@@ -23,6 +23,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public int ID { get; set; }
 		[DataMember]
+		[Verplicht]
 		[DisplayName(@"Omschrijving van de uitstap")]
 		public string Naam { get; set; }
 		[DataMember]
@@ -31,10 +32,12 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		[DisplayName(@"Begindatum")]
 		[DataType(DataType.Date)]
+		[Verplicht]
 		public DateTime? DatumVan { get; set; }
 		[DataMember]
 		[DisplayName(@"Einddatum")]
 		[DataType(DataType.Date)]
+		[Verplicht]
 		public DateTime? DatumTot { get; set; }
 		[DataMember]
 		[DataType(DataType.MultilineText)]

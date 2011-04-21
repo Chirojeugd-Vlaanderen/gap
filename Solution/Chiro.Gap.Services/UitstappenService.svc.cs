@@ -40,29 +40,29 @@ namespace Chiro.Gap.Services
 		/// Bewaart een uitstap aan voor de groep met gegeven <paramref name="groepID"/>
 		/// </summary>
 		/// <param name="groepID">ID van de groep horende bij de uitstap.
-		/// Is eigenlijk enkel relevant als het om een nieuwe uitstap gaat.</param>
-		/// <param name="detail">Details over de uitstap.  Als <c>uitstap.ID</c> <c>0</c> is,
-		/// dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
+		///   Is eigenlijk enkel relevant als het om een nieuwe uitstap gaat.</param>
+		/// <param name="info">Details over de uitstap.  Als <c>uitstap.ID</c> <c>0</c> is,
+		///   dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
 		/// <returns>ID van de uitstap</returns>
-		public int Bewaren(int groepID, UitstapDetail detail)
+		public int Bewaren(int groepID, UitstapInfo info)
 		{
 			// Als de uitstap een ID heeft, moet een bestaande uitstap worden opgehaald.
 			// Anders maken we een nieuwe.
 
 			Uitstap uitstap;
 
-			if (detail.ID == 0)
+			if (info.ID == 0)
 			{
 				var gwj = _groepsWerkJaarMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Groep);
-				uitstap = Mapper.Map<UitstapDetail, Uitstap>(detail);
+				uitstap = Mapper.Map<UitstapInfo, Uitstap>(info);
 				_uitstappenMgr.Koppelen(uitstap, gwj);
 			}
 			else
 			{
 				// haal origineel op, gekoppeld aan groepswerkjaar
-				uitstap = _uitstappenMgr.Ophalen(detail.ID, UitstapExtras.GroepsWerkJaar);
-				// overschrijf met gegevens uit 'detail'
-				Mapper.Map(detail, uitstap);
+				uitstap = _uitstappenMgr.Ophalen(info.ID, UitstapExtras.GroepsWerkJaar);
+				// overschrijf met gegevens uit 'info'
+				Mapper.Map(info, uitstap);
 			}
 
 			try

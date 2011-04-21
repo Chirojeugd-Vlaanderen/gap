@@ -96,12 +96,49 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <summary>
 		/// Formulier om bestaande uitstap mee te bewerken
 		/// </summary>
-		/// <returns></returns>
+		/// <param name="groepID">ID van de groep</param>
+		/// <param name="id">ID van de te bewerken uitstap</param>
+		/// <returns>Een formuliertje waarmee je datum en opmerkingen van een uitstap kunt aanpassen</returns>
 		[AcceptVerbs(HttpVerbs.Get)]
-		public ActionResult Bewerken()
+		public ActionResult Bewerken(int groepID, int id)
 		{
-			throw new NotImplementedException();
+			var model = new UitstapModel();
+			BaseModelInit(model, groepID);
+			model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
+			model.Titel = model.Uitstap.Naam;
+
+
+			return View(model);
 		}
+
+
+		/// <summary>
+		/// Stuurt de gegevens uit het 'uitstapbewerkenformulier' door naar de backend.
+		/// </summary>
+		/// <param name="model">Ingevlude gegevens</param>
+		/// <param name="groepID">Groep waarvoor uitstap moet worden bewerkt</param>
+		/// <param name="id">ID van de te bewerken uitstap</param>
+		/// <returns>Als alles gelukt is, de details van de toegevoegde uitstap.  Anders 
+		/// opnieuw het formulier met feedback over de problemen.</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult Bewerken(UitstapModel model, int groepID, int id)
+		{
+			BaseModelInit(model, groepID);
+			// neem uitstapID over uit url, want ik denk dat daarvoor geen field is voorzien.
+			model.Uitstap.ID = id;
+			model.Titel = model.Uitstap.Naam;
+
+			if (ModelState.IsValid)
+			{
+				int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
+				return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
+			}
+			else
+			{
+				return View("Bewerken", model);
+			}
+		}
+
 
 		/// <summary>
 		/// Laat de user de bivakplaats voor een uitstap bewerken.
