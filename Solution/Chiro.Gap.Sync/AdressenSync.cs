@@ -50,8 +50,6 @@ namespace Chiro.Gap.Sync
 						       AdresType = (AdresTypeEnum)pa.AdresType
 					       };
 
-				// TODO (#238): Buitenlandse adressen!
-
 				var adres = Mapper.Map<Chiro.Gap.Orm.Adres, Chiro.Gap.Sync.SyncService.Adres>(adr);
 
 				_svc.StandaardAdresBewaren(adres, bewoners.ToList());

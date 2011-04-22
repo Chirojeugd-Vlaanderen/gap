@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -18,6 +19,32 @@ namespace Chiro.Gap.Sync
 	/// </summary>
 	public static class MappingHelper
 	{
+		private static string LandGet(this Adres adres)
+		{
+			if (adres is BelgischAdres)
+			{
+				return null;
+			}
+			else
+			{
+				Debug.Assert(adres is BuitenLandsAdres);
+				return ((BuitenLandsAdres)adres).Land.Naam;
+			}
+		}
+
+		private static string PostCodeGet(this Adres adres)
+		{
+			if (adres is BelgischAdres)
+			{
+				return null;
+			}
+			else
+			{
+				Debug.Assert(adres is BuitenLandsAdres);
+				return ((BuitenLandsAdres) adres).PostCode;
+			}	
+		}
+
 		public static void MappingsDefinieren()
 		{
 			Mapper.CreateMap<Persoon, SyncService.Persoon>()
@@ -25,8 +52,8 @@ namespace Chiro.Gap.Sync
 
 			Mapper.CreateMap<Adres, SyncService.Adres>()
 				.ForMember(dst => dst.ExtensionData, opt => opt.Ignore())
-				.ForMember(dst => dst.Land, opt => opt.Ignore()) // TODO (#238): buitenlandse adressen
-				.ForMember(dst => dst.PostCode, opt => opt.Ignore()) // TODO (#238): buitenlandse adressen
+				.ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.LandGet()))
+				.ForMember(dst => dst.PostCode, opt => opt.MapFrom(src=>src.PostCodeGet()))
 				.ForMember(dst => dst.PostNr,
 				           opt =>
 				           opt.MapFrom(
