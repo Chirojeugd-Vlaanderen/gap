@@ -49,8 +49,7 @@ create table biv.Deelnemer
   DeelnemerID int not null identity (1,1),
   UitstapID int not null,
   GelieerdePersoonID int not null,
-  LidID int null, -- als null: logistiek deelnemer
-  IsLogistieker AS (case when LidID IS NULL then CONVERT(bit,'true',0) else CONVERT(bit,'false',0) end),
+  IsLogistieker bit not null,
   HeeftBetaald bit not null,
   MedischeFicheOk bit not null,
   Opmerkingen text,
@@ -61,6 +60,5 @@ alter table biv.Deelnemer add constraint PK_Deelnemer primary key(DeelnemerID);
 alter table biv.Uitstap add constraint FK_Uitstap_Deelnemer_Contact foreign key(ContactDeelnemerID) references biv.Deelnemer(DeelnemerID);
 alter table biv.Deelnemer add constraint FK_Deelnemer_Uitstap foreign key(UitstapID) references biv.Uitstap(UitstapID);
 alter table biv.Deelnemer add constraint FK_Deelnemer_GelieerdePersoon foreign key(GelieerdePersoonID) references pers.GelieerdePersoon(GelieerdePersoonID);
-alter table biv.Deelnemer add constraint FK_Deelnemer_Lid foreign key(LidID) references lid.Lid(LidID);
 
 
