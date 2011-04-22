@@ -46,6 +46,22 @@ namespace Chiro.Kip.Services
 		private readonly IMiniLog _log;
 
 		/// <summary>
+		/// Kipadmin kent het onderscheid postnummer/postcode niet.  Deze
+		/// domme functie plakt de twee aan elkaar.
+		/// </summary>
+		/// <param name="adres">Adres</param>
+		/// <returns>combinatie postnummer/postcode van adres</returns>
+		private static string KipPostNr(Adres adres)
+		{
+			return String.IsNullOrEmpty(adres.PostCode)
+			       	? adres.PostNr.ToString()
+			       	: String.Format(
+			       		"{0} {1}",
+			       		adres.PostNr,
+			       		adres.PostCode);
+		}
+
+		/// <summary>
 		/// Standaardconstructor
 		/// </summary>
 		/// <param name="updateService">Service die gebruikt moet worden om updates terug te sturen naar GAP</param>
@@ -128,13 +144,21 @@ namespace Chiro.Kip.Services
 				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int) src.Geslacht))
 				.ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
 
+			// Kipadmin kent het onderscheid postnummer-postcode niet.  Als er een postcode is, wordt die
+			// met een spatie aan de postnummer geplakt.
+
+			string postNr = KipPostNr(adres);
+			
 			using (var db = new kipadminEntities())
 			{
 				var personen = new List<KipPersoon>();
 
+				// Zoek alle 'bewoners' op.  De gevonden bewoners worden bewaard
+				// in 'personen'.
+
 				foreach (var b in bewoners)
 				{
-					// Adressen van bewoners zonder AD-nummer mogen wel bewaard worden.  Het
+					// NOOT: Adressen van bewoners zonder AD-nummer mogen wel bewaard worden.  Het
 					// kan namelijk zijn dat een persoon al wel aangesloten is, maar dat
 					// zijn AD-nummer nog niet teruggesynct is.
 
@@ -149,7 +173,7 @@ namespace Chiro.Kip.Services
 					else
 					{
 						var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(b.Persoon);
-						zoekInfo.PostNr = adres.PostNr;
+						zoekInfo.PostNr = postNr;
 
 						var gevonden = pMgr.Zoeken(zoekInfo, false, db);
 
@@ -162,11 +186,6 @@ namespace Chiro.Kip.Services
 								"Adreswijziging: {0} {1} niet gevonden",
 								b.Persoon.VoorNaam, b.Persoon.Naam));
 							return;
-
-							//throw new InvalidOperationException(String.Format(
-							//    Properties.Resources.PersoonNietGevonden,
-							//    b.Persoon.VoorNaam,
-							//    b.Persoon.Naam));
 						}
 						else
 						{
@@ -207,13 +226,14 @@ namespace Chiro.Kip.Services
 					}
 				}
 
-				string postNr = adres.PostNr.ToString();
 
 				var adresInDb = (from adr in db.AdresSet.Include("kipWoont.kipPersoon").Include("kipWoont.kipAdresType")
 				                 where adr.Straat == adres.Straat
 				                       && adr.Nr == huisNr
 				                       && adr.PostNr == postNr
 				                       && adr.Gemeente == adres.WoonPlaats
+						       && (string.IsNullOrEmpty(adr.Land) && string.IsNullOrEmpty(adres.Land)
+						       || adr.Land == adres.Land)
 				                 select adr).FirstOrDefault();
 
 				if (adresInDb == null)
@@ -223,11 +243,22 @@ namespace Chiro.Kip.Services
 					            		ID = 0,
 					            		Straat = adres.Straat,
 					            		Nr = huisNr,
-					            		PostNr = adres.PostNr.ToString(),
-					            		Gemeente = adres.WoonPlaats
-					            		// TODO (#238) Buitenlandse adressen.
+					            		PostNr = postNr,
+					            		Gemeente = adres.WoonPlaats,
+					            		Land = adres.Land
 					            	};
 					db.AddToAdresSet(adresInDb);
+
+					_log.BerichtLoggen(0, String.Format(
+						"Nieuw adres gemaakt ({0}): {1} {2}, {3} {4} * {5}",
+						adresInDb.ID, adresInDb.Straat, adresInDb.Nr, adresInDb.PostNr, adresInDb.Gemeente, adresInDb.Land));
+
+				}
+				else
+				{
+					_log.BerichtLoggen(0, String.Format(
+						"Bestaand adres gevonden ({0}): {1} {2}, {3} {4} * {5}",
+						adresInDb.ID, adresInDb.Straat, adresInDb.Nr, adresInDb.PostNr, adresInDb.Gemeente, adresInDb.Land));
 				}
 
 
@@ -1498,7 +1529,7 @@ namespace Chiro.Kip.Services
 
 				if (adres != null)
 				{
-					zoekInfo.PostNr = adres.PostNr;
+					zoekInfo.PostNr = KipPostNr(adres);
 				}
 
 				// Zoek of maak gevraagde persoon

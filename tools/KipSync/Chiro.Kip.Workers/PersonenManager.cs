@@ -166,6 +166,6 @@ namespace Chiro.Kip.Workers
 		public int Geslacht { get; set; }
 		public IEnumerable<string> Communicatie { get; set; }
 		public DateTime? GeboorteDatum { get; set; }
-		public int? PostNr { get; set; }
+		public string PostNr { get; set; }
 	}
 }
