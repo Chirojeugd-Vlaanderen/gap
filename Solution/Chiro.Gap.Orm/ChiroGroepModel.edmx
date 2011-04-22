@@ -1760,7 +1760,7 @@
           <NavigationProperty Name="Plaats" Relationship="ChiroGroepModel.FK_Uitstap_Plaats" FromRole="Uitstap" ToRole="Plaats" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Uitstap_GroepsWerkJaar" FromRole="Uitstap" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="Deelnemer" Relationship="ChiroGroepModel.FK_Deelnemer_Uitstap" FromRole="Uitstap" ToRole="Deelnemer" />
-          <NavigationProperty Name="Deelnemer1" Relationship="ChiroGroepModel.FK_Uitstap_Deelnemer_Contact" FromRole="Uitstap" ToRole="Deelnemer" />
+          <NavigationProperty Name="ContactDeelnemer" Relationship="ChiroGroepModel.FK_Uitstap_Deelnemer_Contact" FromRole="Uitstap" ToRole="Deelnemer" />
         </EntityType>
         <Association Name="FK_Plaats_Adres">
           <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="1" />
@@ -1791,7 +1791,7 @@
           <Property Type="Boolean" Name="HeeftBetaald" Nullable="false" />
           <Property Type="Boolean" Name="MedischeFicheOk" Nullable="false" />
           <Property Type="String" Name="Opmerkingen" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Type="Binary" Name="Versie" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Binary" Name="Versie" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Deelnemer_GelieerdePersoon" FromRole="Deelnemer" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="Uitstap" Relationship="ChiroGroepModel.FK_Deelnemer_Uitstap" FromRole="Deelnemer" ToRole="Uitstap" />
           <NavigationProperty Name="UitstapWaarvoorVerantwoordelijk" Relationship="ChiroGroepModel.FK_Uitstap_Deelnemer_Contact" FromRole="Deelnemer" ToRole="Uitstap" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Public" />

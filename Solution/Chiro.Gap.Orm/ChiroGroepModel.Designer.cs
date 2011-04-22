@@ -6720,7 +6720,7 @@ namespace Chiro.Gap.Orm
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Uitstap_Deelnemer_Contact", "Deelnemer")]
-        public Deelnemer Deelnemer1
+        public Deelnemer ContactDeelnemer
         {
             get
             {
@@ -6736,7 +6736,7 @@ namespace Chiro.Gap.Orm
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Deelnemer> Deelnemer1Reference
+        public EntityReference<Deelnemer> ContactDeelnemerReference
         {
             get
             {

@@ -538,7 +538,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.GroepsWerkJaar, opt => opt.Ignore())
 				.ForMember(dst => dst.GroepsWerkJaarReference, opt => opt.Ignore())
 				.ForMember(dst => dst.Versie, opt => opt.Ignore())
-				.ForMember(dst => dst.Plaats, opt => opt.Ignore());
+				.ForMember(dst => dst.Plaats, opt => opt.Ignore())
+				.ForMember(dst => dst.ContactDeelnemer, opt => opt.Ignore())
+				.ForMember(dst => dst.ContactDeelnemerReference, opt => opt.Ignore())
+				.ForMember(dst => dst.Deelnemer, opt => opt.Ignore());
 
 
 
