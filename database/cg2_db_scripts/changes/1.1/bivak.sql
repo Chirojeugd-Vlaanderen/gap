@@ -9,7 +9,7 @@ create table biv.Plaats
 	PlaatsID int not null identity(1,1),
 	Naam varchar(80) not null,
 	AdresID int not null,
-	GelieerdePersoonID int not null,	-- contactpersoon
+	GelieerdePersoonID int null,		-- contactpersoon
 	GroepID int not null,				-- ingevende groep
 	Versie timestamp
 );
@@ -18,6 +18,8 @@ alter table biv.Plaats add constraint PK_Plaats primary key(PlaatsID);
 alter table biv.Plaats add constraint FK_Plaats_Adres foreign key(AdresID) references adr.Adres(AdresID);
 alter table biv.Plaats add constraint FK_Plaats_GelieerdePersoon_Contact foreign key (GelieerdePersoonID) references pers.GelieerdePersoon(GelieerdePersoonID);
 alter table biv.Plaats add constraint FK_Plaats_Groep foreign key(GroepID) references grp.Groep(GroepID);
+
+create unique index AK_Plaats_AdresID_GroepID_Naam on biv.Plaats(AdresID, GroepID, Naam)
 
 grant select,insert,update,delete on biv.Plaats to GapRole;
 
@@ -32,6 +34,7 @@ create table biv.Uitstap
 	Opmerkingen text,
 	PlaatsID int,
 	GroepsWerkJaarID int,
+	ContactDeelnemerID int,
 	Versie timestamp
 )
 
@@ -40,5 +43,24 @@ alter table biv.Uitstap add constraint FK_Uitstap_Plaats foreign key(PlaatsID) r
 alter table biv.Uitstap add constraint FK_Uitstap_GroepsWerkJaar foreign key(GroepsWerkJaarID) references grp.GroepsWerkJaar(GroepsWerkJaarID);
 
 grant select,insert,update,delete on biv.Uitstap to GapRole;
+
+create table biv.Deelnemer
+(
+  DeelnemerID int not null identity (1,1),
+  UitstapID int not null,
+  GelieerdePersoonID int not null,
+  LidID int null, -- als null: logistiek deelnemer
+  IsLogistieker AS (case when LidID IS NULL then CONVERT(bit,'true',0) else CONVERT(bit,'false',0) end),
+  HeeftBetaald bit not null,
+  MedischeFicheOk bit not null,
+  Opmerkingen text,
+  Versie timestamp
+);
+
+alter table biv.Deelnemer add constraint PK_Deelnemer primary key(DeelnemerID);
+alter table biv.Uitstap add constraint FK_Uitstap_Deelnemer_Contact foreign key(ContactDeelnemerID) references biv.Deelnemer(DeelnemerID);
+alter table biv.Deelnemer add constraint FK_Deelnemer_Uitstap foreign key(UitstapID) references biv.Uitstap(UitstapID);
+alter table biv.Deelnemer add constraint FK_Deelnemer_GelieerdePersoon foreign key(GelieerdePersoonID) references pers.GelieerdePersoon(GelieerdePersoonID);
+alter table biv.Deelnemer add constraint FK_Deelnemer_Lid foreign key(LidID) references lid.Lid(LidID);
 
 
