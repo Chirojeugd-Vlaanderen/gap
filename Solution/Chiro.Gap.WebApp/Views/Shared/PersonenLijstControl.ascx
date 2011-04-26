@@ -7,11 +7,6 @@
 		$("#checkall").click(function() {
 			$("INPUT[@name=GekozenGelieerdePersoonIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
 		});
-
-		$('#kiesActie').hide();
-		$("#GekozenActie").change(function() {
-			$('#kiesActie').click();
-		});
 	});
 </script>
 
@@ -25,23 +20,10 @@
 
 	int j = 0;
 %>
-<%using (Html.BeginForm("ToepassenOpSelectie", "Personen"))
-  { %>
-<div class="right">
-	Totaal aantal personen:
-	<%= Model.Totaal %>
-</div>
-<div class="left">
-	Maak een selectie en
-	<select id="GekozenActie" name="GekozenActie">
-		<option value="0">kies een actie</option>
-		<option value="1">Inschrijven</option>
-		<option value="3">In dezelfde categorie stoppen</option>
-	</select>
-	<input id="kiesActie" type="submit" value="Uitvoeren" /></div>
 <div class="pager">
 	Pagina's:
 	<%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalPaginas, i => Url.Action("List", new { Controller="Personen", page = i, sortering=Model.Sortering })) %>
+    (Totaal: <%= Model.Totaal %> personen)
 </div>
 <table class="overzicht">
 <tr>
@@ -93,6 +75,3 @@
 	</tr>
 	<% } %>
 </table>
-<%
-	}
-%>

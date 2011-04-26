@@ -9,7 +9,12 @@
 			$('#kiesCategorie').hide();
 			$("#GekozenCategorieID").change(function() {
 				$('#kiesCategorie').click();
-			});
+            });
+
+            $('#kiesActie').hide();
+            $("#GekozenActie").change(function () {
+                $('#kiesActie').click();
+            });
 		});
 	</script>
 </asp:Content>
@@ -26,10 +31,17 @@
 			<li>
 				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.GekozenCategorieID }, new { title = "Download de geselecteerde gegevens in een Excel-bestand"}) %></li>
 		</ul>
+        <h1>Selectie</h1>
+
+    	<select id="GekozenActie" name="GekozenActie">
+		    <option value="0">kies een actie</option>
+		    <option value="1">Inschrijven</option>
+		    <option value="3">In dezelfde categorie stoppen</option>
+	    </select>
+	    <input id="kiesActie" type="submit" value="Uitvoeren" />
+
 		<h1>
 			Filteren</h1>
-		<ul>
-			<li>
 				<select id="GekozenCategorieID" name="GekozenCategorieID">
 					<option value="">Op categorie</option>
 					<% foreach (var s in Model.GroepsCategorieen)
@@ -40,8 +52,6 @@
 				</select>
 				<input id="kiesCategorie" type="submit" value="Uitvoeren" />
 				<%=Html.HiddenFor(e => e.Sortering) %>
-			</li>
-		</ul>
 		<h1>
 			Uitleg</h1>
 		<ul>
@@ -51,7 +61,10 @@
 			<li>
 				<%= Html.ActionLink("Wat betekent 'inschrijven'?", "ViewTonen", "Handleiding", null, null, "Inschrijven", new { helpBestand = "Trefwoorden" }, new { title = "Lees in de handleiding wat de gevolgen zijn wanneer je iemand inschrijft" })%></li>
 		</ul>
+
 	</div>
-	<%} %>
+	
 	<% Html.RenderPartial("PersonenLijstControl", Model); %>
+
+    <%} %>
 </asp:Content>

@@ -173,8 +173,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Bij postback naar List, wordt er gekeken wat er in model.GekozenCategorieID zit, en
-		/// wordt de lijst getoond van personen in die categorie
+		/// Afhandelen postback naar list.  Als er iets relevant in 'GekozenActie' zit,
+		/// wordt 'ToepassenOpSelectie' aangeroepen.  In het andere geval werd gewoon
+		/// een categorie geselecterd.
 		/// </summary>
 		/// <param name="model">model.GekozenCategorieID bevat de ID van de categorie waarvan de
 		/// personen getoond moeten worden.  Is deze 0, dan worden alle personen getoond</param>
@@ -184,14 +185,21 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult List(PersoonInfoModel model, int groepID)
 		{
-			return RedirectToAction(
-				"List",
-				new
-				{
-					page = 1,
-					id = model.GekozenCategorieID,
-					sortering = model.Sortering
-				});
+			if (model.GekozenActie > 0)
+			{
+				return ToepassenOpSelectie(model, groepID);
+			}
+			else
+			{
+				return RedirectToAction(
+					"List",
+					new
+						{
+							page = 1,
+							id = model.GekozenCategorieID,
+							sortering = model.Sortering
+						});
+			}
 		}
 
 		/// <summary>
