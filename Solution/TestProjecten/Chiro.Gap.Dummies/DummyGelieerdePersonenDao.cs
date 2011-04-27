@@ -50,7 +50,7 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, PersoonsExtras extras)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
 		{
 			throw new NotImplementedException();
 		}

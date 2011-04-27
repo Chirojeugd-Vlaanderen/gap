@@ -139,7 +139,6 @@ namespace Chiro.Gap.Data.Test
 			var pagina = _gpdao.PaginaOphalenUitCategorie(
 				TestInfo.CATEGORIEID,
 				1, 10, PersoonSorteringsEnum.Naam,
-				false,
 				out aantalTotaal,
 				PersoonsExtras.Geen);
 
@@ -160,16 +159,15 @@ namespace Chiro.Gap.Data.Test
 			var pagina = _gpdao.PaginaOphalenUitCategorie(
 				TestInfo.CATEGORIE2ID,
 				1, 10, PersoonSorteringsEnum.Naam,
-				false,
 				out aantalTotaal,
-				PersoonsExtras.Leden);
+				PersoonsExtras.AlleLeden);
 
 			// assert
 			GelieerdePersoon lid = (from gp in pagina
 									where gp.ID == TestInfo.GELIEERDEPERSOON3ID
 									select gp).FirstOrDefault();
 			GelieerdePersoon geenLid = (from gp in pagina
-										where gp.ID == TestInfo.GELIEERDEPERSOON2ID
+										where gp.ID == TestInfo.GELIEERDEPERSOONID
 										select gp).FirstOrDefault();
 
 			Assert.IsNotNull(lid);

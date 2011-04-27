@@ -137,11 +137,9 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="paginaGrootte">Aantal records op een pagina</param>
 		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
-		/// <param name="metHuidigLidInfo">Als <c>true</c> worden ook eventuele lidobjecten *van dit werkjaar* 
-		/// mee opgehaald.</param>
 		/// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
 		/// <returns>Lijst gelieerde personen</returns>
-		IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, PersoonsExtras extras);
+		IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras);
 
 
 		/// <summary>

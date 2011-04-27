@@ -294,18 +294,16 @@ namespace Chiro.Gap.Workers
 		/// <param name="paginaGrootte">Aantal personen per pagina</param>
 		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
-		/// <param name="metHuidigLidInfo">Als <c>true</c> worden ook eventuele lidobjecten *van dit werkjaar* 
-		/// mee opgehaald.</param>
 		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
 		/// personen in de groep</param>
 		/// <returns>Lijst met GelieerdePersonen</returns>
-		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, PersoonsExtras extras, bool metHuidigLidInfo, out int aantalTotaal)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, PersoonsExtras extras, out int aantalTotaal)
 		{
 			if (!_autorisatieMgr.IsGavCategorie(categorieID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			return _gelieerdePersonenDao.PaginaOphalenUitCategorie(categorieID, pagina, paginaGrootte, sortering, metHuidigLidInfo, out aantalTotaal, extras);
+			return _gelieerdePersonenDao.PaginaOphalenUitCategorie(categorieID, pagina, paginaGrootte, sortering, out aantalTotaal, extras);
 		}
 
 		/// <summary>

@@ -224,8 +224,7 @@ namespace Chiro.Gap.Services
 					pagina,
 					paginaGrootte,
 					sortering,
-					PersoonsExtras.Categorieen,
-					true,
+					PersoonsExtras.Categorieen|PersoonsExtras.LedenDitWerkJaar,
 					out aantalTotaal);
 				return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
 			}
@@ -400,7 +399,6 @@ namespace Chiro.Gap.Services
 					int.MaxValue,
 					sortering,
 					PersoonsExtras.Adressen | PersoonsExtras.Communicatie,
-					false,
 					out totaal);
 
 				return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);

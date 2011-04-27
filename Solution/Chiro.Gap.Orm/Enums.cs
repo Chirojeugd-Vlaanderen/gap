@@ -155,9 +155,14 @@ namespace Chiro.Gap.Orm
 		GroepsWerkJaren = 0x20,
 
 		/// <summary>
-		/// De lidobjecten van een gelieerde persoon
+		/// Lidobjecten recentste groepswerkjaar
 		/// </summary>
-		Leden = 0x40
+		LedenDitWerkJaar = 0x40,
+
+		/// <summary>
+		/// Alle lidobjecten van een gelieerde persoon
+		/// </summary>
+		AlleLeden = 0x60
 	}
 
 	/// <summary>

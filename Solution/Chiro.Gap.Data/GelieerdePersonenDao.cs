@@ -154,6 +154,14 @@ namespace Chiro.Gap.Data.Ef
 				{
 					AlleAdressenKoppelen(db, resultaat);
 				}
+
+				if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
+				{
+					// Als niet alle lidobjecten gevraagd zijn, maar wel de lidobjecten van
+					// het huidige werkjaar, dan moeten we die expliciet koppelen
+
+					HuidigeLedenKoppelen(db, resultaat);
+				}
 			}
 
 			return Utility.DetachObjectGraph(resultaat);
@@ -301,11 +309,9 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="paginaGrootte">Grootte van de pagina</param>
 		/// <param name="sortering">Sortering van de lijst</param>
 		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
-		/// <param name="metHuidigLidInfo">Als <c>true</c> worden ook eventuele lidobjecten *van dit werkjaar* 
-		/// mee opgehaald.</param>
 		/// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
 		/// <returns>Lijst gelieerde personen</returns>
-		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, PersoonsExtras extras)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
 		{
 			Groep g;
 			IList<GelieerdePersoon> lijst;
@@ -313,12 +319,6 @@ namespace Chiro.Gap.Data.Ef
 			using (var db = new ChiroGroepEntities())
 			{
 				// Haal alle personen in de gevraagde categorie op
-
-				// Met de oorspronkelijke query kreeg ik het niet geregeld:
-				//                              
-				//  var query = (from c in db.Categorie.Include(cat => cat.GelieerdePersoon.First().Persoon)
-				//                         where c.ID == categorieID
-				//                         select c).FirstOrDefault().GelieerdePersoon;
 
 				var query = from gp in db.GelieerdePersoon.Include(gp => gp.Categorie)
 							where gp.Categorie.Any(cat => cat.ID == categorieID)
@@ -340,38 +340,12 @@ namespace Chiro.Gap.Data.Ef
 					AlleAdressenKoppelen(db, lijst);
 				}
 
-				// haal indien gevraagd huidige lidobjecten mee op
+				// als enkel de lidobjecten van dit werkjaar opgevraagd worden, dan moeten we dat nog
+				// arrangeren:
 
-				if (metHuidigLidInfo)
+				if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
 				{
-					// Haal de groep van de gevraagde categorie op
-					g = (from c in db.Categorie
-						 where c.ID == categorieID
-						 select c.Groep).FirstOrDefault();
-
-					// Haal het huidige groepswerkjaar van de groep op
-					var huidigWj = (
-									from w in db.GroepsWerkJaar
-									where w.Groep.ID == g.ID
-									orderby w.WerkJaar descending
-									select w).FirstOrDefault().WerkJaar;
-
-					// Lijst is geattacht aan de objectcontext.  Als we nu ook de lidojecten van de 
-					// gelieerdepersonen in de lijst ophalen voor het gegeven werkjaar, dan worden
-					// die DDD-gewijze aan de gelieerde personen gekoppeld.
-
-					// Haal de IDs van alle relevante personen op
-					IList<int> relevanteGpIDs = (from gp in lijst select gp.ID).ToList();
-
-					// Selecteer nu alle leden van huidig werkjaar met relevant gelieerdePersoonID
-
-					(from l in db.Lid.Include(ld => ld.GelieerdePersoon)
-						.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID, relevanteGpIDs))
-					 where l.GroepsWerkJaar.WerkJaar == huidigWj
-					 select l).ToList();
-
-					// !LET OP! Bovenstaande variabele is weliswaar never used, maar is wel nodig
-					// om de huidige leden in de objectcontext te laden! Laten staan dus!
+					HuidigeLedenKoppelen(db, lijst);
 				}
 			}
 			Utility.DetachObjectGraph(lijst);
@@ -848,6 +822,46 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
+		/// Koppelt de lidobjecten van dit werkjaar aan de gegeven
+		/// <paramref name="gelieerdePersonen"/>.
+		/// </summary>
+		/// <param name="db">Objectcontext waaraan de <paramref name="gelieerdePersonen"/> gekoppeld
+		/// moeten zijn.</param>
+		/// <param name="gelieerdePersonen">De gelieerde personen waaraan we eventuele lidobjecten
+		/// willen koppelen</param>
+		/// <returns>Opnieuw de <paramref name="gelieerdePersonen"/>, maar zij die lid zijn in het
+		/// recentste groepswerkjaar, hebben hun lidobject gekoppeld.</returns>
+		/// <remarks>We gaan ervan uit dat alle <paramref name="gelieerdePersonen"/> aan dezelfde
+		/// groep gekoppeld zijn.</remarks>
+		public static IEnumerable<GelieerdePersoon> HuidigeLedenKoppelen(
+			ChiroGroepEntities db, 
+			IEnumerable<GelieerdePersoon> gelieerdePersonen)
+		{
+			var groepIDs = (from gp in gelieerdePersonen select gp.Groep.ID).Distinct();
+			Debug.Assert(groepIDs.Count() == 1);
+
+			int groepID = groepIDs.First();
+
+			var gelieerdePersoonIDs = (from gp in gelieerdePersonen select gp.ID).ToArray();
+
+			int groepsWerkJaarID = (from w in db.GroepsWerkJaar
+			                        where w.Groep.ID == groepID
+			                        orderby w.WerkJaar descending
+			                        select w.ID).FirstOrDefault();
+
+			// Selecteer en instantieer de leden met uit groepswerkjaar met ID groepsWerkJaarID
+			// en gelieerdePersoon uit GelieerdePersoonIDs.  Omdat de objectcontext nog actief
+			// is, en de gelieerde personen daaraan gekoppeld zijn, zullen de geïnstantieerde
+			// leden aan de goede gelieerde personen gekoppeld worden.
+
+			var leden = db.Lid.Include(ld => ld.GelieerdePersoon).Where(Utility.BuildContainsExpression<Lid, int>(
+				l => l.GelieerdePersoon.ID,
+				gelieerdePersoonIDs)).Where(ld => ld.GroepsWerkJaar.ID == groepsWerkJaarID).ToArray();
+
+			return gelieerdePersonen;
+		}
+
+		/// <summary>
 		/// Converteert de PersoonsExtras <paramref name="extras"/> naar lambda-expressies die mee naar 
 		/// de data access moeten om de extra's daadwerkelijk op te halen.
 		/// </summary>
@@ -859,7 +873,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </remarks>
 		private static Expression<Func<GelieerdePersoon, object>>[] ExtrasNaarLambdas(PersoonsExtras extras)
 		{
-			var paths = new List<Expression<Func<GelieerdePersoon, object>>> { gp => gp.Persoon };
+			var paths = new List<Expression<Func<GelieerdePersoon, object>>> {gp => gp.Persoon};
 
 			if ((extras & PersoonsExtras.Adressen) != 0)
 			{
@@ -870,8 +884,12 @@ namespace Chiro.Gap.Data.Ef
 				paths.Add(gp => gp.PersoonsAdres.Adres);
 			}
 
-			if ((extras & PersoonsExtras.Groep) != 0)
+			if ((extras & (PersoonsExtras.Groep|PersoonsExtras.LedenDitWerkJaar)) != 0)
 			{
+				// Als de leden van dit werkjaar opgevraagd worden, dan kunnen we
+				// dat niet via een lambda-expressie uitdrukken.  Maar dan hebben
+				// we straks de groep wel nodig, dus halen we die meteen ook maar op.
+
 				paths.Add(gp => gp.Groep.WithoutUpdate());
 			}
 
@@ -889,7 +907,7 @@ namespace Chiro.Gap.Data.Ef
 			{
 				paths.Add(gp => gp.Lid.First().GroepsWerkJaar.WithoutUpdate());
 			}
-			else if ((extras & PersoonsExtras.Leden) != 0)
+			else if ((extras & PersoonsExtras.AlleLeden) == PersoonsExtras.AlleLeden)
 			{
 				paths.Add(gp => gp.Lid);
 			}

@@ -85,11 +85,11 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				if ((extras & UitstapExtras.Groep) != 0)
+				if ((extras & UitstapExtras.Groep) == UitstapExtras.Groep)
 				{
 					paths.Add(u => u.GroepsWerkJaar.Groep);
 				}
-				else if ((extras & UitstapExtras.GroepsWerkJaar) != 0)
+				else if ((extras & UitstapExtras.GroepsWerkJaar) == UitstapExtras.GroepsWerkJaar)
 				{
 					paths.Add(u => u.GroepsWerkJaar);
 				}

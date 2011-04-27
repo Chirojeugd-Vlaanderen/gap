@@ -308,6 +308,25 @@ namespace Chiro.Gap.Data.Test
 		}
 
 		/// <summary>
+		/// Controleert of het ophalen van een gelieerde persoon met het recentste lid
+		/// de oude leden daadwerkelijk niet mee ophaalt
+		/// </summary>
+		[TestMethod]
+		public void OphalenPersoonMetRecentsteLidInfo()
+		{
+			// Arrange
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
+
+			// Act
+			var metAlleLeden = dao.Ophalen(new int [] {TestInfo.GELIEERDEPERSOON4ID}, PersoonsExtras.AlleLeden);
+			var metLedenDitJaar = dao.Ophalen(new int[] { TestInfo.GELIEERDEPERSOON4ID }, PersoonsExtras.LedenDitWerkJaar);
+
+			// Assert
+			Assert.IsTrue(metAlleLeden.First().Lid.Count() > 1);
+			Assert.IsTrue(metLedenDitJaar.First().Lid.Count() == 1);
+		}
+
+		/// <summary>
 		/// We halen details van een persoon op met twee adressen.  Het eerste is het voorkeursadres.
 		/// De bedoeling is dat van beide adressen de straatnaam meekomt.
 		/// </summary>
