@@ -24,6 +24,17 @@ namespace Chiro.Gap.ServiceContracts
 		#region ophalen
 
 		/// <summary>
+		/// Haalt een persoonsgegevens op van gelieerde personen van een groep,
+		/// inclusief eventueel lidobject voor het recentste werkjaar.
+		/// </summary>
+		/// <param name="selectieGelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
+		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		IList<PersoonDetail> OphalenMetLidInfo(IEnumerable<int> selectieGelieerdePersoonIDs);
+
+		/// <summary>
 		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep,
 		/// inclusief eventueel lidobject voor het recentste werkjaar.
 		/// </summary>
@@ -367,5 +378,7 @@ namespace Chiro.Gap.ServiceContracts
 		void DubbelPuntBestellen(int gelieerdePersoonID);
 
 		#endregion
+
+
 	}
 }

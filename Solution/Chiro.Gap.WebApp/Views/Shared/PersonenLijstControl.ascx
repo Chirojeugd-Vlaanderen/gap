@@ -2,6 +2,8 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+
+<% // TODO: onderstaand script moet naar 'head'. %>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#checkall").click(function() {

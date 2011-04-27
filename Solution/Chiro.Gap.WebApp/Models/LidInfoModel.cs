@@ -3,12 +3,9 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 
-using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.WebApp.Controllers;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -47,5 +44,10 @@ namespace Chiro.Gap.WebApp.Models
 		public int AfdelingID { get; set; }
 		public int FunctieID { get; set; }
 		public SpecialeLedenLijst SpecialeLijst { get; set; }
+
+		// Indien van toepassing: actie die uitgevoerd moet worden op alle leden
+		// met GelieerdePersoonID in SelectieGelieerdePersoonIDs.
+
+		public int GekozenActie { get; set; }
 	}
 }

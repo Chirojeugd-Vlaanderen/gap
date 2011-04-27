@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AfdelingenAanpassen" xml:space="preserve">
-    <value>Afdelingen van {0} bewerken</value>
+    <value>Afdeling(en) bewerken</value>
   </data>
   <data name="AfdelingNietLeeg" xml:space="preserve">
     <value>De geselecteerde afdeling bevat leden of leiding, en kan dus niet verwijderd worden.</value>

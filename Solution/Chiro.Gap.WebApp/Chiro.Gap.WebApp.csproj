@@ -122,6 +122,7 @@
     <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="ModelStateWrapper.cs" />
     <Compile Include="Models\AdresVerwijderenModel.cs" />
+    <Compile Include="Models\AfdelingenBewerkenModel.cs" />
     <Compile Include="Models\AfdelingInfoModel.cs" />
     <Compile Include="Models\AfdelingsOverzichtModel.cs" />
     <Compile Include="Models\CategorieModel.cs" />
@@ -178,6 +179,7 @@
     <Content Include="Scripts\jquery.validate.min-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Views\Gav\Index.aspx" />
+    <Content Include="Views\Leden\AfdelingenBewerken.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\AdresVerwijderen.aspx" />
     <Content Include="Views\Personen\CommVormBewerken.aspx" />

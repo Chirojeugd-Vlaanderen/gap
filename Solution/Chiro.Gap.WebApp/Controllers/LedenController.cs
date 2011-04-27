@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
@@ -334,17 +335,23 @@ namespace Chiro.Gap.WebApp.Controllers
 
 
 		/// <summary>
-		/// Filtert een lijst op basis van de info in LidInfoModel
+		/// Afhandelen van postback ledenlijst.  Ofwel is een actie gekozen op de selectie, ofwel
+		/// moet de lijst gefilterd worden.
 		/// </summary>
 		/// <param name="id">ID van het groepswerkjaar.  Als dit 0 is, wordt het recentste groepswerkjaar gekozen</param>
 		/// <param name="groepID">ID van de groep.  Enkel nodig als geen groepswerkjaar gegeven is, maar sowieso
 		/// beschikbaar via URL.</param>
-		/// <param name="model">LidInfoModel, waaruit de informatie over de gewenste filters opgehaald moet worden.</param>
+		/// <param name="model">LidInfoModel, waaruit de informatie over de gewenste actie/filter opgehaald moet 
+		/// worden.</param>
 		/// <returns>Deze method zal voornamelijk redirecten
 		/// </returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Lijst(int id, int groepID, LidInfoModel model)
 		{
+			if (model.GekozenActie > 0)
+			{
+				return ToepassenOpSelectie(model, groepID);
+			}
 			switch (model.SpecialeLijst)
 			{
 				case LidInfoModel.SpecialeLedenLijst.Alles:
@@ -373,6 +380,54 @@ namespace Chiro.Gap.WebApp.Controllers
 								});
 			}
 		}
+
+		/// <summary>
+		/// Voert de gekozen actie in de dropdownlist van de ledenlijst uit op de geselecteerde
+		/// personen.
+		/// </summary>
+		/// <param name="model">De property GekozenActie bepaalt wat er zal gebeuren met de gelieerde personen
+		/// met ID's in de property SelectieGelieerdePersoonIDs.</param>
+		/// <param name="groepID">ID van de groep waarin de gebruiker op dit moment aan het werken is.</param>
+		/// <returns>Een redirect naar de juiste controller action</returns>
+		public ActionResult ToepassenOpSelectie(LidInfoModel model, int groepID)
+		{
+			// In eerste instantie is dit voornamelijk copy/paste uit de personencontroller.
+
+			if (model.SelectieGelieerdePersoonIDs == null || model.SelectieGelieerdePersoonIDs.Count() == 0)
+			{
+				TempData["fout"] = Properties.Resources.NiemandGeselecteerdFout;
+				return TerugNaarVorigeLijst();
+			}
+
+			switch (model.GekozenActie)
+			{
+				case 1:
+					string foutBerichten = String.Empty;
+
+					ServiceHelper.CallService<ILedenService>(g => g.Uitschrijven(
+						model.SelectieGelieerdePersoonIDs,
+						out foutBerichten));
+
+					if (String.IsNullOrEmpty(foutBerichten))
+					{
+						TempData["succes"] = Properties.Resources.MultiIngeschrevenFeedback;
+					}
+					else
+					{
+						TempData["fout"] = foutBerichten;
+					}
+
+					return TerugNaarVorigeLijst();
+				case 2:
+					return AfdelingenBewerken(model.SelectieGelieerdePersoonIDs, groepID);
+
+				default:
+					TempData["fout"] = Properties.Resources.OnbestaandeActieFeedback;
+					return TerugNaarVorigeLijst();
+			}
+		}
+
+
 
 
 		/// <summary>
@@ -461,18 +516,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			return TerugNaarVorigeLijst();
 		}
 
-		// id = lidid
-		// GET: /Leden/Activeren/id
-		// Er worden alleen actieve leden getoond in de lijsten, dus is dit niet meer relevant (voor al de rest wordt "lid maken" gebruikt).
-		/*[HandleError]
-		public ActionResult Activeren(int id, int groepID)
-		{
-			string fouten; // TODO fouten opvangen
-			ServiceHelper.CallService<ILedenService>(l => l.Inschrijven(new List<int> { id }, out fouten));
-			TempData["succes"] = Properties.Resources.LidActiefGemaakt;
-
-			return TerugNaarVorigeLijst();
-		}*/
+		// TODO (#967): Er zijn methods 'AfdelingBewerken' (1 persoon) en 'AfdelingenBewerken' (meerdere personen)
+		// Waarschijnlijk kan er een en ander vereenvoudigd worden
 
 		/// <summary>
 		/// Toont de view die toelaat om de afdeling(en) van een lid te wijzigen
@@ -524,6 +569,65 @@ namespace Chiro.Gap.WebApp.Controllers
 			// De returnwaarde van de volgende call hebben we nergens voor nodig.
 			ServiceHelper.CallService<ILedenService, int>(svc => svc.AfdelingenVervangen(lidID, model.Info.AfdelingsJaarIDs));
 			return TerugNaarVorigeFiche();
+		}
+
+		/// <summary>
+		/// Genereert een view die de gebruiker de geselecteerde personen nog eens toont, en toelaat
+		/// een nieuwe afdeling te kiezen.
+		/// </summary>
+		/// <param name="selectieGelieerdePersoonIDs">ID's van de *gelieerde* personen</param>
+		/// <param name="groepID">Groep waarvoor de gelieerde personen dit werkjaar lid moeten zijn</param>
+		/// <returns>Een view die toelaat een andere afdeling te kiezen</returns>
+		[AcceptVerbs(HttpVerbs.Get)]
+		private ActionResult AfdelingenBewerken(IEnumerable<int> selectieGelieerdePersoonIDs, int groepID)
+		{
+			// We verwachten een niet-lege lijst gelieerdePersoonIDs
+
+			Debug.Assert(selectieGelieerdePersoonIDs != null);
+			Debug.Assert(selectieGelieerdePersoonIDs.FirstOrDefault() != 0);
+
+			var model = new AfdelingenBewerkenModel();
+			BaseModelInit(model, groepID);
+
+			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<ActieveAfdelingInfo>>(
+				svc => svc.HuidigeAfdelingsJarenOphalen(groepID));
+
+			model.Personen = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(
+				svc => svc.OphalenMetLidInfo(selectieGelieerdePersoonIDs));
+
+			if (model.BeschikbareAfdelingen.FirstOrDefault() == null)
+			{
+				// Geen afdelingen.
+
+				// Workaround via TempData["fout"].  Niet zeker of dat een geweldig goed
+				// idee is.
+
+				TempData["fout"] = String.Format(
+					Properties.Resources.GeenActieveAfdelingen,
+					Url.Action("Index", "Afdelingen", new { groepID }));
+
+				return TerugNaarVorigeLijst();
+			}
+			else
+			{
+				model.Titel = String.Format(Properties.Resources.AfdelingenAanpassen);
+				return View("AfdelingenBewerken", model);
+			}
+		}
+
+		/// <summary>
+		/// Bewaart de nieuw toegekende afdeling(en) uit <paramref name="model"/>
+		/// </summary>
+		/// <param name="groepID">Groep waarin wordt gewerkt</param>
+		/// <param name="model">AfdelingenBewerkenModel met info over welke leden welke
+		/// afdelingen moeten krijgen</param>
+		/// <returns>Er wordt geredirect naar de ledenlijst van de groep</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult AfdelingenBewerken(AfdelingenBewerkenModel model, int groepID)
+		{
+			throw new NotImplementedException();
+
+			return RedirectToAction("Index");
 		}
 
 		/// <summary>

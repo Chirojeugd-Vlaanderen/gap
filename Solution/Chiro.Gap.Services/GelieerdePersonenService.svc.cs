@@ -237,6 +237,21 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
+		/// Haalt een persoonsgegevens op van gelieerde personen van een groep,
+		/// inclusief eventueel lidobject voor het recentste werkjaar.
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
+		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
+		/// <remarks>KanLidWorden en KanLeidingWorden worden door deze method gewoon genegeerd.</remarks>
+		public IList<PersoonDetail> OphalenMetLidInfo(IEnumerable<int> gelieerdePersoonIDs)
+		{
+			var gelieerdePersonen = _gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.LedenDitWerkJaar);
+			var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+
+			return result;
+		}
+
+		/// <summary>
 		/// Haalt gelieerde personen op, met lidinfo, 
 		/// volgens de pagineringsparameters,
 		/// en telt over hoeveel personen het gaat

@@ -203,11 +203,11 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Voert de gekozen actie in de dropdownlist van de personenlijstcontrol uit op de geselecteerde
+		/// Voert de gekozen actie in de dropdownlist van de personenlijst uit op de geselecteerde
 		/// personen.
 		/// </summary>
 		/// <param name="model">De property GekozenActie bepaalt wat er zal gebeuren met de gelieerde personen
-		/// met ID's in de property GeselecteerdePersonen.</param>
+		/// met ID's in de property SelectieGelieerdePersoonIDs.</param>
 		/// <param name="groepID">ID van de groep waarin de gebruiker op dit moment aan het werken is.</param>
 		/// <returns>Een redirect naar de juiste controller action</returns>
 		[AcceptVerbs(HttpVerbs.Post)]

@@ -2,11 +2,15 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 
+<%
+    // Ik ga er hier vanuit dat de ledenlijst in een form geëmbed is.
+    // (anders hebben die checkboxen geen zin)
+ %>
 <table class="overzicht">
 	<tr>
-		<th />
+        <th />
+        <th><%=Html.CheckBox("checkall") %></th>
 		<th>Type</th>
-		<th>Ad-nr.</th>
 		<th>
 			<%= Html.ActionLink(
 				"Naam", 
@@ -60,7 +64,6 @@
 		</th>
 		<th>Telefoon</th>
 		<th>E-mail</th>
-		<%=Model.KanLedenBewerken ? "<th>Acties</th>" : String.Empty %>
 	</tr>
 	<%
 		var volgnr = 0;
@@ -78,12 +81,14 @@
 		 <%}
 
 %>
-		<td><%=volgnr.ToString() %></td>
+        <td><input type="checkbox" 
+            name="SelectieGelieerdePersoonIDs" 
+            value="<%=lidOverzicht.GelieerdePersoonID %>" 
+            <%=Model.SelectieGelieerdePersoonIDs != null && Model.SelectieGelieerdePersoonIDs.Contains(lidOverzicht.GelieerdePersoonID) ? "checked=\"checked\"" : String.Empty%> />
+        </td>
+        <td><%=volgnr.ToString() %></td>
 		<td>
 			<%= lidOverzicht.Type == LidType.Kind ? "Lid" : "Leiding" %>
-		</td>
-		<td>
-			<%= lidOverzicht.AdNummer %>
 		</td>
 		<td>
 			<% Html.RenderPartial("LedenLinkControl", lidOverzicht); %>
@@ -139,14 +144,6 @@
 			<%=Html.Telefoon(lidOverzicht.TelefoonNummer) %> </td><td>
 			<a href='mailto:<%=lidOverzicht.Email %>'><%=lidOverzicht.Email %></a>
 		</td>
-		<%if (Model.KanLedenBewerken)
-	{%>
-		<td>
-			<%=Html.ActionLink("uitschrijven", "DeActiveren", new { Controller = "Leden", id = lidOverzicht.GelieerdePersoonID }, new { title = "Deze persoon verwijderen uit de lijst met ingeschreven leden en leiding" })%>
-			<%=Html.ActionLink("afd.", "AfdelingBewerken", new { Controller = "Leden", lidID = lidOverzicht.LidID }, new { title = "Bij een (andere) afdeling zetten" })%>
-		</td>
-		<%
-			}%>
 	</tr>
 	<% } %>
 </table>
