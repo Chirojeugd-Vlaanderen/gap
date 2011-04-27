@@ -65,6 +65,10 @@ namespace Chiro.Gap.Data.Ef
 				{
 					AlleAdressenKoppelen(db, result);
 				}
+				if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
+				{
+					HuidigeLedenKoppelen(db, result);
+				}
 			}
 
 			// Dan detachen
@@ -205,63 +209,24 @@ namespace Chiro.Gap.Data.Ef
 			}
 		}
 
+
 		/// <summary>
-		/// Haal een pagina op met gelieerde personen van een groep, inclusief hun categorieën en relevante 
-		/// lidinfo voor het recentste werkjaar.
+		/// Haal een pagina op met gelieerde personen van een groep.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
 		/// <param name="pagina">Gevraagde pagina</param>
 		/// <param name="paginaGrootte">Aantal personen per pagina</param>
 		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
+		/// <param name="extras">Bepaalt de mee op te halen gekoppelde entiteiten</param>
 		/// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
 		/// zijn. </param>
 		/// <returns>De gevraagde lijst gelieerde personen</returns>
-		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(
+		public IList<GelieerdePersoon> PaginaOphalen(
 			int groepID,
 			int pagina,
 			int paginaGrootte,
 			PersoonSorteringsEnum sortering,
-			out int aantalTotaal)
-		{
-			int groepsWerkJaarID;
-
-			using (var db = new ChiroGroepEntities())
-			{
-				// Vind het huidig groepsWerkJaarID
-				groepsWerkJaarID = (from w in db.GroepsWerkJaar
-									where w.Groep.ID == groepID
-									orderby w.WerkJaar descending
-									select w.ID).FirstOrDefault();
-			}
-
-			return PaginaOphalenMetLidInfo(
-				groepID,
-				groepsWerkJaarID,
-				pagina,
-				paginaGrootte,
-				sortering,
-				out aantalTotaal);
-		}
-
-		/// <summary>
-		/// Haal een pagina op met gelieerde personen van een groep, inclusief hun categorieën en relevante 
-		/// lidinfo voor het gegeven werkjaar.
-		/// </summary>
-		/// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor we geinteresseerd zijn in de
-		/// lidinfo.</param>
-		/// <param name="pagina">Gevraagde pagina</param>
-		/// <param name="paginaGrootte">Aantal personen per pagina</param>
-		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-		/// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
-		/// zijn. </param>
-		/// <returns>De gevraagde lijst gelieerde personen</returns>
-		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(
-			int groepID,
-			int groepsWerkJaarID,
-			int pagina,
-			int paginaGrootte,
-			PersoonSorteringsEnum sortering,
+			PersoonsExtras extras,
 			out int aantalTotaal)
 		{
 			IList<GelieerdePersoon> lijst;
@@ -271,29 +236,30 @@ namespace Chiro.Gap.Data.Ef
 				// Haal de gelieerde personen op van de gevraagde groep
 
 				var gpQuery = (from gp in db.GelieerdePersoon
-				               	.Include(gpe => gpe.Persoon)
-				               	.Include(gpe => gpe.Categorie)
-				               	.Include(gpe => gpe.Groep)
 				               where gp.Groep.ID == groepID
-				               select gp);
+				               select gp) as ObjectQuery<GelieerdePersoon>;
 
-				// Selecteer gewenste pagina, en bepaal totaal aantal personen
+				Debug.Assert(gpQuery != null);
 
-				lijst = Sorteren(gpQuery, sortering).PaginaSelecteren(pagina, paginaGrootte).ToList();
+				// simpele includes toepassen, sorteren en tellen
+
+				var paths = ExtrasNaarLambdas(extras);
+				lijst = Sorteren(
+					IncludesToepassen(gpQuery, paths), 
+					sortering).PaginaSelecteren(pagina, paginaGrootte).ToList();
 
 				aantalTotaal = gpQuery.Count();
 
-				// De gelieerde personen in 'lijst' zijn geattacht aan de objectcontext.  Als nu
-				// ook de gewenste lidobjecten van het huidige werkjaar opgevraagd worden, dan zal
-				// entity framework die automagisch koppelen aan de gelieerde personen in 'lijst'.
+				// De moeilijkere gekoppelde entiteiten:
 
-				IList<int> relevanteGpIDs = (from gp in lijst select gp.ID).ToList();
-				(from ld in db.Lid.Include("GelieerdePersoon")
-						.Where(Utility.BuildContainsExpression<Lid, int>(
-							l => l.GelieerdePersoon.ID,
-							relevanteGpIDs))
-				 where ld.GroepsWerkJaar.ID == groepsWerkJaarID
-				 select ld).ToList();
+				if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
+				{
+					AlleAdressenKoppelen(db, lijst);
+				}
+				if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
+				{
+					HuidigeLedenKoppelen(db, lijst);
+				}
 			}
 
 			Utility.DetachObjectGraph(lijst);

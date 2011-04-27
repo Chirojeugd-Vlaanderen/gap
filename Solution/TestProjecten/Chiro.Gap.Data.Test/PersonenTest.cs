@@ -226,8 +226,13 @@ namespace Chiro.Gap.Data.Test
 			// act
 
 			// Haal 30 personen op, daar zitten allicht leden bij
-			var lijst = dao.PaginaOphalenMetLidInfo(
-				TestInfo.GROEPID, 1, 30, PersoonSorteringsEnum.Naam, out totaal);
+			var lijst = dao.PaginaOphalen(
+				TestInfo.GROEPID, 
+				1, 
+				30, 
+				PersoonSorteringsEnum.Naam, 
+				PersoonsExtras.Categorieen|PersoonsExtras.LedenDitWerkJaar,
+				out totaal);
 
 			using (var stream = new MemoryStream())
 			{

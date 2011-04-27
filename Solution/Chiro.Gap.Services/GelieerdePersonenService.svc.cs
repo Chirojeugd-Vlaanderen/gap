@@ -253,7 +253,13 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, sortering, out aantalTotaal);
+				var gelieerdePersonen = _gpMgr.PaginaOphalen(
+					groepID, 
+					pagina, 
+					paginaGrootte, 
+					sortering, 
+					PersoonsExtras.Categorieen|PersoonsExtras.LedenDitWerkJaar,
+					out aantalTotaal);
 				var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
 
 				/*

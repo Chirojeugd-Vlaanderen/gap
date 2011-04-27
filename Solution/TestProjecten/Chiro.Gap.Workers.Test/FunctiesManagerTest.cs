@@ -233,6 +233,7 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
+			Factory.ContainerInit();	// Container resetten alvorens dummydata te maken.
 			var testData = new DummyData();
 
 			var fm = Factory.Maak<FunctiesManager>();
@@ -246,13 +247,17 @@ namespace Chiro.Gap.Workers.Test
 				LidType.Alles,
 				testData.HuidigGwj.WerkJaar + 1);	// pas volgend jaar geldig
 
+			f.ID = testData.NieuweFunctieID;
+
 			// Jos krijgt alle nationaal bepaalde functies, zodat eventuele verplichte
 			// nationaal bepaalde functies OK zijn.
 			fm.Toekennen(testData.LeiderJos, fm.NationaalBepaaldeFunctiesOphalen());
 
 			// Act
 
-			var problemen = fm.AantallenControleren(testData.HuidigGwj);
+			var problemen = from p in fm.AantallenControleren(testData.HuidigGwj)
+			                where p.ID == testData.NieuweFunctieID
+			                select p;
 
 			// Assert
 

@@ -14,6 +14,7 @@ namespace Chiro.Gap.Dummies
 	{
 		private const string NIEUWEFUNCODE = "DOM";
 		private const string NIEUWEFUNNAAM = "Domme functie";
+		private const int NIEUWEFUNID = 206;
 
 		private readonly ChiroGroep _dummyGroep;		// testgroep
 		private readonly KaderGroep _dummyGewest;		// testgewest
@@ -275,5 +276,10 @@ namespace Chiro.Gap.Dummies
 		/// Property voor een naam van een niet-bestaande functie
 		/// </summary>
 		public string NieuweFunctieNaam { get { return NIEUWEFUNNAAM; } }
+
+		/// <summary>
+		/// ID dat toegewezen mag worden aan de nieuwe functie
+		/// </summary>
+		public int NieuweFunctieID { get { return NIEUWEFUNID;  } }
 	}
 }

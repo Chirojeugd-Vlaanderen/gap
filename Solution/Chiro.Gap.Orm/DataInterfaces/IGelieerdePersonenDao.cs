@@ -116,17 +116,23 @@ namespace Chiro.Gap.Orm.DataInterfaces
 
 
 		/// <summary>
-		/// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op, inclusief
-		/// eventueel lidobject in het recentste werkjaar.
+		/// Haal een pagina op met gelieerde personen van een groep.
 		/// </summary>
-		/// <param name="groepID">ID van de groep</param>
-		/// <param name="pagina">Paginanummer (1 of groter)</param>
-		/// <param name="paginaGrootte">Aantal records op een pagina</param>
+		/// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
+		/// <param name="pagina">Gevraagde pagina</param>
+		/// <param name="paginaGrootte">Aantal personen per pagina</param>
 		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
-		/// personen gelieerd aan de groep.</param>
-		/// <returns>Lijst met gelieerde personen</returns>
-		IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal);
+		/// <param name="extras">Bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
+		/// zijn. </param>
+		/// <returns>De gevraagde lijst gelieerde personen</returns>
+		IList<GelieerdePersoon> PaginaOphalen(
+			int groepID,
+			int pagina,
+			int paginaGrootte,
+			PersoonSorteringsEnum sortering,
+			PersoonsExtras extras,
+			out int aantalTotaal);
 
 		/// <summary>
 		/// Haal een pagina op met gelieerde personen uit een categorie, inclusief lidinfo voor het huidige

@@ -240,44 +240,33 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haal een pagina op met gelieerde personen van een groep.
-		/// </summary>
-		/// <param name="groepID">GroepID gevraagde groep</param>
-		/// <param name="pagina">Paginanummer (>=1)</param>
-		/// <param name="paginaGrootte">Grootte van de pagina's</param>
-		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-		/// <param name="aantalTotaal">Totaal aantal personen in de groep</param>
-		/// <returns>Lijst met een pagina aan gelieerde personen.</returns>
-		public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
-		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				IList<GelieerdePersoon> list = _gelieerdePersonenDao.PaginaOphalen(groepID, e => e.Groep.ID, pagina, paginaGrootte, out aantalTotaal);
-				list.OrderBy(e => e.Persoon.Naam).ThenBy(e => e.Persoon.VoorNaam);
-				return list;
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-		}
-
-		/// <summary>
-		/// Haalt een pagina op met gelieerde personen van een groep,
-		/// inclusief eventuele lidobjecten voor deze groep
+		/// Haalt een pagina op met gelieerde personen van een groep.
 		/// </summary>
 		/// <param name="groepID">GroepID gevraagde groep</param>
 		/// <param name="pagina">Paginanummer (>=1)</param>
 		/// <param name="paginaGrootte">Aantal personen per pagina</param>
 		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
+		/// <param name="extras">Bepaalt de mee op te halen gekoppelde objecten</param>
 		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
 		/// personen in de groep</param>
 		/// <returns>Lijst met GelieerdePersonen</returns>
-		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
+		public IList<GelieerdePersoon> PaginaOphalen(
+			int groepID, 
+			int pagina, 
+			int paginaGrootte, 
+			PersoonSorteringsEnum sortering, 
+			PersoonsExtras extras,
+			out int aantalTotaal)
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _gelieerdePersonenDao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, sortering, out aantalTotaal);
+				return _gelieerdePersonenDao.PaginaOphalen(
+					groepID, 
+					pagina, 
+					paginaGrootte, 
+					sortering, 
+					extras,
+					out aantalTotaal);
 			}
 			else
 			{
