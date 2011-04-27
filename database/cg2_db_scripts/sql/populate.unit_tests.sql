@@ -18,7 +18,8 @@ use gap
 --   GelieerdePersoon2 is ook geen lid, zit in Categorie2.
 --   GelieerdePersoon3 is leiding van Afdeling1 en Afdeling2, 
 --     zit in Categorie2 en heeft functies contactpersoon en eindredactie boekje
---   GelieerdePersoon4 is ook leiding, met functie 'eindredactie boekje'
+--   GelieerdePersoon4 is ook leiding, met functie 'eindredactie boekje'.  Was ook leiding
+--	   in vorig werkjaar.
 --   GelieerdePersoon5 is lid bij de 'unittestjes'.
 --
 -- GelieerdePersoon 3  heeft een voorkeurs(post)adres, e-mailadres, maar geen telefoonnummer
@@ -177,6 +178,7 @@ SET DateFormat dmy;
 		DECLARE	@testLid4Verwijderd	AS BIT;						SET @testLid4Verwijderd	= 0;
 		DECLARE @testLid4LidGeldBetaald AS BIT;					SET @testLid4LidGeldBetaald = 0;
 		DECLARE @testLid4VolgendWerkjaar AS SMALLINT;			SET @testLid4VolgendWerkjaar = 0;
+		DECLARE @testVorigLid4ID AS INT;
 
 		DECLARE @testLid5ID AS INT;
 		DECLARE @testLid5NonActief AS BIT;						SET @testLid5NonActief = 0;
@@ -549,6 +551,8 @@ END;
 -- 9° Leden maken
 --
 
+-- Gelieerde persoon 3 is dit jaar leiding
+
 IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon3ID AND GroepsWerkJaarID = @testGroepsHuidigWerkJaarID)
 BEGIN
 	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, NonActief, Verwijderd, LidGeldBetaald, VolgendWerkJaar) 
@@ -575,6 +579,7 @@ BEGIN
   INSERT INTO lid.LeidingInAfdelingsJaar(LeidingID, AfdelingsJaarID) VALUES(@testLid3ID, @testAfdelingsJaar2ID)
 END
 
+-- Gelieerde persoon 4 is dit jaar leiding
 
 IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon4ID AND GroepsWerkJaarID = @testGroepsHuidigWerkJaarID)
 BEGIN
@@ -591,6 +596,26 @@ IF NOT EXISTS (SELECT 1 FROM lid.Leiding WHERE LeidingID = @testLid4ID)
 BEGIN
 	INSERT INTO lid.Leiding(LeidingID) VALUES (@testLid4ID)
 END
+
+-- Gelieerde persoon 4 was ook vorig jaar leiding
+
+IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon4ID AND GroepsWerkJaarID = @testVorigGroepsWerkJaarID)
+BEGIN
+	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, NonActief, Verwijderd, LidGeldBetaald, VolgendWerkJaar) 
+		VALUES (@testGelieerdePersoon4ID, @testVorigGroepsWerkJaarID, @testLid4NonActief, @testLid4Verwijderd, @testLid4LidGeldBetaald, @testLid4VolgendWerkjaar)
+	SET @testVorigLid4ID = scope_identity();
+END
+ELSE
+BEGIN
+	SET @testVorigLid4ID = (SELECT LidID FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon4ID AND GroepsWerkJaarID = @testVorigGroepsWerkJaarID)
+END
+
+IF NOT EXISTS (SELECT 1 FROM lid.Leiding WHERE LeidingID = @testVorigLid4ID)
+BEGIN
+	INSERT INTO lid.Leiding(LeidingID) VALUES (@testVorigLid4ID)
+END
+
+
 
 
 IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon5ID AND GroepsWerkJaarID = @testGroepsHuidigWerkJaarID)
