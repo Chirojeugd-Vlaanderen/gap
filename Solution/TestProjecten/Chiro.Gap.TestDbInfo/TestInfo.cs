@@ -18,6 +18,7 @@
 		public const int MINAANTALGELPERS = 5;
 		public const int LID3ID = 296675;
 		public const int LID4ID = 296676;
+		public const int LID5ID = 296677;
 		public const int CATEGORIEID = 647;
 		public const string CATEGORIECODE = "last";
 		public const int CATEGORIE2ID = 648;

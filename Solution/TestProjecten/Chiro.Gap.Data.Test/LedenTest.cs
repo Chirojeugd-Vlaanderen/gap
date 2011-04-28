@@ -370,6 +370,32 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsTrue(result.GelieerdePersoon.PersoonsAdres.Adres is BelgischAdres);
 			Assert.IsNotNull(((BelgischAdres)result.GelieerdePersoon.PersoonsAdres.Adres).StraatNaam);
 		}
+
+		/// <summary>
+		/// Test de geweldige nieuwe functionaliteit om via de ledenDao tegelijkertijd
+		/// leden en leiding op te halen mét afdelingen
+		/// </summary>
+		[TestMethod]
+		public void OphalenMetAfdelingen()
+		{
+			// Arrange
+
+			var dao = Factory.Maak<ILedenDao>();
+
+			// Act
+
+			var result = dao.Ophalen(new int[] {TestInfo.LID3ID, TestInfo.LID5ID}, LidExtras.Afdelingen);
+
+			var kinderen = result.OfType<Kind>();
+			var leiding = result.OfType<Leiding>();
+
+			// Assert
+
+			Assert.IsNotNull(kinderen.FirstOrDefault());
+			Assert.IsNotNull(leiding.FirstOrDefault());
+			Assert.IsNotNull(kinderen.First().AfdelingsJaar);
+			Assert.AreEqual(leiding.First().AfdelingsJaar.Count, 2);			
+		}
 	}
 
 }

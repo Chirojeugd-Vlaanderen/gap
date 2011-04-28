@@ -46,6 +46,57 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
+		/// Haalt een gemengde lijst leden (leden en leiding) op, samen met
+		/// de gekoppelde entiteiten bepaald door <paramref name="extras"/>
+		/// </summary>
+		/// <param name="lidIDs">LidIDs op te halen leden</param>
+		/// <param name="extras">bepaalt op te halen gekoppelde entiteiten</param>
+		/// <returns>De gevraagde lijst leden</returns>
+		public IEnumerable<Lid> Ophalen(IEnumerable<int> lidIDs, LidExtras extras)
+		{
+			IEnumerable<Lid> resultaat;
+			using (var db = new ChiroGroepEntities())
+			{
+				var query = db.Lid.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.ID, lidIDs)) as ObjectQuery<Lid>;
+				
+				// Voer query uit, en pas eenvoudige includes toe
+
+				resultaat = IncludesToepassen(query, ExtrasNaarLambdas<Lid>(extras & ~LidExtras.Afdelingen).ToArray()).ToArray();
+
+				// Als de afdelingen gevraagd zijn, doen we dit via een louche truuk:
+
+				if ((extras & LidExtras.Afdelingen) == LidExtras.Afdelingen)
+				{
+					AfdelingenKoppelen(db, resultaat);
+				}
+			}
+			return Utility.DetachObjectGraph(resultaat);
+		}
+
+		/// <summary>
+		/// Koppelt de afdelingen aan een lijst <paramref name="leden"/>, die geattacht zijn aan 
+		/// de objectcontext <paramref name="db"/>.
+		/// </summary>
+		/// <param name="db">te gebruiken objectcontext</param>
+		/// <param name="leden">leden waarvan de afdelingen gekoppeld moeten worden</param>
+		/// <returns>Dezelfde ledenlijst, maar nu met gekoppelde afdelingen.</returns>
+		public static IEnumerable<Lid> AfdelingenKoppelen(ChiroGroepEntities db, IEnumerable<Lid> leden)
+		{
+			foreach (Lid l in leden)
+			{
+				if (l is Kind)
+				{
+					(l as Kind).AfdelingsJaarReference.Load();
+				}
+				else if (l is Leiding)
+				{
+					(l as Leiding).AfdelingsJaar.Load();
+				}
+			}
+			return leden;
+		}
+
+		/// <summary>
 		/// Haalt lid met gerelateerde entity's op, op basis van 
 		/// GelieerdePersoonID en GroepsWerkJaarID
 		/// </summary>

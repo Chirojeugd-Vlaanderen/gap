@@ -279,7 +279,6 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Lijst gelieerde personen</returns>
 		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
 		{
-			Groep g;
 			IList<GelieerdePersoon> lijst;
 
 			using (var db = new ChiroGroepEntities())

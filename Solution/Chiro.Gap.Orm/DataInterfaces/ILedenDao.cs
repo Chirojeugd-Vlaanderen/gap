@@ -25,6 +25,12 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
 		IList<Lid> AllesOphalen(int groepsWerkJaarID, LidEigenschap sortering);
 
+		/// <summary>
+		/// Een lijst ophalen van alle actieve leden voor het opgegeven groepswerkjaar
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
+		/// <returns>Een lijst alle actieve leden voor het opgegeven groepswerkjaar</returns>
 		IList<Lid> ActieveLedenOphalen(int groepsWerkJaarID, LidEigenschap sortering);
         
 		/// <summary>
@@ -61,6 +67,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
 		/// <returns>Lidobject indien gevonden, anders null</returns>
 		Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID);
+
+		/// <summary>
+		/// Haalt een gemengde lijst leden (leden en leiding) op, samen met
+		/// de gekoppelde entiteiten bepaald door <paramref name="extras"/>
+		/// </summary>
+		/// <param name="lidIDs">LidIDs op te halen leden</param>
+		/// <param name="extras">bepaalt op te halen gekoppelde entiteiten</param>
+		/// <returns>De gevraagde lijst leden</returns>
+		IEnumerable<Lid> Ophalen(IEnumerable<int> lidIDs, LidExtras extras);
 
 		/// <summary>
 		/// Haalt de leden op die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>

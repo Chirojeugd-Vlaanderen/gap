@@ -55,6 +55,11 @@ namespace Chiro.Gap.Dummies
 			return null;
 		}
 
+		public IEnumerable<Lid> Ophalen(IEnumerable<int> lidIDs, LidExtras extras)
+		{
+			throw new NotImplementedException();
+		}
+
 		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
 		{
 			return null;

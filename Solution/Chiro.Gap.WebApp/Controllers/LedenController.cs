@@ -627,7 +627,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			throw new NotImplementedException();
 
-			return RedirectToAction("Index");
+			//return RedirectToAction("Index");
 		}
 
 		/// <summary>
