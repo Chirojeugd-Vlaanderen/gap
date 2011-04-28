@@ -428,6 +428,18 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Haalt leden op, op basis van de <paramref name="lidIDs"/>
+		/// </summary>
+		/// <param name="lidIDs">ID gevraagde leden</param>
+		/// <param name="lidExtras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <returns>Kinderen of leiding met gevraagde <paramref name="lidExtras"/>.</returns>
+		/// <remarks>ID's van leden waarvoor de user geen GAV is, worden genegeerd</remarks>
+		public IEnumerable<Lid> Ophalen(IEnumerable<int> lidIDs, LidExtras lidExtras)
+		{
+			return _daos.LedenDao.Ophalen(_autorisatieMgr.EnkelMijnLeden(lidIDs), lidExtras);
+		}
+
+		/// <summary>
 		/// Haalt lid op, op basis van zijn <paramref name="lidID"/>
 		/// </summary>
 		/// <param name="lidID">ID gevraagde lid</param>
@@ -440,16 +452,7 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			Lid lid;
-			if (_daos.LedenDao.IsLeiding(lidID))
-			{
-				lid = _daos.LeidingDao.Ophalen(lidID, extras);
-			}
-			else
-			{
-				lid = _daos.KindDao.Ophalen(lidID, extras);
-			}
-			return lid;
+			return Ophalen(new int[] {lidID}, extras).FirstOrDefault();
 		}
 
 		/// <summary>

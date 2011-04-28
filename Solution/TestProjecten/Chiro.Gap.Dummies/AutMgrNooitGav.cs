@@ -25,6 +25,11 @@ namespace Chiro.Gap.Dummies
 			return new List<int>();
 		}
 
+		public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs)
+		{
+			return new List<int>();
+		}
+
 		public IEnumerable<Groep> GekoppeldeGroepenGet()
 		{
 			return new List<Groep>();

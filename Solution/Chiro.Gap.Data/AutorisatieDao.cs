@@ -220,6 +220,28 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
+		/// Verwijdert uit een lijst van LidID's de ID's
+		/// van leden voor wie de gebruiker met gegeven <paramref name="login"/> geen GAV is.
+		/// </summary>
+		/// <param name="lidIDs">ID's van leden</param>
+		/// <param name="login">login van de gebruiker</param>
+		/// <returns>Enkel de ID's van leden waarvoor de gebruiker GAV is.</returns>
+		public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs, string login)
+		{
+			using (var db = new ChiroGroepEntities())
+			{
+				return (db.Lid
+					.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.ID, lidIDs))
+					.Where(
+						ld =>
+						ld.GelieerdePersoon.Groep.GebruikersRecht.Any(
+							r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)))
+					.Select(ld => ld.ID).Distinct()).ToArray();
+
+			}
+		}
+
+		/// <summary>
 		/// Gaat na of de gebruiker met de opgegeven login *nu* GAV-rechten heeft 
 		/// op de persoon met de opgegeven ID
 		/// </summary>

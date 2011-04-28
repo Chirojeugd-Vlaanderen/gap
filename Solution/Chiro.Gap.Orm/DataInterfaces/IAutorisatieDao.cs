@@ -138,6 +138,16 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string login);
 
 		/// <summary>
+		/// Verwijdert uit een lijst van LidID's de ID's
+		/// van leden voor wie de gebruiker met gegeven <paramref name="login"/> geen GAV is.
+		/// </summary>
+		/// <param name="lidIDs">ID's van leden</param>
+		/// <param name="login">login van de gebruiker</param>
+		/// <returns>Enkel de ID's van leden waarvoor de gebruiker GAV is.</returns>
+		IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs, string login);
+
+
+		/// <summary>
 		/// Controleert of een gegeven gebruiker GAV is van de groep
 		/// horend bij een zekere categorie.
 		/// </summary>

@@ -78,6 +78,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		IEnumerable<Lid> Ophalen(IEnumerable<int> lidIDs, LidExtras extras);
 
 		/// <summary>
+		/// Haalt lid (kind of leiding) op, samen met
+		/// de gekoppelde entiteiten bepaald door <paramref name="extras"/>
+		/// </summary>
+		/// <param name="lidID">LidID op te halen lid</param>
+		/// <param name="extras">bepaalt op te halen gekoppelde entiteiten</param>
+		/// <returns>De gevraagde lijst leden</returns>
+		Lid Ophalen(int lidID, LidExtras extras);
+
+		/// <summary>
 		/// Haalt de leden op die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// de functie bepaald door <paramref name="functieID"/> hebben
 		/// </summary>
@@ -152,5 +161,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>alle leden met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
 		/// functies, afdelingen.  Communicatie niet!</returns>
 		IEnumerable<Lid> OverTeZettenOphalen(int maxAantal);
+
 	}
 }

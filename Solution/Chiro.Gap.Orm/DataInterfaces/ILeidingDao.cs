@@ -37,13 +37,5 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="extras">Bepaalt de gekoppelde entiteiten die mee bewaard moeten worden</param>
 		/// <returns>Kopie van de bewaarde leid(st)er</returns>
 		Leiding Bewaren(Leiding entiteit, LidExtras extras);
-
-		/// <summary>
-		/// Haalt een leid(st)er op, samen met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
-		/// </summary>
-		/// <param name="lidID">ID van op te halen leid(st)er</param>
-		/// <param name="extras">bepaalt de mee op te halen gekoppelde entiteiten</param>
-		/// <returns>De gevraagde leid(st)er</returns>
-		Leiding Ophalen(int lidID, LidExtras extras);
 	}
 }

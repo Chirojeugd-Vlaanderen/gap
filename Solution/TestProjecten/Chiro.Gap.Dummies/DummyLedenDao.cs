@@ -60,6 +60,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public Lid Ophalen(int lidID, LidExtras extras)
+		{
+			throw new NotImplementedException();
+		}
+
 		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
 		{
 			return null;

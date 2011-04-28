@@ -170,36 +170,5 @@ namespace Chiro.Gap.Data.Ef
 		{
 			return Bewaren(kind, LedenDao.ExtrasNaarLambdasKind(extras));
 		}
-
-		/// <summary>
-		/// Haalt een kind op, samen met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
-		/// </summary>
-		/// <param name="lidID">ID van op te halen kind</param>
-		/// <param name="extras">bepaalt de mee op te halen gekoppelde entiteiten</param>
-		/// <returns>Het gevraagde kind</returns>
-		public Kind Ophalen(int lidID, LidExtras extras)
-		{
-			Kind resultaat;
-
-			using (var db = new ChiroGroepEntities())
-			{
-				var lambdas = LedenDao.ExtrasNaarLambdasKind(extras);
-				var query = from l in db.Lid.OfType<Kind>()
-					    where l.ID == lidID
-					    select l;
-				resultaat = IncludesToepassen(query as ObjectQuery<Kind>, lambdas).FirstOrDefault();
-
-				if ((extras & LidExtras.Adressen) != 0)
-				{
-					GelieerdePersonenDao.AlleAdressenKoppelen(db, resultaat.GelieerdePersoon);
-				}
-				else if ((extras & LidExtras.VoorkeurAdres) != 0)
-				{
-					GelieerdePersonenDao.VoorkeursAdresKoppelen(db, resultaat.GelieerdePersoon);
-				}
-			}
-
-			return Utility.DetachObjectGraph(resultaat);
-		}
 	}
 }

@@ -237,6 +237,7 @@ namespace Chiro.Gap.Workers
 		#endregion
 
 		#region Ophalen/uitfilteren
+
 		/// <summary>
 		/// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
 		/// </summary>
@@ -288,6 +289,18 @@ namespace Chiro.Gap.Workers
 		{
 			return _autorisatieDao.EnkelMijnPersonen(personenIDs, GebruikersNaamGet());
 		}
+
+		/// <summary>
+		/// Verwijdert uit een lijst van LidID's de ID's
+		/// van leden voor wie de aangemelde gebruiker geen GAV is.
+		/// </summary>
+		/// <param name="lidIDs">ID's van leden</param>
+		/// <returns>Enkel de ID's van leden waarvoor de gebruiker GAV is.</returns>
+		public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs)
+		{
+			return _autorisatieDao.EnkelMijnLeden(lidIDs, GebruikersNaamGet());
+		}
+
 		#endregion
 
 		#region Misc

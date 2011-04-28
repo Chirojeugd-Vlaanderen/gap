@@ -38,13 +38,5 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="extras">Bepaalt de gekoppelde entiteiten die mee bewaard moeten worden</param>
 		/// <returns>Kopie van het bewaarde kind</returns>
 		Kind Bewaren(Kind kind, LidExtras extras);
-
-		/// <summary>
-		/// Haalt een kind op, samen met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
-		/// </summary>
-		/// <param name="lidID">ID van op te halen kind</param>
-		/// <param name="extras">bepaalt de mee op te halen gekoppelde entiteiten</param>
-		/// <returns>Het gevraagde kind</returns>
-		Kind Ophalen(int lidID, LidExtras extras);
 	}
 }

@@ -359,7 +359,7 @@ namespace Chiro.Gap.Data.Test
 		{
 			// Arrange
 
-			var dao = Factory.Maak<ILeidingDao>();
+			var dao = Factory.Maak<ILedenDao>();
 
 			// Act
 

@@ -29,6 +29,14 @@ namespace Chiro.Gap.Workers
 		/// <param name="personenIDs">Lijst met ID's van personen</param>
 		/// <returns>Enkel de ID's van die personen voor wie de gebruiker GAV is</returns>
 		IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs);
+		
+		/// <summary>
+		/// Verwijdert uit een lijst van LidID's de ID's
+		/// van leden voor wie de aangemelde gebruiker geen GAV is.
+		/// </summary>
+		/// <param name="lidIDs">ID's van leden</param>
+		/// <returns>Enkel de ID's van leden waarvoor de gebruiker GAV is.</returns>
+		IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs);
 
 		/// <summary>
 		/// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
@@ -190,5 +198,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="plaatsID">ID van een bivakplaats</param>
 		/// <returns><c>true</c> als de aangemelde user nu GAV is voor de plaats, anders <c>false</c>. </returns>
 		bool IsGavPlaats(int plaatsID);
+
+		
 	}
 }

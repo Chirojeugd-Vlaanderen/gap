@@ -72,6 +72,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs, string login)
+		{
+			return lidIDs;
+		}
+
 		public bool IsGavAfdeling(string login, int afdelingsID)
 		{
 			return true;

@@ -69,8 +69,31 @@ namespace Chiro.Gap.Data.Ef
 				{
 					AfdelingenKoppelen(db, resultaat);
 				}
+
+				// Idem voor adressen
+
+				if ((extras & LidExtras.Adressen) == LidExtras.Adressen)
+				{
+					GelieerdePersonenDao.AlleAdressenKoppelen(db, (from ld in resultaat select ld.GelieerdePersoon));
+				}
+				else if ((extras & LidExtras.VoorkeurAdres) == LidExtras.VoorkeurAdres)
+				{
+					GelieerdePersonenDao.VoorkeursAdresKoppelen(db, (from ld in resultaat select ld.GelieerdePersoon));
+				}
 			}
 			return Utility.DetachObjectGraph(resultaat);
+		}
+
+		/// <summary>
+		/// Haalt lid (kind of leiding) op, samen met
+		/// de gekoppelde entiteiten bepaald door <paramref name="extras"/>
+		/// </summary>
+		/// <param name="lidID">LidID op te halen lid</param>
+		/// <param name="extras">bepaalt op te halen gekoppelde entiteiten</param>
+		/// <returns>De gevraagde lijst leden</returns>
+		public Lid Ophalen(int lidID, LidExtras extras)
+		{
+			return Ophalen(new int[] {lidID}, extras).FirstOrDefault();
 		}
 
 		/// <summary>

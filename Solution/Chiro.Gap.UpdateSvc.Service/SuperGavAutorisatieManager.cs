@@ -24,6 +24,11 @@ namespace Chiro.Gap.UpdateSvc.Service
 			throw new NotImplementedException();
 		}
 
+		public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs)
+		{
+			throw new NotImplementedException();
+		}
+
 		public IEnumerable<Groep> MijnGroepenOphalen()
 		{
 			throw new NotImplementedException();
