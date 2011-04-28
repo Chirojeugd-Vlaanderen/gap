@@ -8,8 +8,8 @@
  %>
 <table class="overzicht">
 	<tr>
-        <th />
         <th><%=Html.CheckBox("checkall") %></th>
+        <th />
 		<th>Type</th>
 		<th>
 			<%= Html.ActionLink(
