@@ -20,16 +20,16 @@ namespace Chiro.Gap.WebApp.Models
 		public IList<PersoonDetail> Personen { get; set; }
 
 		/// <summary>
-		/// ID's van de personen, voor postback
+		/// ID's van de leden, voor postback
 		/// </summary>
-		public int GelieerdePersoonIDs { get; set; }
+		public IEnumerable<int> LidIDs { get; set; }
 
 		// AfdelingsJaarID of AfdelingsJaarIDs wordt gebruikt, alnaargelang de gebruiker
 		// 1 of meerdere afdelingen in kon geven.  (Dit laaste is het geval als er enkel
 		// leiding geselecteerd was.)
 
 		public int AfdelingsJaarID { get; set; }
-		public int AfdelingsJaarIDs { get; set; }
+		public IEnumerable<int> AfdelingsJaarIDs { get; set; }
 
 	}
 }

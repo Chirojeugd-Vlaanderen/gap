@@ -164,17 +164,23 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst=>dst.GelieerdePersoonID,opt=>opt.Ignore())
 				.ForMember(dst=>dst.ChiroLeefTijd,opt=>opt.Ignore());
 
+			// Die mapping naar PersoonDetail werkt enkel las er aan de persoon alleen leden
+			// uit het huidige werkjaar gekoppeld zijn.
+
 			Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
 				.ForMember(
 					dst => dst.GelieerdePersoonID,
 					opt => opt.MapFrom(src => src.ID))
-				//TODO dit is eigenlijk al vrij business om in de mapper te zitten
+				//TODO (#968): opkuis
 				.ForMember(
 					dst => dst.IsLid,
 					opt => opt.MapFrom(src => (src.Lid.Any(e => e.Type == LidType.Kind && !e.NonActief))))
 				.ForMember(
 					dst => dst.IsLeiding,
 					opt => opt.MapFrom(src => (src.Lid.Any(e => e.Type == LidType.Leiding && !e.NonActief))))
+				.ForMember(
+					dst => dst.LidID,
+					opt => opt.MapFrom(src => (src.Lid != null && src.Lid.FirstOrDefault() != null ? (int?)(src.Lid.First().ID) : null)))
 				.ForMember(
 					dst => dst.KanLidWorden,
 					opt => opt.MapFrom(src => false)) // Wordt in de service ingevuld, te ingewikkelde code

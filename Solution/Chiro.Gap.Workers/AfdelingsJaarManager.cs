@@ -312,16 +312,40 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lidobject met gekoppeld(e) afdelingsja(a)r(en)</returns>
 		public Lid Vervangen(Lid l, IEnumerable<AfdelingsJaar> afdelingsJaren)
 		{
-			Debug.Assert(l.GroepsWerkJaar != null);
-			Debug.Assert(l.GroepsWerkJaar.Groep != null);
+			return Vervangen(new Lid[] {l}, afdelingsJaren).FirstOrDefault();
+		}
 
-			Lid resultaat;
+		/// <summary>
+		/// De gegeven <paramref name="leden"/> worden toegevoegd naar
+		/// de gegeven lijst nieuwe afdelingen.  Eventuele koppelingen met bestaande afdelingen worden
+		/// verwijderd.
+		/// 
+		/// Een kind mag maar 1 afdeling hebben, voor een leider staan daar geen constraints op.
+		/// Persisteert, want ingeval van leiding kan het zijn dat er links lid->afdelingsjaar moeten 
+		/// verdwijnen.
+		/// </summary>
+		/// <param name="leden">Leden, geladen met groepswerkjaar met afdelingsjaren</param>
+		/// <param name="afdelingsJaren">De afdelingsjaren waaraan de leden gekoppeld moeten worden</param>
+		/// <returns>Lidobjecten met gekoppeld(e) afdelingsja(a)r(en)</returns>
+		public IEnumerable<Lid> Vervangen(IEnumerable<Lid> leden, IEnumerable<AfdelingsJaar> afdelingsJaren)
+		{
+			var groepsWerkJaren = (from l in leden
+			                       select l.GroepsWerkJaar).Distinct().ToArray();
 
-			if (!_autorisatieMgr.IsGavLid(l.ID))
+			Debug.Assert(groepsWerkJaren.Count() == 1);
+			Debug.Assert(groepsWerkJaren.First() != null);
+			Debug.Assert(groepsWerkJaren.First().Groep != null);
+
+			IEnumerable<Lid> resultaat;
+
+			var alleLidIDs = (from l in leden select l.ID).Distinct();
+			var mijnLidIDs = _autorisatieMgr.EnkelMijnLeden(from l in leden select l.ID);
+
+			if (alleLidIDs.Count() > mijnLidIDs.Count())
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			else if (l.GroepsWerkJaar.ID != _veelGebruikt.GroepsWerkJaarOphalen(l.GroepsWerkJaar.Groep.ID).ID)
+			else if (groepsWerkJaren.First().ID != _veelGebruikt.GroepsWerkJaarOphalen(groepsWerkJaren.First().Groep.ID).ID)
 			{
 				throw new FoutNummerException(
 					FoutNummer.GroepsWerkJaarNietBeschikbaar,
@@ -329,7 +353,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			var probleemgevallen = from aj in afdelingsJaren
-					       where aj.GroepsWerkJaar.ID != l.GroepsWerkJaar.ID
+					       where aj.GroepsWerkJaar.ID != groepsWerkJaren.First().ID
 					       select aj;
 
 			if (probleemgevallen.FirstOrDefault() != null)
@@ -343,9 +367,8 @@ namespace Chiro.Gap.Workers
 			{
 #endif
 
-				if (l is Kind)
+				foreach (var kind in leden.OfType<Kind>())
 				{
-					var kind = (Kind) l;
 					if (afdelingsJaren.Count() != 1)
 					{
 						throw new NotSupportedException("Slechts 1 afdeling per kind.");
@@ -358,23 +381,17 @@ namespace Chiro.Gap.Workers
 						afdelingsJaren.First().Kind.Add(kind);
 						kind.AfdelingsJaar = afdelingsJaren.First();
 					}
-
-					_kindDao.Bewaren(kind, knd => knd.AfdelingsJaar.WithoutUpdate());
-
-					// omdat bovenstaande bewaren geen nieuwe ID's zal toekennen, en geen links
-					// zal verwijderen, kunnen we met een gerust geweten het originele kind
-					// opleveren.
-
-					resultaat = kind;
 				}
-				else
+
+				var bewaaardeKinderen = _kindDao.Bewaren(leden.OfType<Kind>(), knd => knd.AfdelingsJaar);
+
+				foreach (var leiding in leden.OfType<Leiding>() )
 				{
-					var leiding = (Leiding) l;
 
 					// Verwijder ontbrekende afdelingen;
 					var teVerwijderenAfdelingen = from aj in leiding.AfdelingsJaar
-					                              where !afdelingsJaren.Any(aj2 => aj2.ID == aj.ID)
-					                              select aj;
+								      where !afdelingsJaren.Any(aj2 => aj2.ID == aj.ID)
+								      select aj;
 
 					foreach (var aj in teVerwijderenAfdelingen)
 					{
@@ -383,27 +400,28 @@ namespace Chiro.Gap.Workers
 
 					// Ken nieuwe afdelingen toe
 					var nieuweAfdelingen = from aj in afdelingsJaren
-					                       where !leiding.AfdelingsJaar.Any(aj2 => aj2.ID == aj.ID)
-					                       select aj;
+							       where !leiding.AfdelingsJaar.Any(aj2 => aj2.ID == aj.ID)
+							       select aj;
 
 					foreach (var aj in nieuweAfdelingen)
 					{
 						leiding.AfdelingsJaar.Add(aj);
 						aj.Leiding.Add(leiding);
 					}
-
-					// Hier moet je wel met de terugkeerwaarde van 'Bewaren' werken, want anders
-					// stuur je afdelingsjaren met TeVerwijderen=true over de lijn. (brr)
-
-					// WithoutUpdate mag niet in dit geval, omdat anders te verwijderen afdelingsjaren niet
-					// verwijderd worden.
-					// Dit is een bug in AttachObjectGraph. (#116)
-
-					resultaat = _leidingDao.Bewaren(leiding, ldng => ldng.AfdelingsJaar.First());
 				}
-				if (l.IsOvergezet)
+
+				// WithoutUpdate mag niet in dit geval, omdat anders te verwijderen afdelingsjaren niet
+				// verwijderd worden.
+				// Dit is een bug in AttachObjectGraph. (#116)
+
+				var bewaardeLeiding = _leidingDao.Bewaren(leden.OfType<Leiding>(), ldng => ldng.AfdelingsJaar.First());
+
+				resultaat = bewaaardeKinderen.Union<Lid>(bewaardeLeiding);
+
+
+				foreach (var l in resultaat.Where(ld => ld.IsOvergezet))
 				{
-					_ledenSync.AfdelingenUpdaten(resultaat);
+					_ledenSync.AfdelingenUpdaten(l);
 				}
 #if KIPDORP
 				tx.Complete();

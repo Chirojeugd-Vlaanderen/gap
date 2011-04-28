@@ -38,6 +38,13 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		// TODO: Fix #546
 
 		/// <summary>
+		/// Als de persoon lid of leiding is (beter zou zijn: kind of leiding), dan
+		/// bevat LidID het LidID.
+		/// </summary>
+		[DataMember]
+		public int? LidID { get; set; }
+
+		/// <summary>
 		/// Geeft aan of de persoon op basis van zijn/haar leeftijd in één van de afdelingen past
 		/// </summary>
 		[DataMember]

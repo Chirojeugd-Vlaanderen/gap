@@ -18,7 +18,7 @@
             foreach (var p in Model.Personen)
             {
         %>
-            <li><%=Html.Hidden("GelieerdePersoonIDs", p.GelieerdePersoonID)%><%=p.VolledigeNaam %></li>
+            <li><%=Html.Hidden("LidIDs", p.LidID)%><%=p.VolledigeNaam %></li>
         <%
             }
         %>
@@ -45,7 +45,7 @@
 								     , pa.Naam
 								     , false)).ToList();
         %>
-			    <%=Html.CheckBoxList("Info.AfdelingsJaarIDs", info)%>
+			    <%=Html.CheckBoxList("AfdelingsJaarIDs", info)%>
 		<%	
             }
 			else

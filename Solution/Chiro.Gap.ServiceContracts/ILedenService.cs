@@ -78,6 +78,17 @@ namespace Chiro.Gap.ServiceContracts
 		int AfdelingenVervangen(int lidID, IEnumerable<int> afdelingsJaarIDs);
 
 		/// <summary>
+		/// Vervangt de afdelingen van de leden met gegeven <paramref name="lidIDs"/> door de afdelingen
+		/// met AFDELINGSJAARIDs gegeven door <paramref name="afdelingsJaarIDs"/>.
+		/// </summary>
+		/// <param name="lidIDs">ID's van leden die nieuwe afdelingen moeten krijgen</param>
+		/// <param name="afdelingsJaarIDs">ID's van de te koppelen afdelingsjaren</param>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		void AfdelingenVervangenBulk(IEnumerable<int> lidIDs, IEnumerable<int> afdelingsJaarIDs);
+
+		/// <summary>
 		/// Verzekert lid met ID <paramref name="lidID"/> tegen loonverlies
 		/// </summary>
 		/// <param name="lidID">ID van te verzekeren lid</param>
@@ -148,5 +159,6 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		int TypeToggle(int id);
+
 	}
 }

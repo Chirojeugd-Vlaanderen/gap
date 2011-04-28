@@ -294,6 +294,8 @@ namespace Chiro.Gap.Services
 
 		#region verzekeren
 
+
+
 		/// <summary>
 		/// Verzekert lid met ID <paramref name="lidID"/> tegen loonverlies
 		/// </summary>
@@ -400,6 +402,45 @@ namespace Chiro.Gap.Services
 				FoutAfhandelaar.FoutAfhandelen(ex);
 				return 0;
 			}
+		}
+
+		/// <summary>
+		/// Vervangt de afdelingen van de leden met gegeven <paramref name="lidIDs"/> door de afdelingen
+		/// met AFDELINGSJAARIDs gegeven door <paramref name="afdelingsJaarIDs"/>.
+		/// </summary>
+		/// <param name="lidIDs">ID's van leden die nieuwe afdelingen moeten krijgen</param>
+		/// <param name="afdelingsJaarIDs">ID's van de te koppelen afdelingsjaren</param>
+		public void AfdelingenVervangenBulk(IEnumerable<int> lidIDs, IEnumerable<int> afdelingsJaarIDs)
+		{
+			IEnumerable<Lid> leden;
+
+			try
+			{
+				leden = _ledenMgr.Ophalen(
+					lidIDs,
+				        LidExtras.Groep | LidExtras.Afdelingen | LidExtras.AlleAfdelingen | LidExtras.Persoon);
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				throw;
+			}
+
+			// Selecteer gevraagde afdelingsjaren uit afdelingsjaren van groepen van leden
+
+			var afdelingsJaren = afdelingsJaarIDs == null ? new List<AfdelingsJaar>() : 
+				leden.Select(ld => ld.GroepsWerkJaar.Groep).SelectMany(grp => grp.GroepsWerkJaar).SelectMany(
+					gwj => gwj.AfdelingsJaar).Where(aj => afdelingsJaarIDs.Contains(aj.ID) ).Distinct();
+
+			// Als het aantal gevonden afdelingsjaren al niet klopt met het aantal afdelingsjaarIDs, dan
+			// is de user aan het prutsen.
+
+			if (afdelingsJaarIDs != null && afdelingsJaren.Count() != afdelingsJaarIDs.Count())
+			{
+				throw new InvalidOperationException(Properties.Resources.AccessDenied);
+			}
+
+			_afdelingsJaarMgr.Vervangen(leden, afdelingsJaren);
 		}
 
 		#endregion

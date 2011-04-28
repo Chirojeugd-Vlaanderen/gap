@@ -625,9 +625,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult AfdelingenBewerken(AfdelingenBewerkenModel model, int groepID)
 		{
-			throw new NotImplementedException();
+			ServiceHelper.CallService<ILedenService>(svc => svc.AfdelingenVervangenBulk(model.LidIDs, model.AfdelingsJaarIDs));
 
-			//return RedirectToAction("Index");
+			return RedirectToAction("Index");
 		}
 
 		/// <summary>
