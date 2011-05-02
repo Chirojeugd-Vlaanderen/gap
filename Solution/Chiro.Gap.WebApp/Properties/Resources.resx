@@ -308,4 +308,10 @@
   <data name="RangeError" xml:space="preserve">
     <value>{0} is beperkt van {1} tot {2}.</value>
   </data>
+  <data name="GeenUitstappenFout" xml:space="preserve">
+    <value>Je hebt nog geen uitstappen geregistreerd waarvoor je deelnemers kunt inschrijven.</value>
+  </data>
+  <data name="UitstapInschrijving" xml:space="preserve">
+    <value>Inschrijven voor uitstap/bivak</value>
+  </data>
 </root>

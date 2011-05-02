@@ -139,9 +139,11 @@ namespace Chiro.Gap.Workers
 		/// Haalt alle uitstappen van een gegeven groep op.
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
+		/// <param name="inschrijvenMogelijk">Als dit <c>true</c> is, worden enkel de gegevens opgehaald
+		/// van uitstappen waarvoor nog ingeschreven kan worden.</param>
 		/// <returns>Details van uitstappen</returns>
 		/// <remarks>Om maar iets te doen, ordenen we voorlopig op einddatum</remarks>
-		public IEnumerable<Uitstap> OphalenVanGroep(int groepID)
+		public IEnumerable<Uitstap> OphalenVanGroep(int groepID, bool inschrijvenMogelijk)
 		{
 			if (!_autorisatieManager.IsGavGroep(groepID))
 			{
@@ -149,7 +151,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				return _uitstappenDao.OphalenVanGroep(groepID).OrderByDescending(u => u.DatumTot);
+				return _uitstappenDao.OphalenVanGroep(groepID, inschrijvenMogelijk).OrderByDescending(u => u.DatumTot);
 			}
 		}
 

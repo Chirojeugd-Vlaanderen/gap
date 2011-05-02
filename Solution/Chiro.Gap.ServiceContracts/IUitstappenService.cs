@@ -30,11 +30,16 @@ namespace Chiro.Gap.ServiceContracts
 		/// Haalt alle uitstappen van een gegeven groep op.
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
+		/// <param name="inschrijvenMogelijk">Als deze <c>true</c> is, worden enkel de uitstappen opgehaald
+		/// waarvoor je nog kunt inschrijven.  In praktijk zijn dit de uitstappen van het huidige werkjaar.
+		/// </param>
 		/// <returns>Details van uitstappen</returns>
+		/// <remarks>We laten toe om inschrijvingen te doen voor uitstappen uit het verleden, om als dat
+		/// nodig is achteraf fouten in de administratie recht te zetten.</remarks>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<UitstapInfo> OphalenVanGroep(int groepID);
+		IEnumerable<UitstapInfo> OphalenVanGroep(int groepID, bool inschrijvenMogelijk);
 
 		/// <summary>
 		/// Haalt details over uitstap met gegeven <paramref name="uitstapID"/> op.

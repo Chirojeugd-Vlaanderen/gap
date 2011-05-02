@@ -145,6 +145,7 @@
     <Compile Include="Models\PersoonInfoModel.cs" />
     <Compile Include="Models\AdresModel.cs" />
     <Compile Include="ActionFilters\ParameterAccepterenAttribute.cs" />
+    <Compile Include="Models\UitstapInschrijfModel.cs" />
     <Compile Include="Models\UitstapModel.cs" />
     <Compile Include="Models\UitstapOverzichtModel.cs" />
     <Compile Include="Models\UitstapPlaatsBewerekenModel.cs" />
@@ -186,6 +187,7 @@
     <Content Include="Views\Personen\CategorieToevoegenAanLijst.aspx" />
     <Content Include="Views\Leden\AfdelingBewerken.aspx" />
     <Content Include="Views\Afdelingen\Nieuw.aspx" />
+    <Content Include="Views\Personen\InschrijvenVoorUitstap.aspx" />
     <Content Include="Views\Personen\NieuweCommVorm.aspx" />
     <Content Include="Views\Personen\EditGegevens.aspx" />
     <Content Include="Views\Personen\Index.aspx" />

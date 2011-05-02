@@ -1137,5 +1137,40 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		#endregion categorieën
+
+		#region uitstappen
+		/// <summary>
+		/// Toont een view die de gebruiker toelaat om een bivak te kiezen waarvoor de gelieerde personen
+		/// met GelieerdePersoonIDs in TempData["ids"] ingeschreven moeten worden.  Bovendien moet
+		/// aangevinkt worden of het al dan niet over 'logistieke deelnemers' gaat.
+		/// </summary>
+		/// <returns>Het inschrijfscherm</returns>
+		public ActionResult InschrijvenVoorUitstap(int groepID)
+		{
+			var model = new UitstapInschrijfModel();
+			BaseModelInit(model, groepID);
+			model.Titel = String.Format(Properties.Resources.UitstapInschrijving);
+
+			model.Uitstappen =
+				ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID, true));
+
+			if (model.Uitstappen.FirstOrDefault() == null)
+			{
+				TempData["fout"] = Properties.Resources.GeenUitstappenFout;
+				return TerugNaarVorigeLijst();
+			}
+			else
+			{
+				object gevonden;
+				TempData.TryGetValue("ids", out gevonden);
+				var gelieerdePersoonIDs = gevonden as IList<int>;
+
+				model.GelieerdePersonen =
+					ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(
+						svc => svc.PersoonInfoOphalen(gelieerdePersoonIDs));
+				return View(model);
+			}
+		}
+		#endregion
 	}
 }

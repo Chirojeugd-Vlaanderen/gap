@@ -96,12 +96,17 @@ namespace Chiro.Gap.Services
 		/// Haalt alle uitstappen van een gegeven groep op.
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
+		/// <param name="inschrijvenMogelijk">Als deze <c>true</c> is, worden enkel de uitstappen opgehaald
+		/// waarvoor je nog kunt inschrijven.  In praktijk zijn dit de uitstappen van het huidige werkjaar.
+		/// </param>
 		/// <returns>Details van uitstappen</returns>
-		public IEnumerable<UitstapInfo> OphalenVanGroep(int groepID)
+		/// <remarks>We laten toe om inschrijvingen te doen voor uitstappen uit het verleden, om als dat
+		/// nodig is achteraf fouten in de administratie recht te zetten.</remarks>
+		public IEnumerable<UitstapInfo> OphalenVanGroep(int groepID, bool inschrijvenMogelijk)
 		{
 			try
 			{
-				return Mapper.Map<IEnumerable<Uitstap>, IEnumerable<UitstapInfo>>(_uitstappenMgr.OphalenVanGroep(groepID));
+				return Mapper.Map<IEnumerable<Uitstap>, IEnumerable<UitstapInfo>>(_uitstappenMgr.OphalenVanGroep(groepID, inschrijvenMogelijk));
 			}
 			catch (GeenGavException ex)
 			{

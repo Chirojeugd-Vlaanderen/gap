@@ -420,7 +420,9 @@ namespace Chiro.Gap.WebApp.Controllers
 					return TerugNaarVorigeLijst();
 				case 2:
 					return AfdelingenBewerken(model.SelectieGelieerdePersoonIDs, groepID);
-
+				case 3:
+					TempData["ids"] = model.SelectieGelieerdePersoonIDs;
+					return RedirectToAction("InschrijvenVoorUitstap", "Personen", new {groepID});
 				default:
 					TempData["fout"] = Properties.Resources.OnbestaandeActieFeedback;
 					return TerugNaarVorigeLijst();

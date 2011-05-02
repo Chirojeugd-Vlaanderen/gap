@@ -295,6 +295,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je hebt nog geen uitstappen geregistreerd waarvoor je deelnemers kunt inschrijven..
+        /// </summary>
+        public static string GeenUitstappenFout {
+            get {
+                return ResourceManager.GetString("GeenUitstappenFout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er is iets foutgelopen toen we de gegevens wilden opvragen..
         /// </summary>
         public static string GegevensOpvragenMisluktFout {
@@ -570,6 +579,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string StamNrDefault {
             get {
                 return ResourceManager.GetString("StamNrDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inschrijven voor uitstap/bivak.
+        /// </summary>
+        public static string UitstapInschrijving {
+            get {
+                return ResourceManager.GetString("UitstapInschrijving", resourceCulture);
             }
         }
         

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Objects;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -19,15 +20,31 @@ namespace Chiro.Gap.Data.Ef
 		/// Haalt alle uitstappen van een gegeven groep op.
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
+		/// <param name="inschrijvenMogelijk">Als dit <c>true</c> is, worden enkel de uitstappen van het
+		/// huidige werkjaar van de groep opgehaald.</param>
 		/// <returns>Details van uitstappen</returns>
-		public IEnumerable<Uitstap> OphalenVanGroep(int groepID)
+		public IEnumerable<Uitstap> OphalenVanGroep(int groepID, bool inschrijvenMogelijk)
 		{
 			IEnumerable<Uitstap> resultaat;
 			using (var db = new ChiroGroepEntities())
 			{
-				resultaat = (from u in db.Uitstap
-				             where u.GroepsWerkJaar.Groep.ID == groepID
-				             select u).ToArray();
+				if (!inschrijvenMogelijk)
+				{
+					// Alle uitstappen ophalen
+					resultaat = (from u in db.Uitstap
+					             where u.GroepsWerkJaar.Groep.ID == groepID
+					             select u).ToArray();
+				}
+				else
+				{
+					// Enkel uitstappen van recentste groepswerkjaar
+					var groep = db.Groep.Include(g => g.GroepsWerkJaar).Where(grp => grp.ID == groepID).FirstOrDefault();
+					Debug.Assert(groep != null);
+					var groepsWerkJaar = groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
+					Debug.Assert(groepsWerkJaar != null);
+					groepsWerkJaar.Uitstap.Load();
+					resultaat = groepsWerkJaar.Uitstap.ToArray();
+				}
 			}
 
 			return Utility.DetachObjectGraph(resultaat);

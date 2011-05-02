@@ -7,7 +7,7 @@
 	<%=Html.Encode(ViewData.Model.GroepsNaam) %>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
-	<% if (Model.MeerdereGroepen == true)
+    <% if (Model.MeerdereGroepen == true)
 	{ %>
 	<link href="<%=ResolveUrl("~/Content/MeerdereGroepen.css")%>" rel="stylesheet"
 		type="text/css" />
@@ -16,7 +16,7 @@
 	<asp:ContentPlaceHolder runat="server" ID="head" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
-	<h1>
+    <h1>
 		<%=Html.Encode(ViewData.Model.GroepsNaam)%> 
 <% if (ViewData.Model.HuidigWerkJaar > 0)
    {%>
@@ -43,14 +43,14 @@
 	%>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
-	<% if (Model.GroepID > 0)
+    <% if (Model.GroepID > 0)
 	{
 		Html.RenderPartial("NavigatieVolledigControl");
 	}
 	%>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="BodyContent" runat="server">
-	<% if (Model.Titel != string.Empty)
+    <% if (Model.Titel != string.Empty)
 	{ %>
 	<h2>
 		<%=Html.Encode(ViewData.Model.Titel) %></h2>
