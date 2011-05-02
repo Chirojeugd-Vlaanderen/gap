@@ -59,7 +59,6 @@ namespace Chiro.Gap.Data.Ef
 				return new Kind[0];
 			}
 			
-
 			using (var db = new ChiroGroepEntities())
 			{
 				IQueryable<Kind> query;
@@ -99,7 +98,6 @@ namespace Chiro.Gap.Data.Ef
 						// we vanuit een standaardquery met alle leiding
 
 						query = from ld in db.Lid.OfType<Kind>() select ld;
-
 					}
 				}
 

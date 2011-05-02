@@ -265,7 +265,6 @@ namespace Chiro.Gap.Workers
 		public bool IsGavPlaats(int plaatsID)
 		{
 			return _autorisatieDao.IsGavPlaats(plaatsID, GebruikersNaamGet());
-
 		}
 
 		/// <summary>

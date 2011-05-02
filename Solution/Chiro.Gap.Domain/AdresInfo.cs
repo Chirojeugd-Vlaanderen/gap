@@ -70,7 +70,7 @@ namespace Chiro.Gap.Domain
 		// buitenlands adres.  Daar wordt de drop down voor woonplaats dan 
 		// niet gebruikt, waardoor bij een verplichte woonplaats het formulier niet 
 		// gepost kan worden.  (hack)
-		//[Verplicht]
+		// [Verplicht]
 		public String WoonPlaatsNaam { get; set; }
 
 		[DataMember]

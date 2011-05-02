@@ -146,7 +146,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Enkel de ID's van leden waarvoor de gebruiker GAV is.</returns>
 		IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs, string login);
 
-
 		/// <summary>
 		/// Controleert of een gegeven gebruiker GAV is van de groep
 		/// horend bij een zekere categorie.
@@ -179,7 +178,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <c>false</c>.</returns>
 		bool IsGavPersoonsAdres(int persoonsAdresID, string login);
 
-
 		/// <summary>
 		/// Geeft <c>true</c> als de uitstap met ID <paramref name="uitstapID"/> gekoppeld is aan een 
 		/// groepswerkjaar waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten heeft.  Anders
@@ -202,6 +200,5 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		bool IsGavPlaats(int plaatsID, string login);
 
 		#endregion
-
 	}
 }

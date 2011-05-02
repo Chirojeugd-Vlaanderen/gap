@@ -11,6 +11,9 @@ using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	[HandleError]
 	public class HandleidingController : BaseController
 	{
@@ -110,12 +113,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View(helpBestand, "Handleiding", model);
 		}
 
-		//[HandleError]
-		//public ActionResult JaarOvergang(int groepID)
-		//{
+		// [HandleError]
+		// public ActionResult JaarOvergang(int groepID)
+		// {
 		//    var model = new HandleidingModel();
 		//    BaseModelInit(model, groepID, "Handleiding: jaarovergang");
 		//    return BestandTonen(model, "JaarOvergang");
-		//}
+		// }
 	}
 }

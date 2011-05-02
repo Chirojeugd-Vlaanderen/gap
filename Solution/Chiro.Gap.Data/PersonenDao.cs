@@ -19,236 +19,235 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
-	/// <summary>
-	/// Gegevenstoegangsobject voor personen
-	/// </summary>
-	public class PersonenDao : Dao<Persoon, ChiroGroepEntities>, IPersonenDao
-	{
-		/// <summary>
-		/// Haalt alle Personen op die op een zelfde
-		/// adres wonen als de gelieerde persoon met het gegeven ID.
-		/// </summary>
-		/// <param name="gelieerdePersoonID">ID van gegeven gelieerde
-		/// persoon.</param>
-		/// <returns>Lijst met Personen (inc. persoonsinfo)</returns>
-		/// <remarks>Als de persoon nergens woont, is hij toch zijn eigen
-		/// huisgenoot.  Ik geef hier enkel Personen, geen GelieerdePersonen,
-		/// omdat ik niet geinteresseerd ben in eventuele dubbels als ik 
-		/// GAV ben van verschillende groepen.</remarks>
-		public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
-		{
-			List<PersoonsAdres> paLijst;
-			List<Persoon> resultaat;
+    /// <summary>
+    /// Gegevenstoegangsobject voor personen
+    /// </summary>
+    public class PersonenDao : Dao<Persoon, ChiroGroepEntities>, IPersonenDao
+    {
+        /// <summary>
+        /// Haalt alle Personen op die op een zelfde
+        /// adres wonen als de gelieerde persoon met het gegeven ID.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van gegeven gelieerde
+        /// persoon.</param>
+        /// <returns>Lijst met Personen (inc. persoonsinfo)</returns>
+        /// <remarks>Als de persoon nergens woont, is hij toch zijn eigen
+        /// huisgenoot.  Ik geef hier enkel Personen, geen GelieerdePersonen,
+        /// omdat ik niet geinteresseerd ben in eventuele dubbels als ik 
+        /// GAV ben van verschillende groepen.</remarks>
+        public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
+        {
+            List<PersoonsAdres> paLijst;
+            List<Persoon> resultaat;
 
-			using (var db = new ChiroGroepEntities())
-			{
-				db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
+            using (var db = new ChiroGroepEntities())
+            {
+                db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
 
-				// FIXME: enkel persoonsadressen van personen van groepen
-				// waarvan je GAV bent
+                // FIXME: enkel persoonsadressen van personen van groepen
+                // waarvan je GAV bent
 
-				var persoonsAdressen = (
-					from pa in db.PersoonsAdres.Include("Persoon")
-					where pa.Adres.PersoonsAdres.Any(
-					l => l.Persoon.GelieerdePersoon.Any(
-					gp => gp.ID == gelieerdePersoonID))
-					select pa);
+                var persoonsAdressen = (
+                    from pa in db.PersoonsAdres.Include("Persoon")
+                    where pa.Adres.PersoonsAdres.Any(
+                    l => l.Persoon.GelieerdePersoon.Any(
+                    gp => gp.ID == gelieerdePersoonID))
+                    select pa);
 
-				// Het zou interessant zijn als ik hierboven al 
-				// pa.GelieerdePersoon zou 'selecten'.  Maar gek genoeg wordt
-				// dan GelieerdePersoon.Persoon niet meegenomen.
-				// Als workaround selecteer ik zodadelijk uit
-				// persoonsAdressen de GelieerdePersonen.
+                // Het zou interessant zijn als ik hierboven al 
+                // pa.GelieerdePersoon zou 'selecten'.  Maar gek genoeg wordt
+                // dan GelieerdePersoon.Persoon niet meegenomen.
+                // Als workaround selecteer ik zodadelijk uit
+                // persoonsAdressen de GelieerdePersonen.
 
-				paLijst = persoonsAdressen.ToList();
+                paLijst = persoonsAdressen.ToList();
 
-				// Als de persoon nergens woont, dan is deze lijst leeg.  In dat geval
-				// halen we gewoon de gelieerde persoon zelf op.
-			}
+                // Als de persoon nergens woont, dan is deze lijst leeg.  In dat geval
+                // halen we gewoon de gelieerde persoon zelf op.
+            }
 
-			resultaat = (from pa in paLijst
-						 select pa.Persoon).Distinct().ToList();
+            resultaat = (from pa in paLijst
+                         select pa.Persoon).Distinct().ToList();
 
-			if (resultaat.Count == 0)
-			{
-				// Als de persoon toevallig geen adressen heeft, is het resultaat
-				// leeg.  Dat willen we niet; ieder is zijn eigen huisgenoot,
-				// ook al woont hij/zij nergens.  Ipv een leeg resultaat,
-				// wordt dan gewoon de gevraagde persoon opgehaald.
+            if (resultaat.Count == 0)
+            {
+                // Als de persoon toevallig geen adressen heeft, is het resultaat
+                // leeg.  Dat willen we niet; ieder is zijn eigen huisgenoot,
+                // ook al woont hij/zij nergens.  Ipv een leeg resultaat,
+                // wordt dan gewoon de gevraagde persoon opgehaald.
 
-				resultaat.Add(CorresponderendePersoonOphalen(gelieerdePersoonID));
+                resultaat.Add(CorresponderendePersoonOphalen(gelieerdePersoonID));
 
-				// FIXME: Er wordt veel te veel info opgehaald.
-			}
+                // FIXME: Er wordt veel te veel info opgehaald.
+            }
 
-			return resultaat;
-		}
+            return resultaat;
+        }
 
-		/// <summary>
-		/// Haalt de persoon op die correspondeert met een gelieerde persoon.
-		/// </summary>
-		/// <param name="gelieerdePersoonID">ID van de gelieerde
-		/// persoon.</param>
-		/// <returns>Persoon inclusief adresinfo</returns>
-		public Persoon CorresponderendePersoonOphalen(int gelieerdePersoonID)
-		{
-			Persoon result;
+        /// <summary>
+        /// Haalt de persoon op die correspondeert met een gelieerde persoon.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van de gelieerde
+        /// persoon.</param>
+        /// <returns>Persoon inclusief adresinfo</returns>
+        public Persoon CorresponderendePersoonOphalen(int gelieerdePersoonID)
+        {
+            Persoon result;
 
-			using (var db = new ChiroGroepEntities())
-			{
-				result = (from foo in
-					 	db.Persoon.Include(p => p.PersoonsAdres.First().Adres)
-					 where foo.GelieerdePersoon.Any(bar => bar.ID == gelieerdePersoonID)
-					 select foo).FirstOrDefault();
+            using (var db = new ChiroGroepEntities())
+            {
+                result = (from foo in
+                              db.Persoon.Include(p => p.PersoonsAdres.First().Adres)
+                          where foo.GelieerdePersoon.Any(bar => bar.ID == gelieerdePersoonID)
+                          select foo).FirstOrDefault();
 
-				// Instantieer ook adressen met adresgegevens (zowel Belgisch als buitenlands), 
-				// zodat entity framework de adresgegevens mee aan het resultaat koppelt.  
-				// (We kunnen dit niet uitdrukken met lambda-expressies, o.w.v. de verschillen
-				// tussen Belgische en buitenlandse adressen.)
+                // Instantieer ook adressen met adresgegevens (zowel Belgisch als buitenlands), 
+                // zodat entity framework de adresgegevens mee aan het resultaat koppelt.  
+                // (We kunnen dit niet uitdrukken met lambda-expressies, o.w.v. de verschillen
+                // tussen Belgische en buitenlandse adressen.)
 
-				var alleAdressen = from pa in result.PersoonsAdres select pa.Adres;
-				foreach (var adr in alleAdressen)
-				{
-					if (adr is BelgischAdres)
-					{
-						(adr as BelgischAdres).StraatNaamReference.Load();
-						(adr as BelgischAdres).WoonPlaatsReference.Load();
-					}
-					else
-					{
-						Debug.Assert(adr is BuitenLandsAdres);
-						((BuitenLandsAdres)adr).LandReference.Load();
-					}
-				}
-			}
+                var alleAdressen = from pa in result.PersoonsAdres select pa.Adres;
+                foreach (var adr in alleAdressen)
+                {
+                    if (adr is BelgischAdres)
+                    {
+                        (adr as BelgischAdres).StraatNaamReference.Load();
+                        (adr as BelgischAdres).WoonPlaatsReference.Load();
+                    }
+                    else
+                    {
+                        Debug.Assert(adr is BuitenLandsAdres);
+                        ((BuitenLandsAdres)adr).LandReference.Load();
+                    }
+                }
+            }
 
-			return Utility.DetachObjectGraph(result);
-		}
+            return Utility.DetachObjectGraph(result);
+        }
 
-		/// <summary>
-		///  Haalt een lijst op van personen, op basis van een lijst <paramref name="gelieerdePersoonIDs"/>.
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">ID's van *GELIEERDE* personen, waarvan de corresponderende persoonsobjecten
-		/// opgehaald moeten worden.</param>
-		/// <param name="paths">Bepaalt welke gekoppelde entiteiten mee opgehaald moeten worden.</param>
-		/// <returns>De gevraagde personen></returns>
-		public IEnumerable<Persoon> OphalenViaGelieerdePersoon(IEnumerable<int> gelieerdePersoonIDs, params Expression<Func<Persoon, object>>[] paths)
-		{
-			IList<Persoon> result;
+        /// <summary>
+        ///  Haalt een lijst op van personen, op basis van een lijst <paramref name="gelieerdePersoonIDs"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoonIDs">ID's van *GELIEERDE* personen, waarvan de corresponderende persoonsobjecten
+        /// opgehaald moeten worden.</param>
+        /// <param name="paths">Bepaalt welke gekoppelde entiteiten mee opgehaald moeten worden.</param>
+        /// <returns>De gevraagde personen></returns>
+        public IEnumerable<Persoon> OphalenViaGelieerdePersoon(IEnumerable<int> gelieerdePersoonIDs, params Expression<Func<Persoon, object>>[] paths)
+        {
+            IList<Persoon> result;
 
-			using (var db = new ChiroGroepEntities())
-			{
-				//// Ik wil dit bereiken:
+            using (var db = new ChiroGroepEntities())
+            {
+                //// Ik wil dit bereiken:
 
-				// var query = (from p in db.Persoon
-				//             where
-				//                p.GelieerdePersoon.Any(gp => gelieerdePersoonIDs.Contains(gp.ID))
-				//             select p) as ObjectQuery<Persoon>;
+                // var query = (from p in db.Persoon
+                //             where
+                //                p.GelieerdePersoon.Any(gp => gelieerdePersoonIDs.Contains(gp.ID))
+                //             select p) as ObjectQuery<Persoon>;
 
-				// Maar omdat die 'contains' op die manier niet 'out of the box' werkt, probeer ik
-				// het zo:
-				
-				var query =
-					(from gp in
-					 	db.GelieerdePersoon.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersoonIDs))
-					 select gp.Persoon) as ObjectQuery<Persoon>;
+                // Maar omdat die 'contains' op die manier niet 'out of the box' werkt, probeer ik
+                // het zo:
 
-				result = IncludesToepassen(query, paths).ToList();
-			}
+                var query =
+                    (from gp in
+                         db.GelieerdePersoon.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersoonIDs))
+                     select gp.Persoon) as ObjectQuery<Persoon>;
 
-			result = Utility.DetachObjectGraph(result);
+                result = IncludesToepassen(query, paths).ToList();
+            }
 
-			return result;
-		}
+            result = Utility.DetachObjectGraph(result);
 
-		/// <summary>
-		/// Verlegt alle referenties van de persoon met ID <paramref name="dubbelID"/> naar de persoon met ID
-		/// <paramref name="origineelID"/>, en verwijdert vervolgens de dubbele persoon.
-		/// </summary>
-		/// <param name="origineelID">ID van de te behouden persoon</param>
-		/// <param name="dubbelID">ID van de te verwijderen persoon, die eigenlijk gewoon dezelfde is de te
-		/// behouden.</param>
-		/// <remarks>Het is niet proper dit soort van logica in de data access te doen.  Anderzijds zou het een 
-		/// heel gedoe zijn om dit in de businesslaag te implementeren, omdat er heel wat relaties verlegd moeten worden.
-		/// Dat wil zeggen: relaties verwijderen en vervolgens nieuwe maken.  Dit zou een heel aantal 'TeVerwijderens' met zich
-		/// meebrengen, wat het allemaal zeer complex zou maken.  Vandaar dat we gewoon via een stored procedure werken.<para />
-		/// </remarks>
-		public void DubbelVerwijderen(int origineelID, int dubbelID)
-		{
-			// Wilde gok op basis van http://ur1.ca/3915c
+            return result;
+        }
 
-			using (var db = new ChiroGroepEntities())
-			{
-				var entityConnection = (EntityConnection) db.Connection;
-				var storeConnection = entityConnection.StoreConnection;
-				var commando = storeConnection.CreateCommand();
+        /// <summary>
+        /// Verlegt alle referenties van de persoon met ID <paramref name="dubbelID"/> naar de persoon met ID
+        /// <paramref name="origineelID"/>, en verwijdert vervolgens de dubbele persoon.
+        /// </summary>
+        /// <param name="origineelID">ID van de te behouden persoon</param>
+        /// <param name="dubbelID">ID van de te verwijderen persoon, die eigenlijk gewoon dezelfde is de te
+        /// behouden.</param>
+        /// <remarks>Het is niet proper dit soort van logica in de data access te doen.  Anderzijds zou het een 
+        /// heel gedoe zijn om dit in de businesslaag te implementeren, omdat er heel wat relaties verlegd moeten worden.
+        /// Dat wil zeggen: relaties verwijderen en vervolgens nieuwe maken.  Dit zou een heel aantal 'TeVerwijderens' met zich
+        /// meebrengen, wat het allemaal zeer complex zou maken.  Vandaar dat we gewoon via een stored procedure werken.<para />
+        /// </remarks>
+        public void DubbelVerwijderen(int origineelID, int dubbelID)
+        {
+            // Wilde gok op basis van http://ur1.ca/3915c
 
-				commando.CommandText = "data.spDubbelePersoonVerwijderen";
-				commando.CommandType = CommandType.StoredProcedure;
-				commando.Parameters.Add(new SqlParameter("foutPID", dubbelID));
-				commando.Parameters.Add(new SqlParameter("juistPID", origineelID));
+            using (var db = new ChiroGroepEntities())
+            {
+                var entityConnection = (EntityConnection)db.Connection;
+                var storeConnection = entityConnection.StoreConnection;
+                var commando = storeConnection.CreateCommand();
 
-				storeConnection.Open();
-				commando.ExecuteNonQuery();
-				storeConnection.Close();
-			}
+                commando.CommandText = "data.spDubbelePersoonVerwijderen";
+                commando.CommandType = CommandType.StoredProcedure;
+                commando.Parameters.Add(new SqlParameter("foutPID", dubbelID));
+                commando.Parameters.Add(new SqlParameter("juistPID", origineelID));
 
-		}
+                storeConnection.Open();
+                commando.ExecuteNonQuery();
+                storeConnection.Close();
+            }
+        }
 
-		/// <summary>
-		/// Zoekt alle mogelijke duo's van personen die hetzelfde AD-nummer hebben, en geeft een lijstje van koppels met 
-		/// de persoonID's van die personen.
-		/// </summary>
-		/// <returns>Lijst met koppels AD-nummers</returns>
-		public IEnumerable<TweeInts> DubbelsZoekenOpBasisVanAd()
-		{
-			using (var db = new ChiroGroepEntities())
-			{
-				var query = from p1 in db.Persoon
-				            join p2 in db.Persoon on p1.AdNummer equals p2.AdNummer
-				            where p1.AdNummer != null && p1.ID < p2.ID
-				            select new TweeInts {I1 = p1.ID, I2 = p2.ID};
+        /// <summary>
+        /// Zoekt alle mogelijke duo's van personen die hetzelfde AD-nummer hebben, en geeft een lijstje van koppels met 
+        /// de persoonID's van die personen.
+        /// </summary>
+        /// <returns>Lijst met koppels AD-nummers</returns>
+        public IEnumerable<TweeInts> DubbelsZoekenOpBasisVanAd()
+        {
+            using (var db = new ChiroGroepEntities())
+            {
+                var query = from p1 in db.Persoon
+                            join p2 in db.Persoon on p1.AdNummer equals p2.AdNummer
+                            where p1.AdNummer != null && p1.ID < p2.ID
+                            select new TweeInts { I1 = p1.ID, I2 = p2.ID };
 
-				return query.ToArray();
-			}
-		}
+                return query.ToArray();
+            }
+        }
 
-		/// <summary>
-		/// Personen opzoeken op (exacte) naam en voornaam.
-		/// Persoon en adressen worden opgehaald.
-		/// </summary>
-		/// <param name="naam">Exacte naam om op te zoeken</param>
-		/// <param name="voornaam">Exacte voornaam om op te zoeken</param>
-		/// <returns>Lijst met gevonden gelieerde personen</returns>
-		public IEnumerable<Persoon> ZoekenOpNaam(string naam, string voornaam)
-		{
-			using (var db = new ChiroGroepEntities())
-			{
-				db.Persoon.MergeOption = MergeOption.NoTracking;
-				return (
-					from p in db.Persoon
-						.Include(prs => prs.PersoonsAdres)
-					where String.Compare(p.Naam, naam, true) == 0
-					&& String.Compare(p.VoorNaam, voornaam, true) == 0
-					select p).ToArray();
-			}
-		}
+        /// <summary>
+        /// Personen opzoeken op (exacte) naam en voornaam.
+        /// Persoon en adressen worden opgehaald.
+        /// </summary>
+        /// <param name="naam">Exacte naam om op te zoeken</param>
+        /// <param name="voornaam">Exacte voornaam om op te zoeken</param>
+        /// <returns>Lijst met gevonden gelieerde personen</returns>
+        public IEnumerable<Persoon> ZoekenOpNaam(string naam, string voornaam)
+        {
+            using (var db = new ChiroGroepEntities())
+            {
+                db.Persoon.MergeOption = MergeOption.NoTracking;
+                return (
+                    from p in db.Persoon
+                        .Include(prs => prs.PersoonsAdres)
+                    where String.Compare(p.Naam, naam, true) == 0
+                    && String.Compare(p.VoorNaam, voornaam, true) == 0
+                    select p).ToArray();
+            }
+        }
 
-		/// <summary>
-		/// Haalt alle personen op met een gegeven AD-nummer
-		/// </summary>
-		/// <param name="adNummer">AD-nummer</param>
-		/// <returns>Een lijstje van personen met een gegeven AD-nummer</returns>
-		/// <remarks>Normaalgesproken bevat het resultaat hoogstens 1 persoon</remarks>
-		public IEnumerable<Persoon> ZoekenOpAd(int adNummer)
-		{
-			using (var db = new ChiroGroepEntities())
-			{
-				db.Persoon.MergeOption = MergeOption.NoTracking;
-				return (from p in db.Persoon
-				        where p.AdNummer == adNummer
-				        select p).ToArray();
-			}
-		}
-	}
+        /// <summary>
+        /// Haalt alle personen op met een gegeven AD-nummer
+        /// </summary>
+        /// <param name="adNummer">AD-nummer</param>
+        /// <returns>Een lijstje van personen met een gegeven AD-nummer</returns>
+        /// <remarks>Normaalgesproken bevat het resultaat hoogstens 1 persoon</remarks>
+        public IEnumerable<Persoon> ZoekenOpAd(int adNummer)
+        {
+            using (var db = new ChiroGroepEntities())
+            {
+                db.Persoon.MergeOption = MergeOption.NoTracking;
+                return (from p in db.Persoon
+                        where p.AdNummer == adNummer
+                        select p).ToArray();
+            }
+        }
+    }
 }

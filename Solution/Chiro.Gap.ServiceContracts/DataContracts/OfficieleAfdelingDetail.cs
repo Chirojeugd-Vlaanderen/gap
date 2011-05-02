@@ -37,7 +37,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public int LeefTijdTot { get; set; }
 
-
 		// TODO (#704): StandaardGeboorteJaarVan en StandaardGeboorteJaarTot mogen wat mij betreft gerust
 		// in het datacontract zitten, maar dan gewoon als 'data member'.  Het berekenen van deze
 		// jaren hoort thuis in de business, en mag niet door het datacontract zelf gebeuren

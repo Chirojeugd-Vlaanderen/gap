@@ -47,7 +47,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		[Verplicht]
 		[DisplayName(@"Geboortejaar van")]
-        [Range(1940, 2100, ErrorMessageResourceType = typeof (Resources), ErrorMessageResourceName = "RangeError")]
+        [Range(1940, 2100, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RangeError")]
 		public int GeboorteJaarVan { get; set; }
 
 		/// <summary>

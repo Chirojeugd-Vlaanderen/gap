@@ -53,7 +53,6 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		IList<Mededeling> Mededelingen { get; }
 
-
 		/// <summary>
 		/// Int die het *jaartal* van het huidige werkjaar voor de groep bepaalt.
 		/// (Bijv. 2010 voor 2010-2011)

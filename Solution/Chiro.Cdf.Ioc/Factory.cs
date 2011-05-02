@@ -13,6 +13,9 @@ using Microsoft.Practices.Unity.Configuration;
 
 namespace Chiro.Cdf.Ioc
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	public static class Factory
 	{
 		private static readonly object ThreadLock = new object();
@@ -134,8 +137,7 @@ namespace Chiro.Cdf.Ioc
 			catch (SynchronizationLockException)
 			{
 				// Doe niets. :-/
-			}
-			
+			}	
 		}
 	}
 }

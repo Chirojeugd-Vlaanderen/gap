@@ -8,6 +8,9 @@ using System.Configuration;
 
 namespace Chiro.Cdf.DependencyInjection
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	public class TypeMappingElementCollection : ConfigurationElementCollection
 	{
 		protected override ConfigurationElement CreateNewElement()

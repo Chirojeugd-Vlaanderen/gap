@@ -200,7 +200,7 @@ namespace Chiro.Gap.WebApp
 			
 			// Onderstaande uitgecommentarieerd, zodat datums ook getoond worden in
 			// OpenOffice.org / LibreOffice (#768)
-			//cell.DataType = new EnumValue<CellValues>(CellValues.Date);
+			// cell.DataType = new EnumValue<CellValues>(CellValues.Date);
 
 			worksheetPart.Worksheet.Save();
 		}

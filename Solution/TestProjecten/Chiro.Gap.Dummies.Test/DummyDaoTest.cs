@@ -5,9 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Dummies.Test
 {
-
-
-	/// <summary>
+    /// <summary>
 	/// This is a test class for DummyDaoTest and is intended
 	/// to contain all DummyDaoTest Unit Tests
 	/// </summary>

@@ -7,8 +7,8 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
-	public class UitstapModel: MasterViewModel
-	{
-		public UitstapDetail Uitstap { get; set; }
-	}
+    public class UitstapModel : MasterViewModel
+    {
+        public UitstapDetail Uitstap { get; set; }
+    }
 }

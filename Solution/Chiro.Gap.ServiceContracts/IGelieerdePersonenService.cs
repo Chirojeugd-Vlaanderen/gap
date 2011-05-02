@@ -378,7 +378,5 @@ namespace Chiro.Gap.ServiceContracts
 		void DubbelPuntBestellen(int gelieerdePersoonID);
 
 		#endregion
-
-
 	}
 }

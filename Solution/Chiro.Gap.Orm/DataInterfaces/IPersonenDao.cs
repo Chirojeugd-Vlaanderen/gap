@@ -95,5 +95,4 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		public int I1 { get; set; }
 		public int I2 { get; set; }
 	}
-
 }

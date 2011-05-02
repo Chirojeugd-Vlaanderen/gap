@@ -16,6 +16,9 @@ using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	[HandleError]
 	public class AfdelingenController : BaseController
 	{

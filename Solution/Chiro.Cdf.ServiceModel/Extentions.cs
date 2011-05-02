@@ -6,7 +6,7 @@ namespace Chiro.Cdf.ServiceModel
 {
     public static class CollectionExtentions
     {
-        public static IEnumerable<U> ConvertAll<T,U>(this IEnumerable<T> collection, Converter<T,U> converter)
+        public static IEnumerable<U> ConvertAll<T, U>(this IEnumerable<T> collection, Converter<T, U> converter)
         {
             return collection.Select(item => converter(item));
         }

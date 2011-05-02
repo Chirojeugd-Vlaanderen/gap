@@ -8,10 +8,13 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
-	[DataContract]
-	public class PlaatsInfo: AdresInfo
-	{
-		[DataMember]
-		public string Naam { get; set; }
-	}
+    /// <summary>
+    /// 
+    /// </summary>
+    [DataContract]
+    public class PlaatsInfo : AdresInfo
+    {
+        [DataMember]
+        public string Naam { get; set; }
+    }
 }

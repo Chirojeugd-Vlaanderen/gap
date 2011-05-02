@@ -17,7 +17,6 @@ using System.Diagnostics;
 
 namespace Chiro.Gap.WebApp.ActionFilters
 {
-
 	/// <summary>
 	/// This attribute can be placed on a parameter of an action method that should be present on the URL in route data
 	/// </summary>
@@ -50,7 +49,6 @@ namespace Chiro.Gap.WebApp.ActionFilters
 		{
 		}
 	}
-
 
 	/// <summary>
 	/// Parameters Match Attribute allows you to specify that an action is only valid

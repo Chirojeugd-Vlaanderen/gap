@@ -5,13 +5,14 @@ using System.Text;
 
 namespace Chiro.Gap.Sync
 {
-	/// <summary>
-	/// Dom grapje voor KipSync.
-	/// </summary>
-	public class OutOfCoffeeException: Exception
-	{
-		public OutOfCoffeeException(string message):base(message)
-		{
-		}
-	}
+    /// <summary>
+    /// Dom grapje voor KipSync.
+    /// </summary>
+    public class OutOfCoffeeException : Exception
+    {
+        public OutOfCoffeeException(string message)
+            : base(message)
+        {
+        }
+    }
 }

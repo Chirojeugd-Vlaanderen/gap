@@ -21,13 +21,13 @@ namespace Chiro.Gap.Workers
 		private readonly IAutorisatieManager _autorisatieManager;
 		private readonly IUitstappenDao _uitstappenDao;
 
-
-		/// <summary>
-		/// Constructor.  De parameters moeten 'ingevuld' via dependency inejction
-		/// </summary>
-		/// <param name="groepsWerkJaarDao">Data access voor groepswerkjaren</param>
-		/// <param name="autorisatieManager">Businesslogica voor autorisatie</param>
-		public UitstappenManager(
+	    /// <summary>
+	    /// Constructor.  De parameters moeten 'ingevuld' via dependency inejction
+	    /// </summary>
+	    /// <param name="uitstappenDao"></param>
+	    /// <param name="groepsWerkJaarDao">Data access voor groepswerkjaren</param>
+	    /// <param name="autorisatieManager">Businesslogica voor autorisatie</param>
+	    public UitstappenManager(
 			IUitstappenDao uitstappenDao, 
 			IGroepsWerkJaarDao groepsWerkJaarDao, 
 			IAutorisatieManager autorisatieManager)
@@ -100,13 +100,12 @@ namespace Chiro.Gap.Workers
 				}
 				return _uitstappenDao.Ophalen(uitstapID, paths.ToArray());
 			}
-
 		}
 
 		/// <summary>
 		/// Bewaart de uitstap met het gekoppelde groepswerkjaar
 		/// </summary>
-		/// <param name="uitstap">te bewaren uitstap</param>
+		/// <param name="uitstap">Te bewaren uitstap</param>
 		/// <param name="extras">Bepaalt de mee te bewaren koppelingen</param>
 		public Uitstap Bewaren(Uitstap uitstap, UitstapExtras extras)
 		{
@@ -158,9 +157,9 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Koppelt een plaats aan een uitstap
 		/// </summary>
-		/// <param name="uitstap">te koppelen uitstap</param>
-		/// <param name="plaats">te koppelen plaats</param>
-		/// <returns>uitstap, met plaats gekoppeld.  Persisteert niet</returns>
+		/// <param name="uitstap">Te koppelen uitstap</param>
+		/// <param name="plaats">Te koppelen plaats</param>
+		/// <returns>Uitstap, met plaats gekoppeld.  Persisteert niet</returns>
 		public Uitstap Koppelen(Uitstap uitstap, Plaats plaats)
 		{
 			if (!_autorisatieManager.IsGavUitstap(uitstap.ID) || !_autorisatieManager.IsGavPlaats(plaats.ID))

@@ -39,17 +39,18 @@ namespace Chiro.Gap.Workers
 		private readonly IAdressenSync _adressenSync;
 		private readonly IDubbelpuntSync _dubbelpuntSync;
 
-		/// <summary>
-		/// Creëert een GelieerdePersonenManager
-		/// </summary>
-		/// <param name="gelieerdePersonenDao">Repository voor gelieerde personen</param>
-		/// <param name="categorieenDao">Repository voor categorieën</param>
-		/// <param name="pDao">Repository voor personen</param>
-		/// <param name="cvDao">Repostiory voor communicatievormen</param>
-		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
-		/// <param name="personenSync">Zorgt voor synchronisate van personen naar Kipadmin</param>
-		/// <param name="adressenSync">Zorgt voor synchronisate van adressen naar Kipadmin</param>
-		public GelieerdePersonenManager(
+	    /// <summary>
+	    /// Creëert een GelieerdePersonenManager
+	    /// </summary>
+	    /// <param name="gelieerdePersonenDao">Repository voor gelieerde personen</param>
+	    /// <param name="categorieenDao">Repository voor categorieën</param>
+	    /// <param name="pDao">Repository voor personen</param>
+	    /// <param name="cvDao">Repostiory voor communicatievormen</param>
+	    /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
+	    /// <param name="personenSync">Zorgt voor synchronisate van personen naar Kipadmin</param>
+	    /// <param name="adressenSync">Zorgt voor synchronisate van adressen naar Kipadmin</param>
+	    /// <param name="dubbelpuntSync"></param>
+	    public GelieerdePersonenManager(
 			IGelieerdePersonenDao gelieerdePersonenDao,
 			ICategorieenDao categorieenDao,
 			IPersonenDao pDao,
@@ -194,7 +195,6 @@ namespace Chiro.Gap.Workers
 					{
 						// Dubbelpuntabonnement werd aangevinkt.
 						_dubbelpuntSync.Abonneren(gelieerdePersoon);
-
 					}
 
 					if (gelieerdePersoon.Persoon.AdNummer != null || gelieerdePersoon.Persoon.AdInAanvraag)
@@ -824,9 +824,8 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-
 		/// <summary>
-		/// Fix de dubbelpuntabonnementen die niet goed zijn overgezet naar Kipadmin.
+		/// Fix de Dubbelpuntabonnementen die niet goed zijn overgezet naar Kipadmin.
 		/// </summary>
 		public void FixDubbelPunt()
 		{

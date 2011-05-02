@@ -83,7 +83,6 @@ namespace Chiro.Gap.WebApp.Models
 		[StringLengte(80)]
 		public string WoonPlaatsBuitenLand { get; set; }
 
-
 		#region Implementatie IAdresBewerkenModel
 
 		// Dit mapt gewoon de velden van IAdresBewerkenModel naar de goeie
@@ -136,6 +135,5 @@ namespace Chiro.Gap.WebApp.Models
 		}
 
 		#endregion
-
 	}
 }

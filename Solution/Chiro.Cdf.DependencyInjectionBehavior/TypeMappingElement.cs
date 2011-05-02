@@ -9,6 +9,9 @@ using System.Configuration;
 
 namespace Chiro.Cdf.DependencyInjection
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	public class TypeMappingElement : ConfigurationElement
 	{
 		private AssemblyQualifiedTypeNameConverter typeConverter = new AssemblyQualifiedTypeNameConverter();

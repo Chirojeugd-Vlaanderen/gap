@@ -96,8 +96,8 @@ namespace Chiro.Gap.ServiceContracts
 		int RecentsteGroepsWerkJaarIDGet(int groepID);
 
 		[OperationContract]
-		[FaultContract(typeof (GapFault))]
-		[FaultContract(typeof (FoutNummerFault))]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepid);
 
 		// Alles om gelieerdepersonen op te halen zit in igelieerdepersonenservice
@@ -277,7 +277,6 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<LedenProbleemInfo> LedenControleren(int groepID);
 
-
 		/// <summary>
 		/// Voegt een functie toe aan de groep
 		/// </summary>
@@ -405,7 +404,6 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		IEnumerable<LandInfo> LandenOphalen();
 
-
 		/// <summary>
 		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint
 		/// met het gegeven <paramref name="straatBegin"/>.
@@ -445,7 +443,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkjaar</param>
 		/// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
-		///<param name="foutBerichten">Een boodschap met welke leden wel of niet konden worden aangemaakt</param>
+		/// <param name="foutBerichten">Een boodschap met welke leden wel of niet konden worden aangemaakt</param>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]

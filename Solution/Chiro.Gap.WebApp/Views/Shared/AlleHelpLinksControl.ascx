@@ -23,6 +23,8 @@
 		<li>
 			<%=Html.ActionLink("Groep", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Groep" }) %></li>
             <li>
+			<%=Html.ActionLink("Persoon toevoegen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwePersoon" }) %></li>
+            <li>
 			<%=Html.ActionLink("Uitstappen/bivak", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Uitstappen" }) %></li>
 	</ul>
 	<h3>

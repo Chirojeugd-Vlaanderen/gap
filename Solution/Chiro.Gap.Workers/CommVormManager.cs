@@ -31,15 +31,16 @@ namespace Chiro.Gap.Workers
 		private readonly ICommunicatieSync _communicatieSync;
 		private readonly IPersonenSync _personenSync;
 
-		/// <summary>
-		/// Deze constructor laat toe om een alternatieve repository voor
-		/// de communicatievormen te gebruiken.  Nuttig voor mocking en testing.
-		/// </summary>
-		/// <param name="typedao">Repository voor communicatietypes</param>
-		/// <param name="commdao">Repository voor communicatievormen</param>
-		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
-		/// <param name="communicatieSync">Syncer naar Kipadmin voor communicatiemiddelen</param>
-		public CommVormManager(
+	    /// <summary>
+	    /// Deze constructor laat toe om een alternatieve repository voor
+	    /// de communicatievormen te gebruiken.  Nuttig voor mocking en testing.
+	    /// </summary>
+	    /// <param name="typedao">Repository voor communicatietypes</param>
+	    /// <param name="commdao">Repository voor communicatievormen</param>
+	    /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
+	    /// <param name="communicatieSync">Syncer naar Kipadmin voor communicatiemiddelen</param>
+	    /// <param name="personenSync"></param>
+	    public CommVormManager(
 			IDao<CommunicatieType> typedao, 
 			IDao<CommunicatieVorm> commdao, 
 			IAutorisatieManager autorisatieMgr,

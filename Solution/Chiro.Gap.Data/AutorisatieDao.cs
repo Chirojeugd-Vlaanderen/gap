@@ -237,7 +237,6 @@ namespace Chiro.Gap.Data.Ef
 						ld.GelieerdePersoon.Groep.GebruikersRecht.Any(
 							r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)))
 					.Select(ld => ld.ID).Distinct()).ToArray();
-
 			}
 		}
 

@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 using Chiro.Cdf.Ioc;
@@ -19,68 +18,65 @@ using Moq;
 
 namespace Chiro.Gap.LidSyncer
 {
-	class Program
-	{
-		/// <summary>
-		/// Een dom programma dat niets anders doet dan de IoC in orde brengen, en vervolgens een LedenManager
-		/// aanroept om de leden met voorbije probeerperiode te syncen.
-		/// </summary>
-		static void Main(string[] args)
-		{
-			Factory.ContainerInit();
-			MappingHelper.MappingsDefinieren();
+    class Program
+    {
+        /// <summary>
+        /// Een dom programma dat niets anders doet dan de IoC in orde brengen, en vervolgens een LedenManager
+        /// aanroept om de leden met voorbije probeerperiode te syncen.
+        /// </summary>
+        static void Main(string[] args)
+        {
+            Factory.ContainerInit();
+            MappingHelper.MappingsDefinieren();
 
-			// Leden overzetten vereist super-gav-rechten
-			// We regelen dit via mocking.
+            // Leden overzetten vereist super-gav-rechten
+            // We regelen dit via mocking.
 
-			var auMgrMock = new Mock<IAutorisatieManager>();
-			auMgrMock.Setup(mgr => mgr.IsSuperGav()).Returns(true);
-			auMgrMock.Setup(mgr => mgr.IsGavGelieerdePersoon(It.IsAny<int>())).Returns(true);
-			auMgrMock.Setup(mgr => mgr.EnkelMijnGelieerdePersonen(It.IsAny<IEnumerable<int>>())).Returns<IEnumerable<int>>(bla => bla.ToList());
-			auMgrMock.Setup(mgr => mgr.IsGavLid(It.IsAny<int>())).Returns(true);
-			auMgrMock.Setup(mgr => mgr.IsGavGroepsWerkJaar(It.IsAny<int>())).Returns(true);
-			auMgrMock.Setup(mgr => mgr.IsGavPersoon(It.IsAny<int>())).Returns(true);
+            var auMgrMock = new Mock<IAutorisatieManager>();
+            auMgrMock.Setup(mgr => mgr.IsSuperGav()).Returns(true);
+            auMgrMock.Setup(mgr => mgr.IsGavGelieerdePersoon(It.IsAny<int>())).Returns(true);
+            auMgrMock.Setup(mgr => mgr.EnkelMijnGelieerdePersonen(It.IsAny<IEnumerable<int>>())).Returns<IEnumerable<int>>(bla => bla.ToList());
+            auMgrMock.Setup(mgr => mgr.IsGavLid(It.IsAny<int>())).Returns(true);
+            auMgrMock.Setup(mgr => mgr.IsGavGroepsWerkJaar(It.IsAny<int>())).Returns(true);
+            auMgrMock.Setup(mgr => mgr.IsGavPersoon(It.IsAny<int>())).Returns(true);
 
-			// nifty ;-P
+            // nifty ;-P
 
-			Factory.InstantieRegistreren(auMgrMock.Object);
+            Factory.InstantieRegistreren(auMgrMock.Object);
 
+            #region aanroepen van lelijke hacks
 
-			#region aanroepen van lelijke hacks
+            // // Fixen dubbelpuntabonnementen die niet goed overgezet zijn
+            // var gpMgr = Factory.Maak<GelieerdePersonenManager>();
+            // gpMgr.FixDubbelPunt();
 
-			//// Fixen dubbelpuntabonnementen die niet goed overgezet zijn
-			// var gpMgr = Factory.Maak<GelieerdePersonenManager>();
-			// gpMgr.FixDubbelPunt();
+            //// Manueel verloren dubbelpunt rechttrekken
+            // DubbelpuntOpnieuwBestellen();
 
-			//// Manueel verloren dubbelpunt rechttrekken
-			// DubbelpuntOpnieuwBestellen();
+            // // Verloren contactpersonen opnieuw overzetten
+            // OpnieuwVerzekerenLoonVerlies();
 
+            // // Verwijder dubbels op basis van ad-nummer
+            // var personenMgr = Factory.Maak<PersonenManager>();
+            // personenMgr.FixGedeeldeAds();
 
-			//// Verloren contactpersonen opnieuw overzetten
-			//OpnieuwVerzekerenLoonVerlies();
+            // // Opnieuw overzetten en bewaren van adressen met busnummers
+            // AdressenOpnieuwBewaren();
 
-			//// Verwijder dubbels op basis van ad-nummer
-			//var personenMgr = Factory.Maak<PersonenManager>();
-			//personenMgr.FixGedeeldeAds();
+            #endregion
 
-			//// Opnieuw overzetten en bewaren van adressen met busnummers
-			//AdressenOpnieuwBewaren();
+            // Overzetten leden na probeerperiode
 
-			#endregion
+            var ledenMgr = Factory.Maak<LedenManager>();
+            ledenMgr.OverZettenNaProbeerPeriode();
+        }
 
-			// Overzetten leden na probeerperiode
+        #region lelijke hacks om dingen te repareren die misliepen
 
-			var ledenMgr = Factory.Maak<LedenManager>();
-			ledenMgr.OverZettenNaProbeerPeriode();
-
-
-		}
-
-		#region lelijke hacks om dingen te repareren die misliepen 
-
-		private static void FunctiesOpnieuwOverzetten()
-		{
-			int[] lidIdLijst = {
+        private static void FunctiesOpnieuwOverzetten()
+        {
+            int[] lidIdLijst = 
+                               {
 			                   	197632, 197426, 207313, 216112, 260406, 222769, 274921, 238046, 256624,
 			                   	189647, 243777, 172845, 236622, 259345, 262772, 211268, 199815, 195680,
 			                   	188216, 245108, 187845, 175417, 186194, 234284, 252508, 244172, 175615,
@@ -92,91 +88,92 @@ namespace Chiro.Gap.LidSyncer
 			                   	208778, 248842, 191411, 227951, 257528, 198180, 241673, 255166
 			                   };
 
-			var ledenMgr = Factory.Maak<LedenManager>();
-			var functiesMgr = Factory.Maak<FunctiesManager>();
+            var ledenMgr = Factory.Maak<LedenManager>();
+            var functiesMgr = Factory.Maak<FunctiesManager>();
 
-			foreach (int lidID in lidIdLijst)
-			{
-				// Haal lid op, en vervang functies door huidige
-				// functies.
-				// (Wat op zich niets doet, maar wat wel de functies
-				// opnieuw over de lijn stuurt.)
+            foreach (int lidID in lidIdLijst)
+            {
+                // Haal lid op, en vervang functies door huidige
+                // functies.
+                // (Wat op zich niets doet, maar wat wel de functies
+                // opnieuw over de lijn stuurt.)
 
-				var l = ledenMgr.Ophalen(lidID, LidExtras.Functies|LidExtras.Groep);
+                var l = ledenMgr.Ophalen(lidID, LidExtras.Functies | LidExtras.Groep);
 
-				if (l != null)
-				{
-					functiesMgr.Vervangen(l, l.Functie);
-				}
-			}
+                if (l != null)
+                {
+                    functiesMgr.Vervangen(l, l.Functie);
+                }
+            }
 
-		}
+        }
 
-		private struct IDs
-		{
-			public int PersoonsVerzekeringID;
-			public int GroepsWerkJaarID;
-		}
+        private struct IDs
+        {
+            public int PersoonsVerzekeringID;
+            public int GroepsWerkJaarID;
+        }
 
-		private static void OpnieuwVerzekerenLoonVerlies()
-		{
-
-			IDs[] ids = {
-			          	new IDs {PersoonsVerzekeringID = 439, GroepsWerkJaarID = 2892},
-			          	new IDs {PersoonsVerzekeringID = 872, GroepsWerkJaarID = 2677},
-			          	new IDs {PersoonsVerzekeringID = 871, GroepsWerkJaarID = 2058},
-			          	new IDs {PersoonsVerzekeringID = 870, GroepsWerkJaarID = 2058},
-			          	new IDs {PersoonsVerzekeringID = 958, GroepsWerkJaarID = 3690},
-			          	new IDs {PersoonsVerzekeringID = 956, GroepsWerkJaarID = 3690},
-			          	new IDs {PersoonsVerzekeringID = 957, GroepsWerkJaarID = 3690},
-			          	new IDs {PersoonsVerzekeringID = 954, GroepsWerkJaarID = 3690},
-			          	new IDs {PersoonsVerzekeringID = 955, GroepsWerkJaarID = 3690},
-			          	new IDs {PersoonsVerzekeringID = 856, GroepsWerkJaarID = 2129},
-			          	new IDs {PersoonsVerzekeringID = 859, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 861, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 864, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 865, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 867, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 869, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 862, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 857, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 858, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 868, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 863, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 860, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 866, GroepsWerkJaarID = 2788},
-			          	new IDs {PersoonsVerzekeringID = 874, GroepsWerkJaarID = 2299},
-			          	new IDs {PersoonsVerzekeringID = 877, GroepsWerkJaarID = 2615},
-			          	new IDs {PersoonsVerzekeringID = 876, GroepsWerkJaarID = 2615},
-			          	new IDs {PersoonsVerzekeringID = 875, GroepsWerkJaarID = 2615},
-			          	new IDs {PersoonsVerzekeringID = 959, GroepsWerkJaarID = 2073},
-			          	new IDs {PersoonsVerzekeringID = 961, GroepsWerkJaarID = 2073},
-			          	new IDs {PersoonsVerzekeringID = 962, GroepsWerkJaarID = 2073},
-			          	new IDs {PersoonsVerzekeringID = 960, GroepsWerkJaarID = 2073},
-			          	new IDs {PersoonsVerzekeringID = 852, GroepsWerkJaarID = 2821},
-			          	new IDs {PersoonsVerzekeringID = 853, GroepsWerkJaarID = 2821},
-			          	new IDs {PersoonsVerzekeringID = 855, GroepsWerkJaarID = 2821},
-			          	new IDs {PersoonsVerzekeringID = 873, GroepsWerkJaarID = 2695},
-			          	new IDs {PersoonsVerzekeringID = 953, GroepsWerkJaarID = 3713},
-			          	new IDs {PersoonsVerzekeringID = 952, GroepsWerkJaarID = 3713},
-			          	new IDs {PersoonsVerzekeringID = 854, GroepsWerkJaarID = 2821}
+        private static void OpnieuwVerzekerenLoonVerlies()
+        {
+            IDs[] ids = 
+                      {
+			          	new IDs { PersoonsVerzekeringID = 439, GroepsWerkJaarID = 2892 },
+			          	new IDs { PersoonsVerzekeringID = 872, GroepsWerkJaarID = 2677 },
+			          	new IDs { PersoonsVerzekeringID = 871, GroepsWerkJaarID = 2058 },
+			          	new IDs { PersoonsVerzekeringID = 870, GroepsWerkJaarID = 2058 },
+			          	new IDs { PersoonsVerzekeringID = 958, GroepsWerkJaarID = 3690 },
+			          	new IDs { PersoonsVerzekeringID = 956, GroepsWerkJaarID = 3690 },
+			          	new IDs { PersoonsVerzekeringID = 957, GroepsWerkJaarID = 3690 },
+			          	new IDs { PersoonsVerzekeringID = 954, GroepsWerkJaarID = 3690 },
+			          	new IDs { PersoonsVerzekeringID = 955, GroepsWerkJaarID = 3690 },
+			          	new IDs { PersoonsVerzekeringID = 856, GroepsWerkJaarID = 2129 },
+			          	new IDs { PersoonsVerzekeringID = 859, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 861, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 864, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 865, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 867, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 869, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 862, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 857, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 858, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 868, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 863, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 860, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 866, GroepsWerkJaarID = 2788 },
+			          	new IDs { PersoonsVerzekeringID = 874, GroepsWerkJaarID = 2299 },
+			          	new IDs { PersoonsVerzekeringID = 877, GroepsWerkJaarID = 2615 },
+			          	new IDs { PersoonsVerzekeringID = 876, GroepsWerkJaarID = 2615 },
+			          	new IDs { PersoonsVerzekeringID = 875, GroepsWerkJaarID = 2615 },
+			          	new IDs { PersoonsVerzekeringID = 959, GroepsWerkJaarID = 2073 },
+			          	new IDs { PersoonsVerzekeringID = 961, GroepsWerkJaarID = 2073 },
+			          	new IDs { PersoonsVerzekeringID = 962, GroepsWerkJaarID = 2073 },
+			          	new IDs { PersoonsVerzekeringID = 960, GroepsWerkJaarID = 2073 },
+			          	new IDs { PersoonsVerzekeringID = 852, GroepsWerkJaarID = 2821 },
+			          	new IDs { PersoonsVerzekeringID = 853, GroepsWerkJaarID = 2821 },
+			          	new IDs { PersoonsVerzekeringID = 855, GroepsWerkJaarID = 2821 },
+			          	new IDs { PersoonsVerzekeringID = 873, GroepsWerkJaarID = 2695 },
+			          	new IDs { PersoonsVerzekeringID = 953, GroepsWerkJaarID = 3713 },
+			          	new IDs { PersoonsVerzekeringID = 952, GroepsWerkJaarID = 3713 },
+			          	new IDs { PersoonsVerzekeringID = 854, GroepsWerkJaarID = 2821 }
 			          };
 
-			var verzekeringenManager = Factory.Maak<VerzekeringenManager>();
-			var groepsWerkJaarManager = Factory.Maak<GroepsWerkJaarManager>();
+            var verzekeringenManager = Factory.Maak<VerzekeringenManager>();
+            var groepsWerkJaarManager = Factory.Maak<GroepsWerkJaarManager>();
 
-			foreach (var current in ids)
-			{
-				var pv = verzekeringenManager.PersoonsVerzekeringOphalen(current.PersoonsVerzekeringID);
-				var gwj = groepsWerkJaarManager.Ophalen(current.GroepsWerkJaarID, GroepsWerkJaarExtras.Groep);
+            foreach (var current in ids)
+            {
+                var pv = verzekeringenManager.PersoonsVerzekeringOphalen(current.PersoonsVerzekeringID);
+                var gwj = groepsWerkJaarManager.Ophalen(current.GroepsWerkJaarID, GroepsWerkJaarExtras.Groep);
 
-				verzekeringenManager.PersoonsVerzekeringBewaren(pv, gwj);
-			}
-		}
+                verzekeringenManager.PersoonsVerzekeringBewaren(pv, gwj);
+            }
+        }
 
-		private static void AdressenOpnieuwBewaren()
-		{
-			int[] adrIdLijst = {
+        private static void AdressenOpnieuwBewaren()
+        {
+            int[] adrIdLijst = 
+                            {
 			                   	10079, 22814, 32632, 93651, 42688, 99270, 78022, 48115, 103561, 12804,
 			                   	47102, 48430, 92177, 101995, 100936, 48407, 75420, 108965, 73654, 103415,
 			                   	10202, 38589, 49904, 61311, 69217, 89283, 11676, 15967, 39525, 52698,
@@ -674,18 +671,20 @@ namespace Chiro.Gap.LidSyncer
 			                   	52477
 			                   };
 
-			var aMgr = Factory.Maak<AdressenManager>();
+            var aMgr = Factory.Maak<AdressenManager>();
 
-			foreach (int id in adrIdLijst)
-			{
-				var adres = aMgr.OphalenMetVoorkeurBewoners(id);
-				aMgr.Bewaren(adres);
-			}
-		}
+            foreach (int id in adrIdLijst)
+            {
+                var adres = aMgr.OphalenMetVoorkeurBewoners(id);
+                aMgr.Bewaren(adres);
+            }
+        }
 
-		private static void DubbelpuntOpnieuwBestellen()
-		{
-			int[] gpIdLijst = { 4350, 4352, 4353, 4354, 4356, 4357, 6760, 6762, 6766, 6787, 6791, 6797,
+        private static void DubbelpuntOpnieuwBestellen()
+        {
+            int[] gpIdLijst = 
+                      {
+                        4350, 4352, 4353, 4354, 4356, 4357, 6760, 6762, 6766, 6787, 6791, 6797,
 						7552, 7556, 7580, 7586, 7595, 7634, 7644, 7651, 7658, 7663, 7691, 7703,
 						7727, 7732, 7763, 7782, 7800, 7821, 18677, 18706, 18707, 18716, 18722,
 						18723, 18732, 18736, 18784, 18826, 18845, 27987, 33613, 33620, 33621,
@@ -741,39 +740,42 @@ namespace Chiro.Gap.LidSyncer
 						176922, 176957, 176999, 177000, 177001, 177027, 177028, 177094, 177153,
 						177154, 177221, 177277, 177279, 177280, 177439, 177459, 177585, 177617,
 						177622
-						 };
+					  };
 
-			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
+            var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 
-			foreach (int gpid in gpIdLijst)
-			{
-				var gp = gpMgr.Ophalen(gpid, PersoonsExtras.Adressen);
+            foreach (int gpid in gpIdLijst)
+            {
+                var gp = gpMgr.Ophalen(gpid, PersoonsExtras.Adressen);
 
-				// Eerst abonnement opheffen
+                // Eerst abonnement opheffen
 
-				//Debug.Assert(gp.Persoon.DubbelPuntAbonnement);
-				gp.Persoon.DubbelPuntAbonnement = false;
-				gpMgr.Bewaren(gp, PersoonsExtras.Geen);
+                // Debug.Assert(gp.Persoon.DubbelPuntAbonnement);
+                gp.Persoon.DubbelPuntAbonnement = false;
+                gpMgr.Bewaren(gp, PersoonsExtras.Geen);
 
-				// Opnieuw bestellen
+                // Opnieuw bestellen
 
-				try
-				{
-					gpMgr.DubbelpuntBestellen(gp);
-				}
-				catch (FoutNummerException ex)
-				{
-					if (ex.FoutNummer == FoutNummer.AdresOntbreekt)
-					{
-						Console.WriteLine("Geen adres voor gelieerdepersoon {0}", gp.ID);
-					}
-					else throw;
-				}
+                try
+                {
+                    gpMgr.DubbelpuntBestellen(gp);
+                }
+                catch (FoutNummerException ex)
+                {
+                    if (ex.FoutNummer == FoutNummer.AdresOntbreekt)
+                    {
+                        Console.WriteLine("Geen adres voor gelieerdepersoon {0}", gp.ID);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
 
-				gpMgr.Bewaren(gp, PersoonsExtras.Geen);
-			}
-		}
+                gpMgr.Bewaren(gp, PersoonsExtras.Geen);
+            }
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

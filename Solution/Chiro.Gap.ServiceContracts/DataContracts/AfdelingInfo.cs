@@ -42,5 +42,4 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public string OfficieleAfdelingNaam { get; set; }
 	}
-
 }

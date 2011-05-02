@@ -110,8 +110,7 @@ namespace Chiro.Gap.Workers
 			else
 			{
 				return _groepsWjDao.RecentsteOphalen(groepID, ExtrasNaarLambdas(extras));
-			}
-			
+			}	
 		}
 
 		/// <summary>

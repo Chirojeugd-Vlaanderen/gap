@@ -8,35 +8,38 @@ using System.Web.Mvc;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
-	public class ErrorController : Controller
-	{
-		//
-		// GET: /Error/
-		public ActionResult Index()
-		{
-			// Normaal gezien passeren we hier nooit, want de defaultRedirect in web.config gaat naar ~/Shared/Error.aspx.
-			Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-			return View("Error");
-		}
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ErrorController : Controller
+    {
+        //
+        // GET: /Error/
+        public ActionResult Index()
+        {
+            // Normaal gezien passeren we hier nooit, want de defaultRedirect in web.config gaat naar ~/Shared/Error.aspx.
+            Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            return View("Error");
+        }
 
-		//
-		// GET: /Error/NietGevonden
-		public ActionResult NietGevonden()
-		{
-			Response.StatusCode = (int)HttpStatusCode.NotFound;
-			return View("Error");
-		}
+        //
+        // GET: /Error/NietGevonden
+        public ActionResult NietGevonden()
+        {
+            Response.StatusCode = (int)HttpStatusCode.NotFound;
+            return View("Error");
+        }
 
-		public ActionResult GeenVerbinding()
-		{
-			Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
-			return View("Error");
-		}
+        public ActionResult GeenVerbinding()
+        {
+            Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
+            return View("Error");
+        }
 
-		public ActionResult GeenToegang()
-		{
-			Response.StatusCode = (int) HttpStatusCode.Forbidden;
-			return View("Error");
-		}
-	}
+        public ActionResult GeenToegang()
+        {
+            Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            return View("Error");
+        }
+    }
 }

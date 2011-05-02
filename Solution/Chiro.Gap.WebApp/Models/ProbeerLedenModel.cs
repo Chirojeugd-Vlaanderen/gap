@@ -5,8 +5,8 @@ using System.Web;
 
 namespace Chiro.Gap.WebApp.Models
 {
-	public class ProbeerLedenModel: LedenLijstModel
-	{
-		public decimal AansluitingsPrijs { get; set; }
-	}
+    public class ProbeerLedenModel : LedenLijstModel
+    {
+        public decimal AansluitingsPrijs { get; set; }
+    }
 }

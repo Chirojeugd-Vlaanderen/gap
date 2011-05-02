@@ -84,7 +84,6 @@ namespace Chiro.Gap.Sync
 					Mapper.Map<GelieerdePersoon, SyncService.PersoonDetails>(gpMetDetails),
 					huidigWj.Groep.Code,
 					huidigWj.WerkJaar);
-
 			}
 		}
 	}

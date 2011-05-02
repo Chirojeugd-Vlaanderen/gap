@@ -29,8 +29,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.</param>
 		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
 		[OperationContract]
-		[FaultContract(typeof (GapFault))]
-		[FaultContract(typeof (FoutNummerFault))]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
 
 		/// <summary>
@@ -159,6 +159,5 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		int TypeToggle(int id);
-
 	}
 }

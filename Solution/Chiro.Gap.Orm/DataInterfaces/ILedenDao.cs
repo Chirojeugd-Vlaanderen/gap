@@ -161,6 +161,5 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>alle leden met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
 		/// functies, afdelingen.  Communicatie niet!</returns>
 		IEnumerable<Lid> OverTeZettenOphalen(int maxAantal);
-
 	}
 }

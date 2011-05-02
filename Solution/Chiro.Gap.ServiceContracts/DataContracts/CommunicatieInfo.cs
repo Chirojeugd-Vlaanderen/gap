@@ -19,7 +19,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	{
 		public CommunicatieInfo()
 		{
-			
 		}
 
 		public CommunicatieInfo(CommunicatieDetail detail)

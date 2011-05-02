@@ -17,6 +17,9 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	[HandleError]
 	public class GavController : BaseController
 	{

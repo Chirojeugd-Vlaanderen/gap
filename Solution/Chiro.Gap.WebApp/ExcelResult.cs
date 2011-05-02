@@ -33,7 +33,7 @@ namespace Chiro.Gap.WebApp
 
 			// Zetten van de cacheability verwijderd, omdat dat problemen opleverde
 			// met Internet Explorer (#775)
-			//context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+			// context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
 
 			context.Response.ContentType = @"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 			context.Response.BinaryWrite(_stream.ToArray());

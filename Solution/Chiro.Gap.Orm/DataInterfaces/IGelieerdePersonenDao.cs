@@ -42,7 +42,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Lijst met gevonden gelieerde personen</returns>
 		IEnumerable<GelieerdePersoon> ZoekenOpNaam(int groepID, string naam, string voornaam);
 
-
 		/// <summary>
 		/// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
 		/// en voornaam gelijkaardig aan <paramref name="naam"/> en <paramref name="voornaam"/>.
@@ -93,7 +92,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 			bool metVoorkeurAdres, 
 			params Expression<Func<GelieerdePersoon, object>>[] paths);
 
-
 		/// <summary>
 		/// Haalt een gelieerde persoon op op basis van <paramref name="persoonID"/> en <paramref name="groepID"/>
 		/// </summary>
@@ -113,7 +111,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="extras">bepaalt de extra op te halen entiteiten</param>
 		/// <returns>De gevraagde gelieerde personen.</returns>
 		IEnumerable<GelieerdePersoon> Ophalen(IList<int> gelieerdePersoonIDs, PersoonsExtras extras);
-
 
 		/// <summary>
 		/// Haal een pagina op met gelieerde personen van een groep.
@@ -146,7 +143,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
 		/// <returns>Lijst gelieerde personen</returns>
 		IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras);
-
 
 		/// <summary>
 		/// Haalt een gelieerde persoon op, inclusief
