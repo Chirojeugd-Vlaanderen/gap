@@ -164,6 +164,15 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst=>dst.GelieerdePersoonID,opt=>opt.Ignore())
 				.ForMember(dst=>dst.ChiroLeefTijd,opt=>opt.Ignore());
 
+			Mapper.CreateMap<GelieerdePersoon, PersoonInfo>()
+				.ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))
+				.ForMember(dst => dst.GeboorteDatum, opt => opt.MapFrom(src => src.Persoon.GeboorteDatum))
+				.ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.ID))
+				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.Persoon.Geslacht))
+				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Persoon.Naam))
+				.ForMember(dst => dst.VersieString, opt => opt.MapFrom(src => src.Persoon.VersieString))
+				.ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam));
+
 			// Die mapping naar PersoonDetail werkt enkel las er aan de persoon alleen leden
 			// uit het huidige werkjaar gekoppeld zijn.
 

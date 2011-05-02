@@ -37,6 +37,7 @@
 		    <option value="0">kies een actie</option>
 		    <option value="1">Inschrijven</option>
 		    <option value="3">In dezelfde categorie stoppen</option>
+            <option value="4">Inschrijven voor bivak/uitstap</option>
 	    </select>
 	    <input id="kiesActie" type="submit" value="Uitvoeren" />
 

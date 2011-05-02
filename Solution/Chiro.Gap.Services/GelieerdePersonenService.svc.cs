@@ -325,8 +325,8 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				return Mapper.Map<IEnumerable<Persoon>, IList<PersoonInfo>>(
-					_pMgr.LijstOphalenViaGelieerdePersoon(gelieerdePersoonIDs, PersoonsExtras.Geen));
+				return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonInfo>>(
+					_gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Geen));
 			}
 			catch (Exception ex)
 			{

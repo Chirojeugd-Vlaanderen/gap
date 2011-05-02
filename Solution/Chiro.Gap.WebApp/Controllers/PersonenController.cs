@@ -247,6 +247,10 @@ namespace Chiro.Gap.WebApp.Controllers
 					TempData["list"] = model.GekozenGelieerdePersoonIDs;
 					r = RedirectToAction("CategorieToevoegenAanLijst");
 					break;
+				case 4:
+					TempData["ids"] = model.GekozenGelieerdePersoonIDs;
+					r = RedirectToAction("InschrijvenVoorUitstap", new {groepID});
+					break;
 				default:
 					TempData["fout"] = Properties.Resources.OnbestaandeActieFeedback;
 					r = TerugNaarVorigeLijst();
