@@ -22,6 +22,8 @@
 			<%=Html.ActionLink("Iedereen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Iedereen" }) %></li>
 		<li>
 			<%=Html.ActionLink("Groep", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Groep" }) %></li>
+            <li>
+			<%=Html.ActionLink("Uitstappen/bivak", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Uitstappen" }) %></li>
 	</ul>
 	<h3>
 		Nieuwe gegevens toevoegen:</h3>

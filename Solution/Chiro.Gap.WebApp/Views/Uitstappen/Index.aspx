@@ -6,7 +6,7 @@
     <div class="kadertitel">Overzicht uitstappen</div>
 
     <p>
-    [<%=Html.ActionLink("nieuwe uitstap/bivak", "Nieuw", "Uitstappen") %>]
+    [<%=Html.ActionLink("Uitstap/bivak toevoegen", "Nieuw", "Uitstappen") %>]
     </p>
 
     <table>

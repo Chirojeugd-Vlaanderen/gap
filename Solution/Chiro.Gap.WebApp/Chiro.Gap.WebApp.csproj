@@ -180,6 +180,9 @@
     <Content Include="Scripts\jquery.validate.min-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Views\Gav\Index.aspx" />
+    <Content Include="Views\Handleiding\UitstapBewerken.aspx" />
+    <Content Include="Views\Handleiding\Uitstappen.aspx" />
+    <Content Include="Views\Handleiding\UitstapToevoegen.aspx" />
     <Content Include="Views\Leden\AfdelingenBewerken.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\AdresVerwijderen.aspx" />
