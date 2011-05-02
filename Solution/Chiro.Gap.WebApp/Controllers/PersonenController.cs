@@ -1105,7 +1105,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				TempData["fout"] = Properties.Resources.CategoriserenZonderCategorieënFout;
+				TempData["fout"] = Properties.Resources.GeenCategorieenFout;
 				return TerugNaarVorigeLijst();
 			}
 		}

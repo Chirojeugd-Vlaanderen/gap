@@ -151,15 +151,6 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Je hebt nog geen categorieën, dus kun je er ook geen mensen in stoppen. Maak categorieën aan op het tabblad &apos;Groep&apos;..
-        /// </summary>
-        public static string CategoriserenZonderCategorieënFout {
-            get {
-                return ResourceManager.GetString("CategoriserenZonderCategorieënFout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Dubbelpunt bestellen voor {0}..
         /// </summary>
         public static string DubbelPuntBestellen {
@@ -291,6 +282,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string GeenActieveAfdelingen {
             get {
                 return ResourceManager.GetString("GeenActieveAfdelingen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Je hebt nog geen categorieën, dus kun je er ook geen mensen in stoppen. Maak categorieën aan op het tabblad &apos;Groep&apos;..
+        /// </summary>
+        public static string GeenCategorieenFout {
+            get {
+                return ResourceManager.GetString("GeenCategorieenFout", resourceCulture);
             }
         }
         
