@@ -61,5 +61,20 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		void PlaatsBewaren(int id, string plaatsNaam, AdresInfo adres);
+
+		/// <summary>
+		/// Schrijft de gelieerde personen met ID's <paramref name="gelieerdePersoonIDs"/> in voor de
+		/// uitstap met ID <paramref name="geselecteerdeUitstapID" />.  Als
+		/// <paramref name="logistiekDeelnemer" /> <c>true</c> is, wordt er ingeschreven als
+		/// logistiek deelnemer.
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's van in te schrijven gelieerde personen</param>
+		/// <param name="geselecteerdeUitstapID">ID van uitstap waarvoor in te schrijven</param>
+		/// <param name="logistiekDeelnemer">Bepaalt of al dan niet ingeschreven wordt als 
+		/// logistieker</param>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		void Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapID, bool logistiekDeelnemer);
 	}
 }

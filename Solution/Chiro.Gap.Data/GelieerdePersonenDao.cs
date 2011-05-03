@@ -873,7 +873,33 @@ namespace Chiro.Gap.Data.Ef
                 paths.Add(gp => gp.Lid);
             }
 
-            return paths.ToArray();
-        }
-    }
+			if ((extras & PersoonsExtras.Communicatie) != 0)
+			{
+				paths.Add(gp => gp.Communicatie.First().CommunicatieType.WithoutUpdate());
+			}
+
+			if ((extras & PersoonsExtras.Categorieen) != 0)
+			{
+				paths.Add(gp => gp.Categorie.First().WithoutUpdate());
+			}
+
+			if ((extras & PersoonsExtras.GroepsWerkJaren) != 0)
+			{
+				paths.Add(gp => gp.Lid.First().GroepsWerkJaar.WithoutUpdate());
+			}
+			else if ((extras & PersoonsExtras.AlleLeden) == PersoonsExtras.AlleLeden)
+			{
+				paths.Add(gp => gp.Lid);
+			}
+
+			if ((extras & PersoonsExtras.Uitstappen) == PersoonsExtras.Uitstappen)
+			{
+				paths.Add(gp => gp.Deelnemer.First().Uitstap.GroepsWerkJaar.Groep);
+			}
+
+			return paths.ToArray();
+		}
+
+
+	}
 }

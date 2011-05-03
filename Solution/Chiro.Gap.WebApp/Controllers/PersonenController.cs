@@ -1134,15 +1134,15 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.GelieerdePersoonIDs,
                 model.GeselecteerdeCategorieIDs));
 
-            if (model.GelieerdePersoonIDs.Count == 1)
-            {
-                return TerugNaarVorigeFiche();
-            }
-            else
-            {
-                return TerugNaarVorigeLijst();
-            }
-        }
+			if (model.GelieerdePersoonIDs.Count == 1)
+			{
+				return RedirectToAction("EditRest", model.GelieerdePersoonIDs.First());
+			}
+			else
+			{
+				return TerugNaarVorigeLijst();
+			}
+		}
 
         #endregion categorieën
 
@@ -1174,12 +1174,27 @@ namespace Chiro.Gap.WebApp.Controllers
                 TempData.TryGetValue("ids", out gevonden);
                 var gelieerdePersoonIDs = gevonden as IList<int>;
 
-                model.GelieerdePersonen =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(
-                        svc => svc.PersoonInfoOphalen(gelieerdePersoonIDs));
-                return View(model);
-            }
-        }
-        #endregion
-    }
+				model.GelieerdePersonen =
+					ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(
+						svc => svc.PersoonInfoOphalen(gelieerdePersoonIDs));
+				return View(model);
+			}
+		}
+
+		/// <summary>
+		/// Action voor postback van het uitstapinschrijvingsformulier.  Voert de gevraagde inschrijving uit.
+		/// </summary>
+		/// <param name="groepID">ID van momenteel actieve groep</param>
+		/// <param name="model">De members <c>GelieerdePersoonIDs</c>, <c>GeselecteerdUitstap</c> en 
+		/// <c>LogistiekDeelnemer</c> bevatten de informatie voor de inschrijving</param>
+		/// <returns>redirect naar de recentste lijst</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult InschrijvenVoorUitstap(int groepID, UitstapInschrijfModel model)
+		{
+			ServiceHelper.CallService<IUitstappenService>(
+				svc => svc.Inschrijven(model.GelieerdePersoonIDs, model.GeselecteerdeUitstapID, model.LogistiekDeelnemer));
+			return TerugNaarVorigeLijst();
+		}
+		#endregion
+	}
 }

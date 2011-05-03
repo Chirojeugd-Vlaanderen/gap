@@ -30,11 +30,11 @@ namespace Chiro.Gap.WebApp.Models
         /// </summary>
         public IEnumerable<UitstapInfo> Uitstappen { get; set; }
 
-        /// <summary>
-        /// ID van de geselecteerde uitstap (voor postback)
-        /// </summary>
-        [DisplayName("Uitstap/bivak")]
-        public int GeselecteerdeUitstap { get; set; }
+		/// <summary>
+		/// ID van de geselecteerde uitstap (voor postback)
+		/// </summary>
+		[DisplayName("Uitstap/bivak")]
+		public int GeselecteerdeUitstapID { get; set; }
 
         /// <summary>
         /// Status van vinkje 'Is logistieke deelnemer'

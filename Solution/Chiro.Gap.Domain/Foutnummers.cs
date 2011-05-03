@@ -40,6 +40,7 @@ namespace Chiro.Gap.Domain
 		FunctieNietVanGroep,
 		AfdelingNietVanGroep,
 		GroepsWerkJaarNietVanGroep,
+		UitstapNietVanGroep,
 		#endregion
 
 		#region niet beschikbaar in werkjaar

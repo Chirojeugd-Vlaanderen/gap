@@ -162,7 +162,14 @@ namespace Chiro.Gap.Orm
 		/// <summary>
 		/// Alle lidobjecten van een gelieerde persoon
 		/// </summary>
-		AlleLeden = 0x60
+		AlleLeden = 0x60,
+
+		/// <summary>
+		/// Alle uitstappen waaraan een gelieerde persoon deelnam, met
+		/// daaraan gekoppeld groepswerkjaar en groep (die dan hopelijk dezelfde is als de
+		/// groep van de gelieerde persoon)
+		/// </summary>
+		Uitstappen = 0x80
 	}
 
 	/// <summary>
@@ -218,6 +225,10 @@ namespace Chiro.Gap.Orm
 		/// <summary>
 		/// Haalt plaats op, inclusief adres
 		/// </summary>
-		Plaats = 0x04
+		Plaats = 0x04,
+		/// <summary>
+		/// Haalt de deelnemers mee op, inclusief gelieerde persoon en persoon.
+		/// </summary>
+		Deelnemers = 0x08
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -94,6 +95,11 @@ namespace Chiro.Gap.Workers
 					paths.Add(u => u.GroepsWerkJaar);
 				}
 
+				if ((extras & UitstapExtras.Deelnemers) == UitstapExtras.Deelnemers)
+				{
+					paths.Add(u => u.Deelnemer.First().GelieerdePersoon.Persoon.WithoutUpdate());
+				}
+
 				if ((extras & UitstapExtras.Plaats) != 0)
 				{
 					paths.Add(u => u.Plaats.Adres);
@@ -129,6 +135,11 @@ namespace Chiro.Gap.Workers
 				{
 					koppelingen.Add(u => u.Plaats);
 				}
+				if ((extras & UitstapExtras.Deelnemers) == UitstapExtras.Deelnemers)
+				{
+					koppelingen.Add(u => u.Deelnemer.First().GelieerdePersoon.WithoutUpdate());
+				}
+
 
 				return _uitstappenDao.Bewaren(uitstap, koppelingen.ToArray());
 			}
@@ -173,6 +184,66 @@ namespace Chiro.Gap.Workers
 
 				return uitstap;
 			}
+		}
+
+		/// <summary>
+		/// Schrijft de gegeven <paramref name="gelieerdePersonen"/> in voor de gegeven
+		/// <paramref name="uitstap"/>, al dan niet als <paramref name="logistiekDeelnemer"/>.
+		/// </summary>
+		/// <param name="uitstap">Uitstap waarvoor in te schrijven, gekoppeld aan groep</param>
+		/// <param name="gelieerdePersonen">In te schrijven gelieerde personen, gekoppeld aan groep</param>
+		/// <param name="logistiekDeelnemer">Als <c>true</c>, dan worden de 
+		/// <paramref name="gelieerdePersonen"/> ingeschreven als logistiek deelnemer.</param>
+		public void Inschrijven(Uitstap uitstap, IEnumerable<GelieerdePersoon> gelieerdePersonen, bool logistiekDeelnemer)
+		{
+			var alleGpIDs = (from gp in gelieerdePersonen select gp.ID).Distinct();
+			var mijnGpIDs = _autorisatieManager.EnkelMijnGelieerdePersonen(alleGpIDs);
+
+			if (alleGpIDs.Count() != mijnGpIDs.Count() || !_autorisatieManager.IsGavUitstap(uitstap.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
+			
+			Debug.Assert(groepen.Count() > 0); // De gelieerde personen moeten aan een groep gekoppeld zijn.
+			Debug.Assert(uitstap.GroepsWerkJaar != null);
+			Debug.Assert(uitstap.GroepsWerkJaar.Groep != null);
+
+			// Als er meer dan 1 groep is, dan is er minstens een groep verschillend van de groep
+			// van de uitstap (duivenkotenprincipe));););
+
+			if (groepen.Count() > 1 || groepen.First().ID != uitstap.GroepsWerkJaar.Groep.ID)
+			{
+				throw new FoutNummerException(
+					FoutNummer.UitstapNietVanGroep,
+					Properties.Resources.FoutieveGroepUitstap);
+			}
+
+			if (!_groepsWerkJaarDao.IsRecentste(uitstap.GroepsWerkJaar.ID))
+			{
+				throw new FoutNummerException(
+					FoutNummer.GroepsWerkJaarNietBeschikbaar,
+					Properties.Resources.GroepsWerkJaarVoorbij);
+			}
+
+			// Als er nu nog geen exception gethrowd is, dan worden eindelijk de deelnemers gemaakt.
+			// (koppel enkel de gelieerde personen die nog niet aan de uitstap gekoppeld zijn)
+
+			foreach (var gp in gelieerdePersonen.Where(gp => !gp.Deelnemer.Any(d => d.Uitstap.ID == uitstap.ID)))
+			{
+				var deelnemer = new Deelnemer
+				                	{
+				                		GelieerdePersoon = gp,
+								Uitstap = uitstap,
+				                		HeeftBetaald = false,
+				                		IsLogistieker = logistiekDeelnemer,
+				                		MedischeFicheOk = false
+				                	};
+				gp.Deelnemer.Add(deelnemer);
+				uitstap.Deelnemer.Add(deelnemer);
+			}
+		
 		}
 	}
 }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.ServiceModel;
 
 using AutoMapper;
@@ -23,21 +25,24 @@ namespace Chiro.Gap.Services
         private readonly GroepsWerkJaarManager _groepsWerkJaarMgr;
         private readonly PlaatsenManager _plaatsenMgr;
         private readonly AdressenManager _adressenMgr;
+		private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
 
-        /// <summary>
-        /// Constructor.  De managers moeten m.b.v. dependency injection gecreeerd worden.
-        /// </summary>
-        /// <param name="uMgr">Uitstappenmanager</param>
-        /// <param name="gwjMgr">Groepswerkjaarmanager</param>
-        /// <param name="plMgr">Plaatsenmanager</param>
-        /// <param name="adMgr">Adressenmanager</param>
-        public UitstappenService(UitstappenManager uMgr, GroepsWerkJaarManager gwjMgr, PlaatsenManager plMgr, AdressenManager adMgr)
-        {
-            _uitstappenMgr = uMgr;
-            _groepsWerkJaarMgr = gwjMgr;
-            _plaatsenMgr = plMgr;
-            _adressenMgr = adMgr;
-        }
+		/// <summary>
+		/// Constructor.  De managers moeten m.b.v. dependency injection gecreeerd worden.
+		/// </summary>
+		/// <param name="uMgr">Uitstappenmanager</param>
+		/// <param name="gwjMgr">Groepswerkjaarmanager</param>
+		/// <param name="plMgr">Plaatsenmanager</param>
+		/// <param name="adMgr">Adressenmanager</param>
+		/// <param name="gpMgr">GelieerdePersonenManager</param>
+		public UitstappenService(UitstappenManager uMgr, GroepsWerkJaarManager gwjMgr, PlaatsenManager plMgr, AdressenManager adMgr, GelieerdePersonenManager gpMgr)
+		{
+			_uitstappenMgr = uMgr;
+			_groepsWerkJaarMgr = gwjMgr;
+			_plaatsenMgr = plMgr;
+			_adressenMgr = adMgr;
+			_gelieerdePersonenMgr = gpMgr;
+		}
 
         /// <summary>
         /// Bewaart een uitstap aan voor de groep met gegeven <paramref name="groepID"/>
@@ -194,7 +199,72 @@ namespace Chiro.Gap.Services
                 throw new FaultException<BlokkerendeObjectenFault<PlaatsInfo>>(fault);
             }
 
-            _uitstappenMgr.Bewaren(uitstap, UitstapExtras.Plaats);
-        }
-    }
+			_uitstappenMgr.Bewaren(uitstap, UitstapExtras.Plaats);
+		}
+
+		/// <summary>
+		/// Schrijft de gelieerde personen met ID's <paramref name="gelieerdePersoonIDs"/> in voor de
+		/// uitstap met ID <paramref name="geselecteerdeUitstapID" />.  Als
+		/// <paramref name="logistiekDeelnemer" /> <c>true</c> is, wordt er ingeschreven als
+		/// logistiek deelnemer.
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's van in te schrijven gelieerde personen</param>
+		/// <param name="geselecteerdeUitstapID">ID van uitstap waarvoor in te schrijven</param>
+		/// <param name="logistiekDeelnemer">Bepaalt of al dan niet ingeschreven wordt als 
+		/// logistieker</param>
+		public void Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapID, bool logistiekDeelnemer)
+		{
+			IEnumerable<GelieerdePersoon> gelieerdePersonen;
+			Uitstap uitstap;
+
+			// Ik haal de personen op, samen met de uitstappen waarvoor ze ooit waren ingeschreven.
+			// Dat is overkill, maar op die manier kunnen de workers wel controleren wie er al wel/nog niet
+			// ingeschreven is voor de gevraagde uitstap. (-> proper :))
+
+			try
+			{
+				gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Uitstappen|PersoonsExtras.Groep);
+			}
+			catch (GeenGavException ex)
+			{
+				var fault = Mapper.Map<GeenGavException, GapFault>(ex);
+				throw new FaultException<GapFault>(fault);
+			}
+
+			try
+			{
+				// Als de uitstap al gekoppeld was aan een gelieerde persoon, dan hebben we die al opgehaald.  Zo niet
+				// halen we de uitstap op via de uitstappenMgr.
+
+				uitstap =
+					gelieerdePersonen.SelectMany(gp => gp.Deelnemer).Select(d => d.Uitstap).Where(u => u.ID == geselecteerdeUitstapID).
+						FirstOrDefault() ?? _uitstappenMgr.Ophalen(geselecteerdeUitstapID, UitstapExtras.Groep);
+			}
+			catch (GeenGavException ex)
+			{
+				var fault = Mapper.Map<GeenGavException, GapFault>(ex);
+				throw new FaultException<GapFault>(fault);
+			}
+
+
+			try
+			{
+				_uitstappenMgr.Inschrijven(uitstap, gelieerdePersonen, logistiekDeelnemer);
+			}
+			catch (FoutNummerException ex)
+			{
+				if (ex.FoutNummer == FoutNummer.UitstapNietVanGroep || ex.FoutNummer == FoutNummer.GroepsWerkJaarNietBeschikbaar)
+				{
+					var fault = Mapper.Map<FoutNummerException, FoutNummerFault>(ex);
+					throw new FaultException<FoutNummerFault>(fault);
+				}
+
+				// Als het foutnummer iets anders is, dan is er iets
+				// onverwachts gebeurd.  Gewoon throwen.
+				throw;
+			}
+
+			_uitstappenMgr.Bewaren(uitstap, UitstapExtras.Deelnemers);
+		}
+	}
 }

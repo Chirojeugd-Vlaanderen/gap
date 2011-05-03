@@ -9,8 +9,8 @@
     <li><input type="submit" value="Bewaren" /></li>
   </ul>
 
-  <%=Html.LabelFor(mdl => mdl.GeselecteerdeUitstap) %>:
-  <%=Html.DropDownListFor(mdl => mdl.GeselecteerdeUitstap, new SelectList(Model.Uitstappen, "ID", "Naam")) %> <br />
+  <%=Html.LabelFor(mdl => mdl.GeselecteerdeUitstapID) %>:
+  <%=Html.DropDownListFor(mdl => mdl.GeselecteerdeUitstapID, new SelectList(Model.Uitstappen, "ID", "Naam")) %> <br />
 
   <%=Html.CheckBoxFor(mdl => mdl.LogistiekDeelnemer) %> 
   <%=Html.LabelFor(mdl => mdl.LogistiekDeelnemer) %>

@@ -63,6 +63,7 @@
     <Compile Include="Adres.cs" />
     <Compile Include="DataInterfaces\IPlaatsenDao.cs" />
     <Compile Include="DataInterfaces\IUitstappenDao.cs" />
+    <Compile Include="Deelnemer.cs" />
     <Compile Include="Plaats.cs" />
     <Compile Include="Uitstap.cs" />
     <Compile Include="Categorie.cs" />
