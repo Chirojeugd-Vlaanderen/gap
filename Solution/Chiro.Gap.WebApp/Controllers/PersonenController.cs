@@ -1146,55 +1146,59 @@ namespace Chiro.Gap.WebApp.Controllers
 
         #endregion categorieën
 
-        #region uitstappen
-        /// <summary>
-        /// Toont een view die de gebruiker toelaat om een bivak te kiezen waarvoor de gelieerde personen
-        /// met GelieerdePersoonIDs in TempData["ids"] ingeschreven moeten worden.  Bovendien moet
-        /// aangevinkt worden of het al dan niet over 'logistieke deelnemers' gaat.
-        /// </summary>
-        /// <param name="groepID"></param>
-        /// <returns>Het inschrijfscherm</returns>
-        public ActionResult InschrijvenVoorUitstap(int groepID)
+	    #region uitstappen
+	    /// <summary>
+	    /// Toont een view die de gebruiker toelaat om een bivak te kiezen waarvoor de gelieerde personen
+	    /// met GelieerdePersoonIDs in TempData["ids"] ingeschreven moeten worden.  Bovendien moet
+	    /// aangevinkt worden of het al dan niet over 'logistieke deelnemers' gaat.
+	    /// </summary>
+	    /// <param name="groepID"></param>
+	    /// <returns>Het inschrijfscherm</returns>
+	    public ActionResult InschrijvenVoorUitstap(int groepID)
+	    {
+		    var model = new UitstapInschrijfModel();
+		    BaseModelInit(model, groepID);
+		    model.Titel = String.Format(Properties.Resources.UitstapInschrijving);
+
+		    model.Uitstappen =
+		        ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID, true));
+
+		    if (model.Uitstappen.FirstOrDefault() == null)
+		    {
+			    TempData["fout"] = Properties.Resources.GeenUitstappenFout;
+			    return TerugNaarVorigeLijst();
+		    }
+		    else
+		    {
+			    object gevonden;
+			    TempData.TryGetValue("ids", out gevonden);
+			    var gelieerdePersoonIDs = gevonden as IList<int>;
+
+			    model.GelieerdePersonen =
+				    ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(
+					    svc => svc.PersoonInfoOphalen(gelieerdePersoonIDs));
+			    return View(model);
+		    }
+	    }
+
+	    /// <summary>
+	    /// Action voor postback van het uitstapinschrijvingsformulier.  Voert de gevraagde inschrijving uit.
+	    /// </summary>
+	    /// <param name="groepID">ID van momenteel actieve groep</param>
+	    /// <param name="model">De members <c>GelieerdePersoonIDs</c>, <c>GeselecteerdUitstap</c> en 
+	    /// <c>LogistiekDeelnemer</c> bevatten de informatie voor de inschrijving</param>
+	    /// <returns>redirect naar de recentste lijst</returns>
+	    [AcceptVerbs(HttpVerbs.Post)]
+	    [HandleError]
+        public ActionResult InschrijvenVoorUitstap(int groepID, UitstapInschrijfModel model)
         {
-            var model = new UitstapInschrijfModel();
-            BaseModelInit(model, groepID);
-            model.Titel = String.Format(Properties.Resources.UitstapInschrijving);
+            var uitstap = ServiceHelper.CallService<IUitstappenService, UitstapInfo>(
+                svc => svc.Inschrijven(model.GelieerdePersoonIDs, model.GeselecteerdeUitstapID, model.LogistiekDeelnemer));
 
-            model.Uitstappen =
-                ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID, true));
+            TempData["succes"] = String.Format(Properties.Resources.DeelnemersToegevoegdFeedback, uitstap.Naam);
 
-            if (model.Uitstappen.FirstOrDefault() == null)
-            {
-                TempData["fout"] = Properties.Resources.GeenUitstappenFout;
-                return TerugNaarVorigeLijst();
-            }
-            else
-            {
-                object gevonden;
-                TempData.TryGetValue("ids", out gevonden);
-                var gelieerdePersoonIDs = gevonden as IList<int>;
-
-				model.GelieerdePersonen =
-					ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(
-						svc => svc.PersoonInfoOphalen(gelieerdePersoonIDs));
-				return View(model);
-			}
-		}
-
-		/// <summary>
-		/// Action voor postback van het uitstapinschrijvingsformulier.  Voert de gevraagde inschrijving uit.
-		/// </summary>
-		/// <param name="groepID">ID van momenteel actieve groep</param>
-		/// <param name="model">De members <c>GelieerdePersoonIDs</c>, <c>GeselecteerdUitstap</c> en 
-		/// <c>LogistiekDeelnemer</c> bevatten de informatie voor de inschrijving</param>
-		/// <returns>redirect naar de recentste lijst</returns>
-		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult InschrijvenVoorUitstap(int groepID, UitstapInschrijfModel model)
-		{
-			ServiceHelper.CallService<IUitstappenService>(
-				svc => svc.Inschrijven(model.GelieerdePersoonIDs, model.GeselecteerdeUitstapID, model.LogistiekDeelnemer));
-			return TerugNaarVorigeLijst();
-		}
-		#endregion
+            return TerugNaarVorigeLijst();
+        }
+	    #endregion
 	}
 }

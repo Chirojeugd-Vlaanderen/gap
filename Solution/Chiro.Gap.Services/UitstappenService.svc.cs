@@ -212,7 +212,7 @@ namespace Chiro.Gap.Services
 		/// <param name="geselecteerdeUitstapID">ID van uitstap waarvoor in te schrijven</param>
 		/// <param name="logistiekDeelnemer">Bepaalt of al dan niet ingeschreven wordt als 
 		/// logistieker</param>
-		public void Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapID, bool logistiekDeelnemer)
+		public UitstapInfo Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapID, bool logistiekDeelnemer)
 		{
 			IEnumerable<GelieerdePersoon> gelieerdePersonen;
 			Uitstap uitstap;
@@ -265,6 +265,31 @@ namespace Chiro.Gap.Services
 			}
 
 			_uitstappenMgr.Bewaren(uitstap, UitstapExtras.Deelnemers);
+
+			return Mapper.Map<Uitstap, UitstapInfo>(uitstap);
 		}
-	}
+
+        /// <summary>
+        /// Haalt informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/> op.
+        /// </summary>
+        /// <param name="uitstapID">ID van de relevante uitstap</param>
+        /// <returns>informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/></returns>
+        public IEnumerable<UitstapDeelnemerInfo> DeelnemersOphalen(int uitstapID)
+        {
+            IEnumerable<Deelnemer> deelnemers;
+            try
+            {
+                deelnemers = _uitstappenMgr.DeelnemersOphalen(uitstapID);
+            }
+            catch (GeenGavException ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                throw;
+            }
+
+            var resultaat = Mapper.Map<IEnumerable<Deelnemer>, IEnumerable<UitstapDeelnemerInfo>>(deelnemers);
+
+            return resultaat;
+        }
+    }
 }

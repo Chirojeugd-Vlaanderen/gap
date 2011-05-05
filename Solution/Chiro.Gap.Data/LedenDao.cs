@@ -105,15 +105,22 @@ namespace Chiro.Gap.Data.Ef
         /// <returns>Dezelfde ledenlijst, maar nu met gekoppelde afdelingen.</returns>
         public static IEnumerable<Lid> AfdelingenKoppelen(ChiroGroepEntities db, IEnumerable<Lid> leden)
         {
+            // TODO: Kan dit niet efficienter?
+
             foreach (Lid l in leden)
             {
                 if (l is Kind)
                 {
                     (l as Kind).AfdelingsJaarReference.Load();
+                    (l as Kind).AfdelingsJaar.AfdelingReference.Load();
                 }
                 else if (l is Leiding)
                 {
                     (l as Leiding).AfdelingsJaar.Load();
+                    foreach (var aj in (l as Leiding).AfdelingsJaar)
+                    {
+                        aj.AfdelingReference.Load();
+                    }
                 }
             }
             return leden;

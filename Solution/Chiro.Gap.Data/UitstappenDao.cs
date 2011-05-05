@@ -51,6 +51,48 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
+        /// Haalt de deelnemers (incl. lidgegevens van het betreffende groepswerkjaar)
+        /// van de gegeven uitstap op.
+        /// </summary>
+        /// <param name="uitstapID">ID van uitstap waarvan deelnemers op te halen zijn</param>
+        /// <returns>De deelnemers van de gevraagde uitstap.</returns>
+        public IEnumerable<Deelnemer> DeelnemersOphalen(int uitstapID)
+        {
+            IEnumerable<Deelnemer> deelnemers;
+            IEnumerable<Lid> leden;
+
+            using (var db = new ChiroGroepEntities())
+            {
+                deelnemers = (from d in db.Deelnemer.Include(dn => dn.GelieerdePersoon.Persoon).Include(dn => dn.UitstapWaarvoorVerantwoordelijk)
+                              where d.Uitstap.ID == uitstapID
+                              select d).ToArray();
+
+                var gelieerdePersoonIDs = (from d in deelnemers
+                                           select d.GelieerdePersoon.ID);
+
+                leden = db.Lid.Include(ld => ld.GelieerdePersoon)
+                    .Where(ld => ld.GroepsWerkJaar.Uitstap.Any(u => u.ID == uitstapID))
+                    .Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID, gelieerdePersoonIDs)).ToArray();
+
+                LedenDao.AfdelingenKoppelen(db, leden);
+            }
+
+            //// Here comes the tricky part.
+            ////
+            //// In eerste instantie had ik: Utility.DetachObjectGraph(deelnemers);
+            //// maar in dat geval is deelnemer.GelieerdePersoon.Lid.First() telkens van het type Lid, en niet van 
+            //// het type Kind of Leiding, wat we eigenlijk nodig hebben.
+            //// Ik probeer daar rond te werken door de leden te detachen, en daarna de deelnemers te returnen
+
+            //var gedetachteLeden = Utility.DetachObjectGraph(leden);
+            //var resultaat = (from l in gedetachteLeden select l.GelieerdePersoon.Deelnemer.First()).ToArray();
+
+            var resultaat = Utility.DetachObjectGraph(deelnemers);
+
+            return resultaat;
+        }
+
+        /// <summary>
         /// Haalt een uitstap op
         /// </summary>
         /// <param name="id">ID op te halen uitstap</param>

@@ -50,7 +50,7 @@
 			{
 		%>
 		<li>
-			<%Html.RenderPartial("PersoonsLinkControl", pi);%>
+			<%=Html.PersoonsLink(pi.GelieerdePersoonID, pi.VoorNaam, pi.Naam)%>
 			-
 			<%=String.Format("{0:d}", pi.GeboorteDatum) %></li>
 		<%

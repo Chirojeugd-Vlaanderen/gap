@@ -3,7 +3,9 @@
 <ul>
 <% foreach (var info in Model.Leden)
    { %>
-    <li><% Html.RenderPartial("PersoonsLinkControl", info.PersoonDetail); %></li>
+    <li>        
+        <%=Html.PersoonsLink(info.PersoonDetail.GelieerdePersoonID, info.PersoonDetail.VoorNaam, info.PersoonDetail.Naam)%>
+    </li>
      <%
    }
    if (Model.Leden.Count() < Model.TotaalAantal)

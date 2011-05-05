@@ -48,7 +48,7 @@
 			<%=p.AdNummer %>
 		</td>
 		<td>
-			<% Html.RenderPartial("PersoonsLinkControl", p); %>
+			<%=Html.PersoonsLink(p.GelieerdePersoonID, p.VoorNaam, p.Naam)%>
 		</td>
 		<td class="right">
 			<%=p.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)p.GeboorteDatum).ToString("d") %>

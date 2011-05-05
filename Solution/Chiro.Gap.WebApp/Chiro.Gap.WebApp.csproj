@@ -106,6 +106,7 @@
       <DependentUpon>MyResources.nl.resx</DependentUpon>
     </Compile>
     <Compile Include="Controllers\UitstappenController.cs" />
+    <Compile Include="HtmlHelpers\AfdelingsLinksHelper.cs" />
     <Compile Include="HtmlHelpers\CheckBoxListHelper.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GavController.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelpers\PersoonsLinkHelper.cs" />
     <Compile Include="HtmlHelpers\PrintLijstHelper.cs" />
     <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="ModelStateWrapper.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Models\PersoonInfoModel.cs" />
     <Compile Include="Models\AdresModel.cs" />
     <Compile Include="ActionFilters\ParameterAccepterenAttribute.cs" />
+    <Compile Include="Models\UitstapDeelnemersModel.cs" />
     <Compile Include="Models\UitstapInschrijfModel.cs" />
     <Compile Include="Models\UitstapModel.cs" />
     <Compile Include="Models\UitstapOverzichtModel.cs" />
@@ -199,7 +202,6 @@
     <Content Include="Views\Shared\AdresBewerkenScriptsControl.ascx" />
     <Content Include="Views\Shared\LedenLijstControl.ascx" />
     <Content Include="Views\Shared\PersonenLijstControl.ascx" />
-    <Content Include="Views\Shared\PersoonsLinkControl.ascx" />
     <Content Include="Views\Shared\TerugNaarLijstLinkControl.ascx" />
     <Content Include="Views\Uitstappen\Bekijken.aspx" />
     <Content Include="Views\Uitstappen\Index.aspx" />
@@ -467,7 +469,6 @@
     <Content Include="Views\Shared\MededelingenControl.ascx" />
     <Content Include="Views\Shared\NavigatieVolledigControl.ascx" />
     <Content Include="Views\Shared\TerugNaarFicheLinkControl.ascx" />
-    <Content Include="Views\Shared\LedenLinkControl.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Date.ascx" />
     <Content Include="Views\Shared\PersonenLinksControl.ascx" />
     <EmbeddedResource Include="Properties\Resources.resx">

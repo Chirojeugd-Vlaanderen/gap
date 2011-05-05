@@ -20,5 +20,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// huidige werkjaar van de groep opgehaald.</param>
         /// <returns>Details van uitstappen</returns>
         IEnumerable<Uitstap> OphalenVanGroep(int groepID, bool inschrijvenMogelijk);
+
+        /// <summary>
+        /// Haalt de deelnemers (incl. lidgegevens van het betreffende groepswerkjaar)
+        /// van de gegeven uitstap op.
+        /// </summary>
+        /// <param name="uitstapID">ID van uitstap waarvan deelnemers op te halen zijn</param>
+        /// <returns>De deelnemers van de gevraagde uitstap.</returns>
+    	IEnumerable<Deelnemer> DeelnemersOphalen(int uitstapID);
     }
 }

@@ -503,6 +503,11 @@ tr.oneven td
 	background-color: #FFFFFF;
 }
 
+.highlight
+{
+    font-weight: bold;
+}
+
 info
 {
 	float: right;

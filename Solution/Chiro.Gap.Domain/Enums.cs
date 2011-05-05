@@ -24,6 +24,22 @@ namespace Chiro.Gap.Domain
     }
 
     /// <summary>
+    /// Deelnemers, begeleiding, logistiek.  Wordt voorlopig enkel gebruikt voor uitstappen van een groep,
+    /// waar dit zich vertaalt als kind, leiding, logistiek.
+    /// </summary>
+    [DataContract]
+    [Flags]
+    public enum DeelnemerType
+    {
+        [EnumMember]
+        Deelnemer = 0x01,
+        [EnumMember]
+        Begeleiding = 0x02,
+        [EnumMember]
+        Logistiek = 0x04
+    }
+
+    /// <summary>
     /// Enum om informatie over het geslacht over te brengen
     /// </summary>
     /// <remarks>Kan zowel over personen als over groepen/afdelingen gaan</remarks>

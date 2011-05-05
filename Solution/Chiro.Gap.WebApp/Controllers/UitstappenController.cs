@@ -88,9 +88,12 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns>De details van de gegeven uitstap</returns>
         public ActionResult Bekijken(int groepID, int id)
         {
-            var model = new UitstapModel();
+            var model = new UitstapDeelnemersModel();
             BaseModelInit(model, groepID);
             model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
+            model.Deelnemers =
+                ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapDeelnemerInfo>>(
+                    svc => svc.DeelnemersOphalen(id));
             model.Titel = model.Uitstap.Naam;
 
             return View(model);

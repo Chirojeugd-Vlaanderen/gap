@@ -91,7 +91,7 @@
 			<%= lidOverzicht.Type == LidType.Kind ? "Lid" : "Leiding" %>
 		</td>
 		<td>
-			<% Html.RenderPartial("LedenLinkControl", lidOverzicht); %>
+            <%=Html.PersoonsLink(lidOverzicht.GelieerdePersoonID, lidOverzicht.VoorNaam, lidOverzicht.Naam)%>
 		</td>
 		<td class="right">
 			<%=lidOverzicht.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)lidOverzicht.GeboorteDatum).ToString("d")%>
@@ -107,25 +107,7 @@
 		{
 			// Afdelingen enkel relevant voor plaatselijke groepen
 	%>		
-			<td>
-	<%
-			foreach (var a in lidOverzicht.Afdelingen)
-			{
-	%>	
-				<%=Html.ActionLink(Html.Encode(a.Afkorting),
-							  "Afdeling",
-							  new
-		                                  		{
-		                                  			Controller = "Leden",
-		                                  			groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar,
-									groepID = Model.GroepID,
-		                                  			id = a.ID,
-		                                  		},
-							  new {title = "Toon alleen afdeling " + a.Naam})%>
-	<%
-			}
-	%>
-			</td>
+			<td> <%:Html.AfdelingsLinks(lidOverzicht.Afdelingen, Model.IDGetoondGroepsWerkJaar, Model.GroepID) %></td>
 	<%
 		}
 %>

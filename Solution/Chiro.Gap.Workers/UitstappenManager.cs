@@ -245,5 +245,23 @@ namespace Chiro.Gap.Workers
 			}
 		
 		}
+
+		/// <summary>
+		/// Haalt de deelnemers (incl. lidgegevens van het betreffende groepswerkjaar)
+		/// van de gegeven uitstap op.
+		/// </summary>
+		/// <param name="uitstapID">ID van uitstap waarvan deelnemers op te halen zijn</param>
+		/// <returns>De deelnemers van de gevraagde uitstap.</returns>
+		public IEnumerable<Deelnemer> DeelnemersOphalen(int uitstapID)
+		{
+			if (!_autorisatieManager.IsGavUitstap(uitstapID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+			else
+			{
+				return _uitstappenDao.DeelnemersOphalen(uitstapID);
+			}
+		}
 	}
 }

@@ -20,7 +20,7 @@
     { %>
     <li>
         <%=Html.Hidden("GelieerdePersoonIDs", p.GelieerdePersoonID) %>
-        <%Html.RenderPartial("PersoonsLinkControl", p);%>
+        <%=Html.PersoonsLink(p.GelieerdePersoonID, p.VoorNaam, p.Naam)%>
     </li>
   <%
     }%>

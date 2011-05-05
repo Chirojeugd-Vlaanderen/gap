@@ -72,9 +72,20 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="geselecteerdeUitstapID">ID van uitstap waarvoor in te schrijven</param>
 		/// <param name="logistiekDeelnemer">Bepaalt of al dan niet ingeschreven wordt als 
 		/// logistieker</param>
+		/// <returns>De basisgegevens van de uitstap, zodat die in de feedback gebruikt kan worden</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapID, bool logistiekDeelnemer);
+		UitstapInfo Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapID, bool logistiekDeelnemer);
+
+		/// <summary>
+		/// Haalt informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/> op.
+		/// </summary>
+		/// <param name="uitstapID">ID van de relevante uitstap</param>
+		/// <returns>informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/></returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		IEnumerable<UitstapDeelnemerInfo> DeelnemersOphalen(int uitstapID);
 	}
 }

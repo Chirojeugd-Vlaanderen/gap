@@ -29,5 +29,8 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         // zo raar om hier gewoon over te tikken wat er al in AdresInfo staat.
         [DataMember]
         public AdresInfo Adres { get; set; }
+
+        [DataMember]
+        public int GroepsWerkJaarID { get; set; }
     }
 }

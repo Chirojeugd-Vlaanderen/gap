@@ -106,6 +106,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toon leden/leiding uit afdeling {0}.
+        /// </summary>
+        public static string AfdelingsLinkTitel {
+            get {
+                return ResourceManager.GetString("AfdelingsLinkTitel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er bestaat al een afdeling met die naam: &apos;{1}&apos; (&apos;{0}&apos;)..
         /// </summary>
         public static string AfdelingsNaamBestaatAl {
@@ -147,6 +156,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string CategorieNaamBestaatAl {
             get {
                 return ResourceManager.GetString("CategorieNaamBestaatAl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to De perso(o)n(en) werd(en) ingeschreven voor de uitstap &apos;{0}&apos;..
+        /// </summary>
+        public static string DeelnemersToegevoegdFeedback {
+            get {
+                return ResourceManager.GetString("DeelnemersToegevoegdFeedback", resourceCulture);
             }
         }
         

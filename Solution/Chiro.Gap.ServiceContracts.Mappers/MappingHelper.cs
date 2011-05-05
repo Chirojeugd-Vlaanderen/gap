@@ -430,6 +430,27 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.GelieerdePersoonID,
                     opt => opt.MapFrom(src => src.Persoon.GelieerdePersoon.FirstOrDefault() == null ? 0 : src.Persoon.GelieerdePersoon.First().ID));
 
+            // TODO: Uitvissen deelnemer of begeleider op basis van kind/leiding werkt wel min of meer voor groepen,
+            // maar kan op die manier niet gebruikt worden voor uitstappen van kaderploegen.
+
+            Mapper.CreateMap<Deelnemer, UitstapDeelnemerInfo>()
+                .ForMember(dst => dst.Afdelingen,
+                           opt => opt.MapFrom(src => Afdelingen(src.GelieerdePersoon.Lid.First())))
+                .ForMember(dst => dst.DeelnemerID, opt => opt.MapFrom(src => src.ID))
+                .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
+                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
+                .ForMember(dst => dst.Type,
+                           opt =>
+                           opt.MapFrom(
+                               src =>
+                               src.IsLogistieker
+                                   ? DeelnemerType.Logistiek
+                                   : src.GelieerdePersoon.Lid.FirstOrDefault() != null && src.GelieerdePersoon.Lid.FirstOrDefault() is Leiding
+                                         ? DeelnemerType.Begeleiding
+                                         : DeelnemerType.Deelnemer))
+                .ForMember(dst => dst.IsContact, opt => opt.MapFrom(src => src.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() != null));
+
+
             // Als de property's van de doelobjecten strategisch gekozen namen hebben, configureert
             // Automapper alles automatisch, zoals hieronder:
 

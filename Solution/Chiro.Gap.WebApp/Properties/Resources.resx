@@ -314,4 +314,10 @@
   <data name="UitstapInschrijving" xml:space="preserve">
     <value>Inschrijven voor uitstap/bivak</value>
   </data>
+  <data name="AfdelingsLinkTitel" xml:space="preserve">
+    <value>Toon leden/leiding uit afdeling {0}</value>
+  </data>
+  <data name="DeelnemersToegevoegdFeedback" xml:space="preserve">
+    <value>De perso(o)n(en) werd(en) ingeschreven voor de uitstap '{0}'.</value>
+  </data>
 </root>
