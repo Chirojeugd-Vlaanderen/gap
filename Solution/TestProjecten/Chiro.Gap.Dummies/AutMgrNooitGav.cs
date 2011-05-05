@@ -126,7 +126,12 @@ namespace Chiro.Gap.Dummies
 			return false;
 		}
 
-		public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
+	    public bool IsGavDeelnemer(int deelnemerID)
+	    {
+	        return false;
+	    }
+
+	    public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
 		{
 			return false;
 		}

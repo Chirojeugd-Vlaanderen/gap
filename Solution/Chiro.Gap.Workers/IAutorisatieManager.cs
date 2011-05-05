@@ -198,5 +198,14 @@ namespace Chiro.Gap.Workers
 		/// <param name="plaatsID">ID van een bivakplaats</param>
 		/// <returns><c>true</c> als de aangemelde user nu GAV is voor de plaats, anders <c>false</c>. </returns>
 		bool IsGavPlaats(int plaatsID);
+
+		/// <summary>
+		/// Controleert of de aangelogde gebruiker op dit moment GAV-rechten heeft op de deelnemer
+		/// met ID <paramref name="deelnemerID"/>
+		/// </summary>
+		/// <param name="deelnemerID">ID van een (uitstap)deelnemer</param>
+		/// <returns><c>true</c> als de aangemelde gebruiker GAV-rechten heeft voor de gevraagde 
+		/// deelnemer, anders <c>false</c></returns>
+		bool IsGavDeelnemer(int deelnemerID);
 	}
 }

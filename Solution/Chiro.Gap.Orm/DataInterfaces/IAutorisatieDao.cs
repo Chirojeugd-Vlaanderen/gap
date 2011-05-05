@@ -199,6 +199,16 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns><c>true</c> als de aangemelde user nu GAV is voor de plaats, anders <c>false</c>. </returns>
 		bool IsGavPlaats(int plaatsID, string login);
 
-		#endregion
-	}
+        /// <summary>
+        /// Controleert of een gebruiker op dit moment GAV-rechten heeft op de deelnemer
+        /// met ID <paramref name="deelnemerID"/>
+        /// </summary>
+        /// <param name="deelnemerID">ID van een (uitstap)deelnemer</param>
+        /// <param name="login">login van de gebruiker wiens GAV-schap moet worden getest</param>
+        /// <returns><c>true</c> als de gebruiker GAV-rechten heeft voor de gevraagde 
+        /// deelnemer, anders <c>false</c></returns>
+	    bool IsGavDeelnemer(int deelnemerID, string login);
+
+        #endregion
+    }
 }

@@ -538,6 +538,35 @@ namespace Chiro.Gap.Data.Ef
 			}
 		}
 
-		#endregion
+        /// <summary>
+        /// Controleert of een gebruiker op dit moment GAV-rechten heeft op de deelnemer
+        /// met ID <paramref name="deelnemerID"/>
+        /// </summary>
+        /// <param name="deelnemerID">ID van een (uitstap)deelnemer</param>
+        /// <param name="login">login van de gebruiker wiens GAV-schap moet worden getest</param>
+        /// <returns><c>true</c> als de gebruiker GAV-rechten heeft voor de gevraagde 
+        /// deelnemer, anders <c>false</c></returns>
+	    public bool IsGavDeelnemer(int deelnemerID, string login)
+	    {
+            if (deelnemerID == 0) // is het geval bij een nieuwe deelnemer
+            {
+                return true;
+            }
+            else
+            {
+                using (var db = new ChiroGroepEntities())
+                {
+                    var query = from d in db.Deelnemer
+                                where d.ID == deelnemerID &&
+                                  d.GelieerdePersoon.Groep.GebruikersRecht.Any(
+                                    r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+                                select d;
+
+                    return query.Count() > 0;
+                }
+            }
+	    }
+
+	    #endregion
 	}
 }

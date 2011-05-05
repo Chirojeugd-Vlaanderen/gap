@@ -26,6 +26,7 @@ namespace Chiro.Gap.Services
         private readonly PlaatsenManager _plaatsenMgr;
         private readonly AdressenManager _adressenMgr;
 		private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
+        private readonly DeelnemersManager _deelnemersMgr;
 
 		/// <summary>
 		/// Constructor.  De managers moeten m.b.v. dependency injection gecreeerd worden.
@@ -35,13 +36,21 @@ namespace Chiro.Gap.Services
 		/// <param name="plMgr">Plaatsenmanager</param>
 		/// <param name="adMgr">Adressenmanager</param>
 		/// <param name="gpMgr">GelieerdePersonenManager</param>
-		public UitstappenService(UitstappenManager uMgr, GroepsWerkJaarManager gwjMgr, PlaatsenManager plMgr, AdressenManager adMgr, GelieerdePersonenManager gpMgr)
+		/// <param name="dMgr">Deelnemersmanager</param>
+		public UitstappenService(
+            UitstappenManager uMgr, 
+            GroepsWerkJaarManager gwjMgr, 
+            PlaatsenManager plMgr, 
+            AdressenManager adMgr, 
+            GelieerdePersonenManager gpMgr,
+            DeelnemersManager dMgr)
 		{
 			_uitstappenMgr = uMgr;
 			_groepsWerkJaarMgr = gwjMgr;
 			_plaatsenMgr = plMgr;
 			_adressenMgr = adMgr;
 			_gelieerdePersonenMgr = gpMgr;
+		    _deelnemersMgr = dMgr;
 		}
 
         /// <summary>
@@ -290,6 +299,32 @@ namespace Chiro.Gap.Services
             var resultaat = Mapper.Map<IEnumerable<Deelnemer>, IEnumerable<UitstapDeelnemerInfo>>(deelnemers);
 
             return resultaat;
+        }
+
+        /// <summary>
+        /// Stelt de deelnemer met gegeven <paramref name="deelnemerID" /> in als contactpersoon voor de uitstap
+        /// waaraan hij deelneemt
+        /// </summary>
+        /// <param name="deelnemerID">ID van de als contact in te stellen deelnemer</param>
+        /// <returns>De ID van de uitstap, ter controle, en misschien handig voor feedback</returns>
+        public int ContactInstellen(int deelnemerID)
+        {
+            Deelnemer deelnemer;
+            try
+            {
+                deelnemer = _deelnemersMgr.Ophalen(deelnemerID);
+            }
+            catch (GeenGavException ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                throw;
+            }
+
+            _deelnemersMgr.InstellenAlsContact(deelnemer);
+
+            _uitstappenMgr.Bewaren(deelnemer.Uitstap, UitstapExtras.Contact);
+
+            return deelnemer.Uitstap.ID;
         }
     }
 }

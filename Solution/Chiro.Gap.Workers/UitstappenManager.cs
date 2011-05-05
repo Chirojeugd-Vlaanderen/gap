@@ -100,6 +100,11 @@ namespace Chiro.Gap.Workers
 					paths.Add(u => u.Deelnemer.First().GelieerdePersoon.Persoon.WithoutUpdate());
 				}
 
+                if ((extras & UitstapExtras.Contact) == UitstapExtras.Contact)
+                {
+                    paths.Add(u => u.ContactDeelnemer.WithoutUpdate());
+                }
+
 				if ((extras & UitstapExtras.Plaats) != 0)
 				{
 					paths.Add(u => u.Plaats.Adres);
@@ -139,7 +144,10 @@ namespace Chiro.Gap.Workers
 				{
 					koppelingen.Add(u => u.Deelnemer.First().GelieerdePersoon.WithoutUpdate());
 				}
-
+                if ((extras & UitstapExtras.Contact) == UitstapExtras.Contact)
+                {
+                    koppelingen.Add(u => u.ContactDeelnemer.WithoutUpdate());
+                }
 
 				return _uitstappenDao.Bewaren(uitstap, koppelingen.ToArray());
 			}

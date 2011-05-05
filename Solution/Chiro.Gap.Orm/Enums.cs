@@ -229,6 +229,10 @@ namespace Chiro.Gap.Orm
 		/// <summary>
 		/// Haalt de deelnemers mee op, inclusief gelieerde persoon en persoon.
 		/// </summary>
-		Deelnemers = 0x08
+		Deelnemers = 0x08,
+        /// <summary>
+        /// Haalt de contactdeelnemer mee op
+        /// </summary>
+        Contact = 0x10
 	}
 }

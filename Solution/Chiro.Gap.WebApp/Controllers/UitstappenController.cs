@@ -212,5 +212,18 @@ namespace Chiro.Gap.WebApp.Controllers
                 return View(model);
             }
         }
+
+        /// <summary>
+        /// Stelt de deelnemer met ID <paramref name="id"/> in als contact voor de uitstap waaraan
+        /// hij deelneemt.
+        /// </summary>
+        /// <param name="groepID">ID van groep die momenteel actief is</param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+    	public ActionResult ContactInstellen(int groepID, int id)
+        {
+            int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.ContactInstellen(id));
+            return RedirectToAction("Bekijken", new {id = uitstapID});
+        }
     }
 }

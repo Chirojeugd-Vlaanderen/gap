@@ -268,6 +268,18 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Controleert of de aangelogde gebruiker op dit moment GAV-rechten heeft op de deelnemer
+		/// met ID <paramref name="deelnemerID"/>
+		/// </summary>
+		/// <param name="deelnemerID">ID van een (uitstap)deelnemer</param>
+		/// <returns><c>true</c> als de aangemelde gebruiker GAV-rechten heeft voor de gevraagde 
+		/// deelnemer, anders <c>false</c></returns>
+		public bool IsGavDeelnemer(int deelnemerID)
+		{
+			return _autorisatieDao.IsGavDeelnemer(deelnemerID, GebruikersNaamGet());
+		}
+
+		/// <summary>
 		/// Verwijdert uit een lijst van GelieerdePersoonID's de ID's
 		/// van GelieerdePersonen voor wie de aangemelde gebruiker geen GAV is
 		/// </summary>

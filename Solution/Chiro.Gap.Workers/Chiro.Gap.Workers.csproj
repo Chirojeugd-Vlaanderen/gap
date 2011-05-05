@@ -73,6 +73,7 @@
     <Compile Include="ChiroGroepenManager.cs" />
     <Compile Include="CommVormManager.cs" />
     <Compile Include="AfdelingsJaarManager.cs" />
+    <Compile Include="DeelnemersManager.cs" />
     <Compile Include="Exceptions\BlokkerendeObjectenException.cs" />
     <Compile Include="Exceptions\FoutNummerException.cs" />
     <Compile Include="Exceptions\GapException.cs" />

@@ -117,6 +117,11 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
-		#endregion
+	    public bool IsGavDeelnemer(int deelnemerID, string login)
+	    {
+	        return true;
+	    }
+
+	    #endregion
 	}
 }

@@ -82,7 +82,10 @@
         <td><%=d.MedischeFicheOk ? "ja": "nee" %></td>
         <td><%=d.HeeftBetaald ? "ja": "nee" %></td>
         <td><%=d.Opmerkingen %></td>
-        <td>(uitschrijven) (instellen als contact)</td>
+        <td>
+            (uitschrijven)
+            <%:d.IsContact ? MvcHtmlString.Empty : Html.ActionLink("instellen als contact", "ContactInstellen", new {id=d.DeelnemerID}) %>
+        </td>
         </tr>
 
     <%
