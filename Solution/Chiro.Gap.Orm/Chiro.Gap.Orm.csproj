@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adres.cs" />
+    <Compile Include="DataInterfaces\IDeelnemersDao.cs" />
     <Compile Include="DataInterfaces\IPlaatsenDao.cs" />
     <Compile Include="DataInterfaces\IUitstappenDao.cs" />
     <Compile Include="Deelnemer.cs" />

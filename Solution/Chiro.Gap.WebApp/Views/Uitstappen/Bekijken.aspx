@@ -83,7 +83,7 @@
         <td><%=d.HeeftBetaald ? "ja": "nee" %></td>
         <td><%=d.Opmerkingen %></td>
         <td>
-            (uitschrijven)
+            <%:Html.ActionLink("uitschrijven", "Uitschrijven", new {id=d.DeelnemerID}) %>
             <%:d.IsContact ? MvcHtmlString.Empty : Html.ActionLink("instellen als contact", "ContactInstellen", new {id=d.DeelnemerID}) %>
         </td>
         </tr>

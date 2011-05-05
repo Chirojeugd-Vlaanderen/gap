@@ -219,11 +219,23 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="groepID">ID van groep die momenteel actief is</param>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Redirect naar overzicht uitstap</returns>
     	public ActionResult ContactInstellen(int groepID, int id)
         {
             int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.ContactInstellen(id));
             return RedirectToAction("Bekijken", new {id = uitstapID});
+        }
+
+        /// <summary>
+        /// Verwijdert de deelnemer met gegeven <paramref name="id"/> van zijn uitstap.
+        /// </summary>
+        /// <param name="groepID">Groep waarin we werken</param>
+        /// <param name="id">DeelnemerID uit te schrijven deelnemer</param>
+        /// <returns>Redirect naar overzicht uitstap</returns>
+        public ActionResult Uitschrijven(int groepID, int id)
+        {
+            int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Uitschrijven(id));
+            return RedirectToAction("Bekijken", new { id = uitstapID });
         }
     }
 }

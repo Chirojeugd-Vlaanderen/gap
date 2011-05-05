@@ -66,6 +66,7 @@
     <Compile Include="ChiroGroepenDao.cs" />
     <Compile Include="CommunicatieTypeDao.cs" />
     <Compile Include="CommunicatieVormDao.cs" />
+    <Compile Include="DeelnemersDao.cs" />
     <Compile Include="FunctiesDao.cs" />
     <Compile Include="GavDao.cs" />
     <Compile Include="GroepsWerkJaarDao.cs" />

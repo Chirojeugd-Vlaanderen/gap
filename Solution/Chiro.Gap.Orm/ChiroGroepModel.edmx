@@ -1129,6 +1129,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="spDeelnemerVerwijderen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="biv">
+          <Parameter Name="deelnemerID" Type="int" Mode="In" />
+        </Function>
         <Function Name="ufnSoundEx" ReturnType="varchar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="core">
           <Parameter Name="tekst" Type="varchar(max)" Mode="In" />
         </Function>

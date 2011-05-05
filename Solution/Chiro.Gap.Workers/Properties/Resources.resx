@@ -255,4 +255,7 @@
   <data name="FoutieveGroepUitstap" xml:space="preserve">
     <value>De groep van de uitstap verschilt van de groep van de deelnemer.</value>
   </data>
+  <data name="DeelnemerNietVanUitstap" xml:space="preserve">
+    <value>Dit is een deelnemer van een andere uitstap.</value>
+  </data>
 </root>

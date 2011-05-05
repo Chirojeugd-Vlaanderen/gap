@@ -98,5 +98,15 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		int ContactInstellen(int deelnemerID);
+
+        /// <summary>
+        /// Schrijft de deelnemer met gegeven <paramref name="deelnemerID"/> uit voor zijn uitstap.
+        /// </summary>
+        /// <param name="deelnemerID">ID uit te schrijven deelnemer</param>
+        /// <returns>ID van de uitstap, ter controle, en h andig voor feedback</returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+	    int Uitschrijven(int deelnemerID);
 	}
 }

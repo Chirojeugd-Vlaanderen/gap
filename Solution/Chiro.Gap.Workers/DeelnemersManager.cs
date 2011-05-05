@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
-using Chiro.Cdf.Data;
 using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
 {
     public class DeelnemersManager
     {
-        private readonly IDao<Deelnemer> _deelnemersDao;
+        private readonly IDeelnemersDao _deelnemersDao;
         private readonly IAutorisatieManager _autorisatieMgr;
 
         /// <summary>
@@ -20,7 +17,7 @@ namespace Chiro.Gap.Workers
         /// </summary>
         /// <param name="deelnemersDao">deelnemersdao</param>
         /// <param name="autorisatieManager">autorisatiemanager</param>
-        public DeelnemersManager(IDao<Deelnemer> deelnemersDao, IAutorisatieManager autorisatieManager)
+        public DeelnemersManager(IDeelnemersDao deelnemersDao, IAutorisatieManager autorisatieManager)
         {
             _deelnemersDao = deelnemersDao;
             _autorisatieMgr = autorisatieManager;
@@ -83,6 +80,23 @@ namespace Chiro.Gap.Workers
             }
 
             return deelnemer;
+        }
+
+        /// <summary>
+        /// Verwijdert de gegeven <paramref name="deelnemer"/> van zijn uitstap.  Persisteert
+        /// </summary>
+        /// <param name="deelnemer">Te verwijderen deelnemer.</param>
+        public void Verwijderen(Deelnemer deelnemer)
+        {
+            if (!_autorisatieMgr.IsGavDeelnemer(deelnemer.ID))
+            {
+                throw new GeenGavException();
+            }
+
+            // Ik ga die deelnemer verwijderen via een stored procedure, omdat ik het anders
+            // niet goed krijg als de deelnemer ook contact is (denk ik).
+
+            _deelnemersDao.Verwijderen(deelnemer);
         }
     }
 }

@@ -326,5 +326,28 @@ namespace Chiro.Gap.Services
 
             return deelnemer.Uitstap.ID;
         }
+
+        /// <summary>
+        /// Schrijft de deelnemer met gegeven <paramref name="deelnemerID"/> uit voor zijn uitstap.
+        /// </summary>
+        /// <param name="deelnemerID">ID uit te schrijven deelnemer</param>
+        /// <returns>ID van de uitstap, ter controle, en handig voor feedback</returns>
+        public int Uitschrijven(int deelnemerID)
+        {
+            Deelnemer deelnemer;
+            try
+            {
+                deelnemer = _deelnemersMgr.Ophalen(deelnemerID);
+            }
+            catch (GeenGavException ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                throw;
+            }
+
+	        _deelnemersMgr.Verwijderen(deelnemer);
+
+            return deelnemer.Uitstap.ID;
+        }
     }
 }

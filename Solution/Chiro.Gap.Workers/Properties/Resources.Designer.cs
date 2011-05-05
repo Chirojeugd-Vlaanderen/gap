@@ -133,6 +133,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dit is een deelnemer van een andere uitstap..
+        /// </summary>
+        internal static string DeelnemerNietVanUitstap {
+            get {
+                return ResourceManager.GetString("DeelnemerNietVanUitstap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er bestaat al een groepswerkjaar in dat werkjaar.
         /// </summary>
         internal static string DubbelGroepswerkjaar {
