@@ -61,4 +61,24 @@ alter table biv.Uitstap add constraint FK_Uitstap_Deelnemer_Contact foreign key(
 alter table biv.Deelnemer add constraint FK_Deelnemer_Uitstap foreign key(UitstapID) references biv.Uitstap(UitstapID);
 alter table biv.Deelnemer add constraint FK_Deelnemer_GelieerdePersoon foreign key(GelieerdePersoonID) references pers.GelieerdePersoon(GelieerdePersoonID);
 
+create unique index AK_Bivak_DeelnemerID_UitstapID on biv.Deelnemer(DeelnemerID, UitstapID);
 
+grant select,insert,update,delete on biv.Deelnemer to GapRole;
+
+go
+
+create procedure biv.DeelnemerVerwijderen (@deelnemerID as int) as
+-- verwijder een deelnemer van zijn uitstap
+begin
+
+begin tran
+
+update biv.Uitstap set ContactDeelnemerID=null where ContactDeelnemerID=@deelnemerID
+delete from biv.Deelnemer where DeelnemerID=@deelnemerID
+
+commit tran
+
+end
+
+grant exec on biv.DeelnemerVerwijderen to GapRole
+go

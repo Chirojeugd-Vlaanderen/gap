@@ -763,6 +763,7 @@ SET @AantalInCategorie = (SELECT COUNT(*) FROM pers.PersoonsCategorie WHERE Cate
 PRINT 'public const int MINAANTALGELPERS = '+ CAST(@GELPERS AS VARCHAR(10)) + ';';
 PRINT 'public const int LID3ID = ' + CAST(@testLid3ID AS VARCHAR(10)) + ';';
 PRINT 'public const int LID4ID = ' + CAST(@testLid4ID AS VARCHAR(10)) + ';';
+PRINT 'public const int LID5ID = ' + CAST(@testLid5ID AS VARCHAR(10)) + ';';
 PRINT 'public const int CATEGORIEID = ' + CAST(@testCategorie1ID AS VARCHAR(10)) + ';';
 PRINT 'public const string CATEGORIECODE = "' + CAST(@testCategorie1Code AS VARCHAR(10)) + '";';
 PRINT 'public const int CATEGORIE2ID = ' + CAST(@testCategorie2ID AS VARCHAR(10)) + ';';
