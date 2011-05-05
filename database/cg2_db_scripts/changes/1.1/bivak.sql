@@ -67,7 +67,7 @@ grant select,insert,update,delete on biv.Deelnemer to GapRole;
 
 go
 
-create procedure biv.DeelnemerVerwijderen (@deelnemerID as int) as
+create procedure biv.spDeelnemerVerwijderen (@deelnemerID as int) as
 -- verwijder een deelnemer van zijn uitstap
 begin
 
@@ -80,5 +80,5 @@ commit tran
 
 end
 
-grant exec on biv.DeelnemerVerwijderen to GapRole
+grant exec on biv.spDeelnemerVerwijderen to GapRole
 go
