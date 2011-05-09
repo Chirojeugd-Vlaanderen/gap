@@ -33,7 +33,26 @@ namespace Chiro.Gap.Data.Ef
                 commando.Parameters.Add(new SqlParameter("deelnemerID", deelnemer.ID));
 
                 storeConnection.Open();
-                commando.ExecuteNonQuery();
+                try
+                {
+                    commando.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    // Blijkbaar wordt er hier een exception gethrowd, die zegt dat
+                    // biv.spDeelnemerVerwijderen niet wordt gevonden.  Desondanks wordt
+                    // ze wel uitgevoerd.  Hoe dat komt, begrijp ik langs geen kanten.
+
+                    // Hoe dan ook, als ik hier dus een SqlException met nummer 15151 tegenkom,
+                    // negeer ik ze gewoon
+
+                    if (ex.Number != 15151)
+                    {
+                        // Andere exceptions zijn onverwacht, en throw ik dus maar.
+                        throw;
+                    }
+                }
+                
                 storeConnection.Close();
             }
         }
