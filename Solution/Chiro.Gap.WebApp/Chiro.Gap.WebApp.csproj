@@ -130,6 +130,7 @@
     <Compile Include="Models\CategorieModel.cs" />
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingsJaarModel.cs" />
+    <Compile Include="Models\DeelnemerBewerkenModel.cs" />
     <Compile Include="Models\IAdresBewerkenModel.cs" />
     <Compile Include="Models\LidAfdelingenModel.cs" />
     <Compile Include="Models\Mededeling.cs" />
@@ -204,6 +205,7 @@
     <Content Include="Views\Shared\PersonenLijstControl.ascx" />
     <Content Include="Views\Shared\TerugNaarLijstLinkControl.ascx" />
     <Content Include="Views\Uitstappen\Bekijken.aspx" />
+    <Content Include="Views\Uitstappen\DeelnemerBewerken.aspx" />
     <Content Include="Views\Uitstappen\Index.aspx" />
     <Content Include="Views\Uitstappen\Bewerken.aspx" />
     <Content Include="Views\Uitstappen\PlaatsBewerken.aspx" />

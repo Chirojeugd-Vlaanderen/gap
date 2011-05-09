@@ -76,9 +76,9 @@
         
         <tr class="<%=klasse%>">
         <td><%=volgnr %></td>
-        <td><%=d.Type == DeelnemerType.Deelnemer ? "lid" : d.Type == DeelnemerType.Begeleiding ? "leiding" : "logistiek" %></td>
+        <td><%=d.Type == DeelnemerType.Deelnemer ? "lid" : d.Type == DeelnemerType.Begeleiding ? "leiding" : d.Type == DeelnemerType.Logistiek ? "logistiek" : "???" %></td>
         <td><%=Html.AfdelingsLinks(d.Afdelingen, Model.Uitstap.GroepsWerkJaarID, Model.GroepID) %></td>
-        <td><%=Html.PersoonsLink(d.GelieerdePersoonID, d.VoorNaam, d.FamilieNaam) %></td>
+        <td><%:Html.ActionLink(String.Concat(d.VoorNaam, " ", d.FamilieNaam), "DeelnemerBewerken", new {id=d.DeelnemerID}) %></td>
         <td><%=d.MedischeFicheOk ? "ja": "nee" %></td>
         <td><%=d.HeeftBetaald ? "ja": "nee" %></td>
         <td><%=d.Opmerkingen %></td>

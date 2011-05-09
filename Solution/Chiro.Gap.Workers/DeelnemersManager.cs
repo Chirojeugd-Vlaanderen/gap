@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 using Chiro.Gap.Orm;
@@ -97,6 +98,23 @@ namespace Chiro.Gap.Workers
             // niet goed krijg als de deelnemer ook contact is (denk ik).
 
             _deelnemersDao.Verwijderen(deelnemer);
+        }
+
+        /// <summary>
+        /// Bewaart de deelnemer, en enkel de deelnemer.  Koppelingen met andere entiteiten worden
+        /// momenteel genegeerd.
+        /// </summary>
+        /// <param name="deelnemer">Te bewaren deelnemer</param>
+        public void Bewaren(Deelnemer deelnemer)
+        {
+            if (!_autorisatieMgr.IsGavDeelnemer(deelnemer.ID))
+            {
+                throw new GeenGavException();
+            }
+
+            // Bewaren
+
+            _deelnemersDao.Bewaren(deelnemer);
         }
     }
 }

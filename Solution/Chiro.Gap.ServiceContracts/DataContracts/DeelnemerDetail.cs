@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -12,13 +14,13 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// Datacontract voor beperkte info ivm een deelnemer van een uitstap.
 	/// </summary>
 	[DataContract]
-	public class UitstapDeelnemerInfo
+	public class DeelnemerDetail : DeelnemerInfo
 	{
-		[DataMember]
-		public int DeelnemerID { get; set; }
-
-		[DataMember]
+	    [DataMember]
 		public int GelieerdePersoonID { get; set; }
+
+        [DataMember]
+        public int UitstapID { get; set; }
 
 		[DataMember]
 		public string VoorNaam { get; set; }
@@ -29,16 +31,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public DeelnemerType Type { get; set; }
 
-		[DataMember]
-		public bool HeeftBetaald { get; set; }
-
-		[DataMember]
-		public bool MedischeFicheOk { get; set; }
-
-		[DataMember]
-		public string Opmerkingen { get; set; }
-
-		[DataMember]
+	    [DataMember]
 		public IList<AfdelingInfo> Afdelingen { get; set; }
 
 		[DataMember]

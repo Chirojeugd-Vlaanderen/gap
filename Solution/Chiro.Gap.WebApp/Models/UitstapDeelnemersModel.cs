@@ -6,6 +6,6 @@ namespace Chiro.Gap.WebApp.Models
 {
 	public class UitstapDeelnemersModel: UitstapModel
 	{
-		public IEnumerable<UitstapDeelnemerInfo> Deelnemers { get; set; }
+		public IEnumerable<DeelnemerDetail> Deelnemers { get; set; }
 	}
 }

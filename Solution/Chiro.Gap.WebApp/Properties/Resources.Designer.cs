@@ -160,6 +160,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deelnemersinformatie {0} {1}.
+        /// </summary>
+        public static string DeelnemerBewerken {
+            get {
+                return ResourceManager.GetString("DeelnemerBewerken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De perso(o)n(en) werd(en) ingeschreven voor de uitstap &apos;{0}&apos;..
         /// </summary>
         public static string DeelnemersToegevoegdFeedback {

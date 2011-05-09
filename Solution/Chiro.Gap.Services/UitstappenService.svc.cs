@@ -283,7 +283,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="uitstapID">ID van de relevante uitstap</param>
         /// <returns>informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/></returns>
-        public IEnumerable<UitstapDeelnemerInfo> DeelnemersOphalen(int uitstapID)
+        public IEnumerable<DeelnemerDetail> DeelnemersOphalen(int uitstapID)
         {
             IEnumerable<Deelnemer> deelnemers;
             try
@@ -296,7 +296,7 @@ namespace Chiro.Gap.Services
                 throw;
             }
 
-            var resultaat = Mapper.Map<IEnumerable<Deelnemer>, IEnumerable<UitstapDeelnemerInfo>>(deelnemers);
+            var resultaat = Mapper.Map<IEnumerable<Deelnemer>, IEnumerable<DeelnemerDetail>>(deelnemers);
 
             return resultaat;
         }
@@ -348,6 +348,55 @@ namespace Chiro.Gap.Services
 	        _deelnemersMgr.Verwijderen(deelnemer);
 
             return deelnemer.Uitstap.ID;
+        }
+
+        /// <summary>
+        /// Haalt informatie over de deelnemer met ID <paramref name="deelnemerID"/> op.
+        /// </summary>
+        /// <param name="deelnemerID">ID van de relevante deelnemer</param>
+        /// <returns>informatie over de deelnemer met ID <paramref name="deelnemerID"/></returns>
+        public DeelnemerDetail DeelnemerOphalen(int deelnemerID)
+        {
+            Deelnemer d;
+            try
+            {
+                d = _deelnemersMgr.Ophalen(deelnemerID);
+            }
+            catch (GeenGavException ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                throw;
+            }
+
+            var resultaat = Mapper.Map<Deelnemer, DeelnemerDetail>(d);
+
+            return resultaat;
+        }
+
+
+        /// <summary>
+        /// Updatet een deelnemer op basis van de info in <paramref name="info"/>
+        /// </summary>
+        /// <param name="info">info nodig voor de update</param>
+        public void DeelnemerBewaren(DeelnemerInfo info)
+        {
+            Deelnemer d;
+            try
+            {
+                d = _deelnemersMgr.Ophalen(info.DeelnemerID);
+            }
+            catch (GeenGavException ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                throw;
+            }
+
+            d.IsLogistieker = info.IsLogistieker;
+            d.HeeftBetaald = info.HeeftBetaald;
+            d.MedischeFicheOk = info.MedischeFicheOk;
+            d.Opmerkingen = info.Opmerkingen;
+
+            _deelnemersMgr.Bewaren(d);
         }
     }
 }

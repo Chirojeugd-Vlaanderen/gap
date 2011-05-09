@@ -86,7 +86,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<UitstapDeelnemerInfo> DeelnemersOphalen(int uitstapID);
+		IEnumerable<DeelnemerDetail> DeelnemersOphalen(int uitstapID);
 
 		/// <summary>
 		/// Stelt de deelnemer met gegeven <paramref name="deelnemerID" /> in als contactpersoon voor de uitstap
@@ -108,5 +108,24 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
 	    int Uitschrijven(int deelnemerID);
+
+        /// <summary>
+        /// Haalt informatie over de deelnemer met ID <paramref name="deelnemerID"/> op.
+        /// </summary>
+        /// <param name="deelnemerID">ID van de relevante deelnemer</param>
+        /// <returns>informatie over de deelnemer met ID <paramref name="deelnemerID"/></returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+	    DeelnemerDetail DeelnemerOphalen(int deelnemerID);
+
+        /// <summary>
+        /// Updatet een deelnemer op basis van de info in <paramref name="info"/>
+        /// </summary>
+        /// <param name="info">info nodig voor de update</param>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+	    void DeelnemerBewaren(DeelnemerInfo info);
 	}
 }

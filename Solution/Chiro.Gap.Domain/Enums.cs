@@ -32,6 +32,8 @@ namespace Chiro.Gap.Domain
     public enum DeelnemerType
     {
         [EnumMember]
+        Onbekend = 0x00,
+        [EnumMember]
         Deelnemer = 0x01,
         [EnumMember]
         Begeleiding = 0x02,

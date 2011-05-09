@@ -320,4 +320,7 @@
   <data name="DeelnemersToegevoegdFeedback" xml:space="preserve">
     <value>De perso(o)n(en) werd(en) ingeschreven voor de uitstap '{0}'.</value>
   </data>
+  <data name="DeelnemerBewerken" xml:space="preserve">
+    <value>Deelnemersinformatie {0} {1}</value>
+  </data>
 </root>

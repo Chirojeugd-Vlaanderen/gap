@@ -619,3 +619,9 @@ img.screenshot
 	border: Solid 2px Gray;
 	display: block;
 }
+
+.invulformulier label
+{
+    width: 25ex;
+    display:inline-block;
+}

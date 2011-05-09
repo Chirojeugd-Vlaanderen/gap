@@ -433,9 +433,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             // TODO: Uitvissen deelnemer of begeleider op basis van kind/leiding werkt wel min of meer voor groepen,
             // maar kan op die manier niet gebruikt worden voor uitstappen van kaderploegen.
 
-            Mapper.CreateMap<Deelnemer, UitstapDeelnemerInfo>()
+            Mapper.CreateMap<Deelnemer, DeelnemerDetail>()
                 .ForMember(dst => dst.Afdelingen,
-                           opt => opt.MapFrom(src => Afdelingen(src.GelieerdePersoon.Lid.First())))
+                           opt => opt.MapFrom(src => Afdelingen(src.GelieerdePersoon.Lid.FirstOrDefault())))
                 .ForMember(dst => dst.DeelnemerID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
@@ -445,10 +445,16 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                                src =>
                                src.IsLogistieker
                                    ? DeelnemerType.Logistiek
-                                   : src.GelieerdePersoon.Lid.FirstOrDefault() != null && src.GelieerdePersoon.Lid.FirstOrDefault() is Leiding
+                                   : src.GelieerdePersoon.Lid.FirstOrDefault() != null &&
+                                     src.GelieerdePersoon.Lid.FirstOrDefault() is Leiding
                                          ? DeelnemerType.Begeleiding
-                                         : DeelnemerType.Deelnemer))
-                .ForMember(dst => dst.IsContact, opt => opt.MapFrom(src => src.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() != null));
+                                         : src.GelieerdePersoon.Lid.FirstOrDefault() != null &&
+                                           src.GelieerdePersoon.Lid.FirstOrDefault() is Lid
+                                               ? DeelnemerType.Deelnemer
+                                               : DeelnemerType.Onbekend))
+                .ForMember(dst => dst.IsContact,
+                           opt => opt.MapFrom(src => src.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() != null));
+
 
 
             // Als de property's van de doelobjecten strategisch gekozen namen hebben, configureert
@@ -657,6 +663,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// <returns>Rij afdelingen van het lid <paramref name="l"/></returns>
         private static IEnumerable<AfdelingInfo> Afdelingen(Lid l)
         {
+            if (l == null)
+            {
+                return new AfdelingInfo[0];
+            }
+
             if (l is Kind)
             {
                 return new[] { Mapper.Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling) };

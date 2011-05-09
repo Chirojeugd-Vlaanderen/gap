@@ -92,7 +92,7 @@ namespace Chiro.Gap.WebApp.Controllers
             BaseModelInit(model, groepID);
             model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
             model.Deelnemers =
-                ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapDeelnemerInfo>>(
+                ServiceHelper.CallService<IUitstappenService, IEnumerable<DeelnemerDetail>>(
                     svc => svc.DeelnemersOphalen(id));
             model.Titel = model.Uitstap.Naam;
 
@@ -236,6 +236,51 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Uitschrijven(id));
             return RedirectToAction("Bekijken", new { id = uitstapID });
+        }
+
+        /// <summary>
+        /// Toont een formulier waarmee de user de informatie over een deelnemer kan aanpassen
+        /// </summary>
+        /// <param name="groepID">huidige groep</param>
+        /// <param name="id">DeelnemerID van de te bewerken deelnemer</param>
+        /// <returns>De 'pas eens een deelnemer aan'-view.</returns>
+        public ActionResult DeelnemerBewerken(int groepID, int id)
+        {
+            var model = new DeelnemerBewerkenModel();
+
+            // We zouden hier waarschijnlijk beter wat meer details opvragen, maar omdat dat nog niet geimplementeerd is
+            // in de backend, houden we het bij de beperkte gegevens.
+
+            model.Deelnemer =
+                ServiceHelper.CallService<IUitstappenService, DeelnemerDetail>(svc => svc.DeelnemerOphalen(id));
+            BaseModelInit(model, groepID, String.Format(Properties.Resources.DeelnemerBewerken, model.Deelnemer.VoorNaam, model.Deelnemer.FamilieNaam));
+
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Stuurt de geupdatete deelnemersgegevens terug naar de service.
+        /// </summary>
+        /// <param name="groepID">ID van de actieve groep</param>
+        /// <param name="id">ID van de deelnemer</param>
+        /// <param name="model">Gegevens ingevuld in het form</param>
+        /// <returns></returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult DeelnemerBewerken(int groepID, int id, DeelnemerBewerkenModel model)
+        {
+            var info = new DeelnemerInfo
+                           {
+                               DeelnemerID = id,
+                               HeeftBetaald = model.Deelnemer.HeeftBetaald,
+                               IsLogistieker = model.Deelnemer.IsLogistieker,
+                               MedischeFicheOk = model.Deelnemer.MedischeFicheOk,
+                               Opmerkingen = model.Deelnemer.Opmerkingen
+                           };
+
+            ServiceHelper.CallService<IUitstappenService>(svc => svc.DeelnemerBewaren(info));
+
+            return RedirectToAction("Bekijken", new {groepID, id = model.Deelnemer.UitstapID});
         }
     }
 }

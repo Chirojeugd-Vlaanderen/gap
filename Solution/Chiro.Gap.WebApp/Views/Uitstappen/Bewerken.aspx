@@ -14,7 +14,7 @@
                     <li><input type="submit" value="Bewaren" /></li>
                     </ul>
 
-                    <fieldset>
+                    <fieldset class="invulformulier">
                     <legend>Info over uitstap of bivak</legend>
                     
                     <%=Html.HiddenFor(mdl=>mdl.Uitstap.ID) %>
