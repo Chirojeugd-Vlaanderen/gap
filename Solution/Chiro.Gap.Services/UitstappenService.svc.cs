@@ -84,7 +84,7 @@ namespace Chiro.Gap.Services
 
             try
             {
-                return _uitstappenMgr.Bewaren(uitstap, UitstapExtras.Geen).ID;
+                return _uitstappenMgr.Bewaren(uitstap, UitstapExtras.GroepsWerkJaar).ID;
             }
             // Afhandelen van verwachte exceptions
             catch (GeenGavException ex)
