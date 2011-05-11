@@ -246,6 +246,9 @@
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="datum" Type="smalldatetime" />
           <Property Name="s_Kaartje" Type="bit" Nullable="false" />
+          <Property Name="b_GapID" Type="int" />
+          <Property Name="u_GapID" Type="int" />
+          <Property Name="s_GapID" Type="int" />
         </EntityType>
         <EntityType Name="kipContactInfo">
           <Key>
@@ -1402,6 +1405,9 @@
           <NavigationProperty Name="kipPersoon1" Relationship="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke" FromRole="kipBivak" ToRole="Persoon" />
           <NavigationProperty Name="kipPersoon2" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten" FromRole="kipBivak" ToRole="Persoon" />
           <NavigationProperty Name="kipPersoon3" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak" FromRole="kipBivak" ToRole="Persoon" />
+          <Property Type="Int32" Name="b_GapID" />
+          <Property Type="Int32" Name="u_GapID" />
+          <Property Type="Int32" Name="s_GapID" />
         </EntityType>
         <Association Name="FK_Bivak_Persoon_AspiVerantwoordelijke">
           <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="0..1" />
@@ -1836,6 +1842,9 @@
           <EntitySetMapping Name="kipBivak">
             <EntityTypeMapping TypeName="kipadminModel.Bivak">
               <MappingFragment StoreEntitySet="kipBivak">
+                <ScalarProperty Name="s_GapID" ColumnName="s_GapID" />
+                <ScalarProperty Name="u_GapID" ColumnName="u_GapID" />
+                <ScalarProperty Name="b_GapID" ColumnName="b_GapID" />
                 <ScalarProperty Name="s_Kaartje" ColumnName="s_Kaartje" />
                 <ScalarProperty Name="datum" ColumnName="datum" />
                 <ScalarProperty Name="id" ColumnName="id" />

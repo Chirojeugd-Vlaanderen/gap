@@ -10,6 +10,12 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
 	public class Bivak
 	{
 		/// <summary>
+		/// ID van de uitstap in GAP.
+		/// </summary>
+		[DataMember]
+		public int UitstapID { get; set; }
+
+		/// <summary>
 		/// Stamnummer voor groep die op bivak gaat
 		/// </summary>
 		[DataMember]
@@ -20,18 +26,6 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		public int WerkJaar { get; set; }
-
-		/// <summary>
-		/// Naam van de bivakplaats
-		/// </summary>
-		[DataMember]
-		public string BivakPlaatsNaam { get; set; }
-
-		/// <summary>
-		/// Adres van de bivakplaats
-		/// </summary>
-		[DataMember]
-		public Adres Adres { get; set; }
 
 		/// <summary>
 		/// Begindatum van het bivak
