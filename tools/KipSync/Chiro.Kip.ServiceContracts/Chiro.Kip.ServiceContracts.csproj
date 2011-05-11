@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataContracts\Bivak.cs" />
     <Compile Include="DataContracts\Adres.cs" />
     <Compile Include="DataContracts\Bewoner.cs" />
     <Compile Include="DataContracts\Communicatiemiddel.cs" />

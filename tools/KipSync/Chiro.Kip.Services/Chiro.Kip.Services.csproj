@@ -74,6 +74,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="SyncPersoonService.Bivak.cs" />
     <Compile Include="SyncPersoonService.cs" />
     <Compile Include="SyncPersoonService.LidGegevens.cs" />
     <Compile Include="SyncPersoonService.PersoonsGegevens.cs" />

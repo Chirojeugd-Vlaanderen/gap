@@ -165,5 +165,26 @@ namespace Chiro.Kip.ServiceContracts
 		void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar);
 		#endregion
 
+		#region bivak
+
+		/// <summary>
+		/// Bivakaangifte
+		/// </summary>
+		/// <param name="contactAd">AD-nummer contactpersoon bivak</param>
+		/// <param name="bivak">gegevens voor de bivakaangifte</param>
+		[OperationContract(IsOneWay = true)]
+		void BivakAangeven(int contactAd, Bivak bivak);
+
+		/// <summary>
+		/// Bivakaangifte
+		/// </summary>
+		/// <param name="contact">gegevens contactpersoon bivak</param>
+		/// <param name="bivak">gegevens voor de bivakaangifte</param>
+		/// <remarks>Enkel te gebruiken als het ad-nummer van de contactpersoon niet gekend is.</remarks>
+		[OperationContract(IsOneWay = true)]
+		void BivakAangevenAdOnbekend(PersoonDetails contact, Bivak bivak);
+
+		#endregion
+
 	}
 }
