@@ -19,7 +19,7 @@
 	<p>
 		Stappen in het proces:</p>
 	<ul>
-		<li>Klik op het tabblad 'Nieuwe persoon'.</li>
+		<li>Klik op het tabblad 'Persoon toevoegen'.</li>
 		<li>Je komt nu op een formuliertje om een nieuwe persoon toe te voegen.</li>
 	</ul>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/Nieuwe_persoon.png") %>" alt="Formuliertje voor een nieuwe persoon" />
