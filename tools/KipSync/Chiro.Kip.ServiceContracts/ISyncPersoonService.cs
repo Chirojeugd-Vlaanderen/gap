@@ -190,6 +190,7 @@ namespace Chiro.Kip.ServiceContracts
 		/// </summary>
 		/// <param name="uitstapID">UitstapID (GAP) voor het bivak</param>
 		/// <param name="adNummer">AD-nummer contactpersoon bivak</param>
+		[OperationContract(IsOneWay = true)]
 		void BivakContactBewaren(int uitstapID, int adNummer);
 
 		/// <summary>
@@ -200,12 +201,14 @@ namespace Chiro.Kip.ServiceContracts
 		/// <param name="details">gegevens van de persoon</param>
 		/// <remarks>Deze method mag enkel gebruikt worden als het ad-nummer van de
 		/// persoon onbestaand of onbekend is.</remarks>
+		[OperationContract(IsOneWay = true)]
 		void BivakContactBewarenAdOnbekend(int uitstapID, PersoonDetails details);
 
 		/// <summary>
 		/// Verwijdert een bivak uit kipadmin.
 		/// </summary>
 		/// <param name="uitstapID">UitstapID (GAP) van het te verwijderen bivak</param>
+		[OperationContract(IsOneWay = true)]
 		void BivakVerwijderen(int uitstapID);
 
 		#endregion
