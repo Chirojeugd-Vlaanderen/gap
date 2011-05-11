@@ -75,6 +75,10 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="SyncPersoonService.cs" />
+    <Compile Include="SyncPersoonService.LidGegevens.cs" />
+    <Compile Include="SyncPersoonService.PersoonsGegevens.cs" />
+    <Compile Include="SyncPersoonService.Publicaties.cs" />
+    <Compile Include="SyncPersoonService.Verzekeringen.cs" />
     <Compile Include="UpdateService\UnityWorkAround.cs" />
   </ItemGroup>
   <ItemGroup>

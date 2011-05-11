@@ -24,6 +24,15 @@ namespace Chiro.Kip.ServiceContracts
 	[ServiceContract]
 	public interface ISyncPersoonService
 	{
+		#region persoonsgegevens
+		/// <summary>
+		/// Updatet een persoon in Kipadmin op basis van de gegevens in GAP.  Als er geen AD-nummer is, dan doen we
+		/// een schamele poging om de persoon al te vinden.   Als ook dat niet lukt, maken we een nieuwe persoon aan.
+		/// Bij ontbrekend AD-nummer, en wordt het achteraf ingevuld bij <paramref name="persoon"/>.  (Niet interessant
+		/// voor service, maar wel voor andere methods die deze aanroepen).
+		/// </summary>
+		/// <param name="persoon">Informatie over een geupdatete persoon in GAP</param>
+		/// <remarks>Als AD-nummer ontbreekt, wordt er sowieso een nieuwe persoon gemaakt.</remarks>
 		[OperationContract(IsOneWay = true)]
 		void PersoonUpdaten(Persoon persoon);
 
@@ -59,7 +68,9 @@ namespace Chiro.Kip.ServiceContracts
 		/// <param name="communicatie">Gegevens over het te verwijderen communicatiemiddel</param>
 		[OperationContract(IsOneWay = true)]
 		void CommunicatieVerwijderen(Persoon pers, CommunicatieMiddel communicatie);
+		#endregion
 
+		#region lidgegevens
 		/// <summary>
 		/// Maakt een persoon met gekend ad-nummer lid, of updatet een bestaand lid
 		/// </summary>
@@ -110,7 +121,9 @@ namespace Chiro.Kip.ServiceContracts
 		/// <remarks>Er is in Kipadmin maar plaats voor 2 afdelingen/lid</remarks>
 		[OperationContract(IsOneWay = true)]
 		void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<AfdelingEnum> afdelingen);
+		#endregion
 
+		#region publicaties
 		/// <summary>
 		/// Bestelt dubbelpunt voor de gegeven persoon in het gegeven groepswerkjaar, gegeven dat de persoon
 		/// een AD-nummer heeft
@@ -129,7 +142,9 @@ namespace Chiro.Kip.ServiceContracts
 		/// <param name="werkJaar">Werkjaar waarvoor Dubbelpuntabonnement</param>
 		[OperationContract(IsOneWay = true)]
 		void DubbelpuntBestellenNieuwePersoon(PersoonDetails details, string stamNummer, int werkJaar);
+		#endregion
 
+		#region verzekeringen
 		/// <summary>
 		/// Verzekert de gegeven persoon in het gegeven groepswerkjaar tegen loonverlies, gegeven dat de persoon
 		/// een AD-nummer heeft
@@ -147,7 +162,8 @@ namespace Chiro.Kip.ServiceContracts
 		/// <param name="stamNummer">Stamnummer van betalende groep</param>
 		/// <param name="werkJaar">Werkjaar voor de verzekering</param>
 		[OperationContract(IsOneWay = true)]
-		void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar);	
+		void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar);
+		#endregion
 
 	}
 }
