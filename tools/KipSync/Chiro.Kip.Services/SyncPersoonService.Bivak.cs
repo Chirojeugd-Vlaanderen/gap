@@ -52,5 +52,14 @@ namespace Chiro.Kip.Services
 		{
 			throw new NotImplementedException();
 		}
+
+		/// <summary>
+		/// Verwijdert een bivak uit kipadmin.
+		/// </summary>
+		/// <param name="uitstapID">UitstapID (GAP) van het te verwijderen bivak</param>
+		public void BivakVerwijderen(int uitstapID)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

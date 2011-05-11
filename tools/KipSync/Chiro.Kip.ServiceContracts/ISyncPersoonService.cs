@@ -202,6 +202,11 @@ namespace Chiro.Kip.ServiceContracts
 		/// persoon onbestaand of onbekend is.</remarks>
 		void BivakContactBewarenAdOnbekend(int uitstapID, PersoonDetails details);
 
+		/// <summary>
+		/// Verwijdert een bivak uit kipadmin.
+		/// </summary>
+		/// <param name="uitstapID">UitstapID (GAP) van het te verwijderen bivak</param>
+		void BivakVerwijderen(int uitstapID);
 
 		#endregion
 
