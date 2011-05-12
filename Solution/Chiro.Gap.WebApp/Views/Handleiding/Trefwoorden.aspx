@@ -14,7 +14,10 @@
             Je bent aangesloten bij Chirojeugd Vlaanderen wanneer een groep, gewest, verbond
             of nationale vrijwilligersploeg je inschrijft en je instapperiode <a href="#Instapperiode">
                 [?]</a> is verstreken. Een inschrijving kan ongedaan gemaakt worden in de loop
-            van het werkjaar, een aansluiting niet.</dd>
+            van het werkjaar, een aansluiting niet.<br />
+            Je groep is aangesloten bij Chirojeugd Vlaanderen als je de jaarovergang uitgevoerd
+            hebt en minstens één leider of leidster ingeschreven hebt.
+        </dd>
         <dt><strong><a class="anchor" id="AD-nummer">AD-nummer</a></strong>:</dt>
         <dd>
             Iedereen die in de administratie van het nationaal Chirosecretariaat terechtkomt,

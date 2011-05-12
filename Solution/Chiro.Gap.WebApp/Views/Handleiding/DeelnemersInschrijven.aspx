@@ -20,7 +20,7 @@
         Je kunt ook logistiek medewerkers
         <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "LogistiekMedewerkers", new { helpBestand = "Trefwoorden" }, new { title = "Wat wordt er bedoeld met logistiek medewerk(st)ers?" } ) %>
         inschrijven, maar dat doe je best apart (zie
-        <%=Html.ActionLink("Medewerkers inschrijven", "ViewTonen", new { controller = "Handleiding", helpBestand = "MedewerkersInschrijven" })%>.</p>
+        <%=Html.ActionLink("Medewerkers inschrijven", "ViewTonen", new { controller = "Handleiding", helpBestand = "MedewerkersInschrijven" })%>).</p>
     <p>
         Stappen in het proces:</p>
     <ul>
@@ -30,7 +30,7 @@
             voor 'Inschrijven voor uitstap/bivak'. Doe dat apart voor bijvoorbeeld leiding die
             met een andere afdeling meegaat om te koken op weekend: zij zijn logistiek medewerk(st)ers
             <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "LogistiekMedewerkers", new { helpBestand = "Trefwoorden" }, new { title = "Wat wordt er bedoeld met logistiek medewerk(st)ers?" } ) %>,
-            en voor hen moet je een extra vinkje zetten (zie (zie
+            en voor hen moet je een extra vinkje zetten (zie
             <%=Html.ActionLink("Medewerkers inschrijven", "ViewTonen", new { controller = "Handleiding", helpBestand = "MedewerkersInschrijven" })%>).</li>
     </ul>
     <img src="<%=ResolveUrl("~/Content/Screenshots/Deelnemers_inschrijven.png") %>" alt="Deelnemers selecteren en inschrijven" />
