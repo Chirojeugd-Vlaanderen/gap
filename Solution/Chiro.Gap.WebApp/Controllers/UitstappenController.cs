@@ -161,9 +161,17 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.Uitstap.Adres = new AdresInfo { LandNaam = Properties.Resources.Belgie };
             }
 
+            // Als het adres buitenlands is, dan moeten we de woonplaats nog eens overnemen in
+            // WoonPlaatsBuitenland.  Dat is nodig voor de AdresBewerkenControl, die een beetje
+            // raar ineen zit.
+            if (String.Compare(model.Uitstap.Adres.LandNaam, Properties.Resources.Belgie, true) != 0)
+            {
+                model.WoonPlaatsBuitenLand = model.Uitstap.Adres.WoonPlaatsNaam;
+            }
+
             model.Titel = model.Uitstap.Naam;
             model.AlleLanden = VeelGebruikt.LandenOphalen();
-            model.BeschikbareWoonPlaatsen = new List<WoonPlaatsInfo>();
+            model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.Uitstap.Adres.PostNr);
 
             return View(model);
         }
