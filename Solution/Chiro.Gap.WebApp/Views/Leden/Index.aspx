@@ -33,7 +33,7 @@
 					{
 						var dummyAfdeling = new SelectListItem[] {new SelectListItem {Text = "op afdeling", Value = "0"}};
 						var dummyFunctie = new SelectListItem[] {new SelectListItem {Text = "op functie", Value = "0"}};
-						var dummySpeciaal = new SelectListItem[] {new SelectListItem {Text = "speciale Lijst", Value = "0"}};%>
+						var dummySpeciaal = new SelectListItem[] {new SelectListItem {Text = "speciale lijst", Value = "0"}};%>
 				
                 	<div id="acties">
                     <h1>Acties</h1>
