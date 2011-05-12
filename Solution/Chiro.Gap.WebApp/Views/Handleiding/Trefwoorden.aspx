@@ -13,12 +13,21 @@
 		<dd>Je bent aangesloten bij Chirojeugd Vlaanderen wanneer een groep, gewest, verbond
 			of nationale vrijwilligersploeg je inschrijft en je instapperiode <a href="#Instapperiode">
 				[?]</a> is verstreken. Een inschrijving kan ongedaan gemaakt worden in de
-			loop van het werkjaar, een aansluiting niet</dd>
+			loop van het werkjaar, een aansluiting niet.</dd>
 		<dt><strong><a class="anchor" id="AD-nummer">AD-nummer</a></strong>:</dt>
 		<dd>Iedereen die in de administratie van het nationaal Chirosecretariaat terechtkomt,
 			krijgt een administratief identificatienummer. Je hebt dat nodig als je bepaalde
 			zaken wilt op-of aanvragen, en Chirojeugd Vlaanderen gebruikt het om je makkelijk
 			terug te vinden.</dd>
+		<dt><strong><a class="anchor" id="Bivakaangifte">Bivakaangifte</a></strong>:</dt>
+		<dd>Voor 1 juni moet je de gegevens van je bivakplaats doorgeven aan het nationaal
+			secretariaat, en je moet aangeven wie de contactpersoon is. Zo kan het secretariaat
+			met jullie contact opnemen wanneer iemand van de ouders je niet kan bereiken
+			of wanneer er iets aan de hand is met je bivakplaats. Dat doorgeven gebeurt
+			automatisch wanneer je je bivak registreert op deze website en daarbij aanvinkt
+			dat het om het jaarlijks bivak gaat. Dat moet ook bij aparte kampen voor één
+			of twee afdelingen. Alleen die gegevens worden doorgegeven, de deelnemerslijst
+			is alleen voor jouw groep zichtbaar.</dd>
 		<dt><strong><a class="anchor" id="Categorie">Categorie</a></strong>:</dt>
 		<dd>Een categorie is een label dat je zelf kunt kiezen. Geef ze een naam (bv. 'kookploeg')
 			en een afkorting (bv. 'KP' of 'kok'). Mensen die je aan een categorie toevoegt,
@@ -76,9 +85,9 @@
 		<dd>Iedereen die je inschrijft in je groep krijgt een instapperiode. De einddatum
 			vind je op de persoonsfiche. Normaal duurt een instapperiode drie weken, maar
 			als je de jaarovergang al in augustus of begin september uitvoert, is de einddatum
-			15 oktober: de deadline voor de jaarovergang. Je hebt dus zeker tijd genoeg om je ledenlijst nog na te kijken,
-			ook als je inschrijvingen nog niet allemaal binnen zijn of als je bv. begin
-			oktober een inschrijvingsdag houdt.<br />
+			15 oktober: de deadline voor de jaarovergang. Je hebt dus zeker tijd genoeg
+			om je ledenlijst nog na te kijken, ook als je inschrijvingen nog niet allemaal
+			binnen zijn of als je bv. begin oktober een inschrijvingsdag houdt.<br />
 			De GAV's krijgen een mailtje wanneer er zo'n einddatum nadert. Is de einddatum
 			verstreken, dan geldt die persoon als definitief ingeschreven. Op dat moment
 			wordt hij of zij aangesloten bij Chirojeugd Vlaanderen. Dat betekent dat je
@@ -139,6 +148,13 @@
 			programma heet dat: 'op non-actief zetten'. De persoon blijft wel in je gegevensbestand
 			zitten, maar hij of zij verschijnt niet meer bij de ingeschreven leden.
 			<%=Html.ActionLink("Hoe doe je dat?", "ViewTonen", new { controller = "Handleiding", helpBestand = "Uitschrijven" })%></dd>
+		<dt><strong><a class="anchor" id="Uitstap">Uitstap</a></strong>:</dt>
+		<dd>Ga je op weekend met je afdeling, naar het zwembad met heel de groep, of op
+			bivak? Dat kun je op deze website registreren, zodat je een deelnemerslijst
+			kunt opmaken. Een bivak <em>moet</em> je registreren (zie <a href="#Bivakaangifte">
+				Bivakaangifte</a>), voor andere uitstappen mag je zelf kiezen of je ze registreert.
+			<%=Html.ActionLink("Hoe doe je dat?", "ViewTonen", new { controller = "Handleiding", helpBestand = "UitstapToevoegen" })%>
+		</dd>
 		<dt><strong><a class="anchor" id="Voorkeursadres">Voorkeursadres</a></strong>:</dt>
 		<dd>Elke persoon kan verschillende adressen hebben, van verschillende types (thuis,
 			kot, enz.). Het voorkeursadres is waar de post moet aankomen. Dat is dus het

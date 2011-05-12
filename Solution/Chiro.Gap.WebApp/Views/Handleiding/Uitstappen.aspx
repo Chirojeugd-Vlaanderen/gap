@@ -24,7 +24,16 @@
     <ul>
         <li>
             <%=Html.ActionLink("Een uitstap/bivak toevoegen", "ViewTonen", new { controller = "Handleiding", helpBestand = "UitstapToevoegen" })%></li>
-            <li>
+        <li>
             <%=Html.ActionLink("Een uitstap/bivak bewerken", "ViewTonen", new { controller = "Handleiding", helpBestand = "UitstapBewerken" })%></li>
+        <li>
+            <%=Html.ActionLink("Deelnemersadministratie", "ViewTonen", new { controller = "Handleiding", helpBestand = "Deelnemersadministratie" })%></li>
+    </ul>
+    <h3>Wat moet je op een andere pagina doen?</h3>
+    <ul>
+        <li>
+            <%=Html.ActionLink("Deelnemers inschrijven", "ViewTonen", new { controller = "Handleiding", helpBestand = "DeelnemersInschrijven" })%></li>
+            <li>
+            <%=Html.ActionLink("Logistiek medewerkers (zoals koks) inschrijven", "ViewTonen", new { controller = "Handleiding", helpBestand = "MedewerkersInschrijven" })%></li>
     </ul>
 </asp:Content>
