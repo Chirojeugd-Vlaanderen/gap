@@ -58,6 +58,8 @@ CREATE TABLE biv.BivakAangifte(
 	WerkJaar INT NOT NULL,
 	DatumVan DATETIME NOT NULL,
 	DatumTot DATETIME NOT NULL,
+	BivakNaam VARCHAR(120) NULL,
+	Opmerking TEXT NULL,	
 	BivakPlaatsNaam VARCHAR(80),
 	AdresID INT NULL, -- nullable omdat de groepen dit mogelijk niet direct in orde brengen
 	ContactAD INT NULL, -- idem
