@@ -37,8 +37,6 @@ CREATE UNIQUE INDEX AK_Bivak_GroepID_WerkJaar ON dbo.kipBivak(GroepID, WerkJaar)
 ALTER TABLE dbo.kipBivak DROP COLUMN StamNr;
 ALTER TABLE dbo.kipBivak DROP COLUMN StamNr2;
 
-GRANT INSERT, UPDATE, SELECT ON dbo.Bivak TO KipSyncRole
-GO
 
 EXEC sp_Rename 'dbo.kipBivak', 'BivakOverzicht'
 GO
@@ -75,4 +73,11 @@ CREATE INDEX IDX_BivakAangifte_Adres ON biv.BivakAangifte(AdresID);
 ALTER TABLE biv.BivakOverzicht ADD CONSTRAINT FK_BivakOverzicht_BAangifte FOREIGN KEY(b_AangifteID) REFERENCES biv.BivakAangifte(BivakAangifteID);
 ALTER TABLE biv.BivakOverzicht ADD CONSTRAINT FK_BivakOverzicht_UAangifte FOREIGN KEY(u_AangifteID) REFERENCES biv.BivakAangifte(BivakAangifteID);
 ALTER TABLE biv.BivakOverzicht ADD CONSTRAINT FK_BivakOverzicht_SAangifte FOREIGN KEY(s_AangifteID) REFERENCES biv.BivakAangifte(BivakAangifteID);
+
+
+GRANT INSERT, UPDATE, SELECT ON biv.BivakOverzicht TO KipSyncRole
+GO
+	
+GRANT INSERT, UPDATE, SELECT, DELETE ON biv.BivakAangifte TO KipSyncRole
+GO
 	
