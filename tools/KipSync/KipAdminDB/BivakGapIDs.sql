@@ -68,6 +68,7 @@ GO
 
 ALTER TABLE biv.BivakAangifte ADD CONSTRAINT FK_BivakAangifte_Groep FOREIGN KEY(GroepID) REFERENCES grp.Groep(GroepID);
 ALTER TABLE biv.BivakAangifte ADD CONSTRAINT FK_BivakAangifte_Adres FOREIGN KEY(AdresID) REFERENCES dbo.kipAdres(AdresID);
+ALTER TABLE biv.BivakAangifte ADD CONSTRAINT FK_BivakAangifte_Persoon FOREIGN KEY(ContactAD) REFERENCES kipPersoon(AdNr);
 	
 CREATE INDEX IDX_BivakAangifte_Groep_WerkJaar ON biv.BivakAangifte(GroepID, WerkJaar);
 CREATE INDEX IDX_BivakAangifte_Adres ON biv.BivakAangifte(AdresID);
@@ -83,3 +84,9 @@ GO
 GRANT INSERT, UPDATE, SELECT, DELETE ON biv.BivakAangifte TO KipSyncRole
 GO
 	
+-- Omdat een bivak in GAP los ingegeven wordt van de plaats, komen er ook bivakken zonder plaats
+-- door naar Kipadmin.  Dat moeten we ondersteunen.
+
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN B_Straat VARCHAR(40) NULL
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN B_Postnr VARCHAR(8) NULL
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN B_Gemeente VARCHAR(40) NULL
