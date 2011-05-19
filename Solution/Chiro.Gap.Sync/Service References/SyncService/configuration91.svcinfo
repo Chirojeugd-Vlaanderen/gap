@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="GI+/tIX/xCznN3XA8n4sdJqzUaU=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="OjE3tZWs4x4wugL9iGPNmfxfeus=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="netMsmqBinding" name="NetMsmqBinding_ISyncPersoonService">
       <properties>
@@ -121,10 +121,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="NetMsmqBinding_ISyncPersoonService" contract="SyncService.ISyncPersoonService" bindingType="netMsmqBinding" address="net.msmq://localhost/private/KipSyncPersoonServiceQueue" bindingConfiguration="NetMsmqBinding_ISyncPersoonService">
+    <endpoint name="NetMsmqBinding_ISyncPersoonService" contract="SyncService.ISyncPersoonService" bindingType="netMsmqBinding" address="net.msmq://localhost/private/kipsyncpersoonservicequeue" bindingConfiguration="NetMsmqBinding_ISyncPersoonService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>net.msmq://localhost/private/KipSyncPersoonServiceQueue</serializedValue>
+          <serializedValue>net.msmq://localhost/private/kipsyncpersoonservicequeue</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

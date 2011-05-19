@@ -57,6 +57,21 @@
   <wsdl:message name="ISyncPersoonService_LoonVerliesVerzekerenAdOnbekend_InputMessage">
     <wsdl:part name="parameters" element="tns:LoonVerliesVerzekerenAdOnbekend" />
   </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_BivakBewaren_InputMessage">
+    <wsdl:part name="parameters" element="tns:BivakBewaren" />
+  </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_BivakPlaatsBewaren_InputMessage">
+    <wsdl:part name="parameters" element="tns:BivakPlaatsBewaren" />
+  </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_BivakContactBewaren_InputMessage">
+    <wsdl:part name="parameters" element="tns:BivakContactBewaren" />
+  </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_BivakContactBewarenAdOnbekend_InputMessage">
+    <wsdl:part name="parameters" element="tns:BivakContactBewarenAdOnbekend" />
+  </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_BivakVerwijderen_InputMessage">
+    <wsdl:part name="parameters" element="tns:BivakVerwijderen" />
+  </wsdl:message>
   <wsdl:portType name="ISyncPersoonService">
     <wsdl:operation name="PersoonUpdaten">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/PersoonUpdaten" message="tns:ISyncPersoonService_PersoonUpdaten_InputMessage" />
@@ -99,6 +114,21 @@
     </wsdl:operation>
     <wsdl:operation name="LoonVerliesVerzekerenAdOnbekend">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/LoonVerliesVerzekerenAdOnbekend" message="tns:ISyncPersoonService_LoonVerliesVerzekerenAdOnbekend_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BivakBewaren">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/BivakBewaren" message="tns:ISyncPersoonService_BivakBewaren_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BivakPlaatsBewaren">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/BivakPlaatsBewaren" message="tns:ISyncPersoonService_BivakPlaatsBewaren_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BivakContactBewaren">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/BivakContactBewaren" message="tns:ISyncPersoonService_BivakContactBewaren_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BivakContactBewarenAdOnbekend">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/BivakContactBewarenAdOnbekend" message="tns:ISyncPersoonService_BivakContactBewarenAdOnbekend_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BivakVerwijderen">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/BivakVerwijderen" message="tns:ISyncPersoonService_BivakVerwijderen_InputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetMsmqBinding_ISyncPersoonService" type="tns:ISyncPersoonService">
@@ -188,12 +218,42 @@
         <soap12:body use="literal" />
       </wsdl:input>
     </wsdl:operation>
+    <wsdl:operation name="BivakBewaren">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/BivakBewaren" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="BivakPlaatsBewaren">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/BivakPlaatsBewaren" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="BivakContactBewaren">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/BivakContactBewaren" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="BivakContactBewarenAdOnbekend">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/BivakContactBewarenAdOnbekend" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="BivakVerwijderen">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/BivakVerwijderen" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="SyncPersoonService">
     <wsdl:port name="NetMsmqBinding_ISyncPersoonService" binding="tns:NetMsmqBinding_ISyncPersoonService">
-      <soap12:address location="net.msmq://localhost/private/KipSyncPersoonServiceQueue" />
+      <soap12:address location="net.msmq://localhost/private/kipsyncpersoonservicequeue" />
       <wsa10:EndpointReference>
-        <wsa10:Address>net.msmq://localhost/private/KipSyncPersoonServiceQueue</wsa10:Address>
+        <wsa10:Address>net.msmq://localhost/private/kipsyncpersoonservicequeue</wsa10:Address>
       </wsa10:EndpointReference>
     </wsdl:port>
   </wsdl:service>

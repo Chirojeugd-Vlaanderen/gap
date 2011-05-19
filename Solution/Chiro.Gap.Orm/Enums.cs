@@ -122,15 +122,15 @@ namespace Chiro.Gap.Orm
 		Geen = 0x00,
 
 		/// <summary>
+		/// Enkel het voorkeursadres van de gelieerde persoon.
+		/// </summary>
+		VoorkeurAdres = 0x01,
+
+		/// <summary>
 		/// Haal de adressen van de (gelieerde) persoon mee op
 		/// </summary>
-		Adressen = 0x01,
+		Adressen = 0x03,
 		
-		/// <summary>
-		/// Haal de groep(en) op waar de (gelieerde) personen mee geleerd zijn
-		/// </summary>
-		Groep = 0x02,
-
 		/// <summary>
 		/// Haal alle communicatievormen van de gelieerde persoon mee op, met gekoppeld
 		/// communicatietype.
@@ -162,14 +162,20 @@ namespace Chiro.Gap.Orm
 		/// <summary>
 		/// Alle lidobjecten van een gelieerde persoon
 		/// </summary>
-		AlleLeden = 0x60,
+		AlleLeden = 0xd0,
 
 		/// <summary>
 		/// Alle uitstappen waaraan een gelieerde persoon deelnam, met
 		/// daaraan gekoppeld groepswerkjaar en groep (die dan hopelijk dezelfde is als de
 		/// groep van de gelieerde persoon)
 		/// </summary>
-		Uitstappen = 0x80
+		Uitstappen = 0x100,
+
+		/// <summary>
+		/// Haal de groep(en) op waar de (gelieerde) personen mee geleerd zijn
+		/// </summary>
+		Groep = 0x200
+
 	}
 
 	/// <summary>

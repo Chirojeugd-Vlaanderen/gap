@@ -4,11 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Transactions;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
@@ -21,21 +23,25 @@ namespace Chiro.Gap.Workers
 		private readonly IGroepsWerkJaarDao _groepsWerkJaarDao;
 		private readonly IAutorisatieManager _autorisatieManager;
 		private readonly IUitstappenDao _uitstappenDao;
+		private readonly IBivakSync _sync;
 
-	    /// <summary>
-	    /// Constructor.  De parameters moeten 'ingevuld' via dependency inejction
-	    /// </summary>
-	    /// <param name="uitstappenDao"></param>
-	    /// <param name="groepsWerkJaarDao">Data access voor groepswerkjaren</param>
-	    /// <param name="autorisatieManager">Businesslogica voor autorisatie</param>
-	    public UitstappenManager(
-			IUitstappenDao uitstappenDao, 
-			IGroepsWerkJaarDao groepsWerkJaarDao, 
-			IAutorisatieManager autorisatieManager)
+		/// <summary>
+		/// Constructor.  De parameters moeten 'ingevuld' via dependency inejction
+		/// </summary>
+		/// <param name="uitstappenDao"></param>
+		/// <param name="groepsWerkJaarDao">Data access voor groepswerkjaren</param>
+		/// <param name="autorisatieManager">Businesslogica voor autorisatie</param>
+		/// <param name="sync">Proxy naar service om bivakaangiftes te syncen met Kipadmin</param>
+		public UitstappenManager(
+			IUitstappenDao uitstappenDao,
+			IGroepsWerkJaarDao groepsWerkJaarDao,
+			IAutorisatieManager autorisatieManager,
+			IBivakSync sync)
 		{
 			_uitstappenDao = uitstappenDao;
 			_groepsWerkJaarDao = groepsWerkJaarDao;
 			_autorisatieManager = autorisatieManager;
+			_sync = sync;
 		}
 
 		/// <summary>
@@ -55,7 +61,7 @@ namespace Chiro.Gap.Workers
 			{
 				throw new BlokkerendeObjectenException<GroepsWerkJaar>(
 					uitstap.GroepsWerkJaar,
-				        Properties.Resources.UitstapAlGekoppeld);
+					Properties.Resources.UitstapAlGekoppeld);
 			}
 			else if (!_groepsWerkJaarDao.IsRecentste(gwj.ID))
 			{
@@ -100,10 +106,10 @@ namespace Chiro.Gap.Workers
 					paths.Add(u => u.Deelnemer.First().GelieerdePersoon.Persoon.WithoutUpdate());
 				}
 
-                if ((extras & UitstapExtras.Contact) == UitstapExtras.Contact)
-                {
-                    paths.Add(u => u.ContactDeelnemer.WithoutUpdate());
-                }
+				if ((extras & UitstapExtras.Contact) == UitstapExtras.Contact)
+				{
+					paths.Add(u => u.ContactDeelnemer.WithoutUpdate());
+				}
 
 				if ((extras & UitstapExtras.Plaats) != 0)
 				{
@@ -118,8 +124,11 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="uitstap">Te bewaren uitstap</param>
 		/// <param name="extras">Bepaalt de mee te bewaren koppelingen</param>
+		/// <remarks>Groepswerkjaar wordt altijd mee bewaard</remarks>
 		public Uitstap Bewaren(Uitstap uitstap, UitstapExtras extras)
 		{
+			var groep = uitstap.GroepsWerkJaar == null ? null : uitstap.GroepsWerkJaar.Groep;
+
 			if (!_autorisatieManager.IsGavUitstap(uitstap.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
@@ -130,12 +139,11 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				var koppelingen = new List<Expression<Func<Uitstap, object>>>();
+				// Sowieso groepswerkjaar koppelen.
 
-				if ((extras & UitstapExtras.GroepsWerkJaar) != 0)
-				{
-					koppelingen.Add(u => u.GroepsWerkJaar.WithoutUpdate());
-				}
+				Debug.Assert(uitstap.GroepsWerkJaar != null);
+				var koppelingen = new List<Expression<Func<Uitstap, object>>> { u => u.GroepsWerkJaar.WithoutUpdate() };
+
 				if ((extras & UitstapExtras.Plaats) != 0)
 				{
 					koppelingen.Add(u => u.Plaats);
@@ -144,12 +152,37 @@ namespace Chiro.Gap.Workers
 				{
 					koppelingen.Add(u => u.Deelnemer.First().GelieerdePersoon.WithoutUpdate());
 				}
-                if ((extras & UitstapExtras.Contact) == UitstapExtras.Contact)
-                {
-                    koppelingen.Add(u => u.ContactDeelnemer.WithoutUpdate());
-                }
+				if ((extras & UitstapExtras.Contact) == UitstapExtras.Contact)
+				{
+					koppelingen.Add(u => u.ContactDeelnemer.WithoutUpdate());
+				}
+#if KIPDORP
+				using (var tx = new TransactionScope())
+				{
+#endif
+					uitstap = _uitstappenDao.Bewaren(uitstap, koppelingen.ToArray());
+					if (uitstap.IsBivak)
+					{
+						// De 'Bewaren' hierboven heeft tot gevolg dat de groep niet
+						// meer gekoppeld is (wegens onderliggende beperkingen van
+						// AttachObjectGraph).  Vandaar dat we voor het gemak
+						// die groep hier opnieuw koppelen.
 
-				return _uitstappenDao.Bewaren(uitstap, koppelingen.ToArray());
+						uitstap.GroepsWerkJaar.Groep = groep;
+						_sync.Bewaren(uitstap);
+					}
+					else
+					{
+						// Dit om op te vangen dat een bivak afgevinkt wordt als bivak.
+						// TODO: betere manier bedenken
+
+						_sync.Verwijderen(uitstap.ID);
+					}
+#if KIPDORP
+					tx.Complete();
+				}
+#endif
+				return uitstap;
 			}
 		}
 
@@ -213,7 +246,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
-			
+
 			Debug.Assert(groepen.Count() > 0); // De gelieerde personen moeten aan een groep gekoppeld zijn.
 			Debug.Assert(uitstap.GroepsWerkJaar != null);
 			Debug.Assert(uitstap.GroepsWerkJaar.Groep != null);
@@ -241,17 +274,17 @@ namespace Chiro.Gap.Workers
 			foreach (var gp in gelieerdePersonen.Where(gp => !gp.Deelnemer.Any(d => d.Uitstap.ID == uitstap.ID)))
 			{
 				var deelnemer = new Deelnemer
-				                	{
-				                		GelieerdePersoon = gp,
+							{
+								GelieerdePersoon = gp,
 								Uitstap = uitstap,
-				                		HeeftBetaald = false,
-				                		IsLogistieker = logistiekDeelnemer,
-				                		MedischeFicheOk = false
-				                	};
+								HeeftBetaald = false,
+								IsLogistieker = logistiekDeelnemer,
+								MedischeFicheOk = false
+							};
 				gp.Deelnemer.Add(deelnemer);
 				uitstap.Deelnemer.Add(deelnemer);
 			}
-		
+
 		}
 
 		/// <summary>

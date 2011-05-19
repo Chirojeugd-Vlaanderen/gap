@@ -66,6 +66,7 @@
     <Compile Include="DataInterfaces\IUitstappenDao.cs" />
     <Compile Include="Deelnemer.cs" />
     <Compile Include="Plaats.cs" />
+    <Compile Include="SyncInterfaces\IBivakSync.cs" />
     <Compile Include="Uitstap.cs" />
     <Compile Include="Categorie.cs" />
     <Compile Include="ChiroGroep.cs" />

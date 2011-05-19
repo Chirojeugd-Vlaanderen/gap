@@ -122,4 +122,43 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="BivakBewaren">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="bivak" nillable="true" type="q21:Bivak" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BivakPlaatsBewaren">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="uitstapID" type="xs:int" />
+        <xs:element minOccurs="0" name="plaatsNaam" nillable="true" type="xs:string" />
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="adres" nillable="true" type="q22:Adres" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BivakContactBewaren">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="uitstapID" type="xs:int" />
+        <xs:element minOccurs="0" name="adNummer" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BivakContactBewarenAdOnbekend">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="uitstapID" type="xs:int" />
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="details" nillable="true" type="q23:PersoonDetails" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BivakVerwijderen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="uitstapID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

@@ -166,6 +166,12 @@ namespace Chiro.Gap.Workers
                 paths.Add(p => p.PersoonsAdres.First().Adres);
             }
 
+            if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+            {
+                // voorkeursadres van een (niet-gelieerde) persoon is niet eenduidig.
+                throw new NotSupportedException();
+            }
+
             if ((extras & PersoonsExtras.Groep) != 0)
             {
                 paths.Add(p => p.GelieerdePersoon.First().Groep);
@@ -217,6 +223,11 @@ namespace Chiro.Gap.Workers
             if ((extras & PersoonsExtras.Adressen) != 0)
             {
                 paths.Add(p => p.PersoonsAdres.First().Adres);
+            }
+            else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+            {
+                // voorkeursadres van een (niet-gelieerde) persoon is niet eenduidig.
+                throw new NotSupportedException();
             }
 
             if ((extras & PersoonsExtras.Groep) != 0)

@@ -113,6 +113,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		IEnumerable<GelieerdePersoon> Ophalen(IList<int> gelieerdePersoonIDs, PersoonsExtras extras);
 
 		/// <summary>
+		/// Haalt een gelieerde persoon op, samen met de gekoppelde entiteiten bepaald door
+		/// <paramref name="extras"/>
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID op te halen gelieerde persoon</param>
+		/// <param name="extras">bepaalt de extra op te halen entiteiten</param>
+		/// <returns>De gevraagde gelieerde persoon.</returns>
+		GelieerdePersoon Ophalen(int gelieerdePersoonID, PersoonsExtras extras);
+
+		/// <summary>
 		/// Haal een pagina op met gelieerde personen van een groep.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>

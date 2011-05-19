@@ -95,6 +95,13 @@ namespace Chiro.Gap.Sync
                 .ForMember(dst => dst.Communicatie, opt => opt.MapFrom(src => src.Communicatie))
                 .ForMember(dst => dst.ExtensionData, opt => opt.Ignore());
 
+
+            Mapper.CreateMap<Uitstap, Bivak>()
+                .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.GroepsWerkJaar.Groep.Code))
+                .ForMember(dst => dst.UitstapID, opt => opt.MapFrom(src => src.ID))
+                .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar))
+		.ForMember(dst => dst.ExtensionData, opt => opt.Ignore());
+
             Mapper.AssertConfigurationIsValid();
         }
     }

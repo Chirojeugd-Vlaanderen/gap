@@ -400,4 +400,16 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="PersoonDetails" nillable="true" type="tns:PersoonDetails" />
+  <xs:complexType name="Bivak">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DatumTot" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DatumVan" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Opmerkingen" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StamNummer" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UitstapID" type="xs:int" />
+      <xs:element minOccurs="0" name="WerkJaar" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Bivak" nillable="true" type="tns:Bivak" />
 </xs:schema>

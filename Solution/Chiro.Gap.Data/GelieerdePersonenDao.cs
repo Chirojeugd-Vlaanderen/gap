@@ -61,10 +61,17 @@ namespace Chiro.Gap.Data.Ef
 
                 var paths = ExtrasNaarLambdas(extras);
                 result = Sorteren(IncludesToepassen(query, paths), sortering).ToList();
-                if ((extras & PersoonsExtras.Adressen) != 0)
+
+
+                if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
                 {
                     AlleAdressenKoppelen(db, result);
                 }
+                else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+                {
+                    VoorkeursAdresKoppelen(db, result);
+                }
+
                 if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
                 {
                     HuidigeLedenKoppelen(db, result);
@@ -154,9 +161,13 @@ namespace Chiro.Gap.Data.Ef
 
                 resultaat = IncludesToepassen(resultaat as ObjectQuery<GelieerdePersoon>, ExtrasNaarLambdas(extras)).ToArray();
 
-                if ((extras & PersoonsExtras.Adressen) != 0)
+                if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
                 {
                     AlleAdressenKoppelen(db, resultaat);
+                }
+                else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+                {
+                    VoorkeursAdresKoppelen(db, resultaat);
                 }
 
                 if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
@@ -172,6 +183,18 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
+        /// Haalt een gelieerde persoon op, samen met de gekoppelde entiteiten bepaald door
+        /// <paramref name="extras"/>
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID op te halen gelieerde persoon</param>
+        /// <param name="extras">bepaalt de extra op te halen entiteiten</param>
+        /// <returns>De gevraagde gelieerde persoon.</returns>
+        public GelieerdePersoon Ophalen(int gelieerdePersoonID, PersoonsExtras extras)
+        {
+            return Ophalen(new[] { gelieerdePersoonID }, extras).FirstOrDefault();
+        }
+
+    	/// <summary>
         /// Sorteert een 'queryable' van gelieerde personen. Eerst volgens de gegeven ordening, dan steeds op naam.
         /// <para />
         /// De sortering is vrij complex om met meerdere opties rekening te houden.
@@ -254,6 +277,11 @@ namespace Chiro.Gap.Data.Ef
                 {
                     AlleAdressenKoppelen(db, lijst);
                 }
+                else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+                {
+                    VoorkeursAdresKoppelen(db, lijst);
+                }
+
                 if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
                 {
                     HuidigeLedenKoppelen(db, lijst);
@@ -298,9 +326,13 @@ namespace Chiro.Gap.Data.Ef
 
                 aantalTotaal = query.Count();
 
-                if ((extras & PersoonsExtras.Adressen) != 0)
+                if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
                 {
                     AlleAdressenKoppelen(db, lijst);
+                }
+                else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+                {
+                    VoorkeursAdresKoppelen(db, lijst);
                 }
 
                 // als enkel de lidobjecten van dit werkjaar opgevraagd worden, dan moeten we dat nog
@@ -836,13 +868,16 @@ namespace Chiro.Gap.Data.Ef
         {
             var paths = new List<Expression<Func<GelieerdePersoon, object>>> { gp => gp.Persoon };
 
+            if ((extras & PersoonsExtras.VoorkeurAdres) != 0)
+            {
+                // standaardadres (bovenstaande conditie is ook true voor alle adressen)
+                paths.Add(gp => gp.PersoonsAdres.Adres);
+            }
+
             if ((extras & PersoonsExtras.Adressen) != 0)
             {
                 // alle adressen
                 paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres);
-
-                // standaardadres
-                paths.Add(gp => gp.PersoonsAdres.Adres);
             }
 
             if ((extras & (PersoonsExtras.Groep | PersoonsExtras.LedenDitWerkJaar)) != 0)

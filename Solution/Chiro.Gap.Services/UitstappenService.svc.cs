@@ -77,7 +77,8 @@ namespace Chiro.Gap.Services
             else
             {
                 // haal origineel op, gekoppeld aan groepswerkjaar
-                uitstap = _uitstappenMgr.Ophalen(info.ID, UitstapExtras.GroepsWerkJaar);
+                // (en ook aan groep, want die is nodig voor sync met kipadmin)
+                uitstap = _uitstappenMgr.Ophalen(info.ID, UitstapExtras.Groep);
                 // overschrijf met gegevens uit 'info'
                 Mapper.Map(info, uitstap);
             }

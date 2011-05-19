@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdressenSync.cs" />
+    <Compile Include="BivakSync.cs" />
     <Compile Include="CommunicatieSync.cs" />
     <Compile Include="DubbelpuntSync.cs" />
     <Compile Include="LedenSync.cs" />

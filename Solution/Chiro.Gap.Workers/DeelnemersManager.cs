@@ -28,7 +28,7 @@ namespace Chiro.Gap.Workers
         /// Haalt een deelnemer op, inclusief persoon en uitstap.
         /// </summary>
         /// <param name="deelnemerID">ID op te halen deelnemer</param>
-        /// <returns>Deelnemer, inclusief persoon, uitstap, groepswerkjaar</returns>
+        /// <returns>Deelnemer, inclusief persoon, uitstap, groepswerkjaar, groep</returns>
         public Deelnemer Ophalen(int deelnemerID)
         {
             if (!_autorisatieMgr.IsGavDeelnemer(deelnemerID))
@@ -40,7 +40,7 @@ namespace Chiro.Gap.Workers
                 return _deelnemersDao.Ophalen(
                     deelnemerID,
                     d => d.GelieerdePersoon.Persoon,
-                    d => d.Uitstap.GroepsWerkJaar);
+                    d => d.Uitstap.GroepsWerkJaar.Groep);
             }
         }
 
