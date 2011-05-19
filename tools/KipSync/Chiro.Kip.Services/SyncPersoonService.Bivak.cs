@@ -7,6 +7,7 @@ using System.Text;
 using Chiro.Kip.Data;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Adres = Chiro.Kip.ServiceContracts.DataContracts.Adres;
+using Persoon = Chiro.Kip.Data.Persoon;
 
 namespace Chiro.Kip.Services
 {
@@ -119,7 +120,7 @@ namespace Chiro.Kip.Services
 
 				// Bivakaangiftes van de groep in het gegeven werkjaar.
 
-				var alleAangiften = from ba in db.BivakAangifte.Include("kipAdres").Include("kipPersoon")
+				var alleAangiften = from ba in db.BivakAangifte.Include("kipAdres").Include("kipPersoon.kipContactInfo")
 				                where ba.WerkJaar == werkJaar && ba.Groep.GroepID == groepID
 				                select ba;
 
@@ -156,7 +157,12 @@ namespace Chiro.Kip.Services
 						overzicht.U_GEMEENTE = aangifte.kipAdres.Gemeente;
 						overzicht.U_LAND = aangifte.kipAdres.Land;
 					}
-					// Buitenlands bivak had blijkbaar geen provincie of verantwoordelijke.
+
+					if (aangifte.kipPersoon != null)
+					{
+						overzicht.U_TEL = GsmNrGet(aangifte.kipPersoon);
+					}
+
 
 					feedback.AppendLine(String.Format("Geregistreerd in overzicht als buitenlands bivak: ID{1} {0}", aangifte.BivakNaam, aangifte.ID));
 				}
@@ -194,7 +200,7 @@ namespace Chiro.Kip.Services
 
 						if (aangifte.kipPersoon != null)
 						{
-							overzicht.VerantwoordelijkeS = aangifte.kipPersoon;
+							overzicht.S_TEL = GsmNrGet(aangifte.kipPersoon);
 						}
 
 						feedback.AppendLine(String.Format("Geregistreerd in overzicht als 'afdelingsbivak': ID{1} {0}", aangifte.BivakNaam, aangifte.ID));
@@ -245,6 +251,7 @@ namespace Chiro.Kip.Services
 
 					if (aangifte.kipPersoon != null)
 					{
+						overzicht.B_TEL = GsmNrGet(aangifte.kipPersoon);
 						overzicht.VerantwoordelijkeB = aangifte.kipPersoon;
 					}
 					feedback.AppendLine(String.Format("Geregistreerd in overzicht als 'gewoon' bivak:  ID{1} {0}", aangifte.BivakNaam, aangifte.ID));
@@ -253,6 +260,51 @@ namespace Chiro.Kip.Services
 				feedback.AppendLine(String.Format("OverzichtsID: {0}", overzicht.id));
 			}
 			_log.BerichtLoggen(groepID, feedback.ToString());
+		}
+
+		/// <summary>
+		/// Probeer een GSM-nummer van de persoon vast te krijgen
+		/// </summary>
+		/// <param name="kipPersoon">Persoon uit kipadmin, met contactinfo gekoppeld</param>
+		/// <returns>Een GSM-nummer, of anders een gewoon telefoonnummer</returns>
+		private static string GsmNrGet(Persoon kipPersoon)
+		{
+			var nummers = (from nr in kipPersoon.kipContactInfo
+			               where nr.ContactTypeId == 1
+			               select nr).OrderByDescending(nr => nr.GeenMailings).ThenBy(nr => nr.VolgNr).Select(nr => nr.Info).
+				ToArray();
+			string resultaat = String.Empty;
+
+			if (nummers.FirstOrDefault() == null)
+			{
+				return String.Empty;
+			}
+			else
+			{
+				resultaat = (from nr in nummers
+				             where IsGsmNr(nr)
+				             select nr).FirstOrDefault();
+				if (resultaat != null)
+				{
+					return resultaat;
+				}
+				else
+				{
+					// Als er geen gsm-nummers gevonden: gewoon eerste telefoonnummer
+					return nummers.First();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Kort-door-de-bochte method die gokt of een telefoonnummer al dan niet een gsm-nummer is
+		/// </summary>
+		/// <param name="nr">Te testen telefoonnummer</param>
+		/// <returns><c>true</c> als het telefoonnummer een gsm-nummer is</returns>
+		private static bool IsGsmNr(string nr)
+		{
+			// Dit is slechts een zeer ruwe benadering.
+			return (nr.StartsWith("04") || nr.StartsWith("+324"));
 		}
 
 		/// <summary>
@@ -304,9 +356,48 @@ namespace Chiro.Kip.Services
 		/// </summary>
 		/// <param name="uitstapID">UitstapID (GAP) voor het bivak</param>
 		/// <param name="adNummer">AD-nummer contactpersoon bivak</param>
+		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void BivakContactBewaren(int uitstapID, int adNummer)
 		{
-			throw new NotImplementedException();
+			using (var db = new kipadminEntities())
+			{
+				var bivak = (from b in db.BivakAangifte.Include("kipPersoon").Include("Groep")
+				             where b.GapUitstapID == uitstapID
+				             select b).FirstOrDefault();
+
+				if (bivak == null)
+				{
+					_log.FoutLoggen(0, String.Format(
+						"Kan contactpersoon {0} niet toekennen aan onbestaand bivak {1}.",
+						adNummer,
+						uitstapID));
+					return;
+				}
+
+				if (bivak.kipPersoon == null || bivak.kipPersoon.AdNummer != adNummer)
+				{
+					// We doen alleen iets als er nog geen contactpersoon was, of als
+					// de contactpersoon iemand anders was.
+
+					
+					var persoon = (from p in db.PersoonSet
+					               where p.AdNummer == adNummer
+					               select p).FirstOrDefault();
+					bivak.kipPersoon = persoon;
+					db.SaveChanges();
+
+					_log.BerichtLoggen(bivak.Groep.GroepID, String.Format(
+						"Persoon {0} {1} {2} ingesteld als contact voor bivak {3} {4}",
+						persoon.AdNummer,
+						persoon.VoorNaam,
+						persoon.Naam,
+						bivak.ID,
+						bivak.BivakNaam));
+
+					FixOudeBivakTabel(bivak.Groep.GroepID, bivak.WerkJaar);
+				}
+				
+			}
 		}
 
 		/// <summary>
@@ -317,9 +408,21 @@ namespace Chiro.Kip.Services
 		/// <param name="details">gegevens van de persoon</param>
 		/// <remarks>Deze method mag enkel gebruikt worden als het ad-nummer van de
 		/// persoon onbestaand of onbekend is.</remarks>
+		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void BivakContactBewarenAdOnbekend(int uitstapID, PersoonDetails details)
 		{
-			throw new NotImplementedException();
+			Debug.Assert(details.Persoon.AdNummer == null);
+
+			if (String.IsNullOrEmpty(details.Persoon.VoorNaam))
+			{
+				_log.FoutLoggen(0, String.Format(
+					"Persoon zonder voornaam niet geupdatet: {0}",
+					details.Persoon.Naam));
+				return;
+			}
+
+			int adnr = UpdatenOfMaken(details);
+			BivakContactBewaren(uitstapID, adnr);
 		}
 
 		/// <summary>

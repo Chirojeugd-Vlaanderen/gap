@@ -89,7 +89,7 @@
             <End Role="kipPersoon" EntitySet="kipPersoon" />
             <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
           </AssociationSet>
-          <AssociationSet Name="FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak" Association="kipadminModel.Store.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak">
+          <AssociationSet Name="FK_Bivak_Persoon_VerantwoordelijkeSubsidies" Association="kipadminModel.Store.FK_Bivak_Persoon_VerantwoordelijkeSubsidies">
             <End Role="kipPersoon" EntitySet="kipPersoon" />
             <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
           </AssociationSet>
@@ -788,7 +788,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak">
+        <Association Name="FK_Bivak_Persoon_VerantwoordelijkeSubsidies">
           <End Role="kipPersoon" Type="kipadminModel.Store.kipPersoon" Multiplicity="0..1" />
           <End Role="BivakOverzicht" Type="kipadminModel.Store.BivakOverzicht" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1510,9 +1510,9 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Type="String" Name="B_NAAM" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="B_STRAAT" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="B_POSTNR" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="B_GEMEENTE" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="B_STRAAT" Nullable="true" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="B_POSTNR" Nullable="true" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="B_GEMEENTE" Nullable="true" MaxLength="40" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="B_PROVINCI" MaxLength="3" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="B_LAND" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="B_TEL" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -1609,7 +1609,6 @@
           <NavigationProperty Name="kipPersoon" Relationship="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1" FromRole="BivakOverzicht" ToRole="Persoon" />
           <NavigationProperty Name="VerantwoordelijkeB" Relationship="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1" FromRole="BivakOverzicht" ToRole="Persoon" />
           <NavigationProperty Name="kipPersoon2" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1" FromRole="BivakOverzicht" ToRole="Persoon" />
-          <NavigationProperty Name="VerantwoordelijkeS" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1" FromRole="BivakOverzicht" ToRole="Persoon" />
         </EntityType>
         <Association Name="FK_BivakAangifte_Adres">
           <End Type="kipadminModel.Adres" Role="Adres" Multiplicity="0..1" />
@@ -2323,10 +2322,10 @@
         <EntityTypeShape EntityType="kipadminModel.Groep" Width="1.5" PointX="10.625" PointY="32.375" Height="3.1340950520833246" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.Lid" Width="1.5" PointX="21" PointY="28" Height="5.2494108072916674" IsExpanded="true" />
         <AssociationConnector Association="kipadminModel.FK__kipContact__AdNr__6A26A4A8" ManuallyRouted="false">
-          <ConnectorPoint PointX="13.454100703125" PointY="31.643616536458335" />
-          <ConnectorPoint PointX="13.454100703125" PointY="36.3362939453125" />
-          <ConnectorPoint PointX="13.904949479166666" PointY="36.3362939453125" />
-          <ConnectorPoint PointX="14.071616145833334" PointY="36.3362939453125" />
+          <ConnectorPoint PointX="13.4379866015625" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="13.4379866015625" PointY="36.3362939453125" />
+          <ConnectorPoint PointX="13.899700856119791" PointY="36.3362939453125" />
+          <ConnectorPoint PointX="14.066367522786459" PointY="36.3362939453125" />
           <ConnectorPoint PointX="15" PointY="36.3362939453125" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipHeeftF__funct__4341E1B1" ManuallyRouted="false">
@@ -2350,18 +2349,18 @@
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.fk_Lid_Groep" ManuallyRouted="false">
           <ConnectorPoint PointX="12.125" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="12.928380104166665" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="13.095046770833333" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="13.149573736979166" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="13.316240403645834" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="13.370767369791667" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="13.537434036458334" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="13.559732799479166" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="13.726399466145834" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="13.732341139322916" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="13.899007805989584" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="13.904949479166666" PointY="32.812205403645834" />
-          <ConnectorPoint PointX="14.233727239583333" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="12.876867701822915" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.043534368489583" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.115760485026041" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.282427151692708" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.354653268229166" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.521319934895834" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.538126149088541" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.704792815755209" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.718913502604165" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.885580169270833" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.899700856119791" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="14.231102928059896" PointY="32.812205403645834" />
           <ConnectorPoint PointX="16.697916666666668" PointY="32.812205403645834" />
           <ConnectorPoint PointX="16.864583333333332" PointY="32.812205403645834" />
           <ConnectorPoint PointX="17.010416666666668" PointY="32.812205403645834" />
@@ -2392,25 +2391,25 @@
           <ConnectorPoint PointX="20.25" PointY="41.324208984375" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Aansluiting_Groep" >
-          <ConnectorPoint PointX="12.125" PointY="33.804613850911458" />
-          <ConnectorPoint PointX="12.928380104166665" PointY="33.804613850911458" />
-          <ConnectorPoint PointX="13.095046770833333" PointY="33.804613850911458" />
-          <ConnectorPoint PointX="13.370767369791667" PointY="33.804613850911458" />
-          <ConnectorPoint PointX="13.537434036458334" PointY="33.804613850911458" />
-          <ConnectorPoint PointX="13.904949479166666" PointY="33.804613850911458" />
-          <ConnectorPoint PointX="14.233727239583333" PointY="33.804613850911458" />
-          <ConnectorPoint PointX="16.697916666666668" PointY="33.804613850911458" />
-          <ConnectorPoint PointX="16.864583333333332" PointY="33.804613850911458" />
-          <ConnectorPoint PointX="17.010416666666668" PointY="33.804613850911458" />
-          <ConnectorPoint PointX="17.177083333333332" PointY="33.804613850911458" />
-          <ConnectorPoint PointX="20.59375" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="12.125" PointY="33.841705438639337" />
+          <ConnectorPoint PointX="12.876867701822915" PointY="33.841705438639337" />
+          <ConnectorPoint PointX="13.043534368489583" PointY="33.841705438639337" />
+          <ConnectorPoint PointX="13.354653268229166" PointY="33.841705438639337" />
+          <ConnectorPoint PointX="13.521319934895834" PointY="33.841705438639337" />
+          <ConnectorPoint PointX="13.899700856119791" PointY="33.841705438639337" />
+          <ConnectorPoint PointX="14.231102928059896" PointY="33.841705438639337" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.841705438639337" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.841705438639337" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.841705438639337" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.841705438639337" />
+          <ConnectorPoint PointX="20.59375" PointY="33.841705438639337" />
           <ConnectorPoint PointX="20.59375" PointY="36.25" />
           </AssociationConnector>
         <EntityTypeShape EntityType="kipadminModel.Afdeling" Width="1.5" PointX="0.75" PointY="0.75" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="kipadminModel.Abonnement" Width="1.5" PointX="17.25" PointY="34.125" Height="6.210917968749996" />
         <AssociationConnector Association="kipadminModel.FK_Abonnement_Persoon" >
-          <ConnectorPoint PointX="13.9882828125" PointY="31.643616536458335" />
-          <ConnectorPoint PointX="13.9882828125" PointY="37.7737939453125" />
+          <ConnectorPoint PointX="13.983034189453125" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="13.983034189453125" PointY="37.7737939453125" />
           <ConnectorPoint PointX="16.697916666666668" PointY="37.7737939453125" />
           <ConnectorPoint PointX="16.864583333333332" PointY="37.7737939453125" />
           <ConnectorPoint PointX="16.916666666666668" PointY="37.7737939453125" />
@@ -2468,12 +2467,10 @@
         <EntityTypeShape EntityType="kipadminModel.Bericht" Width="1.5" PointX="2.75" PointY="0.75" Height="1.9802864583333317" />
         <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresI__61915EA71" >
           <ConnectorPoint PointX="16.78125" PointY="49.625" />
-          <ConnectorPoint PointX="16.78125" PointY="29.1799194921875" />
-          <ConnectorPoint PointX="17.010416666666668" PointY="29.1799194921875" />
-          <ConnectorPoint PointX="17.177083333333332" PointY="29.1799194921875" />
-          <ConnectorPoint PointX="17.666666666666668" PointY="29.1799194921875" />
-          <ConnectorPoint PointX="17.833333333333332" PointY="29.1799194921875" />
-          <ConnectorPoint PointX="18" PointY="29.1799194921875" />
+          <ConnectorPoint PointX="16.78125" PointY="29.008677034505212" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="29.008677034505212" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="29.008677034505212" />
+          <ConnectorPoint PointX="18" PointY="29.008677034505212" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresT__628582E01" >
           <ConnectorPoint PointX="17.25" PointY="9.0189925130208337" />
@@ -2490,8 +2487,12 @@
           </AssociationConnector>
         <EntityTypeShape EntityType="kipadminModel.PersoonsVerzekering" Width="1.5" PointX="22.5" PointY="34.625" Height="1.595683593749996" />
         <AssociationConnector Association="kipadminModel.FK_PersoonsVerzekering_Persoon" >
-          <ConnectorPoint PointX="14.25" PointY="26.406123546875" />
-          <ConnectorPoint PointX="17.75" PointY="26.406123546875" />
+          <ConnectorPoint PointX="14.25" PointY="29.834587482096357" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="29.834587482096357" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="29.834587482096357" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="29.834587482096357" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="29.834587482096357" />
+          <ConnectorPoint PointX="17.75" PointY="29.834587482096357" />
           <ConnectorPoint PointX="17.75" PointY="33.311910807291667" />
           <ConnectorPoint PointX="23.25" PointY="33.311910807291667" />
           <ConnectorPoint PointX="23.25" PointY="34.625" />
@@ -2503,146 +2504,120 @@
           <ConnectorPoint PointX="23.25" PointY="44.213359375" />
           <ConnectorPoint PointX="23.25" PointY="36.220683593749996" /></AssociationConnector>
         <EntityTypeShape EntityType="kipadminModel.BivakAangifte" Width="1.5" PointX="23.75" PointY="25.25" Height="3.5186979166666674" />
-        <EntityTypeShape EntityType="kipadminModel.BivakOverzicht" Width="1.5" PointX="26" PointY="20.625" Height="20.441223958333325" />
+        <EntityTypeShape EntityType="kipadminModel.BivakOverzicht" Width="1.5" PointX="26" PointY="20.625" Height="20.24892252604166" />
         <AssociationConnector Association="kipadminModel.FK_BivakAangifte_Adres" >
           <ConnectorPoint PointX="17.09375" PointY="49.625" />
-          <ConnectorPoint PointX="17.09375" PointY="27.187246093749998" />
-          <ConnectorPoint PointX="17.666666666666668" PointY="27.187246093749998" />
-          <ConnectorPoint PointX="17.833333333333332" PointY="27.187246093749998" />
-          <ConnectorPoint PointX="18.666666666666668" PointY="27.187246093749998" />
-          <ConnectorPoint PointX="18.833333333333332" PointY="27.187246093749998" />
-          <ConnectorPoint PointX="23.385416666666668" PointY="27.187246093749998" />
-          <ConnectorPoint PointX="23.552083333333332" PointY="27.187246093749998" />
-          <ConnectorPoint PointX="23.75" PointY="27.187246093749998" />
+          <ConnectorPoint PointX="17.09375" PointY="27.155742187499996" />
+          <ConnectorPoint PointX="18.666666666666668" PointY="27.155742187499996" />
+          <ConnectorPoint PointX="18.833333333333332" PointY="27.155742187499996" />
+          <ConnectorPoint PointX="23.385416666666668" PointY="27.155742187499996" />
+          <ConnectorPoint PointX="23.552083333333332" PointY="27.155742187499996" />
+          <ConnectorPoint PointX="23.75" PointY="27.155742187499996" />
         </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_BivakAangifte_Groep" >
-          <ConnectorPoint PointX="12.125" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="12.928380104166665" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="13.095046770833333" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="13.370767369791667" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="13.537434036458334" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="13.559732799479166" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="13.726399466145834" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="13.732341139322916" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="13.899007805989584" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="13.904949479166666" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="14.233727239583333" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="16.697916666666668" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="16.864583333333332" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="17.010416666666668" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="17.177083333333332" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="23.166666666666668" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="23.333333333333332" PointY="33.409676905924478" />
-          <ConnectorPoint PointX="25.03125" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="12.125" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="12.876867701822915" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="13.043534368489583" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="13.354653268229166" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="13.521319934895834" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="13.538126149088541" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="13.704792815755209" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="13.718913502604165" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="13.885580169270833" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="13.899700856119791" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="14.231102928059896" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="23.166666666666668" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="23.333333333333332" PointY="33.400895643310506" />
+          <ConnectorPoint PointX="25.03125" PointY="33.400895643310506" />
           <ConnectorPoint PointX="25.03125" PointY="28.960999348958335" />
         </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_BivakOverzicht_BAangifte" >
-          <ConnectorPoint PointX="25.25" PointY="27.009348958333334" />
-          <ConnectorPoint PointX="26" PointY="27.009348958333334" />
+          <ConnectorPoint PointX="25.25" PointY="27.081461995442712" />
+          <ConnectorPoint PointX="26" PointY="27.081461995442712" />
         </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_BivakOverzicht_SAangifte" >
-          <ConnectorPoint PointX="25.25" PointY="26.067174479166667" />
-          <ConnectorPoint PointX="26" PointY="26.067174479166667" />
+          <ConnectorPoint PointX="25.25" PointY="26.103230997721354" />
+          <ConnectorPoint PointX="26" PointY="26.103230997721354" />
         </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_BivakOverzicht_UAangifte" >
-          <ConnectorPoint PointX="25.25" PointY="28.047674153645836" />
-          <ConnectorPoint PointX="26" PointY="28.047674153645836" />
+          <ConnectorPoint PointX="25.25" PointY="28.083730672200524" />
+          <ConnectorPoint PointX="26" PointY="28.083730672200524" />
         </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Bivak_Groep" >
-          <ConnectorPoint PointX="12.125" PointY="34.03125" />
-          <ConnectorPoint PointX="12.959632604166666" PointY="34.03125" />
-          <ConnectorPoint PointX="13.126299270833334" PointY="34.03125" />
-          <ConnectorPoint PointX="13.315103541666666" PointY="34.03125" />
-          <ConnectorPoint PointX="13.481770208333334" PointY="34.03125" />
-          <ConnectorPoint PointX="13.893229791666666" PointY="34.03125" />
-          <ConnectorPoint PointX="14.059896458333334" PointY="34.03125" />
-          <ConnectorPoint PointX="19.072916666666668" PointY="34.03125" />
-          <ConnectorPoint PointX="19.239583333333332" PointY="34.03125" />
-          <ConnectorPoint PointX="20.510416666666668" PointY="34.03125" />
-          <ConnectorPoint PointX="20.677083333333332" PointY="34.03125" />
-          <ConnectorPoint PointX="22.041666666666668" PointY="34.03125" />
-          <ConnectorPoint PointX="22.208333333333332" PointY="34.03125" />
-          <ConnectorPoint PointX="24.947916666666668" PointY="34.03125" />
-          <ConnectorPoint PointX="25.114583333333332" PointY="34.03125" />
-          <ConnectorPoint PointX="26" PointY="34.03125" />
+          <ConnectorPoint PointX="11.17187375" PointY="32.375" />
+          <ConnectorPoint PointX="11.17187375" PointY="21.976563750000025" />
+          <ConnectorPoint PointX="18.666666666666668" PointY="21.976563750000025" />
+          <ConnectorPoint PointX="18.833333333333332" PointY="21.976563750000025" />
+          <ConnectorPoint PointX="26" PointY="21.976563750000025" />
         </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Bivak_Groep2" >
-          <ConnectorPoint PointX="12.125" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="12.959632604166666" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="13.126299270833334" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="13.315103541666666" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="13.481770208333334" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="13.604166666666666" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="13.770833333333334" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="13.893229791666666" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="14.059896458333334" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="14.061200729166666" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="14.227867395833334" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="19.072916666666668" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="19.239583333333332" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="20.510416666666668" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="20.677083333333332" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="24.947916666666668" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="25.114583333333332" PointY="33.734227701822917" />
-          <ConnectorPoint PointX="26" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="11.679689374999999" PointY="32.375" />
+          <ConnectorPoint PointX="11.679689374999999" PointY="23.113284375000063" />
+          <ConnectorPoint PointX="18.666666666666668" PointY="23.113284375000063" />
+          <ConnectorPoint PointX="18.833333333333332" PointY="23.113284375000063" />
+          <ConnectorPoint PointX="26" PointY="23.113284375000063" />
         </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1" >
-          <ConnectorPoint PointX="13.2329070703125" PointY="31.643616536458335" />
-          <ConnectorPoint PointX="13.2329070703125" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="13.370767369791667" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="13.537434036458334" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="13.559732799479166" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="13.726399466145834" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="13.732341139322916" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="13.899007805989584" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="13.904949479166666" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="14.233727239583333" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="16.697916666666668" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="16.864583333333332" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="17.010416666666668" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="17.177083333333332" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="23.166666666666668" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="23.333333333333332" PointY="33.489880479329351" />
-          <ConnectorPoint PointX="26" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="13.199093818359375" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="13.199093818359375" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="13.354653268229166" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="13.521319934895834" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="13.538126149088541" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="13.704792815755209" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="13.718913502604165" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="13.885580169270833" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="13.899700856119791" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="14.231102928059896" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="23.166666666666668" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="23.333333333333332" PointY="33.466434444781186" />
+          <ConnectorPoint PointX="26" PointY="33.466434444781186" />
         </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1" >
-          <ConnectorPoint PointX="13.6430661328125" PointY="31.643616536458335" />
-          <ConnectorPoint PointX="13.6430661328125" PointY="33.749853951822942" />
-          <ConnectorPoint PointX="13.904949479166666" PointY="33.749853951822942" />
-          <ConnectorPoint PointX="14.233727239583333" PointY="33.749853951822942" />
-          <ConnectorPoint PointX="16.697916666666668" PointY="33.749853951822942" />
-          <ConnectorPoint PointX="16.864583333333332" PointY="33.749853951822942" />
-          <ConnectorPoint PointX="17.010416666666668" PointY="33.749853951822942" />
-          <ConnectorPoint PointX="17.177083333333332" PointY="33.749853951822942" />
-          <ConnectorPoint PointX="23.166666666666668" PointY="33.749853951822942" />
-          <ConnectorPoint PointX="23.333333333333332" PointY="33.749853951822942" />
-          <ConnectorPoint PointX="26" PointY="33.749853951822942" />
+          <ConnectorPoint PointX="13.621459482421875" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="13.621459482421875" PointY="33.731144658457438" />
+          <ConnectorPoint PointX="13.899700856119791" PointY="33.731144658457438" />
+          <ConnectorPoint PointX="14.231102928059896" PointY="33.731144658457438" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.731144658457438" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.731144658457438" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.731144658457438" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.731144658457438" />
+          <ConnectorPoint PointX="23.166666666666668" PointY="33.731144658457438" />
+          <ConnectorPoint PointX="23.333333333333332" PointY="33.731144658457438" />
+          <ConnectorPoint PointX="26" PointY="33.731144658457438" />
         </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1" >
-          <ConnectorPoint PointX="14.150393906249999" PointY="31.643616536458335" />
-          <ConnectorPoint PointX="14.150393906249999" PointY="33.933556925455733" />
-          <ConnectorPoint PointX="16.697916666666668" PointY="33.933556925455733" />
-          <ConnectorPoint PointX="16.864583333333332" PointY="33.933556925455733" />
-          <ConnectorPoint PointX="17.010416666666668" PointY="33.933556925455733" />
-          <ConnectorPoint PointX="17.177083333333332" PointY="33.933556925455733" />
-          <ConnectorPoint PointX="20.510416666666668" PointY="33.933556925455733" />
-          <ConnectorPoint PointX="20.677083333333332" PointY="33.933556925455733" />
-          <ConnectorPoint PointX="23.166666666666668" PointY="33.933556925455733" />
-          <ConnectorPoint PointX="23.333333333333332" PointY="33.933556925455733" />
-          <ConnectorPoint PointX="26" PointY="33.933556925455733" />
+          <ConnectorPoint PointX="14.147769594726562" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="14.147769594726562" PointY="33.952102719319669" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.952102719319669" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.952102719319669" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.952102719319669" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.952102719319669" />
+          <ConnectorPoint PointX="20.510416666666668" PointY="33.952102719319669" />
+          <ConnectorPoint PointX="20.677083333333332" PointY="33.952102719319669" />
+          <ConnectorPoint PointX="23.166666666666668" PointY="33.952102719319669" />
+          <ConnectorPoint PointX="23.333333333333332" PointY="33.952102719319669" />
+          <ConnectorPoint PointX="26" PointY="33.952102719319669" />
         </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1" >
-          <ConnectorPoint PointX="13.81567447265625" PointY="31.643616536458335" />
-          <ConnectorPoint PointX="13.81567447265625" PointY="33.61986721557615" />
-          <ConnectorPoint PointX="13.904949479166666" PointY="33.61986721557615" />
-          <ConnectorPoint PointX="14.233727239583333" PointY="33.61986721557615" />
-          <ConnectorPoint PointX="16.697916666666668" PointY="33.61986721557615" />
-          <ConnectorPoint PointX="16.864583333333332" PointY="33.61986721557615" />
-          <ConnectorPoint PointX="17.010416666666668" PointY="33.61986721557615" />
-          <ConnectorPoint PointX="17.177083333333332" PointY="33.61986721557615" />
-          <ConnectorPoint PointX="23.166666666666668" PointY="33.61986721557615" />
-          <ConnectorPoint PointX="23.333333333333332" PointY="33.61986721557615" />
-          <ConnectorPoint PointX="26" PointY="33.61986721557615" />
+          <ConnectorPoint PointX="13.802246835937499" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="13.802246835937499" PointY="33.598789551619312" />
+          <ConnectorPoint PointX="13.899700856119791" PointY="33.598789551619312" />
+          <ConnectorPoint PointX="14.231102928059896" PointY="33.598789551619312" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.598789551619312" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.598789551619312" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.598789551619312" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.598789551619312" />
+          <ConnectorPoint PointX="23.166666666666668" PointY="33.598789551619312" />
+          <ConnectorPoint PointX="23.333333333333332" PointY="33.598789551619312" />
+          <ConnectorPoint PointX="26" PointY="33.598789551619312" />
         </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_BivakAangifte_Persoon" >
           <ConnectorPoint PointX="13.5" PointY="25.625" />

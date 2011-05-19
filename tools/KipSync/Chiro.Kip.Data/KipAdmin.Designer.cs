@@ -41,7 +41,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_BivakAangifte_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "BivakAangifte", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakAangifte))]
 
 // Original file name:
-// Generation date: 19/05/2011 10:55:05
+// Generation date: 19/05/2011 14:11:01
 namespace Chiro.Kip.Data
 {
     
@@ -8785,21 +8785,15 @@ namespace Chiro.Kip.Data
         /// <summary>
         /// Create a new BivakOverzicht object.
         /// </summary>
-        /// <param name="b_STRAAT">Initial value of B_STRAAT.</param>
-        /// <param name="b_POSTNR">Initial value of B_POSTNR.</param>
-        /// <param name="b_GEMEENTE">Initial value of B_GEMEENTE.</param>
         /// <param name="b_BEGIN">Initial value of B_BEGIN.</param>
         /// <param name="b_EIND">Initial value of B_EIND.</param>
         /// <param name="werkjaar">Initial value of werkjaar.</param>
         /// <param name="id">Initial value of id.</param>
         /// <param name="s_Kaartje">Initial value of s_Kaartje.</param>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public static BivakOverzicht CreateBivakOverzicht(string b_STRAAT, string b_POSTNR, string b_GEMEENTE, global::System.DateTime b_BEGIN, global::System.DateTime b_EIND, int werkjaar, int id, bool s_Kaartje)
+        public static BivakOverzicht CreateBivakOverzicht(global::System.DateTime b_BEGIN, global::System.DateTime b_EIND, int werkjaar, int id, bool s_Kaartje)
         {
             BivakOverzicht bivakOverzicht = new BivakOverzicht();
-            bivakOverzicht.B_STRAAT = b_STRAAT;
-            bivakOverzicht.B_POSTNR = b_POSTNR;
-            bivakOverzicht.B_GEMEENTE = b_GEMEENTE;
             bivakOverzicht.B_BEGIN = b_BEGIN;
             bivakOverzicht.B_EIND = b_EIND;
             bivakOverzicht.werkjaar = werkjaar;
@@ -8837,7 +8831,7 @@ namespace Chiro.Kip.Data
         /// <summary>
         /// There are no comments for property B_STRAAT in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         public string B_STRAAT
@@ -8850,7 +8844,7 @@ namespace Chiro.Kip.Data
             {
                 this.OnB_STRAATChanging(value);
                 this.ReportPropertyChanging("B_STRAAT");
-                this._B_STRAAT = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._B_STRAAT = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("B_STRAAT");
                 this.OnB_STRAATChanged();
             }
@@ -8864,7 +8858,7 @@ namespace Chiro.Kip.Data
         /// <summary>
         /// There are no comments for property B_POSTNR in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         public string B_POSTNR
@@ -8877,7 +8871,7 @@ namespace Chiro.Kip.Data
             {
                 this.OnB_POSTNRChanging(value);
                 this.ReportPropertyChanging("B_POSTNR");
-                this._B_POSTNR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._B_POSTNR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("B_POSTNR");
                 this.OnB_POSTNRChanged();
             }
@@ -8891,7 +8885,7 @@ namespace Chiro.Kip.Data
         /// <summary>
         /// There are no comments for property B_GEMEENTE in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         public string B_GEMEENTE
@@ -8904,7 +8898,7 @@ namespace Chiro.Kip.Data
             {
                 this.OnB_GEMEENTEChanging(value);
                 this.ReportPropertyChanging("B_GEMEENTE");
-                this._B_GEMEENTE = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._B_GEMEENTE = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("B_GEMEENTE");
                 this.OnB_GEMEENTEChanged();
             }
@@ -11600,45 +11594,6 @@ namespace Chiro.Kip.Data
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1", "Persoon", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for VerantwoordelijkeS in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "Persoon")]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Persoon VerantwoordelijkeS
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "Persoon").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "Persoon").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for VerantwoordelijkeS in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Persoon> VerantwoordelijkeSReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "Persoon");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "Persoon", value);
                 }
             }
         }
