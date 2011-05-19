@@ -27,13 +27,21 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK__kipWoont__AdNr__609D3A6E1", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Persoon), "Woont", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Woont))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_PersoonsVerzekering_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Persoon), "PersoonsVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.PersoonsVerzekering))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_PersoonsVerzekering_ExtraVerzekering", "ExtraVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.ExtraVerzekering), "PersoonsVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.PersoonsVerzekering))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Bivak_Persoon_AspiVerantwoordelijke", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "kipBivak", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Bivak))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Bivak_Persoon_BivakVerantwoordelijke", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "kipBivak", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Bivak))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "kipBivak", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Bivak))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "kipBivak", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Bivak))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_BivakAangifte_Adres", "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Adres), "BivakAangifte", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakAangifte))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_BivakAangifte_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Groep), "BivakAangifte", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakAangifte))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_BivakOverzicht_BAangifte", "BivakAangifte", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.BivakAangifte), "BivakOverzicht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakOverzicht))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_BivakOverzicht_SAangifte", "BivakAangifte", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.BivakAangifte), "BivakOverzicht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakOverzicht))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_BivakOverzicht_UAangifte", "BivakAangifte", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.BivakAangifte), "BivakOverzicht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakOverzicht))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Bivak_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Groep), "BivakOverzicht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakOverzicht))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Bivak_Groep2", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Groep), "BivakOverzicht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakOverzicht))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Bivak_Persoon_AspiVerantwoordelijke1", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "BivakOverzicht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakOverzicht))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Bivak_Persoon_BivakVerantwoordelijke1", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "BivakOverzicht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakOverzicht))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "BivakOverzicht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakOverzicht))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "BivakOverzicht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakOverzicht))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_BivakAangifte_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "BivakAangifte", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakAangifte))]
 
 // Original file name:
-// Generation date: 11/05/2011 13:32:36
+// Generation date: 19/05/2011 10:55:05
 namespace Chiro.Kip.Data
 {
     
@@ -340,22 +348,39 @@ namespace Chiro.Kip.Data
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         private global::System.Data.Objects.ObjectQuery<PersoonsVerzekering> _PersoonsVerzekering;
         /// <summary>
-        /// There are no comments for kipBivak in the schema.
+        /// There are no comments for BivakAangifte in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Data.Objects.ObjectQuery<Bivak> kipBivak
+        public global::System.Data.Objects.ObjectQuery<BivakAangifte> BivakAangifte
         {
             get
             {
-                if ((this._kipBivak == null))
+                if ((this._BivakAangifte == null))
                 {
-                    this._kipBivak = base.CreateQuery<Bivak>("[kipBivak]");
+                    this._BivakAangifte = base.CreateQuery<BivakAangifte>("[BivakAangifte]");
                 }
-                return this._kipBivak;
+                return this._BivakAangifte;
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private global::System.Data.Objects.ObjectQuery<Bivak> _kipBivak;
+        private global::System.Data.Objects.ObjectQuery<BivakAangifte> _BivakAangifte;
+        /// <summary>
+        /// There are no comments for BivakOverzicht in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Data.Objects.ObjectQuery<BivakOverzicht> BivakOverzicht
+        {
+            get
+            {
+                if ((this._BivakOverzicht == null))
+                {
+                    this._BivakOverzicht = base.CreateQuery<BivakOverzicht>("[BivakOverzicht]");
+                }
+                return this._BivakOverzicht;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Data.Objects.ObjectQuery<BivakOverzicht> _BivakOverzicht;
         /// <summary>
         /// There are no comments for AdresSet in the schema.
         /// </summary>
@@ -485,12 +510,20 @@ namespace Chiro.Kip.Data
             base.AddObject("PersoonsVerzekering", persoonsVerzekering);
         }
         /// <summary>
-        /// There are no comments for kipBivak in the schema.
+        /// There are no comments for BivakAangifte in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public void AddTokipBivak(Bivak bivak)
+        public void AddToBivakAangifte(BivakAangifte bivakAangifte)
         {
-            base.AddObject("kipBivak", bivak);
+            base.AddObject("BivakAangifte", bivakAangifte);
+        }
+        /// <summary>
+        /// There are no comments for BivakOverzicht in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public void AddToBivakOverzicht(BivakOverzicht bivakOverzicht)
+        {
+            base.AddObject("BivakOverzicht", bivakOverzicht);
         }
     }
     /// <summary>
@@ -698,6 +731,28 @@ namespace Chiro.Kip.Data
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Woont>("kipadminModel.FK__kipWoont__AdresI__61915EA71", "Woont", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for BivakAangifte in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakAangifte_Adres", "BivakAangifte")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakAangifte> BivakAangifte
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakAangifte>("kipadminModel.FK_BivakAangifte_Adres", "BivakAangifte");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakAangifte>("kipadminModel.FK_BivakAangifte_Adres", "BivakAangifte", value);
                 }
             }
         }
@@ -2039,90 +2094,112 @@ namespace Chiro.Kip.Data
             }
         }
         /// <summary>
-        /// There are no comments for kipBivak in the schema.
+        /// There are no comments for BivakOverzicht in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_AspiVerantwoordelijke", "kipBivak")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_AspiVerantwoordelijke1", "BivakOverzicht")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Bivak> kipBivak
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakOverzicht> BivakOverzicht
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Bivak>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke", "kipBivak");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1", "BivakOverzicht");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Bivak>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke", "kipBivak", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1", "BivakOverzicht", value);
                 }
             }
         }
         /// <summary>
-        /// There are no comments for kipBivak1 in the schema.
+        /// There are no comments for BivakOverzicht1 in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_BivakVerantwoordelijke", "kipBivak")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_BivakVerantwoordelijke1", "BivakOverzicht")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Bivak> kipBivak1
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakOverzicht> BivakOverzicht1
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Bivak>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke", "kipBivak");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1", "BivakOverzicht");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Bivak>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke", "kipBivak", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1", "BivakOverzicht", value);
                 }
             }
         }
         /// <summary>
-        /// There are no comments for kipBivak2 in the schema.
+        /// There are no comments for BivakOverzicht2 in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten", "kipBivak")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1", "BivakOverzicht")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Bivak> kipBivak2
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakOverzicht> BivakOverzicht2
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Bivak>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten", "kipBivak");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1", "BivakOverzicht");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Bivak>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten", "kipBivak", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1", "BivakOverzicht", value);
                 }
             }
         }
         /// <summary>
-        /// There are no comments for kipBivak3 in the schema.
+        /// There are no comments for BivakOverzicht3 in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak", "kipBivak")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "BivakOverzicht")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Bivak> kipBivak3
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakOverzicht> BivakOverzicht3
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Bivak>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak", "kipBivak");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "BivakOverzicht");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Bivak>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak", "kipBivak", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "BivakOverzicht", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for BivakAangifte in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakAangifte_Persoon", "BivakAangifte")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakAangifte> BivakAangifte
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakAangifte>("kipadminModel.FK_BivakAangifte_Persoon", "BivakAangifte");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakAangifte>("kipadminModel.FK_BivakAangifte_Persoon", "BivakAangifte", value);
                 }
             }
         }
@@ -3664,6 +3741,72 @@ namespace Chiro.Kip.Data
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<ExtraVerzekering>("kipadminModel.FK_ExtraVerzekering_Groep", "ExtraVerzekering", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for BivakAangifte in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakAangifte_Groep", "BivakAangifte")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakAangifte> BivakAangifte
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakAangifte>("kipadminModel.FK_BivakAangifte_Groep", "BivakAangifte");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakAangifte>("kipadminModel.FK_BivakAangifte_Groep", "BivakAangifte", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for BivakOverzicht in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Groep", "BivakOverzicht")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakOverzicht> BivakOverzicht
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Groep", "BivakOverzicht");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Groep", "BivakOverzicht", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for BivakOverzicht1 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Groep2", "BivakOverzicht")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakOverzicht> BivakOverzicht1
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Groep2", "BivakOverzicht");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakOverzicht>("kipadminModel.FK_Bivak_Groep2", "BivakOverzicht", value);
                 }
             }
         }
@@ -8199,20 +8342,449 @@ namespace Chiro.Kip.Data
         }
     }
     /// <summary>
-    /// There are no comments for kipadminModel.Bivak in the schema.
+    /// There are no comments for kipadminModel.BivakAangifte in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="BivakAangifte")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class BivakAangifte : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new BivakAangifte object.
+        /// </summary>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="gapUitstapID">Initial value of GapUitstapID.</param>
+        /// <param name="werkJaar">Initial value of WerkJaar.</param>
+        /// <param name="datumVan">Initial value of DatumVan.</param>
+        /// <param name="datumTot">Initial value of DatumTot.</param>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public static BivakAangifte CreateBivakAangifte(int id, int gapUitstapID, int werkJaar, global::System.DateTime datumVan, global::System.DateTime datumTot)
+        {
+            BivakAangifte bivakAangifte = new BivakAangifte();
+            bivakAangifte.ID = id;
+            bivakAangifte.GapUitstapID = gapUitstapID;
+            bivakAangifte.WerkJaar = werkJaar;
+            bivakAangifte.DatumVan = datumVan;
+            bivakAangifte.DatumTot = datumTot;
+            return bivakAangifte;
+        }
+        /// <summary>
+        /// There are no comments for property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private int _ID;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnIDChanging(int value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for property GapUitstapID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public int GapUitstapID
+        {
+            get
+            {
+                return this._GapUitstapID;
+            }
+            set
+            {
+                this.OnGapUitstapIDChanging(value);
+                this.ReportPropertyChanging("GapUitstapID");
+                this._GapUitstapID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("GapUitstapID");
+                this.OnGapUitstapIDChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private int _GapUitstapID;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnGapUitstapIDChanging(int value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnGapUitstapIDChanged();
+        /// <summary>
+        /// There are no comments for property WerkJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public int WerkJaar
+        {
+            get
+            {
+                return this._WerkJaar;
+            }
+            set
+            {
+                this.OnWerkJaarChanging(value);
+                this.ReportPropertyChanging("WerkJaar");
+                this._WerkJaar = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("WerkJaar");
+                this.OnWerkJaarChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private int _WerkJaar;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnWerkJaarChanging(int value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnWerkJaarChanged();
+        /// <summary>
+        /// There are no comments for property DatumVan in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.DateTime DatumVan
+        {
+            get
+            {
+                return this._DatumVan;
+            }
+            set
+            {
+                this.OnDatumVanChanging(value);
+                this.ReportPropertyChanging("DatumVan");
+                this._DatumVan = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("DatumVan");
+                this.OnDatumVanChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.DateTime _DatumVan;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnDatumVanChanging(global::System.DateTime value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnDatumVanChanged();
+        /// <summary>
+        /// There are no comments for property DatumTot in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.DateTime DatumTot
+        {
+            get
+            {
+                return this._DatumTot;
+            }
+            set
+            {
+                this.OnDatumTotChanging(value);
+                this.ReportPropertyChanging("DatumTot");
+                this._DatumTot = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("DatumTot");
+                this.OnDatumTotChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.DateTime _DatumTot;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnDatumTotChanging(global::System.DateTime value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnDatumTotChanged();
+        /// <summary>
+        /// There are no comments for property BivakPlaatsNaam in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public string BivakPlaatsNaam
+        {
+            get
+            {
+                return this._BivakPlaatsNaam;
+            }
+            set
+            {
+                this.OnBivakPlaatsNaamChanging(value);
+                this.ReportPropertyChanging("BivakPlaatsNaam");
+                this._BivakPlaatsNaam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("BivakPlaatsNaam");
+                this.OnBivakPlaatsNaamChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private string _BivakPlaatsNaam;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnBivakPlaatsNaamChanging(string value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnBivakPlaatsNaamChanged();
+        /// <summary>
+        /// There are no comments for property BivakNaam in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public string BivakNaam
+        {
+            get
+            {
+                return this._BivakNaam;
+            }
+            set
+            {
+                this.OnBivakNaamChanging(value);
+                this.ReportPropertyChanging("BivakNaam");
+                this._BivakNaam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("BivakNaam");
+                this.OnBivakNaamChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private string _BivakNaam;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnBivakNaamChanging(string value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnBivakNaamChanged();
+        /// <summary>
+        /// There are no comments for property Opmerkingen in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public string Opmerkingen
+        {
+            get
+            {
+                return this._Opmerkingen;
+            }
+            set
+            {
+                this.OnOpmerkingenChanging(value);
+                this.ReportPropertyChanging("Opmerkingen");
+                this._Opmerkingen = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Opmerkingen");
+                this.OnOpmerkingenChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private string _Opmerkingen;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnOpmerkingenChanging(string value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnOpmerkingenChanged();
+        /// <summary>
+        /// There are no comments for kipAdres in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakAangifte_Adres", "Adres")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Adres kipAdres
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Adres>("kipadminModel.FK_BivakAangifte_Adres", "Adres").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Adres>("kipadminModel.FK_BivakAangifte_Adres", "Adres").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for kipAdres in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Adres> kipAdresReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Adres>("kipadminModel.FK_BivakAangifte_Adres", "Adres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Adres>("kipadminModel.FK_BivakAangifte_Adres", "Adres", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakAangifte_Groep", "Groep")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Groep Groep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_BivakAangifte_Groep", "Groep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_BivakAangifte_Groep", "Groep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Groep> GroepReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_BivakAangifte_Groep", "Groep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("kipadminModel.FK_BivakAangifte_Groep", "Groep", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for BivakOverzichtB in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakOverzicht_BAangifte", "BivakOverzicht")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakOverzicht> BivakOverzichtB
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakOverzicht>("kipadminModel.FK_BivakOverzicht_BAangifte", "BivakOverzicht");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakOverzicht>("kipadminModel.FK_BivakOverzicht_BAangifte", "BivakOverzicht", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for BivakOverzichtS in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakOverzicht_SAangifte", "BivakOverzicht")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakOverzicht> BivakOverzichtS
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakOverzicht>("kipadminModel.FK_BivakOverzicht_SAangifte", "BivakOverzicht");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakOverzicht>("kipadminModel.FK_BivakOverzicht_SAangifte", "BivakOverzicht", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for BivakOverzichtU in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakOverzicht_UAangifte", "BivakOverzicht")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<BivakOverzicht> BivakOverzichtU
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<BivakOverzicht>("kipadminModel.FK_BivakOverzicht_UAangifte", "BivakOverzicht");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<BivakOverzicht>("kipadminModel.FK_BivakOverzicht_UAangifte", "BivakOverzicht", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for kipPersoon in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakAangifte_Persoon", "Persoon")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Persoon kipPersoon
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_BivakAangifte_Persoon", "Persoon").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_BivakAangifte_Persoon", "Persoon").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for kipPersoon in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Persoon> kipPersoonReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_BivakAangifte_Persoon", "Persoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_BivakAangifte_Persoon", "Persoon", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for kipadminModel.BivakOverzicht in the schema.
     /// </summary>
     /// <KeyProperties>
     /// id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="Bivak")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="BivakOverzicht")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class Bivak : global::System.Data.Objects.DataClasses.EntityObject
+    public partial class BivakOverzicht : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
-        /// Create a new Bivak object.
+        /// Create a new BivakOverzicht object.
         /// </summary>
-        /// <param name="sTAMNR">Initial value of STAMNR.</param>
         /// <param name="b_STRAAT">Initial value of B_STRAAT.</param>
         /// <param name="b_POSTNR">Initial value of B_POSTNR.</param>
         /// <param name="b_GEMEENTE">Initial value of B_GEMEENTE.</param>
@@ -8222,47 +8794,19 @@ namespace Chiro.Kip.Data
         /// <param name="id">Initial value of id.</param>
         /// <param name="s_Kaartje">Initial value of s_Kaartje.</param>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public static Bivak CreateBivak(string sTAMNR, string b_STRAAT, string b_POSTNR, string b_GEMEENTE, global::System.DateTime b_BEGIN, global::System.DateTime b_EIND, int werkjaar, int id, bool s_Kaartje)
+        public static BivakOverzicht CreateBivakOverzicht(string b_STRAAT, string b_POSTNR, string b_GEMEENTE, global::System.DateTime b_BEGIN, global::System.DateTime b_EIND, int werkjaar, int id, bool s_Kaartje)
         {
-            Bivak bivak = new Bivak();
-            bivak.STAMNR = sTAMNR;
-            bivak.B_STRAAT = b_STRAAT;
-            bivak.B_POSTNR = b_POSTNR;
-            bivak.B_GEMEENTE = b_GEMEENTE;
-            bivak.B_BEGIN = b_BEGIN;
-            bivak.B_EIND = b_EIND;
-            bivak.werkjaar = werkjaar;
-            bivak.id = id;
-            bivak.s_Kaartje = s_Kaartje;
-            return bivak;
+            BivakOverzicht bivakOverzicht = new BivakOverzicht();
+            bivakOverzicht.B_STRAAT = b_STRAAT;
+            bivakOverzicht.B_POSTNR = b_POSTNR;
+            bivakOverzicht.B_GEMEENTE = b_GEMEENTE;
+            bivakOverzicht.B_BEGIN = b_BEGIN;
+            bivakOverzicht.B_EIND = b_EIND;
+            bivakOverzicht.werkjaar = werkjaar;
+            bivakOverzicht.id = id;
+            bivakOverzicht.s_Kaartje = s_Kaartje;
+            return bivakOverzicht;
         }
-        /// <summary>
-        /// There are no comments for property STAMNR in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public string STAMNR
-        {
-            get
-            {
-                return this._STAMNR;
-            }
-            set
-            {
-                this.OnSTAMNRChanging(value);
-                this.ReportPropertyChanging("STAMNR");
-                this._STAMNR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
-                this.ReportPropertyChanged("STAMNR");
-                this.OnSTAMNRChanged();
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private string _STAMNR;
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnSTAMNRChanging(string value);
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnSTAMNRChanged();
         /// <summary>
         /// There are no comments for property B_NAAM in the schema.
         /// </summary>
@@ -9397,33 +9941,6 @@ namespace Chiro.Kip.Data
         partial void OnINSCHRNRChanging(global::System.Nullable<short> value);
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnINSCHRNRChanged();
-        /// <summary>
-        /// There are no comments for property STAMNR2 in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public string STAMNR2
-        {
-            get
-            {
-                return this._STAMNR2;
-            }
-            set
-            {
-                this.OnSTAMNR2Changing(value);
-                this.ReportPropertyChanging("STAMNR2");
-                this._STAMNR2 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("STAMNR2");
-                this.OnSTAMNR2Changed();
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private string _STAMNR2;
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnSTAMNR2Changing(string value);
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnSTAMNR2Changed();
         /// <summary>
         /// There are no comments for property DAT_ONTV in the schema.
         /// </summary>
@@ -10775,90 +11292,204 @@ namespace Chiro.Kip.Data
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void Ons_KaartjeChanged();
         /// <summary>
-        /// There are no comments for property b_GapID in the schema.
+        /// There are no comments for BivakAangifteB in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakOverzicht_BAangifte", "BivakAangifte")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Nullable<int> b_GapID
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public BivakAangifte BivakAangifteB
         {
             get
             {
-                return this._b_GapID;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_BAangifte", "BivakAangifte").Value;
             }
             set
             {
-                this.Onb_GapIDChanging(value);
-                this.ReportPropertyChanging("b_GapID");
-                this._b_GapID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("b_GapID");
-                this.Onb_GapIDChanged();
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_BAangifte", "BivakAangifte").Value = value;
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private global::System.Nullable<int> _b_GapID;
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void Onb_GapIDChanging(global::System.Nullable<int> value);
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void Onb_GapIDChanged();
         /// <summary>
-        /// There are no comments for property u_GapID in the schema.
+        /// There are no comments for BivakAangifteB in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Nullable<int> u_GapID
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<BivakAangifte> BivakAangifteBReference
         {
             get
             {
-                return this._u_GapID;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_BAangifte", "BivakAangifte");
             }
             set
             {
-                this.Onu_GapIDChanging(value);
-                this.ReportPropertyChanging("u_GapID");
-                this._u_GapID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("u_GapID");
-                this.Onu_GapIDChanged();
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_BAangifte", "BivakAangifte", value);
+                }
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private global::System.Nullable<int> _u_GapID;
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void Onu_GapIDChanging(global::System.Nullable<int> value);
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void Onu_GapIDChanged();
         /// <summary>
-        /// There are no comments for property s_GapID in the schema.
+        /// There are no comments for BivakAangifteS in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakOverzicht_SAangifte", "BivakAangifte")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Nullable<int> s_GapID
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public BivakAangifte BivakAangifteS
         {
             get
             {
-                return this._s_GapID;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_SAangifte", "BivakAangifte").Value;
             }
             set
             {
-                this.Ons_GapIDChanging(value);
-                this.ReportPropertyChanging("s_GapID");
-                this._s_GapID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("s_GapID");
-                this.Ons_GapIDChanged();
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_SAangifte", "BivakAangifte").Value = value;
             }
         }
+        /// <summary>
+        /// There are no comments for BivakAangifteS in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private global::System.Nullable<int> _s_GapID;
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<BivakAangifte> BivakAangifteSReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_SAangifte", "BivakAangifte");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_SAangifte", "BivakAangifte", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for BivakAangifteU in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_BivakOverzicht_UAangifte", "BivakAangifte")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void Ons_GapIDChanging(global::System.Nullable<int> value);
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public BivakAangifte BivakAangifteU
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_UAangifte", "BivakAangifte").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_UAangifte", "BivakAangifte").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for BivakAangifteU in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void Ons_GapIDChanged();
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<BivakAangifte> BivakAangifteUReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_UAangifte", "BivakAangifte");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<BivakAangifte>("kipadminModel.FK_BivakOverzicht_UAangifte", "BivakAangifte", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Groep", "Groep")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Groep Groep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_Bivak_Groep", "Groep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_Bivak_Groep", "Groep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Groep> GroepReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_Bivak_Groep", "Groep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("kipadminModel.FK_Bivak_Groep", "Groep", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep1 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Groep2", "Groep")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Groep Groep1
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_Bivak_Groep2", "Groep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_Bivak_Groep2", "Groep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep1 in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Groep> Groep1Reference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_Bivak_Groep2", "Groep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("kipadminModel.FK_Bivak_Groep2", "Groep", value);
+                }
+            }
+        }
         /// <summary>
         /// There are no comments for kipPersoon in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_AspiVerantwoordelijke", "Persoon")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_AspiVerantwoordelijke1", "Persoon")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -10867,11 +11498,11 @@ namespace Chiro.Kip.Data
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke", "Persoon").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1", "Persoon").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke", "Persoon").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1", "Persoon").Value = value;
             }
         }
         /// <summary>
@@ -10884,59 +11515,59 @@ namespace Chiro.Kip.Data
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke", "Persoon");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1", "Persoon");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke", "Persoon", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1", "Persoon", value);
                 }
             }
         }
         /// <summary>
-        /// There are no comments for kipPersoon1 in the schema.
+        /// There are no comments for VerantwoordelijkeB in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_BivakVerantwoordelijke", "Persoon")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_BivakVerantwoordelijke1", "Persoon")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Persoon kipPersoon1
+        public Persoon VerantwoordelijkeB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke", "Persoon").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1", "Persoon").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke", "Persoon").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1", "Persoon").Value = value;
             }
         }
         /// <summary>
-        /// There are no comments for kipPersoon1 in the schema.
+        /// There are no comments for VerantwoordelijkeB in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Persoon> kipPersoon1Reference
+        public global::System.Data.Objects.DataClasses.EntityReference<Persoon> VerantwoordelijkeBReference
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke", "Persoon");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1", "Persoon");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke", "Persoon", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1", "Persoon", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for kipPersoon2 in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten", "Persoon")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1", "Persoon")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -10945,11 +11576,11 @@ namespace Chiro.Kip.Data
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten", "Persoon").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1", "Persoon").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten", "Persoon").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1", "Persoon").Value = value;
             }
         }
         /// <summary>
@@ -10962,52 +11593,52 @@ namespace Chiro.Kip.Data
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten", "Persoon");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1", "Persoon");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten", "Persoon", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1", "Persoon", value);
                 }
             }
         }
         /// <summary>
-        /// There are no comments for kipPersoon3 in the schema.
+        /// There are no comments for VerantwoordelijkeS in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak", "Persoon")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "Persoon")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Persoon kipPersoon3
+        public Persoon VerantwoordelijkeS
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak", "Persoon").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "Persoon").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak", "Persoon").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "Persoon").Value = value;
             }
         }
         /// <summary>
-        /// There are no comments for kipPersoon3 in the schema.
+        /// There are no comments for VerantwoordelijkeS in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Persoon> kipPersoon3Reference
+        public global::System.Data.Objects.DataClasses.EntityReference<Persoon> VerantwoordelijkeSReference
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak", "Persoon");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "Persoon");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak", "Persoon", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1", "Persoon", value);
                 }
             }
         }

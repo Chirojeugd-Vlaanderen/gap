@@ -70,6 +70,15 @@ namespace Chiro.Kip.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to België.
+        /// </summary>
+        internal static string Belgie {
+            get {
+                return ResourceManager.GetString("Belgie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kan communicatie {2} van onbekend persoon {0} {1} niet bewaren..
         /// </summary>
         internal static string CommunicatieOnbekendePersoon {

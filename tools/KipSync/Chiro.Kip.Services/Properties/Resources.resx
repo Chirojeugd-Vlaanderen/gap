@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CommunicatieOnbekendePersoon" xml:space="preserve">
     <value>Kan communicatie {2} van onbekend persoon {0} {1} niet bewaren.</value>
@@ -137,5 +137,8 @@
   </data>
   <data name="NegeerPersoonOnvolledigeNaam" xml:space="preserve">
     <value>Naam van persoon onvolledig: {0} {1} ({2})</value>
+  </data>
+  <data name="Belgie" xml:space="preserve">
+    <value>België</value>
   </data>
 </root>

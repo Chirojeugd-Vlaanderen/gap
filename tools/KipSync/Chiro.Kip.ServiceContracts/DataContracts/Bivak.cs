@@ -38,5 +38,17 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		public DateTime DatumTot { get; set; }
+
+		/// <summary>
+		/// Naam van het bivak
+		/// </summary>
+		[DataMember]
+		public string Naam { get; set; }
+
+		/// <summary>
+		/// Opmerkingen bij het bivak
+		/// </summary>
+		[DataMember]
+		public string Opmerkingen { get; set; }
 	}
 }

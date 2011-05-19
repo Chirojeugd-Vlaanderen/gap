@@ -6,10 +6,11 @@
     <edmx:StorageModels>
     <Schema Namespace="kipadminModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
         <EntityContainer Name="kipadminModelStoreContainer">
+          <EntitySet Name="BivakAangifte" EntityType="kipadminModel.Store.BivakAangifte" store:Type="Tables" Schema="biv" />
+          <EntitySet Name="BivakOverzicht" EntityType="kipadminModel.Store.BivakOverzicht" store:Type="Tables" Schema="biv" />
           <EntitySet Name="AFDELING" EntityType="kipadminModel.Store.AFDELING" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="kipAdres" EntityType="kipadminModel.Store.kipAdres" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="kipAdresType" EntityType="kipadminModel.Store.kipAdresType" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="kipBivak" EntityType="kipadminModel.Store.kipBivak" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="kipContactInfo" EntityType="kipadminModel.Store.kipContactInfo" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="kipFunctie" EntityType="kipadminModel.Store.kipFunctie" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="kipHeeftFunctie" EntityType="kipadminModel.Store.kipHeeftFunctie" store:Type="Tables" Schema="dbo" />
@@ -68,21 +69,53 @@
             <End Role="REKENING" EntitySet="REKENING" />
             <End Role="Abonnement" EntitySet="Abonnement" />
           </AssociationSet>
+          <AssociationSet Name="FK_Bivak_Groep" Association="kipadminModel.Store.FK_Bivak_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bivak_Groep2" Association="kipadminModel.Store.FK_Bivak_Groep2">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
           <AssociationSet Name="FK_Bivak_Persoon_AspiVerantwoordelijke" Association="kipadminModel.Store.FK_Bivak_Persoon_AspiVerantwoordelijke">
             <End Role="kipPersoon" EntitySet="kipPersoon" />
-            <End Role="kipBivak" EntitySet="kipBivak" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
           </AssociationSet>
           <AssociationSet Name="FK_Bivak_Persoon_BivakVerantwoordelijke" Association="kipadminModel.Store.FK_Bivak_Persoon_BivakVerantwoordelijke">
             <End Role="kipPersoon" EntitySet="kipPersoon" />
-            <End Role="kipBivak" EntitySet="kipBivak" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
           </AssociationSet>
           <AssociationSet Name="FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten" Association="kipadminModel.Store.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten">
             <End Role="kipPersoon" EntitySet="kipPersoon" />
-            <End Role="kipBivak" EntitySet="kipBivak" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
           </AssociationSet>
           <AssociationSet Name="FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak" Association="kipadminModel.Store.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak">
             <End Role="kipPersoon" EntitySet="kipPersoon" />
-            <End Role="kipBivak" EntitySet="kipBivak" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BivakAangifte_Adres" Association="kipadminModel.Store.FK_BivakAangifte_Adres">
+            <End Role="kipAdres" EntitySet="kipAdres" />
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BivakAangifte_Groep" Association="kipadminModel.Store.FK_BivakAangifte_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BivakAangifte_Persoon" Association="kipadminModel.Store.FK_BivakAangifte_Persoon">
+            <End Role="kipPersoon" EntitySet="kipPersoon" />
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BivakOverzicht_BAangifte" Association="kipadminModel.Store.FK_BivakOverzicht_BAangifte">
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BivakOverzicht_SAangifte" Association="kipadminModel.Store.FK_BivakOverzicht_SAangifte">
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BivakOverzicht_UAangifte" Association="kipadminModel.Store.FK_BivakOverzicht_UAangifte">
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
           </AssociationSet>
           <AssociationSet Name="FK_ChiroGroep_Groep" Association="kipadminModel.Store.FK_ChiroGroep_Groep">
             <End Role="Groep" EntitySet="Groep" />
@@ -117,42 +150,30 @@
             <End Role="REKENING" EntitySet="REKENING" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="AFDELING">
+        <EntityType Name="BivakAangifte">
           <Key>
-            <PropertyRef Name="AFD_ID" />
+            <PropertyRef Name="BivakAangifteID" />
           </Key>
-          <Property Name="AFD_ID" Type="int" Nullable="false" />
-          <Property Name="AFD_NAAM" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="AFD_OMSCHR" Type="varchar" MaxLength="50" />
+          <Property Name="BivakAangifteID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GapUitstapID" Type="int" Nullable="false" />
+          <Property Name="GroepID" Type="int" Nullable="false" />
+          <Property Name="WerkJaar" Type="int" Nullable="false" />
+          <Property Name="DatumVan" Type="datetime" Nullable="false" />
+          <Property Name="DatumTot" Type="datetime" Nullable="false" />
+          <Property Name="BivakPlaatsNaam" Type="varchar" MaxLength="80" />
+          <Property Name="AdresID" Type="int" />
+          <Property Name="BivakNaam" Type="varchar" MaxLength="120" />
+          <Property Name="Opmerkingen" Type="text" />
+          <Property Name="ContactAD" Type="int" />
         </EntityType>
-        <EntityType Name="kipAdres">
-          <Key>
-            <PropertyRef Name="AdresId" />
-          </Key>
-          <Property Name="AdresId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Straat" Type="varchar" Nullable="false" MaxLength="40" />
-          <Property Name="Nr" Type="varchar" MaxLength="20" />
-          <Property Name="PostNr" Type="varchar" MaxLength="10" />
-          <Property Name="Gemeente" Type="varchar" MaxLength="40" />
-          <Property Name="Land" Type="varchar" MaxLength="20" />
-        </EntityType>
-        <EntityType Name="kipAdresType">
-          <Key>
-            <PropertyRef Name="AdresTypeId" />
-          </Key>
-          <Property Name="AdresTypeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Omschrijving" Type="varchar" Nullable="false" MaxLength="30" />
-          <Property Name="Code" Type="char" MaxLength="4" />
-        </EntityType>
-        <EntityType Name="kipBivak">
+        <EntityType Name="BivakOverzicht">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="STAMNR" Type="varchar" Nullable="false" MaxLength="8" />
           <Property Name="B_NAAM" Type="varchar" MaxLength="50" />
-          <Property Name="B_STRAAT" Type="varchar" Nullable="false" MaxLength="40" />
-          <Property Name="B_POSTNR" Type="varchar" Nullable="false" MaxLength="8" />
-          <Property Name="B_GEMEENTE" Type="varchar" Nullable="false" MaxLength="40" />
+          <Property Name="B_STRAAT" Type="varchar" MaxLength="40" />
+          <Property Name="B_POSTNR" Type="varchar" MaxLength="8" />
+          <Property Name="B_GEMEENTE" Type="varchar" MaxLength="40" />
           <Property Name="B_PROVINCI" Type="char" MaxLength="3" />
           <Property Name="B_LAND" Type="varchar" MaxLength="30" />
           <Property Name="B_TEL" Type="varchar" MaxLength="20" />
@@ -193,7 +214,6 @@
           <Property Name="SUB_VERSL" Type="varchar" MaxLength="1" />
           <Property Name="SUB_ADNR" Type="int" />
           <Property Name="INSCHRNR" Type="smallint" />
-          <Property Name="STAMNR2" Type="varchar" MaxLength="8" />
           <Property Name="DAT_ONTV" Type="smalldatetime" />
           <Property Name="DAT_VERZ" Type="smalldatetime" />
           <Property Name="KAMPE_ADNR" Type="int" />
@@ -246,9 +266,38 @@
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="datum" Type="smalldatetime" />
           <Property Name="s_Kaartje" Type="bit" Nullable="false" />
-          <Property Name="b_GapID" Type="int" />
-          <Property Name="u_GapID" Type="int" />
-          <Property Name="s_GapID" Type="int" />
+          <Property Name="b_AangifteID" Type="int" />
+          <Property Name="u_AangifteID" Type="int" />
+          <Property Name="s_AangifteID" Type="int" />
+          <Property Name="GroepID" Type="int" Nullable="false" />
+          <Property Name="GroepID2" Type="int" />
+        </EntityType>
+        <EntityType Name="AFDELING">
+          <Key>
+            <PropertyRef Name="AFD_ID" />
+          </Key>
+          <Property Name="AFD_ID" Type="int" Nullable="false" />
+          <Property Name="AFD_NAAM" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="AFD_OMSCHR" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="kipAdres">
+          <Key>
+            <PropertyRef Name="AdresId" />
+          </Key>
+          <Property Name="AdresId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Straat" Type="varchar" Nullable="false" MaxLength="40" />
+          <Property Name="Nr" Type="varchar" MaxLength="20" />
+          <Property Name="PostNr" Type="varchar" MaxLength="10" />
+          <Property Name="Gemeente" Type="varchar" MaxLength="40" />
+          <Property Name="Land" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="kipAdresType">
+          <Key>
+            <PropertyRef Name="AdresTypeId" />
+          </Key>
+          <Property Name="AdresTypeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Omschrijving" Type="varchar" Nullable="false" MaxLength="30" />
+          <Property Name="Code" Type="char" MaxLength="4" />
         </EntityType>
         <EntityType Name="kipContactInfo">
           <Key>
@@ -679,51 +728,147 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Bivak_Groep">
+          <End Role="Groep" Type="kipadminModel.Store.Groep" Multiplicity="1" />
+          <End Role="BivakOverzicht" Type="kipadminModel.Store.BivakOverzicht" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groep">
+              <PropertyRef Name="GroepID" />
+            </Principal>
+            <Dependent Role="BivakOverzicht">
+              <PropertyRef Name="GroepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bivak_Groep2">
+          <End Role="Groep" Type="kipadminModel.Store.Groep" Multiplicity="0..1" />
+          <End Role="BivakOverzicht" Type="kipadminModel.Store.BivakOverzicht" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groep">
+              <PropertyRef Name="GroepID" />
+            </Principal>
+            <Dependent Role="BivakOverzicht">
+              <PropertyRef Name="GroepID2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Bivak_Persoon_AspiVerantwoordelijke">
           <End Role="kipPersoon" Type="kipadminModel.Store.kipPersoon" Multiplicity="0..1" />
-          <End Role="kipBivak" Type="kipadminModel.Store.kipBivak" Multiplicity="*" />
+          <End Role="BivakOverzicht" Type="kipadminModel.Store.BivakOverzicht" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="kipPersoon">
               <PropertyRef Name="AdNr" />
             </Principal>
-            <Dependent Role="kipBivak">
+            <Dependent Role="BivakOverzicht">
               <PropertyRef Name="ASPI_ADNR" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Bivak_Persoon_BivakVerantwoordelijke">
           <End Role="kipPersoon" Type="kipadminModel.Store.kipPersoon" Multiplicity="0..1" />
-          <End Role="kipBivak" Type="kipadminModel.Store.kipBivak" Multiplicity="*" />
+          <End Role="BivakOverzicht" Type="kipadminModel.Store.BivakOverzicht" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="kipPersoon">
               <PropertyRef Name="AdNr" />
             </Principal>
-            <Dependent Role="kipBivak">
+            <Dependent Role="BivakOverzicht">
               <PropertyRef Name="VERAN_ADNR" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten">
           <End Role="kipPersoon" Type="kipadminModel.Store.kipPersoon" Multiplicity="0..1" />
-          <End Role="kipBivak" Type="kipadminModel.Store.kipBivak" Multiplicity="*" />
+          <End Role="BivakOverzicht" Type="kipadminModel.Store.BivakOverzicht" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="kipPersoon">
               <PropertyRef Name="AdNr" />
             </Principal>
-            <Dependent Role="kipBivak">
+            <Dependent Role="BivakOverzicht">
               <PropertyRef Name="KAMPE_ADNR" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak">
           <End Role="kipPersoon" Type="kipadminModel.Store.kipPersoon" Multiplicity="0..1" />
-          <End Role="kipBivak" Type="kipadminModel.Store.kipBivak" Multiplicity="*" />
+          <End Role="BivakOverzicht" Type="kipadminModel.Store.BivakOverzicht" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="kipPersoon">
               <PropertyRef Name="AdNr" />
             </Principal>
-            <Dependent Role="kipBivak">
+            <Dependent Role="BivakOverzicht">
               <PropertyRef Name="SUB_ADNR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BivakAangifte_Adres">
+          <End Role="kipAdres" Type="kipadminModel.Store.kipAdres" Multiplicity="0..1" />
+          <End Role="BivakAangifte" Type="kipadminModel.Store.BivakAangifte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kipAdres">
+              <PropertyRef Name="AdresId" />
+            </Principal>
+            <Dependent Role="BivakAangifte">
+              <PropertyRef Name="AdresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BivakAangifte_Groep">
+          <End Role="Groep" Type="kipadminModel.Store.Groep" Multiplicity="1" />
+          <End Role="BivakAangifte" Type="kipadminModel.Store.BivakAangifte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groep">
+              <PropertyRef Name="GroepID" />
+            </Principal>
+            <Dependent Role="BivakAangifte">
+              <PropertyRef Name="GroepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BivakAangifte_Persoon">
+          <End Role="kipPersoon" Type="kipadminModel.Store.kipPersoon" Multiplicity="0..1" />
+          <End Role="BivakAangifte" Type="kipadminModel.Store.BivakAangifte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kipPersoon">
+              <PropertyRef Name="AdNr" />
+            </Principal>
+            <Dependent Role="BivakAangifte">
+              <PropertyRef Name="ContactAD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BivakOverzicht_BAangifte">
+          <End Role="BivakAangifte" Type="kipadminModel.Store.BivakAangifte" Multiplicity="0..1" />
+          <End Role="BivakOverzicht" Type="kipadminModel.Store.BivakOverzicht" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BivakAangifte">
+              <PropertyRef Name="BivakAangifteID" />
+            </Principal>
+            <Dependent Role="BivakOverzicht">
+              <PropertyRef Name="b_AangifteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BivakOverzicht_SAangifte">
+          <End Role="BivakAangifte" Type="kipadminModel.Store.BivakAangifte" Multiplicity="0..1" />
+          <End Role="BivakOverzicht" Type="kipadminModel.Store.BivakOverzicht" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BivakAangifte">
+              <PropertyRef Name="BivakAangifteID" />
+            </Principal>
+            <Dependent Role="BivakOverzicht">
+              <PropertyRef Name="s_AangifteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BivakOverzicht_UAangifte">
+          <End Role="BivakAangifte" Type="kipadminModel.Store.BivakAangifte" Multiplicity="0..1" />
+          <End Role="BivakOverzicht" Type="kipadminModel.Store.BivakOverzicht" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BivakAangifte">
+              <PropertyRef Name="BivakAangifteID" />
+            </Principal>
+            <Dependent Role="BivakOverzicht">
+              <PropertyRef Name="u_AangifteID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -903,22 +1048,55 @@
           <AssociationSet Name="FK_PersoonsVerzekering_ExtraVerzekering" Association="kipadminModel.FK_PersoonsVerzekering_ExtraVerzekering">
             <End Role="ExtraVerzekering" EntitySet="ExtraVerzekering" />
             <End Role="PersoonsVerzekering" EntitySet="PersoonsVerzekering" /></AssociationSet>
-          <EntitySet Name="kipBivak" EntityType="kipadminModel.Bivak" />
-          <AssociationSet Name="FK_Bivak_Persoon_AspiVerantwoordelijke" Association="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke">
-            <End Role="Persoon" EntitySet="PersoonSet" />
-            <End Role="kipBivak" EntitySet="kipBivak" />
+          <EntitySet Name="BivakAangifte" EntityType="kipadminModel.BivakAangifte" />
+          <EntitySet Name="BivakOverzicht" EntityType="kipadminModel.BivakOverzicht" />
+          <AssociationSet Name="FK_BivakAangifte_Adres" Association="kipadminModel.FK_BivakAangifte_Adres">
+            <End Role="Adres" EntitySet="AdresSet" />
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
           </AssociationSet>
-          <AssociationSet Name="FK_Bivak_Persoon_BivakVerantwoordelijke" Association="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke">
-            <End Role="Persoon" EntitySet="PersoonSet" />
-            <End Role="kipBivak" EntitySet="kipBivak" />
+          <AssociationSet Name="FK_BivakAangifte_Groep" Association="kipadminModel.FK_BivakAangifte_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
           </AssociationSet>
-          <AssociationSet Name="FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten" Association="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten">
-            <End Role="Persoon" EntitySet="PersoonSet" />
-            <End Role="kipBivak" EntitySet="kipBivak" />
+          <AssociationSet Name="FK_BivakOverzicht_BAangifte" Association="kipadminModel.FK_BivakOverzicht_BAangifte">
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
           </AssociationSet>
-          <AssociationSet Name="FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak" Association="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak">
+          <AssociationSet Name="FK_BivakOverzicht_SAangifte" Association="kipadminModel.FK_BivakOverzicht_SAangifte">
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BivakOverzicht_UAangifte" Association="kipadminModel.FK_BivakOverzicht_UAangifte">
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bivak_Groep" Association="kipadminModel.FK_Bivak_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bivak_Groep2" Association="kipadminModel.FK_Bivak_Groep2">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bivak_Persoon_AspiVerantwoordelijke1" Association="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1">
             <End Role="Persoon" EntitySet="PersoonSet" />
-            <End Role="kipBivak" EntitySet="kipBivak" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bivak_Persoon_BivakVerantwoordelijke1" Association="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1">
+            <End Role="Persoon" EntitySet="PersoonSet" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1" Association="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1">
+            <End Role="Persoon" EntitySet="PersoonSet" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1" Association="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1">
+            <End Role="Persoon" EntitySet="PersoonSet" />
+            <End Role="BivakOverzicht" EntitySet="BivakOverzicht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BivakAangifte_Persoon" Association="kipadminModel.FK_BivakAangifte_Persoon">
+            <End Role="Persoon" EntitySet="PersoonSet" />
+            <End Role="BivakAangifte" EntitySet="BivakAangifte" />
           </AssociationSet></EntityContainer>
         <EntityType Name="Adres">
           <Key>
@@ -930,7 +1108,8 @@
           <Property Name="PostNr" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
           <Property Name="Gemeente" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
           <Property Name="Land" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
-          <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdresI__61915EA71" FromRole="Adres" ToRole="Woont" /></EntityType>
+          <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdresI__61915EA71" FromRole="Adres" ToRole="Woont" />
+          <NavigationProperty Name="BivakAangifte" Relationship="kipadminModel.FK_BivakAangifte_Adres" FromRole="Adres" ToRole="BivakAangifte" /></EntityType>
         <EntityType Name="AdresType">
           <Key>
             <PropertyRef Name="ID" />
@@ -998,10 +1177,11 @@
           <NavigationProperty Name="Abonnement" Relationship="kipadminModel.FK_Abonnement_Persoon" FromRole="Persoon" ToRole="Abonnement" />
           <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdNr__609D3A6E1" FromRole="Persoon" ToRole="Woont" />
           <NavigationProperty Name="PersoonsVerzekering" Relationship="kipadminModel.FK_PersoonsVerzekering_Persoon" FromRole="Persoon" ToRole="PersoonsVerzekering" />
-          <NavigationProperty Name="kipBivak" Relationship="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke" FromRole="Persoon" ToRole="kipBivak" />
-          <NavigationProperty Name="kipBivak1" Relationship="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke" FromRole="Persoon" ToRole="kipBivak" />
-          <NavigationProperty Name="kipBivak2" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten" FromRole="Persoon" ToRole="kipBivak" />
-          <NavigationProperty Name="kipBivak3" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak" FromRole="Persoon" ToRole="kipBivak" /></EntityType>
+          <NavigationProperty Name="BivakOverzicht" Relationship="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1" FromRole="Persoon" ToRole="BivakOverzicht" />
+          <NavigationProperty Name="BivakOverzicht1" Relationship="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1" FromRole="Persoon" ToRole="BivakOverzicht" />
+          <NavigationProperty Name="BivakOverzicht2" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1" FromRole="Persoon" ToRole="BivakOverzicht" />
+          <NavigationProperty Name="BivakOverzicht3" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1" FromRole="Persoon" ToRole="BivakOverzicht" />
+          <NavigationProperty Name="BivakAangifte" Relationship="kipadminModel.FK_BivakAangifte_Persoon" FromRole="Persoon" ToRole="BivakAangifte" /></EntityType>
         <EntityType Name="Woont">
           <Key>
             <PropertyRef Name="WoontID" /></Key>
@@ -1063,7 +1243,10 @@
           <NavigationProperty Name="Lid" Relationship="kipadminModel.fk_Lid_Groep" FromRole="Groep" ToRole="Lid" />
           <NavigationProperty Name="Aansluiting" Relationship="kipadminModel.FK_Aansluiting_Groep" FromRole="Groep" ToRole="Aansluiting" />
           <NavigationProperty Name="Abonnement" Relationship="kipadminModel.FK_Abonnement_Groep" FromRole="Groep" ToRole="Abonnement" />
-          <NavigationProperty Name="ExtraVerzekering" Relationship="kipadminModel.FK_ExtraVerzekering_Groep" FromRole="Groep" ToRole="ExtraVerzekering" /></EntityType>
+          <NavigationProperty Name="ExtraVerzekering" Relationship="kipadminModel.FK_ExtraVerzekering_Groep" FromRole="Groep" ToRole="ExtraVerzekering" />
+          <NavigationProperty Name="BivakAangifte" Relationship="kipadminModel.FK_BivakAangifte_Groep" FromRole="Groep" ToRole="BivakAangifte" />
+          <NavigationProperty Name="BivakOverzicht" Relationship="kipadminModel.FK_Bivak_Groep" FromRole="Groep" ToRole="BivakOverzicht" />
+          <NavigationProperty Name="BivakOverzicht1" Relationship="kipadminModel.FK_Bivak_Groep2" FromRole="Groep" ToRole="BivakOverzicht" /></EntityType>
         <EntityType Name="Lid">
           <Key>
             <PropertyRef Name="id" />
@@ -1303,11 +1486,29 @@
         <Association Name="FK_PersoonsVerzekering_ExtraVerzekering">
           <End Type="kipadminModel.ExtraVerzekering" Role="ExtraVerzekering" Multiplicity="1" />
           <End Type="kipadminModel.PersoonsVerzekering" Role="PersoonsVerzekering" Multiplicity="*" /></Association>
-        <EntityType Name="Bivak">
+        <EntityType Name="BivakAangifte">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="GapUitstapID" Nullable="false" />
+          <Property Type="Int32" Name="WerkJaar" Nullable="false" />
+          <Property Type="DateTime" Name="DatumVan" Nullable="false" />
+          <Property Type="DateTime" Name="DatumTot" Nullable="false" />
+          <Property Type="String" Name="BivakPlaatsNaam" MaxLength="80" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="kipAdres" Relationship="kipadminModel.FK_BivakAangifte_Adres" FromRole="BivakAangifte" ToRole="Adres" />
+          <NavigationProperty Name="Groep" Relationship="kipadminModel.FK_BivakAangifte_Groep" FromRole="BivakAangifte" ToRole="Groep" />
+          <NavigationProperty Name="BivakOverzichtB" Relationship="kipadminModel.FK_BivakOverzicht_BAangifte" FromRole="BivakAangifte" ToRole="BivakOverzicht" />
+          <NavigationProperty Name="BivakOverzichtS" Relationship="kipadminModel.FK_BivakOverzicht_SAangifte" FromRole="BivakAangifte" ToRole="BivakOverzicht" />
+          <NavigationProperty Name="BivakOverzichtU" Relationship="kipadminModel.FK_BivakOverzicht_UAangifte" FromRole="BivakAangifte" ToRole="BivakOverzicht" />
+          <Property Type="String" Name="BivakNaam" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Opmerkingen" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="kipPersoon" Relationship="kipadminModel.FK_BivakAangifte_Persoon" FromRole="BivakAangifte" ToRole="Persoon" />
+        </EntityType>
+        <EntityType Name="BivakOverzicht">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Type="String" Name="STAMNR" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="B_NAAM" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="B_STRAAT" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="B_POSTNR" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
@@ -1350,7 +1551,6 @@
           <Property Type="String" Name="SUB_AANVR" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="SUB_VERSL" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="Int16" Name="INSCHRNR" />
-          <Property Type="String" Name="STAMNR2" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="DAT_ONTV" />
           <Property Type="DateTime" Name="DAT_VERZ" />
           <Property Type="Int16" Name="VORIG_AAN" />
@@ -1401,29 +1601,63 @@
           <Property Type="Int32" Name="id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="DateTime" Name="datum" />
           <Property Type="Boolean" Name="s_Kaartje" Nullable="false" />
-          <NavigationProperty Name="kipPersoon" Relationship="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke" FromRole="kipBivak" ToRole="Persoon" />
-          <NavigationProperty Name="kipPersoon1" Relationship="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke" FromRole="kipBivak" ToRole="Persoon" />
-          <NavigationProperty Name="kipPersoon2" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten" FromRole="kipBivak" ToRole="Persoon" />
-          <NavigationProperty Name="kipPersoon3" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak" FromRole="kipBivak" ToRole="Persoon" />
-          <Property Type="Int32" Name="b_GapID" />
-          <Property Type="Int32" Name="u_GapID" />
-          <Property Type="Int32" Name="s_GapID" />
+          <NavigationProperty Name="BivakAangifteB" Relationship="kipadminModel.FK_BivakOverzicht_BAangifte" FromRole="BivakOverzicht" ToRole="BivakAangifte" />
+          <NavigationProperty Name="BivakAangifteS" Relationship="kipadminModel.FK_BivakOverzicht_SAangifte" FromRole="BivakOverzicht" ToRole="BivakAangifte" />
+          <NavigationProperty Name="BivakAangifteU" Relationship="kipadminModel.FK_BivakOverzicht_UAangifte" FromRole="BivakOverzicht" ToRole="BivakAangifte" />
+          <NavigationProperty Name="Groep" Relationship="kipadminModel.FK_Bivak_Groep" FromRole="BivakOverzicht" ToRole="Groep" />
+          <NavigationProperty Name="Groep1" Relationship="kipadminModel.FK_Bivak_Groep2" FromRole="BivakOverzicht" ToRole="Groep" />
+          <NavigationProperty Name="kipPersoon" Relationship="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1" FromRole="BivakOverzicht" ToRole="Persoon" />
+          <NavigationProperty Name="VerantwoordelijkeB" Relationship="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1" FromRole="BivakOverzicht" ToRole="Persoon" />
+          <NavigationProperty Name="kipPersoon2" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1" FromRole="BivakOverzicht" ToRole="Persoon" />
+          <NavigationProperty Name="VerantwoordelijkeS" Relationship="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1" FromRole="BivakOverzicht" ToRole="Persoon" />
         </EntityType>
-        <Association Name="FK_Bivak_Persoon_AspiVerantwoordelijke">
-          <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="0..1" />
-          <End Type="kipadminModel.Bivak" Role="kipBivak" Multiplicity="*" />
+        <Association Name="FK_BivakAangifte_Adres">
+          <End Type="kipadminModel.Adres" Role="Adres" Multiplicity="0..1" />
+          <End Type="kipadminModel.BivakAangifte" Role="BivakAangifte" Multiplicity="*" />
         </Association>
-        <Association Name="FK_Bivak_Persoon_BivakVerantwoordelijke">
-          <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="0..1" />
-          <End Type="kipadminModel.Bivak" Role="kipBivak" Multiplicity="*" />
+        <Association Name="FK_BivakAangifte_Groep">
+          <End Type="kipadminModel.Groep" Role="Groep" Multiplicity="1" />
+          <End Type="kipadminModel.BivakAangifte" Role="BivakAangifte" Multiplicity="*" />
         </Association>
-        <Association Name="FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten">
-          <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="0..1" />
-          <End Type="kipadminModel.Bivak" Role="kipBivak" Multiplicity="*" />
+        <Association Name="FK_BivakOverzicht_BAangifte">
+          <End Type="kipadminModel.BivakAangifte" Role="BivakAangifte" Multiplicity="0..1" />
+          <End Type="kipadminModel.BivakOverzicht" Role="BivakOverzicht" Multiplicity="*" />
         </Association>
-        <Association Name="FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak">
+        <Association Name="FK_BivakOverzicht_SAangifte">
+          <End Type="kipadminModel.BivakAangifte" Role="BivakAangifte" Multiplicity="0..1" />
+          <End Type="kipadminModel.BivakOverzicht" Role="BivakOverzicht" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_BivakOverzicht_UAangifte">
+          <End Type="kipadminModel.BivakAangifte" Role="BivakAangifte" Multiplicity="0..1" />
+          <End Type="kipadminModel.BivakOverzicht" Role="BivakOverzicht" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Bivak_Groep">
+          <End Type="kipadminModel.Groep" Role="Groep" Multiplicity="1" />
+          <End Type="kipadminModel.BivakOverzicht" Role="BivakOverzicht" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Bivak_Groep2">
+          <End Type="kipadminModel.Groep" Role="Groep" Multiplicity="0..1" />
+          <End Type="kipadminModel.BivakOverzicht" Role="BivakOverzicht" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Bivak_Persoon_AspiVerantwoordelijke1">
           <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="0..1" />
-          <End Type="kipadminModel.Bivak" Role="kipBivak" Multiplicity="*" />
+          <End Type="kipadminModel.BivakOverzicht" Role="BivakOverzicht" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Bivak_Persoon_BivakVerantwoordelijke1">
+          <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="0..1" />
+          <End Type="kipadminModel.BivakOverzicht" Role="BivakOverzicht" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1">
+          <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="0..1" />
+          <End Type="kipadminModel.BivakOverzicht" Role="BivakOverzicht" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1">
+          <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="0..1" />
+          <End Type="kipadminModel.BivakOverzicht" Role="BivakOverzicht" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_BivakAangifte_Persoon">
+          <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="0..1" />
+          <End Type="kipadminModel.BivakAangifte" Role="BivakAangifte" Multiplicity="*" />
         </Association></Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1839,12 +2073,23 @@
               <ScalarProperty Name="ID" ColumnName="PersoonsVerzekeringID" /></EndProperty>
             <EndProperty Name="ExtraVerzekering">
               <ScalarProperty Name="ExtraVerzekeringID" ColumnName="ExtraVerzekeringID" /></EndProperty></AssociationSetMapping>
-          <EntitySetMapping Name="kipBivak">
-            <EntityTypeMapping TypeName="kipadminModel.Bivak">
-              <MappingFragment StoreEntitySet="kipBivak">
-                <ScalarProperty Name="s_GapID" ColumnName="s_GapID" />
-                <ScalarProperty Name="u_GapID" ColumnName="u_GapID" />
-                <ScalarProperty Name="b_GapID" ColumnName="b_GapID" />
+          <EntitySetMapping Name="BivakAangifte">
+            <EntityTypeMapping TypeName="kipadminModel.BivakAangifte">
+              <MappingFragment StoreEntitySet="BivakAangifte">
+                <ScalarProperty Name="Opmerkingen" ColumnName="Opmerkingen" />
+                <ScalarProperty Name="BivakNaam" ColumnName="BivakNaam" />
+                <ScalarProperty Name="BivakPlaatsNaam" ColumnName="BivakPlaatsNaam" />
+                <ScalarProperty Name="DatumTot" ColumnName="DatumTot" />
+                <ScalarProperty Name="DatumVan" ColumnName="DatumVan" />
+                <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
+                <ScalarProperty Name="GapUitstapID" ColumnName="GapUitstapID" />
+                <ScalarProperty Name="ID" ColumnName="BivakAangifteID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BivakOverzicht">
+            <EntityTypeMapping TypeName="kipadminModel.BivakOverzicht">
+              <MappingFragment StoreEntitySet="BivakOverzicht">
                 <ScalarProperty Name="s_Kaartje" ColumnName="s_Kaartje" />
                 <ScalarProperty Name="datum" ColumnName="datum" />
                 <ScalarProperty Name="id" ColumnName="id" />
@@ -1895,7 +2140,6 @@
                 <ScalarProperty Name="VORIG_AAN" ColumnName="VORIG_AAN" />
                 <ScalarProperty Name="DAT_VERZ" ColumnName="DAT_VERZ" />
                 <ScalarProperty Name="DAT_ONTV" ColumnName="DAT_ONTV" />
-                <ScalarProperty Name="STAMNR2" ColumnName="STAMNR2" />
                 <ScalarProperty Name="INSCHRNR" ColumnName="INSCHRNR" />
                 <ScalarProperty Name="SUB_VERSL" ColumnName="SUB_VERSL" />
                 <ScalarProperty Name="SUB_AANVR" ColumnName="SUB_AANVR" />
@@ -1938,12 +2182,72 @@
                 <ScalarProperty Name="B_POSTNR" ColumnName="B_POSTNR" />
                 <ScalarProperty Name="B_STRAAT" ColumnName="B_STRAAT" />
                 <ScalarProperty Name="B_NAAM" ColumnName="B_NAAM" />
-                <ScalarProperty Name="STAMNR" ColumnName="STAMNR" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="FK_Bivak_Persoon_AspiVerantwoordelijke" TypeName="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke" StoreEntitySet="kipBivak">
-            <EndProperty Name="kipBivak">
+          <AssociationSetMapping Name="FK_BivakAangifte_Adres" TypeName="kipadminModel.FK_BivakAangifte_Adres" StoreEntitySet="BivakAangifte">
+            <EndProperty Name="BivakAangifte">
+              <ScalarProperty Name="ID" ColumnName="BivakAangifteID" />
+            </EndProperty>
+            <EndProperty Name="Adres">
+              <ScalarProperty Name="ID" ColumnName="AdresID" />
+            </EndProperty>
+            <Condition ColumnName="AdresID" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_BivakAangifte_Groep" TypeName="kipadminModel.FK_BivakAangifte_Groep" StoreEntitySet="BivakAangifte">
+            <EndProperty Name="BivakAangifte">
+              <ScalarProperty Name="ID" ColumnName="BivakAangifteID" />
+            </EndProperty>
+            <EndProperty Name="Groep">
+              <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_BivakOverzicht_BAangifte" TypeName="kipadminModel.FK_BivakOverzicht_BAangifte" StoreEntitySet="BivakOverzicht">
+            <EndProperty Name="BivakOverzicht">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+            <EndProperty Name="BivakAangifte">
+              <ScalarProperty Name="ID" ColumnName="b_AangifteID" />
+            </EndProperty>
+            <Condition ColumnName="b_AangifteID" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_BivakOverzicht_SAangifte" TypeName="kipadminModel.FK_BivakOverzicht_SAangifte" StoreEntitySet="BivakOverzicht">
+            <EndProperty Name="BivakOverzicht">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+            <EndProperty Name="BivakAangifte">
+              <ScalarProperty Name="ID" ColumnName="s_AangifteID" />
+            </EndProperty>
+            <Condition ColumnName="s_AangifteID" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_BivakOverzicht_UAangifte" TypeName="kipadminModel.FK_BivakOverzicht_UAangifte" StoreEntitySet="BivakOverzicht">
+            <EndProperty Name="BivakOverzicht">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+            <EndProperty Name="BivakAangifte">
+              <ScalarProperty Name="ID" ColumnName="u_AangifteID" />
+            </EndProperty>
+            <Condition ColumnName="u_AangifteID" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Bivak_Groep" TypeName="kipadminModel.FK_Bivak_Groep" StoreEntitySet="BivakOverzicht">
+            <EndProperty Name="BivakOverzicht">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+            <EndProperty Name="Groep">
+              <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Bivak_Groep2" TypeName="kipadminModel.FK_Bivak_Groep2" StoreEntitySet="BivakOverzicht">
+            <EndProperty Name="BivakOverzicht">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+            <EndProperty Name="Groep">
+              <ScalarProperty Name="GroepID" ColumnName="GroepID2" />
+            </EndProperty>
+            <Condition ColumnName="GroepID2" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Bivak_Persoon_AspiVerantwoordelijke1" TypeName="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1" StoreEntitySet="BivakOverzicht">
+            <EndProperty Name="BivakOverzicht">
               <ScalarProperty Name="id" ColumnName="id" />
             </EndProperty>
             <EndProperty Name="Persoon">
@@ -1951,8 +2255,8 @@
             </EndProperty>
             <Condition ColumnName="ASPI_ADNR" IsNull="false" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Bivak_Persoon_BivakVerantwoordelijke" TypeName="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke" StoreEntitySet="kipBivak">
-            <EndProperty Name="kipBivak">
+          <AssociationSetMapping Name="FK_Bivak_Persoon_BivakVerantwoordelijke1" TypeName="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1" StoreEntitySet="BivakOverzicht">
+            <EndProperty Name="BivakOverzicht">
               <ScalarProperty Name="id" ColumnName="id" />
             </EndProperty>
             <EndProperty Name="Persoon">
@@ -1960,8 +2264,8 @@
             </EndProperty>
             <Condition ColumnName="VERAN_ADNR" IsNull="false" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten" TypeName="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten" StoreEntitySet="kipBivak">
-            <EndProperty Name="kipBivak">
+          <AssociationSetMapping Name="FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1" TypeName="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1" StoreEntitySet="BivakOverzicht">
+            <EndProperty Name="BivakOverzicht">
               <ScalarProperty Name="id" ColumnName="id" />
             </EndProperty>
             <EndProperty Name="Persoon">
@@ -1969,15 +2273,25 @@
             </EndProperty>
             <Condition ColumnName="KAMPE_ADNR" IsNull="false" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak" TypeName="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak" StoreEntitySet="kipBivak">
-            <EndProperty Name="kipBivak">
+          <AssociationSetMapping Name="FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1" TypeName="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1" StoreEntitySet="BivakOverzicht">
+            <EndProperty Name="BivakOverzicht">
               <ScalarProperty Name="id" ColumnName="id" />
             </EndProperty>
             <EndProperty Name="Persoon">
               <ScalarProperty Name="AdNummer" ColumnName="SUB_ADNR" />
             </EndProperty>
             <Condition ColumnName="SUB_ADNR" IsNull="false" />
-          </AssociationSetMapping></EntityContainerMapping>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_BivakAangifte_Persoon" TypeName="kipadminModel.FK_BivakAangifte_Persoon" StoreEntitySet="BivakAangifte">
+            <EndProperty Name="BivakAangifte">
+              <ScalarProperty Name="ID" ColumnName="BivakAangifteID" />
+            </EndProperty>
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="AdNummer" ColumnName="ContactAD" />
+            </EndProperty>
+            <Condition ColumnName="ContactAD" IsNull="false" />
+          </AssociationSetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -2009,127 +2323,157 @@
         <EntityTypeShape EntityType="kipadminModel.Groep" Width="1.5" PointX="10.625" PointY="32.375" Height="3.1340950520833246" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.Lid" Width="1.5" PointX="21" PointY="28" Height="5.2494108072916674" IsExpanded="true" />
         <AssociationConnector Association="kipadminModel.FK__kipContact__AdNr__6A26A4A8" ManuallyRouted="false">
-          <ConnectorPoint PointX="13.5" PointY="31.451315104166667" />
-          <ConnectorPoint PointX="13.5" PointY="36.3362939453125" />
+          <ConnectorPoint PointX="13.454100703125" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="13.454100703125" PointY="36.3362939453125" />
+          <ConnectorPoint PointX="13.904949479166666" PointY="36.3362939453125" />
+          <ConnectorPoint PointX="14.071616145833334" PointY="36.3362939453125" />
           <ConnectorPoint PointX="15" PointY="36.3362939453125" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipHeeftF__funct__4341E1B1" ManuallyRouted="false">
-          <ConnectorPoint PointX="22.5" PointY="25.624746093749998" />
-          <ConnectorPoint PointX="24" PointY="25.624746093749998" />
-          <ConnectorPoint PointX="24" PointY="29.75" />
+          <ConnectorPoint PointX="22.5" PointY="24.71875" />
+          <ConnectorPoint PointX="23.46875" PointY="24.71875" />
+          <ConnectorPoint PointX="23.46875" PointY="29.75" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipHeeftF__leidk__424DBD78" ManuallyRouted="false">
           <ConnectorPoint PointX="22.5" PointY="30.643992513020834" />
           <ConnectorPoint PointX="23.25" PointY="30.643992513020834" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Leid_Kad_Persoon" ManuallyRouted="false">
-          <ConnectorPoint PointX="13.9062525" PointY="31.451315104166667" />
-          <ConnectorPoint PointX="13.9062525" PointY="32.381615455729168" />
-          <ConnectorPoint PointX="14.026045416666667" PointY="32.381615455729168" />
-          <ConnectorPoint PointX="14.192712083333335" PointY="32.381615455729168" />
-          <ConnectorPoint PointX="19.072916666666668" PointY="32.381615455729168" />
-          <ConnectorPoint PointX="19.239583333333332" PointY="32.381615455729168" />
-          <ConnectorPoint PointX="21" PointY="32.381615455729168" />
+          <ConnectorPoint PointX="14.25" PointY="30.723002929687503" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="30.723002929687503" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="30.723002929687503" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="30.723002929687503" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="30.723002929687503" />
+          <ConnectorPoint PointX="17.666666666666668" PointY="30.723002929687503" />
+          <ConnectorPoint PointX="17.833333333333332" PointY="30.723002929687503" />
+          <ConnectorPoint PointX="21" PointY="30.723002929687503" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.fk_Lid_Groep" ManuallyRouted="false">
-          <ConnectorPoint PointX="12.125" PointY="32.878013131510414" />
-          <ConnectorPoint PointX="13.010414166666665" PointY="32.878013131510414" />
-          <ConnectorPoint PointX="13.177080833333333" PointY="32.878013131510414" />
-          <ConnectorPoint PointX="13.416666666666666" PointY="32.878013131510414" />
-          <ConnectorPoint PointX="13.583333333333334" PointY="32.878013131510414" />
-          <ConnectorPoint PointX="13.619792916666667" PointY="32.878013131510414" />
-          <ConnectorPoint PointX="13.786459583333334" PointY="32.878013131510414" />
-          <ConnectorPoint PointX="14.026045416666667" PointY="32.878013131510414" />
-          <ConnectorPoint PointX="14.192712083333335" PointY="32.878013131510414" />
-          <ConnectorPoint PointX="19.072916666666668" PointY="32.878013131510414" />
-          <ConnectorPoint PointX="19.239583333333332" PointY="32.878013131510414" />
-          <ConnectorPoint PointX="21" PointY="32.878013131510414" />
+          <ConnectorPoint PointX="12.125" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="12.928380104166665" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.095046770833333" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.149573736979166" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.316240403645834" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.370767369791667" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.537434036458334" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.559732799479166" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.726399466145834" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.732341139322916" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.899007805989584" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="13.904949479166666" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="14.233727239583333" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="17.666666666666668" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="17.833333333333332" PointY="32.812205403645834" />
+          <ConnectorPoint PointX="21" PointY="32.812205403645834" />
           </AssociationConnector>
         <InheritanceConnector EntityType="kipadminModel.ChiroGroep" ManuallyRouted="false">
-          <ConnectorPoint PointX="11.375" PointY="35.509095052083325" />
-          <ConnectorPoint PointX="11.375" PointY="35.884095052083325" />
-          <ConnectorPoint PointX="12.5" PointY="35.884095052083325" />
-          <ConnectorPoint PointX="12.5" PointY="38.244733665771562" />
-          <ConnectorPoint PointX="12.125" PointY="38.244733665771562" />
+          <ConnectorPoint PointX="11.375" PointY="36.085999348958332" />
+          <ConnectorPoint PointX="11.375" PointY="36.25" />
           </InheritanceConnector>
         <EntityTypeShape EntityType="kipadminModel.Rekening" Width="1.5" PointX="15" PointY="38.125" Height="10.633850911458325" />
         <EntityTypeShape EntityType="kipadminModel.Aansluiting" Width="1.5" PointX="20.25" PointY="36.25" Height="6.787822265624996" />
         <AssociationConnector Association="kipadminModel.FK_Rekening_Persoon" >
-          <ConnectorPoint PointX="13.0937475" PointY="31.451315104166667" />
-          <ConnectorPoint PointX="13.0937475" PointY="43.441925455729162" />
+          <ConnectorPoint PointX="13.0117134375" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="13.0117134375" PointY="43.441925455729162" />
           <ConnectorPoint PointX="15" PointY="43.441925455729162" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Aansluiting_Rekening" >
-          <ConnectorPoint PointX="16.5" PointY="41.167958984375" />
-          <ConnectorPoint PointX="17.916666666666668" PointY="41.167958984375" />
-          <ConnectorPoint PointX="18.083333333333332" PointY="41.167958984375" />
-          <ConnectorPoint PointX="19.072916666666668" PointY="41.167958984375" />
-          <ConnectorPoint PointX="19.239583333333332" PointY="41.167958984375" />
-          <ConnectorPoint PointX="20.25" PointY="41.167958984375" />
+          <ConnectorPoint PointX="16.5" PointY="41.324208984375" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="41.324208984375" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="41.324208984375" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="41.324208984375" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="41.324208984375" />
+          <ConnectorPoint PointX="17.916666666666668" PointY="41.324208984375" />
+          <ConnectorPoint PointX="18.083333333333332" PointY="41.324208984375" />
+          <ConnectorPoint PointX="20.25" PointY="41.324208984375" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Aansluiting_Groep" >
-          <ConnectorPoint PointX="12.125" PointY="33.687205403645834" />
-          <ConnectorPoint PointX="13.010414166666665" PointY="33.687205403645834" />
-          <ConnectorPoint PointX="13.177080833333333" PointY="33.687205403645834" />
-          <ConnectorPoint PointX="13.416666666666666" PointY="33.687205403645834" />
-          <ConnectorPoint PointX="13.583333333333334" PointY="33.687205403645834" />
-          <ConnectorPoint PointX="13.619792916666667" PointY="33.687205403645834" />
-          <ConnectorPoint PointX="13.786459583333334" PointY="33.687205403645834" />
-          <ConnectorPoint PointX="14.026045416666667" PointY="33.687205403645834" />
-          <ConnectorPoint PointX="14.192712083333335" PointY="33.687205403645834" />
-          <ConnectorPoint PointX="19.072916666666668" PointY="33.687205403645834" />
-          <ConnectorPoint PointX="19.239583333333332" PointY="33.687205403645834" />
-          <ConnectorPoint PointX="20.59375" PointY="33.687205403645834" />
+          <ConnectorPoint PointX="12.125" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="12.928380104166665" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="13.095046770833333" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="13.370767369791667" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="13.537434036458334" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="13.904949479166666" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="14.233727239583333" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.804613850911458" />
+          <ConnectorPoint PointX="20.59375" PointY="33.804613850911458" />
           <ConnectorPoint PointX="20.59375" PointY="36.25" />
           </AssociationConnector>
         <EntityTypeShape EntityType="kipadminModel.Afdeling" Width="1.5" PointX="0.75" PointY="0.75" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="kipadminModel.Abonnement" Width="1.5" PointX="17.25" PointY="34.125" Height="6.210917968749996" />
         <AssociationConnector Association="kipadminModel.FK_Abonnement_Persoon" >
-          <ConnectorPoint PointX="14.109378750000001" PointY="31.451315104166667" />
-          <ConnectorPoint PointX="14.109378750000001" PointY="34.65625" />
-          <ConnectorPoint PointX="16.916666666666668" PointY="34.65625" />
-          <ConnectorPoint PointX="17.083333333333332" PointY="34.65625" />
-          <ConnectorPoint PointX="17.25" PointY="34.65625" />
+          <ConnectorPoint PointX="13.9882828125" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="13.9882828125" PointY="37.7737939453125" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="37.7737939453125" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="37.7737939453125" />
+          <ConnectorPoint PointX="16.916666666666668" PointY="37.7737939453125" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="37.7737939453125" />
+          <ConnectorPoint PointX="17.25" PointY="37.7737939453125" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Abonnement_Rekening" >
           <ConnectorPoint PointX="16.5" PointY="39.230458984375" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="39.230458984375" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="39.230458984375" />
           <ConnectorPoint PointX="16.916666666666668" PointY="39.230458984375" />
-          <ConnectorPoint PointX="17.083333333333332" PointY="39.230458984375" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="39.230458984375" />
           <ConnectorPoint PointX="17.25" PointY="39.230458984375" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Abonnement_Groep" >
-          <ConnectorPoint PointX="12.125" PointY="34.984375" />
-          <ConnectorPoint PointX="13.010414166666665" PointY="34.984375" />
-          <ConnectorPoint PointX="13.177080833333333" PointY="34.984375" />
-          <ConnectorPoint PointX="13.416666666666666" PointY="34.984375" />
-          <ConnectorPoint PointX="13.583333333333334" PointY="34.984375" />
-          <ConnectorPoint PointX="16.916666666666668" PointY="34.984375" />
-          <ConnectorPoint PointX="17.083333333333332" PointY="34.984375" />
-          <ConnectorPoint PointX="17.25" PointY="34.984375" />
+          <ConnectorPoint PointX="12.125" PointY="34.937462550455734" />
+          <ConnectorPoint PointX="12.928380104166665" PointY="34.937462550455734" />
+          <ConnectorPoint PointX="13.095046770833333" PointY="34.937462550455734" />
+          <ConnectorPoint PointX="13.370767369791667" PointY="34.937462550455734" />
+          <ConnectorPoint PointX="13.537434036458334" PointY="34.937462550455734" />
+          <ConnectorPoint PointX="13.904949479166666" PointY="34.937462550455734" />
+          <ConnectorPoint PointX="14.071616145833334" PointY="34.937462550455734" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="34.937462550455734" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="34.937462550455734" />
+          <ConnectorPoint PointX="16.916666666666668" PointY="34.937462550455734" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="34.937462550455734" />
+          <ConnectorPoint PointX="17.25" PointY="34.937462550455734" />
           </AssociationConnector>
         <EntityTypeShape EntityType="kipadminModel.ExtraVerzekering" Width="1.5" PointX="17.25" PointY="42" Height="3.3263964843750102" />
         <AssociationConnector Association="kipadminModel.FK_ExtraVerzekering_Rekening" >
           <ConnectorPoint PointX="16.5" PointY="43.663198242187505" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="43.663198242187505" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="43.663198242187505" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="43.663198242187505" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="43.663198242187505" />
           <ConnectorPoint PointX="17.25" PointY="43.663198242187505" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_ExtraVerzekering_Groep" >
-          <ConnectorPoint PointX="12.125" PointY="34.202980201822918" />
-          <ConnectorPoint PointX="13.010414166666665" PointY="34.202980201822918" />
-          <ConnectorPoint PointX="13.177080833333333" PointY="34.202980201822918" />
-          <ConnectorPoint PointX="13.416666666666666" PointY="34.202980201822918" />
-          <ConnectorPoint PointX="13.583333333333334" PointY="34.202980201822918" />
-          <ConnectorPoint PointX="14.026045416666667" PointY="34.202980201822918" />
-          <ConnectorPoint PointX="14.192712083333335" PointY="34.202980201822918" />
-          <ConnectorPoint PointX="17" PointY="34.202980201822918" />
+          <ConnectorPoint PointX="12.125" PointY="34.336299962673337" />
+          <ConnectorPoint PointX="12.928380104166665" PointY="34.336299962673337" />
+          <ConnectorPoint PointX="13.095046770833333" PointY="34.336299962673337" />
+          <ConnectorPoint PointX="13.370767369791667" PointY="34.336299962673337" />
+          <ConnectorPoint PointX="13.537434036458334" PointY="34.336299962673337" />
+          <ConnectorPoint PointX="13.904949479166666" PointY="34.336299962673337" />
+          <ConnectorPoint PointX="14.071616145833334" PointY="34.336299962673337" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="34.336299962673337" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="34.336299962673337" />
+          <ConnectorPoint PointX="17" PointY="34.336299962673337" />
           <ConnectorPoint PointX="17" PointY="40.585917968749996" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="40.585917968749996" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="40.585917968749996" />
           <ConnectorPoint PointX="18" PointY="40.585917968749996" />
           <ConnectorPoint PointX="18" PointY="42" />
           </AssociationConnector>
         <EntityTypeShape EntityType="kipadminModel.Bericht" Width="1.5" PointX="2.75" PointY="0.75" Height="1.9802864583333317" />
         <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresI__61915EA71" >
-          <ConnectorPoint PointX="17.25" PointY="50.807444661458334" />
-          <ConnectorPoint PointX="19.15625" PointY="50.807444661458334" />
-          <ConnectorPoint PointX="19.15625" PointY="29.739889322916667" />
+          <ConnectorPoint PointX="16.78125" PointY="49.625" />
+          <ConnectorPoint PointX="16.78125" PointY="29.1799194921875" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="29.1799194921875" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="29.1799194921875" />
+          <ConnectorPoint PointX="17.666666666666668" PointY="29.1799194921875" />
+          <ConnectorPoint PointX="17.833333333333332" PointY="29.1799194921875" />
+          <ConnectorPoint PointX="18" PointY="29.1799194921875" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresT__628582E01" >
           <ConnectorPoint PointX="17.25" PointY="9.0189925130208337" />
@@ -2137,27 +2481,20 @@
           <ConnectorPoint PointX="18.75" PointY="27.375" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipWoont__AdNr__609D3A6E1" >
-          <ConnectorPoint PointX="13.5" PointY="25.625" />
-          <ConnectorPoint PointX="13.5" PointY="25.375" />
-          <ConnectorPoint PointX="14.75" PointY="25.375" />
-          <ConnectorPoint PointX="14.75" PointY="31.614319661458325" />
-          <ConnectorPoint PointX="17.625" PointY="31.614319661458325" />
-          <ConnectorPoint PointX="17.625" PointY="28.557444661458334" />
-          <ConnectorPoint PointX="18" PointY="28.557444661458334" />
+          <ConnectorPoint PointX="14.25" PointY="28.214959746093751" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="28.214959746093751" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="28.214959746093751" />
+          <ConnectorPoint PointX="17.666666666666668" PointY="28.214959746093751" />
+          <ConnectorPoint PointX="17.833333333333332" PointY="28.214959746093751" />
+          <ConnectorPoint PointX="18" PointY="28.214959746093751" />
           </AssociationConnector>
         <EntityTypeShape EntityType="kipadminModel.PersoonsVerzekering" Width="1.5" PointX="22.5" PointY="34.625" Height="1.595683593749996" />
         <AssociationConnector Association="kipadminModel.FK_PersoonsVerzekering_Persoon" >
-          <ConnectorPoint PointX="13.70312625" PointY="31.451315104166667" />
-          <ConnectorPoint PointX="13.70312625" PointY="33.875" />
-          <ConnectorPoint PointX="14.026045416666667" PointY="33.875" />
-          <ConnectorPoint PointX="14.192712083333335" PointY="33.875" />
-          <ConnectorPoint PointX="19.072916666666668" PointY="33.875" />
-          <ConnectorPoint PointX="19.239583333333332" PointY="33.875" />
-          <ConnectorPoint PointX="20.510416666666668" PointY="33.875" />
-          <ConnectorPoint PointX="20.677083333333332" PointY="33.875" />
-          <ConnectorPoint PointX="22.125" PointY="33.875" />
-          <ConnectorPoint PointX="22.125" PointY="35.422841796875" />
-          <ConnectorPoint PointX="22.5" PointY="35.422841796875" />
+          <ConnectorPoint PointX="14.25" PointY="26.406123546875" />
+          <ConnectorPoint PointX="17.75" PointY="26.406123546875" />
+          <ConnectorPoint PointX="17.75" PointY="33.311910807291667" />
+          <ConnectorPoint PointX="23.25" PointY="33.311910807291667" />
+          <ConnectorPoint PointX="23.25" PointY="34.625" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_PersoonsVerzekering_ExtraVerzekering" >
           <ConnectorPoint PointX="18.75" PointY="44.213359375" />
@@ -2165,30 +2502,160 @@
           <ConnectorPoint PointX="19.239583333333332" PointY="44.213359375" />
           <ConnectorPoint PointX="23.25" PointY="44.213359375" />
           <ConnectorPoint PointX="23.25" PointY="36.220683593749996" /></AssociationConnector>
-        <EntityTypeShape EntityType="kipadminModel.Bivak" Width="1.5" PointX="15" PointY="11.5" Height="19.864319661458325" />
-        <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke" >
-          <ConnectorPoint PointX="14.25" PointY="28.494659830729162" />
-          <ConnectorPoint PointX="14.666666666666666" PointY="28.494659830729162" />
-          <ConnectorPoint PointX="14.833333333333334" PointY="28.494659830729162" />
-          <ConnectorPoint PointX="15" PointY="28.494659830729162" />
+        <EntityTypeShape EntityType="kipadminModel.BivakAangifte" Width="1.5" PointX="23.75" PointY="25.25" Height="3.5186979166666674" />
+        <EntityTypeShape EntityType="kipadminModel.BivakOverzicht" Width="1.5" PointX="26" PointY="20.625" Height="20.441223958333325" />
+        <AssociationConnector Association="kipadminModel.FK_BivakAangifte_Adres" >
+          <ConnectorPoint PointX="17.09375" PointY="49.625" />
+          <ConnectorPoint PointX="17.09375" PointY="27.187246093749998" />
+          <ConnectorPoint PointX="17.666666666666668" PointY="27.187246093749998" />
+          <ConnectorPoint PointX="17.833333333333332" PointY="27.187246093749998" />
+          <ConnectorPoint PointX="18.666666666666668" PointY="27.187246093749998" />
+          <ConnectorPoint PointX="18.833333333333332" PointY="27.187246093749998" />
+          <ConnectorPoint PointX="23.385416666666668" PointY="27.187246093749998" />
+          <ConnectorPoint PointX="23.552083333333332" PointY="27.187246093749998" />
+          <ConnectorPoint PointX="23.75" PointY="27.187246093749998" />
         </AssociationConnector>
-        <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke" >
-          <ConnectorPoint PointX="14.25" PointY="26.997329915364581" />
-          <ConnectorPoint PointX="14.666666666666666" PointY="26.997329915364581" />
-          <ConnectorPoint PointX="14.833333333333334" PointY="26.997329915364581" />
-          <ConnectorPoint PointX="15" PointY="26.997329915364581" />
+        <AssociationConnector Association="kipadminModel.FK_BivakAangifte_Groep" >
+          <ConnectorPoint PointX="12.125" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="12.928380104166665" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="13.095046770833333" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="13.370767369791667" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="13.537434036458334" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="13.559732799479166" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="13.726399466145834" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="13.732341139322916" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="13.899007805989584" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="13.904949479166666" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="14.233727239583333" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="23.166666666666668" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="23.333333333333332" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="25.03125" PointY="33.409676905924478" />
+          <ConnectorPoint PointX="25.03125" PointY="28.960999348958335" />
         </AssociationConnector>
-        <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten" >
-          <ConnectorPoint PointX="14.25" PointY="29.991989746093743" />
-          <ConnectorPoint PointX="14.666666666666666" PointY="29.991989746093743" />
-          <ConnectorPoint PointX="14.833333333333334" PointY="29.991989746093743" />
-          <ConnectorPoint PointX="15" PointY="29.991989746093743" />
+        <AssociationConnector Association="kipadminModel.FK_BivakOverzicht_BAangifte" >
+          <ConnectorPoint PointX="25.25" PointY="27.009348958333334" />
+          <ConnectorPoint PointX="26" PointY="27.009348958333334" />
         </AssociationConnector>
-        <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak" >
-          <ConnectorPoint PointX="14.25" PointY="29.243324788411453" />
-          <ConnectorPoint PointX="14.666666666666666" PointY="29.243324788411453" />
-          <ConnectorPoint PointX="14.833333333333334" PointY="29.243324788411453" />
-          <ConnectorPoint PointX="15" PointY="29.243324788411453" />
+        <AssociationConnector Association="kipadminModel.FK_BivakOverzicht_SAangifte" >
+          <ConnectorPoint PointX="25.25" PointY="26.067174479166667" />
+          <ConnectorPoint PointX="26" PointY="26.067174479166667" />
+        </AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_BivakOverzicht_UAangifte" >
+          <ConnectorPoint PointX="25.25" PointY="28.047674153645836" />
+          <ConnectorPoint PointX="26" PointY="28.047674153645836" />
+        </AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_Bivak_Groep" >
+          <ConnectorPoint PointX="12.125" PointY="34.03125" />
+          <ConnectorPoint PointX="12.959632604166666" PointY="34.03125" />
+          <ConnectorPoint PointX="13.126299270833334" PointY="34.03125" />
+          <ConnectorPoint PointX="13.315103541666666" PointY="34.03125" />
+          <ConnectorPoint PointX="13.481770208333334" PointY="34.03125" />
+          <ConnectorPoint PointX="13.893229791666666" PointY="34.03125" />
+          <ConnectorPoint PointX="14.059896458333334" PointY="34.03125" />
+          <ConnectorPoint PointX="19.072916666666668" PointY="34.03125" />
+          <ConnectorPoint PointX="19.239583333333332" PointY="34.03125" />
+          <ConnectorPoint PointX="20.510416666666668" PointY="34.03125" />
+          <ConnectorPoint PointX="20.677083333333332" PointY="34.03125" />
+          <ConnectorPoint PointX="22.041666666666668" PointY="34.03125" />
+          <ConnectorPoint PointX="22.208333333333332" PointY="34.03125" />
+          <ConnectorPoint PointX="24.947916666666668" PointY="34.03125" />
+          <ConnectorPoint PointX="25.114583333333332" PointY="34.03125" />
+          <ConnectorPoint PointX="26" PointY="34.03125" />
+        </AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_Bivak_Groep2" >
+          <ConnectorPoint PointX="12.125" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="12.959632604166666" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="13.126299270833334" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="13.315103541666666" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="13.481770208333334" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="13.604166666666666" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="13.770833333333334" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="13.893229791666666" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="14.059896458333334" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="14.061200729166666" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="14.227867395833334" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="19.072916666666668" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="19.239583333333332" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="20.510416666666668" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="20.677083333333332" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="24.947916666666668" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="25.114583333333332" PointY="33.734227701822917" />
+          <ConnectorPoint PointX="26" PointY="33.734227701822917" />
+        </AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_AspiVerantwoordelijke1" >
+          <ConnectorPoint PointX="13.2329070703125" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="13.2329070703125" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="13.370767369791667" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="13.537434036458334" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="13.559732799479166" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="13.726399466145834" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="13.732341139322916" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="13.899007805989584" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="13.904949479166666" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="14.233727239583333" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="23.166666666666668" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="23.333333333333332" PointY="33.489880479329351" />
+          <ConnectorPoint PointX="26" PointY="33.489880479329351" />
+        </AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_BivakVerantwoordelijke1" >
+          <ConnectorPoint PointX="13.6430661328125" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="13.6430661328125" PointY="33.749853951822942" />
+          <ConnectorPoint PointX="13.904949479166666" PointY="33.749853951822942" />
+          <ConnectorPoint PointX="14.233727239583333" PointY="33.749853951822942" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.749853951822942" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.749853951822942" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.749853951822942" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.749853951822942" />
+          <ConnectorPoint PointX="23.166666666666668" PointY="33.749853951822942" />
+          <ConnectorPoint PointX="23.333333333333332" PointY="33.749853951822942" />
+          <ConnectorPoint PointX="26" PointY="33.749853951822942" />
+        </AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAanvraagTenten1" >
+          <ConnectorPoint PointX="14.150393906249999" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="14.150393906249999" PointY="33.933556925455733" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.933556925455733" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.933556925455733" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.933556925455733" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.933556925455733" />
+          <ConnectorPoint PointX="20.510416666666668" PointY="33.933556925455733" />
+          <ConnectorPoint PointX="20.677083333333332" PointY="33.933556925455733" />
+          <ConnectorPoint PointX="23.166666666666668" PointY="33.933556925455733" />
+          <ConnectorPoint PointX="23.333333333333332" PointY="33.933556925455733" />
+          <ConnectorPoint PointX="26" PointY="33.933556925455733" />
+        </AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_Bivak_Persoon_VerantwoordelijkeAfdelingsBivak1" >
+          <ConnectorPoint PointX="13.81567447265625" PointY="31.643616536458335" />
+          <ConnectorPoint PointX="13.81567447265625" PointY="33.61986721557615" />
+          <ConnectorPoint PointX="13.904949479166666" PointY="33.61986721557615" />
+          <ConnectorPoint PointX="14.233727239583333" PointY="33.61986721557615" />
+          <ConnectorPoint PointX="16.697916666666668" PointY="33.61986721557615" />
+          <ConnectorPoint PointX="16.864583333333332" PointY="33.61986721557615" />
+          <ConnectorPoint PointX="17.010416666666668" PointY="33.61986721557615" />
+          <ConnectorPoint PointX="17.177083333333332" PointY="33.61986721557615" />
+          <ConnectorPoint PointX="23.166666666666668" PointY="33.61986721557615" />
+          <ConnectorPoint PointX="23.333333333333332" PointY="33.61986721557615" />
+          <ConnectorPoint PointX="26" PointY="33.61986721557615" />
+        </AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_BivakAangifte_Persoon" >
+          <ConnectorPoint PointX="13.5" PointY="25.625" />
+          <ConnectorPoint PointX="13.5" PointY="25.375" />
+          <ConnectorPoint PointX="18.666666666666668" PointY="25.375" />
+          <ConnectorPoint PointX="18.833333333333332" PointY="25.375" />
+          <ConnectorPoint PointX="20.75" PointY="25.375" />
+          <ConnectorPoint PointX="20.75" PointY="27.249492187499996" />
+          <ConnectorPoint PointX="23.25" PointY="27.249492187499996" />
+          <ConnectorPoint PointX="23.25" PointY="26.187371046875008" />
+          <ConnectorPoint PointX="23.385416666666668" PointY="26.187371046875008" />
+          <ConnectorPoint PointX="23.552083333333332" PointY="26.187371046875008" />
+          <ConnectorPoint PointX="23.75" PointY="26.187371046875008" />
         </AssociationConnector></Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
