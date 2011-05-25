@@ -38,7 +38,7 @@ namespace Chiro.Gap.Workers
         /// <param name="groepID">ID van ingevende groep</param>
         /// <param name="plaatsNaam">Naam van de plaats</param>
         /// <param name="adresID">ID van het adres van de plaats</param>
-        /// <returns>De gezochte of gemaakte plaats, met daaraan gekoppeld alle uitstappen. Persisteert</returns>
+        /// <returns>De gezochte of gemaakte plaats, met daaraan gekoppeld alle uitstappen én adres. Persisteert</returns>
         public Plaats ZoekenOfMaken(int groepID, string plaatsNaam, int adresID)
         {
             if (!_autorisatieManager.IsGavGroep(groepID))
@@ -50,7 +50,7 @@ namespace Chiro.Gap.Workers
                 Debug.Assert(groepID != 0);
                 Debug.Assert(adresID != 0);
 
-                var plaats = _plaatsenDao.Zoeken(groepID, plaatsNaam, adresID, pl => pl.Uitstap);
+                var plaats = _plaatsenDao.Zoeken(groepID, plaatsNaam, adresID, pl => pl.Uitstap, pl => pl.Adres);
 
                 if (plaats == null)
                 {
