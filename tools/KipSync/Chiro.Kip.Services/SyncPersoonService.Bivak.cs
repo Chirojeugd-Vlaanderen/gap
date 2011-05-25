@@ -521,7 +521,39 @@ namespace Chiro.Kip.Services
 		/// <param name="uitstapID">UitstapID (GAP) van het te verwijderen bivak</param>
 		public void BivakVerwijderen(int uitstapID)
 		{
-			throw new NotImplementedException();
+			int groepID, werkJaar, bivakID;
+
+			using (var db = new kipadminEntities())
+			{
+				var bivak = (from b in db.BivakAangifte.Include("Groep")
+					 where b.GapUitstapID == uitstapID
+					 select b).FirstOrDefault();
+
+				if (bivak == null)
+				{
+					_log.FoutLoggen(0, String.Format(
+						"Kan onbestaand bivak met uitstapID {0} niet verwijderen.",
+						uitstapID));
+					return;
+				}
+				else
+				{
+					// Bewaar groepID, want ik denk dat we daar niet meer aankunnen
+					// als bivak wordt verwijderd.
+
+					groepID = bivak.Groep.GroepID;
+					werkJaar = bivak.WerkJaar;
+					bivakID = bivak.ID;
+
+					db.DeleteObject(bivak);
+				}
+			}
+
+			FixOudeBivakTabel(groepID, werkJaar);
+
+			_log.BerichtLoggen(groepID, String.Format(
+				"Bivak {0} verwijderd",
+				bivakID));
 		}
 	}
 }
