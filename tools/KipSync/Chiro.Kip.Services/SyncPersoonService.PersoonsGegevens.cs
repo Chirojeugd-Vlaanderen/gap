@@ -223,63 +223,7 @@ namespace Chiro.Kip.Services
 				// Als dat entities op sql server zijn, dan gebeurt het zoeken sowieso 
 				// hoofdletterongevoelig.
 
-				string huisNr = null;
-
-				if (adres.HuisNr != null)
-				{
-					if (String.IsNullOrEmpty(adres.Bus))
-					{
-						huisNr = adres.HuisNr.ToString();
-					}
-					else if (adres.Bus[0] >= '0' && adres.Bus[0] <= '9')
-					{
-						// Als de bus numeriek is, dan zetten we 'bus' tussen
-						// huisnummer en bus
-
-						huisNr = String.Format("{0} bus {1}", adres.HuisNr, adres.Bus);
-					}
-					else
-					{
-						// zo niet: een spatie
-
-						huisNr = String.Format("{0} {1}", adres.HuisNr, adres.Bus);
-					}
-				}
-
-
-				var adresInDb = (from adr in db.AdresSet.Include("kipWoont.kipPersoon").Include("kipWoont.kipAdresType")
-						 where adr.Straat == adres.Straat
-						       && adr.Nr == huisNr
-						       && adr.PostNr == postNr
-						       && adr.Gemeente == adres.WoonPlaats
-						       && (string.IsNullOrEmpty(adr.Land) && string.IsNullOrEmpty(adres.Land)
-						       || adr.Land == adres.Land)
-						 select adr).FirstOrDefault();
-
-				if (adresInDb == null)
-				{
-					adresInDb = new Chiro.Kip.Data.Adres
-					{
-						ID = 0,
-						Straat = adres.Straat,
-						Nr = huisNr,
-						PostNr = postNr,
-						Gemeente = adres.WoonPlaats,
-						Land = adres.Land
-					};
-					db.AddToAdresSet(adresInDb);
-
-					_log.BerichtLoggen(0, String.Format(
-						"Nieuw adres gemaakt ({0}): {1} {2}, {3} {4} * {5}",
-						adresInDb.ID, adresInDb.Straat, adresInDb.Nr, adresInDb.PostNr, adresInDb.Gemeente, adresInDb.Land));
-
-				}
-				else
-				{
-					_log.BerichtLoggen(0, String.Format(
-						"Bestaand adres gevonden ({0}): {1} {2}, {3} {4} * {5}",
-						adresInDb.ID, adresInDb.Straat, adresInDb.Nr, adresInDb.PostNr, adresInDb.Gemeente, adresInDb.Land));
-				}
+				Data.Adres adresInDb = AdresVindenOfMaken(adres, db);
 
 
 				// We zitten met het gedoe dat in Kipadmin de adressen een volgnummer hebben.  De voorkeurs-
@@ -356,6 +300,76 @@ namespace Chiro.Kip.Services
 				db.SaveChanges();
 			}
 			_log.BerichtLoggen(0, feedback.ToString());
+		}
+
+		/// <summary>
+		/// Zoekt het gegeven <paramref name="adres"/> op. Als het niet bestaat, maak het
+		/// dan aan.  (SaveChanges wordt nog niet aangeroepen.)
+		/// </summary>
+		/// <param name="adres">Adresgegevens op basis waarvan het adres moet worden gezocht.</param>
+		/// <param name="db">Datacontext waarin gezocht/aangemaakt moet worden</param>
+		/// <returns>Het gevonden of gemaakte adres</returns>
+		private Data.Adres AdresVindenOfMaken(Adres adres, kipadminEntities db)
+		{
+			string postNr = KipPostNr(adres);
+			string huisNr = null;
+
+			if (adres.HuisNr != null)
+			{
+				if (String.IsNullOrEmpty(adres.Bus))
+				{
+					huisNr = adres.HuisNr.ToString();
+				}
+				else if (adres.Bus[0] >= '0' && adres.Bus[0] <= '9')
+				{
+					// Als de bus numeriek is, dan zetten we 'bus' tussen
+					// huisnummer en bus
+
+					huisNr = String.Format("{0} bus {1}", adres.HuisNr, adres.Bus);
+				}
+				else
+				{
+					// zo niet: een spatie
+
+					huisNr = String.Format("{0} {1}", adres.HuisNr, adres.Bus);
+				}
+			}
+
+
+			var adresInDb = (from adr in db.AdresSet.Include("kipWoont.kipPersoon").Include("kipWoont.kipAdresType")
+			                 where adr.Straat == adres.Straat
+			                       && adr.Nr == huisNr
+			                       && adr.PostNr == postNr
+			                       && adr.Gemeente == adres.WoonPlaats
+			                       && (string.IsNullOrEmpty(adr.Land) && string.IsNullOrEmpty(adres.Land)
+			                           || adr.Land == adres.Land)
+			                 select adr).FirstOrDefault();
+
+			if (adresInDb == null)
+			{
+				adresInDb = new Chiro.Kip.Data.Adres
+				            	{
+				            		ID = 0,
+				            		Straat = adres.Straat,
+				            		Nr = huisNr,
+				            		PostNr = postNr,
+				            		Gemeente = adres.WoonPlaats,
+				            		Land = adres.Land
+				            	};
+				db.AddToAdresSet(adresInDb);
+
+				_log.BerichtLoggen(0, String.Format(
+					"Nieuw adres gemaakt ({0}): {1} {2}, {3} {4} * {5}",
+					adresInDb.ID, adresInDb.Straat, adresInDb.Nr, adresInDb.PostNr, adresInDb.Gemeente, adresInDb.Land));
+
+			}
+			else
+			{
+				_log.BerichtLoggen(0, String.Format(
+					"Bestaand adres gevonden ({0}): {1} {2}, {3} {4} * {5}",
+					adresInDb.ID, adresInDb.Straat, adresInDb.Nr, adresInDb.PostNr, adresInDb.Gemeente, adresInDb.Land));
+			}
+			return adresInDb;
 		}
 
 

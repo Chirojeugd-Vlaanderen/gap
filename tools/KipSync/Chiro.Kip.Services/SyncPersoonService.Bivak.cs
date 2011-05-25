@@ -118,6 +118,10 @@ namespace Chiro.Kip.Services
 					feedback.AppendLine("Nieuw overzicht gemaakt");
 				}
 
+				// Zet oostkantons op 'N'.  Als er 'gewoon bivak' of 'afdelingsbivak' in oostkantons is,
+				// wordt dat achteraf 'J'.
+				overzicht.OOSTKANTO = "N";
+
 				// Bivakaangiftes van de groep in het gegeven werkjaar.
 
 				var alleAangiften = from ba in db.BivakAangifte.Include("kipAdres").Include("kipPersoon.kipContactInfo")
@@ -127,13 +131,13 @@ namespace Chiro.Kip.Services
 				var binnenlandseAangiften = (from ag in alleAangiften
 				                             where ag.kipAdres == null ||
 				                             	(String.IsNullOrEmpty(ag.kipAdres.Land) ||
-				                             	 String.Compare(ag.kipAdres.Land, Properties.Resources.Belgie, true) != 0)
+				                             	 String.Compare(ag.kipAdres.Land, Properties.Resources.Belgie, true) == 0)
 				                             select ag).OrderByDescending(ag => ag.ID).ToArray();
 
 				var buitenlandseAangiften = (from ag in alleAangiften
 							     where ag.kipAdres != null &&
 								(!String.IsNullOrEmpty(ag.kipAdres.Land) &&
-								 String.Compare(ag.kipAdres.Land, Properties.Resources.Belgie, true) == 0)
+								 String.Compare(ag.kipAdres.Land, Properties.Resources.Belgie, true) != 0)
 							     select ag).OrderByDescending(ag => ag.ID).ToArray();
 
 				// Als er een buitenlandse aangifte is, dan moet die zeker bewaard worden als buitenlands bivak.
@@ -152,7 +156,7 @@ namespace Chiro.Kip.Services
 
 					if (aangifte.kipAdres != null)
 					{
-						overzicht.U_STRAAT = String.Format("{0} {1} {2}", aangifte.kipAdres.Straat, aangifte.kipAdres.Nr);
+						overzicht.U_STRAAT = String.Format("{0} {1}", aangifte.kipAdres.Straat, aangifte.kipAdres.Nr);
 						overzicht.U_POSTNR = aangifte.kipAdres.PostNr;
 						overzicht.U_GEMEENTE = aangifte.kipAdres.Gemeente;
 						overzicht.U_LAND = aangifte.kipAdres.Land;
@@ -190,12 +194,21 @@ namespace Chiro.Kip.Services
 
 						if (aangifte.kipAdres != null)
 						{
-							overzicht.S_STRAAT = String.Format("{0} {1} {2}", aangifte.kipAdres.Straat, aangifte.kipAdres.Nr);
+							overzicht.S_STRAAT = String.Format("{0} {1}", aangifte.kipAdres.Straat, aangifte.kipAdres.Nr);
 							overzicht.S_POSTNR = aangifte.kipAdres.PostNr;
 							overzicht.S_GEMEENTE = aangifte.kipAdres.Gemeente;
 							overzicht.S_LAND = aangifte.kipAdres.Land;
 
-							overzicht.S_PROVINCI = PostNrNaarProvincie(aangifte.kipAdres.PostNr);
+
+							if (String.IsNullOrEmpty(overzicht.B_LAND) || String.Compare(overzicht.B_LAND, Properties.Resources.Belgie, true) == 0)
+							{
+								if (PostNrInOostKantons(aangifte.kipAdres.PostNr))
+								{
+									overzicht.OOSTKANTO = "J";
+								}
+								overzicht.S_PROVINCI = PostNrNaarProvincie(aangifte.kipAdres.PostNr);
+							}
+
 						}
 
 						if (aangifte.kipPersoon != null)
@@ -236,12 +249,19 @@ namespace Chiro.Kip.Services
 
 					if (aangifte.kipAdres != null)
 					{
-						overzicht.B_STRAAT = String.Format("{0} {1} {2}", aangifte.kipAdres.Straat, aangifte.kipAdres.Nr);
+						overzicht.B_STRAAT = String.Format("{0} {1}", aangifte.kipAdres.Straat, aangifte.kipAdres.Nr);
 						overzicht.B_POSTNR = aangifte.kipAdres.PostNr;
 						overzicht.B_GEMEENTE = aangifte.kipAdres.Gemeente;
 						overzicht.B_LAND = aangifte.kipAdres.Land;
 
-						overzicht.B_PROVINCI = PostNrNaarProvincie(aangifte.kipAdres.PostNr);
+						if (String.IsNullOrEmpty(overzicht.B_LAND) || String.Compare(overzicht.B_LAND, Properties.Resources.Belgie, true) == 0)
+						{
+							overzicht.B_PROVINCI = PostNrNaarProvincie(aangifte.kipAdres.PostNr);
+							if (PostNrInOostKantons(aangifte.kipAdres.PostNr))
+							{
+								overzicht.OOSTKANTO = "J";
+							}
+						}
 					}
 
 					if (!String.IsNullOrEmpty(aangifte.BivakPlaatsNaam))
@@ -256,10 +276,33 @@ namespace Chiro.Kip.Services
 					}
 					feedback.AppendLine(String.Format("Geregistreerd in overzicht als 'gewoon' bivak:  ID{1} {0}", aangifte.BivakNaam, aangifte.ID));
 				}
+				overzicht.STEMPEL = DateTime.Now;
 				db.SaveChanges();
 				feedback.AppendLine(String.Format("OverzichtsID: {0}", overzicht.id));
 			}
 			_log.BerichtLoggen(groepID, feedback.ToString());
+		}
+
+		/// <summary>
+		/// Geeft <c>true</c> als het gegeven postnummer in de oostkantons ligt
+		/// anders <c>false</c>.
+		/// </summary>
+		/// <param name="postNr">Belgisch postnummer</param>
+		/// <returns><c>true</c> als het gegeven postnummer in de oostkantons ligt
+		/// anders <c>false</c>.</returns>
+		/// <remarks>Als het postnummer niet numeriek is, wort <c>null</c> opgeleverd.</remarks>
+		private static bool PostNrInOostKantons(string postNr)
+		{
+			int nr;
+
+			if (int.TryParse(postNr, out nr))
+			{
+				return (nr >= 4700 && nr < 4800 || nr >= 4950 && nr < 4970);
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		/// <summary>
@@ -347,7 +390,47 @@ namespace Chiro.Kip.Services
 		/// <param name="adres">adres van de bivakplaats</param>
 		public void BivakPlaatsBewaren(int uitstapID, string plaatsNaam, Adres adres)
 		{
-			throw new NotImplementedException();
+			bool gewijzigd = false;
+			BivakAangifte bivak;
+
+			using (var db = new kipadminEntities())
+			{
+				bivak = (from b in db.BivakAangifte.Include("kipAdres").Include("Groep")
+				             where b.GapUitstapID == uitstapID
+				             select b).FirstOrDefault();
+
+				if (bivak == null)
+				{
+					_log.FoutLoggen(0, String.Format(
+						"Kan bivakplaats {0} niet toekennen aan onbestaand bivak (uitstapID {1}).",
+						plaatsNaam,
+						uitstapID
+						));
+					return;
+				}
+
+				var nieuwAdres = AdresVindenOfMaken(adres, db);
+
+				if (nieuwAdres.ID == 0 || bivak.kipAdres == null || bivak.kipAdres.ID != nieuwAdres.ID)
+				{
+					// Enkel actie als er echt een nieuw adres toegekend moet worden.
+
+					bivak.kipAdres = nieuwAdres;
+					bivak.BivakPlaatsNaam = plaatsNaam;
+					db.SaveChanges();
+					gewijzigd = true;
+
+					_log.BerichtLoggen(0, String.Format(
+						"Bivakplaats {0} ({2}) toegekend aan bivak met uitstapID {1}.",
+						plaatsNaam,
+						uitstapID,
+						nieuwAdres.Gemeente));
+				}
+			}
+			if (gewijzigd)
+			{
+				FixOudeBivakTabel(bivak.Groep.GroepID, bivak.WerkJaar);
+			}
 		}
 
 		/// <summary>
@@ -359,11 +442,14 @@ namespace Chiro.Kip.Services
 		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void BivakContactBewaren(int uitstapID, int adNummer)
 		{
+			bool gewijzigd = false;
+			BivakAangifte bivak;
+
 			using (var db = new kipadminEntities())
 			{
-				var bivak = (from b in db.BivakAangifte.Include("kipPersoon").Include("Groep")
-				             where b.GapUitstapID == uitstapID
-				             select b).FirstOrDefault();
+				bivak = (from b in db.BivakAangifte.Include("kipPersoon").Include("Groep")
+				         where b.GapUitstapID == uitstapID
+				         select b).FirstOrDefault();
 
 				if (bivak == null)
 				{
@@ -385,6 +471,7 @@ namespace Chiro.Kip.Services
 					               select p).FirstOrDefault();
 					bivak.kipPersoon = persoon;
 					db.SaveChanges();
+					gewijzigd = true;
 
 					_log.BerichtLoggen(bivak.Groep.GroepID, String.Format(
 						"Persoon {0} {1} {2} ingesteld als contact voor bivak {3} {4}",
@@ -394,9 +481,12 @@ namespace Chiro.Kip.Services
 						bivak.ID,
 						bivak.BivakNaam));
 
-					FixOudeBivakTabel(bivak.Groep.GroepID, bivak.WerkJaar);
 				}
 				
+			}
+			if (gewijzigd)
+			{
+				FixOudeBivakTabel(bivak.Groep.GroepID, bivak.WerkJaar);
 			}
 		}
 
