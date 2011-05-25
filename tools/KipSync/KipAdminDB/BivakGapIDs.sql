@@ -59,7 +59,7 @@ CREATE TABLE biv.BivakAangifte(
 	DatumVan DATETIME NOT NULL,
 	DatumTot DATETIME NOT NULL,
 	BivakNaam VARCHAR(120) NULL,
-	Opmerking TEXT NULL,	
+	Opmerkingen TEXT NULL,	
 	BivakPlaatsNaam VARCHAR(80),
 	AdresID INT NULL, -- nullable omdat de groepen dit mogelijk niet direct in orde brengen
 	ContactAD INT NULL, -- idem
@@ -83,6 +83,13 @@ GO
 	
 GRANT INSERT, UPDATE, SELECT, DELETE ON biv.BivakAangifte TO KipSyncRole
 GO
+
+GRANT INSERT, UPDATE, SELECT ON biv.BivakOverzicht TO SECR;
+GRANT SELECT ON biv.BivakOverzicht TO VRIJGEST;
+
+GRANT INSERT, UPDATE, SELECT ON kipBivak TO SECR;
+GRANT SELECT ON kipBivak TO VRIJGEST;
+
 	
 -- Omdat een bivak in GAP los ingegeven wordt van de plaats, komen er ook bivakken zonder plaats
 -- door naar Kipadmin.  Dat moeten we ondersteunen.
