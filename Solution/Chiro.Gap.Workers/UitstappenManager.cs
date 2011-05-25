@@ -127,7 +127,12 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Groepswerkjaar wordt altijd mee bewaard</remarks>
 		public Uitstap Bewaren(Uitstap uitstap, UitstapExtras extras)
 		{
+			// kopieer eerst een aantal gekoppelde entiteiten (voor sync straks), want na het bewaren van 
+			// het bivak zijn we die kwijt...
+
 			var groep = uitstap.GroepsWerkJaar == null ? null : uitstap.GroepsWerkJaar.Groep;
+			var plaats = uitstap.Plaats == null ? null : uitstap.Plaats;
+
 
 			if (!_autorisatieManager.IsGavUitstap(uitstap.ID))
 			{
@@ -167,8 +172,12 @@ namespace Chiro.Gap.Workers
 						// meer gekoppeld is (wegens onderliggende beperkingen van
 						// AttachObjectGraph).  Vandaar dat we voor het gemak
 						// die groep hier opnieuw koppelen.
+						// Idem voor plaats
+
+						// Opgelet.  Dit is inconsistent gedrag van de software :-(
 
 						uitstap.GroepsWerkJaar.Groep = groep;
+						uitstap.Plaats = plaats;
 						_sync.Bewaren(uitstap);
 					}
 					else
