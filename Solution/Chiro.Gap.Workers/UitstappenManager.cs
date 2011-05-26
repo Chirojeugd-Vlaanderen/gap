@@ -124,14 +124,20 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="uitstap">Te bewaren uitstap</param>
 		/// <param name="extras">Bepaalt de mee te bewaren koppelingen</param>
-		/// <remarks>Groepswerkjaar wordt altijd mee bewaard</remarks>
-		public Uitstap Bewaren(Uitstap uitstap, UitstapExtras extras)
+		/// <param name="sync">Als <c>true</c>, wordt de uitstap gesynct naar Kipadmin.</param>
+		/// <remarks>Groepswerkjaar wordt altijd mee bewaard.
+		/// De parameter <paramref name="sync"/> staat erbij om te vermijden dat voor het
+		/// bewaren van een koppeling een (ongewijzigd) bivak mee over de lijn moet.
+		/// </remarks>
+		public Uitstap Bewaren(Uitstap uitstap, UitstapExtras extras, bool sync)
 		{
 			// kopieer eerst een aantal gekoppelde entiteiten (voor sync straks), want na het bewaren van 
 			// het bivak zijn we die kwijt...
 
 			var groep = uitstap.GroepsWerkJaar == null ? null : uitstap.GroepsWerkJaar.Groep;
-			var plaats = uitstap.Plaats == null ? null : uitstap.Plaats;
+			var plaats = uitstap.Plaats ?? null;
+
+			Debug.Assert(uitstap.GroepsWerkJaar != null);
 
 
 			if (!_autorisatieManager.IsGavUitstap(uitstap.ID))
@@ -166,7 +172,7 @@ namespace Chiro.Gap.Workers
 				{
 #endif
 					uitstap = _uitstappenDao.Bewaren(uitstap, koppelingen.ToArray());
-					if (uitstap.IsBivak)
+					if (uitstap.IsBivak && sync)
 					{
 						// De 'Bewaren' hierboven heeft tot gevolg dat de groep niet
 						// meer gekoppeld is (wegens onderliggende beperkingen van
@@ -180,7 +186,7 @@ namespace Chiro.Gap.Workers
 						uitstap.Plaats = plaats;
 						_sync.Bewaren(uitstap);
 					}
-					else
+					else if (sync)
 					{
 						// Dit om op te vangen dat een bivak afgevinkt wordt als bivak.
 						// TODO: betere manier bedenken

@@ -85,7 +85,7 @@ namespace Chiro.Gap.Services
 
             try
             {
-                return _uitstappenMgr.Bewaren(uitstap, UitstapExtras.GroepsWerkJaar).ID;
+                return _uitstappenMgr.Bewaren(uitstap, UitstapExtras.GroepsWerkJaar, true).ID;
             }
             // Afhandelen van verwachte exceptions
             catch (GeenGavException ex)
@@ -209,7 +209,7 @@ namespace Chiro.Gap.Services
                 throw new FaultException<BlokkerendeObjectenFault<PlaatsInfo>>(fault);
             }
 
-			_uitstappenMgr.Bewaren(uitstap, UitstapExtras.Plaats);
+			_uitstappenMgr.Bewaren(uitstap, UitstapExtras.Plaats, true);
 		}
 
 		/// <summary>
@@ -274,7 +274,7 @@ namespace Chiro.Gap.Services
 				throw;
 			}
 
-			_uitstappenMgr.Bewaren(uitstap, UitstapExtras.Deelnemers);
+			_uitstappenMgr.Bewaren(uitstap, UitstapExtras.Deelnemers, false);
 
 			return Mapper.Map<Uitstap, UitstapInfo>(uitstap);
 		}
@@ -323,7 +323,7 @@ namespace Chiro.Gap.Services
 
             _deelnemersMgr.InstellenAlsContact(deelnemer);
 
-            _uitstappenMgr.Bewaren(deelnemer.Uitstap, UitstapExtras.Contact);
+            _uitstappenMgr.Bewaren(deelnemer.Uitstap, UitstapExtras.Contact, true);
 
             return deelnemer.Uitstap.ID;
         }
