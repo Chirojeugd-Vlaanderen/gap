@@ -63,6 +63,9 @@ namespace Chiro.Gap.LidSyncer
             // // Opnieuw overzetten en bewaren van adressen met busnummers
             // AdressenOpnieuwBewaren();
 
+            //var uMgr = Factory.Maak<UitstappenManager>();
+            //uMgr.OpnieuwSyncen(2010);
+
             #endregion
 
             // Overzetten leden na probeerperiode

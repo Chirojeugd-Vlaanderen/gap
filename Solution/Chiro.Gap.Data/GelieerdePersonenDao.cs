@@ -65,11 +65,11 @@ namespace Chiro.Gap.Data.Ef
 
                 if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
                 {
-                    AlleAdressenKoppelen(db, result);
+                    AdresHelper.AlleAdressenKoppelen(result);
                 }
                 else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
                 {
-                    VoorkeursAdresKoppelen(db, result);
+                    AdresHelper.VoorkeursAdresKoppelen(result);
                 }
 
                 if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
@@ -163,11 +163,11 @@ namespace Chiro.Gap.Data.Ef
 
                 if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
                 {
-                    AlleAdressenKoppelen(db, resultaat);
+                    AdresHelper.AlleAdressenKoppelen(resultaat);
                 }
                 else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
                 {
-                    VoorkeursAdresKoppelen(db, resultaat);
+                    AdresHelper.VoorkeursAdresKoppelen(resultaat);
                 }
 
                 if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
@@ -275,11 +275,11 @@ namespace Chiro.Gap.Data.Ef
 
                 if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
                 {
-                    AlleAdressenKoppelen(db, lijst);
+                    AdresHelper.AlleAdressenKoppelen(lijst);
                 }
                 else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
                 {
-                    VoorkeursAdresKoppelen(db, lijst);
+                    AdresHelper.VoorkeursAdresKoppelen(lijst);
                 }
 
                 if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
@@ -328,11 +328,11 @@ namespace Chiro.Gap.Data.Ef
 
                 if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
                 {
-                    AlleAdressenKoppelen(db, lijst);
+                    AdresHelper.AlleAdressenKoppelen(lijst);
                 }
                 else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
                 {
-                    VoorkeursAdresKoppelen(db, lijst);
+                    AdresHelper.VoorkeursAdresKoppelen(lijst);
                 }
 
                 // als enkel de lidobjecten van dit werkjaar opgevraagd worden, dan moeten we dat nog
@@ -395,7 +395,7 @@ namespace Chiro.Gap.Data.Ef
                             where gp.ID == gelieerdePersoonID
                             select gp).FirstOrDefault();
 
-                AlleAdressenKoppelen(db, gelpers);
+                AdresHelper.AlleAdressenKoppelen(gelpers);
 
                 var gwj = (from g in db.GroepsWerkJaar
                            where g.Groep.ID == gelpers.Groep.ID
@@ -513,7 +513,7 @@ namespace Chiro.Gap.Data.Ef
                     && gp.Groep.ID == groepID
                     select gp).ToList();
 
-                AlleAdressenKoppelen(db, result);
+                AdresHelper.AlleAdressenKoppelen(result);
             }
 
             return Utility.DetachObjectGraph(result);
@@ -546,7 +546,7 @@ namespace Chiro.Gap.Data.Ef
 
                 // Instantieer zowel Belgische als buitenlandse adressen.
 
-                AlleAdressenKoppelen(db, resultaat);
+                AdresHelper.AlleAdressenKoppelen(resultaat);
             }
             return Utility.DetachObjectGraph(resultaat);
         }
@@ -712,106 +712,6 @@ namespace Chiro.Gap.Data.Ef
         public GelieerdePersoon Bewaren(GelieerdePersoon gelieerdePersoon, PersoonsExtras extras)
         {
             return Bewaren(gelieerdePersoon, ExtrasNaarLambdas(extras));
-        }
-
-        /// <summary>
-        /// Koppelt de straat/gemeente/land van de voorkeursadressen aan een (geattachte!) gelieerde personen.
-        /// </summary>
-        /// <param name="db">Objectcontext waaraan de personen gekoppeld zijn</param>
-        /// <param name="gelieerdePersoon">gelieerde persoon</param>
-        /// <returns>Dezelfde gelieerde persoon, maar met voorkeursadressen</returns>
-        /// <remarks>Het adresobject van het voorkeursadres moeten al gekoppeld zijn; 
-        /// deze method instantieert enkel nog straat, gemeente en land.</remarks>
-        public static GelieerdePersoon VoorkeursAdresKoppelen(ObjectContext db, GelieerdePersoon gelieerdePersoon)
-        {
-            if (gelieerdePersoon == null || gelieerdePersoon.PersoonsAdres == null)
-            {
-                return gelieerdePersoon;
-            }
-            else
-            {
-                return VoorkeursAdresKoppelen(db, new GelieerdePersoon[] { gelieerdePersoon }).First();
-            }
-        }
-
-        /// <summary>
-        /// Koppelt de straat/gemeente/land van de voorkeursadressen aan een lijst (geattachte!) gelieerde personen.
-        /// </summary>
-        /// <param name="db">Objectcontext waaraan de personen gekoppeld zijn</param>
-        /// <param name="gelieerdePersonen">gelieerde personen</param>
-        /// <returns>Dezelfde gelieerde personen, maar met voorkeursadressen</returns>
-        /// <remarks>De adresobjecten moeten al gekoppeld zijn; deze method instantieert enkel nog straat, gemeente en land.</remarks>
-        public static IEnumerable<GelieerdePersoon> VoorkeursAdresKoppelen(ObjectContext db, IEnumerable<GelieerdePersoon> gelieerdePersonen)
-        {
-            var alleAdressen = from gp in gelieerdePersonen
-                               where gp.PersoonsAdres != null
-                               select gp.PersoonsAdres.Adres;
-
-            // De truuk is gewoon de informatie van de adressen te instantiëren: eerst die van de 
-            // Belgische, dan die van de buitenlandse.
-            // Entity framework zal ervoor zorgen dat de extra info aan de reeds geladen adresobjecten
-            // wordt gekoppeld.
-
-            foreach (var adr in alleAdressen)
-            {
-                if (adr is BelgischAdres)
-                {
-                    (adr as BelgischAdres).StraatNaamReference.Load();
-                    (adr as BelgischAdres).WoonPlaatsReference.Load();
-                }
-                else
-                {
-                    Debug.Assert(adr is BuitenLandsAdres);
-                    ((BuitenLandsAdres)adr).LandReference.Load();
-                }
-            }
-
-            return gelieerdePersonen;
-        }
-
-        /// <summary>
-        /// Koppelt de straat/gemeente/land van de adressen aan een (geattachte!) gelieerde personen.
-        /// </summary>
-        /// <param name="db">Objectcontext waaraan de personen gekoppeld zijn</param>
-        /// <param name="gelieerdePersoon">gelieerde persoon</param>
-        /// <returns>Dezelfde gelieerde persoon, maar met alle adressen gekoppeld</returns>
-        /// <remarks>Het adresobject van het voorkeursadres moeten al gekoppeld zijn; 
-        /// deze method instantieert enkel nog straat, gemeente en land.</remarks>
-        public static GelieerdePersoon AlleAdressenKoppelen(ObjectContext db, GelieerdePersoon gelieerdePersoon)
-        {
-            return AlleAdressenKoppelen(db, new GelieerdePersoon[] { gelieerdePersoon }).First();
-        }
-
-        /// <summary>
-        /// Koppelt straat/gemeente/land van alle adressen aan een lijst (geattachte!) gelieerde personen.
-        /// </summary>
-        /// <param name="db">Objectcontext waaraan de personen gekoppeld zijn</param>
-        /// <param name="gelieerdePersonen">gelieerde personen</param>
-        /// <returns>Dezelfde gelieerde personen, maar met alle adressen</returns>
-        /// <remarks>De adresobjecten moeten al gekoppeld zijn; deze method instantieert enkel nog straat, gemeente en land.</remarks>
-        public static IEnumerable<GelieerdePersoon> AlleAdressenKoppelen(ObjectContext db, IEnumerable<GelieerdePersoon> gelieerdePersonen)
-        {
-            // De truuk is gewoon de informatie van de adressen te instantiëren: eerst die van de 
-            // Belgische, dan die van de buitenlandse.
-            // Entity framework zal ervoor zorgen dat de extra info aan de reeds geladen adresobjecten
-            // wordt gekoppeld.
-
-            var alleAdressen = gelieerdePersonen.SelectMany(gp => gp.Persoon.PersoonsAdres).Select(pa => pa.Adres);
-
-            foreach (var adr in alleAdressen)
-            {
-                if (adr is BelgischAdres)
-                {
-                    (adr as BelgischAdres).StraatNaamReference.Load();
-                    (adr as BelgischAdres).WoonPlaatsReference.Load();
-                }
-                else
-                {
-                    Debug.Assert(adr is BuitenLandsAdres);
-                    ((BuitenLandsAdres)adr).LandReference.Load();
-                }
-            }
-            return gelieerdePersonen;
         }
 
         /// <summary>

@@ -148,11 +148,11 @@ namespace Chiro.Gap.Data.Ef
 
                 if ((extras & LidExtras.Adressen) != 0)
                 {
-                    GelieerdePersonenDao.AlleAdressenKoppelen(db, from l in resultaat select l.GelieerdePersoon);
+                    AdresHelper.AlleAdressenKoppelen(from l in resultaat select l.GelieerdePersoon);
                 }
                 else if ((extras & LidExtras.VoorkeurAdres) != 0)
                 {
-                    GelieerdePersonenDao.VoorkeursAdresKoppelen(db, from l in resultaat select l.GelieerdePersoon);
+                    AdresHelper.VoorkeursAdresKoppelen(from l in resultaat select l.GelieerdePersoon);
                 }
             }
 

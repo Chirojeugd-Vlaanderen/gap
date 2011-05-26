@@ -74,11 +74,11 @@ namespace Chiro.Gap.Data.Ef
 
                 if ((extras & LidExtras.Adressen) == LidExtras.Adressen)
                 {
-                    GelieerdePersonenDao.AlleAdressenKoppelen(db, (from ld in resultaat select ld.GelieerdePersoon));
+                    AdresHelper.AlleAdressenKoppelen((from ld in resultaat select ld.GelieerdePersoon));
                 }
                 else if ((extras & LidExtras.VoorkeurAdres) == LidExtras.VoorkeurAdres)
                 {
-                    GelieerdePersonenDao.VoorkeursAdresKoppelen(db, (from ld in resultaat select ld.GelieerdePersoon));
+                    AdresHelper.VoorkeursAdresKoppelen((from ld in resultaat select ld.GelieerdePersoon));
                 }
             }
             return Utility.DetachObjectGraph(resultaat);
@@ -622,7 +622,7 @@ namespace Chiro.Gap.Data.Ef
 
                 resultaat = leiding.ToArray().Union<Lid>(kinderen.ToArray()).ToArray();
 
-                GelieerdePersonenDao.VoorkeursAdresKoppelen(db, from l in resultaat select l.GelieerdePersoon);
+                AdresHelper.VoorkeursAdresKoppelen(from l in resultaat select l.GelieerdePersoon);
             }
 
             return Utility.DetachObjectGraph<Lid>(resultaat);

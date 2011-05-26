@@ -269,19 +269,10 @@ namespace Chiro.Gap.Data.Ef
                          where pa.Adres.ID == adresID
                          select pa.Adres).FirstOrDefault();
 
-                if (adres is BelgischAdres)
-                {
-                    ((BelgischAdres)adres).StraatNaamReference.Load();
-                    ((BelgischAdres)adres).WoonPlaatsReference.Load();
-                }
-                else if (adres is BuitenLandsAdres)
-                {
-                    ((BuitenLandsAdres)adres).LandReference.Load();
-                }
+                AdresHelper.AdresGegevensKoppelen(adres);
             }
 
             return Utility.DetachObjectGraph(adres);
         }
-
     }
 }

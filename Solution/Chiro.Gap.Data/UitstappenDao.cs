@@ -93,6 +93,39 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
+        /// Haalt alle bivakken (geen uitstappen) op van alle groepen, uit gegeven <paramref name="werkjaar"/>,
+        /// inclusief bivakplaats (met adres), contactpersoon, groepswerkjaar (met groep)
+        /// </summary>
+        /// <param name="werkjaar">Werkjaar waarvan de bivakken opgehaald moeten worden.</param>
+        /// <returns>Alle bivakken uit het <paramref name="werkjaar"/></returns>
+        public IEnumerable<Uitstap> AlleBivakkenOphalen(int werkjaar)
+        {
+            IEnumerable<Uitstap> bivakken;
+            using (var db = new ChiroGroepEntities())
+            {
+                bivakken =
+                    (from u in
+                         db.Uitstap.Include(b => b.ContactDeelnemer.GelieerdePersoon.Persoon).Include(
+                             b => b.GroepsWerkJaar.Groep).Include(b => b.Plaats.Adres)
+                     where u.IsBivak && u.GroepsWerkJaar.WerkJaar == werkjaar
+                     select u).ToArray();
+
+                var adressen = (from b in bivakken
+                                where b.Plaats != null && b.Plaats.Adres != null
+                                select b.Plaats.Adres);
+
+                // Koppel relevante adresgegevens voor Belgische en buitenlandse adressen.
+
+                foreach (var adr in adressen)
+                {
+                    AdresHelper.AdresGegevensKoppelen(adr);
+                }
+            }
+
+            return Utility.DetachObjectGraph(bivakken);
+        }
+
+        /// <summary>
         /// Haalt een uitstap op
         /// </summary>
         /// <param name="id">ID op te halen uitstap</param>

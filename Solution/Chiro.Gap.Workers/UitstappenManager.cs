@@ -319,5 +319,27 @@ namespace Chiro.Gap.Workers
 				return _uitstappenDao.DeelnemersOphalen(uitstapID);
 			}
 		}
+
+		/// <summary>
+		/// Stuurt alle bivakken van werkjaar <paramref name="werkjaar"/> opnieuw naar
+		/// kipadmin.
+		/// </summary>
+		/// <param name="werkjaar">Werkjaar</param>
+		public void OpnieuwSyncen(int werkjaar)
+		{
+			if (!_autorisatieManager.IsSuperGav())
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+			else
+			{
+				var alles = _uitstappenDao.AlleBivakkenOphalen(werkjaar);
+
+				foreach (var bivak in alles)
+				{
+					_sync.Bewaren(bivak);
+				}
+			}
+		}
 	}
 }

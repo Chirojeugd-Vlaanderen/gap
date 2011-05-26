@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractChiroGroepDao.cs" />
+    <Compile Include="AdresHelper.cs" />
     <Compile Include="AdressenDao.cs" />
     <Compile Include="AfdelingenDao.cs" />
     <Compile Include="AfdelingsJarenDao.cs" />

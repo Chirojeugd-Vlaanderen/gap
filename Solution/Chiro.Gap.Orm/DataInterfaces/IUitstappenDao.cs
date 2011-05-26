@@ -28,5 +28,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <param name="uitstapID">ID van uitstap waarvan deelnemers op te halen zijn</param>
         /// <returns>De deelnemers van de gevraagde uitstap.</returns>
     	IEnumerable<Deelnemer> DeelnemersOphalen(int uitstapID);
+
+        /// <summary>
+        /// Haalt alle bivakken op van alle groepen, uit gegeven <paramref name="werkjaar"/>,
+        /// inclusief bivakplaats (met adres), contactpersoon, groepswerkjaar (met groep)
+        /// </summary>
+        /// <param name="werkjaar">Werkjaar waarvan de bivakken opgehaald moeten worden.</param>
+        /// <returns>Alle bivakken uit het <paramref name="werkjaar"/></returns>
+    	IEnumerable<Uitstap> AlleBivakkenOphalen(int werkjaar);
     }
 }
