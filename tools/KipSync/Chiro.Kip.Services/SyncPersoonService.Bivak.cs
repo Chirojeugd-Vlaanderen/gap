@@ -94,9 +94,12 @@ namespace Chiro.Kip.Services
 
 				// Kijk of er al een record bestaat in de oude bivaktabel.
 
-				var overzicht = (from bo in db.BivakOverzicht.Include("BivakAangifteB").Include("BivakAangifteS").Include("BivakAangifteU")
-				                 where bo.Groep.GroepID == groepID && bo.werkjaar == werkJaar
-				                 select bo).FirstOrDefault();
+				var overzicht =
+					(from bo in
+					 	db.BivakOverzicht.Include("BivakAangifteB").Include("BivakAangifteS").Include("BivakAangifteU").Include(
+					 		"VerantwoordelijkeB")
+					 where bo.Groep.GroepID == groepID && bo.werkjaar == werkJaar
+					 select bo).FirstOrDefault();
 
 				feedback.AppendLine("Bijwerken bivakoverzicht.");
 				
@@ -274,6 +277,28 @@ namespace Chiro.Kip.Services
 						overzicht.B_TEL = GsmNrGet(aangifte.kipPersoon);
 						overzicht.VerantwoordelijkeB = aangifte.kipPersoon;
 					}
+
+					if (overzicht.VerantwoordelijkeB == null)
+					{
+						// In kipadmin wordt dezelfde tabel gebruik voor aanvraag kampeermateriaal (tenten) en 
+						// bivakaangifte, en het verschil zit 'em in de bivakverantwoordelijke.  Als die er is,
+						// is het een bivakaangifte.  (O nee!)
+						//
+						// Dus als er geen verantwoordelijke is, dan hangen we daar voor het gemak de contactpersoon aan.
+
+						var contact = (from l in db.Lid
+						               where l.Groep.GroepID == groepID &&
+						                     l.werkjaar == werkJaar &&
+						                     l.HeeftFunctie.Any(hf => hf.Functie.id == (int) FunctieEnum.ContactPersoon)
+						               select l.Persoon).FirstOrDefault();
+						overzicht.VerantwoordelijkeB = contact;
+
+						feedback.AppendLine(String.Format(
+							"Er was nog geen verantwoordelijke; we nemen de contactpersoon {0} {1}", 
+							contact.VoorNaam,
+						        contact.Naam));
+					}
+
 					feedback.AppendLine(String.Format("Geregistreerd in overzicht als 'gewoon' bivak:  ID{1} {0}", aangifte.BivakNaam, aangifte.ID));
 				}
 				overzicht.STEMPEL = DateTime.Now;
