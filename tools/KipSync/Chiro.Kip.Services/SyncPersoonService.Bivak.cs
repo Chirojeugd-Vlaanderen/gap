@@ -293,10 +293,17 @@ namespace Chiro.Kip.Services
 						               select l.Persoon).FirstOrDefault();
 						overzicht.VerantwoordelijkeB = contact;
 
-						feedback.AppendLine(String.Format(
-							"Er was nog geen verantwoordelijke; we nemen de contactpersoon {0} {1}", 
-							contact.VoorNaam,
-						        contact.Naam));
+						if (contact == null)
+						{
+							feedback.AppendLine("Geen verantwoordelijke, noch contactpersoon voor groep.  Jammer voor hen.");
+						}
+						else
+						{
+							feedback.AppendLine(String.Format(
+								"Er was nog geen verantwoordelijke; we nemen de contactpersoon {0} {1}",
+								contact.VoorNaam,
+								contact.Naam));
+						}
 					}
 
 					feedback.AppendLine(String.Format("Geregistreerd in overzicht als 'gewoon' bivak:  ID{1} {0}", aangifte.BivakNaam, aangifte.ID));
@@ -494,6 +501,12 @@ namespace Chiro.Kip.Services
 					var persoon = (from p in db.PersoonSet
 					               where p.AdNummer == adNummer
 					               select p).FirstOrDefault();
+
+					if (persoon == null)
+					{
+						_log.FoutLoggen(bivak.Groep.GroepID, String.Format("Bivakcontact met ongeldig ad-nummer: {0}", adNummer));
+						return;
+					}
 					bivak.kipPersoon = persoon;
 					db.SaveChanges();
 					gewijzigd = true;
