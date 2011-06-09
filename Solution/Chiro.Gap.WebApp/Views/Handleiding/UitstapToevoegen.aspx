@@ -32,7 +32,9 @@
     <img src="<%=ResolveUrl("~/Content/Screenshots/Formulier_bivakdetails.png") %>" alt="Details van de uitstap aanvullen" />
     <ul>
         <li>Vul het adres in. Het formulier gebruikt dezelfde stratenlijst als wanneer je personen
-            toevoegt.</li>
+            toevoegt. Voor een buitenlands adres kun je behalve een postnummer ook een postcode
+            invullen: dat is bijvoorbeeld de lettercode die in Nederlandse adressen na het postnummer
+            komt (bv. 1216 RA Hilversum).</li>
         <li>Klik op 'Bewaren'. Je keert dan terug naar de detailfiche.</li>
     </ul>
     <img src="<%=ResolveUrl("~/Content/Screenshots/Fiche_bivakdetails_zonder_leden.png") %>"

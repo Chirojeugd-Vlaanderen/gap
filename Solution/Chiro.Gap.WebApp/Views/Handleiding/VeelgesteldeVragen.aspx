@@ -13,6 +13,8 @@
         <li><a href="#BivakaangifteInOrde">Hoe weet ik of mijn bivakaangifte in orde is?</a></li>
         <li><a href="#Bivakverzekering">Hoe weet ik of iedereen die meegaat op bivak verzekerd
             is?</a></li>
+        <li><a href="#BuitenlandsePostcode">Bij buitenlandse adressen moet je zowel een postnummer
+            als een postcode invullen. Wat is het verschil?</a></li>
         <li><a href="#Bivakdeelnemers">Is het erg als de deelnemerslijst van ons bivak nog niet
             volledig is?</a></li>
         <li><a href="#AansluitingInOrde">Hoe weet ik of mijn aansluiting in orde is?</a></li>
@@ -58,6 +60,13 @@
             www.chiro.be/verzekeringen</a>). Of dat in orde is, kan niet getoond worden
         op de GAP-website, daar moet je dus zelf op letten.
     </p>
+    <h3>
+        <a class="anchor" id="#BuitenlandsePostcode">Bij buitenlandse adressen moet je zowel
+            een postnummer als een postcode invullen. Wat is het verschil?</a></h3>
+    <p>
+        Het postnummer is hetzelfde als in Belgische adressen: dat bestaat alleen uit cijfers.
+        In Nederland zetten ze daar nog twee letters achter (bv. 1216 RA Hilversum). Die
+        letters zijn de postcode.</p>
     <h3>
         <a class="anchor" id="Bivakdeelnemers">Is het erg als de deelnemerslijst van ons bivak
             nog niet volledig is?</a></h3>

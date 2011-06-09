@@ -38,6 +38,11 @@
             <%=Html.EditorFor(mdl => mdl.Uitstap.PlaatsNaam)%>
             <%=Html.ValidationMessageFor(mdl => mdl.Uitstap.PlaatsNaam)%>
         </p>
+        <p>
+			<strong>Opgelet:</strong> voor binnenlandse adressen wordt alleen de officiële spelling van de straatnaam geaccepteerd.<br />
+			Ben je zeker van de straatnaam maar wordt ze geweigerd? Lees in
+			<%=Html.ActionLink("de handleiding", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweStraatnaam"})%>
+			hoe we daar een mouw aan kunnen passen.</p>
         <% Html.RenderPartial("AdresBewerkenControl", Model); %>
         <%
 }%>
