@@ -9,9 +9,12 @@
     <h2>
         Veelgestelde vragen</h2>
     <ul>
+        <li><a href="#WaaromBivakaangifte">Waarom moeten we een bivakaangifte doen?</a></li>
         <li><a href="#BivakaangifteInOrde">Hoe weet ik of mijn bivakaangifte in orde is?</a></li>
         <li><a href="#Bivakverzekering">Hoe weet ik of iedereen die meegaat op bivak verzekerd
             is?</a></li>
+        <li><a href="#Bivakdeelnemers">Is het erg als de deelnemerslijst van ons bivak nog niet
+            volledig is?</a></li>
         <li><a href="#AansluitingInOrde">Hoe weet ik of mijn aansluiting in orde is?</a></li>
         <li><a href="#JaarovergangFout">De jaarovergang lukt niet.</a></li>
         <li><a href="#WieVerzekerd">Hoe kan ik zien wie er allemaal verzekerd is?</a></li>
@@ -26,6 +29,16 @@
         <li><a href="#Doorsturen">Ik vind geen knop om de aansluiting door te sturen naar het
             nationaal secretariaat.</a></li>
     </ul>
+    <h3>
+        <a class="anchor" id="WaaromBivakaangifte">Waarom moeten we een bivakaangifte doen?</a></h3>
+    <p>
+        We vragen je bivakgegevens in de eerste plaats om je bij noodgevallen te kunnen
+        bereiken of efficiënt te kunnen ondersteunen, of het nu gaat om een ouder die dringend
+        zijn of haar kind moet bereiken, een (natuur)ramp waarvan we je op de hoogte moeten
+        brengen of een probleem waarvoor jij ons contacteert.
+        <br />
+        Daarnaast kunnen we met die gegevens het fenomeen bivak iets beter opvolgen en ondersteunen.
+    </p>
     <h3>
         <a class="anchor" id="BivakaangifteInOrde">Hoe weet ik of mijn bivakaangifte in orde
             is?</a></h3>
@@ -45,6 +58,21 @@
             www.chiro.be/verzekeringen</a>). Of dat in orde is, kan niet getoond worden
         op de GAP-website, daar moet je dus zelf op letten.
     </p>
+    <h3>
+        <a class="anchor" id="Bivakdeelnemers">Is het erg als de deelnemerslijst van ons bivak
+            nog niet volledig is?</a></h3>
+    <p>
+        Nee hoor. Van de bivakaangifte worden alleen de volgende gegevens doorgestuurd naar
+        Chirojeugd Vlaanderen:</p>
+    <ul>
+        <li>De naam en het adres van de bivakplaats</li>
+        <li>De periode waarin jullie op bivak gaan</li>
+        <li>Wie jullie contactpersoon is (= de bivakverantwoordelijke, niet noodzakelijk de
+            groepsleiding)</li>
+    </ul>
+    <p>
+        Wie je inschrijft voor het bivak is alleen zichtbaar voor de groep. Van gewone uitstappen
+        (weekends, daguitstappen) wordt er niets doorgegeven.</p>
     <h3>
         <a class="anchor" id="AansluitingInOrde">Hoe weet ik of mijn aansluiting in orde is?</a></h3>
     <p>

@@ -12,8 +12,7 @@
         Tijd voor de bivakaangifte!</h2>
     <p>
         Breng voor 1 juni je bivakaangifte in orde. Zo kunnen we je bereiken als er iets
-        aan de hand is met je bivakplaats of als iemand je daar nodig heeft. Hoe doe je
-        dat?</p>
+        aan de hand is met je bivakplaats of als iemand je daar nodig heeft. De volgende drie stappen zijn daarbij noodzakelijk.</p>
     <ul>
         <li>
             <%=Html.ActionLink("Registreer je bivak", "ViewTonen", new { controller = "Handleiding", helpBestand = "UitstapToevoegen" })%></li>
@@ -23,7 +22,7 @@
             <%= Html.ActionLink("Duid aan dat hij of zij de contactpersoon is", "ViewTonen", "Handleiding", null, null, "Contactpersoon", new { helpBestand = "DeelnemersInschrijven" }, null)%></li>
     </ul>
     <p>
-        Wat kun je verder nog doen?</p>
+        Wat kun je verder nog doen? Deze gegevens worden niet doorgestuurd naar het nationaal secretariaat, dit is alleen voor jullie groep zichtbaar.</p>
     <ul>
         <li>
             <%=Html.ActionLink("Bijhouden wie ingeschreven is", "ViewTonen", new { controller = "Handleiding", helpBestand = "Deelnemersadministratie" })%>

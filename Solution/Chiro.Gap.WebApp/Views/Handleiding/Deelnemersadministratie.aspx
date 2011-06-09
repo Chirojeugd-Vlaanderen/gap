@@ -10,7 +10,8 @@
         Deelnemersadministratie voor uitstappen/bivakken</h2>
     <p>
         Van de mensen die meegaan, kun je bijhouden of ze al betaald hebben en of hun medische
-        fiche al binnen is. Je kunt ook een opmerking toevoegen.</p>
+        fiche al binnen is. Je kunt ook een opmerking toevoegen. Die informatie wordt niet
+        doorgegeven aan Chirojeugd Vlaanderen, ze is alleen voor jouw groep zichtbaar.</p>
     <p>
         Stappen in het proces:</p>
     <ul>

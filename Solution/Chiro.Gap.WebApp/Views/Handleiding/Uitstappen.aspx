@@ -19,6 +19,18 @@
         brengen of een probleem waarvoor jij ons contacteert.
         <br />
         Daarnaast kunnen we met die gegevens het fenomeen bivak iets beter opvolgen en ondersteunen.</p>
+     <p>
+        Van de bivakaangifte worden alleen de volgende gegevens doorgestuurd naar Chirojeugd
+        Vlaanderen:</p>
+    <ul>
+        <li>De naam en het adres van de bivakplaats</li>
+        <li>De periode waarin jullie op bivak gaan</li>
+        <li>Wie jullie contactpersoon is (= de bivakverantwoordelijke, niet noodzakelijk de
+            groepsleiding)</li>
+    </ul>
+    <p>
+        Wie je inschrijft voor het bivak is alleen zichtbaar voor de groep. Van gewone uitstappen
+        (weekends, daguitstappen) wordt er niets doorgegeven.</p>
     <h3>
         Wat kun je hier doen?</h3>
     <ul>

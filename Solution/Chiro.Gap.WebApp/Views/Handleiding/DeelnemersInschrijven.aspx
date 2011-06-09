@@ -22,6 +22,11 @@
         inschrijven, maar dat doe je best apart (zie
         <%=Html.ActionLink("Medewerkers inschrijven", "ViewTonen", new { controller = "Handleiding", helpBestand = "MedewerkersInschrijven" })%>).</p>
     <p>
+        Van een uitstap wordt er niets doorgegeven aan Chirojeugd Vlaanderen. Van een bivak
+        wordt er doorgegeven wanneer jullie weg zijn, naar welk adres, en wie van jullie
+        groep de contactpersoon (= kampverantwoordelijke) is. De deelnemerslijst is alleen
+        voor je groep zichtbaar.</p>
+    <p>
         Stappen in het proces:</p>
     <ul>
         <li>Ga naar het tabblad 'Ingeschreven'. (Op het tabblad 'Iedereen' gaat dat ook, maar

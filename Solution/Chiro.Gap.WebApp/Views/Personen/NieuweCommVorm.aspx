@@ -59,7 +59,8 @@
 			</tr>
 			<tr>
 				<td>
-					<%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsGezinsGebonden) %>
+					<%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsGezinsGebonden) %><br />
+                    <em>(wordt gekoppeld aan iedereen op hetzelfde adres)</em>
 				</td>
 				<td>
 					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsGebonden) %>

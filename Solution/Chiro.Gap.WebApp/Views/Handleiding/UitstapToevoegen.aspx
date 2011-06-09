@@ -39,7 +39,9 @@
         alt="Details van de uitstap" />
     <ul>
         <li>Vanaf nu kun je
-            <%=Html.ActionLink("mensen inschrijven", "ViewTonen", new { controller = "Handleiding", helpBestand = "DeelnemersInschrijven" })%>.</li>
+            <%=Html.ActionLink("mensen inschrijven", "ViewTonen", new { controller = "Handleiding", helpBestand = "DeelnemersInschrijven" })%>.
+            De deelnemerslijst is alleen voor jullie groep zichtbaar, die wordt niet doorgegeven
+            aan Chirojeugd Vlaanderen.</li>
     </ul>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="title" runat="server">
