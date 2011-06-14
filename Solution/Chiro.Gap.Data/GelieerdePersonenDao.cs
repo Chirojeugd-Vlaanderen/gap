@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -61,7 +61,6 @@ namespace Chiro.Gap.Data.Ef
 
                 var paths = ExtrasNaarLambdas(extras);
                 result = Sorteren(IncludesToepassen(query, paths), sortering).ToList();
-
 
                 if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
                 {
@@ -194,7 +193,7 @@ namespace Chiro.Gap.Data.Ef
             return Ophalen(new[] { gelieerdePersoonID }, extras).FirstOrDefault();
         }
 
-    	/// <summary>
+        /// <summary>
         /// Sorteert een 'queryable' van gelieerde personen. Eerst volgens de gegeven ordening, dan steeds op naam.
         /// <para />
         /// De sortering is vrij complex om met meerdere opties rekening te houden.
@@ -808,33 +807,31 @@ namespace Chiro.Gap.Data.Ef
                 paths.Add(gp => gp.Lid);
             }
 
-			if ((extras & PersoonsExtras.Communicatie) != 0)
-			{
-				paths.Add(gp => gp.Communicatie.First().CommunicatieType.WithoutUpdate());
-			}
+            if ((extras & PersoonsExtras.Communicatie) != 0)
+            {
+                paths.Add(gp => gp.Communicatie.First().CommunicatieType.WithoutUpdate());
+            }
 
-			if ((extras & PersoonsExtras.Categorieen) != 0)
-			{
-				paths.Add(gp => gp.Categorie.First().WithoutUpdate());
-			}
+            if ((extras & PersoonsExtras.Categorieen) != 0)
+            {
+                paths.Add(gp => gp.Categorie.First().WithoutUpdate());
+            }
 
-			if ((extras & PersoonsExtras.GroepsWerkJaren) != 0)
-			{
-				paths.Add(gp => gp.Lid.First().GroepsWerkJaar.WithoutUpdate());
-			}
-			else if ((extras & PersoonsExtras.AlleLeden) == PersoonsExtras.AlleLeden)
-			{
-				paths.Add(gp => gp.Lid);
-			}
+            if ((extras & PersoonsExtras.GroepsWerkJaren) != 0)
+            {
+                paths.Add(gp => gp.Lid.First().GroepsWerkJaar.WithoutUpdate());
+            }
+            else if ((extras & PersoonsExtras.AlleLeden) == PersoonsExtras.AlleLeden)
+            {
+                paths.Add(gp => gp.Lid);
+            }
 
-			if ((extras & PersoonsExtras.Uitstappen) == PersoonsExtras.Uitstappen)
-			{
-				paths.Add(gp => gp.Deelnemer.First().Uitstap.GroepsWerkJaar.Groep);
-			}
+            if ((extras & PersoonsExtras.Uitstappen) == PersoonsExtras.Uitstappen)
+            {
+                paths.Add(gp => gp.Deelnemer.First().Uitstap.GroepsWerkJaar.Groep);
+            }
 
-			return paths.ToArray();
-		}
-
-
-	}
+            return paths.ToArray();
+        }
+    }
 }

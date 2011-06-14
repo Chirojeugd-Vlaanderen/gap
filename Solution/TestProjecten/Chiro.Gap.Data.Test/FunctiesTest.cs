@@ -1,10 +1,14 @@
-﻿using Chiro.Gap.Domain;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using Chiro.Gap.Domain;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm;
 using Chiro.Gap.TestDbInfo;
 
 namespace Chiro.Gap.Data.Test

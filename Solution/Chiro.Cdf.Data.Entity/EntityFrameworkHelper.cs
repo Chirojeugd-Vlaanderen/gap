@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -97,17 +97,14 @@ namespace Chiro.Cdf.Data.Entity
 
 		public bool Equals(ExtendedPropertyInfo other)
 		{
-			if (ReferenceEquals(other, null))
+		    if (ReferenceEquals(other, null))
 			{
 				return false;
 			}
-			else
-			{
-				return (Equals(PropertyInfo, other.PropertyInfo));
-			}
+		    return (Equals(PropertyInfo, other.PropertyInfo));
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Een waarde waarmee we het object kunnen identificeren
 		/// </summary>
 		/// <returns>Een int waarmee we het object kunnen identificeren</returns>

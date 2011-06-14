@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Chiro.Gap.Workers;
 using Chiro.Gap.Orm;

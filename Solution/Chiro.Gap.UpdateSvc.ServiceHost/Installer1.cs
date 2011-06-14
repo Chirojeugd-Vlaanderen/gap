@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.ComponentModel;
-using System.Configuration.Install;
-using System.Linq;
 using System.ServiceProcess;
 
 namespace Chiro.Gap.UpdateSvc.ServiceHost

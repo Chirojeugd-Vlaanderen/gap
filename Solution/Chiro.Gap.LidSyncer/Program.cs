@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -63,8 +63,8 @@ namespace Chiro.Gap.LidSyncer
             // // Opnieuw overzetten en bewaren van adressen met busnummers
             // AdressenOpnieuwBewaren();
 
-            //var uMgr = Factory.Maak<UitstappenManager>();
-            //uMgr.OpnieuwSyncen(2010);
+            // var uMgr = Factory.Maak<UitstappenManager>();
+            // uMgr.OpnieuwSyncen(2010);
 
             #endregion
 
@@ -108,7 +108,6 @@ namespace Chiro.Gap.LidSyncer
                     functiesMgr.Vervangen(l, l.Functie);
                 }
             }
-
         }
 
         private struct IDs

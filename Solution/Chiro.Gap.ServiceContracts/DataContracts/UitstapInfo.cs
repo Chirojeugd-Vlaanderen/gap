@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {

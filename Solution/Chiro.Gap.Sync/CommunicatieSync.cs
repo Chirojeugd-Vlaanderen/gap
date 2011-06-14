@@ -1,9 +1,8 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Diagnostics;
 
 using AutoMapper;
@@ -54,7 +53,7 @@ namespace Chiro.Gap.Sync
 		/// <summary>
 		/// Bewaart een communicatievorm in Kipadmin
 		/// </summary>
-		/// <param name="commvorm">Te bewaren communicatievorm, gekoppeld aan persoon</param>
+        /// <param name="communicatieVorm">Te bewaren communicatievorm, gekoppeld aan persoon</param>
 		public void Toevoegen(CommunicatieVorm communicatieVorm)
 		{
 			Debug.Assert(communicatieVorm.GelieerdePersoon != null);

@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -10,7 +10,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;
 
-using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -76,8 +75,6 @@ namespace Chiro.Gap.Workers
         /// <param name="geboorteJaarEind">Geboortejaar tot</param>
         /// <param name="geslacht">Bepaalt of de afdeling een jongensafdeling, meisjesafdeling of
         /// gemengde afdeling is.</param>
-        /// <param name="geenAutomatischeVerdeling">Indien <c>true</c>, wordt dit afdelingsjaar genegeerd
-        /// bij de automatische afdelingsverdeling.</param>
         /// <returns>Het aangemaakte afdelingsjaar</returns>
         public AfdelingsJaar Aanmaken(
             Afdeling a,
@@ -274,10 +271,7 @@ namespace Chiro.Gap.Workers
             {
                 return _afdelingenDao.Ophalen(afdelingID);
             }
-            else
-            {
-                throw new GeenGavException(Properties.Resources.GeenGav);
-            }
+            throw new GeenGavException(Properties.Resources.GeenGav);
         }
 
         /// <summary>

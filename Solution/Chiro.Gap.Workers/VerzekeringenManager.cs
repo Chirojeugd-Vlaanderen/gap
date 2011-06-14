@@ -1,10 +1,9 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Transactions;
 
@@ -49,8 +48,8 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Haalt een verzekeringstype op uit de database
         /// </summary>
-        /// <param name="verzekering"></param>
-        /// <returns></returns>
+        /// <param name="verzekering">ID van het type verzekering</param>
+        /// <returns>Het verzekeringstype</returns>
         public VerzekeringsType Ophalen(Verzekering verzekering)
         {
             // GAV-rechten zijn hier irrelevant.

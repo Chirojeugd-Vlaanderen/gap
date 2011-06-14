@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceModel;

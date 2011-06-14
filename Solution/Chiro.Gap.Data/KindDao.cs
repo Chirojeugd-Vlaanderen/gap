@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -159,12 +159,13 @@ namespace Chiro.Gap.Data.Ef
 			return Utility.DetachObjectGraph<Kind>(resultaat);
 		}
 
-		/// <summary>
-		/// Bewaart een kind, inclusief de extras gegeven in <paramref name="extras"/>
-		/// </summary>
-		/// <param name="extras">Bepaalt de gekoppelde entiteiten die mee bewaard moeten worden</param>
-		/// <returns>Kopie van het bewaarde kind</returns>
-		public Kind Bewaren(Kind kind, LidExtras extras)
+	    /// <summary>
+	    /// Bewaart een kind, inclusief de extras gegeven in <paramref name="extras"/>
+	    /// </summary>
+	    /// <param name="kind">Het kind dat bewaard moet worden</param>
+	    /// <param name="extras">Bepaalt de gekoppelde entiteiten die mee bewaard moeten worden</param>
+	    /// <returns>Kopie van het bewaarde kind</returns>
+	    public Kind Bewaren(Kind kind, LidExtras extras)
 		{
 			return Bewaren(kind, LedenDao.ExtrasNaarLambdasKind(extras));
 		}

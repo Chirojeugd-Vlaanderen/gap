@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -194,9 +194,9 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Controleert of de gebruiker met gegeven <paramref name="login"/> op dit moment GAV-rechten heeft op de plaats
 		/// met id <paramref name="plaatsID"/>.
 		/// </summary>
-		/// <param name="login">login van de gebruiker wiens GAV-schap moet worden getest</param>
-		/// <param name="plaatsID">ID van een bivakplaats</param>
-		/// <returns><c>true</c> als de aangemelde user nu GAV is voor de plaats, anders <c>false</c>. </returns>
+        /// /// <param name="plaatsID">ID van een bivakplaats</param>
+		/// <param name="login">Login van de gebruiker wiens GAV-schap moet worden getest</param>
+		/// <returns><c>True</c> als de aangemelde user nu GAV is voor de plaats, anders <c>false</c>. </returns>
 		bool IsGavPlaats(int plaatsID, string login);
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// </summary>
         /// <param name="deelnemerID">ID van een (uitstap)deelnemer</param>
         /// <param name="login">login van de gebruiker wiens GAV-schap moet worden getest</param>
-        /// <returns><c>true</c> als de gebruiker GAV-rechten heeft voor de gevraagde 
+        /// <returns><c>True</c> als de gebruiker GAV-rechten heeft voor de gevraagde 
         /// deelnemer, anders <c>false</c></returns>
 	    bool IsGavDeelnemer(int deelnemerID, string login);
 

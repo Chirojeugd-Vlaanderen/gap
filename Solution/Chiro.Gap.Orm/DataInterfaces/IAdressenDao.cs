@@ -1,6 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
@@ -19,8 +22,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <param name="metBewoners">Indien <c>true</c>, worden ook de PersoonsAdressen
         /// opgehaald.  (ALLE persoonsadressen gekoppeld aan het adres; niet
         /// zomaar over de lijn sturen dus)</param>
-        /// <param name="paths">Via deze parameter kun je nog extra gekoppelde entiteiten mee
-        /// ophalen.</param>
         /// <returns>Gevraagd adresobject</returns>
         Adres Ophalen(AdresInfo adresInfo, bool metBewoners);
 

@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -25,17 +25,15 @@ namespace Chiro.Gap.Data.Ef
         /// <returns>Afdeling en gekoppelde Chirogroep</returns>
         public override Afdeling Ophalen(int afdelingID)
         {
-            Afdeling resultaat;
-
             using (var db = new ChiroGroepEntities())
             {
                 db.Afdeling.MergeOption = MergeOption.NoTracking;
 
-                resultaat = (
-                    from Afdeling afd
-                    in db.Afdeling.Include(afd => afd.ChiroGroep)
-                    where afd.ID == afdelingID
-                    select afd).FirstOrDefault();
+                var resultaat = (
+                                         from Afdeling afd
+                                             in db.Afdeling.Include(afd => afd.ChiroGroep)
+                                         where afd.ID == afdelingID
+                                         select afd).FirstOrDefault();
 
                 // Die hack om ook de Chirogroep op te halen, is niet meer nodig sinds
                 // .NET 4

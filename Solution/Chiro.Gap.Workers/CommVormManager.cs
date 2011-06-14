@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -39,7 +39,7 @@ namespace Chiro.Gap.Workers
 	    /// <param name="commdao">Repository voor communicatievormen</param>
 	    /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 	    /// <param name="communicatieSync">Syncer naar Kipadmin voor communicatiemiddelen</param>
-	    /// <param name="personenSync"></param>
+	    /// <param name="personenSync">De service die instaat voor synchronisatie van persoonsgegevens</param>
 	    public CommVormManager(
 			IDao<CommunicatieType> typedao, 
 			IDao<CommunicatieVorm> commdao, 

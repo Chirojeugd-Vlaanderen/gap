@@ -1,9 +1,12 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Web.Mvc;
-
-using AutoMapper;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
@@ -16,7 +19,7 @@ using Chiro.Gap.WebApp.Models;
 namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
-    /// 
+    /// Controller voor weergave en beheer van bivakken en uitstappen
     /// </summary>
     public class UitstappenController : BaseController
     {
@@ -152,7 +155,7 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult PlaatsBewerken(int groepID, int id)
         {
-            var model = new UitstapPlaatsBewerekenModel();
+            var model = new UitstapPlaatsBewerkenModel();
             BaseModelInit(model, groepID);
             model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
 
@@ -186,7 +189,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns>Als alles goed liep, wordt geredirect naar de details van de uitstap.  Anders
         /// opnieuw de view voor het aanpassen van de uitstap, met de nodige feedback</returns>
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult PlaatsBewerken(int groepID, int id, UitstapPlaatsBewerekenModel model)
+        public ActionResult PlaatsBewerken(int groepID, int id, UitstapPlaatsBewerkenModel model)
         {
             // Als het adres buitenlands is, neem dan de woonplaats over uit het
             // vrij in te vullen veld.
@@ -216,6 +219,20 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
                 model.AlleLanden = VeelGebruikt.LandenOphalen();
+                model.Titel = model.Uitstap.Naam;
+
+                return View(model);
+            }
+            catch (FaultException ex)
+            {
+                BaseModelInit(model, groepID);
+
+                // TODO: tijdelijke dinges
+                TempData["fout"] = ex.Message;
+
+                model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
+                model.AlleLanden = VeelGebruikt.LandenOphalen();
+                model.Titel = model.Uitstap.Naam;
 
                 return View(model);
             }
@@ -228,10 +245,10 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="groepID">ID van groep die momenteel actief is</param>
         /// <param name="id"></param>
         /// <returns>Redirect naar overzicht uitstap</returns>
-    	public ActionResult ContactInstellen(int groepID, int id)
+        public ActionResult ContactInstellen(int groepID, int id)
         {
             int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.ContactInstellen(id));
-            return RedirectToAction("Bekijken", new {id = uitstapID});
+            return RedirectToAction("Bekijken", new { id = uitstapID });
         }
 
         /// <summary>
@@ -263,7 +280,6 @@ namespace Chiro.Gap.WebApp.Controllers
                 ServiceHelper.CallService<IUitstappenService, DeelnemerDetail>(svc => svc.DeelnemerOphalen(id));
             BaseModelInit(model, groepID, String.Format(Properties.Resources.DeelnemerBewerken, model.Deelnemer.VoorNaam, model.Deelnemer.FamilieNaam));
 
-
             return View(model);
         }
 
@@ -288,7 +304,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             ServiceHelper.CallService<IUitstappenService>(svc => svc.DeelnemerBewaren(info));
 
-            return RedirectToAction("Bekijken", new {groepID, id = model.Deelnemer.UitstapID});
+            return RedirectToAction("Bekijken", new { groepID, id = model.Deelnemer.UitstapID });
         }
     }
 }

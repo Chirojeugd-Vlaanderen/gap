@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -31,7 +31,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="groepsWjDao">Repository voor groepswerkjaren</param>
 		/// <param name="afdelingenDao">Repository voor afdelingen</param>
-		/// <param name="veelGebruikt">Dit object probeert veel gebruikte zaken op te halen uit de cache</param>
+        /// <param name="veelGebruikt">Object dat veel gebruikte items cachet</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		public GroepsWerkJaarManager(
 			IGroepsWerkJaarDao groepsWjDao,

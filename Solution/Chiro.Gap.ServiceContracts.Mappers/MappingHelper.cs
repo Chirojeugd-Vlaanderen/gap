@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -39,20 +39,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             {
                 var ba = a as BelgischAdres;
 
-                if (ba.StraatNaam != null)
-                {
-                    return ba.StraatNaam.Naam;
-                }
-                else
-                {
-                    return null;
-                }
+                return ba.StraatNaam != null ? ba.StraatNaam.Naam : null;
             }
-            else
-            {
-                Debug.Assert(a is BuitenLandsAdres);
-                return ((BuitenLandsAdres)a).Straat;
-            }
+            Debug.Assert(a is BuitenLandsAdres);
+            return ((BuitenLandsAdres)a).Straat;
         }
 
         /// <summary>
@@ -65,20 +55,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             if (a is BelgischAdres)
             {
                 var ba = (a as BelgischAdres);
-                if (ba.WoonPlaats != null)
-                {
-                    return ba.WoonPlaats.Naam;
-                }
-                else
-                {
-                    return null;
-                }
+                return ba.WoonPlaats != null ? ba.WoonPlaats.Naam : null;
             }
-            else
-            {
-                Debug.Assert(a is BuitenLandsAdres);
-                return ((BuitenLandsAdres)a).WoonPlaats;
-            }
+            Debug.Assert(a is BuitenLandsAdres);
+            return ((BuitenLandsAdres)a).WoonPlaats;
         }
 
         /// <summary>
@@ -92,11 +72,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             {
                 return Properties.Resources.Belgie;
             }
-            else
-            {
-                Debug.Assert(a is BuitenLandsAdres);
-                return ((BuitenLandsAdres)a).Land.Naam;
-            }
+            Debug.Assert(a is BuitenLandsAdres);
+            return ((BuitenLandsAdres)a).Land.Naam;
         }
 
         /// <summary>
@@ -111,11 +88,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             {
                 return null;
             }
-            else
-            {
-                Debug.Assert(a is BuitenLandsAdres);
-                return ((BuitenLandsAdres)a).PostCode;
-            }
+            Debug.Assert(a is BuitenLandsAdres);
+            return ((BuitenLandsAdres)a).PostCode;
         }
 
         /// <summary>
@@ -132,20 +106,14 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 {
                     return ba.WoonPlaats.PostNummer;
                 }
-                else if (ba.StraatNaam != null)
+                if (ba.StraatNaam != null)
                 {
                     return ba.StraatNaam.PostNummer;
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
-            else
-            {
-                Debug.Assert(a is BuitenLandsAdres);
-                return ((BuitenLandsAdres)a).PostNummer;
-            }
+            Debug.Assert(a is BuitenLandsAdres);
+            return ((BuitenLandsAdres)a).PostNummer;
         }
 
         #endregion
@@ -454,8 +422,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                                                : DeelnemerType.Onbekend))
                 .ForMember(dst => dst.IsContact,
                            opt => opt.MapFrom(src => src.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() != null));
-
-
 
             // Als de property's van de doelobjecten strategisch gekozen namen hebben, configureert
             // Automapper alles automatisch, zoals hieronder:

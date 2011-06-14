@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Web.Mvc;
 
 namespace Chiro.Gap.WebApp.HtmlHelpers
@@ -10,11 +12,11 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	{
 		/// <summary>
 		/// HTML-helper voor telefoonnummer, die niets meer doet dan spaties vervangen
-		/// door &nbsp; (zodat telefoonnrs niet gewordrapt worden)
+		/// door non-breaking spaces (zodat telefoon-nrs niet gewordwrapt worden)
 		/// </summary>
-		/// <param name="htmlHelper"></param>
-		/// <param name="telefoonNr">string met telefoonnummer</param>
-		/// <returns>html voor telefoonnr</returns>
+		/// <param name="htmlHelper">Deze htmlhelper zelf</param>
+		/// <param name="telefoonNr">String met telefoonnummer</param>
+		/// <returns>Html voor telefoonnr</returns>
 		public static string Telefoon(this HtmlHelper htmlHelper, string telefoonNr)
 		{
 			if (String.IsNullOrEmpty(telefoonNr))

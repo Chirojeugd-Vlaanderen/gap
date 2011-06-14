@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -17,7 +17,7 @@ using Chiro.Gap.WebApp.Models;
 namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
-    /// 
+    /// TODO (#190): documenteren
     /// </summary>
 	[HandleError]
 	public class AfdelingenController : BaseController
@@ -31,16 +31,27 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// service</param>
 		public AfdelingenController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt) : base(serviceHelper, veelGebruikt) { }
 
-		// GET: /Afdeling/
+        
+		/// <summary>
+        /// TODO (#190): documenteren
+        /// </summary>
+        /// <param name="groepID"></param>
+        /// <returns></returns>
+        // GET: /Afdeling/
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
 			return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), groepID);
 		}
 
-		//
 		// GET: /Afdeling/List/{groepsWerkJaarId}
-		[HandleError]
+		/// <summary>
+        /// TODO (#190): documenteren
+		/// </summary>
+		/// <param name="groepsWerkJaarID"></param>
+		/// <param name="groepID"></param>
+		/// <returns></returns>
+        [HandleError]
 		public ActionResult List(int groepsWerkJaarID, int groepID)
 		{
 			var model = new AfdelingsOverzichtModel();
@@ -150,6 +161,12 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		//
 		// GET: /Afdeling/Verwijderen/afdelingsJaarId
+        /// <summary>
+        /// TODO (#190): documenteren
+        /// </summary>
+        /// <param name="groepID"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
 		[HandleError]
 		public ActionResult Verwijderen(int groepID, int id)
 		{

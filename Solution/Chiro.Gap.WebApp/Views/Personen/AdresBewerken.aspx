@@ -21,6 +21,9 @@
 		<legend>Toepassen op:</legend>
 		<%=Html.CheckBoxList("GelieerdePersoonIDs", Model.Bewoners)%>
 	</fieldset>
+    <%
+		   =Html.ValidationSummary()
+         %>
 	<fieldset>
 		<legend>Adresgegevens</legend>
 		<p>

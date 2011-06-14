@@ -1,9 +1,14 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Linq.Expressions;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Dummies;
-using Chiro.Gap.Workers;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
@@ -12,18 +17,16 @@ using Moq;
 
 namespace Chiro.Gap.Workers.Test.CustomIoc
 {
-    
-    
     /// <summary>
     ///This is a test class for GroepsWerkJaarManagerTest and is intended
     ///to contain all GroepsWerkJaarManagerTest Unit Tests
     ///</summary>
-	[TestClass()]
+	[TestClass]
 	public class GroepsWerkJaarManagerTest
 	{
 
 
-		private TestContext testContextInstance;
+		private TestContext _testContextInstance;
 
 		/// <summary>
 		///Gets or sets the test context which provides
@@ -33,11 +36,11 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 		{
 			get
 			{
-				return testContextInstance;
+				return _testContextInstance;
 			}
 			set
 			{
-				testContextInstance = value;
+				_testContextInstance = value;
 			}
 		}
 

@@ -11,26 +11,14 @@ namespace Chiro.Gap.Sync.Test
     /// <summary>
     /// Tests voor de ledensync
     /// </summary>
-    [TestClass()]
+    [TestClass]
     public class LedenSyncTest
     {
-        private TestContext testContextInstance;
-
         /// <summary>
         /// Gets or sets the test context which provides
         /// information about and functionality for the current test run.
         /// </summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         [ClassInitialize]
         static public void InitialiseerTests(TestContext tc)

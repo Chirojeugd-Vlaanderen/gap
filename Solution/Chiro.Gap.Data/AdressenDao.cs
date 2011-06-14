@@ -1,10 +1,14 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -15,7 +19,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 namespace Chiro.Gap.Data.Ef
 {
     /// <summary>
-    /// 
+    /// TODO (#190): documenteren
     /// </summary>
     public class AdressenDao : Dao<Adres, ChiroGroepEntities>, IAdressenDao
     {

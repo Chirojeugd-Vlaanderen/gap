@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -49,7 +49,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="funDao">Een dao voor data access mbt functies</param>
 		/// <param name="ledenDao">Een dao voor data access mbt leden</param>
 		/// <param name="gwjDao">Data access object voor groepswerkjaren</param>
-		/// <param name="veelGebruikt">Object dat veel gebruikte item cachet</param>
+		/// <param name="veelGebruikt">Object dat veel gebruikte items cachet</param>
 		/// <param name="auMgr">Een IAutorisatieManager voor de autorisatie</param>
 		/// <param name="ledenSync">Wordt gebruikt om lidinformatie te syncen naar kipadmin</param>
 		public FunctiesManager(
@@ -364,6 +364,7 @@ namespace Chiro.Gap.Workers
 		/// <returns><c>null</c> als de functie effectief verwijderd is, anders het functie-object met
 		/// aangepast 'werkjaartot'.</returns>
 		/// dan wordt ze verwijderd.  Zo niet, wordt er een stopdatum op geplakt</remarks>
+		/// <returns></returns>
 		public Functie Verwijderen(Functie functie, bool forceren)
 		{
 			if (!_autorisatieMgr.IsGavFunctie(functie.ID))

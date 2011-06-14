@@ -1,9 +1,13 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
@@ -84,8 +88,8 @@ namespace Chiro.Gap.Data.Ef
             //// het type Kind of Leiding, wat we eigenlijk nodig hebben.
             //// Ik probeer daar rond te werken door de leden te detachen, en daarna de deelnemers te returnen
 
-            //var gedetachteLeden = Utility.DetachObjectGraph(leden);
-            //var resultaat = (from l in gedetachteLeden select l.GelieerdePersoon.Deelnemer.First()).ToArray();
+            // var gedetachteLeden = Utility.DetachObjectGraph(leden);
+            // var resultaat = (from l in gedetachteLeden select l.GelieerdePersoon.Deelnemer.First()).ToArray();
 
             var resultaat = Utility.DetachObjectGraph(deelnemers);
 

@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -21,7 +21,7 @@ using Chiro.Gap.WebApp.Models;
 namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
-    /// 
+    /// Controller voor weergave en beheer van ledenlijst
     /// </summary>
     [HandleError]
     public class LedenController : BaseController
@@ -310,7 +310,7 @@ namespace Chiro.Gap.WebApp.Controllers
         ///   dit AfdelingID getoond.</param>
         /// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie met
         ///   dit FunctieID getoond.</param>
-        /// <param name="ledenLijst"></param>
+        /// <param name="ledenLijst">Het soort lijst dat we moeten tonen</param>
         /// <param name="sortering">Bepaalt op welke eigenschap de lijst gesorteerd moet worden</param>
         /// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
         /// <returns>Een view met de gevraagde ledenlijst</returns>
@@ -436,6 +436,8 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie bepaald door
         /// dit ID getoond.</param>
         /// <param name="groepID">ID van de groep (komt uit url)</param>
+        /// <param name="ledenLijst">Welk soort selectie we moeten maken (alle leden, alleen mensen in probeerperiode, 
+        /// enz.)</param>
         /// <param name="sortering">Eigenschap waarop gesorteerd moet worden</param>
         /// <returns>Exceldocument met gevraagde ledenlijst</returns>
         [HandleError]

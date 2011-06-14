@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -13,7 +13,7 @@ using Chiro.Gap.WebApp.Models;
 namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
-    /// 
+    /// Controller voor toegang tot groepsinstellingen
     /// </summary>
 	[HandleError]
 	public class GroepController : BaseController

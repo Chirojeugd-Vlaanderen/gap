@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -8,7 +8,7 @@ using System.Globalization;
 namespace System.ComponentModel.DataAnnotations
 {
 	/// <summary>
-	/// 
+    /// Attribuut voor validatie op minimumlengte van de input
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
 	public class StringMinimumLengteAttribute : ValidationAttribute

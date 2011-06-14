@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -9,12 +9,15 @@ using System.Web.Mvc;
 namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
-    /// 
+    /// Controller die foutmeldingen laat weergeven
     /// </summary>
     public class ErrorController : Controller
     {
-        //
-        // GET: /Error/
+        /// <summary>
+        /// Standaardconstructor
+        /// </summary>
+        /// <returns></returns>
+        /// // GET: /Error/
         public ActionResult Index()
         {
             // Normaal gezien passeren we hier nooit, want de defaultRedirect in web.config gaat naar ~/Shared/Error.aspx.
@@ -22,20 +25,28 @@ namespace Chiro.Gap.WebApp.Controllers
             return View("Error");
         }
 
-        //
         // GET: /Error/NietGevonden
+        /// <summary>
+        /// Toont de foutpagina met een aangepaste foutcode
+        /// </summary>
         public ActionResult NietGevonden()
         {
             Response.StatusCode = (int)HttpStatusCode.NotFound;
             return View("Error");
         }
 
+        /// <summary>
+        /// Toont de foutpagina met een aangepaste foutcode
+        /// </summary>
         public ActionResult GeenVerbinding()
         {
             Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
             return View("Error");
         }
 
+        /// <summary>
+        /// Toont de foutpagina met een aangepaste foutcode
+        /// </summary>
         public ActionResult GeenToegang()
         {
             Response.StatusCode = (int)HttpStatusCode.Forbidden;

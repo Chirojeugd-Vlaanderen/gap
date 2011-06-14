@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -44,7 +44,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// <summary>
 		/// Standaard 'geboortejaar van' voor gegeven werkjaar
 		/// </summary>
-		/// <param name="werkjaar"></param>
+		/// <param name="werkjaar">Het werkjaar waar het over gaat</param>
 		/// <returns></returns>
 		public int StandaardGeboorteJaarVan(int werkjaar)
 		{
@@ -54,7 +54,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// <summary>
 		/// Standaard 'geboortejaar van' voor dit werkjaar
 		/// </summary>
-		/// <param name="werkjaar"></param>
+		/// <param name="werkjaar">Het werkjaar waar het over gaat</param>
 		/// <returns></returns>
 		public int StandaardGeboorteJaarTot(int werkjaar)
 		{

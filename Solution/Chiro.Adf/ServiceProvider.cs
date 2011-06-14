@@ -19,7 +19,7 @@ namespace Chiro.Adf
 
 		static ServiceProvider()
 		{
-			var configSection = ConfigurationManager.GetSection(AdfConfigurationSection.DefaultAdfConfigurationSectionName) as AdfConfigurationSection;
+			var configSection = ConfigurationManager.GetSection(AdfConfigurationSection.DEFAULT_ADF_CONFIGURATION_SECTION_NAME) as AdfConfigurationSection;
 
 			if (configSection != null)
 				DefaultInstance.ApplyConfiguration(configSection);

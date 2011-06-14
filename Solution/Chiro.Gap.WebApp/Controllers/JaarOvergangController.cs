@@ -15,7 +15,7 @@ using Chiro.Gap.WebApp.Models;
 namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
-    /// 
+    /// Controller die de jaarovergangspagina's toont en input verwerkt
     /// </summary>
     public class JaarOvergangController : BaseController
     {

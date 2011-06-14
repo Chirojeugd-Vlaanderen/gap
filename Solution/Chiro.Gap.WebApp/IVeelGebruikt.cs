@@ -1,18 +1,21 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Collections.Generic;
 
-using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp
 {
 	public interface IVeelGebruikt
 	{
-		/// <summary>
-		/// Verwijdert de gecachete functieproblemen van een bepaalde groep
-		/// </summary>
-		/// <param name="groepID">ID van de groep waarvan de problemencache leeg te maken</param>
-		/// <param name="cache">cache die de problemen bevat</param>
-		void FunctieProblemenResetten(int groepID);
+	    /// <summary>
+	    /// Verwijdert de gecachete functieproblemen van een bepaalde groep
+	    /// </summary>
+	    /// <param name="groepID">ID van de groep waarvan de problemencache leeg te maken</param>
+	    void FunctieProblemenResetten(int groepID);
 
 		/// <summary>
 		/// Haalt de problemen van de groep ivm functies op.  Uit de cache, of als die gegevens niet
@@ -43,7 +46,7 @@ namespace Chiro.Gap.WebApp
 		void GroepsWerkJaarResetten(int groepID);
 
 		/// <summary>
-		/// Haalt het recentste groepswerkjaar van de groep met gegeven <paramref name="GroepID"/>
+		/// Haalt het recentste groepswerkjaar van de groep met gegeven <paramref name="groepID"/>
 		/// op uit de cache, of - indien niet beschikbaar - van backend.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan we het groepswerkjaar willen weten.</param>

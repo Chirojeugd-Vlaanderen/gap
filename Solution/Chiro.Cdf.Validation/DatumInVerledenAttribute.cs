@@ -1,12 +1,12 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
 namespace System.ComponentModel.DataAnnotations
 {
 	/// <summary>
-	/// 
+    /// Attribuut om na te gaan of een datum wel in het verleden ligt
 	/// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 	public class DatumInVerledenAttribute : ValidationAttribute

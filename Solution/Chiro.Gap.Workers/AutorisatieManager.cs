@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -229,6 +229,7 @@ namespace Chiro.Gap.Workers
 		/// met id <paramref name="uitstapID"/>.
 		/// </summary>
 		/// <param name="uitstapID">ID van een uitstap</param>
+		/// <returns></returns>
 		public bool IsGavUitstap(int uitstapID)
 		{
 			return _autorisatieDao.IsGavUitstap(uitstapID, GebruikersNaamGet());

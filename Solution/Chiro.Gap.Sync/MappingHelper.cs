@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 using AutoMapper;
 
@@ -94,7 +96,6 @@ namespace Chiro.Gap.Sync
                                 : (SyncService.AdresTypeEnum)src.PersoonsAdres.AdresType))
                 .ForMember(dst => dst.Communicatie, opt => opt.MapFrom(src => src.Communicatie))
                 .ForMember(dst => dst.ExtensionData, opt => opt.Ignore());
-
 
             Mapper.CreateMap<Uitstap, Bivak>()
                 .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.GroepsWerkJaar.Groep.Code))

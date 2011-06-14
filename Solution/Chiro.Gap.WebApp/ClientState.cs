@@ -1,17 +1,10 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Web.Caching;
-
-using Chiro.Cdf.ServiceHelper;
-using Chiro.Gap.ServiceContracts;
-using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp
 {

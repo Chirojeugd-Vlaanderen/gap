@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Diagnostics;
 using System.Linq;
 
@@ -8,6 +12,9 @@ using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
 {
+    /// <summary>
+    /// TODO (#190): documenteren
+    /// </summary>
     public class DeelnemersManager
     {
         private readonly IDeelnemersDao _deelnemersDao;
@@ -77,7 +84,6 @@ namespace Chiro.Gap.Workers
                     deelnemer.Uitstap.ContactDeelnemer = deelnemer;
                     deelnemer.UitstapWaarvoorVerantwoordelijk.Add(deelnemer.Uitstap);
                 }
-
             }
 
             return deelnemer;

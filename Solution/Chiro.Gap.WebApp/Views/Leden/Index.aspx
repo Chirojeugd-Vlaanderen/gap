@@ -1,7 +1,6 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<LidInfoModel>" %>
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
-<%@ Import Namespace="Chiro.Gap.WebApp.Controllers" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>

@@ -15,7 +15,7 @@ namespace Chiro.Gap.Workers.Test
 	///This is a test class for AfdelingsJaarManagerTest and is intended
 	///to contain all AfdelingsJaarManagerTest Unit Tests
 	///</summary>
-	[TestClass()]
+	[TestClass]
 	public class AfdelingsJaarManagerTest
 	{
 

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -57,7 +62,7 @@ namespace Chiro.Gap.WebApp
         }
 
         /// <summary>
-        /// Haalt het recentste groepswerkjaar van de groep met gegeven <paramref name="GroepID"/>
+        /// Haalt het recentste groepswerkjaar van de groep met gegeven <paramref name="groepID"/>
         /// op uit de cache, of - indien niet beschikbaar - van backend.
         /// </summary>
         /// <param name="groepID">ID van de groep waarvan we het groepswerkjaar willen weten.</param>
@@ -261,9 +266,9 @@ namespace Chiro.Gap.WebApp
                     WOONPLAATSENCACHEKEY,
                     result,
                     null,
-                    System.Web.Caching.Cache.NoAbsoluteExpiration,
+                    Cache.NoAbsoluteExpiration,
                     new TimeSpan(1, 0, 0, 0) /* bewaar 1 dag */,
-                    System.Web.Caching.CacheItemPriority.High /* niet te gauw wissen; grote kost */,
+                    CacheItemPriority.High /* niet te gauw wissen; grote kost */,
                     null);
             }
             return result;
@@ -287,9 +292,9 @@ namespace Chiro.Gap.WebApp
                     LANDENCACHEKEY,
                     result,
                     null,
-                    System.Web.Caching.Cache.NoAbsoluteExpiration,
+                    Cache.NoAbsoluteExpiration,
                     new TimeSpan(1, 0, 0, 0) /* bewaar 1 dag */,
-                    System.Web.Caching.CacheItemPriority.High /* niet te gauw wissen; grote kost */,
+                    CacheItemPriority.High /* niet te gauw wissen; grote kost */,
                     null);
             }
             return result;

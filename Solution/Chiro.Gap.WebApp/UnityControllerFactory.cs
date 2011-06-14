@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -11,14 +11,14 @@ using Microsoft.Practices.Unity;
 namespace Chiro.Gap.WebApp
 {
 	/// <summary>
-	/// 
+    /// TODO (#190): documenteren
 	/// </summary>
 	public class UnityControllerFactory : DefaultControllerFactory
 	{
 		readonly IUnityContainer _container;
 
 		/// <summary>
-		/// 
+        /// TODO (#190): documenteren
 		/// </summary>
 		/// <param name="container"></param>
 		public UnityControllerFactory(IUnityContainer container)

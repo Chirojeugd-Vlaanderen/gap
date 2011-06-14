@@ -9,10 +9,10 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 namespace Chiro.Gap.WebApp.Test
 {
 
-	[TestClass()]
+	[TestClass]
 	public class VeelGebruiktTest
 	{
-		[ClassInitialize()]
+		[ClassInitialize]
 		public static void MyClassInitialize(TestContext testContext)
 		{
 			Factory.ContainerInit();

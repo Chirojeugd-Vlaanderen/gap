@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -56,6 +56,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="chiroGroep">Te bewaren Chirogroep</param>
 		/// <param name="extras">Bepaalt de mee te bewaren gekoppelde entiteiten</param>
+		/// <returns></returns>
 		public ChiroGroep Bewaren(ChiroGroep chiroGroep, ChiroGroepsExtras extras)
 		{
 			if (!_autorisatieMgr.IsGavGroep(chiroGroep.ID))

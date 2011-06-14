@@ -1,7 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -11,9 +13,9 @@ namespace Chiro.Gap.WebApp.Models
     /// <summary>
     /// Model voor bewerken van de plaats van een uitstap.  (duh)
     /// </summary>
-    public class UitstapPlaatsBewerekenModel : UitstapModel, IAdresBewerkenModel
+    public class UitstapPlaatsBewerkenModel : UitstapModel, IAdresBewerkenModel
     {
-        public UitstapPlaatsBewerekenModel()
+        public UitstapPlaatsBewerkenModel()
         {
             Uitstap = new UitstapDetail { Adres = new AdresInfo() };
         }

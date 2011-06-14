@@ -7,16 +7,16 @@ namespace Chiro.Adf.Configuration
 	/// </summary>
 	public class AdfConfigurationSection : ConfigurationSection
 	{
-		internal const string DefaultAdfConfigurationSectionName = "serviceHelper";
-		internal const string ServiceProvidersElementName = "serviceProviders";
+		internal const string DEFAULT_ADF_CONFIGURATION_SECTION_NAME = "serviceHelper";
+		internal const string SERVICE_PROVIDERS_ELEMENT_NAME = "serviceProviders";
         
 		/// <summary>
 		/// Gets the configured service providers.
 		/// </summary>
-		[ConfigurationProperty(ServiceProvidersElementName, Options = ConfigurationPropertyOptions.IsDefaultCollection)]
+		[ConfigurationProperty(SERVICE_PROVIDERS_ELEMENT_NAME, Options = ConfigurationPropertyOptions.IsDefaultCollection)]
 		public ServiceProviderSettingsCollection ServiceProviders
 		{
-			get { return (ServiceProviderSettingsCollection)base[ServiceProvidersElementName]; }
+			get { return (ServiceProviderSettingsCollection)base[SERVICE_PROVIDERS_ELEMENT_NAME]; }
 		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -148,8 +148,8 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="pagina">Paginanummer (1 of groter)</param>
 		/// <param name="paginaGrootte">Aantal records op een pagina</param>
 		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
 		/// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
+        /// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
 		/// <returns>Lijst gelieerde personen</returns>
 		IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras);
 

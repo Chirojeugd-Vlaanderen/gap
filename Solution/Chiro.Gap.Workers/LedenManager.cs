@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -7,9 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
+
 #if KIPDORP
-using System.Threading;
 using System.Transactions;
 #endif
 
@@ -625,6 +624,7 @@ namespace Chiro.Gap.Workers
         /// een juiste afdeling.
         /// </summary>
         /// <param name="lid">Lid waarvan type moet worden veranderd</param>
+        /// <returns></returns>
         public Lid TypeToggle(Lid lid)
         {
             if (!_autorisatieMgr.IsGavLid(lid.ID))

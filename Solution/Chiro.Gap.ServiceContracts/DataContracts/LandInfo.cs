@@ -3,7 +3,7 @@
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
-	/// 
+    /// TODO (#190): documenteren
 	/// </summary>
     [DataContract]
 	public class LandInfo

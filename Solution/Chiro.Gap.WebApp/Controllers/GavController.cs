@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -18,7 +18,8 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
-    /// 
+    /// Controller die nagaat van welke groepen de bezoeker GAV is en op basis daarvan direct doorverwijst
+    /// of eerst laat vragen om een keuze te maken
     /// </summary>
 	[HandleError]
 	public class GavController : BaseController

@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -30,7 +30,7 @@ namespace Chiro.Gap.Workers
         /// </summary>
         /// <param name="grpDao">Repository voor groepen</param>
         /// <param name="gelPersDao">Repository voor gelieerde personen</param>
-        /// <param name="veelGebruikt"></param>
+        /// <param name="veelGebruikt">Object dat veel gebruikte items cachet</param>
         /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
         public GroepenManager(
             IGroepenDao grpDao,

@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -27,7 +27,7 @@ namespace Chiro.Gap.WebApp.Controllers
     // (categorieën of zo), hebben we steeds een default (categorie, ...) die aangeeft dat alle personen moeten worden meegegeven
 
     /// <summary>
-    /// 
+    /// Controller voor weergave en beheer van alle personen die gelieerd zijn aan de groep
     /// </summary>
     [HandleError]
     public class PersonenController : BaseController
@@ -450,7 +450,6 @@ namespace Chiro.Gap.WebApp.Controllers
 
         // NEW CODE
 
-        // GET
         /// <summary>
         /// Deze actie (TODO:) met onduidelijke naam toont gewoon de personenfiche van de gelieerde
         /// persoon met id <paramref name="id"/>.
@@ -459,6 +458,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="groepID">GroepID van de groep waarin de gebruiker aan het werken is</param>
         /// <returns>De view van de personenfiche</returns>
         // id = gelieerdepersonenid
+        // GET
         [HandleError]
         public ActionResult EditRest(int id, int groepID)
         {
@@ -488,7 +488,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// bewaart ze in model.AlleAfdelingen.  In model.AfdelingIDs komen de ID's van de toegekende
         /// afdelingen voor het lid.
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">Het ingevulde model</param>
         [HandleError]
         private void AfdelingenOphalen(PersonenLedenModel model)
         {
@@ -679,6 +679,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
                 model.AlleLanden = VeelGebruikt.LandenOphalen();
+                model.Titel = "Personen verhuizen";
 
                 return View("AdresBewerken", model);
             }
@@ -699,6 +700,8 @@ namespace Chiro.Gap.WebApp.Controllers
                                       probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
 
                 model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+                model.Titel = "Personen verhuizen";
+
                 return View("AdresBewerken", model);
             }
         }
@@ -855,6 +858,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
                 model.AlleLanden = VeelGebruikt.LandenOphalen();
+                model.Titel = "Nieuw adres toevoegen";
 
                 return View("AdresBewerken", model);
             }
@@ -880,18 +884,18 @@ namespace Chiro.Gap.WebApp.Controllers
                                       probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
 
                 model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+                model.Titel = "Nieuw adres toevoegen";
 
                 return View("AdresBewerken", model);
             }
         }
 
         /// <summary>
-        /// TODO (#190): documenteren!
+        /// Stelt een adres in als voorkeursadres van de persoon in kwestie
         /// </summary>
-        /// <param name="persoonsAdresID"></param>
-        /// <param name="gelieerdePersoonID"></param>
-        /// <param name="groepID"></param>
-        /// <returns></returns>
+        /// <param name="persoonsAdresID">ID van de koppeling tussen adres en persoon</param>
+        /// <param name="gelieerdePersoonID">ID van de gelieerde persoon in kwestie</param>
+        /// <param name="groepID">ID van de groep waar het over gaat</param>
         [HandleError]
         public ActionResult VoorkeurAdresMaken(int persoonsAdresID, int gelieerdePersoonID, int groepID)
         {

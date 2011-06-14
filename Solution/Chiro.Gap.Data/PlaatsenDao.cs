@@ -10,10 +10,18 @@ using Chiro.Gap.Orm.DataInterfaces;
 namespace Chiro.Gap.Data.Ef
 {
     /// <summary>
-    /// 
+    /// TODO (#190): documenteren
     /// </summary>
     class PlaatsenDao : Dao<Plaats, ChiroGroepEntities>, IPlaatsenDao
     {
+        /// <summary>
+        /// TODO (#190): documenteren
+        /// </summary>
+        /// <param name="groepID"></param>
+        /// <param name="plaatsNaam"></param>
+        /// <param name="adresID"></param>
+        /// <param name="paths"></param>
+        /// <returns></returns>
         public Plaats Zoeken(int groepID, string plaatsNaam, int adresID, params Expression<Func<Plaats, object>>[] paths)
         {
             Plaats result;

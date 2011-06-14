@@ -43,6 +43,7 @@
 			Ben je zeker van de straatnaam maar wordt ze geweigerd? Lees in
 			<%=Html.ActionLink("de handleiding", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweStraatnaam"})%>
 			hoe we daar een mouw aan kunnen passen.</p>
+            <% =Html.ValidationSummary() %>
         <% Html.RenderPartial("AdresBewerkenControl", Model); %>
         <%
 }%>
