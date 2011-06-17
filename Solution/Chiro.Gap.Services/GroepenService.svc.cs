@@ -747,14 +747,14 @@ namespace Chiro.Gap.Services
                 _groepenMgr.FunctieToevoegen(g, naam, code, maxAantal, minAantal, lidType, werkJaarVan);
                 g = _groepenMgr.Bewaren(g, e => e.Functie);
 
-                return (from ctg in g.Functie
-                        where ctg.Code == code
-                        select ctg.ID).FirstOrDefault();
-            }
-            catch (BestaatAlException<Functie> ex)
-            {
-                var fault = Mapper.Map<BestaatAlException<Functie>,
-                        BestaatAlFault<FunctieDetail>>(ex);
+				return (from fun in g.Functie
+					where fun.Code == code
+					select fun.ID).FirstOrDefault();
+			}
+			catch (BestaatAlException<Functie> ex)
+			{
+				var fault = Mapper.Map<BestaatAlException<Functie>,
+						BestaatAlFault<FunctieDetail>>(ex);
 
                 throw new FaultException<BestaatAlFault<FunctieDetail>>(fault);
             }

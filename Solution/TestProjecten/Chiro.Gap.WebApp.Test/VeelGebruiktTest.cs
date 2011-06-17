@@ -85,7 +85,7 @@ namespace Chiro.Gap.WebApp.Test
 		/// <summary>
 		///A test for IsLive
 		///</summary>
-		[TestMethod()]
+		[TestMethod]
 		public void IsLiveTest()
 		{
 			// Arrange
@@ -106,7 +106,7 @@ namespace Chiro.Gap.WebApp.Test
 		///<summary>
 		///Kijkt na of de lijst met landen goed wordt gecachet
 		///</summary>
-		[TestMethod()]
+		[TestMethod]
 		public void LandenOphalenTest()
 		{
 			// Arrange
