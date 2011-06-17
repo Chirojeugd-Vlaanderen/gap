@@ -7,14 +7,14 @@
 update biv.BivakOverzicht
 set s_aangifteID=null, s_begin=null, s_eind=null, s_naam=null, s_straat=null, s_postnr=null, s_gemeente=null, s_land=null,s_provinci=null, s_tel=null, s_apart='N'
 where werkjaar=2010 and s_begin is not null
-and s_postnr is null
+and (s_postnr is null or s_postnr='')
 
 -- Verwijder 'gewone' bivakken zonder adres uit overzichtstabel
 
 update biv.BivakOverzicht
 set b_aangifteID=null, veran_adnr = null
 where werkjaar=2010 and veran_adnr is not null
-and b_postnr is null
+and (b_postnr is null or b_postnr='')
 
 -- Buitenlands bivak en 'afdelingsbivak' expliciet aanvinken, indien ze bestaan
 
