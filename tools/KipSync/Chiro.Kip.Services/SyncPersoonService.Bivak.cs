@@ -90,6 +90,22 @@ namespace Chiro.Kip.Services
 
 			using (var db = new kipadminEntities())
 			{
+                // Bivakaangiftes van de groep in het gegeven werkjaar.
+
+			    var alleAangiften = from ba in db.BivakAangifte.Include("kipAdres").Include("kipPersoon.kipContactInfo")
+			                        where ba.WerkJaar == werkJaar && ba.Groep.GroepID == groepID && ba.kipAdres != null 
+                                    select ba;
+
+                // Ik bekijk alleen de bivakaangiften met adres, want anders kan Ingrid DB er niet aan uit, en dat
+                // is te allen prijze te vermijden ;-)
+
+                if (alleAangiften.FirstOrDefault() == null)
+                {
+                    // Als er niets overschiet, veranderen we ook niets in de overzichtstabel.
+                    return;
+                }
+
+
 				BivakAangifte aangifte = null;
 
 				// Kijk of er al een record bestaat in de oude bivaktabel.
@@ -125,22 +141,33 @@ namespace Chiro.Kip.Services
 				// wordt dat achteraf 'J'.
 				overzicht.OOSTKANTO = "N";
 
-				// Bivakaangiftes van de groep in het gegeven werkjaar.
+                // Fix 'kaartje'.  Dit is een nullable string, en het kipadminstuk dat de kaartjes arrangeert flipt als
+                // daar iets anders staat dan "J" of "N".
 
-				var alleAangiften = from ba in db.BivakAangifte.Include("kipAdres").Include("kipPersoon.kipContactInfo")
-				                where ba.WerkJaar == werkJaar && ba.Groep.GroepID == groepID
-				                select ba;
+                if (String.Compare(overzicht.KAARTJE, "T", true) == 0)
+                {
+                    // Een bug na de wijziging van kipBivak van table naar view, zette soms 'T' (true) ipv 'J' (ja)
+                    overzicht.KAARTJE = "J";
+                }
+                else if (String.Compare(overzicht.KAARTJE, "J", true) != 0)
+                {
+                    // alles wat niet 'J' is, wordt of blijft 'N'.  (Het zal vooral null of 'F' zijn dat wordt omgezet)
+                    overzicht.KAARTJE = "N";
+                }
+
+
+                // Splits bivakaangiftes op in binnenlandse en buitenlandse
+                // Aangezien we enkel de aangiften met adressen hebben opgevraagd, moeten we daar
+                // alvast niet meer op checken.
 
 				var binnenlandseAangiften = (from ag in alleAangiften
-				                             where ag.kipAdres == null ||
-				                             	(String.IsNullOrEmpty(ag.kipAdres.Land) ||
-				                             	 String.Compare(ag.kipAdres.Land, Properties.Resources.Belgie, true) == 0)
+				                             where String.IsNullOrEmpty(ag.kipAdres.Land) ||
+				                             	 String.Compare(ag.kipAdres.Land, Properties.Resources.Belgie, true) == 0
 				                             select ag).OrderByDescending(ag => ag.ID).ToArray();
 
 				var buitenlandseAangiften = (from ag in alleAangiften
-							     where ag.kipAdres != null &&
-								(!String.IsNullOrEmpty(ag.kipAdres.Land) &&
-								 String.Compare(ag.kipAdres.Land, Properties.Resources.Belgie, true) != 0)
+							     where !String.IsNullOrEmpty(ag.kipAdres.Land) &&
+								 String.Compare(ag.kipAdres.Land, Properties.Resources.Belgie, true) != 0
 							     select ag).OrderByDescending(ag => ag.ID).ToArray();
 
 				// Als er een buitenlandse aangifte is, dan moet die zeker bewaard worden als buitenlands bivak.
@@ -149,6 +176,7 @@ namespace Chiro.Kip.Services
 				{
 					aangifte = buitenlandseAangiften.First();
 
+				    overzicht.U_BUITEN = "J";
 					overzicht.BivakAangifteU = aangifte;
 					overzicht.U_BEGIN = aangifte.DatumVan;
 					overzicht.U_EIND = aangifte.DatumTot;
@@ -173,6 +201,10 @@ namespace Chiro.Kip.Services
 
 					feedback.AppendLine(String.Format("Geregistreerd in overzicht als buitenlands bivak: ID{1} {0}", aangifte.BivakNaam, aangifte.ID));
 				}
+				else
+				{
+				    overzicht.U_BUITEN = "N";
+				}
 
 				// Nu de niet-buitenlandse aangiften.
 
@@ -187,6 +219,7 @@ namespace Chiro.Kip.Services
 
 						aangifte = binnenlandseAangiften[0];
 
+					    overzicht.S_APART = "J";
 						overzicht.BivakAangifteS = aangifte;
 						overzicht.S_BEGIN = aangifte.DatumVan;
 						overzicht.S_EIND = aangifte.DatumTot;
@@ -203,7 +236,7 @@ namespace Chiro.Kip.Services
 							overzicht.S_LAND = aangifte.kipAdres.Land;
 
 
-							if (String.IsNullOrEmpty(overzicht.B_LAND) || String.Compare(overzicht.B_LAND, Properties.Resources.Belgie, true) == 0)
+                            if (String.IsNullOrEmpty(aangifte.kipAdres.Land) || String.Compare(aangifte.kipAdres.Land, Properties.Resources.Belgie, true) == 0)
 							{
 								if (PostNrInOostKantons(aangifte.kipAdres.PostNr))
 								{
@@ -229,6 +262,8 @@ namespace Chiro.Kip.Services
 					{
 						// Als er maar 1 niet-buitenlandse aangifte is, dan wordt dat de 'gewone'
 						// bivakaangifte.
+
+					    overzicht.S_APART = "N";
 
 						aangifte = binnenlandseAangiften[0];
 					}

@@ -481,6 +481,8 @@ namespace Chiro.Kip.Services
 
 						if (cg != null)
 						{
+							// OH NEE, dat is geen foreign key :-(
+
 							cg.BET_ADNR = lid.Persoon.AdNummer;
 							cg.STEMPEL = DateTime.Now;
 						}
