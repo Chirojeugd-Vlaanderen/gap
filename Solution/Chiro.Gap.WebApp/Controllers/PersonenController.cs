@@ -155,7 +155,7 @@ namespace Chiro.Gap.WebApp.Controllers
             string[] kolomkoppen = 
                                    {
 			                       	"AD-nr", "Voornaam", "Naam", "Geboortedatum", "Geslacht", "Straat", "Nr", "Bus", "Postcode",
-			                       	"Gemeente", "Tel", "Mail"
+			                       	"Gemeente", "Land", "Tel", "Mail"
 			                       };
 
             var stream = (new ExcelManip()).ExcelTabel(
@@ -171,6 +171,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => it.Bus,
                 it => it.PostNummer,
                 it => it.WoonPlaats,
+				it => it.Land,
                 it => it.TelefoonNummer,
                 it => it.Email);
             return new ExcelResult(stream, "personen.xlsx");
