@@ -227,7 +227,7 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 BaseModelInit(model, groepID);
 
-                // TODO: tijdelijke dinges
+                // TODO (#999): tijdelijke dinges, eigenlijk moest er een FaultException<OngeldigObjectFault> gecatcht worden
                 TempData["fout"] = ex.Message;
 
                 model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
