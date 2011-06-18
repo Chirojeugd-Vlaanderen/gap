@@ -41,7 +41,18 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.Titel = Properties.Resources.Uitstappen;
 			model.Uitstappen =
 				ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID, false));
-			return View(model);
+
+            // Voor een bivak moet er een adres ingevuld zijn, anders is de bivakaangifte nog niet in orde.
+            var heeftBivak = (from uitstap in model.Uitstappen
+                                  where uitstap.IsBivak
+                                  select uitstap).Count() > 0;
+                                  
+            if (!heeftBivak)
+            {
+                TempData["fout"] = Properties.Resources.GeenBivak;
+            }
+            
+            return View(model);
 		}
 
 		/// <summary>
@@ -111,9 +122,9 @@ namespace Chiro.Gap.WebApp.Controllers
 				// Voor een bivak moet er ook een contactpersoon aangeduid zijn
 				var heeftContact = (from dln in model.Deelnemers
 									where dln.IsContact
-									select dln).Count();
+									select dln).Count() > 0;
 
-				if (heeftContact < 1)
+				if (!heeftContact)
 				{
 					TempData["fout"] += Properties.Resources.GeenContactVoorBivak;
 				}

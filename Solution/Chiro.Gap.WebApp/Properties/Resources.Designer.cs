@@ -331,6 +331,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je hebt nog geen bivak geregistreerd voor dit werkjaar.
+        /// </summary>
+        public static string GeenBivak {
+            get {
+                return ResourceManager.GetString("GeenBivak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je hebt nog geen categorieën, dus kun je er ook geen mensen in stoppen. Maak categorieën aan op het tabblad &apos;Groep&apos;..
         /// </summary>
         public static string GeenCategorieenFout {

@@ -332,4 +332,7 @@
   <data name="GeenContactVoorBivak" xml:space="preserve">
     <value>Je hebt nog geen contactpersoon aangeduid. </value>
   </data>
+  <data name="GeenBivak" xml:space="preserve">
+    <value>Je hebt nog geen bivak geregistreerd voor dit werkjaar</value>
+  </data>
 </root>
