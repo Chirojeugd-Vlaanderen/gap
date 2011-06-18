@@ -324,5 +324,40 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			return RedirectToAction("Bekijken", new { groepID, id = model.Deelnemer.UitstapID });
 		}
+
+
+		/// <summary>
+		/// Downloadt de lijst van deelnemers aan de uitstap <paramref name="id"/> als
+		/// Exceldocument.
+		/// </summary>
+		/// <param name="id">ID van de gevraagde uitstap (komt uit url)</param>
+		/// <returns>Exceldocument met gevraagde ledenlijst</returns>
+		[HandleError]
+		public ActionResult Download(int id)
+		{
+			var uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(s => s.DetailsOphalen(id));
+			var lijst = ServiceHelper.CallService<IUitstappenService, IEnumerable<DeelnemerDetail>>(s => s.DeelnemersOphalen(id));
+
+			string[] kolomkoppen = 
+                    {
+			        "Voornaam", "Familienaam", "Afdelingen", "Functie", "Contactpersoon", "Betaald", "Medische fiche", "Opmerkingen"
+			        };
+
+			var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));
+			var stream = (new ExcelManip()).ExcelTabel(
+				lijst,
+				kolomkoppen,
+				it => it.VoorNaam,
+				it => it.FamilieNaam,
+				it => it.Afdelingen == null ? String.Empty : String.Concat(it.Afdelingen.Select(afd => afd.Afkorting + " ").ToArray()),
+				it => it.Type,
+				it => it.IsContact ? "Ja" : "Nee",
+				it => it.HeeftBetaald ? "Ja" : "Nee",
+				it => it.MedischeFicheOk ? "Ja" : "Nee",
+				it => it.Opmerkingen
+			);
+
+			return new ExcelResult(stream, bestandsNaam);
+		}
 	}
 }

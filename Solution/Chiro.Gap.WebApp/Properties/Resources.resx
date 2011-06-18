@@ -250,10 +250,10 @@
     <value>Je moet de contactpersoon en het adres nog invullen van je bivak &lt;a href='{1}'&gt; {0} &lt;/a&gt;.</value>
   </data>
 	<data name="PersoonNogInvullenOpBivakAangifte" xml:space="preserve">
-    <value>Je moet de contactpersoon nog invullen van je bivak {0}.</value>
+    <value>Je moet de contactpersoon nog invullen van je bivak &lt;a href='{1}'&gt; {0} &lt;/a&gt;.</value>
   </data>
 	<data name="AdresNogInvullenOpBivakAangifte" xml:space="preserve">
-    <value>Je moet het adres nog invullen van je bivak {0}.</value>
+    <value>Je moet het adres nog invullen van je bivak &lt;a href='{1}'&gt; {0} &lt;/a&gt;.</value>
   </data>
   <data name="FunctiesVan" xml:space="preserve">
     <value>Functies van {0}</value>

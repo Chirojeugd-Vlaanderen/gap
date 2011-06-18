@@ -62,7 +62,13 @@
 	%>
 	<h3>
 		Deelnemerslijst</h3>
-		<p>Deze lijst is eerst gesorteerd op type deelnemer (logistiek, leiding, lid), dan op afdeling, en dan op familienaam.</p>
+		<p>Deze lijst is eerst gesorteerd op functie van de deelnemer (logistiek, leiding, lid), dan op afdeling, en dan op familienaam.</p>
+		<p><%= Html.ActionLink(
+		      	"Lijst downloaden", 
+		      	"Download", 
+		      	new { id = Model.Uitstap.ID }, 
+		      	new { title = "Download de deelnemerslijst in een Excel-bestand" })%>
+		</p>
 	<table>
 		<tr>
 			<th />
@@ -76,8 +82,10 @@
 			<th>Acties </th>
 		</tr>
 		<%
-			int volgnr = 0;
-			foreach (var d in Model.Deelnemers.OrderByDescending(d => d.Type).ThenByDescending(d => d.Afdelingen.FirstOrDefault() == null ? String.Empty : d.Afdelingen.FirstOrDefault().Afkorting).ThenBy(d => d.VoorNaam).ThenBy(d => d.FamilieNaam))
+			var volgnr = 0;
+			var lijst =
+				Model.Deelnemers.OrderByDescending(d => d.Type).ThenByDescending(d => d.Afdelingen.FirstOrDefault() == null ? String.Empty : d.Afdelingen.First().Afkorting).ThenBy(d => d.VoorNaam).ThenBy(d => d.FamilieNaam);
+			foreach (var d in lijst)
 			{
 				string klasse = (++volgnr & 1) == 0 ? "even" : "oneven";
 				if (d.IsContact)

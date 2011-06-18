@@ -444,17 +444,15 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Download(int id, int afdelingID, int functieID, int groepID, LidInfoModel.SpecialeLedenLijst ledenLijst, LidEigenschap sortering)
         {
             var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, true);
-            string bestandsNaam;
 
-            // Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
+        	// Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
             // gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
             string[] kolomkoppen = 
-                                   {
-			                       	"Type", "AD-nr", "Voornaam", "Naam", "Afdelingen", "Functies", "Geboortedatum", "Geslacht",
-			                       	"Straat", "Nr", "Bus", "Postnr", "Postcode", "Gemeente", "Land", "Tel", "Mail", "Betaald"
-			                       };
+                  {
+			       	"Type", "AD-nr", "Voornaam", "Naam", "Afdelingen", "Functies", "Geboortedatum", "Geslacht","Straat", "Nr", "Bus", "Postnr", "Postcode", "Gemeente", "Land", "Tel", "Mail", "Betaald"
+			      };
 
-            bestandsNaam = String.Format("{0}.xlsx", model.Titel.Replace(" ", "-"));
+            var bestandsNaam = String.Format("{0}.xlsx", model.Titel.Replace(" ", "-"));
 
             var stream = (new ExcelManip()).ExcelTabel(
                 model.LidInfoLijst,

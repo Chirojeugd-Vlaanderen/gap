@@ -25,30 +25,27 @@ namespace Chiro.Gap.Services
         public static void FoutAfhandelen(Exception ex)
         {
             /*
-             * Hier worden algemene fouten opgevangen en op de goede manier doorgegeven. Als de debugger hier ergens breakt, 
-             * mag je gewoon op F5 duwen om verder te gaan.
+             * Hier worden algemene fouten opgevangen en op de goede manier doorgegeven. Als de debugger hier ergens breakt, mag je gewoon op F5 duwen om verder te gaan.
              */
 
             if (ex is GeenGavException)
             {
                 throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenGav }, new FaultReason(ex.Message));
             }
-            else if (ex is EntityException | ex is EntityCommandExecutionException)
+            if (ex is EntityException | ex is EntityCommandExecutionException)
             {
                 throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenDatabaseVerbinding }, new FaultReason(ex.Message));
             }
-            else if (ex is OptimisticConcurrencyException)
+            if (ex is OptimisticConcurrencyException)
             {
                 throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.Concurrency }, new FaultReason(ex.Message));
             }
-            else if (ex is FoutNummerException)
+            if (ex is FoutNummerException)
             {
                 throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = (ex as FoutNummerException).FoutNummer }, new FaultReason(ex.Message));
             }
-            else
-            {
-                throw ex;
-            }
+            
+			throw ex;
         }
     }
 }
