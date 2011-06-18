@@ -60,6 +60,8 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen lijst. Als dit niet lukt gaat 
         /// hij naar de indexpagina van de controller terug.
+        /// Belangrijkste voordeel is het bijhouden van de instellingen zoals sortering, pagina, ..., zonder al die informatie overal in de url of in de post te houden.
+        /// Er zijn wel enkele issues als er multitabs gebruikt worden, maar kunnen niet leiden tot echte bugs.
         /// </summary>
         /// <returns></returns>
         [HandleError]
@@ -73,32 +75,6 @@ namespace Chiro.Gap.WebApp.Controllers
                 // ReSharper disable Asp.NotResolved
                 r = RedirectToAction("Index");
                 // ReSharper restore Asp.NotResolved
-            }
-            else
-            {
-                r = Redirect(url);
-            }
-
-            return r;
-        }
-
-        /// <summary>
-        /// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen fiche. In tweede instantie 
-        /// probeert hij de vorige lijst, in laatste instantie gaat hij naar de indexpagina van de controller 
-        /// terug.
-        /// </summary>
-        /// <returns></returns>
-        [HandleError]
-        protected ActionResult TerugNaarVorigeFiche()
-        {
-            ActionResult r;
-
-            string url = ClientState.VorigeFiche ?? ClientState.VorigeLijst;
-            if (url == null)
-            {
-                // ReSharper disable Asp.NotResolved
-                r = RedirectToAction("Index");
-                // ReSharper restore Asp.NotResolved   
             }
             else
             {

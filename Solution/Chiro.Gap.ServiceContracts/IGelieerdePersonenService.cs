@@ -306,10 +306,11 @@ namespace Chiro.Gap.ServiceContracts
 		/// Verwijdert een communicatievorm van een gelieerde persoon
 		/// </summary>
 		/// <param name="commvormID">ID van de communicatievorm</param>
+		/// <returns>De ID van de gelieerdepersoon die bij de commvorm hoort</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void CommunicatieVormVerwijderenVanPersoon(int commvormID);
+		int CommunicatieVormVerwijderenVanPersoon(int commvormID);
 
 		/// <summary>
 		/// Persisteert de wijzigingen aan een bestaande communicatievorm

@@ -787,12 +787,12 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Verwijdert de link tussen een persoon en de communicatievorm met de opgegeven ID
         /// </summary>
-        /// <param name="commvormID">De ID van de communicatievorm die niet langer aan de
-        /// persoon in kwestie gelinkt moet zijn</param>
+        /// <param name="commvormID">De ID van de communicatievorm die niet langer aan de persoon in kwestie gelinkt moet zijn</param>
         /* zie #273 */
         // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void CommunicatieVormVerwijderenVanPersoon(int commvormID)
+        public int CommunicatieVormVerwijderenVanPersoon(int commvormID)
         {
+        	int gelieerdePersoonID = -1;
             try
             {
                 var cv = _cvMgr.OphalenMetGelieerdePersoon(commvormID);
@@ -800,12 +800,14 @@ namespace Chiro.Gap.Services
                 {
                     throw new ArgumentException(Resources.FouteCommunicatieVormVoorPersoonString);
                 }
+            	gelieerdePersoonID = cv.GelieerdePersoon.ID;
                 _cvMgr.CommunicatieVormVerwijderen(cv);	// persisteert
             }
             catch (Exception ex)
             {
                 FoutAfhandelaar.FoutAfhandelen(ex);
             }
+			return gelieerdePersoonID;
         }
 
         // TODO dit moet gecontroleerd worden!

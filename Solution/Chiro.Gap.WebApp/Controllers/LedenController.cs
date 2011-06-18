@@ -564,7 +564,9 @@ namespace Chiro.Gap.WebApp.Controllers
 
             // De returnwaarde van de volgende call hebben we nergens voor nodig.
             ServiceHelper.CallService<ILedenService, int>(svc => svc.AfdelingenVervangen(lidID, model.Info.AfdelingsJaarIDs));
-            return TerugNaarVorigeFiche();
+
+			var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(lidID));
+        	return RedirectToAction("EditRest", "Personen", new { id = info.PersoonDetail.GelieerdePersoonID });
         }
 
         /// <summary>
@@ -792,7 +794,9 @@ namespace Chiro.Gap.WebApp.Controllers
                 {
                     throw;
                 }
-                return TerugNaarVorigeFiche();
+
+				var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
+            	gelieerdePersoonID = info.PersoonDetail.GelieerdePersoonID;
             }
 
             return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });

@@ -75,7 +75,6 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
             ClientState.VorigeLijst = Request.Url.ToString();
-            ClientState.VorigeFiche = string.Empty; // Op null zetten zodat die eigenlijk "vergeten" wordt nu
 
             int totaal = 0;
 
@@ -463,9 +462,6 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult EditRest(int id, int groepID)
         {
-            // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
-            ClientState.VorigeFiche = Request.Url.ToString();
-
             var model = new PersonenLedenModel();
             BaseModelInit(model, groepID);
 
@@ -521,7 +517,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
             }
 
-            return TerugNaarVorigeFiche();
+			return RedirectToAction("EditRest", "Personen", new { id = gelieerdepersoonID });
         }
 
         #endregion leden
@@ -648,15 +644,11 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 // De service zal het meegeleverder model.NaarAdres.ID negeren, en 
                 // opnieuw opzoeken.
-                //
-                // Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel verwijderd.)
+                // Adressen worden nooit gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
                 ServiceHelper.CallService<IGelieerdePersonenService>(l => l.GelieerdePersonenVerhuizen(model.GelieerdePersoonIDs, model.PersoonsAdresInfo, model.OudAdresID));
 
-                // Toon een persoon die woont op het nieuwe adres.
-                // (wat hier moet gebeuren hangt voornamelijk af van de use case)
-
-                return TerugNaarVorigeFiche();
+				return RedirectToAction("EditRest", "Personen", new { id = model.GelieerdePersoonIDs.First() });
             }
             catch (FaultException<OngeldigObjectFault> ex)
             {
@@ -903,9 +895,6 @@ namespace Chiro.Gap.WebApp.Controllers
             ServiceHelper.CallService<IGelieerdePersonenService>(l => l.VoorkeursAdresMaken(persoonsAdresID, gelieerdePersoonID));
             VeelGebruikt.LedenProblemenResetten(groepID);
 
-            // Door niet 'terug naar vorige fiche' te gebruiken, is de redirect ook correct als
-            // je ondertussen in een andere tab wat hebt gebladerd.
-
             return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
 
@@ -995,11 +984,11 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult VerwijderenCommVorm(int commvormID, int groepID)
         {
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormVerwijderenVanPersoon(commvormID));
+			var gelieerdePersoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.CommunicatieVormVerwijderenVanPersoon(commvormID));
 
             VeelGebruikt.LedenProblemenResetten(groepID);
 
-            return TerugNaarVorigeFiche();
+			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
 
         // GET: /Personen/CommVormBewerken/gelieerdePersoonID
@@ -1058,13 +1047,11 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 return View("CommVormBewerken", model);
             }
-            else
-            {
-                // Om bloat over de lijn te vermijden: downgraden naar minimale info
-                var comminfo = new CommunicatieInfo(model.NieuweCommVorm);
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(comminfo));
-                return TerugNaarVorigeFiche();
-            }
+            
+			// Om bloat over de lijn te vermijden: downgraden naar minimale info
+            var comminfo = new CommunicatieInfo(model.NieuweCommVorm);
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(comminfo));
+			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
             // TODO catch exceptions overal
         }
 
@@ -1078,7 +1065,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             IList<int> list = new List<int> { gelieerdePersoonID };
             ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieVerwijderen(list, categorieID));
-            return TerugNaarVorigeFiche();
+			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
 
         // GET: /Personen/ToevoegenAanCategorie/categorieID

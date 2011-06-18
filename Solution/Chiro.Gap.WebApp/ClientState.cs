@@ -49,33 +49,5 @@ namespace Chiro.Gap.WebApp
 				s.Value = value;
 			}
 		}
-
-		/// <summary>
-		/// Bevat de url van de vorig opgevraagde fiche.
-		/// </summary>
-		public static String VorigeFiche
-		{
-			get
-			{
-				var s = HttpContext.Current.Request.Cookies.Get(FICHECOOKIE);
-				if (s == null || String.IsNullOrEmpty(s.Value))
-				{
-					return null;
-				}
-				return s.Value;
-			}
-			set
-			{
-				var s = HttpContext.Current.Response.Cookies.Get(FICHECOOKIE);
-				if (s == null)
-				{
-					// TODO: Dit lijkt me het verkeerde exceptiontype
-
-					throw new AccessViolationException(
-						"De cookie kan niet gemaakt worden, zijn cookies uitgeschakeld?");
-				}
-				s.Value = value;
-			}
-		}
 	}
 }
