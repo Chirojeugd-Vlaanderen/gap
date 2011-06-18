@@ -14,7 +14,7 @@ namespace Chiro.Gap.Dummies
     /// <summary>
     /// Gauw een klasse die gebruikt kan worden om eender welke Sync te mocken.
     /// </summary>
-    public class DummySync : IAdressenSync, ICommunicatieSync, IPersonenSync, ILedenSync, IDubbelpuntSync, IVerzekeringenSync
+    public class DummySync : IAdressenSync, ICommunicatieSync, IPersonenSync, ILedenSync, IDubbelpuntSync, IVerzekeringenSync, IBivakSync
     {
         public void StandaardAdressenBewaren(IEnumerable<PersoonsAdres> persoonsAdressen)
         {
@@ -63,5 +63,15 @@ namespace Chiro.Gap.Dummies
         public void Bewaren(PersoonsVerzekering persoonsVerzekering, GroepsWerkJaar gwj)
         {
         }
+
+    	public void Bewaren(Uitstap uitstap)
+    	{
+    		throw new NotImplementedException();
+    	}
+
+    	public void Verwijderen(int uitstapID)
+    	{
+    		throw new NotImplementedException();
+    	}
     }
 }

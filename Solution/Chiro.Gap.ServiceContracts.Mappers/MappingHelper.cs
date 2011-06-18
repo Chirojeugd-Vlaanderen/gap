@@ -405,21 +405,14 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.Afdelingen,
                            opt => opt.MapFrom(src => Afdelingen(src.GelieerdePersoon.Lid.FirstOrDefault())))
                 .ForMember(dst => dst.DeelnemerID, opt => opt.MapFrom(src => src.ID))
+				.ForMember(dst => dst.PersoonLidInfo, opt => opt.Ignore())
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
                 .ForMember(dst => dst.Type,
-                           opt =>
-                           opt.MapFrom(
-                               src =>
-                               src.IsLogistieker
-                                   ? DeelnemerType.Logistiek
-                                   : src.GelieerdePersoon.Lid.FirstOrDefault() != null &&
-                                     src.GelieerdePersoon.Lid.FirstOrDefault() is Leiding
-                                         ? DeelnemerType.Begeleiding
-                                         : src.GelieerdePersoon.Lid.FirstOrDefault() != null &&
-                                           src.GelieerdePersoon.Lid.FirstOrDefault() is Lid
-                                               ? DeelnemerType.Deelnemer
-                                               : DeelnemerType.Onbekend))
+                           opt => opt.MapFrom( src => src.IsLogistieker? DeelnemerType.Logistiek : 
+													  src.GelieerdePersoon.Lid.FirstOrDefault() != null && src.GelieerdePersoon.Lid.FirstOrDefault() is Leiding ? DeelnemerType.Begeleiding :
+													  src.GelieerdePersoon.Lid.FirstOrDefault() != null ? DeelnemerType.Deelnemer :
+													  DeelnemerType.Onbekend))
                 .ForMember(dst => dst.IsContact,
                            opt => opt.MapFrom(src => src.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() != null));
 

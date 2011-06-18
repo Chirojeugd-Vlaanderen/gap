@@ -134,8 +134,7 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public Uitstap Bewaren(Uitstap uitstap, UitstapExtras extras, bool sync)
         {
-            // kopieer eerst een aantal gekoppelde entiteiten (voor sync straks), want na het bewaren van 
-            // het bivak zijn we die kwijt...
+            // kopieer eerst een aantal gekoppelde entiteiten (voor sync straks), want na het bewaren van het bivak zijn we die kwijt...
 
             var groep = uitstap.GroepsWerkJaar == null ? null : uitstap.GroepsWerkJaar.Groep;
             var plaats = uitstap.Plaats;

@@ -59,7 +59,6 @@ namespace Chiro.WatiN.Test
 		// Deployment server voor GapServices
 		private static Process _gapServicesProcess;
 		private static readonly int GapServicesPort = Properties.Settings.Default.GapServicesPort;
-		private static string _gapServicesDeploymentServer = "http://localhost:" + GapServicesPort;
 		private static string _gapServicesPhysicalPath;
 
 		// Deployment server voor GapWebApp
@@ -309,7 +308,7 @@ namespace Chiro.WatiN.Test
 			}
 		}
 
-		public Boolean PersonenPaginaActie(IE window, PersonenActie actie, Persoon Pers)
+		public Boolean PersonenPaginaActie(IE window, PersonenActie actie, Persoon pers)
 		{
 			switch (actie)
 			{
@@ -327,7 +326,7 @@ namespace Chiro.WatiN.Test
 
 						// Aanmaken van een reguliere expressie die we gaan gebruiken om een persoon op te zoeken, 
 						// Hier gebruiken we enkel nogmaar de Naam en VoorNaam.
-						var vindPersoon = new Regex(Pers.Voornaam + " " + Pers.FamilieNaam);
+						var vindPersoon = new Regex(pers.Voornaam + " " + pers.FamilieNaam);
 
 						// Als we dit vinden in de volgende pagina dat in 
 						var vindIsToegevoegdAlsLid = new Regex(@"is nu ingeschreven als (lid|leiding|kind)");
@@ -390,7 +389,7 @@ namespace Chiro.WatiN.Test
 						// We hebben alle pagina's doorlopen en we hebben de persoon niet kunnen lid maken.
 						if (!persoonLidGemaakt)
 						{
-							Debug.WriteLine("ASSERT ERROR: Niet lid gemaakt:" + Pers.Voornaam + " " + Pers.FamilieNaam);
+							Debug.WriteLine("ASSERT ERROR: Niet lid gemaakt:" + pers.Voornaam + " " + pers.FamilieNaam);
 						}
 						return persoonLidGemaaktRestultaat;
 					}
