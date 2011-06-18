@@ -29,5 +29,8 @@
     <Setting Name="AantalLedenOverzettenPerKeer" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">25</Value>
     </Setting>
+    <Setting Name="BivakAangifteStart" Type="System.DateTime" Scope="Application">
+      <Value Profile="(Default)">1990-05-01</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

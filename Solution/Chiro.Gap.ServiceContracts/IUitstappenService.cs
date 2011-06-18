@@ -129,5 +129,14 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
 	    void DeelnemerBewaren(DeelnemerInfo info);
+
+		/// <summary>
+		/// Haalt informatie over de bivakaangifte op van de groep <paramref name="groepID"/> in het gegeven werkjaar
+		/// </summary>
+		/// <param name="groepID">De groep waarvan info wordt gevraagd</param>
+		/// <param name="gwjID">Het werkjaar waarover info wordt gevraagd</param>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		BivakAangifteLijstInfo BivakStatusOphalen(int groepID, int gwjID);
 	}
 }

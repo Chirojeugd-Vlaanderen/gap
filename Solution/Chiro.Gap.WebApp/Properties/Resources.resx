@@ -243,6 +243,18 @@
   <data name="WerkJaarInOvergang" xml:space="preserve">
     <value>De overgang naar werkjaar {0}-{1} moet nog gebeuren.</value>
   </data>
+  <data name="BivakAangifteNogInTeVullen" xml:space="preserve">
+    <value>Je moet je bivakaangifte nog &lt;a href='{0}'&gt; invullen &lt;/a&gt;.</value>
+  </data>
+	<data name="BeideNogInvullenOpBivakAangifte" xml:space="preserve">
+    <value>Je moet de contactpersoon en het adres nog invullen van je bivak &lt;a href='{1}'&gt; {0} &lt;/a&gt;.</value>
+  </data>
+	<data name="PersoonNogInvullenOpBivakAangifte" xml:space="preserve">
+    <value>Je moet de contactpersoon nog invullen van je bivak {0}.</value>
+  </data>
+	<data name="AdresNogInvullenOpBivakAangifte" xml:space="preserve">
+    <value>Je moet het adres nog invullen van je bivak {0}.</value>
+  </data>
   <data name="FunctiesVan" xml:space="preserve">
     <value>Functies van {0}</value>
   </data>

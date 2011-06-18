@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Caching;
 
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
@@ -92,7 +93,13 @@ namespace Chiro.Gap.WebApp
             return gwjDetail;
         }
 
-        #endregion
+		public BivakAangifteLijstInfo BivakStatusHuidigWerkjaarOphalen(int groepID)
+    	{
+    		int gwjID = _serviceHelper.CallService<IGroepenService, int>(g => g.RecentsteGroepsWerkJaarIDGet(groepID));
+			return _serviceHelper.CallService<IUitstappenService, BivakAangifteLijstInfo>(g => g.BivakStatusOphalen(groepID, gwjID));
+    	}
+
+    	#endregion
 
         #region Problemen
 

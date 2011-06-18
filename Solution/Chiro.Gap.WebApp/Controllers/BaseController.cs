@@ -4,11 +4,13 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
 
@@ -140,6 +142,8 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.HuidigWerkJaar = gwjDetail.WerkJaar;
                 model.IsInOvergangsPeriode = gwjDetail.Status == WerkJaarStatus.InOvergang;
 
+				var bivakstatus = VeelGebruikt.BivakStatusHuidigWerkjaarOphalen(groepID);
+
                 #endregion
 
                 #region GAV over meerdere groepen?
@@ -164,6 +168,8 @@ namespace Chiro.Gap.WebApp.Controllers
                             gwjDetail.WerkJaar + 2)
                     });
                 }
+
+				VoegBivakStatusMededelingenToe(bivakstatus, model.Mededelingen);
 
                 // Problemen opvragen
 
@@ -243,21 +249,70 @@ namespace Chiro.Gap.WebApp.Controllers
                         }
 
                         model.Mededelingen.Add(new Mededeling
-                                                {
-                                                    Type = MededelingsType.Probleem,
-                                                    Info = String.Format(boodschap, p.Aantal, url)
-                                                });
+                            {
+                                Type = MededelingsType.Probleem,
+                                Info = String.Format(boodschap, p.Aantal, url)
+                            });
                     }
                 }
-
-                // TODO (#637): ook vermelden dat het werkjaar nog geïnitieerd moet worden als dat nog 
-                // niet gebeurde!
 
                 #endregion
             }
         }
 
-        /// <summary>
+    	private void VoegBivakStatusMededelingenToe(BivakAangifteLijstInfo aangiftestatus, IList<Mededeling> mededelingen)
+    	{
+			if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.NogNietVanBelang || aangiftestatus.AlgemeneStatus == BivakAangifteStatus.Ingevuld)
+			{
+				return;
+			}
+			if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.DringendInTeVullen && aangiftestatus.Bivakinfos.Count == 0)
+			{
+				var url = Url.Action("Nieuw", "Uitstappen");
+				mededelingen.Add(new Mededeling
+				{
+					Type = MededelingsType.Probleem,
+					Info = String.Format(Properties.Resources.BivakAangifteNogInTeVullen, url)
+				});
+			}
+			else
+			{
+				foreach (var bivakstatus in aangiftestatus.Bivakinfos)
+				{	
+					if (bivakstatus.Status == BivakAangifteStatus.PlaatsEnPersoonInTeVullen) 
+					{
+						var url = Url.Action("Bekijken", "Uitstappen", new { id = bivakstatus.ID });
+						mededelingen.Add(new Mededeling
+						{
+							Type = MededelingsType.Probleem,
+							Info = String.Format(Properties.Resources.BeideNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
+						});
+					}
+					if(bivakstatus.Status == BivakAangifteStatus.PlaatsInTeVullen)
+					{
+						var url = Url.Action("PlaatsBewerken", "Uitstappen", new { id = bivakstatus.ID });
+						mededelingen.Add(new Mededeling
+						{
+							Type = MededelingsType.Probleem,
+							Info = String.Format(Properties.Resources.AdresNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
+						});
+					}
+					else if (bivakstatus.Status == BivakAangifteStatus.PersoonInTeVullen)
+					{
+						var url = Url.Action("Bekijken", "Uitstappen", new { id = bivakstatus.ID });
+						mededelingen.Add(new Mededeling
+						{
+							Type = MededelingsType.Probleem,
+							Info = String.Format(Properties.Resources.PersoonNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
+						});
+					}
+				}
+			}
+
+
+    	}
+
+    	/// <summary>
         /// Vult de groepsgegevens én de paginatitel in in de base view
         /// </summary>
         /// <param name="model">Te initialiseren model</param>

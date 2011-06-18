@@ -413,5 +413,19 @@ namespace Chiro.Gap.Services
 
             _deelnemersMgr.Bewaren(d);
         }
+
+		public BivakAangifteLijstInfo BivakStatusOphalen(int groepID, int gwjID)
+    	{
+			var gwj = _groepsWerkJaarMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Groep);
+            try
+            {
+				return _uitstappenMgr.BivakStatusOphalen(groepID, gwj);
+            }
+            catch (GeenGavException ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                throw;
+            }
+    	}
     }
 }

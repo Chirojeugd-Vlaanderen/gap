@@ -90,10 +90,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
 				return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
 			}
-			else
-			{
-				return View("Bewerken", model);
-			}
+			
+			return View("Bewerken", model);
 		}
 
 		/// <summary>
@@ -172,10 +170,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
 				return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
 			}
-			else
-			{
-				return View("Bewerken", model);
-			}
+			
+			return View("Bewerken", model);
 		}
 
 		/// <summary>
@@ -291,13 +287,15 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>De 'pas eens een deelnemer aan'-view.</returns>
 		public ActionResult DeelnemerBewerken(int groepID, int id)
 		{
-			var model = new DeelnemerBewerkenModel();
+			var model = new DeelnemerBewerkenModel
+			            	{
+			            		Deelnemer =
+			            			ServiceHelper.CallService<IUitstappenService, DeelnemerDetail>(svc => svc.DeelnemerOphalen(id))
+			            	};
 
 			// We zouden hier waarschijnlijk beter wat meer details opvragen, maar omdat dat nog niet geimplementeerd is
 			// in de backend, houden we het bij de beperkte gegevens.
 
-			model.Deelnemer =
-				ServiceHelper.CallService<IUitstappenService, DeelnemerDetail>(svc => svc.DeelnemerOphalen(id));
 			BaseModelInit(model, groepID, String.Format(Properties.Resources.DeelnemerBewerken, model.Deelnemer.VoorNaam, model.Deelnemer.FamilieNaam));
 
 			return View(model);

@@ -187,6 +187,28 @@ namespace Chiro.Gap.Domain
         InOvergang = 0x06	// bewust 0x06, omdat een werkjaar in overgang dan ook bezig is.
     }
 
+	/// <summary>
+	/// Geeft aan of de bivakaangifte al is ingevuld
+	/// </summary>
+	[DataContract]
+	public enum BivakAangifteStatus
+	{
+		[EnumMember]
+		Onbekend,
+		[EnumMember]
+		Ingevuld,
+		[EnumMember]
+		NogNietVanBelang,
+		[EnumMember]
+		DringendInTeVullen,
+		[EnumMember]
+		PersoonInTeVullen,
+		[EnumMember]
+		PlaatsInTeVullen,
+		[EnumMember]
+		PlaatsEnPersoonInTeVullen
+	}
+
     /// <summary>
     /// Mogelijke problemen bij gegevens van leden
     /// </summary>

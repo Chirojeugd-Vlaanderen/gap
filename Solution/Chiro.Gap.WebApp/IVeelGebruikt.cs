@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp
@@ -52,6 +53,13 @@ namespace Chiro.Gap.WebApp
 		/// <param name="groepID">ID van de groep waarvan we het groepswerkjaar willen weten.</param>
 		/// <returns>Details over het gevraagde groepswerkjaar.</returns>
 		GroepsWerkJaarDetail GroepsWerkJaarOphalen(int groepID);
+
+		/// <summary>
+		/// Haalt de status van de bivakaangifte op van de groep met gegeven <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan we het groepswerkjaar willen weten.</param>
+		/// <returns>Details over de status van de bivakaangifte.</returns>
+		BivakAangifteLijstInfo BivakStatusHuidigWerkjaarOphalen(int groepID);
 
 		/// <summary>
 		/// Als de gav met gegeven <paramref name="login"/> gav is van precies 1 groep, dan

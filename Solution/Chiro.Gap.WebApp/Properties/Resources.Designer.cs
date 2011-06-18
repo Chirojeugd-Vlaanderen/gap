@@ -61,6 +61,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je moet het adres nog invullen van je bivak {0}..
+        /// </summary>
+        public static string AdresNogInvullenOpBivakAangifte {
+            get {
+                return ResourceManager.GetString("AdresNogInvullenOpBivakAangifte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De gevraagde afdeling bestond niet in het werkjaar {0}-{1}..
         /// </summary>
         public static string AfdelingBestondNiet {
@@ -133,11 +142,29 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je moet de contactpersoon en het adres nog invullen van je bivak &lt;a href=&apos;{1}&apos;&gt; {0} &lt;/a&gt;..
+        /// </summary>
+        public static string BeideNogInvullenOpBivakAangifte {
+            get {
+                return ResourceManager.GetString("BeideNogInvullenOpBivakAangifte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to België.
         /// </summary>
         public static string Belgie {
             get {
                 return ResourceManager.GetString("Belgie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Je moet je bivakaangifte nog &lt;a href=&apos;{0}&apos;&gt; invullen &lt;/a&gt;..
+        /// </summary>
+        public static string BivakAangifteNogInTeVullen {
+            get {
+                return ResourceManager.GetString("BivakAangifteNogInTeVullen", resourceCulture);
             }
         }
         
@@ -615,6 +642,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string Overzicht {
             get {
                 return ResourceManager.GetString("Overzicht", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Je moet de contactpersoon nog invullen van je bivak {0}..
+        /// </summary>
+        public static string PersoonNogInvullenOpBivakAangifte {
+            get {
+                return ResourceManager.GetString("PersoonNogInvullenOpBivakAangifte", resourceCulture);
             }
         }
         
