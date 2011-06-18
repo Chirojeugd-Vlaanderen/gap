@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Algemeen.Data
 {
-    public interface IEntities
+    public interface IRepository
     {
         void WijzigingenBewaren();
         IEnumerable<TEntiteit> Alles<TEntiteit>() where TEntiteit: class, IBasisEntiteit;

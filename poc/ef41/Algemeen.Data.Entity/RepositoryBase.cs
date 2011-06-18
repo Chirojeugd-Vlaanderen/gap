@@ -6,38 +6,45 @@ using System.Linq.Expressions;
 
 namespace Algemeen.Data.Entity
 {
-    public class Entities : DbContext, IEntities
+    public class RepositoryBase : IRepository
     {
+        private readonly IDbContext _dbc;
+
+        public RepositoryBase(IDbContext dbContext)
+        {
+            _dbc = dbContext;
+        }
+
         public void WijzigingenBewaren()
         {
-            SaveChanges();
+            _dbc.SaveChanges();
         }
 
         public IEnumerable<TEntiteit> Alles<TEntiteit>() where TEntiteit: class, IBasisEntiteit
         {
-            return this.Set<TEntiteit>();
+            return _dbc.Set<TEntiteit>();
         }
 
         public TEntiteit Toevoegen<TEntiteit>(TEntiteit entiteit) where TEntiteit: class, IBasisEntiteit
         {
-            return (TEntiteit) this.Set<TEntiteit>().Add(entiteit);
+            return _dbc.Set<TEntiteit>().Add(entiteit);
         }
 
         public TEntiteit Ophalen<TEntiteit>(int ID) where TEntiteit : class, IBasisEntiteit
         {
-            return (TEntiteit) this.Set<TEntiteit>().Where(ent => ent.ID == ID).FirstOrDefault();
+            return _dbc.Set<TEntiteit>().Where(ent => ent.ID == ID).FirstOrDefault();
         }
 
         public TEntiteit Ophalen<TEntiteit>(int ID, params Expression<Func<TEntiteit, object>>[] paths) where TEntiteit : class, IBasisEntiteit
         {
-            var query = this.Set<TEntiteit>().Where(ent => ent.ID == ID);
+            var query = _dbc.Set<TEntiteit>().Where(ent => ent.ID == ID);
             var result = IncludesToepassen(query, paths);
             return result.FirstOrDefault();
         }
 
         public void Verwijderen<TEntiteit>(TEntiteit entiteit) where TEntiteit : class, IBasisEntiteit
         {
-            this.Set<TEntiteit>().Remove(entiteit);
+            _dbc.Set<TEntiteit>().Remove(entiteit);
         }
 
         /// <summary>

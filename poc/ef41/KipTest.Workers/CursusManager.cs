@@ -8,16 +8,16 @@ namespace KipTest.Workers
 {
 	public class CursusManager
 	{
-		private readonly IEntities _entities;
+		private readonly IRepository _repository;
 
-		public CursusManager(IEntities entitities)
+		public CursusManager(IRepository entitities)
 		{
-		    _entities = entitities;
+		    _repository = entitities;
 		}
 
 		public IEnumerable<Cursus> ToekomstigeOphalen()
 		{
-		    return (from c in _entities.Alles<Cursus>()
+		    return (from c in _repository.Alles<Cursus>()
 		            where c.StartDatum > DateTime.Now
 		            select c).ToArray();
 		}
@@ -29,30 +29,30 @@ namespace KipTest.Workers
 
         public Cursus Ophalen(int cursusID, bool metDeelnemers)
         {
-            return metDeelnemers ? _entities.Ophalen<Cursus>(cursusID, cs=>cs.Deelnemers) : _entities.Ophalen<Cursus>(cursusID);
+            return metDeelnemers ? _repository.Ophalen<Cursus>(cursusID, cs=>cs.Deelnemers) : _repository.Ophalen<Cursus>(cursusID);
         }
 
 		public Cursus Maken(string naam, DateTime startDatum, DateTime stopDatum)
 		{
 		    var c = new Cursus {Naam = naam, StartDatum = startDatum, StopDatum = stopDatum};
-		    _entities.Toevoegen(c);
+		    _repository.Toevoegen(c);
 		    return c;
 		}
 
         public void WijzigingenBewaren()
         {
-            _entities.WijzigingenBewaren();
+            _repository.WijzigingenBewaren();
         }
 
 	    public Deelnemer Inschrijven(Cursus cursus, string deelnemerNaam)
 	    {
 	        var d = new Deelnemer {Naam = deelnemerNaam, Cursus = cursus};
-	        return _entities.Toevoegen(d);
+	        return _repository.Toevoegen(d);
 	    }
 
 	    public string[] DeelnemersOphalen(int cursusId)
 	    {
-	        return (from dln in _entities.Alles<Deelnemer>()
+	        return (from dln in _repository.Alles<Deelnemer>()
 	                where dln.CursusID == cursusId
 	                select dln.Naam).ToArray();
 	    }
@@ -61,7 +61,7 @@ namespace KipTest.Workers
 	    {
             foreach (var p in pineuten)
             {
-                _entities.Verwijderen(p);
+                _repository.Verwijderen(p);
             }
 	    }
 

@@ -4,7 +4,7 @@ using KipTest.Domain;
 
 namespace KipTest.Data
 {
-	public class TestEntities: Entities
+    public class TestDbContext : DbContext, IDbContext
 	{
         // Deze zijn nodig voor rechtstreekse toegang
         // Entity-framework-4.1-magie mapt automatisch

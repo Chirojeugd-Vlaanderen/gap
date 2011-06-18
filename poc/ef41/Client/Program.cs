@@ -15,24 +15,24 @@ namespace Client
                 // Dit moet nog iets beters worden.  ServiceHelper zou een mogelijkheid zijn,
                 // maar dan is IOC moeilijk.
 
-                int cursusID = client.CursusMaken("Iekaa bla bla", DateTime.Today, DateTime.Today);
-                Console.WriteLine("Cursus aangemaakt met id {0}", cursusID);
+                int cursusId = client.CursusMaken("Iekaa bla bla", DateTime.Today, DateTime.Today);
+                Console.WriteLine("Cursus aangemaakt met id {0}", cursusId);
 
-                client.DeelnemerInschrijven(cursusID, "Jos");
-                client.DeelnemerInschrijven(cursusID, "Charel");
-                client.DeelnemerInschrijven(cursusID, "Rita");
+                client.DeelnemerInschrijven(cursusId, "Jos");
+                client.DeelnemerInschrijven(cursusId, "Charel");
+                client.DeelnemerInschrijven(cursusId, "Rita");
 
                 Console.WriteLine("Deelnemers toegevoegd.  Ophalen...");
 
-                foreach (var dnl in client.DeelnemersOphalen(cursusID))
+                foreach (var dnl in client.DeelnemersOphalen(cursusId))
                 {
                     Console.WriteLine(dnl);
                 }
 
-                client.DeelnemerVerwijderen(cursusID, "Charel");
+                client.DeelnemerVerwijderen(cursusId, "Charel");
                 Console.WriteLine("Charel verwijderd.  Opnieuw ophalen");
 
-                foreach (var dnl in client.DeelnemersOphalen(cursusID))
+                foreach (var dnl in client.DeelnemersOphalen(cursusId))
                 {
                     Console.WriteLine(dnl);
                 }
@@ -40,9 +40,9 @@ namespace Client
                 int cursusID2 = client.CursusMaken("Esbee hoezee", DateTime.Today, DateTime.Today);
 
 
-                client.DeelnemerVerhuizen(cursusID, cursusID2, "Jos");
+                client.DeelnemerVerhuizen(cursusId, cursusID2, "Jos");
                 Console.WriteLine("Jos verhuisd naar volgende cursus.  Deelnemerslijst 1:");
-                foreach (var dnl in client.DeelnemersOphalen(cursusID))
+                foreach (var dnl in client.DeelnemersOphalen(cursusId))
                 {
                     Console.WriteLine(dnl);
                 }
