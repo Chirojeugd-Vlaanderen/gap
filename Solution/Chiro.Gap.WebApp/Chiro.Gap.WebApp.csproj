@@ -484,7 +484,6 @@
     <Content Include="Views\Shared\LiveTestControl.ascx" />
     <Content Include="Views\Shared\MededelingenControl.ascx" />
     <Content Include="Views\Shared\NavigatieVolledigControl.ascx" />
-    <Content Include="Views\Shared\TerugNaarFicheLinkControl.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Date.ascx" />
     <Content Include="Views\Shared\PersonenLinksControl.ascx" />
     <EmbeddedResource Include="Properties\Resources.resx">

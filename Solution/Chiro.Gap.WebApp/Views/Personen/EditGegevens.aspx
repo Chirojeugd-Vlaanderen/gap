@@ -140,5 +140,5 @@
 		%>
 	</fieldset>
 	<%} %>
-	<% Html.RenderPartial("TerugNaarFicheLinkControl"); %>
+	<%= Html.ActionLink("Terug naar de persoonsfiche", "EditRest", new { Controller = "Personen", id = Model.HuidigePersoon.GelieerdePersoonID }) %>
 </asp:Content>

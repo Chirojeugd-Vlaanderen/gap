@@ -136,6 +136,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ChiroGroepModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="ClassDiagram2.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
