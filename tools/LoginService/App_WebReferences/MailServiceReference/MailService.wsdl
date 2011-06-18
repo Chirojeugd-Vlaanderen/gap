@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://intranet/MailService" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://intranet/MailService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://intranet/MailService">
+      <s:element name="VerstuurMail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="prmVanNaam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="prmVoorAdres" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="prmOver" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="prmBoodschap" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="prmApplicatieNaam" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerstuurMailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VerstuurMailResult" type="tns:BerichtStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="BerichtStatus">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="IsVerstuurd" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="LogBoodschap" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="VerstuurSomMail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="prmVoorAdres" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="prmOver" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="prmBoodschap" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerstuurSomMailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VerstuurSomMailResult" type="tns:BerichtStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerstuurLogMail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="prmOver" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="prmBoodschap" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerstuurLogMailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VerstuurLogMailResult" type="tns:BerichtStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerstuurCustomLogMail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="prmSoortMelding" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="prmOver" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="prmBoodschap" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerstuurCustomLogMailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VerstuurCustomLogMailResult" type="tns:BerichtStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="VerstuurMailSoapIn">
+    <wsdl:part name="parameters" element="tns:VerstuurMail" />
+  </wsdl:message>
+  <wsdl:message name="VerstuurMailSoapOut">
+    <wsdl:part name="parameters" element="tns:VerstuurMailResponse" />
+  </wsdl:message>
+  <wsdl:message name="VerstuurSomMailSoapIn">
+    <wsdl:part name="parameters" element="tns:VerstuurSomMail" />
+  </wsdl:message>
+  <wsdl:message name="VerstuurSomMailSoapOut">
+    <wsdl:part name="parameters" element="tns:VerstuurSomMailResponse" />
+  </wsdl:message>
+  <wsdl:message name="VerstuurLogMailSoapIn">
+    <wsdl:part name="parameters" element="tns:VerstuurLogMail" />
+  </wsdl:message>
+  <wsdl:message name="VerstuurLogMailSoapOut">
+    <wsdl:part name="parameters" element="tns:VerstuurLogMailResponse" />
+  </wsdl:message>
+  <wsdl:message name="VerstuurCustomLogMailSoapIn">
+    <wsdl:part name="parameters" element="tns:VerstuurCustomLogMail" />
+  </wsdl:message>
+  <wsdl:message name="VerstuurCustomLogMailSoapOut">
+    <wsdl:part name="parameters" element="tns:VerstuurCustomLogMailResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MailServiceSoap">
+    <wsdl:operation name="VerstuurMail">
+      <wsdl:input message="tns:VerstuurMailSoapIn" />
+      <wsdl:output message="tns:VerstuurMailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VerstuurSomMail">
+      <wsdl:input message="tns:VerstuurSomMailSoapIn" />
+      <wsdl:output message="tns:VerstuurSomMailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VerstuurLogMail">
+      <wsdl:input message="tns:VerstuurLogMailSoapIn" />
+      <wsdl:output message="tns:VerstuurLogMailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VerstuurCustomLogMail">
+      <wsdl:input message="tns:VerstuurCustomLogMailSoapIn" />
+      <wsdl:output message="tns:VerstuurCustomLogMailSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MailServiceSoap" type="tns:MailServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="VerstuurMail">
+      <soap:operation soapAction="http://intranet/MailService/VerstuurMail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerstuurSomMail">
+      <soap:operation soapAction="http://intranet/MailService/VerstuurSomMail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerstuurLogMail">
+      <soap:operation soapAction="http://intranet/MailService/VerstuurLogMail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerstuurCustomLogMail">
+      <soap:operation soapAction="http://intranet/MailService/VerstuurCustomLogMail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MailServiceSoap12" type="tns:MailServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="VerstuurMail">
+      <soap12:operation soapAction="http://intranet/MailService/VerstuurMail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerstuurSomMail">
+      <soap12:operation soapAction="http://intranet/MailService/VerstuurSomMail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerstuurLogMail">
+      <soap12:operation soapAction="http://intranet/MailService/VerstuurLogMail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerstuurCustomLogMail">
+      <soap12:operation soapAction="http://intranet/MailService/VerstuurCustomLogMail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MailService">
+    <wsdl:port name="MailServiceSoap" binding="tns:MailServiceSoap">
+      <soap:address location="http://intranet/MailService/MailService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MailServiceSoap12" binding="tns:MailServiceSoap12">
+      <soap12:address location="http://intranet/MailService/MailService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
