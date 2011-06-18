@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
 
@@ -18,280 +19,300 @@ using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
-    /// <summary>
-    /// Controller voor weergave en beheer van bivakken en uitstappen
-    /// </summary>
-    public class UitstappenController : BaseController
-    {
-        public UitstappenController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt)
-            : base(serviceHelper, veelGebruikt)
-        {
-        }
+	/// <summary>
+	/// Controller voor weergave en beheer van bivakken en uitstappen
+	/// </summary>
+	public class UitstappenController : BaseController
+	{
+		public UitstappenController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt)
+			: base(serviceHelper, veelGebruikt)
+		{
+		}
 
-        /// <summary>
-        /// Overzicht val alle uitstappen (ever) van een groep
-        /// </summary>
-        /// <param name="groepID">ID van de groep</param>
-        /// <returns>View met uistapoverzicht</returns>
-        public override ActionResult Index(int groepID)
-        {
-            var model = new UitstapOverzichtModel();
-            BaseModelInit(model, groepID);
-            model.Titel = Properties.Resources.Uitstappen;
-            model.Uitstappen =
-                ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID, false));
-            return View(model);
-        }
+		/// <summary>
+		/// Overzicht val alle uitstappen (ever) van een groep
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns>View met uistapoverzicht</returns>
+		public override ActionResult Index(int groepID)
+		{
+			var model = new UitstapOverzichtModel();
+			BaseModelInit(model, groepID);
+			model.Titel = Properties.Resources.Uitstappen;
+			model.Uitstappen =
+				ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID, false));
+			return View(model);
+		}
 
-        /// <summary>
-        /// Formulier om nieuwe uitstap te registreren
-        /// </summary>
-        /// <param name="groepID">ID van groep waarvoor uitstap moet worden geregistreerd</param>
-        /// <returns>Het formulier</returns>
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult Nieuw(int groepID)
-        {
-            var model = new UitstapModel();
-            BaseModelInit(model, groepID);
-            model.Titel = Properties.Resources.NieuweUitstap;
-            model.Uitstap = new UitstapDetail();
+		/// <summary>
+		/// Formulier om nieuwe uitstap te registreren
+		/// </summary>
+		/// <param name="groepID">ID van groep waarvoor uitstap moet worden geregistreerd</param>
+		/// <returns>Het formulier</returns>
+		[AcceptVerbs(HttpVerbs.Get)]
+		public ActionResult Nieuw(int groepID)
+		{
+			var model = new UitstapModel();
+			BaseModelInit(model, groepID);
+			model.Titel = Properties.Resources.NieuweUitstap;
+			model.Uitstap = new UitstapDetail();
 
-            return View("Bewerken", model);
-        }
+			return View("Bewerken", model);
+		}
 
-        /// <summary>
-        /// Verwerkt de gegevens uit het nieuwe-uitstapformulier
-        /// </summary>
-        /// <param name="model">Ingevlude gegevens</param>
-        /// <param name="groepID">Groep waarvoor uitstap moet worden bewaard</param>
-        /// <returns>Als alles gelukt is, de details van de toegevoegde uitstap.  Anders 
-        /// opnieuw het formulier met feedback over de problemen.</returns>
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Nieuw(UitstapModel model, int groepID)
-        {
-            BaseModelInit(model, groepID);
-            model.Titel = Properties.Resources.NieuweUitstap;
+		/// <summary>
+		/// Verwerkt de gegevens uit het nieuwe-uitstapformulier
+		/// </summary>
+		/// <param name="model">Ingevlude gegevens</param>
+		/// <param name="groepID">Groep waarvoor uitstap moet worden bewaard</param>
+		/// <returns>Als alles gelukt is, de details van de toegevoegde uitstap.  Anders 
+		/// opnieuw het formulier met feedback over de problemen.</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult Nieuw(UitstapModel model, int groepID)
+		{
+			BaseModelInit(model, groepID);
+			model.Titel = Properties.Resources.NieuweUitstap;
 
-            if (ModelState.IsValid)
-            {
-                int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
-                return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
-            }
-            else
-            {
-                return View("Bewerken", model);
-            }
-        }
+			if (ModelState.IsValid)
+			{
+				int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
+				return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
+			}
+			else
+			{
+				return View("Bewerken", model);
+			}
+		}
 
-        /// <summary>
-        /// Toont de details van een gegeven uitstap
-        /// </summary>
-        /// <param name="groepID">ID van de groep die momenteel geselecteerd is</param>
-        /// <param name="id">ID van de uitstap waarin we geïnteresseerd zijn</param>
-        /// <returns>De details van de gegeven uitstap</returns>
-        public ActionResult Bekijken(int groepID, int id)
-        {
-            var model = new UitstapDeelnemersModel();
-            BaseModelInit(model, groepID);
-            model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
-            model.Deelnemers =
-                ServiceHelper.CallService<IUitstappenService, IEnumerable<DeelnemerDetail>>(
-                    svc => svc.DeelnemersOphalen(id));
-            model.Titel = model.Uitstap.Naam;
+		/// <summary>
+		/// Toont de details van een gegeven uitstap
+		/// </summary>
+		/// <param name="groepID">ID van de groep die momenteel geselecteerd is</param>
+		/// <param name="id">ID van de uitstap waarin we geïnteresseerd zijn</param>
+		/// <returns>De details van de gegeven uitstap</returns>
+		public ActionResult Bekijken(int groepID, int id)
+		{
+			var model = new UitstapDeelnemersModel();
+			BaseModelInit(model, groepID);
+			model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
+			model.Deelnemers =
+				ServiceHelper.CallService<IUitstappenService, IEnumerable<DeelnemerDetail>>(
+					svc => svc.DeelnemersOphalen(id));
+			model.Titel = model.Uitstap.Naam;
 
-            return View(model);
-        }
+			if (model.Uitstap.IsBivak)
+			{
+				// Voor een bivak moet er een adres ingevuld zijn, anders is de bivakaangifte nog niet in orde.
+				if (model.Uitstap.Adres == null)
+				{
+					TempData["fout"] = Properties.Resources.GeenAdresVoorBivak;
+				}
 
-        /// <summary>
-        /// Formulier om bestaande uitstap mee te bewerken
-        /// </summary>
-        /// <param name="groepID">ID van de groep</param>
-        /// <param name="id">ID van de te bewerken uitstap</param>
-        /// <returns>Een formuliertje waarmee je datum en opmerkingen van een uitstap kunt aanpassen</returns>
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult Bewerken(int groepID, int id)
-        {
-            var model = new UitstapModel();
-            BaseModelInit(model, groepID);
-            model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
-            model.Titel = model.Uitstap.Naam;
+				// Voor een bivak moet er ook een contactpersoon aangeduid zijn
+				var heeftContact = (from dln in model.Deelnemers
+									where dln.IsContact
+									select dln).Count();
 
-            return View(model);
-        }
+				if (heeftContact < 1)
+				{
+					TempData["fout"] += Properties.Resources.GeenContactVoorBivak;
+				}
+			}
 
-        /// <summary>
-        /// Stuurt de gegevens uit het 'uitstapbewerkenformulier' door naar de backend.
-        /// </summary>
-        /// <param name="model">Ingevulde gegevens</param>
-        /// <param name="groepID">Groep waarvoor uitstap moet worden bewerkt</param>
-        /// <param name="id">ID van de te bewerken uitstap</param>
-        /// <returns>Als alles gelukt is, de details van de toegevoegde uitstap.  Anders 
-        /// opnieuw het formulier met feedback over de problemen.</returns>
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Bewerken(UitstapModel model, int groepID, int id)
-        {
-            BaseModelInit(model, groepID);
-            // neem uitstapID over uit url, want ik denk dat daarvoor geen field is voorzien.
-            model.Uitstap.ID = id;
-            model.Titel = model.Uitstap.Naam;
+			return View(model);
+		}
 
-            if (ModelState.IsValid)
-            {
-                int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
-                return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
-            }
-            else
-            {
-                return View("Bewerken", model);
-            }
-        }
+		/// <summary>
+		/// Formulier om bestaande uitstap mee te bewerken
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <param name="id">ID van de te bewerken uitstap</param>
+		/// <returns>Een formuliertje waarmee je datum en opmerkingen van een uitstap kunt aanpassen</returns>
+		[AcceptVerbs(HttpVerbs.Get)]
+		public ActionResult Bewerken(int groepID, int id)
+		{
+			var model = new UitstapModel();
+			BaseModelInit(model, groepID);
+			model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
+			model.Titel = model.Uitstap.Naam;
 
-        /// <summary>
-        /// Laat de user de bivakplaats voor een uitstap bewerken.
-        /// </summary>
-        /// <param name="groepID">ID van de groep waarmee we werken</param>
-        /// <param name="id">ID van het bivak waarvoor de plaats moet worden ingegeven.</param>
-        /// <returns>Het formulier voor het ingeven van een bivakplaats</returns>
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult PlaatsBewerken(int groepID, int id)
-        {
-            var model = new UitstapPlaatsBewerkenModel();
-            BaseModelInit(model, groepID);
-            model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
+			return View(model);
+		}
 
-            if (model.Uitstap.Adres == null)
-            {
-                model.Uitstap.Adres = new AdresInfo { LandNaam = Properties.Resources.Belgie };
-            }
+		/// <summary>
+		/// Stuurt de gegevens uit het 'uitstapbewerkenformulier' door naar de backend.
+		/// </summary>
+		/// <param name="model">Ingevulde gegevens</param>
+		/// <param name="groepID">Groep waarvoor uitstap moet worden bewerkt</param>
+		/// <param name="id">ID van de te bewerken uitstap</param>
+		/// <returns>Als alles gelukt is, de details van de toegevoegde uitstap.  Anders 
+		/// opnieuw het formulier met feedback over de problemen.</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult Bewerken(UitstapModel model, int groepID, int id)
+		{
+			BaseModelInit(model, groepID);
+			// neem uitstapID over uit url, want ik denk dat daarvoor geen field is voorzien.
+			model.Uitstap.ID = id;
+			model.Titel = model.Uitstap.Naam;
 
-            // Als het adres buitenlands is, dan moeten we de woonplaats nog eens overnemen in
-            // WoonPlaatsBuitenland.  Dat is nodig voor de AdresBewerkenControl, die een beetje
-            // raar ineen zit.
-            if (String.Compare(model.Uitstap.Adres.LandNaam, Properties.Resources.Belgie, true) != 0)
-            {
-                model.WoonPlaatsBuitenLand = model.Uitstap.Adres.WoonPlaatsNaam;
-            }
+			if (ModelState.IsValid)
+			{
+				int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
+				return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
+			}
+			else
+			{
+				return View("Bewerken", model);
+			}
+		}
 
-            model.Titel = model.Uitstap.Naam;
-            model.AlleLanden = VeelGebruikt.LandenOphalen();
-            model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.Uitstap.Adres.PostNr);
+		/// <summary>
+		/// Laat de user de bivakplaats voor een uitstap bewerken.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarmee we werken</param>
+		/// <param name="id">ID van het bivak waarvoor de plaats moet worden ingegeven.</param>
+		/// <returns>Het formulier voor het ingeven van een bivakplaats</returns>
+		[AcceptVerbs(HttpVerbs.Get)]
+		public ActionResult PlaatsBewerken(int groepID, int id)
+		{
+			var model = new UitstapPlaatsBewerkenModel();
+			BaseModelInit(model, groepID);
+			model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
 
-            return View(model);
-        }
+			if (model.Uitstap.Adres == null)
+			{
+				model.Uitstap.Adres = new AdresInfo { LandNaam = Properties.Resources.Belgie };
+			}
 
-        /// <summary>
-        /// Als <paramref name="model"/> geen fouten bevat, stuurt deze controller action de geüpdatete plaats
-        /// naar de backend om te persisteren.
-        /// </summary>
-        /// <param name="groepID">Huidige groep</param>
-        /// <param name="model">Bevat de nieuwe plaats voor de uitstap</param>
-        /// <param name="id">ID van de uitstap waarvoor de plaats moet aangepast worden</param>
-        /// <returns>Als alles goed liep, wordt geredirect naar de details van de uitstap.  Anders
-        /// opnieuw de view voor het aanpassen van de uitstap, met de nodige feedback</returns>
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult PlaatsBewerken(int groepID, int id, UitstapPlaatsBewerkenModel model)
-        {
-            // Als het adres buitenlands is, neem dan de woonplaats over uit het
-            // vrij in te vullen veld.
+			// Als het adres buitenlands is, dan moeten we de woonplaats nog eens overnemen in
+			// WoonPlaatsBuitenland.  Dat is nodig voor de AdresBewerkenControl, die een beetje
+			// raar ineen zit.
+			if (String.Compare(model.Uitstap.Adres.LandNaam, Properties.Resources.Belgie, true) != 0)
+			{
+				model.WoonPlaatsBuitenLand = model.Uitstap.Adres.WoonPlaatsNaam;
+			}
 
-            if (String.Compare(model.Land, Properties.Resources.Belgie, true) != 0)
-            {
-                model.WoonPlaats = model.WoonPlaatsBuitenLand;
-            }
+			model.Titel = model.Uitstap.Naam;
+			model.AlleLanden = VeelGebruikt.LandenOphalen();
+			model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.Uitstap.Adres.PostNr);
 
-            try
-            {
-                // De service zal model.NieuwAdres.ID negeren; dit wordt
-                // steeds opnieuw opgezocht.  Adressen worden nooit
-                // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
+			return View(model);
+		}
 
-                ServiceHelper.CallService<IUitstappenService>(l => l.PlaatsBewaren(id, model.Uitstap.PlaatsNaam, model.Uitstap.Adres));
-                // TODO (#950): problemen ontbrekende plaats resetten.
-                // (maar die worden nog niet getoond)
+		/// <summary>
+		/// Als <paramref name="model"/> geen fouten bevat, stuurt deze controller action de geüpdatete plaats
+		/// naar de backend om te persisteren.
+		/// </summary>
+		/// <param name="groepID">Huidige groep</param>
+		/// <param name="model">Bevat de nieuwe plaats voor de uitstap</param>
+		/// <param name="id">ID van de uitstap waarvoor de plaats moet aangepast worden</param>
+		/// <returns>Als alles goed liep, wordt geredirect naar de details van de uitstap.  Anders
+		/// opnieuw de view voor het aanpassen van de uitstap, met de nodige feedback</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult PlaatsBewerken(int groepID, int id, UitstapPlaatsBewerkenModel model)
+		{
+			// Als het adres buitenlands is, neem dan de woonplaats over uit het
+			// vrij in te vullen veld.
 
-                return RedirectToAction("Bekijken", new { groepID, id });
-            }
-            catch (FaultException<OngeldigObjectFault> ex)
-            {
-                BaseModelInit(model, groepID);
+			if (String.Compare(model.Land, Properties.Resources.Belgie, true) != 0)
+			{
+				model.WoonPlaats = model.WoonPlaatsBuitenLand;
+			}
 
-                new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, String.Empty);
+			try
+			{
+				// De service zal model.NieuwAdres.ID negeren; dit wordt
+				// steeds opnieuw opgezocht.  Adressen worden nooit
+				// gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
-                model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
-                model.AlleLanden = VeelGebruikt.LandenOphalen();
-                model.Titel = model.Uitstap.Naam;
+				ServiceHelper.CallService<IUitstappenService>(l => l.PlaatsBewaren(id, model.Uitstap.PlaatsNaam, model.Uitstap.Adres));
+				// TODO (#950): problemen ontbrekende plaats resetten.
+				// (maar die worden nog niet getoond)
 
-                return View(model);
-            }
-        }
+				return RedirectToAction("Bekijken", new { groepID, id });
+			}
+			catch (FaultException<OngeldigObjectFault> ex)
+			{
+				BaseModelInit(model, groepID);
 
-        /// <summary>
-        /// Stelt de deelnemer met ID <paramref name="id"/> in als contact voor de uitstap waaraan
-        /// hij deelneemt.
-        /// </summary>
-        /// <param name="groepID">ID van groep die momenteel actief is</param>
-        /// <param name="id"></param>
-        /// <returns>Redirect naar overzicht uitstap</returns>
-        public ActionResult ContactInstellen(int groepID, int id)
-        {
-            int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.ContactInstellen(id));
-            return RedirectToAction("Bekijken", new { id = uitstapID });
-        }
+				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, String.Empty);
 
-        /// <summary>
-        /// Verwijdert de deelnemer met gegeven <paramref name="id"/> van zijn uitstap.
-        /// </summary>
-        /// <param name="groepID">Groep waarin we werken</param>
-        /// <param name="id">DeelnemerID uit te schrijven deelnemer</param>
-        /// <returns>Redirect naar overzicht uitstap</returns>
-        public ActionResult Uitschrijven(int groepID, int id)
-        {
-            int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Uitschrijven(id));
-            return RedirectToAction("Bekijken", new { id = uitstapID });
-        }
+				model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
+				model.AlleLanden = VeelGebruikt.LandenOphalen();
+				model.Titel = model.Uitstap.Naam;
 
-        /// <summary>
-        /// Toont een formulier waarmee de user de informatie over een deelnemer kan aanpassen
-        /// </summary>
-        /// <param name="groepID">huidige groep</param>
-        /// <param name="id">DeelnemerID van de te bewerken deelnemer</param>
-        /// <returns>De 'pas eens een deelnemer aan'-view.</returns>
-        public ActionResult DeelnemerBewerken(int groepID, int id)
-        {
-            var model = new DeelnemerBewerkenModel();
+				return View(model);
+			}
+		}
 
-            // We zouden hier waarschijnlijk beter wat meer details opvragen, maar omdat dat nog niet geimplementeerd is
-            // in de backend, houden we het bij de beperkte gegevens.
+		/// <summary>
+		/// Stelt de deelnemer met ID <paramref name="id"/> in als contact voor de uitstap waaraan
+		/// hij deelneemt.
+		/// </summary>
+		/// <param name="groepID">ID van groep die momenteel actief is</param>
+		/// <param name="id"></param>
+		/// <returns>Redirect naar overzicht uitstap</returns>
+		public ActionResult ContactInstellen(int groepID, int id)
+		{
+			int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.ContactInstellen(id));
+			return RedirectToAction("Bekijken", new { id = uitstapID });
+		}
 
-            model.Deelnemer =
-                ServiceHelper.CallService<IUitstappenService, DeelnemerDetail>(svc => svc.DeelnemerOphalen(id));
-            BaseModelInit(model, groepID, String.Format(Properties.Resources.DeelnemerBewerken, model.Deelnemer.VoorNaam, model.Deelnemer.FamilieNaam));
+		/// <summary>
+		/// Verwijdert de deelnemer met gegeven <paramref name="id"/> van zijn uitstap.
+		/// </summary>
+		/// <param name="groepID">Groep waarin we werken</param>
+		/// <param name="id">DeelnemerID uit te schrijven deelnemer</param>
+		/// <returns>Redirect naar overzicht uitstap</returns>
+		public ActionResult Uitschrijven(int groepID, int id)
+		{
+			int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Uitschrijven(id));
+			TempData["succes"] = Properties.Resources.DeelnemerUitgeschreven;
+			return RedirectToAction("Bekijken", new { id = uitstapID });
+		}
 
-            return View(model);
-        }
+		/// <summary>
+		/// Toont een formulier waarmee de user de informatie over een deelnemer kan aanpassen
+		/// </summary>
+		/// <param name="groepID">huidige groep</param>
+		/// <param name="id">DeelnemerID van de te bewerken deelnemer</param>
+		/// <returns>De 'pas eens een deelnemer aan'-view.</returns>
+		public ActionResult DeelnemerBewerken(int groepID, int id)
+		{
+			var model = new DeelnemerBewerkenModel();
 
-        /// <summary>
-        /// Stuurt de geupdatete deelnemersgegevens terug naar de service.
-        /// </summary>
-        /// <param name="groepID">ID van de actieve groep</param>
-        /// <param name="id">ID van de deelnemer</param>
-        /// <param name="model">Gegevens ingevuld in het form</param>
-        /// <returns></returns>
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult DeelnemerBewerken(int groepID, int id, DeelnemerBewerkenModel model)
-        {
-            var info = new DeelnemerInfo
-                           {
-                               DeelnemerID = id,
-                               HeeftBetaald = model.Deelnemer.HeeftBetaald,
-                               IsLogistieker = model.Deelnemer.IsLogistieker,
-                               MedischeFicheOk = model.Deelnemer.MedischeFicheOk,
-                               Opmerkingen = model.Deelnemer.Opmerkingen
-                           };
+			// We zouden hier waarschijnlijk beter wat meer details opvragen, maar omdat dat nog niet geimplementeerd is
+			// in de backend, houden we het bij de beperkte gegevens.
 
-            ServiceHelper.CallService<IUitstappenService>(svc => svc.DeelnemerBewaren(info));
+			model.Deelnemer =
+				ServiceHelper.CallService<IUitstappenService, DeelnemerDetail>(svc => svc.DeelnemerOphalen(id));
+			BaseModelInit(model, groepID, String.Format(Properties.Resources.DeelnemerBewerken, model.Deelnemer.VoorNaam, model.Deelnemer.FamilieNaam));
 
-            return RedirectToAction("Bekijken", new { groepID, id = model.Deelnemer.UitstapID });
-        }
-    }
+			return View(model);
+		}
+
+		/// <summary>
+		/// Stuurt de geupdatete deelnemersgegevens terug naar de service.
+		/// </summary>
+		/// <param name="groepID">ID van de actieve groep</param>
+		/// <param name="id">ID van de deelnemer</param>
+		/// <param name="model">Gegevens ingevuld in het form</param>
+		/// <returns></returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult DeelnemerBewerken(int groepID, int id, DeelnemerBewerkenModel model)
+		{
+			var info = new DeelnemerInfo
+						   {
+							   DeelnemerID = id,
+							   HeeftBetaald = model.Deelnemer.HeeftBetaald,
+							   IsLogistieker = model.Deelnemer.IsLogistieker,
+							   MedischeFicheOk = model.Deelnemer.MedischeFicheOk,
+							   Opmerkingen = model.Deelnemer.Opmerkingen
+						   };
+
+			ServiceHelper.CallService<IUitstappenService>(svc => svc.DeelnemerBewaren(info));
+
+			return RedirectToAction("Bekijken", new { groepID, id = model.Deelnemer.UitstapID });
+		}
+	}
 }

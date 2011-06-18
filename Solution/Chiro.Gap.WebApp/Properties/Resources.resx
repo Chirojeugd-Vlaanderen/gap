@@ -323,4 +323,13 @@
   <data name="DeelnemerBewerken" xml:space="preserve">
     <value>Deelnemersinformatie {0} {1}</value>
   </data>
+  <data name="DeelnemerUitgeschreven" xml:space="preserve">
+    <value>De geselecteerde deelnemer werd uitgeschreven</value>
+  </data>
+  <data name="GeenAdresVoorBivak" xml:space="preserve">
+    <value>Je hebt nog geen adres ingevuld voor je bivakplaats. </value>
+  </data>
+  <data name="GeenContactVoorBivak" xml:space="preserve">
+    <value>Je hebt nog geen contactpersoon aangeduid. </value>
+  </data>
 </root>

@@ -62,6 +62,7 @@
 	%>
 	<h3>
 		Deelnemerslijst</h3>
+		<p>Deze lijst is eerst gesorteerd op type deelnemer (logistiek, leiding, lid), dan op afdeling, en dan op familienaam.</p>
 	<table>
 		<tr>
 			<th />
@@ -95,7 +96,7 @@
 				<%=Html.AfdelingsLinks(d.Afdelingen, Model.Uitstap.GroepsWerkJaarID, Model.GroepID) %>
 			</td>
 			<td>
-				<%:Html.ActionLink(String.Concat(d.VoorNaam, " ", d.FamilieNaam), "DeelnemerBewerken", new { id = d.DeelnemerID }, new { title = "Bivakinschrijving bewerken" })%>
+				<%:Html.ActionLink(String.Concat(d.FamilieNaam, " ", d.VoorNaam), "DeelnemerBewerken", new { id = d.DeelnemerID }, new { title = "Bivakinschrijving bewerken" })%>
 			</td>
 			<td>
 				<%=d.MedischeFicheOk ? "ja": "nee" %>

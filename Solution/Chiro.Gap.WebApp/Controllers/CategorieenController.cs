@@ -80,8 +80,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.VolledigeLijstUrl = Url.Action("List", "Personen", new RouteValueDictionary(new { id, groepID }));
 				model.TotaalAantal = ex.Detail.Aantal;
 
-				// Vis categorienaam op uit de gekoppelde categorieen van de personen
-				// niet elegant, maar werkt wel.
+				// Vis categorienaam op uit de gekoppelde categorieen van de personen.
+				// Niet elegant, maar werkt wel.
 
 				string categorieNaam = (from cat in model.Personen.First().CategorieLijst
 										where cat.ID == id
