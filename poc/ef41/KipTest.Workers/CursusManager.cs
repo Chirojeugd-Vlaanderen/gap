@@ -24,8 +24,13 @@ namespace KipTest.Workers
 
 		public Cursus Ophalen(int cursusID)
 		{
-		    return _entities.Ophalen<Cursus>(cursusID);
+		    return Ophalen(cursusID, false);
 		}
+
+        public Cursus Ophalen(int cursusID, bool metDeelnemers)
+        {
+            return metDeelnemers ? _entities.Ophalen<Cursus>(cursusID, cs=>cs.Deelnemers) : _entities.Ophalen<Cursus>(cursusID);
+        }
 
 		public Cursus Maken(string naam, DateTime startDatum, DateTime stopDatum)
 		{
@@ -50,6 +55,14 @@ namespace KipTest.Workers
 	        return (from dln in _entities.Alles<Deelnemer>()
 	                where dln.CursusID == cursusId
 	                select dln.Naam).ToArray();
+	    }
+
+	    public void DeelnemersVerwijderen(Deelnemer[] pineuten)
+	    {
+            foreach (var p in pineuten)
+            {
+                _entities.Verwijderen(p);
+            }
 	    }
 	}
 }

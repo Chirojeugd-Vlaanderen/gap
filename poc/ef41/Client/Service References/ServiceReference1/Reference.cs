@@ -26,6 +26,9 @@ namespace Client.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICursusService/Hallo", ReplyAction="http://tempuri.org/ICursusService/HalloResponse")]
         string Hallo();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICursusService/DeelnemerVerwijderen", ReplyAction="http://tempuri.org/ICursusService/DeelnemerVerwijderenResponse")]
+        void DeelnemerVerwijderen(int cursusID, string naam);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -69,6 +72,10 @@ namespace Client.ServiceReference1 {
         
         public string Hallo() {
             return base.Channel.Hallo();
+        }
+        
+        public void DeelnemerVerwijderen(int cursusID, string naam) {
+            base.Channel.DeelnemerVerwijderen(cursusID, naam);
         }
     }
 }

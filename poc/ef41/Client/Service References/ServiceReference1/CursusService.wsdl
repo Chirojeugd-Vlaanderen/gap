@@ -31,6 +31,12 @@
   <wsdl:message name="ICursusService_Hallo_OutputMessage">
     <wsdl:part name="parameters" element="tns:HalloResponse" />
   </wsdl:message>
+  <wsdl:message name="ICursusService_DeelnemerVerwijderen_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeelnemerVerwijderen" />
+  </wsdl:message>
+  <wsdl:message name="ICursusService_DeelnemerVerwijderen_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeelnemerVerwijderenResponse" />
+  </wsdl:message>
   <wsdl:portType name="ICursusService">
     <wsdl:operation name="CursusMaken">
       <wsdl:input wsaw:Action="http://tempuri.org/ICursusService/CursusMaken" message="tns:ICursusService_CursusMaken_InputMessage" />
@@ -47,6 +53,10 @@
     <wsdl:operation name="Hallo">
       <wsdl:input wsaw:Action="http://tempuri.org/ICursusService/Hallo" message="tns:ICursusService_Hallo_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICursusService/HalloResponse" message="tns:ICursusService_Hallo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeelnemerVerwijderen">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICursusService/DeelnemerVerwijderen" message="tns:ICursusService_DeelnemerVerwijderen_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICursusService/DeelnemerVerwijderenResponse" message="tns:ICursusService_DeelnemerVerwijderen_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ICursusService" type="tns:ICursusService">
@@ -80,6 +90,15 @@
     </wsdl:operation>
     <wsdl:operation name="Hallo">
       <soap:operation soapAction="http://tempuri.org/ICursusService/Hallo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeelnemerVerwijderen">
+      <soap:operation soapAction="http://tempuri.org/ICursusService/DeelnemerVerwijderen" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -2,6 +2,8 @@
 
 namespace Client
 {
+    // Dit is het project dat je moet starten!
+
     class Program
     {
         static void Main(string[] args)
@@ -20,12 +22,21 @@ namespace Client
                 client.DeelnemerInschrijven(cursusID, "Charel");
                 client.DeelnemerInschrijven(cursusID, "Rita");
 
-                Console.Write("Deelnemers toegevoegd.  Ophalen...\n");
+                Console.WriteLine("Deelnemers toegevoegd.  Ophalen...");
 
                 foreach (var dnl in client.DeelnemersOphalen(cursusID))
                 {
                     Console.WriteLine(dnl);
                 }
+
+                client.DeelnemerVerwijderen(cursusID, "Charel");
+                Console.WriteLine("Charel verwijderd.  Opnieuw ophalen");
+
+                foreach (var dnl in client.DeelnemersOphalen(cursusID))
+                {
+                    Console.WriteLine(dnl);
+                }
+
                 Console.ReadLine();
             }
         }

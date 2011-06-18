@@ -19,5 +19,8 @@ namespace KipTest.ServiceContracts
 
         [OperationContract]
         string Hallo();
+
+        [OperationContract]
+        void DeelnemerVerwijderen(int cursusID, string naam);
     }
 }
