@@ -311,7 +311,7 @@
     <Compile Include="Controllers\HandleidingController.cs" />
     <Compile Include="Controllers\JaarOvergangController.cs" />
     <Compile Include="ExcelManip.cs" />
-    <Compile Include="ExcelManip.WoorkbookStyles.cs" />
+    <Compile Include="ExcelManip.WorkbookStyles.cs" />
     <Compile Include="ExcelResult.cs" />
     <Compile Include="HtmlHelpers\AdresHelper.cs" />
     <Compile Include="HtmlHelpers\DropDownListHelper.cs" />

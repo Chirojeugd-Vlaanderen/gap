@@ -81,7 +81,7 @@ namespace Chiro.Gap.Sync
 					gelp => gelp.Communicatie.First().CommunicatieType);
 
 				_svc.DubbelpuntBestellenNieuwePersoon(
-					Mapper.Map<GelieerdePersoon, SyncService.PersoonDetails>(gpMetDetails),
+					Mapper.Map<GelieerdePersoon, PersoonDetails>(gpMetDetails),
 					huidigWj.Groep.Code,
 					huidigWj.WerkJaar);
 			}

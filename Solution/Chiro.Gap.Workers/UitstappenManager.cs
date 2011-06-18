@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+// ReSharper disable RedundantUsingDirective
 using System.Transactions;
+// ReSharper restore RedundantUsingDirective
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;

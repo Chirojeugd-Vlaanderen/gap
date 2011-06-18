@@ -54,7 +54,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 		///<summary>
 		///Controleert of groepswerkjaarcache gecleard wordt bij bewaren groepswerkjaar
 		///</summary>
-		[TestMethod()]
+		[TestMethod]
 		public void BewarenTest()
 		{
 			// Arrange

@@ -747,14 +747,14 @@ namespace Chiro.Gap.Services
                 _groepenMgr.FunctieToevoegen(g, naam, code, maxAantal, minAantal, lidType, werkJaarVan);
                 g = _groepenMgr.Bewaren(g, e => e.Functie);
 
-				return (from fun in g.Functie
-					where fun.Code == code
-					select fun.ID).FirstOrDefault();
-			}
-			catch (BestaatAlException<Functie> ex)
-			{
-				var fault = Mapper.Map<BestaatAlException<Functie>,
-						BestaatAlFault<FunctieDetail>>(ex);
+                return (from fun in g.Functie
+                        where fun.Code == code
+                        select fun.ID).FirstOrDefault();
+            }
+            catch (BestaatAlException<Functie> ex)
+            {
+                var fault = Mapper.Map<BestaatAlException<Functie>,
+                        BestaatAlFault<FunctieDetail>>(ex);
 
                 throw new FaultException<BestaatAlFault<FunctieDetail>>(fault);
             }
@@ -1121,6 +1121,7 @@ namespace Chiro.Gap.Services
                     // om een ChiroGroep.  Zonder afdelingen is een object van het type
                     // (abstract) Groep voldoende.
 
+                    // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
                     if (teActiveren.FirstOrDefault() == null)
                     {
                         g = _groepenMgr.Ophalen(groepID, GroepsExtras.GroepsWerkJaren);
@@ -1129,6 +1130,7 @@ namespace Chiro.Gap.Services
                     {
                         g = _chiroGroepenMgr.Ophalen(groepID, ChiroGroepsExtras.AlleAfdelingen | ChiroGroepsExtras.GroepsWerkJaren);
                     }
+                    // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
 
                     // Nieuw groepswerkjaarobject maken
                     var gwj = _groepsWerkJaarManager.VolgendGroepsWerkJaarMaken(g);

@@ -2,7 +2,7 @@
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%	if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
 	{
-		// ReSharper disable ConvertIfStatementToConditionalTernaryExpression
+// ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 		if (Model.Mededelingen.Count() == 1)
 		{
 %>

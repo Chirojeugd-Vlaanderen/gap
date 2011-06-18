@@ -76,7 +76,7 @@ namespace Chiro.Gap.Sync
                     gelp => gelp.Communicatie.First().CommunicatieType);
 
                 _svc.LoonVerliesVerzekerenAdOnbekend(
-                    Mapper.Map<GelieerdePersoon, SyncService.PersoonDetails>(gp),
+                    Mapper.Map<GelieerdePersoon, PersoonDetails>(gp),
                     gwj.Groep.Code,
                     gwj.WerkJaar);
             }

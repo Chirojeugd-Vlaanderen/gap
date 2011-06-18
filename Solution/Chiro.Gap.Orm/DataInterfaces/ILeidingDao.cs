@@ -26,7 +26,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <remarks>
 		/// Er wordt enkel actieve leiding opgehaald
 		/// </remarks>
-		IEnumerable<Leiding> Zoeken(Chiro.Gap.Domain.LidFilter filter, LidExtras extras);
+		IEnumerable<Leiding> Zoeken(Domain.LidFilter filter, LidExtras extras);
 
 		/// <summary>
 		/// Bewaart een leid(st)er, inclusief de extras gegeven in <paramref name="extras"/>

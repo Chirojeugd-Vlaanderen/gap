@@ -50,7 +50,7 @@ namespace Chiro.Gap.Sync
 						       AdresType = (AdresTypeEnum)pa.AdresType
 					       };
 
-				var adres = Mapper.Map<Chiro.Gap.Orm.Adres, Chiro.Gap.Sync.SyncService.Adres>(adr);
+				var adres = Mapper.Map<Orm.Adres, SyncService.Adres>(adr);
 
 				_svc.StandaardAdresBewaren(adres, bewoners.ToList());
 			}

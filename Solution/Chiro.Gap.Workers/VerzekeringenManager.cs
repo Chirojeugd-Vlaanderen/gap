@@ -5,7 +5,9 @@
 
 using System;
 using System.Linq;
+// ReSharper disable RedundantUsingDirective
 using System.Transactions;
+// ReSharper restore RedundantUsingDirective
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;

@@ -42,7 +42,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.Uitstappen =
 				ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID, false));
 
-            // Voor een bivak moet er een adres ingevuld zijn, anders is de bivakaangifte nog niet in orde.
+            // Er moet jaarlijks een bivak geregistreerd zijn 
+            // (of de groep moet kunnen aangeven dat ze niet op bivak gaan, maar dat is een andere kwestie).
             var heeftBivak = (from uitstap in model.Uitstappen
                                   where uitstap.IsBivak
                                   select uitstap).Count() > 0;
