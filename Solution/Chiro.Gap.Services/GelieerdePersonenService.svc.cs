@@ -339,7 +339,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
         /// <returns>GelieerdePersoon met persoonsgegevens</returns>
-        public PersoonDetail DetailsOphalen(int gelieerdePersoonID)
+        public PersoonDetail DetailOphalen(int gelieerdePersoonID)
         {
             try
             {
@@ -351,6 +351,25 @@ namespace Chiro.Gap.Services
                 return null;
             }
         }
+
+		/// <summary>
+		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">List van IDs van op te halen GelieerdePersonen</param>
+		/// <returns>List van GelieerdePersonen met persoonsgegevens, communicatievorm en adressen</returns>
+		public IList<PersoonLidInfo> DetailsOphalen(IList<int> gelieerdePersoonIDs)
+		{
+			try
+			{
+				return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonLidInfo>>(
+					_gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Communicatie | PersoonsExtras.Adressen | PersoonsExtras.VoorkeurAdres));
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
+		}
 
         /// <summary>
         /// Haalt gelieerde persoon op met ALLE nodige info om het persoons-bewerken scherm te vullen:

@@ -336,19 +336,37 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult Download(int id)
 		{
 			var uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(s => s.DetailsOphalen(id));
-			var lijst = ServiceHelper.CallService<IUitstappenService, IEnumerable<DeelnemerDetail>>(s => s.DeelnemersOphalen(id));
+			var lijst = ServiceHelper.CallService<IUitstappenService, IEnumerable<DeelnemerDetail>>(s => s.DeelnemersOphalen(id)).ToList();
+
+			var personenidlijst = lijst.Select(e => e.GelieerdePersoonID);
+			var personenlijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonLidInfo>>(s => s.DetailsOphalen(personenidlijst.ToList()));
+
+			foreach (var persoonLidInfo in personenlijst)
+			{
+				PersoonLidInfo info = persoonLidInfo;
+				lijst.Where(e => e.GelieerdePersoonID == info.PersoonDetail.GelieerdePersoonID).First().PersoonLidInfo =
+					persoonLidInfo;
+			}
 
 			string[] kolomkoppen = 
                     {
-			        "Voornaam", "Familienaam", "Afdelingen", "Functie", "Contactpersoon", "Betaald", "Medische fiche", "Opmerkingen"
+			        "ADnummer", "Voornaam", "Familienaam", "Geboortedatum", "Geslacht", "Telefoon", "Straat", "Huisnummer", "Postcode", "Woonplaats", "Afdelingen", "Functie", "Contactpersoon", "Betaald", "Medische fiche", "Opmerkingen"
 			        };
 
 			var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));
 			var stream = (new ExcelManip()).ExcelTabel(
 				lijst,
 				kolomkoppen,
+				it => it.PersoonLidInfo.PersoonDetail.AdNummer,
 				it => it.VoorNaam,
 				it => it.FamilieNaam,
+				it => it.PersoonLidInfo.PersoonDetail.GeboorteDatum,
+				it => it.PersoonLidInfo.PersoonDetail.Geslacht,
+				it => it.PersoonLidInfo.CommunicatieInfo.Count()>0?it.PersoonLidInfo.CommunicatieInfo.Where(e => e.Voorkeur && e.CommunicatieTypeID == (int)CommunicatieTypeEnum.TelefoonNummer).First().Nummer:"",
+				it => it.PersoonLidInfo.PersoonsAdresInfo.Where(e => e.PersoonsAdresID == it.PersoonLidInfo.PersoonDetail.VoorkeursAdresID).Count() > 0 ? it.PersoonLidInfo.PersoonsAdresInfo.Where(e => e.PersoonsAdresID == it.PersoonLidInfo.PersoonDetail.VoorkeursAdresID).First().StraatNaamNaam : "",
+				it => it.PersoonLidInfo.PersoonsAdresInfo.Where(e => e.PersoonsAdresID == it.PersoonLidInfo.PersoonDetail.VoorkeursAdresID).Count() > 0 ? it.PersoonLidInfo.PersoonsAdresInfo.Where(e => e.PersoonsAdresID == it.PersoonLidInfo.PersoonDetail.VoorkeursAdresID).First().HuisNr : null,
+				it => it.PersoonLidInfo.PersoonsAdresInfo.Where(e => e.PersoonsAdresID == it.PersoonLidInfo.PersoonDetail.VoorkeursAdresID).Count() > 0 ? it.PersoonLidInfo.PersoonsAdresInfo.Where(e => e.PersoonsAdresID == it.PersoonLidInfo.PersoonDetail.VoorkeursAdresID).First().PostNr : 0,
+				it => it.PersoonLidInfo.PersoonsAdresInfo.Where(e => e.PersoonsAdresID == it.PersoonLidInfo.PersoonDetail.VoorkeursAdresID).Count() > 0 ? it.PersoonLidInfo.PersoonsAdresInfo.Where(e => e.PersoonsAdresID == it.PersoonLidInfo.PersoonDetail.VoorkeursAdresID).First().WoonPlaatsNaam : "",
 				it => it.Afdelingen == null ? String.Empty : String.Concat(it.Afdelingen.Select(afd => afd.Afkorting + " ").ToArray()),
 				it => it.Type,
 				it => it.IsContact ? "Ja" : "Nee",

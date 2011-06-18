@@ -183,7 +183,7 @@ namespace Chiro.Gap.Services.Test
 			Assert.IsTrue(catID == 0);
 
 			// Controleer ook of de gelieerde persoon niet per ongeluk mee is verwijderd
-			var gp = _personenSvc.DetailsOphalen(TestInfo.GELIEERDEPERSOONID);
+			var gp = _personenSvc.DetailOphalen(TestInfo.GELIEERDEPERSOONID);
 			Assert.IsTrue(gp != null);
 		}
 	}

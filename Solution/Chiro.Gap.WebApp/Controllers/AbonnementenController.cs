@@ -51,7 +51,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // OPM: als je de gebruiker wilt waarschuwen dat de kandidaat-abonnee eigenlijk te jong is om in aanmerking te komen,
             //		heb je wel de geboortedatum of de leeftijd nodig
 
-            var info = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(svc => svc.DetailsOphalen(id));
+            var info = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(svc => svc.DetailOphalen(id));
 
             model.LidID = 0;	// LidID is hier niet relevant
 

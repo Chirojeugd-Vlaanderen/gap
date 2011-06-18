@@ -81,7 +81,17 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		PersoonDetail DetailsOphalen(int gelieerdePersoonID);
+		PersoonDetail DetailOphalen(int gelieerdePersoonID);
+
+		/// <summary>
+		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">List van IDs van op te halen GelieerdePersonen</param>
+		/// <returns>List van GelieerdePersonen met persoonsgegevens, communicatievorm en adressen</returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		IList<PersoonLidInfo> DetailsOphalen(IList<int> gelieerdePersoonIDs);
 
 		/// <summary>
 		/// Haalt gelieerde persoon op met ALLE nodige info om het persoons-bewerken scherm te vullen:
