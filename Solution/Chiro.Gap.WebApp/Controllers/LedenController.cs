@@ -116,7 +116,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="ledenLijst">Hiermee kan je speciale lijsten opzoeken</param>
         /// <param name="metAdressen">Geeft aan of de adressen mee opgevraagd moeten worden
         /// (!duurt lang!)</param>
-        /// <returns>een LidInfoModel, met in member LidInfoLijst de gevonden leden</returns>
+        /// <returns>Een LidInfoModel, met in member LidInfoLijst de gevonden leden</returns>
         private LidInfoModel Zoeken(
             int gwjID,
             int groepID,

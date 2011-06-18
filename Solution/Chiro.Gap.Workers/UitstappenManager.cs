@@ -303,7 +303,6 @@ namespace Chiro.Gap.Workers
                 gp.Deelnemer.Add(deelnemer);
                 uitstap.Deelnemer.Add(deelnemer);
             }
-
         }
 
         /// <summary>

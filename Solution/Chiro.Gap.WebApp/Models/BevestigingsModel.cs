@@ -1,4 +1,9 @@
-﻿namespace Chiro.Gap.WebApp.Models
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2011
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+namespace Chiro.Gap.WebApp.Models
 {
     /// <summary>
     /// Model dat vraagt om bevestiging ivm een betalende operatie op een persoon

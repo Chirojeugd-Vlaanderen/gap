@@ -223,19 +223,6 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 return View(model);
             }
-            catch (FaultException ex)
-            {
-                BaseModelInit(model, groepID);
-
-                // TODO (#999): tijdelijke dinges, eigenlijk moest er een FaultException<OngeldigObjectFault> gecatcht worden
-                TempData["fout"] = ex.Message;
-
-                model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
-                model.AlleLanden = VeelGebruikt.LandenOphalen();
-                model.Titel = model.Uitstap.Naam;
-
-                return View(model);
-            }
         }
 
         /// <summary>

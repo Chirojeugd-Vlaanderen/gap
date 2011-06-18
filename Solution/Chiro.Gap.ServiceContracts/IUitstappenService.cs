@@ -22,6 +22,7 @@ namespace Chiro.Gap.ServiceContracts
 		///   dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
 		/// <returns>ID van de uitstap</returns>
 		[OperationContract]
+		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		int Bewaren(int groepID, UitstapInfo info);
@@ -58,6 +59,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="plaatsNaam">naam van de plaats</param>
 		/// <param name="adres">adres van de plaats</param>
 		[OperationContract]
+		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		void PlaatsBewaren(int id, string plaatsNaam, AdresInfo adres);

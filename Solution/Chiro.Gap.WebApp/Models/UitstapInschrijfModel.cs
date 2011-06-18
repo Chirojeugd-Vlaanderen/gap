@@ -41,7 +41,7 @@ namespace Chiro.Gap.WebApp.Models
         /// <summary>
         /// Status van vinkje 'Is logistieke deelnemer'
         /// </summary>
-        [DisplayName("Logistiek deelnemer, bijv. kookploeg")]
+        [DisplayName("Logistiek deelnemer, bv. kookploeg")]
         public bool LogistiekDeelnemer { get; set; }
     }
 }
