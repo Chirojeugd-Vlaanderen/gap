@@ -55,6 +55,23 @@ namespace KipTest.Service
             _cursusManager.WijzigingenBewaren();
         }
 
+        // Verhuist deelnemers met gegeven naam naar een andere cursus
+        public void DeelnemerVerhuizen(int cursusVanID, int cursusTotID, string naam)
+        {
+            // In praktijk doe je dit natuurlijk efficienter.  Maar het is een voorbeeld.
+
+            // Haal cursus op met deelnemers
+            var cursus1 = _cursusManager.Ophalen(cursusVanID, true);
+            var cursus2 = _cursusManager.Ophalen(cursusTotID, true);
+
+            var pineuten = (from d in cursus1.Deelnemers
+                            where String.Compare(d.Naam, naam, true) == 0
+                            select d).ToArray();
+
+            _cursusManager.DeelnemersVerhuizen(pineuten, cursus2);
+            _cursusManager.WijzigingenBewaren();
+        }
+
         public string Hallo()
         {
             return "Hello world!";

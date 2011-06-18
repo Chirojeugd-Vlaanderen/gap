@@ -37,6 +37,24 @@ namespace Client
                     Console.WriteLine(dnl);
                 }
 
+                int cursusID2 = client.CursusMaken("Esbee hoezee", DateTime.Today, DateTime.Today);
+
+
+                client.DeelnemerVerhuizen(cursusID, cursusID2, "Jos");
+                Console.WriteLine("Jos verhuisd naar volgende cursus.  Deelnemerslijst 1:");
+                foreach (var dnl in client.DeelnemersOphalen(cursusID))
+                {
+                    Console.WriteLine(dnl);
+                }
+
+                Console.WriteLine("Deelnemerslijst 2:");
+                foreach (var dnl in client.DeelnemersOphalen(cursusID2))
+                {
+                    Console.WriteLine(dnl);
+                }
+
+
+
                 Console.ReadLine();
             }
         }

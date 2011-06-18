@@ -22,5 +22,8 @@ namespace KipTest.ServiceContracts
 
         [OperationContract]
         void DeelnemerVerwijderen(int cursusID, string naam);
+
+        [OperationContract]
+        void DeelnemerVerhuizen(int cursusVanID, int cursusTotID, string naam);
     }
 }

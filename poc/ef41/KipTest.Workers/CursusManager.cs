@@ -64,5 +64,13 @@ namespace KipTest.Workers
                 _entities.Verwijderen(p);
             }
 	    }
+
+	    public void DeelnemersVerhuizen(Deelnemer[] pineuten, Cursus nieuweCursus)
+	    {
+            foreach (var p in pineuten)
+            {
+                p.Cursus = nieuweCursus;
+            }
+        }
 	}
 }

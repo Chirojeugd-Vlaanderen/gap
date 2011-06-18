@@ -71,4 +71,18 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="DeelnemerVerhuizen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="cursusVanID" type="xs:int" />
+        <xs:element minOccurs="0" name="cursusTotID" type="xs:int" />
+        <xs:element minOccurs="0" name="naam" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeelnemerVerhuizenResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
