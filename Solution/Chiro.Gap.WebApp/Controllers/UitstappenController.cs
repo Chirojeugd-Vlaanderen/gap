@@ -41,19 +41,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.Titel = Properties.Resources.Uitstappen;
 			model.Uitstappen =
 				ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID, false));
-
-            // Er moet jaarlijks een bivak geregistreerd zijn 
-            // (of de groep moet kunnen aangeven dat ze niet op bivak gaan, maar dat is een andere kwestie).
-            var heeftBivak = (from uitstap in model.Uitstappen
-                                  where uitstap.IsBivak
-                                  select uitstap).Count() > 0;
-                                  
-            if (!heeftBivak)
-            {
-                TempData["fout"] = Properties.Resources.GeenBivak;
-            }
-            
-            return View(model);
+			return View(model);
 		}
 
 		/// <summary>
@@ -112,6 +100,9 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			if (model.Uitstap.IsBivak)
 			{
+                // TODO: Dit is volgens mij niet helemaal juist.  De feedbackregio wordt normaal gezien enkel
+                // gebruikt voor feedback op de vorige actie.
+
 				// Voor een bivak moet er een adres ingevuld zijn, anders is de bivakaangifte nog niet in orde.
 				if (model.Uitstap.Adres == null)
 				{
@@ -119,12 +110,12 @@ namespace Chiro.Gap.WebApp.Controllers
 				}
 
 				// Voor een bivak moet er ook een contactpersoon aangeduid zijn
-				var heeftContact = (from dln in model.Deelnemers
-									where dln.IsContact
-									select dln).Count() > 0;
+			    bool heeftContact = (from dln in model.Deelnemers
+			                         where dln.IsContact
+			                         select dln).FirstOrDefault() != null;
 
 				if (!heeftContact)
-				{
+				{                    
 					TempData["fout"] += Properties.Resources.GeenContactVoorBivak;
 				}
 			}
