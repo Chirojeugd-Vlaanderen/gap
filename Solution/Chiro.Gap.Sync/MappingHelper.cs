@@ -84,7 +84,7 @@ namespace Chiro.Gap.Sync
                 .ForMember(dst => dst.Type, opt => opt.MapFrom(src => (SyncService.CommunicatieType)src.CommunicatieType.ID))
                 .ForMember(dst => dst.Waarde, opt => opt.MapFrom(src => src.Nummer));
 
-            Mapper.CreateMap<GelieerdePersoon, SyncService.PersoonDetails>()
+            Mapper.CreateMap<GelieerdePersoon, PersoonDetails>()
                 .ForMember(dst => dst.Persoon, opt => opt.MapFrom(src => src.Persoon))
                 .ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres))
                 .ForMember(dst => dst.AdresType,
@@ -93,7 +93,7 @@ namespace Chiro.Gap.Sync
                             src =>
                             src.PersoonsAdres == null
                                 ? AdresTypeEnum.ANDER
-                                : (SyncService.AdresTypeEnum)src.PersoonsAdres.AdresType))
+                                : (AdresTypeEnum)src.PersoonsAdres.AdresType))
                 .ForMember(dst => dst.Communicatie, opt => opt.MapFrom(src => src.Communicatie))
                 .ForMember(dst => dst.ExtensionData, opt => opt.Ignore());
 

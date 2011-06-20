@@ -315,7 +315,7 @@ namespace Chiro.Gap.Workers
         /// De gegeven <paramref name="leden"/> worden toegevoegd naar
         /// de gegeven lijst nieuwe afdelingen.  Eventuele koppelingen met bestaande afdelingen worden
         /// verwijderd.
-        /// 
+        /// <para/>
         /// Een kind mag maar 1 afdeling hebben, voor een leider staan daar geen constraints op.
         /// Persisteert, want ingeval van leiding kan het zijn dat er links lid->afdelingsjaar moeten 
         /// verdwijnen.

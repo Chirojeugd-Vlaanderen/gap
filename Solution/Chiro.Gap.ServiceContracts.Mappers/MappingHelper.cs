@@ -286,7 +286,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             Mapper.CreateMap<Afdeling, AfdelingInfo>()
                 .ForMember(dst => dst.OfficieleAfdelingNaam, opt => opt.Ignore());
-            // TODO: @broes, ik zet de mapping van OfficieleAfdelingNaam voorlopig op Ignore, zodat de
+            // TODO (#1051): @broes, ik zet de mapping van OfficieleAfdelingNaam voorlopig op Ignore, zodat de
             // unit tests opnieuw lopen.  Maar waarschijnlijk is dat niet wat je wil.  Dus dit zal nog
             // aangepast moeten worden.
 
@@ -398,21 +398,21 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.GelieerdePersoonID,
                     opt => opt.MapFrom(src => src.Persoon.GelieerdePersoon.FirstOrDefault() == null ? 0 : src.Persoon.GelieerdePersoon.First().ID));
 
-            // TODO: Uitvissen deelnemer of begeleider op basis van kind/leiding werkt wel min of meer voor groepen,
+            // TODO (#1050): Uitvissen deelnemer of begeleider op basis van kind/leiding werkt wel min of meer voor groepen,
             // maar kan op die manier niet gebruikt worden voor uitstappen van kaderploegen.
 
             Mapper.CreateMap<Deelnemer, DeelnemerDetail>()
                 .ForMember(dst => dst.Afdelingen,
                            opt => opt.MapFrom(src => Afdelingen(src.GelieerdePersoon.Lid.FirstOrDefault())))
                 .ForMember(dst => dst.DeelnemerID, opt => opt.MapFrom(src => src.ID))
-				.ForMember(dst => dst.PersoonLidInfo, opt => opt.Ignore())
+                .ForMember(dst => dst.PersoonLidInfo, opt => opt.Ignore())
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
                 .ForMember(dst => dst.Type,
-                           opt => opt.MapFrom( src => src.IsLogistieker? DeelnemerType.Logistiek : 
-													  src.GelieerdePersoon.Lid.FirstOrDefault() != null && src.GelieerdePersoon.Lid.FirstOrDefault() is Leiding ? DeelnemerType.Begeleiding :
-													  src.GelieerdePersoon.Lid.FirstOrDefault() != null ? DeelnemerType.Deelnemer :
-													  DeelnemerType.Onbekend))
+                           opt => opt.MapFrom(src => src.IsLogistieker ? DeelnemerType.Logistiek :
+                                                      src.GelieerdePersoon.Lid.FirstOrDefault() != null && src.GelieerdePersoon.Lid.FirstOrDefault() is Leiding ? DeelnemerType.Begeleiding :
+                                                      src.GelieerdePersoon.Lid.FirstOrDefault() != null ? DeelnemerType.Deelnemer :
+                                                      DeelnemerType.Onbekend))
                 .ForMember(dst => dst.IsContact,
                            opt => opt.MapFrom(src => src.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() != null));
 
@@ -543,7 +543,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             #endregion
 
             #region Mapping van Exceptions naar Faults
-            // TODO: Kan het mappen van die generics niet efficienter?
+            // TODO (#1052): Kan het mappen van die generics niet efficienter?
 
             Mapper.CreateMap<BestaatAlException<Categorie>,
                         BestaatAlFault<CategorieInfo>>();

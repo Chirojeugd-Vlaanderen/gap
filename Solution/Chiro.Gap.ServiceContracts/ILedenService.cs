@@ -26,7 +26,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="gelieerdePersoonIDs">Lijst van ID's van gelieerde personen die ingeschreven moeten worden</param>
 		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
-		/// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.</param>
+		/// string waarin wat uitleg staat.</param>
 		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
@@ -38,7 +38,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
 		/// <param name="foutBerichten">Als voor sommige personen die actie mislukte, bevat foutBerichten een
-		/// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
+		/// string waarin wat uitleg staat.</param>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
@@ -103,7 +103,7 @@ namespace Chiro.Gap.ServiceContracts
 
 		#region Ophalen
 
-		// TODO: we vragen leden op per groepswerkjaar. Waarom dit verschil met personen? Personen zijn altijd geldig, 
+        // TODO (#1049): we vragen leden op per groepswerkjaar. Waarom dit verschil met personen? Personen zijn altijd geldig, 
 		// maar is dit wel de beste oplossing? Want alle leden zijn personen, maar wat dan als ze weggaan en dan terugkomen? 
 		// Moeten ze dan expliciet gedeletet worden?...?
 

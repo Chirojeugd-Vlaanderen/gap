@@ -72,7 +72,6 @@ namespace Chiro.Cdf.ServiceModel
                     MessageQueue.Create(queue, true);
                 }
             }
-
         }
 
         private static string GetQueueFromUri(Uri uri)

@@ -67,14 +67,14 @@ namespace Chiro.Gap.Workers
             }
             if (uitstap.GroepsWerkJaar != null && uitstap.GroepsWerkJaar != gwj)
             {
-                throw new BlokkerendeObjectenException<GroepsWerkJaar>(uitstap.GroepsWerkJaar,Resources.UitstapAlGekoppeld);
+                throw new BlokkerendeObjectenException<GroepsWerkJaar>(uitstap.GroepsWerkJaar, Resources.UitstapAlGekoppeld);
             }
             if (!_groepsWerkJaarDao.IsRecentste(gwj.ID))
             {
                 throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietBeschikbaar, Resources.GroepsWerkJaarVoorbij);
             }
-            
-			uitstap.GroepsWerkJaar = gwj;
+
+            uitstap.GroepsWerkJaar = gwj;
             gwj.Uitstap.Add(uitstap);
             return uitstap;
         }
@@ -94,7 +94,7 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
-            
+
             if ((extras & UitstapExtras.Groep) == UitstapExtras.Groep)
             {
                 paths.Add(u => u.GroepsWerkJaar.Groep);
@@ -170,28 +170,28 @@ namespace Chiro.Gap.Workers
             using (var tx = new TransactionScope())
             {
 #endif
-                uitstap = _uitstappenDao.Bewaren(uitstap, koppelingen.ToArray());
-                if (uitstap.IsBivak && sync)
-                {
-                    // De 'Bewaren' hierboven heeft tot gevolg dat de groep niet
-                    // meer gekoppeld is (wegens onderliggende beperkingen van
-                    // AttachObjectGraph).  Vandaar dat we voor het gemak
-                    // die groep hier opnieuw koppelen.
-                    // Idem voor plaats
+            uitstap = _uitstappenDao.Bewaren(uitstap, koppelingen.ToArray());
+            if (uitstap.IsBivak && sync)
+            {
+                // De 'Bewaren' hierboven heeft tot gevolg dat de groep niet
+                // meer gekoppeld is (wegens onderliggende beperkingen van
+                // AttachObjectGraph).  Vandaar dat we voor het gemak
+                // die groep hier opnieuw koppelen.
+                // Idem voor plaats
 
-                    // Opgelet.  Dit is inconsistent gedrag van de software :-(
+                // Opgelet.  Dit is inconsistent gedrag van de software :-(
 
-                    uitstap.GroepsWerkJaar.Groep = groep;
-                    uitstap.Plaats = plaats;
-                    _sync.Bewaren(uitstap);
-                }
-                else if (sync)
-                {
-                    // Dit om op te vangen dat een bivak afgevinkt wordt als bivak.
-                    // TODO: betere manier bedenken
+                uitstap.GroepsWerkJaar.Groep = groep;
+                uitstap.Plaats = plaats;
+                _sync.Bewaren(uitstap);
+            }
+            else if (sync)
+            {
+                // Dit om op te vangen dat een bivak afgevinkt wordt als bivak.
+                // TODO (#1044): betere manier bedenken
 
-                    _sync.Verwijderen(uitstap.ID);
-                }
+                _sync.Verwijderen(uitstap.ID);
+            }
 #if KIPDORP
                 tx.Complete();
             }
@@ -213,8 +213,8 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
-            
-			return _uitstappenDao.OphalenVanGroep(groepID, inschrijvenMogelijk).OrderByDescending(u => u.DatumTot);
+
+            return _uitstappenDao.OphalenVanGroep(groepID, inschrijvenMogelijk).OrderByDescending(u => u.DatumTot);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
-            
+
             plaats.Uitstap.Add(uitstap);
             uitstap.Plaats = plaats;
 
@@ -307,8 +307,8 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
-            
-			return _uitstappenDao.DeelnemersOphalen(uitstapID);
+
+            return _uitstappenDao.DeelnemersOphalen(uitstapID);
         }
 
         /// <summary>
@@ -322,8 +322,8 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
-            
-			var alles = _uitstappenDao.AlleBivakkenOphalen(werkjaar);
+
+            var alles = _uitstappenDao.AlleBivakkenOphalen(werkjaar);
 
             foreach (var bivak in alles)
             {
@@ -331,73 +331,74 @@ namespace Chiro.Gap.Workers
             }
         }
 
-    	public BivakAangifteLijstInfo BivakStatusOphalen(int groepID, GroepsWerkJaar groepsWerkJaar)
-    	{
-			if (!_autorisatieManager.IsGavGroepsWerkJaar(groepsWerkJaar.ID))
+        public BivakAangifteLijstInfo BivakStatusOphalen(int groepID, GroepsWerkJaar groepsWerkJaar)
+        {
+            if (!_autorisatieManager.IsGavGroepsWerkJaar(groepsWerkJaar.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
-			if (!_autorisatieManager.IsGavGroep(groepID))
+            if (!_autorisatieManager.IsGavGroep(groepID))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-			var statuslijst = new BivakAangifteLijstInfo();
+            var statuslijst = new BivakAangifteLijstInfo();
 
-			var aangiftesetting = Settings.Default.BivakAangifteStart;
-			var aangiftestart = new DateTime(groepsWerkJaar.WerkJaar + 1, aangiftesetting.Month, aangiftesetting.Day);
-			if(0<=aangiftestart.CompareTo(DateTime.Today))
-			{
-				statuslijst.AlgemeneStatus = BivakAangifteStatus.NogNietVanBelang;
-			}else
-			{
-				var bivaklijst = OphalenVanGroep(groepID, false).Where(e => e.IsBivak).ToList();
-				bool allesingevuld = true;
-				 foreach (var uitstap in bivaklijst)
-				{
-					var aangifteInfo = new BivakAangifteInfo
-					                   	{
-											ID = uitstap.ID,
-					                   		Omschrijving = uitstap.Naam
-					                   	};
+            var aangiftesetting = Settings.Default.BivakAangifteStart;
+            var aangiftestart = new DateTime(groepsWerkJaar.WerkJaar + 1, aangiftesetting.Month, aangiftesetting.Day);
+            if (0 <= aangiftestart.CompareTo(DateTime.Today))
+            {
+                statuslijst.AlgemeneStatus = BivakAangifteStatus.NogNietVanBelang;
+            }
+            else
+            {
+                var bivaklijst = OphalenVanGroep(groepID, false).Where(e => e.IsBivak).ToList();
+                bool allesingevuld = true;
+                foreach (var uitstap in bivaklijst)
+                {
+                    var aangifteInfo = new BivakAangifteInfo
+                                        {
+                                            ID = uitstap.ID,
+                                            Omschrijving = uitstap.Naam
+                                        };
 
-					var uitstapmetdetails = Ophalen(uitstap.ID, UitstapExtras.Contact | UitstapExtras.Plaats | UitstapExtras.GroepsWerkJaar);
-					if(uitstapmetdetails.GroepsWerkJaar.ID != groepsWerkJaar.ID)
-					{
-						continue;
-					}
+                    var uitstapmetdetails = Ophalen(uitstap.ID, UitstapExtras.Contact | UitstapExtras.Plaats | UitstapExtras.GroepsWerkJaar);
+                    if (uitstapmetdetails.GroepsWerkJaar.ID != groepsWerkJaar.ID)
+                    {
+                        continue;
+                    }
 
-					if (uitstapmetdetails.Plaats == null && uitstapmetdetails.ContactDeelnemer == null)
-					{
-						aangifteInfo.Status = BivakAangifteStatus.PlaatsEnPersoonInTeVullen;
-						allesingevuld = false;
-					}
-					else if (uitstapmetdetails.Plaats == null)
-					{
-						aangifteInfo.Status = BivakAangifteStatus.PlaatsInTeVullen;
-						allesingevuld = false;
-					}
-					else if (uitstapmetdetails.ContactDeelnemer == null)
-					{
-						aangifteInfo.Status = BivakAangifteStatus.PersoonInTeVullen;
-						allesingevuld = false;
-					}
-					else
-					{
-						aangifteInfo.Status = BivakAangifteStatus.Ingevuld;
-					}
-					statuslijst.Bivakinfos.Add(aangifteInfo);
-				}
-				if (statuslijst.Bivakinfos.Count== 0)
-				{
-					statuslijst.AlgemeneStatus = BivakAangifteStatus.DringendInTeVullen;
-				}
-				else
-				{
-					statuslijst.AlgemeneStatus = allesingevuld ? BivakAangifteStatus.Ingevuld : BivakAangifteStatus.DringendInTeVullen;
-				}
-			}
-    		return statuslijst;
-    	}
+                    if (uitstapmetdetails.Plaats == null && uitstapmetdetails.ContactDeelnemer == null)
+                    {
+                        aangifteInfo.Status = BivakAangifteStatus.PlaatsEnPersoonInTeVullen;
+                        allesingevuld = false;
+                    }
+                    else if (uitstapmetdetails.Plaats == null)
+                    {
+                        aangifteInfo.Status = BivakAangifteStatus.PlaatsInTeVullen;
+                        allesingevuld = false;
+                    }
+                    else if (uitstapmetdetails.ContactDeelnemer == null)
+                    {
+                        aangifteInfo.Status = BivakAangifteStatus.PersoonInTeVullen;
+                        allesingevuld = false;
+                    }
+                    else
+                    {
+                        aangifteInfo.Status = BivakAangifteStatus.Ingevuld;
+                    }
+                    statuslijst.Bivakinfos.Add(aangifteInfo);
+                }
+                if (statuslijst.Bivakinfos.Count == 0)
+                {
+                    statuslijst.AlgemeneStatus = BivakAangifteStatus.DringendInTeVullen;
+                }
+                else
+                {
+                    statuslijst.AlgemeneStatus = allesingevuld ? BivakAangifteStatus.Ingevuld : BivakAangifteStatus.DringendInTeVullen;
+                }
+            }
+            return statuslijst;
+        }
     }
 }

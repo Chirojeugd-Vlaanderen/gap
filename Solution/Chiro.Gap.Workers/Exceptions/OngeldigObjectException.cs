@@ -18,7 +18,7 @@ namespace Chiro.Gap.Workers.Exceptions
 	[Serializable]
 	public class OngeldigObjectException : GapException
 	{
-		// TODO: Dit wordt blijkbaar enkel gebruikt voor adressen.  Is heel die constructie dan wel nodig?
+        // TODO (#1041): Dit wordt blijkbaar enkel gebruikt voor adressen.  Is heel die constructie dan wel nodig?
 		// Misschien is een AdresException wel even goed.
 
 		private IDictionary<string, FoutBericht> _berichten = new Dictionary<string, FoutBericht>();

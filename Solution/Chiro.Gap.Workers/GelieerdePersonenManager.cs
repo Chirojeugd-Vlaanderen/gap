@@ -606,7 +606,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="voorkeur">Indien true, wordt het nieuwe adres voorkeursadres van de gegeven gelieerde personen</param>
 		public void AdresToevoegen(IEnumerable<GelieerdePersoon> gelieerdePersonen, Adres adres, AdresTypeEnum adrestype, bool voorkeur)
 		{
-			// TODO: Dit lijkt nog te hard op AdresToevoegen in PersonenManager
+            // TODO (#1042): Dit lijkt nog te hard op AdresToevoegen in PersonenManager
 
 			var gpersIDs = (from p in gelieerdePersonen
 					select p.ID).ToList();

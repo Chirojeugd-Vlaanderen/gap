@@ -30,8 +30,8 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
         /// best toegewezen via inversion of control.
         /// </summary>
-        /// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
-        /// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+        /// <param name="serviceHelper">Wordt gebruikt om de webservices van de backend aan te spreken</param>
+        /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
         public LedenController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt) : base(serviceHelper, veelGebruikt) { }
 
@@ -232,7 +232,12 @@ namespace Chiro.Gap.WebApp.Controllers
             return model;
         }
 
-        // GET: /Leden/
+        /// <summary>
+        /// Toont de ledenlijst van de gegeven groep in het huidige werkjaar
+        /// </summary>
+        /// <param name="groepID">ID van de groep waarvan we de ledenlijst willen tonen</param>
+        /// <returns></returns>
+        /// <!-- GET: /Leden/ -->
         [HandleError]
         public override ActionResult Index(int groepID)
         {
@@ -251,12 +256,12 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID, LidEigenschap sortering)
         {
-            // TODO: deze code moet opgekuist worden
+            // TODO (#1033): deze code moet opgekuist worden
 
             var model = new LidInfoModel();
             BaseModelInit(model, groepID);
 
-            // TODO check dat het gegeven groepswerkjaar id wel degelijk van de gegeven groep is
+            // TODO (#1034): check dat het gegeven groepswerkjaar id wel degelijk van de gegeven groep is
 
             // Laad de lijst van werkjaren in van de groep en zet de juiste info over het te tonen werkjaar
             model.WerkJaarInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<WerkJaarInfo>>(e => e.WerkJarenOphalen(groepID));
@@ -445,11 +450,11 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, true);
 
-        	// Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
+            // Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
             // gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
             string[] kolomkoppen = 
                   {
-			       	"Type", "AD-nr", "Voornaam", "Naam", "Afdelingen", "Functies", "Geboortedatum", "Geslacht","Straat", "Nr", "Bus", "Postnr", "Postcode", "Gemeente", "Land", "Tel", "Mail", "Betaald"
+			       	"Type", "AD-nr", "Voornaam", "Naam", "Afdelingen", "Functies", "Geboortedatum", "Geslacht", "Straat", "Nr", "Bus", "Postnr", "Postcode", "Gemeente", "Land", "Tel", "Mail", "Betaald"
 			      };
 
             var bestandsNaam = String.Format("{0}.xlsx", model.Titel.Replace(" ", "-"));
@@ -490,10 +495,10 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult DeActiveren(int id, int groepID)
         {
-            string fouten = String.Empty; // TODO fouten opvangen
+            string fouten = String.Empty; // TODO (#1035): fouten opvangen
             ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(new List<int> { id }, out fouten));
 
-            // TODO: beter manier om problemen op te vangen dan via een string
+            // TODO (#1035): beter manier om problemen op te vangen dan via een string
 
             if (fouten == String.Empty)
             {
@@ -503,8 +508,8 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             else
             {
-                // TODO: vermijden dat output van de back-end rechtstreeks zichtbaar wordt voor
-                // de user.
+                // TODO (#1035): vermijden dat output van de back-end rechtstreeks zichtbaar wordt 
+                // voor de user.
 
                 TempData["fout"] = fouten;
             }
@@ -551,22 +556,30 @@ namespace Chiro.Gap.WebApp.Controllers
             }
         }
 
-        // 
-        // POST: /Leden/AfdelingBewerken?lidID=5
-        // FIXME lidID wordt automatisch ingevuld als er eenzelfde argument in de GET methode van afdelingBewerken staat. Dit is eigenlijk helemaal niet mooi want wordt niet geverifieerd en zelfs 2de niveau afhankelijkheid van aspx.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="lidID"></param>
+        /// <returns></returns>
+        /// <!-- POST: /Leden/AfdelingBewerken?lidID=5 -->
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
         public ActionResult AfdelingBewerken(LidAfdelingenModel model, int lidID)
         {
-            // FIXME: Het is geen prachtige code: een call van AfdelingenVervangen levert 'toevallig'
+            // FIXME (#1029): lidID wordt automatisch ingevuld als er eenzelfde argument in de GET methode van 
+            // afdelingBewerken staat. Dit is eigenlijk helemaal niet mooi want wordt niet geverifieerd 
+            // en zelfs 2de niveau afhankelijkheid van aspx.
+
+            // FIXME (#1030): Het is geen prachtige code: een call van AfdelingenVervangen levert 'toevallig'
             // een GelieerdePersoonID op, die ik dan in dit specifieke geval
             // 'toevallig' kan gebruiken om naar de juiste personenfiche om te schakelen.
 
             // De returnwaarde van de volgende call hebben we nergens voor nodig.
             ServiceHelper.CallService<ILedenService, int>(svc => svc.AfdelingenVervangen(lidID, model.Info.AfdelingsJaarIDs));
 
-			var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(lidID));
-        	return RedirectToAction("EditRest", "Personen", new { id = info.PersoonDetail.GelieerdePersoonID });
+            var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(lidID));
+            return RedirectToAction("EditRest", "Personen", new { id = info.PersoonDetail.GelieerdePersoonID });
         }
 
         /// <summary>
@@ -616,9 +629,9 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// Bewaart de nieuw toegekende afdeling(en) uit <paramref name="model"/>
         /// </summary>
-        /// <param name="groepID">Groep waarin wordt gewerkt</param>
         /// <param name="model">AfdelingenBewerkenModel met info over welke leden welke
         /// afdelingen moeten krijgen</param>
+        /// <param name="groepID">Groep waarin wordt gewerkt</param>
         /// <returns>Er wordt geredirect naar de ledenlijst van de groep</returns>
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AfdelingenBewerken(AfdelingenBewerkenModel model, int groepID)
@@ -643,7 +656,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new BevestigingsModel();
             BaseModelInit(model, groepID);
 
-            // TODO: DetalsOphalen is eigenlijk overkill; we hebben enkel de volledige naam en 
+            // TODO (#1031): DetailsOphalen is eigenlijk overkill; we hebben enkel de volledige naam en 
             // het GelieerdePersoonID nodig.
             var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
 
@@ -709,14 +722,14 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Bewaart functies
         /// </summary>
         /// <param name="model">LidFunctiesModel met te bewaren gegevens (functie-ID's in <c>model.FunctieIDs</c>)</param>
-        /// <param name="groepID">ID van de groep waarin de user momenteel aan het werken is</param>
         /// <param name="id">LidID te bewerken lid</param>
+        /// <param name="groepID">ID van de groep waarin de user momenteel aan het werken is</param>
         /// <returns>De personenfiche, die de gewijzigde info toont.</returns>
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
         public ActionResult FunctiesToekennen(LidFunctiesModel model, int id, int groepID)
         {
-            // TODO: Dit moet een unitaire operatie zijn, om concurrencyproblemen te vermijden.
+            // TODO (#1036): Dit moet een unitaire operatie zijn, om concurrencyproblemen te vermijden.
             try
             {
                 ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(id, model.FunctieIDs));
@@ -752,7 +765,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// 'Togglet' het vlaggetje 'lidgeld betaald' van een lid.
+        /// Togglet het vlaggetje 'lidgeld betaald' van een lid.
         /// </summary>
         /// <param name="id">LidID van lid met te toggelen vlagje</param>
         /// <param name="groepID">ID van de groep waarin wordt gewerkt</param>
@@ -769,7 +782,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Verandert een kind in leiding of vice versa
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="groepID"></param>
+        /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
         /// <returns>Opnieuw de persoonsfiche</returns>
         [HandleError]
         public ActionResult TypeToggle(int id, int groepID)
@@ -795,8 +808,8 @@ namespace Chiro.Gap.WebApp.Controllers
                     throw;
                 }
 
-				var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
-            	gelieerdePersoonID = info.PersoonDetail.GelieerdePersoonID;
+                var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
+                gelieerdePersoonID = info.PersoonDetail.GelieerdePersoonID;
             }
 
             return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });
@@ -882,9 +895,9 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// Toont de leden uit een bepaalde afdeling
         /// </summary>
+        /// <param name="id">ID van de afdeling.</param>
         /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor een ledenlijst wordt gevraagd.  
         ///   Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
-        /// <param name="id">ID van de afdeling.</param>
         /// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
         /// <returns>Een view met de gevraagde ledenlijst</returns>
         /// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
@@ -917,9 +930,9 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// Toont de leden uit een bepaalde functie
         /// </summary>
+        /// <param name="id">ID van de functie.</param>
         /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor een functie wordt gevraagd.  
         ///   Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
-        /// <param name="id">ID van de functie.</param>
         /// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
         /// <returns>Een view met de gevraagde ledenlijst</returns>
         /// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.

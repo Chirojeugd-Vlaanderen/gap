@@ -84,7 +84,7 @@ namespace Chiro.Gap.Workers
 		/// <returns><c>True</c> (enkel) als user GAV is van alle groepen</returns>
 		public bool IsGavGroepen(IEnumerable<int> groepIDs)
 		{
-			// TODO: functionalieit in autorisatieDao inbouwen zoat dit efficienter kan.
+            // TODO (#1039): functionalieit in autorisatieDao inbouwen zoat dit efficienter kan.
 
 			return groepIDs.All(id => _autorisatieDao.IsGavGroep(GebruikersNaamGet(), id));
 		}
@@ -219,7 +219,7 @@ namespace Chiro.Gap.Workers
 		/// <c>false</c>.</returns>
 		public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
 		{
-			// TODO: functionalieit in autorisatieDao inbouwen zoat dit efficienter kan.
+            // TODO (#1040): functionalieit in autorisatieDao inbouwen zoat dit efficienter kan.
 
 			return persoonsAdresIDs.All(id => _autorisatieDao.IsGavPersoonsAdres(id, GebruikersNaamGet()));			
 		}

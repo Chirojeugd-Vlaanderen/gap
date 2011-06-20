@@ -39,8 +39,8 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
         /// best toegewezen via inversion of control.
         /// </summary>
-        /// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
-        /// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+        /// <param name="serviceHelper">Wordt gebruikt om de webservices van de backend aan te spreken</param>
+        /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
         protected BaseController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt)
         {
@@ -49,10 +49,10 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Een standaard index pagina die door elke controller geimplementeerd moet zijn om de "terug naar 
+        /// Een standaard indexpagina die door elke controller geimplementeerd moet zijn om de "terug naar 
         /// vorige" te kunnen implementeren.
         /// </summary>
-        /// <param name="groepID"></param>
+        /// <param name="groepID">ID van de groep die de pagina oproept, en van wie we dus gegevens moeten tonen</param>
         /// <returns></returns>
         [HandleError]
         public abstract ActionResult Index(int groepID);
@@ -118,8 +118,6 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.HuidigWerkJaar = gwjDetail.WerkJaar;
                 model.IsInOvergangsPeriode = gwjDetail.Status == WerkJaarStatus.InOvergang;
 
-				var bivakstatus = VeelGebruikt.BivakStatusHuidigWerkjaarOphalen(groepID);
-
                 #endregion
 
                 #region GAV over meerdere groepen?
@@ -145,7 +143,8 @@ namespace Chiro.Gap.WebApp.Controllers
                     });
                 }
 
-				VoegBivakStatusMededelingenToe(bivakstatus, model.Mededelingen);
+                var bivakstatus = VeelGebruikt.BivakStatusHuidigWerkjaarOphalen(groepID);
+                VoegBivakStatusMededelingenToe(bivakstatus, model.Mededelingen);
 
                 // Problemen opvragen
 
@@ -236,59 +235,64 @@ namespace Chiro.Gap.WebApp.Controllers
             }
         }
 
-    	private void VoegBivakStatusMededelingenToe(BivakAangifteLijstInfo aangiftestatus, IList<Mededeling> mededelingen)
-    	{
-			if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.NogNietVanBelang || aangiftestatus.AlgemeneStatus == BivakAangifteStatus.Ingevuld)
-			{
-				return;
-			}
-			if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.DringendInTeVullen && aangiftestatus.Bivakinfos.Count == 0)
-			{
-				var url = Url.Action("Nieuw", "Uitstappen");
-				mededelingen.Add(new Mededeling
-				{
-					Type = MededelingsType.Probleem,
-					Info = String.Format(Properties.Resources.BivakAangifteNogInTeVullen, url)
-				});
-			}
-			else
-			{
-				foreach (var bivakstatus in aangiftestatus.Bivakinfos)
-				{	
-					if (bivakstatus.Status == BivakAangifteStatus.PlaatsEnPersoonInTeVullen) 
-					{
-						var url = Url.Action("Bekijken", "Uitstappen", new { id = bivakstatus.ID });
-						mededelingen.Add(new Mededeling
-						{
-							Type = MededelingsType.Probleem,
-							Info = String.Format(Properties.Resources.BeideNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
-						});
-					}
-					if(bivakstatus.Status == BivakAangifteStatus.PlaatsInTeVullen)
-					{
-						var url = Url.Action("PlaatsBewerken", "Uitstappen", new { id = bivakstatus.ID });
-						mededelingen.Add(new Mededeling
-						{
-							Type = MededelingsType.Probleem,
-							Info = String.Format(Properties.Resources.AdresNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
-						});
-					}
-					else if (bivakstatus.Status == BivakAangifteStatus.PersoonInTeVullen)
-					{
-						var url = Url.Action("Bekijken", "Uitstappen", new { id = bivakstatus.ID });
-						mededelingen.Add(new Mededeling
-						{
-							Type = MededelingsType.Probleem,
-							Info = String.Format(Properties.Resources.PersoonNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
-						});
-					}
-				}
-			}
+        /// <summary>
+        /// Gaat na of de probleemmeldingen i.v.m. het bivak van belang zijn, en zo ja,
+        /// dan worden ze toegevoegd aan de problemen waarvoor de gebruiker een waarschuwing ziet.
+        /// </summary>
+        /// <param name="aangiftestatus">Geeft aan of de bivakaangifte al dan niet van belang is (op dit moment)</param>
+        /// <param name="mededelingen">De problemen i.v.m. de bivakaangifte die getoond moeten worden</param>
+        [HandleError]
+        private void VoegBivakStatusMededelingenToe(BivakAangifteLijstInfo aangiftestatus, IList<Mededeling> mededelingen)
+        {
+            if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.NogNietVanBelang || aangiftestatus.AlgemeneStatus == BivakAangifteStatus.Ingevuld)
+            {
+                return;
+            }
+            if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.DringendInTeVullen && aangiftestatus.Bivakinfos.Count == 0)
+            {
+                var url = Url.Action("Nieuw", "Uitstappen");
+                mededelingen.Add(new Mededeling
+                {
+                    Type = MededelingsType.Probleem,
+                    Info = String.Format(Properties.Resources.BivakAangifteNogInTeVullen, url)
+                });
+            }
+            else
+            {
+                foreach (var bivakstatus in aangiftestatus.Bivakinfos)
+                {
+                    if (bivakstatus.Status == BivakAangifteStatus.PlaatsEnPersoonInTeVullen)
+                    {
+                        var url = Url.Action("Bekijken", "Uitstappen", new { id = bivakstatus.ID });
+                        mededelingen.Add(new Mededeling
+                        {
+                            Type = MededelingsType.Probleem,
+                            Info = String.Format(Properties.Resources.BeideNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
+                        });
+                    }
+                    if (bivakstatus.Status == BivakAangifteStatus.PlaatsInTeVullen)
+                    {
+                        var url = Url.Action("PlaatsBewerken", "Uitstappen", new { id = bivakstatus.ID });
+                        mededelingen.Add(new Mededeling
+                        {
+                            Type = MededelingsType.Probleem,
+                            Info = String.Format(Properties.Resources.AdresNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
+                        });
+                    }
+                    else if (bivakstatus.Status == BivakAangifteStatus.PersoonInTeVullen)
+                    {
+                        var url = Url.Action("Bekijken", "Uitstappen", new { id = bivakstatus.ID });
+                        mededelingen.Add(new Mededeling
+                        {
+                            Type = MededelingsType.Probleem,
+                            Info = String.Format(Properties.Resources.PersoonNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
+                        });
+                    }
+                }
+            }
+        }
 
-
-    	}
-
-    	/// <summary>
+        /// <summary>
         /// Vult de groepsgegevens én de paginatitel in in de base view
         /// </summary>
         /// <param name="model">Te initialiseren model</param>

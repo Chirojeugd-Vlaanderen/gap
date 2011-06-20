@@ -23,7 +23,7 @@ namespace Chiro.Gap.WebApp.ActionFilters
 		}
 
 		/// <summary>
-		/// 'Waarde' van de knop (gegeven in value-attribuut van knop input)
+		/// De 'waarde' van de knop (gegeven in value-attribuut van knop input)
 		/// </summary>
 		public string Waarde
 		{
@@ -37,7 +37,7 @@ namespace Chiro.Gap.WebApp.ActionFilters
 		/// </summary>
 		/// <param name="controllerContext"></param>
 		/// <param name="methodInfo"></param>
-		/// <returns><c>true</c> indien deze controlleractie uitgevoerd mag worden, anders <c>false</c>.</returns>
+		/// <returns><c>True</c> indien deze controlleractie uitgevoerd mag worden, anders <c>false</c>.</returns>
 		public override bool IsValidForRequest(ControllerContext controllerContext, System.Reflection.MethodInfo methodInfo)
 		{
 			var req = controllerContext.RequestContext.HttpContext.Request;

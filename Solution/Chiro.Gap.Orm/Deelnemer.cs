@@ -66,6 +66,5 @@ namespace Chiro.Gap.Orm
             // ID's gelijk, dan zijn de objecten ook gelijk.  Zo niet gebruiken we
             // base.Equals, wat eigenlijk niet helemaal correct is.
         }
-
     }
 }

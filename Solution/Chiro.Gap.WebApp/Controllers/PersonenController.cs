@@ -36,8 +36,8 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
         /// best toegewezen via inversion of control.
         /// </summary>
-        /// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
-        /// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+        /// <param name="serviceHelper">Wordt gebruikt om de webservices van de backend aan te spreken</param>
+        /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
         public PersonenController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt)
             : base(serviceHelper, veelGebruikt)
@@ -170,7 +170,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => it.Bus,
                 it => it.PostNummer,
                 it => it.WoonPlaats,
-				it => it.Land,
+                it => it.Land,
                 it => it.TelefoonNummer,
                 it => it.Email);
             return new ExcelResult(stream, "personen.xlsx");
@@ -181,7 +181,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// wordt 'ToepassenOpSelectie' aangeroepen.  In het andere geval werd gewoon
         /// een categorie geselecterd.
         /// </summary>
-        /// <param name="model">model.GekozenCategorieID bevat de ID van de categorie waarvan de
+        /// <param name="model">De property model.GekozenCategorieID bevat de ID van de categorie waarvan de
         /// personen getoond moeten worden.  Is deze 0, dan worden alle personen getoond</param>
         /// <param name="groepID">ID van de groep waarin de gebruiker momenteel werkt</param>
         /// <returns>Een redirect naar de juiste lijst</returns>
@@ -266,8 +266,12 @@ namespace Chiro.Gap.WebApp.Controllers
 
         #region personen
 
-        //
-        // GET: /Personen/Nieuw
+        /// <summary>
+        /// Toont het formulier om een nieuwe persoon toe te voegen
+        /// </summary>
+        /// <param name="groepID">ID van de groep waaraan die persoon gelieerd moet worden</param>
+        /// <returns></returns>
+        /// <!-- GET: /Personen/Nieuw -->
         [HandleError]
         public ActionResult Nieuw(int groepID)
         {
@@ -279,8 +283,13 @@ namespace Chiro.Gap.WebApp.Controllers
             return View("EditGegevens", model);
         }
 
-        //
-        // POST: /Personen/Nieuw
+        /// <summary>
+        /// Gebruikt de ingevulde gegevens om een nieuwe persoon aan te maken
+        /// </summary>
+        /// <param name="model">Het ingevulde model</param>
+        /// <param name="groepID">ID van de groep waaraan de nieuwe persoon gelieerd moet worden</param>
+        /// <returns></returns>
+        /// <!-- POST: /Personen/Nieuw -->
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [HandleError]
@@ -320,8 +329,15 @@ namespace Chiro.Gap.WebApp.Controllers
             return RedirectToAction("EditRest", new { id = ids.GelieerdePersoonID });
         }
 
-        // aka maak een broertje of zusje
-        // GET: /Personen/Kloon
+        /// <summary>
+        /// Maakt een broertje of zusje
+        /// </summary>
+        /// <param name="gelieerdepersoonID">ID van de gelieerde persoon van wie de
+        /// contactgegevens en de familienaam gekopieerd worden</param>
+        /// <param name="groepID">ID van de groep waarvoor de kloon een nieuwe
+        /// gelieerde persoon wordt.</param>
+        /// <returns></returns>
+        /// <!-- GET: /Personen/Kloon -->
         [HandleError]
         public ActionResult Kloon(int gelieerdepersoonID, int groepID)
         {
@@ -337,13 +353,23 @@ namespace Chiro.Gap.WebApp.Controllers
             return View("EditGegevens", model);
         }
 
-        // POST: /Personen/Nieuw
+        /// <summary>
+        /// Vraagt aan de service om een nieuwe persoon aan te maken, op basis van de ingevulde gegevens.
+        /// Die werden deels ingevuld op basis van een andere persoon, voor wie we hier een broer/zus
+        /// aanmaken.
+        /// </summary>
+        /// <param name="model">Het ingevulde model</param>
+        /// <param name="groepID">ID van de groep die een nieuwe gelieerde persoon aanmaakt, en waar die
+        /// persoon dus aan gelinkt moet worden</param>
+        /// <returns></returns>
+        /// <!-- POST: /Personen/Nieuw -->
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
-        // TODO dit is mss iets om op de server te draaien?
         [HandleError]
         public ActionResult Kloon(GelieerdePersonenModel model, int groepID)
         {
+            // TODO (#1028): dit is mss iets om op de server te draaien?
+
             /////BEGIN DUPLICATE CODE
 
             if (model.BroerzusID == 0)
@@ -451,7 +477,7 @@ namespace Chiro.Gap.WebApp.Controllers
         // NEW CODE
 
         /// <summary>
-        /// Deze actie (TODO:) met onduidelijke naam toont gewoon de personenfiche van de gelieerde
+        /// Deze actie met onduidelijke naam toont gewoon de personenfiche van de gelieerde
         /// persoon met id <paramref name="id"/>.
         /// </summary>
         /// <param name="id">ID van de te tonen gelieerde persoon</param>
@@ -500,7 +526,13 @@ namespace Chiro.Gap.WebApp.Controllers
 
         #region leden
 
-        // GET: /Personen/Inschrijven/gelieerdepersoonID
+        /// <summary>
+        /// Schrijft een gelieerde persoon in in de groep
+        /// </summary>
+        /// <param name="gelieerdepersoonID">ID van de gelieerde persoon die we willen inschrijven</param>
+        /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
+        /// <returns></returns>
+        /// <!-- GET: /Personen/Inschrijven/gelieerdepersoonID -->
         [HandleError]
         public ActionResult Inschrijven(int gelieerdepersoonID, int groepID)
         {
@@ -517,7 +549,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
             }
 
-			return RedirectToAction("EditRest", "Personen", new { id = gelieerdepersoonID });
+            return RedirectToAction("EditRest", "Personen", new { id = gelieerdepersoonID });
         }
 
         #endregion leden
@@ -594,7 +626,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Ook in de view Verhuizen krijg je - indien javascript niet werkt - een knop
         /// 'Woonplaatsen ophalen', waarmee het lijstje met woonplaatsen moet worden gevuld.
         /// </summary>
-        /// <param name="model">informatie over het nieuw adres</param>
+        /// <param name="model">Informatie over het nieuw adres</param>
         /// <param name="groepID">ID van de geselecteerde groep</param>
         /// <returns>Opnieuw de view AdresBewerken, maar met het lijstje woonplaatsen ingevuld</returns>
         [ActionName("Verhuizen")]
@@ -603,7 +635,7 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult Verhuizen_WoonplaatsenOphalen(AdresModel model, int groepID)
         {
-            // TODO: Deze method is identiek aan NieuwAdres_WoonPlaatsenOphalen.
+            // TODO (#1037): Deze method is identiek aan NieuwAdres_WoonPlaatsenOphalen.
             // Dat moet dus niet dubbel geschreven zijn
 
             BaseModelInit(model, groepID);
@@ -648,7 +680,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 ServiceHelper.CallService<IGelieerdePersonenService>(l => l.GelieerdePersonenVerhuizen(model.GelieerdePersoonIDs, model.PersoonsAdresInfo, model.OudAdresID));
 
-				return RedirectToAction("EditRest", "Personen", new { id = model.GelieerdePersoonIDs.First() });
+                return RedirectToAction("EditRest", "Personen", new { id = model.GelieerdePersoonIDs.First() });
             }
             catch (FaultException<OngeldigObjectFault> ex)
             {
@@ -730,7 +762,14 @@ namespace Chiro.Gap.WebApp.Controllers
             return View("AdresVerwijderen", model);
         }
 
-        // POST: /Personen/AdresVerwijderen
+        /// <summary>
+        /// Vraagt aan de services om de link tussen een adres en één of meerdere personen te verwijderen
+        /// </summary>
+        /// <param name="model">Het model met de ingevulde gegevens</param>
+        /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
+        /// <returns>De persoonlijkegegevensfiche van de persoon bij wie we oorspronkelijk de opdracht
+        /// gaven om het adres te verwijderen.</returns>
+        /// <!-- POST: /Personen/AdresVerwijderen -->
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
         public ActionResult AdresVerwijderen(AdresVerwijderenModel model, int groepID)
@@ -776,7 +815,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Bij het posten van een nieuw adres krijg je - indien javascript niet werkt - een knop
         /// 'Woonplaatsen ophalen', waarmee het lijstje met woonplaatsen wordt gevuld.
         /// </summary>
-        /// <param name="model">informatie over het nieuw adres</param>
+        /// <param name="model">Informatie over het nieuw adres</param>
         /// <param name="groepID">ID van de geselecteerde groep</param>
         /// <returns>Opnieuw de view AdresBewerken, maar met het lijstje woonplaatsen ingevuld</returns>
         [ActionName("NieuwAdres")]
@@ -802,7 +841,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// Actie voor post van nieuw adres
         /// </summary>
-        /// <param name="model">bevat de geposte informatie</param>
+        /// <param name="model">Bevat de geposte informatie</param>
         /// <param name="groepID">ID van huidig geselecteerde groep</param>
         /// <returns>Zonder problemen wordt geredirect naar de actie 'persoon bewerken'.  Maar
         /// bij een ongeldig adres krijg je opnieuw de view 'AdresBewerken'.</returns>
@@ -902,7 +941,14 @@ namespace Chiro.Gap.WebApp.Controllers
 
         #region commvormen
 
-        // GET: /Personen/NieuweCommVorm/gelieerdePersoonID
+        /// <summary>
+        /// Toont het formulier waarmee een nieuwe communicatievorm toegevoegd kan worden
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van de gelieerde persoon voor wie we een nieuwe 
+        /// communicatievorm toevoegen</param>
+        /// <param name="groepID">ID van de groep die de communicatievorm toevoegt</param>
+        /// <returns></returns>
+        /// <!-- GET: /Personen/NieuweCommVorm/gelieerdePersoonID -->
         [HandleError]
         public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
         {
@@ -980,22 +1026,35 @@ namespace Chiro.Gap.WebApp.Controllers
             }
         }
 
-        // GET: /Personen/VerwijderenCommVorm/commvormid
+        /// <summary>
+        /// Verwijdert de link tussen een persoon en een communicatievorm
+        /// </summary>
+        /// <param name="commvormID">ID van de communicatievorm</param>
+        /// <param name="groepID">ID van de groep die de communicatievorm verwijdert</param>
+        /// <returns></returns>
+        /// <!-- GET: /Personen/VerwijderenCommVorm/commvormid -->
         [HandleError]
         public ActionResult VerwijderenCommVorm(int commvormID, int groepID)
         {
-			var gelieerdePersoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.CommunicatieVormVerwijderenVanPersoon(commvormID));
+            var gelieerdePersoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.CommunicatieVormVerwijderenVanPersoon(commvormID));
 
             VeelGebruikt.LedenProblemenResetten(groepID);
 
-			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
 
-        // GET: /Personen/CommVormBewerken/gelieerdePersoonID
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commvormID"></param>
+        /// <param name="gelieerdePersoonID"></param>
+        /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
+        /// <returns></returns>
+        /// <!-- GET: /Personen/CommVormBewerken/gelieerdePersoonID -->
         [HandleError]
         public ActionResult CommVormBewerken(int commvormID, int gelieerdePersoonID, int groepID)
         {
-            // TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
+            // TODO (#1026): dit is niet juist broes, want hij haalt 2 keer de persoon op?
             var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonID));
             var commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieDetail>(l => l.CommunicatieVormOphalen(commvormID));
             var model = new CommVormModel(persoonDetail, commv);
@@ -1004,9 +1063,17 @@ namespace Chiro.Gap.WebApp.Controllers
             return View("CommVormBewerken", model);
         }
 
-        // TODO meerdere commvormen tegelijk
+        // TODO (#1027): meerdere commvormen tegelijk
 
-        // POST: /Personen/CommVormBewerken/gelieerdePersoonID
+        /// <summary>
+        /// Stuurt de ingevulde gegevens naar de service, die de geselecteerde communicatievorm aanpast
+        /// </summary>
+        /// <param name="model">Het ingevulde model</param>
+        /// <param name="gelieerdePersoonID">De ID van de gelieerde persoon voor wie we de bewerking uitvoeren</param>
+        /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
+        /// <returns>Bij succes gaan we naar de persoonlijkegegevensfiche, anders blijven we op het formulier 
+        /// om de gegevens mee aan te passen</returns>
+        /// <!-- POST: /Personen/CommVormBewerken/gelieerdePersoonID -->
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
         public ActionResult CommVormBewerken(CommVormModel model, int gelieerdePersoonID, int groepID)
@@ -1047,28 +1114,40 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 return View("CommVormBewerken", model);
             }
-            
-			// Om bloat over de lijn te vermijden: downgraden naar minimale info
+
+            // Om bloat over de lijn te vermijden: downgraden naar minimale info
             var comminfo = new CommunicatieInfo(model.NieuweCommVorm);
             ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(comminfo));
-			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
-            // TODO catch exceptions overal
+            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
 
         #endregion commvormen
 
         #region categorieën
 
-        // GET: /Personen/VerwijderenCategorie/categorieID
+        /// <summary>
+        /// Haalt een gelieerde persoon uit een categorie.
+        /// </summary>
+        /// <param name="categorieID">ID van de categorie waartoe de persoon niet meer mag behoren</param>
+        /// <param name="gelieerdePersoonID">ID van de gelieerde persoon die we uit een categorie willen halen</param>
+        /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
+        /// <returns>Keert terug naar de persoonlijkegegevensfiche</returns>
+        /// <!-- GET: /Personen/VerwijderenCategorie/categorieID -->
         [HandleError]
         public ActionResult VerwijderenCategorie(int categorieID, int gelieerdePersoonID, int groepID)
         {
             IList<int> list = new List<int> { gelieerdePersoonID };
             ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieVerwijderen(list, categorieID));
-			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
 
-        // GET: /Personen/ToevoegenAanCategorie/categorieID
+        /// <summary>
+        /// Voegt een gelieerde persoon toe aan een categorie
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van de gelieerde persoon die we in een categorie willen stoppen</param>
+        /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
+        /// <returns></returns>
+        /// <!-- GET: /Personen/ToevoegenAanCategorie/categorieID -->
         [HandleError]
         public ActionResult ToevoegenAanCategorie(int gelieerdePersoonID, int groepID)
         {
@@ -1126,62 +1205,62 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.GelieerdePersoonIDs,
                 model.GeselecteerdeCategorieIDs));
 
-			if (model.GelieerdePersoonIDs.Count == 1)
-			{
-				return RedirectToAction("EditRest", model.GelieerdePersoonIDs.First());
-			}
-			else
-			{
-				return TerugNaarVorigeLijst();
-			}
-		}
+            if (model.GelieerdePersoonIDs.Count == 1)
+            {
+                return RedirectToAction("EditRest", model.GelieerdePersoonIDs.First());
+            }
+            else
+            {
+                return TerugNaarVorigeLijst();
+            }
+        }
 
         #endregion categorieën
 
-	    #region uitstappen
-	    /// <summary>
-	    /// Toont een view die de gebruiker toelaat om een bivak te kiezen waarvoor de gelieerde personen
-	    /// met GelieerdePersoonIDs in TempData["ids"] ingeschreven moeten worden.  Bovendien moet
-	    /// aangevinkt worden of het al dan niet over 'logistieke deelnemers' gaat.
-	    /// </summary>
-	    /// <param name="groepID"></param>
-	    /// <returns>Het inschrijfscherm</returns>
-	    public ActionResult InschrijvenVoorUitstap(int groepID)
-	    {
-		    var model = new UitstapInschrijfModel();
-		    BaseModelInit(model, groepID);
-		    model.Titel = String.Format(Properties.Resources.UitstapInschrijving);
+        #region uitstappen
+        /// <summary>
+        /// Toont een view die de gebruiker toelaat om een bivak te kiezen waarvoor de gelieerde personen
+        /// met GelieerdePersoonIDs in TempData["ids"] ingeschreven moeten worden.  Bovendien moet
+        /// aangevinkt worden of het al dan niet over 'logistieke deelnemers' gaat.
+        /// </summary>
+        /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
+        /// <returns>Het inschrijfscherm</returns>
+        public ActionResult InschrijvenVoorUitstap(int groepID)
+        {
+            var model = new UitstapInschrijfModel();
+            BaseModelInit(model, groepID);
+            model.Titel = String.Format(Properties.Resources.UitstapInschrijving);
 
-		    model.Uitstappen =
-		        ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID, true));
+            model.Uitstappen =
+                ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID, true));
 
-		    if (model.Uitstappen.FirstOrDefault() == null)
-		    {
-			    TempData["fout"] = Properties.Resources.GeenUitstappenFout;
-			    return TerugNaarVorigeLijst();
-		    }
-		    else
-		    {
-			    object gevonden;
-			    TempData.TryGetValue("ids", out gevonden);
-			    var gelieerdePersoonIDs = gevonden as IList<int>;
+            if (model.Uitstappen.FirstOrDefault() == null)
+            {
+                TempData["fout"] = Properties.Resources.GeenUitstappenFout;
+                return TerugNaarVorigeLijst();
+            }
+            else
+            {
+                object gevonden;
+                TempData.TryGetValue("ids", out gevonden);
+                var gelieerdePersoonIDs = gevonden as IList<int>;
 
-			    model.GelieerdePersonen =
-				    ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(
-					    svc => svc.PersoonInfoOphalen(gelieerdePersoonIDs));
-			    return View(model);
-		    }
-	    }
+                model.GelieerdePersonen =
+                    ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(
+                        svc => svc.PersoonInfoOphalen(gelieerdePersoonIDs));
+                return View(model);
+            }
+        }
 
-	    /// <summary>
-	    /// Action voor postback van het uitstapinschrijvingsformulier.  Voert de gevraagde inschrijving uit.
-	    /// </summary>
-	    /// <param name="groepID">ID van momenteel actieve groep</param>
-	    /// <param name="model">De members <c>GelieerdePersoonIDs</c>, <c>GeselecteerdUitstap</c> en 
-	    /// <c>LogistiekDeelnemer</c> bevatten de informatie voor de inschrijving</param>
-	    /// <returns>redirect naar de recentste lijst</returns>
-	    [AcceptVerbs(HttpVerbs.Post)]
-	    [HandleError]
+        /// <summary>
+        /// Action voor postback van het uitstapinschrijvingsformulier.  Voert de gevraagde inschrijving uit.
+        /// </summary>
+        /// <param name="groepID">ID van momenteel actieve groep</param>
+        /// <param name="model">De members <c>GelieerdePersoonIDs</c>, <c>GeselecteerdUitstap</c> en 
+        /// <c>LogistiekDeelnemer</c> bevatten de informatie voor de inschrijving</param>
+        /// <returns>Redirect naar de recentste lijst</returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        [HandleError]
         public ActionResult InschrijvenVoorUitstap(int groepID, UitstapInschrijfModel model)
         {
             var uitstap = ServiceHelper.CallService<IUitstappenService, UitstapInfo>(
@@ -1191,6 +1270,6 @@ namespace Chiro.Gap.WebApp.Controllers
 
             return TerugNaarVorigeLijst();
         }
-	    #endregion
-	}
+        #endregion
+    }
 }

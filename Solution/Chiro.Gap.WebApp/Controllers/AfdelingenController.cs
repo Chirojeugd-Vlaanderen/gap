@@ -26,31 +26,30 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
 		/// best toegewezen via inversion of control.
 		/// </summary>
-		/// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
-		/// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+		/// <param name="serviceHelper">Wordt gebruikt om de webservices van de backend aan te spreken</param>
+		/// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
 		/// service</param>
 		public AfdelingenController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt) : base(serviceHelper, veelGebruikt) { }
 
-        
 		/// <summary>
         /// TODO (#190): documenteren
         /// </summary>
-        /// <param name="groepID"></param>
+        /// <param name="groepID">ID van de groep die de pagina oproept, en van wie we dus gegevens moeten tonen</param>
         /// <returns></returns>
-        // GET: /Afdeling/
+        /// <!-- GET: /Afdeling/ -->
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
 			return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), groepID);
 		}
 
-		// GET: /Afdeling/List/{groepsWerkJaarId}
-		/// <summary>
+        /// <summary>
         /// TODO (#190): documenteren
 		/// </summary>
 		/// <param name="groepsWerkJaarID"></param>
-		/// <param name="groepID"></param>
+		/// <param name="groepID">ID van de groep die de pagina oproept, en van wie we dus gegevens moeten tonen</param>
 		/// <returns></returns>
+        /// /// <!-- GET: /Afdeling/List/{groepsWerkJaarId} -->
         [HandleError]
 		public ActionResult List(int groepsWerkJaarID, int groepID)
 		{
@@ -76,6 +75,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="groepID">Groep waarvoor de afdeling gemaakt moet worden</param>
 		/// <returns>De view die toelaat een nieuwe afdeling te maken.</returns>
+		/// <!-- GET: /Afdeling/Nieuw/ -->
 		[HandleError]
 		public ActionResult Nieuw(int groepID)
 		{
@@ -159,14 +159,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
-		//
-		// GET: /Afdeling/Verwijderen/afdelingsJaarId
         /// <summary>
-        /// TODO (#190): documenteren
+        /// Verwijdert een afdeling uit het lijstje van actieve afdelingen in een bepaald werkjaar.
         /// </summary>
-        /// <param name="groepID"></param>
-        /// <param name="id"></param>
+        /// <param name="groepID">ID van de groep die we aan het bewerken zijn</param>
+        /// <param name="id">ID van het afdelingsjaar dat we willen verwijderen</param>
         /// <returns></returns>
+        /// <!-- GET: /Afdeling/Verwijderen/afdelingsJaarId -->
 		[HandleError]
 		public ActionResult Verwijderen(int groepID, int id)
 		{
@@ -248,7 +247,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <summary>
 		/// Postback voor activeren/bewerken afdeling(sjaar).
 		/// </summary>
-		/// <param name="model"><c>model.AfdelingsJaar</c> bevat de relevante details over het afdelingsjaar</param>
+		/// <param name="model">De property <c>model.AfdelingsJaar</c> bevat de relevante details over het afdelingsjaar</param>
 		/// <param name="groepID">Groep waarin de gebruiker momenteel aan het werken is</param>
 		/// <returns>Het afdelingsoverzicht als de wijzigingen bewaard zijn, en anders opnieuw de
 		/// 'AfdelingsJaarView'.</returns>

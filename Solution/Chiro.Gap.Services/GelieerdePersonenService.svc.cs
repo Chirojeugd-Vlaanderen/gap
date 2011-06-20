@@ -759,7 +759,7 @@ namespace Chiro.Gap.Services
         {
             try
             {
-                // TODO: Deze method moet nog aangepast worden.  De geijkte manier van werken is:
+                // TODO (#1047): Deze method moet nog aangepast worden.  De geijkte manier van werken is:
                 // 1. Haal gelieerde persoon op
                 // 2. Creer nieuwe communicatievorm
                 // 3. Gebruik business om te koppelen
@@ -955,7 +955,7 @@ namespace Chiro.Gap.Services
         /// <param name="gelieerdePersoonID">ID van gelieerde persoon van persoon die Dubbelpunt wil</param>
         public void DubbelPuntBestellen(int gelieerdePersoonID)
         {
-            // TODO: exceptions op databaseniveau catchen
+            // TODO (#1048): exceptions op databaseniveau catchen
 
             GelieerdePersoon gp = null;
             try

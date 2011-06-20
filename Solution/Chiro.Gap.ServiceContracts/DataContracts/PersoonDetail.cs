@@ -21,7 +21,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public int PersoonID { get; set; }
 
-		// TODO: Fix #546
+		// TODO (#546): conceptuele verwarring ivm IsLid
 
 		/// <summary>
 		/// Geeft aan of de persoon als kind ingeschreven is in een groep
@@ -35,7 +35,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public Boolean IsLeiding { get; set; }
 
-		// TODO: Fix #546
+		// TODO (#546): conceptuele verwarring bij IsLid
 
 		/// <summary>
 		/// Als de persoon lid of leiding is (beter zou zijn: kind of leiding), dan

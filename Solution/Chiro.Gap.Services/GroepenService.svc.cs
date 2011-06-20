@@ -1092,7 +1092,7 @@ namespace Chiro.Gap.Services
         {
             foutBerichten = string.Empty;
 
-            // TODO: (#846) deze code hoort thuis in de workers, en niet hier
+            // TODO (#846): deze code hoort thuis in de workers, en niet hier
             var voriggwj = _groepsWerkJaarManager.RecentsteOphalen(groepID);
 
             try

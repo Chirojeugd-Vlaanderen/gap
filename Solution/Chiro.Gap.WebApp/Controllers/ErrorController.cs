@@ -14,10 +14,10 @@ namespace Chiro.Gap.WebApp.Controllers
     public class ErrorController : Controller
     {
         /// <summary>
-        /// Standaardconstructor
+        /// De standaardconstructor
         /// </summary>
         /// <returns></returns>
-        /// // GET: /Error/
+        /// <!-- GET: /Error/ -->
         public ActionResult Index()
         {
             // Normaal gezien passeren we hier nooit, want de defaultRedirect in web.config gaat naar ~/Shared/Error.aspx.
@@ -25,10 +25,10 @@ namespace Chiro.Gap.WebApp.Controllers
             return View("Error");
         }
 
-        // GET: /Error/NietGevonden
         /// <summary>
         /// Toont de foutpagina met een aangepaste foutcode
         /// </summary>
+        /// <!-- GET: /Error/NietGevonden -->
         public ActionResult NietGevonden()
         {
             Response.StatusCode = (int)HttpStatusCode.NotFound;
@@ -38,6 +38,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// Toont de foutpagina met een aangepaste foutcode
         /// </summary>
+        /// <!-- GET: /Error/GeenVerbinding -->
         public ActionResult GeenVerbinding()
         {
             Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
@@ -47,6 +48,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// Toont de foutpagina met een aangepaste foutcode
         /// </summary>
+        /// <!-- GET: /Error/GeenToegang -->
         public ActionResult GeenToegang()
         {
             Response.StatusCode = (int)HttpStatusCode.Forbidden;

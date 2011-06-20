@@ -41,7 +41,7 @@ namespace Chiro.Gap.WebApp
 				var s = HttpContext.Current.Response.Cookies.Get(LIJSTCOOKIE);
 				if (s == null)
 				{
-					// TODO: Dit lijkt me het verkeerde exceptiontype
+                    // TODO (#1056): Dit lijkt me het verkeerde exceptiontype
 
 					throw new AccessViolationException(
 						"De cookie kan niet gemaakt worden, zijn cookies uitgeschakeld?");

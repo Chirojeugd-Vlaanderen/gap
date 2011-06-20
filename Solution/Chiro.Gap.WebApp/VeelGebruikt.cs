@@ -38,8 +38,7 @@ namespace Chiro.Gap.WebApp
         private readonly IServiceHelper _serviceHelper;
         private readonly Cache _cache = HttpRuntime.Cache;	// misschien hier ook DI voor gebruiken?
 
-        // TODO: deze klasse kan gemakkelijk opgesplitst worden in partial classes
-        // per 'thema' 
+        // TODO (#1038): deze klasse kan gemakkelijk opgesplitst worden in partial classes per 'thema' 
 
         /// <summary>
         /// Constructor.  De servicehelper wordt bepaald door dependency injection (IOC)

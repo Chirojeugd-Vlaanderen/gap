@@ -62,7 +62,7 @@ namespace Chiro.Gap.WebApp.Models
 		public int HuidigWerkJaar { get; set; }
 
 		/// <summary>
-		/// <c>true</c> indien de overgang naar het nieuwe werkjaar kan gebeuren
+		/// <c>True</c> indien de overgang naar het nieuwe werkjaar kan gebeuren
 		/// </summary>
 		public bool IsInOvergangsPeriode { get; set; }
 

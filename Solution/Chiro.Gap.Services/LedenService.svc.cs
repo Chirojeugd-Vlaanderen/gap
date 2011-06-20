@@ -74,7 +74,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
         /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
-        /// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.</param>
+        /// string waarin wat uitleg staat. </param>
         /// <returns>De LidID's van de personen die lid zijn gemaakt</returns>
         /// <remarks>
         /// Iedereen die kan lid gemaakt worden, wordt lid, zelfs als dit voor andere personen niet lukt. Voor die personen worden dan foutberichten
@@ -83,6 +83,8 @@ namespace Chiro.Gap.Services
         /// <throws>NotSupportedException</throws> // TODO handle
         public IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
         {
+            // TODO (#1053): beter systeem vinden voor deze feedback.
+
             try
             {
                 var lidIDs = new List<int>();
@@ -161,9 +163,11 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
         /// <param name="foutBerichten">Als voor sommige personen die actie mislukte, bevat foutBerichten een
-        /// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
+        /// string waarin wat uitleg staat.</param>
         public void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
         {
+            // TODO (#1053): beter systeem vinden voor deze feedback
+
             try
             {
                 var foutBerichtenBuilder = new StringBuilder();

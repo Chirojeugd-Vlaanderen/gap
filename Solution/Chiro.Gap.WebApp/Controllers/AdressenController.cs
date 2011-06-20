@@ -24,8 +24,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
 		/// best toegewezen via inversion of control.
 		/// </summary>
-		/// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
-		/// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+		/// <param name="serviceHelper">Wordt gebruikt om de webservices van de backend aan te spreken</param>
+		/// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
 		/// service</param>
 		public AdressenController(
 			IServiceHelper serviceHelper, 
@@ -126,7 +126,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// TODO (#190): documenteren
         /// </summary>
-        /// <param name="groepID"></param>
+        /// <param name="groepID">ID van de groep die de pagina oproept, en van wie we dus gegevens moeten tonen</param>
         /// <returns></returns>
 		[HandleError]
 		public override ActionResult Index(int groepID)

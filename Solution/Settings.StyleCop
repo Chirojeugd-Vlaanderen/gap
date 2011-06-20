@@ -45,7 +45,7 @@
       </Rules>
       <AnalyzerSettings>
         <StringProperty Name="CompanyName">Chirojeugd-Vlaanderen vzw</StringProperty>
-        <StringProperty Name="Copyright">Copyright (c) 2007-2010 Mail naar informatica@chiro.be voor alle info over deze broncode</StringProperty>
+        <StringProperty Name="Copyright">Copyright (c) 2007-2011 Mail naar informatica@chiro.be voor alle info over deze broncode</StringProperty>
         <BooleanProperty Name="IgnorePrivates">True</BooleanProperty>
         <BooleanProperty Name="IncludeFields">False</BooleanProperty>
       </AnalyzerSettings>

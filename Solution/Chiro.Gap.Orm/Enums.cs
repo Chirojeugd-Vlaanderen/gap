@@ -219,22 +219,27 @@ namespace Chiro.Gap.Orm
 	public enum UitstapExtras
 	{
 		Geen = 0x00,
+
 		/// <summary>
 		/// Haalt groepswerkjaar mee op
 		/// </summary>
 		GroepsWerkJaar = 0x01,
+
 		/// <summary>
 		/// Haalt groepswerkjaar en groep mee op 
 		/// </summary>
 		Groep = 0x03,		// Aangezien de groep altijd meekomt met groepswerkjaar: 0x03 ipv 0x02. (mss ook elders te doen)
+
 		/// <summary>
 		/// Haalt plaats op, inclusief adres
 		/// </summary>
 		Plaats = 0x04,
+
 		/// <summary>
 		/// Haalt de deelnemers mee op, inclusief gelieerde persoon en persoon.
 		/// </summary>
 		Deelnemers = 0x08,
+
         /// <summary>
         /// Haalt de contactdeelnemer mee op
         /// </summary>

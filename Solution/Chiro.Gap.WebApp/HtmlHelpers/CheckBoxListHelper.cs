@@ -23,8 +23,8 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		/// <summary>
 		/// Constructor voor CheckBoxListInfo
 		/// </summary>
-		/// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
-		/// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
+        /// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
+        /// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
 		/// <param name="isChecked">Bepaalt de huidige status van de checkbox
 		/// getoond.</param>
 		public CheckBoxListInfo(string value, string displayText, bool isChecked)
@@ -33,8 +33,8 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		/// <summary>
 		/// Constructor voor CheckBoxListInfo
 		/// </summary>
-		/// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
-		/// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
+        /// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
+        /// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
 		/// <param name="isChecked">Bepaalt de huidige status van de checkbox</param>
 		/// <param name="foutBericht">Indien niet leeg, wordt dit foutbericht na de DisplayText 
 		/// getoond.</param>

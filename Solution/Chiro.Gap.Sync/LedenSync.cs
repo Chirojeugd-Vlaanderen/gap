@@ -31,7 +31,7 @@ namespace Chiro.Gap.Sync
         private readonly ICommunicatieVormDao _cVormDao;
         private readonly IPersonenDao _personenDao;
 
-        // TODO: Dit gaat waarschijnlijk ook met AutoMapper
+        // TODO (#1058): Dit gaat waarschijnlijk ook met AutoMapper
         private readonly Dictionary<NationaleFunctie, FunctieEnum> _functieVertaling =
             new Dictionary<NationaleFunctie, FunctieEnum>
 				{
@@ -234,7 +234,7 @@ namespace Chiro.Gap.Sync
             if (l is Kind)
             {
                 kipAfdelingen = new List<AfdelingEnum>
-				                	{
+				                	{ 
 				                		_afdelingVertaling[(NationaleAfdeling) ((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
 				                	};
             }

@@ -21,7 +21,7 @@ namespace Chiro.Gap.UpdateSvc.ConsoleServiceHost
 			// eigenlijk is onderstaande lijn min of meer gelijkaardig aan
 			// var host = new ServiceHost(typeof(UpdateService));
 			//
-			// TODO: Nakijken of die custom ServiceHost<T> wel de moeite is om te behouden.
+            // TODO (#1059): Nakijken of die custom ServiceHost<T> wel de moeite is om te behouden.
 
 			var host = new ServiceHost<UpdateService>();
 

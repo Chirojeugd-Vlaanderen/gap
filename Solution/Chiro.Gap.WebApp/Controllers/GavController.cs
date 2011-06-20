@@ -28,20 +28,25 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
 		/// best toegewezen via inversion of control.
 		/// </summary>
-		/// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
-		/// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+		/// <param name="serviceHelper">Wordt gebruikt om de webservices van de backend aan te spreken</param>
+		/// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
 		/// service</param>
 		public GavController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt) : base(serviceHelper, veelGebruikt) { }
 
-		//
-		// GET: /Gav/
+        /// <summary>
+        /// Brengt de gebruiker naar de relevante startpagina
+        /// </summary>
+        /// <param name="dummyint">Als er geen groepID meegegeven wordt, geven we 0 mee,
+        /// om aan te geven dat er nog geen groep gekozen is.</param>
+        /// <returns>Als de gebruiker GAV is van 1 groep, dan wordt er doorgeschakeld naar de
+        // 'startpagina' van deze groep.  Zo niet krijgt de gebruiker de keuze met welke groep hij of zij
+        /// wil werken.
+        /// </returns>
+        /// <!-- GET: /Gav/ -->
 		[HandleError]
 		public override ActionResult Index([DefaultParameterValue(0)]int dummyint)
 		{
 			ActionResult r;
-
-			// Als de gebruiker GAV is van 1 groep, dan wordt er doorgeschakeld naar de
-			// 'startpagina' van deze groep.  Zo niet krijgt de gebruiker de keuze.
 
 			try
 			{
@@ -53,7 +58,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				else
 				{
 					var model = new Models.GavModel();
-					BaseModelInit(model, 0);    // 0:nog geen groep gekozen
+					BaseModelInit(model, 0);    // 0: nog geen groep gekozen
 
 					model.Titel = "Kies je Chirogroep";
 					model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>

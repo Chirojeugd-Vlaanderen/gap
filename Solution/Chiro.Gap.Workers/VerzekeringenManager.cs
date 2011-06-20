@@ -19,7 +19,7 @@ namespace Chiro.Gap.Workers
 {
     /// <summary>
     /// Manager voor al wat met verzekeringen te maken heeft.
-    /// TODO: Dit was misschien beter een 'PersoonsVerzekeringenManager' geweest?
+    /// TODO (#1045): Dit was misschien beter een 'PersoonsVerzekeringenManager' geweest?
     /// </summary>
     public class VerzekeringenManager
     {
@@ -146,7 +146,7 @@ namespace Chiro.Gap.Workers
                     else
                     {
                         // Verzekeringen mogen niet vervangen worden.
-                        // TODO: Exception throwen
+                        // TODO (#1046): Exception throwen
                         // Voorlopig throwen we die exception niet, opdat we via louche truken
                         // op gemakkelijke wijze 'verloren' verzekeringen opnieuw zouden kunnen 
                         // 'kipsyncen'.

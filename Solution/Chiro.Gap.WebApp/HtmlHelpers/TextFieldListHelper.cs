@@ -22,16 +22,16 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		/// <summary>
 		/// Constructor voor TextFieldListInfo
 		/// </summary>
-		/// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
-		/// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
+        /// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
+        /// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
 		public TextFieldListInfo(string value, string displayText)
 			: this(value, displayText, String.Empty) { }
 
 		/// <summary>
 		/// Constructor voor TextFieldListInfo
 		/// </summary>
-		/// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
-		/// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
+        /// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
+        /// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
 		/// <param name="foutBericht">Indien niet leeg, wordt dit foutbericht na de DisplayText 
 		/// getoond.</param>
 		public TextFieldListInfo(string value, string displayText, string foutBericht)

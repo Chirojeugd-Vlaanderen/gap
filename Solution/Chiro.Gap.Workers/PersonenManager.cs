@@ -186,7 +186,7 @@ namespace Chiro.Gap.Workers
                 throw new NotSupportedException();
             }
 
-            // TODO: dit is nogal veel dubbel werk.  EnkelMijnPersonen laadt alle gelieerde personen,
+            // TODO (#1043): dit is nogal veel dubbel werk.  EnkelMijnPersonen laadt alle gelieerde personen,
             // om te kijken welke personen overeen komen met 'mijn' personen.  Daarna worden, indien
             // 'extras|PersoonsExtras.MijnGelieerdePersonen' gezet is, nog eens dezelfde gelieerde
             // persoonsextra's opgehaald.

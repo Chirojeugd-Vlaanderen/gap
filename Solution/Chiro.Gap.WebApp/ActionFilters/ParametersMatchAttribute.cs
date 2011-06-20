@@ -18,7 +18,7 @@ using System.Diagnostics;
 // variabelen gewoon negeren.
 //
 // Voor overloads van post-methods, kan voorlopig het ParameterAccepterenAttribute gebruikt worden
-// TODO: nog wat opkuis in de attributen ParameterAccepteren en ParametersMatch
+// TODO (#1055): nog wat opkuis in de attributen ParameterAccepteren en ParametersMatch
 
 namespace Chiro.Gap.WebApp.ActionFilters
 {

@@ -50,7 +50,7 @@ namespace Chiro.Gap.Sync
         /// <param name="uitstap">Te bewaren uitstap</param>
         public void Bewaren(Uitstap uitstap)
         {
-            // TODO: Dit zijn waarschijnlijk te veel databasecalls
+            // TODO (#1057): Dit zijn waarschijnlijk te veel databasecalls
 
             var teSyncen = Mapper.Map<Uitstap, Bivak>(uitstap);
             _svc.BivakBewaren(teSyncen);
