@@ -130,7 +130,8 @@ namespace Chiro.Kip.Services
 					overzicht = new BivakOverzicht
 					            	{
 					            		Groep = groep,
-								werkjaar = werkJaar
+								        werkjaar = werkJaar,
+                                        datum = DateTime.Now
 					            	};
 					db.AddToBivakOverzicht(overzicht);
 
