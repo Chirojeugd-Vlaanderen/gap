@@ -94,8 +94,7 @@ namespace Chiro.Gap.WebApp
 
 		public BivakAangifteLijstInfo BivakStatusHuidigWerkjaarOphalen(int groepID)
     	{
-    		int gwjID = _serviceHelper.CallService<IGroepenService, int>(g => g.RecentsteGroepsWerkJaarIDGet(groepID));
-			return _serviceHelper.CallService<IUitstappenService, BivakAangifteLijstInfo>(g => g.BivakStatusOphalen(groepID, gwjID));
+			return _serviceHelper.CallService<IUitstappenService, BivakAangifteLijstInfo>(g => g.BivakStatusOphalen(groepID));
     	}
 
     	#endregion

@@ -414,7 +414,12 @@ namespace Chiro.Gap.Services
             _deelnemersMgr.Bewaren(d);
         }
 
-		public BivakAangifteLijstInfo BivakStatusOphalen(int groepID, int gwjID)
+        /// <summary>
+        /// Haalt informatie over de bivakaangifte op van de groep <paramref name="groepID"/> voor diens recentste 
+        /// werkjaar.
+        /// </summary>
+        /// <param name="groepID">De groep waarvan info wordt gevraagd</param>
+		public BivakAangifteLijstInfo BivakStatusOphalen(int groepID)
     	{
 			var gwj = _groepsWerkJaarMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Groep);
             try
