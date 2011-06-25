@@ -284,11 +284,16 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.Afdelingen,
                     opt => opt.Ignore());
 
-            Mapper.CreateMap<Afdeling, AfdelingInfo>()
-                .ForMember(dst => dst.OfficieleAfdelingNaam, opt => opt.Ignore());
-            // TODO (#1051): @broes, ik zet de mapping van OfficieleAfdelingNaam voorlopig op Ignore, zodat de
-            // unit tests opnieuw lopen.  Maar waarschijnlijk is dat niet wat je wil.  Dus dit zal nog
-            // aangepast moeten worden.
+        	Mapper.CreateMap<Afdeling, AfdelingInfo>()
+        		.ForMember(
+        			dst => dst.Afkorting,
+        			opt => opt.MapFrom(src => src.Afkorting))
+        		.ForMember(
+        			dst => dst.Naam,
+        			opt => opt.MapFrom(src => src.Naam))
+        		.ForMember(
+        			dst => dst.ID,
+        			opt => opt.MapFrom(src => src.ID));
 
             Mapper.CreateMap<Functie, FunctieInfo>();
             Mapper.CreateMap<Functie, FunctieDetail>();
