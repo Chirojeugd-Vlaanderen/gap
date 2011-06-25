@@ -228,6 +228,9 @@
   <data name="LidNonActiefGemaakt" xml:space="preserve">
     <value>Lid is op non-actief gezet.</value>
   </data>
+  <data name="GroepNietBijGroepsWerKjaar" xml:space="preserve">
+    <value>Het gegeven groepswerkjaar hoort niet bij de gegeven groeps.</value>
+  </data>
   <data name="DubbelPuntBestellen" xml:space="preserve">
     <value>Dubbelpunt bestellen voor {0}.</value>
   </data>

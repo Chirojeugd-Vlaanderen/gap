@@ -116,7 +116,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="ledenLijst">Hiermee kan je speciale lijsten opzoeken</param>
         /// <param name="metAdressen">Geeft aan of de adressen mee opgevraagd moeten worden
         /// (!duurt lang!)</param>
-        /// <returns>Een LidInfoModel, met in member LidInfoLijst de gevonden leden</returns>
+        /// <returns>Een LidInfoModel, met in member LidInfoLijst de gevonden leden. Null als de groep en groepswerkjaar niet geassocieerd zijn</returns>
         private LidInfoModel Zoeken(
             int gwjID,
             int groepID,
@@ -134,15 +134,21 @@ namespace Chiro.Gap.WebApp.Controllers
             // wel door de service gebeuren.  (Maar hier, bij de leden, is dat niet van toepassing.)
 
             // Als geen groepswerkjaar gegeven is: haal recentste op 
-            int groepsWerkJaarID = gwjID == 0 ? ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)) : gwjID;
+            var groepsWerkJaarID = gwjID == 0 ? ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)) : gwjID;
 
-            LidInfoModel model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
+            var model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
+
+			if(model==null) // Groep en gwj matchen niet
+			{
+				TempData["fout"] = Properties.Resources.GroepNietBijGroepsWerKjaar;
+				return null;
+			}
+
             model.KanLedenBewerken = groepsWerkJaarID == (from wj in model.WerkJaarInfos
                                                           orderby wj.WerkJaar descending
                                                           select wj.ID).FirstOrDefault();
 
-            // Bewaar gekozen filters in model, zodat de juiste items in de dropdownlijsten geselecteerd 
-            // worden
+            // Bewaar gekozen filters in model, zodat de juiste items in de dropdownlijsten geselecteerd worden
 
             model.AfdelingID = afdelingID;
             model.FunctieID = functieID;
@@ -192,7 +198,7 @@ namespace Chiro.Gap.WebApp.Controllers
             if (functieID != 0)
             {
                 // Naam van de functie opzoeken, zodat we ze kunnen invullen in de paginatitel
-                string functieNaam = (from fi in model.FunctieInfoDictionary
+                var functieNaam = (from fi in model.FunctieInfoDictionary
                                       where fi.Key == functieID
                                       select fi).First().Value.Naam;
 
@@ -203,7 +209,7 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             else if (afdelingID != 0)
             {
-                AfdelingDetail af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
+                var af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
                                      where a.Value.AfdelingID == afdelingID
                                      select a.Value).FirstOrDefault();
 
@@ -252,7 +258,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="groepsWerkJaarID">ID van het gevraagde groepswerkjaar</param>
         /// <param name="groepID">ID van de groep waar het over gaat</param>
         /// <param name="sortering">Enumwaarde die aangeeft op welke parameter de lijst gesorteerd moet worden</param>
-        /// <returns></returns>
+        /// <returns>NULL als het groep en groepswerkjaar ID niet bij dezelfde groep horen</returns>
         [HandleError]
         private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID, LidEigenschap sortering)
         {
@@ -261,14 +267,17 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new LidInfoModel();
             BaseModelInit(model, groepID);
 
-            // TODO (#1034): check dat het gegeven groepswerkjaar id wel degelijk van de gegeven groep is
-
             // Laad de lijst van werkjaren in van de groep en zet de juiste info over het te tonen werkjaar
             model.WerkJaarInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<WerkJaarInfo>>(e => e.WerkJarenOphalen(groepID));
 
             var gevraagdwerkjaar = (from g in model.WerkJaarInfos
                                     where g.ID == groepsWerkJaarID
-                                    select g).First();
+                                    select g).FirstOrDefault();
+
+			if(gevraagdwerkjaar == null) // Het is geen groepswerkjaar van de gegeven groep
+			{
+				return null;
+			}
 
             model.IDGetoondGroepsWerkJaar = groepsWerkJaarID;
             model.JaartalGetoondGroepsWerkJaar = gevraagdwerkjaar.WerkJaar;
@@ -278,7 +287,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             // Laad de afdelingen in het model in via een dictionary
             model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingDetail>();
-            foreach (AfdelingDetail ai in list)
+            foreach (var ai in list)
             {
                 model.AfdelingsInfoDictionary.Add(ai.AfdelingID, ai);
             }
@@ -293,7 +302,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var list2 = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieDetail>>(groep => groep.FunctiesOphalen(groepsWerkJaarID, LidType.Alles));
 
             model.FunctieInfoDictionary = new Dictionary<int, FunctieDetail>();
-            foreach (FunctieDetail fi in list2)
+            foreach (var fi in list2)
             {
                 model.FunctieInfoDictionary.Add(fi.ID, fi);
             }
@@ -332,8 +341,8 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             // Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
             ClientState.VorigeLijst = Request.Url.ToString();
-            LidInfoModel model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, false);
-            return View("Index", model);
+            var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, false);
+			return model==null ? TerugNaarVorigeLijst() : View("Index", model);
         }
 
         /// <summary>
@@ -449,6 +458,10 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Download(int id, int afdelingID, int functieID, int groepID, LidInfoModel.SpecialeLedenLijst ledenLijst, LidEigenschap sortering)
         {
             var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, true);
+			if(model==null)
+			{
+				return TerugNaarVorigeLijst();
+			}
 
             // Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
             // gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
@@ -778,7 +791,7 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult TypeToggle(int id, int groepID)
         {
-            int gelieerdePersoonID = 0;
+            int gelieerdePersoonID;
 
             try
             {
@@ -786,17 +799,16 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             catch (FaultException<FoutNummerFault> ex)
             {
-                if (ex.Detail.FoutNummer == FoutNummer.AlgemeneKindFout)
+                switch (ex.Detail.FoutNummer)
                 {
-                    TempData["fout"] = Properties.Resources.FoutToggleNaarKind;
-                }
-                else if (ex.Detail.FoutNummer == FoutNummer.AlgemeneLeidingFout)
-                {
-                    TempData["fout"] = Properties.Resources.FoutToggleNaarLeiding;
-                }
-                else
-                {
-                    throw;
+                	case FoutNummer.AlgemeneKindFout:
+                		TempData["fout"] = Properties.Resources.FoutToggleNaarKind;
+                		break;
+                	case FoutNummer.AlgemeneLeidingFout:
+                		TempData["fout"] = Properties.Resources.FoutToggleNaarLeiding;
+                		break;
+                	default:
+                		throw;
                 }
 
                 var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
