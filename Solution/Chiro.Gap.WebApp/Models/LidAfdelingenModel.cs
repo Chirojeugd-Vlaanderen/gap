@@ -26,6 +26,11 @@ namespace Chiro.Gap.WebApp.Models
 		public LidAfdelingInfo Info { get; set; }
 
 		/// <summary>
+		/// Het ID van het lid, dat we later nodig hebben
+		/// </summary>
+		public int LidID { get; set; }
+
+		/// <summary>
 		/// Lijst met de actieve afdelingen dit werkjaar
 		/// </summary>
 		public IEnumerable<ActieveAfdelingInfo> BeschikbareAfdelingen { get; set; }

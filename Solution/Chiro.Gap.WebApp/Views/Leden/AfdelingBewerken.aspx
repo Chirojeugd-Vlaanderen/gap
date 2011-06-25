@@ -46,6 +46,7 @@
 			}
 			}
 		%>
+		<%=Html.Hidden("LidID", Model.LidID) %>
 	</fieldset>
 	<%
 		} %>

@@ -535,6 +535,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 svc => svc.HuidigeAfdelingsJarenOphalen(groepID));
             model.Info = ServiceHelper.CallService<ILedenService, LidAfdelingInfo>(
                 svc => svc.AfdelingenOphalen(lidID));
+        	model.LidID = lidID;
 
             if (model.BeschikbareAfdelingen.FirstOrDefault() == null)
             {
@@ -560,25 +561,15 @@ namespace Chiro.Gap.WebApp.Controllers
         /// 
         /// </summary>
         /// <param name="model"></param>
-        /// <param name="lidID"></param>
         /// <returns></returns>
-        /// <!-- POST: /Leden/AfdelingBewerken?lidID=5 -->
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
-        public ActionResult AfdelingBewerken(LidAfdelingenModel model, int lidID)
+        public ActionResult AfdelingBewerken(LidAfdelingenModel model)
         {
-            // FIXME (#1029): lidID wordt automatisch ingevuld als er eenzelfde argument in de GET methode van 
-            // afdelingBewerken staat. Dit is eigenlijk helemaal niet mooi want wordt niet geverifieerd 
-            // en zelfs 2de niveau afhankelijkheid van aspx.
-
-            // FIXME (#1030): Het is geen prachtige code: een call van AfdelingenVervangen levert 'toevallig'
-            // een GelieerdePersoonID op, die ik dan in dit specifieke geval
-            // 'toevallig' kan gebruiken om naar de juiste personenfiche om te schakelen.
-
             // De returnwaarde van de volgende call hebben we nergens voor nodig.
-            ServiceHelper.CallService<ILedenService, int>(svc => svc.AfdelingenVervangen(lidID, model.Info.AfdelingsJaarIDs));
+			ServiceHelper.CallService<ILedenService, int>(svc => svc.AfdelingenVervangen(model.LidID, model.Info.AfdelingsJaarIDs));
 
-            var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(lidID));
+			var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(model.LidID));
             return RedirectToAction("EditRest", "Personen", new { id = info.PersoonDetail.GelieerdePersoonID });
         }
 
