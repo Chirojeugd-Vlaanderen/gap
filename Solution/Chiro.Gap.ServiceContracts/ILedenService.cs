@@ -21,17 +21,26 @@ namespace Chiro.Gap.ServiceContracts
 	public interface ILedenService
 	{
 		/// <summary>
-		/// Probeert de opgegeven gelieerde personen in te schrijven (aan te sluiten),
-		/// en geeft per geval feedback als dat niet gelukt is
+		/// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
 		/// </summary>
-		/// <param name="gelieerdePersoonIDs">Lijst van ID's van gelieerde personen die ingeschreven moeten worden</param>
-		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
-		/// string waarin wat uitleg staat.</param>
+		/// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
+		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
 		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
+		IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
+
+		/// <summary>
+		/// Probeert de opgegeven personen in te schrijven met de meegegeven informatie. Als dit niet mogelijk blijkt te zijn, wordt er niemand ingeschreven.
+		/// </summary>
+		/// <param name="lidInformatie">Lijst van informatie over wie lid moet worden</param>
+		/// <param name="foutBerichten">Als er sommige personen geen lid konden worden gemaakt, bevat foutBerichten een string waarin wat uitleg staat. </param>
+		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten);
 
 		/// <summary>
 		/// Maakt lid met gegeven ID nonactief

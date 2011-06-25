@@ -19,62 +19,31 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	/// </summary>
 	public static class DropDownListHelper
 	{
-		public static string OffAfdelingsDropDownList(this HtmlHelper htmlHelper, string name, IEnumerable<OfficieleAfdelingDetail> afdelingen, string officieleAfdelingNaam)
+		public class DropDownListItem<T>
 		{
-			if (String.IsNullOrEmpty(name))
-			{
-				throw new ArgumentException(@"The argument must have a value", "name");
-			}
-
-			var sb = new StringBuilder();
-
-			var select = new TagBuilder("select");
-			select.MergeAttribute("id", name);
-			select.MergeAttribute("name", name);
-			sb.Append(select.ToString(TagRenderMode.StartTag));
-
-			foreach (var afdeling in afdelingen)
-			{
-				var option1 = new TagBuilder("option");
-				option1.MergeAttribute("value", afdeling.ID.ToString());
-				if (officieleAfdelingNaam != null && officieleAfdelingNaam.Equals(afdeling.Naam))
-				{
-					option1.MergeAttribute("selected", @"yes");
-				}
-				sb.Append(option1.ToString(TagRenderMode.StartTag));
-				sb.Append(afdeling.Naam);
-				sb.Append(option1.ToString(TagRenderMode.EndTag));
-			}
-
-			sb.Append(select.ToString(TagRenderMode.EndTag));
-
-			return sb.ToString();
+			public T Waarde { get; set; }
+			public string DisplayNaam { get; set; }
 		}
 
-		public static string GeslachtsDropDownList(this HtmlHelper htmlHelper, string name, GeslachtsType g)
+		public static string DropDownList<T>(this HtmlHelper htmlHelper, string opslagLijstNaam, IEnumerable<DropDownListItem<T>> mogelijkewaarden, T geselecteerd)
 		{
-			if (String.IsNullOrEmpty(name))
-			{
-				throw new ArgumentException(@"The argument must have a value", "name");
-			}
-
 			var sb = new StringBuilder();
 
 			var select = new TagBuilder("select");
-			select.MergeAttribute("id", name);
-			select.MergeAttribute("name", name);
+			select.MergeAttribute("id", opslagLijstNaam);
+			select.MergeAttribute("name", opslagLijstNaam);
 			sb.Append(select.ToString(TagRenderMode.StartTag));
 
-			foreach (var geslacht in Enum.GetValues(typeof(GeslachtsType)))
+			foreach (var mogelijkewaarde in mogelijkewaarden)
 			{
 				var option1 = new TagBuilder("option");
-				option1.MergeAttribute("value", ((int)geslacht).ToString());
-				if ((GeslachtsType)geslacht == g)
+				option1.MergeAttribute("value", mogelijkewaarde.Waarde.ToString());
+				if (geselecteerd.Equals(mogelijkewaarde.Waarde))
 				{
 					option1.MergeAttribute("selected", @"yes");
 				}
 				sb.Append(option1.ToString(TagRenderMode.StartTag));
-				sb.Append(geslacht.ToString());
+				sb.Append(mogelijkewaarde.DisplayNaam);
 				sb.Append(option1.ToString(TagRenderMode.EndTag));
 			}
 

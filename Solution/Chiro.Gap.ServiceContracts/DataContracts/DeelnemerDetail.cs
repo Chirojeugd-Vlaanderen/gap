@@ -20,7 +20,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public int GelieerdePersoonID { get; set; }
 
 		[DataMember]
-		public PersoonLidInfo PersoonLidInfo { get; set; }
+		public PersoonOverzicht PersoonOverzicht { get; set; }
 
         [DataMember]
         public int UitstapID { get; set; }

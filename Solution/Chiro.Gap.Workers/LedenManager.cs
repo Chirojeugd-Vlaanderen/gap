@@ -17,7 +17,6 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
@@ -80,8 +79,7 @@ namespace Chiro.Gap.Workers
         /// <remarks>
         /// Private; andere lagen moeten via 'Inschrijven' gaan.
         /// <para/>
-        /// Deze method test niet
-        /// of het groepswerkjaar wel het recentste is.  (Voor de unit tests moeten
+        /// Deze method test niet of het groepswerkjaar wel het recentste is.  (Voor de unit tests moeten
         /// we ook leden kunnen maken in oude groepswerkjaren.)
         /// Roep deze method ook niet rechtstreeks aan, maar wel via KindMaken of LeidingMaken
         /// </remarks>
@@ -164,33 +162,34 @@ namespace Chiro.Gap.Workers
             return lid;
         }
 
-        /// <summary>
-        /// Maakt gelieerde persoon een kind (lid) voor het gegeven werkjaar.
-        /// <para />
-        /// Dit komt neer op 
-        ///		Automatisch een afdeling voor het kind bepalen. Een exception als dit niet mogelijk is.
-        ///		De probeerperiode zetten op binnen 3 weken als het een nieuw lid is, en op 15 oktober als de persoon vorig jaar al lid was.
-        /// </summary>
-        /// <param name="gp">Gelieerde persoon, gekoppeld aan groep en persoon</param>
-        /// <param name="gwj">Groepswerkjaar waarin lid te maken, gekoppeld met afdelingsjaren</param>
-        /// <param name="isJaarOvergang">Geeft aan of het lid gemaakt wordt voor de automatische jaarovergang; relevant
-        /// voor probeerperiode.</param>
-        /// <returns>Nieuw kindobject, niet gepersisteerd</returns>
-        /// <remarks>
-        /// Private; andere lagen moeten via 'Inschrijven' gaan.
-        /// <para/>
-        /// De user zal nooit zelf mogen kiezen in welk groepswerkjaar een kind lid wordt.  Maar 
-        /// om testdata voor unit tests op te bouwen, hebben we deze functionaliteit wel nodig.
-        /// <para/>
-        /// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn vorige lidobjecten met
-        /// groepswerkjaren gekoppeld zijn.  Dit wordt gebruikt in LidMaken
-        /// om na te kijken of een gelieerde persoon al eerder
-        /// lid was.  Dit lijkt me echter niet nodig; zie de commentaar aldaar.
-        /// </remarks>
-        /// <throws>FoutNummerException</throws>
-        /// <throws>GeenGavException</throws>
-        /// <throws>InvalidOperationException</throws>
-        private Kind KindMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang)
+    	/// <summary>
+    	/// Maakt gelieerde persoon een kind (lid) voor het gegeven werkjaar.
+    	/// <para />
+    	/// Dit komt neer op 
+    	///		Automatisch een afdeling voor het kind bepalen. Een exception als dit niet mogelijk is.
+    	///		De probeerperiode zetten op binnen 3 weken als het een nieuw lid is, en op 15 oktober als de persoon vorig jaar al lid was.
+    	/// </summary>
+    	/// <param name="gp">Gelieerde persoon, gekoppeld aan groep en persoon</param>
+    	/// <param name="gwj">Groepswerkjaar waarin lid te maken, gekoppeld met afdelingsjaren</param>
+    	/// <param name="isJaarOvergang">Geeft aan of het lid gemaakt wordt voor de automatische jaarovergang; relevant
+    	/// voor probeerperiode.</param>
+    	///<param name="voorgesteldeAfdeling">Voorstel tot toe te kennen afdeling. Checks hierop moeten al gebeurd zijn</param>
+    	///<returns>Nieuw kindobject, niet gepersisteerd</returns>
+    	/// <remarks>
+    	/// Private; andere lagen moeten via 'Inschrijven' gaan.
+    	/// <para/>
+    	/// De user zal nooit zelf mogen kiezen in welk groepswerkjaar een kind lid wordt.  Maar 
+    	/// om testdata voor unit tests op te bouwen, hebben we deze functionaliteit wel nodig.
+    	/// <para/>
+    	/// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn vorige lidobjecten met
+    	/// groepswerkjaren gekoppeld zijn.  Dit wordt gebruikt in LidMaken
+    	/// om na te kijken of een gelieerde persoon al eerder
+    	/// lid was.  Dit lijkt me echter niet nodig; zie de commentaar aldaar.
+    	/// </remarks>
+    	/// <throws>FoutNummerException</throws>
+    	/// <throws>GeenGavException</throws>
+    	/// <throws>InvalidOperationException</throws>
+    	private Kind KindMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang, AfdelingsJaar voorgesteldeAfdeling)
         {
             // LidMaken doet de nodige checks ivm GAV-schap, enz.
             var k = LidMaken(gp, gwj, LidType.Kind, isJaarOvergang) as Kind;
@@ -201,109 +200,151 @@ namespace Chiro.Gap.Workers
                 throw new InvalidOperationException(Properties.Resources.InschrijvenZonderAfdelingen);
             }
 
-            // Afdeling automatisch bepalen
-
+            // allemaal om resharper blij tehouden:
+			Debug.Assert(k != null);
             Debug.Assert(gp.GebDatumMetChiroLeefTijd != null);
-            // Om resharper blij te houden, is al gecontroleerd.
-            var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
-            // Relevante afdelingsjaren opzoeken.  Afdelingen met speciale officiele afdeling
-            // worden in eerste instantie uitgesloten van de automatische verdeling.
 
-            var afdelingsjaren =
-                (from a in gwj.AfdelingsJaar
-                 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
-                       && a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal
-                 select a).ToList();
+			// Afdeling bepalen
+        	AfdelingsJaar gekozenAfdeling;
+			if(voorgesteldeAfdeling!=null)
+			{
+				// Checks hierop zijn al gebeurd in de aanroepende methode
+				gekozenAfdeling = voorgesteldeAfdeling;
+			}
+			else
+			{
+				var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
-            if (afdelingsjaren.Count == 0)
-            {
-                // Is er geen geschikte 'normale' afdeling gevonden, probeer dan de speciale eens.
+				// Relevante afdelingsjaren opzoeken.  Afdelingen met speciale officiele afdeling
+				// worden in eerste instantie uitgesloten van de automatische verdeling.
+				var afdelingsjaren =
+					(from a in gwj.AfdelingsJaar
+					 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
+						   && a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal
+					 select a).ToList();
 
-                afdelingsjaren =
-                    (from a in gwj.AfdelingsJaar
-                     where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
-                           && a.OfficieleAfdeling.ID == (int)NationaleAfdeling.Speciaal
-                     select a).ToList();
-            }
+				if (afdelingsjaren.Count == 0)
+				{
+					// Is er geen geschikte 'normale' afdeling gevonden, probeer dan de speciale eens.
 
-            if (afdelingsjaren.Count == 0)
-            {
-                throw new InvalidOperationException(Properties.Resources.GeenAfdelingVoorLeeftijd);
-            }
+					afdelingsjaren =
+						(from a in gwj.AfdelingsJaar
+						 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
+							   && a.OfficieleAfdeling.ID == (int)NationaleAfdeling.Speciaal
+						 select a).ToList();
+				}
 
-            // Kijk of er een afdeling is met een overeenkomend geslacht
-            var aj = (from a in afdelingsjaren
-                      where a.Geslacht == gp.Persoon.Geslacht || a.Geslacht == GeslachtsType.Gemengd
-                      select a).FirstOrDefault();
+				if (afdelingsjaren.Count == 0)
+				{
+					throw new InvalidOperationException(Properties.Resources.GeenAfdelingVoorLeeftijd);
+				}
 
-            // Als dit niet zo is, kies dan de eerste afdeling die voldoet aan de leeftijdsgrenzen.
-            aj = aj ?? afdelingsjaren.First();
+				// Kijk of er een afdeling is met een overeenkomend geslacht
+				var aj = (from a in afdelingsjaren
+						  where a.Geslacht == gp.Persoon.Geslacht || a.Geslacht == GeslachtsType.Gemengd
+						  select a).FirstOrDefault();
 
-            // Elk scenario waarbij k null is, leidt tot een exception, maar dat gebeurt deels in LidMaken, dus ziet ReSharper dat niet
-            // Je kan de foutmelding van resharper dan als volgt vermijden:
-            Debug.Assert(k != null);
+				// Als dit niet zo is, kies dan de eerste afdeling die voldoet aan de leeftijdsgrenzen.
+				gekozenAfdeling = aj ?? afdelingsjaren.First();	
+			}
 
-            k.AfdelingsJaar = aj;
-            aj.Kind.Add(k);
+			k.AfdelingsJaar = gekozenAfdeling;
+			gekozenAfdeling.Kind.Add(k);
 
             return k;
         }
 
-        /// <summary>
-        /// Maakt gelieerde persoon leiding voor het gegeven werkjaar.
-        /// </summary>
-        /// <param name="gp">Gelieerde persoon, gekoppeld met groep en persoon</param>
-        /// <param name="gwj">Groepswerkjaar waarin leiding te maken</param>
-        /// <param name="isJaarovergang">Geeft aan of het over de automatische jaarovergang gaat.
-        /// (relevant voor probeerperiode)</param>
-        /// <returns>Nieuw leidingsobject; niet gepersisteerd</returns>
-        /// <remarks>
-        /// Private; andere lagen moeten via 'Inschrijven' gaan.
-        /// <para/>
-        /// Deze method mag niet geexposed worden via de services, omdat
-        /// een gebruiker uiteraard enkel in het huidige groepswerkjaar leden
-        /// kan maken.
-        /// <para/>
-        /// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn vorige lidobjecten met
-        /// groepswerkjaren gekoppeld zijn.  Dit wordt gebruikt in LidMaken
-        ///  om na te kijken of een gelieerde persoon al eerder
-        /// lid was.  Dit lijkt me echter niet nodig; zie de commentaar aldaar.
-        /// </remarks>
-        /// <throws>FoutNummerException</throws>
-        /// <throws>GeenGavException</throws>
-        /// <throws>InvalidOperationException</throws>
-        private Leiding LeidingMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarovergang)
+    	/// <summary>
+    	/// Maakt gelieerde persoon leiding voor het gegeven werkjaar.
+    	/// <param name="gp">Gelieerde persoon, gekoppeld met groep en persoon</param>
+    	/// <param name="gwj">Groepswerkjaar waarin leiding te maken</param>
+    	/// <param name="isJaarovergang">Geeft aan of het over de automatische jaarovergang gaat.
+    	/// (relevant voor probeerperiode)</param>
+    	/// <param name="afdelingsJaar">Het afdelingsjaar waarin de nieuwe leiding zeker moet ingeschreven worden</param>
+    	/// <returns>Nieuw leidingsobject; niet gepersisteerd</returns>
+    	/// <remarks>
+    	/// Private; andere lagen moeten via 'Inschrijven' gaan.
+    	/// <para/>
+    	/// Deze method mag niet geexposed worden via de services, omdat een gebruiker uiteraard enkel in het huidige groepswerkjaar leden
+    	/// kan maken.
+    	/// <para/>
+    	/// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn vorige lidobjecten met
+    	/// groepswerkjaren gekoppeld zijn.  Dit wordt gebruikt in LidMaken
+    	///  om na te kijken of een gelieerde persoon al eerder lid was.  Dit lijkt me echter niet nodig; zie de commentaar aldaar.
+    	/// </remarks>
+    	/// <throws>FoutNummerException</throws>
+    	/// <throws>GeenGavException</throws>
+    	/// </summary>
+    	private Leiding LeidingMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarovergang, AfdelingsJaar afdelingsJaar)
         {
-            // LidMaken doet de nodige checks ivm GAV-schap enz.
-            var resultaat = LidMaken(gp, gwj, LidType.Leiding, isJaarovergang) as Leiding;
+			Debug.Assert(gp!=null && gp.GebDatumMetChiroLeefTijd!=null);
 
-            Debug.Assert(gp.GebDatumMetChiroLeefTijd != null);  // Anders was er al wel een exception geworpen
+        	var leiding = LidMaken(gp, gwj, LidType.Leiding, isJaarovergang) as Leiding;
 
-            if (gwj.WerkJaar - gp.GebDatumMetChiroLeefTijd.Value.Year < Properties.Settings.Default.MinLeidingLeefTijd)
-            {
-                // Throw hier een InvalidOperationException, niet omdat dat goed is, maar wel om
-                // consistent te blijven met KindMaken.
-                // TODO #761
-                throw new InvalidOperationException(Properties.Resources.TeJongVoorLeiding);
-            }
+			if (gwj.WerkJaar - gp.GebDatumMetChiroLeefTijd.Value.Year < Properties.Settings.Default.MinLeidingLeefTijd)
+			{
+				throw new GapException("De persoon is te jong om leiding te worden en je groep heeft nog geen afdeling voor die leeftijd.");
+			}
 
-            return resultaat;
+			if(leiding!=null && afdelingsJaar != null)
+			{
+				leiding.AfdelingsJaar.Add(afdelingsJaar);
+				afdelingsJaar.Leiding.Add(leiding);
+			}
+
+			return leiding;
         }
 
-        /// <summary>
-        /// Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet.
-        ///	<para />
-        /// Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen.
-        ///	Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is.
-        ///	Anders wordt een foutmelding gegeven.
-        /// </summary>
-        /// <param name="gp">De persoon om in te schrijven, gekoppeld met groep en persoon</param>
-        /// <param name="gwj">Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren</param>
-        /// <param name="isJaarOvergang">Geeft aan of het over de automatische jaarovergang gaat; relevant voor de
-        /// probeerperiode</param>
-        /// <returns>Het aangemaakte lid object</returns>
-        public Lid Inschrijven(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang)
+	 	/// <summary>
+    	/// Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet.
+    	///	<para />
+    	/// Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen.
+    	///	Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is.
+    	///	Anders wordt een foutmelding gegeven.
+    	/// </summary>
+    	/// <param name="gp">De persoon om in te schrijven, gekoppeld met groep en persoon</param>
+    	/// <param name="gwj">Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren</param>
+    	/// <param name="isJaarOvergang">Geeft aan of het over de automatische jaarovergang gaat; relevant voor de
+    	/// probeerperiode</param>
+    	///<returns>Het aangemaakte lid object</returns>
+    	public Lid AutomagischInschrijven(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang)
+		{
+		    return Inschrijven(gp, gwj, isJaarOvergang, null);
+		}
+
+		    	/// <summary>
+    	/// Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet.
+    	///	<para />
+    	/// Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen.
+    	///	Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is.
+    	///	Anders wordt een foutmelding gegeven.
+    	/// </summary>
+    	/// <param name="gp">De persoon om in te schrijven, gekoppeld met groep en persoon</param>
+    	/// <param name="gwj">Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren</param>
+    	/// <param name="isJaarOvergang">Geeft aan of het over de automatische jaarovergang gaat; relevant voor de
+    	/// probeerperiode</param>
+    	///<param name="voorstellid">Voorstel voor de eigenschappen van het in te schrijven lid. Als dit null is, wordt het lid automagisch ingeschreven. Er wordt enkel rekening gehouden met of het leiding moet worden en welk afdelingsjaar gekozen moet worden</param>
+    	///<returns>Het aangemaakte lid object</returns>
+    	public Lid InschrijvenVolgensVoorstel(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang, LidVoorstel voorstellid)
+		{
+			return Inschrijven(gp, gwj, isJaarOvergang, voorstellid);
+		}
+
+    	/// <summary>
+    	/// Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet.
+    	///	<para />
+    	/// Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen.
+    	///	Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is.
+    	///	Anders wordt een foutmelding gegeven.
+    	/// </summary>
+    	/// <param name="gp">De persoon om in te schrijven, gekoppeld met groep en persoon</param>
+    	/// <param name="gwj">Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren</param>
+    	/// <param name="isJaarOvergang">Geeft aan of het over de automatische jaarovergang gaat; relevant voor de
+    	/// probeerperiode</param>
+    	///<param name="voorstellid">Voorstel voor de eigenschappen van het in te schrijven lid. Als dit null is, wordt het lid automagisch ingeschreven. Er wordt enkel rekening gehouden met of het leiding moet worden en welk afdelingsjaar gekozen moet worden</param>
+    	///<returns>Het aangemaakte lid object</returns>
+    	private Lid Inschrijven(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang, LidVoorstel voorstellid)
         {
             if (!gp.GebDatumMetChiroLeefTijd.HasValue)
             {
@@ -323,28 +364,48 @@ namespace Chiro.Gap.Workers
 
             // Stop de geboortedatum in een lokale variabele [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement]
             var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
-            var afdelingsjaar = (from a in gwj.AfdelingsJaar
-                                 where (a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal) &&
-                                       (geboortejaar <= a.GeboorteJaarTot
-                                        && a.GeboorteJaarVan <= geboortejaar)
-                                 select a).FirstOrDefault();
+
+    		bool leidingmaken;
+    		AfdelingsJaar afdelingsJaar = null;
+
+			if(voorstellid!=null)
+			{
+				leidingmaken = voorstellid.LeidingMaken;
+				if (voorstellid.AfdelingsJaarID == null && !leidingmaken)
+				{
+					throw new GapException("Een kind moet een afdeling krijgen bij het inschrijven.");
+				}
+				if(voorstellid.AfdelingsJaarID != null)
+				{
+					afdelingsJaar = (from a in gwj.AfdelingsJaar
+					                 where (leidingmaken || (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar))
+					                       && voorstellid.AfdelingsJaarID == a.ID
+					                 select a).FirstOrDefault();
+					if(afdelingsJaar==null)
+					{
+						throw new GapException("Het gekozen afdelingsjaar is ongeldig.");
+					}
+				}
+			}
+			else
+			{
+				afdelingsJaar = (from a in gwj.AfdelingsJaar
+									 where (a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal)
+										   && (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)
+									 select a).FirstOrDefault();
+				leidingmaken = afdelingsJaar== null;
+			}
 
             Lid nieuwlid;
-            // Kijk of er een passend afdelingsjaar is
-            if (afdelingsjaar != null)
-            {
-                nieuwlid = KindMaken(gp, gwj, isJaarOvergang);
-            }
-            // Kijk of de persoon oud genoeg is om leiding te worden
-            else if (gwj.WerkJaar - gp.GebDatumMetChiroLeefTijd.Value.Year >= Properties.Settings.Default.MinLeidingLeefTijd)
-            {
-                nieuwlid = LeidingMaken(gp, gwj, isJaarOvergang);
-            }
-            else
-            {
-                throw new GapException("Je groep heeft geen afdeling voor die leeftijd en de persoon is te jong om leiding te worden.");
-            }
-
+			if(leidingmaken)
+			{
+				nieuwlid = LeidingMaken(gp, gwj, isJaarOvergang, afdelingsJaar);
+			}
+			else
+			{
+				// TODO voorgestelde afdelingen meegeven
+				nieuwlid = KindMaken(gp, gwj, isJaarOvergang, afdelingsJaar);
+			}
             return nieuwlid;
         }
 
@@ -450,7 +511,7 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }
 
-            return Ophalen(new int[] { lidID }, extras).FirstOrDefault();
+            return Ophalen(new[] { lidID }, extras).FirstOrDefault();
         }
 
         /// <summary>
@@ -481,49 +542,6 @@ namespace Chiro.Gap.Workers
             }
 
             return _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID, groepsWerkJaarID);
-        }
-
-        /// <summary>
-        /// Neemt de info uit <paramref name="lidInfo"/> over in <paramref name="lid"/>
-        /// </summary>
-        /// <param name="lidInfo">LidInfo om over te nemen in <paramref name="lid"/></param>
-        /// <param name="lid">Lid dat <paramref name="lidInfo"/> moet krijgen</param>
-        public void InfoOvernemen(LidInfo lidInfo, Lid lid)
-        {
-            Debug.Assert(lid is Leiding || lid is Kind);
-
-            if (!_autorisatieMgr.IsGavLid(lid.ID))
-            {
-                throw new GeenGavException(Properties.Resources.GeenGav);
-            }
-
-            if (!_daos.GroepsWerkJaarDao.IsRecentste(lid.GroepsWerkJaar.ID))
-            {
-                throw new FoutNummerException(
-                    FoutNummer.GroepsWerkJaarNietBeschikbaar,
-                    Properties.Resources.GroepsWerkJaarVoorbij);
-            }
-
-            if (lid is Kind && lidInfo.Type == LidType.Leiding)
-            {
-                throw new NotImplementedException();
-            }
-            if (lid is Leiding && lidInfo.Type == LidType.Kind)
-            {
-                throw new NotImplementedException();
-            }
-
-            if (lid is Kind)
-            {
-                var kind = (Kind)lid;
-                kind.LidgeldBetaald = lidInfo.LidgeldBetaald;
-                kind.NonActief = lidInfo.NonActief;
-            }
-            else
-            {
-                var leiding = (Leiding)lid;
-                leiding.NonActief = lidInfo.NonActief;
-            }
         }
 
         /// <summary>
@@ -683,7 +701,7 @@ namespace Chiro.Gap.Workers
 
                 if (nieuwType == LidType.Kind)
                 {
-                    nieuwLid = KindMaken(gelieerdePersoon, groepsWerkJaar, false);
+                    nieuwLid = KindMaken(gelieerdePersoon, groepsWerkJaar, false, null);
                     nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
                     nieuwLid.IsOvergezet = lid.IsOvergezet;
                     nieuwLid = _daos.KindDao.Bewaren(
@@ -694,7 +712,7 @@ namespace Chiro.Gap.Workers
                 }
                 else
                 {
-                    nieuwLid = LeidingMaken(gelieerdePersoon, groepsWerkJaar, false);
+                    nieuwLid = LeidingMaken(gelieerdePersoon, groepsWerkJaar, false, null);
                     nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
                     nieuwLid.IsOvergezet = lid.IsOvergezet;
                     nieuwLid = _daos.LeidingDao.Bewaren(
@@ -738,8 +756,8 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }
 
-            IEnumerable<Lid> kinderen = _daos.KindDao.Zoeken(filter, extras).Cast<Lid>();
-            IEnumerable<Lid> leiding = _daos.LeidingDao.Zoeken(filter, extras).Cast<Lid>();
+            var kinderen = _daos.KindDao.Zoeken(filter, extras);
+            IEnumerable<Lid> leiding = _daos.LeidingDao.Zoeken(filter, extras);
 
             // Sorteren doen we hier niet; dat is presentatie :)
             // Voeg kinderen en leiding samen, en haal de inactieve er uit

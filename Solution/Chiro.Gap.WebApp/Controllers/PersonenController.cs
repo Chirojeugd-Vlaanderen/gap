@@ -30,7 +30,7 @@ namespace Chiro.Gap.WebApp.Controllers
     /// Controller voor weergave en beheer van alle personen die gelieerd zijn aan de groep
     /// </summary>
     [HandleError]
-    public class PersonenController : BaseController
+    public class PersonenController : PersonenEnLedenController
     {
         /// <summary>
         /// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
@@ -230,22 +230,8 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 case 1:
                 case 2:  // 2 is stiekem verdwenen, zie #625.
-                    string foutBerichten = String.Empty;
-
-                    ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.Inschrijven(
-                        model.GekozenGelieerdePersoonIDs,
-                        out foutBerichten));
-
-                    if (String.IsNullOrEmpty(foutBerichten))
-                    {
-                        TempData["succes"] = Properties.Resources.MultiIngeschrevenFeedback;
-                    }
-                    else
-                    {
-                        TempData["fout"] = foutBerichten;
-                    }
-
-                    r = TerugNaarVorigeLijst();
+					TempData["list"] = model.GekozenGelieerdePersoonIDs;
+            		r = RedirectToAction("LedenMaken", "Leden");
                     break;
                 case 3:
                     TempData["list"] = model.GekozenGelieerdePersoonIDs;
@@ -264,7 +250,8 @@ namespace Chiro.Gap.WebApp.Controllers
             return r;
         }
 
-        #region personen
+		
+		#region personen
 
         /// <summary>
         /// Toont het formulier om een nieuwe persoon toe te voegen
@@ -488,7 +475,7 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult EditRest(int id, int groepID)
         {
-            var model = new PersonenLedenModel();
+            var model = new PersoonEnLidModel();
             BaseModelInit(model, groepID);
 
             model.PersoonLidInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(id));
@@ -513,7 +500,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="model">Het ingevulde model</param>
         [HandleError]
-        private void AfdelingenOphalen(PersonenLedenModel model)
+        private void AfdelingenOphalen(PersoonEnLidModel model)
         {
             if (model.PersoonLidInfo.LidInfo != null)
             {
@@ -536,20 +523,9 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult Inschrijven(int gelieerdepersoonID, int groepID)
         {
-            IList<int> ids = new List<int> { gelieerdepersoonID };
-            string foutBerichten = String.Empty;
-
-            ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.Inschrijven(ids, out foutBerichten));
-            if (String.IsNullOrEmpty(foutBerichten))
-            {
-                TempData["succes"] = Properties.Resources.IngeschrevenFeedback;
-            }
-            else
-            {
-                TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
-            }
-
-            return RedirectToAction("EditRest", "Personen", new { id = gelieerdepersoonID });
+        	var lijst = new List<int> {gelieerdepersoonID};
+        	TempData["list"] = lijst;
+        	return RedirectToAction("LedenMaken", "Leden"); // TODO naar waar willen we terug?
         }
 
         #endregion leden
@@ -721,8 +697,7 @@ namespace Chiro.Gap.WebApp.Controllers
                                   select new CheckBoxListInfo(
                                       p.GelieerdePersoonID.ToString(),
                                       p.PersoonVolledigeNaam,
-                                      model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID),
-                                      probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
+                                      model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
                 model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
                 model.Titel = "Personen verhuizen";
@@ -912,8 +887,7 @@ namespace Chiro.Gap.WebApp.Controllers
                                   select new CheckBoxListInfo(
                                       p.GelieerdePersoonID.ToString(),
                                       p.PersoonVolledigeNaam,
-                                      model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID),
-                                      probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
+                                      model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
                 model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
                 model.Titel = "Nieuw adres toevoegen";

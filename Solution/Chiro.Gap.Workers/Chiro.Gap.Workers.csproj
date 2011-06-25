@@ -84,6 +84,7 @@
     <Compile Include="IAuthenticatieManager.cs" />
     <Compile Include="IAutorisatieManager.cs" />
     <Compile Include="IVeelGebruikt.cs" />
+    <Compile Include="LidVoorstel.cs" />
     <Compile Include="PersonenManager.cs" />
     <Compile Include="GelieerdePersonenManager.cs" />
     <Compile Include="GroepenManager.cs" />

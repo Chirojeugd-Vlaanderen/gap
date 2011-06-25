@@ -36,7 +36,8 @@
 				<%=Html.LabelFieldList("AfdelingsIDs", new TextFieldListInfo(ai.AfdelingID.ToString(), ai.AfdelingNaam))%>
 			</td>
 			<td>
-				<%=Html.OffAfdelingsDropDownList("OfficieleAfdelingsIDs", Model.OfficieleAfdelingen, ai.OfficieleAfdelingNaam)%>
+				<% IEnumerable<DropDownListHelper.DropDownListItem<int>> offAfdelingIDItems = Model.OfficieleAfdelingen.Select(e => new DropDownListHelper.DropDownListItem<int>() { Waarde = e.ID, DisplayNaam = e.Naam });%>
+				<%=Html.DropDownList("OfficieleAfdelingsIDs", offAfdelingIDItems, ai.OfficieleAfdelingID)%>
 			</td>
 			<td>
 				<%=Html.TextFieldList("VanLijst", new TextFieldListInfo(ai.GeboorteJaarVan==0?"":ai.GeboorteJaarVan.ToString(), ""))%>
@@ -45,7 +46,9 @@
 				<%=Html.TextFieldList("TotLijst", new TextFieldListInfo(ai.GeboorteJaarTot == 0 ? "" : ai.GeboorteJaarTot.ToString(), ""))%>
 			</td>
 			<td>
-				<%=Html.GeslachtsDropDownList("GeslLijst", ai.Geslacht)%>
+				<%
+					IEnumerable<DropDownListHelper.DropDownListItem<GeslachtsType>> geslachtswaardenlijst = Enum.GetValues(typeof(GeslachtsType)).OfType<GeslachtsType>().ToList().Select(e => new DropDownListHelper.DropDownListItem<GeslachtsType>() { Waarde = e, DisplayNaam = e.ToString() });%>
+				<%=Html.DropDownList("GeslLijst", geslachtswaardenlijst, ai.Geslacht)%>
 			</td>
 		</tr>
 		<% } %>

@@ -9,6 +9,6 @@ namespace Chiro.Gap.WebApp.Models
 {
     public class UitstapModel : MasterViewModel
     {
-        public UitstapDetail Uitstap { get; set; }
+        public UitstapOverzicht Uitstap { get; set; }
     }
 }

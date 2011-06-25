@@ -17,7 +17,7 @@ namespace Chiro.Gap.WebApp.Models
     {
         public UitstapPlaatsBewerkenModel()
         {
-            Uitstap = new UitstapDetail { Adres = new AdresInfo() };
+            Uitstap = new UitstapOverzicht { Adres = new AdresInfo() };
         }
 
         #region Implementation of IAdresBewerkenModel

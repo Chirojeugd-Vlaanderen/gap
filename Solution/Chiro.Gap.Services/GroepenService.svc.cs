@@ -1090,6 +1090,8 @@ namespace Chiro.Gap.Services
         /// <remarks>Voor kadergroepen laat je teActiveren gewoon leeg.</remarks>
         public void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdelingInfo> teActiveren, int groepID, out string foutBerichten)
         {
+			// TODO jaarovergang werkt momenteel NIET!
+			throw new NotImplementedException();
             foutBerichten = string.Empty;
 
             // TODO (#846): deze code hoort thuis in de workers, en niet hier
@@ -1205,7 +1207,7 @@ namespace Chiro.Gap.Services
                         new LidFilter { GroepsWerkJaarID = voriggwj.ID, LidType = LidType.Alles },
                         LidExtras.Persoon | LidExtras.Groep | LidExtras.Functies);
 
-                    foreach (var lid in ledenlijst)
+  /*                  foreach (var lid in ledenlijst)
                     {
                         var gp = lid.GelieerdePersoon;
 
@@ -1238,7 +1240,7 @@ namespace Chiro.Gap.Services
                         {
                             foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
                         }
-                    }
+                    }*/
 
                     foutBerichten = foutBerichtenBuilder.ToString();
 

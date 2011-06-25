@@ -89,8 +89,8 @@ namespace Chiro.Gap.Data.Test
 
 				// GelieerdePersoon2 moet Kind gemaakt worden, want in de test KindVerwijderen
 				// zal geprobeerd worden op GelieerdePersoon2 te 'ontkinden'.  Zie #184.
-				
-				var k = lm.Inschrijven(gp, aj.GroepsWerkJaar, false);
+
+				var k = lm.AutomagischInschrijven(gp, aj.GroepsWerkJaar, false);
 
 				Debug.Assert(k is Kind);
 

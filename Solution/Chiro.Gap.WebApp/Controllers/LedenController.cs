@@ -24,7 +24,7 @@ namespace Chiro.Gap.WebApp.Controllers
     /// Controller voor weergave en beheer van ledenlijst
     /// </summary>
     [HandleError]
-    public class LedenController : BaseController
+    public class LedenController : PersonenEnLedenController
     {
         /// <summary>
         /// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
@@ -815,7 +815,7 @@ namespace Chiro.Gap.WebApp.Controllers
             return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });
         }
 
-        #region Verkorte url's, die eigenlijk gewoon Lijst aanroepen met de jusite parameters
+    	#region Verkorte url's, die eigenlijk gewoon Lijst aanroepen met de jusite parameters
 
         /// <summary>
         /// Toont een gesorteerde ledenlijst

@@ -405,7 +405,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.Afdelingen,
                            opt => opt.MapFrom(src => Afdelingen(src.GelieerdePersoon.Lid.FirstOrDefault())))
                 .ForMember(dst => dst.DeelnemerID, opt => opt.MapFrom(src => src.ID))
-                .ForMember(dst => dst.PersoonLidInfo, opt => opt.Ignore())
+				.ForMember(dst => dst.PersoonOverzicht, opt => opt.Ignore())
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
                 .ForMember(dst => dst.Type,
@@ -428,7 +428,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             Mapper.CreateMap<CommunicatieVorm, CommunicatieDetail>();
             Mapper.CreateMap<Uitstap, UitstapInfo>();
 
-            Mapper.CreateMap<Uitstap, UitstapDetail>()
+            Mapper.CreateMap<Uitstap, UitstapOverzicht>()
                 .ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.Plaats == null ? null : src.Plaats.Adres));
 
             Mapper.CreateMap<Groep, GroepInfo>()
@@ -509,6 +509,28 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(
                     dst => dst.LidInfo,
                     opt => opt.MapFrom(src => src.Lid.FirstOrDefault())); // omdat je altijd maar 1 lid mag opvragen
+			
+			Mapper.CreateMap<Lid, InTeSchrijvenLid>()
+        		.ForMember(
+        			dst => dst.GelieerdePersoonID,
+        			opt => opt.MapFrom(src => src.GelieerdePersoon.ID))
+        		.ForMember(
+        			dst => dst.AfdelingsJaarID,
+					opt => opt.MapFrom(src => src is Leiding ? (((Leiding)src).AfdelingsJaar.FirstOrDefault() == null ? -1 : ((Leiding)src).AfdelingsJaar.First().ID) : ((Kind)src).AfdelingsJaar.ID))
+				.ForMember(
+					dst => dst.LeidingMaken,
+					opt => opt.MapFrom(src => src is Leiding))
+				.ForMember(
+					dst => dst.VolledigeNaam,
+					opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VolledigeNaam));
+
+        	Mapper.CreateMap<InTeSchrijvenLid, LidVoorstel>()
+        		.ForMember(
+        			dst => dst.AfdelingsJaarID,
+        			opt => opt.MapFrom(src => src.AfdelingsJaarID))
+        		.ForMember(
+        			dst => dst.LeidingMaken,
+        			opt => opt.MapFrom(src => src.LeidingMaken));
 
             #region mapping van datacontracts naar entity's
 

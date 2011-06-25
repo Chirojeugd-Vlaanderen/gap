@@ -19,7 +19,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// van een nieuwe uitstap gewoon leeg, ipv een nietszeggende datum in het
 	/// jaar 1 als ze niet nullable zijn.</remarks>
 	[DataContract]
-	[KnownType(typeof(UitstapDetail))]
+	[KnownType(typeof(UitstapOverzicht))]
 	public class UitstapInfo
 	{
 		[DataMember]

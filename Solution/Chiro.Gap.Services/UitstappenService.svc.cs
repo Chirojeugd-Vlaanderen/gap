@@ -142,12 +142,12 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="uitstapID">ID van de uitstap</param>
         /// <returns>Details over de uitstap</returns>
-        public UitstapDetail DetailsOphalen(int uitstapID)
+        public UitstapOverzicht DetailsOphalen(int uitstapID)
         {
             try
             {
                 var uitstap = _uitstappenMgr.Ophalen(uitstapID, UitstapExtras.GroepsWerkJaar | UitstapExtras.Plaats);
-                var uitstapDetail = Mapper.Map<Uitstap, UitstapDetail>(uitstap);
+                var uitstapDetail = Mapper.Map<Uitstap, UitstapOverzicht>(uitstap);
                 return uitstapDetail;
             }
             catch (GeenGavException ex)

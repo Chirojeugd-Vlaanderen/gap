@@ -65,6 +65,76 @@ namespace Chiro.Gap.Services
 
         #region leden managen
 
+		/// <summary>
+		/// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
+		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
+		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
+		public IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
+		{
+			try
+			{
+				var foutBerichtenBuilder = new StringBuilder();
+
+				// Haal meteen alle gelieerde personen op, gecombineerd met hun groep
+				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Groep);
+
+				// Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
+				// al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
+				var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
+
+				var voorgesteldelijst = new List<InTeSchrijvenLid>();
+
+				foreach (var g in groepen)
+				{
+					// Per groep lid maken.
+					// Zoek eerst recentste groepswerkjaar.
+					var gwj = _groepwsWjMgr.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Groep);
+
+					foreach (var gp in g.GelieerdePersoon)
+					{
+						try
+						{
+							var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+
+							if (l != null) // uitgeschreven
+							{
+								if (!l.NonActief)
+								{
+									foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
+									continue;
+								}
+							}
+							else // nieuw lid
+							{
+								l = _ledenMgr.AutomagischInschrijven(gp, gwj, false);
+							}
+
+							if (l != null)
+							{
+								voorgesteldelijst.Add(Mapper.Map<Lid, InTeSchrijvenLid>(l));
+							}
+						}
+						catch (GapException ex)
+						{
+							foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
+						}
+					}
+				}
+
+				foutBerichten = foutBerichtenBuilder.ToString();
+
+				return voorgesteldelijst;
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				foutBerichten = null;
+				return null;
+			}
+		}
+
         /// <summary>
         /// Gegeven een lijst van IDs van gelieerde personen.
         /// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken.
@@ -72,7 +142,7 @@ namespace Chiro.Gap.Services
         /// <para />
         /// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkjaar.
         /// </summary>
-        /// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
+		/// <param name="lidInformatie">Lijst van informatie over wie lid moet worden</param>
         /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
         /// string waarin wat uitleg staat. </param>
         /// <returns>De LidID's van de personen die lid zijn gemaakt</returns>
@@ -81,17 +151,17 @@ namespace Chiro.Gap.Services
         /// teruggegeven.
         /// </remarks>
         /// <throws>NotSupportedException</throws> // TODO handle
-        public IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
+		public IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten)
         {
+			// TODO hier zat ik
             // TODO (#1053): beter systeem vinden voor deze feedback.
-
             try
             {
                 var lidIDs = new List<int>();
                 var foutBerichtenBuilder = new StringBuilder();
 
                 // Haal meteen alle gelieerde personen op, gecombineerd met hun groep
-                var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Groep);
+                var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(lidInformatie.Select(e => e.GelieerdePersoonID), PersoonsExtras.Groep);
 
                 // Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
                 // al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
@@ -120,10 +190,11 @@ namespace Chiro.Gap.Services
                             }
                             else // nieuw lid
                             {
-                                l = _ledenMgr.Inschrijven(gp, gwj, false);
+                            	GelieerdePersoon gp1 = gp;
+                            	l = _ledenMgr.InschrijvenVolgensVoorstel(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
                             }
 
-                            // Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
+                        	// Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
                             // verhindert dat de rest bewaard wordt.
                             if (l != null)
                             {

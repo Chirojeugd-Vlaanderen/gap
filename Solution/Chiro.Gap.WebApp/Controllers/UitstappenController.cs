@@ -44,18 +44,18 @@ namespace Chiro.Gap.WebApp.Controllers
             return View(model);
         }
 
-        /// <summary>
-        /// Formulier om nieuwe uitstap te registreren
-        /// </summary>
-        /// <param name="groepID">ID van groep waarvoor uitstap moet worden geregistreerd</param>
-        /// <returns>Het formulier</returns>
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult Nieuw(int groepID)
-        {
-            var model = new UitstapModel();
-            BaseModelInit(model, groepID);
-            model.Titel = Properties.Resources.NieuweUitstap;
-            model.Uitstap = new UitstapDetail();
+		/// <summary>
+		/// Formulier om nieuwe uitstap te registreren
+		/// </summary>
+		/// <param name="groepID">ID van groep waarvoor uitstap moet worden geregistreerd</param>
+		/// <returns>Het formulier</returns>
+		[AcceptVerbs(HttpVerbs.Get)]
+		public ActionResult Nieuw(int groepID)
+		{
+			var model = new UitstapModel();
+			BaseModelInit(model, groepID);
+			model.Titel = Properties.Resources.NieuweUitstap;
+			model.Uitstap = new UitstapOverzicht();
 
             return View("Bewerken", model);
         }
@@ -70,33 +70,33 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Nieuw(UitstapModel model, int groepID)
         {
-            BaseModelInit(model, groepID);
-            model.Titel = Properties.Resources.NieuweUitstap;
+        	BaseModelInit(model, groepID);
+        	model.Titel = Properties.Resources.NieuweUitstap;
 
-            if (ModelState.IsValid)
-            {
-                int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
-                return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
-            }
+        	if (ModelState.IsValid)
+        	{
+        		int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
+        		return RedirectToAction("Bekijken", new {groepID, id = uitstapID});
+        	}
 
-            return View("Bewerken", model);
+        	return View("Bewerken", model);
         }
 
-        /// <summary>
-        /// Toont de details van een gegeven uitstap
-        /// </summary>
-        /// <param name="groepID">ID van de groep die momenteel geselecteerd is</param>
-        /// <param name="id">ID van de uitstap waarin we geïnteresseerd zijn</param>
-        /// <returns>De details van de gegeven uitstap</returns>
-        public ActionResult Bekijken(int groepID, int id)
-        {
-            var model = new UitstapDeelnemersModel();
-            BaseModelInit(model, groepID);
-            model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
-            model.Deelnemers =
-                ServiceHelper.CallService<IUitstappenService, IEnumerable<DeelnemerDetail>>(
-                    svc => svc.DeelnemersOphalen(id));
-            model.Titel = model.Uitstap.Naam;
+		/// <summary>
+		/// Toont de details van een gegeven uitstap
+		/// </summary>
+		/// <param name="groepID">ID van de groep die momenteel geselecteerd is</param>
+		/// <param name="id">ID van de uitstap waarin we geïnteresseerd zijn</param>
+		/// <returns>De details van de gegeven uitstap</returns>
+		public ActionResult Bekijken(int groepID, int id)
+		{
+			var model = new UitstapDeelnemersModel();
+			BaseModelInit(model, groepID);
+			model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapOverzicht>(svc => svc.DetailsOphalen(id));
+			model.Deelnemers =
+				ServiceHelper.CallService<IUitstappenService, IEnumerable<DeelnemerDetail>>(
+					svc => svc.DeelnemersOphalen(id));
+			model.Titel = model.Uitstap.Naam;
 
             if (model.Uitstap.IsBivak)
             {
@@ -114,7 +114,7 @@ namespace Chiro.Gap.WebApp.Controllers
                                      where dln.IsContact
                                      select dln).FirstOrDefault() != null;
 
-                if (!heeftContact)
+				if (!heeftContact)
                 {
                     TempData["fout"] += Properties.Resources.GeenContactVoorBivak;
                 }
@@ -123,46 +123,20 @@ namespace Chiro.Gap.WebApp.Controllers
             return View(model);
         }
 
-        /// <summary>
-        /// Formulier om bestaande uitstap mee te bewerken
-        /// </summary>
-        /// <param name="groepID">ID van de groep</param>
-        /// <param name="id">ID van de te bewerken uitstap</param>
-        /// <returns>Een formuliertje waarmee je datum en opmerkingen van een uitstap kunt aanpassen</returns>
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult Bewerken(int groepID, int id)
-        {
-            var model = new UitstapModel();
-            BaseModelInit(model, groepID);
-            model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
-            model.Titel = model.Uitstap.Naam;
-
+		/// <summary>
+		/// Formulier om bestaande uitstap mee te bewerken
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <param name="id">ID van de te bewerken uitstap</param>
+		/// <returns>Een formuliertje waarmee je datum en opmerkingen van een uitstap kunt aanpassen</returns>
+		[AcceptVerbs(HttpVerbs.Get)]
+		public ActionResult Bewerken(int groepID, int id)
+		{
+			var model = new UitstapModel();
+			BaseModelInit(model, groepID);
+			model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapOverzicht>(svc => svc.DetailsOphalen(id));
+			model.Titel = model.Uitstap.Naam;
             return View(model);
-        }
-
-        /// <summary>
-        /// Stuurt de gegevens uit het 'uitstapbewerkenformulier' door naar de backend.
-        /// </summary>
-        /// <param name="model">Ingevulde gegevens</param>
-        /// <param name="groepID">Groep waarvoor uitstap moet worden bewerkt</param>
-        /// <param name="id">ID van de te bewerken uitstap</param>
-        /// <returns>Als alles gelukt is, de details van de toegevoegde uitstap.  Anders 
-        /// opnieuw het formulier met feedback over de problemen.</returns>
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Bewerken(UitstapModel model, int groepID, int id)
-        {
-            BaseModelInit(model, groepID);
-            // neem uitstapID over uit url, want ik denk dat daarvoor geen field is voorzien.
-            model.Uitstap.ID = id;
-            model.Titel = model.Uitstap.Naam;
-
-            if (ModelState.IsValid)
-            {
-                int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
-                return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
-            }
-
-            return View("Bewerken", model);
         }
 
         /// <summary>
@@ -176,7 +150,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             var model = new UitstapPlaatsBewerkenModel();
             BaseModelInit(model, groepID);
-            model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
+            model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapOverzicht>(svc => svc.DetailsOphalen(id));
 
             if (model.Uitstap.Adres == null)
             {
@@ -198,7 +172,32 @@ namespace Chiro.Gap.WebApp.Controllers
             return View(model);
         }
 
-        /// <summary>
+		/// <summary>
+        /// Stuurt de gegevens uit het 'uitstapbewerkenformulier' door naar de backend.
+        /// </summary>
+        /// <param name="model">Ingevulde gegevens</param>
+        /// <param name="groepID">Groep waarvoor uitstap moet worden bewerkt</param>
+        /// <param name="id">ID van de te bewerken uitstap</param>
+        /// <returns>Als alles gelukt is, de details van de toegevoegde uitstap.  Anders 
+        /// opnieuw het formulier met feedback over de problemen.</returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Bewerken(UitstapModel model, int groepID, int id)
+		{
+			BaseModelInit(model, groepID);
+			// neem uitstapID over uit url, want ik denk dat daarvoor geen field is voorzien.
+			model.Uitstap.ID = id;
+			model.Titel = model.Uitstap.Naam;
+
+			if (ModelState.IsValid)
+			{
+				int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
+				return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
+			}
+
+			return View("Bewerken", model);
+		}
+
+    	/// <summary>
         /// Als <paramref name="model"/> geen fouten bevat, stuurt deze controller action de geüpdatete plaats
         /// naar de backend om te persisteren.
         /// </summary>
@@ -325,50 +324,43 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult Download(int id)
         {
-            var uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(s => s.DetailsOphalen(id));
-            var lijst = ServiceHelper.CallService<IUitstappenService, IEnumerable<DeelnemerDetail>>(s => s.DeelnemersOphalen(id)).ToList();
+			var uitstap = ServiceHelper.CallService<IUitstappenService, UitstapOverzicht>(s => s.DetailsOphalen(id));
+			var lijst = ServiceHelper.CallService<IUitstappenService, IEnumerable<DeelnemerDetail>>(s => s.DeelnemersOphalen(id)).ToList();
 
-            var personenidlijst = lijst.Select(e => e.GelieerdePersoonID);
-            var personenlijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonLidInfo>>(s => s.DetailsOphalen(personenidlijst.ToList()));
-
-            foreach (var persoonLidInfo in personenlijst)
-            {
-                PersoonLidInfo info = persoonLidInfo;
-                lijst.Where(e => e.GelieerdePersoonID == info.PersoonDetail.GelieerdePersoonID).First().PersoonLidInfo =
-                    persoonLidInfo;
-            }
+			var personenlijst = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>(g => g.AllenOphalenUitLijst(lijst.Select(e => e.GelieerdePersoonID).ToList()));
+		foreach (var persoonLidInfo in personenlijst)
+			{
+				PersoonOverzicht info = persoonLidInfo;
+				lijst.Where(e => e.GelieerdePersoonID == info.GelieerdePersoonID).First().PersoonOverzicht =
+					persoonLidInfo;
+			}
 
             string[] kolomkoppen = 
                     {
 			        "ADnummer", "Voornaam", "Familienaam", "Geboortedatum", "Geslacht", "Telefoon", "Straat", "Huisnummer", "Postcode", "Woonplaats", "Afdelingen", "Functie", "Contactpersoon", "Betaald", "Medische fiche", "Opmerkingen"
 			        };
 
-            var hasVoorkeursTelNr = new Func<DeelnemerDetail, bool>(x => x.PersoonLidInfo.CommunicatieInfo.Count() > 0 && x.PersoonLidInfo.CommunicatieInfo.Where(e => e.Voorkeur && e.CommunicatieTypeID == (int)CommunicatieTypeEnum.TelefoonNummer).Count() > 0);
-            var voorkeursTelNr = new Func<DeelnemerDetail, string>(x => x.PersoonLidInfo.CommunicatieInfo.Where(e => e.Voorkeur && e.CommunicatieTypeID == (int)CommunicatieTypeEnum.TelefoonNummer).First().Nummer);
-            var hasVoorkeursAdres = new Func<DeelnemerDetail, bool>(x => x.PersoonLidInfo.PersoonsAdresInfo.Where(e => e.PersoonsAdresID == x.PersoonLidInfo.PersoonDetail.VoorkeursAdresID).Count() > 0);
-            var voorkeursadres = new Func<DeelnemerDetail, AdresInfo>(x => x.PersoonLidInfo.PersoonsAdresInfo.Where(e => e.PersoonsAdresID == x.PersoonLidInfo.PersoonDetail.VoorkeursAdresID).First());
-
-            var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));
-            var stream = (new ExcelManip()).ExcelTabel(
-                lijst,
-                kolomkoppen,
-                it => it.PersoonLidInfo.PersoonDetail.AdNummer,
-                it => it.VoorNaam,
-                it => it.FamilieNaam,
-                it => it.PersoonLidInfo.PersoonDetail.GeboorteDatum,
-                it => it.PersoonLidInfo.PersoonDetail.Geslacht,
-                it => hasVoorkeursTelNr(it) ? voorkeursTelNr(it) : string.Empty,
-                it => hasVoorkeursAdres(it) ? voorkeursadres(it).StraatNaamNaam : string.Empty,
-                it => hasVoorkeursAdres(it) ? voorkeursadres(it).HuisNr.ToString() : string.Empty,
-                it => hasVoorkeursAdres(it) ? voorkeursadres(it).PostNr.ToString() : string.Empty,
-                it => hasVoorkeursAdres(it) ? voorkeursadres(it).WoonPlaatsNaam : string.Empty,
-                it => it.Afdelingen == null ? String.Empty : String.Concat(it.Afdelingen.Select(afd => afd.Afkorting + " ").ToArray()),
-                it => it.Type,
-                it => it.IsContact ? "Ja" : "Nee",
-                it => it.HeeftBetaald ? "Ja" : "Nee",
-                it => it.MedischeFicheOk ? "Ja" : "Nee",
-                it => it.Opmerkingen
-            );
+			var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));
+			var stream = (new ExcelManip()).ExcelTabel(
+				lijst,
+				kolomkoppen,
+				it => it.PersoonOverzicht.AdNummer,
+				it => it.VoorNaam,
+				it => it.FamilieNaam,
+				it => it.PersoonOverzicht.GeboorteDatum,
+				it => it.PersoonOverzicht.Geslacht,
+				it => it.PersoonOverzicht.TelefoonNummer,
+				it => it.PersoonOverzicht.StraatNaam,
+				it => it.PersoonOverzicht.HuisNummer,
+				it => it.PersoonOverzicht.PostCode,
+				it => it.PersoonOverzicht.WoonPlaats,
+				it => it.Afdelingen == null ? String.Empty : String.Concat(it.Afdelingen.Select(afd => afd.Afkorting + " ").ToArray()),
+				it => it.Type,
+				it => it.IsContact ? "Ja" : "Nee",
+				it => it.HeeftBetaald ? "Ja" : "Nee",
+				it => it.MedischeFicheOk ? "Ja" : "Nee",
+				it => it.Opmerkingen
+			);
 
             return new ExcelResult(stream, bestandsNaam);
         }

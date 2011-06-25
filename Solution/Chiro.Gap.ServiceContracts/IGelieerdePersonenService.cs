@@ -84,16 +84,6 @@ namespace Chiro.Gap.ServiceContracts
 		PersoonDetail DetailOphalen(int gelieerdePersoonID);
 
 		/// <summary>
-		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">List van IDs van op te halen GelieerdePersonen</param>
-		/// <returns>List van GelieerdePersonen met persoonsgegevens, communicatievorm en adressen</returns>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonLidInfo> DetailsOphalen(IList<int> gelieerdePersoonIDs);
-
-		/// <summary>
 		/// Haalt gelieerde persoon op met ALLE nodige info om het persoons-bewerken scherm te vullen:
 		/// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
 		/// functies
@@ -131,6 +121,16 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering);
+
+		/// <summary>
+		/// Haalt gegevens op van alle gelieerdepersonen met IDs in <paramref name="gelieerdePersoonIDs"/>.
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">IDs van de gelieerdepersonen waarover informatie opgehaald moet worden</param>
+		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		IEnumerable<PersoonOverzicht> AllenOphalenUitLijst(IList<int> gelieerdePersoonIDs);
 
 		#endregion ophalen
 

@@ -108,6 +108,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MyResources.nl.resx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\PersonenEnLedenController.cs" />
     <Compile Include="Controllers\UitstappenController.cs" />
     <Compile Include="HtmlHelpers\AfdelingsLinksHelper.cs" />
     <Compile Include="HtmlHelpers\CheckBoxListHelper.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelpers\RadioButtonListHelper.cs" />
     <Compile Include="HtmlHelpers\PersoonsLinkHelper.cs" />
     <Compile Include="HtmlHelpers\PrintLijstHelper.cs" />
     <Compile Include="HtmlHelpers\PagingHelper.cs" />
@@ -137,7 +139,7 @@
     <Compile Include="Models\IAdresBewerkenModel.cs" />
     <Compile Include="Models\LidAfdelingenModel.cs" />
     <Compile Include="Models\Mededeling.cs" />
-    <Compile Include="Models\PersonenLedenModel.cs" />
+    <Compile Include="Models\PersoonEnLidModel.cs" />
     <Compile Include="Models\GroepsInstellingenModel.cs" />
     <Compile Include="Models\IMasterViewModel.cs" />
     <Compile Include="Models\NieuweCommVormModel.cs" />
@@ -151,6 +153,7 @@
     <Compile Include="Models\PersoonInfoModel.cs" />
     <Compile Include="Models\AdresModel.cs" />
     <Compile Include="ActionFilters\ParameterAccepterenAttribute.cs" />
+    <Compile Include="Models\GeselecteerdePersonenEnLedenModel.cs" />
     <Compile Include="Models\UitstapDeelnemersModel.cs" />
     <Compile Include="Models\UitstapInschrijfModel.cs" />
     <Compile Include="Models\UitstapModel.cs" />
@@ -203,6 +206,7 @@
     <Content Include="Views\Handleiding\UitstapToevoegen.aspx" />
     <Content Include="Views\Leden\AfdelingenBewerken.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
+    <Content Include="Views\Shared\LedenMaken.aspx" />
     <Content Include="Views\Personen\AdresVerwijderen.aspx" />
     <Content Include="Views\Personen\CommVormBewerken.aspx" />
     <Content Include="Views\Personen\CategorieToevoegenAanLijst.aspx" />

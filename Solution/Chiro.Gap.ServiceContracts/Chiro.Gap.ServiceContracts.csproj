@@ -70,6 +70,7 @@
     <Compile Include="DataContracts\CommunicatieInfo.cs" />
     <Compile Include="DataContracts\BivakAangifteInfo.cs" />
     <Compile Include="DataContracts\BivakAangifteLijstInfo.cs" />
+    <Compile Include="DataContracts\InTeSchrijvenLid.cs" />
     <Compile Include="DataContracts\DeelnemerInfo.cs" />
     <Compile Include="DataContracts\GroepsWerkJaarDetail.cs" />
     <Compile Include="DataContracts\LandInfo.cs" />
@@ -91,7 +92,7 @@
     <Compile Include="DataContracts\PersoonsAdresInfo.cs" />
     <Compile Include="DataContracts\StraatInfo.cs" />
     <Compile Include="DataContracts\DeelnemerDetail.cs" />
-    <Compile Include="DataContracts\UitstapDetail.cs" />
+    <Compile Include="DataContracts\UitstapOverzicht.cs" />
     <Compile Include="DataContracts\UitstapInfo.cs" />
     <Compile Include="DataContracts\WerkJaarInfo.cs" />
     <Compile Include="DataContracts\WoonPlaatsInfo.cs" />

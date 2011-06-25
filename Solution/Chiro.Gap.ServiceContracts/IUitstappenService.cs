@@ -50,7 +50,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		UitstapDetail DetailsOphalen(int uitstapID);
+		UitstapOverzicht DetailsOphalen(int uitstapID);
 
 		/// <summary>
 		/// Bewaart de plaats voor een uitstap

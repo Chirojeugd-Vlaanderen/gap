@@ -352,25 +352,6 @@ namespace Chiro.Gap.Services
             }
         }
 
-		/// <summary>
-		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">List van IDs van op te halen GelieerdePersonen</param>
-		/// <returns>List van GelieerdePersonen met persoonsgegevens, communicatievorm en adressen</returns>
-		public IList<PersoonLidInfo> DetailsOphalen(IList<int> gelieerdePersoonIDs)
-		{
-			try
-			{
-				return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonLidInfo>>(
-					_gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Communicatie | PersoonsExtras.Adressen | PersoonsExtras.VoorkeurAdres));
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				return null;
-			}
-		}
-
         /// <summary>
         /// Haalt gelieerde persoon op met ALLE nodige info om het persoons-bewerken scherm te vullen:
         /// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
@@ -437,7 +418,7 @@ namespace Chiro.Gap.Services
                     1,
                     int.MaxValue,
                     sortering,
-                    PersoonsExtras.Adressen | PersoonsExtras.Communicatie,
+					PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres,
                     out totaal);
 
                 return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
@@ -459,7 +440,7 @@ namespace Chiro.Gap.Services
         {
             try
             {
-                var gelieerdePersonen = _gpMgr.AllenOphalen(groepID, PersoonsExtras.Adressen | PersoonsExtras.Communicatie, sortering);
+                var gelieerdePersonen = _gpMgr.AllenOphalen(groepID, PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres, sortering);
                 return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
             }
             catch (Exception ex)
@@ -468,6 +449,25 @@ namespace Chiro.Gap.Services
                 return null;
             }
         }
+
+		/// <summary>
+		/// Haalt gegevens op van alle gelieerdepersonen met IDs in <paramref name="gelieerdePersoonIDs"/>.
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">IDs van de gelieerdepersonen waarover informatie opgehaald moet worden</param>
+		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
+		public IEnumerable<PersoonOverzicht> AllenOphalenUitLijst(IList<int> gelieerdePersoonIDs)
+		{
+			try
+			{
+				var gelieerdePersonen = _gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres);
+				return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
+		}
 
         /// <summary>
         /// Zoekt naar (gelieerde)persoonID's op basis van naam, voornaam en groepid
