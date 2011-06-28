@@ -3,39 +3,38 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System.Collections.Generic;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-using Chiro.Gap.Domain;
-
-namespace Chiro.Gap.ServiceContracts.DataContracts
+namespace Chiro.Gap.Domain
 {
 	/// <summary>
 	/// DataContract voor info over de status van een bivakaangifte
 	/// </summary>
 	[DataContract]
-	public class BivakAangifteLijstInfo
+	public class BivakAangifteInfo
 	{
-		public BivakAangifteLijstInfo()
-		{
-			AlgemeneStatus = BivakAangifteStatus.Onbekend;
-			Bivakinfos = new List<BivakAangifteInfo>();
-		}
-
 		/// <summary>
-		///
+		/// Het unieke ID van het bivak
 		/// </summary>
 		[Verplicht]
 		[DataMember]
-		public IList<BivakAangifteInfo> Bivakinfos { get; set; }
+		public int ID { get; set; }
 
 		/// <summary>
-		///
+		/// De omschrijving van het bivak
 		/// </summary>
 		[Verplicht]
 		[DataMember]
-		public BivakAangifteStatus AlgemeneStatus { get; set; }
+		public String Omschrijving { get; set; }
+
+		/// <summary>
+		/// De huidige status van de bivakaangifte
+		/// </summary>
+		[Verplicht]
+		[DataMember]
+		public BivakAangifteStatus Status { get; set; }
 
 		/// <summary>
 		/// Geeft stringrepresentatie van Versie weer (hex).

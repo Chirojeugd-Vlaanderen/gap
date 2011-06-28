@@ -68,8 +68,6 @@
     <Compile Include="DataContracts\CommunicatieDetail.cs" />
     <Compile Include="DataContracts\CommunicatieTypeInfo.cs" />
     <Compile Include="DataContracts\CommunicatieInfo.cs" />
-    <Compile Include="DataContracts\BivakAangifteInfo.cs" />
-    <Compile Include="DataContracts\BivakAangifteLijstInfo.cs" />
     <Compile Include="DataContracts\InTeSchrijvenLid.cs" />
     <Compile Include="DataContracts\DeelnemerInfo.cs" />
     <Compile Include="DataContracts\GroepsWerkJaarDetail.cs" />

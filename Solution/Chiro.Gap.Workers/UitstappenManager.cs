@@ -17,7 +17,6 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
