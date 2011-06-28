@@ -33,6 +33,8 @@ namespace Chiro.Gap.WebApp
         private const string ISLIVECACHEKEY = "live";
         private const string LEDENPROBLEMENCACHEKEY = "lidprob{0}";
         private const string LEDENPROBLEMENAANTALCACHEKEY = "aantallidprob{0}";
+        private const string BIVAKSTATUSCACHEKEY = "bivstat{0}";
+        private const string BIVAKSTATUSAANTALCACHEKEY = "aantalbivstat{0}";
         #endregion
 
         private readonly IServiceHelper _serviceHelper;
@@ -91,11 +93,6 @@ namespace Chiro.Gap.WebApp
 
             return gwjDetail;
         }
-
-		public BivakAangifteLijstInfo BivakStatusHuidigWerkjaarOphalen(int groepID)
-    	{
-			return _serviceHelper.CallService<IUitstappenService, BivakAangifteLijstInfo>(g => g.BivakStatusOphalen(groepID));
-    	}
 
     	#endregion
 
@@ -233,6 +230,62 @@ namespace Chiro.Gap.WebApp
             // worden ze anders niet vervangen.
             _cache.Remove(String.Format(LEDENPROBLEMENCACHEKEY, groepID));
             _cache.Remove(String.Format(LEDENPROBLEMENAANTALCACHEKEY, groepID));
+        }
+
+        /// <summary>
+        /// Verwijdert de bivakproblemen voor groep met id <paramref name="groepID"/> uit de cache.
+        /// </summary>
+        /// <param name="groepID">ID van groep met te verwijderen problemen</param>
+        public void BivakStatusResetten(int groepID)
+        {
+            _cache.Remove(String.Format(BIVAKSTATUSCACHEKEY, groepID));
+            _cache.Remove(String.Format(BIVAKSTATUSAANTALCACHEKEY, groepID));           
+        }
+
+        /// <summary>
+        /// Haalt de problemen ivm de bivakaangifte op.
+        /// </summary>
+        /// <param name="groepID">ID van een groep</param>
+        /// <returns>Info over wat ontbreekt mbt de bivakaangifte</returns>
+        public BivakAangifteLijstInfo BivakStatusHuidigWerkjaarOphalen(int groepID)
+        {
+            int? telling = (int?) _cache.Get(String.Format(BIVAKSTATUSAANTALCACHEKEY, groepID));
+            var resultaat = (BivakAangifteLijstInfo) _cache.Get(String.Format(BIVAKSTATUSCACHEKEY, groepID));
+
+            if (telling == null)
+            {
+                resultaat =
+                    _serviceHelper.CallService<IUitstappenService, BivakAangifteLijstInfo>(
+                        g => g.BivakStatusOphalen(groepID));
+                if (resultaat.Bivakinfos == null)
+                {
+                    telling = 0;
+                    _cache.Remove(String.Format(BIVAKSTATUSCACHEKEY, groepID));
+                }
+                else
+                {
+                    telling = resultaat.Bivakinfos.Count();
+                    _cache.Add(
+                        String.Format(BIVAKSTATUSCACHEKEY, groepID),
+                        resultaat,
+                        null,
+                        Cache.NoAbsoluteExpiration,
+                        new TimeSpan(2, 0, 0),
+                        CacheItemPriority.NotRemovable,
+                        null);
+                }
+
+                _cache.Add(
+                    String.Format(BIVAKSTATUSAANTALCACHEKEY, groepID),
+                    telling,
+                    null,
+                    Cache.NoAbsoluteExpiration,
+                    new TimeSpan(2, 0, 0),
+                    CacheItemPriority.NotRemovable,
+                    null);
+            }
+
+            return resultaat;
         }
 
         #endregion

@@ -94,5 +94,11 @@ namespace Chiro.Gap.WebApp
 		/// </summary>
 		/// <returns>De landinfo van alle gekende landen</returns>
 		IEnumerable<LandInfo> LandenOphalen();
+
+	    /// <summary>
+	    /// Verwijdert de bivakproblemen voor groep met id <paramref name="groepID"/> uit de cache.
+	    /// </summary>
+	    /// <param name="groepID">ID van groep met te verwijderen problemen</param>
+	    void BivakStatusResetten(int groepID);
 	}
 }

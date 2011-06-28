@@ -76,6 +76,7 @@ namespace Chiro.Gap.WebApp.Controllers
         	if (ModelState.IsValid)
         	{
         		int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
+                VeelGebruikt.BivakStatusResetten(groepID);
         		return RedirectToAction("Bekijken", new {groepID, id = uitstapID});
         	}
 
@@ -191,6 +192,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (ModelState.IsValid)
 			{
 				int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
+                VeelGebruikt.BivakStatusResetten(groepID);
 				return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
 			}
 
@@ -224,8 +226,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
                 ServiceHelper.CallService<IUitstappenService>(l => l.PlaatsBewaren(id, model.Uitstap.PlaatsNaam, model.Uitstap.Adres));
-                // TODO (#950): problemen ontbrekende plaats resetten.
-                // (maar die worden nog niet getoond)
+                VeelGebruikt.BivakStatusResetten(groepID);
 
                 return RedirectToAction("Bekijken", new { groepID, id });
             }
@@ -253,6 +254,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult ContactInstellen(int groepID, int id)
         {
             int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.ContactInstellen(id));
+            VeelGebruikt.BivakStatusResetten(groepID);
             return RedirectToAction("Bekijken", new { id = uitstapID });
         }
 
