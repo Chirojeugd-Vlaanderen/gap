@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2009-2011
+// Copyright (c) 2007-2011
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -18,6 +18,9 @@ public class Zoekresultaat
     /// </summary>
     public DirectoryEntry UniekResultaat { get; private set; }
 
+    /// <summary>
+    /// De collectie zoekresultaten (kan uit 0 tot veel elementen bestaan)
+    /// </summary>
     public SearchResultCollection Resultaten { get; set; }
 
     /// <summary>
