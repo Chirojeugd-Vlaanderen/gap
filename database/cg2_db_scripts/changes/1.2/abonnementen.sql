@@ -29,3 +29,4 @@ ADD CONSTRAINT FK_Abonnement_GroepsWerkJaar FOREIGN KEY(GroepsWerkJaarID) REFERE
 CREATE INDEX IDX_Abonnement_GelieerdePersoon ON abo.Abonnement(GelieerdePersoonID);
 CREATE INDEX IDX_Abonnement_GroepsWerkJaar_Publicatie ON abo.Abonnement(GroepsWerkJaarID, PublicatieID);
 
+INSERT INTO abo.Publicatie(Naam) VALUES('Dubbelpunt')
