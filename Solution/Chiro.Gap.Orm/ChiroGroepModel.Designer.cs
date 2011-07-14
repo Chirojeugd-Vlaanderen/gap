@@ -55,6 +55,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Deelnemer_GelieerdePersoon", "GelieerdePersoon", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GelieerdePersoon), "Deelnemer", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Deelnemer))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Deelnemer_Uitstap", "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Uitstap), "Deelnemer", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Deelnemer))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_Deelnemer_Contact", "Deelnemer", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Deelnemer), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Gav_Persoon", "Persoon", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Persoon), "Gav", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Gav))]
 
 #endregion
 
@@ -3217,6 +3218,44 @@ namespace Chiro.Gap.Orm
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Gav_Persoon", "Persoon")]
+        public Persoon Persoon
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_Gav_Persoon", "Persoon").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_Gav_Persoon", "Persoon").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Persoon> PersoonReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_Gav_Persoon", "Persoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Persoon>("ChiroGroepModel.FK_Gav_Persoon", "Persoon", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -5505,6 +5544,28 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PersoonsVerzekering>("ChiroGroepModel.FK_PersoonsVerzekering_Persoon", "PersoonsVerzekering", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Gav_Persoon", "Gav")]
+        public EntityCollection<Gav> Gav
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Gav>("ChiroGroepModel.FK_Gav_Persoon", "Gav");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Gav>("ChiroGroepModel.FK_Gav_Persoon", "Gav", value);
                 }
             }
         }

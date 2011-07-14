@@ -553,7 +553,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.EntityKey, opt => opt.Ignore())
                 .ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
                 .ForMember(dst => dst.DubbelPuntAbonnement, opt => opt.Ignore())
-                .ForMember(dst => dst.AdInAanvraag, opt => opt.Ignore());
+                .ForMember(dst => dst.AdInAanvraag, opt => opt.Ignore())
+                .ForMember(dst => dst.Gav, opt => opt.Ignore());
 
             Mapper.CreateMap<UitstapInfo, Uitstap>()
                 .ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
