@@ -30,3 +30,8 @@ CREATE INDEX IDX_Abonnement_GelieerdePersoon ON abo.Abonnement(GelieerdePersoonI
 CREATE INDEX IDX_Abonnement_GroepsWerkJaar_Publicatie ON abo.Abonnement(GroepsWerkJaarID, PublicatieID);
 
 INSERT INTO abo.Publicatie(Naam) VALUES('Dubbelpunt')
+
+ALTER TABLE auth.Gav ADD PersoonID INT NULL;
+ALTER TABLE auth.Gav
+ADD CONSTRAINT FK_Gav_Persoon FOREIGN KEY(PersoonID) REFERENCES pers.Persoon(PersoonID);
+
