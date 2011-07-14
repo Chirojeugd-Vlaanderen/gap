@@ -4,7 +4,6 @@
 // </copyright>
 
 using System;
-using System.Configuration;
 using System.DirectoryServices;
 
 /// <summary>
