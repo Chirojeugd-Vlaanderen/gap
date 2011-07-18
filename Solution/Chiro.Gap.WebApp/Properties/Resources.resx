@@ -249,13 +249,13 @@
   <data name="BivakAangifteNogInTeVullen" xml:space="preserve">
     <value>Je moet je bivakaangifte nog &lt;a href='{0}'&gt; invullen &lt;/a&gt;.</value>
   </data>
-	<data name="BeideNogInvullenOpBivakAangifte" xml:space="preserve">
+  <data name="BeideNogInvullenOpBivakAangifte" xml:space="preserve">
     <value>Je moet de contactpersoon en het adres nog invullen van je bivak &lt;a href='{1}'&gt; {0} &lt;/a&gt;.</value>
   </data>
-	<data name="PersoonNogInvullenOpBivakAangifte" xml:space="preserve">
+  <data name="PersoonNogInvullenOpBivakAangifte" xml:space="preserve">
     <value>Je moet de contactpersoon nog invullen van je bivak &lt;a href='{1}'&gt; {0} &lt;/a&gt;.</value>
   </data>
-	<data name="AdresNogInvullenOpBivakAangifte" xml:space="preserve">
+  <data name="AdresNogInvullenOpBivakAangifte" xml:space="preserve">
     <value>Je moet het adres nog invullen van je bivak &lt;a href='{1}'&gt; {0} &lt;/a&gt;.</value>
   </data>
   <data name="FunctiesVan" xml:space="preserve">
@@ -349,5 +349,8 @@
   </data>
   <data name="GeenBivak" xml:space="preserve">
     <value>Je hebt nog geen bivak geregistreerd voor dit werkjaar</value>
+  </data>
+  <data name="BestelPeriodeDubbelpuntVoorbij" xml:space="preserve">
+    <value>Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkjaar, moet je eerst de jaarovergang uitvoeren.</value>
   </data>
 </root>

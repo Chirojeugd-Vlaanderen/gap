@@ -85,6 +85,16 @@ namespace Chiro.Gap.WebApp.Controllers
                     TempData["fout"] = Properties.Resources.DubbelPuntZonderAdres;
                     return RedirectToAction("EditRest", "Personen", new { groepID, id });
                 }
+                else if (ex.Detail.FoutNummer == FoutNummer.BestelPeriodeDubbelpuntVoorbij)
+                {
+                    var huidigWerkjaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
+                    TempData["fout"] = String.Format(
+                        Properties.Resources.BestelPeriodeDubbelpuntVoorbij,
+                        huidigWerkjaar.WerkJaar,
+                        huidigWerkjaar.WerkJaar + 1);
+                    return RedirectToAction("EditRest", "Personen", new { groepID, id });
+                }
+
                 else
                 {
                     throw;

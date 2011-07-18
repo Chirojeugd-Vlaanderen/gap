@@ -264,4 +264,7 @@
   <data name="PublicatieInactief" xml:space="preserve">
     <value>De publicatie '{0}' bestaat niet meer; je kunt geen abonnement meer nemen.</value>
   </data>
+  <data name="BestelPeriodeDubbelpuntVoorbij" xml:space="preserve">
+    <value>Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkjaar, moet je eerst de jaarovergang uitvoeren.</value>
+  </data>
 </root>

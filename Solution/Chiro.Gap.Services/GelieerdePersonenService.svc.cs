@@ -997,7 +997,7 @@ namespace Chiro.Gap.Services
             catch (FoutNummerException ex)
             {
                 
-                if (ex.FoutNummer == FoutNummer.AdresOntbreekt)
+                if (ex.FoutNummer == FoutNummer.AdresOntbreekt  || ex.FoutNummer == FoutNummer.BestelPeriodeDubbelpuntVoorbij)
                 {
                     // Verwachte exception afhandelen
                     FoutAfhandelaar.FoutAfhandelen(ex);

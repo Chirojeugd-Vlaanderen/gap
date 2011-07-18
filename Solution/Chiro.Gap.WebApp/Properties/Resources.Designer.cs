@@ -160,6 +160,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkjaar, moet je eerst de jaarovergang uitvoeren..
+        /// </summary>
+        public static string BestelPeriodeDubbelpuntVoorbij {
+            get {
+                return ResourceManager.GetString("BestelPeriodeDubbelpuntVoorbij", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je moet je bivakaangifte nog &lt;a href=&apos;{0}&apos;&gt; invullen &lt;/a&gt;..
         /// </summary>
         public static string BivakAangifteNogInTeVullen {

@@ -112,5 +112,14 @@ namespace Chiro.Gap.Workers.Properties {
                 return ((global::System.DateTime)(this["BivakAangifteStart"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2011-06-01")]
+        public global::System.DateTime EindeDubbelPuntBestelling {
+            get {
+                return ((global::System.DateTime)(this["EindeDubbelPuntBestelling"]));
+            }
+        }
     }
 }

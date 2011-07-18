@@ -85,6 +85,22 @@ namespace Chiro.Gap.Workers
                     Properties.Resources.DubbelPuntZonderAdres,
                     gp.Persoon.VolledigeNaam));
             }
+
+            DateTime eindeBestelPeriode = new DateTime(
+                groepsWerkJaar.WerkJaar+1,
+                Properties.Settings.Default.EindeDubbelPuntBestelling.Month,
+                Properties.Settings.Default.EindeDubbelPuntBestelling.Day);
+
+            if (DateTime.Now > eindeBestelPeriode)
+            {
+                throw new FoutNummerException(
+                    FoutNummer.BestelPeriodeDubbelpuntVoorbij, 
+                    String.Format(
+                        Properties.Resources.BestelPeriodeDubbelpuntVoorbij, 
+                        groepsWerkJaar.WerkJaar, 
+                        groepsWerkJaar.WerkJaar+1));
+            }
+
             // Check of abonnement nog niet bestaat
 
             var bestaande = (from abo in gp.Abonnement

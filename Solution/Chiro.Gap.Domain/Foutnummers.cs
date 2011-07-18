@@ -58,6 +58,7 @@ namespace Chiro.Gap.Domain
 		GeenDatabaseVerbinding,
 		Concurrency,
 		DeelnemerNietVanUitstap,
-        PublicatieInactief
+        PublicatieInactief,
+        BestelPeriodeDubbelpuntVoorbij
 	}
 }
