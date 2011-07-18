@@ -160,7 +160,7 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Je hebt nog geen voorkeursadres ingegeven voor {0}; je kan er dus ook geen Dubbelpuntabonnement voor bestellen..
+        ///   Looks up a localized string similar to Je hebt nog geen voorkeursadres ingegeven voor {0}; je kunt er dus ook geen Dubbelpuntabonnement voor bestellen..
         /// </summary>
         internal static string DubbelPuntZonderAdres {
             get {

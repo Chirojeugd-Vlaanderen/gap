@@ -232,7 +232,7 @@
     <value>Je kan geen kinderen inschrijven als je groep geen afdelingen heeft in het huidige werkjaar!</value>
   </data>
   <data name="DubbelPuntZonderAdres" xml:space="preserve">
-    <value>Je hebt nog geen voorkeursadres ingegeven voor {0}; je kan er dus ook geen Dubbelpuntabonnement voor bestellen.</value>
+    <value>Je hebt nog geen voorkeursadres ingegeven voor {0}; je kunt er dus ook geen Dubbelpuntabonnement voor bestellen.</value>
   </data>
   <data name="TeJongVoorLeiding" xml:space="preserve">
     <value>Deze persoon is nog te jong om leiding te worden.  Check eventueel geboortedatum en/of Chiroleeftijd.</value>

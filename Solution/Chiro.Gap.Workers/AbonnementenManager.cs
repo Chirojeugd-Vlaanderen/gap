@@ -79,6 +79,12 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }
 
+            if (gp.PersoonsAdres == null)
+            {
+                throw new FoutNummerException(FoutNummer.AdresOntbreekt, String.Format(
+                    Properties.Resources.DubbelPuntZonderAdres,
+                    gp.Persoon.VolledigeNaam));
+            }
             // Check of abonnement nog niet bestaat
 
             var bestaande = (from abo in gp.Abonnement

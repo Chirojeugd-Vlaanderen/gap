@@ -994,6 +994,20 @@ namespace Chiro.Gap.Services
                 // heeft al een abonnement
                 FoutAfhandelaar.FoutAfhandelen(ex);
             }
+            catch (FoutNummerException ex)
+            {
+                
+                if (ex.FoutNummer == FoutNummer.AdresOntbreekt)
+                {
+                    // Verwachte exception afhandelen
+                    FoutAfhandelaar.FoutAfhandelen(ex);
+                }
+                else
+                {
+                    // Onverwachte exception opnieuw throwen
+                    throw;                   
+                }
+            }
 
             _abMgr.Bewaren(abonnement);
         }

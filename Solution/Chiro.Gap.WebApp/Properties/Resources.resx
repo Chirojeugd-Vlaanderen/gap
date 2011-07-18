@@ -262,7 +262,7 @@
     <value>Functies van {0}</value>
   </data>
   <data name="DubbelPuntZonderAdres" xml:space="preserve">
-    <value>Je kan geen Dubbelpunt bestellen voor een persoon zonder voorkeursadres.</value>
+    <value>Je kunt geen Dubbelpunt bestellen voor een persoon zonder voorkeursadres.</value>
   </data>
   <data name="FoutToggleNaarKind" xml:space="preserve">
     <value>Je kon van deze persoon geen lid maken.  Misschien is er geen geschikte afdeling? Controleer eventueel de geboortedatum en/of Chiroleeftijd.</value>

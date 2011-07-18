@@ -223,7 +223,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Je kan geen Dubbelpunt bestellen voor een persoon zonder voorkeursadres..
+        ///   Looks up a localized string similar to Je kunt geen Dubbelpunt bestellen voor een persoon zonder voorkeursadres..
         /// </summary>
         public static string DubbelPuntZonderAdres {
             get {
