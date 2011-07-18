@@ -31,6 +31,9 @@ CREATE INDEX IDX_Abonnement_GroepsWerkJaar_Publicatie ON abo.Abonnement(GroepsWe
 
 INSERT INTO abo.Publicatie(Naam) VALUES('Dubbelpunt')
 
+GRANT INSERT ON abo.Abonnement TO GapRole;
+
+
 ALTER TABLE auth.Gav ADD PersoonID INT NULL;
 ALTER TABLE auth.Gav
 ADD CONSTRAINT FK_Gav_Persoon FOREIGN KEY(PersoonID) REFERENCES pers.Persoon(PersoonID);
