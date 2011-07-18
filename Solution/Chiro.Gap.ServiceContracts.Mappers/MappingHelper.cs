@@ -141,6 +141,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             // Die mapping naar PersoonDetail werkt enkel las er aan de persoon alleen leden
             // uit het huidige werkjaar gekoppeld zijn.
+            // Idem voor abonnementen!
 
             Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
                 .ForMember(
@@ -194,7 +195,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.Ignore())
                 .ForMember(
                     dst => dst.DubbelPuntAbonnement,
-                    opt => opt.MapFrom(src => src.Persoon.DubbelPuntAbonnement));
+                    opt => opt.MapFrom(src => src.Abonnement.FirstOrDefault() != null));
 
             Mapper.CreateMap<GelieerdePersoon, PersoonOverzicht>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))
@@ -552,7 +553,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
                 .ForMember(dst => dst.EntityKey, opt => opt.Ignore())
                 .ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
-                .ForMember(dst => dst.DubbelPuntAbonnement, opt => opt.Ignore())
                 .ForMember(dst => dst.AdInAanvraag, opt => opt.Ignore())
                 .ForMember(dst => dst.Gav, opt => opt.Ignore());
 

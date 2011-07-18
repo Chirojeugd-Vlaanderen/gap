@@ -193,17 +193,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		IList<GelieerdePersoon> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID);
 
 		/// <summary>
-		/// Haalt alle gelieerde personen op waarvan de persoon wel een dubbelpuntabonnement maar
-		/// geen AD-nummer heeft.  In theorie kan dit gebeuren tussen het zenden van de message en het
-		/// verwerken door kipsync.  In praktijk zijn er blijkbaar een aantal nieuwe dubbelpuntabonnementen
-		/// niet goed overgezet.
-		/// </summary>
-		/// <returns>Gelieerde personen zonder AD-nummer met dubbelpuntabonnement.  Als een persoon gelieerd
-		/// is aan meerdere groepen, dan zal die in deze lijst meerdere keren voorkomen.
-		/// Inclusief persoonsinfo</returns>
-		IEnumerable<GelieerdePersoon> DubbelPuntZonderAdOphalen();
-
-		/// <summary>
 		/// Bewaart een gelieerde persoon samen met eventueel gekoppelde entiteiten
 		/// </summary>
 		/// <param name="gelieerdePersoon">Te bewaren gelieerde persoon</param>

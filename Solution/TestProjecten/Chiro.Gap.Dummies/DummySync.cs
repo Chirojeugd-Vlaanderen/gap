@@ -73,5 +73,10 @@ namespace Chiro.Gap.Dummies
     	{
     		throw new NotImplementedException();
     	}
+
+        public void Abonneren(Abonnement abonnement)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

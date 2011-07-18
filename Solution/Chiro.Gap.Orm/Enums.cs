@@ -174,7 +174,12 @@ namespace Chiro.Gap.Orm
 		/// <summary>
 		/// Haal de groep(en) op waar de (gelieerde) personen mee geleerd zijn
 		/// </summary>
-		Groep = 0x200
+		Groep = 0x200,
+
+        /// <summary>
+        /// Haal de abonnementen van de persoon voor dit werkjaar op.
+        /// </summary>
+        AbonnementenDitWerkjaar = 0x400|Groep    // groep mee ophalen om abonnementen te bepalen.
 	}
 
 	/// <summary>

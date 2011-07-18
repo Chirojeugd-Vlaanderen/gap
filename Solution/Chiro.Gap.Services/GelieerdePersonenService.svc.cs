@@ -42,6 +42,7 @@ namespace Chiro.Gap.Services
         private readonly GroepsWerkJaarManager _gwjMgr;
         private readonly CommVormManager _cvMgr;
         private readonly CategorieenManager _catMgr;
+        private readonly AbonnementenManager _abMgr;
         private readonly IAutorisatieManager _auMgr;
 
         /// <summary>
@@ -54,6 +55,7 @@ namespace Chiro.Gap.Services
         /// <param name="gwjm">De worker voor GroepsWerkJaren</param>
         /// <param name="cvm">De worker voor CommunicatieVormen</param>
         /// <param name="cm">De worker voor Categorieën</param>
+        /// <param name="abm">De worker voor Abonnementen</param>
         /// <param name="aum">De worker voor Autorisatie</param>
         /// <param name="lm">De worker voor Leden</param>
         public GelieerdePersonenService(
@@ -64,6 +66,7 @@ namespace Chiro.Gap.Services
             GroepsWerkJaarManager gwjm,
             CommVormManager cvm,
             CategorieenManager cm,
+            AbonnementenManager abm,
             IAutorisatieManager aum,
             LedenManager lm)
         {
@@ -76,6 +79,7 @@ namespace Chiro.Gap.Services
             _cvMgr = cvm;
             _catMgr = cm;
             _lidMgr = lm;
+            _abMgr = abm;
         }
 
         #endregion
@@ -949,6 +953,8 @@ namespace Chiro.Gap.Services
             }
         }
 
+        #endregion categorieën
+
         /// <summary>
         /// Bestelt Dubbelpunt voor de persoon met GelieerdePersoonID <paramref name="gelieerdePersoonID"/>.
         /// </summary>
@@ -958,9 +964,12 @@ namespace Chiro.Gap.Services
             // TODO (#1048): exceptions op databaseniveau catchen
 
             GelieerdePersoon gp = null;
+            Abonnement abonnement = null;
+
             try
             {
-                gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen);
+                // Het ophalen van alle groepswerkjaren is overkill.  Maar ik doe het toch.
+                gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen|PersoonsExtras.AbonnementenDitWerkjaar|PersoonsExtras.GroepsWerkJaren);
             }
             catch (GeenGavException ex)
             {
@@ -973,19 +982,22 @@ namespace Chiro.Gap.Services
 
             Debug.Assert(gp != null);
 
+            var groepsWerkJaar = gp.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();   // recentste groepswerkjaar
+            var dubbelpunt = _abMgr.PublicatieOphalen(PublicatieID.Dubbelpunt);
+
             try
             {
-                _gpMgr.DubbelpuntBestellen(gp);
+                abonnement = _abMgr.Abonneren(dubbelpunt, gp, groepsWerkJaar);
             }
-            catch (FoutNummerException ex)
+            catch (BlokkerendeObjectenException<Abonnement> ex)
             {
+                // heeft al een abonnement
                 FoutAfhandelaar.FoutAfhandelen(ex);
             }
 
-            _gpMgr.Bewaren(gp, PersoonsExtras.Geen);
+            _abMgr.Bewaren(abonnement);
         }
 
-        #endregion categorieën
 
         /// <summary>
         /// Haalt de PersoonID op van de gelieerde persoon met de opgegeven ID

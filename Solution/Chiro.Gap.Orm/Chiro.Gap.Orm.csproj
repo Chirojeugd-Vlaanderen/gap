@@ -60,12 +60,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abonnement.cs" />
     <Compile Include="Adres.cs" />
     <Compile Include="DataInterfaces\IDeelnemersDao.cs" />
     <Compile Include="DataInterfaces\IPlaatsenDao.cs" />
     <Compile Include="DataInterfaces\IUitstappenDao.cs" />
     <Compile Include="Deelnemer.cs" />
     <Compile Include="Plaats.cs" />
+    <Compile Include="Publicatie.cs" />
     <Compile Include="SyncInterfaces\IBivakSync.cs" />
     <Compile Include="Uitstap.cs" />
     <Compile Include="Categorie.cs" />
@@ -136,7 +138,6 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ChiroGroepModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="ClassDiagram2.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">

@@ -258,4 +258,10 @@
   <data name="DeelnemerNietVanUitstap" xml:space="preserve">
     <value>Dit is een deelnemer van een andere uitstap.</value>
   </data>
+  <data name="BestaandAbonnement" xml:space="preserve">
+    <value>{0} had al een abonnement voor {1}.</value>
+  </data>
+  <data name="PublicatieInactief" xml:space="preserve">
+    <value>De publicatie '{0}' bestaat niet meer; je kunt geen abonnement meer nemen.</value>
+  </data>
 </root>

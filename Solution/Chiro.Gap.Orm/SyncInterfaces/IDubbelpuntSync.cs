@@ -5,10 +5,10 @@ namespace Chiro.Gap.Orm.SyncInterfaces
 	/// </summary>
 	public interface IDubbelpuntSync
 	{
-		/// <summary>
-		/// Synct een Dubbelpuntabonnement voor het huidige groepswerkjaar naar Kipadmin.
-		/// </summary>
-		/// <param name="gp">Gelieerde persoon die een abonnement wil voor dit werkjaar</param>
-		void Abonneren(GelieerdePersoon gp);
+        /// <summary>
+        /// Synct een dubbelpuntabonnement naar Kipadmin
+        /// </summary>
+        /// <param name="abonnement">Te syncen abonnement</param>
+		void Abonneren(Abonnement abonnement);
 	}
 }

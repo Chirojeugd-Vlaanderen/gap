@@ -176,9 +176,47 @@ namespace Chiro.Gap.Data.Ef
 
                     HuidigeLedenKoppelen(db, resultaat);
                 }
+
+                if ((extras & PersoonsExtras.AbonnementenDitWerkjaar) == PersoonsExtras.AbonnementenDitWerkjaar)
+                {
+                    HuidigeAbonnementenKoppelen(db, resultaat);
+                }
             }
 
             return Utility.DetachObjectGraph(resultaat);
+        }
+
+        /// <summary>
+        /// Instantieert de abonnementen van de gegeven gelieerde personen voor het huidige werkjaar
+        /// </summary>
+        /// <param name="db">Objectcontext</param>
+        /// <param name="gelieerdePersonen">Gelieerde personen waaraan abonnementen gekoppeld moeten worden</param>
+        /// <returns>Dezelfde gelieerde personen, maar met abonnementen gekoppeld</returns>
+        /// <remarks>Dit werkt enkel als alle gelieerde personen aan dezelfde groep gekoppeld zijn</remarks>
+        private IEnumerable<GelieerdePersoon> HuidigeAbonnementenKoppelen(ChiroGroepEntities db, IEnumerable<GelieerdePersoon> gelieerdePersonen)
+        {
+            var groepIDs = (from gp in gelieerdePersonen select gp.Groep.ID).Distinct();
+            Debug.Assert(groepIDs.Count() == 1);
+
+            int groepID = groepIDs.First();
+
+            var gelieerdePersoonIDs = (from gp in gelieerdePersonen select gp.ID).ToArray();
+
+            int groepsWerkJaarID = (from w in db.GroepsWerkJaar
+                                    where w.Groep.ID == groepID
+                                    orderby w.WerkJaar descending
+                                    select w.ID).FirstOrDefault();
+
+            // Selecteer en instantieer de abonnementen met uit groepswerkjaar met ID groepsWerkJaarID
+            // en gelieerdePersoon uit GelieerdePersoonIDs.  Omdat de objectcontext nog actief
+            // is, en de gelieerde personen daaraan gekoppeld zijn, zullen de geïnstantieerde
+            // abonnementen aan de goede gelieerde personen gekoppeld worden.
+
+            var abonnementen = db.Abonnement.Include(ab => ab.GelieerdePersoon).Include(ab=>ab.Publicatie).Where(Utility.BuildContainsExpression<Abonnement, int>(
+                ab => ab.GelieerdePersoon.ID,
+                gelieerdePersoonIDs)).Where(ab => ab.GroepsWerkJaar.ID == groepsWerkJaarID).ToArray();
+
+            return gelieerdePersonen;
         }
 
         /// <summary>
@@ -395,6 +433,7 @@ namespace Chiro.Gap.Data.Ef
                             select gp).FirstOrDefault();
 
                 AdresHelper.AlleAdressenKoppelen(gelpers);
+                HuidigeAbonnementenKoppelen(db, new[] {gelpers});
 
                 var gwj = (from g in db.GroepsWerkJaar
                            where g.Groep.ID == gelpers.Groep.ID
@@ -683,23 +722,6 @@ namespace Chiro.Gap.Data.Ef
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Haalt alle gelieerde personen zonder ad-nummer met een dubbelpuntabonnement op, inclusief
-        /// persoonsinfo.
-        /// </summary>
-        /// <returns>gelieerde personen zonder ad-nummer met een dubbelpuntabonnement</returns>
-        public IEnumerable<GelieerdePersoon> DubbelPuntZonderAdOphalen()
-        {
-            IEnumerable<GelieerdePersoon> resultaat;
-            using (var db = new ChiroGroepEntities())
-            {
-                resultaat = (from gp in db.GelieerdePersoon.Include(gelp => gelp.Persoon)
-                             where !gp.Persoon.AdNummer.HasValue && gp.Persoon.DubbelPuntAbonnement
-                             select gp).ToArray();
-            }
-            return Utility.DetachObjectGraph(resultaat);
         }
 
         /// <summary>

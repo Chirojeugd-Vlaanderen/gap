@@ -106,6 +106,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} had al een abonnement voor {1}..
+        /// </summary>
+        internal static string BestaandAbonnement {
+            get {
+                return ResourceManager.GetString("BestaandAbonnement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er bestaat al een categorie met code &apos;{0}&apos;..
         /// </summary>
         internal static string CategorieBestaatAl {
@@ -408,6 +417,15 @@ namespace Chiro.Gap.Workers.Properties {
         internal static string PersoonIsOverleden {
             get {
                 return ResourceManager.GetString("PersoonIsOverleden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to De publicatie &apos;{0}&apos; bestaat niet meer; je kunt geen abonnement meer nemen..
+        /// </summary>
+        internal static string PublicatieInactief {
+            get {
+                return ResourceManager.GetString("PublicatieInactief", resourceCulture);
             }
         }
         

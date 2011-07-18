@@ -36,7 +36,6 @@ namespace Chiro.Gap.Workers
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly IPersonenSync _personenSync;
 		private readonly IAdressenSync _adressenSync;
-		private readonly IDubbelpuntSync _dubbelpuntSync;
 
 	    /// <summary>
 	    /// Creëert een GelieerdePersonenManager
@@ -56,8 +55,7 @@ namespace Chiro.Gap.Workers
 			ICommunicatieVormDao cvDao,
 			IAutorisatieManager autorisatieMgr,
 			IPersonenSync personenSync,
-			IAdressenSync adressenSync,
-			IDubbelpuntSync dubbelpuntSync)
+			IAdressenSync adressenSync)
 		{
 			_gelieerdePersonenDao = gelieerdePersonenDao;
 			_categorieenDao = categorieenDao;
@@ -65,7 +63,6 @@ namespace Chiro.Gap.Workers
 			_personenDao = pDao;
 			_personenSync = personenSync;
 			_adressenSync = adressenSync;
-			_dubbelpuntSync = dubbelpuntSync;
 			_communicatieVormDao = cvDao;
 		}
 
@@ -189,12 +186,6 @@ namespace Chiro.Gap.Workers
 					{
 #endif
 					q = _gelieerdePersonenDao.Bewaren(gelieerdePersoon, extras);
-
-					if (origineel != null && !origineel.Persoon.DubbelPuntAbonnement && gelieerdePersoon.Persoon.DubbelPuntAbonnement)
-					{
-						// Dubbelpuntabonnement werd aangevinkt.
-						_dubbelpuntSync.Abonneren(gelieerdePersoon);
-					}
 
 					if (gelieerdePersoon.Persoon.AdNummer != null || gelieerdePersoon.Persoon.AdInAanvraag)
 					{
@@ -798,42 +789,5 @@ namespace Chiro.Gap.Workers
 #endif
 		}
 
-		/// <summary>
-		/// Bestelt Dubbelpunt voor gelieerde persoon <paramref name="gp"/>.  PERSISTEERT NIET!
-		/// </summary>
-		/// <param name="gp">Gelieerde persoon waarvoor dubbelpunt moet worden besteld, met daaraan
-		/// gekoppeld zijn voorkeursadres.</param>
-		public void DubbelpuntBestellen(GelieerdePersoon gp)
-		{
-			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-			{
-				if (gp.PersoonsAdres == null)
-				{
-					throw new FoutNummerException(
-						FoutNummer.AdresOntbreekt,
-						String.Format(
-							Properties.Resources.DubbelPuntZonderAdres,
-							gp.Persoon.VolledigeNaam));
-				}
-				gp.Persoon.DubbelPuntAbonnement = true;
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-		}
-
-		/// <summary>
-		/// Fix de Dubbelpuntabonnementen die niet goed zijn overgezet naar Kipadmin.
-		/// </summary>
-		public void FixDubbelPunt()
-		{
-			IEnumerable<GelieerdePersoon> gelieerdePersonen = _gelieerdePersonenDao.DubbelPuntZonderAdOphalen();
-
-			foreach (var gp in gelieerdePersonen)
-			{
-				_dubbelpuntSync.Abonneren(gp);
-			}
-		}
 	}
 }

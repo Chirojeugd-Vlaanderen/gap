@@ -39,19 +39,19 @@ namespace Chiro.Gap.Sync
 			_gelieerdePersonenDao = gelieerdePersonenDao;
 		}
 
-		/// <summary>
-		/// Synct een Dubbelpuntabonnement voor het huidige groepswerkjaar naar Kipadmin.
-		/// </summary>
-		/// <param name="gp">Gelieerde persoon die een abonnement wil voor dit werkjaar, met gekoppelde persoon</param>
-		public void Abonneren(GelieerdePersoon gp)
+	    /// <summary>
+	    /// Synct een dubbelpuntabonnement naar Kipadmin
+	    /// </summary>
+        /// <param name="abonnement">Te syncen abonnement</param>
+	    public void Abonneren(Abonnement abonnement)
 		{
-			Debug.Assert(gp != null);
-			Debug.Assert(gp.Persoon != null);
-			
-			var huidigWj = _groepsWerkJaarDao.RecentsteOphalen(gp, gwj => gwj.Groep);
+			Debug.Assert(abonnement.GelieerdePersoon != null);
+			Debug.Assert(abonnement.GelieerdePersoon.Persoon != null);
+            Debug.Assert(abonnement.GroepsWerkJaar != null);
+            Debug.Assert(abonnement.GroepsWerkJaar.Groep != null);
 
-			Debug.Assert(huidigWj != null);
-			Debug.Assert(huidigWj.Groep != null);
+	        var gp = abonnement.GelieerdePersoon;
+	        var huidigWj = abonnement.GroepsWerkJaar;
 
 			if (gp.Persoon.AdNummer != null)
 			{
