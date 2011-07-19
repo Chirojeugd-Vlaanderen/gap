@@ -45,6 +45,7 @@ namespace Chiro.Kip.Services
 
 				Lid lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie.First().Functie)
 					   where
+
 						l.AANSL_NR > 0 &&
 						l.Persoon.AdNummer == adNummer &&
 						l.Groep.GroepID == groep.GroepID &&
@@ -148,15 +149,20 @@ namespace Chiro.Kip.Services
 						db.SaveChanges();
 					}
 
-					// Als de laatste aansluiting nog niet doorgeboekt is, dan gaat het
-					// nieuwe lid gewoon bij die laatste aansluiting.  (Voor kaderploegen
+                    // Er moet (voor plaatselijke groepen) een nieuwe aansluiting gemaakt worden als:
+                    //    - er nog geen aansluiting was
+                    //    - (of) de vorige aansluiting gefactureerd was, met doorgeboekte factuur
+                    //    - (of) de vorige aansluiting te oud was.
+                    //
+                    // In de andere gevallen wordt het nieuwe lid toegevoegd aan de recentste aansluiting.
+
+					// (Voor kaderploegen
 					// is er geen factuur gekoppeld aan een aansluiting.  Daar gaat
 					// dus alles op aansluiting 1.)
 
-					// Is er nog geen laatste aansluiting, of was de laatste wel
-					// doorgeboekt, dan maken we er een nieuwe.
-
-					if (aansluiting == null || (aansluiting.REKENING != null && aansluiting.REKENING.DOORGEBOE != "N"))
+					if (aansluiting == null ||      // er was nog geen aansluiting
+                        aansluiting.Datum.AddDays(Properties.Settings.Default.ToevoegTermijnAansluiting) < DateTime.Now ||  // vorige aansluiting te oud
+                        (aansluiting.REKENING != null && aansluiting.REKENING.DOORGEBOE != "N" ))   // vorige aansluiting heeft doorgeboekte factuur
 					{
 						// Creeer nieuwe aansluiting, en meteen ook een rekening.
 						// Die rekening mag nog leeg zijn; kipadmin berekent de
@@ -227,6 +233,13 @@ namespace Chiro.Kip.Services
 					aansluiting.Stempel = DateTime.Now;
 					aansluiting.Wijze = "G";
 
+                    if (aansluiting.REKENING != null)
+                    {
+                        // Rekening mag pas overgezet worden (en bedrag pas berekend) nadat
+                        // de instapperiode van dit lid voorbij is.
+                        aansluiting.REKENING.FacturerenVanaf = gedoe.EindeInstapPeriode;
+                    }
+
 					lid = new Lid
 					{
 						AANSL_NR = (short)aansluiting.VolgNummer,
@@ -243,7 +256,8 @@ namespace Chiro.Kip.Services
 						STEMPEL = DateTime.Now,
 						VERZ_NR = 0,
 						WEB_TOEVOEG = null,
-						werkjaar = gedoe.WerkJaar
+						werkjaar = gedoe.WerkJaar,
+                        EindeInstapPeriode = gedoe.EindeInstapPeriode
 					};
 
 					// 2 afdelingen kunnen we overnemen.

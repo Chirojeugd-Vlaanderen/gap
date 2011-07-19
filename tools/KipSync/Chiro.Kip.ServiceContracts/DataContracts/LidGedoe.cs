@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Chiro.Kip.ServiceContracts.DataContracts
@@ -34,5 +35,11 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		public IEnumerable<AfdelingEnum> OfficieleAfdelingen { get; set; }
+
+        /// <summary>
+        /// Einde van de instapperiode
+        /// </summary>
+        [DataMember]
+        public DateTime? EindeInstapPeriode { get; set; }
 	}
 }

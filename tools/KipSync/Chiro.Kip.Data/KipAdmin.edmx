@@ -160,10 +160,10 @@
           <Property Name="WerkJaar" Type="int" Nullable="false" />
           <Property Name="DatumVan" Type="datetime" Nullable="false" />
           <Property Name="DatumTot" Type="datetime" Nullable="false" />
-          <Property Name="BivakPlaatsNaam" Type="varchar" MaxLength="80" />
-          <Property Name="AdresID" Type="int" />
           <Property Name="BivakNaam" Type="varchar" MaxLength="120" />
           <Property Name="Opmerkingen" Type="text" />
+          <Property Name="BivakPlaatsNaam" Type="varchar" MaxLength="80" />
+          <Property Name="AdresID" Type="int" />
           <Property Name="ContactAD" Type="int" />
         </EntityType>
         <EntityType Name="BivakOverzicht">
@@ -286,7 +286,7 @@
           </Key>
           <Property Name="AdresId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Straat" Type="varchar" Nullable="false" MaxLength="40" />
-          <Property Name="Nr" Type="varchar" MaxLength="20" />
+          <Property Name="Nr" Type="varchar" MaxLength="35" />
           <Property Name="PostNr" Type="varchar" MaxLength="10" />
           <Property Name="Gemeente" Type="varchar" MaxLength="40" />
           <Property Name="Land" Type="varchar" MaxLength="20" />
@@ -415,6 +415,7 @@
           <Property Name="BET_VOOR" Type="datetime" />
           <Property Name="ADNR" Type="int" />
           <Property Name="WERKJAAR" Type="smallint" />
+          <Property Name="FacturerenVanaf" Type="datetime" />
         </EntityType>
         <EntityType Name="ChiroGroep">
           <Key>
@@ -529,6 +530,7 @@
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="GroepID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="EindeInstapPeriode" Type="datetime" />
         </EntityType>
         <EntityType Name="Berichten">
           <Key>
@@ -1273,6 +1275,7 @@
           <NavigationProperty Name="HeeftFunctie" Relationship="kipadminModel.FK__kipHeeftF__leidk__424DBD78" FromRole="Lid" ToRole="kipHeeftFunctie" />
           <NavigationProperty Name="Persoon" Relationship="kipadminModel.FK_Leid_Kad_Persoon" FromRole="Lid" ToRole="kipPersoon" />
           <NavigationProperty Name="Groep" Relationship="kipadminModel.fk_Lid_Groep" FromRole="Lid" ToRole="Groep" />
+          <Property Type="DateTime" Name="EindeInstapPeriode" />
         </EntityType>
         <Association Name="FK__kipContact__AdNr__6A26A4A8">
           <End Role="kipPersoon" Type="kipadminModel.Persoon" Multiplicity="1" />
@@ -1346,7 +1349,8 @@
           <NavigationProperty Name="kipPersoon" Relationship="kipadminModel.FK_Rekening_Persoon" FromRole="REKENING" ToRole="Persoon" />
           <NavigationProperty Name="Aansluiting" Relationship="kipadminModel.FK_Aansluiting_Rekening" FromRole="REKENING" ToRole="Aansluiting" />
           <NavigationProperty Name="Abonnement" Relationship="kipadminModel.FK_Abonnement_Rekening" FromRole="Rekening" ToRole="Abonnement" />
-          <NavigationProperty Name="ExtraVerzekering" Relationship="kipadminModel.FK_ExtraVerzekering_Rekening" FromRole="Rekening" ToRole="ExtraVerzekering" /></EntityType>
+          <NavigationProperty Name="ExtraVerzekering" Relationship="kipadminModel.FK_ExtraVerzekering_Rekening" FromRole="Rekening" ToRole="ExtraVerzekering" />
+          <Property Type="DateTime" Name="FacturerenVanaf" /></EntityType>
         <EntityType Name="Aansluiting">
           <Key>
             <PropertyRef Name="AansluitingID" /></Key>
@@ -1803,6 +1807,7 @@
           <EntitySetMapping Name="Lid">
             <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Lid)">
               <MappingFragment StoreEntitySet="Lid">
+                <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" />
                 <ScalarProperty Name="SOORT" ColumnName="SOORT" />
                 <ScalarProperty Name="AFDELING1" ColumnName="AFDELING1" />
                 <ScalarProperty Name="AFDELING2" ColumnName="AFDELING2" />
@@ -1868,6 +1873,7 @@
           <EntitySetMapping Name="RekeningSet">
             <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Rekening)">
               <MappingFragment StoreEntitySet="REKENING">
+                <ScalarProperty Name="FacturerenVanaf" ColumnName="FacturerenVanaf" />
                 <ScalarProperty Name="WERKJAAR" ColumnName="WERKJAAR" />
                 <ScalarProperty Name="BET_VOOR" ColumnName="BET_VOOR" />
                 <ScalarProperty Name="FACLIJNEN" ColumnName="FACLIJNEN" />
