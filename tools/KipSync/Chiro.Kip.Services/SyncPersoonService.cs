@@ -39,14 +39,18 @@ namespace Chiro.Kip.Services
 		/// <param name="adres">Adres</param>
 		/// <returns>combinatie postnummer/postcode van adres</returns>
 		private static string KipPostNr(Adres adres)
-		{
-			return String.IsNullOrEmpty(adres.PostCode)
-			       	? adres.PostNr.ToString()
-			       	: String.Format(
-			       		"{0} {1}",
-			       		adres.PostNr,
-			       		adres.PostCode);
-		}
+        {
+            // Sommige groepen die het verschil postcode/postnr niet snappen, typen in beide vakjes hetzelfde.
+            // Dat filteren we er hier ook maar uit.
+
+            return (String.IsNullOrEmpty(adres.PostCode) || String.Compare(adres.PostNr.ToString(), adres.PostCode) == 0)
+                    ? adres.PostNr.ToString()
+                    : String.Format(
+                        "{0} {1}",
+                        adres.PostNr,
+                        adres.PostCode).Substring(0, 10);  // Voor de zekerheid beperken tot 10 karakters, om service crash te vermijden
+
+        }
 
 		/// <summary>
 		/// Standaardconstructor
