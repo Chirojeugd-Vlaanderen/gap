@@ -67,7 +67,7 @@ namespace Chiro.Gap.Data.Ef
 
                 if ((extras & LidExtras.Afdelingen) == LidExtras.Afdelingen)
                 {
-                    AfdelingenKoppelen(db, resultaat);
+                    AfdelingenKoppelen(db, resultaat, (extras & LidExtras.OfficieleAfdelingen) == LidExtras.OfficieleAfdelingen);
                 }
 
                 // Idem voor adressen
@@ -102,8 +102,9 @@ namespace Chiro.Gap.Data.Ef
         /// </summary>
         /// <param name="db">te gebruiken objectcontext</param>
         /// <param name="leden">leden waarvan de afdelingen gekoppeld moeten worden</param>
+        /// <param name="metOfficieleAfdeling">koppelt ook officiele afdeling</param>
         /// <returns>Dezelfde ledenlijst, maar nu met gekoppelde afdelingen.</returns>
-        public static IEnumerable<Lid> AfdelingenKoppelen(ChiroGroepEntities db, IEnumerable<Lid> leden)
+        public static IEnumerable<Lid> AfdelingenKoppelen(ChiroGroepEntities db, IEnumerable<Lid> leden, bool metOfficieleAfdeling)
         {
             // TODO (#1054): Kan dit niet efficienter?
 
@@ -113,6 +114,11 @@ namespace Chiro.Gap.Data.Ef
                 {
                     (l as Kind).AfdelingsJaarReference.Load();
                     (l as Kind).AfdelingsJaar.AfdelingReference.Load();
+
+                    if (metOfficieleAfdeling)
+                    {
+                        (l as Kind).AfdelingsJaar.OfficieleAfdelingReference.Load();
+                    }
                 }
                 else if (l is Leiding)
                 {
@@ -120,6 +126,11 @@ namespace Chiro.Gap.Data.Ef
                     foreach (var aj in (l as Leiding).AfdelingsJaar)
                     {
                         aj.AfdelingReference.Load();
+
+                        if (metOfficieleAfdeling)
+                        {
+                            aj.OfficieleAfdelingReference.Load();
+                        }
                     }
                 }
             }
@@ -529,13 +540,14 @@ namespace Chiro.Gap.Data.Ef
 
         /// <summary>
         /// Haalt het lid op bepaald door <paramref name="gelieerdePersoonID"/> en
-        /// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
+        /// <paramref name="groepsWerkJaarID"/>, inclusief de relevante details om het lid naar Kipadmin te krijgen:
+        ///  persoon, afdelingen, officiële afdelingen, functies, groepswerkjaar, groep
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gelieerde persoon waarvoor het lidobject gevraagd is.</param>
         /// <param name="groepsWerkJaarID">ID van groepswerkjaar in hetwelke het lidobject gevraagd is</param>
         /// <returns>
         /// Het lid bepaald door <paramref name="gelieerdePersoonID"/> en
-        /// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
+        /// <paramref name="groepsWerkJaarID"/>, inclusief de relevante details om het lid naar Kipadmin te krijgen
         /// </returns>
         public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
         {
@@ -558,9 +570,10 @@ namespace Chiro.Gap.Data.Ef
                     {
                         return (
                             from t in db.Lid.OfType<Kind>()
-                                .Include("GelieerdePersoon.Persoon")
-                                .Include("GroepsWerkJaar")
-                                .Include("AfdelingsJaar.Afdeling")
+                                .Include(knd => knd.GelieerdePersoon.Persoon)
+                                .Include(knd => knd.GroepsWerkJaar.Groep)
+                                .Include(knd => knd.AfdelingsJaar.Afdeling)
+                                .Include(knd => knd.AfdelingsJaar.OfficieleAfdeling)
                                 .Include(knd => knd.Functie)
                             where t.ID == lidID
                             select t).FirstOrDefault();
@@ -569,9 +582,10 @@ namespace Chiro.Gap.Data.Ef
                     {
                         return (
                             from t in db.Lid.OfType<Leiding>()
-                                .Include("GelieerdePersoon.Persoon")
-                                .Include("GroepsWerkJaar")
-                                .Include("AfdelingsJaar.Afdeling")
+                                .Include(leid => leid.GelieerdePersoon.Persoon)
+                                .Include(leid => leid.GroepsWerkJaar.Groep)
+                                .Include(leid => leid.AfdelingsJaar.First().Afdeling)
+                                .Include(leid => leid.AfdelingsJaar.First().OfficieleAfdeling)
                                 .Include(leid => leid.Functie)
                             where t.ID == lidID
                             select t).FirstOrDefault();
@@ -579,53 +593,6 @@ namespace Chiro.Gap.Data.Ef
                 }
                 return lid;
             }
-        }
-
-        /// <summary>
-        /// Haalt hoogstens <paramref name="maxAantal"/> leden op met probeerperiode die voorbij is, 
-        /// inclusief persoonsgegevens, adressen, communicatie, functies, afdelingen
-        /// </summary>
-        /// <param name="maxAantal">max aantal leden op te halen</param>
-        /// <returns>alle leden met probeerperiode die voorbij is, inclusief persoonsgegevens, voorkeursadressen,
-        /// functies, afdelingen.  Communicatie niet!</returns>
-        public IEnumerable<Lid> OverTeZettenOphalen(int maxAantal)
-        {
-            // We moeten dit apart doen voor leden en leiding, omdat de afdelingen anders geregeld zijn.
-
-            Lid[] resultaat;
-
-            // communicatie wordt hier niet mee opgehaald, want wanneer de info naar kipadmin gaat,
-            // moet sowieso de communicatie van mogelijk andere gelieerde personen opnieuw opgezocht
-            // worden.
-
-            using (var db = new ChiroGroepEntities())
-            {
-                var leiding = (from l in db.Lid.OfType<Leiding>()
-                            .Include(lei => lei.GroepsWerkJaar.Groep)
-                                .Include(lei => lei.GelieerdePersoon.Persoon)
-                        .Include(lei => lei.GelieerdePersoon.PersoonsAdres.Adres)
-                                .Include(lei => lei.Functie)
-                                .Include(lei => lei.AfdelingsJaar.First().OfficieleAfdeling)
-                               where !l.NonActief && l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet && l.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten
-                               select l).Take(maxAantal);
-
-                int resterend = maxAantal - leiding.Count();
-
-                var kinderen = (from l in db.Lid.OfType<Kind>()
-                        .Include(kin => kin.GroepsWerkJaar.Groep)
-                        .Include(kin => kin.GelieerdePersoon.Persoon)
-                        .Include(kin => kin.GelieerdePersoon.PersoonsAdres.Adres)
-                                .Include(kin => kin.Functie)
-                                .Include(kin => kin.AfdelingsJaar.OfficieleAfdeling)
-                                where !l.NonActief && l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet && l.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten
-                                select l).Take(resterend);
-
-                resultaat = leiding.ToArray().Union<Lid>(kinderen.ToArray()).ToArray();
-
-                AdresHelper.VoorkeursAdresKoppelen(from l in resultaat select l.GelieerdePersoon);
-            }
-
-            return Utility.DetachObjectGraph<Lid>(resultaat);
         }
 
         /// <summary>
@@ -640,6 +607,11 @@ namespace Chiro.Gap.Data.Ef
         internal static Expression<Func<Kind, object>>[] ExtrasNaarLambdasKind(LidExtras extras)
         {
             var paths = ExtrasNaarLambdas<Kind>(extras & ~LidExtras.Afdelingen);
+
+            if ((extras & LidExtras.OfficieleAfdelingen) != 0)
+            {
+                paths.Add(ld => ld.AfdelingsJaar.OfficieleAfdeling.WithoutUpdate());
+            }
 
             if ((extras & LidExtras.Afdelingen) != 0)
             {
@@ -662,6 +634,10 @@ namespace Chiro.Gap.Data.Ef
         {
             var paths = ExtrasNaarLambdas<Leiding>(extras & ~LidExtras.Afdelingen);
 
+            if ((extras & LidExtras.OfficieleAfdelingen) == LidExtras.OfficieleAfdelingen)
+            {
+                paths.Add(ld => ld.AfdelingsJaar.First().OfficieleAfdeling.WithoutUpdate());
+            }
             if ((extras & LidExtras.Afdelingen) != 0)
             {
                 paths.Add(ld => ld.AfdelingsJaar.First().Afdeling.WithoutUpdate());

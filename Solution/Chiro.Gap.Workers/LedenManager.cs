@@ -444,23 +444,57 @@ namespace Chiro.Gap.Workers
         /// <param name="lid">Het <paramref name="lid"/> dat bewaard moet worden</param>
         /// <param name="extras">De gekoppelde entiteiten</param>
         /// <returns>Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld</returns>
-        /// <remarks>BELANGRIJK! Een nieuw lid mag niet direct gesynct worden naar Kipadmin! Dit gebeurt
-        /// pas bij het verstrijken van de probeerperiode, zie de method 'OverZettenNaProbeerPeriode'.  Enkel wijzigingen
-        /// van reeds bestaande leden mogen hier naar de queue geduwd worden.
-        /// </remarks>
+        /// <remarks>De parameter <paramref name="syncen"/> heeft als doel een sync te vermijden als een
+        /// irrelevante wijziging zoals 'lidgeld betaald' wordt bewaard.</remarks>
         public Lid Bewaren(Lid lid, LidExtras extras)
+        {
+            return Bewaren(lid, extras, true);
+        }
+
+        /// <summary>
+        /// Persisteert een lid met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
+        /// </summary>
+        /// <param name="lid">Het <paramref name="lid"/> dat bewaard moet worden</param>
+        /// <param name="extras">De gekoppelde entiteiten</param>
+        /// <param name="syncen">Als <c>true</c>, dan wordt het lid gesynct met Kipadmin.</param>
+        /// <returns>Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld</returns>
+        /// <remarks>De parameter <paramref name="syncen"/> heeft als doel een sync te vermijden als een
+        /// irrelevante wijziging zoals 'lidgeld betaald' wordt bewaard.</remarks>
+        public Lid Bewaren(Lid lid, LidExtras extras, bool syncen)
         {
             if (!_autorisatieMgr.IsGavLid(lid.ID))
             {
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }
 
-            Lid nieuwlid;
+            Lid bewaardLid;
+
+
             if (lid is Kind)
             {
                 try
                 {
-                    nieuwlid = _daos.KindDao.Bewaren((Kind)lid, extras);
+#if KIPDORP
+                    using (var tx = new TransactionScope())
+                    {
+#endif
+                       if (syncen)
+                       {
+                           if (!lid.NonActief)
+                           {
+                               _sync.Bewaren(lid);
+                           }
+                           else if (lid.EindeInstapPeriode > DateTime.Now)
+                           {
+                               _sync.Verwijderen(lid);
+                           }
+                       }
+                       bewaardLid = _daos.KindDao.Bewaren((Kind)lid, extras);
+#if KIPDORP
+                        tx.Complete();
+                    }
+#endif
+                    
                 }
                 catch (DubbeleEntiteitException<Kind>)
                 {
@@ -471,7 +505,27 @@ namespace Chiro.Gap.Workers
             {
                 try
                 {
-                    nieuwlid = _daos.LeidingDao.Bewaren((Leiding)lid, extras);
+#if KIPDORP
+                    using (var tx = new TransactionScope())
+                    {
+#endif
+                        if (syncen)
+                        {
+                            if (!lid.NonActief)
+                            {
+                                _sync.Bewaren(lid);
+                            }
+                            else if (lid.EindeInstapPeriode > DateTime.Now)
+                            {
+                                _sync.Verwijderen(lid);
+                            }
+                        }
+                        bewaardLid = _daos.LeidingDao.Bewaren((Leiding)lid, extras);
+#if KIPDORP
+                        tx.Complete();
+                    }
+#endif
+
                 }
                 catch (Exception)
                 {
@@ -483,7 +537,7 @@ namespace Chiro.Gap.Workers
                 throw new NotSupportedException(Properties.Resources.OngeldigLidType);
             }
 
-            return nieuwlid;
+            return bewaardLid;
         }
 
         /// <summary>
@@ -526,13 +580,14 @@ namespace Chiro.Gap.Workers
 
         /// <summary>
         /// Haalt het lid op bepaald door <paramref name="gelieerdePersoonID"/> en
-        /// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
+        /// <paramref name="groepsWerkJaarID"/>, inclusief de relevante details om het lid naar Kipadmin te krijgen:
+        ///  persoon, afdelingen, officiële afdelingen, functies, groepswerkjaar, groep
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gelieerde persoon waarvoor het lidobject gevraagd is.</param>
         /// <param name="groepsWerkJaarID">ID van groepswerkjaar in hetwelke het lidobject gevraagd is</param>
         /// <returns>
         /// Het lid bepaald door <paramref name="gelieerdePersoonID"/> en
-        /// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
+        /// <paramref name="groepsWerkJaarID"/>, inclusief de relevante details om het lid naar Kipadmin te krijgen
         /// </returns>
         public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
         {
@@ -597,42 +652,6 @@ namespace Chiro.Gap.Workers
                 Properties.Settings.Default.WerkjaarStartNationaal.Day).AddDays(-1);
 
             return werkJaarStart <= dateTime && dateTime <= werkJaarStop;
-        }
-
-        /// <summary>
-        /// Zoekt de niet-overgezette leden op wier probeerperiode voorbij is, en stuurt diens gegevens
-        /// naar KipSync.
-        /// </summary>
-        public void OverZettenNaProbeerPeriode()
-        {
-            if (!_autorisatieMgr.IsSuperGav())
-            {
-                throw new GeenGavException(Properties.Resources.GeenGav);
-            }
-
-            // Begrens het aantal op te halen leden, omdat in op 15 oktober naar schatting 75000 leden
-            // over te zetten zullen zijn.
-
-            IEnumerable<Lid> teSyncen = _daos.LedenDao.OverTeZettenOphalen(Properties.Settings.Default.AantalLedenOverzettenPerKeer);
-
-            while (teSyncen.FirstOrDefault() != null)
-            {
-                foreach (Lid l in teSyncen)
-                {
-#if KIPDORP
-                    using (var tx = new TransactionScope())
-                    {
-#endif
-                        _sync.Bewaren(l);
-                        l.IsOvergezet = true;
-                        _daos.LedenDao.Bewaren(l);
-#if KIPDORP
-                        tx.Complete();
-                    }
-#endif
-                }
-                teSyncen = _daos.LedenDao.OverTeZettenOphalen(Properties.Settings.Default.AantalLedenOverzettenPerKeer);
-            }
         }
 
         /// <summary>
@@ -703,7 +722,6 @@ namespace Chiro.Gap.Workers
                 {
                     nieuwLid = KindMaken(gelieerdePersoon, groepsWerkJaar, false, null);
                     nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
-                    nieuwLid.IsOvergezet = lid.IsOvergezet;
                     nieuwLid = _daos.KindDao.Bewaren(
                         nieuwLid as Kind,
                         ld => ld.GroepsWerkJaar.WithoutUpdate(),
@@ -714,18 +732,15 @@ namespace Chiro.Gap.Workers
                 {
                     nieuwLid = LeidingMaken(gelieerdePersoon, groepsWerkJaar, false, null);
                     nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
-                    nieuwLid.IsOvergezet = lid.IsOvergezet;
                     nieuwLid = _daos.LeidingDao.Bewaren(
                         nieuwLid as Leiding,
                         ld => ld.GroepsWerkJaar.WithoutUpdate(),
                         ld => ld.GelieerdePersoon.WithoutUpdate());
                 }
-                if (lid.IsOvergezet)
-                {
-                    // In 2 keer syncen; pragmatische aanpak voor TODO #762
-                    _sync.TypeUpdaten(nieuwLid);
-                    _sync.AfdelingenUpdaten(nieuwLid);
-                }
+
+                // In 2 keer syncen; pragmatische aanpak voor TODO #762
+                _sync.TypeUpdaten(nieuwLid);
+                _sync.AfdelingenUpdaten(nieuwLid);
 
 #if KIPDORP
                 tx.Complete();

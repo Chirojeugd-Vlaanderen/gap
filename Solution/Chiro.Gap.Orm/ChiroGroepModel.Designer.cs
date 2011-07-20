@@ -55,10 +55,10 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Deelnemer_GelieerdePersoon", "GelieerdePersoon", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GelieerdePersoon), "Deelnemer", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Deelnemer))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Deelnemer_Uitstap", "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Uitstap), "Deelnemer", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Deelnemer))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_Deelnemer_Contact", "Deelnemer", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Deelnemer), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap))]
-[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Gav_Persoon", "Persoon", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Persoon), "Gav", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Gav))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Abonnement_GelieerdePersoon", "GelieerdePersoon", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GelieerdePersoon), "Abonnement", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Abonnement))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Abonnement_GroepsWerkJaar", "GroepsWerkJaar", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GroepsWerkJaar), "Abonnement", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Abonnement))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Abonnement_Publicatie", "Publicatie", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Publicatie), "Abonnement", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Abonnement))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Gav_Persoon", "Persoon", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Persoon), "Gav", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Gav))]
 
 #endregion
 
@@ -4783,15 +4783,13 @@ namespace Chiro.Gap.Orm
         /// <param name="verwijderd">Initial value of the Verwijderd property.</param>
         /// <param name="volgendWerkjaarInt">Initial value of the VolgendWerkjaarInt property.</param>
         /// <param name="id">Initial value of the ID property.</param>
-        /// <param name="isOvergezet">Initial value of the IsOvergezet property.</param>
-        public static Kind CreateKind(global::System.Boolean nonActief, global::System.Boolean verwijderd, global::System.Int16 volgendWerkjaarInt, global::System.Int32 id, global::System.Boolean isOvergezet)
+        public static Kind CreateKind(global::System.Boolean nonActief, global::System.Boolean verwijderd, global::System.Int16 volgendWerkjaarInt, global::System.Int32 id)
         {
             Kind kind = new Kind();
             kind.NonActief = nonActief;
             kind.Verwijderd = verwijderd;
             kind.VolgendWerkjaarInt = volgendWerkjaarInt;
             kind.ID = id;
-            kind.IsOvergezet = isOvergezet;
             return kind;
         }
 
@@ -4963,15 +4961,13 @@ namespace Chiro.Gap.Orm
         /// <param name="verwijderd">Initial value of the Verwijderd property.</param>
         /// <param name="volgendWerkjaarInt">Initial value of the VolgendWerkjaarInt property.</param>
         /// <param name="id">Initial value of the ID property.</param>
-        /// <param name="isOvergezet">Initial value of the IsOvergezet property.</param>
-        public static Leiding CreateLeiding(global::System.Boolean nonActief, global::System.Boolean verwijderd, global::System.Int16 volgendWerkjaarInt, global::System.Int32 id, global::System.Boolean isOvergezet)
+        public static Leiding CreateLeiding(global::System.Boolean nonActief, global::System.Boolean verwijderd, global::System.Int16 volgendWerkjaarInt, global::System.Int32 id)
         {
             Leiding leiding = new Leiding();
             leiding.NonActief = nonActief;
             leiding.Verwijderd = verwijderd;
             leiding.VolgendWerkjaarInt = volgendWerkjaarInt;
             leiding.ID = id;
-            leiding.IsOvergezet = isOvergezet;
             return leiding;
         }
 
@@ -5023,15 +5019,13 @@ namespace Chiro.Gap.Orm
         /// <param name="verwijderd">Initial value of the Verwijderd property.</param>
         /// <param name="volgendWerkjaarInt">Initial value of the VolgendWerkjaarInt property.</param>
         /// <param name="id">Initial value of the ID property.</param>
-        /// <param name="isOvergezet">Initial value of the IsOvergezet property.</param>
-        public static Lid CreateLid(global::System.Boolean nonActief, global::System.Boolean verwijderd, global::System.Int16 volgendWerkjaarInt, global::System.Int32 id, global::System.Boolean isOvergezet)
+        public static Lid CreateLid(global::System.Boolean nonActief, global::System.Boolean verwijderd, global::System.Int16 volgendWerkjaarInt, global::System.Int32 id)
         {
             Lid lid = new Lid();
             lid.NonActief = nonActief;
             lid.Verwijderd = verwijderd;
             lid.VolgendWerkjaarInt = volgendWerkjaarInt;
             lid.ID = id;
-            lid.IsOvergezet = isOvergezet;
             return lid;
         }
 
@@ -5208,30 +5202,6 @@ namespace Chiro.Gap.Orm
         private Nullable<global::System.DateTime> _EindeInstapPeriode;
         partial void OnEindeInstapPeriodeChanging(Nullable<global::System.DateTime> value);
         partial void OnEindeInstapPeriodeChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean IsOvergezet
-        {
-            get
-            {
-                return _IsOvergezet;
-            }
-            set
-            {
-                OnIsOvergezetChanging(value);
-                ReportPropertyChanging("IsOvergezet");
-                _IsOvergezet = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsOvergezet");
-                OnIsOvergezetChanged();
-            }
-        }
-        private global::System.Boolean _IsOvergezet;
-        partial void OnIsOvergezetChanging(global::System.Boolean value);
-        partial void OnIsOvergezetChanged();
 
         #endregion
     

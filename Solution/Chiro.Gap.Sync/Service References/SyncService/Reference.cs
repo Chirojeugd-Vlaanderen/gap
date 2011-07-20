@@ -503,6 +503,9 @@ namespace Chiro.Gap.Sync.SyncService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<System.DateTime> EindeInstapPeriodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Chiro.Gap.Sync.SyncService.LidTypeEnum LidTypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -524,6 +527,19 @@ namespace Chiro.Gap.Sync.SyncService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> EindeInstapPeriode {
+            get {
+                return this.EindeInstapPeriodeField;
+            }
+            set {
+                if ((this.EindeInstapPeriodeField.Equals(value) != true)) {
+                    this.EindeInstapPeriodeField = value;
+                    this.RaisePropertyChanged("EindeInstapPeriode");
+                }
             }
         }
         

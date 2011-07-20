@@ -342,12 +342,7 @@ namespace Chiro.Gap.Workers
 				Toekennen(lid, toeTeVoegen);
 				resultaat = LosKoppelen(lid, teVerwijderen); // LosKoppelen persisteert
 
-				if (lid.IsOvergezet)
-				{
-					// Als het lid al bestaat in Kipadmin, komen al zijn functies mee.
-					_ledenSync.FunctiesUpdaten(lid);
-				}
-
+				_ledenSync.FunctiesUpdaten(lid);
 #if KIPDORP
 				tx.Complete();
 			}

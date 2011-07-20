@@ -56,6 +56,11 @@ namespace Chiro.Gap.Dummies
         {
         }
 
+        public void Verwijderen(Lid lid)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Abonneren(GelieerdePersoon gp)
         {
         }

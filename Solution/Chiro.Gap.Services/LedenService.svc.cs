@@ -160,8 +160,12 @@ namespace Chiro.Gap.Services
                 var lidIDs = new List<int>();
                 var foutBerichtenBuilder = new StringBuilder();
 
-                // Haal meteen alle gelieerde personen op, gecombineerd met hun groep
-                var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(lidInformatie.Select(e => e.GelieerdePersoonID), PersoonsExtras.Groep);
+                // Haal meteen alle gelieerde personen op, samen met alle info die nodig is om het lid
+                // over te zetten naar Kipadmin: groep, persoon, voorkeursadres
+
+                var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(
+                    lidInformatie.Select(e => e.GelieerdePersoonID), 
+                    PersoonsExtras.Groep|PersoonsExtras.VoorkeurAdres);
 
                 // Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
                 // al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
@@ -177,7 +181,13 @@ namespace Chiro.Gap.Services
                     {
                         try
                         {
+                            // Kijk of het lid al bestaat (eventueel niet-actief).  In de meeste gevallen zal dit geen
+                            // resultaat opleveren.  Als er toch al een lid is, worden persoon, voorkeursadres, officiele afdeling,
+                            // functies ook opgehaald, omdat een eventueel geheractiveerd lid opnieuw naar Kipadmin zal moeten.
+                            
                             var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+
+                            // TODO (#195, #691): Dit is businesslogica, en hoort dus thuis in de workers.
 
                             if (l != null) // uitgeschreven
                             {
@@ -198,7 +208,7 @@ namespace Chiro.Gap.Services
                             // verhindert dat de rest bewaard wordt.
                             if (l != null)
                             {
-                                l = _ledenMgr.Bewaren(l, LidExtras.Afdelingen | LidExtras.Persoon);
+                                l = _ledenMgr.Bewaren(l, LidExtras.Afdelingen | LidExtras.Persoon, true);
                                 lidIDs.Add(l.ID);
                             }
                         }
@@ -272,7 +282,7 @@ namespace Chiro.Gap.Services
                             fn.TeVerwijderen = true;
                         }
 
-                        _ledenMgr.Bewaren(l, LidExtras.Functies);
+                        _ledenMgr.Bewaren(l, LidExtras.Functies, true);
                     }
                 }
 
@@ -299,7 +309,7 @@ namespace Chiro.Gap.Services
 
                 // Eigenlijk heeft het weinig zin om dat nullable te maken...
                 lid.LidgeldBetaald = (lid.LidgeldBetaald == null || lid.LidgeldBetaald == false);
-                _ledenMgr.Bewaren(lid, LidExtras.Geen);
+                _ledenMgr.Bewaren(lid, LidExtras.Geen, false);
                 return lid.GelieerdePersoon.ID;
             }
             catch (GeenGavException ex)

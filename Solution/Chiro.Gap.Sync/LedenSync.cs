@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -134,13 +135,16 @@ namespace Chiro.Gap.Sync
                                        select _afdelingVertaling[(NationaleAfdeling)a.OfficieleAfdeling.ID]).ToList();
             }
 
+            // Euh, en waarom heb ik hiervoor geen mapper gemaakt?
+
             var lidGedoe = new LidGedoe
                             {
                                 StamNummer = l.GroepsWerkJaar.Groep.Code,
                                 WerkJaar = l.GroepsWerkJaar.WerkJaar,
                                 LidType = l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
                                 NationaleFuncties = nationaleFuncties,
-                                OfficieleAfdelingen = officieleAfdelingen
+                                OfficieleAfdelingen = officieleAfdelingen,
+                                EindeInstapPeriode = l.EindeInstapPeriode
                             };
 
             if (l.GelieerdePersoon.Persoon.AdNummer != null)
@@ -275,6 +279,15 @@ namespace Chiro.Gap.Sync
                 l.GroepsWerkJaar.Groep.Code,
                 l.GroepsWerkJaar.WerkJaar,
                 _lidTypeVertaling[lid.Type]);
+        }
+
+        /// <summary>
+        /// Verwijdert een lid uit Kipadmin
+        /// </summary>
+        /// <param name="lid">Te verwijderen lid</param>
+        public void Verwijderen(Lid lid)
+        {
+            throw new NotImplementedException();
         }
     }
 }

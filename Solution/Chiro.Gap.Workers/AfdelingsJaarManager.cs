@@ -413,7 +413,7 @@ namespace Chiro.Gap.Workers
 
                 resultaat = bewaaardeKinderen.Union<Lid>(bewaardeLeiding);
 
-                foreach (var l in resultaat.Where(ld => ld.IsOvergezet))
+                foreach (var l in resultaat)
                 {
                     _ledenSync.AfdelingenUpdaten(l);
                 }

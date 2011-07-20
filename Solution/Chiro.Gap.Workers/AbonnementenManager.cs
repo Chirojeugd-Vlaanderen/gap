@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
+#if KIPDORP
+using System.Transactions;
+#endif
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
@@ -87,18 +89,18 @@ namespace Chiro.Gap.Workers
             }
 
             DateTime eindeBestelPeriode = new DateTime(
-                groepsWerkJaar.WerkJaar+1,
+                groepsWerkJaar.WerkJaar + 1,
                 Properties.Settings.Default.EindeDubbelPuntBestelling.Month,
                 Properties.Settings.Default.EindeDubbelPuntBestelling.Day);
 
             if (DateTime.Now > eindeBestelPeriode)
             {
                 throw new FoutNummerException(
-                    FoutNummer.BestelPeriodeDubbelpuntVoorbij, 
+                    FoutNummer.BestelPeriodeDubbelpuntVoorbij,
                     String.Format(
-                        Properties.Resources.BestelPeriodeDubbelpuntVoorbij, 
-                        groepsWerkJaar.WerkJaar, 
-                        groepsWerkJaar.WerkJaar+1));
+                        Properties.Resources.BestelPeriodeDubbelpuntVoorbij,
+                        groepsWerkJaar.WerkJaar,
+                        groepsWerkJaar.WerkJaar + 1));
             }
 
             // Check of abonnement nog niet bestaat
@@ -139,17 +141,17 @@ namespace Chiro.Gap.Workers
         {
 
 #if KIPDORP
-					using (var tx = new TransactionScope())
-					{
-#endif
-            _abDao.Bewaren(abonnement, ab => ab.GelieerdePersoon, ab => ab.GroepsWerkJaar, ab => ab.Publicatie);
-            if (abonnement.Publicatie.ID == (int)PublicatieID.Dubbelpunt)
+            using (var tx = new TransactionScope())
             {
-                _dubbelpuntSync.Abonneren(abonnement);
-            }
+#endif
+                _abDao.Bewaren(abonnement, ab => ab.GelieerdePersoon, ab => ab.GroepsWerkJaar, ab => ab.Publicatie);
+                if (abonnement.Publicatie.ID == (int)PublicatieID.Dubbelpunt)
+                {
+                    _dubbelpuntSync.Abonneren(abonnement);
+                }
 #if KIPDORP
-						tx.Complete();
-					}
+                tx.Complete();
+            }
 #endif
         }
     }

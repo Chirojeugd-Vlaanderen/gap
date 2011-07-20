@@ -85,8 +85,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Dummies.Test", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Sync", "Chiro.Gap.Sync\Chiro.Gap.Sync.csproj", "{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.LidSyncer", "Chiro.Gap.LidSyncer\Chiro.Gap.LidSyncer.csproj", "{068671FF-8317-4AA3-90B6-97EDD4BE7945}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Sync.Test", "TestProjecten\Chiro.Gap.Sync.Test\Chiro.Gap.Sync.Test.csproj", "{FB1B9BDC-EF8B-4AA1-882F-BF5AC3912D3F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateSvc.Contracts", "Chiro.Gap.UpdateSvc.Contracts\Chiro.Gap.UpdateSvc.Contracts.csproj", "{EFA70FDE-2295-4A91-9553-847C272E7FA4}"
@@ -486,18 +484,6 @@ Global
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|Win32.ActiveCfg = Release|Any CPU
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|x86.ActiveCfg = Release|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Release|Any CPU.Build.0 = Release|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Release|Win32.ActiveCfg = Release|Any CPU
-		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Release|x86.ActiveCfg = Release|Any CPU
 		{FB1B9BDC-EF8B-4AA1-882F-BF5AC3912D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB1B9BDC-EF8B-4AA1-882F-BF5AC3912D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB1B9BDC-EF8B-4AA1-882F-BF5AC3912D3F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

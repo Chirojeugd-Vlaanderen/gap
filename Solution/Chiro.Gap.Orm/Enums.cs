@@ -71,41 +71,46 @@ namespace Chiro.Gap.Orm
 		/// Haalt afdelingsjaren en afdelingen mee op
 		/// </summary>
 		Afdelingen = 0x02,
+
+        /// <summary>
+        /// Haalt de officiele afdelingen mee op
+        /// </summary>
+        OfficieleAfdelingen = 0x04,
 		
 		/// <summary>
 		/// Haalt alle afdelingen van het groepswerkjaar van het lid mee op
 		/// </summary>
-		AlleAfdelingen = 0x04,
+		AlleAfdelingen = 0x08,
 		
 		/// <summary>
 		/// Haalt functies mee op
 		/// </summary>
-		Functies = 0x08,
+		Functies = 0x10,
 		
 		/// <summary>
 		/// Haalt gelieerde persoon en persoon mee op.
 		/// </summary>
-		Persoon = 0x10,
+		Persoon = 0x20,
 
 		/// <summary>
 		/// Haalt personen en verzekeringen mee op
 		/// </summary>
-		Verzekeringen = 0x20,
+		Verzekeringen = 0x40,
 
 		/// <summary>
 		/// Haalt alle adressen van de personen mee op
 		/// </summary>
-		Adressen = 0x40,
+		Adressen = 0x80,
 
 		/// <summary>
 		/// Haalt alle adressen van de personen mee op
 		/// </summary>
-		VoorkeurAdres = 0x80,
+		VoorkeurAdres = 0x100,
 
 		/// <summary>
 		/// Communicatiemiddelen mee ophalen
 		/// </summary>
-		Communicatie = 0x100,
+		Communicatie = 0x200,
 		
 		Alles = Groep | Afdelingen | Functies | Persoon | Verzekeringen | Adressen | VoorkeurAdres | Communicatie
 	}

@@ -78,7 +78,7 @@ namespace Chiro.Gap.Data.Ef
                     .Where(ld => ld.GroepsWerkJaar.Uitstap.Any(u => u.ID == uitstapID))
                     .Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID, gelieerdePersoonIDs)).ToArray();
 
-                LedenDao.AfdelingenKoppelen(db, leden);
+                LedenDao.AfdelingenKoppelen(db, leden, false);
             }
 
             //// Here comes the tricky part.

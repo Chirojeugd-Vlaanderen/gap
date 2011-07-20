@@ -36,5 +36,11 @@ namespace Chiro.Gap.Orm.SyncInterfaces
 		/// </summary>
 		/// <param name="lid">Lid waarvan het lidtype geupdatet moet worden</param>
 		void TypeUpdaten(Lid lid);
+
+        /// <summary>
+        /// Verwijdert een lid uit Kipadmin
+        /// </summary>
+        /// <param name="lid">Te verwijderen lid</param>
+	    void Verwijderen(Lid lid);
 	}
 }

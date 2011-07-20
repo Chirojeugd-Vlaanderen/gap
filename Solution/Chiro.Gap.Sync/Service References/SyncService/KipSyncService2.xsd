@@ -156,6 +156,7 @@
   <xs:element name="ArrayOfCommunicatieMiddel" nillable="true" type="tns:ArrayOfCommunicatieMiddel" />
   <xs:complexType name="LidGedoe">
     <xs:sequence>
+      <xs:element minOccurs="0" name="EindeInstapPeriode" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="LidType" type="tns:LidTypeEnum" />
       <xs:element minOccurs="0" name="NationaleFuncties" nillable="true" type="tns:ArrayOfFunctieEnum" />
       <xs:element minOccurs="0" name="OfficieleAfdelingen" nillable="true" type="tns:ArrayOfAfdelingEnum" />
