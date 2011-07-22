@@ -6,7 +6,7 @@
 
 update biv.BivakOverzicht
 set s_aangifteID=null, s_begin=null, s_eind=null, s_naam=null, s_straat=null, s_postnr=null, s_gemeente=null, s_land=null,s_provinci=null, s_tel=null, s_apart='N'
-where werkjaar=2010 and s_begin is not null
+where werkjaar=2010 and (s_begin is not null or s_apart='J')
 and (s_postnr is null or s_postnr='')
 
 -- Verwijder 'gewone' bivakken zonder adres uit overzichtstabel
