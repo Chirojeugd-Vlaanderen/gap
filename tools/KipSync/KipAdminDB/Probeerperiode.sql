@@ -6,6 +6,8 @@ ADD EindeInstapPeriode DATETIME NULL;
 ALTER TABLE rekening
 ADD FacturerenVanaf DATETIME NULL;
 
+GRANT UPDATE ON rekening TO kipSyncRole;
+
 -- We hacken de view vi_REKENING_GROEP_PERSOON
 -- om op die manier te vermijden dat facturen die
 -- nog niet gefactureerd mogen worden, daadwerkelijk

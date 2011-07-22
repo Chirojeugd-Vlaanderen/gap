@@ -90,6 +90,34 @@ namespace Chiro.Kip.ServiceContracts
 			PersoonDetails details,
 			LidGedoe lidGedoe);
 
+        /// <summary>
+        /// Verwijdert een persoon met gekend AD-nummer als lid
+        /// </summary>
+        /// <param name="adNummer">AD-nummer te verwijderen lid</param>
+        /// <param name="stamNummer">Stamnummer te verwijderen lid</param>
+        /// <param name="werkjaar">Werkjaar te verwijderen lid</param>
+        /// <remarks>Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
+        /// in GAP.</remarks>
+        [OperationContract(IsOneWay = true)]
+        void LidVerwijderen(
+            int adNummer,
+            string stamNummer,
+            int werkjaar);
+
+        /// <summary>
+        /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
+        /// </summary>
+        /// <param name="details">Gegevens die hopelijk toelaten het lid te identificeren</param>
+        /// <param name="stamNummer">Stamnummer van het lid</param>
+        /// <param name="werkjaar">Werkjaar van het lid</param>
+        /// <remarks>Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
+        /// in GAP.</remarks>
+        [OperationContract(IsOneWay = true)]
+	    void NieuwLidVerwijderen(
+	        PersoonDetails details,
+	        string stamNummer,
+	        int werkjaar);
+
 		/// <summary>
 		/// Updatet de functies van een lid.
 		/// </summary>

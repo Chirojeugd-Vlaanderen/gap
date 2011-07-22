@@ -607,6 +607,5 @@ namespace Chiro.Kip.Services
 
 			_log.BerichtLoggen(0, feedback);
 		}
-
 	}
 }

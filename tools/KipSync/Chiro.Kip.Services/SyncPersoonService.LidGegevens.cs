@@ -647,6 +647,71 @@ namespace Chiro.Kip.Services
 			_log.BerichtLoggen(0, feedback.ToString());
 		}
 
+        /// <summary>
+        /// Verwijdert een persoon met gekend AD-nummer als lid
+        /// </summary>
+        /// <param name="adNummer">AD-nummer te verwijderen lid</param>
+        /// <param name="stamNummer">Stamnummer te verwijderen lid</param>
+        /// <param name="werkjaar">Werkjaar te verwijderen lid</param>
+        /// <remarks>Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
+        /// in GAP.</remarks>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void LidVerwijderen(int adNummer, string stamNummer, int werkjaar)
+        {
+            using (var db = new kipadminEntities())
+            {
+                var lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie)
+                           where
+                               l.Persoon.AdNummer == adNummer && (l.Groep is ChiroGroep) &&
+                               String.Compare((l.Groep as ChiroGroep).STAMNR, stamNummer, true) == 0 &&
+                               l.werkjaar == werkjaar
+                           select l).FirstOrDefault();
+
+                if (lid == null)
+                {
+                    _log.FoutLoggen(0, String.Format(
+                        "{2} - Te verwijderen lid niet gevonden. AD{0} wj{1}", 
+                        adNummer, 
+                        werkjaar, 
+                        stamNummer));
+                }
+                else
+                {
+                    foreach (var f in lid.HeeftFunctie)
+                    {
+                        db.DeleteObject(f);
+                    }
+                    db.DeleteObject(lid);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
+        /// </summary>
+        /// <param name="details">Gegevens die hopelijk toelaten het lid te identificeren</param>
+        /// <param name="stamNummer">Stamnummer van het lid</param>
+        /// <param name="werkjaar">Werkjaar van het lid</param>
+        /// <remarks>Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
+        /// in GAP.</remarks>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkjaar)
+        {
+            // Als het AD-nummer al gekend is, moet (gewoon) 'LidBewaren' gebruikt worden.
+            Debug.Assert(details.Persoon.AdNummer == null);
+
+            if (String.IsNullOrEmpty(details.Persoon.VoorNaam))
+            {
+                _log.FoutLoggen(0, String.Format(
+                    "Te verwijderen lid zonder voornaam genegeerd; persoonID {0}",
+                    details.Persoon.ID));
+                return;
+            }
+            int adnr = UpdatenOfMaken(details);
+
+            LidVerwijderen(adnr, stamNummer, werkjaar);
+        }
 
 	}
 }
