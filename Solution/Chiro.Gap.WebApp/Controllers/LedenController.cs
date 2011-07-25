@@ -579,11 +579,9 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult AfdelingBewerken(LidAfdelingenModel model)
         {
-            // De returnwaarde van de volgende call hebben we nergens voor nodig.
-			ServiceHelper.CallService<ILedenService, int>(svc => svc.AfdelingenVervangen(model.LidID, model.Info.AfdelingsJaarIDs));
+			int gpID = ServiceHelper.CallService<ILedenService, int>(svc => svc.AfdelingenVervangen(model.LidID, model.Info.AfdelingsJaarIDs));
 
-			var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(model.LidID));
-            return RedirectToAction("EditRest", "Personen", new { id = info.PersoonDetail.GelieerdePersoonID });
+            return RedirectToAction("EditRest", "Personen", new { id = gpID });
         }
 
         /// <summary>
