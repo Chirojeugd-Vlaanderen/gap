@@ -62,7 +62,6 @@
 	%>
 	<h3>
 		Deelnemerslijst</h3>
-		<p>Deze lijst is eerst gesorteerd op functie van de deelnemer (logistiek, leiding, lid), dan op afdeling, en dan op familienaam.</p>
 		<p><%= Html.ActionLink(
 		      	"Lijst downloaden", 
 		      	"Download", 
