@@ -69,7 +69,7 @@ namespace Chiro.Kip.Services
 			Debug.Assert(gevonden.AdNummer > 0);
 
 			string feedback = String.Format(
-			    "Nieuwe persoon bewaard: ID{0} {1} {2} AD{3}",
+			    "Persoon herkend/aangemaakt: ID{0} {1} {2} AD{3}",
 			    persoon.ID,
 			    persoon.VoorNaam,
 			    persoon.Naam,

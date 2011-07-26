@@ -295,69 +295,10 @@ namespace Chiro.Kip.Services
 						db.AddToHeeftFunctieSet(hf);
 					}
 
-					// Domme telling in aansluitingslijn
-
-					if (gedoe.LidType == LidTypeEnum.Kind && persoon.Geslacht == (int)GeslachtsEnum.Man)
-					{
-						switch (gedoe.OfficieleAfdelingen.First())
-						{
-							case AfdelingEnum.Ribbels:
-								++aansluiting.RibbelsJ;
-								break;
-							case AfdelingEnum.Speelclub:
-								++aansluiting.SpeelClubJ;
-								break;
-							case AfdelingEnum.Rakwis:
-								++aansluiting.RakwisJ;
-								break;
-							case AfdelingEnum.Titos:
-								++aansluiting.TitosJ;
-								break;
-							case AfdelingEnum.Ketis:
-								++aansluiting.KetisJ;
-								break;
-							case AfdelingEnum.Aspis:
-								++aansluiting.AspisJ;
-								break;
-							default:
-								++aansluiting.SpeciaalJ;
-								break;
-						}
-					}
-					else if (gedoe.LidType == LidTypeEnum.Kind && persoon.Geslacht == (int)GeslachtsEnum.Vrouw)
-					{
-						switch (gedoe.OfficieleAfdelingen.First())
-						{
-							case AfdelingEnum.Ribbels:
-								++aansluiting.RibbelsM;
-								break;
-							case AfdelingEnum.Speelclub:
-								++aansluiting.SpeelClubM;
-								break;
-							case AfdelingEnum.Rakwis:
-								++aansluiting.RakwisM;
-								break;
-							case AfdelingEnum.Titos:
-								++aansluiting.TitosM;
-								break;
-							case AfdelingEnum.Ketis:
-								++aansluiting.KetisM;
-								break;
-							case AfdelingEnum.Aspis:
-								++aansluiting.AspisM;
-								break;
-							default:
-								++aansluiting.SpeciaalM;
-								break;
-						}
-					}
-					else if (gedoe.LidType == LidTypeEnum.Leiding)
-					{
-						if (gedoe.NationaleFuncties.Contains(FunctieEnum.Vb)) ++aansluiting.Vb;
-						else if (gedoe.NationaleFuncties.Contains(FunctieEnum.Proost)) ++aansluiting.Proost;
-						else if (persoon.Geslacht == (int)GeslachtsEnum.Man) ++aansluiting.LeidingJ;
-						else if (persoon.Geslacht == (int)GeslachtsEnum.Vrouw) ++aansluiting.LeidingM;
-					}
+					// In de aansluitingslijn zit ook telkens een telling: het aantal leden wordt geteld per afdeling en geslacht,
+                    // het aantal leiding enkel per geslacht, met uitzondering van proost en VB.  Vroeger gebeurde die telling
+                    // in KipSync.  Maar ik ga nu Kipadmin aanpassen, zodat die telling gebeurt net voordat de factuur wordt
+                    // gemaakt.
 
 					// Lid toevoegen aan datacontext, en bewaren.
 
@@ -372,7 +313,7 @@ namespace Chiro.Kip.Services
 			_log.BerichtLoggen(groep == null ? 0 : groep.GroepID, feedback);
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Maakt een persoon zonder ad-nummer lid.  Dit is een dure operatie, omdat er gezocht zal 
 		/// worden of de persoon al bestaat.  Zeker de eerste keer op 16 oktober, gaat dit zwaar 
 		/// zijn.  Vanaf volgend jaar, zal het merendeel van de leden al een ad-nummer hebben.
@@ -683,6 +624,13 @@ namespace Chiro.Kip.Services
                     }
                     db.DeleteObject(lid);
                     db.SaveChanges();
+
+                    _log.BerichtLoggen(0, String.Format(
+                        "{2} - Lid verwijderd. AD{0} wj{1}",
+                        adNummer,
+                        werkjaar,
+                        stamNummer));
+
                 }
             }
         }
