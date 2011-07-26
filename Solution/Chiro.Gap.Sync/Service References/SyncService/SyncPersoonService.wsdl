@@ -36,6 +36,12 @@
   <wsdl:message name="ISyncPersoonService_NieuwLidBewaren_InputMessage">
     <wsdl:part name="parameters" element="tns:NieuwLidBewaren" />
   </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_LidVerwijderen_InputMessage">
+    <wsdl:part name="parameters" element="tns:LidVerwijderen" />
+  </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_NieuwLidVerwijderen_InputMessage">
+    <wsdl:part name="parameters" element="tns:NieuwLidVerwijderen" />
+  </wsdl:message>
   <wsdl:message name="ISyncPersoonService_FunctiesUpdaten_InputMessage">
     <wsdl:part name="parameters" element="tns:FunctiesUpdaten" />
   </wsdl:message>
@@ -93,6 +99,12 @@
     </wsdl:operation>
     <wsdl:operation name="NieuwLidBewaren">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/NieuwLidBewaren" message="tns:ISyncPersoonService_NieuwLidBewaren_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LidVerwijderen">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/LidVerwijderen" message="tns:ISyncPersoonService_LidVerwijderen_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NieuwLidVerwijderen">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/NieuwLidVerwijderen" message="tns:ISyncPersoonService_NieuwLidVerwijderen_InputMessage" />
     </wsdl:operation>
     <wsdl:operation name="FunctiesUpdaten">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/FunctiesUpdaten" message="tns:ISyncPersoonService_FunctiesUpdaten_InputMessage" />
@@ -172,6 +184,18 @@
     </wsdl:operation>
     <wsdl:operation name="NieuwLidBewaren">
       <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/NieuwLidBewaren" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="LidVerwijderen">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/LidVerwijderen" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="NieuwLidVerwijderen">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/NieuwLidVerwijderen" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

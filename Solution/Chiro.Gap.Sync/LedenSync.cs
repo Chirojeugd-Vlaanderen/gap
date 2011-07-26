@@ -285,9 +285,29 @@ namespace Chiro.Gap.Sync
         /// Verwijdert een lid uit Kipadmin
         /// </summary>
         /// <param name="lid">Te verwijderen lid</param>
+        /// <remarks>We verwachten dat groep en  persoon gekoppeld zijn</remarks>
         public void Verwijderen(Lid lid)
         {
-            throw new NotImplementedException();
+            Debug.Assert(lid != null);
+            Debug.Assert(lid.GelieerdePersoon != null);
+            Debug.Assert(lid.GelieerdePersoon.Persoon != null);
+            Debug.Assert(lid.GroepsWerkJaar != null);
+
+            var groep = lid.GelieerdePersoon.Groep ?? lid.GroepsWerkJaar.Groep;
+
+            Debug.Assert(groep != null);
+
+            if (lid.GelieerdePersoon.Persoon.AdNummer != null)
+            {
+                _svc.LidVerwijderen((int)lid.GelieerdePersoon.Persoon.AdNummer, groep.Code, lid.GroepsWerkJaar.WerkJaar);
+            }
+            else
+            {
+                _svc.NieuwLidVerwijderen(
+                    Mapper.Map<GelieerdePersoon, PersoonDetails>(lid.GelieerdePersoon),
+                    groep.Code,
+                    lid.GroepsWerkJaar.WerkJaar);
+            }
         }
     }
 }
