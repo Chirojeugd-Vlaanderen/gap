@@ -12,6 +12,7 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -133,6 +134,37 @@ namespace Chiro.Gap.Services.Test
 			target.FunctiesVervangen(lidID, new int[]{
 				(int)NationaleFunctie.ContactPersoon,
 				TestInfo.FUNCTIEID});
+			#endregion
+		}
+
+		[TestMethod]
+		public void TestLidMakenBuitenVoorstel()
+		{
+			#region arrange
+			LedenService target = Factory.Maak<LedenService>();
+			#endregion
+
+			#region act
+			// GP4 zit niet in een afdeling, we vragen zijn voorgestelde afdeling en steken hem/haar dan in de andere
+			List<int> gps = new List<int>();
+			gps.Add(TestInfo.GELIEERDEPERSOON2ID);
+			string fouten;
+			var voorstel = target.VoorstelTotInschrijvenGenereren(gps, out fouten).First();
+			int gekozenafdelingsjaarID = voorstel.AfdelingsJaarID == TestInfo.AFDELINGSJAAR2ID ? TestInfo.AFDELINGSJAAR1ID : TestInfo.AFDELINGSJAAR2ID;
+			voorstel.AfdelingsJaarID = gekozenafdelingsjaarID;
+			List<InTeSchrijvenLid> defvoorstel = new List<InTeSchrijvenLid>();
+			defvoorstel.Add(voorstel);
+			// TODO wat is eigenlijk het gewenste gedrag hier? Zie ticket #1073
+			int lidID = target.Inschrijven(defvoorstel, out fouten).First();
+			#endregion
+
+			#region Assert
+			var l = target.DetailsOphalen(lidID);
+			Assert.IsTrue(l.LidInfo.AfdelingIdLijst.Contains(gekozenafdelingsjaarID));
+			#endregion
+
+			#region Cleanup
+			target.Uitschrijven(gps, out fouten);
 			#endregion
 		}
 	}
