@@ -47,17 +47,31 @@
                     <%if (Model.KanLedenBewerken)
                     {%>   
                     <h1>Selectie</h1>
-
     	            <select id="GekozenActie" name="GekozenActie">
 		                <option value="0">kies een actie</option>
-		                <option value="1">Uitschrijven</option>
-		                <option value="2">Afdeling aanpassen</option>
-                        <option value="3">Inschrijven voor uitstap/bivak</option>
+						<%if(Model.JaartalGetoondGroepsWerkJaar!=Model.JaartalHuidigGroepsWerkJaar){ %>
+							<option value="1">Inschrijven</option>
+						<%}else{ %>
+							<option value="2">Uitschrijven</option>
+						<%} %>
+		                <option value="3">Afdeling aanpassen</option>
+                        <option value="4">Inschrijven voor uitstap/bivak</option>
 	                </select>
 	                <input id="kiesActie" type="submit" value="Uitvoeren" />
 
                     <%
-                    }%>
+                    }else{%>
+					<h1>Selectie</h1>
+    	            <select id="Select1" name="GekozenActie">
+		                <option value="0">kies een actie</option>
+						<%if(Model.JaartalGetoondGroepsWerkJaar!=Model.JaartalHuidigGroepsWerkJaar){ %>
+							<option value="1">Inschrijven</option>
+						<%}else{ %>
+							<option value="2">Uitschrijven</option>
+						<%} %>
+	                </select>
+	                <input id="Submit1" type="submit" value="Uitvoeren" />
+					<%} %>
 
                     <h1>Filteren</h1>                    	
 

@@ -281,6 +281,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             model.IDGetoondGroepsWerkJaar = groepsWerkJaarID;
             model.JaartalGetoondGroepsWerkJaar = gevraagdwerkjaar.WerkJaar;
+			model.JaartalHuidigGroepsWerkJaar = ServiceHelper.CallService<IGroepenService, GroepsWerkJaarDetail>(e => e.RecentsteGroepsWerkJaarOphalen(groepID)).WerkJaar;
 
             // Haal alle afdelingsjaren op van de groep in het groepswerkjaar
             var list = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>(groep => groep.ActieveAfdelingenOphalen(groepsWerkJaarID));
@@ -392,6 +393,20 @@ namespace Chiro.Gap.WebApp.Controllers
             }
         }
 
+		/// <summary>
+		/// Schrijft een gelieerde persoon in in de groep
+		/// </summary>
+		/// <param name="gelieerdepersoonIDs">IDs van de gelieerde personen die we willen inschrijven</param>
+		/// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
+		/// <returns></returns>
+		/// <!-- GET: /Personen/Inschrijven/gelieerdepersoonID -->
+		[HandleError]
+		public ActionResult Inschrijven(IEnumerable<int> gelieerdepersoonIDs, int groepID)
+		{
+			TempData["list"] = gelieerdepersoonIDs;
+			return RedirectToAction("LedenMaken", "Leden"); // TODO naar waar willen we terug?
+		}
+
         /// <summary>
         /// Voert de gekozen actie in de dropdownlist van de ledenlijst uit op de geselecteerde
         /// personen.
@@ -412,26 +427,31 @@ namespace Chiro.Gap.WebApp.Controllers
 
             switch (model.GekozenActie)
             {
-                case 1:
-                    string foutBerichten = String.Empty;
+            	case 1:
+            		{
+            			return Inschrijven(model.SelectieGelieerdePersoonIDs, groepID);
+            		}
+            	case 2:
+            		{
+            		var foutBerichten = String.Empty;
 
-                    ServiceHelper.CallService<ILedenService>(g => g.Uitschrijven(
-                        model.SelectieGelieerdePersoonIDs,
-                        out foutBerichten));
+            		ServiceHelper.CallService<ILedenService>(
+            			g => g.Uitschrijven(model.SelectieGelieerdePersoonIDs, out foutBerichten));
 
-                    if (String.IsNullOrEmpty(foutBerichten))
-                    {
-                        TempData["succes"] = Properties.Resources.MultiIngeschrevenFeedback;
-                    }
-                    else
-                    {
-                        TempData["fout"] = foutBerichten;
-                    }
+            		if (String.IsNullOrEmpty(foutBerichten))
+            		{
+            			TempData["succes"] = Properties.Resources.MultiIngeschrevenFeedback;
+            		}
+            		else
+            		{
+            			TempData["fout"] = foutBerichten;
+            		}
 
-                    return TerugNaarVorigeLijst();
-                case 2:
+            		return TerugNaarVorigeLijst();
+					}
+        		case 3:
                     return AfdelingenBewerken(model.SelectieGelieerdePersoonIDs, groepID);
-                case 3:
+                case 4:
                     TempData["ids"] = model.SelectieGelieerdePersoonIDs;
                     return RedirectToAction("InschrijvenVoorUitstap", "Personen", new { groepID });
                 default:

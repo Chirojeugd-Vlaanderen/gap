@@ -39,6 +39,7 @@ namespace Chiro.Gap.WebApp.Models
 
 		public int IDGetoondGroepsWerkJaar { get; set; }
 		public int JaartalGetoondGroepsWerkJaar { get; set; }
+		public int JaartalHuidigGroepsWerkJaar { get; set; }
 		public IEnumerable<WerkJaarInfo> WerkJaarInfos { get; set; }
 
 		public int AfdelingID { get; set; }
