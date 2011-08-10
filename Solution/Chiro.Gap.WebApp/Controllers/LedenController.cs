@@ -428,27 +428,10 @@ namespace Chiro.Gap.WebApp.Controllers
             switch (model.GekozenActie)
             {
             	case 1:
-            		{
-            			return Inschrijven(model.SelectieGelieerdePersoonIDs, groepID);
-            		}
+					return Inschrijven(model.SelectieGelieerdePersoonIDs, groepID);
             	case 2:
-            		{
-            		var foutBerichten = String.Empty;
-
-            		ServiceHelper.CallService<ILedenService>(
-            			g => g.Uitschrijven(model.SelectieGelieerdePersoonIDs, out foutBerichten));
-
-            		if (String.IsNullOrEmpty(foutBerichten))
-            		{
-            			TempData["succes"] = Properties.Resources.MultiIngeschrevenFeedback;
-            		}
-            		else
-            		{
-            			TempData["fout"] = foutBerichten;
-            		}
-
+					UitSchrijven(model.SelectieGelieerdePersoonIDs, groepID, Properties.Resources.MultiIngeschrevenFeedback);
             		return TerugNaarVorigeLijst();
-					}
         		case 3:
                     return AfdelingenBewerken(model.SelectieGelieerdePersoonIDs, groepID);
                 case 4:
@@ -459,6 +442,29 @@ namespace Chiro.Gap.WebApp.Controllers
                     return TerugNaarVorigeLijst();
             }
         }
+
+		private void UitSchrijven(IEnumerable<int> gpIDs, int groepID, string successboodschap)
+		{
+			var fouten = String.Empty; // TODO (#1035): fouten opvangen
+
+			ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(gpIDs, out fouten));
+
+			// TODO (#1035): beter manier om problemen op te vangen dan via een string
+
+			if (fouten == String.Empty)
+			{
+				TempData["succes"] = successboodschap;
+
+				VeelGebruikt.FunctieProblemenResetten(groepID);
+			}
+			else
+			{
+				// TODO (#1035): vermijden dat output van de back-end rechtstreeks zichtbaar wordt 
+				// voor de user.
+
+				TempData["fout"] = fouten;
+			}
+		}
 
         /// <summary>
         /// Downloadt de lijst van leden uit groepswerkjaar met GroepsWerkJaarID <paramref name="id"/> als
@@ -528,29 +534,12 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult DeActiveren(int id, int groepID)
         {
-            string fouten = String.Empty; // TODO (#1035): fouten opvangen
-            ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(new List<int> { id }, out fouten));
-
-            // TODO (#1035): beter manier om problemen op te vangen dan via een string
-
-            if (fouten == String.Empty)
-            {
-                TempData["succes"] = Properties.Resources.LidNonActiefGemaakt;
-
-                VeelGebruikt.FunctieProblemenResetten(groepID);
-            }
-            else
-            {
-                // TODO (#1035): vermijden dat output van de back-end rechtstreeks zichtbaar wordt 
-                // voor de user.
-
-                TempData["fout"] = fouten;
-            }
-
-            return TerugNaarVorigeLijst();
+        	IEnumerable<int> gpIDs = new List<int> {id};
+        	UitSchrijven(gpIDs, groepID, Properties.Resources.LidNonActiefGemaakt);
+        	return TerugNaarVorigeLijst();
         }
 
-        // TODO (#967): Er zijn methods 'AfdelingBewerken' (1 persoon) en 'AfdelingenBewerken' (meerdere personen)
+    	// TODO (#967): Er zijn methods 'AfdelingBewerken' (1 persoon) en 'AfdelingenBewerken' (meerdere personen)
         // Waarschijnlijk kan er een en ander vereenvoudigd worden
 
         /// <summary>
@@ -751,7 +740,7 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult FunctiesToekennen(LidFunctiesModel model, int id, int groepID)
         {
-            // TODO (#1036): Dit moet een unitaire operatie zijn, om concurrencyproblemen te vermijden.
+            // TODO (#1036): Dit moet een atomaire operatie zijn, om concurrencyproblemen te vermijden.
             try
             {
                 ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(id, model.FunctieIDs));
