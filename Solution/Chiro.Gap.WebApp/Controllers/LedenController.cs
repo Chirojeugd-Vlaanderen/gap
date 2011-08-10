@@ -403,8 +403,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult Inschrijven(IEnumerable<int> gelieerdepersoonIDs, int groepID)
 		{
-			TempData["list"] = gelieerdepersoonIDs;
-			return RedirectToAction("LedenMaken", "Leden"); // TODO naar waar willen we terug?
+			return GelieerdePersonenInschrijven(gelieerdepersoonIDs);
 		}
 
         /// <summary>

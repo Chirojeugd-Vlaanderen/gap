@@ -13,6 +13,8 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public int WerkJaar { get; set; }
 		[DataMember]
+		public int WerkJaarID { get; set; }
+		[DataMember]
 		public WerkJaarStatus Status { get; set; }
 		[DataMember]
 		public int GroepID { get; set; }

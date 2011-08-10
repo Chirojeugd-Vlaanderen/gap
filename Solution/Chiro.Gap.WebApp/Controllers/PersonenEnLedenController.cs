@@ -23,8 +23,15 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public abstract override ActionResult Index(int groepID);
 
+		[HandleError]
+		protected ActionResult GelieerdePersonenInschrijven(IEnumerable<int> gelieerdepersoonIDs)
+		{
+			TempData["list"] = gelieerdepersoonIDs;
+			return RedirectToAction("LedenMaken", "Leden"); // TODO naar waar willen we terug?
+		}
+
 		/// <summary>
-		/// 
+		/// BELANGRIJK: in Tempdata "list" moet een lijst zitten van welke gelieerdepersonen moeten worden ingeschreven
 		/// </summary>
 		/// <param name="groepID"></param>
 		/// <returns></returns>

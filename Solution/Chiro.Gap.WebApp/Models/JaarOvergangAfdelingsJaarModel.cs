@@ -37,5 +37,7 @@ namespace Chiro.Gap.WebApp.Models
 		public List<string> GeslLijst { get; set; }
 
 		public int NieuwWerkjaar { get; set; }
+
+		public bool LedenMeteenInschrijven { get; set; }
 	}
 }

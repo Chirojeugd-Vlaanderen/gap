@@ -98,6 +98,18 @@ namespace Chiro.Gap.WebApp
 
         #region Problemen
 
+		/// <summary>
+		/// Reset alle problemen omdat de jaarovergang wordt uitgevoerd
+		/// </summary>
+		/// <param name="groepID">ID van groep met te verwijderen problemen</param>
+		public void JaarOvergangReset(int groepID)
+		{
+			FunctieProblemenResetten(groepID);
+			BivakStatusResetten(groepID);
+			GroepsWerkJaarResetten(groepID);
+			LedenProblemenResetten(groepID);
+		}
+
         /// <summary>
         /// Verwijdert de gecachete functieproblemen van een bepaalde groep
         /// </summary>

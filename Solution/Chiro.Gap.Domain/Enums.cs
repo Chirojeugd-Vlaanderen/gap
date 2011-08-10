@@ -66,8 +66,9 @@ namespace Chiro.Gap.Domain
     [Flags]
     public enum Niveau
     {
-        [EnumMember]
-        Satelliet = 0x01,
+// FUTURE
+//        [EnumMember]
+//        Satelliet = 0x01,
         [EnumMember]
         LidInGroep = 0x02,
         [EnumMember]
@@ -80,8 +81,10 @@ namespace Chiro.Gap.Domain
         Verbond = 0x20,
         [EnumMember]
         Nationaal = 0x80,
+		[EnumMember]
+		KaderGroep = Gewest | Verbond | Nationaal,
         [EnumMember]
-        Alles = Satelliet | Groep | Gewest | Verbond | Nationaal
+        Alles = /*Satelliet |*/ Groep | KaderGroep
     };
 
     /// <summary>

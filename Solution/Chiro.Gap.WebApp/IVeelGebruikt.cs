@@ -100,5 +100,11 @@ namespace Chiro.Gap.WebApp
 	    /// </summary>
 	    /// <param name="groepID">ID van groep met te verwijderen problemen</param>
 	    void BivakStatusResetten(int groepID);
+
+		/// <summary>
+		/// Reset alle problemen omdat de jaarovergang wordt uitgevoerd
+		/// </summary>
+		/// <param name="groepID">ID van groep met te verwijderen problemen</param>
+		void JaarOvergangReset(int groepID);
 	}
 }

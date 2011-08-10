@@ -14,11 +14,11 @@
 	</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<%=Html.ActionLink("Terug naar stap 1", "AfdelingenMaken", new { Controller = "JaarOvergang" }) %>
+	<%=Html.ActionLink("Terug naar stap 1", "Stap1AfdelingenSelecteren", new { Controller = "JaarOvergang" })%>
 	<br />
 	<br />
 
-	<%using (Html.BeginForm("VerdelingMaken", "JaarOvergang"))
+	<%using (Html.BeginForm("Stap2AfdelingsJarenVerdelen", "JaarOvergang"))
    { %>
 	<table>
 		<tr>
@@ -36,7 +36,7 @@
 				<%=Html.LabelFieldList("AfdelingsIDs", new TextFieldListInfo(ai.AfdelingID.ToString(), ai.AfdelingNaam))%>
 			</td>
 			<td>
-				<% IEnumerable<DropDownListHelper.DropDownListItem<int>> offAfdelingIDItems = Model.OfficieleAfdelingen.Select(e => new DropDownListHelper.DropDownListItem<int>() { Waarde = e.ID, DisplayNaam = e.Naam });%>
+				<% var offAfdelingIDItems = Model.OfficieleAfdelingen.Select(e => new DropDownListHelper.DropDownListItem<int>() { Waarde = e.ID, DisplayNaam = e.Naam });%>
 				<%=Html.DropDownList("OfficieleAfdelingsIDs", offAfdelingIDItems, ai.OfficieleAfdelingID)%>
 			</td>
 			<td>
@@ -47,15 +47,18 @@
 			</td>
 			<td>
 				<%
-					IEnumerable<DropDownListHelper.DropDownListItem<GeslachtsType>> geslachtswaardenlijst = Enum.GetValues(typeof(GeslachtsType)).OfType<GeslachtsType>().ToList().Select(e => new DropDownListHelper.DropDownListItem<GeslachtsType>() { Waarde = e, DisplayNaam = e.ToString() });%>
+					var geslachtswaardenlijst = Enum.GetValues(typeof(GeslachtsType)).OfType<GeslachtsType>().ToList().Select(e => new DropDownListHelper.DropDownListItem<GeslachtsType> { Waarde = e, DisplayNaam = e.ToString() });%>
 				<%=Html.DropDownList("GeslLijst", geslachtswaardenlijst, ai.Geslacht)%>
 			</td>
 		</tr>
 		<% } %>
 	</table>
 	<br />
+	<%=Html.RadioButton("Model.LedenMeteenInschrijven", true, true)%> Verdergaan en een lijst weergeven van alle huidige leden om deze in te schrijven in het nieuwe jaar.
 	<br />
-	<input id="volgende" type="submit" value="Verdeling bewaren en huidige leden herinschrijven" /> <strong>Dit kan een paar minuutjes duren!</strong>
+	<%=Html.RadioButton("Model.LedenMeteenInschrijven", false, false)%> Jaarovergang afmaken, ik zal de leden later zelf herinschrijven.
+	<br />
+	<input id="volgende" type="submit" value="Verdeling bewaren en verdergaan" /> <strong>Dit kan een paar minuutjes duren!</strong>
 	<%} %>
     <p>De leden en de leiding van vorig jaar wordt automatisch opnieuw ingeschreven. Ze krijgen daarbij opnieuw een instapperiode
 			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is die instapperiode?" } ) %>. Je hebt dus drie weken (of tot 15 oktober) de tijd om de nodige mensen uit te schrijven, zodat je geen factuur krijgt voor hun aansluiting. Achteraf kun je nog inschrijven wie je wilt, het hele jaar door.</p>

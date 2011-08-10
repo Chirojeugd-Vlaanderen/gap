@@ -476,9 +476,9 @@
     <Content Include="Views\GavTaken\Index.aspx" />
     <Content Include="Views\Groep\Index.aspx" />
     <Content Include="Views\Handleiding\Index.aspx" />
-    <Content Include="Views\JaarOvergang\AfdelingenAanmaken.aspx" />
-    <Content Include="Views\JaarOvergang\AfdelingenVerdelen.aspx" />
-    <Content Include="Views\JaarOvergang\AfdelingMaken.aspx" />
+    <Content Include="Views\JaarOvergang\Stap1AfdelingenSelecteren.aspx" />
+    <Content Include="Views\JaarOvergang\Stap2AfdelingsJarenVerdelen.aspx" />
+    <Content Include="Views\JaarOvergang\NieuweAfdelingMaken.aspx" />
     <Content Include="Views\Leden\FunctiesToekennen.aspx" />
     <Content Include="Views\Leden\LoonVerliesVerzekeren.aspx" />
     <Content Include="Views\Personen\EditRest.aspx" />

@@ -230,9 +230,8 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 case 1:
                 case 2:  // 2 is stiekem verdwenen, zie #625.
-					TempData["list"] = model.GekozenGelieerdePersoonIDs;
-            		r = RedirectToAction("LedenMaken", "Leden");
-                    break;
+					r = GelieerdePersonenInschrijven(model.GekozenGelieerdePersoonIDs);
+            		break;
                 case 3:
                     TempData["list"] = model.GekozenGelieerdePersoonIDs;
                     r = RedirectToAction("CategorieToevoegenAanLijst");
@@ -523,9 +522,7 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult Inschrijven(int gelieerdepersoonID, int groepID)
         {
-        	var lijst = new List<int> {gelieerdepersoonID};
-        	TempData["list"] = lijst;
-        	return RedirectToAction("LedenMaken", "Leden"); // TODO naar waar willen we terug?
+			return GelieerdePersonenInschrijven(new List<int> { gelieerdepersoonID });
         }
 
         #endregion leden

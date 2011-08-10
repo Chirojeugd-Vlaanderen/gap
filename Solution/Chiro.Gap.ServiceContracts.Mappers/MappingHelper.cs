@@ -445,6 +445,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             Mapper.CreateMap<GroepsWerkJaar, GroepsWerkJaarDetail>()
                 .ForMember(dst => dst.Status, opt => opt.MapFrom(src => WerkJaarStatus.Onbekend))
+				.ForMember(dst => dst.WerkJaarID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.GroepPlaats,
                            opt => opt.MapFrom(
                             src => src.Groep is ChiroGroep ? (src.Groep as ChiroGroep).Plaats : Properties.Resources.NietVanToepassing));
