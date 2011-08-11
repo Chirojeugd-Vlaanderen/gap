@@ -208,6 +208,12 @@ namespace Chiro.Gap.Workers
 		public int NieuweWerkJaar()
 		{
 			// Bereken gewenste werkjaar
+
+            // Het algoritme kijkt het volgende na:
+            // Stel dat de jaarovergang mogelijk wordt vanaf 1 augustus.
+            // Als vandaag voor 1 augustus is, dan is het werkjaar vorig jaar begonnen => huidig jaar - 1
+            // Als vandaag 1 augustus of later is, dan begint het werkjaar dit kalenderjaar => huidig jaar.
+
 			int werkjaar;
 
 			var startdate = new DateTime(
@@ -215,7 +221,7 @@ namespace Chiro.Gap.Workers
 				Properties.Settings.Default.BeginOvergangsPeriode.Month,
 				Properties.Settings.Default.BeginOvergangsPeriode.Day);
 
-			if (DateTime.Today.CompareTo(startdate) < 0) // vroeger
+			if (DateTime.Today < startdate) // vroeger
 			{
 				werkjaar = DateTime.Today.Year - 1;
 			}
