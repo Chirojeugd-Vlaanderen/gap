@@ -81,7 +81,10 @@ namespace Chiro.Gap.WebApp.Controllers
             var huidigwerkjaar = ServiceHelper.CallService<IGroepenService, GroepsWerkJaarDetail>(g => g.RecentsteGroepsWerkJaarOphalen(groepID));
 			var periodeSindsVorigGwj = DateTime.Today.Year - huidigwerkjaar.WerkJaar;
 
+            // TODO: bovenstaande gaat ervan uit dat de jaarovergang voor december gebeurt, wat niet altijd het geval is.
+
             // Haal de huidige actieve afdelingen op, om zoveel mogelijk informatie te kunnen overnemen in het scherm
+
 			var actievelijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingDetail>>(g => g.ActieveAfdelingenOphalen(huidigwerkjaar.WerkJaarID));
 
             // laadt de details in van alle afdelingen die geselecteerd zijn voor het nieuwe werkjaar
