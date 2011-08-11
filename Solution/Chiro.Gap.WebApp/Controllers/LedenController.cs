@@ -281,6 +281,8 @@ namespace Chiro.Gap.WebApp.Controllers
 
             model.IDGetoondGroepsWerkJaar = groepsWerkJaarID;
             model.JaartalGetoondGroepsWerkJaar = gevraagdwerkjaar.WerkJaar;
+
+            // TODO (#1033): Hetgeen hieronder opgevraagd wordt, zit volgens mij al in de reeds opgehaalde model.WerkJaarInfos.  Na te kijken.
 			model.JaartalHuidigGroepsWerkJaar = ServiceHelper.CallService<IGroepenService, GroepsWerkJaarDetail>(e => e.RecentsteGroepsWerkJaarOphalen(groepID)).WerkJaar;
 
             // Haal alle afdelingsjaren op van de groep in het groepswerkjaar
