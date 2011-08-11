@@ -512,7 +512,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Schrijft een gelieerde persoon uit, en toont de bijgewerkte ledenlijst
+        /// Schrijft één gelieerde persoon uit, en toont de bijgewerkte ledenlijst
         /// </summary>
         /// <param name="id">GelieerdePersoonID van uit te schrijven gelieerde persoon</param>
         /// <param name="groepID">ID van de groep waarin de gebruker werkt</param>
@@ -522,6 +522,13 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult DeActiveren(int id, int groepID)
         {
+            // Opmerking: Deactiveren biedt de mogelijkheid om gauw 1 persoon uit te schrijven via een url.
+            // Meerdere personen uitschrijven kan door ze te selecteren, en dan de juiste actie te kiezen
+            // (de feedback is dan nog verkeerd; zie #1090)
+
+            // Achterliggend wordt telkens de private method 'Uitschrijven' aangeroepen, die op een lijst 
+            // GelieerdePersonIDs werkt.
+
         	IEnumerable<int> gpIDs = new List<int> {id};
         	UitSchrijven(gpIDs, groepID, Properties.Resources.LidNonActiefGemaakt);
         	return TerugNaarVorigeLijst();
