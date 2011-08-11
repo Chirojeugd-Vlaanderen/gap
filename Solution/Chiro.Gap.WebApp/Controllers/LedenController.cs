@@ -395,19 +395,6 @@ namespace Chiro.Gap.WebApp.Controllers
             }
         }
 
-		/// <summary>
-		/// Schrijft een gelieerde persoon in in de groep
-		/// </summary>
-		/// <param name="gelieerdepersoonIDs">IDs van de gelieerde personen die we willen inschrijven</param>
-		/// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
-		/// <returns></returns>
-		/// <!-- GET: /Personen/Inschrijven/gelieerdepersoonID -->
-		[HandleError]
-		public ActionResult Inschrijven(IEnumerable<int> gelieerdepersoonIDs, int groepID)
-		{
-			return GelieerdePersonenInschrijven(gelieerdepersoonIDs);
-		}
-
         /// <summary>
         /// Voert de gekozen actie in de dropdownlist van de ledenlijst uit op de geselecteerde
         /// personen.
@@ -429,7 +416,7 @@ namespace Chiro.Gap.WebApp.Controllers
             switch (model.GekozenActie)
             {
             	case 1:
-					return Inschrijven(model.SelectieGelieerdePersoonIDs, groepID);
+					return GelieerdePersonenInschrijven(model.SelectieGelieerdePersoonIDs);
             	case 2:
 					UitSchrijven(model.SelectieGelieerdePersoonIDs, groepID, Properties.Resources.MultiIngeschrevenFeedback);
             		return TerugNaarVorigeLijst();
