@@ -49,6 +49,8 @@ namespace Chiro.Gap.Workers
 			GroepsWerkJaarManager wm,
 			LedenManager lm)
 		{
+            // TODO (#1095): visie ontwikkelen over wanneer we IoC toepassen
+
 			_groepenMgr = gm;
 			_chiroGroepenMgr = cgm;
 			_afdelingsJaarMgr = ajm;
