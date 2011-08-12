@@ -418,7 +418,7 @@ namespace Chiro.Gap.WebApp.Controllers
             	case 1:
 					return GelieerdePersonenInschrijven(model.SelectieGelieerdePersoonIDs);
             	case 2:
-					UitSchrijven(model.SelectieGelieerdePersoonIDs, groepID, Properties.Resources.MultiIngeschrevenFeedback);
+					UitSchrijven(model.SelectieGelieerdePersoonIDs, groepID, Properties.Resources.LedenUitgeschreven);
             		return TerugNaarVorigeLijst();
         		case 3:
                     return AfdelingenBewerken(model.SelectieGelieerdePersoonIDs, groepID);

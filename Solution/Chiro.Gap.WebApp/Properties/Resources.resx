@@ -353,4 +353,7 @@
   <data name="BestelPeriodeDubbelpuntVoorbij" xml:space="preserve">
     <value>Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkjaar, moet je eerst de jaarovergang uitvoeren.</value>
   </data>
+  <data name="LedenUitgeschreven" xml:space="preserve">
+    <value>De geselecteerde leden werden uitgeschreven.</value>
+  </data>
 </root>
