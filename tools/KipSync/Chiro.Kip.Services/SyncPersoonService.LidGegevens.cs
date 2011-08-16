@@ -618,7 +618,7 @@ namespace Chiro.Kip.Services
                 }
                 else
                 {
-                    foreach (var f in lid.HeeftFunctie)
+                    foreach (var f in lid.HeeftFunctie.ToArray())
                     {
                         db.DeleteObject(f);
                     }
