@@ -411,7 +411,7 @@ namespace Chiro.Gap.Workers
 
                 var bewaardeLeiding = _leidingDao.Bewaren(leden.OfType<Leiding>(), ldng => ldng.AfdelingsJaar.First());
 
-                resultaat = bewaaardeKinderen.Union<Lid>(bewaardeLeiding);
+                resultaat = bewaaardeKinderen.Union<Lid>(bewaardeLeiding).Where(ld => ld.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten);
 
                 foreach (var l in resultaat)
                 {

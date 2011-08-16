@@ -342,7 +342,10 @@ namespace Chiro.Gap.Workers
 				Toekennen(lid, toeTeVoegen);
 				resultaat = LosKoppelen(lid, teVerwijderen); // LosKoppelen persisteert
 
-				_ledenSync.FunctiesUpdaten(lid);
+                if (lid.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten)
+                {
+                    _ledenSync.FunctiesUpdaten(lid);
+                }
 #if KIPDORP
 				tx.Complete();
 			}

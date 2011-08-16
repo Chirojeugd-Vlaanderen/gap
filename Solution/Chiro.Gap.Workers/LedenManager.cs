@@ -480,12 +480,13 @@ namespace Chiro.Gap.Workers
 #endif
                        if (syncen)
                        {
-                           if (!lid.NonActief)
+                           if (!lid.NonActief && lid.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten)
                            {
                                _sync.Bewaren(lid);
                            }
                            else if (lid.EindeInstapPeriode > DateTime.Now)
                            {
+                               // Verwijderen tijdens probeerperiode mag natuurlijk nog wel op het einde van het werkjaar
                                _sync.Verwijderen(lid);
                            }
                        }
@@ -511,7 +512,7 @@ namespace Chiro.Gap.Workers
 #endif
                         if (syncen)
                         {
-                            if (!lid.NonActief)
+                            if (!lid.NonActief && lid.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten)
                             {
                                 _sync.Bewaren(lid);
                             }
@@ -738,9 +739,12 @@ namespace Chiro.Gap.Workers
                         ld => ld.GelieerdePersoon.WithoutUpdate());
                 }
 
-                // In 2 keer syncen; pragmatische aanpak voor TODO #762
-                _sync.TypeUpdaten(nieuwLid);
-                _sync.AfdelingenUpdaten(nieuwLid);
+                if (nieuwLid.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten)
+                {
+                    // In 2 keer syncen; pragmatische aanpak voor TODO #762
+                    _sync.TypeUpdaten(nieuwLid);
+                    _sync.AfdelingenUpdaten(nieuwLid);
+                }
 
 #if KIPDORP
                 tx.Complete();
