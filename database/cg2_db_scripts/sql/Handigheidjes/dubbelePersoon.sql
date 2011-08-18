@@ -157,6 +157,16 @@ FROM pers.GelieerdePersoon fouteGp
 JOIN pers.PersoonsCategorie pc on fouteGp.GelieerdePersoonID=pc.GelieerdePersoonID
 WHERE fouteGp.PersoonID = @foutPID
 
+-- probeer deelnemers te verleggen
+
+UPDATE fouteDn
+SET fouteDn.GelieerdePersoonID=juisteGp.GelieerdePersoonID
+FROM pers.GelieerdePersoon fouteGp
+JOIN biv.Deelnemer fouteDn on fouteDn.GelieerdePersoonID = fouteGp.GelieerdePersoonID
+JOIN pers.GelieerdePersoon juisteGp on fouteGp.GroepID = juisteGp.GroepID
+WHERE fouteGp.PersoonID=@foutPID AND juisteGp.PersoonID=@juistPID
+
+
 -- op dit moment kunnen de foute gelieerde personen verdwijnen
 
 DELETE FROM pers.GelieerdePersoon
@@ -202,5 +212,6 @@ WHERE pv.PersoonID = @foutPID
 DELETE FROM pers.Persoon WHERE PersoonID=@foutPID
 
 COMMIT TRAN
+
 
 end
