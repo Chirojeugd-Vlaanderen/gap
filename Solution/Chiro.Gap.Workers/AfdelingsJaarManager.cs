@@ -332,6 +332,8 @@ namespace Chiro.Gap.Workers
             Debug.Assert(groepsWerkJaren.First() != null);
             Debug.Assert(groepsWerkJaren.First().Groep != null);
 
+            int werkjaar = groepsWerkJaren.First().WerkJaar;
+
             IEnumerable<Lid> resultaat;
 
             var alleLidIDs = (from l in leden select l.ID).Distinct();
@@ -411,11 +413,14 @@ namespace Chiro.Gap.Workers
 
                 var bewaardeLeiding = _leidingDao.Bewaren(leden.OfType<Leiding>(), ldng => ldng.AfdelingsJaar.First());
 
-                resultaat = bewaaardeKinderen.Union<Lid>(bewaardeLeiding).Where(ld => ld.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten);
+                resultaat = bewaaardeKinderen.Union<Lid>(bewaardeLeiding);
 
-                foreach (var l in resultaat)
+                if (werkjaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten)
                 {
-                    _ledenSync.AfdelingenUpdaten(l);
+                    foreach (var l in resultaat)
+                    {
+                        _ledenSync.AfdelingenUpdaten(l);
+                    }
                 }
 #if KIPDORP
                 tx.Complete();
