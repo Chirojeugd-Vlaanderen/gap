@@ -751,26 +751,31 @@ namespace Chiro.Gap.Data.Ef
             ChiroGroepEntities db,
             IEnumerable<GelieerdePersoon> gelieerdePersonen)
         {
-            var groepIDs = (from gp in gelieerdePersonen select gp.Groep.ID).Distinct();
-            Debug.Assert(groepIDs.Count() == 1);
+            if (gelieerdePersonen.FirstOrDefault() != null)
+            {
+                // Enkel als de lijst daadwerkelijk personen bevat, doen we er iets mee.
 
-            int groepID = groepIDs.First();
+                var groepIDs = (from gp in gelieerdePersonen select gp.Groep.ID).Distinct();
+                Debug.Assert(groepIDs.Count() == 1);
 
-            var gelieerdePersoonIDs = (from gp in gelieerdePersonen select gp.ID).ToArray();
+                int groepID = groepIDs.First();
 
-            int groepsWerkJaarID = (from w in db.GroepsWerkJaar
-                                    where w.Groep.ID == groepID
-                                    orderby w.WerkJaar descending
-                                    select w.ID).FirstOrDefault();
+                var gelieerdePersoonIDs = (from gp in gelieerdePersonen select gp.ID).ToArray();
 
-            // Selecteer en instantieer de leden met uit groepswerkjaar met ID groepsWerkJaarID
-            // en gelieerdePersoon uit GelieerdePersoonIDs.  Omdat de objectcontext nog actief
-            // is, en de gelieerde personen daaraan gekoppeld zijn, zullen de geïnstantieerde
-            // leden aan de goede gelieerde personen gekoppeld worden.
+                int groepsWerkJaarID = (from w in db.GroepsWerkJaar
+                                        where w.Groep.ID == groepID
+                                        orderby w.WerkJaar descending
+                                        select w.ID).FirstOrDefault();
 
-            var leden = db.Lid.Include(ld => ld.GelieerdePersoon).Where(Utility.BuildContainsExpression<Lid, int>(
-                l => l.GelieerdePersoon.ID,
-                gelieerdePersoonIDs)).Where(ld => ld.GroepsWerkJaar.ID == groepsWerkJaarID).ToArray();
+                // Selecteer en instantieer de leden met uit groepswerkjaar met ID groepsWerkJaarID
+                // en gelieerdePersoon uit GelieerdePersoonIDs.  Omdat de objectcontext nog actief
+                // is, en de gelieerde personen daaraan gekoppeld zijn, zullen de geïnstantieerde
+                // leden aan de goede gelieerde personen gekoppeld worden.
+
+                var leden = db.Lid.Include(ld => ld.GelieerdePersoon).Where(Utility.BuildContainsExpression<Lid, int>(
+                    l => l.GelieerdePersoon.ID,
+                    gelieerdePersoonIDs)).Where(ld => ld.GroepsWerkJaar.ID == groepsWerkJaarID).ToArray();
+            }
 
             return gelieerdePersonen;
         }
