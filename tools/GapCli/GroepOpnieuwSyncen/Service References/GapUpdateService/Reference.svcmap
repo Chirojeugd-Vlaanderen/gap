@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="a857d248-2d54-484d-8055-b022a9c34832" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8001/GapUpdateSvc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="GapUpdateSvc.xsd" MetadataType="Schema" ID="44854016-3632-4d1b-bdf7-7e8c6f122136" SourceId="1" SourceUrl="http://localhost:8001/GapUpdateSvc?xsd=xsd0" />
+    <MetadataFile FileName="GapUpdateSvc1.xsd" MetadataType="Schema" ID="461b5524-98b7-4667-9fa3-378570dc650c" SourceId="1" SourceUrl="http://localhost:8001/GapUpdateSvc?xsd=xsd1" />
+    <MetadataFile FileName="UpdateService.wsdl" MetadataType="Wsdl" ID="e728c8a7-6eb4-43a7-9552-86c773d8aff0" SourceId="1" SourceUrl="http://localhost:8001/GapUpdateSvc?wsdl" />
+    <MetadataFile FileName="GapUpdateSvc.disco" MetadataType="Disco" ID="30aeefd7-7563-4d40-b282-5eed4b46eb60" SourceId="1" SourceUrl="http://localhost:8001/GapUpdateSvc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
