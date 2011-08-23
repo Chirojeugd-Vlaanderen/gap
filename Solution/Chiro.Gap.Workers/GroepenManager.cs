@@ -314,7 +314,7 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Haalt groep op met gegeven stamnummer
+        /// Haalt groep op met gegeven stamnummer, incl recentse groepswerkjaar
         /// </summary>
         /// <param name="code">Stamnummer op te halen groep</param>
         /// <returns>Groep met <paramref name="code"/> als stamnummer</returns>
@@ -322,7 +322,7 @@ namespace Chiro.Gap.Workers
         {
             var resultaat = _groepenDao.Ophalen(code);
 
-            if (_autorisatieMgr.IsGavGroep(resultaat.ID))
+            if (_autorisatieMgr.IsSuperGav() || _autorisatieMgr.IsGavGroep(resultaat.ID))
             {
                 return resultaat;
             }

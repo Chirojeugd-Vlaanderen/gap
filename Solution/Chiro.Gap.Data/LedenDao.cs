@@ -713,5 +713,32 @@ namespace Chiro.Gap.Data.Ef
             }
             return paths;
         }
+
+        /// <summary>
+        /// Haalt alle leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens,
+        /// voorkeursadressen, functies en afdelingen.  (Geen communicatiemiddelen)
+        /// </summary>
+        /// <param name="gwjID">ID van het gevraagde groepswerkjaar</param>
+        /// <returns>De lijst van leden</returns>
+        public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID)
+        {
+            Lid[] resultaat;
+
+            using (var db = new ChiroGroepEntities())
+            {
+                resultaat =
+                    (from l in
+                         db.Lid.Include(ld => ld.GroepsWerkJaar.Groep).Include(ld => ld.GelieerdePersoon.Persoon).
+                         Include(ld => ld.Functie)
+                     where
+                         !l.NonActief &&
+                         l.GroepsWerkJaar.ID == gwjID
+                     select l).ToArray();
+
+                AdresHelper.VoorkeursAdresKoppelen(from l in resultaat select l.GelieerdePersoon);
+                AfdelingenKoppelen(db, resultaat, true);
+            }
+            return Utility.DetachObjectGraph<Lid>(resultaat);
+        }
     }
 }

@@ -152,5 +152,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
 		/// </returns>
 		Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID);
+
+	    /// <summary>
+	    /// Haalt alle leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens,
+	    /// voorkeursadressen, functies en afdelingen.  (Geen communicatiemiddelen)
+	    /// </summary>
+	    /// <param name="gwjID">ID van het gevraagde groepswerkjaar</param>
+	    /// <returns>De lijst van leden</returns>
+	    IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID);
 	}
 }

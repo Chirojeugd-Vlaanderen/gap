@@ -83,7 +83,7 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// Haalt groep op met gegeven stamnummer
+		/// Haalt groep op met gegeven stamnummer, inclusief recentste groepswerkjaar
 		/// </summary>
 		/// <param name="code">Stamnummer op te halen groep</param>
 		/// <returns>Groep met <paramref name="code"/> als stamnummer</returns>
@@ -93,9 +93,21 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.Groep.MergeOption = MergeOption.NoTracking;
 
-				return (from g in db.Groep
-						where g.Code == code
-						select g).FirstOrDefault();
+			    var groepsWj = (from gwj in db.GroepsWerkJaar.Include(gwj => gwj.Groep)
+			                    where gwj.Groep.Code == code
+			                    select gwj).OrderByDescending(gwj=>gwj.WerkJaar).FirstOrDefault();
+
+                if (groepsWj != null)
+                {
+                    return groepsWj.Groep;
+                }
+                else
+                {
+                    var groep = (from g in db.Groep
+                                 where g.Code == code
+                                 select g).FirstOrDefault();
+                    return groep;
+                }
 			}
 		}
 	}

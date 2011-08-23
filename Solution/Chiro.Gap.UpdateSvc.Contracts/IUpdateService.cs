@@ -25,5 +25,12 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 		/// <param name="nieuwAd">nieuw AD-nummer</param>
 		[OperationContract(IsOneWay = true)]
 		void AdNummerVervangen(int oudAd, int nieuwAd);
+
+        /// <summary>
+        /// Synct alle leden van het recentste werkjaar van een groep opnieuw naar Kipadmin
+        /// </summary>
+        /// <param name="stamNummer">Stamnummer van groep met te syncen leden</param>
+	    [OperationContract(IsOneWay = true)]
+	    void OpnieuwSyncen(string stamNummer);
 	}
 }

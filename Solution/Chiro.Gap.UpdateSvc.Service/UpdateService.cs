@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.ServiceModel;
 
 using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.UpdateSvc.Contracts;
 using Chiro.Gap.Workers;
 
@@ -10,14 +12,23 @@ namespace Chiro.Gap.UpdateSvc.Service
 	public class UpdateService : IUpdateService
 	{
 		private readonly PersonenManager _personenMgr;
+	    private readonly GroepenManager _groepenMgr;
+	    private readonly LedenManager _ledenMgr;
+	    private readonly ILedenSync _ledenSync;
 
-		/// <summary>
-		/// Dependency Injection via de constructor
-		/// </summary>
-		/// <param name="personenManager">te gebruiken personenmanagerobject</param>
-		public UpdateService(PersonenManager personenManager)
+	    /// <summary>
+	    /// Dependency Injection via de constructor
+	    /// </summary>
+	    /// <param name="personenManager">te gebruiken personenmanagerobject</param>
+	    /// <param name="groepenManager">te gebruiken groepenmanager</param>
+	    /// <param name="ledenManager">te gebruiken ledenmanager</param>
+	    /// <param name="ledenSync">te gebruiken ledensync terug naar Kipadmin</param>
+	    public UpdateService(PersonenManager personenManager, GroepenManager groepenManager, LedenManager ledenManager, ILedenSync ledenSync)
 		{
 			_personenMgr = personenManager;
+		    _groepenMgr = groepenManager;
+	        _ledenMgr = ledenManager;
+	        _ledenSync = ledenSync;
 		}
 
 		/// <summary>
@@ -54,5 +65,37 @@ namespace Chiro.Gap.UpdateSvc.Service
 				Console.WriteLine("Ad-nummer {0} vervangen door {1}. ({2}, ID {3})", oudAd, nieuwAd, p.VolledigeNaam, p.ID);
 			}
 		}
+
+        /// <summary>
+        /// Synct alle leden van het recentste werkjaar van een groep opnieuw naar Kipadmin
+        /// </summary>
+        /// <param name="stamNummer">Stamnummer van groep met te syncen leden</param>
+        /// <remarks>Dit is eigenlijk geen sync van Kipadmin naar GAP, maar een vraag van Kipadmin
+        /// aan GAP om bepaalde zaken opnieuw te syncen.  Eigenlijk staat dit dus niet op zijn
+        /// plaats in deze service.  Maar voorlopig staat het hier, omdat UpdateService de
+        /// enige manier is om communicatie van KIP naar GAP te arrangeren.</remarks>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+	    public void OpnieuwSyncen(string stamNummer)
+        {
+            // ophalen met stamnummer levert (toevallig ;-/) het recentste groepswerkjaar mee.
+
+            var gwj = _groepenMgr.Ophalen(stamNummer).GroepsWerkJaar.FirstOrDefault();
+
+            if (gwj == null)
+            {
+                Console.WriteLine("Geen groepswerkjaar gevonden voor {0}", stamNummer);
+            }
+            else
+            {
+                var leden = _ledenMgr.OphalenUitGroepsWerkJaar(gwj.ID);
+
+                foreach (var lid in leden)
+                {
+                    _ledenSync.Bewaren(lid);
+                }
+
+                Console.WriteLine("Leden van {0} voor werkjaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
+            }
+        }
 	}
 }

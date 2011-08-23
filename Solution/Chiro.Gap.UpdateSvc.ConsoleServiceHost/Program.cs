@@ -8,6 +8,7 @@ using System;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.UpdateSvc.Service;
 using Chiro.Cdf.ServiceModel;
+using Chiro.Gap.Sync;
 
 namespace Chiro.Gap.UpdateSvc.ConsoleServiceHost
 {
@@ -16,6 +17,7 @@ namespace Chiro.Gap.UpdateSvc.ConsoleServiceHost
 		static void Main(string[] args)
 		{
 			Factory.ContainerInit();
+		    MappingHelper.MappingsDefinieren();
 
 			// ServiceHost<T> is een type dat we zelf declareren in Chiro.Cdf.ServiceModel, maar
 			// eigenlijk is onderstaande lijn min of meer gelijkaardig aan

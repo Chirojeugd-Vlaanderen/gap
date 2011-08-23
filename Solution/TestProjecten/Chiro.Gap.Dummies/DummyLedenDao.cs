@@ -95,7 +95,12 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<Lid> OverTeZettenOphalen(int maxAantal)
+	    public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public IEnumerable<Lid> OverTeZettenOphalen(int maxAantal)
 		{
 			throw new NotImplementedException();
 		}
