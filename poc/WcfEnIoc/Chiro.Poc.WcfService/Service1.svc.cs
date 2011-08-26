@@ -1,0 +1,14 @@
+﻿using System;
+using Chiro.Poc.WcfService.ServiceContracts;
+
+namespace Chiro.Poc.WcfService
+{
+    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
+    public class Service1 : IService1
+    {
+        public string Hallo()
+        {
+            return "Antwoord van de service.";
+        }
+    }
+}
