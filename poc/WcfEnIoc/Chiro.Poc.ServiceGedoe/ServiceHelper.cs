@@ -13,7 +13,7 @@ namespace Chiro.Poc.ServiceGedoe
         {
             TResult result;
 
-            var client = Factory.Maak<IClient<TContract>>();
+            var client = Factory.Maak<IServiceClient<TContract>>();
 
             using (client)
             {

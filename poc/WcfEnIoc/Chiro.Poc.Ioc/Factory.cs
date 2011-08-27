@@ -18,6 +18,12 @@ namespace Chiro.Poc.Ioc
             section.Configure(_container);
         }
 
+        public static void InstantieRegistreren<T>(T obj)
+        {
+            Debug.Assert(_container != null);   // Als _container null is, is hij waarschijnlijk niet geinitialiseerd
+            _container.RegisterInstance(obj);
+        }
+
         public static T Maak<T>()
         {
             Debug.Assert(_container != null);   // Als _container null is, is hij waarschijnlijk niet geinitialiseerd
@@ -26,6 +32,7 @@ namespace Chiro.Poc.Ioc
 
         public static object Maak(Type t)
         {
+            Debug.Assert(_container != null);   // Als _container null is, is hij waarschijnlijk niet geinitialiseerd
             return _container.Resolve(t);
         }
     }

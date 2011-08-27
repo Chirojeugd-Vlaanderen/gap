@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Chiro.Poc.ServiceGedoe
 {
-    public class Client<TContract> : System.ServiceModel.ClientBase<TContract>, IClient<TContract> where TContract : class
+    public class OnlineServiceClient<TContract> : System.ServiceModel.ClientBase<TContract>, IServiceClient<TContract> where TContract : class
     {
-        public Client()
+        public OnlineServiceClient()
         {
         }
 
