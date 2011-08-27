@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using Chiro.Poc.Ioc;
 
 namespace Chiro.Poc.ServiceGedoe
 {
@@ -12,7 +13,9 @@ namespace Chiro.Poc.ServiceGedoe
         {
             TResult result;
 
-            using (var client = new Client<TContract>())
+            var client = Factory.Maak<IClient<TContract>>();
+
+            using (client)
             {
                 result = client.Call(operatie);
             }

@@ -49,6 +49,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chiro.Poc.Ioc\Chiro.Poc.Ioc.csproj">
+      <Project>{FC24376D-22AC-4406-812E-AFB102647623}</Project>
+      <Name>Chiro.Poc.Ioc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Poc.ServiceGedoe\Chiro.Poc.ServiceGedoe.csproj">
       <Project>{9ED19C2B-7E63-46D1-83CB-1432B73FB8D2}</Project>
       <Name>Chiro.Poc.ServiceGedoe</Name>
