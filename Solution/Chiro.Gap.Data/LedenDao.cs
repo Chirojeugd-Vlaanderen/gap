@@ -715,12 +715,14 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
-        /// Haalt alle leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens,
+        /// Haalt leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens,
         /// voorkeursadressen, functies en afdelingen.  (Geen communicatiemiddelen)
         /// </summary>
         /// <param name="gwjID">ID van het gevraagde groepswerkjaar</param>
+        /// <param name="ookInactief">geef hier <c>true</c> als ook de niet-actieve leden opgehaald
+        /// moeten worden.</param>
         /// <returns>De lijst van leden</returns>
-        public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID)
+        public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID, bool ookInactief)
         {
             Lid[] resultaat;
 
@@ -731,7 +733,7 @@ namespace Chiro.Gap.Data.Ef
                          db.Lid.Include(ld => ld.GroepsWerkJaar.Groep).Include(ld => ld.GelieerdePersoon.Persoon).
                          Include(ld => ld.Functie)
                      where
-                         !l.NonActief &&
+                         (!l.NonActief || ookInactief) &&
                          l.GroepsWerkJaar.ID == gwjID
                      select l).ToArray();
 

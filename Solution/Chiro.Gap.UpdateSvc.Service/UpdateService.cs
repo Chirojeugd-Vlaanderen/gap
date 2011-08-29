@@ -87,7 +87,7 @@ namespace Chiro.Gap.UpdateSvc.Service
             }
             else
             {
-                var leden = _ledenMgr.OphalenUitGroepsWerkJaar(gwj.ID);
+                var leden = _ledenMgr.OphalenUitGroepsWerkJaar(gwj.ID, true);
 
                 foreach (var lid in leden)
                 {

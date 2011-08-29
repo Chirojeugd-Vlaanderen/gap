@@ -119,50 +119,63 @@ namespace Chiro.Gap.Sync
             Debug.Assert(l.GroepsWerkJaar != null);
             Debug.Assert(l.GroepsWerkJaar.Groep != null);
 
-            var nationaleFuncties = (from f in l.Functie
-                                     where f.IsNationaal
-                                     select _functieVertaling[(NationaleFunctie)f.ID]).ToList();
-
-            List<AfdelingEnum> officieleAfdelingen;
-
-            if (l is Kind)
+            if (l.NonActief)
             {
-                officieleAfdelingen = new List<AfdelingEnum> { _afdelingVertaling[(NationaleAfdeling)((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)] };
+                Verwijderen(l);
             }
             else
             {
-                officieleAfdelingen = (from a in (l as Leiding).AfdelingsJaar
-                                       select _afdelingVertaling[(NationaleAfdeling)a.OfficieleAfdeling.ID]).ToList();
-            }
+                var nationaleFuncties = (from f in l.Functie
+                                         where f.IsNationaal
+                                         select _functieVertaling[(NationaleFunctie) f.ID]).ToList();
 
-            // Euh, en waarom heb ik hiervoor geen mapper gemaakt?
+                List<AfdelingEnum> officieleAfdelingen;
 
-            var lidGedoe = new LidGedoe
-                            {
-                                StamNummer = l.GroepsWerkJaar.Groep.Code,
-                                WerkJaar = l.GroepsWerkJaar.WerkJaar,
-                                LidType = l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
-                                NationaleFuncties = nationaleFuncties,
-                                OfficieleAfdelingen = officieleAfdelingen,
-                                EindeInstapPeriode = l.EindeInstapPeriode
-                            };
+                if (l is Kind)
+                {
+                    officieleAfdelingen = new List<AfdelingEnum>
+                                              {
+                                                  _afdelingVertaling[
+                                                      (NationaleAfdeling)
+                                                      ((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
+                                              };
+                }
+                else
+                {
+                    officieleAfdelingen = (from a in (l as Leiding).AfdelingsJaar
+                                           select _afdelingVertaling[(NationaleAfdeling) a.OfficieleAfdeling.ID]).ToList
+                        ();
+                }
 
-            if (l.GelieerdePersoon.Persoon.AdNummer != null)
-            {
-                _svc.LidBewaren((int)l.GelieerdePersoon.Persoon.AdNummer, lidGedoe);
-            }
-            else
-            {
-                // Markeer AD-nummer als zijnde 'in aanvraag'
+                // Euh, en waarom heb ik hiervoor geen mapper gemaakt?
 
-                l.GelieerdePersoon.Persoon.AdInAanvraag = true;
-                _personenDao.Bewaren(l.GelieerdePersoon.Persoon);
+                var lidGedoe = new LidGedoe
+                                   {
+                                       StamNummer = l.GroepsWerkJaar.Groep.Code,
+                                       WerkJaar = l.GroepsWerkJaar.WerkJaar,
+                                       LidType = l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
+                                       NationaleFuncties = nationaleFuncties,
+                                       OfficieleAfdelingen = officieleAfdelingen,
+                                       EindeInstapPeriode = l.EindeInstapPeriode
+                                   };
 
-                // Ook persoonsgegevens meesturen
+                if (l.GelieerdePersoon.Persoon.AdNummer != null)
+                {
+                    _svc.LidBewaren((int) l.GelieerdePersoon.Persoon.AdNummer, lidGedoe);
+                }
+                else
+                {
+                    // Markeer AD-nummer als zijnde 'in aanvraag'
 
-                _svc.NieuwLidBewaren(
-                    Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon),
-                    lidGedoe);
+                    l.GelieerdePersoon.Persoon.AdInAanvraag = true;
+                    _personenDao.Bewaren(l.GelieerdePersoon.Persoon);
+
+                    // Ook persoonsgegevens meesturen
+
+                    _svc.NieuwLidBewaren(
+                        Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon),
+                        lidGedoe);
+                }
             }
         }
 

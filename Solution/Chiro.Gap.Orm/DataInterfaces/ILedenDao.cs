@@ -16,23 +16,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// Interface voor een gegevenstoegangsobject voor Leden
 	/// </summary>
 	public interface ILedenDao : IDao<Lid>
-	{
-		/// <summary>
-		/// Een lijst ophalen van alle leden voor het opgegeven groepswerkjaar
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
-		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
-		IList<Lid> AllesOphalen(int groepsWerkJaarID, LidEigenschap sortering);
-
-		/// <summary>
-		/// Een lijst ophalen van alle actieve leden voor het opgegeven groepswerkjaar
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
-		/// <returns>Een lijst alle actieve leden voor het opgegeven groepswerkjaar</returns>
-		IList<Lid> ActieveLedenOphalen(int groepsWerkJaarID, LidEigenschap sortering);
-        
+	{      
 		/// <summary>
 		/// Haalt een pagina op van de gevraagde gegevens:
 		/// leden van een bepaalde groep in een gegeven werkjaar, die in de gegeven afdeling zitten
@@ -154,11 +138,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID);
 
 	    /// <summary>
-	    /// Haalt alle leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens,
+	    /// Haalt leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens,
 	    /// voorkeursadressen, functies en afdelingen.  (Geen communicatiemiddelen)
 	    /// </summary>
 	    /// <param name="gwjID">ID van het gevraagde groepswerkjaar</param>
+	    /// <param name="ookInactief">geef hier <c>true</c> als ook de niet-actieve leden opgehaald
+	    /// moeten worden.</param>
 	    /// <returns>De lijst van leden</returns>
-	    IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID);
+	    IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID, bool ookInactief);
 	}
 }

@@ -20,10 +20,6 @@ namespace Chiro.Gap.Dummies
 	{
 		#region ILedenDao Members
 
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
-		{
-			return new List<Lid>();
-		}
 		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LidEigenschap sortering)
 		{
 			return new List<Lid>();
@@ -31,22 +27,6 @@ namespace Chiro.Gap.Dummies
 
 		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LidEigenschap sortering)
 		{
-			return new List<Lid>();
-		}
-
-		public IList<Lid> AllesOphalen(int groepsWerkJaarID, LidEigenschap sortering)
-		{
-			return new List<Lid>();
-		}
-
-		public IList<Lid> ActieveLedenOphalen(int groepsWerkJaarID, LidEigenschap sortering)
-		{
-			return new List<Lid>();
-		}
-
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal, LidEigenschap sortering)
-		{
-			aantalTotaal = 0;
 			return new List<Lid>();
 		}
 
@@ -95,15 +75,10 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-	    public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID)
+	    public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID, bool ookInactief)
 	    {
 	        throw new NotImplementedException();
 	    }
-
-	    public IEnumerable<Lid> OverTeZettenOphalen(int maxAantal)
-		{
-			throw new NotImplementedException();
-		}
 
 		#endregion
 	}

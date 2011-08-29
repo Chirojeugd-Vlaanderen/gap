@@ -601,16 +601,18 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Haalt alle leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens,
+        /// Haalt leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens,
         /// voorkeursadressen, functies en afdelingen.  (Geen communicatiemiddelen)
         /// </summary>
         /// <param name="gwjID">ID van het gevraagde groepswerkjaar</param>
+        /// <param name="ookInactief">geef hier <c>true</c> als ook de niet-actieve leden opgehaald
+        /// moeten worden.</param>
         /// <returns>De lijst van leden</returns>
-        public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID)
+        public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID, bool ookInactief)
         {
             if (_autorisatieMgr.IsSuperGav())
             {
-                return _daos.LedenDao.OphalenUitGroepsWerkJaar(gwjID);
+                return _daos.LedenDao.OphalenUitGroepsWerkJaar(gwjID, ookInactief);
             }
             else
             {

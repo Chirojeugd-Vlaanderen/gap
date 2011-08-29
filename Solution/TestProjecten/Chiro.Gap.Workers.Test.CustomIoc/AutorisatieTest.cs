@@ -74,7 +74,7 @@ namespace Chiro.Gap.Workers.Test
 			var ledenDaoMock = new Mock<ILedenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 
-			ledenDaoMock.Setup(foo => foo.AllesOphalen(testData.HuidigGwj.ID, LidEigenschap.Naam)).Returns(new List<Lid>());
+			ledenDaoMock.Setup(foo => foo.OphalenUitGroepsWerkJaar(testData.HuidigGwj.ID, false)).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(false);
 
 			Factory.InstantieRegistreren(ledenDaoMock.Object);
@@ -108,7 +108,7 @@ namespace Chiro.Gap.Workers.Test
 			var groepenDaoMock = new Mock<IGroepenDao>();
 			var groepsWerkJaarDaoMock = new Mock<IGroepsWerkJaarDao>();
 
-			ledenDaoMock.Setup(foo => foo.AllesOphalen(testData.HuidigGwj.ID, LidEigenschap.Naam)).Returns(new List<Lid>());
+			ledenDaoMock.Setup(foo => foo.OphalenUitGroepsWerkJaar(testData.HuidigGwj.ID, false)).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(false);
 			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(testData.HuidigGwj.ID)).Returns(testData.HuidigGwj);
 			groepenDaoMock.Setup(foo => foo.Ophalen(testData.DummyGroep.ID)).Returns(testData.DummyGroep);
@@ -206,7 +206,7 @@ namespace Chiro.Gap.Workers.Test
 
 			// We mocken de dao's dat het zoeken naar leden/leiding een lege lijst oplevert
 
-			ledenDaoMock.Setup(foo => foo.ActieveLedenOphalen(testData.HuidigGwj.ID, LidEigenschap.Naam)).Returns(new List<Lid>());
+			ledenDaoMock.Setup(foo => foo.OphalenUitGroepsWerkJaar(testData.HuidigGwj.ID, false)).Returns(new List<Lid>());
 			leidingDaoMock.Setup(foo => foo.Zoeken(It.IsAny<LidFilter>(), It.IsAny<LidExtras>())).
 				Returns(new List<Leiding>());
 			kindDaoMock.Setup(foo => foo.Zoeken(It.IsAny<LidFilter>(), It.IsAny<LidExtras>())).
