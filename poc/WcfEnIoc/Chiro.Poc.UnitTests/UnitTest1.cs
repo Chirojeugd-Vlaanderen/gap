@@ -6,6 +6,9 @@ using Moq;
 
 namespace Chiro.Poc.UnitTests
 {
+    /// <summary>
+    /// Unit test, die service calls 'wegmockt'.
+    /// </summary>
     [TestClass]
     public class UnitTest1
     {
@@ -15,21 +18,31 @@ namespace Chiro.Poc.UnitTests
             Factory.ContainerInit();
         }
 
+        /// <summary>
+        /// Deze unit test roept een mock aan in plaats van de echte service.
+        /// </summary>
+        /// <remarks>
+        /// Dit werkt enkel omdat er een andere IServiceClient gebruikt wordt; dit is
+        /// gedefinieerd in App.Config
+        /// </remarks>
         [TestMethod]
         public void TestMethod1()
         {
-            // Arrange
-
+            // Arrange: Creeer een mock voor IService1, en configureer de DI-container
+            // zodanig dat hij die mock zal gebruiken.
+            
             var serviceMock = new Mock<IService1>();
             serviceMock.Setup(m => m.Hallo()).Returns("Antwoord van mock");
 
+            // (Als je hieronder een SynchronisationLockException krijgt bij het debuggen, 
+            // doe dan gewoon maar verder.)
             Factory.InstantieRegistreren(serviceMock.Object);
 
-            // Act
+            // Act: laat ServiceHelper een method van IService1 aanroepen
 
             string result = ServiceHelper.CallService<IService1, string>(svc => svc.Hallo());
 
-            // Assert
+            // Assert: We verwachten een antwoord van de mock, niet van de service
 
             Assert.AreEqual(result, "Antwoord van mock");
         }
