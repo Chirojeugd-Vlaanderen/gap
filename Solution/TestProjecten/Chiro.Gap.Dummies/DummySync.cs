@@ -58,7 +58,6 @@ namespace Chiro.Gap.Dummies
 
         public void Verwijderen(Lid lid)
         {
-            throw new NotImplementedException();
         }
 
         public void Abonneren(GelieerdePersoon gp)
@@ -71,17 +70,14 @@ namespace Chiro.Gap.Dummies
 
     	public void Bewaren(Uitstap uitstap)
     	{
-    		throw new NotImplementedException();
     	}
 
     	public void Verwijderen(int uitstapID)
     	{
-    		throw new NotImplementedException();
     	}
 
         public void Abonneren(Abonnement abonnement)
         {
-            throw new NotImplementedException();
         }
     }
 }

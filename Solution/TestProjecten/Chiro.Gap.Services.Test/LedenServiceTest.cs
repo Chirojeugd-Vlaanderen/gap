@@ -160,7 +160,7 @@ namespace Chiro.Gap.Services.Test
 
 			#region Assert
 			var l = target.DetailsOphalen(lidID);
-			Assert.IsTrue(l.LidInfo.AfdelingIdLijst.Contains(gekozenafdelingsjaarID));
+			Assert.IsTrue(l.LidInfo.AfdelingIdLijst.Contains(TestInfo.AFDELING2ID));
 			#endregion
 
 			#region Cleanup

@@ -30,8 +30,8 @@
 		public const int AFDELINGSJAAR1ID = 17630;
 		public const int AFDELING1VAN = 2003;
 		public const int AFDELING1TOT = 2004;
-		public const int AFDELING2ID = 5650;
-		public const int AFDELINGSJAAR2ID = 17631;
+		public const int AFDELING2ID = 5649;
+		public const int AFDELINGSJAAR2ID = 17633;
 		public const int AFDELING2VAN = 2003;
 		public const int AFDELING2TOT = 2004;
 		public const int AFDELING3ID = 5650;

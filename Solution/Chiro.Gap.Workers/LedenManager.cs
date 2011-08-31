@@ -378,8 +378,9 @@ namespace Chiro.Gap.Workers
 				if(voorstellid.AfdelingsJaarID != null)
 				{
 					afdelingsJaar = (from a in gwj.AfdelingsJaar
-					                 where (leidingmaken || (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar))
-					                       && voorstellid.AfdelingsJaarID == a.ID
+							 // NOTE: #1073: het gewenste gedrag is dat we het lid sowieso in de voorgestelde afdeling inschrijven , wat de leeftijd ook is.
+					                 where /*(leidingmaken /*|| (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)) &&*/
+					                       voorstellid.AfdelingsJaarID == a.ID
 					                 select a).FirstOrDefault();
 					if(afdelingsJaar==null)
 					{
