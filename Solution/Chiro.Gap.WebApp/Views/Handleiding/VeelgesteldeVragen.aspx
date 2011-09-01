@@ -170,6 +170,6 @@
     <h3>
         Kan ik extra logins aanvragen?</h3>
     <p>
-        Ja. Vraag er één aan via <a href="http://www.chiro.be/eloket/gap">het e-loket</a>.
+        Ja. Vraag er één aan via <a href="http://www.chiro.be/eloket/aansluitingen-chirogroepen">het e-loket</a>.
         <strong>Vermeld je stamnummer</strong>, zodat we weten over welke groep het gaat.</p>
 </asp:Content>
