@@ -17,7 +17,7 @@
 		we moeten opsturen voor die leden.</p>
 	<p>
 		Sommige groepen hebben een aparte afdeling voor mensen met een (mentale) handicap.
-		Dat is één mogelijke uitwerking van het <a href="http://www.chiro.be/toegankelijkheidchirovisie">
+		Dat is één mogelijke uitwerking van het <a href="http://http://www.chiro.be/info-voor-leiding/diversiteit/chirovisie">
 			streven naar inclusie</a> van de Chiro:
 	</p>
 	<blockquote>

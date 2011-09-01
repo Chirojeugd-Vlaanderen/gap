@@ -6,6 +6,8 @@
         Algemeen:</h3>
     <ul>
         <li><a href="http://www.chiro.be/eloket/feedback-gap">Vragen of feedback?</a></li>
+		<li>
+            <%=Html.ActionLink("Deadlines", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Deadlines" }) %></li>
         <li>
             <%=Html.ActionLink("Trefwoorden", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Trefwoorden" }) %></li>
         <li>
