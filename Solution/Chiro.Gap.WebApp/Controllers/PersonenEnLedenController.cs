@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-using Chiro.Cdf.ServiceHelper;
+using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.Models;
@@ -12,13 +12,12 @@ namespace Chiro.Gap.WebApp.Controllers
 	public abstract class PersonenEnLedenController : BaseController
 	{
 		/// <summary>
-        /// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
+        /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
         /// best toegewezen via inversion of control.
         /// </summary>
-        /// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
         /// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-		protected PersonenEnLedenController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt) : base(serviceHelper, veelGebruikt) { }
+		protected PersonenEnLedenController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
 
 		[HandleError]
 		public abstract override ActionResult Index(int groepID);

@@ -73,17 +73,12 @@
     <Compile Include="PreserveDataContractReferencesOperationBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceHelper.cs" />
-    <Compile Include="StaticServiceHelper.cs" />
     <Compile Include="ShieldExceptionsAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Adf\Chiro.Adf.csproj">
       <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
       <Name>Chiro.Adf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
-      <Project>{11A23709-8EA9-43B1-9982-B1DC08A50FD8}</Project>
-      <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

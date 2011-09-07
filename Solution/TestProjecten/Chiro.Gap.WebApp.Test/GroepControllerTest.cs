@@ -1,11 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Chiro.Cdf.Ioc;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System;
 using System.Web.Mvc;
 
 using Moq;
 
-using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WebApp.Controllers;
 
@@ -20,6 +21,12 @@ namespace Chiro.Gap.WebApp.Test
 	[TestClass]
 	public class GroepControllerTest
 	{
+        [ClassInitialize()]
+        public static void MyClassInitialize(TestContext testContext)
+        {
+            Factory.ContainerInit();
+        }
+
     	#region Additional test attributes
 		// 
 		//You can use the following additional attributes as you write your tests:
@@ -60,21 +67,19 @@ namespace Chiro.Gap.WebApp.Test
 			const int DUMMYCATID = 9;
 			const int DUMMYGROEPID = 1;
 
-			var serviceHelperMock = new Mock<IServiceHelper>();
+			var groepenServiceMock = new Mock<IGroepenService>();
 
 			// Verwacht dat de groepenservice aangeroepen wordt.
-			serviceHelperMock.Setup(hlpr => hlpr.CallService(It.IsAny<Action<IGroepenService>>()));
+			groepenServiceMock.Setup(mock=>mock.CategorieVerwijderen(It.IsAny<int>(), It.IsAny<bool>()));
 
-			// Met onze servicehelperconstructie kan ik het mockobject blijkbaar niet laten controleren
-			// welke service method precies aangeroepen wordt :-(
+		    Factory.InstantieRegistreren(groepenServiceMock.Object);
 
-			IServiceHelper serviceHelper = serviceHelperMock.Object;
-			var target = new CategorieenController(serviceHelper, new VeelGebruikt(serviceHelper));
+			var target = new CategorieenController(new VeelGebruikt());
 
 			var actual = target.CategorieVerwijderen(DUMMYGROEPID, DUMMYCATID) as RedirectToRouteResult;
 
 			// Controleer of verwachte service call wel is gebeurd
-			serviceHelperMock.VerifyAll();
+			groepenServiceMock.VerifyAll();
 
 			// Verwacht de view met de groepsinstellingen.
 			Assert.IsNotNull(actual);

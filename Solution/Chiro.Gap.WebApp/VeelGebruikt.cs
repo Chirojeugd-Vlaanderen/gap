@@ -9,7 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Caching;
 
-using Chiro.Cdf.ServiceHelper;
+using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -37,19 +37,9 @@ namespace Chiro.Gap.WebApp
         private const string BIVAKSTATUSAANTALCACHEKEY = "aantalbivstat{0}";
         #endregion
 
-        private readonly IServiceHelper _serviceHelper;
         private readonly Cache _cache = HttpRuntime.Cache;	// misschien hier ook DI voor gebruiken?
 
         // TODO (#1038): deze klasse kan gemakkelijk opgesplitst worden in partial classes per 'thema' 
-
-        /// <summary>
-        /// Constructor.  De servicehelper wordt bepaald door dependency injection (IOC)
-        /// </summary>
-        /// <param name="serviceHelper">Te gebruiken servicehelper</param>
-        public VeelGebruikt(IServiceHelper serviceHelper)
-        {
-            _serviceHelper = serviceHelper;
-        }
 
         #region Groepswerkjaar
 
@@ -74,7 +64,7 @@ namespace Chiro.Gap.WebApp
             var gwjDetail = (GroepsWerkJaarDetail)_cache.Get(String.Format(GROEPSWERKJAARCACHEKEY, groepID));
             if (gwjDetail == null)
             {
-                gwjDetail = _serviceHelper.CallService<IGroepenService, GroepsWerkJaarDetail>(g => g.RecentsteGroepsWerkJaarOphalen(groepID));
+                gwjDetail = ServiceHelper.CallService<IGroepenService, GroepsWerkJaarDetail>(g => g.RecentsteGroepsWerkJaarOphalen(groepID));
 
                 // Als de gebruiker geen GAV is, krijgen we hier een FaultException. Die wordt niet opgevangen,
                 // maar als je in web.config <customErrors="On"> instelt (ipv "Off" of "RemoteOnly"), dan
@@ -151,7 +141,7 @@ namespace Chiro.Gap.WebApp
 
                 // problemen ophalen
                 functieProblemen =
-                    _serviceHelper.CallService<IGroepenService, IEnumerable<FunctieProbleemInfo>>(
+                    ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieProbleemInfo>>(
                         svc => svc.FunctiesControleren(groepID));
 
                 // eventueel de problemen cachen
@@ -199,7 +189,7 @@ namespace Chiro.Gap.WebApp
 
             if (telling == null || telling != (ledenProblemen == null ? 0 : ledenProblemen.Count()))
             {
-                ledenProblemen = _serviceHelper.CallService<IGroepenService, IEnumerable<LedenProbleemInfo>>(
+                ledenProblemen = ServiceHelper.CallService<IGroepenService, IEnumerable<LedenProbleemInfo>>(
                     svc => svc.LedenControleren(groepID));
 
                 if (ledenProblemen == null)
@@ -267,7 +257,7 @@ namespace Chiro.Gap.WebApp
             if (telling == null)
             {
                 resultaat =
-                    _serviceHelper.CallService<IUitstappenService, BivakAangifteLijstInfo>(
+                    ServiceHelper.CallService<IUitstappenService, BivakAangifteLijstInfo>(
                         g => g.BivakStatusOphalen(groepID));
                 if (resultaat.Bivakinfos == null)
                 {
@@ -329,7 +319,7 @@ namespace Chiro.Gap.WebApp
             {
                 // Cache geexpired, opnieuw opzoeken en cachen.
 
-                result = _serviceHelper.CallService<IGroepenService,
+                result = ServiceHelper.CallService<IGroepenService,
                     IEnumerable<WoonPlaatsInfo>>(g => g.GemeentesOphalen());
 
                 _cache.Add(
@@ -356,7 +346,7 @@ namespace Chiro.Gap.WebApp
             {
                 // Cache geëxpired; opnieuw ophalen en cachen.
 
-                result = _serviceHelper.CallService<IGroepenService, IEnumerable<LandInfo>>(g => g.LandenOphalen());
+                result = ServiceHelper.CallService<IGroepenService, IEnumerable<LandInfo>>(g => g.LandenOphalen());
 
                 _cache.Add(
                     LANDENCACHEKEY,
@@ -386,7 +376,7 @@ namespace Chiro.Gap.WebApp
             int? id = (int?)_cache.Get(String.Format(UNIEKEGROEPCACHEKEY, login));
             if (id == null)
             {
-                var mijnGroepen = _serviceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
+                var mijnGroepen = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
                     (g => g.MijnGroepenOphalen());
 
                 id = mijnGroepen.Count() == 1 ? mijnGroepen.First().ID : 0;
@@ -412,7 +402,7 @@ namespace Chiro.Gap.WebApp
             bool? isLive = (bool?)_cache.Get(ISLIVECACHEKEY);
             if (isLive == null)
             {
-                isLive = _serviceHelper.CallService<IGroepenService, bool>(svc => svc.IsLive());
+                isLive = ServiceHelper.CallService<IGroepenService, bool>(svc => svc.IsLive());
                 _cache.Add(
                     ISLIVECACHEKEY,
                     isLive,

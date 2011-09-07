@@ -8,9 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
 
-using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
-using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
 
@@ -29,22 +27,17 @@ namespace Chiro.Gap.WebApp.Controllers
     [HandleError]
     public abstract class BaseController : Controller
     {
-        private readonly IServiceHelper _serviceHelper;
         private readonly IVeelGebruikt _veelGebruikt;
-
-        protected IServiceHelper ServiceHelper { get { return _serviceHelper; } }
         protected IVeelGebruikt VeelGebruikt { get { return _veelGebruikt; } }
 
         /// <summary>
-        /// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
+        /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
         /// best toegewezen via inversion of control.
         /// </summary>
-        /// <param name="serviceHelper">Wordt gebruikt om de webservices van de backend aan te spreken</param>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-        protected BaseController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt)
+        protected BaseController(IVeelGebruikt veelGebruikt)
         {
-            _serviceHelper = serviceHelper;
             _veelGebruikt = veelGebruikt;
         }
 

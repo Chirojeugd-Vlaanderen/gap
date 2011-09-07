@@ -108,7 +108,7 @@
       <FormatSettings />
     </XML>
     <FileHeader><![CDATA[<copyright company="Chirojeugd-Vlaanderen vzw">
-Copyright (c) 2007-2011
+Copyright (c) 2007-2010
 Mail naar informatica@chiro.be voor alle info over deze broncode
 </copyright>
 ]]></FileHeader>
@@ -145,7 +145,6 @@ Mail naar informatica@chiro.be voor alle info over deze broncode
       <Item>61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01</Item>
       <Item>95AAE40F-B33D-4266-B134-F98FF7E115A7</Item>
       <Item>AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3</Item>
-      <Item>C934C8CE-39C8-45B7-AC38-F487CEA9B2D5/d:Service References</Item>
       <Item>FF5B16C6-BC4B-4150-A266-7A6EE1BD914F</Item>
     </SkipFilesAndFolders>
   </Daemon.SolutionSettings>

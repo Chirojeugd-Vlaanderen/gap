@@ -9,7 +9,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
 
-using Chiro.Cdf.ServiceHelper;
+using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -24,8 +24,7 @@ namespace Chiro.Gap.WebApp.Controllers
     /// </summary>
     public class UitstappenController : BaseController
     {
-        public UitstappenController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt)
-            : base(serviceHelper, veelGebruikt)
+        public UitstappenController(IVeelGebruikt veelGebruikt): base(veelGebruikt)
         {
         }
 

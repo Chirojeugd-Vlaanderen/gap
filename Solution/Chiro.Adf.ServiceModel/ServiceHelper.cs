@@ -1,31 +1,102 @@
-﻿using System;
-
-using Chiro.Cdf.ServiceHelper;
+using System;
+using System.ServiceModel;
 
 namespace Chiro.Adf.ServiceModel
 {
 	/// <summary>
-	/// ServiceHelper is nu een niet-statische wrapper naar de oorspronkelijke ServiceHelper, die nu
-	/// StaticServiceHelper heet.
+	/// Provides helper/extension methods to call operations on service proxies and making sure the proxy is 
+	/// disposed or aborted in case of timeout or communication exceptions.
 	/// </summary>
-	public class ServiceHelper: IServiceHelper
+	public static class ServiceHelper
 	{
-		#region IServiceHelper Members
+		/// <summary>
+		/// Calls the specified operation on a service instance and safely disposes or aborts the service 
+		/// (proxy) in case of Timeout or communication exceptions.
+		/// </summary>
+		/// <typeparam name="I">The service type</typeparam>
+		/// <param name="service">The service instance to perform the opreation on.</param>
+		/// <param name="operation">The operation to invoke.</param>
+		// ReSharper disable InconsistentNaming
+		public static void Call<I>(this I service, Action<I> operation) where I : class
+		// ReSharper restore InconsistentNaming
+		{
+			if (service == null)
+				throw new ArgumentNullException("service");
+			if (operation == null)
+				throw new ArgumentNullException("operation");
+
+			try
+			{
+				operation.Invoke(service);
+			}
+			catch (TimeoutException)
+			{
+				((IClientChannel)service).Abort();
+				throw;
+			}
+			catch (FaultException)
+			{
+				((IClientChannel) service).Close();
+				throw;
+			}
+			catch (CommunicationException)
+			{
+				((IClientChannel)service).Abort();
+				throw;
+			}
+			finally
+			{
+				DisposeServiceInstance(service);
+			}
+		}
 
 		/// <summary>
-		/// Gebruik deze method om een functie aan te roepen van een service.
+		/// Calls the specified operation on a service instance and safely disposes or aborts the service (proxy) in case of Timeout or communication exceptions.
 		/// </summary>
-		/// <typeparam name="I">ServiceContract aan te roepen service</typeparam>
-		/// <typeparam name="T">Type van het resultaat van <paramref name="operation"/></typeparam>
-		/// <param name="operation">Lambda-expressie die de <typeparamref name="I"/> afbeeldt op het gewenste
-		/// resultaat.</param>
-		/// <returns>Resultaat van de functie-aanroep</returns>
-		/// <example>
-		/// <c>string = CallService &lt;IMijnService, string&gt; (svc =&gt; svc.IetsDoen(id))</c>
-		/// </example>
-		public T CallService<I, T>(Func<I, T> operation) where I : class
+		/// <typeparam name="I">The type of service.</typeparam>
+		/// <typeparam name="T">The return value type</typeparam>
+		/// <param name="service">The serivice instance to call the operation on.</param>
+		/// <param name="operation">The service operation to invoke.</param>
+		/// <returns>the return value of the service operation.</returns>
+		// ReSharper disable InconsistentNaming
+		public static T Call<I, T>(this I service, Func<I, T> operation) where I : class
+		// ReSharper restore InconsistentNaming
 		{
-			return StaticServiceHelper.CallService(operation);
+			if (service == null)
+				throw new ArgumentNullException("service");
+			if (operation == null)
+				throw new ArgumentNullException("operation");
+
+			try
+			{
+				return operation.Invoke(service);
+			}
+			catch (TimeoutException)
+			{
+				((IClientChannel)service).Abort();
+				throw;
+			}
+			catch (FaultException)
+			{
+				if (((IClientChannel) service).State == CommunicationState.Faulted)
+				{
+					((IClientChannel) service).Abort();
+				}
+				else
+				{
+					((IClientChannel) service).Close();
+				}
+				throw;
+			}
+			catch (CommunicationException)
+			{
+				((IClientChannel)service).Abort();
+				throw;
+			}
+			finally
+			{
+				DisposeServiceInstance(service);
+			}
 		}
 
 		/// <summary>
@@ -37,11 +108,46 @@ namespace Chiro.Adf.ServiceModel
 		/// <example>
 		/// <c>CallService &lt;IMijnService, string&gt; (svc =&gt; svc.IetsDoen(id))</c>
 		/// </example>
-		public void CallService<I>(Action<I> operation) where I : class
+		// ReSharper disable InconsistentNaming
+		public static void CallService<I>(Action<I> operation) where I : class
+		// ReSharper restore InconsistentNaming
 		{
-			StaticServiceHelper.CallService(operation);
+			Call(ServiceProvider.Default.GetService<I>(), operation);
 		}
 
-		#endregion
+		/// <summary>
+		/// Gebruik deze method om een functie aan te roepen van een service.
+		/// </summary>
+		/// <typeparam name="I">ServiceContract aan te roepen service</typeparam>
+		/// <typeparam name="T">Type van het resultaat van <paramref name="operation"/></typeparam>
+		/// <param name="operation">Lambda-expressie die de <typeparamref name="I"/> afbeeldt op het gewenste
+		/// resultaat.</param>
+		/// <returns>Resultaat van de functie-aanroep</returns>
+		/// <example>
+		/// <c>string = 
+		///	StaticAdfServiceHelper.CallService &lt;IMijnService, string&gt; (svc =&gt; svc.IetsDoen(id))</c>
+		/// </example>
+		// ReSharper disable InconsistentNaming
+		public static T CallService<I, T>(Func<I, T> operation) where I : class
+		// ReSharper restore InconsistentNaming
+		{
+			return Call(ServiceProvider.Default.GetService<I>(), operation);
+		}
+
+		private static void DisposeServiceInstance(object instance)
+		{
+			var client = instance as IClientChannel;
+			if (client == null || client.State == CommunicationState.Closed)
+				return;
+
+			try
+			{
+				client.Close();
+			}
+			catch
+			{
+				client.Abort();
+			}
+		}
 	}
 }

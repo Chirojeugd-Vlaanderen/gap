@@ -10,7 +10,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
 
-using Chiro.Cdf.ServiceHelper;
+using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -25,13 +25,12 @@ namespace Chiro.Gap.WebApp.Controllers
     public class JaarOvergangController : BaseController
     {
         /// <summary>
-        /// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
+        /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
         /// best toegewezen via inversion of control.
         /// </summary>
-        /// <param name="serviceHelper">Wordt gebruikt om de webservices van de backend aan te spreken</param>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-        public JaarOvergangController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt) : base(serviceHelper, veelGebruikt) { }
+        public JaarOvergangController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
 
 		public override ActionResult Index(int groepID)
 		{

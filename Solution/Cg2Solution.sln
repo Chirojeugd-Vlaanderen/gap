@@ -73,8 +73,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Validation", "Chi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.TestDbInfo", "TestProjecten\Chiro.Gap.TestDbInfo\Chiro.Gap.TestDbInfo.csproj", "{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceHelper", "Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj", "{11A23709-8EA9-43B1-9982-B1DC08A50FD8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Orm.Test", "Chiro.Gap.Orm.Test\Chiro.Gap.Orm.Test.csproj", "{95AAE40F-B33D-4266-B134-F98FF7E115A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Workers.Test.CustomIoc", "TestProjecten\Chiro.Gap.Workers.Test.CustomIoc\Chiro.Gap.Workers.Test.CustomIoc.csproj", "{64C70DFC-E7B9-4293-B626-2C99C62208C8}"
@@ -412,18 +410,6 @@ Global
 		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Release|Win32.ActiveCfg = Release|Any CPU
 		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Release|x86.ActiveCfg = Release|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Release|Win32.ActiveCfg = Release|Any CPU
-		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Release|x86.ActiveCfg = Release|Any CPU
 		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

@@ -80,7 +80,7 @@ namespace Chiro.Adf.ServiceModel.Test
             groepenServiceMock.Setup(mock => mock.WieBenIk()).Returns("mock");
             Factory.InstantieRegistreren(groepenServiceMock.Object);
 
-            string actual = StaticServiceHelper.CallService<IGroepenService, string>(svc=>svc.WieBenIk());
+            string actual = ServiceHelper.CallService<IGroepenService, string>(svc=>svc.WieBenIk());
 
             Assert.AreEqual("mock", actual);
         }
