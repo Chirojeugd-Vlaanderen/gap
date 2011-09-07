@@ -68,8 +68,6 @@ namespace Chiro.Adf.ServiceModel
 				throw new ArgumentNullException("service");
 			if (operation == null)
 				throw new ArgumentNullException("operation");
-			if (!(service is IClientChannel))
-				throw new ArgumentException("The Call extension method can only be called in conjuction with IClientChannel proxies.");
 
 			try
 			{
