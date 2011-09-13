@@ -95,7 +95,7 @@ namespace Chiro.Gap.Workers
 
             var query = from v in l.GelieerdePersoon.Persoon.PersoonsVerzekering
                         where v.VerzekeringsType.ID == verz.ID
-                          && (v.Tot >= beginDatum || v.Van <= eindDatum)
+                          && (v.Tot > beginDatum && beginDatum >= v.Van || v.Van < eindDatum && eindDatum <= v.Tot)
                         select v;
 
             var bestaande = query.FirstOrDefault();
