@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbonnementenDao.cs" />
     <Compile Include="AbstractChiroGroepDao.cs" />
     <Compile Include="AdresHelper.cs" />
     <Compile Include="AdressenDao.cs" />

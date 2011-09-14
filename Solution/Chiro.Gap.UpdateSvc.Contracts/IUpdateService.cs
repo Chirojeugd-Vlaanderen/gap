@@ -32,5 +32,16 @@ namespace Chiro.Gap.UpdateSvc.Contracts
         /// <param name="stamNummer">Stamnummer van groep met te syncen leden</param>
 	    [OperationContract(IsOneWay = true)]
 	    void OpnieuwSyncen(string stamNummer);
+
+	    /// <summary>
+	    /// Synct alle abonnementen van het recentste werkjaar van een groep opnieuw naar Kipadmin
+	    /// </summary>
+	    /// <param name="stamNummer">Stamnummer van groep met te syncen abonnementen</param>
+	    /// <remarks>Dit is eigenlijk geen sync van Kipadmin naar GAP, maar een vraag van Kipadmin
+	    /// aan GAP om bepaalde zaken opnieuw te syncen.  Eigenlijk staat dit dus niet op zijn
+	    /// plaats in deze service.  Maar voorlopig staat het hier, omdat UpdateService de
+	    /// enige manier is om communicatie van KIP naar GAP te arrangeren.</remarks>
+        [OperationContract(IsOneWay = true)]
+	    void AbonnementenOpnieuwSyncen(string stamNummer);
 	}
 }

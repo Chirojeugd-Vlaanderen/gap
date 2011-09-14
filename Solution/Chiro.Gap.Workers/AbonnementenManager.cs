@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 #if KIPDORP
@@ -8,6 +9,7 @@ using System.Transactions;
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -19,7 +21,7 @@ namespace Chiro.Gap.Workers
     public class AbonnementenManager
     {
         private readonly IDao<Publicatie> _pubDao;
-        private readonly IDao<Abonnement> _abDao;
+        private readonly IAbonnementenDao _abDao;
         private readonly IAutorisatieManager _auMgr;
         private readonly IDubbelpuntSync _dubbelpuntSync;
 
@@ -32,7 +34,7 @@ namespace Chiro.Gap.Workers
         /// <param name="dpSync">sync voor dubbelpuntabonnementen</param>
         public AbonnementenManager(
             IDao<Publicatie> pubDao,
-            IDao<Abonnement> abDao,
+            IAbonnementenDao abDao,
             IAutorisatieManager auMgr,
             IDubbelpuntSync dpSync)
         {
@@ -153,6 +155,27 @@ namespace Chiro.Gap.Workers
                 tx.Complete();
             }
 #endif
+        }
+
+        /// <summary>
+        /// Haalt alle abonnementen op uit een gegeven groepswerkjaar, inclusief personen, voorkeursadressen, 
+        /// groepswerkjaar en groep.
+        /// </summary>
+        /// <param name="gwjID">ID van het gegeven groepswerkjaar</param>
+        /// <returns>
+        /// Alle abonnementen op uit een gegeven groepswerkjaar, inclusief personen, voorkeursadressen, 
+        /// groepswerkjaar en groep.
+        /// </returns>
+        public IEnumerable<Abonnement> OphalenUitGroepsWerkJaar(int gwjID)
+        {
+            if (_auMgr.IsSuperGav() || _auMgr.IsGavGroepsWerkJaar(gwjID))
+            {
+                return _abDao.OphalenUitGroepsWerkJaar(gwjID);
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
         }
     }
 }

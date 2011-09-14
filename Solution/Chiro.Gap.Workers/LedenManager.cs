@@ -611,7 +611,7 @@ namespace Chiro.Gap.Workers
         /// <returns>De lijst van leden</returns>
         public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID, bool ookInactief)
         {
-            if (_autorisatieMgr.IsSuperGav())
+            if (_autorisatieMgr.IsSuperGav() || _autorisatieMgr.IsGavGroepsWerkJaar(gwjID))
             {
                 return _daos.LedenDao.OphalenUitGroepsWerkJaar(gwjID, ookInactief);
             }
