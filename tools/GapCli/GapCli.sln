@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonenMergen", "PersonenM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroepOpnieuwSyncen", "GroepOpnieuwSyncen\GroepOpnieuwSyncen.csproj", "{007D4515-841C-480A-B22F-F16F268953B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbonnementenOpnieuwSyncen", "AbonnementenOpnieuwSyncen\AbonnementenOpnieuwSyncen.csproj", "{BC5C8BCD-C218-4A4E-99F1-104F2E60F23A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -19,6 +21,10 @@ Global
 		{007D4515-841C-480A-B22F-F16F268953B1}.Debug|x86.Build.0 = Debug|x86
 		{007D4515-841C-480A-B22F-F16F268953B1}.Release|x86.ActiveCfg = Release|x86
 		{007D4515-841C-480A-B22F-F16F268953B1}.Release|x86.Build.0 = Release|x86
+		{BC5C8BCD-C218-4A4E-99F1-104F2E60F23A}.Debug|x86.ActiveCfg = Debug|x86
+		{BC5C8BCD-C218-4A4E-99F1-104F2E60F23A}.Debug|x86.Build.0 = Debug|x86
+		{BC5C8BCD-C218-4A4E-99F1-104F2E60F23A}.Release|x86.ActiveCfg = Release|x86
+		{BC5C8BCD-C218-4A4E-99F1-104F2E60F23A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

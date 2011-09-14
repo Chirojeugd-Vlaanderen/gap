@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{007D4515-841C-480A-B22F-F16F268953B1}</ProjectGuid>
+    <ProjectGuid>{BC5C8BCD-C218-4A4E-99F1-104F2E60F23A}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GroepOpnieuwSyncen</RootNamespace>
-    <AssemblyName>GroepOpnieuwSyncen</AssemblyName>
+    <RootNamespace>AbonnementenOpnieuwSyncen</RootNamespace>
+    <AssemblyName>AbonnementenOpnieuwSyncen</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -52,7 +52,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Service References\GapUpdateService\Reference.cs">
+    <Compile Include="Service References\UpdateServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -62,31 +62,29 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config">
+    <None Include="app.config" />
+    <None Include="Service References\UpdateServiceReference\GapUpdateSvc.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\GapUpdateService\GapUpdateSvc.xsd">
+    <None Include="Service References\UpdateServiceReference\GapUpdateSvc1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\GapUpdateService\GapUpdateSvc1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\GapUpdateService\UpdateService.wsdl" />
+    <None Include="Service References\UpdateServiceReference\UpdateService.wsdl" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\GapUpdateService\" />
+    <WCFMetadataStorage Include="Service References\UpdateServiceReference\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\GapUpdateService\GapUpdateSvc.disco" />
+    <None Include="Service References\UpdateServiceReference\GapUpdateSvc.disco" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\GapUpdateService\configuration91.svcinfo" />
+    <None Include="Service References\UpdateServiceReference\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\GapUpdateService\configuration.svcinfo" />
+    <None Include="Service References\UpdateServiceReference\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\GapUpdateService\Reference.svcmap">
+    <None Include="Service References\UpdateServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
