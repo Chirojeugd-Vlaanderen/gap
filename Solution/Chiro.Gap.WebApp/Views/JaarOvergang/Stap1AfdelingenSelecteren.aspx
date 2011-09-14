@@ -23,7 +23,7 @@
 
 		int j = 0;
 	%>
-	Selecteer de afdelingen die je groep volgend werkjaar zult gebruiken. <br/><br/>
+	Selecteer de afdelingen die je groep volgend werkjaar zal gebruiken. <br/><br/>
 	Als er afdelingen van naam veranderen of als er nieuwe bijkomen, kun je dat hier aanpassen. <br/><br/>
 	
 	<%using (Html.BeginForm("Stap1AfdelingenSelecteren", "JaarOvergang"))
@@ -52,6 +52,7 @@
 		</tr>
 		<% } %>
 	</table>
+    <%=Html.ValidationMessageFor(mdl => mdl.GekozenAfdelingsIDs) %>
 	<br />
 	<%=Html.ActionLink("Afdeling aanmaken", "NieuweAfdelingMaken", new { Controller = "JaarOvergang" })%> <br /><br />
 	<input id="volgende" type="submit" value="Naar stap 2" />

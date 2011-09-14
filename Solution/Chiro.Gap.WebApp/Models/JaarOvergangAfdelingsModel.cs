@@ -4,6 +4,8 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 using Chiro.Gap.ServiceContracts.DataContracts;
 
@@ -17,7 +19,12 @@ namespace Chiro.Gap.WebApp.Models
 		public JaarOvergangAfdelingsModel()
 		{
 			Afdelingen = new List<AfdelingInfo>();
-			GekozenAfdelingsIDs = new List<int>();
+			
+            // LET OP: GezokenAfdelingsIDs moet hier null zijn, en geen lege lijst,
+            // omdat ik het [Verplicht] attribuut gebruik om te controleren of de groep
+            // niet vergeten is afdelingen aan te klikken.
+            
+            GekozenAfdelingsIDs = null;
 		}
 
 		/// <summary>
@@ -25,6 +32,12 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public IEnumerable<AfdelingInfo> Afdelingen { get; set; }
 
+        /// <summary>
+        /// Gekozen afdelingen die er volgend jaar zullen zijn.  Er moet er minstens 1 gekozen
+        /// zijn.  (Wel opletten dat je dit model dan niet gebruikt voor kaderploegen! Zie ook TODO #1124)
+        /// </summary>
+        [Verplicht]
+        [DisplayName(@"Geselecteerde afdelingen")]
 		public IEnumerable<int> GekozenAfdelingsIDs { get; set; }
 	}
 }

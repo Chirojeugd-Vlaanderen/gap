@@ -59,7 +59,14 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Stap1AfdelingenSelecteren(JaarOvergangAfdelingsModel model1, int groepID)
         {
-			return Stap2AfdelingsJarenVerdelen(model1.GekozenAfdelingsIDs, groepID);
+            if (!ModelState.IsValid)
+            {
+                return Stap1AfdelingenSelecteren(groepID);
+            }
+            else
+            {
+                return Stap2AfdelingsJarenVerdelen(model1.GekozenAfdelingsIDs, groepID);                
+            }
         }
 
 		// Gegeven een lijst van afdelingen die in het volgende werkjaar gelden, 
