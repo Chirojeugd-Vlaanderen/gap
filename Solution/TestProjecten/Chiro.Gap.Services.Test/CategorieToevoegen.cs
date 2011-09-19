@@ -28,7 +28,6 @@ namespace Chiro.Gap.Services.Test
 		[ClassCleanup]
 		static public void AfsluitenTests()
 		{
-			Factory.Dispose();
 		}
 
 		List<int> catlijst = new List<int>(); //lijst van nieuw aangemaakte categorieën, die nog verwijderd moeten worden

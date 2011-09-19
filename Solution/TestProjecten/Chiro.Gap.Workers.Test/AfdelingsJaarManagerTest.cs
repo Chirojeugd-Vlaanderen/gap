@@ -55,7 +55,7 @@ namespace Chiro.Gap.Workers.Test
 		[ClassCleanup()]
 		public static void MyClassCleanup()
 		{
-			Factory.Dispose();
+			
 		}
 
 		//

@@ -50,7 +50,7 @@ namespace Chiro.Gap.Dummies.Test
 		[ClassCleanup]
 		static public void AfsluitenTests()
 		{
-			Factory.Dispose();
+			
 		}
 
 		/// <summary>

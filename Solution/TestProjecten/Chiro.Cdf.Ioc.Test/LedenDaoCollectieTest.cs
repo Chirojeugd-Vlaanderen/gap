@@ -18,7 +18,6 @@ namespace Chiro.Cdf.Ioc.Test
 		[ClassCleanup]
 		static public void AfsluitenTests()
 		{
-			Factory.Dispose();
 		}
 
 		/// <summary>

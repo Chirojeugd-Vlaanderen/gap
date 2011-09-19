@@ -66,7 +66,6 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		protected void Application_End(object sender, EventArgs e)
 		{
-			Factory.Dispose();
 		}
 	}
 }

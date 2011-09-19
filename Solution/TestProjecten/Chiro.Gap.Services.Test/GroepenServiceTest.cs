@@ -64,7 +64,6 @@ namespace Chiro.Gap.Services.Test
 		[ClassCleanup]
 		static public void AfsluitenTests()
 		{
-			Factory.Dispose();
 		}
 
 

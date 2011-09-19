@@ -6,26 +6,16 @@
 using System;
 using System.Web.Mvc;
 
-using Microsoft.Practices.Unity;
+using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.WebApp
 {
-	/// <summary>
-    /// TODO (#190): documenteren
-	/// </summary>
-	public class UnityControllerFactory : DefaultControllerFactory
+    /// <summary>
+    /// Onze eigen 'controller factory' die ervoor zorgt dat er IOC gebruikt kan worden bij het aanmaken
+    /// van controllers voor MVC-toepassingen
+    /// </summary>
+    public class UnityControllerFactory : DefaultControllerFactory
 	{
-		readonly IUnityContainer _container;
-
-		/// <summary>
-        /// TODO (#190): documenteren
-		/// </summary>
-		/// <param name="container"></param>
-		public UnityControllerFactory(IUnityContainer container)
-		{
-			_container = container;
-		}
-
 		protected override IController GetControllerInstance(System.Web.Routing.RequestContext requestContext, Type controllerType)
 		{
 			if (controllerType == null)
@@ -41,7 +31,7 @@ namespace Chiro.Gap.WebApp
 				throw new ArgumentException(string.Format("Type requested {0} is not a controller", controllerType));
 			}
 
-			return _container.Resolve(controllerType) as IController;
+			return Factory.Maak(controllerType) as IController;
 		}
 	}
 }

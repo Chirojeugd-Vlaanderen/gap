@@ -29,7 +29,7 @@ namespace Chiro.Gap.Workers.Test
         [ClassCleanup]
         static public void AfsluitenTests()
         {
-            Factory.Dispose();
+            
         }
 
 		#region Additional test attributes

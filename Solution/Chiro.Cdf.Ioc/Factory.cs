@@ -14,82 +14,44 @@ using Microsoft.Practices.Unity.Configuration;
 namespace Chiro.Cdf.Ioc
 {
     /// <summary>
-    /// TODO (#190): documenteren
+    /// Factory is verantwoordelijk voor de dependency injection
     /// </summary>
 	public static class Factory
 	{
 		private static readonly object ThreadLock = new object();
 
 		private static IUnityContainer _container;
-		private static string _containerNaam = String.Empty;
-
-		public static IUnityContainer Container
-		{
-			get
-			{
-				return _container;
-			}
-		}
-
-		public static string ContainerNaam
-		{
-			get
-			{
-				return _containerNaam;
-			}
-		}
 
 		/// <summary>
 		/// Initialiseert de unity container voor de factory.
-		/// Gebruikt de standaardcontainer.
 		/// </summary>
 		public static void ContainerInit()
 		{
-			ContainerInit(Properties.Settings.Default.StandaardContainer);
-		}
+            // Kunnen we dit niet gewoon in de constructor doen, en zo een 
+            // singleton implementeren?
 
-		/// <summary>
-		/// Initialiseert de unity container voor de factory
-		/// </summary>
-		/// <param name="containerNaam">Naam van de te gebruiken container</param>
-		public static void ContainerInit(string containerNaam)
-		{
-			lock (ThreadLock)
-			{
-				if (_container != null /*&& _containerNaam != containerNaam*/)   // zie ticket #155
-				{
-					// Andere container in gebruik: geef eerst vrij.
+            lock (ThreadLock)
+            {
+                if (_container != null)
+                {
+                    // Andere container in gebruik: geef eerst vrij.
 
-					_container.Dispose();
-					_container = null;
-					_containerNaam = String.Empty;
-				}
+                    _container.Dispose();
+                    _container = null;
+                }
 
-				if (_container == null)
-				{
-					var section = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
+                _container = new UnityContainer();
 
-					_container = new UnityContainer();
-					if (section != null)
-					{
-						section.Containers[containerNaam].Configure(_container);
-					}
-					_containerNaam = containerNaam;
-				}
-			}
-		}
+                var section = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
 
-		public static void Dispose()
-		{
-			lock (ThreadLock)
-			{
-				if (_container != null)
-				{
-					_container.Dispose();
-					_container = null;
-				}
-				_containerNaam = String.Empty;
-			}
+                // Als section null is, is er geen unity-configuratie in app.config of web.config.
+                // Op zich geen probleem, want de configuratie kan ook at runtime
+
+                if (section != null)
+                {
+                    section.Configure(_container);
+                }
+            }
 		}
 
 		/// <summary>
@@ -102,7 +64,7 @@ namespace Chiro.Cdf.Ioc
 		{
 			Debug.Assert(_container != null);
 
-			return Container.Resolve<T>();
+			return _container.Resolve<T>();
 		}
 
 		/// <summary>
@@ -114,7 +76,7 @@ namespace Chiro.Cdf.Ioc
 		{
 			Debug.Assert(_container != null);
 
-			return Container.Resolve(t);
+			return _container.Resolve(t);
 		}
 
 		/// <summary>
@@ -132,7 +94,7 @@ namespace Chiro.Cdf.Ioc
 
 			try
 			{
-				Container.RegisterInstance(instantie);
+				_container.RegisterInstance(instantie);
 			}
 			catch (SynchronizationLockException)
 			{

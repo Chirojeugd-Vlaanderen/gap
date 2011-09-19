@@ -135,14 +135,10 @@ namespace Chiro.Gap.WebApp
 
         private static void InitializeContainer()
         {
-            if (_container == null)
-            {
-                Factory.ContainerInit();
-                _container = Factory.Container;
-            }
+            Factory.ContainerInit();
 
             IControllerFactory controllerFactory =
-                new UnityControllerFactory(_container);
+                new UnityControllerFactory();
 
             ControllerBuilder.Current.SetControllerFactory(controllerFactory);
         }

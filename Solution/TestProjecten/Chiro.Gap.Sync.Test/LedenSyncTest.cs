@@ -35,7 +35,7 @@ namespace Chiro.Gap.Sync.Test
         [ClassCleanup]
         static public void AfsluitenTests()
         {
-            Factory.Dispose();
+            
         }
 
         /// <summary>
