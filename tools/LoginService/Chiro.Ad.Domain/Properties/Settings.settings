@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chiro.Ad.Domain.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="LdapWereldRoot" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">LDAP://chiro.wereld</Value>
+    </Setting>
+    <Setting Name="LdapLokaalRoot" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">LDAP://chiro.lokaal</Value>
+    </Setting>
+    <Setting Name="GapRootOU" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/OU=ChiroAdministratie,DC=Chiro,DC=Wereld</Value>
+    </Setting>
+    <Setting Name="GapOU" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/OU=Gebruikers,OU=ChiroAdministratie,DC=Chiro,DC=Wereld</Value>
+    </Setting>
+    <Setting Name="GapGroepenOU" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/OU=Groepen,OU=ChiroAdministratie,DC=Chiro,DC=Wereld</Value>
+    </Setting>
+    <Setting Name="GapGebruikersGroep" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">GapGebruikers</Value>
+    </Setting>
+    <Setting Name="ADLogin" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">PwdAdmin</Value>
+    </Setting>
+    <Setting Name="ADPwd" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1000Pintn</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

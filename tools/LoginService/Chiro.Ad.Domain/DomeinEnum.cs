@@ -3,7 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-namespace App_Code
+namespace Chiro.Ad.Domain
 {
     /// <summary>
     /// Enum voor de verschillende domeinen in Active Directory waar mensen een login

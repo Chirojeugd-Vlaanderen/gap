@@ -117,13 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="GebruikerBestaatAlFout" xml:space="preserve">
-    <value>Die persoon heeft al een login</value>
-  </data>
-  <data name="LoginBestaatAlFout" xml:space="preserve">
-    <value>Die login bestaat al</value>
-  </data>
-  <data name="OngeldigMailadresFout" xml:space="preserve">
-    <value>Het opgegeven mailadres is ongeldig</value>
+  <data name="VerschillendWachtwoordMail" xml:space="preserve">
+    <value>&lt;p&gt;Dag {0}&lt;/p&gt;
+&lt;p&gt;Iemand van je groep of kaderploeg gaf je toegang tot de website van het Groepsadministratieprogramma (GAP): https://gap.chiro.be/. Je had blijkbaar al een login voor het extranet van de Chiro, je kunt hiervoor dezelfde gebruiken. In die login zat wel een ander mailadres dan wat er in de gegevens van je groep of kaderploeg zit.&lt;/p&gt;
+&lt;p&gt;Is het niet de bedoeling dat we dat andere adres nog gebruiken? Pas dat dan aan op https://extranet.chiro.be/Gebruiker.&lt;/p&gt;
+&lt;p&gt;Groeten&lt;br /&gt;De Chirohelpdesk (Helpdesk@chiro.be)&lt;/p&gt;</value>
   </data>
 </root>
