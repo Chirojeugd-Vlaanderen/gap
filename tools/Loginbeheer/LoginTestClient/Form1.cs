@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Windows.Forms;
+using Chiro.Ad.ServiceContracts;
+using Chiro.Adf.ServiceModel;
 using LoginTestClient.Properties;
-using LoginTestClient.ServiceReference1;
 
 namespace LoginTestClient
 {
@@ -25,14 +26,12 @@ namespace LoginTestClient
         private void GapLoginButton_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
-            ServiceClient client = null;
 
             LoginLabel.Text = Resources.NogGeenLoginGemaakt_Feedback;
 
             try
             {
-                client = new ServiceClient();
-                var login = client.GapLoginAanvragen(Int32.Parse(AdNrTextBox.Text), VoornaamTextBox.Text, NaamTextBox.Text, MailadresTextBox.Text);
+                string login = ServiceHelper.CallService<IService, string>(client => client.GapLoginAanvragen(Int32.Parse(AdNrTextBox.Text), VoornaamTextBox.Text, NaamTextBox.Text, MailadresTextBox.Text));
                 LoginLabel.Text = string.Concat("Login: ", login);
             }
             catch (FaultException<ArgumentException> fault)
@@ -51,13 +50,7 @@ namespace LoginTestClient
             {
                 FoutboodschapTonen(fault.Message);
             }
-            finally
-            {
-                if (client != null)
-                {
-                    client.Close();
-                }
-            }
+ 
             Cursor.Current = Cursors.Default;
         }
 
