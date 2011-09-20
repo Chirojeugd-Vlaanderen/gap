@@ -1,9 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ServiceModel;
+
+using Chiro.Ad.ServiceContracts;
+using Chiro.Adf.ServiceModel;
 
 namespace Chiro.Ad.Test
 {
@@ -20,10 +19,7 @@ namespace Chiro.Ad.Test
         [ExpectedException(typeof(FaultException))]
         public void TestMethod1()
         {
-            using (var client = new LoginServiceReference.ServiceClient())
-            {
-                client.GapLoginAanvragen(39198, "Johan", "Vervloet", "johan.vervloet@chiro");
-            }
+            ServiceHelper.CallService<IService, string>(client => client.GapLoginAanvragen(39198, "Johan", "Vervloet", "johan.vervloet@chiro"));
         }
     }
 }
