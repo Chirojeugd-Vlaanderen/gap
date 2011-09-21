@@ -280,7 +280,19 @@ namespace Chiro.Gap.Workers
 			return _autorisatieDao.IsGavDeelnemer(deelnemerID, GebruikersNaamGet());
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Als een gelieerde persoon een gebruikersrecht heeft/had voor zijn eigen groep, dan
+        /// levert deze call dat gebruikersrecht op.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van een gelieerde persoon</param>
+        /// <returns>Gebruikersrecht van de gelieerde persoon met ID <paramref name="gelieerdePersoonID"/>
+        /// op zijn eigen groep (if any, anders null)</returns>
+	    public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
+	    {
+	        return _autorisatieDao.GebruikersRechtGelieerdePersoon(gelieerdePersoonID);
+	    }
+
+	    /// <summary>
 		/// Verwijdert uit een lijst van GelieerdePersoonID's de ID's
 		/// van GelieerdePersonen voor wie de aangemelde gebruiker geen GAV is
 		/// </summary>

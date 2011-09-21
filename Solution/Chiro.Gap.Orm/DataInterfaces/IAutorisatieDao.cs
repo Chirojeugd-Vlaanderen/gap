@@ -40,6 +40,16 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// anders een GebruikersRecht-object</returns>
 		/// <remarks>Let op: de gebruikersrechten kunnen vervallen zijn!</remarks>
 		GebruikersRecht RechtenMbtGelieerdePersoonGet(string login, int gelieerdePersoonID);
+
+        /// <summary>
+        /// Als een gelieerde persoon een gebruikersrecht heeft/had voor zijn eigen groep, dan
+        /// levert deze call dat gebruikersrecht op.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van een gelieerde persoon</param>
+        /// <returns>Gebruikersrecht van de gelieerde persoon met ID <paramref name="gelieerdePersoonID"/>
+        /// op zijn eigen groep (if any, anders null)</returns>
+        GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID);
+
 		#endregion
 
 		#region Enkel de niet-vervallen gebruikersrechten
@@ -210,5 +220,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	    bool IsGavDeelnemer(int deelnemerID, string login);
 
         #endregion
-    }
+
+
+	}
 }

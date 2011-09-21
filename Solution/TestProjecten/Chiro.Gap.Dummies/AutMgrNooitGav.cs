@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Chiro.Gap.Workers;
 using Chiro.Gap.Orm;
@@ -128,6 +129,11 @@ namespace Chiro.Gap.Dummies
 	    public bool IsGavDeelnemer(int deelnemerID)
 	    {
 	        return false;
+	    }
+
+	    public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
+	    {
+	        throw new NotImplementedException();
 	    }
 
 	    public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)

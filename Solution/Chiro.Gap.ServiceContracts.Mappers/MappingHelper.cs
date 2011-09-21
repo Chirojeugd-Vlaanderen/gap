@@ -336,10 +336,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src))
                 .ForMember(
                     dst => dst.PersoonsAdresInfo,
-                    opt => opt.MapFrom(null))
+                    opt => opt.Ignore())
                 .ForMember(
                     dst => dst.CommunicatieInfo,
-                    opt => opt.MapFrom(null));
+                    opt => opt.Ignore())
+                .ForMember(
+                    dst => dst.GavTot,
+                    opt => opt.Ignore());
 
             // De bedoeling was om zo veel mogelijk automatisch te kunnen mappen.  Vandaar ook properties
             // zoals StraatNaamNaam en WoonPlaatsNaam.  Maar met de invoering van de buitenlandse adressen,
@@ -515,7 +518,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src.Communicatie))
                 .ForMember(
                     dst => dst.LidInfo,
-                    opt => opt.MapFrom(src => src.Lid.FirstOrDefault())); // omdat je altijd maar 1 lid mag opvragen
+                    opt => opt.MapFrom(src => src.Lid.FirstOrDefault())) // dit werkt enkel als er maar 1 lid aan de persoon is gekoppeld!
+                .ForMember(
+                    dst => dst.GavTot,
+                    opt => opt.Ignore()); 
 			
 			Mapper.CreateMap<Lid, InTeSchrijvenLid>()
         		.ForMember(

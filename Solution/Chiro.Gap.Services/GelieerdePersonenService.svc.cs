@@ -374,11 +374,20 @@ namespace Chiro.Gap.Services
                 // TODO (#656): Dit moet properder!
 
                 var gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
-
-                var pl = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
                 var gwj = _gwjMgr.RecentsteOphalen(gp.Groep.ID, GroepsWerkJaarExtras.GroepsFuncties | GroepsWerkJaarExtras.Afdelingen);
 
-                var p = pl.PersoonDetail;
+                var result = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
+
+                var gebruikersrecht = _auMgr.GebruikersRechtGelieerdePersoon(gp.ID);
+
+                if (gebruikersrecht != null)
+                {
+                    result.GavTot = gebruikersrecht.VervalDatum;
+                }
+
+                // Dit lijkt me meer business
+
+                var p = result.PersoonDetail;
                 if (p.GeboorteDatum != null)
                 {
                     var geboortejaar = p.GeboorteDatum.Value.Year - p.ChiroLeefTijd;
@@ -395,7 +404,7 @@ namespace Chiro.Gap.Services
                     }
                 }
 
-                return pl;
+                return result;
             }
             catch (Exception ex)
             {

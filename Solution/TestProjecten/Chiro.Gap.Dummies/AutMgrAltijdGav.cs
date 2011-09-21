@@ -132,6 +132,11 @@ namespace Chiro.Gap.Dummies
 	        return true;
 	    }
 
+	    public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
+	    {
+	        throw new NotImplementedException();
+	    }
+
 	    public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
 		{
 			return true;

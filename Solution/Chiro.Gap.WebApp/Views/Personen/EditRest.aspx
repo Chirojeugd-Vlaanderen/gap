@@ -64,6 +64,21 @@
 			<li>
 				<%=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
 		</ul>
+        <h3>Gebruiker</h3>
+        <%
+            if (Model.PersoonLidInfo.GavTot == null)
+            {
+        %>
+        Deze persoon heeft geen toegang tot het GAP.
+        <%                
+            }
+            else
+            {
+        %>
+        Deze persoon heeft gebruikersrechten voor het GAP tot <%=Html.DisplayFor(s => s.PersoonLidInfo.GavTot)%>.
+        <%                  
+            }
+        %>
 	</div>
 	<h3>
 		Persoonlijke gegevens</h3>

@@ -30,7 +30,12 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public bool IsGavGroep(string login, int groepID)
+	    public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public bool IsGavGroep(string login, int groepID)
 		{
 			return true;
 		}

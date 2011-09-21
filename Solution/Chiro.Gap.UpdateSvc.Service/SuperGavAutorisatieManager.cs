@@ -131,5 +131,10 @@ namespace Chiro.Gap.UpdateSvc.Service
         {
             throw new NotImplementedException();
         }
+
+        public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

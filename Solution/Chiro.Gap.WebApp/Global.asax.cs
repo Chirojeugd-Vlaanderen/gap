@@ -19,8 +19,6 @@ namespace Chiro.Gap.WebApp
 
     public class MvcApplication : System.Web.HttpApplication
     {
-        private static IUnityContainer _container;
-
         protected void Application_Start()
         {
             InitializeContainer();

@@ -93,7 +93,47 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Als een gelieerde persoon een gebruikersrecht heeft/had voor zijn eigen groep, dan
+        /// levert deze call dat gebruikersrecht op.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van een gelieerde persoon</param>
+        /// <returns>Gebruikersrecht van de gelieerde persoon met ID <paramref name="gelieerdePersoonID"/>
+        /// op zijn eigen groep (if any, anders null)</returns>
+	    public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
+        {
+            GebruikersRecht resultaat;
+	        using (var db = new ChiroGroepEntities())
+	        {
+
+                // GavSchap is een tabel met kolommen (GavID, PersoonID).  (GavID, PersoonID) is primary key, en
+                // bij gevolg uniek.
+                // GavSchap wordt gebruikt om een persoon met een GAV te koppelen.  Dus eigenlijk zou dat een
+                // 0..1-to-0..1 relatie moeten zijn.  Maar dat lukt precies niet goed in Entity Framework.
+
+	            var gav = (from gp in db.GelieerdePersoon
+	                               where gp.ID == gelieerdePersoonID
+	                               select gp.Persoon.Gav.FirstOrDefault()).FirstOrDefault();
+
+                if (gav == null)
+                {
+                    return null;
+                }
+
+   	            var groep = (from gp in db.GelieerdePersoon
+	                         where gp.ID == gelieerdePersoonID
+	                         select gp.Groep).FirstOrDefault();
+
+
+	            resultaat = (from gr in db.GebruikersRecht
+	                         where gr.Groep.ID == groep.ID && gr.Gav.ID == gav.ID
+	                         select gr).FirstOrDefault();
+	        }
+
+            return Utility.DetachObjectGraph(resultaat);
+        }
+
+	    /// <summary>
 		/// Kijkt in de tabel Gebruikersrecht of er een record is dat de  opgegeven 
 		/// <paramref name="login"/> aan de opgegeven <paramref name="groepID"/> koppelt.
 		/// </summary>
