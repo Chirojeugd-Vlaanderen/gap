@@ -5,6 +5,9 @@ using System.Messaging;
 
 using Microsoft.Practices.Unity;
 
+// LET OP! De klasses in dit project hebben niets te maken met ServiceHelper, wel met de
+// implementatie van onze message queue services.
+
 namespace Chiro.Cdf.ServiceModel
 {
     /// <summary>

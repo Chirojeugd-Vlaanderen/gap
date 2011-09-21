@@ -58,7 +58,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Abonnement_GelieerdePersoon", "GelieerdePersoon", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GelieerdePersoon), "Abonnement", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Abonnement))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Abonnement_GroepsWerkJaar", "GroepsWerkJaar", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GroepsWerkJaar), "Abonnement", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Abonnement))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Abonnement_Publicatie", "Publicatie", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Publicatie), "Abonnement", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Abonnement))]
-[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Gav_Persoon", "Persoon", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Persoon), "Gav", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Gav))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "GavSchap", "Gav", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Gav), "Persoon", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Persoon))]
 
 #endregion
 
@@ -3498,34 +3498,18 @@ namespace Chiro.Gap.Orm
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Gav_Persoon", "Persoon")]
-        public Persoon Persoon
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "GavSchap", "Persoon")]
+        public EntityCollection<Persoon> Persoon
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_Gav_Persoon", "Persoon").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_Gav_Persoon", "Persoon").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Persoon> PersoonReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_Gav_Persoon", "Persoon");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Persoon>("ChiroGroepModel.GavSchap", "Persoon");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Persoon>("ChiroGroepModel.FK_Gav_Persoon", "Persoon", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Persoon>("ChiroGroepModel.GavSchap", "Persoon", value);
                 }
             }
         }
@@ -5815,18 +5799,18 @@ namespace Chiro.Gap.Orm
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Gav_Persoon", "Gav")]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "GavSchap", "Gav")]
         public EntityCollection<Gav> Gav
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Gav>("ChiroGroepModel.FK_Gav_Persoon", "Gav");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Gav>("ChiroGroepModel.GavSchap", "Gav");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Gav>("ChiroGroepModel.FK_Gav_Persoon", "Gav", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Gav>("ChiroGroepModel.GavSchap", "Gav", value);
                 }
             }
         }

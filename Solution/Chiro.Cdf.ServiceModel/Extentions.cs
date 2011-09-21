@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
+// LET OP! De klasses in dit project hebben niets te maken met ServiceHelper, wel met de
+// implementatie van onze message queue services.
+
 namespace Chiro.Cdf.ServiceModel
 {
     public static class CollectionExtentions
