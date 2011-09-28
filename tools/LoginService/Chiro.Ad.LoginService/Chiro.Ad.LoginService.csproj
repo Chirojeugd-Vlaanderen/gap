@@ -60,7 +60,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Service.svc" />
+    <Content Include="AdService.svc" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -82,8 +82,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service.svc.cs">
-      <DependentUpon>Service.svc</DependentUpon>
+    <Compile Include="AdService.svc.cs">
+      <DependentUpon>AdService.svc</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

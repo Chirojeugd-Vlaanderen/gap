@@ -12,7 +12,7 @@ namespace Chiro.Ad.ServiceContracts
     /// Interface voor de service die hier aangeboden wordt
     /// </summary>
     [ServiceContract]
-    public interface IService
+    public interface IAdService
     {
         /// <summary>
         /// Vraagt aan Active Directory om een account aan te maken met rechten om GAP

@@ -14,7 +14,7 @@ namespace Chiro.Ad.LoginService
     /// <summary>
     /// Class waarin de mogelijkheden van de service uitgewerkt zijn
     /// </summary>
-    public class Service : IService
+    public class AdService : IAdService
     {
         /// <summary>
         /// Vraagt aan Active Directory om een account aan te maken met rechten om GAP
