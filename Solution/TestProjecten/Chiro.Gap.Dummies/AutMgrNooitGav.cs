@@ -131,7 +131,7 @@ namespace Chiro.Gap.Dummies
 	        return false;
 	    }
 
-	    public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
+	    public bool IsGavGebruikersRecht(int gebruikersRechtID)
 	    {
 	        throw new NotImplementedException();
 	    }

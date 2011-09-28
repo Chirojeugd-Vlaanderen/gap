@@ -36,13 +36,13 @@ namespace Chiro.Gap.Services
 
         private readonly GelieerdePersonenManager _gpMgr;
         private readonly PersonenManager _pMgr;
-        private readonly LedenManager _lidMgr;
         private readonly AdressenManager _adrMgr;
-        private readonly GroepenManager _grMgr;
+        private readonly GroepenManager _groepenMgr;
         private readonly GroepsWerkJaarManager _gwjMgr;
         private readonly CommVormManager _cvMgr;
         private readonly CategorieenManager _catMgr;
         private readonly AbonnementenManager _abMgr;
+        private readonly GebruikersRechtenManager _gebruikersRechtenMgr;
         private readonly IAutorisatieManager _auMgr;
 
         /// <summary>
@@ -51,35 +51,35 @@ namespace Chiro.Gap.Services
         /// <param name="gpm">De worker voor GelieerdePersonen</param>
         /// <param name="pm">De worker voor Personen</param>
         /// <param name="adm">De worker voor Adressen</param>
-        /// <param name="gm">De worker voor Groepen</param>
+        /// <param name="groepenMgr">De worker voor Groepen</param>
         /// <param name="gwjm">De worker voor GroepsWerkJaren</param>
         /// <param name="cvm">De worker voor CommunicatieVormen</param>
         /// <param name="cm">De worker voor Categorieën</param>
         /// <param name="abm">De worker voor Abonnementen</param>
         /// <param name="aum">De worker voor Autorisatie</param>
-        /// <param name="lm">De worker voor Leden</param>
+        /// <param name="gebruikersRechtenMgr">De worker voor Gebruikersrechten</param>
         public GelieerdePersonenService(
             GelieerdePersonenManager gpm,
             PersonenManager pm,
             AdressenManager adm,
-            GroepenManager gm,
+            GroepenManager groepenMgr,
             GroepsWerkJaarManager gwjm,
             CommVormManager cvm,
             CategorieenManager cm,
             AbonnementenManager abm,
-            IAutorisatieManager aum,
-            LedenManager lm)
+            GebruikersRechtenManager gebruikersRechtenMgr,
+            IAutorisatieManager aum)
         {
             _gpMgr = gpm;
             _pMgr = pm;
             _auMgr = aum;
             _adrMgr = adm;
-            _grMgr = gm;
+            _groepenMgr = groepenMgr;
             _gwjMgr = gwjm;
             _cvMgr = cvm;
             _catMgr = cm;
-            _lidMgr = lm;
             _abMgr = abm;
+            _gebruikersRechtenMgr = gebruikersRechtenMgr;
         }
 
         #endregion
@@ -193,7 +193,7 @@ namespace Chiro.Gap.Services
             // De parameter 'info' wordt hier eigenlijk niet gebruikt als GelieerdePersoon,
             // maar als datacontract dat de persoonsinfo en de Chiroleeftijd bevat.
 
-            Groep g = _grMgr.Ophalen(groepID);
+            Groep g = _groepenMgr.Ophalen(groepID);
 
             // Gebruik de businesslaag om info.Persoon te koppelen aan de opgehaalde groep.
 
@@ -378,11 +378,15 @@ namespace Chiro.Gap.Services
 
                 var result = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
 
-                var gebruikersrecht = _auMgr.GebruikersRechtGelieerdePersoon(gp.ID);
+                var gebruikersrecht = _gebruikersRechtenMgr.GebruikersRechtGelieerdePersoon(gp.ID);
 
                 if (gebruikersrecht != null)
                 {
-                    result.GavTot = gebruikersrecht.VervalDatum;
+                    result.GebruikersRechtInfo = new GebruikersRechtInfo
+                                                     {
+                                                         VervalDatum = gebruikersrecht.VervalDatum,
+                                                         Verlengbaar = _gebruikersRechtenMgr.IsVerlengbaar(gebruikersrecht)
+                                                     };
                 }
 
                 // Dit lijkt me meer business

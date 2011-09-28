@@ -127,6 +127,11 @@ namespace Chiro.Gap.Dummies
 	        return true;
 	    }
 
+	    public bool IsGavGebruikersRecht(int gebruikersRechtID, string login)
+	    {
+	        throw new NotImplementedException();
+	    }
+
 	    #endregion
 	}
 }

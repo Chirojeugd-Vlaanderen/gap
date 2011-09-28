@@ -132,7 +132,17 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public bool IsGavGebruikersRecht(int gebruikersRechtID)
+        {
+            throw new NotImplementedException();
+        }
+
         public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsVerlengbaar(GebruikersRecht gebruikersrecht)
         {
             throw new NotImplementedException();
         }

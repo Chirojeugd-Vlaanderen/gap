@@ -44,10 +44,10 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public IEnumerable<CommunicatieDetail> CommunicatieInfo { get; set; }
 
 	    /// <summary>
-	    /// Einddatum van GAV-schap van deze gelieerde persoon, of null als hij geen GAV is voor zijn groep.
+	    /// Info over eventueel gebruikersrecht van deze gelieerde persoon op zijn eigen groep.
+	    /// (null als er geen gebruikersrecht is)
 	    /// </summary>
         [DataMember]
-        [DataType(DataType.Date)]
-        public DateTime? GavTot { get; set; }
+        public GebruikersRechtInfo GebruikersRechtInfo { get; set; }
 	}
 }

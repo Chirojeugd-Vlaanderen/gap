@@ -66,7 +66,7 @@
 		</ul>
         <h3>Gebruiker</h3>
         <%
-            if (Model.PersoonLidInfo.GavTot == null)
+            if (Model.PersoonLidInfo.GebruikersRechtInfo == null)
             {
         %>
         Deze persoon heeft geen toegang tot het GAP.
@@ -75,7 +75,7 @@
             else
             {
         %>
-        Deze persoon heeft gebruikersrechten voor het GAP tot <%=Html.DisplayFor(s => s.PersoonLidInfo.GavTot)%>.
+        Deze persoon heeft gebruikersrechten voor het GAP tot <%=Html.DisplayFor(s => s.PersoonLidInfo.GebruikersRechtInfo.VervalDatum)%>.
         <%                  
             }
         %>

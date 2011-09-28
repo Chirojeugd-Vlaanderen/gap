@@ -150,7 +150,7 @@ namespace Chiro.Gap.Data.Ef
 									  && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
 									  select r;
 
-				return query.Count() > 0;
+				return query.FirstOrDefault() != null;
 			}
 		}
 
@@ -180,7 +180,7 @@ namespace Chiro.Gap.Data.Ef
 						  && (r.VervalDatum == null || r.VervalDatum >= nu)
 						  select r;
 
-					return query.Count() > 0;
+					return query.FirstOrDefault() != null;
 				}
 			}
 		}
@@ -305,7 +305,7 @@ namespace Chiro.Gap.Data.Ef
 								&& (r.VervalDatum == null || r.VervalDatum >= DateTime.Now)
 						  select r;
 
-					return query.Count() > 0;
+					return query.FirstOrDefault() != null;
 				}
 			}
 		}
@@ -334,7 +334,7 @@ namespace Chiro.Gap.Data.Ef
 								&& (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
 						  select r;
 
-					return query.Count() > 0;
+					return query.FirstOrDefault() != null;
 				}
 			}
 		}
@@ -394,7 +394,7 @@ namespace Chiro.Gap.Data.Ef
 								gr => gr.Gav.Login == login && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
 						select aj;
 
-					return query.Count() > 0;
+					return query.FirstOrDefault() != null;
 				}
 			}
 		}
@@ -423,7 +423,7 @@ namespace Chiro.Gap.Data.Ef
 						&& l.GroepsWerkJaar.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
 						select l;
 
-					return query.Count() > 0;
+					return query.FirstOrDefault() != null;
 				}
 			}
 		}
@@ -452,7 +452,7 @@ namespace Chiro.Gap.Data.Ef
 						&& l.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
 						select l;
 
-					return query.Count() > 0;
+					return query.FirstOrDefault() != null;
 				}
 			}
 		}
@@ -481,7 +481,7 @@ namespace Chiro.Gap.Data.Ef
 						&& l.GelieerdePersoon.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
 						select l;
 
-					return query.Count() > 0;
+					return query.FirstOrDefault() != null;
 				}
 			}
 		}
@@ -511,7 +511,7 @@ namespace Chiro.Gap.Data.Ef
 					                  	r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
 					            select gp;
 
-					return query.Count() > 0;
+					return query.FirstOrDefault() != null;
 				}
 			}
 		}
@@ -542,7 +542,7 @@ namespace Chiro.Gap.Data.Ef
 					                  	r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
 					            select u;
 
-					return query.Count() > 0;
+					return query.FirstOrDefault() != null;
 				}
 			}
 		}
@@ -573,7 +573,7 @@ namespace Chiro.Gap.Data.Ef
 								r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
 						    select p;
 
-					return query.Count() > 0;
+					return query.FirstOrDefault() != null;
 				}
 			}
 		}
@@ -602,9 +602,30 @@ namespace Chiro.Gap.Data.Ef
                                     r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
                                 select d;
 
-                    return query.Count() > 0;
+                    return query.FirstOrDefault() != null;
                 }
             }
+	    }
+
+        /// <summary>
+        /// Controleert of de aangelogde gebruiker op dit moment GAV-rechten heeft op het gebruikersrecht
+        /// met ID <paramref name="gebruikersRechtID"/>
+        /// </summary>
+        /// <param name="gebruikersRechtID">ID van een gebruikersrecht</param>
+        /// <param name="login">login van de gebruiker wiens GAV-schap moet worden getest</param>
+        /// <returns><c>true</c> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde 
+        /// gebruikersrecht, anders <c>false</c></returns>
+	    public bool IsGavGebruikersRecht(int gebruikersRechtID, string login)
+	    {
+	        using (var db = new ChiroGroepEntities())
+	        {
+	            var query = from gr in db.GebruikersRecht
+	                        where gr.Groep.GebruikersRecht.Any(
+	                            r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+	                        select gr;
+
+	            return query.FirstOrDefault() != null;
+	        }
 	    }
 
 	    #endregion

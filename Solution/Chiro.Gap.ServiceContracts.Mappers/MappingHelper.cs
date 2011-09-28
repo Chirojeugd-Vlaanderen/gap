@@ -341,7 +341,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.CommunicatieInfo,
                     opt => opt.Ignore())
                 .ForMember(
-                    dst => dst.GavTot,
+                    dst => dst.GebruikersRechtInfo,
                     opt => opt.Ignore());
 
             // De bedoeling was om zo veel mogelijk automatisch te kunnen mappen.  Vandaar ook properties
@@ -520,7 +520,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.LidInfo,
                     opt => opt.MapFrom(src => src.Lid.FirstOrDefault())) // dit werkt enkel als er maar 1 lid aan de persoon is gekoppeld!
                 .ForMember(
-                    dst => dst.GavTot,
+                    dst => dst.GebruikersRechtInfo,
                     opt => opt.Ignore()); 
 			
 			Mapper.CreateMap<Lid, InTeSchrijvenLid>()

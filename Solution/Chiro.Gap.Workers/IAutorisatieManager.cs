@@ -209,12 +209,12 @@ namespace Chiro.Gap.Workers
 		bool IsGavDeelnemer(int deelnemerID);
 
         /// <summary>
-        /// Als een gelieerde persoon een gebruikersrecht heeft/had voor zijn eigen groep, dan
-        /// levert deze call dat gebruikersrecht op.
+        /// Controleert of de aangelogde gebruiker op dit moment GAV-rechten heeft op het gebruikersrecht
+        /// met ID <paramref name="gebruikersRechtID"/>
         /// </summary>
-        /// <param name="gelieerdePersoonID">ID van een gelieerde persoon</param>
-        /// <returns>Gebruikersrecht van de gelieerde persoon met ID <paramref name="gelieerdePersoonID"/>
-        /// op zijn eigen groep (if any, anders null)</returns>
-	    GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID);
+        /// <param name="gebruikersRechtID">ID van een gebruikersrecht</param>
+        /// <returns><c>true</c> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde 
+        /// gebruikersrecht, anders <c>false</c></returns>
+	    bool IsGavGebruikersRecht(int gebruikersRechtID);
 	}
 }

@@ -221,6 +221,14 @@ namespace Chiro.Gap.Orm.DataInterfaces
 
         #endregion
 
-
+        /// <summary>
+        /// Controleert of de aangelogde gebruiker op dit moment GAV-rechten heeft op het gebruikersrecht
+        /// met ID <paramref name="gebruikersRechtID"/>
+        /// </summary>
+        /// <param name="gebruikersRechtID">ID van een gebruikersrecht</param>
+        /// <param name="login">login van de gebruiker wiens GAV-schap moet worden getest</param>
+        /// <returns><c>true</c> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde 
+        /// gebruikersrecht, anders <c>false</c></returns>
+	    bool IsGavGebruikersRecht(int gebruikersRechtID, string login);
 	}
 }
