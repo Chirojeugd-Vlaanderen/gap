@@ -31,7 +31,7 @@ namespace LoginTestClient
 
             try
             {
-                string login = ServiceHelper.CallService<IService, string>(client => client.GapLoginAanvragen(Int32.Parse(AdNrTextBox.Text), VoornaamTextBox.Text, NaamTextBox.Text, MailadresTextBox.Text));
+                string login = ServiceHelper.CallService<IAdService, string>(client => client.GapLoginAanvragen(Int32.Parse(AdNrTextBox.Text), VoornaamTextBox.Text, NaamTextBox.Text, MailadresTextBox.Text));
                 LoginLabel.Text = string.Concat("Login: ", login);
             }
             catch (FaultException<ArgumentException> fault)
