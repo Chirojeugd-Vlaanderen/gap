@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.ServiceModel;
 using System.Text;
@@ -304,7 +305,15 @@ namespace Chiro.Kip.Services
 
 					db.AddToLid(lid);
 
-					db.SaveChanges();
+				    try
+				    {
+                        db.SaveChanges();
+				    }
+				    catch (UpdateException)
+				    {
+                        _log.FoutLoggen(groep.GroepID, String.Format(Properties.Resources.LidMetAansl0, adNummer, gedoe.StamNummer, gedoe.WerkJaar));
+				    }
+					
 
 					feedback = String.Format("Persoon met AD-nr. {0} ingeschreven als lid voor {1} in {2}", adNummer,
 								 gedoe.StamNummer, gedoe.WerkJaar);

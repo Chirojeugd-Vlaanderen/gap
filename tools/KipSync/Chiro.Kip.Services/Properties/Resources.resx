@@ -141,4 +141,7 @@
   <data name="Belgie" xml:space="preserve">
     <value>België</value>
   </data>
+  <data name="LidMetAansl0" xml:space="preserve">
+    <value>Lid met aansluitnr 0 niet geupgradet {0} {1} wj {2}.</value>
+  </data>
 </root>
