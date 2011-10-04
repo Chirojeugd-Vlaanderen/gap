@@ -43,15 +43,11 @@
 				<asp:ContentPlaceHolder ID="PaginaTitelContent" runat="server" />
 			</div>
 			<div id="settingsmenu">
-				Aangemeld als
-				<% =HttpContext.Current.User.Identity.Name
-				%><br />
-				[<a href="https://extranet.chiro.be/Gebruiker" title="Je wachtwoord veranderen">Wachtwoord
-					wijzigen</a>]<br />
-				<div id="AndereGroepLink" visible="false">
-					<br />
-					[<%=Html.ActionLink("Andere groep kiezen", "Index", "Gav") %>]
-				</div>
+                <ul>
+				    <li>Aangemeld als <% =HttpContext.Current.User.Identity.Name %></li>
+                    <li>[<a href="https://extranet.chiro.be/Gebruiker" title="Je wachtwoord veranderen">Wachtwoord wijzigen</a>]</li>
+                    <asp:ContentPlaceHolder ID="settingsitems" runat="server" />
+                </ul>
 			</div>
 			<div id="topNavigatie">
 				<asp:ContentPlaceHolder ID="NavigatieContent" runat="server" />

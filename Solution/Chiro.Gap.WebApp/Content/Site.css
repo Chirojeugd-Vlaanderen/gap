@@ -339,6 +339,11 @@ div#title
 	text-decoration: none;
 }
 
+#settingsmenu li
+{
+    list-style: none;
+}
+
 .field-validation-error
 {
 	color: #ff0000;
@@ -607,11 +612,6 @@ li.nietgoed
 
 li.goed
 {
-}
-
-#AndereGroepLink
-{
-	visibility: hidden;
 }
 
 img.screenshot

@@ -335,7 +335,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="VeelGebruikt.cs" />
-    <Content Include="Content\MeerdereGroepen.css" />
     <Content Include="Content\Screenshots\Afdeling_activeren.png" />
     <Content Include="Content\Screenshots\assistent_database_01.png" />
     <Content Include="Content\Screenshots\assistent_database_02.png" />

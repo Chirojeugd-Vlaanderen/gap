@@ -6,15 +6,20 @@
 	|
 	<%=Html.Encode(ViewData.Model.GroepsNaam) %>
 </asp:Content>
+
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
-    <% if (Model.MeerdereGroepen == true)
-	{ %>
-	<link href="<%=ResolveUrl("~/Content/MeerdereGroepen.css")%>" rel="stylesheet"
-		type="text/css" />
-	<%		}
-	%>
+    <!-- TODO (#95) Dit lijkt me nutteloze nesting -->
 	<asp:ContentPlaceHolder runat="server" ID="head" />
 </asp:Content>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="settingsitems" runat="server">
+    <% if (Model.MeerdereGroepen == true)
+	{ %>
+		    <li>[<%=Html.ActionLink("Andere groep kiezen", "Index", "Gav") %>]</li>
+	<%		
+    } %>
+</asp:Content>
+
 <asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
     <h1>
 		<%=Html.Encode(ViewData.Model.GroepsNaam)%> 
