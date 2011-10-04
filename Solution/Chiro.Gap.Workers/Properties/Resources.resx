@@ -280,4 +280,7 @@
   <data name="GebruikersRechtNietVerlengbaar" xml:space="preserve">
     <value>Dit gebruikersrecht kan niet verlengd worden.</value>
   </data>
+  <data name="GebruikersRechtWasAlVervallen" xml:space="preserve">
+    <value>Dit gebruikersrecht was al vervallen.</value>
+  </data>
 </root>

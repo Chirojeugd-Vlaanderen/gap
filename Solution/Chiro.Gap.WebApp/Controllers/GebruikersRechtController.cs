@@ -31,5 +31,17 @@ namespace Chiro.Gap.WebApp.Controllers
             ServiceHelper.CallService<IGelieerdePersonenService>(svc => svc.GebruikersRechtToekennen(id));
             return RedirectToAction("EditRest", new {Controller = "Personen", id});
         }
+
+        /// <summary>
+        /// Neemt alle gebruikersrechten af van de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>
+        /// voor zijn eigen groep.  (Concreet wordt de vervaldatum op gisteren gezet.)
+        /// </summary>
+        /// <param name="id">ID van de gelieerde persoon</param>
+        /// <returns>Redirect naar personenfiche</returns>
+        public ActionResult Afnemen(int id)
+        {
+            ServiceHelper.CallService<IGelieerdePersonenService>(svc => svc.GebruikersRechtAfnemen(id));
+            return RedirectToAction("EditRest", new { Controller = "Personen", id });
+        }
     }
 }

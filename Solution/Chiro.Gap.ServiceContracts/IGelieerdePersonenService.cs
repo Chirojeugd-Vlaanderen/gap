@@ -399,6 +399,17 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
         void GebruikersRechtToekennen(int id);
+
+        /// <summary>
+        /// Neemt alle gebruikersrechten af van de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>
+        /// voor zijn eigen groep.  (Concreet wordt de vervaldatum op gisteren gezet.)
+        /// </summary>
+        /// <param name="id">ID van de gelieerde persoon</param>
+        /// <returns>Redirect naar personenfiche</returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        void GebruikersRechtAfnemen(int id);
         #endregion
     }
 }

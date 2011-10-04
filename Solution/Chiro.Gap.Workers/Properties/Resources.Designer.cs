@@ -313,6 +313,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dit gebruikersrecht was al vervallen..
+        /// </summary>
+        internal static string GebruikersRechtWasAlVervallen {
+            get {
+                return ResourceManager.GetString("GebruikersRechtWasAlVervallen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleer de leeftijd van wie je wilt inschrijven)..
         /// </summary>
         internal static string GeenAfdelingVoorLeeftijd {

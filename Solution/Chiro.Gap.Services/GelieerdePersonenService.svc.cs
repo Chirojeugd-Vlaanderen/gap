@@ -1046,6 +1046,27 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
+        /// Neemt alle gebruikersrechten af van de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>
+        /// voor zijn eigen groep.  (Concreet wordt de vervaldatum op gisteren gezet.)
+        /// </summary>
+        /// <param name="id">ID van de gelieerde persoon</param>
+        /// <returns>Redirect naar personenfiche</returns>
+        public void GebruikersRechtAfnemen(int id)
+        {
+            // Haal gelieerde persoon op met eventuele bestaande gebruikersrechten en communicatie
+
+            var gp = _gpMgr.Ophalen(id, PersoonsExtras.GebruikersRechten | PersoonsExtras.Groep);
+
+            var gebruikersRecht = (from gr in gp.Persoon.Gav.FirstOrDefault().GebruikersRecht
+                                   where gr.Groep.ID == gp.Groep.ID
+                                   select gr).FirstOrDefault();
+
+            _gebruikersRechtenMgr.Intrekken(gebruikersRecht);
+
+            _gebruikersRechtenMgr.Bewaren(gebruikersRecht);
+        }
+
+        /// <summary>
         /// Haalt de PersoonID op van de gelieerde persoon met de opgegeven ID
         /// </summary>
         /// <param name="gelieerdePersoonID">De ID van de gelieerde persoon in kwestie</param>

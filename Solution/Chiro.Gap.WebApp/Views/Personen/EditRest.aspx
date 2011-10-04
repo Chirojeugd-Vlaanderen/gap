@@ -68,7 +68,7 @@
         <ul>
 
         <%
-            if (Model.PersoonLidInfo.GebruikersRechtInfo == null)
+            if (Model.PersoonLidInfo.GebruikersRechtInfo == null || Model.PersoonLidInfo.GebruikersRechtInfo.VervalDatum < DateTime.Now)
             {
         %>
             <li><%: Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> heeft geen toegang tot het GAP.</li>
@@ -90,6 +90,7 @@
                     
                 }
             %>
+            <li><%=Html.ActionLink("[gebruikersrecht afnemen]", "Afnemen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
         <%                              
             }
         %>

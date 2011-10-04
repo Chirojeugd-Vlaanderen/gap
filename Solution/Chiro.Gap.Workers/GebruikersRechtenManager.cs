@@ -176,5 +176,38 @@ namespace Chiro.Gap.Workers
             return resultaat;
 
         }
+
+        /// <summary>
+        /// Pas de vervaldatum van het gegeven <paramref name="gebruikersRecht"/> aan, zodanig dat
+        /// het niet meer geldig is.  ZONDER TE PERSISTEREN.
+        /// </summary>
+        /// <param name="gebruikersRecht">te vervallen gebruikersrecht</param>
+        public void Intrekken(GebruikersRecht gebruikersRecht)
+        {
+            if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersRecht.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+            if (gebruikersRecht.VervalDatum < DateTime.Now)
+            {
+                throw new FoutNummerException(FoutNummer.GebruikersRechtWasAlVervallen, Properties.Resources.GebruikersRechtWasAlVervallen);
+            }
+
+            gebruikersRecht.VervalDatum = DateTime.Now.AddDays(-1);
+        }
+
+        /// <summary>
+        /// Persisteert het gegeven <paramref name="gebruikersRecht"/>, zonder enige koppelingen
+        /// </summary>
+        /// <param name="gebruikersRecht">Te bewaren gebruikersrecht</param>
+        public void Bewaren(GebruikersRecht gebruikersRecht)
+        {
+            if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersRecht.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+
+            _gebruikersRechtenDao.Bewaren(gebruikersRecht);
+        }
     }
 }

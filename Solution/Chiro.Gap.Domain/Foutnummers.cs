@@ -66,7 +66,8 @@ namespace Chiro.Gap.Domain
 		DeelnemerNietVanUitstap,
         PublicatieInactief,
         BestelPeriodeDubbelpuntVoorbij,
-        GebruikersRechtNietVerlengbaar
+        GebruikersRechtNietVerlengbaar,
+        GebruikersRechtWasAlVervallen
         #endregion
 	}
 }
