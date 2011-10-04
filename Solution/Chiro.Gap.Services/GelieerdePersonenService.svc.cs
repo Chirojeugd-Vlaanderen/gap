@@ -382,10 +382,14 @@ namespace Chiro.Gap.Services
 
                 if (gebruikersrecht != null)
                 {
+                    // TODO: use automapper
+
                     result.GebruikersRechtInfo = new GebruikersRechtInfo
                                                      {
                                                          VervalDatum = gebruikersrecht.VervalDatum,
-                                                         Verlengbaar = _gebruikersRechtenMgr.IsVerlengbaar(gebruikersrecht)
+                                                         Verlengbaar = _gebruikersRechtenMgr.IsVerlengbaar(gebruikersrecht),
+                                                         GavLogin = gebruikersrecht.Gav.Login,
+                                                         ID = gebruikersrecht.ID
                                                      };
                 }
 
@@ -1025,6 +1029,21 @@ namespace Chiro.Gap.Services
             _abMgr.Bewaren(abonnement);
         }
 
+        /// <summary>
+        /// Kent een gebruikersrecht voor 14 maanden toe aan de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>.
+        /// Als het gebruikersrecht al bestaat, dan wordt het indien mogelijk verlengd tot 14 maanden vanaf vandaag.
+        /// </summary>
+        /// <param name="id">ID van de gelieerde persoon die gebruikersrecht moet krijgen</param>
+        public void GebruikersRechtToekennen(int id)
+        {
+            // Haal gelieerde persoon op met eventuele bestaande gebruikersrechten en communicatie
+
+            var gp = _gpMgr.Ophalen(id, PersoonsExtras.GebruikersRechten|PersoonsExtras.Groep|PersoonsExtras.Communicatie);
+
+            // Creëer/verleng en bewaar gebruikersrecht
+
+            _gebruikersRechtenMgr.ToekennenOfVerlengen(gp.Persoon, gp.Groep, _gpMgr.EMailKiezen(gp));
+        }
 
         /// <summary>
         /// Haalt de PersoonID op van de gelieerde persoon met de opgegeven ID

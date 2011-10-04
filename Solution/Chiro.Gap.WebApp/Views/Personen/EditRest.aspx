@@ -65,20 +65,35 @@
 				<%=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
 		</ul>
         <h3>Gebruiker</h3>
+        <ul>
+
         <%
             if (Model.PersoonLidInfo.GebruikersRechtInfo == null)
             {
         %>
-        Deze persoon heeft geen toegang tot het GAP.
+            <li><%: Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> heeft geen toegang tot het GAP.</li>
+            <li><%=Html.ActionLink("[gebruikersrecht toekennen]", "Toekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
         <%                
             }
             else
             {
         %>
-        Deze persoon heeft gebruikersrechten voor het GAP tot <%=Html.DisplayFor(s => s.PersoonLidInfo.GebruikersRechtInfo.VervalDatum)%>.
-        <%                  
+            <li>Gebruikersnaam: <%=Html.DisplayFor(s => s.PersoonLidInfo.GebruikersRechtInfo.GavLogin)%></li>
+            <li>Vervaldatum: <%=Html.DisplayFor(s => s.PersoonLidInfo.GebruikersRechtInfo.VervalDatum)%></li>
+            <% 
+                if (Model.PersoonLidInfo.GebruikersRechtInfo.Verlengbaar)
+                {
+                    // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
+            %>
+            <li><%=Html.ActionLink("[gebruikersrecht verlengen]", "Toekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
+            <%                
+                    
+                }
+            %>
+        <%                              
             }
         %>
+        </ul>
 	</div>
 	<h3>
 		Persoonlijke gegevens</h3>

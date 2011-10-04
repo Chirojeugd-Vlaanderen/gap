@@ -97,6 +97,7 @@
     <Compile Include="Controllers\AfdelingenController.cs" />
     <Compile Include="Controllers\CategorieenController.cs" />
     <Compile Include="Controllers\FunctiesController.cs" />
+    <Compile Include="Controllers\GebruikersRechtController.cs" />
     <Compile Include="Controllers\GroepController.cs" />
     <Compile Include="App_GlobalResources\MyResources.designer.cs">
       <AutoGen>True</AutoGen>

@@ -388,5 +388,17 @@ namespace Chiro.Gap.ServiceContracts
 		void DubbelPuntBestellen(int gelieerdePersoonID);
 
 		#endregion
-	}
+
+        #region gebruikersrecht
+        /// <summary>
+        /// Kent een gebruikersrecht voor 14 maanden toe aan de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>.
+        /// Als het gebruikersrecht al bestaat, dan wordt het indien mogelijk verlengd tot 14 maanden vanaf vandaag.
+        /// </summary>
+        /// <param name="id">ID van de gelieerde persoon die gebruikersrecht moet krijgen</param>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        void GebruikersRechtToekennen(int id);
+        #endregion
+    }
 }

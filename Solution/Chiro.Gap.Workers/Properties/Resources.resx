@@ -267,4 +267,17 @@
   <data name="BestelPeriodeDubbelpuntVoorbij" xml:space="preserve">
     <value>Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkjaar, moet je eerst de jaarovergang uitvoeren.</value>
   </data>
+  <data name="AdNummerVerplicht" xml:space="preserve">
+    <value>Enkel personen met een AD-nummer komen in aanmerking voor een login.</value>
+  </data>
+  <data name="EMailVerplicht" xml:space="preserve">
+    <value>Enkel personen met een e-mailadres komen in aanmerking voor een gsm.</value>
+  </data>
+  <data name="LoginFormaat" xml:space="preserve">
+    <value>CHIROPUBLIC\{0}</value>
+    <comment>(want ik denk dat de loginservice het domein niet mee oplevert)</comment>
+  </data>
+  <data name="GebruikersRechtNietVerlengbaar" xml:space="preserve">
+    <value>Dit gebruikersrecht kan niet verlengd worden.</value>
+  </data>
 </root>

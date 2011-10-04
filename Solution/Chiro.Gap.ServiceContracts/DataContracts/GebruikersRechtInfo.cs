@@ -11,11 +11,23 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
     public class GebruikersRechtInfo
     {
         /// <summary>
+        /// ID van het gebruikersrecht
+        /// </summary>
+        [DataMember]
+        public int ID { get; set; }
+
+        /// <summary>
         /// Vervaldatum gebruikersrecht
         /// </summary>
         [DataMember]
         [DataType(DataType.Date)]
         public DateTime? VervalDatum { get; set; }
+
+        /// <summary>
+        /// Login voor de gebruiker
+        /// </summary>
+        [DataMember]
+        public string GavLogin { get; set; }
 
         /// <summary>
         /// Geeft aan of het gebruikersrecht verlengbaar is

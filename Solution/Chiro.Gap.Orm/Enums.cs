@@ -184,7 +184,13 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// Haal de abonnementen van de persoon voor dit werkjaar op.
         /// </summary>
-        AbonnementenDitWerkjaar = 0x400|Groep    // groep mee ophalen om abonnementen te bepalen.
+        AbonnementenDitWerkjaar = 0x400|Groep,    // groep mee ophalen om abonnementen te bepalen.
+
+        /// <summary>
+        /// Gebruikersrechten die een (gelieerde) persoon heeft/had
+        /// </summary>
+        GebruikersRechten = 0x800
+
 	}
 
 	/// <summary>

@@ -858,6 +858,11 @@ namespace Chiro.Gap.Data.Ef
                 paths.Add(gp => gp.Deelnemer.First().Uitstap.GroepsWerkJaar.Groep);
             }
 
+            if ((extras & PersoonsExtras.GebruikersRechten) == PersoonsExtras.GebruikersRechten)
+            {
+                paths.Add(gp => gp.Persoon.Gav.FirstOrDefault().GebruikersRecht);
+            }
+
             return paths.ToArray();
         }
     }

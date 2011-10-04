@@ -110,6 +110,14 @@
     <Compile Include="VerzekeringenManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
+      <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
+      <Name>Chiro.Ad.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
+      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
+      <Name>Chiro.Adf.ServiceModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
       <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
       <Name>Chiro.Cdf.Data.Entity</Name>

@@ -95,7 +95,7 @@ namespace Chiro.Gap.Data.Ef
 
         /// <summary>
         /// Als een gelieerde persoon een gebruikersrecht heeft/had voor zijn eigen groep, dan
-        /// levert deze call dat gebruikersrecht op.
+        /// levert deze call dat gebruikersrecht op, inclusief GAV-object.
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van een gelieerde persoon</param>
         /// <returns>Gebruikersrecht van de gelieerde persoon met ID <paramref name="gelieerdePersoonID"/>
@@ -125,7 +125,7 @@ namespace Chiro.Gap.Data.Ef
 	                         select gp.Groep).FirstOrDefault();
 
 
-	            resultaat = (from gr in db.GebruikersRecht
+	            resultaat = (from gr in db.GebruikersRecht.Include(r => r.Gav)
 	                         where gr.Groep.ID == groep.ID && gr.Gav.ID == gav.ID
 	                         select gr).FirstOrDefault();
 	        }

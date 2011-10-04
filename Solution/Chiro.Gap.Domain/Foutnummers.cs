@@ -17,8 +17,8 @@ namespace Chiro.Gap.Domain
 		FouteGeboortejarenVoorAfdeling,
 		ChronologieFout,		// fout ivm volgorde datums
 
-		#region adressen
-		LandNietGevonden,
+        #region adressen
+        LandNietGevonden,
 		WoonPlaatsNietGevonden,
 		StraatNietGevonden,
 		StraatOntbreekt,
@@ -55,10 +55,18 @@ namespace Chiro.Gap.Domain
 		AfdelingNietLeeg,
 		#endregion
 
-		GeenDatabaseVerbinding,
+        #region verplichte gegevens
+        AdNummerVerplicht,
+        EMailVerplicht,
+        #endregion
+
+        #region nog te groeperen
+        GeenDatabaseVerbinding,
 		Concurrency,
 		DeelnemerNietVanUitstap,
         PublicatieInactief,
-        BestelPeriodeDubbelpuntVoorbij
+        BestelPeriodeDubbelpuntVoorbij,
+        GebruikersRechtNietVerlengbaar
+        #endregion
 	}
 }

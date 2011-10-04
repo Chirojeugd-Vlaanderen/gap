@@ -789,5 +789,20 @@ namespace Chiro.Gap.Workers
 #endif
 		}
 
-	}
+        /// <summary>
+        /// 'Kiest' een e-mailadres van een gelieerde persoon dat we zullen gebruiken om hem/haar te mailen.
+        /// </summary>
+        /// <param name="gp">Slachtoffer van onze spam</param>
+        /// <returns>Een e-mailadres van <paramref name="gp"/></returns>
+        public string EMailKiezen(GelieerdePersoon gp)
+        {
+            // orden eerst op 'we mogen er e-mail naar sturen', en dan op 'is het voorkeursadres'.
+            // Om maar iets te doen he.
+
+            return (from a in gp.Communicatie
+                    where a.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email
+                    select a).OrderByDescending(cm => cm.IsVoorOptIn).ThenBy(cm => cm.Voorkeur).Select(cm => cm.Nummer).
+                FirstOrDefault();
+        }
+    }
 }

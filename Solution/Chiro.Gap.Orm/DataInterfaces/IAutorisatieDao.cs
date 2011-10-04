@@ -43,7 +43,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 
         /// <summary>
         /// Als een gelieerde persoon een gebruikersrecht heeft/had voor zijn eigen groep, dan
-        /// levert deze call dat gebruikersrecht op.
+        /// levert deze call dat gebruikersrecht op, inclusief GAV-object.
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van een gelieerde persoon</param>
         /// <returns>Gebruikersrecht van de gelieerde persoon met ID <paramref name="gelieerdePersoonID"/>
