@@ -4,6 +4,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 using Chiro.Gap.ServiceContracts.DataContracts;
 

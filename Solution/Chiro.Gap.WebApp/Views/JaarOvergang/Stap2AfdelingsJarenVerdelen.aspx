@@ -1,17 +1,8 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<JaarOvergangAfdelingsJaarModel>" %>
-
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
-
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" />
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#checkall").click(function() {
-				$("INPUT[@name=GekozenAfdelingsIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
-			});
-		});
-	</script>
+<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<%=Html.ActionLink("Terug naar stap 1", "Stap1AfdelingenSelecteren", new { Controller = "JaarOvergang" })%>
@@ -27,7 +18,6 @@
 			<th>Vanaf geboortejaar </th>
 			<th>Tot geboortejaar </th>
 			<th>Geslacht </th>
-
 		</tr>
 		<% foreach (var ai in Model.Afdelingen)
 	 { %>
@@ -36,27 +26,27 @@
 				<%=Html.LabelFieldList("AfdelingsIDs", new TextFieldListInfo(ai.AfdelingID.ToString(), ai.AfdelingNaam))%>
 			</td>
 			<td>
-				<% var offAfdelingIDItems = Model.OfficieleAfdelingen.Select(e => new DropDownListHelper.DropDownListItem<int>() { Waarde = e.ID, DisplayNaam = e.Naam });%>
+				<% var offAfdelingIDItems = Model.OfficieleAfdelingen.Select(e => new DropDownListHelper.DropDownListItem<int> { Waarde = e.ID, DisplayNaam = e.Naam });%>
 				<%=Html.DropDownList("OfficieleAfdelingsIDs", offAfdelingIDItems, ai.OfficieleAfdelingID)%>
 			</td>
 			<td>
-				<%=Html.TextFieldList("VanLijst", new TextFieldListInfo(ai.GeboorteJaarVan==0?"":ai.GeboorteJaarVan.ToString(), ""))%>
+				<%=Html.TextFieldList("VanLijst", new TextFieldListInfo(ai.GeboorteJaarVan == 0 ? "" : ai.GeboorteJaarVan.ToString(), ""))%>
 			</td>
 			<td>
 				<%=Html.TextFieldList("TotLijst", new TextFieldListInfo(ai.GeboorteJaarTot == 0 ? "" : ai.GeboorteJaarTot.ToString(), ""))%>
 			</td>
 			<td>
 				<%
-					var geslachtswaardenlijst = Enum.GetValues(typeof(GeslachtsType)).OfType<GeslachtsType>().ToList().Select(e => new DropDownListHelper.DropDownListItem<GeslachtsType> { Waarde = e, DisplayNaam = e.ToString() });%>
-				<%=Html.DropDownList("GeslLijst", geslachtswaardenlijst, ai.Geslacht)%>
+					var geslachtswaardenlijst = Enum.GetValues(typeof(GeslachtsType)).OfType<GeslachtsType>().ToList().Select(e => new DropDownListHelper.DropDownListItem<int> { Waarde = (int)e, DisplayNaam = e.ToString() });%>
+				<%=Html.DropDownList("GeslLijst", geslachtswaardenlijst, (int)ai.Geslacht)%>
 			</td>
 		</tr>
 		<% } %>
 	</table>
 	<br />
-	<%=Html.RadioButton("Model.LedenMeteenInschrijven", true, true)%> Verdergaan en een lijst weergeven van alle huidige leden om deze in te schrijven in het nieuwe jaar.
+	<%=Html.RadioButton("LedenMeteenInschrijven", true, true)%> Verdergaan en een lijst weergeven van alle huidige leden om deze in te schrijven in het nieuwe jaar.
 	<br />
-	<%=Html.RadioButton("Model.LedenMeteenInschrijven", false, false)%> Jaarovergang afmaken, ik zal de leden later zelf herinschrijven.
+	<%=Html.RadioButton("LedenMeteenInschrijven", false, false)%> Jaarovergang afmaken, ik zal de leden later zelf herinschrijven.
 	<br />
 	<input id="volgende" type="submit" value="Verdeling bewaren en verdergaan" /> <strong>Dit kan een paar minuutjes duren!</strong>
 	<%} %>

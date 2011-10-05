@@ -14,15 +14,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
 	<%
-		List<CheckBoxListInfo> info
-		   = (from pa in Model.Afdelingen
-			  select new CheckBoxListInfo(
-				 pa.ID.ToString()
-				 , ""
-				 , false)).ToList();
-
-		int j = 0;
+		var info = (from pa in Model.Afdelingen select new CheckBoxListInfo(pa.ID.ToString(), "", false)).ToList();
+		var j = 0;
 	%>
+
 	Selecteer de afdelingen die je groep volgend werkjaar zal gebruiken. <br/><br/>
 	Als er afdelingen van naam veranderen of als er nieuwe bijkomen, kun je dat hier aanpassen. <br/><br/>
 	
