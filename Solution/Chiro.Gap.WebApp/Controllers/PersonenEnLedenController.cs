@@ -29,6 +29,27 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("LedenMaken", "Leden"); // TODO naar waar willen we terug?
 		}
 
+		public void GelieerdePersonenUitschrijven(IEnumerable<int> gelieerdepersoonIDs, int groepID)
+		{
+			var fouten = String.Empty; // TODO (#1035): fouten opvangen
+
+			ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(gelieerdepersoonIDs, out fouten));
+
+			// TODO (#1035): beter manier om problemen op te vangen dan via een string
+
+			if (fouten == String.Empty)
+			{
+				TempData["succes"] = Properties.Resources.LedenUitgeschreven;
+
+				VeelGebruikt.FunctieProblemenResetten(groepID);
+			}
+			else
+			{
+				// TODO (#1035): vermijden dat output van de back-end rechtstreeks zichtbaar wordt voor de user.
+				TempData["fout"] = fouten;
+			}
+		}
+
 		/// <summary>
 		/// BELANGRIJK: in Tempdata "list" moet een lijst zitten van welke gelieerdepersonen moeten worden ingeschreven
 		/// </summary>

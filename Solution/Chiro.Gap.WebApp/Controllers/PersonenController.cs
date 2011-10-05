@@ -526,6 +526,20 @@ namespace Chiro.Gap.WebApp.Controllers
 			return GelieerdePersonenInschrijven(new List<int> { gelieerdepersoonID });
         }
 
+		/// <summary>
+		/// Schrijft een gelieerde persoon uit uit de groep
+		/// </summary>
+		/// <param name="gelieerdepersoonID">ID van de gelieerde persoon die we willen uitschrijven</param>
+		/// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
+		/// <returns></returns>
+		/// <!-- GET: /Personen/Uitschrijven/gelieerdepersoonID -->
+		[HandleError]
+		public ActionResult Uitschrijven(int gelieerdepersoonID, int groepID)
+		{
+			GelieerdePersonenUitschrijven(new List<int> { gelieerdepersoonID }, groepID);
+			return TerugNaarVorigeLijst();
+		}
+
         #endregion leden
 
         #region adressen

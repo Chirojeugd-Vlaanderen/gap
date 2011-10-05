@@ -390,6 +390,8 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
+				// TODO de check op speciale afdeling is vermoedelijk een fout, je wilt wel degelijk een voorstel genereren voor speciale afdelingen 
+				// TODO 1145 er kan geen voorstel worden gegenereerd als je in geen afdeling past => eigenlijk wil je dan ook gewoon een afdeling voorstellen, want je hoeft de chiroleeftijd niet aan te passen om lid te maken
 				afdelingsJaar = (from a in gwj.AfdelingsJaar
 									 where (a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal)
 										   && (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)

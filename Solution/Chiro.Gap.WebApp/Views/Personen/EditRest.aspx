@@ -274,6 +274,12 @@
 			(Kostprijs: &euro;
 			<%=Model.PrijsVerzekeringLoonVerlies.ToString() %>) </li>
 		<%}%>
+
+		<li>		
+			<%=Html.ActionLink("Uitschrijven", "Uitschrijven", new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })
+			%>
+		</li>
+
 	</ul>
 	<%}
    else
