@@ -48,6 +48,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	    /// (null als er geen gebruikersrecht is)
 	    /// </summary>
         [DataMember]
-        public GebruikersRechtInfo GebruikersRechtInfo { get; set; }
+        public GebruikersInfo GebruikersInfo { get; set; }
 	}
 }

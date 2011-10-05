@@ -14,6 +14,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -77,5 +78,21 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			return r;
 		}
+        
+        /// <summary>
+        /// Toont view voor het GAV-beheer voor groep met ID <paramref name="groepID"/>
+        /// </summary>
+        /// <param name="groepID">ID van de groep waarvoor we de GAV's willen zien/beheren</param>
+        /// <returns></returns>
+        public ActionResult Beheren(int groepID)
+        {
+            var model = new GavOverzichtModel();
+            BaseModelInit(model, groepID);
+
+            model.GebruikersDetails = ServiceHelper.CallService<IGroepenService, IEnumerable<GebruikersDetail>>(svc => svc.GebruikersOphalen(groepID));
+
+            model.Titel = Properties.Resources.GebruikersOverzicht;
+            return View(model);
+        }
 	}
 }

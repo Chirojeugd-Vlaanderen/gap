@@ -341,7 +341,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.CommunicatieInfo,
                     opt => opt.Ignore())
                 .ForMember(
-                    dst => dst.GebruikersRechtInfo,
+                    dst => dst.GebruikersInfo,
                     opt => opt.Ignore());
 
             // De bedoeling was om zo veel mogelijk automatisch te kunnen mappen.  Vandaar ook properties
@@ -520,7 +520,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.LidInfo,
                     opt => opt.MapFrom(src => src.Lid.FirstOrDefault())) // dit werkt enkel als er maar 1 lid aan de persoon is gekoppeld!
                 .ForMember(
-                    dst => dst.GebruikersRechtInfo,
+                    dst => dst.GebruikersInfo,
                     opt => opt.Ignore()); 
 			
 			Mapper.CreateMap<Lid, InTeSchrijvenLid>()
@@ -544,6 +544,18 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         		.ForMember(
         			dst => dst.LeidingMaken,
         			opt => opt.MapFrom(src => src.LeidingMaken));
+
+            Mapper.CreateMap<GebruikersRecht, GebruikersDetail>()
+                .ForMember(dst => dst.Verlengbaar,
+                           opt =>
+                           opt.MapFrom(
+                               src =>
+                               GebruikersRechtenManager.
+                                   VervalDatumNabij(src.VervalDatum)))
+                .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => GelieerdePersoonIDGet(src)))
+                .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? 0 : src.Gav.Persoon.First().ID))
+                .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? String.Empty : src.Gav.Persoon.First().Naam))
+                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? String.Empty : src.Gav.Persoon.First().VoorNaam));
 
             #region mapping van datacontracts naar entity's
 
@@ -676,6 +688,24 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 // Enkel kinderen en leiding
                 throw new NotSupportedException();
             }
+        }
+
+        /// <summary>
+        /// Bepaalt het GelieerdePersoonID van de gelieerde persoon die hoort bij het gebruikersrecht
+        /// <paramref name="gebruikersRecht"/>.  <c>null</c> indien onbekend.
+        /// </summary>
+        /// <param name="gebruikersRecht">Gebruikersrecht waarvan we het corresponderende GelieerdePersoonID zoeken</param>
+        /// <returns>GelieerdePersoonID van de gelieerde persoon die hoort bij het gebruikersrecht
+        /// <paramref name="gebruikersRecht"/>.  <c>null</c> indien onbekend.</returns>
+        private static int? GelieerdePersoonIDGet(GebruikersRecht gebruikersRecht)
+        {
+            if (gebruikersRecht.Gav.Persoon.Count() == 0)
+            {
+                return null;
+            }
+            return (from gp in gebruikersRecht.Gav.Persoon.First().GelieerdePersoon
+                    where gp.Groep.ID == gebruikersRecht.Groep.ID
+                    select gp.ID).FirstOrDefault();
         }
 
         #endregion

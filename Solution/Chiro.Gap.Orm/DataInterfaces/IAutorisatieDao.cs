@@ -50,6 +50,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// op zijn eigen groep (if any, anders null)</returns>
         GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID);
 
+        /// <summary>
+        /// Haalt alle gebruikersrechten op uit de groep met ID <paramref name="groepID"/>, inclusief
+        /// groep, gav, persoon en gelieerde personen.
+        /// </summary>
+        /// <param name="groepID">ID van de groep waarvan we de gebruikersrechten willen ophalen</param>
+        /// <returns>alle gebruikersrechten uit de groep met ID <paramref name="groepID"/>, inclusief
+        /// groep, gav, persoon en gelieerde personen.</returns>
+        IEnumerable<GebruikersRecht> AllesOphalen(int groepID);
+
 		#endregion
 
 		#region Enkel de niet-vervallen gebruikersrechten
@@ -219,8 +228,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// deelnemer, anders <c>false</c></returns>
 	    bool IsGavDeelnemer(int deelnemerID, string login);
 
-        #endregion
-
         /// <summary>
         /// Controleert of de aangelogde gebruiker op dit moment GAV-rechten heeft op het gebruikersrecht
         /// met ID <paramref name="gebruikersRechtID"/>
@@ -230,5 +237,9 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <returns><c>true</c> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde 
         /// gebruikersrecht, anders <c>false</c></returns>
 	    bool IsGavGebruikersRecht(int gebruikersRechtID, string login);
+
+        #endregion
+
+
 	}
 }

@@ -42,11 +42,12 @@ namespace Chiro.Gap.Services
         private readonly CategorieenManager _categorieenMgr;
         private readonly FunctiesManager _functiesMgr;
         private readonly LedenManager _ledenMgr;
+        private readonly GebruikersRechtenManager _gebruikersRechtenManager;
 
         /// <summary>
         /// Constructor met via IoC toegekende workers
         /// </summary>
-        /// <param name="gm">De worker voor Groepen</param>
+        /// <param name="groepenMgr">De worker voor Groepen</param>
         /// <param name="cgm">De worker voor Chirogroepen</param>
         /// <param name="ajm">De worker voor AfdelingsJaren</param>
         /// <param name="wm">De worker voor GroepsWerkJaren</param>
@@ -54,10 +55,11 @@ namespace Chiro.Gap.Services
         /// <param name="cm">De worker voor Categorieën</param>
         /// <param name="fm">De worker voor Functies</param>
         /// <param name="lm">De worker voor Leden</param>
-		/// <param name="jm">De worker voor Jaarovergang</param>
+        /// <param name="jm">De worker voor Jaarovergang</param>
         /// <param name="am">De worker voor Autorisatie</param>
+        /// <param name="gebruikersRechtenMgr">Worker ivm gebruikersrechten</param>
         public GroepenService(
-            GroepenManager gm,
+            GroepenManager groepenMgr,
             ChiroGroepenManager cgm,
             AfdelingsJaarManager ajm,
             GroepsWerkJaarManager wm,
@@ -66,9 +68,10 @@ namespace Chiro.Gap.Services
             FunctiesManager fm,
             LedenManager lm,
             IAutorisatieManager am,
-			JaarOvergangManager jm)
+			JaarOvergangManager jm,
+            GebruikersRechtenManager gebruikersRechtenMgr)
         {
-            _groepenMgr = gm;
+            _groepenMgr = groepenMgr;
             _chiroGroepenMgr = cgm;
             _afdelingsJaarMgr = ajm;
             _groepsWerkJaarManager = wm;
@@ -78,6 +81,7 @@ namespace Chiro.Gap.Services
             _functiesMgr = fm;
             _ledenMgr = lm;
 			_jaarOvergangManager = jm;
+            _gebruikersRechtenManager = gebruikersRechtenMgr;
         }
 
         #endregion
@@ -1070,6 +1074,18 @@ namespace Chiro.Gap.Services
 
             string connectionString = ConfigurationManager.ConnectionStrings["ChiroGroepEntities"].ConnectionString.ToUpper();
             return connectionString.Contains(Properties.Settings.Default.LiveConnSubstring.ToUpper());
+        }
+
+        /// <summary>
+        /// Haalt informatie over alle gebruikersrechten van de gegeven groep op.
+        /// </summary>
+        /// <param name="groepID">ID van de groep waarvan de gebruikersrechten op te vragen zijn</param>
+        /// <returns>Lijstje met details van de gebruikersrechten</returns>
+        public IEnumerable<GebruikersDetail> GebruikersOphalen(int groepID)
+        {
+            var rechten = _gebruikersRechtenManager.AllesOphalen(groepID);
+            var resultaat = Mapper.Map<IEnumerable<GebruikersRecht>, GebruikersDetail[]>(rechten);
+            return resultaat;
         }
 
         #endregion

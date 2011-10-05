@@ -8,7 +8,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
     /// Basisinfo over gebruikersrechten
     /// </summary>
     [DataContract]
-    public class GebruikersRechtInfo
+    public class GebruikersInfo
     {
         /// <summary>
         /// ID van het gebruikersrecht

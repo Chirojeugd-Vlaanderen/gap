@@ -68,7 +68,7 @@
         <ul>
 
         <%
-            if (Model.PersoonLidInfo.GebruikersRechtInfo == null || Model.PersoonLidInfo.GebruikersRechtInfo.VervalDatum < DateTime.Now)
+            if (Model.PersoonLidInfo.GebruikersInfo == null || Model.PersoonLidInfo.GebruikersInfo.VervalDatum < DateTime.Now)
             {
         %>
             <li><%: Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> heeft geen toegang tot het GAP.</li>
@@ -78,10 +78,10 @@
             else
             {
         %>
-            <li>Gebruikersnaam: <%=Html.DisplayFor(s => s.PersoonLidInfo.GebruikersRechtInfo.GavLogin)%></li>
-            <li>Vervaldatum: <%=Html.DisplayFor(s => s.PersoonLidInfo.GebruikersRechtInfo.VervalDatum)%></li>
+            <li>Gebruikersnaam: <%=Html.DisplayFor(s => s.PersoonLidInfo.GebruikersInfo.GavLogin)%></li>
+            <li>Vervaldatum: <%=Html.DisplayFor(s => s.PersoonLidInfo.GebruikersInfo.VervalDatum)%></li>
             <% 
-                if (Model.PersoonLidInfo.GebruikersRechtInfo.Verlengbaar)
+                if (Model.PersoonLidInfo.GebruikersInfo.Verlengbaar)
                 {
                     // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
             %>

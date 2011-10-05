@@ -137,6 +137,7 @@
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingsJaarModel.cs" />
     <Compile Include="Models\DeelnemerBewerkenModel.cs" />
+    <Compile Include="Models\GavOverzichtModel.cs" />
     <Compile Include="Models\IAdresBewerkenModel.cs" />
     <Compile Include="Models\LidAfdelingenModel.cs" />
     <Compile Include="Models\Mededeling.cs" />
@@ -198,6 +199,7 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Views\Gav\Beheren.aspx" />
     <Content Include="Views\Gav\Index.aspx" />
     <Content Include="Views\Handleiding\Deadlines.aspx" />
     <Content Include="Views\Handleiding\Deelnemersadministratie.aspx" />

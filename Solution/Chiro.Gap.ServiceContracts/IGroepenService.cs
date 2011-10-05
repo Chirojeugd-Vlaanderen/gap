@@ -473,5 +473,13 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns><c>true</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
 		[OperationContract]
 		bool IsLive();
+
+        /// <summary>
+        /// Haalt informatie over alle gebruikersrechten van de gegeven groep op.
+        /// </summary>
+        /// <param name="groepID">ID van de groep waarvan de gebruikersrechten op te vragen zijn</param>
+        /// <returns>Lijstje met details van de gebruikersrechten</returns>
+        [OperationContract]
+	    IEnumerable<GebruikersDetail> GebruikersOphalen(int groepID);
 	}
 }

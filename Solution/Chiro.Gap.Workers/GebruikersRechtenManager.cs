@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 
@@ -19,20 +20,16 @@ namespace Chiro.Gap.Workers
     public class GebruikersRechtenManager
     {
         private readonly IAutorisatieDao _autorisatieDao;
-        private readonly IDao<GebruikersRecht> _gebruikersRechtenDao;
         private readonly IAutorisatieManager _autorisatieManager;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="autorisatieDao">DAO die gebruikt zal worden om gegevens ivm gebruikersrechten op te zoeken</param>
-        /// <param name="gebruikersRechtenDao">DAO voor data access ivm gebruikersrechten</param>
-        /// <param name="autorisatieManager">Autorisatiemanager die gebruikt zal worden om te controleren of de user wel
-        /// rechten genoeg heeft om de gevraagde gegevens op te halen</param>
-        public GebruikersRechtenManager(IAutorisatieDao autorisatieDao, IDao<GebruikersRecht> gebruikersRechtenDao, IAutorisatieManager autorisatieManager)
+        /// <param name="autorisatieManager">Data access ivm gebruikersrechten</param>
+        public GebruikersRechtenManager(IAutorisatieDao autorisatieDao, IAutorisatieManager autorisatieManager)
         {
             _autorisatieDao = autorisatieDao;
-            _gebruikersRechtenDao = gebruikersRechtenDao;
             _autorisatieManager = autorisatieManager;
         }
 
@@ -54,22 +51,34 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Als een gelieerde persoon een gebruikersrecht heeft/had voor zijn eigen groep, dan
-        /// levert deze call dat gebruikersrecht op.
+        /// geeft <c>true</c> als de 'gebruikersrechtvervaldatum' <paramref name="datum"/>  in de
+        /// nabije toekomst is, anders <c>false</c>.
         /// </summary>
-        /// <param name="gelieerdePersoonID">ID van een gelieerde persoon</param>
-        /// <returns>Gebruikersrecht van de gelieerde persoon met ID <paramref name="gelieerdePersoonID"/>
-        /// op zijn eigen groep (if any, anders null)</returns>
+        /// <param name="datum">Vervaldatum van een gebruikersrecht</param>
+        /// <returns><c>true</c> als de 'gebruikersrechtvervaldatum' <paramref name="datum"/>  in de
+        /// nabije toekomst is, anders <c>false</c>.</returns>
+        public static bool VervalDatumNabij(DateTime? datum)
+        {
+            return datum == null
+           ? false
+           : ((DateTime)datum) < DateTime.Now.AddMonths(
+               Properties.Settings.Default.MaandenGebruikersRechtVerlengbaar);
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als het gegeven <paramref name="gebruikersrecht"/> verlengd
+        /// kan worden, anders <c>false</c>
+        /// </summary>
+        /// <param name="gebruikersrecht">gebruikersrecht waarvan de verlengbaarheid te controleren is</param>
+        /// <returns><c>true</c> als het gegeven <paramref name="gebruikersrecht"/> verlengd
+        /// kan worden, anders <c>false</c>.</returns>
         public bool IsVerlengbaar(GebruikersRecht gebruikersrecht)
         {
             if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersrecht.ID))
             {
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }
-            return gebruikersrecht.VervalDatum == null
-                       ? false
-                       : ((DateTime)gebruikersrecht.VervalDatum) < DateTime.Now.AddMonths(
-                           Properties.Settings.Default.MaandenGebruikersRechtVerlengbaar);
+            return VervalDatumNabij(gebruikersrecht.VervalDatum);
         }
 
         /// <summary>
@@ -165,7 +174,7 @@ namespace Chiro.Gap.Workers
                         svc => svc.GapLoginAanvragen(adNr, persoon.Naam, persoon.VoorNaam, eMail));
                 }
 
-                resultaat = _gebruikersRechtenDao.Bewaren(gebruikersRecht,
+                resultaat = _autorisatieDao.Bewaren(gebruikersRecht,
                                                               gr => gr.Gav.Persoon.First().WithoutUpdate(),
                                                               gr => gr.Groep.WithoutUpdate());
 #if KIPDORP
@@ -207,7 +216,24 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }
 
-            _gebruikersRechtenDao.Bewaren(gebruikersRecht);
+            _autorisatieDao.Bewaren(gebruikersRecht);
+        }
+
+        /// <summary>
+        /// Haalt alle gebruikersrechten op uit de groep met ID <paramref name="groepID"/>, inclusief
+        /// groep, gav, persoon en gelieerde personen.
+        /// </summary>
+        /// <param name="groepID">ID van de groep waarvan we de gebruikersrechten willen ophalen</param>
+        /// <returns>alle gebruikersrechten uit de groep met ID <paramref name="groepID"/>, inclusief
+        /// groep, gav, persoon en gelieerde personen.</returns>
+        public IEnumerable<GebruikersRecht> AllesOphalen(int groepID)
+        {
+            if (!_autorisatieManager.IsGavGroep(groepID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+
+            return _autorisatieDao.AllesOphalen(groepID);
         }
     }
 }

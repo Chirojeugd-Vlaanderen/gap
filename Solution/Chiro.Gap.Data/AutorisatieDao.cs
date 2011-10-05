@@ -133,6 +133,28 @@ namespace Chiro.Gap.Data.Ef
             return Utility.DetachObjectGraph(resultaat);
         }
 
+        /// <summary>
+        /// Haalt alle gebruikersrechten op uit de groep met ID <paramref name="groepID"/>, inclusief
+        /// groep, gav, persoon en gelieerde personen.
+        /// </summary>
+        /// <param name="groepID">ID van de groep waarvan we de gebruikersrechten willen ophalen</param>
+        /// <returns>alle gebruikersrechten uit de groep met ID <paramref name="groepID"/>, inclusief
+        /// groep, gav, persoon en gelieerde personen.</returns>
+	    public IEnumerable<GebruikersRecht> AllesOphalen(int groepID)
+        {
+            IEnumerable<GebruikersRecht> resultaat;
+	        using (var db = new ChiroGroepEntities())
+	        {
+	            resultaat =
+	                (from gebruikersRecht in
+	                     db.GebruikersRecht.Include(gr => gr.Groep).Include(
+	                         gr => gr.Gav.Persoon.First().GelieerdePersoon.First().Groep)
+	                 where gebruikersRecht.Groep.ID == groepID
+	                 select gebruikersRecht).ToArray();
+	        }
+            return Utility.DetachObjectGraph(resultaat);
+        }
+
 	    /// <summary>
 		/// Kijkt in de tabel Gebruikersrecht of er een record is dat de  opgegeven 
 		/// <paramref name="login"/> aan de opgegeven <paramref name="groepID"/> koppelt.

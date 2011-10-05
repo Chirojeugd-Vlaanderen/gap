@@ -384,7 +384,7 @@ namespace Chiro.Gap.Services
                 {
                     // TODO: use automapper
 
-                    result.GebruikersRechtInfo = new GebruikersRechtInfo
+                    result.GebruikersInfo = new GebruikersInfo
                                                      {
                                                          VervalDatum = gebruikersrecht.VervalDatum,
                                                          Verlengbaar = _gebruikersRechtenMgr.IsVerlengbaar(gebruikersrecht),
