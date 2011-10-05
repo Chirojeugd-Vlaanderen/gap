@@ -69,7 +69,7 @@
 	<% if(Model.BroerzusID != 0)
 {
 	%>
-	<p>Het adres en de gezinsgebonden communicatievormen <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "GezinsgebondenCommunicatievorm", new { helpBestand = "Trefwoorden" }, new { title = "Wat zijn 'gezinsgebonden communicatievormen'?" })%> worden gekopieerd van de broer of zus. <%=Html.ActionLink("Meer uitleg nodig over 'zus/broer maken'?", "ViewTonen", new { Controller = "Handleiding", helpBestand = "ZusBroer" }) %></p>	
+	<p>Het adres en de gezinsgebonden communicatievormen&nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "GezinsgebondenCommunicatievorm", new { helpBestand = "Trefwoorden" }, new { title = "Wat zijn 'gezinsgebonden communicatievormen'?" })%> worden gekopieerd van de broer of zus. <%=Html.ActionLink("Meer uitleg nodig over 'zus/broer maken'?", "ViewTonen", new { Controller = "Handleiding", helpBestand = "ZusBroer" }) %></p>	
 	<%
 } %>
 	<fieldset>

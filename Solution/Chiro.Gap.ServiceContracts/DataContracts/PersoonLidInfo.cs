@@ -23,7 +23,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public PersoonDetail PersoonDetail { get; set; }
 
-		// TODO booleans voor wat er geladen is
+        // TODO (#1134): booleans voor wat er geladen is
 
 		/// <summary>
 		/// Info-object van het lidmaatschap van de persoon

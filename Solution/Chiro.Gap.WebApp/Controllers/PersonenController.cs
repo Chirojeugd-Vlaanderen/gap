@@ -1129,7 +1129,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Toont de view 'CategorieToevoegen', die toelaat om personen in een categorie onder te
         /// brengen.  
         /// De ID's van onder te brengen personen worden opgevist uit TempData["list"].
-        /// TODO Kan dat niet properder? => er moet informatie worden doorgegeven aan een method die nu een GET is, omdat er daarna er een POST op moet kunnen gebeuren
+        /// TODO (#1137): Kan dat niet properder? => er moet informatie worden doorgegeven aan een method die nu een GET is, omdat er daarna er een POST op moet kunnen gebeuren
         /// vanuit CategorieToevoegenAanLijst.aspx
         /// </summary>
         /// <param name="groepID">ID van de groep waarin de gebruiker momenteel aan het werken is</param>

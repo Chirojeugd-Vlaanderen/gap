@@ -19,7 +19,7 @@
 		Neem daar wel je tijd voor! Er moet op dat moment veel gebeuren, en het is het
 		beste dat je het allemaal ineens doet - anders kun je een factuur
 		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Factuur", new { helpBestand = "Trefwoorden" }, new { title = "Uitleg over facturatie"})%>
-		krijgen voor de aansluiting <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Factuur", new { helpBestand = "Trefwoorden" }, new { title = "Uitleg over facturatie"})%>van mensen die je eigenlijk niet wilt inschrijven.</p>
+		krijgen voor de aansluiting&nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Factuur", new { helpBestand = "Trefwoorden" }, new { title = "Uitleg over facturatie"})%>van mensen die je eigenlijk niet wilt inschrijven.</p>
 	<h3>
 		Wat kun je hier doen?</h3>
 	<ul>

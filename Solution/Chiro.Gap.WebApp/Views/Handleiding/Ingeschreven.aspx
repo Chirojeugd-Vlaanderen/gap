@@ -18,7 +18,7 @@
 		meer aan veranderen.</p>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/Tabblad_Ingeschreven.png") %>"
 		alt="Het tabblad 'Ingeschreven'" />
-    <p>Je ledenlijst wordt doorgegeven aan Chirojeugd Vlaanderen, voor de aansluiting <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Aansluiting", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een aansluiting?" })%> en de verzekering. Dat gebeurt per lid, na het einde van hun instapperiode <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een instapperiode?" })%>.</p>
+    <p>Je ledenlijst wordt doorgegeven aan Chirojeugd Vlaanderen, voor de aansluiting&nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Aansluiting", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een aansluiting?" })%> en de verzekering. Dat gebeurt per lid, na het einde van hun instapperiode&nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een instapperiode?" })%>.</p>
 	<h3>
 		Wat kun je hier doen?</h3>
 	<ul>

@@ -178,7 +178,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			catch (FaultException)
 			{
 				TempData["fout"] = Properties.Resources.AfdelingNietLeeg;
-				// TODO: specifieke exceptions catchen en weergeven via de modelstate, en niet via tempdata.
+                // TODO (#1139): specifieke exceptions catchen en weergeven via de modelstate, en niet via tempdata.
 			}
 
 			return RedirectToAction("Index");

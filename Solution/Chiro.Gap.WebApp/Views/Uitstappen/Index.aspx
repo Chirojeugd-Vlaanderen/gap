@@ -7,7 +7,7 @@
         <p>
             Informatie over uitstappen wordt niet doorgegeven aan Chirojeugd Vlaanderen. Van
             een kamp wordt alleen de informatie voor de bivakaangifte
-            <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
+           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
             doorgestuurd. De deelnemerslijst is alleen voor je groep toegankelijk.</p>
         <p>
             [<%=Html.ActionLink("Uitstap/bivak toevoegen", "Nieuw", "Uitstappen") %>]

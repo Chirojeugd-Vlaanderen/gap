@@ -46,7 +46,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new BevestigingsModel();
             BaseModelInit(model, groepID);
 
-            // TODO: DetailsOphalen is overkill, aangezien ik enkel de volledige naam nodig heb.
+            // TODO (#1140): DetailsOphalen is overkill, aangezien ik enkel de volledige naam nodig heb.
             // OPM: als je de gebruiker wilt waarschuwen dat de kandidaat-abonnee eigenlijk te jong is om in aanmerking te komen,
             //		heb je wel de geboortedatum of de leeftijd nodig
 

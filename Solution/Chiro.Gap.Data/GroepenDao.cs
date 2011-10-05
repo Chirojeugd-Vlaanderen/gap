@@ -27,7 +27,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Groep, afdelingsjaar, afdelingen en officiële afdelingen</returns>
 		public Groep OphalenMetAfdelingen(int groepsWerkJaarID)
 		{
-			// TODO ik denk dat deze niet meer nuttig gebruikt wordt behalve in tests
+            // TODO (#1136): ik denk dat deze niet meer nuttig gebruikt wordt behalve in tests
 			GroepsWerkJaar groepswj;
 
 			using (var db = new ChiroGroepEntities())

@@ -10,15 +10,15 @@
         Deelnemers inschrijven voor je uitstap/bivak</h2>
     <p>
         Eerst moet je zorgen dat je uitstap
-        <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Uitstap", new { helpBestand = "Trefwoorden" }, new { title = "Wat wordt hier beschouwd als een uitstap?" } ) %>
+       &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Uitstap", new { helpBestand = "Trefwoorden" }, new { title = "Wat wordt hier beschouwd als een uitstap?" } ) %>
         of bivak
-        <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivak", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een bivak?" } ) %>
+       &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivak", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een bivak?" } ) %>
         geregistreerd is. Lees eventueel eerst
         <%=Html.ActionLink("hoe je dat doet", "ViewTonen", new { controller = "Handleiding", helpBestand = "UitstapToevoegen" })%>.</p>
     <p>
         Deelnemers zijn je leden en je leiding: mensen die ingeschreven zijn in je groep.
         Je kunt ook logistiek medewerkers
-        <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "LogistiekMedewerkers", new { helpBestand = "Trefwoorden" }, new { title = "Wat wordt er bedoeld met logistiek medewerk(st)ers?" } ) %>
+       &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "LogistiekMedewerkers", new { helpBestand = "Trefwoorden" }, new { title = "Wat wordt er bedoeld met logistiek medewerk(st)ers?" } ) %>
         inschrijven, maar dat doe je best apart (zie
         <%=Html.ActionLink("Medewerkers inschrijven", "ViewTonen", new { controller = "Handleiding", helpBestand = "MedewerkersInschrijven" })%>).</p>
     <p>
@@ -34,7 +34,7 @@
         <li>Vink aan wie je wilt inschrijven, en kies in het selectielijstje onder 'Acties'
             voor 'Inschrijven voor uitstap/bivak'. Doe dat apart voor bijvoorbeeld leiding die
             met een andere afdeling meegaat om te koken op weekend: zij zijn logistiek medewerk(st)ers
-            <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "LogistiekMedewerkers", new { helpBestand = "Trefwoorden" }, new { title = "Wat wordt er bedoeld met logistiek medewerk(st)ers?" } ) %>,
+           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "LogistiekMedewerkers", new { helpBestand = "Trefwoorden" }, new { title = "Wat wordt er bedoeld met logistiek medewerk(st)ers?" } ) %>,
             en voor hen moet je een extra vinkje zetten (zie
             <%=Html.ActionLink("Medewerkers inschrijven", "ViewTonen", new { controller = "Handleiding", helpBestand = "MedewerkersInschrijven" })%>).</li>
     </ul>

@@ -121,9 +121,9 @@
             Tijdens de jaarovergang geef je aan welke afdelingen je groep heeft. De leden van
             vorig jaar worden automatisch in de juiste afdeling gezet en ingeschreven. Voor
             die juiste afdeling kijkt het programma naar de leeftijd en de Chiroleeftijd
-            <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is je Chiroleeftijd?"})%>.
+           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is je Chiroleeftijd?"})%>.
             Bij die inschrijving krijgen al die leden een instapperiode
-            <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een instapperiode?"})%>.
+           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een instapperiode?"})%>.
             Als ze niet meer naar de Chiro willen komen, moet je ze uitschrijven voor het einde
             van die instapperiode, anders krijg je toch een factuur voor hun lidgeld. Werk je
             met een inschrijvingsdag die nogal laat valt? Voer de jaarovergang dan kort voor

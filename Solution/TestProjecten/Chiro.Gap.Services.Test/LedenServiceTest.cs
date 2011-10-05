@@ -154,7 +154,6 @@ namespace Chiro.Gap.Services.Test
 			voorstel.AfdelingsJaarID = gekozenafdelingsjaarID;
 			List<InTeSchrijvenLid> defvoorstel = new List<InTeSchrijvenLid>();
 			defvoorstel.Add(voorstel);
-			// TODO wat is eigenlijk het gewenste gedrag hier? Zie ticket #1073
 			int lidID = target.Inschrijven(defvoorstel, out fouten).First();
 			#endregion
 

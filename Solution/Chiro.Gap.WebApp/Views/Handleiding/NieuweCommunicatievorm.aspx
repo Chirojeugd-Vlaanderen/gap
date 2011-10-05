@@ -38,7 +38,7 @@
         <li>Selecteer het type: mailadres, telefoonnummer, enz.</li>
         <li>Vul het nummer of het mailadres in.</li>
         <li>Je kunt aanvinken of de communicatievorm voor het hele gezin
-            <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "GezinsgebondenCommunicatievorm", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een gezinsgebonden communicatievorm?" })%>
+           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "GezinsgebondenCommunicatievorm", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een gezinsgebonden communicatievorm?" })%>
             is. Een typisch voorbeeld is het nummer van een vaste telefoonlijn: daarmee kun
             je het hele gezin bereiken. Elke nieuwe persoon die je toevoegt voor hetzelfde thuisadres
             krijgt automatisch de gezinsgebonden communicatievormen die je al toevoegde. Nieuwe
@@ -46,7 +46,7 @@
             aan iedereen die op hetzelfde adres woont.</li>
         <li>Vul je een mailadres in, dan kun je aanvinken of het ingeschreven mag worden op
             een Snelleberichtenlijst
-            <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Snelleberichtenlijsten", new { helpBestand = "Trefwoorden" }, null)%>.
+           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Snelleberichtenlijsten", new { helpBestand = "Trefwoorden" }, null)%>.
             Dat is dus alleen voor intern Chirogebruik. Chirojeugd Vlaanderen geeft dat soort
             gegevens nooit door aan derden - lees er de
             <%=Html.ActionLink("privacyverklaring", "ViewTonen", new { controller = "Handleiding", helpBestand = "Privacy" })%>

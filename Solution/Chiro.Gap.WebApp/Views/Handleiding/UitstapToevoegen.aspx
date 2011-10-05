@@ -17,7 +17,7 @@
             'klein kamp' voor je jongste afdeling of een buitenlands bivak, vink dan aan dat
             het om een jaarlijks bivak gaat <em>(ook als je het niet elk jaar organiseert!)</em>.
             Voor een bivak moet je namelijk een bivakaangifte
-            <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
+           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
             doen. Dat vinkje zorgt ervoor dat de gegevens automatisch doorgegeven worden aan
             het nationaal secretariaat.</li>
     </ul>
@@ -26,7 +26,7 @@
         <li>Klik op de knop Bewaren.</li>
         <li>Nu zie je een detailfiche van je nieuwe uitstap. Daar staan nog niet veel details
             in, maar voor een bivakaangifte
-            <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
+           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
             is dat wel noodzakelijk. Klik dus op de link 'Bivakplaats ingeven'.</li>
     </ul>
     <img src="<%=ResolveUrl("~/Content/Screenshots/Formulier_bivakdetails.png") %>" alt="Details van de uitstap aanvullen" />

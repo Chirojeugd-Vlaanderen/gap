@@ -156,7 +156,7 @@ namespace Chiro.Gap.Services
         /// <param name="g">Te persisteren groep</param>
         public void Bewaren(GroepInfo g)
         {
-            // FIXME: gedetailleerde exception
+            // FIXME (#1138): gedetailleerde exception
             try
             {
                 var groep = _groepenMgr.Ophalen(g.ID);
