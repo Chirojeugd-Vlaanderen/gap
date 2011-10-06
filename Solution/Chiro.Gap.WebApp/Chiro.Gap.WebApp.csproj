@@ -210,6 +210,7 @@
     <Content Include="Views\Handleiding\UitstapToevoegen.aspx" />
     <Content Include="Views\Leden\AfdelingenBewerken.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
+    <Content Include="Views\Personen\OverledenPersoon.aspx" />
     <Content Include="Views\Shared\LedenMaken.aspx" />
     <Content Include="Views\Personen\AdresVerwijderen.aspx" />
     <Content Include="Views\Personen\CommVormBewerken.aspx" />

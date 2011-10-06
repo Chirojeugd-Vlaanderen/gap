@@ -31,7 +31,8 @@
 		<legend>Afdelingen</legend>
 
 		<p>
-			Selecteer voor elke persoon welke afdeling je hem wil geven en of hij/zij lid of leiding is. Als je een specifieke persoon toch niet lid wil maken, kan je hem afvinken.
+            Selecteer voor iedereen de juiste afdeling. Voor leiding zet je een vinkje in de kolom 'Leiding maken'.
+            Staat er iemand tussen die je toch niet wilt inschrijven, verwijder dan het vinkje in de eerste kolom.
 		</p>
 
 		<table class="overzicht">

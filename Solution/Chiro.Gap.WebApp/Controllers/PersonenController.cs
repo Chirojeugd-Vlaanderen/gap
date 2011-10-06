@@ -38,7 +38,8 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-        public PersonenController(IVeelGebruikt veelGebruikt): base(veelGebruikt)
+        public PersonenController(IVeelGebruikt veelGebruikt)
+            : base(veelGebruikt)
         {
         }
         // TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
@@ -151,8 +152,8 @@ namespace Chiro.Gap.WebApp.Controllers
             // gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
             string[] kolomkoppen = 
                                    {
-			                       	"AD-nr", "Voornaam", "Naam", "Geboortedatum", "Geslacht", "Straat", "Nr", "Bus", "Postcode",
-			                       	"Gemeente", "Land", "Tel", "Mail"
+			                       	"AD-nr", "Voornaam", "Naam", "Geboortedatum", "Geslacht", "Straat", "Nr", "Bus", "Postnr",
+			                       	"Postcode", "Gemeente", "Land", "Tel", "Mail"
 			                       };
 
             var stream = (new ExcelManip()).ExcelTabel(
@@ -163,14 +164,17 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => it.Naam,
                 it => it.GeboorteDatum,
                 it => it.Geslacht,
-                it => it.StraatNaam,
-                it => it.HuisNummer,
-                it => it.Bus,
-                it => it.PostNummer,
-                it => it.WoonPlaats,
-                it => it.Land,
-                it => it.TelefoonNummer,
-                it => it.Email);
+                // Contactgegevens enkel opnemen bij levende mensen
+                it => !it.SterfDatum.HasValue ? it.StraatNaam : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.HuisNummer : null,
+                it => !it.SterfDatum.HasValue ? it.Bus : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.PostNummer : null,
+                it => !it.SterfDatum.HasValue ? it.PostCode : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.WoonPlaats : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.Land : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.TelefoonNummer : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.Email : string.Empty);
+
             return new ExcelResult(stream, "personen.xlsx");
         }
 
@@ -228,8 +232,8 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 case 1:
                 case 2:  // 2 is stiekem verdwenen, zie #625.
-					r = GelieerdePersonenInschrijven(model.GekozenGelieerdePersoonIDs);
-            		break;
+                    r = GelieerdePersonenInschrijven(model.GekozenGelieerdePersoonIDs);
+                    break;
                 case 3:
                     TempData["list"] = model.GekozenGelieerdePersoonIDs;
                     r = RedirectToAction("CategorieToevoegenAanLijst");
@@ -247,8 +251,8 @@ namespace Chiro.Gap.WebApp.Controllers
             return r;
         }
 
-		
-		#region personen
+
+        #region personen
 
         /// <summary>
         /// Toont het formulier om een nieuwe persoon toe te voegen
@@ -479,18 +483,26 @@ namespace Chiro.Gap.WebApp.Controllers
             BaseModelInit(model, groepID);
 
             model.PersoonLidInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(id));
+           
+            if (!model.PersoonLidInfo.PersoonDetail.SterfDatum.HasValue)
+            {
+                AfdelingenOphalen(model);
 
-            AfdelingenOphalen(model);
+                model.KanVerzekerenLoonVerlies = model.PersoonLidInfo.PersoonDetail.GeboorteDatum != null &&
+                                                 DateTime.Today.Year -
+                                                 ((DateTime)model.PersoonLidInfo.PersoonDetail.GeboorteDatum).Year >=
+                                                 Properties.Settings.Default.LoonVerliesVanafLeeftijd;
+                model.PrijsVerzekeringLoonVerlies = Properties.Settings.Default.PrijsVerzekeringLoonVerlies;
+                model.PrijsDubbelPunt = Properties.Settings.Default.PrijsDubbelPunt;
+                model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam;
 
-            model.KanVerzekerenLoonVerlies = model.PersoonLidInfo.PersoonDetail.GeboorteDatum != null &&
-                                             DateTime.Today.Year -
-                                             ((DateTime)model.PersoonLidInfo.PersoonDetail.GeboorteDatum).Year >=
-                                             Properties.Settings.Default.LoonVerliesVanafLeeftijd;
-            model.PrijsVerzekeringLoonVerlies = Properties.Settings.Default.PrijsVerzekeringLoonVerlies;
-            model.PrijsDubbelPunt = Properties.Settings.Default.PrijsDubbelPunt;
-
-            model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam;
-            return View("EditRest", model);
+                return View("EditRest", model);
+            }
+            else
+            {
+                model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam + " (†)";
+                return View("OverledenPersoon", model);
+            }
         }
 
         /// <summary>
@@ -523,7 +535,7 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult Inschrijven(int gelieerdepersoonID, int groepID)
         {
-			return GelieerdePersonenInschrijven(new List<int> { gelieerdepersoonID });
+            return GelieerdePersonenInschrijven(new List<int> { gelieerdepersoonID });
         }
 
 		/// <summary>

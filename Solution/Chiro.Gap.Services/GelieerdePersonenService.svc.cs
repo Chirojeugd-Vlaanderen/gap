@@ -296,6 +296,11 @@ namespace Chiro.Gap.Services
                     {
                         continue;
                     }
+                    if(p.SterfDatum.HasValue)
+                    {
+                        continue;
+                    }
+
                     int geboortejaar = p.GeboorteDatum.Value.Year - p.ChiroLeefTijd;
                     var afd = (from a in gwj.AfdelingsJaar
                                where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar

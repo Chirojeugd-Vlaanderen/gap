@@ -496,15 +496,17 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => it.Functies == null ? String.Empty : String.Concat(it.Functies.Select(fun => fun.Code + " ").ToArray()),
                 it => it.GeboorteDatum,
                 it => it.Geslacht,
-                it => it.StraatNaam,
-                it => it.HuisNummer,
-                it => it.Bus,
-                it => it.PostNummer,
-                it => it.PostCode,
-                it => it.WoonPlaats,
-                it => it.Land,
-                it => it.TelefoonNummer,
-                it => it.Email,
+                // Contactgegevens enkel opnemen bij levende mensen
+                it => !it.SterfDatum.HasValue ? it.StraatNaam : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.HuisNummer : null,
+                it => !it.SterfDatum.HasValue ? it.Bus : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.PostNummer : null,
+                it => !it.SterfDatum.HasValue ? it.PostCode : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.WoonPlaats : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.Land : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.TelefoonNummer : string.Empty,
+                it => !it.SterfDatum.HasValue ? it.Email : string.Empty,
+                // 'Lidgeld betaald' mag wel getoond worden bij overledenen, want daar kan eventueel discussie over ontstaan
                 it => it.LidgeldBetaald ? "Ja" : "Nee");
 
             return new ExcelResult(stream, bestandsNaam);

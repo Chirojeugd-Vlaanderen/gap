@@ -154,12 +154,12 @@ namespace Chiro.Gap.Workers
         {
             var paths = new List<Expression<Func<Persoon, object>>>();
 
-			if ((extras & (PersoonsExtras.Communicatie | PersoonsExtras.Categorieen | PersoonsExtras.Uitstappen)) != 0)
-			{
-				// niet ondersteund, want dan moeten we eerst nog gaan uitvlooien
-				// welke gelieerde persoon we precies nodig hebben.
-				throw new NotSupportedException();
-			}
+            if ((extras & (PersoonsExtras.Communicatie | PersoonsExtras.Categorieen | PersoonsExtras.Uitstappen)) != 0)
+            {
+                // niet ondersteund, want dan moeten we eerst nog gaan uitvlooien
+                // welke gelieerde persoon we precies nodig hebben.
+                throw new NotSupportedException();
+            }
 
             if ((extras & PersoonsExtras.Adressen) != 0)
             {
@@ -208,12 +208,12 @@ namespace Chiro.Gap.Workers
 
             var paths = new List<Expression<Func<Persoon, object>>>();
 
-			if ((extras & (PersoonsExtras.Communicatie | PersoonsExtras.Categorieen | PersoonsExtras.Uitstappen)) != 0)
-			{
-				// niet ondersteund, want dan moeten we eerst nog gaan uitvlooien
-				// welke gelieerde persoon we precies nodig hebben.
-				throw new NotSupportedException();
-			}
+            if ((extras & (PersoonsExtras.Communicatie | PersoonsExtras.Categorieen | PersoonsExtras.Uitstappen)) != 0)
+            {
+                // niet ondersteund, want dan moeten we eerst nog gaan uitvlooien
+                // welke gelieerde persoon we precies nodig hebben.
+                throw new NotSupportedException();
+            }
 
             if ((extras & PersoonsExtras.GroepsWerkJaren) != 0)
             {

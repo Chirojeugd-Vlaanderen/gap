@@ -2667,7 +2667,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="ChiroGroepModel" ZoomLevel="46" xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+      <Diagram Name="ChiroGroepModel" ZoomLevel="87" xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
         <EntityTypeShape EntityType="ChiroGroepModel.ChiroGroep" Width="1.5" PointX="1" PointY="32.125" Height="1.5956835937500102" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Groep" Width="1.5" PointX="1" PointY="25.375" Height="3.5186979166666674" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Persoon" Width="1.5" PointX="9" PointY="4.875" Height="3.5186979166666656" IsExpanded="true" />
