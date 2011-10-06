@@ -390,6 +390,8 @@ namespace Chiro.Gap.ServiceContracts
 		#endregion
 
         #region gebruikersrecht
+        // TODO: (#1146) deze zaken verhuizen naar een aparte service
+
         /// <summary>
         /// Kent een gebruikersrecht voor 14 maanden toe aan de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>.
         /// Als het gebruikersrecht al bestaat, dan wordt het indien mogelijk verlengd tot 14 maanden vanaf vandaag.
@@ -398,7 +400,15 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
-        void GebruikersRechtToekennen(int id);
+        void GelieerdePersoonRechtenGeven(int id);
+
+        /// <summary>
+        /// Verlengt het gebruikersrecht van de GAV met login <paramref name="gebruikersRechtID"/> tot 14 maanden na vandaag.
+        /// </summary>
+        /// <param name="gebruikersRechtID">ID te verlengen gebruikersrecht</param>
+        [OperationContract]
+        void GebruikersRechtVerlengen(int gebruikersRechtID);
+
 
         /// <summary>
         /// Neemt alle gebruikersrechten af van de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>
@@ -409,7 +419,17 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
-        void GebruikersRechtAfnemen(int id);
+        void GelieerdePersoonRechtenAfnemen(int id);
+
+        /// <summary>
+        /// Trekt het gebruikersrecht met gegeven <paramref name="gebruikersRechtID"/> in.  (I.e. zet vervaldatum
+        /// op gisteren)
+        /// </summary>
+        /// <param name="gebruikersRechtID">ID in te trekken gebruikersrecht</param>
+        [OperationContract]
+        void GebruikersRechtIntrekken(int gebruikersRechtID);
+
         #endregion
-    }
+
+	}
 }

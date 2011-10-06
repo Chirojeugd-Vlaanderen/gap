@@ -82,6 +82,32 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Verlengt het gegeven <paramref name="gebruikersRecht"/> (indien mogelijk) tot het standaard aantal maanden
+        /// na vandaag.
+        /// </summary>
+        /// <param name="gebruikersRecht">Te verlengen gebruikersrecht</param>
+        public void Verlengen(GebruikersRecht gebruikersRecht)
+        {
+            // TODO: Nakijken of deze method niet in onderstaande gebruikt kan worden.
+
+            if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersRecht.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+            else if (!IsVerlengbaar(gebruikersRecht))
+            {
+                // Als er gebruikersrecht is, maar dat is niet verlengbaar, dan gooien
+                // we er een exception tegenaan.
+
+                throw new FoutNummerException(FoutNummer.GebruikersRechtNietVerlengbaar, Properties.Resources.GebruikersRechtNietVerlengbaar);
+            }
+
+            // Vervaldatum aanpassen
+
+            gebruikersRecht.VervalDatum = DateTime.Now.AddMonths(Properties.Settings.Default.MaandenGebruikersRechtStandaard);
+        }
+
+        /// <summary>
         /// Geeft <paramref name="persoon"/> GAV-recht op <paramref name="groep"/> voor de standaardduur.  Als er al
         /// gebruikersrechten bestonden, worden die zo mogelijk verlengd.  MOET PERSISTEREN, want er wordt een login 
         /// aangemaakt in AD, en dat moet dus allemaal in 1 transactie.
@@ -221,11 +247,11 @@ namespace Chiro.Gap.Workers
 
         /// <summary>
         /// Haalt alle gebruikersrechten op uit de groep met ID <paramref name="groepID"/>, inclusief
-        /// groep, gav, persoon en gelieerde personen.
+        /// persoon.
         /// </summary>
         /// <param name="groepID">ID van de groep waarvan we de gebruikersrechten willen ophalen</param>
         /// <returns>alle gebruikersrechten uit de groep met ID <paramref name="groepID"/>, inclusief
-        /// groep, gav, persoon en gelieerde personen.</returns>
+        /// persoon.</returns>
         public IEnumerable<GebruikersRecht> AllesOphalen(int groepID)
         {
             if (!_autorisatieManager.IsGavGroep(groepID))
@@ -233,7 +259,27 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }
 
-            return _autorisatieDao.AllesOphalen(groepID);
+            var resultaat = _autorisatieDao.AllesOphalen(groepID);
+
+            return resultaat;
         }
+
+        /// <summary>
+        /// Haalt een gebruikersrecht op, gegeven zijn <paramref name="gebruikersRechtID"/>,
+        /// zonder koppelingen.
+        /// </summary>
+        /// <param name="gebruikersRechtID">ID op te halen gebruikersrecht</param>
+        /// <returns>Het gevraagde gebruikersrecht, zonder koppelingen</returns>
+        public GebruikersRecht Ophalen(int gebruikersRechtID)
+        {
+            if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersRechtID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+
+            return _autorisatieDao.Ophalen(gebruikersRechtID);
+        }
+
+
     }
 }

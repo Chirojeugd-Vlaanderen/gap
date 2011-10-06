@@ -15,7 +15,7 @@
             %>
     <tr>
         <td><%:gebr.GavLogin %></td>
-        <td><%=Html.ActionLink(String.Format("{0} {1}", gebr.VoorNaam, gebr.FamilieNaam), "EditRest", new { Controller = "Personen", id = gebr.GelieerdePersoonID}) %></td>
+        <td><%=gebr.PersoonID > 0 ? Html.ActionLink(String.Format("{0} {1}", gebr.VoorNaam, gebr.FamilieNaam), "EditRest", new { Controller = "Personen", id = gebr.GelieerdePersoonID}).ToHtmlString() : "(onbekend)" %></td>
         <td><%:gebr.VervalDatum == null ? "nooit" : ((DateTime)gebr.VervalDatum).ToString("d") %></td>
         <td>
             <%
@@ -23,12 +23,12 @@
                 {
                     // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
             %>
-              <%=Html.ActionLink("verlengen", "Toekennen", new { Controller = "GebruikersRecht", id = gebr.GelieerdePersoonID }) %>
+              <%=Html.ActionLink("verlengen", "Verlengen", new { id = gebr.ID }) %>
             <%                
                     
                 }
             %>
-              <%=Html.ActionLink("afnemen", "Afnemen", new { Controller = "GebruikersRecht", id = gebr.GelieerdePersoonID }) %></>
+              <%=Html.ActionLink("afnemen", "Intrekken", new { id = gebr.ID }) %></>
         </td>
     </tr>
             <%
@@ -37,3 +37,4 @@
 </table>
 
 </asp:Content>
+

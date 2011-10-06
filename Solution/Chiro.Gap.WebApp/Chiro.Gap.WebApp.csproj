@@ -199,8 +199,8 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Views\Gav\Beheren.aspx" />
     <Content Include="Views\Gav\Index.aspx" />
+    <Content Include="Views\GebruikersRecht\Index.aspx" />
     <Content Include="Views\Handleiding\Deadlines.aspx" />
     <Content Include="Views\Handleiding\Deelnemersadministratie.aspx" />
     <Content Include="Views\Handleiding\DeelnemersInschrijven.aspx" />

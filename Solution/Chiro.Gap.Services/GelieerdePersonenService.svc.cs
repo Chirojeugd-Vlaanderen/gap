@@ -1039,7 +1039,7 @@ namespace Chiro.Gap.Services
         /// Als het gebruikersrecht al bestaat, dan wordt het indien mogelijk verlengd tot 14 maanden vanaf vandaag.
         /// </summary>
         /// <param name="id">ID van de gelieerde persoon die gebruikersrecht moet krijgen</param>
-        public void GebruikersRechtToekennen(int id)
+        public void GelieerdePersoonRechtenGeven(int id)
         {
             // Haal gelieerde persoon op met eventuele bestaande gebruikersrechten en communicatie
 
@@ -1051,12 +1051,24 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
+        /// Verlengt het gebruikersrecht van de GAV met login <paramref name="gebruikersRechtID"/> tot 14 maanden na vandaag.
+        /// </summary>
+        /// <param name="gebruikersRechtID">ID te verlengen gebruikersrecht</param>
+        public void GebruikersRechtVerlengen(int gebruikersRechtID)
+        {
+            var gebruikersRecht = _gebruikersRechtenMgr.Ophalen(gebruikersRechtID);
+            _gebruikersRechtenMgr.Verlengen(gebruikersRecht);
+            _gebruikersRechtenMgr.Bewaren(gebruikersRecht);
+
+        }
+
+        /// <summary>
         /// Neemt alle gebruikersrechten af van de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>
         /// voor zijn eigen groep.  (Concreet wordt de vervaldatum op gisteren gezet.)
         /// </summary>
         /// <param name="id">ID van de gelieerde persoon</param>
         /// <returns>Redirect naar personenfiche</returns>
-        public void GebruikersRechtAfnemen(int id)
+        public void GelieerdePersoonRechtenAfnemen(int id)
         {
             // Haal gelieerde persoon op met eventuele bestaande gebruikersrechten en communicatie
 
@@ -1068,6 +1080,18 @@ namespace Chiro.Gap.Services
 
             _gebruikersRechtenMgr.Intrekken(gebruikersRecht);
 
+            _gebruikersRechtenMgr.Bewaren(gebruikersRecht);
+        }
+
+        /// <summary>
+        /// Trekt het gebruikersrecht met gegeven <paramref name="gebruikersRechtID"/> in.  (I.e. zet vervaldatum
+        /// op gisteren)
+        /// </summary>
+        /// <param name="gebruikersRechtID">ID in te trekken gebruikersrecht</param>
+        public void GebruikersRechtIntrekken(int gebruikersRechtID)
+        {
+            var gebruikersRecht = _gebruikersRechtenMgr.Ophalen(gebruikersRechtID);
+            _gebruikersRechtenMgr.Intrekken(gebruikersRecht);
             _gebruikersRechtenMgr.Bewaren(gebruikersRecht);
         }
 

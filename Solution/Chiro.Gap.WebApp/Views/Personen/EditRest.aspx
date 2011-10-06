@@ -72,7 +72,7 @@
             {
         %>
             <li><%: Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> heeft geen toegang tot het GAP.</li>
-            <li><%=Html.ActionLink("[gebruikersrecht toekennen]", "Toekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
+            <li><%=Html.ActionLink("[gebruikersrecht toekennen]", "AanGpToekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
         <%                
             }
             else
@@ -85,12 +85,12 @@
                 {
                     // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
             %>
-            <li><%=Html.ActionLink("[gebruikersrecht verlengen]", "Toekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
+            <li><%=Html.ActionLink("[gebruikersrecht verlengen]", "AanGpToekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
             <%                
                     
                 }
             %>
-            <li><%=Html.ActionLink("[gebruikersrecht afnemen]", "Afnemen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
+            <li><%=Html.ActionLink("[gebruikersrecht afnemen]", "VanGpAfnemen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
         <%                              
             }
         %>
