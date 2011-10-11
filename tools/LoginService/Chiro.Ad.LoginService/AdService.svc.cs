@@ -4,6 +4,7 @@
 // </copyright>
 
 using System;
+using System.Security.Permissions;
 using System.ServiceModel;
 using System.Text.RegularExpressions;
 
@@ -71,6 +72,7 @@ namespace Chiro.Ad.LoginService
         ///   </code>
         /// </example>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        [PrincipalPermission(SecurityAction.Demand,Role=@"LoginSvc")]
         public string GapLoginAanvragen(int adNr, string voornaam, string familienaam, string mailadres)
         {
             // Validatie

@@ -17,7 +17,7 @@ namespace Chiro.Ad.Test
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FaultException))]
-        public void TestMethod1()
+        public void ServiceAanroepTest()
         {
             ServiceHelper.CallService<IAdService, string>(client => client.GapLoginAanvragen(39198, "Johan", "Vervloet", "johan.vervloet@chiro"));
         }
