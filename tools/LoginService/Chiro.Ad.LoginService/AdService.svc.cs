@@ -6,8 +6,11 @@
 using System;
 using System.ServiceModel;
 using System.Text.RegularExpressions;
+
 using Chiro.Ad.Domain;
 using Chiro.Ad.ServiceContracts;
+using Chiro.Ad.Workers;
+using Chiro.Cdf.Mailer;
 
 namespace Chiro.Ad.LoginService
 {
@@ -16,6 +19,21 @@ namespace Chiro.Ad.LoginService
     /// </summary>
     public class AdService : IAdService
     {
+        private readonly IMailer _mailer;
+        private readonly LoginManager _loginManager;
+
+        /// <summary>
+        /// Creeert een nieuwe service; gebruik <paramref name="mailer"/> om mails
+        /// te versturen.
+        /// </summary>
+        /// <param name="loginManager">businesslogica voor logins</param>
+        /// <param name="mailer">IMailer waarmee de service mails zal versturen</param>
+        public AdService(LoginManager loginManager, IMailer mailer)
+        {
+            _mailer = mailer;
+            _loginManager = loginManager;
+        }
+
         /// <summary>
         /// Vraagt aan Active Directory om een account aan te maken met rechten om GAP
         /// te gebruiken. Als de persoon in kwestie al een account heeft, worden de 
@@ -52,6 +70,7 @@ namespace Chiro.Ad.LoginService
         ///     }
         ///   </code>
         /// </example>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public string GapLoginAanvragen(int adNr, string voornaam, string familienaam, string mailadres)
         {
             // Validatie
@@ -62,7 +81,6 @@ namespace Chiro.Ad.LoginService
 
             // Verwerking
             GapLogin gebruiker;
-            var msr = new MailServiceReference.MailServiceSoapClient();
 
             try
             {
@@ -71,17 +89,19 @@ namespace Chiro.Ad.LoginService
                 // We controleren of het mailadres hetzelfde is als hier opgegeven.
                 if (gebruiker.Mailadres != string.Empty && gebruiker.Mailadres != mailadres)
                 {
+                    // TODO: dit verhuizen naar businesslogica
+
                     // Het is een ander, dus sturen we ook nog een mailtje naar het hier opgegeven adres,
                     // voor de zekerheid, met instructies om het wachtwoord van de login te kunnen aanpassen.
                     string boodschap = String.Format(Properties.Resources.VerschillendWachtwoordMail, voornaam);
-                    msr.VerstuurMail("Helpdesk@chiro.be", mailadres, "Je Chirologin", boodschap, "IntranetService");
+                    _mailer.Verzenden(mailadres, "Je Chirologin", boodschap);
                 }
                 else if (gebruiker.Mailadres == string.Empty)
                 {
                     // Nog geen mailadres ingevuld, dus is het een nieuwe login
                     gebruiker.Mailadres = mailadres;
                     gebruiker.Opslaan();
-                    gebruiker.ActiverenEnMailen(false);
+                    _loginManager.ActiverenEnMailen(gebruiker);
                 }
                 return gebruiker.Login;
             }

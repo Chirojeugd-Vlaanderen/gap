@@ -5,9 +5,7 @@
 
 using System;
 using System.DirectoryServices;
-using System.Text;
 
-// using Chiro.Validatie;
 
 namespace Chiro.Ad.Domain
 {
@@ -47,56 +45,6 @@ namespace Chiro.Ad.Domain
 
                 groep = zoeker.UniekResultaat;
                 AanSecuritygroepToevoegen(groep);
-            }
-        }
-
-        /// <summary>
-        /// Maak een willekeurig samengesteld wachtwoord dat aan de geldende regels voldoet
-        /// </summary>
-        /// <returns>Een wachtwoord</returns>
-        private static string WachtwoordMaken()
-        {
-            // regels: minstens 3 van de 4 volgende tekens gebruiken: kleine letters, hoofdletters, leestekens en cijfers
-            // praktijk: begin met 3 hoofdletters (begin van de applicatienaam), dan een leesteken, en daarna zes kleine letters
-            var sb = new StringBuilder();
-            sb.Append("GAP");
-            sb.Append("!");
-            sb.Append(System.IO.Path.GetRandomFileName().Substring(0, 6));
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Het wachtwoord resetten, de account enablen en de accounteigenaar een mailtje sturen 
-        /// om hem of haar de (nieuwe) logingegevens te bezorgen
-        /// </summary>
-        /// <param name="isReset">
-        /// Wordt de account gereset (<c>true</c>) of gewoon geactiveerd (<c>false</c>)? Dat bepaalt mee wat er in het mailtje komt.</param>
-        public void ActiverenEnMailen(bool isReset)
-        {
-            var msr = new MailServiceReference.MailServiceSoapClient();
-            MailServiceReference.BerichtStatus status;
-            string boodschap;
-
-            // Alleen als de gebruiker niet-actief is, moet er nog een wachtwoord ingesteld worden
-            if (IsActief == false)
-            {
-                Activeren(WachtwoordMaken());
-
-                boodschap = string.Format(Properties.Resources.GapAccountInfoMail, Naam, Login, Wachtwoord);
-                status = msr.VerstuurMail("Helpdesk@chiro.be", Mailadres, "Je GAP-login", boodschap, "IntranetService");
-            }
-            else // Bestaande account
-            {
-                // OPM: als de account al bestond en alleen GAP-rechten had, dan klopt dat mailtje niet
-                boodschap = string.Format(Properties.Resources.AccountUitbreidingMailAanhef, Naam);
-
-                boodschap += Properties.Resources.RechtenUitbreidingGAP + Properties.Resources.AccountMailAfsluiting;
-                status = msr.VerstuurMail("Het GAP-team", Mailadres, "Je Chirologin", boodschap, "GAP");
-            }
-
-            if (status.IsVerstuurd == false)
-            {
-                throw new ApplicationException(status.LogBoodschap);
             }
         }
     }

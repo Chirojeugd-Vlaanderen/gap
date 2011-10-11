@@ -53,34 +53,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\DataSources\Chiro.Ad.Domain.MailServiceReference.BerichtStatus.datasource" />
-    <None Include="Service References\MailServiceReference\MailService.disco" />
-    <None Include="Service References\MailServiceReference\configuration91.svcinfo" />
-    <None Include="Service References\MailServiceReference\configuration.svcinfo" />
-    <None Include="Service References\MailServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="AdService.svc" />
-    <Content Include="Web.config" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <None Include="Service References\MailServiceReference\MailService.wsdl" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\MailServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="AdService.svc.cs">
       <DependentUpon>AdService.svc</DependentUpon>
@@ -98,12 +91,25 @@
       <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Ad.Workers\Chiro.Ad.Workers.csproj">
+      <Project>{C28DE7B1-76DF-4C38-8F25-184A9248A81C}</Project>
+      <Name>Chiro.Ad.Workers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj">
+      <Project>{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}</Project>
+      <Name>Chiro.Cdf.DependencyInjectionBehavior</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
+      <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
+      <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
+      <Project>{18FF2008-106F-48A6-BEFB-5F8B301354D0}</Project>
+      <Name>Chiro.Cdf.Mailer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\MailServiceReference\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

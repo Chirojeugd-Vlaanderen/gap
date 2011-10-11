@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="9d52d46d-b192-444b-8083-ae6cc1c384ac" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="eff1ffd2-4a23-4d17-9e72-eb7b256a611c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <EnableDataBinding>true</EnableDataBinding>
@@ -21,8 +21,8 @@
     <MetadataSource Address="http://intranet/MailService/MailService.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MailService.disco" MetadataType="Disco" ID="e53d6533-4c73-4772-9d62-ea9425159b07" SourceId="1" SourceUrl="http://intranet/MailService/MailService.asmx?disco" />
-    <MetadataFile FileName="MailService.wsdl" MetadataType="Wsdl" ID="bb64776d-5ed0-49f5-9ae6-39a14088afb4" SourceId="1" SourceUrl="http://intranet/MailService/MailService.asmx?wsdl" />
+    <MetadataFile FileName="MailService.disco" MetadataType="Disco" ID="efbdddd3-c81a-47ea-b57f-dcb511c71ec9" SourceId="1" SourceUrl="http://intranet/MailService/MailService.asmx?disco" />
+    <MetadataFile FileName="MailService.wsdl" MetadataType="Wsdl" ID="a3aa282c-e59d-4b73-874e-6d143f58b608" SourceId="1" SourceUrl="http://intranet/MailService/MailService.asmx?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -73,16 +73,6 @@ namespace Chiro.Ad.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Op https://extranet.chiro.be/gebruiker kun je je wachtwoord veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen, en je ziet er tot welke online diensten van Chirojeugd Vlaanderen je toegang hebt.&lt;/p&gt;
-        ///&lt;p&gt;Groeten&lt;br /&gt;De Chirohelpdesk (Helpdesk@chiro.be)&lt;/p&gt;.
-        /// </summary>
-        internal static string AccountMailAfsluiting {
-            get {
-                return ResourceManager.GetString("AccountMailAfsluiting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to De account is niet gevonden.
         /// </summary>
         internal static string AccountNietGevondenFout {
@@ -119,16 +109,6 @@ namespace Chiro.Ad.Domain.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;p&gt;Dag {0}&lt;/p&gt;
-        ///&lt;p&gt;Je had al een login voor het extranet van de Chiro. Vanaf nu kun je er nog iets meer mee doen. Ben je je loginnaam en/of wachtwoord vergeten? Die gegevens kun je opvragen op https://extranet.chiro.be/wachtwoordvergeten.&lt;/p&gt;.
-        /// </summary>
-        internal static string AccountUitbreidingMailAanhef {
-            get {
-                return ResourceManager.GetString("AccountUitbreidingMailAanhef", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Dag {0}&lt;/p&gt;
         ///&lt;p&gt;Je account voor het extranet van de Chiro is aangemaakt. Hieronder vind je je gegevens.&lt;/p&gt;
         ///&lt;ul&gt;&lt;li&gt;Login: {1}&lt;/li&gt;&lt;li&gt;Wachtwoord: {2}&lt;/li&gt;&lt;/ul&gt;
         ///&lt;p&gt;Let op als je dat wachtwoord kopieert uit deze mail: dikwijls wordt er een overtollige spatie achteraan bijgeplakt. Kijk dus na dat je geplakte wachtwoord even lang is als dat hierboven.&lt;/p&gt;
@@ -137,19 +117,6 @@ namespace Chiro.Ad.Domain.Properties {
         internal static string ActiveringsInfoMail {
             get {
                 return ResourceManager.GetString("ActiveringsInfoMail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Dag {0}&lt;/p&gt;
-        ///&lt;p&gt;Je account voor de groepsadministratie (GAP) is aangemaakt. Je vindt dat op https://gap.chiro.be/ (vergeet de &apos;s&apos; niet in &apos;https&apos;!).&lt;/p&gt;
-        ///&lt;p&gt;Hieronder vind je een voorlopig wachtwoord. Op https://extranet.chiro.be/Gebruiker kun je dat veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen, en je ziet er tot welke online diensten van Chirojeugd Vlaanderen je toegang hebt.&lt;/p&gt;
-        ///&lt;ul&gt;&lt;li&gt;Login: {1}&lt;/li&gt;&lt;li&gt;Wachtwoord: {2}&lt;/li&gt;&lt;/ul&gt;
-        ///&lt;p&gt;Let op als je dat wach [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string GapAccountInfoMail {
-            get {
-                return ResourceManager.GetString("GapAccountInfoMail", resourceCulture);
             }
         }
         
@@ -190,15 +157,6 @@ namespace Chiro.Ad.Domain.Properties {
         internal static string OngeldigMailadresFout {
             get {
                 return ResourceManager.GetString("OngeldigMailadresFout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Je hebt nu ook toegang tot de GAP-website, waarmee je de ledenadministratie van je groep, gewest of verbond in orde kunt brengen. Surf daarvoor naar https://gap.chiro.be (vergeet de s niet in https). Gelieve daar zo snel mogelijk de jaarovergang uit te voeren als dat nog niet gebeurd is.&lt;/p&gt;.
-        /// </summary>
-        internal static string RechtenUitbreidingGAP {
-            get {
-                return ResourceManager.GetString("RechtenUitbreidingGAP", resourceCulture);
             }
         }
     }

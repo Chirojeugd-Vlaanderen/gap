@@ -144,7 +144,13 @@ namespace Chiro.Ad.Domain
         /// <summary>
         /// Het AD-wachtwoord van de gebruiker
         /// </summary>
-        public String Wachtwoord { get; private set; }
+        public String Wachtwoord
+        {
+            set
+            {
+                _gebruiker.Invoke("setPassword", value);
+            }
+        }
 
         /// <summary>
         /// Securitygroepen waar de account member van is
@@ -357,16 +363,11 @@ namespace Chiro.Ad.Domain
         }
 
         /// <summary>
-        /// Het opgegeven wachtwoord instellen en de account enablen
+        /// Activeert de gebruiker in Active Directory
         /// </summary>
-        /// <param name="nieuwWachtwoord">Het wachtwoord dat ingesteld moet worden. Als dat een lege
-        /// string is, gebruiken we "Chirojeugd!" - alleen voor intern gebruik, dus.</param>
-        public void Activeren(String nieuwWachtwoord)
+        public void Activeren()
         {
-            Wachtwoord = nieuwWachtwoord == string.Empty ? "Chirojeugd!" : nieuwWachtwoord;
             _gebruiker.Properties["userAccountControl"].Value = 66048; // enabled
-            _gebruiker.Invoke("setPassword", Wachtwoord);
-            Opslaan();
         }
 
         /// <summary>

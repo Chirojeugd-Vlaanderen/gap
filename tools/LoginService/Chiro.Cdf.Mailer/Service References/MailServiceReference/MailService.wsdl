@@ -5,11 +5,11 @@
       <s:element name="VerstuurMail">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="prmVanNaam" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="prmVoorAdres" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="prmOver" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="prmBoodschap" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="prmApplicatieNaam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="VanNaamParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="VoorAdresParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OverParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BoodschapParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ApplicatieNaamParam" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -26,12 +26,28 @@
           <s:element minOccurs="0" maxOccurs="1" name="LogBoodschap" type="s:string" />
         </s:sequence>
       </s:complexType>
+      <s:element name="VerstuurGapMail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VoorAdresParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OverParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BoodschapParam" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerstuurGapMailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VerstuurGapMailResult" type="tns:BerichtStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="VerstuurSomMail">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="prmVoorAdres" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="prmOver" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="prmBoodschap" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="VoorAdresParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OverParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BoodschapParam" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -45,8 +61,8 @@
       <s:element name="VerstuurLogMail">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="prmOver" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="prmBoodschap" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OverParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BoodschapParam" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -57,12 +73,28 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="LogMailVersturen">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OverParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BoodschapParam" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsFoutlogParam" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LogMailVersturenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LogMailVersturenResult" type="tns:BerichtStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="VerstuurCustomLogMail">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="prmSoortMelding" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="prmOver" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="prmBoodschap" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SoortMeldingParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OverParam" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BoodschapParam" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -81,6 +113,12 @@
   <wsdl:message name="VerstuurMailSoapOut">
     <wsdl:part name="parameters" element="tns:VerstuurMailResponse" />
   </wsdl:message>
+  <wsdl:message name="VerstuurGapMailSoapIn">
+    <wsdl:part name="parameters" element="tns:VerstuurGapMail" />
+  </wsdl:message>
+  <wsdl:message name="VerstuurGapMailSoapOut">
+    <wsdl:part name="parameters" element="tns:VerstuurGapMailResponse" />
+  </wsdl:message>
   <wsdl:message name="VerstuurSomMailSoapIn">
     <wsdl:part name="parameters" element="tns:VerstuurSomMail" />
   </wsdl:message>
@@ -93,6 +131,12 @@
   <wsdl:message name="VerstuurLogMailSoapOut">
     <wsdl:part name="parameters" element="tns:VerstuurLogMailResponse" />
   </wsdl:message>
+  <wsdl:message name="LogMailVersturenSoapIn">
+    <wsdl:part name="parameters" element="tns:LogMailVersturen" />
+  </wsdl:message>
+  <wsdl:message name="LogMailVersturenSoapOut">
+    <wsdl:part name="parameters" element="tns:LogMailVersturenResponse" />
+  </wsdl:message>
   <wsdl:message name="VerstuurCustomLogMailSoapIn">
     <wsdl:part name="parameters" element="tns:VerstuurCustomLogMail" />
   </wsdl:message>
@@ -104,6 +148,10 @@
       <wsdl:input message="tns:VerstuurMailSoapIn" />
       <wsdl:output message="tns:VerstuurMailSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="VerstuurGapMail">
+      <wsdl:input message="tns:VerstuurGapMailSoapIn" />
+      <wsdl:output message="tns:VerstuurGapMailSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="VerstuurSomMail">
       <wsdl:input message="tns:VerstuurSomMailSoapIn" />
       <wsdl:output message="tns:VerstuurSomMailSoapOut" />
@@ -111,6 +159,10 @@
     <wsdl:operation name="VerstuurLogMail">
       <wsdl:input message="tns:VerstuurLogMailSoapIn" />
       <wsdl:output message="tns:VerstuurLogMailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LogMailVersturen">
+      <wsdl:input message="tns:LogMailVersturenSoapIn" />
+      <wsdl:output message="tns:LogMailVersturenSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="VerstuurCustomLogMail">
       <wsdl:input message="tns:VerstuurCustomLogMailSoapIn" />
@@ -121,6 +173,15 @@
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="VerstuurMail">
       <soap:operation soapAction="http://intranet/MailService/VerstuurMail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerstuurGapMail">
+      <soap:operation soapAction="http://intranet/MailService/VerstuurGapMail" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -139,6 +200,15 @@
     </wsdl:operation>
     <wsdl:operation name="VerstuurLogMail">
       <soap:operation soapAction="http://intranet/MailService/VerstuurLogMail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LogMailVersturen">
+      <soap:operation soapAction="http://intranet/MailService/LogMailVersturen" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -167,6 +237,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="VerstuurGapMail">
+      <soap12:operation soapAction="http://intranet/MailService/VerstuurGapMail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="VerstuurSomMail">
       <soap12:operation soapAction="http://intranet/MailService/VerstuurSomMail" style="document" />
       <wsdl:input>
@@ -178,6 +257,15 @@
     </wsdl:operation>
     <wsdl:operation name="VerstuurLogMail">
       <soap12:operation soapAction="http://intranet/MailService/VerstuurLogMail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LogMailVersturen">
+      <soap12:operation soapAction="http://intranet/MailService/LogMailVersturen" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
