@@ -12,8 +12,12 @@
 	<asp:ContentPlaceHolder runat="server" ID="head" />
 </asp:Content>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="settingsitems" runat="server">
-            <li>[<%=Html.ActionLink("GAV's beheren", "Index" , "GebruikersRecht") %>]</li>
+<asp:Content ID="Content1" ContentPlaceHolderID="settingsitems" runat="server">           
+    <% if (Model.GroepID > 0)
+	{ %>
+		    <li>[<%=Html.ActionLink("GAV's beheren", "Index" , "GebruikersRecht") %>]</li>
+	<%		
+    } %>
     <% if (Model.MeerdereGroepen == true)
 	{ %>
 		    <li>[<%=Html.ActionLink("Andere groep kiezen", "Index", "Gav") %>]</li>

@@ -31,10 +31,13 @@
               <%=Html.ActionLink("afnemen", "Intrekken", new { id = gebr.ID }) %></>
         </td>
     </tr>
+
             <%
         }
     %>
 </table>
+
+<p>TIP: Je kunt een gebruiker bijmaken door op een personenfiche op &lsquo;gebruikersrecht toekennen&rsquo; te klikken.</p>
 
 </asp:Content>
 

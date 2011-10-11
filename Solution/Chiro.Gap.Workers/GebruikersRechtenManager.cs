@@ -197,7 +197,7 @@ namespace Chiro.Gap.Workers
                     // de login
 
                     gav.Login = ServiceHelper.CallService<IAdService, string>(
-                        svc => svc.GapLoginAanvragen(adNr, persoon.Naam, persoon.VoorNaam, eMail));
+                        svc => svc.GapLoginAanvragen(adNr, persoon.VoorNaam, persoon.Naam, eMail));
                 }
 
                 resultaat = _autorisatieDao.Bewaren(gebruikersRecht,

@@ -18,6 +18,20 @@
 	  Html.RenderPartial("MededelingenControl"); 
   }%>
 </asp:Content>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="settingsitems" runat="server">           
+    <% if (Model.GroepID > 0)
+	{ %>
+		    <li>[<%=Html.ActionLink("GAV's beheren", "Index" , "GebruikersRecht") %>]</li>
+	<%		
+    } %>
+    <% if (Model.MeerdereGroepen == true)
+	{ %>
+		    <li>[<%=Html.ActionLink("Andere groep kiezen", "Index", "Gav") %>]</li>
+	<%		
+    } %>
+</asp:Content>
+
 <asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
 	<% if (Model.GroepID > 0)
 	{
