@@ -32,7 +32,7 @@ namespace Chiro.Gap.Dummies
 
 	    public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
 	    {
-	        throw new NotImplementedException();
+	        return null;
 	    }
 
 	    public IEnumerable<GebruikersRecht> AllesOphalen(int groepID)
