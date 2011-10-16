@@ -346,20 +346,14 @@ namespace Chiro.Ad.Domain
         /// </summary>
         public void Opslaan()
         {
-            // Securitycontext opzetten voor schrijfoperatie)
-            using (var pc = new PrincipalContext(ContextType.Domain, Domein.Substring(7)))
-            {
-                // Login van een account operator valideren
-                // TODO: beter oplossen! (of web.config encrypteren)
-                if (pc.ValidateCredentials(Properties.Settings.Default.ADLogin, Properties.Settings.Default.ADPwd))
-                {
-                    _gebruiker.CommitChanges();
-                }
-                else
-                {
-                    throw new SecurityException("Kon niet authenticeren");
-                }
-            }
+            // De bedoeling is dat deze service runt als een user die in de AD-groep 'account operators' zit voor
+            // het domein waar de gebruikers worden gemaakt.
+            // In dit geval: KIPDORP\LoginSvcUser die in CHIROPUBLIC\Account Operators zit
+
+            // Als ik de service nu eens run als account met account operator rechten.  Kan ik dan niet gewoon
+            // als mijzelf de changes committen?
+
+            _gebruiker.CommitChanges();
         }
 
         /// <summary>
