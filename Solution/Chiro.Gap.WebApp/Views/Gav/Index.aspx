@@ -10,9 +10,6 @@
 	<link href="<%=ResolveUrl("~/Content/GeenGroepGekozen.css")%>" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<% using (Html.BeginForm())
-	{        
-	%>
 	<ul>
 		<%
 			// Ik weet niet precies hoe het komt, maar soms krijg ik null-items
@@ -33,6 +30,12 @@
 		%>
 	</ul>
 	<%
-		}
+        if (Model.GroepenLijst.FirstOrDefault() == null)
+        {
+            %>
+            <p>Je groep werd niet gevonden.  Misschien is je gebruikersrecht vervallen? Vraag aan een collega-GAV om je 
+            gebruikersrecht te verlengen, of <a href='http://www.chiro.be/eloket/aansluitingen-chirogroepen'>contacteer het secretariaat.</a></p>
+            <%
+        }
 	%>
 </asp:Content>
