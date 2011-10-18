@@ -196,8 +196,10 @@ namespace Chiro.Gap.Workers
                     // Als het om een nieuwe GAV gaat, vraag dan een AD-account aan, en bewaar
                     // de login
 
-                    gav.Login = ServiceHelper.CallService<IAdService, string>(
+                    string username = ServiceHelper.CallService<IAdService, string>(
                         svc => svc.GapLoginAanvragen(adNr, persoon.VoorNaam, persoon.Naam, eMail));
+
+                    gav.Login = String.Format(@"CHIROPUBLIC\{0}", username);
                 }
 
                 resultaat = _autorisatieDao.Bewaren(gebruikersRecht,
