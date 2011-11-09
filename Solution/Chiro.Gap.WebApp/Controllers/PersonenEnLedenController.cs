@@ -100,7 +100,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var lijst = new List<InTeSchrijvenLid>();
 			for(var i=0; i<model.GelieerdePersoonIDs.Count; i++)
 			{
-				int gelieerdePersoonID = model.GelieerdePersoonIDs[i];
+				var gelieerdePersoonID = model.GelieerdePersoonIDs[i];
 				if(model.InTeSchrijvenGelieerdePersoonIDs.Contains(gelieerdePersoonID))
 				{
 					lijst.Add(new InTeSchrijvenLid() { GelieerdePersoonID = gelieerdePersoonID, AfdelingsJaarID = model.ToegekendeAfdelingsJaarIDs[i], LeidingMaken = model.LeidingMakenGelieerdePersoonIDs.Contains(gelieerdePersoonID)} );
@@ -111,6 +111,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (String.IsNullOrEmpty(foutBerichten))
 			{
 				TempData["succes"] = Properties.Resources.IngeschrevenFeedback;
+
+				// Als een persoon wordt aangemaakt, worden best de ledenproblemen gereset (want die persoon zal bvb geen adres hebben).
+				VeelGebruikt.LedenProblemenResetten(groepID);
 			}
 			else
 			{

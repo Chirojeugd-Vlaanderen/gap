@@ -311,9 +311,6 @@ namespace Chiro.Gap.WebApp.Controllers
             // TODO: wat als er een fout optreedt bij PersoonBewaren?
             TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
-			// Als een persoon wordt aangemaakt, worden best de ledenproblemen gereset (want die persoon zal bvb geen adres hebben).
-			VeelGebruikt.LedenProblemenResetten(groepID);
-
             // (er wordt hier geredirect ipv de view te tonen,
             // zodat je bij een 'refresh' niet de vraag krijgt
             // of je de gegevens opnieuw wil posten.)
