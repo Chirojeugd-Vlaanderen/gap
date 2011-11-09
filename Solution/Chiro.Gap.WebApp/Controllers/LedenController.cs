@@ -417,7 +417,7 @@ namespace Chiro.Gap.WebApp.Controllers
             	case 1:
 					return GelieerdePersonenInschrijven(model.SelectieGelieerdePersoonIDs);
             	case 2:
-					UitSchrijven(model.SelectieGelieerdePersoonIDs, groepID, Properties.Resources.LedenUitgeschreven);
+					GelieerdePersonenUitschrijven(model.SelectieGelieerdePersoonIDs, groepID, Properties.Resources.LedenUitgeschreven);
             		return TerugNaarVorigeLijst();
         		case 3:
                     return AfdelingenBewerken(model.SelectieGelieerdePersoonIDs, groepID);
@@ -429,29 +429,6 @@ namespace Chiro.Gap.WebApp.Controllers
                     return TerugNaarVorigeLijst();
             }
         }
-
-		private void UitSchrijven(IEnumerable<int> gpIDs, int groepID, string successboodschap)
-		{
-			var fouten = String.Empty; // TODO (#1035): fouten opvangen
-
-			ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(gpIDs, out fouten));
-
-			// TODO (#1035): beter manier om problemen op te vangen dan via een string
-
-			if (fouten == String.Empty)
-			{
-				TempData["succes"] = successboodschap;
-
-				VeelGebruikt.FunctieProblemenResetten(groepID);
-			}
-			else
-			{
-				// TODO (#1035): vermijden dat output van de back-end rechtstreeks zichtbaar wordt 
-				// voor de user.
-
-				TempData["fout"] = fouten;
-			}
-		}
 
         /// <summary>
         /// Downloadt de lijst van leden uit groepswerkjaar met GroepsWerkJaarID <paramref name="id"/> als
@@ -512,6 +489,10 @@ namespace Chiro.Gap.WebApp.Controllers
             return new ExcelResult(stream, bestandsNaam);
         }
 
+		// Opmerking: Deactiveren biedt de mogelijkheid om gauw 1 persoon uit te schrijven via een url.
+		// Meerdere personen uitschrijven kan door ze te selecteren, en dan de juiste actie te kiezen
+		// (de feedback is dan nog verkeerd; zie #1090)
+
         /// <summary>
         /// Schrijft één gelieerde persoon uit, en toont de bijgewerkte ledenlijst
         /// </summary>
@@ -521,17 +502,9 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <remarks>Uitschrijven wil zeggen: maak de leden gekoppeld aan de gelieerde persoon met
         /// GelieerdePersoonID <paramref name="id"/> inactief</remarks>
         [HandleError]
-        public ActionResult DeActiveren(int id, int groepID)
-        {
-            // Opmerking: Deactiveren biedt de mogelijkheid om gauw 1 persoon uit te schrijven via een url.
-            // Meerdere personen uitschrijven kan door ze te selecteren, en dan de juiste actie te kiezen
-            // (de feedback is dan nog verkeerd; zie #1090)
-
-            // Achterliggend wordt telkens de private method 'Uitschrijven' aangeroepen, die op een lijst 
-            // GelieerdePersonIDs werkt.
-
-        	IEnumerable<int> gpIDs = new List<int> {id};
-        	UitSchrijven(gpIDs, groepID, Properties.Resources.LidNonActiefGemaakt);
+        public ActionResult DeActiveren(int id, int groepID){
+        	var gpIDs = new List<int> {id};
+        	GelieerdePersonenUitschrijven(gpIDs, groepID, Properties.Resources.LidNonActiefGemaakt);
         	return TerugNaarVorigeLijst();
         }
 

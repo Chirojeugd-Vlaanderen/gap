@@ -787,7 +787,7 @@ namespace Chiro.Gap.Services
             {
                 // TODO (#1047): Deze method moet nog aangepast worden.  De geijkte manier van werken is:
                 // 1. Haal gelieerde persoon op
-                // 2. Creer nieuwe communicatievorm
+                // 2. Creer NIEUWE communicatievorm BUG! Momenteel wordt een commDetail dat al bestaat maar van iemand anders is gewoon verzet!!!!
                 // 3. Gebruik business om te koppelen
                 // 4. Bewaar
 

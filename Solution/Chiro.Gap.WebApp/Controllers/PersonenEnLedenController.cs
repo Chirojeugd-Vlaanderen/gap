@@ -29,7 +29,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("LedenMaken", "Leden"); // TODO naar waar willen we terug?
 		}
 
-		public void GelieerdePersonenUitschrijven(IEnumerable<int> gelieerdepersoonIDs, int groepID)
+		public void GelieerdePersonenUitschrijven(IEnumerable<int> gelieerdepersoonIDs, int groepID, string succesboodschap)
 		{
 			var fouten = String.Empty; // TODO (#1035): fouten opvangen
 
@@ -39,7 +39,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			if (fouten == String.Empty)
 			{
-				TempData["succes"] = Properties.Resources.LedenUitgeschreven;
+				TempData["succes"] = succesboodschap;
 
 				VeelGebruikt.FunctieProblemenResetten(groepID);
 			}

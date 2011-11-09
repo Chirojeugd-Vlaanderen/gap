@@ -389,15 +389,20 @@ namespace Chiro.Gap.WebApp.Controllers
 
             var broerzus = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(model.BroerzusID));
 
-            var voorkeursComm = (from a in broerzus.CommunicatieInfo
+            var gezinsComm = (from a in broerzus.CommunicatieInfo
                                  where a.Voorkeur && a.IsGezinsGebonden
-                                 select a).FirstOrDefault();
+                                 select a).ToList();
 
-            if (voorkeursComm != null)
+			if (gezinsComm.Count()!=0)
             {
                 // vermijd bloat van te veel over de lijn te sturen
-                var comminfo = new CommunicatieInfo(voorkeursComm);
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(ids.GelieerdePersoonID, comminfo));
+				foreach(var c in gezinsComm)
+				{
+					var c1 = c;
+					ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(ids.GelieerdePersoonID, c1));
+
+					// TODO errors opvangen? #1047
+				}
             }
 
             if (broerzus.PersoonDetail.VoorkeursAdresID != null)
@@ -545,7 +550,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult Uitschrijven(int gelieerdepersoonID, int groepID)
 		{
-			GelieerdePersonenUitschrijven(new List<int> { gelieerdepersoonID }, groepID);
+			GelieerdePersonenUitschrijven(new List<int> { gelieerdepersoonID }, groepID, Properties.Resources.LedenUitgeschreven);
 			return TerugNaarVorigeLijst();
 		}
 
