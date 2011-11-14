@@ -43,13 +43,24 @@ namespace Chiro.Kip.Services
             // Sommige groepen die het verschil postcode/postnr niet snappen, typen in beide vakjes hetzelfde.
             // Dat filteren we er hier ook maar uit.
 
-            return (String.IsNullOrEmpty(adres.PostCode) || String.Compare(adres.PostNr.ToString(), adres.PostCode) == 0)
-                    ? adres.PostNr.ToString()
-                    : String.Format(
-                        "{0} {1}",
-                        adres.PostNr,
-                        adres.PostCode).Substring(0, 10);  // Voor de zekerheid beperken tot 10 karakters, om service crash te vermijden
+            // TODO: test of het resultaat van KipPostNr niet langer wordt dan 10 tekens.
 
+		    string resultaat = (String.IsNullOrEmpty(adres.PostCode) ||
+		                        String.Compare(adres.PostNr.ToString(), adres.PostCode) == 0)
+		                           ? adres.PostNr.ToString()
+		                           : String.Format(
+		                               "{0} {1}",
+		                               adres.PostNr,
+		                               adres.PostCode);
+            
+            // Voor de zekerheid beperken tot 10 karakters.
+
+            if (resultaat.Length > 10)
+            {
+                resultaat = resultaat.Substring(0, 10);
+            }
+
+		    return resultaat;
         }
 
 		/// <summary>
