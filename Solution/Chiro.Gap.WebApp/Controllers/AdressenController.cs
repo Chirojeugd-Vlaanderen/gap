@@ -15,8 +15,11 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 namespace Chiro.Gap.WebApp.Controllers
 {
 	/// <summary>
-	/// Deze controller zal in eerste instantie voornamelijk gegevens opleveren voor de autosuggestie.
+	/// Deze controller dient enkel om gegevens aan te leveren voor de adressen-autocomplete.
 	/// </summary>
+	/// <remarks>
+	/// Koppelen van adressen aan personen, gebeurt in de <see cref="PersonenController"/>.
+	/// </remarks>
 	[HandleError]
 	public class AdressenController : BaseController
 	{

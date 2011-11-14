@@ -17,8 +17,11 @@ using Chiro.Gap.WebApp.Models;
 namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
-    /// TODO (#190): documenteren
+    /// Deze controller voorziet de acties om afdelingen en afdelingsjaren te
+    /// maken. te wijzigen, te verwijderen.
     /// </summary>
+    /// <remarks>Het koppelen van leden aan afdelingen gebeurt hier niet, dat zit in de
+    /// <see cref="LedenController" />.</remarks>
 	[HandleError]
 	public class AfdelingenController : BaseController
 	{
@@ -31,11 +34,12 @@ namespace Chiro.Gap.WebApp.Controllers
 		public AfdelingenController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
 
 		/// <summary>
-        /// TODO (#190): documenteren
+        /// Toont het afdelingsoverzicht voor het huidge groepswerkjaar: de actieve afdelingen, 
+        /// met links om dien te bekijken/bewerken.  De inactieve afdelingen worden ook getoond, 
+        /// met dan de mogelijkheid  om ze te activeren.
         /// </summary>
-        /// <param name="groepID">ID van de groep die de pagina oproept, en van wie we dus gegevens moeten tonen</param>
-        /// <returns></returns>
-        /// <!-- GET: /Afdeling/ -->
+        /// <param name="groepID">ID van de groep die de pagina oproept, en van dewelke we dus gegevens moeten tonen</param>
+        /// <returns>Het afdelingsoverzicht voor het huidige werkjaar</returns>
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
@@ -43,12 +47,13 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
         /// <summary>
-        /// TODO (#190): documenteren
-		/// </summary>
-		/// <param name="groepsWerkJaarID"></param>
-		/// <param name="groepID">ID van de groep die de pagina oproept, en van wie we dus gegevens moeten tonen</param>
-		/// <returns></returns>
-        /// /// <!-- GET: /Afdeling/List/{groepsWerkJaarId} -->
+        /// Toont het afdelingsoverzicht voor het groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/>:
+        ///  de actieve afdelingen,  met links om dien te bekijken/bewerken.  De inactieve afdelingen worden ook 
+        /// getoond, met dan de mogelijkheid  om ze te activeren.
+        /// </summary>
+        /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor de gebruiker de afdelingen wil zien</param>
+		/// <param name="groepID">ID van de groep waarin de gebruiker aan het werken is.</param>
+		/// <returns>Het afdelingsoverzicht voor het groepswerkjaar met ID <paramref name="groepsWerkJaarID"/></returns>
         [HandleError]
 		public ActionResult List(int groepsWerkJaarID, int groepID)
 		{

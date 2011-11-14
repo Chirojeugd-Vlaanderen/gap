@@ -17,7 +17,9 @@ using Chiro.Gap.WebApp.Models;
 namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
-    /// Controller die voorlopig voor niet veel meer dan Dubbelpunt gebruikt zal worden.
+    /// Controller die gebruikt wordt om een gelieerde persoon te abonneren op een tijdschrift, voor
+    /// het huidige werkjaar.  Momenteel zijn er enkel Dubbelpuntabonnementen, op termijn mogelijk
+    /// ook andere publicaties.
     /// </summary>
     public class AbonnementenController : BaseController
     {
