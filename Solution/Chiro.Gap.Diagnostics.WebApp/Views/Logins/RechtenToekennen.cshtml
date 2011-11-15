@@ -1,0 +1,20 @@
+﻿@model Chiro.Gap.Diagnostics.WebApp.Models.NotificatieModel
+
+@{
+    ViewBag.Title = "Rechten toekennen";
+}
+
+<h2>Rechten Toekennen</h2>
+
+<p>
+Als je gebruikersrechten aanvraagt voor @Model.GroepInfo.Naam (@Model.GroepInfo.StamNummer - @Model.GroepInfo.Plaats), dan
+zal iemand uit deze groep een mailtje krijgen, waarin hij/zij op de hoogte wordt gesteld van jouw gebruikersrechten.
+</p>
+
+@using (Html.BeginForm())
+{
+    <p>Je kunt in het mailtje wat meer informatie opnemen over waarom je toegang nodig hebt tot de gegevens van de groep.</p>
+    <div>@Html.LabelFor(mdl => mdl.Reden):</div>
+    <div>@Html.TextAreaFor(mdl => mdl.Reden)</div>
+    <input type="submit" value="Verzenden" />
+}

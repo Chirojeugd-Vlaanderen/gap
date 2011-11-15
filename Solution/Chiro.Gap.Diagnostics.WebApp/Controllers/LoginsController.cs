@@ -34,9 +34,35 @@ namespace Chiro.Gap.Diagnostics.WebApp.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Deze method wordt aangeroepen als de user een stamnummer invulde in de Index-view, om tijdelijke
+        /// gebruikersrechten te krijgen voor een groep.
+        /// </summary>
+        /// <param name="model">Het stamnummer in het model is het stamnummer van de groep waarvoor je
+        /// gebruikersrechten wilt</param>
+        /// <returns>Een redirect naar 'RechtenToekennen'</returns>
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Index(LoginsModel model)
         {
-            throw new NotImplementedException();
+            return RedirectToAction("RechtenToekennen", new {stamNummer = model.StamNummer});
+        }
+
+        /// <summary>
+        /// Vraagt bevestiging om tijdelijke gebruikersrechten voor de groep te krijgen.  De gebruiker moet
+        /// iemand van de 'contactpersonen' (contactpersoon van de groep, of een van de GAV's als we weten
+        /// wie het is) selecteren, die een notificatie zal krijgen.
+        /// </summary>
+        /// <param name="stamNummer">stamNummer van groep waarvoor je gebruikersrechten wilt</param>
+        /// <returns>De view die om bevestiging vraagt</returns>
+        public ActionResult RechtenToekennen(string stamNummer)
+        {
+            var model = new NotificatieModel();
+
+            // TODO: model fatsoenlijk opvullen
+
+            model.GroepInfo = new GroepInfo();
+
+            return View(model);
         }
     }
 }
