@@ -1,0 +1,37 @@
+﻿@model Chiro.Gap.Diagnostics.WebApp.Models.LoginsModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="title">Tijdelijke toegang</h2>
+
+<p>
+Je hebt momenteel toegang tot het GAP voor deze groepen:
+</p>
+
+@if (Model == null || Model.Groepen == null || Model.Groepen.FirstOrDefault() == null)
+{
+    <strong>(geen)</strong>
+}
+else
+{
+    <ul>
+        @foreach(var groep in Model.Groepen)
+        {
+            <li><a href='@String.Format(Model.GapUrl, @groep.ID)'>@groep.StamNummer - @groep.Naam (@groep.Plaats)</a></li>
+        }
+    </ul>
+}
+
+@using (Html.BeginForm())
+{
+    <p>Geef jezelf tijdelijke toegang tot een groep: </p>
+    
+    <span>@Html.LabelFor(mdl => mdl.StamNummer):</span>
+    <span>@Html.TextBoxFor(mdl => mdl.StamNummer)</span>
+    <span><input type="submit" value="Verzenden" /></span>
+}
+
+
+
