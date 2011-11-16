@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 
 using Chiro.Adf.ServiceModel;
+using Chiro.Gap.Diagnostics.ServiceContracts;
+using Chiro.Gap.Diagnostics.ServiceContracts.DataContracts;
 using Chiro.Gap.Diagnostics.WebApp.Models;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -58,9 +60,8 @@ namespace Chiro.Gap.Diagnostics.WebApp.Controllers
         {
             var model = new NotificatieModel();
 
-            // TODO: model fatsoenlijk opvullen
-
-            model.GroepInfo = new GroepInfo();
+            model.GroepContactInfo =
+                ServiceHelper.CallService<IAdminService, GroepContactInfo>(svc => svc.ContactInfoOphalen(stamNummer));
 
             return View(model);
         }

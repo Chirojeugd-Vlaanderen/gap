@@ -127,6 +127,10 @@
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Diagnostics.ServiceContracts\Chiro.Gap.Diagnostics.ServiceContracts.csproj">
+      <Project>{4F46DB45-BE35-4DD6-BA3D-A9409AB8B0E3}</Project>
+      <Name>Chiro.Gap.Diagnostics.ServiceContracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
       <Name>Chiro.Gap.ServiceContracts</Name>

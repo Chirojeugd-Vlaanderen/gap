@@ -7,7 +7,7 @@
 <h2>Rechten Toekennen</h2>
 
 <p>
-Als je gebruikersrechten aanvraagt voor @Model.GroepInfo.Naam (@Model.GroepInfo.StamNummer - @Model.GroepInfo.Plaats), dan
+Als je gebruikersrechten aanvraagt voor de groep &lsquo;@Model.GroepContactInfo.Naam&rsquo; (@Model.GroepContactInfo.Code), dan
 zal iemand uit deze groep een mailtje krijgen, waarin hij/zij op de hoogte wordt gesteld van jouw gebruikersrechten.
 </p>
 
@@ -15,6 +15,6 @@ zal iemand uit deze groep een mailtje krijgen, waarin hij/zij op de hoogte wordt
 {
     <p>Je kunt in het mailtje wat meer informatie opnemen over waarom je toegang nodig hebt tot de gegevens van de groep.</p>
     <div>@Html.LabelFor(mdl => mdl.Reden):</div>
-    <div>@Html.TextAreaFor(mdl => mdl.Reden)</div>
+    <div>@Html.TextAreaFor(mdl => mdl.Reden, new { cols=70 })</div>
     <input type="submit" value="Verzenden" />
 }
