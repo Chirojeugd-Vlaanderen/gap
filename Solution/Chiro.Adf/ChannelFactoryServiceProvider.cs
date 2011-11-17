@@ -28,17 +28,25 @@ namespace Chiro.Adf
 		/// <returns></returns>
 		public I GetService<I>(object arguments) where I : class { throw new NotSupportedException(); }
 
-		/// <summary>
-		/// Creates the service proxy for the endpoint with the specified name.
-		/// </summary>
-		/// <typeparam name="I">The name of the endpoint.</typeparam>
-		/// <returns></returns>
+        /// <summary>
+        /// Gebruikt IoC om de service met interface I te instantieren.
+        /// </summary>
+        /// <typeparam name="I">Service interface</typeparam>
+        /// <returns>Een instantie van <typeparamref name="I"/>.  Als die niet geresolved kon worden, dan <c>null</c></returns>
 		public I GetService<I>(string instanceName) where I : class
 		{
 			if (typeof(I).IsDefined(typeof(ServiceContractAttribute), true))
 			{
-				var factory = new ChannelFactory<I>(instanceName); // use the named endpoint
-				return factory.CreateChannel();
+			    ChannelFactory<I> factory;
+                try
+                {
+                    factory = new ChannelFactory<I>(instanceName); // use the named endpoint
+                }
+                catch(InvalidOperationException)
+                {
+                    return null;
+                }
+			    return factory.CreateChannel();
 			}
 
 			return null;

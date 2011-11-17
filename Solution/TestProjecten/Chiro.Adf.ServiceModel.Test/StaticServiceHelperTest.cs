@@ -4,6 +4,8 @@ using Moq;
 using System;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Cdf.Ioc;
+using System.ServiceModel;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Adf.ServiceModel.Test
 {
@@ -40,6 +42,10 @@ namespace Chiro.Adf.ServiceModel.Test
         public static void MyClassInitialize(TestContext testContext)
         {
             Factory.ContainerInit();
+
+            var groepenServiceMock = new Mock<IGroepenService>();
+            groepenServiceMock.Setup(mock => mock.WieBenIk()).Returns("mock");
+            Factory.InstantieRegistreren(groepenServiceMock.Object);
         }
 
         #region Additional test attributes
@@ -73,16 +79,29 @@ namespace Chiro.Adf.ServiceModel.Test
         #endregion
 
 
+        /// <summary>
+        /// Aanroep van gemockte service
+        /// </summary>
         [TestMethod()]
-        public void CallServiceTest()
+        public void GemockteServiceTest()
         {
-            var groepenServiceMock = new Mock<IGroepenService>();
-            groepenServiceMock.Setup(mock => mock.WieBenIk()).Returns("mock");
-            Factory.InstantieRegistreren(groepenServiceMock.Object);
-
             string actual = ServiceHelper.CallService<IGroepenService, string>(svc=>svc.WieBenIk());
 
             Assert.AreEqual("mock", actual);
+        }
+
+        /// <summary>
+        /// Aanroep van niet-gemockte service
+        /// </summary>
+        [TestMethod()]
+        [ExpectedException(typeof(FaultException<FoutNummerFault>))]
+        public void NietGemockteServiceTest()
+        {
+            int actual = ServiceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.PersoonIDGet(-1));
+
+            // we verwachten een geen-GAV-fout
+
+            Assert.IsTrue(false);
         }
     }
 }

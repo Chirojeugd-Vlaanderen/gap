@@ -10,10 +10,11 @@ namespace Chiro.Adf
 	public interface IServiceProvider
 	{
 		/// <summary>
-		/// Gets the configured service implementation for the specified interface.
+		/// Lever een service-implementatie op voor servicecontract <typeparamref name="I"/>.
 		/// </summary>
-		/// <typeparam name="I">The interface type to get the service for.</typeparam>
-		/// <returns></returns>
+		/// <typeparam name="I">Servicecontract</typeparam>
+		/// <returns>Implementatie van het gevraagde service-contract, of <c>null</c> als er geen implementatie
+		/// beschikbaar is.</returns>
 		I GetService<I>() where I : class;
 
 		/// <summary>

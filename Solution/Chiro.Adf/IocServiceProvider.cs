@@ -6,6 +6,8 @@ using System.Text;
 
 using Chiro.Cdf.Ioc;
 
+using Microsoft.Practices.Unity;
+
 namespace Chiro.Adf
 {
     /// <summary>
@@ -13,9 +15,21 @@ namespace Chiro.Adf
     /// </summary>
     public class IocServiceProvider: IServiceProvider
     {
+        /// <summary>
+        /// Gebruikt IoC om de service met interface I te instantieren.
+        /// </summary>
+        /// <typeparam name="I">Service interface</typeparam>
+        /// <returns>Een instantie van <typeparamref name="I"/>.  Als die niet geresolved kon worden, dan <c>null</c></returns>
         public I GetService<I>() where I : class
         {
-            return Factory.Maak<I>();
+            try
+            {
+                return Factory.Maak<I>();
+            }
+            catch (ResolutionFailedException)
+            {
+                return null;
+            }
         }
 
         public I GetService<I>(object arguments) where I : class
