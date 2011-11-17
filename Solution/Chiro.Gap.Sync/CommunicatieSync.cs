@@ -7,11 +7,13 @@ using System.Diagnostics;
 
 using AutoMapper;
 
+using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.Sync.SyncService;
+using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
-using CommunicatieType = Chiro.Gap.Sync.SyncService.CommunicatieType;
+using CommunicatieType = Chiro.Kip.ServiceContracts.DataContracts.CommunicatieType;
 using Persoon = Chiro.Gap.Orm.Persoon;
 
 namespace Chiro.Gap.Sync
@@ -21,17 +23,6 @@ namespace Chiro.Gap.Sync
 	/// </summary>
 	public class CommunicatieSync : ICommunicatieSync
 	{
-		private readonly ISyncPersoonService _svc;
-
-		/// <summary>
-		/// Constructor voor CommunicatieSync
-		/// </summary>
-		/// <param name="svc">Te gebruiken service</param>
-		public CommunicatieSync(ISyncPersoonService svc)
-		{
-			_svc = svc;	
-		}
-
 		/// <summary>
 		/// Verwijdert een communicatievorm uit Kipadmin
 		/// </summary>
@@ -42,12 +33,15 @@ namespace Chiro.Gap.Sync
 			Debug.Assert(communicatieVorm.GelieerdePersoon != null);
 			Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon != null);
 
-			_svc.CommunicatieVerwijderen(Mapper.Map<Persoon, SyncService.Persoon>(communicatieVorm.GelieerdePersoon.Persoon),
-				new CommunicatieMiddel
-				{
-					Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,
-					Waarde = communicatieVorm.Nummer
-				});
+            ServiceHelper.CallService<ISyncPersoonService>(
+		        svc =>
+		        svc.CommunicatieVerwijderen(
+		            Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(communicatieVorm.GelieerdePersoon.Persoon),
+		            new CommunicatieMiddel
+		                {
+		                    Type = (CommunicatieType) communicatieVorm.CommunicatieType.ID,
+		                    Waarde = communicatieVorm.Nummer
+		                }));
 		}
 
 		/// <summary>
@@ -59,13 +53,17 @@ namespace Chiro.Gap.Sync
 			Debug.Assert(communicatieVorm.GelieerdePersoon != null);
 			Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon != null);
 
-			_svc.CommunicatieToevoegen(Mapper.Map<Persoon, SyncService.Persoon>(communicatieVorm.GelieerdePersoon.Persoon),
-				new CommunicatieMiddel
-				{
-					Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,
-					Waarde = communicatieVorm.Nummer,
-					GeenMailings = !communicatieVorm.IsVoorOptIn
-				});
+		    ServiceHelper.CallService<ISyncPersoonService>(
+		        svc =>
+		        svc.CommunicatieToevoegen(
+		            Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(
+		                communicatieVorm.GelieerdePersoon.Persoon),
+		            new CommunicatieMiddel
+		                {
+		                    Type = (CommunicatieType) communicatieVorm.CommunicatieType.ID,
+		                    Waarde = communicatieVorm.Nummer,
+		                    GeenMailings = !communicatieVorm.IsVoorOptIn
+		                }));
 		}
 	}
 }

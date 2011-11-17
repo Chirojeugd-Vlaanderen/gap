@@ -9,7 +9,7 @@ using System.Diagnostics;
 using AutoMapper;
 
 using Chiro.Gap.Orm;
-using Chiro.Gap.Sync.SyncService;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
 using Adres = Chiro.Gap.Orm.Adres;
 using Persoon = Chiro.Gap.Orm.Persoon;
@@ -49,11 +49,9 @@ namespace Chiro.Gap.Sync
 
         public static void MappingsDefinieren()
         {
-            Mapper.CreateMap<Persoon, SyncService.Persoon>()
-                .ForMember(dst => dst.ExtensionData, opt => opt.Ignore()); // Members met dezelfde naam mappen automatisch
+            Mapper.CreateMap<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(); // Members met dezelfde naam mappen automatisch
 
-            Mapper.CreateMap<Adres, SyncService.Adres>()
-                .ForMember(dst => dst.ExtensionData, opt => opt.Ignore())
+            Mapper.CreateMap<Adres, Chiro.Kip.ServiceContracts.DataContracts.Adres>()
                 .ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.LandGet()))
                 .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()))
                 .ForMember(dst => dst.PostNr,
@@ -79,9 +77,8 @@ namespace Chiro.Gap.Sync
                                 : src is BuitenLandsAdres ? (src as BuitenLandsAdres).WoonPlaats : String.Empty));
 
             Mapper.CreateMap<CommunicatieVorm, CommunicatieMiddel>()
-                .ForMember(dst => dst.ExtensionData, opt => opt.Ignore())
                 .ForMember(dst => dst.GeenMailings, opt => opt.MapFrom(src => !src.IsVoorOptIn))
-                .ForMember(dst => dst.Type, opt => opt.MapFrom(src => (SyncService.CommunicatieType)src.CommunicatieType.ID))
+                .ForMember(dst => dst.Type, opt => opt.MapFrom(src => (Chiro.Kip.ServiceContracts.DataContracts.CommunicatieType)src.CommunicatieType.ID))
                 .ForMember(dst => dst.Waarde, opt => opt.MapFrom(src => src.Nummer));
 
             Mapper.CreateMap<GelieerdePersoon, PersoonDetails>()
@@ -92,16 +89,14 @@ namespace Chiro.Gap.Sync
                            opt.MapFrom(
                             src =>
                             src.PersoonsAdres == null
-                                ? AdresTypeEnum.ANDER
+                                ? AdresTypeEnum.Overige
                                 : (AdresTypeEnum)src.PersoonsAdres.AdresType))
-                .ForMember(dst => dst.Communicatie, opt => opt.MapFrom(src => src.Communicatie))
-                .ForMember(dst => dst.ExtensionData, opt => opt.Ignore());
+                .ForMember(dst => dst.Communicatie, opt => opt.MapFrom(src => src.Communicatie));
 
             Mapper.CreateMap<Uitstap, Bivak>()
                 .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.GroepsWerkJaar.Groep.Code))
                 .ForMember(dst => dst.UitstapID, opt => opt.MapFrom(src => src.ID))
-                .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar))
-		.ForMember(dst => dst.ExtensionData, opt => opt.Ignore());
+                .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar));
 
             Mapper.AssertConfigurationIsValid();
         }

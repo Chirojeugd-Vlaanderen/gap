@@ -3,10 +3,12 @@ using System.Linq;
 
 using AutoMapper;
 
+using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.Sync.SyncService;
+using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.Sync
 {
@@ -15,7 +17,6 @@ namespace Chiro.Gap.Sync
 	/// </summary>
 	public class DubbelpuntSync : IDubbelpuntSync
 	{
-		private readonly ISyncPersoonService _svc;
 		private readonly IGroepsWerkJaarDao _groepsWerkJaarDao;
 		private readonly IPersonenDao _personenDao;
 		private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
@@ -24,16 +25,13 @@ namespace Chiro.Gap.Sync
 		/// Creeert een nieuwe DubbelpuntSync
 		/// </summary>
 		/// <param name="groepsWerkJaarDao">Data access object voor groepsgerelateerde zaken</param>
-		/// <param name="service">Proxy naar de syncrhonisatieservice</param>
 		/// <param name="personenDao">Data access object voor persoonsgerelateerde zaken</param>
 		/// <param name="gelieerdePersonenDao">Data access object voor gelieerde personen</param>
 		public DubbelpuntSync(
-			ISyncPersoonService service, 
 			IGroepsWerkJaarDao groepsWerkJaarDao,
 			IPersonenDao personenDao,
 			IGelieerdePersonenDao gelieerdePersonenDao)
 		{
-			_svc = service;
 			_groepsWerkJaarDao = groepsWerkJaarDao;
 			_personenDao = personenDao;
 			_gelieerdePersonenDao = gelieerdePersonenDao;
@@ -57,10 +55,10 @@ namespace Chiro.Gap.Sync
 			{
 				// Jeeej! We hebben een ad-nummer! Dubbelpuntabonnement is een fluitje van een cent.
 
-				_svc.DubbelpuntBestellen(
-					(int)gp.Persoon.AdNummer,
+				ServiceHelper.CallService<ISyncPersoonService>(svc => svc.DubbelpuntBestellen(
+					gp.Persoon.AdNummer ?? 0,
 					huidigWj.Groep.Code,
-					huidigWj.WerkJaar);
+					huidigWj.WerkJaar));
 			}
 			else
 			{
@@ -80,10 +78,10 @@ namespace Chiro.Gap.Sync
 					gelp => gelp.Persoon,
 					gelp => gelp.Communicatie.First().CommunicatieType);
 
-				_svc.DubbelpuntBestellenNieuwePersoon(
+				ServiceHelper.CallService<ISyncPersoonService>(svc => svc.DubbelpuntBestellenNieuwePersoon(
 					Mapper.Map<GelieerdePersoon, PersoonDetails>(gpMetDetails),
 					huidigWj.Groep.Code,
-					huidigWj.WerkJaar);
+					huidigWj.WerkJaar));
 			}
 		}
 	}

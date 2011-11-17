@@ -6,10 +6,12 @@
 using System.Collections.Generic;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Dummies;
+using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.Sync.SyncService;
 using Moq;
-using Persoon = Chiro.Gap.Sync.SyncService.Persoon;
+using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
 
 namespace Chiro.Gap.Sync.Test
 {

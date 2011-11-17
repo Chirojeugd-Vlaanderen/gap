@@ -8,9 +8,11 @@ using System.Linq;
 
 using AutoMapper;
 
+using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.Sync.SyncService;
+using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
 using Persoon = Chiro.Gap.Orm.Persoon;
 
@@ -21,17 +23,6 @@ namespace Chiro.Gap.Sync
 	/// </summary>
 	public class AdressenSync : IAdressenSync
 	{
-		private readonly ISyncPersoonService _svc;
-
-		/// <summary>
-		/// Constructor voor AdressenSync
-		/// </summary>
-		/// <param name="svc">Te gebruiken service</param>
-		public AdressenSync(ISyncPersoonService svc)
-		{
-			_svc = svc;	
-		}
-
 		/// <summary>
 		/// Stelt de gegeven persoonsadressen in als standaardadressen in Kipadmin
 		/// </summary>
@@ -46,13 +37,13 @@ namespace Chiro.Gap.Sync
 				var bewoners = from pa in adr.PersoonsAdres
 					       select new Bewoner
 					       {
-						       Persoon = Mapper.Map<Persoon, SyncService.Persoon>(pa.Persoon),
+						       Persoon = Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(pa.Persoon),
 						       AdresType = (AdresTypeEnum)pa.AdresType
 					       };
 
-				var adres = Mapper.Map<Orm.Adres, SyncService.Adres>(adr);
+				var adres = Mapper.Map<Orm.Adres, Chiro.Kip.ServiceContracts.DataContracts.Adres>(adr);
 
-				_svc.StandaardAdresBewaren(adres, bewoners.ToList());
+				ServiceHelper.CallService<ISyncPersoonService>(svc=>svc.StandaardAdresBewaren(adres, bewoners.ToList()));
 			}
 		}
 	}

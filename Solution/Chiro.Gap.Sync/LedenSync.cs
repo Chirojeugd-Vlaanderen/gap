@@ -3,18 +3,19 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
 using AutoMapper;
 
+using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.Sync.SyncService;
+using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
 using Persoon = Chiro.Gap.Orm.Persoon;
 
@@ -25,7 +26,6 @@ namespace Chiro.Gap.Sync
     /// </summary>
     public class LedenSync : ILedenSync
     {
-        private readonly ISyncPersoonService _svc;
         private readonly ILedenDao _ledenDao;
         private readonly IKindDao _kindDao;
         private readonly ILeidingDao _leidingDao;
@@ -80,24 +80,20 @@ namespace Chiro.Gap.Sync
 				};
 
         /// <summary>
-        /// Creeert nieuwe klasse voor ledensynchronisatie, die met Kipadmin zal communiceren via
-        /// <paramref name="svc"/>
+        /// Creeert nieuwe klasse voor ledensynchronisatie
         /// </summary>
-        /// <param name="svc">te gebruiken KipSyncService voor communicatie met Kipadmn</param>
         /// <param name="cVormDao">Data access object voor communicatievormen</param>
         /// <param name="ledenDao">Data access object voor leden</param>
         /// <param name="leidingDao">Data access object voor leiding</param>
         /// <param name="personenDao">Data access object voor personen</param>
         /// <param name="kindDao">Data access object voor kinderen</param>
         public LedenSync(
-            ISyncPersoonService svc,
             ICommunicatieVormDao cVormDao,
             ILedenDao ledenDao,
             IKindDao kindDao,
             ILeidingDao leidingDao,
             IPersonenDao personenDao)
         {
-            _svc = svc;
             _cVormDao = cVormDao;
             _ledenDao = ledenDao;
             _kindDao = kindDao;
@@ -161,7 +157,7 @@ namespace Chiro.Gap.Sync
 
                 if (l.GelieerdePersoon.Persoon.AdNummer != null)
                 {
-                    _svc.LidBewaren((int) l.GelieerdePersoon.Persoon.AdNummer, lidGedoe);
+                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidBewaren(l.GelieerdePersoon.Persoon.AdNummer ?? 0, lidGedoe));
                 }
                 else
                 {
@@ -172,9 +168,9 @@ namespace Chiro.Gap.Sync
 
                     // Ook persoonsgegevens meesturen
 
-                    _svc.NieuwLidBewaren(
+                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidBewaren(
                         Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon),
-                        lidGedoe);
+                        lidGedoe));
                 }
             }
         }
@@ -207,11 +203,12 @@ namespace Chiro.Gap.Sync
                                  where f.IsNationaal
                                  select _functieVertaling[(NationaleFunctie)f.ID]).ToList();
 
-            _svc.FunctiesUpdaten(Mapper.Map<Persoon, SyncService.Persoon>(
-                l.GelieerdePersoon.Persoon),
-                                 l.GroepsWerkJaar.Groep.Code,
-                                 l.GroepsWerkJaar.WerkJaar,
-                                 kipFunctieIDs);
+            ServiceHelper.CallService<ISyncPersoonService>(
+                svc => svc.FunctiesUpdaten(Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(
+                    l.GelieerdePersoon.Persoon),
+                                           l.GroepsWerkJaar.Groep.Code,
+                                           l.GroepsWerkJaar.WerkJaar,
+                                           kipFunctieIDs));
         }
 
         /// <summary>
@@ -264,10 +261,10 @@ namespace Chiro.Gap.Sync
                                  select _afdelingVertaling[(NationaleAfdeling)(aj.OfficieleAfdeling.ID)]).ToList();
             }
 
-            _svc.AfdelingenUpdaten(Mapper.Map<Persoon, SyncService.Persoon>(l.GelieerdePersoon.Persoon),
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AfdelingenUpdaten(Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(l.GelieerdePersoon.Persoon),
                          chiroGroep.Code,
                          l.GroepsWerkJaar.WerkJaar,
-                         kipAfdelingen);
+                         kipAfdelingen));
         }
 
         /// <summary>
@@ -287,11 +284,11 @@ namespace Chiro.Gap.Sync
                 l = lid;
             }
 
-            _svc.LidTypeUpdaten(
-                Mapper.Map<Persoon, SyncService.Persoon>(l.GelieerdePersoon.Persoon),
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidTypeUpdaten(
+                Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(l.GelieerdePersoon.Persoon),
                 l.GroepsWerkJaar.Groep.Code,
                 l.GroepsWerkJaar.WerkJaar,
-                _lidTypeVertaling[lid.Type]);
+                _lidTypeVertaling[lid.Type]));
         }
 
         /// <summary>
@@ -312,14 +309,14 @@ namespace Chiro.Gap.Sync
 
             if (lid.GelieerdePersoon.Persoon.AdNummer != null)
             {
-                _svc.LidVerwijderen((int)lid.GelieerdePersoon.Persoon.AdNummer, groep.Code, lid.GroepsWerkJaar.WerkJaar);
+                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidVerwijderen(lid.GelieerdePersoon.Persoon.AdNummer ?? 0, groep.Code, lid.GroepsWerkJaar.WerkJaar));
             }
             else
             {
-                _svc.NieuwLidVerwijderen(
+                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidVerwijderen(
                     Mapper.Map<GelieerdePersoon, PersoonDetails>(lid.GelieerdePersoon),
                     groep.Code,
-                    lid.GroepsWerkJaar.WerkJaar);
+                    lid.GroepsWerkJaar.WerkJaar));
             }
         }
     }

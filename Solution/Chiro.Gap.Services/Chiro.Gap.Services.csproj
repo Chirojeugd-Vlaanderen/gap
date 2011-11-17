@@ -157,6 +157,10 @@
       <Project>{08F94344-8414-4136-8314-4B7380B10CD7}</Project>
       <Name>Chiro.Gap.ServiceContracts.Mappers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
+      <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
+      <Name>Chiro.Kip.ServiceContracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Settings.settings">

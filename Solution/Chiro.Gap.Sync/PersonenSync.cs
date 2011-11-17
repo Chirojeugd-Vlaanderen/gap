@@ -8,10 +8,12 @@ using System.Diagnostics;
 
 using AutoMapper;
 
+using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.Sync.SyncService;
+using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
 using Adres = Chiro.Gap.Orm.Adres;
 using Persoon = Chiro.Gap.Orm.Persoon;
@@ -23,17 +25,14 @@ namespace Chiro.Gap.Sync
 	/// </summary>
 	public class PersonenSync : IPersonenSync
 	{
-		private readonly ISyncPersoonService _svc;
 		private readonly ICommunicatieVormDao _cVormDao;
 
 		/// <summary>
 		/// Constructor voor PersonenSync
 		/// </summary>
-		/// <param name="svc">Service voor synchronsatie met Kipadmin</param>
 		/// <param name="cVormDao">Data access object voor communicatievormen</param>
-		public PersonenSync(ISyncPersoonService svc, ICommunicatieVormDao cVormDao)
+		public PersonenSync(ICommunicatieVormDao cVormDao)
 		{
-			_svc = svc;
 			_cVormDao = cVormDao;
 		}
 
@@ -52,8 +51,8 @@ namespace Chiro.Gap.Sync
 
 			Debug.Assert(gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag);
 
-			var syncPersoon = Mapper.Map<Persoon, SyncService.Persoon>(gp.Persoon);
-			_svc.PersoonUpdaten(syncPersoon);
+            var syncPersoon = Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon);
+			ServiceHelper.CallService<ISyncPersoonService>(svc => svc.PersoonUpdaten(syncPersoon));
 
 			if (metStandaardAdres && gp.PersoonsAdres != null)
 			{
@@ -62,15 +61,15 @@ namespace Chiro.Gap.Sync
 				// alle adressen in gelieerdePersoon.Persoon.PersoonsAdres).
 
 				// TODO (#238): Buitenlandse adressen!
-				var syncAdres = Mapper.Map<Adres, SyncService.Adres>(gp.PersoonsAdres.Adres);
+                var syncAdres = Mapper.Map<Adres, Chiro.Kip.ServiceContracts.DataContracts.Adres>(gp.PersoonsAdres.Adres);
 
 				var syncBewoner = new Bewoner
 				{
-					Persoon = Mapper.Map<Persoon, SyncService.Persoon>(gp.Persoon),
+                    Persoon = Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon),
 					AdresType = (AdresTypeEnum)gp.PersoonsAdres.AdresType
 				};
 
-				_svc.StandaardAdresBewaren(syncAdres, new List<Bewoner> { syncBewoner });
+				ServiceHelper.CallService<ISyncPersoonService>(svc => svc.StandaardAdresBewaren(syncAdres, new List<Bewoner> { syncBewoner }));
 			}
 			if (metCommunicatie)
 			{
@@ -79,7 +78,7 @@ namespace Chiro.Gap.Sync
 
 				var syncCommunicatie = Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(_cVormDao.ZoekenOpPersoon(gp.Persoon.ID));
 
-				_svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie);
+				ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie));
 			}
 		}
 
@@ -90,10 +89,10 @@ namespace Chiro.Gap.Sync
 		/// <param name="gp">Gelieerde persoon</param>
 		public void CommunicatieUpdaten(GelieerdePersoon gp)
 		{
-			var syncPersoon = Mapper.Map<Persoon, SyncService.Persoon>(gp.Persoon);
+			var syncPersoon = Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon);
 			var syncCommunicatie = Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(_cVormDao.ZoekenOpPersoon(gp.Persoon.ID));
 
-			_svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie);
+			ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie));
 		}
 	}
 }

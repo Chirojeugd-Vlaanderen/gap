@@ -5,10 +5,12 @@
 
 using AutoMapper;
 
+using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.Sync.SyncService;
+using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
 using Adres = Chiro.Gap.Orm.Adres;
 
@@ -19,7 +21,6 @@ namespace Chiro.Gap.Sync
     /// </summary>
     public class BivakSync : IBivakSync
     {
-        private readonly ISyncPersoonService _svc;
         private readonly IAdressenDao _adressenDao;
         private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
         private readonly IDeelnemersDao _deelnemersDao;
@@ -27,17 +28,14 @@ namespace Chiro.Gap.Sync
         /// <summary>
         /// Standaardconstructor
         /// </summary>
-        /// <param name="svc">proxy naar syncservice</param>
         /// <param name="adressenDao">Data access voor adressen</param>
         /// <param name="gelieerdePersonenDao">data access voor gelieerde personen</param>
         /// <param name="deelnemersDao">data access voor deelnemers</param>
         public BivakSync(
-            ISyncPersoonService svc,
             IAdressenDao adressenDao,
             IGelieerdePersonenDao gelieerdePersonenDao,
             IDeelnemersDao deelnemersDao)
         {
-            _svc = svc;
             _adressenDao = adressenDao;
             _gelieerdePersonenDao = gelieerdePersonenDao;
             _deelnemersDao = deelnemersDao;
@@ -53,7 +51,7 @@ namespace Chiro.Gap.Sync
             // TODO (#1057): Dit zijn waarschijnlijk te veel databasecalls
 
             var teSyncen = Mapper.Map<Uitstap, Bivak>(uitstap);
-            _svc.BivakBewaren(teSyncen);
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakBewaren(teSyncen));
 
             GelieerdePersoon contactPersoon;
 
@@ -83,7 +81,7 @@ namespace Chiro.Gap.Sync
                 // Haal adres opnieuw op, zodat we zeker gemeente of land mee hebben.
 
                 var adres = _adressenDao.Ophalen(uitstap.Plaats.Adres.ID);
-                _svc.BivakPlaatsBewaren(uitstap.ID, uitstap.Plaats.Naam, Mapper.Map<Adres, SyncService.Adres>(adres));
+                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakPlaatsBewaren(uitstap.ID, uitstap.Plaats.Naam, Mapper.Map<Adres, Chiro.Kip.ServiceContracts.DataContracts.Adres>(adres)));
             }
 
             if (contactPersoon != null)
@@ -91,9 +89,9 @@ namespace Chiro.Gap.Sync
                 if (contactPersoon.Persoon.AdNummer != null)
                 {
                     // AD-nummer gekend: gewoon koppelen via AD-nummer
-                    _svc.BivakContactBewaren(
+                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakContactBewaren(
                         uitstap.ID,
-                        (int)contactPersoon.Persoon.AdNummer);
+                        contactPersoon.Persoon.AdNummer ?? 0));
                 }
                 else
                 {
@@ -108,9 +106,9 @@ namespace Chiro.Gap.Sync
                     gelPersoon.Persoon.AdInAanvraag = true;
                     _gelieerdePersonenDao.Bewaren(gelPersoon, gp => gp.Persoon);
 
-                    _svc.BivakContactBewarenAdOnbekend(
+                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakContactBewarenAdOnbekend(
                         uitstap.ID,
-                        Mapper.Map<GelieerdePersoon, PersoonDetails>(gelPersoon));
+                        Mapper.Map<GelieerdePersoon, PersoonDetails>(gelPersoon)));
                 }
             }
         }
@@ -121,7 +119,7 @@ namespace Chiro.Gap.Sync
         /// <param name="uitstapID">ID te verwijderen uitstap</param>
         public void Verwijderen(int uitstapID)
         {
-            _svc.BivakVerwijderen(uitstapID);
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakVerwijderen(uitstapID));
         }
     }
 }

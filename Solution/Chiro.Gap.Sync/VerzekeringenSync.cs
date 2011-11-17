@@ -3,14 +3,17 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System.Diagnostics;
 using System.Linq;
 
 using AutoMapper;
 
+using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.Sync.SyncService;
+using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.Sync
 {
@@ -19,22 +22,18 @@ namespace Chiro.Gap.Sync
     /// </summary>
     public class VerzekeringenSync : IVerzekeringenSync
     {
-        private readonly ISyncPersoonService _svc;
         private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
         private readonly IPersonenDao _personenDao;
 
         /// <summary>
         /// Creert een nieuwe VerzekeringenSync
         /// </summary>
-        /// <param name="svc">Proxy naar de synchronisatieservice</param>
         /// <param name="gelieerdePersonenDao">Data access object voor gelieerde personen</param>
         /// <param name="personenDao">Data access object voor personen</param>
         public VerzekeringenSync(
-            ISyncPersoonService svc,
             IGelieerdePersonenDao gelieerdePersonenDao,
             IPersonenDao personenDao)
         {
-            _svc = svc;
             _gelieerdePersonenDao = gelieerdePersonenDao;
             _personenDao = personenDao;
         }
@@ -49,10 +48,10 @@ namespace Chiro.Gap.Sync
             if (persoonsVerzekering.Persoon.AdNummer != null)
             {
                 // Verzekeren op basis van AD-nummer
-                _svc.LoonVerliesVerzekeren(
-                    (int)persoonsVerzekering.Persoon.AdNummer,
+                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LoonVerliesVerzekeren(
+                    persoonsVerzekering.Persoon.AdNummer ?? 0,
                     gwj.Groep.Code,
-                    gwj.WerkJaar);
+                    gwj.WerkJaar));
             }
             else
             {
@@ -75,10 +74,10 @@ namespace Chiro.Gap.Sync
                     gelp => gelp.Persoon,
                     gelp => gelp.Communicatie.First().CommunicatieType);
 
-                _svc.LoonVerliesVerzekerenAdOnbekend(
+                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LoonVerliesVerzekerenAdOnbekend(
                     Mapper.Map<GelieerdePersoon, PersoonDetails>(gp),
                     gwj.Groep.Code,
-                    gwj.WerkJaar);
+                    gwj.WerkJaar));
             }
         }
     }

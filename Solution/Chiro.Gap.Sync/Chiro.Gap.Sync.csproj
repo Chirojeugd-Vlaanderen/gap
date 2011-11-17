@@ -70,45 +70,17 @@
     <Compile Include="MappingHelper.cs" />
     <Compile Include="OutOfCoffeeException.cs" />
     <Compile Include="PersonenSync.cs" />
-    <Compile Include="SyncService\UnityWorkArounds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\SyncService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="VerzekeringenSync.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Service References\SyncService\KipSyncService.xsd" />
-    <None Include="Service References\SyncService\KipSyncService1.xsd" />
-    <None Include="Service References\SyncService\KipSyncService2.xsd" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\SyncService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\SyncService\KipSyncService.disco" />
-    <None Include="Service References\SyncService\SyncPersoonService.wsdl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\SyncService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\SyncService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\SyncService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
+      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
+      <Name>Chiro.Adf.ServiceModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
       <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
       <Name>Chiro.Cdf.Data.Entity</Name>
@@ -124,6 +96,10 @@
     <ProjectReference Include="..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
       <Name>Chiro.Gap.Orm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
+      <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
+      <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
