@@ -20,16 +20,22 @@ namespace Chiro.Gap.Workers
     public class GebruikersRechtenManager
     {
         private readonly IAutorisatieDao _autorisatieDao;
+        private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
         private readonly IAutorisatieManager _autorisatieManager;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="autorisatieDao">DAO die gebruikt zal worden om gegevens ivm gebruikersrechten op te zoeken</param>
+        /// <param name="gelieerdePersonenDao">data access voor gelieerdepersonen</param>
         /// <param name="autorisatieManager">Data access ivm gebruikersrechten</param>
-        public GebruikersRechtenManager(IAutorisatieDao autorisatieDao, IAutorisatieManager autorisatieManager)
+        public GebruikersRechtenManager(
+            IAutorisatieDao autorisatieDao, 
+            IGelieerdePersonenDao gelieerdePersonenDao, 
+            IAutorisatieManager autorisatieManager)
         {
             _autorisatieDao = autorisatieDao;
+            _gelieerdePersonenDao = gelieerdePersonenDao;
             _autorisatieManager = autorisatieManager;
         }
 
@@ -282,6 +288,34 @@ namespace Chiro.Gap.Workers
             return _autorisatieDao.Ophalen(gebruikersRechtID);
         }
 
+        /// <summary>
+        /// Gegeven een <paramref name="groepID"/>, haal van de GAV's waarvan 
+        /// de personen gekend zijn, de gelieerde personen op (die dus de
+        /// koppeling bepalen tussen de persoon en de groep met gegeven
+        /// <paramref name="groepID"/>).
+        /// Voorlopig worden ook de communicatiemiddelen mee opgeleverd.
+        /// </summary>
+        /// <param name="groepID">ID van een groep</param>
+        /// <returns>beschikbare gelieerde personen waarvan we weten dat ze GAV zijn
+        /// voor die groep</returns>
+        /// <remarks>Vervallen GAV's worden niet opgeleverd</remarks>
+        public IEnumerable<GelieerdePersoon> GavGelieerdePersonenOphalen(int groepID)
+        {
+            if (!(_autorisatieManager.IsSuperGav() || _autorisatieManager.IsGavGroep(groepID)))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
 
+            var gavGps = _gelieerdePersonenDao.OphalenOpBasisVanGavs(groepID);
+
+            return (from gp in gavGps
+                    where
+                        gp.Persoon.Gav.Any(
+                            gav =>
+                            gav.GebruikersRecht.Any(
+                                gr =>
+                                gr.Groep.ID == groepID && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)))
+                    select gp).ToArray();
+        }
     }
 }

@@ -736,6 +736,54 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
+        /// Gegeven een <paramref name="groepID"/>, haal van de (ex-)GAV's waarvan 
+        /// de personen gekend zijn, de gelieerde personen op (die dus de
+        /// koppeling bepalen tussen de persoon en de groep met gegeven
+        /// <paramref name="groepID"/>).
+        /// Voorlopig worden ook de communicatiemiddelen mee opgeleverd.
+        /// </summary>
+        /// <param name="groepID">ID van een groep</param>
+        /// <returns>beschikbare gelieerde personen waarvan we weten dat ze GAV zijn
+        /// voor die groep</returns>
+        /// <remarks>Vervallen GAV's worden ook meegeleverd</remarks>
+        public IEnumerable<GelieerdePersoon> OphalenOpBasisVanGavs(int groepID)
+        {
+            IEnumerable<GelieerdePersoon> resultaat;
+
+            using (var db = new ChiroGroepEntities())
+            {
+                // selecteer de relevanten gebruikersrechten, en instantieer met 'ToArray'.
+
+                var gebruikersRechten =
+                    (from gr in db.GebruikersRecht.Include(gr => gr.Gav.Persoon).Include(gr => gr.Groep)
+                     where gr.Groep.ID == groepID
+                     select gr).ToArray();
+
+                // In theorie kan er aan een Gav maar 1 persoon gekoppeld zijn.  In praktijk heb ik dat verkeerd
+                // gedaan in de database, en zijn er mogelijk meer.  Dat verklaart de 'SelectMany' op
+                // Gav.Persoon.  (Zie #1158)
+
+                var persoonIDs = gebruikersRechten.SelectMany(gr => gr.Gav.Persoon).Select(p => p.ID);
+
+                // Selecteer de relevante gelieerde personen, en instantieer met 'ToArray'.  De objectcontext
+                // zal ervoor zorgen dat de juiste gelieerde persoon aan het juiste gebruikersrecht wordt
+                // gekoppeld.
+
+                var gelieerdePersonen =
+                    (from gp in
+                         db.GelieerdePersoon.Include(gp => gp.Persoon).Include(
+                             gp => gp.Communicatie.First().CommunicatieType).Where(
+                                 Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.Persoon.ID, persoonIDs))
+                     where gp.Groep.ID == groepID
+                     select gp).ToArray();
+
+                resultaat = gelieerdePersonen;
+
+            }
+            return Utility.DetachObjectGraph(resultaat);
+        }
+
+        /// <summary>
         /// Koppelt de lidobjecten van dit werkjaar aan de gegeven
         /// <paramref name="gelieerdePersonen"/>.
         /// </summary>

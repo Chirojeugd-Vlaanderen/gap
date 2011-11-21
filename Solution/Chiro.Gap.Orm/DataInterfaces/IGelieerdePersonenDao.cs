@@ -199,5 +199,18 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="extras">bepaalt de gekoppelde entiteiten</param>
 		/// <returns>de bewaarde gelieerde persoon</returns>
 		GelieerdePersoon Bewaren(GelieerdePersoon gelieerdePersoon, PersoonsExtras extras);
+
+        /// <summary>
+        /// Gegeven een <paramref name="groepID"/>, haal van de (ex-)GAV's waarvan 
+        /// de personen gekend zijn, de gelieerde personen op (die dus de
+        /// koppeling bepalen tussen de persoon en de groep met gegeven
+        /// <paramref name="groepID"/>).
+        /// Voorlopig worden ook de communicatiemiddelen mee opgeleverd.
+        /// </summary>
+        /// <param name="groepID">ID van een groep</param>
+        /// <returns>beschikbare gelieerde personen waarvan we weten dat ze GAV zijn
+        /// voor die groep</returns>
+        /// <remarks>Vervallen GAV's worden ook meegeleverd</remarks>
+	    IEnumerable<GelieerdePersoon> OphalenOpBasisVanGavs(int groepID);
 	}
 }

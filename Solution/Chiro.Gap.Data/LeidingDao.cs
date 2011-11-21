@@ -55,7 +55,7 @@ namespace Chiro.Gap.Data.Ef
 
             if ((filter.LidType & LidType.Leiding) == 0)
             {
-                // Als er niet op kinderen gezocht wordt, lever dan niets op
+                // Als er niet op leiding gezocht wordt, lever dan niets op
                 return new Leiding[0];
             }
 

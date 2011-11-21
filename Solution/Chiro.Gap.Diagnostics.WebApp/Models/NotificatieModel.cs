@@ -19,6 +19,11 @@ namespace Chiro.Gap.Diagnostics.WebApp.Models
         public GroepContactInfo GroepContactInfo { get; set; }
 
         /// <summary>
+        /// ID van de gelieerde persoon die de notificatiemail moet krijgen
+        /// </summary>
+        public int MailOntvangerGelieerdePersoonID { get; set; }
+
+        /// <summary>
         /// De gebruiker kan een reden meegeven die mee opgenomen zal worden in het mailtje dat naar
         /// de contactpersoon gestuurd zal worden.
         /// </summary>

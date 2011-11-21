@@ -790,10 +790,14 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public IEnumerable<Lid> Zoeken(LidFilter filter, LidExtras extras)
         {
-            if (filter.GroepID != null && !_autorisatieMgr.IsGavGroep(filter.GroepID.Value) ||
+            // Hieronder een hele hoop voorwaarden voor de GeenGavException.
+            // Ik denk dat het duidelijker zou zijn moest deze if geinverteerd worden,
+            // en dat er dus zou staan wanneer er wél gezocht mag worden.
+
+            if (!_autorisatieMgr.IsSuperGav() && (filter.GroepID != null && !_autorisatieMgr.IsGavGroep(filter.GroepID.Value) ||
                 filter.GroepsWerkJaarID != null && !_autorisatieMgr.IsGavGroepsWerkJaar(filter.GroepsWerkJaarID.Value) ||
                 filter.AfdelingID != null && !_autorisatieMgr.IsGavAfdeling(filter.AfdelingID.Value) ||
-                filter.FunctieID != null && !_autorisatieMgr.IsGavFunctie(filter.FunctieID.Value))
+                filter.FunctieID != null && !_autorisatieMgr.IsGavFunctie(filter.FunctieID.Value)))
             {
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }
