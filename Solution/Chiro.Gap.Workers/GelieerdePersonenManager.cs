@@ -110,27 +110,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Een gelieerde persoon ophalen met al zijn/haar communicatievormen
-		/// </summary>
-		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon</param>
-		/// <returns>Een gelieerde persoon met al zijn/haar communicatievormen</returns>
-		public GelieerdePersoon OphalenMetCommVormen(int gelieerdePersoonID)
-		{
-			if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
-			{
-				return _gelieerdePersonenDao.Ophalen(gelieerdePersoonID,
-					foo => foo.Persoon,
-					foo => foo.Groep,
-					foo => foo.Communicatie,
-					foo => foo.Communicatie.First().CommunicatieType);
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-		}
-
-		/// <summary>
 		/// Haalt een lijst op van gelieerde personen.
 		/// </summary>
 		/// <param name="gelieerdePersonenIDs">ID's van de op te vragen

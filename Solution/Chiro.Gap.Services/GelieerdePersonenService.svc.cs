@@ -794,7 +794,7 @@ namespace Chiro.Gap.Services
                 var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(commDetail);
                 communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(commDetail.CommunicatieTypeID);
 
-                GelieerdePersoon gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
+                GelieerdePersoon gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Communicatie);
                 _cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
                 _cvMgr.Bewaren(communicatieVorm);
             }
