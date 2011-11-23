@@ -7,7 +7,7 @@ using System;
 using System.Security.Permissions;
 using System.ServiceModel;
 using System.Text.RegularExpressions;
-
+using System.Threading;
 using Chiro.Ad.Domain;
 using Chiro.Ad.ServiceContracts;
 using Chiro.Ad.Workers;

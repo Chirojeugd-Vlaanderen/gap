@@ -19,6 +19,10 @@ namespace Chiro.Cdf.Mailer
         {
             MailServiceReference.BerichtStatus status;
 
+            // Ik zou hier ook graag met ServiceHelper werken, maar dat kan niet direct omdat ik niet
+            // direct de interface van de service heb.  Bovendien ben ik niet zeker of ServiceHelper
+            // werkt als het geen WCF-services zijn.
+
             using (var msr = new MailServiceReference.MailServiceSoapClient())
             {
                 status = msr.VerstuurGapMail(ontvanger, onderwerp, body);
