@@ -190,7 +190,6 @@ namespace Chiro.Gap.Orm
         /// Gebruikersrechten die een (gelieerde) persoon heeft/had
         /// </summary>
         GebruikersRechten = 0x800
-
 	}
 
 	/// <summary>

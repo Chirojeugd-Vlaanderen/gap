@@ -149,7 +149,7 @@ namespace Chiro.Gap.Data.Ef
         /// <param name="gelieerdePersoonIDs">ID's op te halen gelieerde personen</param>
         /// <param name="extras">bepaalt de extra op te halen entiteiten</param>
         /// <returns>De gevraagde gelieerde personen.</returns>
-        public IEnumerable<GelieerdePersoon> Ophalen(IList<int> gelieerdePersoonIDs, PersoonsExtras extras)
+        public IEnumerable<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersoonIDs, PersoonsExtras extras)
         {
             IEnumerable<GelieerdePersoon> resultaat;
 

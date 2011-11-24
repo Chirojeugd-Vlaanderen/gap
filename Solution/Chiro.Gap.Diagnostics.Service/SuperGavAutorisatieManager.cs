@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ServiceModel;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers;
@@ -12,9 +13,11 @@ using Chiro.Gap.Workers;
 namespace Chiro.Gap.Diagnostics.Service
 {
     /// <summary>
-    /// Autorisatiemanager voor de synchronisatie kipadmin->gap, die
-    /// eigenlijk alleen maar zegt: 'Ik ben supergav!'.  De rest is niet
-    /// geimplementeerd, en dat houden we voorlopig zo.
+    /// Autorisatiemanager die slechts 2 dingen doet:
+    /// 1. Zeggen 'Ik ben super-GAV'.
+    /// 2. De gebruikersnaam opleveren
+    /// Alle andere zaken zijn niet-geïmplementeerd, en voor de veiligheid
+    /// blijven ze dat best ook.
     /// </summary>
     /// <remarks>
     /// Deze klasse is een kopie van die in Chiro.Gap.UpdataSvc.Service.  Het lijkt
@@ -123,7 +126,8 @@ namespace Chiro.Gap.Diagnostics.Service
 
         public string GebruikersNaamGet()
         {
-            throw new NotImplementedException();
+            return ServiceSecurityContext.Current == null ? String.Empty
+                : ServiceSecurityContext.Current.WindowsIdentity.Name;
         }
 
         public IEnumerable<int> MijnGroepIDsOphalen()

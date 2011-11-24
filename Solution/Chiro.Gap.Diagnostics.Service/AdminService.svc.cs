@@ -66,22 +66,22 @@ namespace Chiro.Gap.Diagnostics.Service
                                                         LidType = LidType.Leiding
                                                     },
                                                 LidExtras.Communicatie|LidExtras.Persoon)
-                 where !String.IsNullOrEmpty(_gelieerdePersonenManager.EMailKiezen(l.GelieerdePersoon))
+                 where !String.IsNullOrEmpty(GelieerdePersonenManager.EMailKiezen(l.GelieerdePersoon))
                  select new MailContactInfo
                             {
                                 GelieerdePersoonID = l.GelieerdePersoon.ID,
-                                EmailAdres = _gelieerdePersonenManager.EMailKiezen(l.GelieerdePersoon),
+                                EmailAdres = GelieerdePersonenManager.EMailKiezen(l.GelieerdePersoon),
                                 IsContact = false,
                                 IsGav = false,
                                 VolledigeNaam = l.GelieerdePersoon.Persoon.VolledigeNaam
                             }).ToArray();
 
             var gekendeGavs = (from gp in _gebruikersRechtenManager.GavGelieerdePersonenOphalen(groep.ID)
-                               where !String.IsNullOrEmpty(_gelieerdePersonenManager.EMailKiezen(gp))
+                               where !String.IsNullOrEmpty(GelieerdePersonenManager.EMailKiezen(gp))
                                select new MailContactInfo
                                           {
                                               GelieerdePersoonID = gp.ID,
-                                              EmailAdres = _gelieerdePersonenManager.EMailKiezen(gp),
+                                              EmailAdres = GelieerdePersonenManager.EMailKiezen(gp),
                                               IsContact = false,
                                               IsGav = false,
                                               VolledigeNaam = gp.Persoon.VolledigeNaam
@@ -99,6 +99,32 @@ namespace Chiro.Gap.Diagnostics.Service
             }
             
             return result;
+        }
+
+        /// <summary>
+        /// Geeft de momenteel aangelogde gebruiker tijdelijke rechten voor de groep 
+        /// van de gelieerde persoon met ID <paramref name="notificatieGelieerdePersoonID"/>.
+        /// Deze gelieerde persoon wordt hiervan via  e-mail op de hoogte gebracht.  
+        /// Uiteraard moet die gelieerde persoon een e-mailadres hebben. 
+        /// De tijdelijke rechten zijn geldig voor het aantal dagen gegeven in de settings van
+        /// <see name="Chiro.Gap.Diagnostics.Service" />
+        /// Zo nodig kan een tijdelijke gebruiker zelf zijn eigen rechten verlengen.
+        /// </summary>
+        /// <param name="notificatieGelieerdePersoonID">GelieerdePersoonID die de groep
+        /// bepaalt, en meteen ook diegene die via e-mail
+        /// verwittigd wordt over de tijdelijke login</param>
+        /// <param name="reden">Extra informatie die naar de notificatie-ontvanger wordt
+        /// gestuurd.</param>
+        public void TijdelijkeRechtenGeven(int notificatieGelieerdePersoonID, string reden)
+        {
+            var gav = _gebruikersRechtenManager.MijnGavOphalen();
+
+            var notificatieOntvanger = _gelieerdePersonenManager.Ophalen(notificatieGelieerdePersoonID, PersoonsExtras.Communicatie|PersoonsExtras.Groep);
+            _gebruikersRechtenManager.ToekennenOfVerlengen(gav,
+                                                               notificatieOntvanger,
+                                                               DateTime.Now.AddDays(
+                                                                   Properties.Settings.Default.
+                                                                       DagenTijdelijkGebruikersRecht), reden);
         }
     }
 }

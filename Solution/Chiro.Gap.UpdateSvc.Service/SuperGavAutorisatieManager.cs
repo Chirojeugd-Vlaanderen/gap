@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ServiceModel;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers;
@@ -12,10 +13,20 @@ using Chiro.Gap.Workers;
 namespace Chiro.Gap.UpdateSvc.Service
 {
     /// <summary>
-    /// Autorisatiemanager voor de synchronisatie kipadmin->gap, die
-    /// eigenlijk alleen maar zegt: 'Ik ben supergav!'.  De rest is niet
-    /// geimplementeerd, en dat houden we voorlopig zo.
+    /// Autorisatiemanager die slechts 2 dingen doet:
+    /// 1. Zeggen 'Ik ben super-GAV'.
+    /// 2. De gebruikersnaam opleveren
+    /// Alle andere zaken zijn niet-geïmplementeerd, en voor de veiligheid
+    /// blijven ze dat best ook.
     /// </summary>
+    /// <remarks>
+    /// Deze klasse is een kopie van die in Chiro.Gap.UpdataSvc.Service.  Het lijkt
+    /// me zo dom om hiervoor een apart project te maken.  Maar ik weet ook niet
+    /// goed waar ik dit anders kwijt moet.  Ik wil dit uit Chiro.Gap.Workers houden,
+    /// om te vermijden dat je super-gav kunt worden door gewoon de unity-configuration
+    /// aan te passen.  Nu kun je dat enkel als Chiro.Gap.Diagnostics.Service.dll
+    /// beschikbaar is.
+    /// </remarks>
     public class SuperGavAutorisatieManager : IAutorisatieManager
     {
         public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs)
@@ -113,9 +124,11 @@ namespace Chiro.Gap.UpdateSvc.Service
             return true;
         }
 
+
         public string GebruikersNaamGet()
         {
-            throw new NotImplementedException();
+            return ServiceSecurityContext.Current == null ? String.Empty
+                : ServiceSecurityContext.Current.WindowsIdentity.Name;
         }
 
         public IEnumerable<int> MijnGroepIDsOphalen()

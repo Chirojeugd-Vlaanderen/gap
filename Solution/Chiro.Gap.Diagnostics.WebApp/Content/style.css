@@ -33,7 +33,7 @@ h3 {
 	font-size: 1.6em;
 }
 
-p, ul, ol {
+p, ul, ol, form {
 	margin-top: 21px;
 	line-height: 180%;
 }

@@ -125,6 +125,10 @@
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
+      <Project>{18FF2008-106F-48A6-BEFB-5F8B301354D0}</Project>
+      <Name>Chiro.Cdf.Mailer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Data\Chiro.Gap.Data.csproj">
       <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
       <Name>Chiro.Gap.Data</Name>

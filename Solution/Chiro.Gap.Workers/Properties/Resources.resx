@@ -271,7 +271,7 @@
     <value>Enkel personen met een AD-nummer komen in aanmerking voor een login.</value>
   </data>
   <data name="EMailVerplicht" xml:space="preserve">
-    <value>Enkel personen met een e-mailadres komen in aanmerking voor een gsm.</value>
+    <value>Een e-mailadres is verplicht</value>
   </data>
   <data name="LoginFormaat" xml:space="preserve">
     <value>CHIROPUBLIC\{0}</value>
@@ -282,5 +282,26 @@
   </data>
   <data name="GebruikersRechtWasAlVervallen" xml:space="preserve">
     <value>Dit gebruikersrecht was al vervallen.</value>
+  </data>
+  <data name="TijdelijkeRechtenMailBody" xml:space="preserve">
+    <value>Beste {0},
+
+De gebruiker {1} heeft tijdelijk toegang gekregen tot jouw GroepsAdministratieProgramma.  Naar alle waarschijnlijkheid was dat omdat iemand van het nationaal secretariaat mee heeft gekeken naar jouw gegevens.
+
+Gebruiker: {1}
+Vervaldatum: {2}
+Extra info:
+{3}
+
+Als je niet weet waarover dit gaat, neem je best contact op met het secretariaat (03-231 07 95).
+
+Een overzichtje van wie er allemaal toegang heeft tot jouw GroepsAdministratieProgramma, vind je op
+https://gap.chiro.be/live/{4}/GebruikersRecht
+
+Groeten,
+de helpdesk</value>
+  </data>
+  <data name="TijdelijkeRechtenMailOnderwerp" xml:space="preserve">
+    <value>Tijdelijke gebruiker voor GAP</value>
   </data>
 </root>

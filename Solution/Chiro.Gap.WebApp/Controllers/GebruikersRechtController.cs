@@ -38,7 +38,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Verlengen(int id)
         {
             // Aangezien niet aan iedere GAV een persoon gekoppeld is, is het niet mogelijk om eerst gewoon 
-            // de GelieerdePersoonID van de login te bepalen, en daarna GebruikersRechtToekennen(gpid) aan
+            // de GelieerdePersoonID van de login te bepalen, en daarna ToekennenOfVerlengen(gpid) aan
             // te roepen.  Er moet dus een servicemethod gebruikt worden die rechtstreeks op het gebruikersrecht
 
             ServiceHelper.CallService<IGelieerdePersonenService>(svc => svc.GebruikersRechtVerlengen(id));

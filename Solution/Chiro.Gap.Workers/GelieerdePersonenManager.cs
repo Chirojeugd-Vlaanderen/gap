@@ -79,17 +79,11 @@ namespace Chiro.Gap.Workers
 		/// meeste gevallen niet nodig zullen hebben.</remarks>
 		public GelieerdePersoon Ophalen(int gelieerdePersoonID)
 		{
+            // TODO: uitzoeken of we dit niet gewoon kunnen
+            // doorschakelen naar Ophalen(gelieerdePersoonID, PersoonsExtras.Geen).
+
 			if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
 			{
-				// ENKEL informatie gelieerde persoon en persoon ophalen.
-				// Als je ook informatie wil van de groep, maak dan een aparte
-				// method, of gebruik een lambda-expressie
-				//
-				// In de meeste gevallen zullen we bij het opvragen van een
-				// gelieerde persoon de groepsinfo niet nodig hebben, aangezien
-				// er aan die groepsinfo toch niets zal wijzigen.  Vandaar dat
-				// die groepsinfo hier niet mee komt.
-
 				return _gelieerdePersonenDao.Ophalen(gelieerdePersoonID, foo => foo.Persoon);
 			}
 			else
@@ -502,7 +496,14 @@ namespace Chiro.Gap.Workers
 		/// <returns>De gevraagde rij gelieerde personen.  De personen komen sowieso mee.</returns>
 		public IEnumerable<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersoonIDs, PersoonsExtras extras)
 		{
-			return _gelieerdePersonenDao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs), extras);
+            // Als de gebruiker geen super-GAV is, moet nagekeken worden dat enkel informatie wordt opgehaald
+            // van gelieerde personen waarvoor je de rechten hebt
+
+		    var gpids = _autorisatieMgr.IsSuperGav()
+		                    ? gelieerdePersoonIDs
+		                    : _autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs);
+
+			return _gelieerdePersonenDao.Ophalen(gpids, extras);
 		}
 
 		/// <summary>
@@ -773,7 +774,7 @@ namespace Chiro.Gap.Workers
         /// </summary>
         /// <param name="gp">Slachtoffer van onze spam</param>
         /// <returns>Een e-mailadres van <paramref name="gp"/></returns>
-        public string EMailKiezen(GelieerdePersoon gp)
+        public static string EMailKiezen(GelieerdePersoon gp)
         {
             // orden eerst op 'we mogen er e-mail naar sturen', en dan op 'is het voorkeursadres'.
             // Om maar iets te doen he.

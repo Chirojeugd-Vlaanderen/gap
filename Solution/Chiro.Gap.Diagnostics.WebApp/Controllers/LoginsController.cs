@@ -58,12 +58,31 @@ namespace Chiro.Gap.Diagnostics.WebApp.Controllers
         /// <returns>De view die om bevestiging vraagt</returns>
         public ActionResult RechtenToekennen(string stamNummer)
         {
-            var model = new NotificatieModel();
-
-            model.GroepContactInfo =
-                ServiceHelper.CallService<IAdminService, GroepContactInfo>(svc => svc.ContactInfoOphalen(stamNummer));
+            var model = new NotificatieModel
+                            {
+                                GroepContactInfo =
+                                    ServiceHelper.CallService<IAdminService, GroepContactInfo>(
+                                        svc => svc.ContactInfoOphalen(stamNummer))
+                            };
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Roept de service aan om rechten toe te kennen aan de groep met stamnummer
+        /// <code>model.StamNummer</code>; de service zal mailen naar de persoon met 
+        /// gelieerdepersoonID <code>model.MailOntvangerGelieerdePersoonID</code>.
+        /// </summary>
+        /// <param name="model">Bevat stamnummer en gelieerdepersoonID</param>
+        /// <returns>Achteraf wordt geredirect naar het overzicht van de logins</returns>
+        /// <remarks>Controle of de gelieerde persoon wel gekoppeld is aan de groep,
+        /// gebeurt door de service</remarks>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RechtenToekennen(NotificatieModel model)
+        {
+            ServiceHelper.CallService<IAdminService>(
+                svc => svc.TijdelijkeRechtenGeven(model.MailOntvangerGelieerdePersoonID, model.Reden));
+            return RedirectToAction("Index");
         }
     }
 }

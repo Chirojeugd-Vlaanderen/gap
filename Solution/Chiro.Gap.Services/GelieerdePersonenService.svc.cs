@@ -1047,7 +1047,7 @@ namespace Chiro.Gap.Services
 
             // Creëer/verleng en bewaar gebruikersrecht
 
-            _gebruikersRechtenMgr.ToekennenOfVerlengen(gp.Persoon, gp.Groep, _gpMgr.EMailKiezen(gp));
+            _gebruikersRechtenMgr.ToekennenOfVerlengen(gp.Persoon, gp.Groep, GelieerdePersonenManager.EMailKiezen(gp));
         }
 
         /// <summary>
