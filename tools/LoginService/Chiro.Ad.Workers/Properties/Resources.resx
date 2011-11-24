@@ -118,25 +118,34 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountMailAfsluiting" xml:space="preserve">
-    <value>&lt;p&gt;Op https://extranet.chiro.be/gebruiker kun je je wachtwoord veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen, en je ziet er tot welke online diensten van Chirojeugd Vlaanderen je toegang hebt.&lt;/p&gt;
-&lt;p&gt;Groeten&lt;br /&gt;De Chirohelpdesk (Helpdesk@chiro.be)&lt;/p&gt;</value>
+    <value>Op https://extranet.chiro.be/gebruiker kun je je wachtwoord veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen, en je ziet er tot welke online diensten van Chirojeugd Vlaanderen je toegang hebt.
+
+Groeten
+De Chirohelpdesk (Helpdesk@chiro.be)</value>
   </data>
   <data name="AccountUitbreidingMailAanhef" xml:space="preserve">
-    <value>&lt;p&gt;Dag {0}&lt;/p&gt;
-&lt;p&gt;Je had al een login voor het extranet van de Chiro. Vanaf nu kun je er nog iets meer mee doen. Ben je je loginnaam en/of wachtwoord vergeten? Die gegevens kun je opvragen op https://extranet.chiro.be/wachtwoordvergeten.&lt;/p&gt;</value>
+    <value>Dag {0}
+
+Je had al een login voor het extranet van de Chiro. Vanaf nu kun je er nog iets meer mee doen. Ben je je loginnaam en/of wachtwoord vergeten? Die gegevens kun je opvragen op https://extranet.chiro.be/wachtwoordvergeten.</value>
   </data>
   <data name="GapAccountInfoMail" xml:space="preserve">
-    <value>&lt;p&gt;Dag {0}&lt;/p&gt;
-&lt;p&gt;Je account voor de groepsadministratie (GAP) is aangemaakt. Je vindt dat op https://gap.chiro.be/ (vergeet de 's' niet in 'https'!).&lt;/p&gt;
-&lt;p&gt;Hieronder vind je een voorlopig wachtwoord. Op https://extranet.chiro.be/Gebruiker kun je dat veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen, en je ziet er tot welke online diensten van Chirojeugd Vlaanderen je toegang hebt.&lt;/p&gt;
-&lt;ul&gt;&lt;li&gt;Login: {1}&lt;/li&gt;&lt;li&gt;Wachtwoord: {2}&lt;/li&gt;&lt;/ul&gt;
-&lt;p&gt;Groeten&lt;br /&gt;De Chirohelpdesk (Helpdesk@chiro.be)&lt;/p&gt;</value>
+    <value>Dag {0}
+
+Je account voor de groepsadministratie (GAP) is aangemaakt. Je vindt dat op https://gap.chiro.be/ (vergeet de 's' niet in 'https'!).
+
+Hieronder vind je een voorlopig wachtwoord. Op https://extranet.chiro.be/Gebruiker kun je dat veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen, en je ziet er tot welke online diensten van Chirojeugd Vlaanderen je toegang hebt.
+
+  Login: {1}
+  Wachtwoord: {2}
+
+Groeten
+De Chirohelpdesk (Helpdesk@chiro.be)</value>
     <comment>Parameter 0 = voornaam, 1 = login, 2 = wachtwoord</comment>
   </data>
   <data name="MailNietVerstuurd" xml:space="preserve">
     <value>De mail is niet verstuurd geraakt.</value>
   </data>
   <data name="RechtenUitbreidingGap" xml:space="preserve">
-    <value>&lt;p&gt;Je hebt nu ook toegang tot de GAP-website, waarmee je de ledenadministratie van je groep, gewest of verbond in orde kunt brengen. Surf daarvoor naar https://gap.chiro.be (vergeet de s niet in https).&lt;/p&gt;</value>
+    <value>Je hebt nu ook toegang tot de GAP-website, waarmee je de ledenadministratie van je groep, gewest of verbond in orde kunt brengen. Surf daarvoor naar https://gap.chiro.be (vergeet de s niet in https).</value>
   </data>
 </root>
