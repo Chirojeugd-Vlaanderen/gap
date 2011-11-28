@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Security.Permissions;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
@@ -25,6 +26,8 @@ namespace Chiro.Gap.Diagnostics.Service
         private readonly GebruikersRechtenManager _gebruikersRechtenManager;
         private readonly LedenManager _ledenManager;
         private readonly GelieerdePersonenManager _gelieerdePersonenManager;
+
+        private const string SECURITYGROEP = @"KIPDORP\g-GapSuper";
 
         /// <summary>
         /// Constructor voor de AdminService.  De workers uit de backend (en ihb
@@ -53,6 +56,7 @@ namespace Chiro.Gap.Diagnostics.Service
         /// <param name="code">stamnummer van de groep</param>
         /// <returns>basisgegevens van de groep, en e-mailadressen van contactpersoon
         /// en gekende GAV's</returns>
+        [PrincipalPermission(SecurityAction.Demand, Role = SECURITYGROEP)]
         public GroepContactInfo ContactInfoOphalen(string code)
         {
             var groep = _groepenManager.Ophalen(code);
@@ -115,6 +119,7 @@ namespace Chiro.Gap.Diagnostics.Service
         /// verwittigd wordt over de tijdelijke login</param>
         /// <param name="reden">Extra informatie die naar de notificatie-ontvanger wordt
         /// gestuurd.</param>
+        [PrincipalPermission(SecurityAction.Demand, Role = SECURITYGROEP)]
         public void TijdelijkeRechtenGeven(int notificatieGelieerdePersoonID, string reden)
         {
             var gav = _gebruikersRechtenManager.MijnGavOphalen();
