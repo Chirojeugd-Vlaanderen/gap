@@ -11,6 +11,13 @@ namespace Chiro.Gap.Diagnostics.ServiceContracts
     public interface IAdminService
     {
         /// <summary>
+        /// Hello-world method, enkel voor testing purposes
+        /// </summary>
+        /// <returns>"Hello World!"</returns>
+        [OperationContract]
+        string Hello();
+
+        /// <summary>
         /// Haalt basisgegevens van de groep met stamnr <paramref name="code"/> op, 
         /// samen met de e-mailadressen van contactpersoon en gekende GAV's
         /// </summary>
