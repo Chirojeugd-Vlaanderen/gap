@@ -6,7 +6,7 @@
         Algemeen:</h3>
     <ul>
         <li><a href="http://www.chiro.be/eloket/feedback-gap">Vragen of feedback?</a></li>
-		<li>
+        <li>
             <%=Html.ActionLink("Deadlines", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Deadlines" }) %></li>
         <li>
             <%=Html.ActionLink("Trefwoorden", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Trefwoorden" }) %></li>
@@ -67,6 +67,8 @@
         <li>
             <%=Html.ActionLink("Iemand uitschrijven", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Uitschrijven" })%></li>
         <li>
+            <%=Html.ActionLink("Logins beheren", "ViewTonen", new { Controller = "Handleiding", helpBestand = "GavsBeheren" })%></li>
+        <li>
             <%=Html.ActionLink("Groepen fusioneren", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Fusioneren" })%></li>
         <li>
             <%=Html.ActionLink("'Speciale' afdelingen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "SpecialeAfdelingen" })%></li>
@@ -88,7 +90,6 @@
             <%=Html.ActionLink("Lijsten downloaden", "ViewTonen", new { Controller = "Handleiding", helpBestand = "LijstDownloaden" })%></li>
         <li>
             <%=Html.ActionLink("Etiketten maken", "ViewTonen", new { Controller = "Handleiding", helpBestand = "EtikettenMaken" })%></li>
-
         <li>
             <%=Html.ActionLink("Een verjaardagslijst maken", "ViewTonen", new { Controller = "Handleiding", helpBestand = "ExcelVerjaardagslijst" })%></li>
     </ul>

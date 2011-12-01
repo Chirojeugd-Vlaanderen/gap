@@ -18,6 +18,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -182,9 +183,12 @@
     <Content Include="Content\Screenshots\Fiche_bivakdetails_met_leden.png" />
     <Content Include="Content\Screenshots\Fiche_bivakdetails_zonder_leden.png" />
     <Content Include="Content\Screenshots\Formulier_bivakdetails.png" />
+    <Content Include="Content\Screenshots\Gebruikersrecht_toekennen.png" />
     <Content Include="Content\Screenshots\Inschrijving_uitstap_bevestigen.png" />
     <Content Include="Content\Screenshots\Nieuwe_uitstap.png" />
+    <Content Include="Content\Screenshots\Overzicht_gebruikersrechten.png" />
     <Content Include="Content\Screenshots\Tabblad_bivak.png" />
+    <Content Include="Content\Screenshots\Toegekend_gebruikersrecht.png" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery.autocomplete.js" />
@@ -204,6 +208,7 @@
     <Content Include="Views\Handleiding\Deadlines.aspx" />
     <Content Include="Views\Handleiding\Deelnemersadministratie.aspx" />
     <Content Include="Views\Handleiding\DeelnemersInschrijven.aspx" />
+    <Content Include="Views\Handleiding\GavsBeheren.aspx" />
     <Content Include="Views\Handleiding\MedewerkersInschrijven.aspx" />
     <Content Include="Views\Handleiding\UitstapBewerken.aspx" />
     <Content Include="Views\Handleiding\Uitstappen.aspx" />

@@ -1,7 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.LidInfoModel>" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
-
 <% // TODO: onderstaand script moet naar 'head'. %>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -86,8 +85,8 @@
             {%>
     <tr class="even">
         <%}
-        else
-        {%>
+            else
+            {%>
         <tr class="oneven">
             <%}%>
             <td>
@@ -101,7 +100,7 @@
                 <%= lidOverzicht.Type == LidType.Kind ? "Lid" : "Leiding" %>
             </td>
             <td>
-                <%=Html.PersoonsLink(lidOverzicht.GelieerdePersoonID, lidOverzicht.VoorNaam, lidOverzicht.Naam)%> 
+                <%=Html.PersoonsLink(lidOverzicht.GelieerdePersoonID, lidOverzicht.VoorNaam, lidOverzicht.Naam)%>
                 <%=lidOverzicht.SterfDatum.HasValue? "&nbsp;(&dagger;)" : string.Empty %>
             </td>
             <td class="right">
@@ -136,11 +135,19 @@
                 <%=lidOverzicht.EindeInstapPeriode == null ? String.Empty : ((DateTime)lidOverzicht.EindeInstapPeriode).ToString("d") %>
             </td>
             <td>
-                <%=Html.Telefoon(lidOverzicht.TelefoonNummer) %>
+                <%if (!lidOverzicht.SterfDatum.HasValue)
+                  {%>
+                <%=Html.Telefoon(lidOverzicht.TelefoonNummer)%>
+                <%
+                    }%>
             </td>
             <td>
+                <%if (!lidOverzicht.SterfDatum.HasValue)
+                  {%>
                 <a href='mailto:<%=lidOverzicht.Email %>'>
                     <%=lidOverzicht.Email %></a>
+                <%
+                    }%>
             </td>
         </tr>
         <% } %>
