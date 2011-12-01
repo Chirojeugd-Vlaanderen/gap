@@ -489,25 +489,6 @@ namespace Chiro.Gap.WebApp.Controllers
             return new ExcelResult(stream, bestandsNaam);
         }
 
-		// Opmerking: Deactiveren biedt de mogelijkheid om gauw 1 persoon uit te schrijven via een url.
-		// Meerdere personen uitschrijven kan door ze te selecteren, en dan de juiste actie te kiezen
-		// (de feedback is dan nog verkeerd; zie #1090)
-
-        /// <summary>
-        /// Schrijft één gelieerde persoon uit, en toont de bijgewerkte ledenlijst
-        /// </summary>
-        /// <param name="id">GelieerdePersoonID van uit te schrijven gelieerde persoon</param>
-        /// <param name="groepID">ID van de groep waarin de gebruker werkt</param>
-        /// <returns></returns>
-        /// <remarks>Uitschrijven wil zeggen: maak de leden gekoppeld aan de gelieerde persoon met
-        /// GelieerdePersoonID <paramref name="id"/> inactief</remarks>
-        [HandleError]
-        public ActionResult DeActiveren(int id, int groepID){
-        	var gpIDs = new List<int> {id};
-        	GelieerdePersonenUitschrijven(gpIDs, groepID, Properties.Resources.LidNonActiefGemaakt);
-        	return TerugNaarVorigeLijst();
-        }
-
     	// TODO (#967): Er zijn methods 'AfdelingBewerken' (1 persoon) en 'AfdelingenBewerken' (meerdere personen)
         // Waarschijnlijk kan er een en ander vereenvoudigd worden
 
