@@ -196,11 +196,12 @@ namespace Chiro.Gap.Services
                                     foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
                                     continue;
                                 }
-                                l.NonActief = false;
+								var gp1 = gp;
+								l = _ledenMgr.HerInschrijvenVolgensVoorstel(l, gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
                             }
                             else // nieuw lid
                             {
-                            	GelieerdePersoon gp1 = gp;
+                            	var gp1 = gp;
                             	l = _ledenMgr.InschrijvenVolgensVoorstel(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
                             }
 
@@ -326,51 +327,18 @@ namespace Chiro.Gap.Services
         /// <returns>GelieerdePersoonID van lid</returns>
         public int TypeToggle(int id)
         {
-            LidType oorspronkelijkType = LidType.Alles;
+			var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon);
 
-            try
-            {
-                Lid l = _ledenMgr.Ophalen(
-                    id,
-                    LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Groep | LidExtras.Persoon | LidExtras.AlleAfdelingen);
-
-                oorspronkelijkType = l.Type;
-                int gpID = l.GelieerdePersoon.ID;
-
-                _ledenMgr.TypeToggle(l);
-
-                return gpID;
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return 0;
-            }
-            catch (InvalidOperationException ex)
-            {
-                // TODO (#761): Ervoor zorgen dat LidMaken/LeidingMaken duidelijkere exceptions throwen.
-                // Als workaround een andere exception laten afhandelen
-
-                FoutNummer nr;
-
-                switch (oorspronkelijkType)
-                {
-                    case LidType.Kind:
-                        // Fout bij omschakelen kind -> leiding: geef leidingfout
-                        nr = FoutNummer.AlgemeneLeidingFout;
-                        break;
-                    case LidType.Leiding:
-                        // Fout bij omschakelen leiding -> kind: geef kindfout
-                        nr = FoutNummer.AlgemeneKindFout;
-                        break;
-                    default:
-                        nr = FoutNummer.AlgemeneFout;
-                        break;
-                }
-
-                FoutAfhandelaar.FoutAfhandelen(new FoutNummerException(nr, ex.Message));
-                return 0;
-            }
+			var l = new List<InTeSchrijvenLid>();
+        	var voorstel = new InTeSchrijvenLid
+        	               	{
+        	               		GelieerdePersoonID = lid.GelieerdePersoon.ID,
+        	               		LeidingMaken = lid is Kind,
+								AfdelingsJaarIrrelevant = true
+        	               	};
+        	l.Add(voorstel);
+        	string berichten;
+        	return Inschrijven(l, out berichten).First();
         }
 
         #endregion

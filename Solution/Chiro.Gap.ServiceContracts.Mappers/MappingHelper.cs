@@ -533,9 +533,12 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(
                     dst => dst.GelieerdePersoonID,
                     opt => opt.MapFrom(src => src.GelieerdePersoon.ID))
+				.ForMember(
+					dst => dst.AfdelingsJaarIrrelevant,
+					opt => opt.MapFrom(src => false))
                 .ForMember(
-                    dst => dst.AfdelingsJaarID,
-                    opt => opt.MapFrom(src => src is Leiding ? (((Leiding)src).AfdelingsJaar.FirstOrDefault() == null ? -1 : ((Leiding)src).AfdelingsJaar.First().ID) : ((Kind)src).AfdelingsJaar.ID))
+                    dst => dst.AfdelingsJaarIDs,
+                    opt => opt.MapFrom(src => src is Leiding ? (((Leiding)src).AfdelingsJaar.Select(e => e.ID)) : new List<int>{((Kind) src).AfdelingsJaar.ID}))
                 .ForMember(
                     dst => dst.LeidingMaken,
                     opt => opt.MapFrom(src => src is Leiding))
@@ -545,8 +548,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             Mapper.CreateMap<InTeSchrijvenLid, LidVoorstel>()
                 .ForMember(
-                    dst => dst.AfdelingsJaarID,
-                    opt => opt.MapFrom(src => src.AfdelingsJaarID))
+					dst => dst.AfdelingsJaarIDs,
+					opt => opt.MapFrom(src => src.AfdelingsJaarIDs))
+				.ForMember(
+					dst => dst.AfdelingsJarenIrrelevant,
+					opt => opt.MapFrom(src => src.AfdelingsJaarIrrelevant))
                 .ForMember(
                     dst => dst.LeidingMaken,
                     opt => opt.MapFrom(src => src.LeidingMaken));

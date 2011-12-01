@@ -103,7 +103,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				var gelieerdePersoonID = model.GelieerdePersoonIDs[i];
 				if(model.InTeSchrijvenGelieerdePersoonIDs.Contains(gelieerdePersoonID))
 				{
-					lijst.Add(new InTeSchrijvenLid() { GelieerdePersoonID = gelieerdePersoonID, AfdelingsJaarID = model.ToegekendeAfdelingsJaarIDs[i], LeidingMaken = model.LeidingMakenGelieerdePersoonIDs.Contains(gelieerdePersoonID)} );
+					lijst.Add(new InTeSchrijvenLid() { GelieerdePersoonID = gelieerdePersoonID, AfdelingsJaarIDs = new List<int>{model.ToegekendeAfdelingsJaarIDs[i]}, LeidingMaken = model.LeidingMakenGelieerdePersoonIDs.Contains(gelieerdePersoonID), AfdelingsJaarIrrelevant = false});
 				}
 			}
 

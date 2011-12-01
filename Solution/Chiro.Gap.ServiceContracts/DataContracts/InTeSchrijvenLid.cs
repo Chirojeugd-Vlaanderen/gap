@@ -35,9 +35,14 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public bool LeidingMaken { get; set; }
 
 		/// <summary>
-		/// De ID van het eventuele gekozen afdelingsjaar, anders null. (zou nooit null mogen zijn als leidingmaken true is
+		/// De IDs van de eventuele gekozen afdelingsjaars.
 		/// </summary>
 		[DataMember]
-		public int? AfdelingsJaarID { get; set; }
+		public IEnumerable<int> AfdelingsJaarIDs { get; set; }
+
+		/// <summary>
+		/// Boolean die aangeeft of het afdelingsjaar aangepast moet worden.
+		/// </summary>
+		public bool AfdelingsJaarIrrelevant;
 	}
 }

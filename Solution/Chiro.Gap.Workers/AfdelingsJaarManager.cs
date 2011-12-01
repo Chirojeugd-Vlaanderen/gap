@@ -415,13 +415,10 @@ namespace Chiro.Gap.Workers
 
                 resultaat = bewaaardeKinderen.Union<Lid>(bewaardeLeiding);
 
-                if (werkjaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten)
-                {
                     foreach (var l in resultaat)
                     {
                         _ledenSync.AfdelingenUpdaten(l);
                     }
-                }
 #if KIPDORP
                 tx.Complete();
             }

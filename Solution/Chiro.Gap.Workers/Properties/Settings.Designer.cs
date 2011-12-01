@@ -124,15 +124,6 @@ namespace Chiro.Gap.Workers.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2011")]
-        public int MinWerkJaarLidOverzetten {
-            get {
-                return ((int)(this["MinWerkJaarLidOverzetten"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public int MaandenGebruikersRechtVerlengbaar {
             get {

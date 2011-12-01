@@ -261,7 +261,7 @@ namespace Chiro.Gap.Workers
     	/// <param name="gwj">Groepswerkjaar waarin leiding te maken</param>
     	/// <param name="isJaarovergang">Geeft aan of het over de automatische jaarovergang gaat.
     	/// (relevant voor probeerperiode)</param>
-    	/// <param name="afdelingsJaar">Het afdelingsjaar waarin de nieuwe leiding zeker moet ingeschreven worden</param>
+		/// <param name="afdelingsJaren">De afdelingsjaren waarin de nieuwe leiding zeker moet ingeschreven worden</param>
     	/// <returns>Nieuw leidingsobject; niet gepersisteerd</returns>
     	/// <remarks>
     	/// Private; andere lagen moeten via 'Inschrijven' gaan.
@@ -276,7 +276,7 @@ namespace Chiro.Gap.Workers
     	/// <throws>FoutNummerException</throws>
     	/// <throws>GeenGavException</throws>
     	/// </summary>
-    	private Leiding LeidingMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarovergang, AfdelingsJaar afdelingsJaar)
+    	private Leiding LeidingMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarovergang, List<AfdelingsJaar> afdelingsJaren)
         {
 			Debug.Assert(gp!=null && gp.GebDatumMetChiroLeefTijd!=null);
 
@@ -287,10 +287,14 @@ namespace Chiro.Gap.Workers
 				throw new GapException("De persoon is te jong om leiding te worden en je groep heeft nog geen afdeling voor die leeftijd.");
 			}
 
-			if(leiding!=null && afdelingsJaar != null)
+			if(leiding!=null)
 			{
-				leiding.AfdelingsJaar.Add(afdelingsJaar);
-				afdelingsJaar.Leiding.Add(leiding);
+				foreach(var a in afdelingsJaren)
+				{
+					leiding.AfdelingsJaar.Add(a);
+					a.Leiding.Add(leiding);	
+				}
+				
 			}
 
 			return leiding;
@@ -330,6 +334,101 @@ namespace Chiro.Gap.Workers
 		{
 			return Inschrijven(gp, gwj, isJaarOvergang, voorstellid);
 		}
+		public Lid HerInschrijvenVolgensVoorstel(Lid lid, GelieerdePersoon gelieerdePersoon, GroepsWerkJaar groepsWerkJaar, bool isJaarOvergang, LidVoorstel voorstellid)
+		{
+			if (!_autorisatieMgr.IsGavLid(lid.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+			
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+			// Voor 't gemak eerst verwijderen, en dan terug aanmaken.
+
+			// als type wisselt, dan functies deleten die het andere type niet mag hebben
+			if(lid is Kind && voorstellid.LeidingMaken)
+			{
+				foreach (var fn in lid.Functie)
+				{
+					// TODO check whether it is a function which the new type does not have
+					//{
+					fn.TeVerwijderen = true;
+					//}
+					// TODO reassign functies to nieuw lid
+				}
+			}
+
+			if (lid is Kind)
+			{
+				var kind = lid as Kind;
+				kind.TeVerwijderen = true;
+				_daos.KindDao.Bewaren(kind, knd => knd.AfdelingsJaar, knd => knd.Functie);
+			}
+			else
+			{
+				var leiding = lid as Leiding;
+				Debug.Assert(leiding != null);
+				foreach (var aj in leiding.AfdelingsJaar)
+				{
+					aj.TeVerwijderen = true;
+				}
+				leiding.TeVerwijderen = true;
+				_daos.LeidingDao.Bewaren(leiding, ld => ld.AfdelingsJaar, ld => ld.Functie);
+			}
+
+			// Met heel dat 'TeVerwijderen'-gedoe, is het domein typisch
+			// niet meer consistent na iets te verwijderen.
+
+			gelieerdePersoon.Lid.Clear();
+			groepsWerkJaar.Lid.Clear();
+			foreach (var aj in groepsWerkJaar.AfdelingsJaar)
+			{
+				aj.TeVerwijderen = false;
+			}
+
+			// Maak opnieuw lid
+
+			var nieuwLid = Inschrijven(gelieerdePersoon, groepsWerkJaar, isJaarOvergang, voorstellid);
+			nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
+			if(voorstellid.AfdelingsJarenIrrelevant)
+			{
+				if (lid is Kind)
+				{
+					var kind = lid as Kind;
+					var lijst = groepsWerkJaar.AfdelingsJaar.Where(e => voorstellid.AfdelingsJaarIDs.Contains(e.ID));
+					// TODO check lijst lengte 1
+					foreach(var afdelingsJaar in lijst)
+					{
+						kind.AfdelingsJaar = afdelingsJaar;
+						afdelingsJaar.Kind.Add(kind);
+					}
+					
+				}
+				else
+				{
+					var leiding = lid as Leiding;
+					Debug.Assert(leiding != null);
+					var lijst = groepsWerkJaar.AfdelingsJaar.Where(e => voorstellid.AfdelingsJaarIDs.Contains(e.ID));
+					foreach (var afdelingsJaar in lijst)
+					{
+						leiding.AfdelingsJaar.Add(afdelingsJaar);
+						afdelingsJaar.Leiding.Add(leiding);
+					}
+				}
+			}
+
+			// In 2 keer syncen; pragmatische aanpak voor TODO #762
+			_sync.TypeUpdaten(nieuwLid);
+			_sync.AfdelingenUpdaten(nieuwLid);
+
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
+			return nieuwLid;
+		}
 
     	/// <summary>
     	/// Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet.
@@ -366,37 +465,41 @@ namespace Chiro.Gap.Workers
             var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
     		bool leidingmaken;
-    		AfdelingsJaar afdelingsJaar = null;
+    		var afdelingsJaar = new List<AfdelingsJaar>();
 
 			if(voorstellid!=null)
 			{
 				leidingmaken = voorstellid.LeidingMaken;
-				if (voorstellid.AfdelingsJaarID == null && !leidingmaken)
+				if(!voorstellid.AfdelingsJarenIrrelevant)
 				{
-					throw new GapException("Een kind moet een afdeling krijgen bij het inschrijven.");
-				}
-				if(voorstellid.AfdelingsJaarID != null)
-				{
+					if (voorstellid.AfdelingsJaarIDs.Count() != 1 && !leidingmaken)
+					{
+						throw new GapException("Een kind moet exact 1 afdeling krijgen bij het inschrijven.");
+					}
 					afdelingsJaar = (from a in gwj.AfdelingsJaar
-							 // NOTE: #1073: het gewenste gedrag is dat we het lid sowieso in de voorgestelde afdeling inschrijven , wat de leeftijd ook is.
-					                 where /*(leidingmaken /*|| (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)) &&*/
-					                       voorstellid.AfdelingsJaarID == a.ID
-					                 select a).FirstOrDefault();
-					if(afdelingsJaar==null)
+									 // NOTE: #1073: het gewenste gedrag is dat we het lid sowieso in de voorgestelde afdeling inschrijven , wat de leeftijd ook is.
+									 where /*(leidingmaken /*|| (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)) &&*/
+										   voorstellid.AfdelingsJaarIDs.Contains(a.ID)
+									 select a).ToList();
+					if (afdelingsJaar.Count()==0)
 					{
 						throw new GapException("Het gekozen afdelingsjaar is ongeldig.");
 					}
 				}
 			}
-			else
+			else // automagisch voorstel genereren
 			{
 				// TODO de check op speciale afdeling is vermoedelijk een fout, je wilt wel degelijk een voorstel genereren voor speciale afdelingen 
 				// TODO 1145 er kan geen voorstel worden gegenereerd als je in geen afdeling past => eigenlijk wil je dan ook gewoon een afdeling voorstellen, want je hoeft de chiroleeftijd niet aan te passen om lid te maken
 				afdelingsJaar = (from a in gwj.AfdelingsJaar
 									 where (a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal)
 										   && (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)
-									 select a).FirstOrDefault();
-				leidingmaken = afdelingsJaar== null;
+									 select a).ToList();
+				leidingmaken = afdelingsJaar.Count()==0;
+				if(afdelingsJaar.Count()>1)
+				{
+					afdelingsJaar = new List<AfdelingsJaar>{afdelingsJaar.First()};
+				}
 			}
 
             Lid nieuwlid;
@@ -406,8 +509,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				// TODO voorgestelde afdelingen meegeven
-				nieuwlid = KindMaken(gp, gwj, isJaarOvergang, afdelingsJaar);
+				nieuwlid = KindMaken(gp, gwj, isJaarOvergang, afdelingsJaar.First());
 			}
             return nieuwlid;
         }
@@ -483,7 +585,7 @@ namespace Chiro.Gap.Workers
 #endif
                        if (syncen)
                        {
-                           if (!lid.NonActief && lid.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten)
+                           if (!lid.NonActief)
                            {
                                _sync.Bewaren(lid);
                            }
@@ -515,7 +617,7 @@ namespace Chiro.Gap.Workers
 #endif
                         if (syncen)
                         {
-                            if (!lid.NonActief && lid.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten)
+                            if (!lid.NonActief)
                             {
                                 _sync.Bewaren(lid);
                             }
@@ -676,104 +778,6 @@ namespace Chiro.Gap.Workers
                 Properties.Settings.Default.WerkjaarStartNationaal.Day).AddDays(-1);
 
             return werkJaarStart <= dateTime && dateTime <= werkJaarStop;
-        }
-
-        /// <summary>
-        /// Maakt van een kindlid een leid(st)er of omgekeerd.  Persisteert.
-        /// Functies gaan voor het gemak verloren.
-        /// Gekoppelde afdelingen gaan verloren; een lid krijgt meteen
-        /// een juiste afdeling.
-        /// </summary>
-        /// <param name="lid">Lid waarvan type moet worden veranderd</param>
-        /// <returns></returns>
-        public Lid TypeToggle(Lid lid)
-        {
-            if (!_autorisatieMgr.IsGavLid(lid.ID))
-            {
-                throw new GeenGavException(Properties.Resources.GeenGav);
-            }
-
-            var gelieerdePersoon = lid.GelieerdePersoon;
-            var groepsWerkJaar = lid.GroepsWerkJaar;
-            var nieuwType = LidType.Alles & (~lid.Type);
-
-            Lid nieuwLid;
-
-#if KIPDORP
-            using (var tx = new TransactionScope())
-            {
-#endif
-                // Voor 't gemak eerst verwijderen, en dan terug aanmaken.
-
-                foreach (var fn in lid.Functie)
-                {
-                    fn.TeVerwijderen = true;
-                }
-
-                if (lid is Kind)
-                {
-                    var kind = lid as Kind;
-                    kind.TeVerwijderen = true;
-                    _daos.KindDao.Bewaren(kind, knd => knd.AfdelingsJaar, knd => knd.Functie);
-                }
-                else
-                {
-                    var leiding = lid as Leiding;
-
-                    Debug.Assert(leiding != null);
-
-                    foreach (var aj in leiding.AfdelingsJaar)
-                    {
-                        aj.TeVerwijderen = true;
-                    }
-                    leiding.TeVerwijderen = true;
-                    _daos.LeidingDao.Bewaren(leiding, ld => ld.AfdelingsJaar, ld => ld.Functie);
-                }
-
-                // Met heel dat 'TeVerwijderen'-gedoe, is het domein typisch
-                // niet meer consistent na iets te verwijderen.
-
-                gelieerdePersoon.Lid.Clear();
-                groepsWerkJaar.Lid.Clear();
-                foreach (var aj in groepsWerkJaar.AfdelingsJaar)
-                {
-                    aj.TeVerwijderen = false;
-                }
-
-                // Maak opnieuw lid
-
-                if (nieuwType == LidType.Kind)
-                {
-                    nieuwLid = KindMaken(gelieerdePersoon, groepsWerkJaar, false, null);
-                    nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
-                    nieuwLid = _daos.KindDao.Bewaren(
-                        nieuwLid as Kind,
-                        ld => ld.GroepsWerkJaar.WithoutUpdate(),
-                        ld => ld.GelieerdePersoon.WithoutUpdate(),
-                        ld => ld.AfdelingsJaar.WithoutUpdate());
-                }
-                else
-                {
-                    nieuwLid = LeidingMaken(gelieerdePersoon, groepsWerkJaar, false, null);
-                    nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
-                    nieuwLid = _daos.LeidingDao.Bewaren(
-                        nieuwLid as Leiding,
-                        ld => ld.GroepsWerkJaar.WithoutUpdate(),
-                        ld => ld.GelieerdePersoon.WithoutUpdate());
-                }
-
-                if (nieuwLid.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten)
-                {
-                    // In 2 keer syncen; pragmatische aanpak voor TODO #762
-                    _sync.TypeUpdaten(nieuwLid);
-                    _sync.AfdelingenUpdaten(nieuwLid);
-                }
-
-#if KIPDORP
-                tx.Complete();
-            }
-#endif
-            return nieuwLid;
         }
 
         /// <summary>

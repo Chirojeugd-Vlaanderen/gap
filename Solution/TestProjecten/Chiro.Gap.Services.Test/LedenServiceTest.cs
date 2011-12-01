@@ -150,8 +150,9 @@ namespace Chiro.Gap.Services.Test
 			gps.Add(TestInfo.GELIEERDEPERSOON2ID);
 			string fouten;
 			var voorstel = target.VoorstelTotInschrijvenGenereren(gps, out fouten).First();
-			int gekozenafdelingsjaarID = voorstel.AfdelingsJaarID == TestInfo.AFDELINGSJAAR2ID ? TestInfo.AFDELINGSJAAR1ID : TestInfo.AFDELINGSJAAR2ID;
-			voorstel.AfdelingsJaarID = gekozenafdelingsjaarID;
+			int gekozenafdelingsjaarID = voorstel.AfdelingsJaarIDs.Contains(TestInfo.AFDELINGSJAAR2ID) ? TestInfo.AFDELINGSJAAR1ID : TestInfo.AFDELINGSJAAR2ID;
+			voorstel.AfdelingsJaarIDs = new List<int> {gekozenafdelingsjaarID};
+			voorstel.AfdelingsJaarIrrelevant = false;
 			List<InTeSchrijvenLid> defvoorstel = new List<InTeSchrijvenLid>();
 			defvoorstel.Add(voorstel);
 			int lidID = target.Inschrijven(defvoorstel, out fouten).First();
