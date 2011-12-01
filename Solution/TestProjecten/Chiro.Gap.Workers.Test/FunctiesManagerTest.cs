@@ -71,8 +71,7 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 0,
-				LidType.Alles,
-				0);
+				LidType.Alles);
 
 			IEnumerable<Functie> functies = new Functie[] { f };
 
@@ -106,8 +105,7 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 0,
-				LidType.Alles,
-				0);
+				LidType.Alles);
 
 			IEnumerable<Functie> functies = new Functie[] { f };
 
@@ -142,8 +140,9 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 0,
-				LidType.Alles,
-				testData.HuidigGwj.WerkJaar + 1);	// pas geldig volgend groepswerkjaar
+				LidType.Alles);
+
+		    f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
 
 			IEnumerable<Functie> functies = new Functie[] { f };
 
@@ -174,8 +173,7 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 0,
-				LidType.Kind,
-				testData.HuidigGwj.WerkJaar);
+				LidType.Kind);
 
 			IEnumerable<Functie> functies = new Functie[] { f };
 
@@ -204,8 +202,7 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 1,
-				LidType.Alles,
-				0);
+				LidType.Alles);
 
 			// Functie bewaren, zodat dummydao een ID toekent.
 
@@ -244,8 +241,9 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 1,
-				LidType.Alles,
-				testData.HuidigGwj.WerkJaar + 1);	// pas volgend jaar geldig
+				LidType.Alles);	// pas volgend jaar geldig
+
+		    f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
 
 			f.ID = testData.NieuweFunctieID;
 
@@ -307,7 +305,6 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 0,
-				0,
 				0);
 
 			// Act
@@ -362,8 +359,7 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 0,
-				LidType.Alles,
-				0);
+				LidType.Alles);
 
 			// Het DummyDao kent een ID toe aan f.  (Voor DummyDao is dat OK, maar in echte situaties
 			// niet, omdat de nieuwe f niet gekoppeld zou zijn aan de groep.  Eigenlijk moeten we

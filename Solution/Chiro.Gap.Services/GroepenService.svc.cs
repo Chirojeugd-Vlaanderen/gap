@@ -745,9 +745,11 @@ namespace Chiro.Gap.Services
         {
             try
             {
-                Groep g = _groepenMgr.Ophalen(groepID, GroepsExtras.Functies);
+                GroepsWerkJaar gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID,
+                                                                             GroepsWerkJaarExtras.GroepsFuncties);
+                Groep g = gwj.Groep;
 
-                _groepenMgr.FunctieToevoegen(g, naam, code, maxAantal, minAantal, lidType, werkJaarVan);
+                _groepenMgr.FunctieToevoegen(g, naam, code, maxAantal, minAantal, lidType);
                 g = _groepenMgr.Bewaren(g, e => e.Functie);
 
                 return (from fun in g.Functie

@@ -68,11 +68,6 @@
 			<%=Html.EditorFor(mdl => mdl.NieuweFunctie.MinAantal) %><br />
 			(Moet 0 zijn als er geen minimumaantal is)<%=Html.ValidationMessageFor(mdl => mdl.NieuweFunctie.MinAantal) %>
 		</p>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.NieuweFunctie.WerkJaarVan) %>
-			<%=Html.EditorFor(mdl => mdl.NieuweFunctie.WerkJaarVan) %><br />
-			(Mag leeg blijven als het er niet toe doet)
-		</p>
 <% 
 		if ((Model.Detail.Niveau & Niveau.Groep) != 0)
 		{

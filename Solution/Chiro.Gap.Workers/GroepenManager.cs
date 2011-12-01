@@ -221,13 +221,12 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Maakt een nieuwe (groepseigen) functie voor groep <paramref name="g"/>.  Persisteert niet.
         /// </summary>
-        /// <param name="g">Groep waarvoor de functie gemaakt wordt</param>
+        /// <param name="g">Groep waarvoor de functie gemaakt wordt, inclusief minstens het recentste werkjaar</param>
         /// <param name="naam">Naam van de functie</param>
         /// <param name="code">Code van de functie</param>
         /// <param name="maxAantal">Maximumaantal leden in de categorie.  Onbeperkt indien null.</param>
         /// <param name="minAantal">Minimumaantal leden in de categorie.</param>
         /// <param name="lidType">LidType waarvoor de functie van toepassing is</param>
-        /// <param name="werkJaarVan">Werkjaar vanaf wanneer de categorie gebruikt mag worden.</param>
         /// <returns>De nieuwe (gekoppelde) functie</returns>
         public Functie FunctieToevoegen(
             Groep g,
@@ -235,8 +234,7 @@ namespace Chiro.Gap.Workers
             string code,
             int? maxAantal,
             int minAantal,
-            LidType lidType,
-            int? werkJaarVan)
+            LidType lidType)
         {
             if (!_autorisatieMgr.IsGavGroep(g.ID))
             {
@@ -286,7 +284,7 @@ namespace Chiro.Gap.Workers
                 Niveau = niveau,
                 Naam = naam,
                 WerkJaarTot = null,
-                WerkJaarVan = werkJaarVan,
+                WerkJaarVan = g.GroepsWerkJaar.OrderByDescending(gwj=>gwj.WerkJaar).First().WerkJaar,
                 IsNationaal = false
             };
 
