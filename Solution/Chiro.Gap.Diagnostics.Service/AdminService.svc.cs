@@ -26,6 +26,7 @@ namespace Chiro.Gap.Diagnostics.Service
         private readonly GebruikersRechtenManager _gebruikersRechtenManager;
         private readonly LedenManager _ledenManager;
         private readonly GelieerdePersonenManager _gelieerdePersonenManager;
+        private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
 
         private const string SECURITYGROEP = @"KIPDORP\g-GapSuper";
 
@@ -37,16 +38,19 @@ namespace Chiro.Gap.Diagnostics.Service
         /// <param name="gebruikersRechtenManager">Bevat gebruikersrechtgerelateerde methods van de backend</param>
         /// <param name="ledenManager">Bevat ledengerelateerde methods van de backend</param>
         /// <param name="gelieerdePersonenManager">Methods van backend m.b.t. gelieerde personen</param>
+        /// <param name="groepsWerkJaarManager">Methods van backend m.b.t. groepswerkjaar</param>
         public AdminService(
             GroepenManager groepenManager, 
             GebruikersRechtenManager gebruikersRechtenManager,
             GelieerdePersonenManager gelieerdePersonenManager,
+            GroepsWerkJaarManager groepsWerkJaarManager,
             LedenManager ledenManager)
         {
             _groepenManager = groepenManager;
             _gebruikersRechtenManager = gebruikersRechtenManager;
             _ledenManager = ledenManager;
             _gelieerdePersonenManager = gelieerdePersonenManager;
+            _groepsWerkJaarManager = groepsWerkJaarManager;
         }
 
         /// <summary>
@@ -69,15 +73,16 @@ namespace Chiro.Gap.Diagnostics.Service
         [PrincipalPermission(SecurityAction.Demand, Role = SECURITYGROEP)]
         public GroepContactInfo ContactInfoOphalen(string code)
         {
-            var groep = _groepenManager.Ophalen(code);
-            var result = Mapper.Map<Groep, GroepContactInfo>(groep);
+            var groepsWerkJaar = _groepsWerkJaarManager.RecentsteOphalen(code, GroepsWerkJaarExtras.Groep);
+            
+            var result = Mapper.Map<Groep, GroepContactInfo>(groepsWerkJaar.Groep);
 
             var contactpersonenMetEmail =
                 (from l in _ledenManager.Zoeken(new LidFilter
                                                     {
                                                         FunctieID = (int) NationaleFunctie.ContactPersoon,
-                                                        GroepID = groep.ID,
-                                                        LidType = LidType.Leiding
+                                                        LidType = LidType.Leiding,
+                                                        GroepsWerkJaarID = groepsWerkJaar.ID
                                                     },
                                                 LidExtras.Communicatie|LidExtras.Persoon)
                  where !String.IsNullOrEmpty(GelieerdePersonenManager.EMailKiezen(l.GelieerdePersoon))
@@ -90,7 +95,7 @@ namespace Chiro.Gap.Diagnostics.Service
                                 VolledigeNaam = l.GelieerdePersoon.Persoon.VolledigeNaam
                             }).ToArray();
 
-            var gekendeGavs = (from gp in _gebruikersRechtenManager.GavGelieerdePersonenOphalen(groep.ID)
+            var gekendeGavs = (from gp in _gebruikersRechtenManager.GavGelieerdePersonenOphalen(groepsWerkJaar.Groep.ID)
                                where !String.IsNullOrEmpty(GelieerdePersonenManager.EMailKiezen(gp))
                                select new MailContactInfo
                                           {
@@ -101,9 +106,12 @@ namespace Chiro.Gap.Diagnostics.Service
                                               VolledigeNaam = gp.Persoon.VolledigeNaam
                                           }).ToArray();
 
-            result.Contacten = contactpersonenMetEmail.Union(gekendeGavs).Distinct().ToArray();
+            result.Contacten = contactpersonenMetEmail.Union(gekendeGavs)
+                // Ik had hier graag een .Distinct() gedaan, maar dat werkt niet.  Ook  niet als ik
+                // Equals en GetHashCode overload.  Dus doe ik het omslachtig
+                .GroupBy(src => src.GelieerdePersoonID).Select(src => src.First()).ToArray();
 
-            // omslachtige loops, maar normaal gezien zal het over een beperkt aantal gaan
+            // omslachtige loops, maar normaal gezien zal het over een beperkt aantal gaan))
 
             foreach (var c in result.Contacten)
             {

@@ -21,9 +21,11 @@ namespace Chiro.Gap.Workers
     {
         private const string GROEPSWERKJAARCACHEKEY = "gwj{0}";
         private const string NATIONALEFUNCTIESCACHEKEY = "natfun";
+        private const string GROEPIDCACHEKEY = "gid_{0}";
 
         private readonly IGroepsWerkJaarDao _groepsWerkJaarDao;
         private readonly IFunctiesDao _functiesDao;
+        private readonly IGroepenDao _groepenDao;
 
         private readonly Cache _cache = HttpRuntime.Cache;
 
@@ -33,10 +35,12 @@ namespace Chiro.Gap.Workers
         /// </summary>
         /// <param name="groepsWerkJaarDao">Zorgt voor data access ivm groepswerkjaren</param>
         /// <param name="functiesDao">Data access voor functies</param>
-        public VeelGebruikt(IGroepsWerkJaarDao groepsWerkJaarDao, IFunctiesDao functiesDao)
+        /// <param name="groepenDao">Data access voor groepen</param>
+        public VeelGebruikt(IGroepsWerkJaarDao groepsWerkJaarDao, IFunctiesDao functiesDao, IGroepenDao groepenDao)
         {
             _groepsWerkJaarDao = groepsWerkJaarDao;
             _functiesDao = functiesDao;
+            _groepenDao = groepenDao;
         }
 
         /// <summary>
@@ -95,6 +99,32 @@ namespace Chiro.Gap.Workers
             }
 
             return _cache[NATIONALEFUNCTIESCACHEKEY] as IEnumerable<Functie>;
+        }
+
+        /// <summary>
+        /// Haalt het groepID van de groep met gegeven stamnummer op uit de cache.
+        /// </summary>
+        /// <param name="code">stamnummer van groep waarvan groepID te bepalen is</param>
+        /// <returns>GroepID van de groep met stamnummer <paramref name="code"/>.</returns>
+        public int CodeNaarGroepID(string code)
+        {
+            int? groepID = (int?) _cache.Get(String.Format(GROEPIDCACHEKEY, code));
+
+            if (groepID == null || groepID == 0)
+            {
+                groepID = _groepenDao.Ophalen(code).ID;
+
+                _cache.Add(
+                    String.Format(GROEPIDCACHEKEY, code),
+                    groepID,
+                    null,
+                    Cache.NoAbsoluteExpiration,
+                    new TimeSpan(2, 0, 0),
+                    CacheItemPriority.Normal,
+                    null);
+            }
+
+            return groepID ?? 0;
         }
     }
 }

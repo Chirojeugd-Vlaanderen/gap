@@ -31,5 +31,12 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <returns>Lijstje nationale functies</returns>
 		IEnumerable<Functie> NationaleFunctiesOphalen();
+
+        /// <summary>
+        /// Haalt het groepID van de groep met gegeven stamnummer op uit de cache.
+        /// </summary>
+        /// <param name="code">stamnummer van groep waarvan groepID te bepalen is</param>
+        /// <returns>GroepID van de groep met stamnummer <paramref name="code"/>.</returns>
+	    int CodeNaarGroepID(string code);
 	}
 }

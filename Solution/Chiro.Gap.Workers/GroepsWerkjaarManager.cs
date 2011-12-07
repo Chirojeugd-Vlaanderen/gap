@@ -95,7 +95,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>Het recentste Groepswerkjaar voor de opgegeven groep</returns>
 		public GroepsWerkJaar RecentsteOphalen(int groepID, GroepsWerkJaarExtras extras)
 		{
-			if (!_autorisatieMgr.IsGavGroep(groepID))
+			if (!(_autorisatieMgr.IsSuperGav() || _autorisatieMgr.IsGavGroep(groepID)))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
@@ -112,6 +112,17 @@ namespace Chiro.Gap.Workers
 				return _groepsWjDao.RecentsteOphalen(groepID, ExtrasNaarLambdas(extras));
 			}	
 		}
+
+        /// <summary>
+        /// Haalt recentste groepswerkjaar voor een groep op.
+        /// </summary>
+        /// <param name="code">stamnummer van de gevraagde groep</param>
+        /// <param name="extras">Bepaalt eventuele mee op te halen gekoppelde entiteiten</param>
+        /// <returns>Het recentste Groepswerkjaar voor de opgegeven groep</returns>
+        public GroepsWerkJaar RecentsteOphalen(string code, GroepsWerkJaarExtras extras)
+        {
+            return RecentsteOphalen(_veelGebruikt.CodeNaarGroepID(code), extras);
+        }
 
 		/// <summary>
 		/// Bepaalt ID van het recentste GroepsWerkJaar gemaakt voor een
@@ -268,5 +279,7 @@ namespace Chiro.Gap.Workers
 				throw new BestaatAlException<GroepsWerkJaar>(gwj);
 			}
 		}
-	}
+
+
+    }
 }

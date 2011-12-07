@@ -10,12 +10,12 @@
 <div id="wrapper">
 	<div id="header" class="container">
 		<div id="logo">
-			<h1><a href="#">GAP-beheer</a></h1>
+			<h1>@Html.ActionLink("GAP-beheer", "Index", "Logins")</h1>
 		</div>
 		<div id="menu">
             <ul>
-				<li class="current_page_item"><a href="#">Tijdelijke toegang</a></li>
-				<li><a href="#">Ontbrekende adressen</a></li>
+				<li>@Html.ActionLink("Tijdelijke toegang", "Index", "Logins")</li>
+   				<li>@Html.ActionLink("Verdwenen adressen", "Index", "Adressen")</li>
 			</ul>
 		</div>
 	</div>

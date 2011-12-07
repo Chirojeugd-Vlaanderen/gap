@@ -66,7 +66,7 @@ a:hover {
 	height: 150px;
 	margin: 0 auto;
 	padding: 0px 50px;
-	background: url(images/img01.jpg) no-repeat left top;
+	background: white url(/GapAdmin/content/img01.jpg) no-repeat left top;
 }
 
 /* Logo */
@@ -182,7 +182,7 @@ a:hover {
 	display: block;
 	margin-right: 1px;
 	padding: 10px 15px 15px 15px;
-	background: url(images/img06.gif) no-repeat left 12px;
+	background: url(/GapAdmin/content/img06.gif) no-repeat left 12px;
 	text-decoration: none;
 	text-align: center;
 	font-family: Arial, Helvetica, sans-serif;
@@ -205,7 +205,7 @@ a:hover {
 	width: 890px;
 	margin: 0 auto;
 	padding: 30px 55px;
-	background: url(images/img03.jpg) repeat-y left top;
+	background: white url(/GapAdmin/content/img03.jpg) repeat-y left top;
 }
 
 /* Content */
@@ -271,7 +271,7 @@ a:hover {
 	height: 25px;
 	padding: 2px 0px 0px 0px;
 	margin-right: 10px;
-	background: url(images/img08.jpg) no-repeat left top;
+	background: url(/GapAdmin/content/img08.jpg) no-repeat left top;
 	text-align: center;
 	color: #FFFFFF;
 }
@@ -282,7 +282,7 @@ a:hover {
 	width: 88px;
 	height: 25px;
 	padding: 2px 0px 0px 0px;
-	background: url(images/img08.jpg) no-repeat left top;
+	background: url(/GapAdmin/content/img08.jpg) no-repeat left top;
 	text-align: center;
 	color: #FFFFFF;
 }
@@ -316,7 +316,7 @@ a:hover {
 #sidebar li li {
 	line-height: 35px;
 	border-bottom: 1px dotted #E7E2DC;
-	background: url(images/img02.jpg) no-repeat left 15px;
+	background: url(/GapAdmin/content/img02.jpg) no-repeat left 15px;
 	margin: 0px 30px;
 	border-left: none;
 }
@@ -379,7 +379,7 @@ a:hover {
 /* Three Column Footer Content */
 
 #footer-content {
-	background: url(images/img04.jpg) repeat-y left top;
+	background: black url(/GapAdmin/content/img04.jpg) repeat-y left top;
 	color: #BFBFBF;
 }
 
@@ -387,7 +387,7 @@ a:hover {
 	overflow: hidden;
 	width: 890px;
 	padding: 30px 55px 50px 55px;
-	background: url(images/img05.jpg) no-repeat left bottom;
+	background: url(/GapAdmin/content/img05.jpg) no-repeat left bottom;
 }
 
 #footer-content h2 {
@@ -474,7 +474,7 @@ a:hover {
 	width: 252px;
 	height: 38px;
 	padding: 15px 0px 0px 0px;
-	background: url(images/img07.jpg) no-repeat left top;
+	background: url(/GapAdmin/content/img07.jpg) no-repeat left top;
 	letter-spacing: -2px;
 	text-align: center;
 	text-transform: lowercase;
