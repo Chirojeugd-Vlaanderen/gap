@@ -13,3 +13,7 @@ join adr.Adres gapa on gapgp.VoorkeursAdresID = gapa.AdresID
 -- inner join hierboven, zodat de gp's in gap zonder voorkeursadres niet meegenomen worden
 join grp.Groep gapg on gapgp.GroepID = gapg.GroepID
 where (w.WoontID is null)
+
+
+
+grant select on diag.vVerlorenAdressen to gapSuperRole
