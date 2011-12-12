@@ -908,7 +908,7 @@ namespace Chiro.Gap.Data.Ef
 
             if ((extras & PersoonsExtras.GebruikersRechten) == PersoonsExtras.GebruikersRechten)
             {
-                paths.Add(gp => gp.Persoon.Gav.FirstOrDefault().GebruikersRecht);
+                paths.Add(gp => gp.Persoon.Gav.FirstOrDefault().GebruikersRecht.FirstOrDefault().Groep);
             }
 
             return paths.ToArray();
