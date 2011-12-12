@@ -130,7 +130,7 @@ namespace Chiro.Gap.Data.Ef
 	                         select gr).FirstOrDefault();
 	        }
 
-            return Utility.DetachObjectGraph(resultaat);
+            return resultaat == null ? resultaat : Utility.DetachObjectGraph(resultaat);
         }
 
         /// <summary>
