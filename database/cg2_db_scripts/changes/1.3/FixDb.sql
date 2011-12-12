@@ -1,3 +1,4 @@
+use gap
 
 ALTER TABLE auth.Gav DROP CONSTRAINT FK_Gav_Persoon
 ALTER TABLE auth.Gav DROP COLUMN PersoonID
