@@ -51,5 +51,11 @@ namespace Chiro.Gap.Diagnostics.ServiceContracts
         /// adres heeft.</returns>
         [OperationContract]
         int AantalVerdwenenAdressenOphalen();
+
+        /// <summary>
+        /// Synct de adressen die niet doorkwamen naar Kipadmin opnieuw
+        /// </summary>
+        [OperationContract]
+        void OntbrekendeAdressenSyncen();
     }
 }

@@ -20,6 +20,8 @@ namespace Chiro.Gap.Diagnostics.Service
         /// </summary>
         public static void MappingsDefinieren()
         {
+            // Mappings voor diagnostic datacontracts
+
             Mapper.CreateMap<Groep, GroepContactInfo>()
                 .ForMember(dst => dst.Plaats, opt => opt.MapFrom(src => src is ChiroGroep
                                                                              ? (src as ChiroGroep).Plaats
@@ -27,6 +29,10 @@ namespace Chiro.Gap.Diagnostics.Service
                 .ForMember(dst => dst.Contacten, opt => opt.Ignore());
 
             Mapper.AssertConfigurationIsValid();
+
+            // Mappings voor kipsync
+
+            Sync.MappingHelper.MappingsDefinieren();
         }
     }
 }

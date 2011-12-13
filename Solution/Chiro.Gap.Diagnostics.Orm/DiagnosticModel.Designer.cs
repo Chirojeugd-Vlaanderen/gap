@@ -257,24 +257,24 @@ namespace Chiro.Gap.Diagnostics.Orm
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> VoorkeursAdresID
+        public Nullable<global::System.Int32> PersoonsAdresID
         {
             get
             {
-                return _VoorkeursAdresID;
+                return _PersoonsAdresID;
             }
             set
             {
-                OnVoorkeursAdresIDChanging(value);
-                ReportPropertyChanging("VoorkeursAdresID");
-                _VoorkeursAdresID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("VoorkeursAdresID");
-                OnVoorkeursAdresIDChanged();
+                OnPersoonsAdresIDChanging(value);
+                ReportPropertyChanging("PersoonsAdresID");
+                _PersoonsAdresID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PersoonsAdresID");
+                OnPersoonsAdresIDChanged();
             }
         }
-        private Nullable<global::System.Int32> _VoorkeursAdresID;
-        partial void OnVoorkeursAdresIDChanging(Nullable<global::System.Int32> value);
-        partial void OnVoorkeursAdresIDChanged();
+        private Nullable<global::System.Int32> _PersoonsAdresID;
+        partial void OnPersoonsAdresIDChanging(Nullable<global::System.Int32> value);
+        partial void OnPersoonsAdresIDChanged();
 
         #endregion
     

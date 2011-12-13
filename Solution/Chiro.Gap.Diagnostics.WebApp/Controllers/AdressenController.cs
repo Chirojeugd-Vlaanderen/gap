@@ -32,5 +32,15 @@ namespace Chiro.Gap.Diagnostics.WebApp.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Stuur alle ontbrekende adressen opnieuw van GAP naar Kipadmin
+        /// </summary>
+        /// <returns>Opnieuw de view met ontbrekende adressen</returns>
+        public ActionResult OpnieuwSyncen()
+        {
+            ServiceHelper.CallService<IAdminService>(svc => svc.OntbrekendeAdressenSyncen());
+            return RedirectToAction("Index");
+        }
+
     }
 }

@@ -9,6 +9,7 @@ using Chiro.Gap.Diagnostics.ServiceContracts.DataContracts;
 using Chiro.Gap.Diagnostics.Workers;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Diagnostics.Service
@@ -24,6 +25,8 @@ namespace Chiro.Gap.Diagnostics.Service
         private readonly GelieerdePersonenManager _gelieerdePersonenManager;
         private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
         private readonly VerlorenAdressenManager _verlorenAdressenManager;
+
+        private readonly IAdressenSync _adressenSync;
 
         // LIVE
         //private const string SECURITYGROEP = @"KIPDORP\g-GapSuper";
@@ -41,13 +44,15 @@ namespace Chiro.Gap.Diagnostics.Service
         /// <param name="gelieerdePersonenManager">Methods van backend m.b.t. gelieerde personen</param>
         /// <param name="groepsWerkJaarManager">Methods van backend m.b.t. groepswerkjaar</param>
         /// <param name="verlorenAdressenManager">Methods van backend m.b.t. diagnostics</param>
+        /// <param name="adressenSync">zorgt voor de synchronisatie van de adressen naar Kipadmin</param>
         public AdminService(
             GroepenManager groepenManager, 
             GebruikersRechtenManager gebruikersRechtenManager,
             GelieerdePersonenManager gelieerdePersonenManager,
             GroepsWerkJaarManager groepsWerkJaarManager,
             LedenManager ledenManager,
-            VerlorenAdressenManager verlorenAdressenManager)
+            VerlorenAdressenManager verlorenAdressenManager,
+            IAdressenSync adressenSync)
         {
             _groepenManager = groepenManager;
             _gebruikersRechtenManager = gebruikersRechtenManager;
@@ -55,6 +60,7 @@ namespace Chiro.Gap.Diagnostics.Service
             _gelieerdePersonenManager = gelieerdePersonenManager;
             _groepsWerkJaarManager = groepsWerkJaarManager;
             _verlorenAdressenManager = verlorenAdressenManager;
+            _adressenSync = adressenSync;
         }
 
         /// <summary>
@@ -163,6 +169,18 @@ namespace Chiro.Gap.Diagnostics.Service
         public int AantalVerdwenenAdressenOphalen()
         {
             return _verlorenAdressenManager.VerdwenenAdressenOphalen().Count();
+        }
+
+        /// <summary>
+        /// Synct de adressen die niet doorkwamen naar Kipadmin opnieuw
+        /// </summary>
+        public void OntbrekendeAdressenSyncen()
+        {
+            var gpIds = _verlorenAdressenManager.VerdwenenAdressenOphalen().Select(row => row.GelieerdePersoonID).ToArray();
+            var gelieerdePersonen = _gelieerdePersonenManager.Ophalen(gpIds, PersoonsExtras.VoorkeurAdres);
+            var persoonsAdressen = gelieerdePersonen.Select(gp => gp.PersoonsAdres).ToArray();
+
+            _adressenSync.StandaardAdressenBewaren(persoonsAdressen);
         }
     }
 }

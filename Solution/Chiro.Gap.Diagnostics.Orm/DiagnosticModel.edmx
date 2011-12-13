@@ -50,7 +50,7 @@
           <Property Name="VoorNaam" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
           <Property Name="Naam" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
           <Property Name="GelieerdePersoonID" Type="Int32" Nullable="false" />
-          <Property Name="VoorkeursAdresID" Type="Int32" />
+          <Property Name="PersoonsAdresID" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -64,7 +64,7 @@
             <ScalarProperty Name="VoorNaam" ColumnName="VoorNaam" />
             <ScalarProperty Name="Naam" ColumnName="Naam" />
             <ScalarProperty Name="GelieerdePersoonID" ColumnName="GelieerdePersoonID" />
-            <ScalarProperty Name="VoorkeursAdresID" ColumnName="VoorkeursAdresID" />
+            <ScalarProperty Name="PersoonsAdresID" ColumnName="VoorkeursAdresID" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
