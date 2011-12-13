@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Security.Permissions;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
 
 using AutoMapper;
 
 using Chiro.Gap.Diagnostics.ServiceContracts;
 using Chiro.Gap.Diagnostics.ServiceContracts.DataContracts;
+using Chiro.Gap.Diagnostics.Workers;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers;
@@ -27,8 +23,13 @@ namespace Chiro.Gap.Diagnostics.Service
         private readonly LedenManager _ledenManager;
         private readonly GelieerdePersonenManager _gelieerdePersonenManager;
         private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
+        private readonly VerlorenAdressenManager _verlorenAdressenManager;
 
-        private const string SECURITYGROEP = @"KIPDORP\g-GapSuper";
+        // LIVE
+        //private const string SECURITYGROEP = @"KIPDORP\g-GapSuper";
+
+        // DEV
+        private const string SECURITYGROEP = @".\Users";
 
         /// <summary>
         /// Constructor voor de AdminService.  De workers uit de backend (en ihb
@@ -39,18 +40,21 @@ namespace Chiro.Gap.Diagnostics.Service
         /// <param name="ledenManager">Bevat ledengerelateerde methods van de backend</param>
         /// <param name="gelieerdePersonenManager">Methods van backend m.b.t. gelieerde personen</param>
         /// <param name="groepsWerkJaarManager">Methods van backend m.b.t. groepswerkjaar</param>
+        /// <param name="verlorenAdressenManager">Methods van backend m.b.t. diagnostics</param>
         public AdminService(
             GroepenManager groepenManager, 
             GebruikersRechtenManager gebruikersRechtenManager,
             GelieerdePersonenManager gelieerdePersonenManager,
             GroepsWerkJaarManager groepsWerkJaarManager,
-            LedenManager ledenManager)
+            LedenManager ledenManager,
+            VerlorenAdressenManager verlorenAdressenManager)
         {
             _groepenManager = groepenManager;
             _gebruikersRechtenManager = gebruikersRechtenManager;
             _ledenManager = ledenManager;
             _gelieerdePersonenManager = gelieerdePersonenManager;
             _groepsWerkJaarManager = groepsWerkJaarManager;
+            _verlorenAdressenManager = verlorenAdressenManager;
         }
 
         /// <summary>
@@ -148,6 +152,17 @@ namespace Chiro.Gap.Diagnostics.Service
                                                                DateTime.Now.AddDays(
                                                                    Properties.Settings.Default.
                                                                        DagenTijdelijkGebruikersRecht), reden);
+        }
+
+        /// <summary>
+        /// Haalt het aantal adressen op dat niet doorgekomen is naar Kipadmin.
+        /// </summary>
+        /// <returns>Het aantal (voorkeurs)adressen in GAP waarvoor de persoon in Kipadmin geen
+        /// adres heeft.</returns>
+        [PrincipalPermission(SecurityAction.Demand, Role = SECURITYGROEP)]
+        public int AantalVerdwenenAdressenOphalen()
+        {
+            return _verlorenAdressenManager.VerdwenenAdressenOphalen().Count();
         }
     }
 }

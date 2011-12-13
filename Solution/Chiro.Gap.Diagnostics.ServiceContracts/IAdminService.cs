@@ -43,5 +43,13 @@ namespace Chiro.Gap.Diagnostics.ServiceContracts
         /// verstuurd.</param>
         [OperationContract]
         void TijdelijkeRechtenGeven(int notificatieGelieerdePersoonID, string reden);
+
+        /// <summary>
+        /// Haalt het aantal adressen op dat niet doorgekomen is naar Kipadmin.
+        /// </summary>
+        /// <returns>Het aantal (voorkeurs)adressen in GAP waarvoor de persoon in Kipadmin geen
+        /// adres heeft.</returns>
+        [OperationContract]
+        int AantalVerdwenenAdressenOphalen();
     }
 }

@@ -57,10 +57,12 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AdressenController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AddressenIndexModel.cs" />
     <Compile Include="Models\NotificatieModel.cs" />
     <Compile Include="Models\LoginsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,6 +121,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Views\Logins\RechtenToekennen.cshtml" />
+    <Content Include="Views\Adressen\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">

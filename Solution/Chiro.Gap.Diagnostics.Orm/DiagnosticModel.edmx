@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="diagnosticModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="diagnosticModelStoreContainer">
+          <EntitySet Name="vVerlorenAdressen" EntityType="diagnosticModel.Store.vVerlorenAdressen" store:Type="Views" store:Schema="diag" store:Name="vVerlorenAdressen">
+            <DefiningQuery>SELECT 
+      [vVerlorenAdressen].[AdNr] AS [AdNr], 
+      [vVerlorenAdressen].[StamNr] AS [StamNr], 
+      [vVerlorenAdressen].[VoorNaam] AS [VoorNaam], 
+      [vVerlorenAdressen].[Naam] AS [Naam], 
+      [vVerlorenAdressen].[GelieerdePersoonID] AS [GelieerdePersoonID], 
+      [vVerlorenAdressen].[VoorkeursAdresID] AS [VoorkeursAdresID]
+      FROM [diag].[vVerlorenAdressen] AS [vVerlorenAdressen]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'gap.diag.vVerlorenAdressen' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="vVerlorenAdressen">
+          <Key>
+            <PropertyRef Name="AdNr" />
+            <PropertyRef Name="GelieerdePersoonID" />
+          </Key>
+          <Property Name="AdNr" Type="int" Nullable="false" />
+          <Property Name="StamNr" Type="char" MaxLength="10" />
+          <Property Name="VoorNaam" Type="varchar" MaxLength="30" />
+          <Property Name="Naam" Type="varchar" MaxLength="120" />
+          <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
+          <Property Name="VoorkeursAdresID" Type="int" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="diagnosticModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="diagnosticEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="vVerlorenAdressen" EntityType="diagnosticModel.VerlorenAdres" />
+        </EntityContainer>
+        <EntityType Name="VerlorenAdres">
+          <Key>
+            <PropertyRef Name="AdNr" />
+            <PropertyRef Name="GelieerdePersoonID" />
+          </Key>
+          <Property Name="AdNr" Type="Int32" Nullable="false" />
+          <Property Name="StamNr" Type="String" MaxLength="10" Unicode="false" FixedLength="true" />
+          <Property Name="VoorNaam" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="Naam" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="GelieerdePersoonID" Type="Int32" Nullable="false" />
+          <Property Name="VoorkeursAdresID" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="diagnosticModelStoreContainer" CdmEntityContainer="diagnosticEntities">
+          <EntitySetMapping Name="vVerlorenAdressen"><EntityTypeMapping TypeName="diagnosticModel.VerlorenAdres"><MappingFragment StoreEntitySet="vVerlorenAdressen">
+            <ScalarProperty Name="AdNr" ColumnName="AdNr" />
+            <ScalarProperty Name="StamNr" ColumnName="StamNr" />
+            <ScalarProperty Name="VoorNaam" ColumnName="VoorNaam" />
+            <ScalarProperty Name="Naam" ColumnName="Naam" />
+            <ScalarProperty Name="GelieerdePersoonID" ColumnName="GelieerdePersoonID" />
+            <ScalarProperty Name="VoorkeursAdresID" ColumnName="VoorkeursAdresID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="DiagnosticModel">
+        <EntityTypeShape EntityType="diagnosticModel.VerlorenAdres" Width="1.5" PointX="0.75" PointY="0.75" Height="2.172587890625" IsExpanded="true" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

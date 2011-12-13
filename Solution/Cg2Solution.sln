@@ -107,6 +107,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ServiceContracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Mailer", "Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj", "{18FF2008-106F-48A6-BEFB-5F8B301354D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Diagnostics.Workers", "Chiro.Gap.Diagnostics.Workers\Chiro.Gap.Diagnostics.Workers.csproj", "{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Diagnostics.Orm", "Chiro.Gap.Diagnostics.Orm\Chiro.Gap.Diagnostics.Orm.csproj", "{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Diagnostics.Data", "Chiro.Gap.Diagnostics.Data\Chiro.Gap.Diagnostics.Data.csproj", "{C1218796-36DD-417B-9331-272A4BEE34CE}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution3.vsmdi
@@ -626,6 +632,42 @@ Global
 		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Win32.ActiveCfg = Release|Any CPU
 		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|x86.ActiveCfg = Release|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Release|Win32.ActiveCfg = Release|Any CPU
+		{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}.Release|x86.ActiveCfg = Release|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Release|Win32.ActiveCfg = Release|Any CPU
+		{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}.Release|x86.ActiveCfg = Release|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Release|Win32.ActiveCfg = Release|Any CPU
+		{C1218796-36DD-417B-9331-272A4BEE34CE}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

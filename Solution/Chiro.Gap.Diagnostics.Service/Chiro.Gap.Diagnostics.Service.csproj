@@ -114,9 +114,21 @@
       <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
       <Name>Chiro.Gap.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Diagnostics.Data\Chiro.Gap.Diagnostics.Data.csproj">
+      <Project>{C1218796-36DD-417B-9331-272A4BEE34CE}</Project>
+      <Name>Chiro.Gap.Diagnostics.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Diagnostics.Orm\Chiro.Gap.Diagnostics.Orm.csproj">
+      <Project>{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}</Project>
+      <Name>Chiro.Gap.Diagnostics.Orm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Diagnostics.ServiceContracts\Chiro.Gap.Diagnostics.ServiceContracts.csproj">
       <Project>{4F46DB45-BE35-4DD6-BA3D-A9409AB8B0E3}</Project>
       <Name>Chiro.Gap.Diagnostics.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Diagnostics.Workers\Chiro.Gap.Diagnostics.Workers.csproj">
+      <Project>{1EC4D0AB-20EA-4965-94C4-CC4D526A6DC4}</Project>
+      <Name>Chiro.Gap.Diagnostics.Workers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
       <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>

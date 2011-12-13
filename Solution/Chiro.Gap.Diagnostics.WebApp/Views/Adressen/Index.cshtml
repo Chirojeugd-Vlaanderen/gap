@@ -1,0 +1,12 @@
+﻿@model Chiro.Gap.Diagnostics.WebApp.Models.AddressenIndexModel
+           
+@{
+    ViewBag.Title = "Adresproblemen";
+}
+
+<h2 class="title">Adresproblemen</h2>
+
+<p>
+Aantal niet-doorgekomen adressen in Kipadmin: <strong>@Model.AantalVerdwenenAdressen</strong>. [<a href="@Model.RapportUrl">bekijken</a>] [@Html.ActionLink("opnieuw syncen", "OpnieuwSyncen")]
+</p>
+

@@ -31,5 +31,15 @@ namespace Chiro.Gap.Diagnostics.WebApp.Properties {
                 return ((string)(this["GapUrl"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://kipsrv1.chiro.lokaal/Reports/Pages/Report.aspx?ItemPath=%2fKipadmin%2fprob" +
+            "lemen%2fVerdwenen+Adressen")]
+        public string VerdwenenAdressenRapportUrl {
+            get {
+                return ((string)(this["VerdwenenAdressenRapportUrl"]));
+            }
+        }
     }
 }
