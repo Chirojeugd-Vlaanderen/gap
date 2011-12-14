@@ -188,6 +188,20 @@ namespace Chiro.Gap.Workers
                         svc => svc.GapLoginAanvragen(adNr, persoon.VoorNaam, persoon.Naam, eMail));
 
                     gav.Login = String.Format(@"CHIROPUBLIC\{0}", username);
+
+                    // Het zou kunnen dat de gevraagde GAV al in de database zat, maar nog niet
+                    // gekoppeld was aan een persoon.  Om een key violation te vermijden, doen
+                    // we deze minder mooie hack:
+
+                    gav.ID = _gavDao.IdOphalen(gav.Login);
+                    
+                    // TODO: Eigenlijk is dat niet goed, want gav.Versie gaat niet kloppen.  Maar aangezien dat
+                    // dat met die versie en concurrency control toch ook niet overal werkt, zal het 
+                    // momenteel zo misschien wel lukken. :-P
+                    //
+                    // Als we op termijn de koppeling GAV-Persoon verplicht kunnen maken, dan is dit gedoe
+                    // helemaal niet meer nodig.
+
                 }
 
                 resultaat = _autorisatieDao.Bewaren(gebruikersRecht,

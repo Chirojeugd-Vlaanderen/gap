@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Data.Objects;
 using System.Linq;
 
@@ -34,5 +35,21 @@ namespace Chiro.Gap.Data.Ef
 						select gav).FirstOrDefault();
 			}
 		}
+
+        /// <summary>
+        /// Kijkt of er al een GAV met gegven <paramref name="login"/> bestaat,
+        /// en retourneert desgevallend diens ID.
+        /// </summary>
+        /// <param name="login">login op te zoeken ID</param>
+        /// <returns>ID van de gevonden GAV, of 0 indien niets gevonden</returns>
+	    public int IdOphalen(string login)
+	    {
+            using (var db = new ChiroGroepEntities())
+            {
+                return (from gav in db.Gav
+                        where gav.Login == login
+                        select gav.ID).FirstOrDefault();
+            }
+	    }
 	}
 }
