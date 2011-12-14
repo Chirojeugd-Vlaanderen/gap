@@ -40,6 +40,11 @@ namespace Chiro.Gap.Dummies
 	        throw new NotImplementedException();
 	    }
 
+	    public int IdOphalen(int gavID, int groepID)
+	    {
+	        throw new NotImplementedException();
+	    }
+
 	    public bool IsGavGroep(string login, int groepID)
 		{
 			return true;

@@ -155,6 +155,22 @@ namespace Chiro.Gap.Data.Ef
             return Utility.DetachObjectGraph(resultaat);
         }
 
+        /// <summary>
+        /// Haalt gebruikersrechtID op, gegeven <paramref name="gavID"/> en <paramref name="groepID"/>
+        /// </summary>
+        /// <param name="gavID">ID van GAV waarvan gebruikersrechtID op te halen</param>
+        /// <param name="groepID">ID van groep waarvan gebruikersrechtID op te halen</param>
+        /// <returns>ID van gebruikersrecht van GAV op groep, of 0 als niet gevonden.</returns>
+        public int IdOphalen(int gavID, int groepID)
+        {
+            using (var db = new ChiroGroepEntities())
+            {
+                return (from gr in db.GebruikersRecht
+                        where gr.Groep.ID == groepID && gr.Gav.ID == gavID
+                        select gr.ID).FirstOrDefault();
+            }
+        }
+
 	    /// <summary>
 		/// Kijkt in de tabel Gebruikersrecht of er een record is dat de  opgegeven 
 		/// <paramref name="login"/> aan de opgegeven <paramref name="groepID"/> koppelt.
