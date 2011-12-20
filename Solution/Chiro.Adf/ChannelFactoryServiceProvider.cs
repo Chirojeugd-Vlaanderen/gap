@@ -29,7 +29,7 @@ namespace Chiro.Adf
 		public I GetService<I>(object arguments) where I : class { throw new NotSupportedException(); }
 
         /// <summary>
-        /// Gebruikt IoC om de service met interface I te instantieren.
+        /// Gebruikt WCF om een proxy naar de service met interface I te instantieren.
         /// </summary>
         /// <typeparam name="I">Service interface</typeparam>
         /// <returns>Een instantie van <typeparamref name="I"/>.  Als die niet geresolved kon worden, dan <c>null</c></returns>

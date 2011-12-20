@@ -57,5 +57,19 @@ namespace Chiro.Gap.Diagnostics.ServiceContracts
         /// </summary>
         [OperationContract]
         void OntbrekendeAdressenSyncen();
+
+        /// <summary>
+        /// Haalt het aantal functie-inconsistenties op voor het huidige werkjaar
+        /// </summary>
+        /// <returns>Het aantal functies in GAP dat niet in Kipadmin gevonden wordt, plus
+        /// het aantal functies in Kipadmin dat niet in GAP gevonden wordt.</returns>
+        [OperationContract]
+        int AantalFunctieFoutenOphalen();
+
+        /// <summary>
+        /// Hersynchroniseert de functies van de leden met functieproblemen (huidig werkjaar)
+        /// </summary>
+        [OperationContract]
+        void FunctieProbleemLedenOpnieuwSyncen();
     }
 }

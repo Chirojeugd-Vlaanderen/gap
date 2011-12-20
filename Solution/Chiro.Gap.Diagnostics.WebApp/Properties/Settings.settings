@@ -8,5 +8,8 @@
     <Setting Name="VerdwenenAdressenRapportUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://kipsrv1.chiro.lokaal/Reports/Pages/Report.aspx?ItemPath=%2fKipadmin%2fproblemen%2fVerdwenen+Adressen</Value>
     </Setting>
+    <Setting Name="FunctieFoutenRapportUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://kipsrv1.chiro.lokaal/Reports/Pages/Report.aspx?ItemPath=%2fKipadmin%2fproblemen%2fFunctie-inconsistenties</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

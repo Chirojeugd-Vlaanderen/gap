@@ -11,17 +11,20 @@ namespace Chiro.Gap.Diagnostics.Workers
     /// <summary>
     /// Backend-functionaliteit voor diagnostische doeleinden
     /// </summary>
-    public class VerlorenAdressenManager
+    public class ProblemenManager
     {
         private readonly IVerlorenAdressenDao _verlorenAdressenDao;
+        private readonly IFunctieProblemenDao _functieProblemenDao;
 
         /// <summary>
         /// Standaardconstructor.  Data access wordt geinjecteerd.
         /// </summary>
         /// <param name="verlorenAdressenDao">Data access voor verloren adressen</param>
-        public VerlorenAdressenManager(IVerlorenAdressenDao verlorenAdressenDao)
+        /// <param name="functieProblemenDao">Data access voor functieproblemen</param>
+        public ProblemenManager(IVerlorenAdressenDao verlorenAdressenDao, IFunctieProblemenDao functieProblemenDao)
         {
             _verlorenAdressenDao = verlorenAdressenDao;
+            _functieProblemenDao = functieProblemenDao;
         }
 
         /// <summary>
@@ -32,6 +35,16 @@ namespace Chiro.Gap.Diagnostics.Workers
         public IEnumerable<VerlorenAdres> VerdwenenAdressenOphalen()
         {
             return _verlorenAdressenDao.AllesOphalen();
+        }
+
+        /// <summary>
+        /// Haalt alle functie-inconsistenties op voor het huidige werkjaar
+        /// </summary>
+        /// <returns>Rijen informatie voor inconsistenties tussen functies in het GAP
+        /// en functies in Kipadmin.</returns>
+        public IEnumerable<FunctieProbleem> FunctieProblemenOphalen()
+        {
+            return _functieProblemenDao.AllesOphalen();
         }
     }
 }

@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FunctieProbleem.cs" />
+    <Compile Include="DataInterfaces\IFunctieProblemenDao.cs" />
     <Compile Include="DataInterfaces\IVerlorenAdressenDao.cs" />
     <Compile Include="DiagnosticModel.Designer.cs">
       <AutoGen>True</AutoGen>

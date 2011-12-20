@@ -4,8 +4,21 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="diagnosticModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="diagnosticModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="diagnosticModelStoreContainer">
+          <EntitySet Name="vFunctieProblemen" EntityType="diagnosticModel.Store.vFunctieProblemen" store:Type="Views" store:Schema="diag" store:Name="vFunctieProblemen">
+            <DefiningQuery>SELECT 
+      [vFunctieProblemen].[Code] AS [Code], 
+      [vFunctieProblemen].[AdNummer] AS [AdNummer], 
+      [vFunctieProblemen].[VoorNaam] AS [VoorNaam], 
+      [vFunctieProblemen].[Naam] AS [Naam], 
+      [vFunctieProblemen].[GapLidID] AS [GapLidID], 
+      [vFunctieProblemen].[GapFunctieCode] AS [GapFunctieCode], 
+      [vFunctieProblemen].[GapFunctieOmschrijving] AS [GapFunctieOmschrijving], 
+      [vFunctieProblemen].[KipFunctieCode] AS [KipFunctieCode], 
+      [vFunctieProblemen].[KipFunctieOmschrijving] AS [KipFunctieOmschrijving]
+      FROM [diag].[vFunctieProblemen] AS [vFunctieProblemen]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="vVerlorenAdressen" EntityType="diagnosticModel.Store.vVerlorenAdressen" store:Type="Views" store:Schema="diag" store:Name="vVerlorenAdressen">
             <DefiningQuery>SELECT 
       [vVerlorenAdressen].[AdNr] AS [AdNr], 
@@ -17,6 +30,25 @@
       FROM [diag].[vVerlorenAdressen] AS [vVerlorenAdressen]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'gap.diag.vFunctieProblemen' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="vFunctieProblemen">
+          <Key>
+            <PropertyRef Name="VoorNaam" />
+            <PropertyRef Name="Naam" />
+            <PropertyRef Name="GapLidID" />
+          </Key>
+          <Property Name="Code" Type="char" MaxLength="10" />
+          <Property Name="AdNummer" Type="int" />
+          <Property Name="VoorNaam" Type="varchar" Nullable="false" MaxLength="60" />
+          <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="160" />
+          <Property Name="GapLidID" Type="int" Nullable="false" />
+          <Property Name="GapFunctieCode" Type="varchar" MaxLength="10" />
+          <Property Name="GapFunctieOmschrijving" Type="varchar" MaxLength="80" />
+          <Property Name="KipFunctieCode" Type="varchar" MaxLength="3" />
+          <Property Name="KipFunctieOmschrijving" Type="varchar" MaxLength="40" />
+        </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'gap.diag.vVerlorenAdressen' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
@@ -32,13 +64,13 @@
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
           <Property Name="VoorkeursAdresID" Type="int" />
         </EntityType>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="diagnosticModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="diagnosticEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="vVerlorenAdressen" EntityType="diagnosticModel.VerlorenAdres" />
+          <EntitySet Name="FunctieProbleems" EntityType="diagnosticModel.FunctieProbleem" />
         </EntityContainer>
         <EntityType Name="VerlorenAdres">
           <Key>
@@ -51,6 +83,22 @@
           <Property Name="Naam" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
           <Property Name="GelieerdePersoonID" Type="Int32" Nullable="false" />
           <Property Name="PersoonsAdresID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="FunctieProbleem">
+          <Key>
+            <PropertyRef Name="VoorNaam" />
+            <PropertyRef Name="Naam" />
+            <PropertyRef Name="GapLidID" />
+          </Key>
+          <Property Type="String" Name="Code" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Type="Int32" Name="AdNummer" />
+          <Property Type="String" Name="VoorNaam" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Naam" Nullable="false" MaxLength="160" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="GapLidID" Nullable="false" />
+          <Property Type="String" Name="GapFunctieCode" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="GapFunctieOmschrijving" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="KipFunctieCode" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="KipFunctieOmschrijving" MaxLength="40" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -66,6 +114,21 @@
             <ScalarProperty Name="GelieerdePersoonID" ColumnName="GelieerdePersoonID" />
             <ScalarProperty Name="PersoonsAdresID" ColumnName="VoorkeursAdresID" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="FunctieProbleems">
+            <EntityTypeMapping TypeName="diagnosticModel.FunctieProbleem">
+              <MappingFragment StoreEntitySet="vFunctieProblemen">
+                <ScalarProperty Name="KipFunctieOmschrijving" ColumnName="KipFunctieOmschrijving" />
+                <ScalarProperty Name="KipFunctieCode" ColumnName="KipFunctieCode" />
+                <ScalarProperty Name="GapFunctieOmschrijving" ColumnName="GapFunctieOmschrijving" />
+                <ScalarProperty Name="GapFunctieCode" ColumnName="GapFunctieCode" />
+                <ScalarProperty Name="GapLidID" ColumnName="GapLidID" />
+                <ScalarProperty Name="Naam" ColumnName="Naam" />
+                <ScalarProperty Name="VoorNaam" ColumnName="VoorNaam" />
+                <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -88,6 +151,7 @@
     <Diagrams>
       <Diagram Name="DiagnosticModel">
         <EntityTypeShape EntityType="diagnosticModel.VerlorenAdres" Width="1.5" PointX="0.75" PointY="0.75" Height="2.172587890625" IsExpanded="true" />
+        <EntityTypeShape EntityType="diagnosticModel.FunctieProbleem" Width="1.5" PointX="3.375" PointY="0.75" Height="2.7494921874999996" />
       </Diagram>
     </Diagrams>
   </Designer>

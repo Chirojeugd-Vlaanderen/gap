@@ -655,7 +655,8 @@ namespace Chiro.Gap.Workers
         /// <remarks>ID's van leden waarvoor de user geen GAV is, worden genegeerd</remarks>
         public IEnumerable<Lid> Ophalen(IEnumerable<int> lidIDs, LidExtras lidExtras)
         {
-            return _daos.LedenDao.Ophalen(_autorisatieMgr.EnkelMijnLeden(lidIDs), lidExtras);
+            var eigenLidIDs = _autorisatieMgr.IsSuperGav() ? lidIDs : _autorisatieMgr.EnkelMijnLeden(lidIDs);
+            return _daos.LedenDao.Ophalen(eigenLidIDs, lidExtras);
         }
 
         /// <summary>

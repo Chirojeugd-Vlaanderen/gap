@@ -80,6 +80,22 @@ namespace Chiro.Gap.Diagnostics.Orm
             }
         }
         private ObjectSet<VerlorenAdres> _vVerlorenAdressen;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<FunctieProbleem> FunctieProbleems
+        {
+            get
+            {
+                if ((_FunctieProbleems == null))
+                {
+                    _FunctieProbleems = base.CreateObjectSet<FunctieProbleem>("FunctieProbleems");
+                }
+                return _FunctieProbleems;
+            }
+        }
+        private ObjectSet<FunctieProbleem> _FunctieProbleems;
 
         #endregion
         #region AddTo Methods
@@ -91,6 +107,14 @@ namespace Chiro.Gap.Diagnostics.Orm
         {
             base.AddObject("vVerlorenAdressen", verlorenAdres);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the FunctieProbleems EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToFunctieProbleems(FunctieProbleem functieProbleem)
+        {
+            base.AddObject("FunctieProbleems", functieProbleem);
+        }
 
         #endregion
     }
@@ -99,6 +123,263 @@ namespace Chiro.Gap.Diagnostics.Orm
     #endregion
     
     #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="diagnosticModel", Name="FunctieProbleem")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class FunctieProbleem : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new FunctieProbleem object.
+        /// </summary>
+        /// <param name="voorNaam">Initial value of the VoorNaam property.</param>
+        /// <param name="naam">Initial value of the Naam property.</param>
+        /// <param name="gapLidID">Initial value of the GapLidID property.</param>
+        public static FunctieProbleem CreateFunctieProbleem(global::System.String voorNaam, global::System.String naam, global::System.Int32 gapLidID)
+        {
+            FunctieProbleem functieProbleem = new FunctieProbleem();
+            functieProbleem.VoorNaam = voorNaam;
+            functieProbleem.Naam = naam;
+            functieProbleem.GapLidID = gapLidID;
+            return functieProbleem;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Code
+        {
+            get
+            {
+                return _Code;
+            }
+            set
+            {
+                OnCodeChanging(value);
+                ReportPropertyChanging("Code");
+                _Code = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Code");
+                OnCodeChanged();
+            }
+        }
+        private global::System.String _Code;
+        partial void OnCodeChanging(global::System.String value);
+        partial void OnCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> AdNummer
+        {
+            get
+            {
+                return _AdNummer;
+            }
+            set
+            {
+                OnAdNummerChanging(value);
+                ReportPropertyChanging("AdNummer");
+                _AdNummer = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("AdNummer");
+                OnAdNummerChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _AdNummer;
+        partial void OnAdNummerChanging(Nullable<global::System.Int32> value);
+        partial void OnAdNummerChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String VoorNaam
+        {
+            get
+            {
+                return _VoorNaam;
+            }
+            set
+            {
+                if (_VoorNaam != value)
+                {
+                    OnVoorNaamChanging(value);
+                    ReportPropertyChanging("VoorNaam");
+                    _VoorNaam = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("VoorNaam");
+                    OnVoorNaamChanged();
+                }
+            }
+        }
+        private global::System.String _VoorNaam;
+        partial void OnVoorNaamChanging(global::System.String value);
+        partial void OnVoorNaamChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Naam
+        {
+            get
+            {
+                return _Naam;
+            }
+            set
+            {
+                if (_Naam != value)
+                {
+                    OnNaamChanging(value);
+                    ReportPropertyChanging("Naam");
+                    _Naam = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Naam");
+                    OnNaamChanged();
+                }
+            }
+        }
+        private global::System.String _Naam;
+        partial void OnNaamChanging(global::System.String value);
+        partial void OnNaamChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 GapLidID
+        {
+            get
+            {
+                return _GapLidID;
+            }
+            set
+            {
+                if (_GapLidID != value)
+                {
+                    OnGapLidIDChanging(value);
+                    ReportPropertyChanging("GapLidID");
+                    _GapLidID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("GapLidID");
+                    OnGapLidIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _GapLidID;
+        partial void OnGapLidIDChanging(global::System.Int32 value);
+        partial void OnGapLidIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String GapFunctieCode
+        {
+            get
+            {
+                return _GapFunctieCode;
+            }
+            set
+            {
+                OnGapFunctieCodeChanging(value);
+                ReportPropertyChanging("GapFunctieCode");
+                _GapFunctieCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("GapFunctieCode");
+                OnGapFunctieCodeChanged();
+            }
+        }
+        private global::System.String _GapFunctieCode;
+        partial void OnGapFunctieCodeChanging(global::System.String value);
+        partial void OnGapFunctieCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String GapFunctieOmschrijving
+        {
+            get
+            {
+                return _GapFunctieOmschrijving;
+            }
+            set
+            {
+                OnGapFunctieOmschrijvingChanging(value);
+                ReportPropertyChanging("GapFunctieOmschrijving");
+                _GapFunctieOmschrijving = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("GapFunctieOmschrijving");
+                OnGapFunctieOmschrijvingChanged();
+            }
+        }
+        private global::System.String _GapFunctieOmschrijving;
+        partial void OnGapFunctieOmschrijvingChanging(global::System.String value);
+        partial void OnGapFunctieOmschrijvingChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String KipFunctieCode
+        {
+            get
+            {
+                return _KipFunctieCode;
+            }
+            set
+            {
+                OnKipFunctieCodeChanging(value);
+                ReportPropertyChanging("KipFunctieCode");
+                _KipFunctieCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("KipFunctieCode");
+                OnKipFunctieCodeChanged();
+            }
+        }
+        private global::System.String _KipFunctieCode;
+        partial void OnKipFunctieCodeChanging(global::System.String value);
+        partial void OnKipFunctieCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String KipFunctieOmschrijving
+        {
+            get
+            {
+                return _KipFunctieOmschrijving;
+            }
+            set
+            {
+                OnKipFunctieOmschrijvingChanging(value);
+                ReportPropertyChanging("KipFunctieOmschrijving");
+                _KipFunctieOmschrijving = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("KipFunctieOmschrijving");
+                OnKipFunctieOmschrijvingChanged();
+            }
+        }
+        private global::System.String _KipFunctieOmschrijving;
+        partial void OnKipFunctieOmschrijvingChanging(global::System.String value);
+        partial void OnKipFunctieOmschrijvingChanged();
+
+        #endregion
+    
+    }
     
     /// <summary>
     /// No Metadata Documentation available.

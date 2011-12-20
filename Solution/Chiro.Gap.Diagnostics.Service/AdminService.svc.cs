@@ -24,9 +24,16 @@ namespace Chiro.Gap.Diagnostics.Service
         private readonly LedenManager _ledenManager;
         private readonly GelieerdePersonenManager _gelieerdePersonenManager;
         private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
-        private readonly VerlorenAdressenManager _verlorenAdressenManager;
+        private readonly ProblemenManager _problemenManager;
+
+        // De sync-opdrachten worden rechtstreeks vanuit deze service gegeven.
+        // Anderzijds bevat iedere worker ook een sync-object.  Moet de sync
+        // dan niet via de workers gebeuren? Bijv. _ledenManager.FunctiesOpnieuwSyncen
+        // ipv. _ledenSync.FunctiesOpnieuwSyncen.
+        // Of wordt het dan te complex?
 
         private readonly IAdressenSync _adressenSync;
+        private readonly ILedenSync _ledenSync;
 
         // LIVE
         //private const string SECURITYGROEP = @"KIPDORP\g-GapSuper";
@@ -43,24 +50,27 @@ namespace Chiro.Gap.Diagnostics.Service
         /// <param name="ledenManager">Bevat ledengerelateerde methods van de backend</param>
         /// <param name="gelieerdePersonenManager">Methods van backend m.b.t. gelieerde personen</param>
         /// <param name="groepsWerkJaarManager">Methods van backend m.b.t. groepswerkjaar</param>
-        /// <param name="verlorenAdressenManager">Methods van backend m.b.t. diagnostics</param>
+        /// <param name="problemenManager">Methods van backend m.b.t. diagnostics</param>
         /// <param name="adressenSync">zorgt voor de synchronisatie van de adressen naar Kipadmin</param>
+        /// <param name="ledenSync">zorgt voor de synchronisatie van de leden naar Kipadmin</param>
         public AdminService(
             GroepenManager groepenManager, 
             GebruikersRechtenManager gebruikersRechtenManager,
             GelieerdePersonenManager gelieerdePersonenManager,
             GroepsWerkJaarManager groepsWerkJaarManager,
             LedenManager ledenManager,
-            VerlorenAdressenManager verlorenAdressenManager,
-            IAdressenSync adressenSync)
+            ProblemenManager problemenManager,
+            IAdressenSync adressenSync,
+            ILedenSync ledenSync)
         {
             _groepenManager = groepenManager;
             _gebruikersRechtenManager = gebruikersRechtenManager;
             _ledenManager = ledenManager;
             _gelieerdePersonenManager = gelieerdePersonenManager;
             _groepsWerkJaarManager = groepsWerkJaarManager;
-            _verlorenAdressenManager = verlorenAdressenManager;
+            _problemenManager = problemenManager;
             _adressenSync = adressenSync;
+            _ledenSync = ledenSync;
         }
 
         /// <summary>
@@ -168,19 +178,47 @@ namespace Chiro.Gap.Diagnostics.Service
         [PrincipalPermission(SecurityAction.Demand, Role = SECURITYGROEP)]
         public int AantalVerdwenenAdressenOphalen()
         {
-            return _verlorenAdressenManager.VerdwenenAdressenOphalen().Count();
+            return _problemenManager.VerdwenenAdressenOphalen().Count();
         }
 
         /// <summary>
         /// Synct de adressen die niet doorkwamen naar Kipadmin opnieuw
         /// </summary>
+        [PrincipalPermission(SecurityAction.Demand, Role = SECURITYGROEP)]
         public void OntbrekendeAdressenSyncen()
         {
-            var gpIds = _verlorenAdressenManager.VerdwenenAdressenOphalen().Select(row => row.GelieerdePersoonID).ToArray();
+            var gpIds = _problemenManager.VerdwenenAdressenOphalen().Select(row => row.GelieerdePersoonID).ToArray();
             var gelieerdePersonen = _gelieerdePersonenManager.Ophalen(gpIds, PersoonsExtras.VoorkeurAdres);
             var persoonsAdressen = gelieerdePersonen.Select(gp => gp.PersoonsAdres).ToArray();
 
             _adressenSync.StandaardAdressenBewaren(persoonsAdressen);
+        }
+
+        /// <summary>
+        /// Haalt het aantal functie-inconsistenties op voor het huidige werkjaar
+        /// </summary>
+        /// <returns>Het aantal functies in GAP dat niet in Kipadmin gevonden wordt, plus
+        /// het aantal functies in Kipadmin dat niet in GAP gevonden wordt.</returns>
+        [PrincipalPermission(SecurityAction.Demand, Role = SECURITYGROEP)]
+        public int AantalFunctieFoutenOphalen()
+        {
+            return _problemenManager.FunctieProblemenOphalen().Count();
+        }
+
+
+        /// <summary>
+        /// Hersynchroniseert de functies van de leden met functieproblemen (huidig werkjaar)
+        /// </summary>
+        [PrincipalPermission(SecurityAction.Demand, Role = SECURITYGROEP)]
+        public void FunctieProbleemLedenOpnieuwSyncen()
+        {
+            var lidIDs = _problemenManager.FunctieProblemenOphalen().Select(fp => fp.GapLidID).ToArray();
+            var leden = _ledenManager.Ophalen(lidIDs, LidExtras.Persoon | LidExtras.Functies | LidExtras.Groep);
+
+            foreach (var lid in leden)
+            {
+                _ledenSync.FunctiesUpdaten(lid);
+            }
         }
     }
 }
