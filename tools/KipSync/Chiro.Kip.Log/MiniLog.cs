@@ -63,7 +63,16 @@ namespace Chiro.Kip.Log
 
 				Console.WriteLine("{0}:{1}:{2}", tijd, userDef, bericht);
 
-				var b = new Bericht { bericht = bericht, datum = tijd, ernstig = ernstig, gebruiker = userDef };
+			    var b = new Bericht
+			                {
+			                    bericht =
+			                        bericht.Length > Properties.Settings.Default.MaxLenLogBericht
+			                            ? bericht.Substring(0, Properties.Settings.Default.MaxLenLogBericht)
+			                            : bericht,
+			                    datum = tijd,
+			                    ernstig = ernstig,
+			                    gebruiker = userDef
+			                };
 
 				db.AddToBerichtSet(b);
 				db.SaveChanges();
