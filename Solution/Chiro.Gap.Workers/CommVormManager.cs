@@ -12,6 +12,7 @@ using System.Transactions;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.Workers.Exceptions;
@@ -26,7 +27,7 @@ namespace Chiro.Gap.Workers
 	public class CommVormManager
 	{
 		private readonly IDao<CommunicatieType> _typedao;
-		private readonly IDao<CommunicatieVorm> _dao;
+		private readonly ICommunicatieVormDao _dao;
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly ICommunicatieSync _communicatieSync;
 		private readonly IPersonenSync _personenSync;
@@ -42,7 +43,7 @@ namespace Chiro.Gap.Workers
 	    /// <param name="personenSync">De service die instaat voor synchronisatie van persoonsgegevens</param>
 	    public CommVormManager(
 			IDao<CommunicatieType> typedao, 
-			IDao<CommunicatieVorm> commdao, 
+			ICommunicatieVormDao commdao, 
 			IAutorisatieManager autorisatieMgr,
 			ICommunicatieSync communicatieSync,
 			IPersonenSync personenSync)

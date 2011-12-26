@@ -857,10 +857,6 @@ namespace Chiro.Gap.Services
                 // TODO (#497): specifiekere info bij in de exceptie
                 throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.ValidatieFout, Bericht = ex.Message });
             }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
         }
 
         /// <summary>

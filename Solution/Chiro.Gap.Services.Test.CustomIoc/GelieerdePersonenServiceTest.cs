@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Data.Objects.DataClasses;
+using System.Linq;
+using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Ioc;
@@ -118,6 +121,79 @@ namespace Chiro.Gap.Services.Test.CustomIoc
 
             // Als de verify geen exception opleverde, is het gelukt.
             Assert.IsTrue(true);
+        }
+
+        /// <summary>
+        /// Controleren of 'communicatievormaanpassen' wel degelijk een communicatievorm aanpast.
+        ///</summary>
+        [TestMethod()]
+        public void CommunicatieVormAanpassenTest()
+        {
+            // Arrange
+
+            const int TESTGPID = 1234;      // arbitrair ID van een gelieerde persoon
+            const int TESTCVID = 2345;      // en van een communicatievorm
+            const int TESTCTID = 3;         // en diens communicatietype
+
+            var testCommunicatieType = new CommunicatieType {ID = TESTCTID, Validatie = ".*"};
+            var testCommunicatieVorm = new CommunicatieVorm
+                                           {
+                                               ID = TESTCVID,
+                                               CommunicatieType = testCommunicatieType,
+                                               Nummer = "jos@linux.be"
+                                           };
+
+            // Koppel gauw testCommunicatieVorm aan testGelieerdePersoon
+
+            var testGelieerdePersoon = new GelieerdePersoon
+                                           {
+                                               ID = TESTGPID,
+                                               Persoon = new Persoon(),
+                                               Communicatie =
+                                                   new EntityCollection<CommunicatieVorm>
+                                                       {
+                                                           testCommunicatieVorm
+                                                       }
+                                           };
+            testCommunicatieVorm.GelieerdePersoon = testGelieerdePersoon;
+
+            var communicatieTypeDaoMock = new Mock<IDao<CommunicatieType>>();
+            var communicatieVormDaoMock = new Mock<ICommunicatieVormDao>();
+
+            var communicatieSyncMock = new Mock<ICommunicatieSync>();
+
+            // het communicatietype zal worden opgevraagd, maar is irrelevant voor deze test.
+            // zorg er wel voor dat alles valideert.
+            communicatieTypeDaoMock.Setup(dao => dao.Ophalen(TESTCTID)).Returns(testCommunicatieType);
+            // idem voor communicatievorm
+
+            // Toevallig weet ik dat IDao.Ophalen opgeroepen wordt met 4 lambda-expressies om de
+            // communicatievorm op te halen.  Dus die moet gemockt worden.
+            communicatieVormDaoMock.Setup(
+                dao =>
+                dao.Ophalen(TESTCVID,
+                            It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>()))
+                .Returns(testCommunicatieVorm);
+
+            Factory.InstantieRegistreren(communicatieTypeDaoMock.Object);
+            Factory.InstantieRegistreren(communicatieVormDaoMock.Object);
+            Factory.InstantieRegistreren(communicatieSyncMock.Object);
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            var commDetail = new CommunicatieInfo
+            {
+                CommunicatieTypeID = 3,    // e-mail
+                ID = TESTCVID,    // ID van de bestaande communicatievorm
+                Nummer = "johan@linux.be"  // arbitrair nieuw e-mailadres
+            };
+
+            // Act
+            target.CommunicatieVormAanpassen(commDetail);
+
+            // Assert
+
+            Assert.AreEqual(testCommunicatieVorm.Nummer, "johan@linux.be");
         }
     }
 }
