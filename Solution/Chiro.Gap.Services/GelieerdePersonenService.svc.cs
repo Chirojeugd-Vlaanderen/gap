@@ -804,10 +804,6 @@ namespace Chiro.Gap.Services
                 // OPM: ex.Message als bericht opgenomen in de FoutNummerFault. Is dat voldoende?
                 throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.ValidatieFout, Bericht = ex.Message });
             }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
         }
 
         /// <summary>

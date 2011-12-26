@@ -113,6 +113,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Diagnostics.Orm",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Diagnostics.Data", "Chiro.Gap.Diagnostics.Data\Chiro.Gap.Diagnostics.Data.csproj", "{C1218796-36DD-417B-9331-272A4BEE34CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Services.Test.CustomIoc", "Chiro.Gap.Services.Test.CustomIoc\Chiro.Gap.Services.Test.CustomIoc.csproj", "{585E2DB2-1A93-41FA-85BE-0E752631EEA8}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution3.vsmdi
@@ -668,6 +670,18 @@ Global
 		{C1218796-36DD-417B-9331-272A4BEE34CE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C1218796-36DD-417B-9331-272A4BEE34CE}.Release|Win32.ActiveCfg = Release|Any CPU
 		{C1218796-36DD-417B-9331-272A4BEE34CE}.Release|x86.ActiveCfg = Release|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Release|Win32.ActiveCfg = Release|Any CPU
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -687,6 +701,7 @@ Global
 		{64C70DFC-E7B9-4293-B626-2C99C62208C8} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{6511ADF0-747A-4278-9B49-650CCE3A5AF6} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{FB1B9BDC-EF8B-4AA1-882F-BF5AC3912D3F} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
+		{585E2DB2-1A93-41FA-85BE-0E752631EEA8} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{E883CD16-1749-43FA-B344-AD2928A8B00E} = {BBABD468-99FA-43E6-8E64-DAA6C3CFF2BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

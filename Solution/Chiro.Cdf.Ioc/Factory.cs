@@ -49,6 +49,9 @@ namespace Chiro.Cdf.Ioc
 
                 if (section != null)
                 {
+                    // Als je hier een IoException of zoiets krijgt, dan mis je waarschijnlijk referenties
+                    // naar assemblies die in je untiy-configuratie voorkomen.
+
                     section.Configure(_container);
                 }
             }
