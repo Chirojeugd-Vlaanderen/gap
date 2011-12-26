@@ -787,12 +787,14 @@ namespace Chiro.Gap.Services
             {
                 // TODO (#1047): Deze method moet nog aangepast worden.  De geijkte manier van werken is:
                 // 1. Haal gelieerde persoon op
-                // 2. Creer NIEUWE communicatievorm BUG! Momenteel wordt een commDetail dat al bestaat maar van iemand anders is gewoon verzet!!!!
+                // 2. Creer NIEUWE communicatievorm
                 // 3. Gebruik business om te koppelen
                 // 4. Bewaar
 
                 var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(commDetail);
                 communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(commDetail.CommunicatieTypeID);
+
+                communicatieVorm.ID = 0;    // zodat de communicatievorm zeker als nieuw wordt beschouwd.
 
                 GelieerdePersoon gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Communicatie);
                 _cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);

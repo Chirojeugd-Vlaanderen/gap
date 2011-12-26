@@ -91,7 +91,7 @@ namespace Chiro.Gap.Services.Test.CustomIoc
             communicatieTypeDaoMock.Setup(dao => dao.Ophalen(3)).Returns(new CommunicatieType {Validatie = ".*"});
             // idem voor gelieerde persoon
             gelieerdePersonenDaoMock.Setup(dao => dao.Ophalen(It.IsAny<IEnumerable<int>>(), It.IsAny<PersoonsExtras>()))
-                .Returns(new[] {new GelieerdePersoon{Persoon = new Persoon()}});
+                .Returns(new[] {new GelieerdePersoon{Persoon = new Persoon{AdInAanvraag = true}}});
 
             // verwacht dat CommunicatieSync.Toevoegen wordt aangeroepen.
             communicatieSyncMock.Setup(snc => snc.Toevoegen(It.IsAny<CommunicatieVorm>())).Verifiable();
