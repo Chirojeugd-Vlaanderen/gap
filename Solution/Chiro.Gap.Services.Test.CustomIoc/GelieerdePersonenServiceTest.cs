@@ -195,5 +195,97 @@ namespace Chiro.Gap.Services.Test.CustomIoc
 
             Assert.AreEqual(testCommunicatieVorm.Nummer, "johan@linux.be");
         }
+
+        /// <summary>
+        /// Bij  het toevoegen van een communicatievorm die voorkeur moet zijn, moeten
+        /// bestaande communicatievormen van hetzelfde type hun voorkeur verliezen. 
+        ///</summary>
+        [TestMethod()]
+        public void VoorkeursCommunicatieVormToevoegenTest()
+        {
+            // Arrange
+
+            const int TESTGPID = 1234;      // arbitrair ID van een gelieerde persoon
+            const int TESTCVID = 2345;      // en van een communicatievorm
+            const int TESTCTID = 3;         // en diens communicatietype
+
+            var testCommunicatieType = new CommunicatieType { ID = TESTCTID, Validatie = ".*" };
+            var testCommunicatieVorm = new CommunicatieVorm
+            {
+                ID = TESTCVID,
+                CommunicatieType = testCommunicatieType,
+                Nummer = "jos@linux.be"
+            };
+
+            // Koppel gauw testCommunicatieVorm aan testGelieerdePersoon
+
+            var testGelieerdePersoon = new GelieerdePersoon
+            {
+                ID = TESTGPID,
+                Persoon = new Persoon(),
+                Communicatie =
+                    new EntityCollection<CommunicatieVorm>
+                                                       {
+                                                           testCommunicatieVorm
+                                                       }
+            };
+            testCommunicatieVorm.GelieerdePersoon = testGelieerdePersoon;
+
+            var communicatieTypeDaoMock = new Mock<IDao<CommunicatieType>>();
+            var communicatieVormDaoMock = new Mock<ICommunicatieVormDao>();
+            var gelieerdePersonenDaoMock = new Mock<IGelieerdePersonenDao>();
+
+            var communicatieSyncMock = new Mock<ICommunicatieSync>();
+
+            // het communicatietype zal worden opgevraagd, maar is irrelevant voor deze test.
+            // zorg er wel voor dat alles valideert.
+            communicatieTypeDaoMock.Setup(dao => dao.Ophalen(TESTCTID)).Returns(testCommunicatieType);
+
+            // zorg ervoor dat de gelieerde persoon opgehaald wordt
+            gelieerdePersonenDaoMock.Setup(dao => dao.Ophalen(It.IsAny<IEnumerable<int>>(), It.IsAny<PersoonsExtras>()))
+                .Returns(new[] { testGelieerdePersoon });
+
+            // in plaats van een communicatievorm te bewaren, zetten we iets in zijn opmerkingenveld.
+            // Op die manier kunnen we achteraf zien welke communicatievormen bewaard zijn.
+
+            // Dit gaat er nu vanuit dat de communicatievormen bewaard worden via CommunicatieVormDao.Bewaren;
+            // kan even goed iets anders zijn.  Unit test enkel ter illustratie
+
+            communicatieVormDaoMock.Setup(
+                dao =>
+                dao.Bewaren(It.IsAny<CommunicatieVorm>(), It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>())).
+                Returns((CommunicatieVorm cv, Expression<Func<CommunicatieVorm, object>>[] paths) =>
+                            {
+                                cv.Nota = "bewaard";
+                                return cv;
+                            });
+
+            Factory.InstantieRegistreren(communicatieTypeDaoMock.Object);
+            Factory.InstantieRegistreren(communicatieVormDaoMock.Object);
+            Factory.InstantieRegistreren(gelieerdePersonenDaoMock.Object);
+            Factory.InstantieRegistreren(communicatieSyncMock.Object);
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            var commDetail = new CommunicatieInfo
+            {
+                CommunicatieTypeID = 3,    // e-mail
+                ID = 0,                    // nieuwe communicatievorm
+                Nummer = "johan@linux.be", // arbitrair nieuw e-mailadres
+                Voorkeur = true
+            };
+
+            // Act
+            target.CommunicatieVormToevoegen(TESTGPID, commDetail);
+
+            // Assert
+
+            // De nieuwe communicatievorm zal wel bewaard zijn.  Maar de
+            // oorspronkelijke moet ook bewaard zijn, want die is zijn
+            // voorkeur verloren.
+
+            Assert.AreEqual("bewaard", testCommunicatieVorm.Nota);
+        }
+
     }
 }
