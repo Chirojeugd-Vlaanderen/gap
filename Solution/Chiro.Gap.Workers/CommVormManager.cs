@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -202,55 +203,66 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Vervangt eventueel de oude gegevens van de communicatievorm door de nieuwe,
-		/// gaat na of er al een andere communicatievorm van dat type is, om te garanderen
-		/// dat er een voorkeurscommunicatievorm van dat type is
+		///  Koppelt een communicatievorm aan een gelieerde persoon.
 		/// </summary>
 		/// <param name="gp">De gelieerde persoon voor wie de communicatievorm toegevoegd of aangepast wordt</param>
 		/// <param name="nieuwecv">De nieuwe gegevens voor de communicatievorm</param>
-		public void AanpassingenDoorvoeren(GelieerdePersoon gp, CommunicatieVorm nieuwecv)
+		/// <remarks>Als de communicatievorm de eerste van een bepaald type is, dan wordt dat ook de voorkeur.</remarks>
+		public void Koppelen(GelieerdePersoon gp, CommunicatieVorm nieuwecv)
 		{
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+            var cvValid = new CommunicatieVormValidator();
 
-			CommunicatieVorm oudecv = gp.Communicatie.Where(e => e.ID == nieuwecv.ID).FirstOrDefault();
+            if (!cvValid.Valideer(nieuwecv))
+            {
+                throw new ValidatieException(string.Format(Properties.Resources.CommunicatieVormValidatieFeedback, nieuwecv.Nummer, nieuwecv.CommunicatieType.Omschrijving));
+            }
 
-			var cvValid = new CommunicatieVormValidator();
+            Debug.Assert(nieuwecv.ID == 0);
 
-			if (!cvValid.Valideer(nieuwecv))
-			{
-				throw new ValidatieException(string.Format(Properties.Resources.CommunicatieVormValidatieFeedback, nieuwecv.Nummer, nieuwecv.CommunicatieType.Omschrijving));
-			}
-
-			if (oudecv != null)
-			{
-				gp.Communicatie.Remove(oudecv);
-			}
+		    bool eersteVanType = (from c in gp.Communicatie
+		                          where c.CommunicatieType.ID == nieuwecv.CommunicatieType.ID
+		                          select c).FirstOrDefault() == null;
 
 			gp.Communicatie.Add(nieuwecv);
 			nieuwecv.GelieerdePersoon = gp;
 
-			bool seen = false;
-			foreach (CommunicatieVorm cv in gp.Communicatie)
-			{
-				if (cv.CommunicatieType.ID == nieuwecv.CommunicatieType.ID)
-				{
-					if (cv.Voorkeur && seen)
-					{
-						cv.Voorkeur = false;
-					}
-					if (!seen && cv.Voorkeur)
-					{
-						seen = true;
-					}
-				}
-			}
-			if (!seen)
-			{
-				nieuwecv.Voorkeur = true;
-			}
+            if (eersteVanType)
+            {
+                VoorkeurZetten(nieuwecv);
+            }
 		}
+
+
+        /// <summary>
+        /// Stelt de gegeven communicatievorm in als voorkeurscommunicatievorm voor zijn
+        /// type en gelieerde persoon
+        /// </summary>
+        /// <param name="cv">Communicatievorm die voorkeurscommunicatievorm moet worden,
+        /// gegeven zijn type en gelieerde persoon</param>
+	    public void VoorkeurZetten(CommunicatieVorm cv)
+	    {
+            if (!_autorisatieMgr.IsGavCommVorm(cv.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+
+            var validator = new CommunicatieVormValidator();
+
+            if (!validator.Valideer(cv))
+            {
+                throw new ValidatieException(string.Format(Properties.Resources.CommunicatieVormValidatieFeedback,
+                                                           cv.Nummer,
+                                                           cv.CommunicatieType.Omschrijving));
+            }
+
+            foreach (var communicatieVorm in cv.GelieerdePersoon.Communicatie.Where(c => c.CommunicatieType.ID == cv.CommunicatieType.ID).ToArray())
+	        {
+	            communicatieVorm.Voorkeur = (communicatieVorm == cv);
+	        }
+	    }
 	}
 }

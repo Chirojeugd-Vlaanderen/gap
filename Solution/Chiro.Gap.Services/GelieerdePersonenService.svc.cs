@@ -797,7 +797,7 @@ namespace Chiro.Gap.Services
                 communicatieVorm.ID = 0;    // zodat de communicatievorm zeker als nieuw wordt beschouwd.
 
                 GelieerdePersoon gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Communicatie);
-                _cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
+                _cvMgr.Koppelen(gp, communicatieVorm);
                 _cvMgr.Bewaren(communicatieVorm);
             }
             catch (ValidatieException ex)
@@ -839,23 +839,42 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Persisteert de wijzigingen aan een bestaande communicatievorm
         /// </summary>
-        /// <param name="v">De aan te passen communicatievorm</param>
-        public void CommunicatieVormAanpassen(CommunicatieInfo v)
+        /// <param name="info">Info mbt de aan te passen communicatievorm</param>
+        public void CommunicatieVormAanpassen(CommunicatieInfo info)
         {
+            // Haal originele communicatievorm op, inclusief gelieerde persoon en diens
+            // andere communicatievormen.
+
+            var cv = _cvMgr.OphalenMetGelieerdePersoon(info.ID);
+            int origCommunicatieTypeID = cv.CommunicatieType.ID;
+
+            // Map nieuwe gegevens op originele communicatievorm
+
+            Mapper.Map(info, cv);
+
+            // Als het type veranderde, dan moeten we wat foefelare
+
+            if (info.CommunicatieTypeID != origCommunicatieTypeID)
+            {
+                cv.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(info.CommunicatieTypeID);
+            }
+
             try
             {
-                var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(v);
-                communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(v.CommunicatieTypeID);
-
-                var cv = _cvMgr.OphalenMetGelieerdePersoon(v.ID);
-                var gp = cv.GelieerdePersoon;
-                _cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
-                _cvMgr.Bewaren(communicatieVorm);
+                if (info.Voorkeur)
+                {
+                    _cvMgr.VoorkeurZetten(cv);
+                }
+                _cvMgr.Bewaren(cv);
             }
             catch (ValidatieException ex)
             {
                 // TODO (#497): specifiekere info bij in de exceptie
-                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.ValidatieFout, Bericht = ex.Message });
+                throw new FaultException<FoutNummerFault>(new FoutNummerFault
+                                                              {
+                                                                  FoutNummer = FoutNummer.ValidatieFout,
+                                                                  Bericht = ex.Message
+                                                              });
             }
         }
 
