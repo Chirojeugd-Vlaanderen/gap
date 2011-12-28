@@ -868,6 +868,17 @@ namespace Chiro.Gap.Services
             var cv = _cvMgr.OphalenMetGelieerdePersoon(info.ID);
             int origCommunicatieTypeID = cv.CommunicatieType.ID;
 
+            // Kijk of er al communicatievormen van hetzelfde type bestaan die de voorkeur
+            // hebben.  Dat is relevant voor als de aangepaste de voorkeur heeft, en we diegene
+            // die hun voorkeur verliezen moeten persisteren.
+            // (In theorie kan er maar 1 de voorkeur zijn.  In praktijk is er ticket #385, waardoor
+            // er sommigen meer dan 1 voorkeurs-e-mailadres, -telefoonnr.,... hebben.  Vandaar dat
+            // we een lijst opzoeken)
+
+            var bestaandeMetVoorkeur = (from cov in cv.GelieerdePersoon.Communicatie
+                                        where cov.CommunicatieType.ID == info.CommunicatieTypeID && cov.Voorkeur
+                                        select cov).ToList();
+
             // Map nieuwe gegevens op originele communicatievorm
 
             Mapper.Map(info, cv);
@@ -884,7 +895,20 @@ namespace Chiro.Gap.Services
                 if (info.Voorkeur)
                 {
                     _cvMgr.VoorkeurZetten(cv);
+
+                    // Als de aan te passen communicatievorm de voorkeur heeft,
+                    // dan zijn er misschien bestaande die hun voorkeur verliezen.  
+                    // Persisteer dus ook die andere.  (De check op ID's vermijdt
+                    // dat we de gewijzigde ook bewaren; dat doen we zodadelijk 
+                    // sowieso)
+
+                    foreach (var cov in bestaandeMetVoorkeur.Where(bv => bv.ID != info.ID))
+                    {
+                        _cvMgr.Bewaren(cov);
+                    }
                 }
+
+                // Bewaar uiteindelijk de aan te passen communicatievorm
                 _cvMgr.Bewaren(cv);
             }
             catch (ValidatieException ex)

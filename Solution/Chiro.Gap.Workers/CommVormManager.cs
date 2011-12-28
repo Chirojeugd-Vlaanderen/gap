@@ -106,6 +106,15 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+
+            var cvValidator = new CommunicatieVormValidator();
+
+            if (!cvValidator.Valideer(commvorm))
+            {
+                throw new ValidatieException(string.Format(Properties.Resources.CommunicatieVormValidatieFeedback,
+                                                           commvorm.Nummer,
+                                                           commvorm.CommunicatieType.Omschrijving));
+            }
 #if KIPDORP
 			using (var tx = new TransactionScope())
 			{
