@@ -131,28 +131,5 @@ namespace Chiro.Gap.Services.Test
 			target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);
 			Assert.IsTrue(true);	// al blij als er geen exception optreedt
 		}
-
-		///<summary>
-		///Toevoegen van een geldig telefoonnr aan een onbestaande gelieerde persoon.  
-		/// Dit moet failen met een GeenGavException
-		/// </summary>
-		[ExpectedException(typeof(FaultException<FoutNummerFault>))]
-		[TestMethod]
-		public void CommunicatieVormToevoegenTestOnbestaandePersoon()
-		{
-			var target = Factory.Maak<GelieerdePersonenService>();
-
-			var gelieerdePersoonID = TestInfo.ONBESTAANDEGELIEERDEPERSOONID;
-
-			var commInfo = new CommunicatieDetail()
-			{
-				CommunicatieTypeID = 1,
-				Voorkeur = true,
-				Nummer = TestInfo.GELDIGTELEFOONNR
-			};
-
-			target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);
-			Assert.IsTrue(false);	// hier mogen we niet geraken; hopelijk hebben we een exception gehad.
-		}
 	}
 }
