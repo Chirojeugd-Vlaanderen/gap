@@ -214,7 +214,8 @@ namespace Chiro.Gap.Services.Test.CustomIoc
             {
                 ID = TESTCVID,
                 CommunicatieType = testCommunicatieType,
-                Nummer = "jos@linux.be"
+                Nummer = "jos@linux.be",
+                Voorkeur = true
             };
 
             // Koppel gauw testCommunicatieVorm aan testGelieerdePersoon
