@@ -230,7 +230,7 @@ namespace Chiro.Gap.Workers
 			gp.Communicatie.Add(nieuwecv);
 			nieuwecv.GelieerdePersoon = gp;
 
-            if (eersteVanType)
+            if (eersteVanType || nieuwecv.Voorkeur)
             {
                 VoorkeurZetten(nieuwecv);
             }

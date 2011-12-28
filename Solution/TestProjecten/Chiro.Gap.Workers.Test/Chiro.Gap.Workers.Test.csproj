@@ -81,6 +81,7 @@
     <Compile Include="AfdelingsJaarManagerTest.cs" />
     <Compile Include="CategorieTest.cs" />
     <Compile Include="CategorieToevoegen.cs" />
+    <Compile Include="CommVormManagerTest.cs" />
     <Compile Include="UitstapAanmaken.cs" />
     <Compile Include="FunctiesManagerTest.cs" />
     <Compile Include="GapExceptionTest.cs" />
@@ -95,6 +96,14 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
+      <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
+      <Name>Chiro.Ad.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
+      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
+      <Name>Chiro.Adf.ServiceModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
       <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
       <Name>Chiro.Cdf.Data.Entity</Name>
@@ -106,6 +115,10 @@
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
+      <Project>{18FF2008-106F-48A6-BEFB-5F8B301354D0}</Project>
+      <Name>Chiro.Cdf.Mailer</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
       <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>

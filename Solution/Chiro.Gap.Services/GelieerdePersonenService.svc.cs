@@ -785,20 +785,36 @@ namespace Chiro.Gap.Services
         {
             try
             {
-                // TODO (#1047): Deze method moet nog aangepast worden.  De geijkte manier van werken is:
-                // 1. Haal gelieerde persoon op
-                // 2. Creer NIEUWE communicatievorm
-                // 3. Gebruik business om te koppelen
-                // 4. Bewaar
+                GelieerdePersoon gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Communicatie);
+
+                var bestaandeMetVoorkeur = (from cv in gp.Communicatie
+                                            where cv.CommunicatieType.ID == commDetail.CommunicatieTypeID && cv.Voorkeur
+                                            select cv).ToList();
+                // in theorie kan er maar 1 met voorkeur zijn, in praktijk zullen er hier en daar 
+                // personen zijn met meer dan 1 voorkeur per communicatievorm, t.g.v. ticket #385.
 
                 var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(commDetail);
+                communicatieVorm.ID = 0;    // zodat de communicatievorm zeker als nieuw wordt beschouwd.
                 communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(commDetail.CommunicatieTypeID);
 
-                communicatieVorm.ID = 0;    // zodat de communicatievorm zeker als nieuw wordt beschouwd.
-
-                GelieerdePersoon gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Communicatie);
                 _cvMgr.Koppelen(gp, communicatieVorm);
                 _cvMgr.Bewaren(communicatieVorm);
+
+                // Wanneer de nieuwe communicatievorm niet de voorkeurscommunicatievorm is, dan volstaat het
+                // enkel de nieuwe communicatievorm te bewaren (en te syncen naar Kipadmin).
+
+                if (communicatieVorm.Voorkeur)
+                {
+                    // Is de nieuwe communicatievorm wél de voorkeurscommunicatie, dan moet ook de communicatievorm
+                    // die zijn voorkeur verloren heeft opnieuw worden bewaard.
+
+                    foreach (var cv in bestaandeMetVoorkeur)
+                    {
+                        // ik verwacht dat de CommunicatieVormManager.Koppelen de 'Voorkeur' van deze ondertussen
+                        // op 'false' heeft gezet.
+                        _cvMgr.Bewaren(cv);
+                    }
+                }
             }
             catch (ValidatieException ex)
             {
