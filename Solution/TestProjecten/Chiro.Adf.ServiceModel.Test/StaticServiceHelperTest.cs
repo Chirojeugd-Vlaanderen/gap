@@ -43,9 +43,9 @@ namespace Chiro.Adf.ServiceModel.Test
         {
             Factory.ContainerInit();
 
-            var groepenServiceMock = new Mock<IGroepenService>();
-            groepenServiceMock.Setup(mock => mock.WieBenIk()).Returns("mock");
-            Factory.InstantieRegistreren(groepenServiceMock.Object);
+            var gelieerdePersonenServiceMock = new Mock<IGelieerdePersonenService>();
+            gelieerdePersonenServiceMock.Setup(mock => mock.PersoonIDGet(It.IsAny<int>())).Returns(-1);
+            Factory.InstantieRegistreren(gelieerdePersonenServiceMock.Object);
         }
 
         #region Additional test attributes
@@ -80,28 +80,25 @@ namespace Chiro.Adf.ServiceModel.Test
 
 
         /// <summary>
+        /// Aanroep van niet-gemockte service
+        /// </summary>
+        [TestMethod()]
+        public void NietGemockteServiceTest()
+        {
+            string actual = ServiceHelper.CallService<IGroepenService, string>(svc=>svc.WieBenIk());
+
+            Assert.IsFalse(String.IsNullOrEmpty(actual));
+        }
+
+        /// <summary>
         /// Aanroep van gemockte service
         /// </summary>
         [TestMethod()]
         public void GemockteServiceTest()
         {
-            string actual = ServiceHelper.CallService<IGroepenService, string>(svc=>svc.WieBenIk());
+            int actual = ServiceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.PersoonIDGet(12345));
 
-            Assert.AreEqual("mock", actual);
-        }
-
-        /// <summary>
-        /// Aanroep van niet-gemockte service
-        /// </summary>
-        [TestMethod()]
-        [ExpectedException(typeof(FaultException<FoutNummerFault>))]
-        public void NietGemockteServiceTest()
-        {
-            int actual = ServiceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.PersoonIDGet(-1));
-
-            // we verwachten een geen-GAV-fout
-
-            Assert.IsTrue(false);
+            Assert.AreEqual(-1, actual);
         }
     }
 }
