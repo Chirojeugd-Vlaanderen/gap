@@ -612,6 +612,7 @@ namespace Chiro.WatiN.Test
 		/// invoegen.
 		/// </summary>
 		[TestMethod]
+        [Ignore]
 		public void PersonenInvoegen()
 		{
 			Boolean foutGevonden = false;
@@ -812,6 +813,7 @@ namespace Chiro.WatiN.Test
 		}
 
 		[TestMethod]
+        [Ignore]
 		public void LidMakenPersonen()
 		{
 			Boolean foutGevonden = false;
