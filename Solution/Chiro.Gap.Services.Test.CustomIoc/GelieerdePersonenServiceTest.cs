@@ -75,7 +75,7 @@ namespace Chiro.Gap.Services.Test.CustomIoc
 
         /// <summary>
         /// Kijkt na of CommunicatieVormToevoegen enkel de nieuwe communicatievorm
-        /// naar Kipadmin synct, ipv alles te vervangen.  
+        /// naar Kipadmin synct, ipv alle communicatie in kipadmin te vervangen  
         ///</summary>
         [TestMethod()]
         public void CommunicatieVormToevoegenTest()
@@ -84,6 +84,7 @@ namespace Chiro.Gap.Services.Test.CustomIoc
 
             const int TESTGPID = 1234;
 
+            var communicatieVormDaoMock = new Mock<ICommunicatieVormDao>();
             var communicatieTypeDaoMock = new Mock<IDao<CommunicatieType>>();
             var gelieerdePersonenDaoMock = new Mock<IGelieerdePersonenDao>();
 
@@ -92,15 +93,23 @@ namespace Chiro.Gap.Services.Test.CustomIoc
             // het communicatietype zal worden opgevraagd, maar is irrelevant voor deze test.
             // zorg er wel voor dat alles valideert.
             communicatieTypeDaoMock.Setup(dao => dao.Ophalen(3)).Returns(new CommunicatieType {Validatie = ".*"});
+            
             // idem voor gelieerde persoon
             gelieerdePersonenDaoMock.Setup(dao => dao.Ophalen(It.IsAny<IEnumerable<int>>(), It.IsAny<PersoonsExtras>()))
                 .Returns(new[] {new GelieerdePersoon{Persoon = new Persoon{AdInAanvraag = true}}});
+
+            // de communicatievorm zal ook worden bewaard
+            communicatieVormDaoMock.Setup(
+                dao =>
+                dao.Bewaren(It.IsAny<CommunicatieVorm>(), It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>())).
+                Returns((CommunicatieVorm cv, Expression<Func<CommunicatieVorm, object>>[] paths) => cv);
 
             // verwacht dat CommunicatieSync.Toevoegen wordt aangeroepen.
             communicatieSyncMock.Setup(snc => snc.Toevoegen(It.IsAny<CommunicatieVorm>())).Verifiable();
 
             Factory.InstantieRegistreren(communicatieTypeDaoMock.Object);
             Factory.InstantieRegistreren(gelieerdePersonenDaoMock.Object);
+            Factory.InstantieRegistreren(communicatieVormDaoMock.Object);
             Factory.InstantieRegistreren(communicatieSyncMock.Object);
 
             var target = Factory.Maak<GelieerdePersonenService>();
