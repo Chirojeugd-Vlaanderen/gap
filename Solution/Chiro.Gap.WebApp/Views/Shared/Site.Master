@@ -8,7 +8,10 @@
 </asp:Content>
 
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
-    <!-- TODO (#95) Dit lijkt me nutteloze nesting -->
+    <% // Dit is geen nutteloze nesting: bij overerving, zoals in de handleiding, 
+       // kun je alleen de contentplaceholders van de directe parent gebruiken.
+       // En als je commentaar voor de developers in de UI-bestanden wilt zetten,
+       // gebruik je beter servercomments, zoals hier, dan html-comments. ;) %>
 	<asp:ContentPlaceHolder runat="server" ID="head" />
 </asp:Content>
 
