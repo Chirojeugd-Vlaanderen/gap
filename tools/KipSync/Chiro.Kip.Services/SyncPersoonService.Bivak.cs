@@ -62,6 +62,11 @@ namespace Chiro.Kip.Services
 					// Vermoedelijk omdat de groepscode een CHAR(10) is, en geen VARCHAR(10)?
 					// I kan mij niet voorstellen dat enkel hier problemen geeft...
 
+                    if (aangifte.WerkJaar != bivak.WerkJaar)
+                    {
+                        _log.FoutLoggen(groep.GroepID, String.Format("Bivakaangifte van vorig jaar gewijzigd {0}", groep.STAMNR));
+                        return;
+                    }
 					Debug.Assert(aangifte.WerkJaar == bivak.WerkJaar);
 					aangifte.BivakNaam = bivak.Naam;
 					aangifte.Opmerkingen = bivak.Opmerkingen;
