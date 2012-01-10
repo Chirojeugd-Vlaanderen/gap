@@ -86,7 +86,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		    var huidigwerkjaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
 
-			var periodeSindsVorigGwj = DateTime.Today.Year - huidigwerkjaar.WerkJaar;
+			var werkJarenVerschil = model.NieuwWerkjaar - huidigwerkjaar.WerkJaar;
 
             // TODO: bovenstaande gaat ervan uit dat de jaarovergang voor december gebeurt, wat niet altijd het geval is.
 
@@ -125,8 +125,8 @@ namespace Chiro.Gap.WebApp.Controllers
                 {
 					afddetail.OfficieleAfdelingID	= actieveafdeling.OfficieleAfdelingID;
 					afddetail.Geslacht				= actieveafdeling.Geslacht;
-					afddetail.GeboorteJaarTot		= actieveafdeling.GeboorteJaarTot + periodeSindsVorigGwj;
-					afddetail.GeboorteJaarVan		= actieveafdeling.GeboorteJaarVan + periodeSindsVorigGwj;
+					afddetail.GeboorteJaarTot		= actieveafdeling.GeboorteJaarTot + werkJarenVerschil;
+					afddetail.GeboorteJaarVan		= actieveafdeling.GeboorteJaarVan + werkJarenVerschil;
                 }
             }
 
