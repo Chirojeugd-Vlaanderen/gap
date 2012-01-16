@@ -151,7 +151,7 @@ namespace Chiro.Gap.Services.Test
 			string fouten;
 			var voorstel = target.VoorstelTotInschrijvenGenereren(gps, out fouten).First();
 			int gekozenafdelingsjaarID = voorstel.AfdelingsJaarIDs.Contains(TestInfo.AFDELINGSJAAR2ID) ? TestInfo.AFDELINGSJAAR1ID : TestInfo.AFDELINGSJAAR2ID;
-			voorstel.AfdelingsJaarIDs = new List<int> {gekozenafdelingsjaarID};
+			voorstel.AfdelingsJaarIDs = new [] {gekozenafdelingsjaarID};
 			voorstel.AfdelingsJaarIrrelevant = false;
 			List<InTeSchrijvenLid> defvoorstel = new List<InTeSchrijvenLid>();
 			defvoorstel.Add(voorstel);

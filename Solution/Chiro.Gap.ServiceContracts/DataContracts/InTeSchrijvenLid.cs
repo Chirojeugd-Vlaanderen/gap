@@ -38,7 +38,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// De IDs van de eventuele gekozen afdelingsjaars.
 		/// </summary>
 		[DataMember]
-		public IEnumerable<int> AfdelingsJaarIDs { get; set; }
+		public int[] AfdelingsJaarIDs { get; set; }
 
 		/// <summary>
 		/// Boolean die aangeeft of het afdelingsjaar aangepast moet worden.
