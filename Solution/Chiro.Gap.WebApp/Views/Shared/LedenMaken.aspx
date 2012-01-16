@@ -56,8 +56,15 @@
 				<td><%=Html.CheckBoxList("LeidingMakenGelieerdePersoonIDs", leidingmaken[j])%></td>
 				<th>
 				<%//TODO juist voorspelde afdelingsjaar hier invullen! (property toevoegen aan persoondetail ofzo) %>
-				<% IEnumerable<DropDownListHelper.DropDownListItem<int>> afdelingIDItems = Model.BeschikbareAfdelingen.Select(e => new DropDownListHelper.DropDownListItem<int>() { Waarde = e.AfdelingsJaarID, DisplayNaam = e.Naam });%>
-				<%=Html.DropDownList("ToegekendeAfdelingsJaarIDs", afdelingIDItems, pl.AfdelingsJaarID.HasValue?pl.AfdelingsJaarID.Value:Model.BeschikbareAfdelingen.First().AfdelingsJaarID)%>
+				<%
+		    IEnumerable<DropDownListHelper.DropDownListItem<int>> afdelingIDItems =
+		        Model.BeschikbareAfdelingen.Select(
+		            e => new DropDownListHelper.DropDownListItem<int>() {Waarde = e.AfdelingsJaarID, DisplayNaam = e.Naam});%>
+
+				<%=Html.DropDownList(
+                    "ToegekendeAfdelingsJaarIDs", 
+                    afdelingIDItems, 
+                    pl.AfdelingsJaarIDs.FirstOrDefault() > 0 ? pl.AfdelingsJaarIDs.FirstOrDefault(): Model.BeschikbareAfdelingen.First().AfdelingsJaarID) %>
 				</th>
 
 				<%/*PersoonDetail pl1 = pl;
