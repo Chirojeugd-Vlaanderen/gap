@@ -621,8 +621,13 @@ namespace Chiro.Gap.Workers
                             {
                                 _sync.Bewaren(lid);
                             }
-                            else if (lid.EindeInstapPeriode > DateTime.Now)
+                            else if (lid.EindeInstapPeriode > DateTime.Now || lid.Niveau > Niveau.Groep)
                             {
+                                // verwijderen enkel in een van deze gevallen:
+                                //  * instapperiode is nog niet voorbij (voor gewone groepen)
+                                //  * kaderleden.  Deze hebben namelijk geen instapperiode, en het lidgeld is onafhankelijk
+                                //      van het aantal ingeschreven personen.
+
                                 _sync.Verwijderen(lid);
                             }
                         }
