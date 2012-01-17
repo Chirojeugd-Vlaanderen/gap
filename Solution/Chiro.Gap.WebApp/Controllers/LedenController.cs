@@ -402,7 +402,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// met ID's in de property SelectieGelieerdePersoonIDs.</param>
         /// <param name="groepID">ID van de groep waarin de gebruiker op dit moment aan het werken is.</param>
         /// <returns>Een redirect naar de juiste controller action</returns>
-        public ActionResult ToepassenOpSelectie(LidInfoModel model, int groepID)
+        private ActionResult ToepassenOpSelectie(LidInfoModel model, int groepID)
         {
             // In eerste instantie is dit voornamelijk copy/paste uit de personencontroller.
 

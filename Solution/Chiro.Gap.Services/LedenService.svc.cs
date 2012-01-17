@@ -263,6 +263,8 @@ namespace Chiro.Gap.Services
 
                     foreach (var gp in g.GelieerdePersoon)
                     {
+                        // FIXME: is dit niet te veel business logica?
+
                         var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
                         if (l == null)

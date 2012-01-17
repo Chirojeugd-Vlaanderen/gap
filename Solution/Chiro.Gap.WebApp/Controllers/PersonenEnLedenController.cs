@@ -29,11 +29,20 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("LedenMaken", "Leden"); // TODO naar waar willen we terug?
 		}
 
-		public void GelieerdePersonenUitschrijven(IEnumerable<int> gelieerdepersoonIDs, int groepID, string succesboodschap)
+        /// <summary>
+        /// Schrijft via de backend de gelieerde personen met gegeven <paramref name="gelieerdePersoonIDs"/> uit
+        /// uit de groep met gegeven <paramref name="groepID"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoonIDs">ID's uit te schrijven gelieerde personen</param>
+        /// <param name="groepID">ID van groep waarvoor uit te schrijven</param>
+        /// <param name="succesboodschap">Feedback die gegeven zal worden bij succes</param>
+		protected void GelieerdePersonenUitschrijven(IEnumerable<int> gelieerdePersoonIDs, int groepID, string succesboodschap)
 		{
+            // Ik vind het een beetje vreemd dat het succesbericht hier een parameter is.
+            
 			var fouten = String.Empty; // TODO (#1035): fouten opvangen
 
-			ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(gelieerdepersoonIDs, out fouten));
+			ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(gelieerdePersoonIDs, out fouten));
 
 			// TODO (#1035): beter manier om problemen op te vangen dan via een string
 
