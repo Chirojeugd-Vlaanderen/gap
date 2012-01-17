@@ -1,4 +1,5 @@
 ﻿using Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -80,12 +81,12 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         /// voorbij is, want ze hebben geen probeerperiode) toch gesynct worden.
         ///</summary>
         [TestMethod()]
-        public void BewarenTest()
+        public void KaderUitschrijvenTest()
         {
             // arrange
 
             var ledenSyncMock = new Mock<ILedenSync>();
-            ledenSyncMock.Setup(snc => snc.Bewaren(It.IsAny<Lid>()));   // verwacht dat ledensync een lid moet bewaren
+            ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>()));   // verwacht dat ledensync een lid moet bewaren
 
             var leidingDaoMock = new Mock<ILeidingDao>();
             leidingDaoMock.Setup(dao => dao.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns(
@@ -102,7 +103,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
                           {
                               EindeInstapPeriode = DateTime.Today,  // probeerperiode kadermedewerker is irrelevant
                               NonActief = true,
-                              GroepsWerkJaar = new GroepsWerkJaar {Groep = new KaderGroep()}
+                              GroepsWerkJaar = new GroepsWerkJaar {Groep = new KaderGroep {NiveauInt = (int)Niveau.Gewest}}
                           };
 
             // act
@@ -111,8 +112,49 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 
             // assert: controleer of de ledensync is aangeroepen
 
-            ledenSyncMock.Verify(snc => snc.Bewaren(It.IsAny<Lid>()));
+            ledenSyncMock.Verify(snc => snc.Verwijderen(It.IsAny<Lid>()));
             Assert.IsTrue(true);
         }
+
+        ///<summary>
+        /// Controleert of uitschrijvingen van leiding waarvan de probeerperiode voorbij is,
+        /// niet naar kipadmin gesynct worden.
+        ///</summary>
+        [TestMethod()]
+        public void LeidingUitschrijvenTest()
+        {
+            // arrange
+
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>()));   // deze mag niet aangeroepen worden
+
+            var leidingDaoMock = new Mock<ILeidingDao>();
+            leidingDaoMock.Setup(dao => dao.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns(
+                (Leiding x, LidExtras y) => x);  // bewaren doet niets behalven het originele leiding terug opleveren
+
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+            Factory.InstantieRegistreren(leidingDaoMock.Object);
+
+            var target = Factory.Maak<LedenManager>();
+
+            // construeer gauw een uitgeschreven leid(st)er
+
+            Lid lid = new Leiding
+            {
+                EindeInstapPeriode = DateTime.Today,  // probeerperiode kadermedewerker is irrelevant
+                NonActief = true,
+                GroepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep() }
+            };
+
+            // act
+
+            target.Bewaren(lid, LidExtras.Geen, true);
+
+            // assert: controleer of de ledensync is aangeroepen
+
+            ledenSyncMock.Verify(snc => snc.Verwijderen(It.IsAny<Lid>()), Times.Never());
+            Assert.IsTrue(true);
+        }
+
     }
 }
