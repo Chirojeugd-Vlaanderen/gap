@@ -191,6 +191,7 @@
     <Content Include="Content\Screenshots\Toegekend_gebruikersrecht.png" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Compile Include="Models\InschrijfbaarLid.cs" />
     <Content Include="Scripts\jquery.autocomplete.js" />
     <Content Include="Scripts\jquery.autocomplete.min.js" />
     <Content Include="Views\Afdelingen\AfdelingsJaar.aspx" />

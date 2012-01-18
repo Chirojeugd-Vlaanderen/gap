@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 using Chiro.Adf.ServiceModel;
@@ -60,10 +61,12 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// BELANGRIJK: in Tempdata "list" moet een lijst zitten van welke gelieerdepersonen moeten worden ingeschreven
+		/// Dit is een louche actie.  Ze kijkt in TempData["list"], en hoopt dat daar een List van gelieerdePersoonID's in
+		/// zit.  Dan wordt er een suggestie gedaan voor een inschrijving van die gelieerde personen, in die zin
+		/// dat er voorgesteld wordt of ze lid of leiding worden, en in welke afdeling ze terechtkomen.
 		/// </summary>
-		/// <param name="groepID"></param>
-		/// <returns></returns>
+		/// <param name="groepID">Groep waar de leden ingeschreven moeten worden</param>
+		/// <returns>De view met de voorgestelde afdelingen</returns>
 		[HandleError]
 		public ActionResult LedenMaken(int groepID)
 		{
@@ -84,10 +87,16 @@ namespace Chiro.Gap.WebApp.Controllers
 				return TerugNaarVorigeLijst();
 			}
 
-			foreach (var p in personenOverzicht)
-			{
-				model.PersoonEnLidInfos.Add(p);
-			}
+		    model.PersoonEnLidInfos = (from p in personenOverzicht
+		                               select new InschrijfbaarLid
+		                                          {
+		                                              AfdelingsJaarIDs = p.AfdelingsJaarIDs,
+		                                              AfdelingsJaarIrrelevant = false,
+		                                              GelieerdePersoonID = p.GelieerdePersoonID,
+		                                              InTeSchrijven = true,
+		                                              LeidingMaken = p.LeidingMaken,
+		                                              VolledigeNaam = p.VolledigeNaam
+		                                          }).ToArray();
 
 			// TODO "Geen" ook toevoegen en met ajax verwijderen uit de lijst als je lid selecteert
 			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<ActieveAfdelingInfo>>(svc => svc.HuidigeAfdelingsJarenOphalen(groepID));
@@ -106,17 +115,22 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult LedenMaken(GeselecteerdePersonenEnLedenModel model, int groepID)
 		{
 			var foutBerichten = String.Empty;
-			var lijst = new List<InTeSchrijvenLid>();
-			for(var i=0; i<model.GelieerdePersoonIDs.Count; i++)
-			{
-				var gelieerdePersoonID = model.GelieerdePersoonIDs[i];
-				if(model.InTeSchrijvenGelieerdePersoonIDs.Contains(gelieerdePersoonID))
-				{
-					lijst.Add(new InTeSchrijvenLid() { GelieerdePersoonID = gelieerdePersoonID, AfdelingsJaarIDs = new []{model.ToegekendeAfdelingsJaarIDs[i]}, LeidingMaken = model.LeidingMakenGelieerdePersoonIDs.Contains(gelieerdePersoonID), AfdelingsJaarIrrelevant = false});
-				}
-			}
 
-			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.Inschrijven(lijst, out foutBerichten));
+            // Bekijk enkel de rijen waar 'in te schrijven' is aangevinkt.
+		    var inTeSchrijven = (from rij in model.PersoonEnLidInfos
+		                         where rij.InTeSchrijven
+		                         select new InTeSchrijvenLid
+		                                    {
+		                                        AfdelingsJaarIDs = rij.AfdelingsJaarIDs,
+                                                AfdelingsJaarIrrelevant = false,
+                                                GelieerdePersoonID = rij.GelieerdePersoonID,
+                                                LeidingMaken = rij.LeidingMaken
+		                                    }).ToArray();
+            // model.PersoonEnLidInfo is van het type InschrijfbaarLid[].  Als ik deze cast
+            // naar InTeSchrijvenLid, krijg ik een exception ivm datacontracts.  Vandaar dat
+            // ik kloon ipv cast.
+
+			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.Inschrijven(inTeSchrijven, out foutBerichten));
 			if (String.IsNullOrEmpty(foutBerichten))
 			{
 				TempData["succes"] = Properties.Resources.IngeschrevenFeedback;
