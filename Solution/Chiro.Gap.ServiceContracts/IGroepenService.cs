@@ -19,6 +19,7 @@ namespace Chiro.Gap.ServiceContracts
 	/// ServiceContract voor de GroepenService
 	/// </summary>
 	[ServiceContract]
+    [ServiceKnownType(typeof(AfdelingDetail))]
 	public interface IGroepenService
 	{
 		/// <summary>
@@ -446,7 +447,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdelingInfo> teActiveren, int groepID);
+		void JaarovergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID);
 
 		/// <summary>
 		/// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.

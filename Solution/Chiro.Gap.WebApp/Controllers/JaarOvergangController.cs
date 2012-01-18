@@ -78,6 +78,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.Titel = "Jaarovergang stap 2:  instellingen van je afdelingen";
 			model.NieuwWerkjaar = ServiceHelper.CallService<IGroepenService, int>(g => g.NieuwWerkJaarOphalen());
+		    model.LedenMeteenInschrijven = true;
             model.OfficieleAfdelingen =
                 ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
                     e => e.OfficieleAfdelingenOphalen(groepID));
@@ -130,7 +131,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.Afdelingen = (from a in afdelingDetails
                                  orderby a.GeboorteJaarTot descending
                                  orderby a.GeboorteJaarTot == 0 descending
-                                 select a);
+                                 select a).ToArray();
 
             // TODO extra info pagina voor jaarovergang
             // TODO kan validatie in de listhelper worden bijgecodeerd?
@@ -141,42 +142,18 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Stap2AfdelingsJarenVerdelen(JaarOvergangAfdelingsJaarModel model, int groepID)
         {
-            var tecreerenafdelingsjaren = new List<TeActiverenAfdelingInfo>();
-
-            if (model.AfdelingsIDs.Count != model.TotLijst.Count || model.TotLijst.Count != model.GeslLijst.Count || model.TotLijst.Count != model.VanLijst.Count)
-            {
-                TempData["fout"] = "Niet alle informatie is ingevuld, gelieve aan te vullen.";
-				return View("Stap2AfdelingsJarenVerdelen", model);
-            }
-
-            if (model.TotLijst.Any(e => e.Equals(string.Empty)) || model.VanLijst.Any(e => e.Equals(string.Empty)))
+            if (model.Afdelingen.Any(e => e.GeboorteJaarVan == 0 && e.GeboorteJaarTot == 0))
             {
                 TempData["fout"] = "Niet alle informatie is ingevuld, gelieve aan te vullen.";
 				return View("Stap2AfdelingsJarenVerdelen", model);
             }
 			
-            // ReSharper disable LoopCanBeConvertedToQuery
-            for (var i = 0; i < model.VanLijst.Count; i++)
-            {
-                var x = new TeActiverenAfdelingInfo
-                            {
-                                AfdelingID = Int32.Parse(model.AfdelingsIDs[i]),
-                                OfficieleAfdelingID = Int32.Parse(model.OfficieleAfdelingsIDs[i]),
-                                GeboorteJaarTot = Int32.Parse(model.TotLijst[i]),
-                                GeboorteJaarVan = Int32.Parse(model.VanLijst[i]),
-                                Geslacht = (GeslachtsType)Int32.Parse(model.GeslLijst[i])
-                            };
-
-				tecreerenafdelingsjaren.Add(x);
-            }
-            // ReSharper restore LoopCanBeConvertedToQuery
-
 			// Leden zoeken in het vorige actieve werkjaar, dus opvragen voor we de jaarovergang zelf doen
 			var vorigGwjID = ServiceHelper.CallService<IGroepenService, int>(g => g.RecentsteGroepsWerkJaarIDGet(groepID));
 
             try
             {
-				ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(tecreerenafdelingsjaren, groepID));
+				ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(model.Afdelingen, groepID));
             }
             catch (FaultException<FoutNummerFault> ex)
             {

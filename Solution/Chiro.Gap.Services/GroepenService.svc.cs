@@ -1104,7 +1104,7 @@ namespace Chiro.Gap.Services
         /// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkjaar</param>
         /// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
         /// <remarks>Voor kadergroepen laat je teActiveren gewoon leeg.</remarks>
-        public void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdelingInfo> teActiveren, int groepID)
+        public void JaarovergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID)
         {
             try
             {

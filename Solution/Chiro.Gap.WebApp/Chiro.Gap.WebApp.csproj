@@ -325,9 +325,7 @@
     <Compile Include="ExcelManip.WorkbookStyles.cs" />
     <Compile Include="ExcelResult.cs" />
     <Compile Include="HtmlHelpers\AdresHelper.cs" />
-    <Compile Include="HtmlHelpers\DropDownListHelper.cs" />
     <Compile Include="HtmlHelpers\TelefoonHelper.cs" />
-    <Compile Include="HtmlHelpers\TextFieldListHelper.cs" />
     <Compile Include="HtmlHelpers\GeslachtHelper.cs" />
     <Compile Include="IVeelGebruikt.cs" />
     <Compile Include="Models\BevestigingsModel.cs" />

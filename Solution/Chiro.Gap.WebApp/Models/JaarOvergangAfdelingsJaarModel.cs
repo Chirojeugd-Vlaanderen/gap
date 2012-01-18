@@ -11,34 +11,30 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 namespace Chiro.Gap.WebApp.Models
 {
 	/// <summary>
-	/// Model voor het lijstje van actieve en niet-actieve afdelingen
+	/// Model voor het vastleggen van de afdelingsjaren dit werkjaar
 	/// </summary>
 	public class JaarOvergangAfdelingsJaarModel : MasterViewModel
 	{
-		public JaarOvergangAfdelingsJaarModel()
-		{
-			Afdelingen = new List<AfdelingDetail>();
-			AfdelingsIDs = new List<string>();
-			OfficieleAfdelingsIDs = new List<string>();
-			VanLijst = new List<string>();
-			TotLijst = new List<string>();
-			GeslLijst = new List<string>();
-		}
-
 		/// <summary>
-		/// Afdelingen die al actief zijn dit werkjaar (met afdelingsjaar dus)
+		/// Afdelingsjaren voor dit werkjaar
 		/// </summary>
-		public IEnumerable<AfdelingDetail> Afdelingen { get; set; }
+		public AfdelingDetail[] Afdelingen { get; set; }
+
+        /// <summary>
+        /// Lijst van alle officiele afdelingen
+        /// </summary>
 		public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingen { get; set; }
 
-		public List<string> AfdelingsIDs { get; set; }
-		public List<string> OfficieleAfdelingsIDs { get; set; }
-		public List<string> VanLijst { get; set; }
-		public List<string> TotLijst { get; set; }
-		public List<string> GeslLijst { get; set; }
-
+        /// <summary>
+        /// Als de verdeling van toepassing is op een toekomstig werkjaar, bevat
+        /// deze property dat werkjaar
+        /// </summary>
 		public int NieuwWerkjaar { get; set; }
 
+        /// <summary>
+        /// Is <c>true</c> als de gebruiker ervoor kiest om een voorstel te doen
+        /// om de huidige leden over te zetten naar de nieuwe afdelingsjaren
+        /// </summary>
 		public bool LedenMeteenInschrijven { get; set; }
 	}
 }

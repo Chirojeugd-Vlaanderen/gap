@@ -59,7 +59,7 @@ namespace Chiro.Gap.Workers
 		}
 
         // TODO (#1135): internal datacontract maken
-		public void JaarOvergangUitvoeren(IEnumerable<TeActiverenAfdelingInfo> teActiveren, int groepID)
+		public void JaarOvergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID)
 		{
 			var voriggwj = _groepsWerkJaarManager.RecentsteOphalen(groepID);
 

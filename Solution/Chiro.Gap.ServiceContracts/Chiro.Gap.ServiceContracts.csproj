@@ -76,7 +76,6 @@
     <Compile Include="DataContracts\LandInfo.cs" />
     <Compile Include="DataContracts\LedenProbleemInfo.cs" />
     <Compile Include="DataContracts\PlaatsInfo.cs" />
-    <Compile Include="DataContracts\TeActiverenAfdelingInfo.cs" />
     <Compile Include="DataContracts\FunctieInfo.cs" />
     <Compile Include="DataContracts\FunctieProbleemInfo.cs" />
     <Compile Include="DataContracts\GezinInfo.cs" />

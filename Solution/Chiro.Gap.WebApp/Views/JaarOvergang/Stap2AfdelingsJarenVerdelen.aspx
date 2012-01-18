@@ -20,40 +20,57 @@
             <th>Tot geboortejaar </th>
             <th>Geslacht </th>
         </tr>
-        <% foreach (var ai in Model.Afdelingen)
+        <% for (int j = 0; j < Model.Afdelingen.Count(); ++j)
            { %>
         <tr>
             <td>
-                <%=Html.LabelFieldList("AfdelingsIDs", new TextFieldListInfo(ai.AfdelingID.ToString(), ai.AfdelingNaam))%>
-            </td>
-            <td>
-                <% var offAfdelingIDItems = Model.OfficieleAfdelingen.Select(e => new DropDownListHelper.DropDownListItem<int> { Waarde = e.ID, DisplayNaam = e.Naam });%>
-                <%=Html.DropDownList("OfficieleAfdelingsIDs", offAfdelingIDItems, ai.OfficieleAfdelingID)%>
-            </td>
-            <td>
-                <%=Html.TextFieldList("VanLijst", new TextFieldListInfo(ai.GeboorteJaarVan == 0 ? "" : ai.GeboorteJaarVan.ToString(), ""))%>
-            </td>
-            <td>
-                <%=Html.TextFieldList("TotLijst", new TextFieldListInfo(ai.GeboorteJaarTot == 0 ? "" : ai.GeboorteJaarTot.ToString(), ""))%>
+                <%: Html.HiddenFor(mdl => mdl.Afdelingen[j].AfdelingID) %>
+                <%: Html.LabelFor(mdl => mdl.Afdelingen[j].AfdelingNaam) %>
             </td>
             <td>
                 <%
-         var geslachtswaardenlijst = Enum.GetValues(typeof(GeslachtsType)).OfType<GeslachtsType>().ToList().Select(e => new DropDownListHelper.DropDownListItem<int> { Waarde = (int)e, DisplayNaam = e.ToString() });%>
-                <%=Html.DropDownList("GeslLijst", geslachtswaardenlijst, (int)ai.Geslacht)%>
+                    var officieleAfdelingLijstItems = (from oa in Model.OfficieleAfdelingen
+                                                          select new SelectListItem
+                                                             {
+                                                                 Selected =
+                                                                     (Model.Afdelingen[j].OfficieleAfdelingID == oa.ID),
+                                                                 Text = oa.Naam,
+                                                                 Value = oa.ID.ToString()
+                                                             }).ToArray();
+                %>
+                <%: Html.DropDownListFor(mdl=>mdl.Afdelingen[j].OfficieleAfdelingID, officieleAfdelingLijstItems) %>
+            </td>
+            <td>
+                <%: Html.EditorFor(mdl=>mdl.Afdelingen[j].GeboorteJaarVan) %>
+            </td>
+            <td>
+                <%: Html.EditorFor(mdl=>mdl.Afdelingen[j].GeboorteJaarTot) %>
+            </td>
+            <td>
+                <%
+                    var geslachtsLijstItems =
+                        Enum.GetValues(typeof (GeslachtsType)).OfType<GeslachtsType>().ToList().Select(
+                            e =>
+                            new SelectListItem
+                            {
+                               Selected = (Model.Afdelingen[j].Geslacht == e),
+                               Value = ((int) e).ToString(),
+                               Text = e.ToString()
+                            });%>
+                <%: Html.DropDownListFor(mdl=>mdl.Afdelingen[j].Geslacht, geslachtsLijstItems) %>
             </td>
         </tr>
         <% } %>
     </table>
     <br />
-    <%=Html.RadioButton("LedenMeteenInschrijven", true, true)%>
+    <%: Html.RadioButtonFor(mdl => mdl.LedenMeteenInschrijven, true)%>
     Verdergaan en een lijst weergeven van alle huidige leden om deze in te schrijven
-    in het nieuwe jaar.
+    in het nieuwe jaar.  <strong>Dit kan een paar minuutjes duren!</strong>
     <br />
-    <%=Html.RadioButton("LedenMeteenInschrijven", false, false)%>
+    <%: Html.RadioButtonFor(mdl => mdl.LedenMeteenInschrijven, false)%>
     Jaarovergang afmaken, ik zal de leden later zelf herinschrijven.
     <br />
     <input id="volgende" type="submit" value="Verdeling bewaren en verdergaan" />
-    <strong>Dit kan een paar minuutjes duren!</strong>
     <%} %>
     <p>
         De leden en de leiding van vorig jaar wordt automatisch opnieuw ingeschreven.
