@@ -92,9 +92,9 @@
     <Web>
       <Naming2>
         <UserRule Name="ASP_TAG_NAME" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
-        <UserRule Name="ASP_TAG_PREFIX" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="ASP_TAG_PREFIX" Inspect="True" Prefix="" Suffix="" Style="aa_bb" />
         <UserRule Name="ASP_FIELD" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
-        <UserRule Name="ASP_HTML_CONTROL" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="ASP_HTML_CONTROL" Inspect="True" Prefix="" Suffix="" Style="aa_bb" />
       </Naming2>
     </Web>
     <Xaml>
