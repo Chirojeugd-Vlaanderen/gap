@@ -40,12 +40,18 @@
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>
         </Rule>
+        <Rule Name="FileHeaderFileNameDocumentationMustMatchTypeName">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
       </Rules>
       <AnalyzerSettings>
         <StringProperty Name="CompanyName">Chirojeugd-Vlaanderen vzw</StringProperty>
         <StringProperty Name="Copyright">Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode</StringProperty>
         <BooleanProperty Name="IgnorePrivates">True</BooleanProperty>
         <BooleanProperty Name="IncludeFields">False</BooleanProperty>
+        <BooleanProperty Name="IgnoreInternals">True</BooleanProperty>
       </AnalyzerSettings>
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.LayoutRules">
