@@ -309,7 +309,7 @@ namespace Chiro.Gap.Services
                     {
                         p.KanLidWorden = true;
                     }
-                    if (p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Resources.LeidingVanafLeeftijd) + p.ChiroLeefTijd)
+                    if (p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Settings.Default.LeidingVanafLeeftijd.ToString()) + p.ChiroLeefTijd)
                     {
                         p.KanLeidingWorden = true;
                     }
@@ -411,7 +411,7 @@ namespace Chiro.Gap.Services
                     {
                         p.KanLidWorden = true;
                     }
-                    if (geboortejaar < DateTime.Today.Year - Int32.Parse(Resources.LeidingVanafLeeftijd) + p.ChiroLeefTijd)
+                    if (geboortejaar < DateTime.Today.Year - Int32.Parse(Settings.Default.LeidingVanafLeeftijd.ToString()) + p.ChiroLeefTijd)
                     {
                         p.KanLeidingWorden = true;
                     }

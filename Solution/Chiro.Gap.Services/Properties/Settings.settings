@@ -8,5 +8,8 @@
     <Setting Name="LiveConnSubstring" Type="System.String" Scope="Application">
       <Value Profile="(Default)">gaplive</Value>
     </Setting>
+    <Setting Name="LeidingVanafLeeftijd" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
