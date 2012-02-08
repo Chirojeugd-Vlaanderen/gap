@@ -50,13 +50,13 @@
       <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
       <Name>Chiro.Cdf.Data.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
-      <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
-      <Name>Chiro.Cdf.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Diagnostics.Orm\Chiro.Gap.Diagnostics.Orm.csproj">
       <Project>{6F5E657E-B3E7-4E3C-8348-721A563AD9D5}</Project>
       <Name>Chiro.Gap.Diagnostics.Orm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chrio.Cdf.Data\Chiro.Cdf.Data.csproj">
+      <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
+      <Name>Chiro.Cdf.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

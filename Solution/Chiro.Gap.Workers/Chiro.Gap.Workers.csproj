@@ -122,7 +122,7 @@
       <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
       <Name>Chiro.Cdf.Data.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
+    <ProjectReference Include="..\Chrio.Cdf.Data\Chiro.Cdf.Data.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.Data</Name>
     </ProjectReference>
@@ -130,7 +130,7 @@
       <Project>{18FF2008-106F-48A6-BEFB-5F8B301354D0}</Project>
       <Name>Chiro.Cdf.Mailer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
+    <ProjectReference Include="..\Chiro.Cdf.Validatie\Chiro.Cdf.Validation.csproj">
       <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
       <Name>Chiro.Cdf.Validation</Name>
     </ProjectReference>
