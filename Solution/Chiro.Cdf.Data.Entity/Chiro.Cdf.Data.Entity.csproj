@@ -69,7 +69,7 @@
     <None Include="OptimisticConcurrencyDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chrio.Cdf.Data\Chiro.Cdf.Data.csproj">
+    <ProjectReference Include="..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.Data</Name>
     </ProjectReference>
