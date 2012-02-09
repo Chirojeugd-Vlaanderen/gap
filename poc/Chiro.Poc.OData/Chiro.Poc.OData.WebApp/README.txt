@@ -55,3 +55,8 @@ wget -q -O - --header 'accept: application/json' http://lap-jve2/ODataPoc/DataSe
 Als je de header weglaat, zul je opnieuw een ATOM-resultaat verkrijgen.
 
 wget -q -O - http://lap-jve2/ODataPoc/DataService.svc/Leden
+
+
+CLIENTS
+
+In het mapje 'VoorbeeldClients' vind je wat voorbeelden van client code.

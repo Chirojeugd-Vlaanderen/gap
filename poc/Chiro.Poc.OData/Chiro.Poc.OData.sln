@@ -3,6 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Poc.OData.WebApp", "Chiro.Poc.OData.WebApp\Chiro.Poc.OData.WebApp.csproj", "{F8FFEB3C-EAA8-41DF-A546-FCDB017E85DE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VoorbeeldClients", "VoorbeeldClients", "{785503D4-5EBD-4A61-80A4-39B86D1A5794}"
+	ProjectSection(SolutionItems) = preProject
+		VoorbeeldClients\client.php = VoorbeeldClients\client.php
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
