@@ -5,8 +5,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Poc.OData.WebApp", "C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VoorbeeldClients", "VoorbeeldClients", "{785503D4-5EBD-4A61-80A4-39B86D1A5794}"
 	ProjectSection(SolutionItems) = preProject
+		VoorbeeldClients\client-jquery.html = VoorbeeldClients\client-jquery.html
 		VoorbeeldClients\client.php = VoorbeeldClients\client.php
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Poc.OData.DataServicesJSONP", "Chiro.Poc.OData.DataServicesJSONP\Chiro.Poc.OData.DataServicesJSONP.csproj", "{68B38D95-0CB4-4521-8E78-CEC72C4A1DE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +21,10 @@ Global
 		{F8FFEB3C-EAA8-41DF-A546-FCDB017E85DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8FFEB3C-EAA8-41DF-A546-FCDB017E85DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8FFEB3C-EAA8-41DF-A546-FCDB017E85DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68B38D95-0CB4-4521-8E78-CEC72C4A1DE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68B38D95-0CB4-4521-8E78-CEC72C4A1DE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68B38D95-0CB4-4521-8E78-CEC72C4A1DE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68B38D95-0CB4-4521-8E78-CEC72C4A1DE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
