@@ -7,8 +7,30 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
 		<script>
+			// pas onderstaande aan
+			var SERVICE_LOCATIE='lap-jve2.chiro.lokaal/ODataPoc/DataService.svc';
+
+			// gebruikersnaam en wachtwoord voor de API
+			// Het is uiteraard erg insecure om die gewoon in de javascript
+			// te zetten, want door de source van de pagina te bekijken, heb
+			// heb je de credentials vast.
+			// Maar dit is gewoon ter illustratie
+
+			var USER='apitest';	// laat leeg als geen authenticatie nodig is.
+			var PASS='PubliekGeheim.';
+
+			var SERVICE_URL;
+
+			if (USER=='')
+			{
+				SERVICE_URL= "http://" + SERVICE_LOCATIE;
+			}
+			else
+			{
+				SERVICE_URL="http://" + USER + ":" + PASS + "@" + SERVICE_LOCATIE;
+			}
+
 			// pas onderstaande url aan!
-			var SERVICE_URL="http://lap-jve2.chiro.lokaal/ODataPoc/DataService.svc"; 
 
 			// In de implementatie van DataServicesJSONP heet de callback-parameter
 			// '$callback' (en niet gewoon 'callback')
@@ -26,15 +48,16 @@
 		<script type="text/javascript">
 			$("#knop").click(function() {
 
-				// Ik krijg de http accept header niet zodanig gezet
-				// dat de service json oplevert.  Daar werk ik rond
-				// door $format=json toe te voegen.
+				// Blijkbaar is het onmogelijk om request headers aan
+				// te passen als je JSONP gebruikt
 
 				var myurl=SERVICE_URL+"/Leden?$format=json";
 
 				$.ajax({
 					dataType: 'jsonp',
   					url: myurl,
+					username: 'apitest',
+					password: 'PubliekGeheim.',
 					success: function (data) {
 						$("#ledenlijst").text('');
 						$.each(
