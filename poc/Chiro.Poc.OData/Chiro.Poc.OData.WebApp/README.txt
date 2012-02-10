@@ -60,3 +60,6 @@ wget -q -O - http://lap-jve2/ODataPoc/DataService.svc/Leden
 CLIENTS
 
 In het mapje 'VoorbeeldClients' vind je wat voorbeelden van client code.
+Om met JQuery cross-domain-requests te kunnen doen, moet de service JSONP ondersteunen.
+Hiervoor heb ik Microsoft.Data.Services.Toolkit gebruikt, wat je kunt downloaden van
+http://wcfdstoolkit.codeplex.com/

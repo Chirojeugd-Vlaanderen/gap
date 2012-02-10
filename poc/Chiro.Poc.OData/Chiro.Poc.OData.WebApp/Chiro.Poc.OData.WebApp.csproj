@@ -33,6 +33,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Services.Toolkit">
+      <HintPath>..\references\Microsoft.Data.Services.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Services" />
     <Reference Include="System.Data.Services.Client" />
@@ -73,12 +76,6 @@
     <Compile Include="LedenContext.cs" />
     <Compile Include="LidDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Chiro.Poc.OData.DataServicesJSONP\Chiro.Poc.OData.DataServicesJSONP.csproj">
-      <Project>{68B38D95-0CB4-4521-8E78-CEC72C4A1DE9}</Project>
-      <Name>Chiro.Poc.OData.DataServicesJSONP</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

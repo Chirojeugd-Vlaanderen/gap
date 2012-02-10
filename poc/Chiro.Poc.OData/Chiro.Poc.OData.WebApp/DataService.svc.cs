@@ -5,13 +5,11 @@ using System.Data.Services.Common;
 using System.Linq;
 using System.ServiceModel.Web;
 using System.Web;
-
-using Chiro.Poc.OData.DataServicesJSONP;
+using Microsoft.Data.Services.Toolkit;
 
 namespace Chiro.Poc.OData.WebApp
 {
-    [JSONPSupportBehavior]
-    public class DataService : DataService<LedenContext>
+    public class DataService : ODataService<LedenContext>
     {
         // This method is called only once to initialize service-wide policies.
         public static void InitializeService(DataServiceConfiguration config)
