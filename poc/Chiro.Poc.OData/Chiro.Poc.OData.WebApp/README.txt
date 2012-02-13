@@ -1,5 +1,6 @@
 ﻿PROOF OF CONCEPT VOOR EEN ODATA-API
 
+Documentatie: https://develop.chiro.be/trac/cg2/wiki/API
 Source: https://develop.chiro.be/subversion/cg2/trunk/poc/Chiro.Poc.OData
 
 De bedoeling is dat dit een dummy API wordt, waarbij we onze gegevens als WCF 
