@@ -9,26 +9,17 @@
 // wijzig onderstaande, zodat het wijst naar een instantie van de service.
 DEFINE('SERVICE_URL', 'http://lap-jve2.chiro.lokaal/ODataPoc/DataService.svc');
 
-// gebruikersnaam en wachtwoord voor basic authenticatie.  
-// Gebruik de lege string als USER als er geen authenticatie nodig is.
-DEFINE('USER','apitest');
-DEFINE('PASS','PubliekGeheim.');
-
-
 // get_data - haalt JSON-data op van de service, en parst het
 // resultaat als php-object.
 function get_data($url)
 {
-	$header="accept: application/json\r\n";
-	if (USER != '')
-	{
-		$header .= 'Authorization: Basic '.base64_encode(USER.':'.PASS);
-	}
+	// je zou ook JSON kunnen opleveren door ?$format=JSON aan de URL te
+	// kunnen toevoegen.  Maar ik doe het hier met de accept header, dan
+	// zijn de calls van get_data properder.
 
 	$context = stream_context_create(
 		array('http'=>array(
-			'header'=>"accept: application/json\r\n".
-			          'Authorization: Basic '.base64_encode(USER.':'.PASS))));
+			'header'=>"accept: application/json")));
 
 	$result=file_get_contents(SERVICE_URL."\\$url", false, $context);
 	return json_decode($result)->d;
