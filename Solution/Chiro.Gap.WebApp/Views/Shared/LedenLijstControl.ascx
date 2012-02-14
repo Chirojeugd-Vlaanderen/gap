@@ -12,10 +12,10 @@
 <table class="overzicht">
     <tr>
         <th>
-            <%=Html.CheckBox("checkall") %></th>
-        <th />
-        <!-- leeg titeltje boven nummering.  Niet verwijderen!, zie #1079 -->
-        <th>Type</th>
+            <%=Html.CheckBox("checkall") %>
+        </th>
+        <th class="center">&#35;</th>
+        <th class="center">Type</th>
         <th>
             <%= Html.ActionLink(
 				"Naam", 
