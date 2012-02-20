@@ -6,48 +6,48 @@
 	public static class TestInfo
 	{
 		#region ID's gegenereerd door script
-		// te plakken uit output van 
-		// cg2_database_action.sh -a creatie -t test
-
-		public const int GROEPID = 1058;
-		public const int GELIEERDEPERSOONID = 198472;
-		public const int GELIEERDEPERSOON2ID = 198473;
-		public const int GELIEERDEPERSOON3ID = 198474;
-		public const int GELIEERDEPERSOON4ID = 198475;
-		public const int GELIEERDEPERSOON5ID = 198476;
-		public const int MINAANTALGELPERS = 5;
-		public const int LID3ID = 296675;
-		public const int LID4ID = 296676;
-		public const int LID5ID = 296677;
-		public const int CATEGORIEID = 647;
-		public const string CATEGORIECODE = "last";
-		public const int CATEGORIE2ID = 648;
-		public const int CATEGORIE3ID = 649;
-		public const int FUNCTIEID = 290;
-		public const int AANTALINCATEGORIE = 1;
-		public const int AFDELING1ID = 5648;
-		public const int OFFICIELEAFDELINGID = 1;
-		public const int AFDELINGSJAAR1ID = 17630;
-		public const int AFDELING1VAN = 2003;
-		public const int AFDELING1TOT = 2004;
-		public const int AFDELING2ID = 5649;
-		public const int AFDELINGSJAAR2ID = 17633;
-		public const int AFDELING2VAN = 2003;
-		public const int AFDELING2TOT = 2004;
-		public const int AFDELING3ID = 5650;
-
-		public const int ADRESID = 53;
-
-		public const int GROEPSWERKJAARID = 3963;
-		public const string ZOEKNAAM = "Bosmans";
-		public const string GAV1 = "Yvonne";
-		public const string GAV2 = "Yvette";
-
-		public const int WATINGROEPID = 1056;
+		// te plakken uit output van trunk/db/TestSetup/4_unit_tests.sql
+		// 
+        public const int GROEPID = 1065;
+        public const int GELIEERDEPERSOONID = 225183;
+        public const int GELIEERDEPERSOON2ID = 225184;
+        public const int GELIEERDEPERSOON3ID = 225185;
+        public const int GELIEERDEPERSOON4ID = 225186;
+        public const int GELIEERDEPERSOON5ID = 225187;
+        public const int MINAANTALGELPERS = 5;
+        public const int LID3ID = 421600;
+        public const int LID4ID = 421601;
+        public const int LID5ID = 421603;
+        public const int CATEGORIEID = 887;
+        public const string CATEGORIECODE = "last";
+        public const int CATEGORIE2ID = 888;
+        public const int CATEGORIE3ID = 889;
+        public const int FUNCTIEID = 409;
+        public const int AANTALINCATEGORIE = 1;
+        public const int AFDELING1ID = 5866;
+        public const int OFFICIELEAFDELINGID = 1;
+        public const int AFDELINGSJAAR1ID = 23209;
+        public const int AFDELING1VAN = 2003;
+        public const int AFDELING1TOT = 2004;
+        public const int AFDELING2ID = 5867;
+        public const int AFDELINGSJAAR2ID = 23210;
+        public const int AFDELING2VAN = 2003;
+        public const int AFDELING2TOT = 2004;
+        public const int AFDELING3ID = 5868;
+        public const int ADRESID = 53;
+        public const int GROEPSWERKJAARID = 5033;
+        public const string ZOEKNAAM = "Bosmans";
+        public const string GAV1 = "Yvonne";
+        public const string GAV2 = "Yvette";
 		#endregion
 
 		
 		#region Zelf in te stellen:
+
+        /// <summary>
+        /// GroepID voor watin-tests
+        /// </summary>
+        public const int WATINGROEPID = 1056;
 
 		/// <summary>
 		/// Onbestaande categoriecode te gebruiken voor toevoegtest
