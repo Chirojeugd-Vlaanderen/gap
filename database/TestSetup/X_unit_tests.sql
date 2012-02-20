@@ -1,4 +1,4 @@
-use gap
+use gap_dev
 
 -- Creeer testgroep voor unittests, met deze testdata:
 -- @testHuidigWerkJaar en @testVorigWerkJaar
@@ -111,7 +111,7 @@ SET DateFormat dmy;
 		DECLARE @testPersoon2Naam AS VARCHAR(160);				SET @testPersoon2Naam = @testPersoon1Naam
 		DECLARE @testPersoon2VoorNaam AS VARCHAR(60);			SET @testPersoon2VoorNaam = 'Irène';
 		DECLARE @testPersoon2GeboorteDatum AS SMALLDATETIME; 	SET @testPersoon2GeboorteDatum = '30/11/2003';
-		DECLARE @testPersoon2Geslacht AS BIT;						SET @testPersoon2Geslacht=1;
+		DECLARE @testPersoon2Geslacht AS BIT;					SET @testPersoon2Geslacht=2;
 		
 		DECLARE @testPersoon3ID AS INT;
 		DECLARE @testPersoon3Naam AS VARCHAR(160);				SET @testPersoon3Naam = @testPersoon1Naam
@@ -791,7 +791,7 @@ PRINT '-'
 PRINT 'TestVorigGroepsWerkJaarID: ' + CAST(@testVorigGroepsWerkJaarID AS VARCHAR(10)) + ';';
 PRINT 'TestVorigAdfelingsJaarID: ' + CAST(@testVorigAfdelingsJaarID AS VARCHAR(10)) + ';';
 PRINT 'TestPersoonID: ' + CAST(@testPersoon1ID AS VARCHAR(10)) + ';';
-PRINT 'TestPersoon2ID: ' + CAST(@testPersoon3ID AS VARCHAR(10)) + ';';
+PRINT 'TestPersoon2ID: ' + CAST(@testPersoon2ID AS VARCHAR(10)) + ';';
 PRINT 'TestPersoon3ID: ' + CAST(@testPersoon3ID AS VARCHAR(10)) + ';';
 PRINT 'TestPersoon4ID: ' + CAST(@testPersoon4ID AS VARCHAR(10)) + ';';
 PRINT 'TestPersoon5ID: ' + CAST(@testPersoon5ID AS VARCHAR(10)) + ';';
