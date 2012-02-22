@@ -169,7 +169,7 @@ namespace Chiro.Gap.Workers
         /// </summary>
         /// <param name="afdelingsJaarID">ID van het AfdelingsJaar</param>
         /// <returns><c>True</c> on successful</returns>
-        public bool Verwijderen(int afdelingsJaarID)
+        public bool AfdJarenVerwijderen(int afdelingsJaarID)
         {
             AfdelingsJaar aj = _afdJarenDao.Ophalen(afdelingsJaarID, a => a.Afdeling, a => a.Leiding, a => a.Kind);
 
@@ -185,6 +185,31 @@ namespace Chiro.Gap.Workers
 
             aj.TeVerwijderen = true;
             _afdJarenDao.Bewaren(aj);
+            return true;
+        }
+
+        /// <summary>
+        /// Verwijdert Afdeling uit database
+        /// </summary>
+        /// <param name="afdelingID">ID van de Afdeling</param>
+        /// <returns><c>True</c> on successful</returns>
+        public bool AfdVerwijderen(int afdelingID)
+        {
+            Afdeling afd = _afdelingenDao.Ophalen(afdelingID);
+
+            if (!_autorisatieMgr.IsGavAfdeling(afdelingID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+
+            /* Controleren moet niet meer want dat gebeurd al bij het non-actief zetten van de afdeling
+            if (aj.Kind.Count != 0 || aj.Leiding.Count != 0)
+            {
+                throw new InvalidOperationException(Properties.Resources.AfdelingsJaarBevatLeden);
+            }*/
+
+            afd.TeVerwijderen = true;
+            _afdelingenDao.Bewaren(afd);
             return true;
         }
 

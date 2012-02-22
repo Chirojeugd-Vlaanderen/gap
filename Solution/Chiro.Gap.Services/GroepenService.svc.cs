@@ -387,11 +387,9 @@ namespace Chiro.Gap.Services
                         detail.AfdelingsJaarID,
                         AfdelingsJaarExtras.OfficieleAfdeling | AfdelingsJaarExtras.Afdeling | AfdelingsJaarExtras.GroepsWerkJaar);
 
-                    if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID
-                        || afdelingsJaar.Afdeling.ID != detail.AfdelingID)
+                    if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID || afdelingsJaar.Afdeling.ID != detail.AfdelingID)
                     {
-                        throw new NotSupportedException("Afdeling en Groepswerkjaar mogen niet"
-                            + " gewijzigd worden.");
+                        throw new NotSupportedException("Afdeling en Groepswerkjaar mogen niet gewijzigd worden.");
                     }
 
                     _afdelingsJaarMgr.Wijzigen(
@@ -429,7 +427,32 @@ namespace Chiro.Gap.Services
         {
             try
             {
-                _afdelingsJaarMgr.Verwijderen(afdelingsJaarID);
+                _afdelingsJaarMgr.AfdJarenVerwijderen(afdelingsJaarID);
+            }
+            catch (InvalidOperationException)
+            {
+                /*var afdjaar = _afdelingsJaarMgr.Ophalen(afdelingsJaarID, AfdelingsJaarExtras.Afdeling);
+                var afdjaardetail = Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afdjaar);*/
+                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.AfdelingNietLeeg });
+            }
+            catch (Exception ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+            }
+        }
+
+        /// <summary>
+        /// Verwijdert een afdelingsjaar
+        /// en controleert of er geen leden in zitten.
+        /// </summary>
+        /// <param name="afdelingsJaarID">ID van het afdelingsjaar dat verwijderd moet worden</param>
+        /* zie #273 */
+        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public void AfdelingVerwijderen(int afdelingID)
+        {
+            try
+            {
+                _afdelingsJaarMgr.AfdVerwijderen(afdelingID);
             }
             catch (InvalidOperationException)
             {

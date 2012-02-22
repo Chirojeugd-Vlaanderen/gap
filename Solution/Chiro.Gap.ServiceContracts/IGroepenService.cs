@@ -160,6 +160,15 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		void AfdelingsJaarVerwijderen(int afdelingsJaarID);
 
+        /// <summary>
+        /// Verwijdert een afdeling
+        /// </summary>
+        /// <param name="afdelingID">ID van de afdeling waarover het gaat</param>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        void AfdelingVerwijderen(int afdelingID);
+
 		/// <summary>
 		/// Haalt details over alle officiele afdelingen op.
 		/// </summary>

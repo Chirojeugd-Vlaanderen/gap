@@ -15,7 +15,7 @@
 	<%= Html.ValidationSummary() %>
 	<% 
 		Html.EnableClientValidation();
-		using (Html.BeginForm("Bewerken", "Afdelingen", new { groepID = Model.GroepID }))
+		using (Html.BeginForm("AfdJaarBewerken", "Afdelingen", new { groepID = Model.GroepID }))
 		{%>
 	<ul id="acties">
 		<li>

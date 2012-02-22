@@ -169,9 +169,9 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="groepID">ID van de groep die we aan het bewerken zijn</param>
         /// <param name="id">ID van het afdelingsjaar dat we willen verwijderen</param>
         /// <returns></returns>
-        /// <!-- GET: /Afdeling/Verwijderen/afdelingsJaarId -->
+        /// <!-- GET: /Afdeling/VerwijderenVerwijderenVanWerkjaar/afdelingsJaarId -->
 		[HandleError]
-		public ActionResult Verwijderen(int groepID, int id)
+        public ActionResult VerwijderenVanWerkjaar(int groepID, int id)
 		{
 			// Afdeling van afdelingsjaar invullen
 			try
@@ -188,6 +188,32 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			return RedirectToAction("Index");
 		}
+
+        /// <summary>
+        /// Verwijdert een afdeling volledig uit de database.
+        /// </summary>
+        /// <param name="groepID">ID van de groep die we aan het bewerken zijn</param>
+        /// <param name="id">ID van de afdeling dat we willen verwijderen</param>
+        /// <returns></returns>
+        /// <!-- GET: /Afdeling/Verwijderen/afdelingsId -->
+        [HandleError]
+        public ActionResult Verwijderen(int groepID, int id)
+        {
+            // Afdeling van afdelingsjaar invullen
+            try
+            {
+                ServiceHelper.CallService<IGroepenService>(groep => groep.AfdelingVerwijderen(id));
+
+                TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+            }
+            catch (FaultException)
+            {
+                TempData["fout"] = Properties.Resources.AfdelingNietLeeg;
+                // TODO (#1139): specifieke exceptions catchen en weergeven via de modelstate, en niet via tempdata.
+            }
+
+            return RedirectToAction("Index");
+        }
 
 		/// <summary>
 		/// Laat de gebruiker een nieuw afdelingsjaar maken voor een niet-actieve afdeling
@@ -224,13 +250,12 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="id">ID van het te bewerken afdelingsjaar</param>
 		/// <returns>De view 'afdelingsjaar'</returns>
 		[HandleError]
-		public ActionResult Bewerken(int groepID, int id)
+		public ActionResult AfdJaarBewerken(int groepID, int id)
 		{
 			var model = new AfdelingsJaarModel();
 			BaseModelInit(model, groepID);
 
-			AfdelingDetail detail = ServiceHelper.CallService<IGroepenService, AfdelingDetail>(
-				svc => svc.AfdelingDetailOphalen(id));
+			AfdelingDetail detail = ServiceHelper.CallService<IGroepenService, AfdelingDetail>(svc => svc.AfdelingDetailOphalen(id));
 
 			model.Afdeling = new AfdelingInfo
 			{
@@ -240,9 +265,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			};
 
 			model.AfdelingsJaar = detail; // inheritance :)
-			model.OfficieleAfdelingen =
-				ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>
-				(groep => groep.OfficieleAfdelingenOphalen(groepID));
+			model.OfficieleAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(groep => groep.OfficieleAfdelingenOphalen(groepID));
 
 			model.Titel = "Afdeling bewerken";
 			return View("AfdelingsJaar", model);
@@ -257,7 +280,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// 'AfdelingsJaarView'.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HandleError]
-		public ActionResult Bewerken(AfdelingsJaarModel model, int groepID)
+		public ActionResult AfdJaarBewerken(AfdelingsJaarModel model, int groepID)
 		{
 			BaseModelInit(model, groepID);
 
@@ -290,5 +313,83 @@ namespace Chiro.Gap.WebApp.Controllers
 				return View("AfdelingsJaar", model);
 			}
 		}
+
+        /// <summary>
+        /// Laat de gebruiker het bestaande afdelingsjaar met afdelingsjaarID <paramref name="id"/>
+        /// bewerken.
+        /// </summary>
+        /// <param name="groepID">ID van de geselecteerde groep</param>
+        /// <param name="id">ID van het te bewerken afdelingsjaar</param>
+        /// <returns>De view 'afdelingsjaar'</returns>
+        [HandleError]
+        public ActionResult AfdBewerken(int groepID, int id)
+        {
+            var model = new AfdelingInfoModel();
+            BaseModelInit(model, groepID);
+
+            AfdelingInfo detail = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(id));
+
+            model.Info = detail;
+           
+            model.Titel = "Afdeling bewerken";
+            return View("Afdeling", model);
+        }
+
+        /// <summary>
+        /// Postback voor activeren/bewerken afdeling(sjaar).
+        /// </summary>
+        /// <param name="model">De property <c>model.AfdelingsJaar</c> bevat de relevante details over het afdelingsjaar</param>
+        /// <param name="groepID">Groep waarin de gebruiker momenteel aan het werken is</param>
+        /// <returns>Het afdelingsoverzicht als de wijzigingen bewaard zijn, en anders opnieuw de
+        /// 'AfdelingsJaarView'.</returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        [HandleError]
+        public ActionResult AfdBewerken(AfdelingInfoModel model, int groepID)
+        {
+            BaseModelInit(model, groepID);
+            
+            try
+            {
+                ServiceHelper.CallService<IGroepenService>(e => e.AfdelingBewaren(model.Info));
+
+                TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+
+                return RedirectToAction("Index");
+            }
+            catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
+            {
+                if (string.Compare(
+                    ex.Detail.Bestaande.Afkorting,
+                    model.Info.Afkorting,
+                    true) == 0)
+                {
+                    ModelState.AddModelError(
+                        "Info.Afkorting",
+                        string.Format(
+                            Properties.Resources.AfdelingsCodeBestaatAl,
+                            ex.Detail.Bestaande.Afkorting,
+                            ex.Detail.Bestaande.Naam));
+                }
+                else if (string.Compare(
+                    ex.Detail.Bestaande.Naam,
+                    model.Info.Naam,
+                    true) == 0)
+                {
+                    ModelState.AddModelError(
+                        "Info.Naam",
+                        string.Format(
+                            Properties.Resources.AfdelingsNaamBestaatAl,
+                            ex.Detail.Bestaande.Afkorting,
+                            ex.Detail.Bestaande.Naam));
+                }
+                else
+                {
+                    // Dit kan niet.
+                    Debug.Assert(false);
+                }
+
+                return View("Afdeling", model);
+            }
+        }
 	}
 }
