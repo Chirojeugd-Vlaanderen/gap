@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<AfdelingInfoModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<AfdelingInfoModel>" %>
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -13,7 +13,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<% 
 		Html.EnableClientValidation(); // Deze instructie moet (enkel) voor de BeginForm komen
-		using (Html.BeginForm())
+        using (Html.BeginForm("AfdBewerken", "Afdelingen", new { groepID = Model.GroepID }))
         {
     %>
 	<ul id="acties">
@@ -22,7 +22,7 @@
 		</li>
 	</ul>
 	<fieldset>
-		<legend>Nieuwe afdeling</legend>
+		<legend>Afdeling bewerken</legend>
 		<%=Html.LabelFor(mdl => mdl.Info.Naam) %>
 		<%=Html.EditorFor(mdl => mdl.Info.Naam)%>
 		<br />
@@ -32,6 +32,7 @@
 		<%=Html.EditorFor(mdl => mdl.Info.Afkorting)%>
 		<br />
 		<%=Html.ValidationMessageFor(mdl => mdl.Info.Afkorting)%>
+        <%=Html.HiddenFor(mdl => mdl.Info.ID) %>
 	</fieldset>
 	<% } %>
 </asp:Content>
