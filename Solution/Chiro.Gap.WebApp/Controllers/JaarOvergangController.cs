@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -32,32 +32,32 @@ namespace Chiro.Gap.WebApp.Controllers
         /// service</param>
         public JaarOvergangController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
 
-		public override ActionResult Index(int groepID)
-		{
-			return Stap1AfdelingenSelecteren(groepID);
-		}
+        public override ActionResult Index(int groepID)
+        {
+            return Stap1AfdelingenSelecteren(groepID);
+        }
 
-		// Geef een lijst weer van alle beschikbare afdelingen, waaruit de groep kan kiezen welke afdelingen ze volgend jaar zullen hebben
-		// (ze kunnen er ook nieuwe bijmaken)
-		// Als de groep een kadergroep is, dan slaan we de afdelingsstappen over
-		private ActionResult Stap1AfdelingenSelecteren(int groepID)
+        // Geef een lijst weer van alle beschikbare afdelingen, waaruit de groep kan kiezen welke afdelingen ze volgend jaar zullen hebben
+        // (ze kunnen er ook nieuwe bijmaken)
+        // Als de groep een kadergroep is, dan slaan we de afdelingsstappen over
+        private ActionResult Stap1AfdelingenSelecteren(int groepID)
         {
             var model = new JaarOvergangAfdelingsModel();
             BaseModelInit(model, groepID);
 
             // Als we met een gewest/verbond te doen hebben, dan zijn de afdelingen niet relevant
-            if(model.GroepsNiveau == Niveau.KaderGroep)
+            if (model.GroepsNiveau == Niveau.KaderGroep)
             {
-				return Stap2AfdelingsJarenVerdelen(new JaarOvergangAfdelingsJaarModel(), groepID);
+                return Stap2AfdelingsJarenVerdelen(new JaarOvergangAfdelingsJaarModel(), groepID);
             }
 
-			model.Titel = "Jaarovergang stap 1: welke afdelingen heeft je groep volgend jaar?";
+            model.Titel = "Jaarovergang stap 1: welke afdelingen heeft je groep volgend jaar?";
             model.Afdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(g => g.AlleAfdelingenOphalen(groepID));
-			return View("Stap1AfdelingenSelecteren", model);
+            return View("Stap1AfdelingenSelecteren", model);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult Stap1AfdelingenSelecteren(JaarOvergangAfdelingsModel model1, int groepID)
+        public ActionResult Stap1AfdelingenSelecteren(JaarOvergangAfdelingsModel model1, int groepID)
         {
             if (!ModelState.IsValid)
             {
@@ -65,129 +65,129 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             else
             {
-                return Stap2AfdelingsJarenVerdelen(model1.GekozenAfdelingsIDs, groepID);                
+                return Stap2AfdelingsJarenVerdelen(model1.GekozenAfdelingsIDs, groepID);
             }
         }
 
-		// Gegeven een lijst van afdelingen die in het volgende werkjaar gelden, 
-		// haal de 
-		private ActionResult Stap2AfdelingsJarenVerdelen(IEnumerable<int> gekozenAfdelingsIDs, int groepID)
+        // Gegeven een lijst van afdelingen die in het volgende werkjaar gelden, 
+        // haal de 
+        private ActionResult Stap2AfdelingsJarenVerdelen(IEnumerable<int> gekozenAfdelingsIDs, int groepID)
         {
             var model = new JaarOvergangAfdelingsJaarModel();
             BaseModelInit(model, groepID);
 
-			model.Titel = "Jaarovergang stap 2:  instellingen van je afdelingen";
-			model.NieuwWerkjaar = ServiceHelper.CallService<IGroepenService, int>(g => g.NieuwWerkJaarOphalen());
-		    model.LedenMeteenInschrijven = true;
+            model.Titel = "Jaarovergang stap 2:  instellingen van je afdelingen";
+            model.NieuwWerkjaar = ServiceHelper.CallService<IGroepenService, int>(g => g.NieuwWerkJaarOphalen());
+            model.LedenMeteenInschrijven = true;
             model.OfficieleAfdelingen =
                 ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
                     e => e.OfficieleAfdelingenOphalen(groepID));
 
             var afdelingsinfos = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(g => g.AlleAfdelingenOphalen(groepID));
-		    var huidigwerkjaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
-			var werkJarenVerschil = model.NieuwWerkjaar - huidigwerkjaar.WerkJaar;
+            var huidigwerkjaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
+            var werkJarenVerschil = model.NieuwWerkjaar - huidigwerkjaar.WerkJaar;
 
             // Haal de huidige actieve afdelingen op, om zoveel mogelijk informatie te kunnen overnemen in het scherm
 
-			var actievelijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingDetail>>(g => g.ActieveAfdelingenOphalen(huidigwerkjaar.WerkJaarID));
+            var actievelijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingDetail>>(g => g.ActieveAfdelingenOphalen(huidigwerkjaar.WerkJaarID));
 
             // laadt de details in van alle afdelingen die geselecteerd zijn voor het nieuwe werkjaar
             var afdelingDetails = new List<AfdelingDetail>();
-			foreach (var afd in afdelingsinfos)
+            foreach (var afd in afdelingsinfos)
             {
                 if (!gekozenAfdelingsIDs.Contains(afd.ID))
                 {
                     continue;
                 }
 
-				var afddetail = new AfdelingDetail
-									{
-										AfdelingAfkorting = afd.Afkorting,
-										AfdelingID = afd.ID,
-										AfdelingNaam = afd.Naam,
-										GeboorteJaarTot = 0,
-										GeboorteJaarVan = 0,
-										Geslacht = GeslachtsType.Onbekend
-									};
+                var afddetail = new AfdelingDetail
+                                    {
+                                        AfdelingAfkorting = afd.Afkorting,
+                                        AfdelingID = afd.ID,
+                                        AfdelingNaam = afd.Naam,
+                                        GeboorteJaarTot = 0,
+                                        GeboorteJaarVan = 0,
+                                        Geslacht = GeslachtsType.Onbekend
+                                    };
 
-				afdelingDetails.Add(afddetail);
+                afdelingDetails.Add(afddetail);
 
                 // Lokale variabele om "Access to modified closure" te vermijden [wiki:VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure]
                 var afd1 = afd;
                 var actieveafdeling = (from actafd in actievelijst
-                           where actafd.AfdelingID == afd1.ID
-                           select actafd).FirstOrDefault();
+                                       where actafd.AfdelingID == afd1.ID
+                                       select actafd).FirstOrDefault();
 
-				if (actieveafdeling != null) // Er is een afdelingsjaar actief op dit moment, dus we kunnen meer info inladen
+                if (actieveafdeling != null) // Er is een afdelingsjaar actief op dit moment, dus we kunnen meer info inladen
                 {
-					afddetail.OfficieleAfdelingID	= actieveafdeling.OfficieleAfdelingID;
-					afddetail.Geslacht				= actieveafdeling.Geslacht;
-					afddetail.GeboorteJaarTot		= actieveafdeling.GeboorteJaarTot + werkJarenVerschil;
-					afddetail.GeboorteJaarVan		= actieveafdeling.GeboorteJaarVan + werkJarenVerschil;
+                    afddetail.OfficieleAfdelingID = actieveafdeling.OfficieleAfdelingID;
+                    afddetail.Geslacht = actieveafdeling.Geslacht;
+                    afddetail.GeboorteJaarTot = actieveafdeling.GeboorteJaarTot + werkJarenVerschil;
+                    afddetail.GeboorteJaarVan = actieveafdeling.GeboorteJaarVan + werkJarenVerschil;
                 }
             }
 
             // Sorteer de afdelingsjaren: eerst die zonder gegevens, dan van ribbels naar aspiranten
-			model.Afdelingen = (from a in afdelingDetails
-                                 orderby a.GeboorteJaarTot descending
-                                 orderby a.GeboorteJaarTot == 0 descending
-                                 select a).ToArray();
+            model.Afdelingen = (from a in afdelingDetails
+                                orderby a.GeboorteJaarTot descending
+                                orderby a.GeboorteJaarTot == 0 descending
+                                select a).ToArray();
 
             // TODO extra info pagina voor jaarovergang
             // TODO kan validatie in de listhelper worden bijgecodeerd?
             // TODO foutmeldingen
-			return View("Stap2AfdelingsJarenVerdelen", model);
+            return View("Stap2AfdelingsJarenVerdelen", model);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult Stap2AfdelingsJarenVerdelen(JaarOvergangAfdelingsJaarModel model, int groepID)
+        public ActionResult Stap2AfdelingsJarenVerdelen(JaarOvergangAfdelingsJaarModel model, int groepID)
         {
             if (model.Afdelingen.Any(e => e.GeboorteJaarVan == 0 && e.GeboorteJaarTot == 0))
             {
                 TempData["fout"] = "Niet alle informatie is ingevuld, gelieve aan te vullen.";
-				return View("Stap2AfdelingsJarenVerdelen", model);
+                return View("Stap2AfdelingsJarenVerdelen", model);
             }
-			
-			// Leden zoeken in het vorige actieve werkjaar, dus opvragen voor we de jaarovergang zelf doen
-			var vorigGwjID = ServiceHelper.CallService<IGroepenService, int>(g => g.RecentsteGroepsWerkJaarIDGet(groepID));
+
+            // Leden zoeken in het vorige actieve werkjaar, dus opvragen voor we de jaarovergang zelf doen
+            var vorigGwjID = ServiceHelper.CallService<IGroepenService, int>(g => g.RecentsteGroepsWerkJaarIDGet(groepID));
 
             try
             {
-				ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(model.Afdelingen, groepID));
+                ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(model.Afdelingen, groepID));
             }
             catch (FaultException<FoutNummerFault> ex)
             {
                 TempData["fout"] = ex.Message;
-				return View("Stap2AfdelingsJarenVerdelen", model);
+                return View("Stap2AfdelingsJarenVerdelen", model);
             }
 
-			VeelGebruikt.JaarOvergangReset(groepID);
+            VeelGebruikt.JaarOvergangReset(groepID);
 
-        	if (!model.LedenMeteenInschrijven)
-        	{
-        		return RedirectToAction("Index", "Leden");
-        	}
+            if (!model.LedenMeteenInschrijven)
+            {
+                return RedirectToAction("Index", "Leden");
+            }
 
-			// Leden uit het oude werkjaar opvragen om lid te maken
-			var filter = new LidFilter
-        		            {
-								GroepsWerkJaarID = vorigGwjID,
-        		             	AfdelingID = null,
-        		             	FunctieID = null,
-        		             	ProbeerPeriodeNa = null,
-        		             	HeeftVoorkeurAdres = null,
-        		             	HeeftTelefoonNummer = null,
-        		             	HeeftEmailAdres = null,
-        		             	LidType = LidType.Alles
-        		            };
+            // Leden uit het oude werkjaar opvragen om lid te maken
+            var filter = new LidFilter
+                            {
+                                GroepsWerkJaarID = vorigGwjID,
+                                AfdelingID = null,
+                                FunctieID = null,
+                                ProbeerPeriodeNa = null,
+                                HeeftVoorkeurAdres = null,
+                                HeeftTelefoonNummer = null,
+                                HeeftEmailAdres = null,
+                                LidType = LidType.Alles
+                            };
 
-        	// TODO nogal duur om eerst alle leden op te halen, best herschrijven
-        	var gelieerdepersoonIDs =
-        		ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(svc => svc.Zoeken(filter, false)).Select(
-        			e => e.GelieerdePersoonID).ToList();
+            // TODO nogal duur om eerst alle leden op te halen, best herschrijven
+            var gelieerdepersoonIDs =
+                ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(svc => svc.Zoeken(filter, false)).Select(
+                    e => e.GelieerdePersoonID).ToList();
 
-        	TempData["list"] = gelieerdepersoonIDs;
-        	return RedirectToAction("LedenMaken", "Leden");
+            TempData["list"] = gelieerdepersoonIDs;
+            return RedirectToAction("LedenMaken", "Leden");
         }
 
         /// <summary>
@@ -198,14 +198,14 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult NieuweAfdelingMaken(int groepID)
         {
             var model = new AfdelingInfoModel
-                        	{
-                        		Titel = Properties.Resources.NieuweAfdelingTitel,
-                        		Info = new AfdelingInfo()
-                        	};
+                            {
+                                Titel = Properties.Resources.NieuweAfdelingTitel,
+                                Info = new AfdelingInfo()
+                            };
 
-        	BaseModelInit(model, groepID);
+            BaseModelInit(model, groepID);
 
-			return View("NieuweAfdelingMaken", model);
+            return View("NieuweAfdelingMaken", model);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns>Het overzicht van de afdelingen, indien de nieuwe afdeling goed gemaakt is.
         /// In het andere geval opnieuw de view om een afdeling bij te maken.</returns>
         [AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult NieuweAfdelingMaken(AfdelingInfoModel model, int groepID)
+        public ActionResult NieuweAfdelingMaken(AfdelingInfoModel model, int groepID)
         {
             model.Titel = Properties.Resources.NieuweAfdelingTitel;
             BaseModelInit(model, groepID);
@@ -275,7 +275,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Info = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(afdelingID));
 
             model.Titel = "Afdeling bewerken";
-			return View("Stap1AfdelingenSelecteren", model);
+            return View("Stap1AfdelingenSelecteren", model);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -299,7 +299,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.Info = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(model.Info.ID));
 
                 model.Titel = "Afdeling bewerken";
-				return View("Stap1AfdelingenSelecteren", model);
+                return View("Stap1AfdelingenSelecteren", model);
             }
         }
     }

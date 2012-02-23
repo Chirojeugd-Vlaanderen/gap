@@ -15,7 +15,7 @@ namespace Chiro.Gap.Workers.Test
 
 
 	/// <summary>
-	/// This is a test class for FunctiesManagerTest and is intended
+	/// Dit is een testclass voor Unit Tests van FunctiesManagerTest,
 	/// to contain all FunctiesManagerTest Unit Tests
 	/// </summary>
 	[TestClass]

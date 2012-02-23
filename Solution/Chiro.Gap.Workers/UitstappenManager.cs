@@ -1,6 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
-// Mail naar informatica@chiro.be voor alle info over deze broncode
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
 using System;
@@ -8,9 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-// ReSharper disable RedundantUsingDirective
 using System.Transactions;
-// ReSharper restore RedundantUsingDirective
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
@@ -33,12 +30,20 @@ namespace Chiro.Gap.Workers
         private readonly IBivakSync _sync;
 
         /// <summary>
-        /// Constructor.  De parameters moeten 'ingevuld' via dependency inejction
+        /// Constructor.  De parameters moeten 'ingevuld' worden via dependency injection.
         /// </summary>
-        /// <param name="uitstappenDao">Data access voor uitstappen</param>
-        /// <param name="groepsWerkJaarDao">Data access voor groepswerkjaren</param>
-        /// <param name="autorisatieManager">Businesslogica voor autorisatie</param>
-        /// <param name="sync">Proxy naar service om bivakaangiftes te syncen met Kipadmin</param>
+        /// <param name="uitstappenDao">
+        /// Data access voor uitstappen
+        /// </param>
+        /// <param name="groepsWerkJaarDao">
+        /// Data access voor groepswerkjaren
+        /// </param>
+        /// <param name="autorisatieManager">
+        /// Businesslogica voor autorisatie
+        /// </param>
+        /// <param name="sync">
+        /// Proxy naar service om bivakaangiftes te syncen met Kipadmin
+        /// </param>
         public UitstappenManager(
             IUitstappenDao uitstappenDao,
             IGroepsWerkJaarDao groepsWerkJaarDao,
@@ -55,19 +60,28 @@ namespace Chiro.Gap.Workers
         /// Koppelt een uitstap aan een groepswerkjaar.  Dit moet typisch
         /// enkel gebeuren bij een nieuwe uitstap.
         /// </summary>
-        /// <param name="uitstap">Te koppelen uitstap</param>
-        /// <param name="gwj">Te koppelen groepswerkjaar</param>
-        /// <returns><paramref name="uitstap"/>, gekoppeld aan <paramref name="gwj"/>.</returns>
+        /// <param name="uitstap">
+        /// Te koppelen uitstap
+        /// </param>
+        /// <param name="gwj">
+        /// Te koppelen groepswerkjaar
+        /// </param>
+        /// <returns>
+        /// <paramref name="uitstap"/>, gekoppeld aan <paramref name="gwj"/>.
+        /// </returns>
         public Uitstap Koppelen(Uitstap uitstap, GroepsWerkJaar gwj)
         {
             if (!_autorisatieManager.IsGavGroepsWerkJaar(gwj.ID) || !_autorisatieManager.IsGavUitstap(uitstap.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
+
             if (uitstap.GroepsWerkJaar != null && uitstap.GroepsWerkJaar != gwj)
             {
-                throw new BlokkerendeObjectenException<GroepsWerkJaar>(uitstap.GroepsWerkJaar, Resources.UitstapAlGekoppeld);
+                throw new BlokkerendeObjectenException<GroepsWerkJaar>(uitstap.GroepsWerkJaar,
+                                                                       Resources.UitstapAlGekoppeld);
             }
+
             if (!_groepsWerkJaarDao.IsRecentste(gwj.ID))
             {
                 throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietBeschikbaar, Resources.GroepsWerkJaarVoorbij);
@@ -82,9 +96,15 @@ namespace Chiro.Gap.Workers
         /// Haalt de uitstap met gegeven <paramref name="uitstapID"/> op, inclusief
         /// het gekoppelde groepswerkjaar.
         /// </summary>
-        /// <param name="uitstapID">ID op te halen uitstap</param>
-        /// <param name="extras"></param>
-        /// <returns>De uitstap, met daaraan gekoppeld het groepswerkjaar.</returns>
+        /// <param name="uitstapID">
+        /// ID op te halen uitstap
+        /// </param>
+        /// <param name="extras">
+        /// TODO (#190): documenteren
+        /// </param>
+        /// <returns>
+        /// De uitstap, met daaraan gekoppeld het groepswerkjaar.
+        /// </returns>
         public Uitstap Ophalen(int uitstapID, UitstapExtras extras)
         {
             var paths = new List<Expression<Func<Uitstap, object>>>();
@@ -117,24 +137,33 @@ namespace Chiro.Gap.Workers
             {
                 paths.Add(u => u.Plaats.Adres);
             }
+
             return _uitstappenDao.Ophalen(uitstapID, paths.ToArray());
         }
 
         /// <summary>
         /// Bewaart de uitstap met het gekoppelde groepswerkjaar
         /// </summary>
-        /// <param name="uitstap">Te bewaren uitstap</param>
-        /// <param name="extras">Bepaalt de mee te bewaren koppelingen</param>
-        /// <param name="sync">Als <c>true</c>, wordt de uitstap gesynct naar Kipadmin.</param>
-        /// <returns>De bewaarde uitstap</returns>
-        /// <remarks>Groepswerkjaar wordt altijd mee bewaard.
+        /// <param name="uitstap">
+        /// Te bewaren uitstap
+        /// </param>
+        /// <param name="extras">
+        /// Bepaalt de mee te bewaren koppelingen
+        /// </param>
+        /// <param name="sync">
+        /// Als <c>true</c>, wordt de uitstap gesynct naar Kipadmin.
+        /// </param>
+        /// <returns>
+        /// De bewaarde uitstap
+        /// </returns>
+        /// <remarks>
+        /// Groepswerkjaar wordt altijd mee bewaard.
         /// De parameter <paramref name="sync"/> staat erbij om te vermijden dat voor het
         /// bewaren van een koppeling een (ongewijzigd) bivak mee over de lijn moet.
         /// </remarks>
         public Uitstap Bewaren(Uitstap uitstap, UitstapExtras extras, bool sync)
         {
             // kopieer eerst een aantal gekoppelde entiteiten (voor sync straks), want na het bewaren van het bivak zijn we die kwijt...
-
             var groep = uitstap.GroepsWerkJaar == null ? null : uitstap.GroepsWerkJaar.Groep;
             var plaats = uitstap.Plaats;
 
@@ -144,12 +173,13 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
+
             if (!_groepsWerkJaarDao.IsRecentste(uitstap.GroepsWerkJaar.ID))
             {
                 throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietBeschikbaar, Resources.GroepsWerkJaarVoorbij);
             }
-            // Sowieso groepswerkjaar koppelen.
 
+            // Sowieso groepswerkjaar koppelen.
             Debug.Assert(uitstap.GroepsWerkJaar != null);
             var koppelingen = new List<Expression<Func<Uitstap, object>>> { u => u.GroepsWerkJaar.WithoutUpdate() };
 
@@ -157,14 +187,17 @@ namespace Chiro.Gap.Workers
             {
                 koppelingen.Add(u => u.Plaats);
             }
+
             if ((extras & UitstapExtras.Deelnemers) == UitstapExtras.Deelnemers)
             {
                 koppelingen.Add(u => u.Deelnemer.First().GelieerdePersoon.WithoutUpdate());
             }
+
             if ((extras & UitstapExtras.Contact) == UitstapExtras.Contact)
             {
                 koppelingen.Add(u => u.ContactDeelnemer.WithoutUpdate());
             }
+
 #if KIPDORP
             using (var tx = new TransactionScope())
             {
@@ -179,7 +212,6 @@ namespace Chiro.Gap.Workers
                 // Idem voor plaats
 
                 // Opgelet.  Dit is inconsistent gedrag van de software :-(
-
                 uitstap.GroepsWerkJaar.Groep = groep;
                 uitstap.Plaats = plaats;
                 _sync.Bewaren(uitstap);
@@ -188,9 +220,9 @@ namespace Chiro.Gap.Workers
             {
                 // Dit om op te vangen dat een bivak afgevinkt wordt als bivak.
                 // TODO (#1044): betere manier bedenken
-
                 _sync.Verwijderen(uitstap.ID);
             }
+
 #if KIPDORP
                 tx.Complete();
             }
@@ -201,11 +233,19 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Haalt alle uitstappen van een gegeven groep op.
         /// </summary>
-        /// <param name="groepID">ID van de groep</param>
-        /// <param name="inschrijvenMogelijk">Als dit <c>true</c> is, worden enkel de gegevens opgehaald
-        /// van uitstappen waarvoor nog ingeschreven kan worden.</param>
-        /// <returns>Details van uitstappen</returns>
-        /// <remarks>Om maar iets te doen, ordenen we voorlopig op einddatum</remarks>
+        /// <param name="groepID">
+        /// ID van de groep
+        /// </param>
+        /// <param name="inschrijvenMogelijk">
+        /// Als dit <c>true</c> is, worden enkel de gegevens opgehaald
+        /// van uitstappen waarvoor nog ingeschreven kan worden.
+        /// </param>
+        /// <returns>
+        /// Details van uitstappen
+        /// </returns>
+        /// <remarks>
+        /// Om maar iets te doen, ordenen we voorlopig op einddatum
+        /// </remarks>
         public IEnumerable<Uitstap> OphalenVanGroep(int groepID, bool inschrijvenMogelijk)
         {
             if (!_autorisatieManager.IsGavGroep(groepID))
@@ -219,9 +259,15 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Koppelt een plaats aan een uitstap
         /// </summary>
-        /// <param name="uitstap">Te koppelen uitstap</param>
-        /// <param name="plaats">Te koppelen plaats</param>
-        /// <returns>Uitstap, met plaats gekoppeld.  Persisteert niet</returns>
+        /// <param name="uitstap">
+        /// Te koppelen uitstap
+        /// </param>
+        /// <param name="plaats">
+        /// Te koppelen plaats
+        /// </param>
+        /// <returns>
+        /// Uitstap, met plaats gekoppeld.  Persisteert niet
+        /// </returns>
         public Uitstap Koppelen(Uitstap uitstap, Plaats plaats)
         {
             if (!_autorisatieManager.IsGavUitstap(uitstap.ID) || !_autorisatieManager.IsGavPlaats(plaats.ID))
@@ -239,11 +285,19 @@ namespace Chiro.Gap.Workers
         /// Schrijft de gegeven <paramref name="gelieerdePersonen"/> in voor de gegeven
         /// <paramref name="uitstap"/>, al dan niet als <paramref name="logistiekDeelnemer"/>.
         /// </summary>
-        /// <param name="uitstap">Uitstap waarvoor in te schrijven, gekoppeld aan groep</param>
-        /// <param name="gelieerdePersonen">In te schrijven gelieerde personen, gekoppeld aan groep</param>
-        /// <param name="logistiekDeelnemer">Als <c>true</c>, dan worden de 
-        /// <paramref name="gelieerdePersonen"/> ingeschreven als logistiek deelnemer.</param>
-        public void Inschrijven(Uitstap uitstap, IEnumerable<GelieerdePersoon> gelieerdePersonen, bool logistiekDeelnemer)
+        /// <param name="uitstap">
+        /// Uitstap waarvoor in te schrijven, gekoppeld aan groep
+        /// </param>
+        /// <param name="gelieerdePersonen">
+        /// In te schrijven gelieerde personen, gekoppeld aan groep
+        /// </param>
+        /// <param name="logistiekDeelnemer">
+        /// Als <c>true</c>, dan worden de 
+        /// <paramref name="gelieerdePersonen"/> ingeschreven als logistiek deelnemer.
+        /// </param>
+        public void Inschrijven(Uitstap uitstap,
+                                IEnumerable<GelieerdePersoon> gelieerdePersonen,
+                                bool logistiekDeelnemer)
         {
             var alleGpIDs = (from gp in gelieerdePersonen select gp.ID).Distinct();
             var mijnGpIDs = _autorisatieManager.EnkelMijnGelieerdePersonen(alleGpIDs);
@@ -261,7 +315,6 @@ namespace Chiro.Gap.Workers
 
             // Als er meer dan 1 groep is, dan is er minstens een groep verschillend van de groep
             // van de uitstap (duivenkotenprincipe));););
-
             if (groepen.Count() > 1 || groepen.First().ID != uitstap.GroepsWerkJaar.Groep.ID)
             {
                 throw new FoutNummerException(
@@ -278,17 +331,16 @@ namespace Chiro.Gap.Workers
 
             // Als er nu nog geen exception gethrowd is, dan worden eindelijk de deelnemers gemaakt.
             // (koppel enkel de gelieerde personen die nog niet aan de uitstap gekoppeld zijn)
-
             foreach (var gp in gelieerdePersonen.Where(gp => !gp.Deelnemer.Any(d => d.Uitstap.ID == uitstap.ID)))
             {
                 var deelnemer = new Deelnemer
-                            {
-                                GelieerdePersoon = gp,
-                                Uitstap = uitstap,
-                                HeeftBetaald = false,
-                                IsLogistieker = logistiekDeelnemer,
-                                MedischeFicheOk = false
-                            };
+                                    {
+                                        GelieerdePersoon = gp,
+                                        Uitstap = uitstap,
+                                        HeeftBetaald = false,
+                                        IsLogistieker = logistiekDeelnemer,
+                                        MedischeFicheOk = false
+                                    };
                 gp.Deelnemer.Add(deelnemer);
                 uitstap.Deelnemer.Add(deelnemer);
             }
@@ -298,8 +350,12 @@ namespace Chiro.Gap.Workers
         /// Haalt de deelnemers (incl. lidgegevens van het betreffende groepswerkjaar)
         /// van de gegeven uitstap op.
         /// </summary>
-        /// <param name="uitstapID">ID van uitstap waarvan deelnemers op te halen zijn</param>
-        /// <returns>De deelnemers van de gevraagde uitstap.</returns>
+        /// <param name="uitstapID">
+        /// ID van uitstap waarvan deelnemers op te halen zijn
+        /// </param>
+        /// <returns>
+        /// De deelnemers van de gevraagde uitstap.
+        /// </returns>
         public IEnumerable<Deelnemer> DeelnemersOphalen(int uitstapID)
         {
             if (!_autorisatieManager.IsGavUitstap(uitstapID))
@@ -314,7 +370,9 @@ namespace Chiro.Gap.Workers
         /// Stuurt alle bivakken van werkjaar <paramref name="werkjaar"/> opnieuw naar
         /// kipadmin.
         /// </summary>
-        /// <param name="werkjaar">Werkjaar</param>
+        /// <param name="werkjaar">
+        /// Het werkjaar waarvan de gegevens opnieuw gesynct moeten worden
+        /// </param>
         public void OpnieuwSyncen(int werkjaar)
         {
             if (!_autorisatieManager.IsSuperGav())
@@ -330,12 +388,31 @@ namespace Chiro.Gap.Workers
             }
         }
 
+        /// <summary>
+        /// Gaat na welke gegevens er nog ontbreken in de geregistreerde bivakken om van een
+        /// geldige bivakaangifte te kunnen spreken.
+        /// </summary>
+        /// <param name="groepID">
+        /// De ID van de groep waar het over gaat.
+        /// </param>
+        /// <param name="groepsWerkJaar">
+        /// Het werkjaar waarvoor de gegevens opgehaald moeten worden.
+        /// </param>
+        /// <returns>
+        /// Een lijstje met opmerkingen/feedback voor de gebruiker, zodat die weet 
+        /// of er nog iets extra's ingevuld moet worden.
+        /// </returns>
+        /// <exception cref="GeenGavException">
+        /// Komt voor als de gebruiker op dit moment geen GAV is voor de groep met de opgegeven <paramref name="groepID"/>,
+        /// maar ook als de gebruiker geen GAV was/is in het opgegeven <paramref name="groepsWerkJaar"/>.
+        /// </exception>
         public BivakAangifteLijstInfo BivakStatusOphalen(int groepID, GroepsWerkJaar groepsWerkJaar)
         {
             if (!_autorisatieManager.IsGavGroepsWerkJaar(groepsWerkJaar.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
+
             if (!_autorisatieManager.IsGavGroep(groepID))
             {
                 throw new GeenGavException(Resources.GeenGav);
@@ -356,12 +433,14 @@ namespace Chiro.Gap.Workers
                 foreach (var uitstap in bivaklijst)
                 {
                     var aangifteInfo = new BivakAangifteInfo
-                                        {
-                                            ID = uitstap.ID,
-                                            Omschrijving = uitstap.Naam
-                                        };
+                                           {
+                                               ID = uitstap.ID,
+                                               Omschrijving = uitstap.Naam
+                                           };
 
-                    var uitstapmetdetails = Ophalen(uitstap.ID, UitstapExtras.Contact | UitstapExtras.Plaats | UitstapExtras.GroepsWerkJaar);
+                    var uitstapmetdetails = Ophalen(uitstap.ID,
+                                                    UitstapExtras.Contact | UitstapExtras.Plaats |
+                                                    UitstapExtras.GroepsWerkJaar);
                     if (uitstapmetdetails.GroepsWerkJaar.ID != groepsWerkJaar.ID)
                     {
                         continue;
@@ -386,17 +465,22 @@ namespace Chiro.Gap.Workers
                     {
                         aangifteInfo.Status = BivakAangifteStatus.Ingevuld;
                     }
+
                     statuslijst.Bivakinfos.Add(aangifteInfo);
                 }
+
                 if (statuslijst.Bivakinfos.Count == 0)
                 {
                     statuslijst.AlgemeneStatus = BivakAangifteStatus.DringendInTeVullen;
                 }
                 else
                 {
-                    statuslijst.AlgemeneStatus = allesingevuld ? BivakAangifteStatus.Ingevuld : BivakAangifteStatus.DringendInTeVullen;
+                    statuslijst.AlgemeneStatus = allesingevuld
+                                                     ? BivakAangifteStatus.Ingevuld
+                                                     : BivakAangifteStatus.DringendInTeVullen;
                 }
             }
+
             return statuslijst;
         }
     }

@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -8,8 +8,11 @@ using Chiro.Cdf.Data.Entity;
 namespace Chiro.Gap.Orm
 {
 	/// <summary>
-	/// VerzekeringsType (loonverlies, beperkte periode, avontuurlijke activiteiten,...)
+    /// Instantieert een VerzekeringsType-object dat zorgt voor samenwerking met Entity Framework
 	/// </summary>
+	/// <remarks>
+	/// Loonverlies, beperkte periode, avontuurlijke activiteiten,...
+	/// </remarks>
 	public partial class VerzekeringsType : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen;

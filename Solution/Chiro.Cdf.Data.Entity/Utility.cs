@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -75,12 +75,12 @@ namespace Chiro.Cdf.Data.Entity
 		/// <typeparam name="T"></typeparam>
 		/// <returns>The detached root object.</returns>
 		/// <remarks>
-		///     1. Enkel als de oorspronkelijke context niet meer bestaat,
-		///        zullen de entity's daadwerkelijk EntityState=Detached
-		///        hebben.
-		///     2. Als er circulaire relaties voorkomen, dan werkt het
-		///        niet.
-		///     3. Blijkbaar ook niet voor many-to-many?
+		///    1. Enkel als de oorspronkelijke context niet meer bestaat,
+		///       zullen de entity's daadwerkelijk EntityState=Detached
+		///       hebben.
+		///    2. Als er circulaire relaties voorkomen, dan werkt het
+		///       niet.
+		///    3. Blijkbaar ook niet voor many-to-many?
 		/// </remarks>
 		public static T DetachObjectGraph<T>(T entity) where T : IEfBasisEntiteit
 		{

@@ -30,7 +30,7 @@ namespace Chiro.Gap.WebApp.Test
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -45,7 +45,7 @@ namespace Chiro.Gap.WebApp.Test
 
 		///<summary>
 		///Kijkt na of de lijst met landen goed wordt gecachet
-		///</summary>
+		/// </summary>
 		[TestMethod]
 		public void LandenOphalenTest()
 		{

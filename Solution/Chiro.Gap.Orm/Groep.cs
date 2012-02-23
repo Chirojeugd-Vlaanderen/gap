@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -18,7 +18,10 @@ namespace Chiro.Gap.Orm
 	{
 		private bool _teVerwijderen;
 
-		public abstract Niveau Niveau { get; }
+	    /// <summary>
+	    /// Geeft bv. aan of het om een lokale groep, een gewest of een verbond gaat
+	    /// </summary>
+	    public abstract Niveau Niveau { get; }
 
 		/// <summary>
 		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren

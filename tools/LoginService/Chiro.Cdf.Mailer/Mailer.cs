@@ -1,22 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Web;
 
 namespace Chiro.Cdf.Mailer
 {
-    public class Mailer: IMailer
+    /// <summary>
+    /// Class die ervoor zorgt dat er mailtjes verstuurd kunnen worden
+    /// </summary>
+    public class Mailer : IMailer
     {
         /// <summary>
-        /// Verzendt een mail naar <paramref name="ontvanger"/>, met gegeven <paramref name="onderwerp"/> en
+        /// Verstuurt een mail naar <paramref name="ontvanger"/>, met gegeven <paramref name="onderwerp"/> en
         /// <paramref name="ontvanger"/>
         /// </summary>
-        /// <param name="ontvanger">e-mailadres van de geadresseerde</param>
-        /// <param name="onderwerp">onderwerp van de mail</param>
-        /// <param name="body">body van de mail.  Enkel tekst!</param>
-        /// <returns><c>true</c> als het bericht verstuurd is, anders <c>false</c>.</returns>
-        /// <remarks>Ik werk voorlopig text only om te vermijden dat een user html zou kunnen injecteren in het mailtje.</remarks>
+        /// <param name="ontvanger">E-mailadres van de geadresseerde</param>
+        /// <param name="onderwerp">Onderwerp van de mail</param>
+        /// <param name="body">Inhoud van de mail</param>
+        /// <returns><c>True</c> als het bericht verstuurd is, anders <c>false</c>.</returns>
+        /// <remarks>
+        /// Het mailtje dat verstuurd wordt, heeft html-opmaak. De <paramref name="body"/> die je hier
+        /// meegeeft, komt tussen de body-tags in het bericht terecht.
+        /// </remarks>
         public bool Verzenden(string ontvanger, string onderwerp, string body)
         {
             MailServiceReference.BerichtStatus status;
@@ -27,9 +34,7 @@ namespace Chiro.Cdf.Mailer
 
             using (var msr = new MailServiceReference.MailServiceSoapClient())
             {
-                // Met de mails die via de mailer service worden verstuurd, gebeurt iets raar met de inhoud.
-                // De constructie met <pre>...</pre> lost dit op voor html-gebaseerde mail clients
-
+                // Om te vermijden dat de gebruiker het mailtje om zeep helpt, zetten we <pre>...</pre> rond de inhoud.
                 status = msr.VerstuurGapMail(ontvanger, onderwerp, String.Format("<pre>\n{0}\n</pre>", HttpUtility.HtmlEncode(body)));
             }
             return status.IsVerstuurd;

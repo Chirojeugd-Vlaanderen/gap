@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -19,7 +19,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 namespace Chiro.Gap.Data.Ef
 {
     /// <summary>
-    /// TODO (#190): documenteren
+    /// Gegevenstoegangsobject voor adressen
     /// </summary>
     public class AdressenDao : Dao<Adres, ChiroGroepEntities>, IAdressenDao
     {
@@ -28,7 +28,7 @@ namespace Chiro.Gap.Data.Ef
         /// buitenlands adres.
         /// </summary>
         /// <param name="id">ID op te halen adres</param>
-        /// <param name="paths">bepaalt mee op te halen gekoppelde entiteiten</param>
+        /// <param name="paths">Bepaalt mee op te halen gekoppelde entiteiten</param>
         /// <returns>Het gevraagde adres</returns>
         public override Adres Ophalen(int id, params Expression<Func<Adres, object>>[] paths)
         {
@@ -66,7 +66,7 @@ namespace Chiro.Gap.Data.Ef
         /// <summary>
         /// Haalt adres op, op basis van de adresgegevens
         /// </summary>
-        /// <param name="adresInfo">adresgegevens</param>
+        /// <param name="adresInfo">De adresgegevens</param>
         /// <param name="metBewoners">Indien <c>true</c>, worden ook de PersoonsAdressen
         /// opgehaald.  (ALLE persoonsadressen gekoppeld aan het adres; niet
         /// zomaar over de lijn sturen dus)</param>

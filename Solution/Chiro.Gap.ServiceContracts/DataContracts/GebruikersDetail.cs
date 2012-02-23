@@ -1,10 +1,16 @@
-﻿using System;
+﻿// <copyright file="GebruikersDetail.cs" company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
+    /// <summary>
+    /// TODO (#190): documenteren
+    /// </summary>
     [DataContract]
-    public class GebruikersDetail: GebruikersInfo
+    public class GebruikersDetail : GebruikersInfo
     {
         /// <summary>
         /// Voornaam van de GAV (als geweten)

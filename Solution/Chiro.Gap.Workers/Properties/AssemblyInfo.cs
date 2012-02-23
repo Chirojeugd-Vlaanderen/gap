@@ -1,6 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
-// Mail naar informatica@chiro.be voor alle info over deze broncode
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
 using System.Reflection;
@@ -27,12 +26,10 @@ using System.Runtime.InteropServices;
 [assembly: Guid("4781460e-7950-4780-a471-cf4a24296d2d")]
 
 // Version information for an assembly consists of the following four values:
-//
 //      Major Version
 //      Minor Version 
 //      Build Number
 //      Revision
-//
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]

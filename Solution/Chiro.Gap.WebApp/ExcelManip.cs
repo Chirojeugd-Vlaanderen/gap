@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -25,7 +25,7 @@ namespace Chiro.Gap.WebApp
 		/// </summary>
 		/// <typeparam name="T">Type van de objecten</typeparam>
 		/// <param name="rows">Objecten die in een rij terecht moeten komen</param>
-		/// <param name="cols">(Param)array van lambda-expressies, die de kolommen van het document bepaalt</param>
+		/// <param name="cols">Een (param)array van lambda-expressies, die de kolommen van het document bepaalt</param>
 		/// <returns>Een memorystream met daarin het Exceldocument</returns>
 		public MemoryStream ExcelTabel<T>(IEnumerable<T> rows, params Func<T, object>[] cols)
 		{
@@ -89,7 +89,7 @@ namespace Chiro.Gap.WebApp
 		/// <typeparam name="T">Type van de objecten in de rij</typeparam>
 		/// <param name="spreadSheet">Spreadsheet waarin de tabel moet komen</param>
 		/// <param name="rows">Rij objecten; elke rij is gebaseerd op een object</param>
-		/// <param name="cols">(Param)array van lambda-expressies, die de kolommen bepalen</param>
+		/// <param name="cols">Een (param)array van lambda-expressies, die de kolommen bepalen</param>
 		public void WriteRows<T>(SpreadsheetDocument spreadSheet, IEnumerable<T> rows, params Func<T, object>[] cols)
 		{
 			uint rowIndex = 2; // In de eerste rij vulden we al kolomtitels in

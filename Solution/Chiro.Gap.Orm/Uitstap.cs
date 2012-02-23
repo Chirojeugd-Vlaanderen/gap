@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -9,7 +9,7 @@ using Chiro.Cdf.Data.Entity;
 namespace Chiro.Gap.Orm
 {
     /// <summary>
-    /// Via een partial klasse de gegenereerde klasse uitstap uitbreiden tot een IEfBasisEntiteit
+    /// Instantieert een Uitstap-object dat zorgt voor samenwerking met Entity Framework
     /// </summary>
     public partial class Uitstap : IEfBasisEntiteit
     {

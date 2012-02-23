@@ -5,7 +5,7 @@ using Chiro.Gap.Domain;
 namespace Chiro.Gap.Orm.Test
 {
     /// <summary>
-    /// This is a test class for FunctieTest and is intended
+    /// Dit is een testclass voor Unit Tests van FunctieTest,
     /// to contain all FunctieTest Unit Tests
     /// </summary>
 	[TestClass]

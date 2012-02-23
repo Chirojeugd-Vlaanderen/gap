@@ -1,10 +1,14 @@
-﻿using System.Runtime.Serialization;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
-	/// <summary>
-    /// TODO (#190): documenteren
-	/// </summary>
+    /// <summary>
+    /// Datacontract voor beperkte informatie over een land
+    /// </summary>
     [DataContract]
 	public class LandInfo
 	{

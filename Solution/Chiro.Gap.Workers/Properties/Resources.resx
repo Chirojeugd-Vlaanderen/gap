@@ -304,4 +304,16 @@ de helpdesk</value>
   <data name="TijdelijkeRechtenMailOnderwerp" xml:space="preserve">
     <value>Tijdelijke gebruiker voor GAP</value>
   </data>
+  <data name="TeJongVoorLeidingEnGeenGepasteAfdeling" xml:space="preserve">
+    <value>De persoon is te jong om leiding te worden en je groep heeft nog geen afdeling voor die leeftijd.</value>
+  </data>
+  <data name="JaarovergangTeVroeg" xml:space="preserve">
+    <value>De jaarovergang is enkel toegelaten vanaf een vooropgestelde datum.</value>
+  </data>
+  <data name="OngeldigeAfdelingBinnenGroep" xml:space="preserve">
+    <value>Een van de gevraagde afdelingen is geen afdeling van de gegeven groep.</value>
+  </data>
+  <data name="OngeldigeAfdelingNationaal" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -65,75 +65,75 @@ namespace Chiro.Gap.Services
 
         #region leden managen
 
-		/// <summary>
-		/// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
-		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
-		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
-		public IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
-		{
-			try
-			{
-				var foutBerichtenBuilder = new StringBuilder();
+        /// <summary>
+        /// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
+        /// </summary>
+        /// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
+        /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
+        /// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
+        public IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
+        {
+            try
+            {
+                var foutBerichtenBuilder = new StringBuilder();
 
-				// Haal meteen alle gelieerde personen op, gecombineerd met hun groep
-				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Groep);
+                // Haal meteen alle gelieerde personen op, gecombineerd met hun groep
+                var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Groep);
 
-				// Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
-				// al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
-				var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
+                // Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
+                // al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
+                var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
 
-				var voorgesteldelijst = new List<InTeSchrijvenLid>();
+                var voorgesteldelijst = new List<InTeSchrijvenLid>();
 
-				foreach (var g in groepen)
-				{
-					// Per groep lid maken.
-					// Zoek eerst recentste groepswerkjaar.
-					var gwj = _groepwsWjMgr.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Groep);
+                foreach (var g in groepen)
+                {
+                    // Per groep lid maken.
+                    // Zoek eerst recentste groepswerkjaar.
+                    var gwj = _groepwsWjMgr.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Groep);
 
-					foreach (var gp in g.GelieerdePersoon)
-					{
-						try
-						{
-							var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+                    foreach (var gp in g.GelieerdePersoon)
+                    {
+                        try
+                        {
+                            var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
-							if (l != null) // uitgeschreven
-							{
-								if (!l.NonActief)
-								{
-									foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
-									continue;
-								}
-							}
-							else // nieuw lid
-							{
-								l = _ledenMgr.AutomagischInschrijven(gp, gwj, false);
-							}
+                            if (l != null) // uitgeschreven
+                            {
+                                if (!l.NonActief)
+                                {
+                                    foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
+                                    continue;
+                                }
+                            }
+                            else // nieuw lid
+                            {
+                                l = _ledenMgr.AutomagischInschrijven(gp, gwj, false);
+                            }
 
-							if (l != null)
-							{
-								voorgesteldelijst.Add(Mapper.Map<Lid, InTeSchrijvenLid>(l));
-							}
-						}
-						catch (GapException ex)
-						{
-							foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
-						}
-					}
-				}
+                            if (l != null)
+                            {
+                                voorgesteldelijst.Add(Mapper.Map<Lid, InTeSchrijvenLid>(l));
+                            }
+                        }
+                        catch (GapException ex)
+                        {
+                            foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
+                        }
+                    }
+                }
 
-				foutBerichten = foutBerichtenBuilder.ToString();
+                foutBerichten = foutBerichtenBuilder.ToString();
 
-				return voorgesteldelijst;
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				foutBerichten = null;
-				return null;
-			}
-		}
+                return voorgesteldelijst;
+            }
+            catch (Exception ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                foutBerichten = null;
+                return null;
+            }
+        }
 
         /// <summary>
         /// Gegeven een lijst van IDs van gelieerde personen.
@@ -142,7 +142,7 @@ namespace Chiro.Gap.Services
         /// <para />
         /// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkjaar.
         /// </summary>
-		/// <param name="lidInformatie">Lijst van informatie over wie lid moet worden</param>
+        /// <param name="lidInformatie">Lijst van informatie over wie lid moet worden</param>
         /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
         /// string waarin wat uitleg staat. </param>
         /// <returns>De LidID's van de personen die lid zijn gemaakt</returns>
@@ -151,9 +151,9 @@ namespace Chiro.Gap.Services
         /// teruggegeven.
         /// </remarks>
         /// <throws>NotSupportedException</throws> // TODO handle
-		public IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten)
+        public IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten)
         {
-			// TODO hier zat ik
+            // TODO hier zat ik
             // TODO (#1053): beter systeem vinden voor deze feedback.
             try
             {
@@ -164,8 +164,8 @@ namespace Chiro.Gap.Services
                 // over te zetten naar Kipadmin: groep, persoon, voorkeursadres
 
                 var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(
-                    lidInformatie.Select(e => e.GelieerdePersoonID), 
-                    PersoonsExtras.Groep|PersoonsExtras.VoorkeurAdres);
+                    lidInformatie.Select(e => e.GelieerdePersoonID),
+                    PersoonsExtras.Groep | PersoonsExtras.VoorkeurAdres);
 
                 // Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
                 // al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
@@ -184,7 +184,7 @@ namespace Chiro.Gap.Services
                             // Kijk of het lid al bestaat (eventueel niet-actief).  In de meeste gevallen zal dit geen
                             // resultaat opleveren.  Als er toch al een lid is, worden persoon, voorkeursadres, officiele afdeling,
                             // functies ook opgehaald, omdat een eventueel geheractiveerd lid opnieuw naar Kipadmin zal moeten.
-                            
+
                             var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
                             // TODO (#195, #691): Dit is businesslogica, en hoort dus thuis in de workers.
@@ -196,16 +196,16 @@ namespace Chiro.Gap.Services
                                     foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
                                     continue;
                                 }
-								var gp1 = gp;
-								l = _ledenMgr.HerInschrijvenVolgensVoorstel(l, gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                var gp1 = gp;
+                                l = _ledenMgr.HerInschrijvenVolgensVoorstel(l, gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
                             }
                             else // nieuw lid
                             {
-                            	var gp1 = gp;
-                            	l = _ledenMgr.InschrijvenVolgensVoorstel(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                var gp1 = gp;
+                                l = _ledenMgr.InschrijvenVolgensVoorstel(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
                             }
 
-                        	// Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
+                            // Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
                             // verhindert dat de rest bewaard wordt.
                             if (l != null)
                             {
@@ -299,7 +299,7 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// 'Togglet' het vlagje 'lidgeld betaald' van het lid met LidID <paramref name="id"/>.  Geeft als resultaat
+        /// Togglet het vlagje 'lidgeld betaald' van het lid met LidID <paramref name="id"/>.  Geeft als resultaat
         /// het GelieerdePersoonID.  (Niet proper, maar wel interessant voor redirect.)
         /// </summary>
         /// <param name="id">ID van lid met te togglen lidgeld</param>
@@ -329,18 +329,18 @@ namespace Chiro.Gap.Services
         /// <returns>GelieerdePersoonID van lid</returns>
         public int TypeToggle(int id)
         {
-			var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon);
+            var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon);
 
-			var l = new List<InTeSchrijvenLid>();
-        	var voorstel = new InTeSchrijvenLid
-        	               	{
-        	               		GelieerdePersoonID = lid.GelieerdePersoon.ID,
-        	               		LeidingMaken = lid is Kind,
-								AfdelingsJaarIrrelevant = true
-        	               	};
-        	l.Add(voorstel);
-        	string berichten;
-        	return Inschrijven(l, out berichten).First();
+            var l = new List<InTeSchrijvenLid>();
+            var voorstel = new InTeSchrijvenLid
+                            {
+                                GelieerdePersoonID = lid.GelieerdePersoon.ID,
+                                LeidingMaken = lid is Kind,
+                                AfdelingsJaarIrrelevant = true
+                            };
+            l.Add(voorstel);
+            string berichten;
+            return Inschrijven(l, out berichten).First();
         }
 
         #endregion

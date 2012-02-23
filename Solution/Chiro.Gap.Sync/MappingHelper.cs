@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -47,11 +47,14 @@ namespace Chiro.Gap.Sync
             }
         }
 
+        /// <summary>
+        /// Regelt de mappings
+        /// </summary>
         public static void MappingsDefinieren()
         {
-            Mapper.CreateMap<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(); // Members met dezelfde naam mappen automatisch
+            Mapper.CreateMap<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(); // Members met dezelfde naam mappen automatisch
 
-            Mapper.CreateMap<Adres, Chiro.Kip.ServiceContracts.DataContracts.Adres>()
+            Mapper.CreateMap<Adres, Kip.ServiceContracts.DataContracts.Adres>()
                 .ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.LandGet()))
                 .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()))
                 .ForMember(dst => dst.PostNr,
@@ -78,7 +81,7 @@ namespace Chiro.Gap.Sync
 
             Mapper.CreateMap<CommunicatieVorm, CommunicatieMiddel>()
                 .ForMember(dst => dst.GeenMailings, opt => opt.MapFrom(src => !src.IsVoorOptIn))
-                .ForMember(dst => dst.Type, opt => opt.MapFrom(src => (Chiro.Kip.ServiceContracts.DataContracts.CommunicatieType)src.CommunicatieType.ID))
+                .ForMember(dst => dst.Type, opt => opt.MapFrom(src => (Kip.ServiceContracts.DataContracts.CommunicatieType)src.CommunicatieType.ID))
                 .ForMember(dst => dst.Waarde, opt => opt.MapFrom(src => src.Nummer));
 
             Mapper.CreateMap<GelieerdePersoon, PersoonDetails>()

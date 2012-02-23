@@ -64,10 +64,10 @@ var
         ///		1: context - A DOM Element, Document or jQuery to use as context.
         ///	</param>
         /// <field name="selector" Type="Object">
-        ///     The DOM node context originally passed to jQuery() (if none was passed then context will be equal to the document).
+        ///    The DOM node context originally passed to jQuery() (if none was passed then context will be equal to the document).
         /// </field>
         /// <field name="context" Type="String">
-        ///     A selector representing selector originally passed to jQuery().
+        ///    A selector representing selector originally passed to jQuery().
         /// </field>
         ///	<returns type="jQuery" />
 	

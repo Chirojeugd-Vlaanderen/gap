@@ -1,11 +1,15 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
     /// <summary>
-    /// Basisinfo over gebruikersrechten
+    /// Datacontract voor beperkte informatie over gebruikersrechten
     /// </summary>
     [DataContract]
     public class GebruikersInfo

@@ -1,4 +1,8 @@
-﻿using System.Diagnostics;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System.Diagnostics;
 using System.Linq;
 
 using AutoMapper;
@@ -13,7 +17,7 @@ using Chiro.Kip.ServiceContracts.DataContracts;
 namespace Chiro.Gap.Sync
 {
 	/// <summary>
-	/// Klasse voor de synchronisatie van dubbelpuntabonnementen
+	/// Klasse voor de synchronisatie van Dubbelpuntabonnementen
 	/// </summary>
 	public class DubbelpuntSync : IDubbelpuntSync
 	{
@@ -22,7 +26,7 @@ namespace Chiro.Gap.Sync
 		private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
 
 		/// <summary>
-		/// Creeert een nieuwe DubbelpuntSync
+		/// Creëert een nieuwe DubbelpuntSync
 		/// </summary>
 		/// <param name="groepsWerkJaarDao">Data access object voor groepsgerelateerde zaken</param>
 		/// <param name="personenDao">Data access object voor persoonsgerelateerde zaken</param>
@@ -38,7 +42,7 @@ namespace Chiro.Gap.Sync
 		}
 
 	    /// <summary>
-	    /// Synct een dubbelpuntabonnement naar Kipadmin
+	    /// Synct een Dubbelpuntabonnement naar Kipadmin
 	    /// </summary>
         /// <param name="abonnement">Te syncen abonnement</param>
 	    public void Abonneren(Abonnement abonnement)
@@ -53,7 +57,7 @@ namespace Chiro.Gap.Sync
 
 			if (gp.Persoon.AdNummer != null)
 			{
-				// Jeeej! We hebben een ad-nummer! Dubbelpuntabonnement is een fluitje van een cent.
+				// Jeeej! We hebben een AD-nummer! Dubbelpuntabonnement is een fluitje van een cent.
 
 				ServiceHelper.CallService<ISyncPersoonService>(svc => svc.DubbelpuntBestellen(
 					gp.Persoon.AdNummer ?? 0,

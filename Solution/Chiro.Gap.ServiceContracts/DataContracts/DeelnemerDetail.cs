@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -16,28 +16,52 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class DeelnemerDetail : DeelnemerInfo
 	{
+	    /// <summary>
+	    /// De ID van de gelieerde persoon die deelneemt
+	    /// </summary>
 	    [DataMember]
 		public int GelieerdePersoonID { get; set; }
 
-		[DataMember]
+	    /// <summary>
+	    /// Gedetailleerde persoonsinfo over de deelnemer
+	    /// </summary>
+	    [DataMember]
 		public PersoonOverzicht PersoonOverzicht { get; set; }
 
-        [DataMember]
+	    /// <summary>
+	    /// De ID van de uitstap waar die persoon aan deelneemt
+	    /// </summary>
+	    [DataMember]
         public int UitstapID { get; set; }
 
-		[DataMember]
+	    /// <summary>
+	    /// De voornaam van de deelnemer
+	    /// </summary>
+	    [DataMember]
 		public string VoorNaam { get; set; }
 
-		[DataMember]
+	    /// <summary>
+	    /// De familienaam van de deelnemer
+	    /// </summary>
+	    [DataMember]
 		public string FamilieNaam { get; set; }
 
-		[DataMember]
+	    /// <summary>
+	    /// Geeft aan of de deelnemer deelneemt, begeleidt of meegaat als logistiek medewerker
+	    /// </summary>
+	    [DataMember]
 		public DeelnemerType Type { get; set; }
 
+	    /// <summary>
+	    /// TODO (#190): documenteren
+	    /// </summary>
 	    [DataMember]
 		public IList<AfdelingInfo> Afdelingen { get; set; }
 
-		[DataMember]
+	    /// <summary>
+	    /// Is de deelnemer contactpersoon voor de uitstap in kwestie?
+	    /// </summary>
+	    [DataMember]
 		public bool IsContact { get; set; }
 	}
 }

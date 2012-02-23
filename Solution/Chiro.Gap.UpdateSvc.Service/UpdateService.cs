@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Linq;
 using System.ServiceModel;
 
@@ -9,7 +13,10 @@ using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.UpdateSvc.Service
 {
-	public class UpdateService : IUpdateService
+    /// <summary>
+    /// Service die updates doorgeeft van GAP naar KipAdmin of omgekeerd
+    /// </summary>
+    public class UpdateService : IUpdateService
 	{
 		private readonly PersonenManager _personenMgr;
 	    private readonly GroepenManager _groepenMgr;
@@ -21,10 +28,24 @@ namespace Chiro.Gap.UpdateSvc.Service
 	    /// <summary>
 	    /// Dependency Injection via de constructor
 	    /// </summary>
-	    /// <param name="personenManager">te gebruiken personenmanagerobject</param>
-	    /// <param name="groepenManager">te gebruiken groepenmanager</param>
-	    /// <param name="ledenManager">te gebruiken ledenmanager</param>
-	    /// <param name="ledenSync">te gebruiken ledensync terug naar Kipadmin</param>
+	    /// <param name="personenManager">
+	    /// Te gebruiken worker voor Personen
+	    /// </param>
+	    /// <param name="groepenManager">
+	    /// Te gebruiken worker voor Groepen
+	    /// </param>
+	    /// <param name="ledenManager">
+	    /// Te gebruiken worker voor Leden
+	    /// </param>
+	    /// <param name="abonnementenManager">
+        /// Te gebruiken worker voor abonnementen
+	    /// </param>
+	    /// <param name="ledenSync">
+	    /// Te gebruiken LedenSync terug naar Kipadmin
+	    /// </param>
+	    /// <param name="dubbelpuntSync">
+        /// Te gebruiken DubbelpuntSync terug naar Kipadmin
+	    /// </param>
 	    public UpdateService(PersonenManager personenManager, GroepenManager groepenManager, LedenManager ledenManager, AbonnementenManager abonnementenManager, ILedenSync ledenSync, IDubbelpuntSync dubbelpuntSync)
 		{
 			_personenMgr = personenManager;
@@ -40,7 +61,7 @@ namespace Chiro.Gap.UpdateSvc.Service
 		/// <paramref name="persoonID"/>.
 		/// </summary>
 		/// <param name="persoonID">ID van persoon met toe te kennen AD-nummer</param>
-		/// <param name="adNummer">toe te kennen AD-nummer</param>
+		/// <param name="adNummer">Toe te kennen AD-nummer</param>
 		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void AdNummerToekennen(int persoonID, int adNummer)
 		{
@@ -57,7 +78,7 @@ namespace Chiro.Gap.UpdateSvc.Service
 		/// <paramref name="nieuwAd"/>, dan worden de personen gemerged.
 		/// </summary>
 		/// <param name="oudAd">AD-nummer van persoon met te vervangen AD-nummer</param>
-		/// <param name="nieuwAd">nieuw AD-nummer</param>
+		/// <param name="nieuwAd">Nieuw AD-nummer</param>
 		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void AdNummerVervangen(int oudAd, int nieuwAd)
 		{
@@ -133,6 +154,5 @@ namespace Chiro.Gap.UpdateSvc.Service
                 Console.WriteLine("Abonnementen van {0} voor werkjaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
             }
         }
-
 	}
 }

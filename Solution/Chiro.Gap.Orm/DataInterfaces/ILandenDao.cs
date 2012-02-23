@@ -1,7 +1,14 @@
-﻿using Chiro.Cdf.Data;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
+    /// <summary>
+    /// Interface voor de repository voor landen
+    /// </summary>
     public interface ILandenDao : IDao<Land>
     {
         /// <summary>

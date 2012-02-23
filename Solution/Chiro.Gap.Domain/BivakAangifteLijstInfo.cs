@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -15,21 +15,25 @@ namespace Chiro.Gap.Domain
 	[DataContract]
 	public class BivakAangifteLijstInfo
 	{
-		public BivakAangifteLijstInfo()
+	    /// <summary>
+	    /// Constructor. Instantieert een leeg lijstje van bivakken.
+	    /// </summary>
+	    public BivakAangifteLijstInfo()
 		{
 			AlgemeneStatus = BivakAangifteStatus.Onbekend;
 			Bivakinfos = new List<BivakAangifteInfo>();
 		}
 
 		/// <summary>
-		///
+		/// Het lijstje met geregistreerde bivakken
 		/// </summary>
 		[Verplicht]
 		[DataMember]
 		public IList<BivakAangifteInfo> Bivakinfos { get; set; }
 
 		/// <summary>
-		///
+		/// Geeft aan wat er op dit moment moet gebeuren voor de bivakaangifte
+		/// om in orde te zijn met de Chiroadministratie
 		/// </summary>
 		[Verplicht]
 		[DataMember]

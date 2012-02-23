@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -55,7 +55,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// groep, gav, persoon en gelieerde personen.
         /// </summary>
         /// <param name="groepID">ID van de groep waarvan we de gebruikersrechten willen ophalen</param>
-        /// <returns>alle gebruikersrechten uit de groep met ID <paramref name="groepID"/>, inclusief
+        /// <returns>Alle gebruikersrechten uit de groep met ID <paramref name="groepID"/>, inclusief
         /// groep, gav, persoon en gelieerde personen.</returns>
         IEnumerable<GebruikersRecht> AllesOphalen(int groepID);
 
@@ -124,7 +124,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <param name="login">De gebruikersnaam van de bezoeker</param>
 		/// <param name="afdelingsJaarID">ID van het gegeven afdelingsJaar</param>
-		/// <returns><c>true</c> als de bezoeker Gav is voor het bedoelde afdelingsJaar,
+		/// <returns><c>True</c> als de bezoeker Gav is voor het bedoelde afdelingsJaar,
 		/// <c>false</c> als dat niet het geval is</returns>
 		bool IsGavAfdelingsJaar(string login, int afdelingsJaarID);
 
@@ -169,7 +169,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// van leden voor wie de gebruiker met gegeven <paramref name="login"/> geen GAV is.
 		/// </summary>
 		/// <param name="lidIDs">ID's van leden</param>
-		/// <param name="login">login van de gebruiker</param>
+		/// <param name="login">Login van de gebruiker</param>
 		/// <returns>Enkel de ID's van leden waarvoor de gebruiker GAV is.</returns>
 		IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs, string login);
 
@@ -200,7 +200,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <param name="persoonsAdresID">ID van de functie</param>
 		/// <param name="login">De gebruikersnaam</param>
-		/// <returns><c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
+		/// <returns><c>True</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
 		/// waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten op heeft.  Anders
 		/// <c>false</c>.</returns>
 		bool IsGavPersoonsAdres(int persoonsAdresID, string login);
@@ -212,7 +212,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <param name="uitstapID">ID van de uitstap</param>
 		/// <param name="login">De gebruikersnaam</param>
-		/// <returns><c>true</c> als het persoonsAdres met ID <paramref name="uitstapID"/> gekoppeld is aan een 
+		/// <returns><c>True</c> als het persoonsAdres met ID <paramref name="uitstapID"/> gekoppeld is aan een 
 		/// groepswerkjaar waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten heeft.  Anders
 		/// <c>false</c>.</returns>
 		bool IsGavUitstap(int uitstapID, string login);
@@ -231,7 +231,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// met ID <paramref name="deelnemerID"/>
         /// </summary>
         /// <param name="deelnemerID">ID van een (uitstap)deelnemer</param>
-        /// <param name="login">login van de gebruiker wiens GAV-schap moet worden getest</param>
+        /// <param name="login">Login van de gebruiker wiens GAV-schap moet worden getest</param>
         /// <returns><c>True</c> als de gebruiker GAV-rechten heeft voor de gevraagde 
         /// deelnemer, anders <c>false</c></returns>
 	    bool IsGavDeelnemer(int deelnemerID, string login);
@@ -241,12 +241,11 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// met ID <paramref name="gebruikersRechtID"/>
         /// </summary>
         /// <param name="gebruikersRechtID">ID van een gebruikersrecht</param>
-        /// <param name="login">login van de gebruiker wiens GAV-schap moet worden getest</param>
-        /// <returns><c>true</c> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde 
+        /// <param name="login">Login van de gebruiker wiens GAV-schap moet worden getest</param>
+        /// <returns><c>True</c> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde 
         /// gebruikersrecht, anders <c>false</c></returns>
 	    bool IsGavGebruikersRecht(int gebruikersRechtID, string login);
 
         #endregion
-
 	}
 }

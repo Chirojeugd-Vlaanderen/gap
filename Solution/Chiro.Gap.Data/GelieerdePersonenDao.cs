@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -41,7 +41,7 @@ namespace Chiro.Gap.Data.Ef
         /// </summary>
         /// <param name="groepID">ID van de groep waarvan we de gelieerde personen willen opvragen</param>
         /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-        /// <param name="extras">bepaalt op te halen gerelateerde entity's</param>
+        /// <param name="extras">Bepaalt op te halen gerelateerde entity's</param>
         /// <returns>De gevraagde lijst gelieerde personen</returns>
         public IList<GelieerdePersoon> AllenOphalen(
             int groepID,
@@ -90,7 +90,7 @@ namespace Chiro.Gap.Data.Ef
         /// <param name="persoonID">ID van de *persoon* waarvoor de gelieerde persoon opgehaald moet worden</param>
         /// <param name="groepID">ID van de groep waaraan de gelieerde persoon gelieerd moet zijn</param>
         /// <param name="metVoorkeurAdres">Indien <c>true</c>, worden ook het voorkeursadres mee opgehaald.</param>
-        /// <param name="paths">bepaalt op te halen gekoppelde entiteiten</param>
+        /// <param name="paths">Bepaalt op te halen gekoppelde entiteiten</param>
         /// <returns>De gevraagde gelieerde persoon</returns>
         /// <remarks>Het ophalen van adressen kan niet beschreven worden met de lambda-
         /// expressies in <paramref name="paths"/>, o.w.v. de verschillen tussen Belgische en buitenlandse
@@ -133,7 +133,7 @@ namespace Chiro.Gap.Data.Ef
         /// </summary>
         /// <param name="persoonID">ID van de *persoon* waarvoor de gelieerde persoon opgehaald moet worden</param>
         /// <param name="groepID">ID van de groep waaraan de gelieerde persoon gelieerd moet zijn</param>
-        /// <param name="paths">bepaalt op te halen gekoppelde entiteiten</param>
+        /// <param name="paths">Bepaalt op te halen gekoppelde entiteiten</param>
         /// <returns>De gevraagde gelieerde persoon</returns>
         /// <remarks>Adressen worden niet opgehaald, want adressen kunnen niet beschreven worden met de lambda-
         /// expressies in <paramref name="paths"/>.</remarks>
@@ -147,7 +147,7 @@ namespace Chiro.Gap.Data.Ef
         /// <paramref name="extras"/>
         /// </summary>
         /// <param name="gelieerdePersoonIDs">ID's op te halen gelieerde personen</param>
-        /// <param name="extras">bepaalt de extra op te halen entiteiten</param>
+        /// <param name="extras">Bepaalt de extra op te halen entiteiten</param>
         /// <returns>De gevraagde gelieerde personen.</returns>
         public IEnumerable<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersoonIDs, PersoonsExtras extras)
         {
@@ -189,7 +189,7 @@ namespace Chiro.Gap.Data.Ef
         /// <summary>
         /// Instantieert de abonnementen van de gegeven gelieerde personen voor het huidige werkjaar
         /// </summary>
-        /// <param name="db">Objectcontext</param>
+        /// <param name="db">De Objectcontext</param>
         /// <param name="gelieerdePersonen">Gelieerde personen waaraan abonnementen gekoppeld moeten worden</param>
         /// <returns>Dezelfde gelieerde personen, maar met abonnementen gekoppeld</returns>
         /// <remarks>Dit werkt enkel als alle gelieerde personen aan dezelfde groep gekoppeld zijn</remarks>
@@ -212,7 +212,7 @@ namespace Chiro.Gap.Data.Ef
             // is, en de gelieerde personen daaraan gekoppeld zijn, zullen de geïnstantieerde
             // abonnementen aan de goede gelieerde personen gekoppeld worden.
 
-            var abonnementen = db.Abonnement.Include(ab => ab.GelieerdePersoon).Include(ab=>ab.Publicatie).Where(Utility.BuildContainsExpression<Abonnement, int>(
+            var abonnementen = db.Abonnement.Include(ab => ab.GelieerdePersoon).Include(ab => ab.Publicatie).Where(Utility.BuildContainsExpression<Abonnement, int>(
                 ab => ab.GelieerdePersoon.ID,
                 gelieerdePersoonIDs)).Where(ab => ab.GroepsWerkJaar.ID == groepsWerkJaarID).ToArray();
 
@@ -224,7 +224,7 @@ namespace Chiro.Gap.Data.Ef
         /// <paramref name="extras"/>
         /// </summary>
         /// <param name="gelieerdePersoonID">ID op te halen gelieerde persoon</param>
-        /// <param name="extras">bepaalt de extra op te halen entiteiten</param>
+        /// <param name="extras">Bepaalt de extra op te halen entiteiten</param>
         /// <returns>De gevraagde gelieerde persoon.</returns>
         public GelieerdePersoon Ophalen(int gelieerdePersoonID, PersoonsExtras extras)
         {
@@ -333,13 +333,27 @@ namespace Chiro.Gap.Data.Ef
         /// Haal een pagina op met gelieerde personen uit een categorie, inclusief lidinfo voor het huidige
         /// werkjaar.
         /// </summary>
-        /// <param name="categorieID">ID van de gevraagde categorie</param>
-        /// <param name="pagina">Gevraagde pagina</param>
-        /// <param name="paginaGrootte">Grootte van de pagina</param>
-        /// <param name="sortering">Sortering van de lijst</param>
-        /// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
-        /// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
-        /// <returns>Lijst gelieerde personen</returns>
+        /// <param name="categorieID">
+        /// ID van de gevraagde categorie
+        /// </param>
+        /// <param name="pagina">
+        /// Gevraagde pagina
+        /// </param>
+        /// <param name="paginaGrootte">
+        /// Grootte van de pagina
+        /// </param>
+        /// <param name="sortering">
+        /// Sortering van de lijst
+        /// </param>
+        /// <param name="aantalTotaal">
+        /// Outputparameter die het totaal aantal personen in de categorie weergeeft
+        /// </param>
+        /// <param name="extras">
+        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
+        /// </param>
+        /// <returns>
+        /// Lijst gelieerde personen
+        /// </returns>
         public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
         {
             IList<GelieerdePersoon> lijst;
@@ -404,13 +418,13 @@ namespace Chiro.Gap.Data.Ef
 
         /// <summary>
         /// Haalt een gelieerde persoon op, inclusief
-        ///   - persoon
-        ///   - communicatievormen
-        ///   - (alle!) adressen
-        ///   - groepen
-        ///   - categorieen
-        ///   - lidobjecten in het huidige werkjaar
-        ///   - afdelingen en functies van die lidobjecen
+        ///  - persoon
+        ///  - communicatievormen
+        ///  - (alle!) adressen
+        ///  - groepen
+        ///  - categorieen
+        ///  - lidobjecten in het huidige werkjaar
+        ///  - afdelingen en functies van die lidobjecen
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
         /// <returns>Gelieerde persoon met alle bovenvernoemde details</returns>
@@ -433,7 +447,7 @@ namespace Chiro.Gap.Data.Ef
                             select gp).FirstOrDefault();
 
                 AdresHelper.AlleAdressenKoppelen(gelpers);
-                HuidigeAbonnementenKoppelen(db, new[] {gelpers});
+                HuidigeAbonnementenKoppelen(db, new[] { gelpers });
 
                 var gwj = (from g in db.GroepsWerkJaar
                            where g.Groep.ID == gelpers.Groep.ID
@@ -519,9 +533,11 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
-        /// TODO (#190): documenteren
+        /// Een lijstje ophalen van communicatietypes
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// Een IEnumerable van communicatietypes
+        /// </returns>
         public IEnumerable<CommunicatieType> CommunicatieTypesOphalen()
         {
             throw new NotImplementedException();
@@ -728,8 +744,8 @@ namespace Chiro.Gap.Data.Ef
         /// Bewaart een gelieerde persoon samen met eventueel gekoppelde entiteiten
         /// </summary>
         /// <param name="gelieerdePersoon">Te bewaren gelieerde persoon</param>
-        /// <param name="extras">bepaalt de gekoppelde entiteiten</param>
-        /// <returns>de bewaarde gelieerde persoon</returns>
+        /// <param name="extras">Bepaalt de gekoppelde entiteiten</param>
+        /// <returns>De bewaarde gelieerde persoon</returns>
         public GelieerdePersoon Bewaren(GelieerdePersoon gelieerdePersoon, PersoonsExtras extras)
         {
             return Bewaren(gelieerdePersoon, ExtrasNaarLambdas(extras));
@@ -743,7 +759,7 @@ namespace Chiro.Gap.Data.Ef
         /// Voorlopig worden ook de communicatiemiddelen mee opgeleverd.
         /// </summary>
         /// <param name="groepID">ID van een groep</param>
-        /// <returns>beschikbare gelieerde personen waarvan we weten dat ze GAV zijn
+        /// <returns>Beschikbare gelieerde personen waarvan we weten dat ze GAV zijn
         /// voor die groep</returns>
         /// <remarks>Vervallen GAV's worden ook meegeleverd</remarks>
         public IEnumerable<GelieerdePersoon> OphalenOpBasisVanGavs(int groepID)
@@ -778,7 +794,6 @@ namespace Chiro.Gap.Data.Ef
                      select gp).ToArray();
 
                 resultaat = gelieerdePersonen;
-
             }
             return Utility.DetachObjectGraph(resultaat);
         }

@@ -1,3 +1,7 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 namespace Chiro.Gap.Orm.SyncInterfaces
 {
 	/// <summary>

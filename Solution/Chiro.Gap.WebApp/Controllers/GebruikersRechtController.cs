@@ -1,4 +1,8 @@
-using System;
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2012
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -14,7 +18,7 @@ namespace Chiro.Gap.WebApp.Controllers
     /// </summary>
     public class GebruikersRechtController : BaseController
     {
-        public GebruikersRechtController(IVeelGebruikt veelGebruikt): base(veelGebruikt)
+        public GebruikersRechtController(IVeelGebruikt veelGebruikt) : base(veelGebruikt)
         {
         }
 
@@ -27,7 +31,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult AanGpToekennen(int id)
         {
             ServiceHelper.CallService<IGelieerdePersonenService>(svc => svc.GelieerdePersoonRechtenGeven(id));
-            return RedirectToAction("EditRest", new {Controller = "Personen", id});
+            return RedirectToAction("EditRest", new { Controller = "Personen", id });
         }
 
         /// <summary>
@@ -60,7 +64,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// Trekt het gebruikersrecht met gegeven <paramref name="id"/> in (i.e. zet vervaldatum op gisteren)
         /// </summary>
-        /// <param name="id">GebruikersRechtID</param>
+        /// <param name="id">De ID van het GebruikersRecht</param>
         /// <returns>Redirect naar GAV-overzicht</returns>
         public ActionResult Intrekken(int id)
         {
@@ -83,7 +87,5 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Titel = Properties.Resources.GebruikersOverzicht;
             return View(model);
         }
-
-
     }
 }

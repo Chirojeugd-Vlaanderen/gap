@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -80,13 +80,23 @@ namespace Chiro.Gap.Sync
 				};
 
         /// <summary>
-        /// Creeert nieuwe klasse voor ledensynchronisatie
+        /// Creëert nieuwe klasse voor ledensynchronisatie
         /// </summary>
-        /// <param name="cVormDao">Data access object voor communicatievormen</param>
-        /// <param name="ledenDao">Data access object voor leden</param>
-        /// <param name="leidingDao">Data access object voor leiding</param>
-        /// <param name="personenDao">Data access object voor personen</param>
-        /// <param name="kindDao">Data access object voor kinderen</param>
+        /// <param name="cVormDao">
+        /// Data access object voor communicatievormen
+        /// </param>
+        /// <param name="ledenDao">
+        /// Data access object voor leden
+        /// </param>
+        /// <param name="kindDao">
+        /// Data access object voor kinderen
+        /// </param>
+        /// <param name="leidingDao">
+        /// Data access object voor leiding
+        /// </param>
+        /// <param name="personenDao">
+        /// Data access object voor personen
+        /// </param>
         public LedenSync(
             ICommunicatieVormDao cVormDao,
             ILedenDao ledenDao,
@@ -105,7 +115,7 @@ namespace Chiro.Gap.Sync
         /// Stuurt een lid naar Kipadmin
         /// </summary>
         /// <param name="l">Te bewaren lid</param>
-        /// <remarks>voor het gemak gaan we ervan uit dat persoonsgegevens, adressen, afdelingen en functies al
+        /// <remarks>Voor het gemak gaan we ervan uit dat persoonsgegevens, adressen, afdelingen en functies al
         /// gekoppeld zijn.  Communicatie moeten we sowieso opnieuw ophalen, want kan ook gekoppeld
         /// zijn aan andere gelieerde personen.</remarks>
         public void Bewaren(Lid l)
@@ -123,7 +133,7 @@ namespace Chiro.Gap.Sync
             {
                 var nationaleFuncties = (from f in l.Functie
                                          where f.IsNationaal
-                                         select _functieVertaling[(NationaleFunctie) f.ID]).ToList();
+                                         select _functieVertaling[(NationaleFunctie)f.ID]).ToList();
 
                 List<AfdelingEnum> officieleAfdelingen;
 
@@ -131,15 +141,13 @@ namespace Chiro.Gap.Sync
                 {
                     officieleAfdelingen = new List<AfdelingEnum>
                                               {
-                                                  _afdelingVertaling[
-                                                      (NationaleAfdeling)
-                                                      ((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
+                                                  _afdelingVertaling[(NationaleAfdeling)((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
                                               };
                 }
                 else
                 {
                     officieleAfdelingen = (from a in (l as Leiding).AfdelingsJaar
-                                           select _afdelingVertaling[(NationaleAfdeling) a.OfficieleAfdeling.ID]).ToList
+                                           select _afdelingVertaling[(NationaleAfdeling)a.OfficieleAfdeling.ID]).ToList
                         ();
                 }
 
@@ -214,8 +222,8 @@ namespace Chiro.Gap.Sync
         /// <summary>
         /// Updatet de afdelingen van <paramref name="lid"/> in Kipadmin
         /// </summary>
-        /// <param name="lid">Lid</param>
-        /// <remarks>*Alle* relevante gegevens van het lidobject worden hier sowieso opnieuw opgehaald, anders was het
+        /// <param name="lid">Het Lidobject</param>
+        /// <remarks>Alle (!) relevante gegevens van het lidobject worden hier sowieso opnieuw opgehaald, anders was het
         /// te veel een gedoe.</remarks>
         public void AfdelingenUpdaten(Lid lid)
         {
@@ -249,7 +257,7 @@ namespace Chiro.Gap.Sync
             {
                 kipAfdelingen = new List<AfdelingEnum>
 				                	{ 
-				                		_afdelingVertaling[(NationaleAfdeling) ((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
+				                		_afdelingVertaling[(NationaleAfdeling)((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
 				                	};
             }
             else

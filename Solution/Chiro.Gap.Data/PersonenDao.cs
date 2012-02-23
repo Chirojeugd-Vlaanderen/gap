@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -126,7 +126,7 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
-        ///  Haalt een lijst op van personen, op basis van een lijst <paramref name="gelieerdePersoonIDs"/>.
+        /// Haalt een lijst op van personen, op basis van een lijst <paramref name="gelieerdePersoonIDs"/>.
         /// </summary>
         /// <param name="gelieerdePersoonIDs">ID's van *GELIEERDE* personen, waarvan de corresponderende persoonsobjecten
         /// opgehaald moeten worden.</param>
@@ -236,7 +236,7 @@ namespace Chiro.Gap.Data.Ef
         /// <summary>
         /// Haalt alle personen op met een gegeven AD-nummer
         /// </summary>
-        /// <param name="adNummer">AD-nummer</param>
+        /// <param name="adNummer">Het AD-nummer dat we zoeken</param>
         /// <returns>Een lijstje van personen met een gegeven AD-nummer</returns>
         /// <remarks>Normaalgesproken bevat het resultaat hoogstens 1 persoon</remarks>
         public IEnumerable<Persoon> ZoekenOpAd(int adNummer)

@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -27,28 +27,28 @@ namespace Chiro.Ad.ServiceContracts
         /// worden de GAP-rechten toegekend. Ofwel werd hij aangemaakt. In beide gevallen krijgt
         /// de persoon in kwestie een mailtje zodat hij of zij op de hoogte is.</returns>
         /// <example>
-        ///     Dit is een voorbeeld van hoe deze service aangeroepen kan worden: 
-        ///   <code>
-        ///     string login;
-        ///     ServiceClient client = null;
-        ///     try
-        ///     {
-        ///         client = new ServiceClient();
-        ///         login = client.GapLoginAanvragen(Int32.Parse(AdNrTextBox.Text), VoornaamTextBox.Text, NaamTextBox.Text, MailadresTextBox.Text);
-        ///     }
-        ///     catch
-        ///     {
-        ///         // Fout afhandelen
-        ///     }
-        ///     finally
-        ///     {
-        ///         if (client != null)
-        ///         {
-        ///             // Altijd de client afsluiten!
-        ///             client.Close();
-        ///         }
-        ///     }
-        ///   </code>
+        ///    Dit is een voorbeeld van hoe deze service aangeroepen kan worden: 
+        ///  <code>
+        ///    string login;
+        ///    ServiceClient client = null;
+        ///    try
+        ///    {
+        ///        client = new ServiceClient();
+        ///        login = client.GapLoginAanvragen(Int32.Parse(AdNrTextBox.Text), VoornaamTextBox.Text, NaamTextBox.Text, MailadresTextBox.Text);
+        ///    }
+        ///    catch
+        ///    {
+        ///        // Fout afhandelen
+        ///    }
+        ///    finally
+        ///    {
+        ///        if (client != null)
+        ///        {
+        ///            // Altijd de client afsluiten!
+        ///            client.Close();
+        ///        }
+        ///    }
+        ///  </code>
         /// </example>
         [OperationContract]
         [FaultContract(typeof(FaultException<ArgumentException>))]

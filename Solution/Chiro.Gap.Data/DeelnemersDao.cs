@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -13,6 +13,9 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+    /// <summary>
+    /// Gegevenstoegangsobject voor deelnemers aan een uitstap
+    /// </summary>
     public class DeelnemersDao : Dao<Deelnemer, ChiroGroepEntities>, IDeelnemersDao
     {
         /// <summary>

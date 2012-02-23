@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -96,7 +96,15 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		int RecentsteGroepsWerkJaarIDGet(int groepID);
 
-		[OperationContract]
+	    /// <summary>
+        /// Haalt gedetailleerde gegevens op van het recentst gemaakte groepswerkjaar
+        /// voor een gegeven groep op.
+	    /// </summary>
+        /// <param name="groepid">GroepID van groep</param>
+	    /// <returns>
+	    /// De details van het recentste groepswerkjaar
+	    /// </returns>
+	    [OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepid);
@@ -461,7 +469,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Een jaartal</returns>
 		[OperationContract]
 		int NieuwWerkJaarOphalen();
 
@@ -480,7 +488,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Deze method geeft weer of we op een liveomgeving werken (<c>true</c>) of niet (<c>false</c>)
 		/// </summary>
-		/// <returns><c>true</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
+		/// <returns><c>True</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
 		[OperationContract]
 		bool IsLive();
 

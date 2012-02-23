@@ -1,0 +1,96 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:LedenDao.cs" caret="32638" fromTop="15" />
+      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:AdresHelper.cs" caret="511" fromTop="17" />
+      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:PlaatsenDao.cs" caret="223" fromTop="6" />
+      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:PersonenDao.cs" caret="10560" fromTop="17" />
+      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:GelieerdePersonenDao.cs" caret="35558" fromTop="17" />
+      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:AutorisatieDao.cs" caret="5389" fromTop="18" />
+      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:LeidingDao.cs" caret="0" fromTop="0" />
+      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:KindDao.cs" caret="0" fromTop="0" />
+      <File id="A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD/d:DataInterfaces/f:ILeidingDao.cs" caret="0" fromTop="0" />
+      <File id="A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD/d:DataInterfaces/f:ILedenDao.cs" caret="0" fromTop="0" />
+      <File id="65D1DB34-9F12-48C6-88F8-3943E5A4609B/f:BivakAangifteLijstInfo.cs" caret="814" fromTop="20" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/f:ILedenService.cs" caret="7095" fromTop="12" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:LidOverzicht.cs" caret="1174" fromTop="18" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/f:IUitstappenService.cs" caret="0" fromTop="0" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:OfficieleAfdelingDetail.cs" caret="1413" fromTop="22" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/f:IGroepenService.cs" caret="19807" fromTop="21" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/f:IGelieerdePersonenService.cs" caret="19731" fromTop="17" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:FaultContracts/f:BestaatAlFault.cs" caret="476" fromTop="13" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:FaultContracts/f:BlokkerendeObjectenFault.cs" caret="509" fromTop="13" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:FunctieInfo.cs" caret="309" fromTop="10" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GebruikersInfo.cs" caret="408" fromTop="11" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:LandInfo.cs" caret="338" fromTop="9" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:LedenProbleemInfo.cs" caret="717" fromTop="24" />
+      <File id="65D1DB34-9F12-48C6-88F8-3943E5A4609B/f:Enums.cs" caret="827" fromTop="20" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="1495" fromTop="28" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="1557" fromTop="33" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:AfdelingInfo.cs" caret="325" fromTop="11" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:PlaatsInfo.cs" caret="357" fromTop="12" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1546" fromTop="23" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1780" fromTop="34" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1063" fromTop="36" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1207" fromTop="27" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1732" fromTop="28" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1405" fromTop="17" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1818" fromTop="33" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1546" fromTop="23" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="599" fromTop="18" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="779" fromTop="24" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="996" fromTop="31" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="1277" fromTop="39" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="1615" fromTop="37" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="1495" fromTop="28" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="503" fromTop="17" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="635" fromTop="23" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="772" fromTop="29" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="949" fromTop="23" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="1230" fromTop="35" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="1373" fromTop="26" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="1630" fromTop="34" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="1557" fromTop="33" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:PlaatsInfo.cs" caret="600" fromTop="20" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:PlaatsInfo.cs" caret="513" fromTop="18" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:PlaatsInfo.cs" caret="357" fromTop="12" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1877" fromTop="39" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="932" fromTop="10" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1096" fromTop="17" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1248" fromTop="23" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1423" fromTop="31" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1604" fromTop="39" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1780" fromTop="34" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False">
+    </NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="Resources`0" priority="1" />
+      <Item value="FoutNummerException`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Workers.Properties.Resources">
+      <Item value="OngeldigeAfdelingBinnenGroep" priority="0" />
+      <Item value="OngeldigeAfdelingNationaal" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+</Configuration>

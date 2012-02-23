@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -194,8 +194,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// Zoekt naar (gelieerde)persoonID's op basis van naam, voornaam en groepid
 		/// </summary>
 		/// <param name="groepID">ID van de groep met de te vinden persoon</param>
-		/// <param name="naam">familienaam van de te vinden persoon</param>
-		/// <param name="voornaam">voornaam van de te vinden persoon</param>
+		/// <param name="naam">Familienaam van de te vinden persoon</param>
+		/// <param name="voornaam">Voornaam van de te vinden persoon</param>
 		/// <returns>GelieerdePersoonID en PersoonID van de gevonden personen, of <c>null</c> als
 		/// niet gevonden.</returns>
 		/// <remarks>Dit is nogal een domme method, maar ze is nodig om ticket #710 te fixen.</remarks>
@@ -228,7 +228,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdePersoonIDs">ID's van te verhuizen *GELIEERDE* Personen </param>
 		/// <param name="nieuwAdres">AdresInfo-object met nieuwe adresgegevens</param>
 		/// <param name="oudAdresID">ID van het oude adres</param>
-		/// <remarks>nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
+        /// <remarks>De ID van <paramref name="nieuwAdres"/> wordt genegeerd.  Het adresID wordt altijd
 		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
 		/// dan krijgt het adres een nieuw ID.</remarks>
 		[OperationContract]
@@ -409,13 +409,11 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         void GebruikersRechtVerlengen(int gebruikersRechtID);
 
-
         /// <summary>
         /// Neemt alle gebruikersrechten af van de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>
         /// voor zijn eigen groep.  (Concreet wordt de vervaldatum op gisteren gezet.)
         /// </summary>
         /// <param name="id">ID van de gelieerde persoon</param>
-        /// <returns>Redirect naar personenfiche</returns>
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
@@ -430,6 +428,5 @@ namespace Chiro.Gap.ServiceContracts
         void GebruikersRechtIntrekken(int gebruikersRechtID);
 
         #endregion
-
 	}
 }

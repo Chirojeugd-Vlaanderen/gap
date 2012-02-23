@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -50,9 +50,6 @@ namespace Chiro.Gap.WebApp.ActionFilters
 	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
 	public sealed class QueryStringValueAttribute : Attribute
 	{
-		public QueryStringValueAttribute()
-		{
-		}
 	}
 
 	/// <summary>
@@ -66,14 +63,9 @@ namespace Chiro.Gap.WebApp.ActionFilters
 	[AttributeUsage
 	 (AttributeTargets.Method, AllowMultiple = false, Inherited =
 	  true)]
-	public sealed class
-		ParametersMatchAttribute : ActionMethodSelectorAttribute
+	public sealed class ParametersMatchAttribute : ActionMethodSelectorAttribute
 	{
-		public ParametersMatchAttribute()
-		{
-		}
-
-		public override bool IsValidForRequest(ControllerContext
+	    public override bool IsValidForRequest(ControllerContext
 							controllerContext,
 							MethodInfo methodInfo)
 		{
@@ -82,9 +74,7 @@ namespace Chiro.Gap.WebApp.ActionFilters
 			  controllerContext.RouteData.Values.Where(v => !(v.Key == "controller"
 								       || v.Key == "action"
 								       || v.Key ==
-								       "area")).Select(rv => rv.
-											Key).
-			  ToList();
+								       "area")).Select(rv => rv.Key).ToList();
 
 			// The Form values
 			var form = controllerContext.HttpContext.Request.Form;
@@ -177,4 +167,3 @@ namespace Chiro.Gap.WebApp.ActionFilters
 		}
 	}
 }
-

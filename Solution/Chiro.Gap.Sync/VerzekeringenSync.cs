@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -26,7 +26,7 @@ namespace Chiro.Gap.Sync
         private readonly IPersonenDao _personenDao;
 
         /// <summary>
-        /// Creert een nieuwe VerzekeringenSync
+        /// Standaardconstructor.  De parameters worden gebruikt voor dependency injection.
         /// </summary>
         /// <param name="gelieerdePersonenDao">Data access object voor gelieerde personen</param>
         /// <param name="personenDao">Data access object voor personen</param>
@@ -41,7 +41,7 @@ namespace Chiro.Gap.Sync
         /// <summary>
         /// Zet de gegeven <paramref name="persoonsVerzekering"/> over naar Kipadmin.
         /// </summary>
-        /// <param name="persoonsVerzekering">over te zetten persoonsverzekering</param>
+        /// <param name="persoonsVerzekering">Over te zetten persoonsverzekering</param>
         /// <param name="gwj">Bepaalt werkjaar en groep die factuur zal krijgen</param>
         public void Bewaren(PersoonsVerzekering persoonsVerzekering, GroepsWerkJaar gwj)
         {

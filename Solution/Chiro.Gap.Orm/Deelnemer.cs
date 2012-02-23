@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -8,6 +8,9 @@ using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
+    /// <summary>
+    /// Instantieert een Deelnemer-object dat zorgt voor samenwerking met Entity Framework.
+    /// </summary>
     public partial class Deelnemer : IEfBasisEntiteit
     {
         private bool _teVerwijderen;

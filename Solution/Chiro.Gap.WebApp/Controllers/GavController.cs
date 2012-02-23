@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -38,7 +38,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="dummyint">Als er geen groepID meegegeven wordt, geven we 0 mee,
         /// om aan te geven dat er nog geen groep gekozen is.</param>
         /// <returns>Als de gebruiker GAV is van 1 groep, dan wordt er doorgeschakeld naar de
-        // 'startpagina' van deze groep.  Zo niet krijgt de gebruiker de keuze met welke groep hij of zij
+        /// 'startpagina' van deze groep.  Zo niet krijgt de gebruiker de keuze met welke groep hij of zij
         /// wil werken.
         /// </returns>
         /// <!-- GET: /Gav/ -->

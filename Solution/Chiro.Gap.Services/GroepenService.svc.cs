@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -37,7 +37,7 @@ namespace Chiro.Gap.Services
         private readonly AfdelingsJaarManager _afdelingsJaarMgr;
         private readonly AdressenManager _adresMgr;
         private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
-		private readonly JaarOvergangManager _jaarOvergangManager;
+        private readonly JaarOvergangManager _jaarOvergangManager;
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly CategorieenManager _categorieenMgr;
         private readonly FunctiesManager _functiesMgr;
@@ -47,17 +47,39 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Constructor met via IoC toegekende workers
         /// </summary>
-        /// <param name="groepenMgr">De worker voor Groepen</param>
-        /// <param name="cgm">De worker voor Chirogroepen</param>
-        /// <param name="ajm">De worker voor AfdelingsJaren</param>
-        /// <param name="wm">De worker voor GroepsWerkJaren</param>
-        /// <param name="adresMgr">De worker voor Adressen</param>
-        /// <param name="cm">De worker voor Categorieën</param>
-        /// <param name="fm">De worker voor Functies</param>
-        /// <param name="lm">De worker voor Leden</param>
-        /// <param name="jm">De worker voor Jaarovergang</param>
-        /// <param name="am">De worker voor Autorisatie</param>
-        /// <param name="gebruikersRechtenMgr">Worker ivm gebruikersrechten</param>
+        /// <param name="groepenMgr">
+        /// De worker voor Groepen
+        /// </param>
+        /// <param name="cgm">
+        /// De worker voor Chirogroepen
+        /// </param>
+        /// <param name="ajm">
+        /// De worker voor AfdelingsJaren
+        /// </param>
+        /// <param name="wm">
+        /// De worker voor GroepsWerkJaren
+        /// </param>
+        /// <param name="adresMgr">
+        /// De worker voor Adressen
+        /// </param>
+        /// <param name="cm">
+        /// De worker voor Categorieën
+        /// </param>
+        /// <param name="fm">
+        /// De worker voor Functies
+        /// </param>
+        /// <param name="lm">
+        /// De worker voor Leden
+        /// </param>
+        /// <param name="am">
+        /// De worker voor Autorisatie
+        /// </param>
+        /// <param name="jm">
+        /// De worker voor Jaarovergang
+        /// </param>
+        /// <param name="gebruikersRechtenMgr">
+        /// Worker ivm gebruikersrechten
+        /// </param>
         public GroepenService(
             GroepenManager groepenMgr,
             ChiroGroepenManager cgm,
@@ -68,7 +90,7 @@ namespace Chiro.Gap.Services
             FunctiesManager fm,
             LedenManager lm,
             IAutorisatieManager am,
-			JaarOvergangManager jm,
+            JaarOvergangManager jm,
             GebruikersRechtenManager gebruikersRechtenMgr)
         {
             _groepenMgr = groepenMgr;
@@ -80,7 +102,7 @@ namespace Chiro.Gap.Services
             _categorieenMgr = cm;
             _functiesMgr = fm;
             _ledenMgr = lm;
-			_jaarOvergangManager = jm;
+            _jaarOvergangManager = jm;
             _gebruikersRechtenManager = gebruikersRechtenMgr;
         }
 
@@ -306,8 +328,6 @@ namespace Chiro.Gap.Services
         /// <param name="groepID">ID van de Chirogroep</param>
         /// <param name="naam">Naam van de afdeling</param>
         /// <param name="afkorting">Afkorting van de afdeling (voor lijsten, overzichten,...)</param>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void AfdelingAanmaken(int groepID, string naam, string afkorting)
         {
             ChiroGroep g = _chiroGroepenMgr.Ophalen(groepID, ChiroGroepsExtras.AlleAfdelingen);
@@ -421,8 +441,6 @@ namespace Chiro.Gap.Services
         /// en controleert of er geen leden in zitten.
         /// </summary>
         /// <param name="afdelingsJaarID">ID van het afdelingsjaar dat verwijderd moet worden</param>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void AfdelingsJaarVerwijderen(int afdelingsJaarID)
         {
             try
@@ -445,9 +463,7 @@ namespace Chiro.Gap.Services
         /// Verwijdert een afdelingsjaar
         /// en controleert of er geen leden in zitten.
         /// </summary>
-        /// <param name="afdelingsJaarID">ID van het afdelingsjaar dat verwijderd moet worden</param>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        /// <param name="afdelingID">ID van de afdeling die verwijderd moet worden</param>
         public void AfdelingVerwijderen(int afdelingID)
         {
             try
@@ -471,8 +487,6 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="afdelingsJaarID">De ID van het afdelingsjaar dat we nodig hebben</param>
         /// <returns>De gegevens van het AfdelingsJaar</returns>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public AfdelingsJaarDetail AfdelingsJaarOphalen(int afdelingsJaarID)
         {
             try
@@ -518,8 +532,6 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="afdelingID">ID van op te halen afdeling</param>
         /// <returns>Info van de gevraagde afdeling</returns>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public AfdelingInfo AfdelingOphalen(int afdelingID)
         {
             try
@@ -543,8 +555,6 @@ namespace Chiro.Gap.Services
         /// Informatie over alle actieve afdelingen in het groepswerkjaar met 
         /// ID <paramref name="groepsWerkJaarID"/>
         /// </returns>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepsWerkJaarID)
         {
             try
@@ -605,8 +615,6 @@ namespace Chiro.Gap.Services
         /// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
         /// opgezocht moeten worden.</param>
         /// <returns>Info over de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID)
         {
             try
@@ -652,7 +660,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="groepID">ID van de groep waarvoor de functies gecontroleerd moeten worden.</param>
         /// <returns>
-        /// Indien er problemen zijn, wordt een rij FunctieProbleemInfo opgeleverd.
+        /// Als er problemen zijn, wordt een rij FunctieProbleemInfo opgeleverd.
         /// </returns>
         public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepID)
         {
@@ -833,8 +841,6 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="groepID">De ID van de Groep die we willen bekijken</param>
         /// <returns>Een lijstje van werkjaren</returns>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IEnumerable<WerkJaarInfo> WerkJarenOphalen(int groepID)
         {
             try
@@ -1001,8 +1007,6 @@ namespace Chiro.Gap.Services
         /// in de ui.
         /// </summary>
         /// <returns>Lijst met alle beschikbare deelgemeentes</returns>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IEnumerable<WoonPlaatsInfo> GemeentesOphalen()
         {
             try
@@ -1032,8 +1036,6 @@ namespace Chiro.Gap.Services
         /// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
         /// <param name="postNr">Postnummer waarin te zoeken</param>
         /// <returns>Gegevens van de gevonden straten</returns>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IEnumerable<StraatInfo> StratenOphalen(String straatBegin, int postNr)
         {
             try
@@ -1056,8 +1058,6 @@ namespace Chiro.Gap.Services
         /// <returns>Gegevens van de gevonden straten</returns>
         /// <remarks>Ik had deze functie ook graag StratenOphalen genoemd, maar je mag geen 2 
         /// WCF-functies met dezelfde naam in 1 service hebben.  Spijtig.</remarks>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(String straatBegin, IEnumerable<int> postNrs)
         {
             try
@@ -1092,7 +1092,7 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Deze method geeft weer of we op een liveomgeving werken (<c>true</c>) of niet (<c>false</c>)
         /// </summary>
-        /// <returns><c>true</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
+        /// <returns><c>True</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
         public bool IsLive()
         {
             // We zoeken dit uit op basis van de connectionstring.
@@ -1131,7 +1131,7 @@ namespace Chiro.Gap.Services
         {
             try
             {
-            	_jaarOvergangManager.JaarOvergangUitvoeren(teActiveren, groepID);
+                _jaarOvergangManager.JaarOvergangUitvoeren(teActiveren, groepID);
             }
             catch (Exception ex)
             {
@@ -1142,7 +1142,7 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Berekent wat het nieuwe werkjaar zal zijn als op dit moment de jaarovergang zou gebeuren.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Een jaartal (bv. 2011 voor 2011-2012)</returns>
         public int NieuwWerkJaarOphalen()
         {
             return _groepsWerkJaarManager.NieuweWerkJaar();

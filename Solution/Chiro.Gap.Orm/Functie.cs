@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -10,8 +10,9 @@ using Chiro.Gap.Domain;
 namespace Chiro.Gap.Orm
 {
     /// <summary>
-    /// Functie op lidniveau
+    /// Instantieert een Functie-object dat zorgt voor samenwerking met Entity Framework
     /// </summary>
+    /// <remarks>Op lidniveau</remarks>
     public partial class Functie : IEfBasisEntiteit
     {
         /// <summary>
@@ -70,7 +71,7 @@ namespace Chiro.Gap.Orm
         /// Controleert of de functie de nationale functie de nationale functie <paramref name="natFun"/> is.
         /// </summary>
         /// <param name="natFun">Een nationale functie</param>
-        /// <returns><c>true</c> als de functie de nationale functie is, anders <c>false</c></returns>
+        /// <returns><c>True</c> als de functie de nationale functie is, anders <c>false</c></returns>
         public bool Is(NationaleFunctie natFun)
         {
             return ID == ((int)natFun);

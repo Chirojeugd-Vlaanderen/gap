@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -11,7 +11,7 @@ namespace Chiro.Cdf.Data
 	/// <summary>
 	/// Exception die opgegooid kan worden als een bepaalde entiteit al bestaat
 	/// </summary>
-	/// <typeparam name="TEntiteit"></typeparam>
+	/// <typeparam name="TEntiteit">Het type van de entiteit die al bestaat</typeparam>
 	[Serializable]
 	public class DubbeleEntiteitException<TEntiteit> : Exception where TEntiteit : IBasisEntiteit
 	{
@@ -100,7 +100,7 @@ namespace Chiro.Cdf.Data
 		#region custom constructors
 
 		/// <summary>
-		/// Creeert een Exception omdat er al een entiteit zoals <paramref name="entiteit"/> al bestaat.
+		/// Creëert een Exception omdat er al een entiteit zoals <paramref name="entiteit"/> al bestaat.
 		/// </summary>
 		/// <param name="entiteit">De bestaande entiteit, die de nieuwe in de weg staat.</param>
 		public DubbeleEntiteitException(TEntiteit entiteit)

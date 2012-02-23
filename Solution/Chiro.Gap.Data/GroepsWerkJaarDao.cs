@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -79,7 +79,7 @@ namespace Chiro.Gap.Data.Ef
 		/// van zijn groep is.
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <returns><c>true</c> alss het groepswerkjaar het recentste is</returns>
+		/// <returns><c>True</c> alss het groepswerkjaar het recentste is</returns>
 		public bool IsRecentste(int groepsWerkJaarID)
 		{
 			int recentsteID;

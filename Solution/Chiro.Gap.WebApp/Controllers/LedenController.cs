@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -105,13 +105,13 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Voert een zoekopdracht uit op de leden, en plaatst het resultaat in een LidInfoModel.
         /// </summary>
         /// <param name="gwjID">ID van het groepswerkjaar waarvoor een ledenlijst wordt gevraagd.  
-        ///   Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
+        ///  Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
         /// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
         /// <param name="sortering">Bepaalt op welke eigenschap de lijst gesorteerd moet worden</param>
         /// <param name="afdelingID">Als verschillend van 0, worden enkel de leden uit de afdeling met
-        ///   dit AfdelingID getoond.</param>
+        ///  dit AfdelingID getoond.</param>
         /// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie met
-        ///   dit FunctieID getoond.</param>
+        ///  dit FunctieID getoond.</param>
         /// <param name="ledenLijst">Hiermee kan je speciale lijsten opzoeken</param>
         /// <param name="metAdressen">Geeft aan of de adressen mee opgevraagd moeten worden
         /// (!duurt lang!)</param>
@@ -137,11 +137,11 @@ namespace Chiro.Gap.WebApp.Controllers
 
             var model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
 
-			if(model==null) // Groep en gwj matchen niet
-			{
-				TempData["fout"] = Properties.Resources.GroepNietBijGroepsWerKjaar;
-				return null;
-			}
+            if (model == null) // Groep en gwj matchen niet
+            {
+                TempData["fout"] = Properties.Resources.GroepNietBijGroepsWerKjaar;
+                return null;
+            }
 
             model.KanLedenBewerken = groepsWerkJaarID == (from wj in model.WerkJaarInfos
                                                           orderby wj.WerkJaar descending
@@ -198,8 +198,8 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 // Naam van de functie opzoeken, zodat we ze kunnen invullen in de paginatitel
                 var functieNaam = (from fi in model.FunctieInfoDictionary
-                                      where fi.Key == functieID
-                                      select fi).First().Value.Naam;
+                                   where fi.Key == functieID
+                                   select fi).First().Value.Naam;
 
                 model.Titel = String.Format(Properties.Resources.AfdelingsLijstTitel,
                                 functieNaam,
@@ -209,8 +209,8 @@ namespace Chiro.Gap.WebApp.Controllers
             else if (afdelingID != 0)
             {
                 var af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
-                                     where a.Value.AfdelingID == afdelingID
-                                     select a.Value).FirstOrDefault();
+                          where a.Value.AfdelingID == afdelingID
+                          select a.Value).FirstOrDefault();
 
                 if (af == null)
                 {
@@ -273,16 +273,16 @@ namespace Chiro.Gap.WebApp.Controllers
                                     where g.ID == groepsWerkJaarID
                                     select g).FirstOrDefault();
 
-			if(gevraagdwerkjaar == null) // Het is geen groepswerkjaar van de gegeven groep
-			{
-				return null;
-			}
+            if (gevraagdwerkjaar == null) // Het is geen groepswerkjaar van de gegeven groep
+            {
+                return null;
+            }
 
             model.IDGetoondGroepsWerkJaar = groepsWerkJaarID;
             model.JaartalGetoondGroepsWerkJaar = gevraagdwerkjaar.WerkJaar;
 
             // TODO (#1033): Hetgeen hieronder opgevraagd wordt, zit volgens mij al in de reeds opgehaalde model.WerkJaarInfos.  Na te kijken.
-			model.JaartalHuidigGroepsWerkJaar = ServiceHelper.CallService<IGroepenService, GroepsWerkJaarDetail>(e => e.RecentsteGroepsWerkJaarOphalen(groepID)).WerkJaar;
+            model.JaartalHuidigGroepsWerkJaar = ServiceHelper.CallService<IGroepenService, GroepsWerkJaarDetail>(e => e.RecentsteGroepsWerkJaarOphalen(groepID)).WerkJaar;
 
             // Haal alle afdelingsjaren op van de groep in het groepswerkjaar
             var list = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>(groep => groep.ActieveAfdelingenOphalen(groepsWerkJaarID));
@@ -321,11 +321,11 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Toont een gesorteerde ledenlijst
         /// </summary>
         /// <param name="id">ID van het groepswerkjaar waarvoor een ledenlijst wordt gevraagd.  
-        ///   Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
+        ///  Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
         /// <param name="afdelingID">Als verschillend van 0, worden enkel de leden uit de afdeling met
-        ///   dit AfdelingID getoond.</param>
+        ///  dit AfdelingID getoond.</param>
         /// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie met
-        ///   dit FunctieID getoond.</param>
+        ///  dit FunctieID getoond.</param>
         /// <param name="ledenLijst">Het soort lijst dat we moeten tonen</param>
         /// <param name="sortering">Bepaalt op welke eigenschap de lijst gesorteerd moet worden</param>
         /// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
@@ -344,7 +344,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
             ClientState.VorigeLijst = Request.Url.ToString();
             var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, false);
-			return model==null ? TerugNaarVorigeLijst() : View("Index", model);
+            return model == null ? TerugNaarVorigeLijst() : View("Index", model);
         }
 
         /// <summary>
@@ -414,12 +414,12 @@ namespace Chiro.Gap.WebApp.Controllers
 
             switch (model.GekozenActie)
             {
-            	case 1:
-					return GelieerdePersonenInschrijven(model.SelectieGelieerdePersoonIDs);
-            	case 2:
-					GelieerdePersonenUitschrijven(model.SelectieGelieerdePersoonIDs, groepID, Properties.Resources.LedenUitgeschreven);
-            		return TerugNaarVorigeLijst();
-        		case 3:
+                case 1:
+                    return GelieerdePersonenInschrijven(model.SelectieGelieerdePersoonIDs);
+                case 2:
+                    GelieerdePersonenUitschrijven(model.SelectieGelieerdePersoonIDs, groepID, Properties.Resources.LedenUitgeschreven);
+                    return TerugNaarVorigeLijst();
+                case 3:
                     return AfdelingenBewerken(model.SelectieGelieerdePersoonIDs, groepID);
                 case 4:
                     TempData["ids"] = model.SelectieGelieerdePersoonIDs;
@@ -448,10 +448,10 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Download(int id, int afdelingID, int functieID, int groepID, LidInfoModel.SpecialeLedenLijst ledenLijst, LidEigenschap sortering)
         {
             var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, true);
-			if(model==null)
-			{
-				return TerugNaarVorigeLijst();
-			}
+            if (model == null)
+            {
+                return TerugNaarVorigeLijst();
+            }
 
             // Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
             // gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
@@ -489,7 +489,7 @@ namespace Chiro.Gap.WebApp.Controllers
             return new ExcelResult(stream, bestandsNaam);
         }
 
-    	// TODO (#967): Er zijn methods 'AfdelingBewerken' (1 persoon) en 'AfdelingenBewerken' (meerdere personen)
+        // TODO (#967): Er zijn methods 'AfdelingBewerken' (1 persoon) en 'AfdelingenBewerken' (meerdere personen)
         // Waarschijnlijk kan er een en ander vereenvoudigd worden
 
         /// <summary>
@@ -507,7 +507,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 svc => svc.HuidigeAfdelingsJarenOphalen(groepID));
             model.Info = ServiceHelper.CallService<ILedenService, LidAfdelingInfo>(
                 svc => svc.AfdelingenOphalen(lidID));
-        	model.LidID = lidID;
+            model.LidID = lidID;
 
             if (model.BeschikbareAfdelingen.FirstOrDefault() == null)
             {
@@ -529,16 +529,11 @@ namespace Chiro.Gap.WebApp.Controllers
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
         public ActionResult AfdelingBewerken(LidAfdelingenModel model)
         {
-			int gpID = ServiceHelper.CallService<ILedenService, int>(svc => svc.AfdelingenVervangen(model.LidID, model.Info.AfdelingsJaarIDs));
+            int gpID = ServiceHelper.CallService<ILedenService, int>(svc => svc.AfdelingenVervangen(model.LidID, model.Info.AfdelingsJaarIDs));
 
             return RedirectToAction("EditRest", "Personen", new { id = gpID });
         }
@@ -758,14 +753,14 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 switch (ex.Detail.FoutNummer)
                 {
-                	case FoutNummer.AlgemeneKindFout:
-                		TempData["fout"] = Properties.Resources.FoutToggleNaarKind;
-                		break;
-                	case FoutNummer.AlgemeneLeidingFout:
-                		TempData["fout"] = Properties.Resources.FoutToggleNaarLeiding;
-                		break;
-                	default:
-                		throw;
+                    case FoutNummer.AlgemeneKindFout:
+                        TempData["fout"] = Properties.Resources.FoutToggleNaarKind;
+                        break;
+                    case FoutNummer.AlgemeneLeidingFout:
+                        TempData["fout"] = Properties.Resources.FoutToggleNaarLeiding;
+                        break;
+                    default:
+                        throw;
                 }
 
                 var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
@@ -775,7 +770,7 @@ namespace Chiro.Gap.WebApp.Controllers
             return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });
         }
 
-    	#region Verkorte url's, die eigenlijk gewoon Lijst aanroepen met de jusite parameters
+        #region Verkorte url's, die eigenlijk gewoon Lijst aanroepen met de jusite parameters
 
         /// <summary>
         /// Toont een gesorteerde ledenlijst
@@ -857,7 +852,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="id">ID van de afdeling.</param>
         /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor een ledenlijst wordt gevraagd.  
-        ///   Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
+        ///  Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
         /// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
         /// <returns>Een view met de gevraagde ledenlijst</returns>
         /// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
@@ -892,7 +887,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="id">ID van de functie.</param>
         /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor een functie wordt gevraagd.  
-        ///   Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
+        ///  Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
         /// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
         /// <returns>Een view met de gevraagde ledenlijst</returns>
         /// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.

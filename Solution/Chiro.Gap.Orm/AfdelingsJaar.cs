@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -10,9 +10,12 @@ using Chiro.Gap.Domain;
 namespace Chiro.Gap.Orm
 {
 	/// <summary>
+    /// Instantieert een AfdelingsJaar-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
+	/// <remarks>
 	/// Een afdelingsjaar bepaalt welke geboortejaren, geslacht en officiële afdelingen
 	/// in een bepaald werkjaar overeenkomen met een gegeven afdeling.
-	/// </summary>
+	/// </remarks>
 	public partial class AfdelingsJaar : IEfBasisEntiteit
 	{
 		/// <summary>

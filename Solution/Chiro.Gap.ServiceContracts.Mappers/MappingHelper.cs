@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -31,8 +31,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// <summary>
         /// Bepaalt de straatnaam van een Adres
         /// </summary>
-        /// <param name="a">Adres</param>
-        /// <returns>Straatnaam</returns>
+        /// <param name="a">Het adres</param>
+        /// <returns>De straatnaam</returns>
         private static string StraatGet(this Adres a)
         {
             if (a is BelgischAdres)
@@ -48,7 +48,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// <summary>
         /// Bepaalt de woonplaats van een adres.
         /// </summary>
-        /// <param name="a">Adres</param>
+        /// <param name="a">Het adres</param>
         /// <returns>Naam van de woonplaats</returns>
         private static string WoonPlaatsGet(this Adres a)
         {
@@ -64,7 +64,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// <summary>
         /// Bepaalt naam van het land van een adres
         /// </summary>
-        /// <param name="a">adres</param>
+        /// <param name="a">Het adres</param>
         /// <returns>Naam van het land van het adres</returns>
         private static string LandGet(this Adres a)
         {
@@ -79,7 +79,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// <summary>
         /// Geeft postcode voor een buitenlands adres, of <c>null</c> voor een Belgisch adres.
         /// </summary>
-        /// <param name="a">Adres</param>
+        /// <param name="a">Het adres</param>
         /// <returns>Als <paramref name="a"/> een buitenlands adres is, de postcode, 
         /// anders <c>null</c>.</returns>
         private static string PostCodeGet(this Adres a)
@@ -95,8 +95,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// <summary>
         /// Bepaalt het postnummer van een adres.
         /// </summary>
-        /// <param name="a">Adres</param>
-        /// <returns>Postnummer</returns>
+        /// <param name="a">Het adres</param>
+        /// <returns>Het postnummer</returns>
         private static int? PostNummerGet(this Adres a)
         {
             if (a is BelgischAdres)
@@ -538,7 +538,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => false))
                 .ForMember(
                     dst => dst.AfdelingsJaarIDs,
-                    opt => opt.MapFrom(src => src is Leiding ? (((Leiding)src).AfdelingsJaar.Select(e => e.ID)) : new List<int>{((Kind) src).AfdelingsJaar.ID}))
+                    opt => opt.MapFrom(src => src is Leiding ? (((Leiding)src).AfdelingsJaar.Select(e => e.ID)) : new List<int>{ ((Kind)src).AfdelingsJaar.ID }))
                 .ForMember(
                     dst => dst.LeidingMaken,
                     opt => opt.MapFrom(src => src is Leiding))
@@ -560,10 +560,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             Mapper.CreateMap<GebruikersRecht, GebruikersDetail>()
                 .ForMember(dst => dst.Verlengbaar,
                            opt =>
-                           opt.MapFrom(
-                               src =>
-                               GebruikersRechtenManager.
-                                   VervalDatumNabij(src.VervalDatum)))
+                           opt.MapFrom(src => GebruikersRechtenManager.VervalDatumNabij(src.VervalDatum)))
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => GelieerdePersoonIDGet(src)))
                 .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? 0 : src.Gav.Persoon.First().ID))
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? String.Empty : src.Gav.Persoon.First().Naam))

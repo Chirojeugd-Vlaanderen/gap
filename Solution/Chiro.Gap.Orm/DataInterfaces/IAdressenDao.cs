@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -18,7 +18,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <summary>
         /// Haalt adres op, op basis van de adresgegevens
         /// </summary>
-        /// <param name="adresInfo">adresgegevens</param>
+        /// <param name="adresInfo">De adresgegevens</param>
         /// <param name="metBewoners">Indien <c>true</c>, worden ook de PersoonsAdressen
         /// opgehaald.  (ALLE persoonsadressen gekoppeld aan het adres; niet
         /// zomaar over de lijn sturen dus)</param>

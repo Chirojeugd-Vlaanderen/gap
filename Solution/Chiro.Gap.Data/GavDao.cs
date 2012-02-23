@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -40,7 +40,7 @@ namespace Chiro.Gap.Data.Ef
         /// Kijkt of er al een GAV met gegven <paramref name="login"/> bestaat,
         /// en retourneert desgevallend diens ID.
         /// </summary>
-        /// <param name="login">login op te zoeken ID</param>
+        /// <param name="login">Login op te zoeken ID</param>
         /// <returns>ID van de gevonden GAV, of 0 indien niets gevonden</returns>
 	    public int IdOphalen(string login)
 	    {

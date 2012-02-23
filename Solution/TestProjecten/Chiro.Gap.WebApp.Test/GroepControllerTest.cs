@@ -15,7 +15,7 @@ namespace Chiro.Gap.WebApp.Test
     
     
     /// <summary>
-    /// This is a test class for GroepControllerTest and is intended
+    /// Dit is een testclass voor Unit Tests van GroepControllerTest,
     /// to contain all GroepControllerTest Unit Tests
     /// </summary>
 	[TestClass]

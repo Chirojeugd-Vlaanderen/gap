@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -39,7 +39,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		/// </summary>
 		/// <param name="html">HtmlHelper waarvoor dit een extension method is</param>
 		/// <param name="huidigWerkJaarID">GroepsWerkJaarID van te 'highlighten' link</param>
-		/// <param name="werkjaren">rij met werkjaarinfo</param>
+		/// <param name="werkjaren">Rij met werkjaarinfo</param>
 		/// <param name="url">Functie die een url maakt op basis van WerkJaarInro</param>
 		/// <returns></returns>
 		public static string WerkJaarLinks(

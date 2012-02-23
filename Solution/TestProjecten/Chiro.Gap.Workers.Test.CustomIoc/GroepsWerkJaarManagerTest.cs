@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -18,9 +18,8 @@ using Moq;
 namespace Chiro.Gap.Workers.Test.CustomIoc
 {
     /// <summary>
-    ///This is a test class for GroepsWerkJaarManagerTest and is intended
-    ///to contain all GroepsWerkJaarManagerTest Unit Tests
-    ///</summary>
+    /// Dit is een testclass voor Unit Tests van GroepsWerkJaarManagerTest
+    /// </summary>
 	[TestClass]
 	public class GroepsWerkJaarManagerTest
 	{
@@ -31,7 +30,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -53,7 +52,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 
 		///<summary>
 		///Controleert of groepswerkjaarcache gecleard wordt bij bewaren groepswerkjaar
-		///</summary>
+		/// </summary>
 		[TestMethod]
 		public void BewarenTest()
 		{

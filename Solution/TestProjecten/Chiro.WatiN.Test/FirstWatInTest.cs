@@ -441,7 +441,7 @@ namespace Chiro.WatiN.Test
 		}
 
 		/// <summary>
-		///  Preconditie we zitten in toevoegen van nieuwe persoon.
+		/// Preconditie we zitten in toevoegen van nieuwe persoon.
 		/// </summary>
 		/// <param name="window"></param>
 		/// <param name="pers"></param>

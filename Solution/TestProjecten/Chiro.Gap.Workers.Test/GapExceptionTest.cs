@@ -12,7 +12,7 @@ namespace Chiro.Gap.Workers.Test
     
     
     /// <summary>
-    /// This is a test class for GapExceptionTest and is intended
+    /// Dit is een testclass voor Unit Tests van GapExceptionTest,
     /// to contain all GapExceptionTest Unit Tests
     /// </summary>
 	[TestClass]

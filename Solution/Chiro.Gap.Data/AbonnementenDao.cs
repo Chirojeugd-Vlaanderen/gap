@@ -1,7 +1,10 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2012
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
@@ -9,7 +12,10 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
-    public class AbonnementenDao: Dao<Abonnement, ChiroGroepEntities>, IAbonnementenDao
+    /// <summary>
+    /// Gegevenstoegangsobject voor abonnementen
+    /// </summary>
+    public class AbonnementenDao : Dao<Abonnement, ChiroGroepEntities>, IAbonnementenDao
     {
         /// <summary>
         /// Haalt alle abonnementen op uit een gegeven groepswerkjaar, inclusief personen, voorkeursadressen, 

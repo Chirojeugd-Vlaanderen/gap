@@ -11,7 +11,7 @@ namespace Chiro.Gap.Workers.Test
 
 
 	/// <summary>
-	/// This is a test class for GelieerdePersonenManagerTest and is intended
+	/// Dit is een testclass voor Unit Tests van GelieerdePersonenManagerTest,
 	/// to contain all GelieerdePersonenManagerTest Unit Tests
 	/// </summary>
 	[TestClass]

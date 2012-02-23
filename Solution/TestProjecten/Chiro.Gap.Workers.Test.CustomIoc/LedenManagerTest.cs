@@ -14,9 +14,9 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
     
     
     /// <summary>
-    ///This is a test class for LedenManagerTest and is intended
+    /// Dit is een testclass voor LedenManagerTest,
     ///to contain all LedenManagerTest Unit Tests
-    ///</summary>
+    /// </summary>
     [TestClass()]
     public class LedenManagerTest
     {
@@ -27,7 +27,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
-        ///</summary>
+        /// </summary>
         public TestContext TestContext
         {
             get
@@ -58,9 +58,9 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         //
 
         /// <summary>
-        /// run code before running each test
+        /// Run code before running each test
         /// </summary>
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             Factory.ContainerInit();
@@ -79,8 +79,8 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         ///<summary>
         /// Controleert of uitschrijvingen van kadermedewerkers (waarvan de probeerperiode per definitie
         /// voorbij is, want ze hebben geen probeerperiode) toch gesynct worden.
-        ///</summary>
-        [TestMethod()]
+        /// </summary>
+        [TestMethod]
         public void KaderUitschrijvenTest()
         {
             // arrange
@@ -119,8 +119,8 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         ///<summary>
         /// Controleert of uitschrijvingen van leiding waarvan de probeerperiode voorbij is,
         /// niet naar kipadmin gesynct worden.
-        ///</summary>
-        [TestMethod()]
+        /// </summary>
+        [TestMethod]
         public void LeidingUitschrijvenTest()
         {
             // arrange

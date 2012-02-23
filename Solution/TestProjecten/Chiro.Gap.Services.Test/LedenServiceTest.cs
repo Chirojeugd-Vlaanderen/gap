@@ -19,7 +19,7 @@ namespace Chiro.Gap.Services.Test
     
     
     /// <summary>
-    /// This is a test class for LedenServiceTest and is intended
+    /// Dit is een testclass voor Unit Tests van LedenServiceTest,
     /// to contain all LedenServiceTest Unit Tests
     /// </summary>
 	[TestClass]

@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -84,21 +84,21 @@ namespace Chiro.Gap.WebApp
             return gwjDetail;
         }
 
-    	#endregion
+        #endregion
 
         #region Problemen
 
-		/// <summary>
-		/// Reset alle problemen omdat de jaarovergang wordt uitgevoerd
-		/// </summary>
-		/// <param name="groepID">ID van groep met te verwijderen problemen</param>
-		public void JaarOvergangReset(int groepID)
-		{
-			FunctieProblemenResetten(groepID);
-			BivakStatusResetten(groepID);
-			GroepsWerkJaarResetten(groepID);
-			LedenProblemenResetten(groepID);
-		}
+        /// <summary>
+        /// Reset alle problemen omdat de jaarovergang wordt uitgevoerd
+        /// </summary>
+        /// <param name="groepID">ID van groep met te verwijderen problemen</param>
+        public void JaarOvergangReset(int groepID)
+        {
+            FunctieProblemenResetten(groepID);
+            BivakStatusResetten(groepID);
+            GroepsWerkJaarResetten(groepID);
+            LedenProblemenResetten(groepID);
+        }
 
         /// <summary>
         /// Verwijdert de gecachete functieproblemen van een bepaalde groep
@@ -241,7 +241,7 @@ namespace Chiro.Gap.WebApp
         public void BivakStatusResetten(int groepID)
         {
             _cache.Remove(String.Format(BIVAKSTATUSCACHEKEY, groepID));
-            _cache.Remove(String.Format(BIVAKSTATUSAANTALCACHEKEY, groepID));           
+            _cache.Remove(String.Format(BIVAKSTATUSAANTALCACHEKEY, groepID));
         }
 
         /// <summary>
@@ -251,8 +251,8 @@ namespace Chiro.Gap.WebApp
         /// <returns>Info over wat ontbreekt mbt de bivakaangifte</returns>
         public BivakAangifteLijstInfo BivakStatusHuidigWerkjaarOphalen(int groepID)
         {
-            int? telling = (int?) _cache.Get(String.Format(BIVAKSTATUSAANTALCACHEKEY, groepID));
-            var resultaat = (BivakAangifteLijstInfo) _cache.Get(String.Format(BIVAKSTATUSCACHEKEY, groepID));
+            int? telling = (int?)_cache.Get(String.Format(BIVAKSTATUSAANTALCACHEKEY, groepID));
+            var resultaat = (BivakAangifteLijstInfo)_cache.Get(String.Format(BIVAKSTATUSCACHEKEY, groepID));
 
             if (telling == null)
             {
@@ -396,7 +396,7 @@ namespace Chiro.Gap.WebApp
         /// <summary>
         /// Indien <c>true</c> werken we in de liveomgeving, anders in de testomgeving.
         /// </summary>
-        /// <returns><c>true</c> als we live bezig zijn</returns>
+        /// <returns><c>True</c> als we live bezig zijn</returns>
         public bool IsLive()
         {
             bool? isLive = (bool?)_cache.Get(ISLIVECACHEKEY);

@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -48,7 +48,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
         /// <summary>
         /// Toont het afdelingsoverzicht voor het groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/>:
-        ///  de actieve afdelingen,  met links om dien te bekijken/bewerken.  De inactieve afdelingen worden ook 
+        /// de actieve afdelingen,  met links om dien te bekijken/bewerken.  De inactieve afdelingen worden ook 
         /// getoond, met dan de mogelijkheid  om ze te activeren.
         /// </summary>
         /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor de gebruiker de afdelingen wil zien</param>

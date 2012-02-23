@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -48,16 +48,36 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Constructor met via IoC toegekende workers
         /// </summary>
-        /// <param name="gpm">De worker voor GelieerdePersonen</param>
-        /// <param name="pm">De worker voor Personen</param>
-        /// <param name="adm">De worker voor Adressen</param>
-        /// <param name="groepenMgr">De worker voor Groepen</param>
-        /// <param name="gwjm">De worker voor GroepsWerkJaren</param>
-        /// <param name="cvm">De worker voor CommunicatieVormen</param>
-        /// <param name="cm">De worker voor Categorieën</param>
-        /// <param name="abm">De worker voor Abonnementen</param>
-        /// <param name="aum">De worker voor Autorisatie</param>
-        /// <param name="gebruikersRechtenMgr">De worker voor Gebruikersrechten</param>
+        /// <param name="gpm">
+        /// De worker voor GelieerdePersonen
+        /// </param>
+        /// <param name="pm">
+        /// De worker voor Personen
+        /// </param>
+        /// <param name="adm">
+        /// De worker voor Adressen
+        /// </param>
+        /// <param name="groepenMgr">
+        /// De worker voor Groepen
+        /// </param>
+        /// <param name="gwjm">
+        /// De worker voor GroepsWerkJaren
+        /// </param>
+        /// <param name="cvm">
+        /// De worker voor CommunicatieVormen
+        /// </param>
+        /// <param name="cm">
+        /// De worker voor Categorieën
+        /// </param>
+        /// <param name="abm">
+        /// De worker voor Abonnementen
+        /// </param>
+        /// <param name="gebruikersRechtenMgr">
+        /// De worker voor Gebruikersrechten
+        /// </param>
+        /// <param name="aum">
+        /// De worker voor Autorisatie
+        /// </param>
         public GelieerdePersonenService(
             GelieerdePersonenManager gpm,
             PersonenManager pm,
@@ -296,7 +316,7 @@ namespace Chiro.Gap.Services
                     {
                         continue;
                     }
-                    if(p.SterfDatum.HasValue)
+                    if (p.SterfDatum.HasValue)
                     {
                         continue;
                     }
@@ -444,7 +464,7 @@ namespace Chiro.Gap.Services
                     1,
                     int.MaxValue,
                     sortering,
-					PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres,
+                    PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres,
                     out totaal);
 
                 return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
@@ -476,31 +496,31 @@ namespace Chiro.Gap.Services
             }
         }
 
-		/// <summary>
-		/// Haalt gegevens op van alle gelieerdepersonen met IDs in <paramref name="gelieerdePersoonIDs"/>.
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">IDs van de gelieerdepersonen waarover informatie opgehaald moet worden</param>
-		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
-		public IEnumerable<PersoonOverzicht> AllenOphalenUitLijst(IList<int> gelieerdePersoonIDs)
-		{
-			try
-			{
-				var gelieerdePersonen = _gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres);
-				return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				return null;
-			}
-		}
+        /// <summary>
+        /// Haalt gegevens op van alle gelieerdepersonen met IDs in <paramref name="gelieerdePersoonIDs"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoonIDs">IDs van de gelieerdepersonen waarover informatie opgehaald moet worden</param>
+        /// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
+        public IEnumerable<PersoonOverzicht> AllenOphalenUitLijst(IList<int> gelieerdePersoonIDs)
+        {
+            try
+            {
+                var gelieerdePersonen = _gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres);
+                return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
+            }
+            catch (Exception ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                return null;
+            }
+        }
 
         /// <summary>
         /// Zoekt naar (gelieerde)persoonID's op basis van naam, voornaam en groepid
         /// </summary>
         /// <param name="groepID">ID van de groep met de te vinden persoon</param>
-        /// <param name="naam">familienaam van de te vinden persoon</param>
-        /// <param name="voornaam">voornaam van de te vinden persoon</param>
+        /// <param name="naam">Familienaam van de te vinden persoon</param>
+        /// <param name="voornaam">Voornaam van de te vinden persoon</param>
         /// <returns>GelieerdePersoonID en PersoonID van de gevonden personen, of <c>null</c> als
         /// niet gevonden.</returns>
         /// <remarks>Dit is nogal een domme method, maar ze is nodig om ticket #710 te fixen.</remarks>
@@ -555,7 +575,7 @@ namespace Chiro.Gap.Services
         /// <param name="gelieerdePersoonIDs">ID's van te verhuizen *GELIEERDE* Personen </param>
         /// <param name="naarAdres">AdresInfo-object met nieuwe adresgegevens</param>
         /// <param name="oudAdresID">ID van het oude adres</param>
-        /// <remarks>nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
+        /// <remarks>De ID van nieuwAdres wordt genegeerd.  Het adresID wordt altijd
         /// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
         /// dan krijgt het adres een nieuw ID.</remarks>
         public void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs,
@@ -831,12 +851,15 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Verwijdert de link tussen een persoon en de communicatievorm met de opgegeven ID
         /// </summary>
-        /// <param name="commvormID">De ID van de communicatievorm die niet langer aan de persoon in kwestie gelinkt moet zijn</param>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        /// <param name="commvormID">
+        /// De ID van de communicatievorm die niet langer aan de persoon in kwestie gelinkt moet zijn
+        /// </param>
+        /// <returns>
+        /// De ID van de gelieerde persoon bij wie de verwijdering uitgevoerd is
+        /// </returns>
         public int CommunicatieVormVerwijderenVanPersoon(int commvormID)
         {
-        	int gelieerdePersoonID = -1;
+            int gelieerdePersoonID = -1;
             try
             {
                 var cv = _cvMgr.OphalenMetGelieerdePersoon(commvormID);
@@ -844,17 +867,17 @@ namespace Chiro.Gap.Services
                 {
                     throw new ArgumentException(Resources.FouteCommunicatieVormVoorPersoonString);
                 }
-            	gelieerdePersoonID = cv.GelieerdePersoon.ID;
+                gelieerdePersoonID = cv.GelieerdePersoon.ID;
                 _cvMgr.CommunicatieVormVerwijderen(cv);	// persisteert
             }
             catch (Exception ex)
             {
                 FoutAfhandelaar.FoutAfhandelen(ex);
             }
-			return gelieerdePersoonID;
+            return gelieerdePersoonID;
         }
 
-        // TODO dit moet gecontroleerd worden!
+        // TODO dit moet gecontroleerd worden!  => *Wat* moet er gecontroleerd worden?
 
         /// <summary>
         /// Persisteert de wijzigingen aan een bestaande communicatievorm
@@ -1048,7 +1071,7 @@ namespace Chiro.Gap.Services
             try
             {
                 // Het ophalen van alle groepswerkjaren is overkill.  Maar ik doe het toch.
-                gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen|PersoonsExtras.AbonnementenDitWerkjaar|PersoonsExtras.GroepsWerkJaren);
+                gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen | PersoonsExtras.AbonnementenDitWerkjaar | PersoonsExtras.GroepsWerkJaren);
             }
             catch (GeenGavException ex)
             {
@@ -1075,8 +1098,7 @@ namespace Chiro.Gap.Services
             }
             catch (FoutNummerException ex)
             {
-                
-                if (ex.FoutNummer == FoutNummer.AdresOntbreekt  || ex.FoutNummer == FoutNummer.BestelPeriodeDubbelpuntVoorbij)
+                if (ex.FoutNummer == FoutNummer.AdresOntbreekt || ex.FoutNummer == FoutNummer.BestelPeriodeDubbelpuntVoorbij)
                 {
                     // Verwachte exception afhandelen
                     FoutAfhandelaar.FoutAfhandelen(ex);
@@ -1084,7 +1106,7 @@ namespace Chiro.Gap.Services
                 else
                 {
                     // Onverwachte exception opnieuw throwen
-                    throw;                   
+                    throw;
                 }
             }
 
@@ -1100,7 +1122,7 @@ namespace Chiro.Gap.Services
         {
             // Haal gelieerde persoon op met eventuele bestaande gebruikersrechten en communicatie
 
-            var gp = _gpMgr.Ophalen(id, PersoonsExtras.GebruikersRechten|PersoonsExtras.Groep|PersoonsExtras.Communicatie);
+            var gp = _gpMgr.Ophalen(id, PersoonsExtras.GebruikersRechten | PersoonsExtras.Groep | PersoonsExtras.Communicatie);
 
             // Creëer/verleng en bewaar gebruikersrecht
 
@@ -1116,7 +1138,6 @@ namespace Chiro.Gap.Services
             var gebruikersRecht = _gebruikersRechtenMgr.Ophalen(gebruikersRechtID);
             _gebruikersRechtenMgr.Verlengen(gebruikersRecht);
             _gebruikersRechtenMgr.Bewaren(gebruikersRecht);
-
         }
 
         /// <summary>
@@ -1124,7 +1145,6 @@ namespace Chiro.Gap.Services
         /// voor zijn eigen groep.  (Concreet wordt de vervaldatum op gisteren gezet.)
         /// </summary>
         /// <param name="id">ID van de gelieerde persoon</param>
-        /// <returns>Redirect naar personenfiche</returns>
         public void GelieerdePersoonRechtenAfnemen(int id)
         {
             // Haal gelieerde persoon op met eventuele bestaande gebruikersrechten en communicatie

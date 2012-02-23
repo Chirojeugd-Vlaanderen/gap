@@ -1,6 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
-// Mail naar informatica@chiro.be voor alle info over deze broncode
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
 using System;
@@ -33,9 +32,15 @@ namespace Chiro.Gap.Workers
         /// Standaardconstructor.  Data access objects worden typisch geregeld via
         /// inversion of control.
         /// </summary>
-        /// <param name="groepsWerkJaarDao">Zorgt voor data access ivm groepswerkjaren</param>
-        /// <param name="functiesDao">Data access voor functies</param>
-        /// <param name="groepenDao">Data access voor groepen</param>
+        /// <param name="groepsWerkJaarDao">
+        /// Zorgt voor data access ivm groepswerkjaren
+        /// </param>
+        /// <param name="functiesDao">
+        /// Data access voor functies
+        /// </param>
+        /// <param name="groepenDao">
+        /// Data access voor groepen
+        /// </param>
         public VeelGebruikt(IGroepsWerkJaarDao groepsWerkJaarDao, IFunctiesDao functiesDao, IGroepenDao groepenDao)
         {
             _groepsWerkJaarDao = groepsWerkJaarDao;
@@ -47,28 +52,34 @@ namespace Chiro.Gap.Workers
         /// Verwijdert het recentste groepswerkjaar van groep met ID <paramref name="groepID"/>
         /// uit de cache.
         /// </summary>
-        /// <param name="groepID">ID van de groep waarvan groepswerkjaarcache te resetten</param>
+        /// <param name="groepID">
+        /// ID van de groep waarvan groepswerkjaarcache te resetten
+        /// </param>
         public void GroepsWerkJaarResetten(int groepID)
         {
-            _cache.Remove(String.Format(GROEPSWERKJAARCACHEKEY, groepID));
+            _cache.Remove(string.Format(GROEPSWERKJAARCACHEKEY, groepID));
         }
 
         /// <summary>
         /// Haalt van de groep met gegeven <paramref name="groepID"/> het recentste
         /// groepswerkjaar op, inclusief de groep zelf.
         /// </summary>
-        /// <param name="groepID">ID van de groep waarvan groepswerkjaar gevraagd</param>
-        /// <returns>Het groepswerkjaar, met daaraan gekoppeld de groep</returns>
+        /// <param name="groepID">
+        /// ID van de groep waarvan groepswerkjaar gevraagd
+        /// </param>
+        /// <returns>
+        /// Het groepswerkjaar, met daaraan gekoppeld de groep
+        /// </returns>
         public GroepsWerkJaar GroepsWerkJaarOphalen(int groepID)
         {
-            var gwj = (GroepsWerkJaar)_cache.Get(String.Format(GROEPSWERKJAARCACHEKEY, groepID));
+            var gwj = (GroepsWerkJaar)_cache.Get(string.Format(GROEPSWERKJAARCACHEKEY, groepID));
 
             if (gwj == null)
             {
                 gwj = _groepsWerkJaarDao.RecentsteOphalen(groepID, gwjr => gwjr.Groep);
 
                 _cache.Add(
-                    String.Format(GROEPSWERKJAARCACHEKEY, groepID),
+                    string.Format(GROEPSWERKJAARCACHEKEY, groepID),
                     gwj,
                     null,
                     Cache.NoAbsoluteExpiration,
@@ -83,7 +94,9 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Haalt alle nationale functies op
         /// </summary>
-        /// <returns>Lijstje nationale functies</returns>
+        /// <returns>
+        /// Lijstje nationale functies
+        /// </returns>
         public IEnumerable<Functie> NationaleFunctiesOphalen()
         {
             if (_cache[NATIONALEFUNCTIESCACHEKEY] == null)
@@ -104,18 +117,22 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Haalt het groepID van de groep met gegeven stamnummer op uit de cache.
         /// </summary>
-        /// <param name="code">stamnummer van groep waarvan groepID te bepalen is</param>
-        /// <returns>GroepID van de groep met stamnummer <paramref name="code"/>.</returns>
+        /// <param name="code">
+        /// Stamnummer van groep waarvan groepID te bepalen is
+        /// </param>
+        /// <returns>
+        /// GroepID van de groep met stamnummer <paramref name="code"/>.
+        /// </returns>
         public int CodeNaarGroepID(string code)
         {
-            int? groepID = (int?) _cache.Get(String.Format(GROEPIDCACHEKEY, code));
+            var groepID = (int?)_cache.Get(string.Format(GROEPIDCACHEKEY, code));
 
             if (groepID == null || groepID == 0)
             {
                 groepID = _groepenDao.Ophalen(code).ID;
 
                 _cache.Add(
-                    String.Format(GROEPIDCACHEKEY, code),
+                    string.Format(GROEPIDCACHEKEY, code),
                     groepID,
                     null,
                     Cache.NoAbsoluteExpiration,

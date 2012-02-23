@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -62,8 +62,8 @@ namespace Chiro.Cdf.Ioc
 		/// Gebruik Unity om een instantie van type/interface T
 		/// te creëren.
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
+        /// <typeparam name="T">Van welk type het object moet zijn</typeparam>
+		/// <returns>Het type</returns>
 		public static T Maak<T>()
 		{
 			Debug.Assert(_container != null);
@@ -74,8 +74,8 @@ namespace Chiro.Cdf.Ioc
 		/// <summary>
 		/// Gebruik Unity om een instantie van het gevraagde type te creëren.
 		/// </summary>
-		/// <param name="t"></param>
-		/// <returns></returns>
+		/// <param name="t">Van welk type het object moet zijn</param>
+		/// <returns>Het geïnstantieerde object</returns>
 		public static object Maak(Type t)
 		{
 			Debug.Assert(_container != null);

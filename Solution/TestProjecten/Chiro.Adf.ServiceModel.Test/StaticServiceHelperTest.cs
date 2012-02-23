@@ -12,9 +12,9 @@ namespace Chiro.Adf.ServiceModel.Test
     
     
     /// <summary>
-    ///This is a test class for StaticServiceHelperTest and is intended
+    /// Dit is een testclass voor StaticServiceHelperTest,
     ///to contain all StaticServiceHelperTest Unit Tests
-    ///</summary>
+    /// </summary>
     [TestClass()]
     public class StaticServiceHelperTest
     {
@@ -25,7 +25,7 @@ namespace Chiro.Adf.ServiceModel.Test
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
-        ///</summary>
+        /// </summary>
         public TestContext TestContext
         {
             get
@@ -65,7 +65,7 @@ namespace Chiro.Adf.ServiceModel.Test
         //}
         //
         //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
+        //[TestInitialize]
         //public void MyTestInitialize()
         //{
         //}
@@ -82,7 +82,7 @@ namespace Chiro.Adf.ServiceModel.Test
         /// <summary>
         /// Aanroep van niet-gemockte service
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         public void NietGemockteServiceTest()
         {
             string actual = ServiceHelper.CallService<IGroepenService, string>(svc=>svc.WieBenIk());
@@ -93,7 +93,7 @@ namespace Chiro.Adf.ServiceModel.Test
         /// <summary>
         /// Aanroep van gemockte service
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         public void GemockteServiceTest()
         {
             int actual = ServiceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.PersoonIDGet(12345));

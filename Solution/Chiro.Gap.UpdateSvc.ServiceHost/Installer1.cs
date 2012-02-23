@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -8,10 +8,16 @@ using System.ServiceProcess;
 
 namespace Chiro.Gap.UpdateSvc.ServiceHost
 {
-	[RunInstaller(true)]
+    /// <summary>
+    /// Class die Updateservice helpt installeren
+    /// </summary>
+    [RunInstaller(true)]
 	public partial class Installer1 : System.Configuration.Install.Installer
 	{
-		public Installer1()
+        /// <summary>
+        /// Constructor. Zorgt voor de nodige configuratie.
+        /// </summary>
+        public Installer1()
 		{
 			InitializeComponent();
 

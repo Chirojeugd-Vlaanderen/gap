@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -149,7 +149,7 @@ namespace Chiro.Gap.ServiceContracts
 		#endregion
 
 		/// <summary>
-		/// 'Togglet' het vlagje 'lidgeld betaald' van het lid met LidID <paramref name="id"/>.  Geeft als resultaat
+		/// Togglet het vlagje 'lidgeld betaald' van het lid met LidID <paramref name="id"/>.  Geeft als resultaat
 		/// het GelieerdePersoonID.  (Niet proper, maar wel interessant voor redirect.)
 		/// </summary>
 		/// <param name="id">ID van lid met te togglen lidgeld</param>

@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -47,8 +47,8 @@ namespace Chiro.Cdf.Data
 		/// Experimentele equals die objecten als gelijk beschouwt als hun ID's niet nul en gelijk zijn.
 		/// </summary>
 		/// <typeparam name="T">Type van <paramref name="be"/>, moet IBasisentiteit implementeren</typeparam>
-		/// <param name="be">Te vergelijken entiteit</param>
-		/// <param name="obj">Te vergelijken entiteit</param>
+		/// <param name="be">Eerste te vergelijken entiteit</param>
+		/// <param name="obj">Tweede te vergelijken entiteit</param>
         /// <returns><c>True</c> als <paramref name="be"/> en <paramref name="obj"/> hetzelfde niet-nulle ID 
 		/// hebben</returns>
 		/// <remarks>Als zowel <paramref name="be"/> als <paramref name="obj"/> ID 0 hebben, wordt

@@ -1,4 +1,8 @@
-﻿using System.Runtime.Serialization;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System.Runtime.Serialization;
 
 using Chiro.Gap.Domain;
 
@@ -10,21 +14,52 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class GroepsWerkJaarDetail
 	{
-		[DataMember]
+	    /// <summary>
+	    /// Het beginjaartal, bv. 2011 voor 2011-2012
+	    /// </summary>
+	    [DataMember]
 		public int WerkJaar { get; set; }
-		[DataMember]
+
+	    /// <summary>
+	    /// De ID van het werkjaar
+	    /// </summary>
+	    [DataMember]
 		public int WerkJaarID { get; set; }
-		[DataMember]
+
+	    /// <summary>
+	    /// TODO (#190): documenteren
+	    /// </summary>
+	    [DataMember]
 		public WerkJaarStatus Status { get; set; }
-		[DataMember]
+
+	    /// <summary>
+	    /// De ID van de groep die in het opgegeven werkjaar actief is
+	    /// </summary>
+	    [DataMember]
 		public int GroepID { get; set; }
-		[DataMember]
+
+	    /// <summary>
+	    /// De naam van de groep
+	    /// </summary>
+	    [DataMember]
 		public string GroepNaam { get; set; }
-		[DataMember]
+
+	    /// <summary>
+	    /// De gemeente waar de groep zich bevindt
+	    /// </summary>
+	    [DataMember]
 		public string GroepPlaats { get; set; }
-		[DataMember]
+
+	    /// <summary>
+	    /// Het stamnummer van de groep
+	    /// </summary>
+	    [DataMember]
 		public string GroepCode { get; set; }
-		[DataMember]
+
+	    /// <summary>
+	    /// Geeft aan of het om een lokale groep, een gewest of een verbond gaat
+	    /// </summary>
+	    [DataMember]
 		public Niveau GroepNiveau { get; set; }
 	}
 }

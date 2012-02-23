@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
-using System.Linq;
 using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
@@ -8,35 +8,27 @@ using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.ServiceContracts.Mappers;
-using Chiro.Gap.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Chiro.Gap.Workers;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.ServiceContracts.Mappers;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
 namespace Chiro.Gap.Services.Test.CustomIoc
 {
-    
-    
     /// <summary>
-    ///This is a test class for GelieerdePersonenServiceTest and is intended
-    ///to contain all GelieerdePersonenServiceTest Unit Tests
-    ///</summary>
-    [TestClass()]
+    /// Dit is een testclass voor Unit Tests van GelieerdePersonenServiceTest
+    /// </summary>
+    [TestClass]
     public class GelieerdePersonenServiceTest
     {
-
-
         private TestContext testContextInstance;
 
         /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        /// Gets or sets the test context which provides
+        /// information about and functionality for the current test run.
+        /// </summary>
         public TestContext TestContext
         {
             get
@@ -50,18 +42,18 @@ namespace Chiro.Gap.Services.Test.CustomIoc
         }
         
         /// <summary>
-        /// run code before running first test
+        /// Run code before running first test
         /// </summary>
-        [ClassInitialize()]
+        [ClassInitialize]
         static public void MyClassInitialize(TestContext context)
         {
             MappingHelper.MappingsDefinieren();
         }
 
         /// <summary>
-        /// run code before running each test
+        /// Run code before running each test
         /// </summary>
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             // Restore IoC settings
@@ -76,8 +68,8 @@ namespace Chiro.Gap.Services.Test.CustomIoc
         /// <summary>
         /// Kijkt na of CommunicatieVormToevoegen enkel de nieuwe communicatievorm
         /// naar Kipadmin synct, ipv alle communicatie in kipadmin te vervangen  
-        ///</summary>
-        [TestMethod()]
+        /// </summary>
+        [TestMethod]
         public void CommunicatieVormToevoegenTest()
         {
             // Arrange
@@ -134,8 +126,8 @@ namespace Chiro.Gap.Services.Test.CustomIoc
 
         /// <summary>
         /// Controleren of 'communicatievormaanpassen' wel degelijk een communicatievorm aanpast.
-        ///</summary>
-        [TestMethod()]
+        /// </summary>
+        [TestMethod]
         public void CommunicatieVormAanpassenTest()
         {
             // Arrange
@@ -208,8 +200,8 @@ namespace Chiro.Gap.Services.Test.CustomIoc
         /// <summary>
         /// Bij  het toevoegen van een communicatievorm die voorkeur moet zijn, moeten
         /// bestaande communicatievormen van hetzelfde type hun voorkeur verliezen. 
-        ///</summary>
-        [TestMethod()]
+        /// </summary>
+        [TestMethod]
         public void VoorkeursCommunicatieVormToevoegenTest()
         {
             // Arrange
@@ -302,8 +294,8 @@ namespace Chiro.Gap.Services.Test.CustomIoc
         /// Als een communicatievorm voorkeur wordt gemaakt voor zijn type, dan moet
         /// de huidige voorkeurscommunicatie opnieuw gepersisteerd worden, want die
         /// verliest zijn voorkeur.
-        ///</summary>
-        [TestMethod()]
+        /// </summary>
+        [TestMethod]
         public void CommunicatieVormVoorkeurMakenTest()
         {
             // Arrange

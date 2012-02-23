@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -73,7 +73,7 @@ namespace Chiro.Gap.WebApp
 		/// <summary>
 		/// Indien <c>true</c> werken we in de liveomgeving, anders in de testomgeving.
 		/// </summary>
-		/// <returns><c>true</c> als we live bezig zijn</returns>
+		/// <returns><c>True</c> als we live bezig zijn</returns>
 		bool IsLive();
 
 		/// <summary>

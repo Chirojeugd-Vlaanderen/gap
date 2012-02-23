@@ -20,9 +20,9 @@ namespace Chiro.Gap.WebApp.Test
     
     
     /// <summary>
-    ///This is a test class for JaarOvergangControllerTest and is intended
+    /// Dit is een testclass voor JaarOvergangControllerTest,
     ///to contain all JaarOvergangControllerTest Unit Tests
-    ///</summary>
+    /// </summary>
     [TestClass()]
     public class JaarOvergangControllerTest
     {
@@ -33,7 +33,7 @@ namespace Chiro.Gap.WebApp.Test
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
-        ///</summary>
+        /// </summary>
         public TestContext TestContext
         {
             get
@@ -67,7 +67,7 @@ namespace Chiro.Gap.WebApp.Test
         /// <summary>
         /// Run code before running each test
         /// </summary>
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             // Omdat ik hier en daar mocks ga registreren, wil ik de IOC-container
@@ -89,7 +89,7 @@ namespace Chiro.Gap.WebApp.Test
         /// <summary>
         /// Kijkt na of de gesuggereerde geboortejaren voor de nieuwe afdelingsjaren wel juist zijn bij de jaarovergang.
         /// </summary>
-        [TestMethod()]
+        [TestMethod]
         public void Stap1AfdelingenSelecterenTest()
         {
             const int GROEPID = 426;            // arbitrair

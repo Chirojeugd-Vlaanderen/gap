@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -26,8 +26,8 @@ namespace Chiro.Gap.Orm.SyncInterfaces
 		/// <summary>
 		/// Updatet de afdelingen van <paramref name="lid"/> in Kipadmin
 		/// </summary>
-		/// <param name="lid">Lid</param>
-		/// <remarks>*Alle* relevante gegevens van het lidobject worden hier sowieso opnieuw opgehaald, anders was het
+		/// <param name="lid">Het lidobject dat we bewerken</param>
+		/// <remarks>Alle (!) relevante gegevens van het lidobject worden hier sowieso opnieuw opgehaald, anders was het
 		/// te veel een gedoe.</remarks>
 		void AfdelingenUpdaten(Lid lid);
 

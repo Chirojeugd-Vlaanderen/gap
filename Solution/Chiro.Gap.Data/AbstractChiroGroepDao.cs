@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -16,7 +16,7 @@ namespace Chiro.Gap.Data.Ef
 	/// om <code>IDao`1</code> op te mappen.  Ik weet nameijk niet hoe je een generic
 	/// met 1 type 'injecteert' naar een generic met 2 types.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">Het type entiteit waarvoor de Dao opgeroepen wordt</typeparam>
 	public class AbstractChiroGroepDao<T> : Dao<T, ChiroGroepEntities>, IDao<T> where T : EntityObject, IEfBasisEntiteit
 	{
 	}

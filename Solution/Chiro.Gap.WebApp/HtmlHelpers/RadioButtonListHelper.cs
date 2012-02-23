@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -77,7 +77,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			{
 				builder.MergeAttribute("checked", @"checked");
 			}
-			//builder.MergeAttributes(htmlAttributes);
+			// builder.MergeAttributes(htmlAttributes);
 			builder.MergeAttribute("type", @"radio");
 			builder.MergeAttribute("value", info.Value);
 			builder.MergeAttribute("id", counter.ToString());

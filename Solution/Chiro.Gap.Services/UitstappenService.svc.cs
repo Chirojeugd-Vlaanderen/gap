@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -35,12 +35,12 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Constructor.  De managers moeten m.b.v. dependency injection gecreeerd worden.
         /// </summary>
-        /// <param name="uMgr">Uitstappenmanager</param>
-        /// <param name="gwjMgr">Groepswerkjaarmanager</param>
-        /// <param name="plMgr">Plaatsenmanager</param>
-        /// <param name="adMgr">Adressenmanager</param>
-        /// <param name="gpMgr">GelieerdePersonenManager</param>
-        /// <param name="dMgr">Deelnemersmanager</param>
+        /// <param name="uMgr">De worker voor Uitstappen</param>
+        /// <param name="gwjMgr">De worker voor Groepswerkjaren</param>
+        /// <param name="plMgr">De worker voor Plaatsen</param>
+        /// <param name="adMgr">De worker voor Adressen</param>
+        /// <param name="gpMgr">De worker voor GelieerdePersonen</param>
+        /// <param name="dMgr">De worker voor Deelnemers</param>
         public UitstappenService(
             UitstappenManager uMgr,
             GroepsWerkJaarManager gwjMgr,
@@ -61,9 +61,9 @@ namespace Chiro.Gap.Services
         /// Bewaart een uitstap aan voor de groep met gegeven <paramref name="groepID"/>
         /// </summary>
         /// <param name="groepID">ID van de groep horende bij de uitstap.
-        ///   Is eigenlijk enkel relevant als het om een nieuwe uitstap gaat.</param>
+        ///  Is eigenlijk enkel relevant als het om een nieuwe uitstap gaat.</param>
         /// <param name="info">Details over de uitstap.  Als <c>uitstap.ID</c> <c>0</c> is,
-        ///   dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
+        ///  dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
         /// <returns>ID van de uitstap</returns>
         public int Bewaren(int groepID, UitstapInfo info)
         {
@@ -237,7 +237,7 @@ namespace Chiro.Gap.Services
         /// <param name="geselecteerdeUitstapID">ID van uitstap waarvoor in te schrijven</param>
         /// <param name="logistiekDeelnemer">Bepaalt of al dan niet ingeschreven wordt als 
         /// logistieker</param>
-        /// <returns></returns>
+        /// <returns>Het uitstap-object met de bijgewerkte deelnemerslijst</returns>
         public UitstapInfo Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapID, bool logistiekDeelnemer)
         {
             IEnumerable<GelieerdePersoon> gelieerdePersonen;
@@ -262,9 +262,10 @@ namespace Chiro.Gap.Services
                 // Als de uitstap al gekoppeld was aan een gelieerde persoon, dan hebben we die al opgehaald.  Zo niet
                 // halen we de uitstap op via de uitstappenMgr.
 
-                uitstap =
-                    gelieerdePersonen.SelectMany(gp => gp.Deelnemer).Select(d => d.Uitstap).Where(u => u.ID == geselecteerdeUitstapID).
-                        FirstOrDefault() ?? _uitstappenMgr.Ophalen(geselecteerdeUitstapID, UitstapExtras.Groep);
+                uitstap = gelieerdePersonen.SelectMany(gp => gp.Deelnemer)
+                                           .Select(d => d.Uitstap)
+                                           .Where(u => u.ID == geselecteerdeUitstapID)
+                                           .FirstOrDefault() ?? _uitstappenMgr.Ophalen(geselecteerdeUitstapID, UitstapExtras.Groep);
             }
             catch (GeenGavException ex)
             {
@@ -298,7 +299,7 @@ namespace Chiro.Gap.Services
         /// Haalt informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/> op.
         /// </summary>
         /// <param name="uitstapID">ID van de relevante uitstap</param>
-        /// <returns>informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/></returns>
+        /// <returns>Informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/></returns>
         public IEnumerable<DeelnemerDetail> DeelnemersOphalen(int uitstapID)
         {
             IEnumerable<Deelnemer> deelnemers;
@@ -370,7 +371,7 @@ namespace Chiro.Gap.Services
         /// Haalt informatie over de deelnemer met ID <paramref name="deelnemerID"/> op.
         /// </summary>
         /// <param name="deelnemerID">ID van de relevante deelnemer</param>
-        /// <returns>informatie over de deelnemer met ID <paramref name="deelnemerID"/></returns>
+        /// <returns>Informatie over de deelnemer met ID <paramref name="deelnemerID"/></returns>
         public DeelnemerDetail DeelnemerOphalen(int deelnemerID)
         {
             Deelnemer d;
@@ -392,7 +393,7 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Updatet een deelnemer op basis van de info in <paramref name="info"/>
         /// </summary>
-        /// <param name="info">info nodig voor de update</param>
+        /// <param name="info">Info nodig voor de update</param>
         public void DeelnemerBewaren(DeelnemerInfo info)
         {
             Deelnemer d;
@@ -418,19 +419,25 @@ namespace Chiro.Gap.Services
         /// Haalt informatie over de bivakaangifte op van de groep <paramref name="groepID"/> voor diens recentste 
         /// werkjaar.
         /// </summary>
-        /// <param name="groepID">De groep waarvan info wordt gevraagd</param>
-		public BivakAangifteLijstInfo BivakStatusOphalen(int groepID)
-    	{
-			var gwj = _groepsWerkJaarMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Groep);
+        /// <param name="groepID">
+        /// De groep waarvan info wordt gevraagd
+        /// </param>
+        /// <returns>
+        /// Een lijstje met opmerkingen over wat er nog moet gebeuren voor de groep in orde is met de
+        /// administratie voor de bivakaangifte
+        /// </returns>
+        public BivakAangifteLijstInfo BivakStatusOphalen(int groepID)
+        {
+            var gwj = _groepsWerkJaarMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Groep);
             try
             {
-				return _uitstappenMgr.BivakStatusOphalen(groepID, gwj);
+                return _uitstappenMgr.BivakStatusOphalen(groepID, gwj);
             }
             catch (GeenGavException ex)
             {
                 FoutAfhandelaar.FoutAfhandelen(ex);
                 throw;
             }
-    	}
+        }
     }
 }

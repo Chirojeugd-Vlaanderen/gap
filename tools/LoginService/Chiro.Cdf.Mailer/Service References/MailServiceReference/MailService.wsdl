@@ -149,6 +149,7 @@
       <wsdl:output message="tns:VerstuurMailSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="VerstuurGapMail">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Verstuurt een mailtje met 'helpdesk@chiro.be' als afzender. Dat mailtje heeft html-opmaak. De boodschap die je hier meegeeft, komt tussen de body-tags in het bericht terecht. Zorg dus voor degelijke opmaak.</wsdl:documentation>
       <wsdl:input message="tns:VerstuurGapMailSoapIn" />
       <wsdl:output message="tns:VerstuurGapMailSoapOut" />
     </wsdl:operation>

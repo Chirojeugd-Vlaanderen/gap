@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -11,7 +11,7 @@ namespace Chiro.Gap.ServiceContracts.FaultContracts
 	/// <summary>
 	/// Faultcontract dat gebruikt wordt als bestaande entiteiten/objecten een operatie verhinderen
 	/// </summary>
-	/// <typeparam name="TObject"></typeparam>
+	/// <typeparam name="TObject">Het type van het object dat de operatie blokkeert</typeparam>
 	[DataContract]
 	public class BlokkerendeObjectenFault<TObject> : GapFault
 	{

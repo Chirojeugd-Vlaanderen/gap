@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -20,7 +20,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// en <paramref name="adresID"/>
         /// </summary>
         /// <param name="groepID">ID van groep die de plaats gemaakt moet hebben</param>
-        /// <param name="plaatsNaam">naam van de plaats</param>
+        /// <param name="plaatsNaam">Naam van de plaats</param>
         /// <param name="adresID">ID van het adres van de plaats</param>
         /// <param name="paths">Bepaalt wat er allemaal mee opgehaald moet worden</param>
         /// <returns>De gevonden groep, of <c>null</c> als niets werd gevonden</returns>

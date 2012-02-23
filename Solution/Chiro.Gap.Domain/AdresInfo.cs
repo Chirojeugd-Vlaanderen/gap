@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -12,7 +12,7 @@ namespace Chiro.Gap.Domain
 	/// Generieke adresgegevens.  Wordt gebruikt om adressen op te zoeken, maar ook als 
 	/// datacontract.  Omdat de workers deze klasse gebruiken, heb ik ze verplaatst van
 	/// Chiro.Gap.ServiceContracts naar Chiro.Gap.Domain.
-	/// 
+	/// <para />
 	/// Het ID wordt enkel gebruikt bij het ophalen van een adres.
 	/// Voor de rest zijn alle members strings (geen straatIDs of woonplaatsIDs), zodat hetzelfde
 	/// contract gebruikt kan worden voor binnenlandse en buitenlandse adressen.
@@ -70,7 +70,10 @@ namespace Chiro.Gap.Domain
 		// [Verplicht]
 		public String WoonPlaatsNaam { get; set; }
 
-		[DataMember]
+	    /// <summary>
+	    /// Naam van het land
+	    /// </summary>
+	    [DataMember]
 		public String LandNaam { get; set; }
 	}
 }

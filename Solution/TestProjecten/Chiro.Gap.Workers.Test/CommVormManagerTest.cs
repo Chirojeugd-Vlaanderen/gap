@@ -13,9 +13,9 @@ namespace Chiro.Gap.Workers.Test
     
     
     /// <summary>
-    ///This is a test class for CommVormManagerTest and is intended
+    /// Dit is een testclass voor CommVormManagerTest,
     ///to contain all CommVormManagerTest Unit Tests
-    ///</summary>
+    /// </summary>
     [TestClass()]
     public class CommVormManagerTest
     {
@@ -26,7 +26,7 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
-        ///</summary>
+        /// </summary>
         public TestContext TestContext
         {
             get
@@ -63,7 +63,7 @@ namespace Chiro.Gap.Workers.Test
         //}
         //
         //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
+        //[TestInitialize]
         //public void MyTestInitialize()
         //{
         //}
@@ -81,8 +81,8 @@ namespace Chiro.Gap.Workers.Test
         /// Als een persoon al een voorkeurs-e-mailadres heeft, en er wordt een nieuw
         /// vooorkeurs-e-mailadres gekoppeld, dan moet het bestaande adres zijn voorkeur
         /// verliezen.
-        ///</summary>
-        [TestMethod()]
+        /// </summary>
+        [TestMethod]
         public void KoppelenVoorkeursCommunicatieTest()
         {
             // Arrange

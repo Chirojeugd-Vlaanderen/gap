@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -39,7 +39,7 @@ namespace Chiro.Gap.Sync
 		            Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(communicatieVorm.GelieerdePersoon.Persoon),
 		            new CommunicatieMiddel
 		                {
-		                    Type = (CommunicatieType) communicatieVorm.CommunicatieType.ID,
+		                    Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,
 		                    Waarde = communicatieVorm.Nummer
 		                }));
 		}
@@ -60,7 +60,7 @@ namespace Chiro.Gap.Sync
 		                communicatieVorm.GelieerdePersoon.Persoon),
 		            new CommunicatieMiddel
 		                {
-		                    Type = (CommunicatieType) communicatieVorm.CommunicatieType.ID,
+		                    Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,
 		                    Waarde = communicatieVorm.Nummer,
 		                    GeenMailings = !communicatieVorm.IsVoorOptIn
 		                }));

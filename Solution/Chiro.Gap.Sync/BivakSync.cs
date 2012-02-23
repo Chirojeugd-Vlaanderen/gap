@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -17,7 +17,7 @@ using Adres = Chiro.Gap.Orm.Adres;
 namespace Chiro.Gap.Sync
 {
     /// <summary>
-    /// synchronisatie van bivakaangifte naar Kipadmin
+    /// Synchronisatie van bivakaangifte naar Kipadmin
     /// </summary>
     public class BivakSync : IBivakSync
     {
@@ -26,11 +26,11 @@ namespace Chiro.Gap.Sync
         private readonly IDeelnemersDao _deelnemersDao;
 
         /// <summary>
-        /// Standaardconstructor
+        /// Standaardconstructor.  De parameters worden gebruikt voor dependency injection.
         /// </summary>
         /// <param name="adressenDao">Data access voor adressen</param>
-        /// <param name="gelieerdePersonenDao">data access voor gelieerde personen</param>
-        /// <param name="deelnemersDao">data access voor deelnemers</param>
+        /// <param name="gelieerdePersonenDao">Data access voor gelieerde personen</param>
+        /// <param name="deelnemersDao">Data access voor deelnemers</param>
         public BivakSync(
             IAdressenDao adressenDao,
             IGelieerdePersonenDao gelieerdePersonenDao,

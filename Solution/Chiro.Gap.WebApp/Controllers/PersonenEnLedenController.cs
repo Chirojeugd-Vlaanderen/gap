@@ -1,3 +1,7 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +20,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
         /// best toegewezen via inversion of control.
         /// </summary>
-        /// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+        /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
 		protected PersonenEnLedenController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
 
@@ -75,7 +79,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 			model.Titel = "Personen inschrijven in het huidige werkjaar";
 
-			//TODO model laden, gegeven:
+			// TODO model laden, gegeven:
 			object value;
 			TempData.TryGetValue("list", out value);
 			var gekozengelieerdepersoonsids = (List<int>)value;
@@ -104,12 +108,6 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View("LedenMaken", model);
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="model"></param>
-		/// <param name="groepID"></param>
-		/// <returns></returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HandleError]
 		public ActionResult LedenMaken(GeselecteerdePersonenEnLedenModel model, int groepID)

@@ -6,8 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Chiro.Gap.Dummies.Test
 {
     /// <summary>
-	/// This is a test class for DummyDaoTest and is intended
-	/// to contain all DummyDaoTest Unit Tests
+	/// Dit is een testclass voor Unit Tests van DummyDaoTest
 	/// </summary>
 	[TestClass]
 	public class DummyDaoTest

@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -105,7 +105,6 @@ namespace Chiro.Gap.Data.Ef
             GebruikersRecht resultaat;
 	        using (var db = new ChiroGroepEntities())
 	        {
-
                 // GavSchap is een tabel met kolommen (GavID, PersoonID).  (GavID, PersoonID) is primary key, en
                 // bij gevolg uniek.
                 // GavSchap wordt gebruikt om een persoon met een GAV te koppelen.  Dus eigenlijk zou dat een
@@ -124,7 +123,6 @@ namespace Chiro.Gap.Data.Ef
 	                         where gp.ID == gelieerdePersoonID
 	                         select gp.Groep).FirstOrDefault();
 
-
 	            resultaat = (from gr in db.GebruikersRecht.Include(r => r.Gav)
 	                         where gr.Groep.ID == groep.ID && gr.Gav.ID == gav.ID
 	                         select gr).FirstOrDefault();
@@ -138,7 +136,7 @@ namespace Chiro.Gap.Data.Ef
         /// groep, gav, persoon en gelieerde personen.
         /// </summary>
         /// <param name="groepID">ID van de groep waarvan we de gebruikersrechten willen ophalen</param>
-        /// <returns>alle gebruikersrechten uit de groep met ID <paramref name="groepID"/>, inclusief
+        /// <returns>Alle gebruikersrechten uit de groep met ID <paramref name="groepID"/>, inclusief
         /// groep, gav, persoon en gelieerde personen.</returns>
 	    public IEnumerable<GebruikersRecht> AllesOphalen(int groepID)
         {
@@ -302,7 +300,7 @@ namespace Chiro.Gap.Data.Ef
 		/// van leden voor wie de gebruiker met gegeven <paramref name="login"/> geen GAV is.
 		/// </summary>
 		/// <param name="lidIDs">ID's van leden</param>
-		/// <param name="login">login van de gebruiker</param>
+		/// <param name="login">Login van de gebruiker</param>
 		/// <returns>Enkel de ID's van leden waarvoor de gebruiker GAV is.</returns>
 		public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs, string login)
 		{
@@ -561,7 +559,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="uitstapID">ID van de uitstap</param>
 		/// <param name="login">De gebruikersnaam</param>
-		/// <returns><c>true</c> als de uitstap met ID <paramref name="uitstapID"/> gekoppeld is aan een 
+		/// <returns><c>True</c> als de uitstap met ID <paramref name="uitstapID"/> gekoppeld is aan een 
 		/// groepswerkjaar waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten heeft.  Anders
 		/// <c>false</c>.</returns>
 		public bool IsGavUitstap(int uitstapID, string login)
@@ -592,7 +590,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="plaatsID">ID van de plaats</param>
 		/// <param name="login">De gebruikersnaam</param>
-		/// <returns><c>true</c> als de plaats met ID <paramref name="plaatsID"/> gekoppeld is aan een 
+		/// <returns><c>True</c> als de plaats met ID <paramref name="plaatsID"/> gekoppeld is aan een 
 		/// groep waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten heeft.  Anders
 		/// <c>false</c>.</returns>
 		public bool IsGavPlaats(int plaatsID, string login)
@@ -621,8 +619,8 @@ namespace Chiro.Gap.Data.Ef
         /// met ID <paramref name="deelnemerID"/>
         /// </summary>
         /// <param name="deelnemerID">ID van een (uitstap)deelnemer</param>
-        /// <param name="login">login van de gebruiker wiens GAV-schap moet worden getest</param>
-        /// <returns><c>true</c> als de gebruiker GAV-rechten heeft voor de gevraagde 
+        /// <param name="login">Login van de gebruiker wiens GAV-schap moet worden getest</param>
+        /// <returns><c>True</c> als de gebruiker GAV-rechten heeft voor de gevraagde 
         /// deelnemer, anders <c>false</c></returns>
 	    public bool IsGavDeelnemer(int deelnemerID, string login)
 	    {
@@ -650,8 +648,8 @@ namespace Chiro.Gap.Data.Ef
         /// met ID <paramref name="gebruikersRechtID"/>
         /// </summary>
         /// <param name="gebruikersRechtID">ID van een gebruikersrecht</param>
-        /// <param name="login">login van de gebruiker wiens GAV-schap moet worden getest</param>
-        /// <returns><c>true</c> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde 
+        /// <param name="login">Login van de gebruiker wiens GAV-schap moet worden getest</param>
+        /// <returns><c>True</c> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde 
         /// gebruikersrecht, anders <c>false</c></returns>
 	    public bool IsGavGebruikersRecht(int gebruikersRechtID, string login)
 	    {

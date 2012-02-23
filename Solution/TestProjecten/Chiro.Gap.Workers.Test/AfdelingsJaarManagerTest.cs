@@ -12,9 +12,9 @@ namespace Chiro.Gap.Workers.Test
 
 
 	/// <summary>
-	///This is a test class for AfdelingsJaarManagerTest and is intended
+	/// Dit is een testclass voor AfdelingsJaarManagerTest,
 	///to contain all AfdelingsJaarManagerTest Unit Tests
-	///</summary>
+	/// </summary>
 	[TestClass]
 	public class AfdelingsJaarManagerTest
 	{
@@ -25,7 +25,7 @@ namespace Chiro.Gap.Workers.Test
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -60,7 +60,7 @@ namespace Chiro.Gap.Workers.Test
 
 		//
 		//Use TestInitialize to run code before running each test
-		//[TestInitialize()]
+		//[TestInitialize]
 		//public void MyTestInitialize()
 		//{
 		//}
@@ -76,8 +76,8 @@ namespace Chiro.Gap.Workers.Test
 
 		///<summary>
 		///Probeer een afdeling te maken in een groepswerkjaar van een andere groep
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		[ExpectedException(typeof(FoutNummerException))]
 		public void AfdelingGroepsWerkJaarMismatch()
 		{

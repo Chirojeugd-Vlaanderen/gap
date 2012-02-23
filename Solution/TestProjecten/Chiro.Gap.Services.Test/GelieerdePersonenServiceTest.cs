@@ -12,7 +12,7 @@ namespace Chiro.Gap.Services.Test
     
     
     /// <summary>
-    /// This is a test class for GelieerdePersonenServiceTest and is intended
+    /// Dit is een testclass voor Unit Tests van GelieerdePersonenServiceTest,
     /// to contain all GelieerdePersonenServiceTest Unit Tests
     /// </summary>
 	[TestClass]

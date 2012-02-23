@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -251,7 +251,6 @@ namespace Chiro.Gap.WebApp.Controllers
             return r;
         }
 
-
         #region personen
 
         /// <summary>
@@ -390,19 +389,19 @@ namespace Chiro.Gap.WebApp.Controllers
             var broerzus = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(model.BroerzusID));
 
             var gezinsComm = (from a in broerzus.CommunicatieInfo
-                                 where a.Voorkeur && a.IsGezinsGebonden
-                                 select a).ToList();
+                              where a.Voorkeur && a.IsGezinsGebonden
+                              select a).ToList();
 
-			if (gezinsComm.Count()!=0)
+            if (gezinsComm.Count() != 0)
             {
                 // vermijd bloat van te veel over de lijn te sturen
-				foreach(var c in gezinsComm)
-				{
-					var c1 = c;
-					ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(ids.GelieerdePersoonID, c1));
+                foreach (var c in gezinsComm)
+                {
+                    var c1 = c;
+                    ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(ids.GelieerdePersoonID, c1));
 
-					// TODO errors opvangen? #1047
-				}
+                    // TODO errors opvangen? #1047
+                }
             }
 
             if (broerzus.PersoonDetail.VoorkeursAdresID != null)
@@ -485,7 +484,7 @@ namespace Chiro.Gap.WebApp.Controllers
             BaseModelInit(model, groepID);
 
             model.PersoonLidInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(id));
-           
+
             if (!model.PersoonLidInfo.PersoonDetail.SterfDatum.HasValue)
             {
                 AfdelingenOphalen(model);
@@ -540,19 +539,19 @@ namespace Chiro.Gap.WebApp.Controllers
             return GelieerdePersonenInschrijven(new List<int> { gelieerdepersoonID });
         }
 
-		/// <summary>
-		/// Schrijft een gelieerde persoon uit uit de groep
-		/// </summary>
-		/// <param name="gelieerdepersoonID">ID van de gelieerde persoon die we willen uitschrijven</param>
-		/// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
-		/// <returns></returns>
-		/// <!-- GET: /Personen/Uitschrijven/gelieerdepersoonID -->
-		[HandleError]
-		public ActionResult Uitschrijven(int gelieerdepersoonID, int groepID)
-		{
-			GelieerdePersonenUitschrijven(new List<int> { gelieerdepersoonID }, groepID, Properties.Resources.LedenUitgeschreven);
-			return TerugNaarVorigeLijst();
-		}
+        /// <summary>
+        /// Schrijft een gelieerde persoon uit uit de groep
+        /// </summary>
+        /// <param name="gelieerdepersoonID">ID van de gelieerde persoon die we willen uitschrijven</param>
+        /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
+        /// <returns></returns>
+        /// <!-- GET: /Personen/Uitschrijven/gelieerdepersoonID -->
+        [HandleError]
+        public ActionResult Uitschrijven(int gelieerdepersoonID, int groepID)
+        {
+            GelieerdePersonenUitschrijven(new List<int> { gelieerdepersoonID }, groepID, Properties.Resources.LedenUitgeschreven);
+            return TerugNaarVorigeLijst();
+        }
 
         #endregion leden
 
@@ -968,10 +967,8 @@ namespace Chiro.Gap.WebApp.Controllers
             // Eerst een hoop gedoe om de CommunicatieInfo uit het model in een
             // CommunicatieDetail te krijgen, zodat de validatie kan gebeuren.
 
-            var communicatieType = ServiceHelper.CallService<
-                IGelieerdePersonenService,
-                CommunicatieTypeInfo>(svc => svc.CommunicatieTypeOphalen(
-                    model.NieuweCommVorm.CommunicatieTypeID));
+            var communicatieType = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieTypeInfo>
+                (svc => svc.CommunicatieTypeOphalen(model.NieuweCommVorm.CommunicatieTypeID));
 
             // Ik begrijp onderstaande code niet.  Wordt automapper hier gebruikt om te klonen?
             // En zo ja: wat is de meerwaarde?
@@ -1044,7 +1041,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// 
+        /// TODO (#190): documenteren
         /// </summary>
         /// <param name="commvormID"></param>
         /// <param name="gelieerdePersoonID"></param>

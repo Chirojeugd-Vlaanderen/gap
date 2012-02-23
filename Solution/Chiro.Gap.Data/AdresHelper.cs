@@ -1,5 +1,5 @@
 // <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -14,8 +14,8 @@ namespace Chiro.Gap.Data.Ef
     /// <summary>
     /// Aparte klasse die gebruikt wordt om straat/woonplaats/land te koppelen
     /// aan adressen die geattacht zijn aan een objectcontext.
-    /// 
-    /// Dit is steeds wat prutswerk, o.w.v. het onderscheid tussen Belgische en
+    /// <para />
+    /// Dit is altijd wat prutswerk, o.w.v. het onderscheid tussen Belgische en
     /// buitenlandse adressen.
     /// </summary>
     internal static class AdresHelper
@@ -23,7 +23,7 @@ namespace Chiro.Gap.Data.Ef
         /// <summary>
         /// Koppelt de straat/gemeente/land van de voorkeursadressen aan een (geattachte!) gelieerde personen.
         /// </summary>
-        /// <param name="gelieerdePersoon">gelieerde persoon</param>
+        /// <param name="gelieerdePersoon">De gelieerde persoon waar het over gaat</param>
         /// <returns>Dezelfde gelieerde persoon, maar met voorkeursadressen</returns>
         /// <remarks>Het adresobject van het voorkeursadres moeten al gekoppeld zijn; 
         /// deze method instantieert enkel nog straat, gemeente en land.</remarks>
@@ -42,7 +42,7 @@ namespace Chiro.Gap.Data.Ef
         /// <summary>
         /// Koppelt de straat/gemeente/land van de voorkeursadressen aan een lijst (geattachte!) gelieerde personen.
         /// </summary>
-        /// <param name="gelieerdePersonen">gelieerde personen</param>
+        /// <param name="gelieerdePersonen">Gelieerde personen</param>
         /// <returns>Dezelfde gelieerde personen, maar met voorkeursadressen</returns>
         /// <remarks>De adresobjecten moeten al gekoppeld zijn; deze method instantieert enkel nog straat, gemeente en land.</remarks>
         public static IEnumerable<GelieerdePersoon> VoorkeursAdresKoppelen(IEnumerable<GelieerdePersoon> gelieerdePersonen)
@@ -76,7 +76,7 @@ namespace Chiro.Gap.Data.Ef
         /// <summary>
         /// Koppelt de straat/gemeente/land van de adressen aan een (geattachte!) gelieerde personen.
         /// </summary>
-        /// <param name="gelieerdePersoon">gelieerde persoon</param>
+        /// <param name="gelieerdePersoon">De gelieerde persoon waar het over gaat</param>
         /// <returns>Dezelfde gelieerde persoon, maar met alle adressen gekoppeld</returns>
         /// <remarks>Het adresobject van het voorkeursadres moeten al gekoppeld zijn; 
         /// deze method instantieert enkel nog straat, gemeente en land.</remarks>
@@ -88,7 +88,7 @@ namespace Chiro.Gap.Data.Ef
         /// <summary>
         /// Koppelt straat/gemeente/land van alle adressen aan een lijst (geattachte!) gelieerde personen.
         /// </summary>
-        /// <param name="gelieerdePersonen">gelieerde personen</param>
+        /// <param name="gelieerdePersonen">Gelieerde personen</param>
         /// <returns>Dezelfde gelieerde personen, maar met alle adressen</returns>
         /// <remarks>De adresobjecten moeten al gekoppeld zijn; deze method instantieert enkel nog straat, gemeente en land.</remarks>
         public static IEnumerable<GelieerdePersoon> AlleAdressenKoppelen(IEnumerable<GelieerdePersoon> gelieerdePersonen)

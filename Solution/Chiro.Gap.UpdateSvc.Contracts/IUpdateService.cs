@@ -1,4 +1,8 @@
-﻿using System.ServiceModel;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System.ServiceModel;
 
 namespace Chiro.Gap.UpdateSvc.Contracts
 {
@@ -11,8 +15,12 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 		/// <summary>
 		/// Stelt het AD-nummer van de persoon met ID <paramref name="persoonID"/> in.  
 		/// </summary>
-		/// <param name="adNummer">Nieuw AD-nummer</param>
-		/// <param name="persoonID">ID van de persoon</param>
+		/// <param name="persoonID">
+		/// ID van de persoon
+		/// </param>
+		/// <param name="adNummer">
+		/// Nieuw AD-nummer
+		/// </param>
 		[OperationContract(IsOneWay = true)]
 		void AdNummerToekennen(int persoonID, int adNummer);
 
@@ -22,7 +30,7 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 		/// <paramref name="nieuwAd"/>, dan worden de personen gemerged.
 		/// </summary>
 		/// <param name="oudAd">AD-nummer van persoon met te vervangen AD-nummer</param>
-		/// <param name="nieuwAd">nieuw AD-nummer</param>
+		/// <param name="nieuwAd">Nieuw AD-nummer</param>
 		[OperationContract(IsOneWay = true)]
 		void AdNummerVervangen(int oudAd, int nieuwAd);
 

@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -14,8 +14,8 @@ namespace Chiro.Gap.WebApp.Models
 {
 	/// <summary>
 	/// Model voor verhuis:
-	///   . op een adres A wonen personen
-	///   . een aantal van die personen verhuizen naar een nieuw adres B
+	///  . op een adres A wonen personen
+	///  . een aantal van die personen verhuizen naar een nieuw adres B
 	/// Model voor een nieuw adres
 	/// </summary>
 	public class AdresModel : MasterViewModel, IAdresBewerkenModel

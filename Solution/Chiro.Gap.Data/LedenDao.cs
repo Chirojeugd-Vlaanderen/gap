@@ -1,5 +1,5 @@
 ﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2011
+// Copyright (c) 2007-2012
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
@@ -50,7 +50,7 @@ namespace Chiro.Gap.Data.Ef
         /// de gekoppelde entiteiten bepaald door <paramref name="extras"/>
         /// </summary>
         /// <param name="lidIDs">LidIDs op te halen leden</param>
-        /// <param name="extras">bepaalt op te halen gekoppelde entiteiten</param>
+        /// <param name="extras">Bepaalt op te halen gekoppelde entiteiten</param>
         /// <returns>De gevraagde lijst leden</returns>
         public IEnumerable<Lid> Ophalen(IEnumerable<int> lidIDs, LidExtras extras)
         {
@@ -89,7 +89,7 @@ namespace Chiro.Gap.Data.Ef
         /// de gekoppelde entiteiten bepaald door <paramref name="extras"/>
         /// </summary>
         /// <param name="lidID">LidID op te halen lid</param>
-        /// <param name="extras">bepaalt op te halen gekoppelde entiteiten</param>
+        /// <param name="extras">Bepaalt op te halen gekoppelde entiteiten</param>
         /// <returns>De gevraagde lijst leden</returns>
         public Lid Ophalen(int lidID, LidExtras extras)
         {
@@ -100,9 +100,9 @@ namespace Chiro.Gap.Data.Ef
         /// Koppelt de afdelingen aan een lijst <paramref name="leden"/>, die geattacht zijn aan 
         /// de objectcontext <paramref name="db"/>.
         /// </summary>
-        /// <param name="db">te gebruiken objectcontext</param>
-        /// <param name="leden">leden waarvan de afdelingen gekoppeld moeten worden</param>
-        /// <param name="metOfficieleAfdeling">koppelt ook officiele afdeling</param>
+        /// <param name="db">Te gebruiken objectcontext</param>
+        /// <param name="leden">Leden waarvan de afdelingen gekoppeld moeten worden</param>
+        /// <param name="metOfficieleAfdeling">Koppelt ook officiële afdeling</param>
         /// <returns>Dezelfde ledenlijst, maar nu met gekoppelde afdelingen.</returns>
         public static IEnumerable<Lid> AfdelingenKoppelen(ChiroGroepEntities db, IEnumerable<Lid> leden, bool metOfficieleAfdeling)
         {
@@ -526,7 +526,7 @@ namespace Chiro.Gap.Data.Ef
         /// Geeft <c>true</c> indien het lid met <paramref name="lidID"/> leiding is, anders <c>false</c>
         /// </summary>
         /// <param name="lidID">ID van lid waarvoor na te gaan of het al dan niet leiding is</param>
-        /// <returns><c>true</c> indien het lid met <paramref name="lidID"/> leiding is, anders <c>false</c></returns>
+        /// <returns><c>True</c> indien het lid met <paramref name="lidID"/> leiding is, anders <c>false</c></returns>
         public bool IsLeiding(int lidID)
         {
             using (var db = new ChiroGroepEntities())
@@ -541,7 +541,7 @@ namespace Chiro.Gap.Data.Ef
         /// <summary>
         /// Haalt het lid op bepaald door <paramref name="gelieerdePersoonID"/> en
         /// <paramref name="groepsWerkJaarID"/>, inclusief de relevante details om het lid naar Kipadmin te krijgen:
-        ///  persoon, afdelingen, officiële afdelingen, functies, groepswerkjaar, groep
+        /// persoon, afdelingen, officiële afdelingen, functies, groepswerkjaar, groep
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gelieerde persoon waarvoor het lidobject gevraagd is.</param>
         /// <param name="groepsWerkJaarID">ID van groepswerkjaar in hetwelke het lidobject gevraagd is</param>
@@ -650,7 +650,7 @@ namespace Chiro.Gap.Data.Ef
         /// Converteert LidExtra's naar lambda-expressies voor de data-access
         /// </summary>
         /// <param name="extras">Te converteren lidextra's</param>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">TODO (#190): documenteren</typeparam>
         /// <returns>Lijst lambda-expressies geschikt voor de LedenDAO</returns>
         /// <remarks>Van de adressen kunnen straten/gemeentes niet als lambda-expressie worden uitgedrukt,
         /// om wille van het verschil tussen Belgische en buitenlandse adressen.  Om adressen mee op te halen,
@@ -719,7 +719,7 @@ namespace Chiro.Gap.Data.Ef
         /// voorkeursadressen, functies en afdelingen.  (Geen communicatiemiddelen)
         /// </summary>
         /// <param name="gwjID">ID van het gevraagde groepswerkjaar</param>
-        /// <param name="ookInactief">geef hier <c>true</c> als ook de niet-actieve leden opgehaald
+        /// <param name="ookInactief">Geef hier <c>true</c> als ook de niet-actieve leden opgehaald
         /// moeten worden.</param>
         /// <returns>De lijst van leden</returns>
         public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID, bool ookInactief)
@@ -730,8 +730,9 @@ namespace Chiro.Gap.Data.Ef
             {
                 resultaat =
                     (from l in
-                         db.Lid.Include(ld => ld.GroepsWerkJaar.Groep).Include(ld => ld.GelieerdePersoon.Persoon).
-                         Include(ld => ld.Functie)
+                         db.Lid.Include(ld => ld.GroepsWerkJaar.Groep)
+                               .Include(ld => ld.GelieerdePersoon.Persoon)
+                               .Include(ld => ld.Functie)
                      where
                          (!l.NonActief || ookInactief) &&
                          l.GroepsWerkJaar.ID == gwjID
