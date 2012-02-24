@@ -272,7 +272,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Postback voor activeren/bewerken afdeling(sjaar).
+		/// Postback voor activeren/bewerken afdelingsjaar
 		/// </summary>
 		/// <param name="model">De property <c>model.AfdelingsJaar</c> bevat de relevante details over het afdelingsjaar</param>
 		/// <param name="groepID">Groep waarin de gebruiker momenteel aan het werken is</param>
@@ -315,12 +315,12 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
         /// <summary>
-        /// Laat de gebruiker het bestaande afdelingsjaar met afdelingsjaarID <paramref name="id"/>
+        /// Laat de gebruiker een bestaande afdeling met afdelingID <paramref name="id"/>
         /// bewerken.
         /// </summary>
         /// <param name="groepID">ID van de geselecteerde groep</param>
-        /// <param name="id">ID van het te bewerken afdelingsjaar</param>
-        /// <returns>De view 'afdelingsjaar'</returns>
+        /// <param name="id">ID van de te bewerken afdeling</param>
+        /// <returns>De view 'afdeling'</returns>
         [HandleError]
         public ActionResult AfdBewerken(int groepID, int id)
         {
@@ -336,12 +336,12 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Postback voor activeren/bewerken afdeling(sjaar).
+        /// Postback voor activeren/bewerken afdeling
         /// </summary>
-        /// <param name="model">De property <c>model.AfdelingsJaar</c> bevat de relevante details over het afdelingsjaar</param>
+        /// <param name="model">De property <c>model.AfdelingInfo</c> bevat de relevante details over de afdeling</param>
         /// <param name="groepID">Groep waarin de gebruiker momenteel aan het werken is</param>
         /// <returns>Het afdelingsoverzicht als de wijzigingen bewaard zijn, en anders opnieuw de
-        /// 'AfdelingsJaarView'.</returns>
+        /// 'AfdelingView'.</returns>
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
         public ActionResult AfdBewerken(AfdelingInfoModel model, int groepID)
