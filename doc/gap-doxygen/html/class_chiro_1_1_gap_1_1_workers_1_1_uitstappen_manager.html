@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -102,7 +100,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Zoeken');
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Members</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_uitstappen_manager.html#ae19cc494578cc43538891e00791dd72e">UitstappenManager</a> (<a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_uitstappen_dao.html">IUitstappenDao</a> uitstappenDao, <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_groeps_werk_jaar_dao.html">IGroepsWerkJaarDao</a> groepsWerkJaarDao, <a class="el" href="interface_chiro_1_1_gap_1_1_workers_1_1_i_autorisatie_manager.html">IAutorisatieManager</a> autorisatieManager, <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_bivak_sync.html">IBivakSync</a> sync)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. De parameters moeten 'ingevuld' via dependency inejction.  <a href="#ae19cc494578cc43538891e00791dd72e"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. De parameters moeten 'ingevuld' worden via dependency injection.  <a href="#ae19cc494578cc43538891e00791dd72e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_uitstap.html">Uitstap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_uitstappen_manager.html#a6323d16fc6f00f0e0916d9700eb7a23a">Koppelen</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_uitstap.html">Uitstap</a> uitstap, <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groeps_werk_jaar.html">GroepsWerkJaar</a> gwj)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Koppelt een uitstap aan een groepswerkjaar. Dit moet typisch enkel gebeuren bij een nieuwe uitstap.  <a href="#a6323d16fc6f00f0e0916d9700eb7a23a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_uitstap.html">Uitstap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_uitstappen_manager.html#a6bea8cce62328f1dc6c29ae14b8caa40">Ophalen</a> (int uitstapID, <a class="el" href="namespace_chiro_1_1_gap_1_1_orm.html#a64e3de74a0dfb9c5b74f8ec8a7360e40">UitstapExtras</a> extras)</td></tr>
@@ -120,6 +118,7 @@ Public Members</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_uitstappen_manager.html#ad1edb4a1df25f449212fb025b56987cf">OpnieuwSyncen</a> (int werkjaar)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Stuurt alle bivakken van werkjaar <em>werkjaar</em>  opnieuw naar kipadmin.  <a href="#ad1edb4a1df25f449212fb025b56987cf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_domain_1_1_bivak_aangifte_lijst_info.html">BivakAangifteLijstInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_uitstappen_manager.html#adadeb8f698e5e20581cdebb29367cd56">BivakStatusOphalen</a> (int groepID, <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groeps_werk_jaar.html">GroepsWerkJaar</a> groepsWerkJaar)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gaat na welke gegevens er nog ontbreken in de geregistreerde bivakken om van een geldige bivakaangifte te kunnen spreken.  <a href="#adadeb8f698e5e20581cdebb29367cd56"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
 <div class="textblock"><p>Businesslogica wat betreft uitstappen en bivakken. </p>
@@ -161,13 +160,13 @@ Public Members</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Constructor. De parameters moeten 'ingevuld' via dependency inejction. </p>
+<p>Constructor. De parameters moeten 'ingevuld' worden via dependency injection. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">uitstappenDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access voor uitstappen</td></tr>
-    <tr><td class="paramname">groepsWerkJaarDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access voor groepswerkjaren</td></tr>
-    <tr><td class="paramname">autorisatieManager</td><td>Businesslogica voor autorisatie</td></tr>
-    <tr><td class="paramname">sync</td><td>Proxy naar service om bivakaangiftes te syncen met Kipadmin</td></tr>
+    <tr><td class="paramname">uitstappenDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access voor uitstappen </td></tr>
+    <tr><td class="paramname">groepsWerkJaarDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access voor groepswerkjaren </td></tr>
+    <tr><td class="paramname">autorisatieManager</td><td>Businesslogica voor autorisatie </td></tr>
+    <tr><td class="paramname">sync</td><td>Proxy naar service om bivakaangiftes te syncen met Kipadmin </td></tr>
   </table>
   </dd>
 </dl>
@@ -209,13 +208,13 @@ Public Members</h2></td></tr>
 <p>Bewaart de uitstap met het gekoppelde groepswerkjaar. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">uitstap</td><td>Te bewaren uitstap</td></tr>
-    <tr><td class="paramname">extras</td><td>Bepaalt de mee te bewaren koppelingen</td></tr>
-    <tr><td class="paramname">sync</td><td>Als <code>true</code>, wordt de uitstap gesynct naar Kipadmin.</td></tr>
+    <tr><td class="paramname">uitstap</td><td>Te bewaren uitstap </td></tr>
+    <tr><td class="paramname">extras</td><td>Bepaalt de mee te bewaren koppelingen </td></tr>
+    <tr><td class="paramname">sync</td><td>Als <code>true</code>, wordt de uitstap gesynct naar Kipadmin. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De bewaarde uitstap</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De bewaarde uitstap </dd></dl>
 <p>Groepswerkjaar wordt altijd mee bewaard. De parameter <em>sync</em>  staat erbij om te vermijden dat voor het bewaren van een koppeling een (ongewijzigd) bivak mee over de lijn moet. </p>
 
 </div>
@@ -245,6 +244,22 @@ Public Members</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>Gaat na welke gegevens er nog ontbreken in de geregistreerde bivakken om van een geldige bivakaangifte te kunnen spreken. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">groepID</td><td>De ID van de groep waar het over gaat. </td></tr>
+    <tr><td class="paramname">groepsWerkJaar</td><td>Het werkjaar waarvoor de gegevens opgehaald moeten worden. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een lijstje met opmerkingen/feedback voor de gebruiker, zodat die weet of er nog iets extra's ingevuld moet worden. </dd></dl>
+<dl><dt><b>Excepties:</b></dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">GeenGavException</td><td>Komt voor als de gebruiker op dit moment geen GAV is voor de groep met de opgegeven <em>groepID</em> , maar ook als de gebruiker geen GAV was/is in het opgegeven <em>groepsWerkJaar</em> . </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a class="anchor" id="ac101730b4818c835a05548eb5c28c8f1"></a><!-- doxytag: member="Chiro::Gap::Workers::UitstappenManager::DeelnemersOphalen" ref="ac101730b4818c835a05548eb5c28c8f1" args="(int uitstapID)" -->
@@ -265,11 +280,11 @@ Public Members</h2></td></tr>
 <p>Haalt de deelnemers (incl. lidgegevens van het betreffende groepswerkjaar) van de gegeven uitstap op. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">uitstapID</td><td>ID van uitstap waarvan deelnemers op te halen zijn</td></tr>
+    <tr><td class="paramname">uitstapID</td><td>ID van uitstap waarvan deelnemers op te halen zijn </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De deelnemers van de gevraagde uitstap.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De deelnemers van de gevraagde uitstap. </dd></dl>
 
 </div>
 </div>
@@ -307,9 +322,9 @@ Public Members</h2></td></tr>
 <p>Schrijft de gegeven <em>gelieerdePersonen</em>  in voor de gegeven <em>uitstap</em> , al dan niet als <em>logistiekDeelnemer</em> . </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">uitstap</td><td>Uitstap waarvoor in te schrijven, gekoppeld aan groep</td></tr>
-    <tr><td class="paramname">gelieerdePersonen</td><td>In te schrijven gelieerde personen, gekoppeld aan groep</td></tr>
-    <tr><td class="paramname">logistiekDeelnemer</td><td>Als <code>true</code>, dan worden de <em>gelieerdePersonen</em>  ingeschreven als logistiek deelnemer.</td></tr>
+    <tr><td class="paramname">uitstap</td><td>Uitstap waarvoor in te schrijven, gekoppeld aan groep </td></tr>
+    <tr><td class="paramname">gelieerdePersonen</td><td>In te schrijven gelieerde personen, gekoppeld aan groep </td></tr>
+    <tr><td class="paramname">logistiekDeelnemer</td><td>Als <code>true</code>, dan worden de <em>gelieerdePersonen</em>  ingeschreven als logistiek deelnemer. </td></tr>
   </table>
   </dd>
 </dl>
@@ -344,12 +359,12 @@ Public Members</h2></td></tr>
 <p>Koppelt een uitstap aan een groepswerkjaar. Dit moet typisch enkel gebeuren bij een nieuwe uitstap. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">uitstap</td><td>Te koppelen uitstap</td></tr>
-    <tr><td class="paramname">gwj</td><td>Te koppelen groepswerkjaar</td></tr>
+    <tr><td class="paramname">uitstap</td><td>Te koppelen uitstap </td></tr>
+    <tr><td class="paramname">gwj</td><td>Te koppelen groepswerkjaar </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd><em>uitstap</em> , gekoppeld aan <em>gwj</em> .</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd><em>uitstap</em> , gekoppeld aan <em>gwj</em> . </dd></dl>
 
 </div>
 </div>
@@ -381,12 +396,12 @@ Public Members</h2></td></tr>
 <p>Koppelt een plaats aan een uitstap. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">uitstap</td><td>Te koppelen uitstap</td></tr>
-    <tr><td class="paramname">plaats</td><td>Te koppelen plaats</td></tr>
+    <tr><td class="paramname">uitstap</td><td>Te koppelen uitstap </td></tr>
+    <tr><td class="paramname">plaats</td><td>Te koppelen plaats </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Uitstap, met plaats gekoppeld. Persisteert niet</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Uitstap, met plaats gekoppeld. Persisteert niet </dd></dl>
 
 </div>
 </div>
@@ -418,12 +433,12 @@ Public Members</h2></td></tr>
 <p>Haalt de uitstap met gegeven <em>uitstapID</em>  op, inclusief het gekoppelde groepswerkjaar. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">uitstapID</td><td>ID op te halen uitstap</td></tr>
-    <tr><td class="paramname">extras</td><td></td></tr>
+    <tr><td class="paramname">uitstapID</td><td>ID op te halen uitstap </td></tr>
+    <tr><td class="paramname">extras</td><td>TODO (#190): documenteren </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De uitstap, met daaraan gekoppeld het groepswerkjaar.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De uitstap, met daaraan gekoppeld het groepswerkjaar. </dd></dl>
 
 </div>
 </div>
@@ -455,12 +470,12 @@ Public Members</h2></td></tr>
 <p>Haalt alle uitstappen van een gegeven groep op. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepID</td><td>ID van de groep</td></tr>
-    <tr><td class="paramname">inschrijvenMogelijk</td><td>Als dit <code>true</code> is, worden enkel de gegevens opgehaald van uitstappen waarvoor nog ingeschreven kan worden.</td></tr>
+    <tr><td class="paramname">groepID</td><td>ID van de groep </td></tr>
+    <tr><td class="paramname">inschrijvenMogelijk</td><td>Als dit <code>true</code> is, worden enkel de gegevens opgehaald van uitstappen waarvoor nog ingeschreven kan worden. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Details van uitstappen</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Details van uitstappen </dd></dl>
 <p>Om maar iets te doen, ordenen we voorlopig op einddatum </p>
 
 </div>
@@ -483,7 +498,7 @@ Public Members</h2></td></tr>
 <p>Stuurt alle bivakken van werkjaar <em>werkjaar</em>  opnieuw naar kipadmin. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">werkjaar</td><td>Werkjaar</td></tr>
+    <tr><td class="paramname">werkjaar</td><td>Het werkjaar waarvan de gegevens opnieuw gesynct moeten worden </td></tr>
   </table>
   </dd>
 </dl>
@@ -511,7 +526,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:45 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:46 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -121,6 +119,8 @@ Public Members</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Als een gelieerde persoon een gebruikersrecht heeft/had voor zijn eigen groep, dan levert deze call dat gebruikersrecht op, inclusief GAV-object.  <a href="#a784f627f44e174ff778bc73794370cae"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gebruikers_recht.html">GebruikersRecht</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_dummies_1_1_aut_dao_altijd_gav.html#ad0ce0c552ad6c5429369ef69e7cc7dc1">AllesOphalen</a> (int groepID)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt alle gebruikersrechten op uit de groep met ID <em>groepID</em> , inclusief groep, gav, persoon en gelieerde personen.  <a href="#ad0ce0c552ad6c5429369ef69e7cc7dc1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_dummies_1_1_aut_dao_altijd_gav.html#a4f9d6ae355ddaefb20446e3103dc51f0">IdOphalen</a> (int gavID, int groepID)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt gebruikersrecht op, gegeven <em>gavID</em>  en <em>groepID</em>   <a href="#a4f9d6ae355ddaefb20446e3103dc51f0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_dummies_1_1_aut_dao_altijd_gav.html#aa01ee6fce5c541766c558ff167b78305">IsGavGroep</a> (string login, int groepID)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Controleert of een gebruiker *nu* GAV is van een gegeven groep.  <a href="#aa01ee6fce5c541766c558ff167b78305"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_dummies_1_1_aut_dao_altijd_gav.html#aafe692d266ed30e6529db943d7e5c089">IsGavGelieerdePersoon</a> (string login, int gelieerdePersoonID)</td></tr>
@@ -183,7 +183,7 @@ Public Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>alle gebruikersrechten uit de groep met ID <em>groepID</em> , inclusief groep, gav, persoon en gelieerde personen.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Alle gebruikersrechten uit de groep met ID <em>groepID</em> , inclusief groep, gav, persoon en gelieerde personen.</dd></dl>
 
 <p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_autorisatie_dao.html#a984b1523c9c442c005daf982fffee567">Chiro.Gap.Orm.DataInterfaces.IAutorisatieDao</a>.</p>
 
@@ -257,7 +257,7 @@ Public Members</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">lidIDs</td><td>ID's van leden</td></tr>
-    <tr><td class="paramname">login</td><td>login van de gebruiker</td></tr>
+    <tr><td class="paramname">login</td><td>Login van de gebruiker</td></tr>
   </table>
   </dd>
 </dl>
@@ -334,6 +334,45 @@ Public Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a4f9d6ae355ddaefb20446e3103dc51f0"></a><!-- doxytag: member="Chiro::Gap::Dummies::AutDaoAltijdGav::IdOphalen" ref="a4f9d6ae355ddaefb20446e3103dc51f0" args="(int gavID, int groepID)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Chiro.Gap.Dummies.AutDaoAltijdGav.IdOphalen </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>gavID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>groepID</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Haalt gebruikersrecht op, gegeven <em>gavID</em>  en <em>groepID</em>  </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gavID</td><td>ID van GAV waarvan gebruikersrecht op te halen</td></tr>
+    <tr><td class="paramname">groepID</td><td>ID van groep waarvan gebruikersrecht op te halen</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>ID van gebruikersrecht van GAV op groep, of 0 als niet gevonden.</dd></dl>
+
+<p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_autorisatie_dao.html#a6abcce51bd23aa51fb338eb45f98ac38">Chiro.Gap.Orm.DataInterfaces.IAutorisatieDao</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a85059b8c357a2cbaf8db3aebe07b5b9e"></a><!-- doxytag: member="Chiro::Gap::Dummies::AutDaoAltijdGav::IsGavAfdeling" ref="a85059b8c357a2cbaf8db3aebe07b5b9e" args="(string login, int afdelingsID)" -->
 <div class="memitem">
 <div class="memproto">
@@ -406,7 +445,7 @@ Public Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>true</code> als de bezoeker Gav is voor het bedoelde afdelingsJaar, <code>false</code> als dat niet het geval is</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>True</code> als de bezoeker Gav is voor het bedoelde afdelingsJaar, <code>false</code> als dat niet het geval is</dd></dl>
 
 <p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_autorisatie_dao.html#a9615b32c266ec0b9734b08549a189d4f">Chiro.Gap.Orm.DataInterfaces.IAutorisatieDao</a>.</p>
 
@@ -519,7 +558,7 @@ Public Members</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">deelnemerID</td><td>ID van een (uitstap)deelnemer</td></tr>
-    <tr><td class="paramname">login</td><td>login van de gebruiker wiens GAV-schap moet worden getest</td></tr>
+    <tr><td class="paramname">login</td><td>Login van de gebruiker wiens GAV-schap moet worden getest</td></tr>
   </table>
   </dd>
 </dl>
@@ -558,11 +597,11 @@ Public Members</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">gebruikersRechtID</td><td>ID van een gebruikersrecht</td></tr>
-    <tr><td class="paramname">login</td><td>login van de gebruiker wiens GAV-schap moet worden getest</td></tr>
+    <tr><td class="paramname">login</td><td>Login van de gebruiker wiens GAV-schap moet worden getest</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>true</code> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde gebruikersrecht, anders <code>false</code></dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>True</code> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde gebruikersrecht, anders <code>false</code></dd></dl>
 
 <p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_autorisatie_dao.html#a2863bcd7e36e63a6d51e8decdf1482b4">Chiro.Gap.Orm.DataInterfaces.IAutorisatieDao</a>.</p>
 
@@ -796,7 +835,7 @@ Public Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>true</code> als het persoonsAdres met ID <em>persoonsAdresID</em>  gekoppeld is aan een persoon waarop de gebruiker met login <em>login</em>  momenteel GAV-rechten op heeft. Anders <code>false</code>.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>True</code> als het persoonsAdres met ID <em>persoonsAdresID</em>  gekoppeld is aan een persoon waarop de gebruiker met login <em>login</em>  momenteel GAV-rechten op heeft. Anders <code>false</code>.</dd></dl>
 
 <p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_autorisatie_dao.html#aac57e868e2e68c3801fde8cb3e4b9d7a">Chiro.Gap.Orm.DataInterfaces.IAutorisatieDao</a>.</p>
 
@@ -875,7 +914,7 @@ Public Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>true</code> als het persoonsAdres met ID <em>uitstapID</em>  gekoppeld is aan een groepswerkjaar waarop de gebruiker met login <em>login</em>  momenteel GAV-rechten heeft. Anders <code>false</code>.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>True</code> als het persoonsAdres met ID <em>uitstapID</em>  gekoppeld is aan een groepswerkjaar waarop de gebruiker met login <em>login</em>  momenteel GAV-rechten heeft. Anders <code>false</code>.</dd></dl>
 
 <p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_autorisatie_dao.html#ae493fcbb5c28e29b30c55fde92c8fa91">Chiro.Gap.Orm.DataInterfaces.IAutorisatieDao</a>.</p>
 
@@ -1010,7 +1049,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:34 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:29 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

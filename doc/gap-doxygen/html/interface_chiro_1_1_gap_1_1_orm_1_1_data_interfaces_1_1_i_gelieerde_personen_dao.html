@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -127,8 +125,8 @@ Public Members</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt een gelieerde persoon op op basis van <em>persoonID</em>  en <em>groepID</em>   <a href="#a1574415d1c168735afabd436fc0936ad"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_gelieerde_personen_dao.html#a0d9bcd7955b1e59d3fbc37e74ceb9fcc">Ophalen</a> (int persoonID, int groepID, params Expression&lt; Func&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a>, object &gt;&gt;[] paths)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt een gelieerde persoon op op basis van <em>persoonID</em>  en <em>groepID</em>   <a href="#a0d9bcd7955b1e59d3fbc37e74ceb9fcc"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_gelieerde_personen_dao.html#a787b267ca7a25da33d5fffe2470bdd06">Ophalen</a> (IList&lt; int &gt; gelieerdePersoonIDs, <a class="el" href="namespace_chiro_1_1_gap_1_1_orm.html#ac6a59b2f87a62dc141e4fe4b1643999b">PersoonsExtras</a> extras)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt een aantal gelieerde personen op, samen met de gekoppelde entiteiten bepaald door <em>extras</em>   <a href="#a787b267ca7a25da33d5fffe2470bdd06"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_gelieerde_personen_dao.html#a4b564205d3d42ab6eff34a810a367e70">Ophalen</a> (IEnumerable&lt; int &gt; gelieerdePersoonIDs, <a class="el" href="namespace_chiro_1_1_gap_1_1_orm.html#ac6a59b2f87a62dc141e4fe4b1643999b">PersoonsExtras</a> extras)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt een aantal gelieerde personen op, samen met de gekoppelde entiteiten bepaald door <em>extras</em>   <a href="#a4b564205d3d42ab6eff34a810a367e70"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_gelieerde_personen_dao.html#a429dfa81f4500e9d8940592f828eb741">Ophalen</a> (int gelieerdePersoonID, <a class="el" href="namespace_chiro_1_1_gap_1_1_orm.html#ac6a59b2f87a62dc141e4fe4b1643999b">PersoonsExtras</a> extras)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt een gelieerde persoon op, samen met de gekoppelde entiteiten bepaald door <em>extras</em>   <a href="#a429dfa81f4500e9d8940592f828eb741"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">IList&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_gelieerde_personen_dao.html#a422d64b2b1b00ff2e8b3e4664f547cb7">PaginaOphalen</a> (int groepID, int pagina, int paginaGrootte, <a class="el" href="namespace_chiro_1_1_gap_1_1_domain.html#a29ae8fd83a0dcec220c30cca9bd2027d">PersoonSorteringsEnum</a> sortering, <a class="el" href="namespace_chiro_1_1_gap_1_1_orm.html#ac6a59b2f87a62dc141e4fe4b1643999b">PersoonsExtras</a> extras, out int aantalTotaal)</td></tr>
@@ -145,6 +143,8 @@ Public Members</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt alle personen op die op een zelfde adres wonen als de gelieerde persoon met het gegeven ID.  <a href="#afe4af15fc42479ef43a37df34184bf31"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_gelieerde_personen_dao.html#a399265b8c261fa6d4e7009f43952cc98">Bewaren</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a> gelieerdePersoon, <a class="el" href="namespace_chiro_1_1_gap_1_1_orm.html#ac6a59b2f87a62dc141e4fe4b1643999b">PersoonsExtras</a> extras)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Bewaart een gelieerde persoon samen met eventueel gekoppelde entiteiten.  <a href="#a399265b8c261fa6d4e7009f43952cc98"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_gelieerde_personen_dao.html#acd897a5f9c4f6f34fff6ad984688dccf">OphalenOpBasisVanGavs</a> (int groepID)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gegeven een <em>groepID</em> , haal van de (ex-)GAV's waarvan de personen gekend zijn, de gelieerde personen op (die dus de koppeling bepalen tussen de persoon en de groep met gegeven <em>groepID</em> ). Voorlopig worden ook de communicatiemiddelen mee opgeleverd.  <a href="#acd897a5f9c4f6f34fff6ad984688dccf"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
 <div class="textblock"><p>Interface voor een gegevenstoegangsobject voor GelieerdePersonen. </p>
@@ -225,11 +225,11 @@ Public Members</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">gelieerdePersoon</td><td>Te bewaren gelieerde persoon</td></tr>
-    <tr><td class="paramname">extras</td><td>bepaalt de gekoppelde entiteiten</td></tr>
+    <tr><td class="paramname">extras</td><td>Bepaalt de gekoppelde entiteiten</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>de bewaarde gelieerde persoon</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De bewaarde gelieerde persoon</dd></dl>
 
 <p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_gap_1_1_data_1_1_ef_1_1_gelieerde_personen_dao.html#a8e50d96fc4c0188a9b0f5ac9f4a6f3f8">Chiro.Gap.Data.Ef.GelieerdePersonenDao</a> en <a class="el" href="class_chiro_1_1_gap_1_1_dummies_1_1_dummy_gelieerde_personen_dao.html#aa86613b3a4d0bec4b81c66b3044a38f3">Chiro.Gap.Dummies.DummyGelieerdePersonenDao</a>.</p>
 
@@ -393,7 +393,7 @@ Public Members</h2></td></tr>
     <tr><td class="paramname">persoonID</td><td>ID van de *persoon* waarvoor de gelieerde persoon opgehaald moet worden</td></tr>
     <tr><td class="paramname">groepID</td><td>ID van de groep waaraan de gelieerde persoon gelieerd moet zijn</td></tr>
     <tr><td class="paramname">metVoorkeurAdres</td><td>Indien <code>true</code>, wordt ook het voorkeursadres opgehaald.</td></tr>
-    <tr><td class="paramname">paths</td><td>bepaalt op te halen gekoppelde entiteiten</td></tr>
+    <tr><td class="paramname">paths</td><td>Bepaalt op te halen gekoppelde entiteiten</td></tr>
   </table>
   </dd>
 </dl>
@@ -440,7 +440,7 @@ Public Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">persoonID</td><td>ID van de *persoon* waarvoor de gelieerde persoon opgehaald moet worden</td></tr>
     <tr><td class="paramname">groepID</td><td>ID van de groep waaraan de gelieerde persoon gelieerd moet zijn</td></tr>
-    <tr><td class="paramname">paths</td><td>bepaalt op te halen gekoppelde entiteiten</td></tr>
+    <tr><td class="paramname">paths</td><td>Bepaalt op te halen gekoppelde entiteiten</td></tr>
   </table>
   </dd>
 </dl>
@@ -451,14 +451,14 @@ Public Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a787b267ca7a25da33d5fffe2470bdd06"></a><!-- doxytag: member="Chiro::Gap::Orm::DataInterfaces::IGelieerdePersonenDao::Ophalen" ref="a787b267ca7a25da33d5fffe2470bdd06" args="(IList&lt; int &gt; gelieerdePersoonIDs, PersoonsExtras extras)" -->
+<a class="anchor" id="a4b564205d3d42ab6eff34a810a367e70"></a><!-- doxytag: member="Chiro::Gap::Orm::DataInterfaces::IGelieerdePersonenDao::Ophalen" ref="a4b564205d3d42ab6eff34a810a367e70" args="(IEnumerable&lt; int &gt; gelieerdePersoonIDs, PersoonsExtras extras)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">IEnumerable&lt;<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a>&gt; Chiro.Gap.Orm.DataInterfaces.IGelieerdePersonenDao.Ophalen </td>
           <td>(</td>
-          <td class="paramtype">IList&lt; int &gt;&#160;</td>
+          <td class="paramtype">IEnumerable&lt; int &gt;&#160;</td>
           <td class="paramname"><em>gelieerdePersoonIDs</em>, </td>
         </tr>
         <tr>
@@ -480,13 +480,13 @@ Public Members</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">gelieerdePersoonIDs</td><td>ID's op te halen gelieerde personen</td></tr>
-    <tr><td class="paramname">extras</td><td>bepaalt de extra op te halen entiteiten</td></tr>
+    <tr><td class="paramname">extras</td><td>Bepaalt de extra op te halen entiteiten</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="return"><dt><b>Retourneert:</b></dt><dd>De gevraagde gelieerde personen.</dd></dl>
 
-<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_gap_1_1_data_1_1_ef_1_1_gelieerde_personen_dao.html#a4bf40600447b5b376438e5dc14749952">Chiro.Gap.Data.Ef.GelieerdePersonenDao</a> en <a class="el" href="class_chiro_1_1_gap_1_1_dummies_1_1_dummy_gelieerde_personen_dao.html#aae94e8e7f04f40d6e497aed30f3fbe99">Chiro.Gap.Dummies.DummyGelieerdePersonenDao</a>.</p>
+<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_gap_1_1_data_1_1_ef_1_1_gelieerde_personen_dao.html#a93406b791cf3aff706cfec38ba74c482">Chiro.Gap.Data.Ef.GelieerdePersonenDao</a> en <a class="el" href="class_chiro_1_1_gap_1_1_dummies_1_1_dummy_gelieerde_personen_dao.html#ae382e1409637671f2ecfc1d02654d7ef">Chiro.Gap.Dummies.DummyGelieerdePersonenDao</a>.</p>
 
 </div>
 </div>
@@ -519,13 +519,42 @@ Public Members</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">gelieerdePersoonID</td><td>ID op te halen gelieerde persoon</td></tr>
-    <tr><td class="paramname">extras</td><td>bepaalt de extra op te halen entiteiten</td></tr>
+    <tr><td class="paramname">extras</td><td>Bepaalt de extra op te halen entiteiten</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="return"><dt><b>Retourneert:</b></dt><dd>De gevraagde gelieerde persoon.</dd></dl>
 
 <p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_gap_1_1_data_1_1_ef_1_1_gelieerde_personen_dao.html#a4afc039f16b9f756807b9e0dd32c0c47">Chiro.Gap.Data.Ef.GelieerdePersonenDao</a> en <a class="el" href="class_chiro_1_1_gap_1_1_dummies_1_1_dummy_gelieerde_personen_dao.html#acd4980c88a2723cd0b4b91dfe754e018">Chiro.Gap.Dummies.DummyGelieerdePersonenDao</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acd897a5f9c4f6f34fff6ad984688dccf"></a><!-- doxytag: member="Chiro::Gap::Orm::DataInterfaces::IGelieerdePersonenDao::OphalenOpBasisVanGavs" ref="acd897a5f9c4f6f34fff6ad984688dccf" args="(int groepID)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">IEnumerable&lt;<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a>&gt; Chiro.Gap.Orm.DataInterfaces.IGelieerdePersonenDao.OphalenOpBasisVanGavs </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>groepID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Gegeven een <em>groepID</em> , haal van de (ex-)GAV's waarvan de personen gekend zijn, de gelieerde personen op (die dus de koppeling bepalen tussen de persoon en de groep met gegeven <em>groepID</em> ). Voorlopig worden ook de communicatiemiddelen mee opgeleverd. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">groepID</td><td>ID van een groep</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Beschikbare gelieerde personen waarvan we weten dat ze GAV zijn voor die groep</dd></dl>
+<p>Vervallen GAV's worden ook meegeleverd </p>
+
+<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_gap_1_1_data_1_1_ef_1_1_gelieerde_personen_dao.html#a7e663c2d49adb1644d700465902ab03b">Chiro.Gap.Data.Ef.GelieerdePersonenDao</a> en <a class="el" href="class_chiro_1_1_gap_1_1_dummies_1_1_dummy_gelieerde_personen_dao.html#aba8aef2fd8cf73d234095f9719b050f1">Chiro.Gap.Dummies.DummyGelieerdePersonenDao</a>.</p>
 
 </div>
 </div>
@@ -869,7 +898,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:37 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:33 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -103,7 +101,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Zoeken');
 Public Members</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_jaar_overgang_manager.html#af74a69d7394670d5a5eaa2acc33daf7c">JaarOvergangManager</a> (<a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_groepen_manager.html">GroepenManager</a> gm, <a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_chiro_groepen_manager.html">ChiroGroepenManager</a> cgm, <a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_afdelings_jaar_manager.html">AfdelingsJaarManager</a> ajm, <a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_groeps_werk_jaar_manager.html">GroepsWerkJaarManager</a> wm, <a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_leden_manager.html">LedenManager</a> lm)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Maakt een nieuwe jaarovergangsmanager aan.  <a href="#af74a69d7394670d5a5eaa2acc33daf7c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_jaar_overgang_manager.html#ad4399e798a146d98d952fc5e0e3738fc">JaarOvergangUitvoeren</a> (IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_te_activeren_afdeling_info.html">TeActiverenAfdelingInfo</a> &gt; teActiveren, int groepID)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_jaar_overgang_manager.html#af8b6eec6b1be4b4b6e9485ee0f3e2af6">JaarOvergangUitvoeren</a> (IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_afdelings_jaar_detail.html">AfdelingsJaarDetail</a> &gt; teActiveren, int groepID)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Maakt voor de groep met de opgegeven <em>groepID</em>  een nieuw werkjaar aan en maakt daarin de opgegeven afdelingen aan, met hun respectieve leeftijdsgrenzen (geboortejaren).  <a href="#af8b6eec6b1be4b4b6e9485ee0f3e2af6"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
 <div class="textblock"><p>Worker die alle businesslogica i.v.m. de jaarovergang bevat. </p>
@@ -154,11 +153,11 @@ Public Members</h2></td></tr>
 <p>Maakt een nieuwe jaarovergangsmanager aan. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">gm</td><td>De worker voor Groepen</td></tr>
-    <tr><td class="paramname">cgm</td><td>De worker voor Chirogroepen</td></tr>
-    <tr><td class="paramname">ajm</td><td>De worker voor AfdelingsJaren</td></tr>
-    <tr><td class="paramname">wm</td><td>De worker voor GroepsWerkJaren</td></tr>
-    <tr><td class="paramname">lm</td><td>De worker voor Leden</td></tr>
+    <tr><td class="paramname">gm</td><td>De worker voor Groepen </td></tr>
+    <tr><td class="paramname">cgm</td><td>De worker voor Chirogroepen </td></tr>
+    <tr><td class="paramname">ajm</td><td>De worker voor AfdelingsJaren </td></tr>
+    <tr><td class="paramname">wm</td><td>De worker voor GroepsWerkJaren </td></tr>
+    <tr><td class="paramname">lm</td><td>De worker voor Leden </td></tr>
   </table>
   </dd>
 </dl>
@@ -166,14 +165,14 @@ Public Members</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Documentatie van functie members</h2>
-<a class="anchor" id="ad4399e798a146d98d952fc5e0e3738fc"></a><!-- doxytag: member="Chiro::Gap::Workers::JaarOvergangManager::JaarOvergangUitvoeren" ref="ad4399e798a146d98d952fc5e0e3738fc" args="(IEnumerable&lt; TeActiverenAfdelingInfo &gt; teActiveren, int groepID)" -->
+<a class="anchor" id="af8b6eec6b1be4b4b6e9485ee0f3e2af6"></a><!-- doxytag: member="Chiro::Gap::Workers::JaarOvergangManager::JaarOvergangUitvoeren" ref="af8b6eec6b1be4b4b6e9485ee0f3e2af6" args="(IEnumerable&lt; AfdelingsJaarDetail &gt; teActiveren, int groepID)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void Chiro.Gap.Workers.JaarOvergangManager.JaarOvergangUitvoeren </td>
           <td>(</td>
-          <td class="paramtype">IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_te_activeren_afdeling_info.html">TeActiverenAfdelingInfo</a> &gt;&#160;</td>
+          <td class="paramtype">IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_afdelings_jaar_detail.html">AfdelingsJaarDetail</a> &gt;&#160;</td>
           <td class="paramname"><em>teActiveren</em>, </td>
         </tr>
         <tr>
@@ -190,6 +189,22 @@ Public Members</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Maakt voor de groep met de opgegeven <em>groepID</em>  een nieuw werkjaar aan en maakt daarin de opgegeven afdelingen aan, met hun respectieve leeftijdsgrenzen (geboortejaren). </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">teActiveren</td><td>De afdelingen die geactiveerd moeten worden, met ingestelde geboortejaren </td></tr>
+    <tr><td class="paramname">groepID</td><td>De ID van de groep die de jaarovergang uitvoert </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Excepties:</b></dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">GapException</td><td>Komt voor wanneer de jaarvergang te vroeg gebeurt. </td></tr>
+    <tr><td class="paramname">FoutNummerException</td><td>Komt voor als er een afdeling bij zit die niet gekend is in de groep, of als er een afdeling gekoppeld is aan een onbestaande nationale afdeling. Ook validatiefouten worden op deze manier doorgegeven. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -214,7 +229,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:45 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:46 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

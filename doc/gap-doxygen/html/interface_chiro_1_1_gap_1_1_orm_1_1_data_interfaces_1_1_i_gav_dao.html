@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -103,8 +101,9 @@ Klasse diagram voor Chiro.Gap.Orm.DataInterfaces.IGavDao</div>
  <div class="center">
   <img src="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_gav_dao.png" usemap="#Chiro.Gap.Orm.DataInterfaces.IGavDao_map" alt=""/>
   <map id="Chiro.Gap.Orm.DataInterfaces.IGavDao_map" name="Chiro.Gap.Orm.DataInterfaces.IGavDao_map">
-<area href="interface_chiro_1_1_cdf_1_1_data_1_1_i_dao-g.html" title="Algemeen contract voor CRUD-operaties in de ORM-laag. Implementeert een &#39;Repository&#39;. Aangepast uit &#39;Pro LINQ Object Relational Mapping with C# 2008&#39;." alt="Chiro.Cdf.Data.IDao&lt; T &gt;" shape="rect" coords="0,0,237,24"/>
+<area href="interface_chiro_1_1_cdf_1_1_data_1_1_i_dao-g.html" title="Algemeen contract voor CRUD-operaties in de ORM-laag. Implementeert een &#39;Repository&#39;. Aangepast uit &#39;Pro LINQ Object Relational Mapping with C# 2008&#39;." alt="Chiro.Cdf.Data.IDao&lt; T &gt;" shape="rect" coords="123,0,360,24"/>
 <area href="class_chiro_1_1_gap_1_1_data_1_1_ef_1_1_gav_dao.html" title="Gegevenstoegangsobject voor GAV-info." alt="Chiro.Gap.Data.Ef.GavDao" shape="rect" coords="0,112,237,136"/>
+<area href="class_chiro_1_1_gap_1_1_dummies_1_1_dummy_gav_dao.html" alt="Chiro.Gap.Dummies.DummyGavDao" shape="rect" coords="247,112,484,136"/>
 </map>
  </div></div>
 
@@ -114,10 +113,40 @@ Klasse diagram voor Chiro.Gap.Orm.DataInterfaces.IGavDao</div>
 Public Members</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gav.html">Gav</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_gav_dao.html#ad0f1c73c9285585a195de66ec4c87e84">Ophalen</a> (string login)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt GAV-object op op basis van login.  <a href="#ad0f1c73c9285585a195de66ec4c87e84"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_gav_dao.html#a2bf380c6483240bfa7e8057455e00c8a">IdOphalen</a> (string login)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Kijkt of er al een GAV met gegven <em>login</em>  bestaat, en retourneert desgevallend diens ID.  <a href="#a2bf380c6483240bfa7e8057455e00c8a"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
 <div class="textblock"><p>Interface voor een gegevenstoegangsobject voor GAV's. </p>
 </div><hr/><h2>Documentatie van functie members</h2>
+<a class="anchor" id="a2bf380c6483240bfa7e8057455e00c8a"></a><!-- doxytag: member="Chiro::Gap::Orm::DataInterfaces::IGavDao::IdOphalen" ref="a2bf380c6483240bfa7e8057455e00c8a" args="(string login)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Chiro.Gap.Orm.DataInterfaces.IGavDao.IdOphalen </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>login</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Kijkt of er al een GAV met gegven <em>login</em>  bestaat, en retourneert desgevallend diens ID. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">login</td><td>Login op te zoeken ID</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>ID van de gevonden GAV, of 0 indien niets gevonden</dd></dl>
+
+<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_gap_1_1_dummies_1_1_dummy_gav_dao.html#a324964843aad12381f8b2a40d379f652">Chiro.Gap.Dummies.DummyGavDao</a> en <a class="el" href="class_chiro_1_1_gap_1_1_data_1_1_ef_1_1_gav_dao.html#a11022db9002f59b0963ed001c981448a">Chiro.Gap.Data.Ef.GavDao</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ad0f1c73c9285585a195de66ec4c87e84"></a><!-- doxytag: member="Chiro::Gap::Orm::DataInterfaces::IGavDao::Ophalen" ref="ad0f1c73c9285585a195de66ec4c87e84" args="(string login)" -->
 <div class="memitem">
 <div class="memproto">
@@ -142,7 +171,7 @@ Public Members</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Retourneert:</b></dt><dd>GAV horende bij gegeven login</dd></dl>
 
-<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_gap_1_1_data_1_1_ef_1_1_gav_dao.html#a1cb86e92e423db4813a9c1cb5ca445c5">Chiro.Gap.Data.Ef.GavDao</a>.</p>
+<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_gap_1_1_dummies_1_1_dummy_gav_dao.html#aa17f98ad041b0b88d5d8d4ede1662baf">Chiro.Gap.Dummies.DummyGavDao</a> en <a class="el" href="class_chiro_1_1_gap_1_1_data_1_1_ef_1_1_gav_dao.html#a1cb86e92e423db4813a9c1cb5ca445c5">Chiro.Gap.Data.Ef.GavDao</a>.</p>
 
 </div>
 </div>
@@ -167,7 +196,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:37 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:33 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

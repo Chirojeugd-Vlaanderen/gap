@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -113,12 +111,19 @@ Klasse diagram voor Chiro.Gap.ServiceContracts.DataContracts.UitstapInfo</div>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_uitstap_info.html#a4ea7576e2fd78f02a3a0c18d05e20142">ID</a><code> [get, set]</code></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">De unieke ID van de uitstap.  <a href="#a4ea7576e2fd78f02a3a0c18d05e20142"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_uitstap_info.html#ae83e31c5fd88fabd66948862b78b5a6c">Naam</a><code> [get, set]</code></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">De naam die de groep zelf geeft aan de uitstap (bv. 'Groot kamp 2011')  <a href="#ae83e31c5fd88fabd66948862b78b5a6c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_uitstap_info.html#a2997e47b052168ca6108bf06f69bf29a">IsBivak</a><code> [get, set]</code></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Geeft aan of het om een bivak gaat, waarvan de gegevens dus als bivakaangifte naar KipAdmin moeten gaan, of een andere uitstap, waarvan de gegevens enkel bij de groep zelf gekend moeten zijn (en die dus onvolledig mogen zijn).  <a href="#a2997e47b052168ca6108bf06f69bf29a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">DateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_uitstap_info.html#a8c16666b74b391b19d4a63d0dd790206">DatumVan</a><code> [get, set]</code></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">De datum van vertrek.  <a href="#a8c16666b74b391b19d4a63d0dd790206"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">DateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_uitstap_info.html#a149fdd2424f62ee9ad5e892cbc5de369">DatumTot</a><code> [get, set]</code></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">De datum van thuiskomst.  <a href="#a149fdd2424f62ee9ad5e892cbc5de369"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_uitstap_info.html#a47e1b1566008cbfa08ea34b8d23b93d7">Opmerkingen</a><code> [get, set]</code></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Eventuele extra info.  <a href="#a47e1b1566008cbfa08ea34b8d23b93d7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_uitstap_info.html#ae67c49c838fe173742511f89062853c7">VersieString</a><code> [get, set]</code></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Geeft stringrepresentatie van Versie weer (hex). Nodig om versie te bewaren in MVC view.  <a href="#ae67c49c838fe173742511f89062853c7"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
 <div class="textblock"><p>Basisinformatie over een uitstap. </p>
@@ -135,6 +140,8 @@ Properties</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>De datum van thuiskomst. </p>
+
 </div>
 </div>
 <a class="anchor" id="a8c16666b74b391b19d4a63d0dd790206"></a><!-- doxytag: member="Chiro::Gap::ServiceContracts::DataContracts::UitstapInfo::DatumVan" ref="a8c16666b74b391b19d4a63d0dd790206" args="" -->
@@ -147,6 +154,8 @@ Properties</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>De datum van vertrek. </p>
 
 </div>
 </div>
@@ -161,6 +170,8 @@ Properties</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>De unieke ID van de uitstap. </p>
+
 </div>
 </div>
 <a class="anchor" id="a2997e47b052168ca6108bf06f69bf29a"></a><!-- doxytag: member="Chiro::Gap::ServiceContracts::DataContracts::UitstapInfo::IsBivak" ref="a2997e47b052168ca6108bf06f69bf29a" args="" -->
@@ -173,6 +184,8 @@ Properties</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Geeft aan of het om een bivak gaat, waarvan de gegevens dus als bivakaangifte naar KipAdmin moeten gaan, of een andere uitstap, waarvan de gegevens enkel bij de groep zelf gekend moeten zijn (en die dus onvolledig mogen zijn). </p>
 
 </div>
 </div>
@@ -187,6 +200,8 @@ Properties</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>De naam die de groep zelf geeft aan de uitstap (bv. 'Groot kamp 2011') </p>
+
 </div>
 </div>
 <a class="anchor" id="a47e1b1566008cbfa08ea34b8d23b93d7"></a><!-- doxytag: member="Chiro::Gap::ServiceContracts::DataContracts::UitstapInfo::Opmerkingen" ref="a47e1b1566008cbfa08ea34b8d23b93d7" args="" -->
@@ -200,6 +215,8 @@ Properties</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>Eventuele extra info. </p>
+
 </div>
 </div>
 <a class="anchor" id="ae67c49c838fe173742511f89062853c7"></a><!-- doxytag: member="Chiro::Gap::ServiceContracts::DataContracts::UitstapInfo::VersieString" ref="ae67c49c838fe173742511f89062853c7" args="" -->
@@ -212,6 +229,8 @@ Properties</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Geeft stringrepresentatie van Versie weer (hex). Nodig om versie te bewaren in MVC view. </p>
 
 </div>
 </div>
@@ -236,7 +255,7 @@ Properties</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:39 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:36 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

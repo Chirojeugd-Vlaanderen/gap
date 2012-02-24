@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -119,10 +117,10 @@ Public Members</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Een lijst van subgemeenten ophalen.  <a href="#ae9233afa896695d15654aa0c8ab1fd83"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_land.html">Land</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_adressen_manager.html#a52f478ffa8d7f3ce37959b3f15f954d5">LandenOphalen</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">De lijst van beschikbare landen ophalen.  <a href="#a52f478ffa8d7f3ce37959b3f15f954d5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">IList&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_straat_naam.html">StraatNaam</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_adressen_manager.html#ac96bab346eb74bb447735a95caf815f8">StratenOphalen</a> (String straatBegin, int postNr)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt alle straten op uit een gegeven <em>postNr</em> , waarvan de naam begint met het gegeven <em>straatBegin</em> .  <a href="#ac96bab346eb74bb447735a95caf815f8"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">IList&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_straat_naam.html">StraatNaam</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_adressen_manager.html#a8612d05f87fcbdbc180f5e1880fbcd4b">StratenOphalen</a> (String straatBegin, IEnumerable&lt; int &gt; postNrs)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt alle straten op uit een gegeven rij <em>postNrs</em> , waarvan de naam begint met het gegeven <em>straatBegin</em> .  <a href="#a8612d05f87fcbdbc180f5e1880fbcd4b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">IList&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_straat_naam.html">StraatNaam</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_adressen_manager.html#a59d75e0812c2e591f836bc702944077a">StratenOphalen</a> (string straatBegin, int postNr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt alle straten op uit een gegeven <em>postNr</em> , waarvan de naam begint met het gegeven <em>straatBegin</em> .  <a href="#a59d75e0812c2e591f836bc702944077a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">IList&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_straat_naam.html">StraatNaam</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_adressen_manager.html#a484166fd3212167cfc745200f374bf18">StratenOphalen</a> (string straatBegin, IEnumerable&lt; int &gt; postNrs)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt alle straten op uit een gegeven rij <em>postNrs</em> , waarvan de naam begint met het gegeven <em>straatBegin</em> .  <a href="#a484166fd3212167cfc745200f374bf18"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
 <div class="textblock"><p>Worker die alle businesslogica i.v.m. adressen bevat. </p>
@@ -179,12 +177,12 @@ Public Members</h2></td></tr>
 <p>Creëert nieuwe adressenmanager. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">adressenDao</td><td>Repository voor adressen</td></tr>
-    <tr><td class="paramname">stratenDao</td><td>Repository voor straten</td></tr>
-    <tr><td class="paramname">subgemeenteDao</td><td>Repository voor 'subgemeentes'</td></tr>
-    <tr><td class="paramname">landenDao</td><td>Repository voor landen</td></tr>
-    <tr><td class="paramname">autorisatieMgr</td><td>Worker die autorisatie regelt</td></tr>
-    <tr><td class="paramname">sync</td><td>Zorgt voor synchronisate van adressen naar KipAdmin</td></tr>
+    <tr><td class="paramname">adressenDao</td><td>Repository voor adressen </td></tr>
+    <tr><td class="paramname">stratenDao</td><td>Repository voor straten </td></tr>
+    <tr><td class="paramname">subgemeenteDao</td><td>Repository voor 'subgemeentes' </td></tr>
+    <tr><td class="paramname">landenDao</td><td>Repository voor landen </td></tr>
+    <tr><td class="paramname">autorisatieMgr</td><td>Worker die autorisatie regelt </td></tr>
+    <tr><td class="paramname">sync</td><td>Zorgt voor synchronisate van adressen naar KipAdmin </td></tr>
   </table>
   </dd>
 </dl>
@@ -220,12 +218,12 @@ Public Members</h2></td></tr>
 <p>Haalt het adres met ID <em>adresID</em>  op, inclusief de bewoners (gelieerde personen) uit de groep met ID <em>groepID</em>  </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">adresID</td><td>ID van het op te halen adres</td></tr>
-    <tr><td class="paramname">groepID</td><td>ID van de groep waaruit bewoners moeten worden gehaald</td></tr>
+    <tr><td class="paramname">adresID</td><td>ID van het op te halen adres </td></tr>
+    <tr><td class="paramname">groepID</td><td>ID van de groep waaruit bewoners moeten worden gehaald </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het gevraagde adres met de relevante bewoners.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het gevraagde adres met de relevante bewoners. </dd></dl>
 
 </div>
 </div>
@@ -263,13 +261,13 @@ Public Members</h2></td></tr>
 <p>Haalt het adres met ID <em>adresID</em>  op, inclusief de bewoners (gelieerde personen) uit de groep met ID <em>groepID</em>  </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">adresID</td><td>ID van het op te halen adres</td></tr>
-    <tr><td class="paramname">groepID</td><td>ID van de groep waaruit bewoners moeten worden gehaald</td></tr>
-    <tr><td class="paramname">alleGelieerdePersonen</td><td>Indien true, worden alle gelieerde personen van de bewoners mee opgehaald, ook diegene waar je geen GAV voor bent.</td></tr>
+    <tr><td class="paramname">adresID</td><td>ID van het op te halen adres </td></tr>
+    <tr><td class="paramname">groepID</td><td>ID van de groep waaruit bewoners moeten worden gehaald </td></tr>
+    <tr><td class="paramname">alleGelieerdePersonen</td><td>Indien true, worden alle gelieerde personen van de bewoners mee opgehaald, ook diegene waar je geen GAV voor bent. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het gevraagde adres met de relevante bewoners.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het gevraagde adres met de relevante bewoners. </dd></dl>
 <p>ALLE ANDERE ADRESSEN VAN DE GEKOPPELDE BEWONERS WORDEN OOK MEE OPGEHAALD </p>
 
 </div>
@@ -308,13 +306,13 @@ Public Members</h2></td></tr>
 <p>Haalt het adres met ID <em>adresID</em>  op, inclusief de bewoners (gelieerde personen) uit de groepen met ID in <em>groepIDs</em>  </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">adresID</td><td>ID van het op te halen adres</td></tr>
-    <tr><td class="paramname">groepIDs</td><td>ID van de groepen waaruit bewoners moeten worden gehaald</td></tr>
-    <tr><td class="paramname">alleGelieerdePersonen</td><td>Indien true, worden alle gelieerde personen van de bewoners mee opgehaald, ook diegene waar je geen GAV voor bent.</td></tr>
+    <tr><td class="paramname">adresID</td><td>ID van het op te halen adres </td></tr>
+    <tr><td class="paramname">groepIDs</td><td>ID van de groepen waaruit bewoners moeten worden gehaald </td></tr>
+    <tr><td class="paramname">alleGelieerdePersonen</td><td>Indien true, worden alle gelieerde personen van de bewoners mee opgehaald, ook diegene waar je geen GAV voor bent. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het gevraagde adres met de relevante bewoners.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het gevraagde adres met de relevante bewoners. </dd></dl>
 <p>ALLE ANDERE ADRESSEN VAN DE GEKOPPELDE BEWONERS WORDEN OOK MEE OPGEHAALD </p>
 
 </div>
@@ -337,11 +335,11 @@ Public Members</h2></td></tr>
 <p>Persisteert adres in de database, samen met alle gekoppelde personen en gelieerde personen. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">adr</td><td>Te persisteren adres</td></tr>
+    <tr><td class="paramname">adr</td><td>Te persisteren adres </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het adres met eventueel nieuw ID</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het adres met eventueel nieuw ID </dd></dl>
 
 </div>
 </div>
@@ -360,7 +358,7 @@ Public Members</h2></td></tr>
 <div class="memdoc">
 
 <p>Een lijst van subgemeenten ophalen. </p>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een lijst van subgemeenten</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een lijst van subgemeenten </dd></dl>
 
 </div>
 </div>
@@ -379,7 +377,7 @@ Public Members</h2></td></tr>
 <div class="memdoc">
 
 <p>De lijst van beschikbare landen ophalen. </p>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De lijst van beschikbare landen</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De lijst van beschikbare landen </dd></dl>
 
 </div>
 </div>
@@ -401,23 +399,23 @@ Public Members</h2></td></tr>
 <p>Haalt een adres op, samen met alle personen die hun voorkeursadres daar hebben. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">adresID</td><td>ID van het gevraagde adres</td></tr>
+    <tr><td class="paramname">adresID</td><td>ID van het gevraagde adres </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het adres met de bewoners die daar hun voorkeursadres hebben</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het adres met de bewoners die daar hun voorkeursadres hebben </dd></dl>
 <p>Voorlopig enkel voor supergav </p>
 
 </div>
 </div>
-<a class="anchor" id="ac96bab346eb74bb447735a95caf815f8"></a><!-- doxytag: member="Chiro::Gap::Workers::AdressenManager::StratenOphalen" ref="ac96bab346eb74bb447735a95caf815f8" args="(String straatBegin, int postNr)" -->
+<a class="anchor" id="a59d75e0812c2e591f836bc702944077a"></a><!-- doxytag: member="Chiro::Gap::Workers::AdressenManager::StratenOphalen" ref="a59d75e0812c2e591f836bc702944077a" args="(string straatBegin, int postNr)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">IList&lt;<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_straat_naam.html">StraatNaam</a>&gt; Chiro.Gap.Workers.AdressenManager.StratenOphalen </td>
           <td>(</td>
-          <td class="paramtype">String&#160;</td>
+          <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>straatBegin</em>, </td>
         </tr>
         <tr>
@@ -438,23 +436,23 @@ Public Members</h2></td></tr>
 <p>Haalt alle straten op uit een gegeven <em>postNr</em> , waarvan de naam begint met het gegeven <em>straatBegin</em> . </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">straatBegin</td><td>Eerste letters van de te zoeken straatnamen</td></tr>
-    <tr><td class="paramname">postNr</td><td>Postnummer waarin te zoeken</td></tr>
+    <tr><td class="paramname">straatBegin</td><td>Eerste letters van de te zoeken straatnamen </td></tr>
+    <tr><td class="paramname">postNr</td><td>Postnummer waarin te zoeken </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gegevens van de gevonden straten</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gegevens van de gevonden straten </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a8612d05f87fcbdbc180f5e1880fbcd4b"></a><!-- doxytag: member="Chiro::Gap::Workers::AdressenManager::StratenOphalen" ref="a8612d05f87fcbdbc180f5e1880fbcd4b" args="(String straatBegin, IEnumerable&lt; int &gt; postNrs)" -->
+<a class="anchor" id="a484166fd3212167cfc745200f374bf18"></a><!-- doxytag: member="Chiro::Gap::Workers::AdressenManager::StratenOphalen" ref="a484166fd3212167cfc745200f374bf18" args="(string straatBegin, IEnumerable&lt; int &gt; postNrs)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">IList&lt;<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_straat_naam.html">StraatNaam</a>&gt; Chiro.Gap.Workers.AdressenManager.StratenOphalen </td>
           <td>(</td>
-          <td class="paramtype">String&#160;</td>
+          <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>straatBegin</em>, </td>
         </tr>
         <tr>
@@ -475,12 +473,12 @@ Public Members</h2></td></tr>
 <p>Haalt alle straten op uit een gegeven rij <em>postNrs</em> , waarvan de naam begint met het gegeven <em>straatBegin</em> . </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">straatBegin</td><td>Eerste letters van de te zoeken straatnamen</td></tr>
-    <tr><td class="paramname">postNrs</td><td>Postnummers waarin te zoeken</td></tr>
+    <tr><td class="paramname">straatBegin</td><td>Eerste letters van de te zoeken straatnamen </td></tr>
+    <tr><td class="paramname">postNrs</td><td>Postnummers waarin te zoeken </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gegevens van de gevonden straten</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gegevens van de gevonden straten </dd></dl>
 
 </div>
 </div>
@@ -502,11 +500,11 @@ Public Members</h2></td></tr>
 <p>Zoekt adres op, op basis van de parameters. Als er zo geen adres bestaat, wordt het aangemaakt, op voorwaarde dat de straat en subgemeente geidentificeerd kunnen worden. Als ook dat laatste niet het geval is, wordt een exception gethrowd. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">adresInfo</td><td>Bevat de gegevens van het te zoeken/maken adres</td></tr>
+    <tr><td class="paramname">adresInfo</td><td>Bevat de gegevens van het te zoeken/maken adres </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gevonden adres</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gevonden adres </dd></dl>
 <p>Ieder heeft het recht adressen op te zoeken </p>
 
 </div>
@@ -532,7 +530,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:44 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:45 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

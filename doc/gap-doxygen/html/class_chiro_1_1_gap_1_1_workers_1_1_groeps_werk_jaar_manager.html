@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -112,6 +110,8 @@ Public Members</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt recentste groepswerkjaar voor een groep op.  <a href="#ab3b4d49474fe0cc8da7e4481df4496f1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groeps_werk_jaar.html">GroepsWerkJaar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_groeps_werk_jaar_manager.html#a1cd96e7e48aacf0865544a1472707d4e">RecentsteOphalen</a> (int groepID, <a class="el" href="namespace_chiro_1_1_gap_1_1_orm.html#abc4b36ead25388fbbe1c3c26209957d8">GroepsWerkJaarExtras</a> extras)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt recentste groepswerkjaar voor een groep op.  <a href="#a1cd96e7e48aacf0865544a1472707d4e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groeps_werk_jaar.html">GroepsWerkJaar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_groeps_werk_jaar_manager.html#a90e6a13a9d9cf1eb5d1cf61ba29ae6ea">RecentsteOphalen</a> (string code, <a class="el" href="namespace_chiro_1_1_gap_1_1_orm.html#abc4b36ead25388fbbe1c3c26209957d8">GroepsWerkJaarExtras</a> extras)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt recentste groepswerkjaar voor een groep op.  <a href="#a90e6a13a9d9cf1eb5d1cf61ba29ae6ea"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_groeps_werk_jaar_manager.html#a228ace862ac6e32a13b0e880fef834d9">RecentsteGroepsWerkJaarIDGet</a> (int groepID)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Bepaalt ID van het recentste GroepsWerkJaar gemaakt voor een gegeven groep.  <a href="#a228ace862ac6e32a13b0e880fef834d9"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groeps_werk_jaar.html">GroepsWerkJaar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_groeps_werk_jaar_manager.html#abf7a65e894c96db34cbee285188206b9">VolgendGroepsWerkJaarMaken</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groep.html">Groep</a> g)</td></tr>
@@ -170,10 +170,10 @@ Static Public Members</h2></td></tr>
 <p>Creëert een <a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_groeps_werk_jaar_manager.html" title="Worker die alle businesslogica i.v.m. groepswerkjaren bevat.">GroepsWerkJaarManager</a>. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepsWjDao</td><td>Repository voor groepswerkjaren</td></tr>
-    <tr><td class="paramname">afdelingenDao</td><td>Repository voor afdelingen</td></tr>
-    <tr><td class="paramname">veelGebruikt</td><td>Object dat veel gebruikte items cachet</td></tr>
-    <tr><td class="paramname">autorisatieMgr</td><td>Worker die autorisatie regelt</td></tr>
+    <tr><td class="paramname">groepsWjDao</td><td>Repository voor groepswerkjaren </td></tr>
+    <tr><td class="paramname">afdelingenDao</td><td>Repository voor afdelingen </td></tr>
+    <tr><td class="paramname">veelGebruikt</td><td>Object dat veel gebruikte items cachet </td></tr>
+    <tr><td class="paramname">autorisatieMgr</td><td>Worker die autorisatie regelt </td></tr>
   </table>
   </dd>
 </dl>
@@ -209,12 +209,12 @@ Static Public Members</h2></td></tr>
 <p>Persisteert een groepswerkjaar in de database. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">gwj</td><td>Te persisteren groepswerkjaar, gekoppeld aan de groep</td></tr>
-    <tr><td class="paramname">groepsWerkJaarExtras</td><td>Bepaalt welke gerelateerde entiteiten mee gepersisteerd moeten worden</td></tr>
+    <tr><td class="paramname">gwj</td><td>Te persisteren groepswerkjaar, gekoppeld aan de groep </td></tr>
+    <tr><td class="paramname">groepsWerkJaarExtras</td><td>Bepaalt welke gerelateerde entiteiten mee gepersisteerd moeten worden </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het gepersisteerde groepswerkjaar, met eventuele nieuwe ID's</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het gepersisteerde groepswerkjaar, met eventuele nieuwe ID's </dd></dl>
 
 </div>
 </div>
@@ -236,11 +236,11 @@ Static Public Members</h2></td></tr>
 <p>Berekent de theoretische einddatum van het gegeven groepswerkjaar. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepsWerkJaar</td><td>Groepswerkjaar, met daaraan gekoppeld een werkjaarobject</td></tr>
+    <tr><td class="paramname">groepsWerkJaar</td><td>Groepswerkjaar, met daaraan gekoppeld een werkjaarobject </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Einddatum van het gekoppelde werkjaar.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Einddatum van het gekoppelde werkjaar. </dd></dl>
 
 </div>
 </div>
@@ -259,7 +259,7 @@ Static Public Members</h2></td></tr>
 <div class="memdoc">
 
 <p>Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren. </p>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het jaar waarin dat nieuwe werkjaar begint</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het jaar waarin dat nieuwe werkjaar begint </dd></dl>
 
 </div>
 </div>
@@ -281,11 +281,11 @@ Static Public Members</h2></td></tr>
 <p>Haalt de afdelingen van een groep op die niet gebruikt zijn in een gegeven groepswerkjaar, op basis van een <em>groepsWerkJaarID</em>  </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepsWerkJaarID</td><td>ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen opgezocht moeten worden.</td></tr>
+    <tr><td class="paramname">groepsWerkJaarID</td><td>ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen opgezocht moeten worden. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De ongebruikte afdelingen van een groep in het gegeven groepswerkjaar </dd></dl>
 
 </div>
 </div>
@@ -317,12 +317,12 @@ Static Public Members</h2></td></tr>
 <p>Haalt het groepswerkjaar op bij een gegeven <em>groepsWerkJaarID</em>  </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepsWerkJaarID</td><td>ID van het gevraagde GroepsWerkJaar</td></tr>
-    <tr><td class="paramname">extras</td><td>Bepaalt op te halen gerelateerde entiteiten</td></tr>
+    <tr><td class="paramname">groepsWerkJaarID</td><td>ID van het gevraagde GroepsWerkJaar </td></tr>
+    <tr><td class="paramname">extras</td><td>Bepaalt op te halen gerelateerde entiteiten </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gevraagde groepswerkjaar</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gevraagde groepswerkjaar </dd></dl>
 
 </div>
 </div>
@@ -344,11 +344,11 @@ Static Public Members</h2></td></tr>
 <p>Bepaalt ID van het recentste GroepsWerkJaar gemaakt voor een gegeven groep. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepID</td><td>ID van Groep</td></tr>
+    <tr><td class="paramname">groepID</td><td>ID van Groep </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>ID van het recentste GroepsWerkJaar</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>ID van het recentste GroepsWerkJaar </dd></dl>
 
 </div>
 </div>
@@ -370,11 +370,11 @@ Static Public Members</h2></td></tr>
 <p>Haalt recentste groepswerkjaar voor een groep op. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepID</td><td>ID gevraagde groep</td></tr>
+    <tr><td class="paramname">groepID</td><td>ID gevraagde groep </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het recentste Groepswerkjaar voor de opgegeven groep</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het recentste Groepswerkjaar voor de opgegeven groep </dd></dl>
 
 </div>
 </div>
@@ -406,12 +406,49 @@ Static Public Members</h2></td></tr>
 <p>Haalt recentste groepswerkjaar voor een groep op. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepID</td><td>ID gevraagde groep</td></tr>
-    <tr><td class="paramname">extras</td><td>Bepaalt eventuele mee op te halen gekoppelde entiteiten</td></tr>
+    <tr><td class="paramname">groepID</td><td>ID gevraagde groep </td></tr>
+    <tr><td class="paramname">extras</td><td>Bepaalt eventuele mee op te halen gekoppelde entiteiten </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het recentste Groepswerkjaar voor de opgegeven groep</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het recentste Groepswerkjaar voor de opgegeven groep </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a90e6a13a9d9cf1eb5d1cf61ba29ae6ea"></a><!-- doxytag: member="Chiro::Gap::Workers::GroepsWerkJaarManager::RecentsteOphalen" ref="a90e6a13a9d9cf1eb5d1cf61ba29ae6ea" args="(string code, GroepsWerkJaarExtras extras)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groeps_werk_jaar.html">GroepsWerkJaar</a> Chiro.Gap.Workers.GroepsWerkJaarManager.RecentsteOphalen </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>code</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_chiro_1_1_gap_1_1_orm.html#abc4b36ead25388fbbe1c3c26209957d8">GroepsWerkJaarExtras</a>&#160;</td>
+          <td class="paramname"><em>extras</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Haalt recentste groepswerkjaar voor een groep op. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">code</td><td>Stamnummer van de gevraagde groep </td></tr>
+    <tr><td class="paramname">extras</td><td>Bepaalt eventuele mee op te halen gekoppelde entiteiten </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het recentste Groepswerkjaar voor de opgegeven groep </dd></dl>
 
 </div>
 </div>
@@ -433,11 +470,11 @@ Static Public Members</h2></td></tr>
 <p>Bepaalt de datum vanaf wanneer het volgende werkjaar begonnen kan worden. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">werkJaar</td><td>Jaartal van het 'huidige' werkjaar (i.e. 2010 voor 2010-2011 enz)</td></tr>
+    <tr><td class="paramname">werkJaar</td><td>Jaartal van het 'huidige' werkjaar (i.e. 2010 voor 2010-2011 enz) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden </dd></dl>
 
 </div>
 </div>
@@ -459,11 +496,11 @@ Static Public Members</h2></td></tr>
 <p>Maakt een nieuw groepswerkjaar in het gevraagde werkjaar. Persisteert niet ;-P. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">g</td><td>De groep waarvoor een groepswerkjaar aangemaakt moet worden</td></tr>
+    <tr><td class="paramname">g</td><td>De groep waarvoor een groepswerkjaar aangemaakt moet worden </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het nieuwe groepswerkjaar</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het nieuwe groepswerkjaar </dd></dl>
 <p>&lt;throws&gt;OngeldigObjectException&lt;/throws&gt; </p>
 
 </div>
@@ -489,7 +526,7 @@ Static Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:45 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:46 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

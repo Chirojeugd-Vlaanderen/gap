@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -102,7 +100,7 @@ Klasse diagram voor Chiro.Gap.Dummies.DummySync</div>
  <div class="center">
   <img src="class_chiro_1_1_gap_1_1_dummies_1_1_dummy_sync.png" usemap="#Chiro.Gap.Dummies.DummySync_map" alt=""/>
   <map id="Chiro.Gap.Dummies.DummySync_map" name="Chiro.Gap.Dummies.DummySync_map">
-<area href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_adressen_sync.html" alt="Chiro.Gap.Orm.SyncInterfaces.IAdressenSync" shape="rect" coords="0,0,306,24"/>
+<area href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_adressen_sync.html" title="Regelt de synchronisatie van adresgegevens naar Kipadmin." alt="Chiro.Gap.Orm.SyncInterfaces.IAdressenSync" shape="rect" coords="0,0,306,24"/>
 <area href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_communicatie_sync.html" title="Interface voor synchronisatie van communicatiemiddelen naar Kipadmin." alt="Chiro.Gap.Orm.SyncInterfaces.ICommunicatieSync" shape="rect" coords="316,0,622,24"/>
 <area href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_personen_sync.html" title="Interface voor synchronisatie van persoonsinfo naar Kipadmin." alt="Chiro.Gap.Orm.SyncInterfaces.IPersonenSync" shape="rect" coords="632,0,938,24"/>
 <area href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_leden_sync.html" title="Interface voor synchronisatie van lidinfo naar Kipadmin." alt="Chiro.Gap.Orm.SyncInterfaces.ILedenSync" shape="rect" coords="948,0,1254,24"/>
@@ -211,11 +209,11 @@ Public Members</h2></td></tr>
 <p>Updatet de afdelingen van <em>lid</em>  in Kipadmin. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lid</td><td>Lid</td></tr>
+    <tr><td class="paramname">lid</td><td>Het lidobject dat we bewerken</td></tr>
   </table>
   </dd>
 </dl>
-<p>*Alle* relevante gegevens van het lidobject worden hier sowieso opnieuw opgehaald, anders was het te veel een gedoe. </p>
+<p>Alle (!) relevante gegevens van het lidobject worden hier sowieso opnieuw opgehaald, anders was het te veel een gedoe. </p>
 
 <p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_leden_sync.html#ab1e6debdb089e7b34102bbae1821509a">Chiro.Gap.Orm.SyncInterfaces.ILedenSync</a>.</p>
 
@@ -255,9 +253,9 @@ Public Members</h2></td></tr>
 <p>Stuurt de persoonsgegevens, samen met eventueel adressen en/of communicatie, naar Kipadmin. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">gp</td><td>gelieerde persoon, persoonsinfo</td></tr>
-    <tr><td class="paramname">metStandaardAdres</td><td>stuurt ook het standaardadres mee (moet dan wel gekoppeld zijn)</td></tr>
-    <tr><td class="paramname">metCommunicatie</td><td>stuurt ook communicatie mee. Hiervoor wordt expliciet alle communicatie-info opgehaald, omdat de workers typisch niet toestaan dat de gebruiker alle communicatie ophaalt.</td></tr>
+    <tr><td class="paramname">gp</td><td>Gelieerde persoon, persoonsinfo</td></tr>
+    <tr><td class="paramname">metStandaardAdres</td><td>Stuurt ook het standaardadres mee (moet dan wel gekoppeld zijn)</td></tr>
+    <tr><td class="paramname">metCommunicatie</td><td>Stuurt ook communicatie mee. Hiervoor wordt expliciet alle communicatie-info opgehaald, omdat de workers typisch niet toestaan dat de gebruiker alle communicatie ophaalt.</td></tr>
   </table>
   </dd>
 </dl>
@@ -321,7 +319,7 @@ Public Members</h2></td></tr>
 <p>Zet de gegeven <em>persoonsVerzekering</em>  over naar Kipadmin. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">persoonsVerzekering</td><td>over te zetten persoonsverzekering</td></tr>
+    <tr><td class="paramname">persoonsVerzekering</td><td>Over te zetten persoonsverzekering</td></tr>
     <tr><td class="paramname">gwj</td><td>Bepaalt werkjaar en groep die factuur zal krijgen</td></tr>
   </table>
   </dd>
@@ -596,7 +594,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:35 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:32 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

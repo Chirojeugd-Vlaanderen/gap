@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -183,12 +181,12 @@ Public Members</h2></td></tr>
 <p>Instantieert een FunctiesManager-object. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">funDao</td><td>Een dao voor data access mbt functies</td></tr>
-    <tr><td class="paramname">ledenDao</td><td>Een dao voor data access mbt leden</td></tr>
-    <tr><td class="paramname">gwjDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access object voor groepswerkjaren</td></tr>
-    <tr><td class="paramname">veelGebruikt</td><td>Object dat veel gebruikte items cachet</td></tr>
-    <tr><td class="paramname">auMgr</td><td>Een <a class="el" href="interface_chiro_1_1_gap_1_1_workers_1_1_i_autorisatie_manager.html" title="Een autorisatiemanager bepaalt de rechten van een gebruiker op entiteiten.">IAutorisatieManager</a> voor de autorisatie</td></tr>
-    <tr><td class="paramname">ledenSync</td><td>Wordt gebruikt om lidinformatie te syncen naar kipadmin</td></tr>
+    <tr><td class="paramname">funDao</td><td>Een dao voor data access mbt functies </td></tr>
+    <tr><td class="paramname">ledenDao</td><td>Een dao voor data access mbt leden </td></tr>
+    <tr><td class="paramname">gwjDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access object voor groepswerkjaren </td></tr>
+    <tr><td class="paramname">veelGebruikt</td><td>Object dat veel gebruikte items cachet </td></tr>
+    <tr><td class="paramname">auMgr</td><td>Een <a class="el" href="interface_chiro_1_1_gap_1_1_workers_1_1_i_autorisatie_manager.html" title="Een autorisatiemanager bepaalt de rechten van een gebruiker op entiteiten.">IAutorisatieManager</a> voor de autorisatie </td></tr>
+    <tr><td class="paramname">ledenSync</td><td>Wordt gebruikt om lidinformatie te syncen naar kipadmin </td></tr>
   </table>
   </dd>
 </dl>
@@ -214,11 +212,11 @@ Public Members</h2></td></tr>
 <p>Kijkt na voor een gegeven <em>groepsWerkJaar</em>  of de maximum- en minimumaantallen van de functies (eigen en nationaal bepaald) niet overschreden zijn. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepsWerkJaar</td><td>Te controleren werkjaar</td></tr>
+    <tr><td class="paramname">groepsWerkJaar</td><td>Te controleren werkjaar </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen. </dd></dl>
 <p>Deze functie is zich niet bewust van de aanwezigheid van een database, en verwacht dat groepsWerkJaar.Groep.Functie en groepsWerkJaar.Lid[i].Functie geladen zijn. </p>
 
 </div>
@@ -251,12 +249,12 @@ Public Members</h2></td></tr>
 <p>Kijkt na voor een gegeven <em>groepsWerkJaar</em>  of de maximum- en minimumaantallen van de functies <em>functies</em>  niet overschreden zijn. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepsWerkJaar</td><td>Te controleren werkjaar</td></tr>
-    <tr><td class="paramname">functies</td><td>Functies waarop te controleren</td></tr>
+    <tr><td class="paramname">groepsWerkJaar</td><td>Te controleren werkjaar </td></tr>
+    <tr><td class="paramname">functies</td><td>Functies waarop te controleren </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen. </dd></dl>
 <p>Deze functie is zich niet bewust van de aanwezigheid van een database, en verwacht dat groepsWerkJaar.Lid[i].Functie geladen is. </p>
 <p>Functies in <em>functies</em>  waar geen groep aan gekoppeld is, worden als nationaal bepaalde functies beschouwd. </p>
 <p>Functies die niet geldig zijn in het gevraagde groepswerkjaar, worden genegeerd </p>
@@ -281,11 +279,11 @@ Public Members</h2></td></tr>
 <p>Persisteert de gegeven <em>functie</em>  in de database, samen met zijn koppeling naar groep. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">functie</td><td>Te persisteren functie</td></tr>
+    <tr><td class="paramname">functie</td><td>Te persisteren functie </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De bewaarde functie</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De bewaarde functie </dd></dl>
 
 </div>
 </div>
@@ -317,13 +315,13 @@ Public Members</h2></td></tr>
 <p>Koppelt de functies met ID's <em>functieIDs</em>  los van het lid <em>lid</em> . PERSISTEERT. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lid</td><td>Lid waarvan functies losgekoppeld moeten worden</td></tr>
-    <tr><td class="paramname">functieIDs</td><td>ID's van de los te koppelen functies</td></tr>
+    <tr><td class="paramname">lid</td><td>Lid waarvan functies losgekoppeld moeten worden </td></tr>
+    <tr><td class="paramname">functieIDs</td><td>ID's van de los te koppelen functies </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het lidobject met daaraan gekoppeld de overblijvende functies</dd></dl>
-<p>functie-ID's van functies die niet aan het lid gekoppeld zijn, worden genegeerd. er wordt verwacht dat voor elke te verwijderen functie alle leden met groepswerkjaar geladen zijn er wordt niet echt losgekoppeld; de koppeling lid-functie wordt op 'te verwijderen' gezet. (Wat wil zeggen dat verwijderen via het lid moet gebeuren, en niet via de functie) (Dat systeem met 'teVerwijderen' is eigenlijk toch verre van ideaal.) </p>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het lidobject met daaraan gekoppeld de overblijvende functies </dd></dl>
+<p>Functie-ID's van functies die niet aan het lid gekoppeld zijn, worden genegeerd. Er wordt verwacht dat voor elke te verwijderen functie alle leden met groepswerkjaar geladen zijn Er wordt niet echt losgekoppeld; de koppeling lid-functie wordt op 'te verwijderen' gezet. (Wat wil zeggen dat verwijderen via het lid moet gebeuren, en niet via de functie) (Dat systeem met 'teVerwijderen' is eigenlijk toch verre van ideaal.) </p>
 
 </div>
 </div>
@@ -342,7 +340,7 @@ Public Members</h2></td></tr>
 <div class="memdoc">
 
 <p>Geeft de nationaal bepaalde functies terug. </p>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De rij nationaal bepaalde functies</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De rij nationaal bepaalde functies </dd></dl>
 
 </div>
 </div>
@@ -364,11 +362,11 @@ Public Members</h2></td></tr>
 <p>Haalt 1 functie op, samen met de gekoppelde groep. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">functieID</td><td>ID op te halen functie</td></tr>
+    <tr><td class="paramname">functieID</td><td>ID op te halen functie </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De opgehaalde functie met de gekoppelde groep</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De opgehaalde functie met de gekoppelde groep </dd></dl>
 
 </div>
 </div>
@@ -400,12 +398,12 @@ Public Members</h2></td></tr>
 <p>Een functie ophalen op basis van de ID, samen met de gekoppelde leden. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">functieID</td><td>ID op te halen functie</td></tr>
-    <tr><td class="paramname">metHannekesNest</td><td>Bij <code>true</code> worden leden, personen, groepswerkjaar en groep mee opgehaald</td></tr>
+    <tr><td class="paramname">functieID</td><td>ID op te halen functie </td></tr>
+    <tr><td class="paramname">metHannekesNest</td><td>Bij <code>true</code> worden leden, personen, groepswerkjaar en groep mee opgehaald </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De opgehaalde functie met de gekoppelde leden</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De opgehaalde functie met de gekoppelde leden </dd></dl>
 
 </div>
 </div>
@@ -427,11 +425,11 @@ Public Members</h2></td></tr>
 <p>Haalt een lijstje functies op, uiteraard met gekoppelde groepen (indien van toepassing) </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">functieIDs</td><td>ID's op te halen functies</td></tr>
+    <tr><td class="paramname">functieIDs</td><td>ID's op te halen functies </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Lijst opgehaalde functies, met gekoppelde groepen (indien van toepassing)</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Lijst opgehaalde functies, met gekoppelde groepen (indien van toepassing) </dd></dl>
 
 </div>
 </div>
@@ -463,8 +461,8 @@ Public Members</h2></td></tr>
 <p>Haalt alle functies op die mogelijk toegekend kunnen worden aan een lid uit het groepswerkjaar bepaald door <em>groepsWerkJaarID</em>  en van het type <em>lidType</em> . </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepsWerkJaarID</td><td>ID van het groepswerkjaar waarvoor de relevante functies gevraagd zijn.</td></tr>
-    <tr><td class="paramname">lidType</td><td><code>LidType.Kind</code> of <code>LidType.Leiding</code></td></tr>
+    <tr><td class="paramname">groepsWerkJaarID</td><td>ID van het groepswerkjaar waarvoor de relevante functies gevraagd zijn. </td></tr>
+    <tr><td class="paramname">lidType</td><td><code>LidType.Kind</code> of <code>LidType.Leiding</code> </td></tr>
   </table>
   </dd>
 </dl>
@@ -500,8 +498,8 @@ Public Members</h2></td></tr>
 <p>Kent de meegegeven <em>functies</em>  toe aan het gegeven <em>lid</em> . Als het lid al andere functies had, blijven die behouden. Persisteert niet. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lid</td><td>Lid dat de functies moet krijgen, gekoppeld aan zijn groep</td></tr>
-    <tr><td class="paramname">functies</td><td>Rij toe te kennen functies</td></tr>
+    <tr><td class="paramname">lid</td><td>Lid dat de functies moet krijgen, gekoppeld aan zijn groep </td></tr>
+    <tr><td class="paramname">functies</td><td>Rij toe te kennen functies </td></tr>
   </table>
   </dd>
 </dl>
@@ -546,12 +544,12 @@ Public Members</h2></td></tr>
 <p>Vervangt de functies van het lid <em>lid</em>  door de functies in <em>functies</em> . Persisteert. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lid</td><td>Lid waarvan de functies vervangen moeten worden</td></tr>
-    <tr><td class="paramname">functies</td><td>Nieuwe lijst functies</td></tr>
+    <tr><td class="paramname">lid</td><td>Lid waarvan de functies vervangen moeten worden </td></tr>
+    <tr><td class="paramname">functies</td><td>Nieuwe lijst functies </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het <em>lid</em>  met daaraan gekoppeld de nieuwe functies</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het <em>lid</em>  met daaraan gekoppeld de nieuwe functies </dd></dl>
 <p>Aan <em>lid</em> moeten de huidige functies gekoppeld zijn </p>
 
 </div>
@@ -584,15 +582,13 @@ Public Members</h2></td></tr>
 <p>Verwijdert een functie (PERSISTEERT!) </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">functie</td><td>Te verwijderen functie, inclusief groep, leden en groepswerkjaar leden</td></tr>
-    <tr><td class="paramname">forceren</td><td>Indien <code>true</code> wordt de functie ook verwijderd als er dit werkjaar personen met de gegeven functie zijn. Anders krijg je een exception.</td></tr>
+    <tr><td class="paramname">functie</td><td>Te verwijderen functie, inclusief groep, leden en groepswerkjaar leden </td></tr>
+    <tr><td class="paramname">forceren</td><td>Indien <code>true</code> wordt de functie ook verwijderd als er dit werkjaar personen met de gegeven functie zijn. Anders krijg je een exception. </td></tr>
   </table>
   </dd>
 </dl>
-<p>Als de functie geen leden meer bevat na verwijdering van die van het huidige werkjaar, </p>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>null</code> als de functie effectief verwijderd is, anders het functie-object met aangepast 'werkjaartot'.</dd></dl>
-<p>dan wordt ze verwijderd. Zo niet, wordt er een stopdatum op geplakt </p>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd></dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>Null</code> als de functie effectief verwijderd is, anders het functie-object met aangepast 'werkjaartot'. </dd></dl>
+<p>Als de functie geen leden meer bevat na verwijdering van die van het huidige werkjaar, dan wordt ze verwijderd. Zo niet, wordt er een stopdatum op geplakt. </p>
 
 </div>
 </div>
@@ -617,7 +613,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:45 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:45 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

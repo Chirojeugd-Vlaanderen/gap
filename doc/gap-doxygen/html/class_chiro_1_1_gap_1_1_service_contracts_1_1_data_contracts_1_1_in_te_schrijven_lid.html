@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -89,6 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Zoeken');
 </div>
 <div class="header">
   <div class="summary">
+<a href="#pub-attribs">Public Attributen</a> &#124;
 <a href="#properties">Properties</a>  </div>
   <div class="headertitle">
 <div class="title">Chiro.Gap.ServiceContracts.DataContracts.InTeSchrijvenLid Class Referentie</div>  </div>
@@ -97,9 +96,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Zoeken');
 <!-- doxytag: class="Chiro::Gap::ServiceContracts::DataContracts::InTeSchrijvenLid" -->
 <p>DataContract voor summiere info over aangesloten leden/leiding en hun afdeling(en)  
  <a href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_in_te_schrijven_lid.html#details">Meer...</a></p>
+<div class="dynheader">
+Klasse diagram voor Chiro.Gap.ServiceContracts.DataContracts.InTeSchrijvenLid</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_in_te_schrijven_lid.png" usemap="#Chiro.Gap.ServiceContracts.DataContracts.InTeSchrijvenLid_map" alt=""/>
+  <map id="Chiro.Gap.ServiceContracts.DataContracts.InTeSchrijvenLid_map" name="Chiro.Gap.ServiceContracts.DataContracts.InTeSchrijvenLid_map">
+<area href="class_chiro_1_1_gap_1_1_web_app_1_1_models_1_1_inschrijfbaar_lid.html" title="Gegevens relevant voor een inschrijving, aangevuld met een boolean die aangeeft of de gelieerde perso..." alt="Chiro.Gap.WebApp.Models.InschrijfbaarLid" shape="rect" coords="0,56,355,80"/>
+</map>
+ </div></div>
 
 <p><a href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_in_te_schrijven_lid-members.html">Lijst van alle members.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Public Attributen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_in_te_schrijven_lid.html#ae7e5452a285bdb3cfe1d8696e73234e5">AfdelingsJaarIrrelevant</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Boolean die aangeeft of het afdelingsjaar aangepast moet worden.  <a href="#ae7e5452a285bdb3cfe1d8696e73234e5"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="properties"></a>
 Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_in_te_schrijven_lid.html#a17177ec1b853afbe3e0e82e16a275550">VolledigeNaam</a><code> [get, set]</code></td></tr>
@@ -108,24 +120,40 @@ Properties</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">De id van de gelieerde persoon die we leiding willen maken.  <a href="#a567a461e24ba4fbceb453ebbbced700f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_in_te_schrijven_lid.html#a412b6b5dea5b320bd228a43e7e3a93de">LeidingMaken</a><code> [get, set]</code></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Geeft aan of het een leiding moet worden ipv een kind.  <a href="#a412b6b5dea5b320bd228a43e7e3a93de"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_in_te_schrijven_lid.html#ae0a9962fa3953e825123d11e4209c154">AfdelingsJaarID</a><code> [get, set]</code></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">De ID van het eventuele gekozen afdelingsjaar, anders null. (zou nooit null mogen zijn als leidingmaken true is.  <a href="#ae0a9962fa3953e825123d11e4209c154"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_in_te_schrijven_lid.html#aca6cac7d32493b140a4a11fca1533e48">AfdelingsJaarIDs</a><code> [get, set]</code></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">De IDs van de eventuele gekozen afdelingsjaars.  <a href="#aca6cac7d32493b140a4a11fca1533e48"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
 <div class="textblock"><p>DataContract voor summiere info over aangesloten leden/leiding en hun afdeling(en) </p>
-</div><hr/><h2>Property Documentatie</h2>
-<a class="anchor" id="ae0a9962fa3953e825123d11e4209c154"></a><!-- doxytag: member="Chiro::Gap::ServiceContracts::DataContracts::InTeSchrijvenLid::AfdelingsJaarID" ref="ae0a9962fa3953e825123d11e4209c154" args="" -->
+</div><hr/><h2>Documentatie van data members</h2>
+<a class="anchor" id="ae7e5452a285bdb3cfe1d8696e73234e5"></a><!-- doxytag: member="Chiro::Gap::ServiceContracts::DataContracts::InTeSchrijvenLid::AfdelingsJaarIrrelevant" ref="ae7e5452a285bdb3cfe1d8696e73234e5" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Chiro.Gap.ServiceContracts.DataContracts.InTeSchrijvenLid.AfdelingsJaarID<code> [get, set]</code></td>
+          <td class="memname">bool <a class="el" href="class_chiro_1_1_gap_1_1_service_contracts_1_1_data_contracts_1_1_in_te_schrijven_lid.html#ae7e5452a285bdb3cfe1d8696e73234e5">Chiro.Gap.ServiceContracts.DataContracts.InTeSchrijvenLid.AfdelingsJaarIrrelevant</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>De ID van het eventuele gekozen afdelingsjaar, anders null. (zou nooit null mogen zijn als leidingmaken true is. </p>
+<p>Boolean die aangeeft of het afdelingsjaar aangepast moet worden. </p>
+
+</div>
+</div>
+<hr/><h2>Property Documentatie</h2>
+<a class="anchor" id="aca6cac7d32493b140a4a11fca1533e48"></a><!-- doxytag: member="Chiro::Gap::ServiceContracts::DataContracts::InTeSchrijvenLid::AfdelingsJaarIDs" ref="aca6cac7d32493b140a4a11fca1533e48" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int [] Chiro.Gap.ServiceContracts.DataContracts.InTeSchrijvenLid.AfdelingsJaarIDs<code> [get, set]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>De IDs van de eventuele gekozen afdelingsjaars. </p>
 
 </div>
 </div>
@@ -195,7 +223,7 @@ Properties</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:39 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:34 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

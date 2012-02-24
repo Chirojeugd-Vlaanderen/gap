@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -102,7 +100,7 @@ Klasse diagram voor Chiro.Gap.Workers.VeelGebruikt</div>
  <div class="center">
   <img src="class_chiro_1_1_gap_1_1_workers_1_1_veel_gebruikt.png" usemap="#Chiro.Gap.Workers.VeelGebruikt_map" alt=""/>
   <map id="Chiro.Gap.Workers.VeelGebruikt_map" name="Chiro.Gap.Workers.VeelGebruikt_map">
-<area href="interface_chiro_1_1_gap_1_1_workers_1_1_i_veel_gebruikt.html" alt="Chiro.Gap.Workers.IVeelGebruikt" shape="rect" coords="0,0,201,24"/>
+<area href="interface_chiro_1_1_gap_1_1_workers_1_1_i_veel_gebruikt.html" title="TODO (#190): documenteren." alt="Chiro.Gap.Workers.IVeelGebruikt" shape="rect" coords="0,0,201,24"/>
 </map>
  </div></div>
 
@@ -110,19 +108,21 @@ Klasse diagram voor Chiro.Gap.Workers.VeelGebruikt</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Members</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_veel_gebruikt.html#a51672623ebc5984609950e88049910d2">VeelGebruikt</a> (<a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_groeps_werk_jaar_dao.html">IGroepsWerkJaarDao</a> groepsWerkJaarDao, <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_functies_dao.html">IFunctiesDao</a> functiesDao)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Standaardconstructor. <a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access objects worden typisch geregeld via inversion of control.  <a href="#a51672623ebc5984609950e88049910d2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_veel_gebruikt.html#af69c6bd16edd51daef5449c49456829a">VeelGebruikt</a> (<a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_groeps_werk_jaar_dao.html">IGroepsWerkJaarDao</a> groepsWerkJaarDao, <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_functies_dao.html">IFunctiesDao</a> functiesDao, <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_groepen_dao.html">IGroepenDao</a> groepenDao)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Standaardconstructor. <a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access objects worden typisch geregeld via inversion of control.  <a href="#af69c6bd16edd51daef5449c49456829a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_veel_gebruikt.html#ad8b4d68337d2fe9e9278d742736831de">GroepsWerkJaarResetten</a> (int groepID)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Verwijdert het recentste groepswerkjaar van groep met ID <em>groepID</em>  uit de cache.  <a href="#ad8b4d68337d2fe9e9278d742736831de"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groeps_werk_jaar.html">GroepsWerkJaar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_veel_gebruikt.html#a99e44d67ba88944c44004a662b396f0c">GroepsWerkJaarOphalen</a> (int groepID)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt van de groep met gegeven <em>groepID</em>  het recentste groepswerkjaar op, inclusief de groep zelf.  <a href="#a99e44d67ba88944c44004a662b396f0c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_functie.html">Functie</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_veel_gebruikt.html#aef95b50e3de424e6f2748b781a7c0b24">NationaleFunctiesOphalen</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt alle nationale functies op.  <a href="#aef95b50e3de424e6f2748b781a7c0b24"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_veel_gebruikt.html#a0cc88e5fbcf341b64dd3f7c16865132f">CodeNaarGroepID</a> (string code)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt het groepID van de groep met gegeven stamnummer op uit de cache.  <a href="#a0cc88e5fbcf341b64dd3f7c16865132f"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
 <div class="textblock"><p>Klasse om veel gebruikte zaken mee op te vragen, die dan ook gecachet kunnen worden. Enkel als iets niet gecachet is, wordt de data access aangeroepen. </p>
 </div><hr/><h2>Constructor &amp; Destructor Documentatie</h2>
-<a class="anchor" id="a51672623ebc5984609950e88049910d2"></a><!-- doxytag: member="Chiro::Gap::Workers::VeelGebruikt::VeelGebruikt" ref="a51672623ebc5984609950e88049910d2" args="(IGroepsWerkJaarDao groepsWerkJaarDao, IFunctiesDao functiesDao)" -->
+<a class="anchor" id="af69c6bd16edd51daef5449c49456829a"></a><!-- doxytag: member="Chiro::Gap::Workers::VeelGebruikt::VeelGebruikt" ref="af69c6bd16edd51daef5449c49456829a" args="(IGroepsWerkJaarDao groepsWerkJaarDao, IFunctiesDao functiesDao, IGroepenDao groepenDao)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -136,7 +136,13 @@ Public Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_functies_dao.html">IFunctiesDao</a>&#160;</td>
-          <td class="paramname"><em>functiesDao</em>&#160;</td>
+          <td class="paramname"><em>functiesDao</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_groepen_dao.html">IGroepenDao</a>&#160;</td>
+          <td class="paramname"><em>groepenDao</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -150,8 +156,9 @@ Public Members</h2></td></tr>
 <p>Standaardconstructor. <a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access objects worden typisch geregeld via inversion of control. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepsWerkJaarDao</td><td>Zorgt voor data access ivm groepswerkjaren</td></tr>
-    <tr><td class="paramname">functiesDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access voor functies</td></tr>
+    <tr><td class="paramname">groepsWerkJaarDao</td><td>Zorgt voor data access ivm groepswerkjaren </td></tr>
+    <tr><td class="paramname">functiesDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access voor functies </td></tr>
+    <tr><td class="paramname">groepenDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> access voor groepen </td></tr>
   </table>
   </dd>
 </dl>
@@ -159,6 +166,34 @@ Public Members</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Documentatie van functie members</h2>
+<a class="anchor" id="a0cc88e5fbcf341b64dd3f7c16865132f"></a><!-- doxytag: member="Chiro::Gap::Workers::VeelGebruikt::CodeNaarGroepID" ref="a0cc88e5fbcf341b64dd3f7c16865132f" args="(string code)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Chiro.Gap.Workers.VeelGebruikt.CodeNaarGroepID </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>code</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Haalt het groepID van de groep met gegeven stamnummer op uit de cache. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">code</td><td>Stamnummer van groep waarvan groepID te bepalen is </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>GroepID van de groep met stamnummer <em>code</em> . </dd></dl>
+
+<p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_workers_1_1_i_veel_gebruikt.html#a0143e4b840a33cca81797995f9702294">Chiro.Gap.Workers.IVeelGebruikt</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a99e44d67ba88944c44004a662b396f0c"></a><!-- doxytag: member="Chiro::Gap::Workers::VeelGebruikt::GroepsWerkJaarOphalen" ref="a99e44d67ba88944c44004a662b396f0c" args="(int groepID)" -->
 <div class="memitem">
 <div class="memproto">
@@ -177,11 +212,11 @@ Public Members</h2></td></tr>
 <p>Haalt van de groep met gegeven <em>groepID</em>  het recentste groepswerkjaar op, inclusief de groep zelf. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepID</td><td>ID van de groep waarvan groepswerkjaar gevraagd</td></tr>
+    <tr><td class="paramname">groepID</td><td>ID van de groep waarvan groepswerkjaar gevraagd </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het groepswerkjaar, met daaraan gekoppeld de groep</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het groepswerkjaar, met daaraan gekoppeld de groep </dd></dl>
 
 <p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_workers_1_1_i_veel_gebruikt.html#a2865a8ea1850885dfff5cc059ba2e211">Chiro.Gap.Workers.IVeelGebruikt</a>.</p>
 
@@ -205,7 +240,7 @@ Public Members</h2></td></tr>
 <p>Verwijdert het recentste groepswerkjaar van groep met ID <em>groepID</em>  uit de cache. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepID</td><td>ID van de groep waarvan groepswerkjaarcache te resetten</td></tr>
+    <tr><td class="paramname">groepID</td><td>ID van de groep waarvan groepswerkjaarcache te resetten </td></tr>
   </table>
   </dd>
 </dl>
@@ -229,7 +264,7 @@ Public Members</h2></td></tr>
 <div class="memdoc">
 
 <p>Haalt alle nationale functies op. </p>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Lijstje nationale functies</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Lijstje nationale functies </dd></dl>
 
 <p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_workers_1_1_i_veel_gebruikt.html#a3c4777375cb912a6f8566f747bdef795">Chiro.Gap.Workers.IVeelGebruikt</a>.</p>
 
@@ -256,7 +291,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:45 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:46 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

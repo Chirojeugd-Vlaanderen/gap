@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -120,12 +118,8 @@ Public Members</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Toont een gesorteerde ledenlijst.  <a href="#a157afc609d2ec7b2506835dace081845"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_leden_controller.html#ae77f1b94bcb0f4496babc4e3cbb97509">Lijst</a> (int id, int groepID, <a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_models_1_1_lid_info_model.html">LidInfoModel</a> model)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Afhandelen van postback ledenlijst. Ofwel is een actie gekozen op de selectie, ofwel moet de lijst gefilterd worden.  <a href="#ae77f1b94bcb0f4496babc4e3cbb97509"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">ActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_leden_controller.html#a4fdadc1d98577a5f230ffb0d9f7ce8a5">ToepassenOpSelectie</a> (<a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_models_1_1_lid_info_model.html">LidInfoModel</a> model, int groepID)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Voert de gekozen actie in de dropdownlist van de ledenlijst uit op de geselecteerde personen.  <a href="#a4fdadc1d98577a5f230ffb0d9f7ce8a5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_leden_controller.html#a3679e6bcd24dfe3f1e48a5168a9cb53c">Download</a> (int id, int afdelingID, int functieID, int groepID, <a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_models_1_1_lid_info_model.html#a699a035237271c506b21e4b5718491c1">LidInfoModel.SpecialeLedenLijst</a> ledenLijst, <a class="el" href="namespace_chiro_1_1_gap_1_1_domain.html#a8e3c243d99fa0729aaaccd333fb7411a">LidEigenschap</a> sortering)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Downloadt de lijst van leden uit groepswerkjaar met GroepsWerkJaarID <em>id</em>  als Exceldocument.  <a href="#a3679e6bcd24dfe3f1e48a5168a9cb53c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">ActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_leden_controller.html#a51d84bce8e3d89d8759569ac74950670">DeActiveren</a> (int id, int groepID)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Schrijft één gelieerde persoon uit, en toont de bijgewerkte ledenlijst.  <a href="#a51d84bce8e3d89d8759569ac74950670"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_leden_controller.html#aaf099ccf78ac994d6f4688dfce8caf8d">AfdelingBewerken</a> (int lidID, int groepID)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Toont de view die toelaat om de afdeling(en) van een lid te wijzigen.  <a href="#aaf099ccf78ac994d6f4688dfce8caf8d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_leden_controller.html#aa5b3d00e44bf95b64c05ed3f3356f5b3">AfdelingBewerken</a> (<a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_models_1_1_lid_afdelingen_model.html">LidAfdelingenModel</a> model)</td></tr>
@@ -327,13 +321,6 @@ Public Members</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">model</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd></dd></dl>
 
 </div>
 </div>
@@ -371,44 +358,6 @@ Public Members</h2></td></tr>
   </dd>
 </dl>
 <dl class="return"><dt><b>Retourneert:</b></dt><dd>Er wordt geredirect naar de ledenlijst van de groep</dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a51d84bce8e3d89d8759569ac74950670"></a><!-- doxytag: member="Chiro::Gap::WebApp::Controllers::LedenController::DeActiveren" ref="a51d84bce8e3d89d8759569ac74950670" args="(int id, int groepID)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ActionResult Chiro.Gap.WebApp.Controllers.LedenController.DeActiveren </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>groepID</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Schrijft één gelieerde persoon uit, en toont de bijgewerkte ledenlijst. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">id</td><td>GelieerdePersoonID van uit te schrijven gelieerde persoon</td></tr>
-    <tr><td class="paramname">groepID</td><td>ID van de groep waarin de gebruker werkt</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd></dd></dl>
-<p>Uitschrijven wil zeggen: maak de leden gekoppeld aan de gelieerde persoon met GelieerdePersoonID <em>id</em>  inactief </p>
 
 </div>
 </div>
@@ -1013,43 +962,6 @@ Public Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4fdadc1d98577a5f230ffb0d9f7ce8a5"></a><!-- doxytag: member="Chiro::Gap::WebApp::Controllers::LedenController::ToepassenOpSelectie" ref="a4fdadc1d98577a5f230ffb0d9f7ce8a5" args="(LidInfoModel model, int groepID)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ActionResult Chiro.Gap.WebApp.Controllers.LedenController.ToepassenOpSelectie </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_models_1_1_lid_info_model.html">LidInfoModel</a>&#160;</td>
-          <td class="paramname"><em>model</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>groepID</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Voert de gekozen actie in de dropdownlist van de ledenlijst uit op de geselecteerde personen. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">model</td><td>De property GekozenActie bepaalt wat er zal gebeuren met de gelieerde personen met ID's in de property SelectieGelieerdePersoonIDs.</td></tr>
-    <tr><td class="paramname">groepID</td><td>ID van de groep waarin de gebruiker op dit moment aan het werken is.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een redirect naar de juiste controller action</dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="a73a178917b1649c6c835139c8c82a20d"></a><!-- doxytag: member="Chiro::Gap::WebApp::Controllers::LedenController::TypeToggle" ref="a73a178917b1649c6c835139c8c82a20d" args="(int id, int groepID)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1160,7 +1072,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:41 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:40 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

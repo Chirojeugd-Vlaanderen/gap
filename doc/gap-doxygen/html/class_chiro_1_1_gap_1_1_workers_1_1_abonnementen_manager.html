@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -94,7 +92,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Zoeken');
 </div>
 <div class="contents">
 <!-- doxytag: class="Chiro::Gap::Workers::AbonnementenManager" -->
-<p>Businesslogica wat betreft abonnementen.  
+<p>Businesslogica wat abonnementen betreft.  
  <a href="class_chiro_1_1_gap_1_1_workers_1_1_abonnementen_manager.html#details">Meer...</a></p>
 
 <p><a href="class_chiro_1_1_gap_1_1_workers_1_1_abonnementen_manager-members.html">Lijst van alle members.</a></p>
@@ -113,7 +111,7 @@ Public Members</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt alle abonnementen op uit een gegeven groepswerkjaar, inclusief personen, voorkeursadressen, groepswerkjaar en groep.  <a href="#ad04bb29da9f7216c2e72f56544e0decd"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
-<div class="textblock"><p>Businesslogica wat betreft abonnementen. </p>
+<div class="textblock"><p>Businesslogica wat abonnementen betreft. </p>
 </div><hr/><h2>Constructor &amp; Destructor Documentatie</h2>
 <a class="anchor" id="abc11cd4dd041040371a5cfe16cdc1abf"></a><!-- doxytag: member="Chiro::Gap::Workers::AbonnementenManager::AbonnementenManager" ref="abc11cd4dd041040371a5cfe16cdc1abf" args="(IDao&lt; Publicatie &gt; pubDao, IAbonnementenDao abDao, IAutorisatieManager auMgr, IDubbelpuntSync dpSync)" -->
 <div class="memitem">
@@ -155,10 +153,10 @@ Public Members</h2></td></tr>
 <p>Constructor, die zorg draagt voor dependency injection. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">pubDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> Access Object voor publicaties</td></tr>
-    <tr><td class="paramname">abDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> Access Object voor abonnement</td></tr>
-    <tr><td class="paramname">auMgr</td><td>neemt de autorisatie voor zijn rekening</td></tr>
-    <tr><td class="paramname">dpSync</td><td>sync voor dubbelpuntabonnementen</td></tr>
+    <tr><td class="paramname">pubDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> Access Object voor publicaties </td></tr>
+    <tr><td class="paramname">abDao</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_data.html">Data</a> Access Object voor abonnement </td></tr>
+    <tr><td class="paramname">auMgr</td><td>Neemt de autorisatie voor zijn rekening </td></tr>
+    <tr><td class="paramname">dpSync</td><td><a class="el" href="namespace_chiro_1_1_gap_1_1_sync.html">Sync</a> voor Dubbelpuntabonnementen </td></tr>
   </table>
   </dd>
 </dl>
@@ -200,13 +198,21 @@ Public Members</h2></td></tr>
 <p>Creëert een abonnement voor de gelieerde persoon <em>gp</em>  op publicatie <em>publicatie</em>  in het groepswerkjaar <em>groepsWerkJaar</em> . </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">publicatie</td><td>Publicatie waarvoor abonnement te maken</td></tr>
-    <tr><td class="paramname">gp</td><td>Gelieerde persoon die abonnement moet krijgen</td></tr>
-    <tr><td class="paramname">groepsWerkJaar</td><td>Groepswerkjaar waarvoor abonnement</td></tr>
+    <tr><td class="paramname">publicatie</td><td>Publicatie waarvoor abonnement aangevraagd wordt </td></tr>
+    <tr><td class="paramname">gp</td><td>Gelieerde persoon die abonnement moet krijgen </td></tr>
+    <tr><td class="paramname">groepsWerkJaar</td><td>Groepswerkjaar waarvoor abonnement aangevraagd wordt </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd></dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het aangevraagde abonnement </dd></dl>
+<dl><dt><b>Excepties:</b></dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">BlokkerendeObjectenException{TEntiteit}</td><td>Komt voor als de <em>gp</em>  voor het opgegeven <em>groepsWerkJaar</em>  al een abonnement heeft op die <em>publicatie</em> . </td></tr>
+    <tr><td class="paramname">FoutNummerException</td><td>Komt voor als de publicatie niet meer uitgegeven wordt en je dus geen abonnement meer kunt aanvragen, als de bestelperiode voorbij is, of als de <em>gp</em>  geen adres heeft waar we de publicatie naar kunnen opsturen. </td></tr>
+    <tr><td class="paramname">GeenGavException</td><td>Komt voor als de gebruiker geen GAV is voor de groep waar het <em>groepsWerkJaar</em>  aan gekoppeld is. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -228,7 +234,7 @@ Public Members</h2></td></tr>
 <p>Persisteert een abonnement. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">abonnement</td><td>Te persisteren abonnement</td></tr>
+    <tr><td class="paramname">abonnement</td><td>Te persisteren abonnement </td></tr>
   </table>
   </dd>
 </dl>
@@ -253,7 +259,7 @@ Public Members</h2></td></tr>
 <p>Haalt alle abonnementen op uit een gegeven groepswerkjaar, inclusief personen, voorkeursadressen, groepswerkjaar en groep. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">gwjID</td><td>ID van het gegeven groepswerkjaar</td></tr>
+    <tr><td class="paramname">gwjID</td><td>ID van het gegeven groepswerkjaar </td></tr>
   </table>
   </dd>
 </dl>
@@ -279,11 +285,11 @@ Public Members</h2></td></tr>
 <p>Haalt een publicatie op, gegeven zijn <em>publicatieID</em>  </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">publicatieID</td><td>bepaalt op te halen publicatie</td></tr>
+    <tr><td class="paramname">publicatieID</td><td>Bepaalt op te halen publicatie </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De gevraagde publicatie</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De gevraagde publicatie </dd></dl>
 
 </div>
 </div>
@@ -308,7 +314,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:44 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:45 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

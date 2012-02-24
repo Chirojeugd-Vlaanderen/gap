@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -116,10 +114,40 @@ Klasse diagram voor Chiro.Gap.Data.Ef.GavDao</div>
 Public Members</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gav.html">Gav</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_data_1_1_ef_1_1_gav_dao.html#a1cb86e92e423db4813a9c1cb5ca445c5">Ophalen</a> (string login)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt GAV-object op voor een gegeven <em>login</em> , inclusief via gebruikersrecht gekoppelde groepen.  <a href="#a1cb86e92e423db4813a9c1cb5ca445c5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_data_1_1_ef_1_1_gav_dao.html#a11022db9002f59b0963ed001c981448a">IdOphalen</a> (string login)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Kijkt of er al een GAV met gegven <em>login</em>  bestaat, en retourneert desgevallend diens ID.  <a href="#a11022db9002f59b0963ed001c981448a"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
 <div class="textblock"><p>Gegevenstoegangsobject voor GAV-info. </p>
 </div><hr/><h2>Documentatie van functie members</h2>
+<a class="anchor" id="a11022db9002f59b0963ed001c981448a"></a><!-- doxytag: member="Chiro::Gap::Data::Ef::GavDao::IdOphalen" ref="a11022db9002f59b0963ed001c981448a" args="(string login)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Chiro.Gap.Data.Ef.GavDao.IdOphalen </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>login</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Kijkt of er al een GAV met gegven <em>login</em>  bestaat, en retourneert desgevallend diens ID. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">login</td><td>Login op te zoeken ID</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>ID van de gevonden GAV, of 0 indien niets gevonden</dd></dl>
+
+<p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_gav_dao.html#a2bf380c6483240bfa7e8057455e00c8a">Chiro.Gap.Orm.DataInterfaces.IGavDao</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a1cb86e92e423db4813a9c1cb5ca445c5"></a><!-- doxytag: member="Chiro::Gap::Data::Ef::GavDao::Ophalen" ref="a1cb86e92e423db4813a9c1cb5ca445c5" args="(string login)" -->
 <div class="memitem">
 <div class="memproto">
@@ -169,7 +197,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:33 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:28 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

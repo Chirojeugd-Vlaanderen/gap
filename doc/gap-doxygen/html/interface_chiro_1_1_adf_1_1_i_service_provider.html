@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -112,7 +110,7 @@ Klasse diagram voor Chiro.Adf.IServiceProvider</div>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Members</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">I&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_adf_1_1_i_service_provider.html#afaa59515ad7ac9a0662c343e3b1aa319">GetService&lt; I &gt;</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the configured service implementation for the specified interface.  <a href="#afaa59515ad7ac9a0662c343e3b1aa319"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Lever een service-implementatie op voor servicecontract <em>I</em> .  <a href="#afaa59515ad7ac9a0662c343e3b1aa319"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">I&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_adf_1_1_i_service_provider.html#aa0fc71df14e244c5d94730de1139ed0c">GetService&lt; I &gt;</a> (object arguments)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the configure service implementation for the specified interface.  <a href="#aa0fc71df14e244c5d94730de1139ed0c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">I&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_chiro_1_1_adf_1_1_i_service_provider.html#a006b8f5cd15f408a37ffd132786e8313">GetService&lt; I &gt;</a> (string instanceName)</td></tr>
@@ -216,16 +214,16 @@ Public Members</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Gets the configured service implementation for the specified interface. </p>
+<p>Lever een service-implementatie op voor servicecontract <em>I</em> . </p>
 <dl><dt><b>Template Parameters:</b></dt><dd>
   <table class="">
-    <tr><td class="paramname">I</td><td>The interface type to get the service for.</td></tr>
+    <tr><td class="paramname">I</td><td>Servicecontract</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd></dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Implementatie van het gevraagde service-contract, of <code>null</code> als er geen implementatie beschikbaar is.</dd></dl>
 
-<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_adf_1_1_service_provider.html#acde03335c12d49a68df9128a4a573c87">Chiro.Adf.ServiceProvider</a>, <a class="el" href="class_chiro_1_1_adf_1_1_channel_factory_service_provider.html#a93a3860101b643edf842e68c0f6f472b">Chiro.Adf.ChannelFactoryServiceProvider</a> en <a class="el" href="class_chiro_1_1_adf_1_1_ioc_service_provider.html#ae205fff976b1a6f31ce9e82e9555d316">Chiro.Adf.IocServiceProvider</a>.</p>
+<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_adf_1_1_service_provider.html#acde03335c12d49a68df9128a4a573c87">Chiro.Adf.ServiceProvider</a>, <a class="el" href="class_chiro_1_1_adf_1_1_ioc_service_provider.html#ae205fff976b1a6f31ce9e82e9555d316">Chiro.Adf.IocServiceProvider</a> en <a class="el" href="class_chiro_1_1_adf_1_1_channel_factory_service_provider.html#a93a3860101b643edf842e68c0f6f472b">Chiro.Adf.ChannelFactoryServiceProvider</a>.</p>
 <div class="typeconstraint">
 <dl><dt><b>Type Beperkingen</b><dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -266,7 +264,7 @@ Public Members</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Retourneert:</b></dt><dd></dd></dl>
 
-<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_adf_1_1_service_provider.html#a3e7fce530a352d6c683bd9312bf1d437">Chiro.Adf.ServiceProvider</a>, <a class="el" href="class_chiro_1_1_adf_1_1_channel_factory_service_provider.html#adb07947b0769a4c871c8437e6c1fef87">Chiro.Adf.ChannelFactoryServiceProvider</a> en <a class="el" href="class_chiro_1_1_adf_1_1_ioc_service_provider.html#a88efe089cfe45bd76edc6053e90bb080">Chiro.Adf.IocServiceProvider</a>.</p>
+<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_adf_1_1_service_provider.html#a3e7fce530a352d6c683bd9312bf1d437">Chiro.Adf.ServiceProvider</a>, <a class="el" href="class_chiro_1_1_adf_1_1_ioc_service_provider.html#a88efe089cfe45bd76edc6053e90bb080">Chiro.Adf.IocServiceProvider</a> en <a class="el" href="class_chiro_1_1_adf_1_1_channel_factory_service_provider.html#adb07947b0769a4c871c8437e6c1fef87">Chiro.Adf.ChannelFactoryServiceProvider</a>.</p>
 <div class="typeconstraint">
 <dl><dt><b>Type Beperkingen</b><dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -307,7 +305,7 @@ Public Members</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Retourneert:</b></dt><dd></dd></dl>
 
-<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_adf_1_1_service_provider.html#a79fe89745d22937f3c188b9e7cde614c">Chiro.Adf.ServiceProvider</a>, <a class="el" href="class_chiro_1_1_adf_1_1_channel_factory_service_provider.html#a60c0224bc6f7f3944f9fd5e409256a60">Chiro.Adf.ChannelFactoryServiceProvider</a> en <a class="el" href="class_chiro_1_1_adf_1_1_ioc_service_provider.html#a7e4fea278ba10d9741775ad0984031ce">Chiro.Adf.IocServiceProvider</a>.</p>
+<p>Wordt ge&iuml;mplementeerd door <a class="el" href="class_chiro_1_1_adf_1_1_service_provider.html#a79fe89745d22937f3c188b9e7cde614c">Chiro.Adf.ServiceProvider</a>, <a class="el" href="class_chiro_1_1_adf_1_1_ioc_service_provider.html#a7e4fea278ba10d9741775ad0984031ce">Chiro.Adf.IocServiceProvider</a> en <a class="el" href="class_chiro_1_1_adf_1_1_channel_factory_service_provider.html#a60c0224bc6f7f3944f9fd5e409256a60">Chiro.Adf.ChannelFactoryServiceProvider</a>.</p>
 <div class="typeconstraint">
 <dl><dt><b>Type Beperkingen</b><dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -533,7 +531,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:31 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:25 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -94,7 +92,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Zoeken');
 <div class="title">Chiro.Gap.UpdateSvc.Service.UpdateService Class Referentie</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="Chiro::Gap::UpdateSvc::Service::UpdateService" --><!-- doxytag: inherits="Chiro::Gap::UpdateSvc::Contracts::IUpdateService" --><div class="dynheader">
+<!-- doxytag: class="Chiro::Gap::UpdateSvc::Service::UpdateService" --><!-- doxytag: inherits="Chiro::Gap::UpdateSvc::Contracts::IUpdateService" -->
+<p><a class="el" href="namespace_chiro_1_1_gap_1_1_update_svc_1_1_service.html">Service</a> die updates doorgeeft van GAP naar KipAdmin of omgekeerd.  
+ <a href="class_chiro_1_1_gap_1_1_update_svc_1_1_service_1_1_update_service.html#details">Meer...</a></p>
+<div class="dynheader">
 Klasse diagram voor Chiro.Gap.UpdateSvc.Service.UpdateService</div>
 <div class="dyncontent">
  <div class="center">
@@ -119,7 +120,9 @@ Public Members</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_update_svc_1_1_service_1_1_update_service.html#a70b1bb017b4b1f50dae7d362d81133e8">AbonnementenOpnieuwSyncen</a> (string stamNummer)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Synct alle abonnementen van het recentste werkjaar van een groep opnieuw naar Kipadmin.  <a href="#a70b1bb017b4b1f50dae7d362d81133e8"></a><br/></td></tr>
 </table>
-<hr/><h2>Constructor &amp; Destructor Documentatie</h2>
+<hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
+<div class="textblock"><p><a class="el" href="namespace_chiro_1_1_gap_1_1_update_svc_1_1_service.html">Service</a> die updates doorgeeft van GAP naar KipAdmin of omgekeerd. </p>
+</div><hr/><h2>Constructor &amp; Destructor Documentatie</h2>
 <a class="anchor" id="aebb8a1a0e21f26b3ec4cc830af08f3d7"></a><!-- doxytag: member="Chiro::Gap::UpdateSvc::Service::UpdateService::UpdateService" ref="aebb8a1a0e21f26b3ec4cc830af08f3d7" args="(PersonenManager personenManager, GroepenManager groepenManager, LedenManager ledenManager, AbonnementenManager abonnementenManager, ILedenSync ledenSync, IDubbelpuntSync dubbelpuntSync)" -->
 <div class="memitem">
 <div class="memproto">
@@ -172,10 +175,12 @@ Public Members</h2></td></tr>
 <p>Dependency Injection via de constructor. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">personenManager</td><td>te gebruiken personenmanagerobject</td></tr>
-    <tr><td class="paramname">groepenManager</td><td>te gebruiken groepenmanager</td></tr>
-    <tr><td class="paramname">ledenManager</td><td>te gebruiken ledenmanager</td></tr>
-    <tr><td class="paramname">ledenSync</td><td>te gebruiken ledensync terug naar Kipadmin</td></tr>
+    <tr><td class="paramname">personenManager</td><td>Te gebruiken worker voor Personen </td></tr>
+    <tr><td class="paramname">groepenManager</td><td>Te gebruiken worker voor Groepen </td></tr>
+    <tr><td class="paramname">ledenManager</td><td>Te gebruiken worker voor Leden </td></tr>
+    <tr><td class="paramname">abonnementenManager</td><td>Te gebruiken worker voor abonnementen </td></tr>
+    <tr><td class="paramname">ledenSync</td><td>Te gebruiken LedenSync terug naar Kipadmin </td></tr>
+    <tr><td class="paramname">dubbelpuntSync</td><td>Te gebruiken DubbelpuntSync terug naar Kipadmin </td></tr>
   </table>
   </dd>
 </dl>
@@ -205,7 +210,7 @@ Public Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<p>Dit is eigenlijk geen sync van Kipadmin naar GAP, maar een vraag van Kipadmin aan GAP om bepaalde zaken opnieuw te syncen. Eigenlijk staat dit dus niet op zijn plaats in deze service. Maar voorlopig staat het hier, omdat <a class="el" href="class_chiro_1_1_gap_1_1_update_svc_1_1_service_1_1_update_service.html">UpdateService</a> de enige manier is om communicatie van KIP naar GAP te arrangeren. </p>
+<p>Dit is eigenlijk geen sync van Kipadmin naar GAP, maar een vraag van Kipadmin aan GAP om bepaalde zaken opnieuw te syncen. Eigenlijk staat dit dus niet op zijn plaats in deze service. Maar voorlopig staat het hier, omdat <a class="el" href="class_chiro_1_1_gap_1_1_update_svc_1_1_service_1_1_update_service.html" title="Service die updates doorgeeft van GAP naar KipAdmin of omgekeerd.">UpdateService</a> de enige manier is om communicatie van KIP naar GAP te arrangeren. </p>
 
 <p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_update_svc_1_1_contracts_1_1_i_update_service.html#a70ccef681fb20f958bd2559cc84dfd21">Chiro.Gap.UpdateSvc.Contracts.IUpdateService</a>.</p>
 
@@ -240,7 +245,7 @@ Public Members</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">persoonID</td><td>ID van persoon met toe te kennen AD-nummer</td></tr>
-    <tr><td class="paramname">adNummer</td><td>toe te kennen AD-nummer</td></tr>
+    <tr><td class="paramname">adNummer</td><td>Toe te kennen AD-nummer</td></tr>
   </table>
   </dd>
 </dl>
@@ -278,7 +283,7 @@ Public Members</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">oudAd</td><td>AD-nummer van persoon met te vervangen AD-nummer</td></tr>
-    <tr><td class="paramname">nieuwAd</td><td>nieuw AD-nummer</td></tr>
+    <tr><td class="paramname">nieuwAd</td><td>Nieuw AD-nummer</td></tr>
   </table>
   </dd>
 </dl>
@@ -309,7 +314,7 @@ Public Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<p>Dit is eigenlijk geen sync van Kipadmin naar GAP, maar een vraag van Kipadmin aan GAP om bepaalde zaken opnieuw te syncen. Eigenlijk staat dit dus niet op zijn plaats in deze service. Maar voorlopig staat het hier, omdat <a class="el" href="class_chiro_1_1_gap_1_1_update_svc_1_1_service_1_1_update_service.html">UpdateService</a> de enige manier is om communicatie van KIP naar GAP te arrangeren. </p>
+<p>Dit is eigenlijk geen sync van Kipadmin naar GAP, maar een vraag van Kipadmin aan GAP om bepaalde zaken opnieuw te syncen. Eigenlijk staat dit dus niet op zijn plaats in deze service. Maar voorlopig staat het hier, omdat <a class="el" href="class_chiro_1_1_gap_1_1_update_svc_1_1_service_1_1_update_service.html" title="Service die updates doorgeeft van GAP naar KipAdmin of omgekeerd.">UpdateService</a> de enige manier is om communicatie van KIP naar GAP te arrangeren. </p>
 
 <p>Implementeert <a class="el" href="interface_chiro_1_1_gap_1_1_update_svc_1_1_contracts_1_1_i_update_service.html#a54e1b6bdd31660d92673282dbcf581ef">Chiro.Gap.UpdateSvc.Contracts.IUpdateService</a>.</p>
 
@@ -336,7 +341,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:40 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:38 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

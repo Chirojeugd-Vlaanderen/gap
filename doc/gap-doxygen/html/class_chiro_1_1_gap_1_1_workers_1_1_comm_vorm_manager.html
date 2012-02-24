@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -101,8 +99,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Zoeken');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Members</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_comm_vorm_manager.html#afa3e28d9a922420b8974a69942199dc3">CommVormManager</a> (<a class="el" href="interface_chiro_1_1_cdf_1_1_data_1_1_i_dao-g.html">IDao</a>&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_type.html">CommunicatieType</a> &gt; typedao, <a class="el" href="interface_chiro_1_1_cdf_1_1_data_1_1_i_dao-g.html">IDao</a>&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_vorm.html">CommunicatieVorm</a> &gt; commdao, <a class="el" href="interface_chiro_1_1_gap_1_1_workers_1_1_i_autorisatie_manager.html">IAutorisatieManager</a> autorisatieMgr, <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_communicatie_sync.html">ICommunicatieSync</a> communicatieSync, <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_personen_sync.html">IPersonenSync</a> personenSync)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Deze constructor laat toe om een alternatieve repository voor de communicatievormen te gebruiken. Nuttig voor mocking en testing.  <a href="#afa3e28d9a922420b8974a69942199dc3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_comm_vorm_manager.html#a6d269e61e8df43a403dc3050aed1e4c5">CommVormManager</a> (<a class="el" href="interface_chiro_1_1_cdf_1_1_data_1_1_i_dao-g.html">IDao</a>&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_type.html">CommunicatieType</a> &gt; typedao, <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_communicatie_vorm_dao.html">ICommunicatieVormDao</a> commdao, <a class="el" href="interface_chiro_1_1_gap_1_1_workers_1_1_i_autorisatie_manager.html">IAutorisatieManager</a> autorisatieMgr, <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_communicatie_sync.html">ICommunicatieSync</a> communicatieSync, <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_personen_sync.html">IPersonenSync</a> personenSync)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Deze constructor laat toe om een alternatieve repository voor de communicatievormen te gebruiken. Nuttig voor mocking en testing.  <a href="#a6d269e61e8df43a403dc3050aed1e4c5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_vorm.html">CommunicatieVorm</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_comm_vorm_manager.html#ad81cd7c1ba598a6a20d1e0da6907910c">Ophalen</a> (int commvormID)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt communicatievorm op, op basis van commvormID.  <a href="#ad81cd7c1ba598a6a20d1e0da6907910c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_vorm.html">CommunicatieVorm</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_comm_vorm_manager.html#acbe43672111efc5add49fc862beb31f9">OphalenMetGelieerdePersoon</a> (int commvormID)</td></tr>
@@ -117,13 +115,15 @@ Public Members</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">De communicatievorm met de opgegeven ID ophalen.  <a href="#a40c602888ee4621c359f7d8c03d63022"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_comm_vorm_manager.html#a1f6051f64660299438dd9bb25630a109">CommunicatieVormVerwijderen</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_vorm.html">CommunicatieVorm</a> comm)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Verwijdert een communicatievorm, en persisteert.  <a href="#a1f6051f64660299438dd9bb25630a109"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_comm_vorm_manager.html#ab5e0f7441b14982e5b8024f82cc171c7">AanpassingenDoorvoeren</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a> gp, <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_vorm.html">CommunicatieVorm</a> nieuwecv)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Vervangt eventueel de oude gegevens van de communicatievorm door de nieuwe, gaat na of er al een andere communicatievorm van dat type is, om te garanderen dat er een voorkeurscommunicatievorm van dat type is.  <a href="#ab5e0f7441b14982e5b8024f82cc171c7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_comm_vorm_manager.html#a984a7ca9f4f426cf7c50bc0ed5dec17a">Koppelen</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a> gp, <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_vorm.html">CommunicatieVorm</a> nieuwecv)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Koppelt een communicatievorm aan een gelieerde persoon.  <a href="#a984a7ca9f4f426cf7c50bc0ed5dec17a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_comm_vorm_manager.html#a41017f9b2625aa0088d9d7bffbdaa164">VoorkeurZetten</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_vorm.html">CommunicatieVorm</a> cv)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Stelt de gegeven communicatievorm in als voorkeurscommunicatievorm voor zijn type en gelieerde persoon.  <a href="#a41017f9b2625aa0088d9d7bffbdaa164"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Gedetailleerde Beschrijving</h2>
 <div class="textblock"><p>Worker die alle businesslogica i.v.m. communicatievormen bevat (telefoonnummer, mailadres, enz.) </p>
 </div><hr/><h2>Constructor &amp; Destructor Documentatie</h2>
-<a class="anchor" id="afa3e28d9a922420b8974a69942199dc3"></a><!-- doxytag: member="Chiro::Gap::Workers::CommVormManager::CommVormManager" ref="afa3e28d9a922420b8974a69942199dc3" args="(IDao&lt; CommunicatieType &gt; typedao, IDao&lt; CommunicatieVorm &gt; commdao, IAutorisatieManager autorisatieMgr, ICommunicatieSync communicatieSync, IPersonenSync personenSync)" -->
+<a class="anchor" id="a6d269e61e8df43a403dc3050aed1e4c5"></a><!-- doxytag: member="Chiro::Gap::Workers::CommVormManager::CommVormManager" ref="a6d269e61e8df43a403dc3050aed1e4c5" args="(IDao&lt; CommunicatieType &gt; typedao, ICommunicatieVormDao commdao, IAutorisatieManager autorisatieMgr, ICommunicatieSync communicatieSync, IPersonenSync personenSync)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -136,7 +136,7 @@ Public Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="interface_chiro_1_1_cdf_1_1_data_1_1_i_dao-g.html">IDao</a>&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_vorm.html">CommunicatieVorm</a> &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_i_communicatie_vorm_dao.html">ICommunicatieVormDao</a>&#160;</td>
           <td class="paramname"><em>commdao</em>, </td>
         </tr>
         <tr>
@@ -169,11 +169,11 @@ Public Members</h2></td></tr>
 <p>Deze constructor laat toe om een alternatieve repository voor de communicatievormen te gebruiken. Nuttig voor mocking en testing. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">typedao</td><td>Repository voor communicatietypes</td></tr>
-    <tr><td class="paramname">commdao</td><td>Repository voor communicatievormen</td></tr>
-    <tr><td class="paramname">autorisatieMgr</td><td>Worker die autorisatie regelt</td></tr>
-    <tr><td class="paramname">communicatieSync</td><td>Syncer naar Kipadmin voor communicatiemiddelen</td></tr>
-    <tr><td class="paramname">personenSync</td><td>De service die instaat voor synchronisatie van persoonsgegevens</td></tr>
+    <tr><td class="paramname">typedao</td><td>Repository voor communicatietypes </td></tr>
+    <tr><td class="paramname">commdao</td><td>Repository voor communicatievormen </td></tr>
+    <tr><td class="paramname">autorisatieMgr</td><td>Worker die autorisatie regelt </td></tr>
+    <tr><td class="paramname">communicatieSync</td><td>Syncer naar Kipadmin voor communicatiemiddelen </td></tr>
+    <tr><td class="paramname">personenSync</td><td>De service die instaat voor synchronisatie van persoonsgegevens </td></tr>
   </table>
   </dd>
 </dl>
@@ -181,42 +181,6 @@ Public Members</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Documentatie van functie members</h2>
-<a class="anchor" id="ab5e0f7441b14982e5b8024f82cc171c7"></a><!-- doxytag: member="Chiro::Gap::Workers::CommVormManager::AanpassingenDoorvoeren" ref="ab5e0f7441b14982e5b8024f82cc171c7" args="(GelieerdePersoon gp, CommunicatieVorm nieuwecv)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Chiro.Gap.Workers.CommVormManager.AanpassingenDoorvoeren </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a>&#160;</td>
-          <td class="paramname"><em>gp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_vorm.html">CommunicatieVorm</a>&#160;</td>
-          <td class="paramname"><em>nieuwecv</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Vervangt eventueel de oude gegevens van de communicatievorm door de nieuwe, gaat na of er al een andere communicatievorm van dat type is, om te garanderen dat er een voorkeurscommunicatievorm van dat type is. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">gp</td><td>De gelieerde persoon voor wie de communicatievorm toegevoegd of aangepast wordt</td></tr>
-    <tr><td class="paramname">nieuwecv</td><td>De nieuwe gegevens voor de communicatievorm</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a041d46d0fd5b2b49e258927179df036c"></a><!-- doxytag: member="Chiro::Gap::Workers::CommVormManager::Bewaren" ref="a041d46d0fd5b2b49e258927179df036c" args="(CommunicatieVorm commvorm)" -->
 <div class="memitem">
 <div class="memproto">
@@ -235,11 +199,11 @@ Public Members</h2></td></tr>
 <p>Persisteert communicatievorm in de database. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">commvorm</td><td>Te persisteren communicatievorm</td></tr>
+    <tr><td class="paramname">commvorm</td><td>Te persisteren communicatievorm </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De bewaarde communicatievorm</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De bewaarde communicatievorm </dd></dl>
 <p>Persoon moet gekoppeld zijn </p>
 
 </div>
@@ -262,11 +226,11 @@ Public Members</h2></td></tr>
 <p>Een communicatietype ophalen op basis van de opgegeven ID. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">commTypeID</td><td>De ID van het communicatietype dat we nodig hebben</td></tr>
+    <tr><td class="paramname">commTypeID</td><td>De ID van het communicatietype dat we nodig hebben </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het communicatietype met de opgegeven ID</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het communicatietype met de opgegeven ID </dd></dl>
 
 </div>
 </div>
@@ -285,7 +249,7 @@ Public Members</h2></td></tr>
 <div class="memdoc">
 
 <p>Een collectie ophalen van alle gekende communicatietypes. </p>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een collectie van communicatietypes</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een collectie van communicatietypes </dd></dl>
 
 </div>
 </div>
@@ -307,11 +271,11 @@ Public Members</h2></td></tr>
 <p>De communicatievorm met de opgegeven ID ophalen. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">commvormID</td><td>De ID van de communicatievorm die je nodig hebt</td></tr>
+    <tr><td class="paramname">commvormID</td><td>De ID van de communicatievorm die je nodig hebt </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De communicatievorm met de opgegeven ID</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De communicatievorm met de opgegeven ID </dd></dl>
 
 </div>
 </div>
@@ -333,10 +297,47 @@ Public Members</h2></td></tr>
 <p>Verwijdert een communicatievorm, en persisteert. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">comm</td><td>Te verwijderen communicatievorm</td></tr>
+    <tr><td class="paramname">comm</td><td>Te verwijderen communicatievorm </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a984a7ca9f4f426cf7c50bc0ed5dec17a"></a><!-- doxytag: member="Chiro::Gap::Workers::CommVormManager::Koppelen" ref="a984a7ca9f4f426cf7c50bc0ed5dec17a" args="(GelieerdePersoon gp, CommunicatieVorm nieuwecv)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Chiro.Gap.Workers.CommVormManager.Koppelen </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a>&#160;</td>
+          <td class="paramname"><em>gp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_vorm.html">CommunicatieVorm</a>&#160;</td>
+          <td class="paramname"><em>nieuwecv</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Koppelt een communicatievorm aan een gelieerde persoon. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gp</td><td>De gelieerde persoon voor wie de communicatievorm toegevoegd of aangepast wordt </td></tr>
+    <tr><td class="paramname">nieuwecv</td><td>De nieuwe gegevens voor de communicatievorm </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Als de communicatievorm de eerste van een bepaald type is, dan wordt dat ook de voorkeur. </p>
 
 </div>
 </div>
@@ -358,11 +359,11 @@ Public Members</h2></td></tr>
 <p>Haalt communicatievorm op, op basis van commvormID. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">commvormID</td><td>ID op te halen communicatievorm</td></tr>
+    <tr><td class="paramname">commvormID</td><td>ID op te halen communicatievorm </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gevraagde communicatievorm</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gevraagde communicatievorm </dd></dl>
 
 </div>
 </div>
@@ -384,11 +385,36 @@ Public Members</h2></td></tr>
 <p>Haalt gelieerdepersoon en zijn gelinkte commvormen, gegeven een ID van een van zijn commvormen. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">commvormID</td><td>ID van een van de persoon zijn communicatievormen</td></tr>
+    <tr><td class="paramname">commvormID</td><td>ID van een van de persoon zijn communicatievormen </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gevraagde communicatievorm</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Gevraagde communicatievorm </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a41017f9b2625aa0088d9d7bffbdaa164"></a><!-- doxytag: member="Chiro::Gap::Workers::CommVormManager::VoorkeurZetten" ref="a41017f9b2625aa0088d9d7bffbdaa164" args="(CommunicatieVorm cv)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Chiro.Gap.Workers.CommVormManager.VoorkeurZetten </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_communicatie_vorm.html">CommunicatieVorm</a>&#160;</td>
+          <td class="paramname"><em>cv</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Stelt de gegeven communicatievorm in als voorkeurscommunicatievorm voor zijn type en gelieerde persoon. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cv</td><td>Communicatievorm die voorkeurscommunicatievorm moet worden, gegeven zijn type en gelieerde persoon </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -413,7 +439,7 @@ Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:45 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:45 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

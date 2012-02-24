@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -105,7 +103,11 @@ Public Members</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_leden_manager.html#a4c04a649186add40259f8d0afe727a98">LedenManager</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_data_interfaces_1_1_leden_dao_collectie.html">LedenDaoCollectie</a> daos, <a class="el" href="interface_chiro_1_1_gap_1_1_workers_1_1_i_veel_gebruikt.html">IVeelGebruikt</a> veelGebruikt, <a class="el" href="interface_chiro_1_1_gap_1_1_workers_1_1_i_autorisatie_manager.html">IAutorisatieManager</a> autorisatie, <a class="el" href="interface_chiro_1_1_gap_1_1_orm_1_1_sync_interfaces_1_1_i_leden_sync.html">ILedenSync</a> sync)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Maakt een nieuwe ledenmanager aan.  <a href="#a4c04a649186add40259f8d0afe727a98"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_leden_manager.html#a0c5ba2cca1aa8a1b0925c94b66db624e">AutomagischInschrijven</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a> gp, <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groeps_werk_jaar.html">GroepsWerkJaar</a> gwj, bool isJaarOvergang)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet. Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen. Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is. Anders wordt een foutmelding gegeven.  <a href="#a0c5ba2cca1aa8a1b0925c94b66db624e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_leden_manager.html#a494312fc48a1d4a24da2d59e588f12c2">InschrijvenVolgensVoorstel</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a> gp, <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groeps_werk_jaar.html">GroepsWerkJaar</a> gwj, bool isJaarOvergang, <a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_lid_voorstel.html">LidVoorstel</a> voorstellid)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet. Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen. Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is. Anders wordt een foutmelding gegeven.  <a href="#a494312fc48a1d4a24da2d59e588f12c2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_leden_manager.html#a99dd3e6b3da5db6e6d375c435408ed54">HerInschrijvenVolgensVoorstel</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a> lid, <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a> gelieerdePersoon, <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groeps_werk_jaar.html">GroepsWerkJaar</a> groepsWerkJaar, bool isJaarOvergang, <a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_lid_voorstel.html">LidVoorstel</a> voorstellid)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Schrijft een bestaand lid in voor het nieuwe werkjaar, en koppelt op basis van meegeleverde gegevens afdelingen aan die inschrijving. Het kan ook zijn dat het lid via deze procedure leiding wordt.  <a href="#a99dd3e6b3da5db6e6d375c435408ed54"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_leden_manager.html#a298cb8f428f67c9b1679019156f1a098">NonActiefMaken</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a> lid)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Zet kinderen en leiding op non-actief. Geen van beide kunnen ooit verwijderd worden!!!  <a href="#a298cb8f428f67c9b1679019156f1a098"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_leden_manager.html#ab40e2652519fbe80eb4e9e4de37b3bf4">Bewaren</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a> lid, <a class="el" href="namespace_chiro_1_1_gap_1_1_orm.html#ad66dbe9a4f2e39e7eb5b6b50e01c8fe9">LidExtras</a> extras)</td></tr>
@@ -122,8 +124,6 @@ Public Members</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt het lid op bepaald door <em>gelieerdePersoonID</em>  en <em>groepsWerkJaarID</em> , inclusief de relevante details om het lid naar Kipadmin te krijgen: persoon, afdelingen, officiële afdelingen, functies, groepswerkjaar, groep.  <a href="#a48e4baa9d09bf156cd9ccfcb85ab4110"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_leden_manager.html#aa3a16b45a1362f8510dd7aa5f7844ba1">OphalenUitGroepsWerkJaar</a> (int gwjID, bool ookInactief)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Haalt leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens, voorkeursadressen, functies en afdelingen. (Geen communicatiemiddelen)  <a href="#aa3a16b45a1362f8510dd7aa5f7844ba1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_leden_manager.html#ae3d121e1a1bea3a734338db95c496bb6">TypeToggle</a> (<a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a> lid)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Maakt van een kindlid een leid(st)er of omgekeerd. Persisteert. Functies gaan voor het gemak verloren. Gekoppelde afdelingen gaan verloren; een lid krijgt meteen een juiste afdeling.  <a href="#ae3d121e1a1bea3a734338db95c496bb6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; <a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_leden_manager.html#abdfd359ef50f1b2aec90e970e2deada8">Zoeken</a> (<a class="el" href="class_chiro_1_1_gap_1_1_domain_1_1_lid_filter.html">LidFilter</a> filter, <a class="el" href="namespace_chiro_1_1_gap_1_1_orm.html#ad66dbe9a4f2e39e7eb5b6b50e01c8fe9">LidExtras</a> extras)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Zoekt leden op, op basis van de gegeven <em>filter</em> .  <a href="#abdfd359ef50f1b2aec90e970e2deada8"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
@@ -176,10 +176,10 @@ Static Public Members</h2></td></tr>
 <p>Maakt een nieuwe ledenmanager aan. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">daos</td><td>Een hele reeks van IDao-objecten, nodig voor data access.</td></tr>
-    <tr><td class="paramname">veelGebruikt</td><td>Object dat toelaat veel gebruikte items te cachen.</td></tr>
-    <tr><td class="paramname">autorisatie</td><td>Een IAuthorisatieManager, die de GAV-permissies van de huidige user controleert.</td></tr>
-    <tr><td class="paramname">sync</td><td>Zorgt voor synchronisate van adressen naar KipAdmin</td></tr>
+    <tr><td class="paramname">daos</td><td>Een hele reeks van IDao-objecten, nodig voor data access. </td></tr>
+    <tr><td class="paramname">veelGebruikt</td><td>Object dat toelaat veel gebruikte items te cachen. </td></tr>
+    <tr><td class="paramname">autorisatie</td><td>Een IAuthorisatieManager, die de GAV-permissies van de huidige user controleert. </td></tr>
+    <tr><td class="paramname">sync</td><td>Zorgt voor synchronisate van adressen naar KipAdmin </td></tr>
   </table>
   </dd>
 </dl>
@@ -205,11 +205,11 @@ Static Public Members</h2></td></tr>
 <p>Geeft een lijst terug van alle afdelingen waaraan het lid gegeven gekoppeld is. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">l</td><td>Het gegeven lid</td></tr>
+    <tr><td class="paramname">l</td><td>Het gegeven lid </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Lijst met afdelingen</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Lijst met afdelingen </dd></dl>
 <p>Een kind is hoogstens aan 1 afdeling gekoppeld </p>
 
 </div>
@@ -244,17 +244,17 @@ Static Public Members</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet. </p>
-<p>Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen. Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is. Anders wordt een foutmelding gegeven.</p>
+
+<p>Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet. Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen. Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is. Anders wordt een foutmelding gegeven. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">gp</td><td>De persoon om in te schrijven, gekoppeld met groep en persoon</td></tr>
-    <tr><td class="paramname">gwj</td><td>Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren</td></tr>
-    <tr><td class="paramname">isJaarOvergang</td><td>Geeft aan of het over de automatische jaarovergang gaat; relevant voor de probeerperiode</td></tr>
+    <tr><td class="paramname">gp</td><td>De persoon om in te schrijven, gekoppeld met groep en persoon </td></tr>
+    <tr><td class="paramname">gwj</td><td>Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren </td></tr>
+    <tr><td class="paramname">isJaarOvergang</td><td>Geeft aan of het over de automatische jaarovergang gaat; relevant voor de probeerperiode </td></tr>
   </table>
   </dd>
 </dl>
-<p>returns&gt;Het aangemaakte lid object</p>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het aangemaakte lidobject </dd></dl>
 
 </div>
 </div>
@@ -286,13 +286,12 @@ Static Public Members</h2></td></tr>
 <p>Persisteert een lid met de gekoppelde entiteiten bepaald door <em>extras</em> . </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lid</td><td>Het <em>lid</em>  dat bewaard moet worden</td></tr>
-    <tr><td class="paramname">extras</td><td>De gekoppelde entiteiten</td></tr>
+    <tr><td class="paramname">lid</td><td>Het <em>lid</em>  dat bewaard moet worden </td></tr>
+    <tr><td class="paramname">extras</td><td>De gekoppelde entiteiten </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld</dd></dl>
-<p>De parameter <em>syncen</em>  heeft als doel een sync te vermijden als een irrelevante wijziging zoals 'lidgeld betaald' wordt bewaard. </p>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld </dd></dl>
 
 </div>
 </div>
@@ -330,13 +329,13 @@ Static Public Members</h2></td></tr>
 <p>Persisteert een lid met de gekoppelde entiteiten bepaald door <em>extras</em> . </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lid</td><td>Het <em>lid</em>  dat bewaard moet worden</td></tr>
-    <tr><td class="paramname">extras</td><td>De gekoppelde entiteiten</td></tr>
-    <tr><td class="paramname">syncen</td><td>Als <code>true</code>, dan wordt het lid gesynct met Kipadmin.</td></tr>
+    <tr><td class="paramname">lid</td><td>Het <em>lid</em>  dat bewaard moet worden </td></tr>
+    <tr><td class="paramname">extras</td><td>De gekoppelde entiteiten </td></tr>
+    <tr><td class="paramname">syncen</td><td>Als <code>true</code>, dan wordt het lid gesynct met Kipadmin. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld </dd></dl>
 <p>De parameter <em>syncen</em>  heeft als doel een sync te vermijden als een irrelevante wijziging zoals 'lidgeld betaald' wordt bewaard. </p>
 
 </div>
@@ -369,12 +368,76 @@ Static Public Members</h2></td></tr>
 <p>Controleert of de datum <em>dateTime</em>  zich in het werkjaar <em>p</em>  bevindt. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">dateTime</td><td>Te controleren datum</td></tr>
-    <tr><td class="paramname">p</td><td>Werkjaar. (2010 voor 2010-2011 enz.)</td></tr>
+    <tr><td class="paramname">dateTime</td><td>Te controleren datum </td></tr>
+    <tr><td class="paramname">p</td><td>Werkjaar. (2010 voor 2010-2011 enz.) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>true</code> als <em>dateTime</em>  zich in het werkjaar bevindt; anders <code>false</code>.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd><code>True</code> als <em>dateTime</em>  zich in het werkjaar bevindt; anders <code>false</code>. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a99dd3e6b3da5db6e6d375c435408ed54"></a><!-- doxytag: member="Chiro::Gap::Workers::LedenManager::HerInschrijvenVolgensVoorstel" ref="a99dd3e6b3da5db6e6d375c435408ed54" args="(Lid lid, GelieerdePersoon gelieerdePersoon, GroepsWerkJaar groepsWerkJaar, bool isJaarOvergang, LidVoorstel voorstellid)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a> Chiro.Gap.Workers.LedenManager.HerInschrijvenVolgensVoorstel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a>&#160;</td>
+          <td class="paramname"><em>lid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_gelieerde_persoon.html">GelieerdePersoon</a>&#160;</td>
+          <td class="paramname"><em>gelieerdePersoon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_groeps_werk_jaar.html">GroepsWerkJaar</a>&#160;</td>
+          <td class="paramname"><em>groepsWerkJaar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isJaarOvergang</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_chiro_1_1_gap_1_1_workers_1_1_lid_voorstel.html">LidVoorstel</a>&#160;</td>
+          <td class="paramname"><em>voorstellid</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Schrijft een bestaand lid in voor het nieuwe werkjaar, en koppelt op basis van meegeleverde gegevens afdelingen aan die inschrijving. Het kan ook zijn dat het lid via deze procedure leiding wordt. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lid</td><td>Het lidobject van de inschrijving in het vorige werkjaar </td></tr>
+    <tr><td class="paramname">gelieerdePersoon</td><td>De gelieerde persoon die ingeschreven moet worden </td></tr>
+    <tr><td class="paramname">groepsWerkJaar</td><td>Geeft aan over welke groep en welk werkjaar het gaat </td></tr>
+    <tr><td class="paramname">isJaarOvergang</td><td>TODO (#190): documenteren. <code>True</code> als de inschrijving tijdens de jaarovergang gebeurt? In welk geval kan het dan <code>false</code> zijn, en waarvoor dient dat? </td></tr>
+    <tr><td class="paramname">voorstellid</td><td>Bevat de afdelingen waar het nieuwe lidobject aan gekoppeld moet worden en heeft aan of de gelieerde persoon leiding is. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het lidobject met de gegevens van de nieuwe inschrijving </dd></dl>
+<dl><dt><b>Excepties:</b></dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">GeenGavException</td><td>Komt voor als de gebruiker geen GAV-rechten heeft op het <em>lid</em> . </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -414,18 +477,18 @@ Static Public Members</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet. </p>
-<p>Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen. Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is. Anders wordt een foutmelding gegeven.</p>
+
+<p>Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet. Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen. Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is. Anders wordt een foutmelding gegeven. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">gp</td><td>De persoon om in te schrijven, gekoppeld met groep en persoon</td></tr>
-    <tr><td class="paramname">gwj</td><td>Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren</td></tr>
-    <tr><td class="paramname">isJaarOvergang</td><td>Geeft aan of het over de automatische jaarovergang gaat; relevant voor de probeerperiode</td></tr>
+    <tr><td class="paramname">gp</td><td>De persoon om in te schrijven, gekoppeld met groep en persoon </td></tr>
+    <tr><td class="paramname">gwj</td><td>Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren </td></tr>
+    <tr><td class="paramname">isJaarOvergang</td><td>Geeft aan of het over de automatische jaarovergang gaat; relevant voor de probeerperiode </td></tr>
+    <tr><td class="paramname">voorstellid</td><td>Voorstel voor de eigenschappen van het in te schrijven lid. Als dit null is, wordt het lid automagisch ingeschreven. Er wordt enkel rekening gehouden met of het leiding moet worden en welk afdelingsjaar gekozen moet worden </td></tr>
   </table>
   </dd>
 </dl>
-<p>param name="voorstellid"&gt;Voorstel voor de eigenschappen van het in te schrijven lid. Als dit null is, wordt het lid automagisch ingeschreven. Er wordt enkel rekening gehouden met of het leiding moet worden en welk afdelingsjaar gekozen moet worden</p>
-<p>returns&gt;Het aangemaakte lid object</p>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Het aangemaakte lid object </dd></dl>
 
 </div>
 </div>
@@ -447,7 +510,7 @@ Static Public Members</h2></td></tr>
 <p>Zet kinderen en leiding op non-actief. Geen van beide kunnen ooit verwijderd worden!!! </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lid</td><td>Het lid dat we non-actief willen maken</td></tr>
+    <tr><td class="paramname">lid</td><td>Het lid dat we non-actief willen maken </td></tr>
   </table>
   </dd>
 </dl>
@@ -483,12 +546,12 @@ Static Public Members</h2></td></tr>
 <p>Haalt leden op, op basis van de <em>lidIDs</em>  </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lidIDs</td><td>ID gevraagde leden</td></tr>
-    <tr><td class="paramname">lidExtras</td><td>Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</td></tr>
+    <tr><td class="paramname">lidIDs</td><td>ID gevraagde leden </td></tr>
+    <tr><td class="paramname">lidExtras</td><td>Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Kinderen of leiding met gevraagde <em>lidExtras</em> .</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Kinderen of leiding met gevraagde <em>lidExtras</em> . </dd></dl>
 <p>ID's van leden waarvoor de user geen GAV is, worden genegeerd </p>
 
 </div>
@@ -521,12 +584,12 @@ Static Public Members</h2></td></tr>
 <p>Haalt lid op, op basis van zijn <em>lidID</em>  </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lidID</td><td>ID gevraagde lid</td></tr>
-    <tr><td class="paramname">extras</td><td>Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</td></tr>
+    <tr><td class="paramname">lidID</td><td>ID gevraagde lid </td></tr>
+    <tr><td class="paramname">extras</td><td>Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Kind of Leiding met gevraagde <em>extras</em> .</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Kind of Leiding met gevraagde <em>extras</em> . </dd></dl>
 
 </div>
 </div>
@@ -548,11 +611,11 @@ Static Public Members</h2></td></tr>
 <p>Haalt lid en gekoppelde persoon op, op basis van <em>lidID</em>  </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">lidID</td><td>ID op te halen lid</td></tr>
+    <tr><td class="paramname">lidID</td><td>ID op te halen lid </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Lid, met daaraan gekoppeld gelieerde persoon en persoon.</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Lid, met daaraan gekoppeld gelieerde persoon en persoon. </dd></dl>
 
 </div>
 </div>
@@ -584,12 +647,12 @@ Static Public Members</h2></td></tr>
 <p>Haalt leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens, voorkeursadressen, functies en afdelingen. (Geen communicatiemiddelen) </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">gwjID</td><td>ID van het gevraagde groepswerkjaar</td></tr>
-    <tr><td class="paramname">ookInactief</td><td>geef hier <code>true</code> als ook de niet-actieve leden opgehaald moeten worden.</td></tr>
+    <tr><td class="paramname">gwjID</td><td>ID van het gevraagde groepswerkjaar </td></tr>
+    <tr><td class="paramname">ookInactief</td><td>Geef hier <code>true</code> als ook de niet-actieve leden opgehaald moeten worden. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>De lijst van leden</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De lijst van leden </dd></dl>
 
 </div>
 </div>
@@ -621,38 +684,12 @@ Static Public Members</h2></td></tr>
 <p>Haalt het lid op bepaald door <em>gelieerdePersoonID</em>  en <em>groepsWerkJaarID</em> , inclusief de relevante details om het lid naar Kipadmin te krijgen: persoon, afdelingen, officiële afdelingen, functies, groepswerkjaar, groep. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">gelieerdePersoonID</td><td>ID van de gelieerde persoon waarvoor het lidobject gevraagd is.</td></tr>
-    <tr><td class="paramname">groepsWerkJaarID</td><td>ID van groepswerkjaar in hetwelke het lidobject gevraagd is</td></tr>
+    <tr><td class="paramname">gelieerdePersoonID</td><td>ID van de gelieerde persoon waarvoor het lidobject gevraagd is. </td></tr>
+    <tr><td class="paramname">groepsWerkJaarID</td><td>ID van groepswerkjaar in hetwelke het lidobject gevraagd is </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="return"><dt><b>Retourneert:</b></dt><dd>Het lid bepaald door <em>gelieerdePersoonID</em>  en <em>groepsWerkJaarID</em> , inclusief de relevante details om het lid naar Kipadmin te krijgen </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ae3d121e1a1bea3a734338db95c496bb6"></a><!-- doxytag: member="Chiro::Gap::Workers::LedenManager::TypeToggle" ref="ae3d121e1a1bea3a734338db95c496bb6" args="(Lid lid)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a> Chiro.Gap.Workers.LedenManager.TypeToggle </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_chiro_1_1_gap_1_1_orm_1_1_lid.html">Lid</a>&#160;</td>
-          <td class="paramname"><em>lid</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Maakt van een kindlid een leid(st)er of omgekeerd. Persisteert. Functies gaan voor het gemak verloren. Gekoppelde afdelingen gaan verloren; een lid krijgt meteen een juiste afdeling. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">lid</td><td>Lid waarvan type moet worden veranderd</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd></dd></dl>
 
 </div>
 </div>
@@ -684,12 +721,12 @@ Static Public Members</h2></td></tr>
 <p>Zoekt leden op, op basis van de gegeven <em>filter</em> . </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">filter</td><td>De niet-nulle properties van de filter bepalen waarop gezocht moet worden</td></tr>
+    <tr><td class="paramname">filter</td><td>De niet-nulle properties van de filter bepalen waarop gezocht moet worden </td></tr>
     <tr><td class="paramname">extras</td><td>Bepaalt de mee op te halen gekoppelde entiteiten. (Adressen ophalen vertraagt aanzienlijk.) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd>Lijst met info over gevonden leden</dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>Lijst met info over gevonden leden </dd></dl>
 <p>Er worden enkel actieve leden opgehaald </p>
 
 </div>
@@ -715,7 +752,7 @@ Static Public Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:45 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:46 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

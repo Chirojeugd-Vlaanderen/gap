@@ -24,8 +24,6 @@
  <tbody>
  <tr style="height: 56px;">
   
-  <td id="projectlogo"><img alt="Logo" src="chiro.png"/></td>
-  
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">GAP
@@ -114,14 +112,15 @@ Public Members</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">abstract override ActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_personen_en_leden_controller.html#a31ade4b45a43cf940c01829976258868">Index</a> (int groepID)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Een standaard indexpagina die door elke controller geimplementeerd moet zijn om de "terug naar 
             vorige" te kunnen implementeren.  <a href="#a31ade4b45a43cf940c01829976258868"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_personen_en_leden_controller.html#aae6112aaedd71bd4c4fdcfecef0b591a">GelieerdePersonenUitschrijven</a> (IEnumerable&lt; int &gt; gelieerdepersoonIDs, int groepID)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_personen_en_leden_controller.html#ab2bd14ea138e2de147c5f62e55dd6507">LedenMaken</a> (int groepID)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">BELANGRIJK: in Tempdata "list" moet een lijst zitten van welke gelieerdepersonen moeten worden ingeschreven.  <a href="#ab2bd14ea138e2de147c5f62e55dd6507"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Dit is een louche actie. Ze kijkt in TempData["list"], en hoopt dat daar een List van gelieerdePersoonID's in zit. Dan wordt er een suggestie gedaan voor een inschrijving van die gelieerde personen, in die zin dat er voorgesteld wordt of ze lid of leiding worden, en in welke afdeling ze terechtkomen.  <a href="#ab2bd14ea138e2de147c5f62e55dd6507"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_personen_en_leden_controller.html#a279ec9c767b62e70a9872eb48597ee59">LedenMaken</a> (<a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_models_1_1_geselecteerde_personen_en_leden_model.html">GeselecteerdePersonenEnLedenModel</a> model, int groepID)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Members</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_personen_en_leden_controller.html#ab402b7a884586e834e1c38702b54731b">PersonenEnLedenController</a> (<a class="el" href="interface_chiro_1_1_gap_1_1_web_app_1_1_i_veel_gebruikt.html">IVeelGebruikt</a> veelGebruikt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_personen_en_leden_controller.html#a9a6a1dbca643c07873c6c92a3c3b0dfe">GelieerdePersonenInschrijven</a> (IEnumerable&lt; int &gt; gelieerdepersoonIDs)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chiro_1_1_gap_1_1_web_app_1_1_controllers_1_1_personen_en_leden_controller.html#ae64582a499482908f603f263cd28cd68">GelieerdePersonenUitschrijven</a> (IEnumerable&lt; int &gt; gelieerdePersoonIDs, int groepID, string succesboodschap)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Schrijft via de backend de gelieerde personen met gegeven <em>gelieerdePersoonIDs</em>  uit uit de groep met gegeven <em>groepID</em> .  <a href="#ae64582a499482908f603f263cd28cd68"></a><br/></td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentatie</h2>
 <a class="anchor" id="ab402b7a884586e834e1c38702b54731b"></a><!-- doxytag: member="Chiro::Gap::WebApp::Controllers::PersonenEnLedenController::PersonenEnLedenController" ref="ab402b7a884586e834e1c38702b54731b" args="(IVeelGebruikt veelGebruikt)" -->
@@ -141,7 +140,7 @@ Protected Members</h2></td></tr>
 <p>Standaardconstructor. <em>veelGebruikt</em>  wordt best toegewezen via inversion of control.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">veelGebruikt</td><td>haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via service</td></tr>
+    <tr><td class="paramname">veelGebruikt</td><td>Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via service</td></tr>
   </table>
   </dd>
 </dl>
@@ -166,7 +165,7 @@ Protected Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aae6112aaedd71bd4c4fdcfecef0b591a"></a><!-- doxytag: member="Chiro::Gap::WebApp::Controllers::PersonenEnLedenController::GelieerdePersonenUitschrijven" ref="aae6112aaedd71bd4c4fdcfecef0b591a" args="(IEnumerable&lt; int &gt; gelieerdepersoonIDs, int groepID)" -->
+<a class="anchor" id="ae64582a499482908f603f263cd28cd68"></a><!-- doxytag: member="Chiro::Gap::WebApp::Controllers::PersonenEnLedenController::GelieerdePersonenUitschrijven" ref="ae64582a499482908f603f263cd28cd68" args="(IEnumerable&lt; int &gt; gelieerdePersoonIDs, int groepID, string succesboodschap)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -174,22 +173,38 @@ Protected Members</h2></td></tr>
           <td class="memname">void Chiro.Gap.WebApp.Controllers.PersonenEnLedenController.GelieerdePersonenUitschrijven </td>
           <td>(</td>
           <td class="paramtype">IEnumerable&lt; int &gt;&#160;</td>
-          <td class="paramname"><em>gelieerdepersoonIDs</em>, </td>
+          <td class="paramname"><em>gelieerdePersoonIDs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>groepID</em>&#160;</td>
+          <td class="paramname"><em>groepID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>succesboodschap</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td><code> [protected]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Schrijft via de backend de gelieerde personen met gegeven <em>gelieerdePersoonIDs</em>  uit uit de groep met gegeven <em>groepID</em> . </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gelieerdePersoonIDs</td><td>ID's uit te schrijven gelieerde personen</td></tr>
+    <tr><td class="paramname">groepID</td><td>ID van groep waarvoor uit te schrijven</td></tr>
+    <tr><td class="paramname">succesboodschap</td><td>Feedback die gegeven zal worden bij succes</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -239,14 +254,14 @@ Protected Members</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>BELANGRIJK: in Tempdata "list" moet een lijst zitten van welke gelieerdepersonen moeten worden ingeschreven. </p>
+<p>Dit is een louche actie. Ze kijkt in TempData["list"], en hoopt dat daar een List van gelieerdePersoonID's in zit. Dan wordt er een suggestie gedaan voor een inschrijving van die gelieerde personen, in die zin dat er voorgesteld wordt of ze lid of leiding worden, en in welke afdeling ze terechtkomen. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">groepID</td><td></td></tr>
+    <tr><td class="paramname">groepID</td><td>Groep waar de leden ingeschreven moeten worden</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd></dd></dl>
+<dl class="return"><dt><b>Retourneert:</b></dt><dd>De view met de voorgestelde afdelingen</dd></dl>
 
 </div>
 </div>
@@ -274,14 +289,6 @@ Protected Members</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">model</td><td></td></tr>
-    <tr><td class="paramname">groepID</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Retourneert:</b></dt><dd></dd></dl>
 
 </div>
 </div>
@@ -306,7 +313,7 @@ Protected Members</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Gegenereerd op Wo 9 Nov 2011 19:58:41 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
+Gegenereerd op Vr 24 Feb 2012 09:18:41 voor GAP door &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>
