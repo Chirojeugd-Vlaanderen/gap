@@ -4,10 +4,10 @@
 
 <table>
     <tr>
-        <th>login</th>
-        <th>naam</th>
-        <th>vervaldatum</th>
-        <th>acties</th>
+        <th>Login</th>
+        <th>Naam</th>
+        <th>Vervaldatum</th>
+        <th>Actie</th>
     </tr>
     <%
         foreach (var gebr in Model.GebruikersDetails.Where(det => det.VervalDatum >= DateTime.Now))
@@ -18,17 +18,18 @@
         <td><%=gebr.PersoonID > 0 ? Html.ActionLink(String.Format("{0} {1}", gebr.VoorNaam, gebr.FamilieNaam), "EditRest", new { Controller = "Personen", id = gebr.GelieerdePersoonID}).ToHtmlString() : "(onbekend)" %></td>
         <td><%:gebr.VervalDatum == null ? "nooit" : ((DateTime)gebr.VervalDatum).ToString("d") %></td>
         <td>
-            <%
-                if (gebr.Verlengbaar)
-                {
-                    // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
+            <% if (gebr.Verlengbaar)
+                { // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
             %>
-              <%=Html.ActionLink("verlengen", "Verlengen", new { id = gebr.ID }) %>
-            <%                
-                    
+              <%=Html.ActionLink("Verlengen", "Verlengen", new { id = gebr.ID }) %>
+            <%              
                 }
-            %>
-              <%=Html.ActionLink("afnemen", "Intrekken", new { id = gebr.ID }) %></>
+
+                if (Model.GebruikersDetails.Count() > 1)
+                {
+%>
+              <%= Html.ActionLink("Afnemen", "Intrekken", new {id = gebr.ID}) %>
+            <% } %>
         </td>
     </tr>
 
