@@ -12,7 +12,7 @@
 				-
 				<%=String.Format("{0:d}", Model.Uitstap.DatumTot)%></em>.
 			<%=Model.Uitstap.Opmerkingen%>
-			[<%=Html.ActionLink("Bewerken", "Bewerken", new {id = Model.Uitstap.ID})%>]
+			[<%=Html.ActionLink("Bewerken", "Bewerken", new { id = Model.Uitstap.ID })%> - <%=Html.ActionLink("Verwijderen", "Verwijderen", new { uitstapID = Model.Uitstap.ID })%>]
 		</p>
 		<p>
 			<%

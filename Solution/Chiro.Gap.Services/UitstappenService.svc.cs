@@ -319,6 +319,23 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
+        /// Verwijdert een uitstap
+        /// </summary>
+        /// <param name="uitstapID">ID van de uitstap die verwijderd moet worden</param>
+        public void UitstapVerwijderen(int uitstapID)
+        {
+            try
+            {
+                _uitstappenMgr.UitstapVerwijderen(uitstapID);
+            }
+            catch (GeenGavException ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Stelt de deelnemer met gegeven <paramref name="deelnemerID" /> in als contactpersoon voor de uitstap
         /// waaraan hij deelneemt
         /// </summary>

@@ -95,6 +95,16 @@ namespace Chiro.Gap.ServiceContracts
         IEnumerable<DeelnemerDetail> DeelnemersOphalen(int uitstapID);
 
         /// <summary>
+        /// Verwijderd een uitstap met als ID <paramref name="uitstapID"/>
+        /// </summary>
+        /// <param name="uitstapID">ID van de te verwijderen uitstap</param>
+        /// <returns>Verwijderd de uitstap en toont daarna het overzicht scherm</returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        void UitstapVerwijderen(int uitstapID);
+
+        /// <summary>
         /// Stelt de deelnemer met gegeven <paramref name="deelnemerID" /> in als contactpersoon voor de uitstap
         /// waaraan hij deelneemt
         /// </summary>

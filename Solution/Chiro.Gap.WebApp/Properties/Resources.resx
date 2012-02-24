@@ -359,4 +359,10 @@
   <data name="GebruikersOverzicht" xml:space="preserve">
     <value>Gebruikersrechten</value>
   </data>
+  <data name="UitstapVerwijderd" xml:space="preserve">
+    <value>De uitstap is verwijderd</value>
+  </data>
+  <data name="UitstapVerwijderenFout" xml:space="preserve">
+    <value>De uitstap kon niet verwijderd worden</value>
+  </data>
 </root>

@@ -231,6 +231,29 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Verwijderd de uitstap
+        /// </summary>
+        /// <param name="uitstapID">
+        /// ID van uitstap die te verwijderen is
+        /// </param>
+        /// <returns>
+        /// Verwijderd de uitstap en toont het overzichtsscherm
+        /// </returns>
+        public bool UitstapVerwijderen(int uitstapID)
+        {
+            if (!_autorisatieManager.IsGavUitstap(uitstapID))
+            {
+                throw new GeenGavException(Resources.GeenGav);
+            }
+
+            Uitstap uitstap = _uitstappenDao.Ophalen(uitstapID);
+            uitstap.TeVerwijderen = true;
+            _uitstappenDao.Bewaren(uitstap);
+
+            return true;
+        }
+
+        /// <summary>
         /// Haalt alle uitstappen van een gegeven groep op.
         /// </summary>
         /// <param name="groepID">

@@ -24,8 +24,7 @@ namespace Chiro.Gap.WebApp.Controllers
     /// </summary>
     public class UitstappenController : BaseController
     {
-        public UitstappenController(IVeelGebruikt veelGebruikt)
-            : base(veelGebruikt)
+        public UitstappenController(IVeelGebruikt veelGebruikt) : base(veelGebruikt)
         {
         }
 
@@ -122,6 +121,30 @@ namespace Chiro.Gap.WebApp.Controllers
             }
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Verwijderd de uitstap
+        /// </summary>
+        /// <param name="groepID">ID van de groep die momenteel geselecteerd is</param>
+        /// <param name="uitstapID">ID van de uitstap die we willen verwijderen</param>
+        /// <returns>Verwijderd de uitstap en gaat terug naar het overzichtscherm</returns>
+        public ActionResult Verwijderen(int groepID, int uitstapID)
+        {
+            // Afdeling van afdelingsjaar invullen
+            try
+            {
+                ServiceHelper.CallService<IUitstappenService>(svc => svc.UitstapVerwijderen(uitstapID));
+
+                TempData["succes"] = Properties.Resources.UitstapVerwijderd;
+            }
+            catch (FaultException)
+            {
+                TempData["fout"] = Properties.Resources.UitstapVerwijderenFout;
+                // TODO (#1139): specifieke exceptions catchen en weergeven via de modelstate, en niet via tempdata.
+            }
+
+            return RedirectToAction("Index");
         }
 
         /// <summary>

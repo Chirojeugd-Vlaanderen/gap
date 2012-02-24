@@ -243,12 +243,6 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }
 
-            /* Controleren moet niet meer want dat gebeurd al bij het non-actief zetten van de afdeling
-            if (aj.Kind.Count != 0 || aj.Leiding.Count != 0)
-            {
-                throw new InvalidOperationException(Properties.Resources.AfdelingsJaarBevatLeden);
-            }*/
-
             afd.TeVerwijderen = true;
             _afdelingenDao.Bewaren(afd);
             return true;
