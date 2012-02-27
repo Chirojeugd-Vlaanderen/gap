@@ -33,7 +33,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public FunctiesController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
 
         /// <summary>
-        /// Genereert een view met algemene gegevens over de groep
+        /// Genereert een view met een lijstje van alle beschikbare functies en geeft de mogelijkheid om er één nieuwe toe te voegen.
         /// </summary>
         /// <param name="groepID">ID van de gewenste groep</param>
         /// <returns>View met algemene gegevens over de groep</returns>
