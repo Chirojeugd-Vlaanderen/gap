@@ -465,7 +465,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var stream = (new ExcelManip()).ExcelTabel(
                 model.LidInfoLijst,
                 kolomkoppen,
-                it => it.Type,
+                it => it.Type == LidType.Kind ? "Lid" : "Leiding",
                 it => it.AdNummer,
                 it => it.VoorNaam,
                 it => it.Naam,
