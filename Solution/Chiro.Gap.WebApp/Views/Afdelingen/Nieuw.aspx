@@ -25,13 +25,11 @@
 		<legend>Nieuwe afdeling</legend>
 		<%=Html.LabelFor(mdl => mdl.Info.Naam) %>
 		<%=Html.EditorFor(mdl => mdl.Info.Naam)%>
-		<br />
-		<%=Html.ValidationMessageFor(mdl => mdl.Info.Naam)%>
+        <%=Html.ValidationMessageFor(mdl => mdl.Info.Naam)%>
 		<br />
 		<%=Html.LabelFor(mdl => mdl.Info.Afkorting)%>
 		<%=Html.EditorFor(mdl => mdl.Info.Afkorting)%>
-		<br />
-		<%=Html.ValidationMessageFor(mdl => mdl.Info.Afkorting)%>
+        <%=Html.ValidationMessageFor(mdl => mdl.Info.Afkorting)%>
 	</fieldset>
 	<% } %>
 </asp:Content>

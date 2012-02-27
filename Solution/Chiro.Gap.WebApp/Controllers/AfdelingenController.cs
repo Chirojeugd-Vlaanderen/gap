@@ -288,14 +288,14 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			if (model.AfdelingsJaar.GeboorteJaarTot < model.AfdelingsJaar.GeboorteJaarVan)
 			{
-				int tmp = model.AfdelingsJaar.GeboorteJaarVan;
 				model.AfdelingsJaar.GeboorteJaarVan = model.AfdelingsJaar.GeboorteJaarTot;
-				model.AfdelingsJaar.GeboorteJaarTot = tmp;
+                model.AfdelingsJaar.GeboorteJaarTot = model.AfdelingsJaar.GeboorteJaarVan;
 			}
 
 			try
 			{
 				ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarBewaren(model.AfdelingsJaar));
+                ServiceHelper.CallService<IGroepenService>(e => e.AfdelingBewaren(model.Afdeling));
 
 				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 

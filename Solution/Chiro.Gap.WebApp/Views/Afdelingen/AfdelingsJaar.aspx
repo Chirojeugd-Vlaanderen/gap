@@ -25,9 +25,13 @@
 	</ul>
 	<fieldset>
 		<%=Html.LabelFor(mdl=> mdl.Afdeling.Naam)%>
-		<%=Html.TextBoxFor(mdl => mdl.Afdeling.Naam, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" })%><br />
+		<%=Html.EditorFor(mdl => mdl.Afdeling.Naam)%>
+        <%=Html.ValidationMessageFor(mdl => mdl.Afdeling.Naam)%>
+        <br />
 		<%=Html.LabelFor(mdl => mdl.Afdeling.Afkorting)%>
-		<%=Html.TextBoxFor(mdl => mdl.Afdeling.Afkorting, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" })%><br />
+		<%=Html.EditorFor(mdl => mdl.Afdeling.Afkorting)%>
+        <%=Html.ValidationMessageFor(mdl => mdl.Afdeling.Afkorting)%>
+        <br />
 		<%=Html.LabelFor(s => s.AfdelingsJaar.Geslacht)%>
 		<%= Html.RadioButton("AfdelingsJaar.Geslacht", GeslachtsType.Gemengd, Model.AfdelingsJaar.Geslacht == GeslachtsType.Gemengd)%>
 		Gemengd
@@ -47,6 +51,7 @@
 		%>
 		<%=Html.LabelFor(mdl=>mdl.AfdelingsJaar.OfficieleAfdelingID) %>
 		<%=Html.DropDownListFor(mdl => mdl.AfdelingsJaar.OfficieleAfdelingID, new SelectList(values, "value", "text"))%> 
+        <%=Html.HiddenFor(mdl=>mdl.Afdeling.ID) %>
 		<%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.AfdelingID) %>
 		<%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.AfdelingsJaarID) %>
 		<%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.VersieString) %>
