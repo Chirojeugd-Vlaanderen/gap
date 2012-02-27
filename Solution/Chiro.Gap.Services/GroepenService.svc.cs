@@ -34,6 +34,7 @@ namespace Chiro.Gap.Services
 
         private readonly GroepenManager _groepenMgr;
         private readonly ChiroGroepenManager _chiroGroepenMgr;
+        private readonly AfdelingenManager _afdelingenMgr;
         private readonly AfdelingsJaarManager _afdelingsJaarMgr;
         private readonly AdressenManager _adresMgr;
         private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
@@ -52,6 +53,9 @@ namespace Chiro.Gap.Services
         /// </param>
         /// <param name="cgm">
         /// De worker voor Chirogroepen
+        /// </param>
+        /// <param name="afdm">
+        /// De worker voor Afdelingen
         /// </param>
         /// <param name="ajm">
         /// De worker voor AfdelingsJaren
@@ -83,6 +87,7 @@ namespace Chiro.Gap.Services
         public GroepenService(
             GroepenManager groepenMgr,
             ChiroGroepenManager cgm,
+            AfdelingenManager afdm,
             AfdelingsJaarManager ajm,
             GroepsWerkJaarManager wm,
             AdressenManager adresMgr,
@@ -95,6 +100,7 @@ namespace Chiro.Gap.Services
         {
             _groepenMgr = groepenMgr;
             _chiroGroepenMgr = cgm;
+            _afdelingenMgr = afdm;
             _afdelingsJaarMgr = ajm;
             _groepsWerkJaarManager = wm;
             _autorisatieMgr = am;
@@ -445,7 +451,7 @@ namespace Chiro.Gap.Services
         {
             try
             {
-                _afdelingsJaarMgr.AfdJarenVerwijderen(afdelingsJaarID);
+                _afdelingsJaarMgr.Verwijderen(afdelingsJaarID);
             }
             catch (InvalidOperationException)
             {
@@ -460,20 +466,17 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Verwijdert een afdelingsjaar
-        /// en controleert of er geen leden in zitten.
+        /// Verwijdert een afdeling, op voorwaarde dat er geen leden in zitten.
         /// </summary>
         /// <param name="afdelingID">ID van de afdeling die verwijderd moet worden</param>
         public void AfdelingVerwijderen(int afdelingID)
         {
             try
             {
-                _afdelingsJaarMgr.AfdVerwijderen(afdelingID);
+                _afdelingenMgr.Verwijderen(afdelingID);
             }
             catch (InvalidOperationException)
             {
-                /*var afdjaar = _afdelingsJaarMgr.Ophalen(afdelingsJaarID, AfdelingsJaarExtras.Afdeling);
-                var afdjaardetail = Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afdjaar);*/
                 throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.AfdelingNietLeeg });
             }
             catch (Exception ex)

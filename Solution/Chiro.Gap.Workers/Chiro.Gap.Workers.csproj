@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="AbonnementenManager.cs" />
     <Compile Include="AdressenManager.cs" />
+    <Compile Include="AfdelingenManager.cs" />
     <Compile Include="AuthenticatieManager.cs" />
     <Compile Include="AutorisatieManager.cs" />
     <Compile Include="BestaatAlException.cs" />

@@ -8,68 +8,68 @@
   </SettingsComponent>
   <RecentFiles>
     <RecentFiles>
-      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:LedenDao.cs" caret="32638" fromTop="15" />
-      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:AdresHelper.cs" caret="511" fromTop="17" />
-      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:PlaatsenDao.cs" caret="223" fromTop="6" />
-      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:PersonenDao.cs" caret="10560" fromTop="17" />
-      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:GelieerdePersonenDao.cs" caret="35558" fromTop="17" />
-      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:AutorisatieDao.cs" caret="5389" fromTop="18" />
-      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:LeidingDao.cs" caret="0" fromTop="0" />
-      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:KindDao.cs" caret="0" fromTop="0" />
-      <File id="A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD/d:DataInterfaces/f:ILeidingDao.cs" caret="0" fromTop="0" />
-      <File id="A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD/d:DataInterfaces/f:ILedenDao.cs" caret="0" fromTop="0" />
-      <File id="65D1DB34-9F12-48C6-88F8-3943E5A4609B/f:BivakAangifteLijstInfo.cs" caret="814" fromTop="20" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/f:ILedenService.cs" caret="7095" fromTop="12" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:LidOverzicht.cs" caret="1174" fromTop="18" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/f:IUitstappenService.cs" caret="0" fromTop="0" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:OfficieleAfdelingDetail.cs" caret="1413" fromTop="22" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/f:IGroepenService.cs" caret="19807" fromTop="21" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/f:IGelieerdePersonenService.cs" caret="19731" fromTop="17" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:FaultContracts/f:BestaatAlFault.cs" caret="476" fromTop="13" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:FaultContracts/f:BlokkerendeObjectenFault.cs" caret="509" fromTop="13" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:FunctieInfo.cs" caret="309" fromTop="10" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GebruikersInfo.cs" caret="408" fromTop="11" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:LandInfo.cs" caret="338" fromTop="9" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:LedenProbleemInfo.cs" caret="717" fromTop="24" />
-      <File id="65D1DB34-9F12-48C6-88F8-3943E5A4609B/f:Enums.cs" caret="827" fromTop="20" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="1495" fromTop="28" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="1557" fromTop="33" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:AfdelingInfo.cs" caret="325" fromTop="11" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:PlaatsInfo.cs" caret="357" fromTop="12" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1546" fromTop="23" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1780" fromTop="34" />
+      <File id="AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3/f:FunctiesManagerTest.cs" caret="8168" fromTop="0" />
+      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:AbstractEfDaoTest.cs" caret="6883" fromTop="40" />
+      <File id="F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD/d:Views/d:Handleiding/f:VeelgesteldeVragen.aspx" caret="0" fromTop="0" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="936" fromTop="12" />
+      <File id="B55EDF1F-DE3F-4E00-A359-0D56BE67E197/f:VerplichtAttribute.cs" caret="563" fromTop="11" />
+      <File id="F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD/d:Controllers/f:PersonenController.cs" caret="4101" fromTop="13" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:GelieerdePersonenManager.cs" caret="8247" fromTop="5" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GelieerdePersonenService.svc.cs" caret="13087" fromTop="3" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:Web.config" caret="7929" fromTop="17" />
+      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:AutorisatieDao.cs" caret="9740" fromTop="14" />
+      <File id="A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD/f:App.Config" caret="322" fromTop="3" />
+      <File id="AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3/f:App.config" caret="666" fromTop="8" />
+      <File id="04FFC0EF-4B35-4673-9E82-D87562B1D288/f:App.config" caret="675" fromTop="8" />
+      <File id="61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01/f:App.config" caret="954" fromTop="9" />
+      <File id="9BFC33C8-238D-421C-B19B-D5FAC50CB15C/f:app.config" caret="5060" fromTop="13" />
+      <File id="1FD873E8-1CF1-4824-A559-D5EA843BF459/f:App.config" caret="1178" fromTop="13" />
+      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:WerkJaarTest.cs" caret="1757" fromTop="14" />
+      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:AfdelingsTest.cs" caret="2009" fromTop="11" />
+      <File id="61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01/f:LedenServiceTest.cs" caret="4044" fromTop="11" />
+      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:PersonenTest.cs" caret="8040" fromTop="12" />
+      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:AfdelingsJarenDao.cs" caret="3020" fromTop="10" />
+      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:App.config" caret="0" fromTop="0" />
+      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:LedenTest.cs" caret="5746" fromTop="31" />
+      <File id="F4145652-EF28-4F23-A11E-CD68D4AA2A05/f:AbstractEfDao.cs" caret="10422" fromTop="10" />
+      <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="1790" fromTop="21" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingenManager.cs" caret="1280" fromTop="8" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GroepenService.svc.cs" caret="21206" fromTop="8" />
+      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:AfdelingInfo.cs" caret="433" fromTop="5" />
+      <File id="F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD/d:Controllers/f:AfdelingenController.cs" caret="12498" fromTop="8" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingsJaarManager.cs" caret="7848" fromTop="8" />
     </RecentFiles>
     <RecentEdits>
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1063" fromTop="36" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1207" fromTop="27" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1732" fromTop="28" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1405" fromTop="17" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1818" fromTop="33" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerDetail.cs" caret="1546" fromTop="23" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="599" fromTop="18" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="779" fromTop="24" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="996" fromTop="31" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="1277" fromTop="39" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="1615" fromTop="37" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:DeelnemerInfo.cs" caret="1495" fromTop="28" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="503" fromTop="17" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="635" fromTop="23" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="772" fromTop="29" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="949" fromTop="23" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="1230" fromTop="35" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="1373" fromTop="26" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="1630" fromTop="34" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:GroepsWerkJaarDetail.cs" caret="1557" fromTop="33" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:PlaatsInfo.cs" caret="600" fromTop="20" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:PlaatsInfo.cs" caret="513" fromTop="18" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:PlaatsInfo.cs" caret="357" fromTop="12" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1877" fromTop="39" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="932" fromTop="10" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1096" fromTop="17" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1248" fromTop="23" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1423" fromTop="31" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1604" fromTop="39" />
-      <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="1780" fromTop="34" />
+      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:App.config" caret="4537" fromTop="13" />
+      <File id="AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3/f:App.config" caret="666" fromTop="8" />
+      <File id="04FFC0EF-4B35-4673-9E82-D87562B1D288/f:App.config" caret="675" fromTop="8" />
+      <File id="61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01/f:App.config" caret="954" fromTop="9" />
+      <File id="9BFC33C8-238D-421C-B19B-D5FAC50CB15C/f:app.config" caret="5060" fromTop="13" />
+      <File id="1FD873E8-1CF1-4824-A559-D5EA843BF459/f:App.config" caret="1178" fromTop="13" />
+      <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="1774" fromTop="13" />
+      <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="1774" fromTop="11" />
+      <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="4786" fromTop="17" />
+      <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="1914" fromTop="20" />
+      <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="272" fromTop="8" />
+      <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="1774" fromTop="19" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GroepenService.svc.cs" caret="18536" fromTop="23" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GroepenService.svc.cs" caret="18888" fromTop="34" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingsJaarManager.cs" caret="0" fromTop="0" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingsJaarManager.cs" caret="8470" fromTop="7" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingenManager.cs" caret="978" fromTop="17" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingenManager.cs" caret="289" fromTop="9" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingenManager.cs" caret="611" fromTop="18" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingenManager.cs" caret="814" fromTop="18" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingenManager.cs" caret="1550" fromTop="24" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GroepenService.svc.cs" caret="1274" fromTop="3" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GroepenService.svc.cs" caret="3713" fromTop="13" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GroepenService.svc.cs" caret="3238" fromTop="12" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GroepenService.svc.cs" caret="2211" fromTop="12" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GroepenService.svc.cs" caret="18784" fromTop="9" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingenManager.cs" caret="1280" fromTop="8" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingsJaarManager.cs" caret="7848" fromTop="8" />
+      <File id="F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD/d:Controllers/f:AfdelingenController.cs" caret="12245" fromTop="3" />
+      <File id="F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD/d:Controllers/f:AfdelingenController.cs" caret="12498" fromTop="8" />
     </RecentEdits>
   </RecentFiles>
   <NAntValidationSettings>
@@ -85,12 +85,1136 @@
   </UnitTestRunnerNUnit>
   <CompletionStatisticsManager>
     <ItemStatistics item="Default">
-      <Item value="Resources`0" priority="1" />
-      <Item value="FoutNummerException`0" priority="0" />
+      <Item value="pl" priority="3" />
+      <Item value="bool" priority="9" />
+      <Item value="uitstap" priority="0" />
+      <Item value="if" priority="57" />
+      <Item value="null" priority="14" />
+      <Item value="heeftContact" priority="0" />
+      <Item value="private" priority="31" />
+      <Item value="const" priority="14" />
+      <Item value="string" priority="27" />
+      <Item value="LandInfo`0" priority="0" />
+      <Item value="int" priority="56" />
+      <Item value="_cache" priority="4" />
+      <Item value="String`0" priority="15" />
+      <Item value="BIVAKSTATUSAANTALCACHEKEY" priority="0" />
+      <Item value="var" priority="99" />
+      <Item value="IServiceHelper`0" priority="0" />
+      <Item value="serviceHelper" priority="0" />
+      <Item value="BIVAKSTATUSCACHEKEY" priority="2" />
+      <Item value="groepID" priority="12" />
+      <Item value="telling" priority="2" />
+      <Item value="resultaat" priority="17" />
+      <Item value="else" priority="20" />
+      <Item value="Cache`0" priority="0" />
+      <Item value="new" priority="81" />
+      <Item value="TimeSpan" priority="0" />
+      <Item value="CacheItemPriority`0" priority="0" />
+      <Item value="return" priority="53" />
+      <Item value="public" priority="36" />
+      <Item value="void" priority="1" />
+      <Item value="VeelGebruikt`0" priority="3" />
+      <Item value="base" priority="2" />
+      <Item value="gelp" priority="0" />
+      <Item value="throw" priority="24" />
+      <Item value="NotImplementedException" priority="1" />
+      <Item value="PersoonsExtras`0" priority="9" />
+      <Item value="AbonnementenDitWerkjaar" priority="0" />
+      <Item value="db" priority="15" />
+      <Item value="IEnumerable" priority="11" />
+      <Item value="Abonnement`0" priority="10" />
+      <Item value="Abonnement" priority="1" />
+      <Item value="ab" priority="7" />
+      <Item value="_gwjMgr" priority="0" />
+      <Item value="gp" priority="49" />
+      <Item value="gwj" priority="3" />
+      <Item value="try" priority="1" />
+      <Item value="abonnement" priority="17" />
+      <Item value="Publicatie`0" priority="3" />
+      <Item value="enum" priority="1" />
+      <Item value="_pubMgr" priority="1" />
+      <Item value="dubbelpunt" priority="0" />
+      <Item value="gelieerdePersoonID" priority="5" />
+      <Item value="groepsWerkJaar" priority="10" />
+      <Item value="BlokkerendeObjectenException" priority="0" />
+      <Item value="FoutAfhandelaar`0" priority="1" />
+      <Item value="_abMgr" priority="1" />
+      <Item value="readonly" priority="25" />
+      <Item value="internal" priority="1" />
+      <Item value="IDao" priority="2" />
+      <Item value="AbonnementenManager`0" priority="1" />
+      <Item value="_pubDao" priority="1" />
+      <Item value="pubDao" priority="0" />
+      <Item value="IAutorisatieManager`0" priority="6" />
+      <Item value="_auMgr" priority="5" />
+      <Item value="auMgr" priority="0" />
+      <Item value="publicatie" priority="4" />
+      <Item value="FoutNummerException" priority="9" />
+      <Item value="FoutNummer`0" priority="12" />
+      <Item value="Properties" priority="37" />
+      <Item value="Resources`0" priority="24" />
+      <Item value="GeenGavException" priority="10" />
+      <Item value="from" priority="39" />
+      <Item value="where" priority="28" />
+      <Item value="abo" priority="1" />
+      <Item value="select" priority="29" />
+      <Item value="bestaande" priority="0" />
+      <Item value="GelieerdePersoon" priority="1" />
+      <Item value="AanvraagDatum" priority="0" />
+      <Item value="DateTime`0" priority="28" />
+      <Item value="GroepsWerkJaar" priority="2" />
+      <Item value="Publicatie" priority="0" />
+      <Item value="abDao" priority="0" />
+      <Item value="abm" priority="0" />
+      <Item value="IDubbelpuntSync`0" priority="1" />
+      <Item value="_dubbelpuntSync" priority="3" />
+      <Item value="dpSync" priority="0" />
+      <Item value="IFormatProvider`0" priority="1" />
+      <Item value="PublicatieID`0" priority="0" />
+      <Item value="Debug`0" priority="8" />
+      <Item value="HuidigeAbonnementenKoppelen`0" priority="0" />
+      <Item value="catch" priority="0" />
+      <Item value="FoutNummerException`0" priority="1" />
+      <Item value="ex" priority="2" />
+      <Item value="DateTime" priority="0" />
+      <Item value="Settings`0" priority="12" />
+      <Item value="eindeBestelPeriode" priority="0" />
+      <Item value="huidigWerkjaar" priority="1" />
+      <Item value="EindeInstapPeriode" priority="1" />
+      <Item value="metOfficieleAfdeling" priority="2" />
+      <Item value="l" priority="10" />
+      <Item value="as" priority="6" />
+      <Item value="Kind`0" priority="0" />
+      <Item value="aj" priority="0" />
+      <Item value="LidExtras`0" priority="10" />
+      <Item value="extras" priority="5" />
+      <Item value="OfficieleAfdelingen" priority="0" />
+      <Item value="PersoonsAdres`0" priority="0" />
+      <Item value="knd" priority="3" />
+      <Item value="leid" priority="3" />
+      <Item value="syncen" priority="1" />
+      <Item value="_sync" priority="3" />
+      <Item value="using" priority="12" />
+      <Item value="TransactionScope`0" priority="1" />
+      <Item value="tx" priority="0" />
+      <Item value="TransactionCompletedEventHandler`0" priority="1" />
+      <Item value="lid" priority="21" />
+      <Item value="Bewaren`0" priority="1" />
+      <Item value="_svc" priority="1" />
+      <Item value="groep" priority="15" />
+      <Item value="GelieerdePersoon`0" priority="10" />
+      <Item value="PersoonDetails`0" priority="0" />
+      <Item value="GelieerdePersonenInschrijven`0" priority="0" />
+      <Item value="nieuwLid" priority="0" />
+      <Item value="gelieerdePersonen" priority="6" />
+      <Item value="WerkJaarStatus`0" priority="0" />
+      <Item value="groepsWerkJaren" priority="0" />
+      <Item value="Verwijderen`0" priority="0" />
+      <Item value="IServiceProvider`0" priority="0" />
+      <Item value="ChannelFactoryServiceProvider`0" priority="1" />
+      <Item value="I`0" priority="0" />
+      <Item value="svc" priority="13" />
+      <Item value="IGroepenService`0" priority="2" />
+      <Item value="groepenServiceMock" priority="10" />
+      <Item value="mock" priority="3" />
+      <Item value="Chiro" priority="5" />
+      <Item value="Cdf" priority="0" />
+      <Item value="Ioc" priority="0" />
+      <Item value="Factory`0" priority="15" />
+      <Item value="Times`0" priority="1" />
+      <Item value="It`0" priority="10" />
+      <Item value="DataAnnotationsModelValidationFactory`0" priority="2" />
+      <Item value="serviceHelperMock" priority="0" />
+      <Item value="eindDatum" priority="0" />
+      <Item value="v" priority="0" />
+      <Item value="gwjID" priority="2" />
+      <Item value="_autorisatieMgr" priority="9" />
+      <Item value="_abDao" priority="0" />
+      <Item value="DayOfWeek`0" priority="1" />
+      <Item value="ChiroGroepEntities`0" priority="6" />
+      <Item value="a" priority="5" />
+      <Item value="Utility`0" priority="3" />
+      <Item value="dubbelpuntSync" priority="1" />
+      <Item value="_abonnementenManager" priority="0" />
+      <Item value="abonnementen" priority="0" />
+      <Item value="abonnementenManager" priority="0" />
+      <Item value="SuperGavAutorisatieManager`0" priority="0" />
+      <Item value="ModelState" priority="0" />
+      <Item value="Stap1AfdelingenSelecteren`0" priority="0" />
+      <Item value="Html" priority="20" />
+      <Item value="section" priority="1" />
+      <Item value="IDisposable`0" priority="1" />
+      <Item value="Adf.ServiceModel" priority="0" />
+      <Item value="dst" priority="4" />
+      <Item value="opt" priority="4" />
+      <Item value="gebruikersrecht" priority="16" />
+      <Item value="result" priority="7" />
+      <Item value="_autorisatieDao" priority="9" />
+      <Item value="GebruikersRecht`0" priority="4" />
+      <Item value="gr" priority="35" />
+      <Item value="gav" priority="24" />
+      <Item value="Model" priority="13" />
+      <Item value="GebruikersRechtInfo`0" priority="0" />
+      <Item value="Mapper`0" priority="2" />
+      <Item value="GebruikersRechtInfo" priority="0" />
+      <Item value="Verlengbaar" priority="1" />
+      <Item value="GebruikersRechtenManager`0" priority="7" />
+      <Item value="autorisatie" priority="0" />
+      <Item value="autorisatieManager" priority="1" />
+      <Item value="IAutorisatieDao`0" priority="0" />
+      <Item value="_autorisatieManager" priority="16" />
+      <Item value="false" priority="4" />
+      <Item value="query" priority="0" />
+      <Item value="_gebruikersRechtenMgr" priority="9" />
+      <Item value="grm" priority="0" />
+      <Item value="object" priority="4" />
+      <Item value="ViewData" priority="0" />
+      <Item value="RedirectToAction`0" priority="5" />
+      <Item value="Flags" priority="0" />
+      <Item value="_gpMgr" priority="3" />
+      <Item value="id" priority="0" />
+      <Item value="GebruikersRechten" priority="0" />
+      <Item value="persoon" priority="13" />
+      <Item value="Gav`0" priority="3" />
+      <Item value="foutNummer" priority="2" />
+      <Item value="eMail" priority="1" />
+      <Item value="ResolveEventArgs`0" priority="0" />
+      <Item value="Gav" priority="2" />
+      <Item value="Login" priority="1" />
+      <Item value="login" priority="1" />
+      <Item value="Persoon" priority="2" />
+      <Item value="Array`0" priority="0" />
+      <Item value="gebruikersRecht" priority="28" />
+      <Item value="GebruikersRecht" priority="1" />
+      <Item value="_gavDao" priority="2" />
+      <Item value="gavDao" priority="1" />
+      <Item value="gv" priority="0" />
+      <Item value="ID" priority="3" />
+      <Item value="_gebruikersRechtenDao" priority="4" />
+      <Item value="gebruikersRechtenDao" priority="0" />
+      <Item value="CommunicatieType`0" priority="0" />
+      <Item value="orderby" priority="1" />
+      <Item value="ci" priority="0" />
+      <Item value="cm" priority="6" />
+      <Item value="GavLogin" priority="0" />
+      <Item value="ServiceHelper`0" priority="6" />
+      <Item value="IGelieerdePersonenService`0" priority="3" />
+      <Item value="IsVerlengbaar`0" priority="1" />
+      <Item value="paths" priority="1" />
+      <Item value="BaseModelInit`0" priority="0" />
+      <Item value="model" priority="14" />
+      <Item value="Resources" priority="0" />
+      <Item value="View`0" priority="2" />
+      <Item value="MasterViewModel`0" priority="0" />
+      <Item value="GebruikersInfo`0" priority="0" />
+      <Item value="DataMember" priority="0" />
+      <Item value="GebruikersDetail`0" priority="2" />
+      <Item value="IList" priority="0" />
+      <Item value="foreach" priority="8" />
+      <Item value="in" priority="7" />
+      <Item value="gdet" priority="0" />
+      <Item value="_gebruikersRechtenManager" priority="9" />
+      <Item value="static" priority="0" />
+      <Item value="VervalDatumNabij`0" priority="0" />
+      <Item value="src" priority="6" />
+      <Item value="gebr" priority="3" />
+      <Item value="r" priority="0" />
+      <Item value="gebruikersRechtenMgr" priority="0" />
+      <Item value="gebruikersRechtID" priority="2" />
+      <Item value="true" priority="12" />
+      <Item value="value" priority="2" />
+      <Item value="is" priority="0" />
+      <Item value="username" priority="0" />
+      <Item value="GapUrl" priority="0" />
+      <Item value="ActionResult`0" priority="3" />
+      <Item value="LoginsModel`0" priority="0" />
+      <Item value="HttpVerbs`0" priority="3" />
+      <Item value="AcceptVerbs" priority="2" />
+      <Item value="AppDomainSetup`0" priority="0" />
+      <Item value="ContactInfoModel`0" priority="0" />
+      <Item value="GroepInfo" priority="0" />
+      <Item value="gebruikersRechtenManager" priority="1" />
+      <Item value="LedenManager`0" priority="2" />
+      <Item value="_ledenManager" priority="2" />
+      <Item value="ledenManager" priority="0" />
+      <Item value="LidFilter" priority="1" />
+      <Item value="CommunicatieTypeEnum`0" priority="1" />
+      <Item value="GelieerdePersoonID" priority="9" />
+      <Item value="EmailAdres" priority="2" />
+      <Item value="IsContact" priority="1" />
+      <Item value="IsGav" priority="1" />
+      <Item value="VolledigeNaam" priority="3" />
+      <Item value="contactpersonenMetEmail" priority="3" />
+      <Item value="GroepID" priority="2" />
+      <Item value="LidType" priority="0" />
+      <Item value="LidType`0" priority="0" />
+      <Item value="GavExtras" priority="0" />
+      <Item value="IGelieerdePersonenDao`0" priority="2" />
+      <Item value="gelieerdePersonenDao" priority="1" />
+      <Item value="_gelieerdePersonenDao" priority="1" />
+      <Item value="gavGps" priority="2" />
+      <Item value="gbr" priority="0" />
+      <Item value="p" priority="11" />
+      <Item value="p1" priority="1" />
+      <Item value="personen" priority="0" />
+      <Item value="gp1" priority="0" />
+      <Item value="grp" priority="1" />
+      <Item value="gebruikersRechten" priority="2" />
+      <Item value="Select`2" priority="1" />
+      <Item value="ObjectQuery`0" priority="0" />
+      <Item value="IncludesToepassen`0" priority="0" />
+      <Item value="MailContactInfo`0" priority="1" />
+      <Item value="long" priority="0" />
+      <Item value="GelieerdePersonenManager`0" priority="4" />
+      <Item value="gelieerdePersonenManager" priority="1" />
+      <Item value="_groepenManager" priority="2" />
+      <Item value="_gelieerdePersonenManager" priority="6" />
+      <Item value="Union`1" priority="0" />
+      <Item value="gekendeGavs" priority="3" />
+      <Item value="Any`1" priority="1" />
+      <Item value="cp" priority="1" />
+      <Item value="c" priority="5" />
+      <Item value="persoonIDs" priority="0" />
+      <Item value="ToList`1" priority="0" />
+      <Item value="con" priority="0" />
+      <Item value="NotificatieModel`0" priority="0" />
+      <Item value="stamNummer" priority="1" />
+      <Item value="OperationBehavior" priority="0" />
+      <Item value="OperationContract" priority="3" />
+      <Item value="mailOntvangerGelieerdePersoonID" priority="1" />
+      <Item value="gelieerdePersoon" priority="4" />
+      <Item value="mailAdres" priority="3" />
+      <Item value="IAuthenticatieManager`0" priority="1" />
+      <Item value="_authenticatieManager" priority="1" />
+      <Item value="authenticatieManager" priority="0" />
+      <Item value="notificatieOntvanger" priority="3" />
+      <Item value="Groep" priority="2" />
+      <Item value="Action`0" priority="0" />
+      <Item value="GroepMetGavs" priority="0" />
+      <Item value="mijnLogin" priority="0" />
+      <Item value="bestaandGebruikersRecht" priority="2" />
+      <Item value="vervalDatum" priority="2" />
+      <Item value="ToekennenOfVerlengen`0" priority="0" />
+      <Item value="IMailer`0" priority="0" />
+      <Item value="mailer" priority="0" />
+      <Item value="_mailer" priority="0" />
+      <Item value="IGavDao`0" priority="1" />
+      <Item value="Geen" priority="0" />
+      <Item value="gelieerdePersoonIDs" priority="5" />
+      <Item value="SECURITYGROEP" priority="0" />
+      <Item value="GroepsExtras`0" priority="1" />
+      <Item value="GroepsWerkJaar`0" priority="0" />
+      <Item value="_groepsWerkJaarManager" priority="1" />
+      <Item value="GroepsFuncties" priority="0" />
+      <Item value="Groep`0" priority="1" />
+      <Item value="List" priority="0" />
+      <Item value="List&lt;int&gt;" priority="0" />
+      <Item value="g" priority="0" />
+      <Item value="f" priority="2" />
+      <Item value="testData" priority="1" />
+      <Item value="ISyncPersoonService`0" priority="0" />
+      <Item value="GroepsWerkJaarManager`0" priority="2" />
+      <Item value="groepsWerkJaarManager" priority="0" />
+      <Item value="code" priority="0" />
+      <Item value="GroepsWerkJaarExtras`0" priority="0" />
+      <Item value="GroepsWerkJaarID" priority="0" />
+      <Item value="groepswerkjaar" priority="1" />
+      <Item value="_veelGebruikt" priority="0" />
+      <Item value="_groepsWerkJaarDao" priority="0" />
+      <Item value="IGroepenDao`0" priority="1" />
+      <Item value="_groepenDao" priority="1" />
+      <Item value="groepenDao" priority="0" />
+      <Item value="override" priority="0" />
+      <Item value="obj" priority="1" />
+      <Item value="ander" priority="2" />
+      <Item value="fixed" priority="0" />
+      <Item value="Distinct`1" priority="0" />
+      <Item value="AantalVerdwenenAdressen" priority="0" />
+      <Item value="DiagnosticsManager`0" priority="2" />
+      <Item value="diagnosticsManager" priority="1" />
+      <Item value="_diganosticsmanager" priority="1" />
+      <Item value="VerlorenAdres`0" priority="2" />
+      <Item value="_verlorenAdressenDao" priority="1" />
+      <Item value="verlorenAdressenDao" priority="0" />
+      <Item value="_verlorenAdressenManager" priority="3" />
+      <Item value="verlorenAdressenManager" priority="1" />
+      <Item value="Gap" priority="2" />
+      <Item value="Diagnostics" priority="1" />
+      <Item value="Workers" priority="2" />
+      <Item value="VervlorenAdressenManager`0" priority="0" />
+      <Item value="AdNr" priority="1" />
+      <Item value="VerlorenAdressenDao`0" priority="0" />
+      <Item value="RapportUrl" priority="0" />
+      <Item value="verdwenenAdressen" priority="0" />
+      <Item value="res" priority="0" />
+      <Item value="row" priority="0" />
+      <Item value="gpIds" priority="0" />
+      <Item value="VoorkeurAdres" priority="0" />
+      <Item value="IAdressenSync`0" priority="0" />
+      <Item value="_adressenSync" priority="1" />
+      <Item value="adressenSync" priority="0" />
+      <Item value="persoonsAdressen" priority="1" />
+      <Item value="Sync" priority="0" />
+      <Item value="MappingHelper`0" priority="0" />
+      <Item value="AantalProblemen" priority="0" />
+      <Item value="ProblemenRapportUrl" priority="0" />
+      <Item value="IFunctieProblemenDao`0" priority="1" />
+      <Item value="_functieProblemenDao" priority="0" />
+      <Item value="functieProblemenDao" priority="0" />
+      <Item value="_problemenManager" priority="0" />
+      <Item value="fp" priority="0" />
+      <Item value="lidIDs" priority="1" />
+      <Item value="ILedenSync`0" priority="2" />
+      <Item value="_ledenSync" priority="2" />
+      <Item value="ledenSync" priority="0" />
+      <Item value="leden" priority="0" />
+      <Item value="eigenLidIDs" priority="0" />
+      <Item value="Voorkeur" priority="3" />
+      <Item value="TESTCTID" priority="0" />
+      <Item value="Mock`0" priority="6" />
+      <Item value="testGelieerdePersoon" priority="2" />
+      <Item value="ICommunicatieVormDao`0" priority="2" />
+      <Item value="communicatieVormDaoMock" priority="3" />
+      <Item value="dao" priority="4" />
+      <Item value="CommunicatieVorm`0" priority="7" />
+      <Item value="testCommunicatieVorm" priority="4" />
+      <Item value="cv" priority="5" />
+      <Item value="Expression`0" priority="0" />
+      <Item value="Func" priority="0" />
+      <Item value="testCommunicatieType" priority="3" />
+      <Item value="ToString`0" priority="0" />
+      <Item value="TESTGPID" priority="0" />
+      <Item value="gelieerdePersonenDaoMock" priority="2" />
+      <Item value="communicatieVorm" priority="0" />
+      <Item value="commDetail" priority="0" />
+      <Item value="bestaandeMetVoorkeur" priority="1" />
+      <Item value="_cvMgr" priority="1" />
+      <Item value="AttributeTargets`0" priority="0" />
+      <Item value="CommVormManager`0" priority="0" />
+      <Item value="CommunicatieType" priority="1" />
+      <Item value="nieuwecv" priority="0" />
+      <Item value="info" priority="0" />
+      <Item value="commvorm" priority="0" />
+      <Item value="TESTCVID2" priority="0" />
+      <Item value="Nummer" priority="0" />
+      <Item value="testCommunicatieVorm2" priority="1" />
+      <Item value="GebruikersNaamGet`0" priority="0" />
+      <Item value="rta" priority="0" />
+      <Item value="groepIDsVanGps" priority="0" />
+      <Item value="mijnGroepIDs" priority="0" />
+      <Item value="problemen" priority="0" />
+      <Item value="ExpectedException" priority="0" />
+      <Item value="typeof" priority="3" />
+      <Item value="Assert`0" priority="4" />
+      <Item value="gelieerdePersonenServiceMock" priority="1" />
+      <Item value="actual" priority="4" />
+      <Item value="Ignore" priority="0" />
+      <Item value="IVeelGebruikt`0" priority="1" />
+      <Item value="JaarOvergangController`0" priority="1" />
+      <Item value="JaarOvergangAfdelingsModel" priority="0" />
+      <Item value="GekozenAfdelingsIDs" priority="0" />
+      <Item value="ContentResult`0" priority="0" />
+      <Item value="Moq" priority="0" />
+      <Item value="GROEPID" priority="4" />
+      <Item value="WerkJaar" priority="1" />
+      <Item value="veelGebruiktMock" priority="3" />
+      <Item value="vg" priority="2" />
+      <Item value="GroepsWerkJaarDetail" priority="0" />
+      <Item value="VORIGWERKJAAR" priority="1" />
+      <Item value="BivakAangifteLijstInfo" priority="1" />
+      <Item value="AlgemeneStatus" priority="0" />
+      <Item value="BivakAangifteStatus`0" priority="0" />
+      <Item value="Func&lt;IList&lt;AfdelingInfo&gt;&gt;" priority="0" />
+      <Item value="AfdelingInfo" priority="0" />
+      <Item value="Func&lt;IList&lt;AfdelingDetail&gt;&gt;" priority="1" />
+      <Item value="AfdelingDetail`0" priority="0" />
+      <Item value="AfdelingDetail" priority="0" />
+      <Item value="AfdelingID" priority="0" />
+      <Item value="GeboorteJaarVan" priority="0" />
+      <Item value="GeboorteJaarTot" priority="0" />
+      <Item value="WerkJaarID" priority="0" />
+      <Item value="GROEPSWERKJAARID" priority="0" />
+      <Item value="OUDGEBOORTEJAARTOT" priority="1" />
+      <Item value="NIEUWWERKJAAR" priority="0" />
+      <Item value="UrlToTestAttribute`0" priority="0" />
+      <Item value="JaarOvergangAfdelingsJaarModel`0" priority="1" />
+      <Item value="actualModel" priority="1" />
+      <Item value="LdapStyleUriParser`0" priority="0" />
+      <Item value="System" priority="0" />
+      <Item value="InTeSchrijvenLid`0" priority="4" />
+      <Item value="ServiceKnownType" priority="2" />
+      <Item value="FirstOrDefault`1" priority="3" />
+      <Item value="ledenSyncMock" priority="4" />
+      <Item value="sync" priority="0" />
+      <Item value="Lid" priority="0" />
+      <Item value="KaderGroep`0" priority="1" />
+      <Item value="NonActief" priority="0" />
+      <Item value="snc" priority="0" />
+      <Item value="Lid`0" priority="0" />
+      <Item value="ILeidingDao`0" priority="0" />
+      <Item value="leidingDaoMock" priority="1" />
+      <Item value="Niveau`0" priority="1" />
+      <Item value="NiveauInt" priority="0" />
+      <Item value="MockException`0" priority="0" />
+      <Item value="mdl" priority="16" />
+      <Item value="j" priority="13" />
+      <Item value="SelectListItem`0" priority="1" />
+      <Item value="SelectListItem" priority="0" />
+      <Item value="Selected" priority="2" />
+      <Item value="ba" priority="2" />
+      <Item value="Text" priority="1" />
+      <Item value="Value" priority="1" />
+      <Item value="KeyAttribute`0" priority="0" />
+      <Item value="for" priority="0" />
+      <Item value="InschrijfbaarLid" priority="0" />
+      <Item value="AfdelingsJaarIDs" priority="1" />
+      <Item value="AfdelingsJaarIrrelevant" priority="1" />
+      <Item value="InTeSchrijven" priority="0" />
+      <Item value="LeidingMaken" priority="1" />
+      <Item value="personenOverzicht" priority="0" />
+      <Item value="rij" priority="4" />
+      <Item value="InTeSchrijvenLid" priority="0" />
+      <Item value="Serializable" priority="0" />
+      <Item value="oa" priority="2" />
+      <Item value="officieleAfdelingLijstItems" priority="0" />
+      <Item value="e" priority="1" />
+      <Item value="geslachtsLijstItems" priority="0" />
+      <Item value="AfdelingsJaarDetail`0" priority="0" />
+      <Item value="IQueryable`0" priority="1" />
+      <Item value="PersoonDetailRepo`0" priority="0" />
+      <Item value="AfdelingenManager`0" priority="2" />
+      <Item value="IAfdelingenDao`0" priority="0" />
+      <Item value="_afdelingenDao" priority="0" />
+      <Item value="afdelingenDao" priority="0" />
+      <Item value="autorisatieMgr" priority="0" />
+      <Item value="_afdelingsJaarMgr" priority="0" />
+      <Item value="afdm" priority="0" />
+      <Item value="_afdelingenMgr" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Diagnostics.Debug">
+      <Item value="Assert`0" priority="9" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.Uitstap">
+      <Item value="GroepsWerkJaar" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.IEnumerable`1">
+      <Item value="First`1" priority="3" />
+      <Item value="FirstOrDefault`1" priority="8" />
+      <Item value="Where`1" priority="2" />
+      <Item value="OrderByDescending`2" priority="1" />
+      <Item value="OrderBy`2" priority="1" />
+      <Item value="ToArray`1" priority="11" />
+      <Item value="SelectMany`3" priority="3" />
+      <Item value="Select`2" priority="7" />
+      <Item value="Distinct`1" priority="1" />
+      <Item value="GroupBy`4" priority="0" />
+      <Item value="ToList`1" priority="0" />
+      <Item value="Contains`1" priority="0" />
+      <Item value="Count`1" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Caching.Cache">
+      <Item value="Get`0" priority="2" />
+      <Item value="Remove`0" priority="0" />
+      <Item value="Add`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="Format`0" priority="13" />
+      <Item value="IsNullOrEmpty`0" priority="4" />
+      <Item value="Compare`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.DataContracts.BivakAangifteLijstInfo">
+      <Item value="Bivakinfos" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.IList`1">
+      <Item value="Count" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Web.Caching.Cache">
+      <Item value="NoAbsoluteExpiration" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Web.Caching.CacheItemPriority">
+      <Item value="NotRemovable" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.WebApp.Controllers.BaseController">
+      <Item value="VeelGebruikt" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.WebApp.IVeelGebruikt">
+      <Item value="BivakStatusResetten`0" priority="0" />
+      <Item value="GroepsWerkJaarOphalen`0" priority="1" />
+      <Item value="BivakStatusHuidigWerkjaarOphalen`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Orm.PersoonsExtras">
+      <Item value="AbonnementenDitWerkjaar" priority="0" />
+      <Item value="GroepsWerkJaren" priority="0" />
+      <Item value="VoorkeurAdres" priority="0" />
+      <Item value="Communicatie" priority="1" />
+      <Item value="GebruikersRechten" priority="1" />
+      <Item value="GroepMetGavs" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.ChiroGroepEntities">
+      <Item value="Abonnement" priority="1" />
+      <Item value="GebruikersRecht" priority="7" />
+      <Item value="GelieerdePersoon" priority="4" />
+      <Item value="Persoon" priority="0" />
+      <Item value="Groep" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Objects.ObjectQuery`1">
+      <Item value="Include`0" priority="5" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.Abonnement">
+      <Item value="Publicatie" priority="3" />
+      <Item value="GroepsWerkJaar" priority="7" />
+      <Item value="ID" priority="0" />
+      <Item value="GelieerdePersoon" priority="6" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Workers.GroepsWerkJaarManager">
+      <Item value="RecentsteOphalen`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.GelieerdePersoon">
+      <Item value="Groep" priority="22" />
+      <Item value="Abonnement" priority="2" />
+      <Item value="Persoon" priority="19" />
+      <Item value="PersoonsAdres" priority="2" />
+      <Item value="ID" priority="3" />
+      <Item value="Communicatie" priority="7" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.Groep">
+      <Item value="GroepsWerkJaar" priority="1" />
+      <Item value="Code" priority="3" />
+      <Item value="ID" priority="19" />
+      <Item value="GebruikersRecht" priority="6" />
+      <Item value="WithoutUpdate`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Objects.DataClasses.EntityCollection`1">
+      <Item value="OrderByDescending`2" priority="1" />
+      <Item value="Add`0" priority="8" />
+      <Item value="FirstOrDefault`1" priority="7" />
+      <Item value="Any`1" priority="7" />
+      <Item value="First`1" priority="15" />
+      <Item value="Where`1" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.GroepsWerkJaar">
+      <Item value="WerkJaar" priority="12" />
+      <Item value="ID" priority="2" />
+      <Item value="Abonnement" priority="0" />
+      <Item value="Groep" priority="5" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Linq.IOrderedEnumerable`1">
+      <Item value="FirstOrDefault`1" priority="0" />
+      <Item value="ThenBy`2" priority="0" />
+      <Item value="Select`2" priority="1" />
+      <Item value="First`1" priority="0" />
+      <Item value="ToArray`1" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Services.FoutAfhandelaar">
+      <Item value="FoutAfhandelen`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Workers.IAutorisatieManager">
+      <Item value="IsGavGelieerdePersoon`0" priority="3" />
+      <Item value="IsGavGroepsWerkJaar`0" priority="2" />
+      <Item value="IsGavPersoon`0" priority="0" />
+      <Item value="IsGavGroep`0" priority="2" />
+      <Item value="IsGavGebruikersRecht`0" priority="0" />
+      <Item value="IsSuperGav`0" priority="9" />
+      <Item value="GebruikersNaamGet`0" priority="1" />
+      <Item value="EnkelMijnGelieerdePersonen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.Publicatie">
+      <Item value="ID" priority="1" />
+      <Item value="Naam" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.Persoon">
+      <Item value="VoorNaam" priority="2" />
+      <Item value="VolledigeNaam" priority="6" />
+      <Item value="AdNummer" priority="5" />
+      <Item value="Gav" priority="9" />
+      <Item value="Naam" priority="0" />
+      <Item value="WithoutUpdate`0" priority="1" />
+      <Item value="GelieerdePersoon" priority="4" />
+      <Item value="ID" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Domain.PublicatieID">
+      <Item value="Dubbelpunt" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.SyncInterfaces.IDubbelpuntSync">
+      <Item value="Abonneren`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Domain.FoutNummer">
+      <Item value="AdresOntbreekt" priority="1" />
+      <Item value="BestelPeriodeDubbelpuntVoorbij" priority="2" />
+      <Item value="EMailVerplicht" priority="2" />
+      <Item value="GebruikersRechtNietVerlengbaar" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:@Chiro.Gap.Workers.Properties.Resources">
-      <Item value="OngeldigeAfdelingBinnenGroep" priority="0" />
-      <Item value="OngeldigeAfdelingNationaal" priority="0" />
+      <Item value="DubbelPuntZonderAdres" priority="0" />
+      <Item value="GeenAfdelingVoorLeeftijd" priority="2" />
+      <Item value="GeenGav" priority="5" />
+      <Item value="AdNummerVerplicht" priority="0" />
+      <Item value="EMailVerplicht" priority="1" />
+      <Item value="GebruikersRechtNietVerlengbaar" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Workers.Exceptions.FoutNummerException">
+      <Item value="FoutNummer" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Workers.Properties.Settings">
+      <Item value="Default" priority="7" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Workers.Properties.Settings">
+      <Item value="EindeDubbelPuntBestelling" priority="2" />
+      <Item value="MinWerkJaarLidOverzetten" priority="1" />
+      <Item value="MaandenGebruikersRechtVerlengbaar" priority="0" />
+      <Item value="MaandenGebruikersRechtStandaard" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.DateTime">
+      <Item value="Year" priority="0" />
+      <Item value="Month" priority="0" />
+      <Item value="AddMonths`0" priority="2" />
+      <Item value="AddDays`0" priority="3" />
+      <Item value="ToString`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.DateTime">
+      <Item value="Now" priority="9" />
+      <Item value="Today" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.ServiceModel.FaultException`1">
+      <Item value="Detail" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.FaultContracts.FoutNummerFault">
+      <Item value="FoutNummer" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.DataContracts.GroepsWerkJaarDetail">
+      <Item value="WerkJaar" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.Lid">
+      <Item value="EindeInstapPeriode" priority="1" />
+      <Item value="NonActief" priority="3" />
+      <Item value="GelieerdePersoon" priority="15" />
+      <Item value="GroepsWerkJaar" priority="6" />
+      <Item value="Niveau" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.Kind">
+      <Item value="AfdelingsJaar" priority="3" />
+      <Item value="GelieerdePersoon" priority="0" />
+      <Item value="GroepsWerkJaar" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.AfdelingsJaar">
+      <Item value="Afdeling" priority="2" />
+      <Item value="OfficieleAfdeling" priority="2" />
+      <Item value="OfficieleAfdelingReference" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Objects.DataClasses.EntityReference`1">
+      <Item value="Load`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Orm.LidExtras">
+      <Item value="OfficieleAfdelingen" priority="3" />
+      <Item value="Communicatie" priority="0" />
+      <Item value="Persoon" priority="0" />
+      <Item value="Functies" priority="0" />
+      <Item value="Groep" priority="0" />
+      <Item value="Geen" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.Leiding">
+      <Item value="GelieerdePersoon" priority="0" />
+      <Item value="GroepsWerkJaar" priority="0" />
+      <Item value="AfdelingsJaar" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.SyncInterfaces.ILedenSync">
+      <Item value="Bewaren`0" priority="3" />
+      <Item value="FunctiesUpdaten`0" priority="1" />
+      <Item value="Verwijderen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.DataInterfaces.LedenDaoCollectie">
+      <Item value="LeidingDao" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Sync.SyncService.ISyncPersoonService">
+      <Item value="LidVerwijderen`0" priority="0" />
+      <Item value="NieuwLidVerwijderen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@AutoMapper.Mapper">
+      <Item value="Map`0" priority="2" />
+      <Item value="CreateMap`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.DataInterfaces.ILedenDao">
+      <Item value="OphalenUitGroepsWerkJaar`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.IGroepenService">
+      <Item value="IsLive`0" priority="0" />
+      <Item value="WieBenIk`0" priority="1" />
+      <Item value="LandenOphalen`0" priority="1" />
+      <Item value="CategorieVerwijderen`0" priority="0" />
+      <Item value="RecentsteGroepsWerkJaarIDGet`0" priority="0" />
+      <Item value="RecentsteGroepsWerkJaarOphalen`0" priority="0" />
+      <Item value="NieuwWerkJaarOphalen`0" priority="0" />
+      <Item value="AlleAfdelingenOphalen`0" priority="0" />
+      <Item value="ActieveAfdelingenOphalen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Moq.Mock`1">
+      <Item value="Setup`1" priority="14" />
+      <Item value="Object" priority="9" />
+      <Item value="Verify`1" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Moq.Language.Flow.ISetup`2">
+      <Item value="Returns`4" priority="16" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Cdf.Ioc.Factory">
+      <Item value="Maak`0" priority="3" />
+      <Item value="InstantieRegistreren`1" priority="7" />
+      <Item value="ContainerInit`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Moq.Times">
+      <Item value="AtMostOnce`0" priority="0" />
+      <Item value="Exactly`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Moq.It">
+      <Item value="IsAny`1" priority="8" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.PersoonsAdres">
+      <Item value="Adres" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Linq.IQueryable`1">
+      <Item value="ToArray`1" priority="4" />
+      <Item value="FirstOrDefault`1" priority="3" />
+      <Item value="First`1" priority="1" />
+      <Item value="SelectMany`3" priority="0" />
+      <Item value="Select`2" priority="0" />
+      <Item value="Distinct`1" priority="1" />
+      <Item value="Contains`1" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Data.Ef.AdresHelper">
+      <Item value="VoorkeursAdresKoppelen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Cdf.Data.Entity.Utility">
+      <Item value="DetachObjectGraph`1" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Mvc.ModelStateDictionary">
+      <Item value="IsValid" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Mvc.HtmlHelper`1">
+      <Item value="ValidationMessageFor`2" priority="0" />
+      <Item value="ActionLink`0" priority="1" />
+      <Item value="DisplayFor`2" priority="1" />
+      <Item value="Encode`0" priority="0" />
+      <Item value="CheckBox`0" priority="3" />
+      <Item value="CheckBoxFor`1" priority="2" />
+      <Item value="EditorFor`2" priority="2" />
+      <Item value="DropDownListFor`2" priority="3" />
+      <Item value="HiddenFor`2" priority="1" />
+      <Item value="DropDownList`1" priority="0" />
+      <Item value="LabelFor`2" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.WebApp.Models.JaarOvergangAfdelingsModel">
+      <Item value="GekozenAfdelingsIDs" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:AutoMapper.IMappingExpression`2">
+      <Item value="ForMember`0" priority="6" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:AutoMapper.IMemberConfigurationExpression`1">
+      <Item value="Ignore`0" priority="3" />
+      <Item value="MapFrom`0" priority="5" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.DataContracts.PersoonLidInfo">
+      <Item value="GavTot" priority="2" />
+      <Item value="GebruikersRechtInfo" priority="5" />
+      <Item value="PersoonDetail" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.GebruikersRecht">
+      <Item value="Groep" priority="16" />
+      <Item value="Gav" priority="19" />
+      <Item value="VervalDatum" priority="15" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.Gav">
+      <Item value="ID" priority="1" />
+      <Item value="GebruikersRecht" priority="10" />
+      <Item value="Persoon" priority="15" />
+      <Item value="Login" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.WebApp.Models.PersoonEnLidModel">
+      <Item value="PersoonLidInfo" priority="5" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Nullable`1">
+      <Item value="ToString`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.DataContracts.GebruikersRechtInfo">
+      <Item value="VervalDatum" priority="3" />
+      <Item value="GavLogin" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.DataContracts.PersoonDetail">
+      <Item value="VolledigeNaam" priority="0" />
+      <Item value="GelieerdePersoonID" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Mvc.ViewDataDictionary`1">
+      <Item value="Model" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Adf.ServiceModel.ServiceHelper">
+      <Item value="CallService`2" priority="9" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Workers.GelieerdePersonenManager">
+      <Item value="Ophalen`0" priority="2" />
+      <Item value="Bewaren`0" priority="0" />
+      <Item value="EMailKiezen`0" priority="3" />
+      <Item value="OphalenMetCommVormen`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Cdf.Data.IDao`1">
+      <Item value="Bewaren`0" priority="3" />
+      <Item value="AllesOphalen`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Transactions.TransactionScope">
+      <Item value="Complete`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.CommunicatieVorm">
+      <Item value="CommunicatieType" priority="7" />
+      <Item value="IsVoorOptIn" priority="4" />
+      <Item value="Voorkeur" priority="4" />
+      <Item value="Nummer" priority="1" />
+      <Item value="Nota" priority="1" />
+      <Item value="GelieerdePersoon" priority="1" />
+      <Item value="ID" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Domain.CommunicatieTypeEnum">
+      <Item value="Email" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.CommunicatieType">
+      <Item value="ID" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.IGelieerdePersonenService">
+      <Item value="GebruikersRechtToekennen`0" priority="0" />
+      <Item value="PersoonIDGet`0" priority="0" />
+      <Item value="PaginaOphalenMetLidInfo`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.DataContracts.GebruikersDetail">
+      <Item value="Verlengbaar" priority="1" />
+      <Item value="GavLogin" priority="2" />
+      <Item value="GavPersoonVoorNaam" priority="0" />
+      <Item value="GavPersoonID" priority="0" />
+      <Item value="VervalDatum" priority="2" />
+      <Item value="GelieerdePersoonID" priority="0" />
+      <Item value="GavPersoonNaam" priority="0" />
+      <Item value="PersoonID" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.WebApp.Models.GavOverzichtModel">
+      <Item value="GebruikersDetails" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Workers.GebruikersRechtenManager">
+      <Item value="AllesOphalen`0" priority="3" />
+      <Item value="ToekennenOfVerlengen`0" priority="1" />
+      <Item value="Bewaren`0" priority="0" />
+      <Item value="GebruikersRechtToekennen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.DataInterfaces.IAutorisatieDao">
+      <Item value="Ophalen`0" priority="0" />
+      <Item value="Bewaren`0" priority="1" />
+      <Item value="IsGavGelieerdePersoon`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Mvc.MvcHtmlString">
+      <Item value="ToHtmlString`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.WebApp.Models.IMasterViewModel">
+      <Item value="GroepID" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.WebApp.Models.GavModel">
+      <Item value="GroepenLijst" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Diagnostics.WebApp.Properties.Settings">
+      <Item value="Default" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Diagnostics.WebApp.Properties.Settings">
+      <Item value="GapUrl" priority="0" />
+      <Item value="VerdwenenAdressenRapportUrl" priority="0" />
+      <Item value="FunctieFoutenRapportUrl" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Web.Mvc.HttpVerbs">
+      <Item value="Post" priority="1" />
+      <Item value="Get" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Diagnostics.WebApp.Models.LoginsModel">
+      <Item value="StamNummer" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Diagnostics.WebApp.Models.NotificatieModel">
+      <Item value="GroepInfo" priority="0" />
+      <Item value="GroepContactInfo" priority="0" />
+      <Item value="StamNummer" priority="1" />
+      <Item value="MailOntvangerGelieerdePersoonID" priority="0" />
+      <Item value="Reden" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Diagnostics.ServiceContracts.DataContracts.GroepContactInfo">
+      <Item value="Code" priority="0" />
+      <Item value="Contacten" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Workers.LedenManager">
+      <Item value="Zoeken`0" priority="0" />
+      <Item value="Ophalen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Domain.LidType">
+      <Item value="Leiding" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Objects.ObjectSet`1">
+      <Item value="Include`0" priority="4" />
+      <Item value="Where`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Diagnostics.ServiceContracts.DataContracts.MailContactInfo">
+      <Item value="GelieerdePersoonID" priority="9" />
+      <Item value="IsContact" priority="0" />
+      <Item value="IsGav" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Diagnostics.Service.Properties.Resources">
+      <Item value="PersoonNietVanGroep" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Workers.IAuthenticatieManager">
+      <Item value="GebruikersNaamGet`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Diagnostics.Service.Properties.Settings">
+      <Item value="Default" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Diagnostics.Service.Properties.Settings">
+      <Item value="DagenTijdelijkGebruikersrecht" priority="1" />
+      <Item value="DagenTijdelijkGebruikersRecht" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Workers.GelieerdePersonenManager">
+      <Item value="EMailKiezen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Cdf.Mailer.IMailer">
+      <Item value="Verzenden`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.DataInterfaces.IGavDao">
+      <Item value="Ophalen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Orm.GroepsExtras">
+      <Item value="GroepsWerkJaren" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.Functie">
+      <Item value="WerkJaarTot" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Dummies.DummyData">
+      <Item value="HuidigGwj" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.DataInterfaces.IGroepsWerkJaarDao">
+      <Item value="RecentsteOphalen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.DataInterfaces.IGroepenDao">
+      <Item value="Ophalen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Int32">
+      <Item value="GetHashCode`0" priority="0" />
+      <Item value="ToString`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Object">
+      <Item value="GetHashCode`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Linq.IGrouping`2">
+      <Item value="First`1" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Diagnostics.Workers.VerlorenAdressenManager">
+      <Item value="VerdwenenAdressenOphalen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Diagnostics.Orm.VerlorenAdres">
+      <Item value="GelieerdePersoonID" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.SyncInterfaces.IAdressenSync">
+      <Item value="StandaardAdressenBewaren`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Sync.MappingHelper">
+      <Item value="MappingsDefinieren`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Diagnostics.Workers.ProblemenManager">
+      <Item value="FunctieProblemenOphalen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Diagnostics.Orm.FunctieProbleem">
+      <Item value="GapLidID" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.DataInterfaces.ICommunicatieVormDao">
+      <Item value="Bewaren`0" priority="0" />
+      <Item value="Ophalen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.VisualStudio.TestTools.UnitTesting.Assert">
+      <Item value="AreEqual`0" priority="2" />
+      <Item value="IsFalse`0" priority="1" />
+      <Item value="IsTrue`0" priority="1" />
+      <Item value="AreNotEqual`0" priority="0" />
+      <Item value="IsNotNull`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.DataContracts.CommunicatieInfo">
+      <Item value="CommunicatieTypeID" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Workers.CommVormManager">
+      <Item value="Bewaren`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.List`1">
+      <Item value="Where`1" priority="0" />
+      <Item value="ToArray`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Services.GelieerdePersonenService">
+      <Item value="CommunicatieVormAanpassen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.DataInterfaces.IGelieerdePersonenDao">
+      <Item value="Ophalen`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.WebApp.Controllers.JaarOvergangController">
+      <Item value="Stap1AfdelingenSelecteren`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Domain.BivakAangifteStatus">
+      <Item value="NogNietVanBelang" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Mvc.ActionResult">
+      <Item value="ExecuteResult`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Mvc.ViewResult">
+      <Item value="ViewData" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Mvc.ViewDataDictionary">
+      <Item value="Model" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.WebApp.Models.JaarOvergangAfdelingsJaarModel">
+      <Item value="Afdelingen" priority="10" />
+      <Item value="NieuwWerkjaar" priority="0" />
+      <Item value="OfficieleAfdelingen" priority="0" />
+      <Item value="LedenMeteenInschrijven" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.DataContracts.AfdelingDetail">
+      <Item value="GeboorteJaarVan" priority="2" />
+      <Item value="AfdelingNaam" priority="0" />
+      <Item value="OfficieleAfdelingID" priority="1" />
+      <Item value="Geslacht" priority="1" />
+      <Item value="GeboorteJaarTot" priority="0" />
+      <Item value="AfdelingID" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.DataContracts.ActieveAfdelingInfo">
+      <Item value="AfdelingsJaarID" priority="2" />
+      <Item value="Naam" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.Orm.DataInterfaces.ILeidingDao">
+      <Item value="Bewaren`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Chiro.Gap.Domain.Niveau">
+      <Item value="KaderGroep" priority="0" />
+      <Item value="Gewest" priority="0" />
+      <Item value="Groep" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Moq.Language.Flow.ISetup`1">
+      <Item value="Throws`1" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.WebApp.Models.GeselecteerdePersonenEnLedenModel">
+      <Item value="InTeSchrijvenGelieerdePersoonIDs" priority="2" />
+      <Item value="GelieerdePersoonIDs" priority="1" />
+      <Item value="ToegekendeAfdelingsJaarIDs" priority="0" />
+      <Item value="BeschikbareAfdelingen" priority="2" />
+      <Item value="PersoonEnLidInfos" priority="10" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.DataContracts.InTeSchrijvenLid">
+      <Item value="GelieerdePersoonID" priority="2" />
+      <Item value="LeidingMaken" priority="1" />
+      <Item value="AfdelingsJaarIDs" priority="0" />
+      <Item value="VolledigeNaam" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.WebApp.Models.InschrijfbaarLid">
+      <Item value="GelieerdePersoonID" priority="1" />
+      <Item value="InTeSchrijven" priority="1" />
+      <Item value="VolledigeNaam" priority="0" />
+      <Item value="LeidingMaken" priority="1" />
+      <Item value="AfdelingsJaarIDs" priority="2" />
+      <Item value="AfdelingsJaarIrrelevant" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Chiro.Gap.ServiceContracts.DataContracts.OfficieleAfdelingDetail">
+      <Item value="Naam" priority="0" />
     </ItemStatistics>
   </CompletionStatisticsManager>
 </Configuration>
