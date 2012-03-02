@@ -6,8 +6,9 @@
 /_ReSharper.*
 
 # /Solution/
-/Solution/ChirogroepSqlServer
-/Solution/*
+/Solution/*.rej
+/Solution/*.orig
+/Solution/*.ReSharper.user
 
 # /Solution/Chiro.Adf/
 /Solution/Chiro.Adf/[Bb]in
