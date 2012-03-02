@@ -114,7 +114,7 @@
     <Compile Include="VerzekeringenManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
+    <ProjectReference Include="..\..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
       <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>
@@ -130,7 +130,7 @@
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
+    <ProjectReference Include="..\..\tools\LoginService\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
       <Project>{18FF2008-106F-48A6-BEFB-5F8B301354D0}</Project>
       <Name>Chiro.Cdf.Mailer</Name>
     </ProjectReference>

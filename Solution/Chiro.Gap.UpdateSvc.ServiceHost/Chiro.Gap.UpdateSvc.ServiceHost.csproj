@@ -103,7 +103,7 @@
       <Project>{B2E725F5-E3F8-4511-99AB-2EB84124F302}</Project>
       <Name>Chiro.Gap.UpdateSvc.Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
+    <ProjectReference Include="..\..\tools\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
