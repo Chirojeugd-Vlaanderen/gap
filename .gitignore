@@ -10,6 +10,9 @@
 /Solution/*.orig
 /Solution/*.ReSharper.user
 
+/Solution/TestResults
+/Solution/_Resharper.*
+
 # /Solution/Chiro.Adf/
 /Solution/Chiro.Adf/[Bb]in
 /Solution/Chiro.Adf/obj
@@ -1477,3 +1480,5 @@
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Net35Algemeen/*.user
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Net35Algemeen/*.aps
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Net35Algemeen/*.eto
+
+/Solution/Cg2Solution.5.1.ReSharper.user
