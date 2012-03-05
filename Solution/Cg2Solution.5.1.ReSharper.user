@@ -14,35 +14,32 @@
       <File id="F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD/d:Controllers/f:PersonenController.cs" caret="4101" fromTop="13" />
       <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:GelieerdePersonenManager.cs" caret="8247" fromTop="5" />
       <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GelieerdePersonenService.svc.cs" caret="13087" fromTop="3" />
-      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:Web.config" caret="7929" fromTop="17" />
       <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:AutorisatieDao.cs" caret="9740" fromTop="14" />
-      <File id="A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD/f:App.Config" caret="322" fromTop="3" />
       <File id="AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3/f:App.config" caret="666" fromTop="8" />
       <File id="04FFC0EF-4B35-4673-9E82-D87562B1D288/f:App.config" caret="675" fromTop="8" />
-      <File id="61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01/f:App.config" caret="954" fromTop="9" />
       <File id="9BFC33C8-238D-421C-B19B-D5FAC50CB15C/f:app.config" caret="5060" fromTop="13" />
       <File id="1FD873E8-1CF1-4824-A559-D5EA843BF459/f:App.config" caret="1178" fromTop="13" />
       <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:WerkJaarTest.cs" caret="1757" fromTop="14" />
       <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:AfdelingsTest.cs" caret="2009" fromTop="11" />
       <File id="61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01/f:LedenServiceTest.cs" caret="4044" fromTop="11" />
       <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:PersonenTest.cs" caret="8040" fromTop="12" />
-      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:AfdelingsJarenDao.cs" caret="3020" fromTop="10" />
-      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:App.config" caret="0" fromTop="0" />
       <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:LedenTest.cs" caret="5746" fromTop="31" />
       <File id="F4145652-EF28-4F23-A11E-CD68D4AA2A05/f:AbstractEfDao.cs" caret="10422" fromTop="10" />
-      <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="1790" fromTop="21" />
       <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingenManager.cs" caret="1280" fromTop="8" />
       <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GroepenService.svc.cs" caret="21206" fromTop="8" />
       <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:AfdelingInfo.cs" caret="433" fromTop="5" />
       <File id="F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD/d:Controllers/f:AfdelingenController.cs" caret="12498" fromTop="8" />
       <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingsJaarManager.cs" caret="7848" fromTop="8" />
       <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:LidVoorstel.cs" caret="0" fromTop="0" />
+      <File id="A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD/f:App.Config" caret="64" fromTop="3" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:Web.config" caret="7933" fromTop="6" />
+      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:App.config" caret="4609" fromTop="8" />
+      <File id="61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01/f:App.config" caret="967" fromTop="9" />
+      <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="1774" fromTop="40" />
+      <File id="F9197C38-63BC-4D2F-9F0A-8326C698B536/f:AfdelingsJarenDao.cs" caret="3020" fromTop="12" />
+      <File id="d:Miscellaneous Files/f:.gitignore/l:C!?Users?johanv?Documents?Visual Studio 2010?Projects?gap-git?gap-vervljo?.gitignore" caret="0" fromTop="0" />
     </RecentFiles>
     <RecentEdits>
-      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:App.config" caret="4537" fromTop="13" />
-      <File id="AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3/f:App.config" caret="666" fromTop="8" />
-      <File id="04FFC0EF-4B35-4673-9E82-D87562B1D288/f:App.config" caret="675" fromTop="8" />
-      <File id="61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01/f:App.config" caret="954" fromTop="9" />
       <File id="9BFC33C8-238D-421C-B19B-D5FAC50CB15C/f:app.config" caret="5060" fromTop="13" />
       <File id="1FD873E8-1CF1-4824-A559-D5EA843BF459/f:App.config" caret="1178" fromTop="13" />
       <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="1774" fromTop="13" />
@@ -50,7 +47,6 @@
       <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="4786" fromTop="17" />
       <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="1914" fromTop="20" />
       <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="272" fromTop="8" />
-      <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="1774" fromTop="19" />
       <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GroepenService.svc.cs" caret="18536" fromTop="23" />
       <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:GroepenService.svc.cs" caret="18888" fromTop="34" />
       <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingsJaarManager.cs" caret="0" fromTop="0" />
@@ -69,6 +65,11 @@
       <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingsJaarManager.cs" caret="7848" fromTop="8" />
       <File id="F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD/d:Controllers/f:AfdelingenController.cs" caret="12245" fromTop="3" />
       <File id="F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD/d:Controllers/f:AfdelingenController.cs" caret="12498" fromTop="8" />
+      <File id="A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD/f:App.Config" caret="326" fromTop="3" />
+      <File id="96D3E32A-0C40-4FDE-90CC-0EB0AC17E975/f:Web.config" caret="7933" fromTop="6" />
+      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:App.config" caret="4609" fromTop="8" />
+      <File id="61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01/f:App.config" caret="967" fromTop="9" />
+      <File id="1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724/f:TestInfo.cs" caret="1774" fromTop="23" />
     </RecentEdits>
   </RecentFiles>
   <NAntValidationSettings>
