@@ -8,8 +8,6 @@
   </SettingsComponent>
   <RecentFiles>
     <RecentFiles>
-      <File id="AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3/f:FunctiesManagerTest.cs" caret="8168" fromTop="0" />
-      <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:AbstractEfDaoTest.cs" caret="6883" fromTop="40" />
       <File id="F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD/d:Views/d:Handleiding/f:VeelgesteldeVragen.aspx" caret="0" fromTop="0" />
       <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:UitstapInfo.cs" caret="936" fromTop="12" />
       <File id="B55EDF1F-DE3F-4E00-A359-0D56BE67E197/f:VerplichtAttribute.cs" caret="563" fromTop="11" />
@@ -38,6 +36,7 @@
       <File id="8FAF739D-1058-4240-9466-BCA5DB8525D4/d:DataContracts/f:AfdelingInfo.cs" caret="433" fromTop="5" />
       <File id="F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD/d:Controllers/f:AfdelingenController.cs" caret="12498" fromTop="8" />
       <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:AfdelingsJaarManager.cs" caret="7848" fromTop="8" />
+      <File id="35E2AED7-7C0A-4B30-B7C8-24F9078AC32E/f:LidVoorstel.cs" caret="0" fromTop="0" />
     </RecentFiles>
     <RecentEdits>
       <File id="CC7F4606-886C-459A-8D3F-4CF4F316DA35/f:App.config" caret="4537" fromTop="13" />
