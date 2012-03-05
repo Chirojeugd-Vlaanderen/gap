@@ -10,6 +10,8 @@
 /Solution/*.orig
 /Solution/*.ReSharper.user
 
+/Solution/TestResults
+
 # /Solution/Chiro.Adf/
 /Solution/Chiro.Adf/[Bb]in
 /Solution/Chiro.Adf/obj
