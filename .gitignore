@@ -11,6 +11,7 @@
 /Solution/*.ReSharper.user
 
 /Solution/TestResults
+/Solution/_Resharper.*
 
 # /Solution/Chiro.Adf/
 /Solution/Chiro.Adf/[Bb]in
