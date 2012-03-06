@@ -1,6 +1,7 @@
 */bin/
 */obj/
-*/*.csproj
 */*.csproj.user
 *.suo
 *.vsmdi
+
+*.sln~

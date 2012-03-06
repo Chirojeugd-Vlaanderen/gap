@@ -1482,3 +1482,5 @@
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Net35Algemeen/*.eto
 
 /Solution/Cg2Solution.5.1.ReSharper.user
+/.gitignore~
+/Solution/.gitignore~
