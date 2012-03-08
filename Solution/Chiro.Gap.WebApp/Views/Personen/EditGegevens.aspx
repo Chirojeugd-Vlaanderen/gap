@@ -75,7 +75,7 @@
 	<fieldset>
 		<legend>Persoonlijke gegevens</legend>
 		<p>
-			<%=Html.LabelFor(s => s.HuidigePersoon.AdNummer) %>
+		    <%=Html.LabelFor(s => s.HuidigePersoon.AdNummer) %>
 			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "AD-nummer", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een AD-nummer?" } ) %>
 			<%=Html.DisplayFor(s => s.HuidigePersoon.AdNummer) %>
 			<%=Html.HiddenFor(s => s.HuidigePersoon.AdNummer)  %>
@@ -139,6 +139,8 @@
 			}
 		%>
 	</fieldset>
-	<%} %>
+	<% } %>
+    <% if (Model.HuidigePersoon.GelieerdePersoonID > 0) { %>
 	<%= Html.ActionLink("Terug naar de persoonsfiche", "EditRest", new { Controller = "Personen", id = Model.HuidigePersoon.GelieerdePersoonID }) %>
+    <% } %>
 </asp:Content>
