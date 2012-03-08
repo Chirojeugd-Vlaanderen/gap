@@ -180,6 +180,7 @@
       <Link>Views\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
     <Content Include="Content\indicator.gif" />
+    <Content Include="Content\jquery-ui-1.8.18.custom.css" />
     <Content Include="Content\jquery.autocomplete.css" />
     <Content Include="Content\Screenshots\Deelnemersinfo_bewerken.png" />
     <Content Include="Content\Screenshots\Deelnemers_inschrijven.png" />
@@ -195,18 +196,12 @@
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Compile Include="Models\InschrijfbaarLid.cs" />
-    <Content Include="Scripts\jquery.autocomplete.js" />
-    <Content Include="Scripts\jquery.autocomplete.min.js" />
+    <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.18.custom.min.js" />
     <Content Include="Views\Afdelingen\Afdeling.aspx" />
     <Content Include="Views\Afdelingen\AfdelingsJaar.aspx" />
     <Content Include="Views\Afdelingen\Index.aspx" />
-    <Content Include="Scripts\jquery-1.3.2-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.3.2.js" />
-    <Content Include="Scripts\jquery-1.3.2.min-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.3.2.min.js" />
-    <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Views\Gav\Index.aspx" />
     <Content Include="Views\GebruikersRecht\Index.aspx" />

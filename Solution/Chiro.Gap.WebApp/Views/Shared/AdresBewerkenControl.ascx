@@ -21,9 +21,11 @@
     <input type="submit" name="action" value="Woonplaatsen ophalen" />
 </noscript>
 <p>
+    <div class="ui-widget">
     <%=Html.LabelFor(mdl => mdl.Straat)%>
     <%=Html.EditorFor(mdl => mdl.Straat)%>
     <%=Html.ValidationMessageFor(mdl => mdl.Straat)%>
+    </div>
 </p>
 <p>
     <%=Html.LabelFor(mdl => mdl.HuisNr)%>

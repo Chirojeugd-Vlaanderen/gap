@@ -100,7 +100,8 @@ namespace Chiro.Gap.WebApp.Controllers
 						 orderby straat.Naam
 						 select straat.Naam).Distinct();
 
-			return Content(String.Join("\n", namen.ToArray()));
+			//return Content(String.Join("\n", namen.ToArray()));
+            return Json(namen, JsonRequestBehavior.AllowGet);
 		}
 
 		/// <summary>
