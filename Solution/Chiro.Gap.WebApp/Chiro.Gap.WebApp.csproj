@@ -132,13 +132,16 @@
     <Compile Include="ModelStateWrapper.cs" />
     <Compile Include="Models\AdresVerwijderenModel.cs" />
     <Compile Include="Models\AfdelingenBewerkenModel.cs" />
-    <Compile Include="Models\AfdelingInfoModel.cs" />
+    <Compile Include="Models\AfdelingInfoModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\AfdelingsOverzichtModel.cs" />
     <Compile Include="Models\CategorieModel.cs" />
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingsJaarModel.cs" />
     <Compile Include="Models\DeelnemerBewerkenModel.cs" />
     <Compile Include="Models\GavOverzichtModel.cs" />
+    <Compile Include="Models\GroepInfoModel.cs" />
     <Compile Include="Models\IAdresBewerkenModel.cs" />
     <Compile Include="Models\LidAfdelingenModel.cs" />
     <Compile Include="Models\Mededeling.cs" />
@@ -207,6 +210,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Views\Gav\Index.aspx" />
     <Content Include="Views\GebruikersRecht\Index.aspx" />
+    <Content Include="Views\Groep\NaamWijzigen.aspx" />
     <Content Include="Views\Handleiding\Deadlines.aspx" />
     <Content Include="Views\Handleiding\Deelnemersadministratie.aspx" />
     <Content Include="Views\Handleiding\DeelnemersInschrijven.aspx" />

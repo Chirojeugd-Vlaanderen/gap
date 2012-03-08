@@ -8,13 +8,13 @@
 	<div class="kaderke">
 		<div class="kadertitel">
 			Algemene groepsinfo</div>
-		<table border="0">
+		<table>
 			<tr>
 				<td>
 					<%=Html.LabelFor(mdl => mdl.Detail.Naam)%>
 				</td>
 				<td>
-					<%=Html.DisplayFor(mdl => mdl.Detail.Naam)%>
+					<%=Html.DisplayFor(mdl => mdl.Detail.Naam)%> [<%=Html.ActionLink("Wijzigen", "NaamWijzigen", "Groep")%>]
 				</td>
 			</tr>
 			<tr>
@@ -59,7 +59,7 @@
  				}
 %>
 				</ul>
-				[<%=Html.ActionLink("afdelingsverdeling aanpassen", "Index", "Afdelingen")%>]
+				[<%=Html.ActionLink("Afdelingsverdeling aanpassen", "Index", "Afdelingen")%>]
 			</div>
 <%
 		}
@@ -79,7 +79,7 @@
 				}
 			%>
 		</ul>
-		[<%=Html.ActionLink("categorieën toevoegen/verwijderen", "Index", "Categorieen") %>]
+		[<%=Html.ActionLink("Categorieën toevoegen/verwijderen", "Index", "Categorieen") %>]
 	</div>
 	<div class="kaderke">
 		<div class="kadertitel">
@@ -99,6 +99,6 @@
 			<%
 				}%>
 		</ul>
-		[<%=Html.ActionLink("functies toevoegen/verwijderen", "Index", "Functies") %>]
+		[<%=Html.ActionLink("Functies toevoegen/verwijderen", "Index", "Functies") %>]
 	</div>
 </asp:Content>
