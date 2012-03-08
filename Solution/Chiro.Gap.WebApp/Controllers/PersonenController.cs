@@ -1198,13 +1198,11 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult CategorieToevoegenAanLijst(CategorieModel model, int groepID)
         {
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(
-                model.GelieerdePersoonIDs,
-                model.GeselecteerdeCategorieIDs));
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(model.GelieerdePersoonIDs, model.GeselecteerdeCategorieIDs));
 
             if (model.GelieerdePersoonIDs.Count == 1)
             {
-                return RedirectToAction("EditRest", model.GelieerdePersoonIDs.First());
+                return RedirectToAction("EditRest", "Personen", new { id = model.GelieerdePersoonIDs.First(), groepID });
             }
             else
             {
