@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.ServiceProcess;
-using System.Text;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceModel;
 using Chiro.Kip.Services;
