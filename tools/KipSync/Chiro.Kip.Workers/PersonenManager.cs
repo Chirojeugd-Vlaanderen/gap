@@ -42,7 +42,10 @@ namespace Chiro.Kip.Workers
 				resultaat = (from p in db.PersoonSet.Include(prs => prs.kipContactInfo).Include(prs => prs.kipWoont.First().kipAdres)
 					     where p.AdNummer == zoekInfo.AdNummer
 					     select p).FirstOrDefault();
-				if (resultaat != null) return resultaat;
+				if (resultaat != null)
+				{
+				    return resultaat;
+				}
 			}
 
 			// poging 2

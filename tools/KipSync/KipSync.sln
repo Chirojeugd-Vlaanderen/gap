@@ -18,12 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Services", "Chiro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ConsoleServiceHost", "Chiro.Kip.ConsoleServiceHost\Chiro.Kip.ConsoleServiceHost.csproj", "{8B6789B3-DE67-4EAA-BC24-72C15DCB0E53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceModel", "Chiro.Cdf.ServiceModel\Chiro.Cdf.ServiceModel.csproj", "{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data.Entity", "Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj", "{F4145652-EF28-4F23-A11E-CD68D4AA2A05}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data", "Chiro.Cdf.Data\Chiro.Cdf.Data.csproj", "{72F61656-2949-4763-9381-678B2D07AE0B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Workers", "Chiro.Kip.Workers\Chiro.Kip.Workers.csproj", "{9DD68140-0958-4C53-A32F-518BC225B417}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ServiceContracts", "Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj", "{6E81A10A-AD85-47A0-8B5D-70361F393CDD}"
@@ -32,9 +26,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Log", "Chiro.Kip.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.SyncServiceHost", "Chiro.Kip.SyncService\Chiro.Kip.SyncServiceHost.csproj", "{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc", "Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj", "{C100E957-CEE2-4707-BF13-C64553C28C7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data", "..\..\Solution\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj", "{72F61656-2949-4763-9381-678B2D07AE0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.DependencyInjectionBehavior", "Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj", "{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data.Entity", "..\..\Solution\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj", "{F4145652-EF28-4F23-A11E-CD68D4AA2A05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.DependencyInjectionBehavior", "..\..\Solution\Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj", "{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc", "..\..\Solution\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj", "{C100E957-CEE2-4707-BF13-C64553C28C7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceModel", "..\..\Solution\Chiro.Cdf.ServiceModel\Chiro.Cdf.ServiceModel.csproj", "{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -57,18 +57,6 @@ Global
 		{8B6789B3-DE67-4EAA-BC24-72C15DCB0E53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B6789B3-DE67-4EAA-BC24-72C15DCB0E53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B6789B3-DE67-4EAA-BC24-72C15DCB0E53}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Release|Any CPU.Build.0 = Release|Any CPU
-		{72F61656-2949-4763-9381-678B2D07AE0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72F61656-2949-4763-9381-678B2D07AE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9DD68140-0958-4C53-A32F-518BC225B417}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9DD68140-0958-4C53-A32F-518BC225B417}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DD68140-0958-4C53-A32F-518BC225B417}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -85,14 +73,26 @@ Global
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Messaging;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceModel;
 
