@@ -12,4 +12,5 @@ join auth.GebruikersRecht gr on gwj.GroepID = gr.GroepID
 join auth.Gav on gr.GavID = gav.GavID
 where datediff(day, getdate(), EindeInstapPeriode) = @dagenopvoorhand 
 and (gr.VervalDatum is null or gr.Vervaldatum >= getdate())
+and l.NonActief = 0
 go
