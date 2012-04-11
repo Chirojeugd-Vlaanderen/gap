@@ -52,7 +52,6 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Laat de gebruiker de naam van de groep <paramref name="groepID"/> bewerken.
         /// </summary>
         /// <param name="groepID">ID van de geselecteerde groep</param>
-        /// <param name="nieuweNaam">Nieuwe naam van de groep</param>
         /// <returns>De view 'afdelingsinstellingen'</returns>
         [HandleError]
         public ActionResult NaamWijzigen(int groepID)
