@@ -45,6 +45,8 @@ namespace Chiro.Adf.ServiceModel.Test
 
             var gelieerdePersonenServiceMock = new Mock<IGelieerdePersonenService>();
             gelieerdePersonenServiceMock.Setup(mock => mock.PersoonIDGet(It.IsAny<int>())).Returns(-1);
+            gelieerdePersonenServiceMock.Setup(mock => mock.DubbelPuntBestellen(It.IsAny<int>())).Throws(
+                new FaultException());
             Factory.InstantieRegistreren(gelieerdePersonenServiceMock.Object);
         }
 
@@ -99,6 +101,20 @@ namespace Chiro.Adf.ServiceModel.Test
             int actual = ServiceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.PersoonIDGet(12345));
 
             Assert.AreEqual(-1, actual);
+        }
+
+        /// <summary>
+        /// In mijn gemockte service throwt 'DubbelpuntBestellen' een FaultException.  Ik moet die FaultException
+        /// kunnen cachen.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FaultException))]
+        public void FaultExceptionGemockteServiceTest()
+        {
+            ServiceHelper.CallService<IGelieerdePersonenService>(svc => svc.DubbelPuntBestellen(12345));
+
+            // Als we geen exception hebben, is er iets mis gegaan.
+            Assert.AreEqual(true, false);
         }
     }
 }
