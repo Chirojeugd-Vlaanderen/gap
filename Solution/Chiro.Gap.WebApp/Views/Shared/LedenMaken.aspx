@@ -63,7 +63,12 @@
                                    Selected = (Model.PersoonEnLidInfos[j].AfdelingsJaarIDs.FirstOrDefault() == ba.AfdelingsJaarID),
                                    Text = ba.Naam,
                                    Value = ba.AfdelingsJaarID.ToString()
-                               }).ToArray();
+                               }).ToList();
+                               
+                    if (Model.PersoonEnLidInfos[j].LeidingMaken)
+                    {
+                        afdelingsLijstItems.Add(new SelectListItem {Selected = true, Text = @"geen", Value = "0" });
+                    }
                 %>
                                                                
                 <%=Html.DropDownListFor(mdl => mdl.PersoonEnLidInfos[j].AfdelingsJaarIDs, afdelingsLijstItems)%>
