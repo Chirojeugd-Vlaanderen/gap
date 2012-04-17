@@ -2,6 +2,19 @@
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+	    <script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
+		<script type="text/javascript">
+		    $(document).ready(function () {
+		        $(':checkbox').click(function () {
+		            if ($(this).attr('checked')) {
+		                $(this).parent().parent().find('select').append('<option value="0">geen</option>');
+		            }
+		            else {
+		                $(this).parent().parent().find('select').find('option[value="0"]').remove();
+		            }
+		        });
+		    });
+		</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<% using (Html.BeginForm())
@@ -38,7 +51,7 @@
                     <%:Html.CheckBoxFor(mdl => mdl.PersoonEnLidInfos[j].InTeSchrijven) %>
                 </td>
 				<td><%:Html.DisplayFor(mdl => mdl.PersoonEnLidInfos[j].VolledigeNaam)%></td>
-				<td><%:Html.CheckBoxFor(mdl => mdl.PersoonEnLidInfos[j].LeidingMaken)%></td>
+				<td class="leidingmaken"><%:Html.CheckBoxFor(mdl => mdl.PersoonEnLidInfos[j].LeidingMaken)%></td>
 				<td>
 
 				<%

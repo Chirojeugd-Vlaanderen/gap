@@ -82,7 +82,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			// TODO model laden, gegeven:
 			object value;
 			TempData.TryGetValue("list", out value);
-			var gekozengelieerdepersoonsids = (List<int>)value;
+			var gekozengelieerdepersoonsids = value as List<int>;
+
 			var foutBerichten = String.Empty;
 			var personenOverzicht = ServiceHelper.CallService<ILedenService, IEnumerable<InTeSchrijvenLid>>(e => e.VoorstelTotInschrijvenGenereren(gekozengelieerdepersoonsids, out foutBerichten));
 			if (!String.IsNullOrEmpty(foutBerichten))
