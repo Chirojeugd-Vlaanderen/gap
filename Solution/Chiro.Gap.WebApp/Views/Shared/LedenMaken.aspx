@@ -5,7 +5,7 @@
 	    <script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
 		<script type="text/javascript">
 		    $(document).ready(function () {
-		        $(':checkbox').click(function () {
+		        $('input[id*="LeidingMaken"]').click(function () {
 		            if ($(this).attr('checked')) {
 		                $(this).parent().parent().find('select').append('<option value="0">geen</option>');
 		            }
@@ -51,7 +51,7 @@
                     <%:Html.CheckBoxFor(mdl => mdl.PersoonEnLidInfos[j].InTeSchrijven) %>
                 </td>
 				<td><%:Html.DisplayFor(mdl => mdl.PersoonEnLidInfos[j].VolledigeNaam)%></td>
-				<td class="leidingmaken"><%:Html.CheckBoxFor(mdl => mdl.PersoonEnLidInfos[j].LeidingMaken)%></td>
+				<td><%:Html.CheckBoxFor(mdl => mdl.PersoonEnLidInfos[j].LeidingMaken)%></td>
 				<td>
 
 				<%
