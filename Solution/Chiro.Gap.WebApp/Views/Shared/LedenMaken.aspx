@@ -5,11 +5,24 @@
 	    <script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
 		<script type="text/javascript">
 		    $(document).ready(function () {
+
+		        // onderstaande zorgt ervoor dat een klik op een checkbox 'leiding maken' de optie
+		        // 'geen' toevoegt of verwijdert aan de lijst met mogelijke afdelingen
+
 		        $('input[id*="LeidingMaken"]').click(function () {
 		            if ($(this).attr('checked')) {
 		                $(this).parent().parent().find('select').append('<option value="0">geen</option>');
 		            }
 		            else {
+		                $(this).parent().parent().find('select').find('option[value="0"]').remove();
+		            }
+		        });
+
+		        // initieel moet de optie 'geen' verwijderd worden voor alle rijen waar 'leiding maken'
+		        // niet is geselecteerd.  We doen dit met javascript, zodat het inobtrusive blijft.
+
+		        $('input[id*="LeidingMaken"]').each(function () {
+		            if (!$(this).attr('checked')) {
 		                $(this).parent().parent().find('select').find('option[value="0"]').remove();
 		            }
 		        });
@@ -65,18 +78,25 @@
                                    Value = ba.AfdelingsJaarID.ToString()
                                }).ToList();
                                
-                    if (Model.PersoonEnLidInfos[j].LeidingMaken)
-                    {
-                        afdelingsLijstItems.Add(new SelectListItem {Selected = true, Text = @"geen", Value = "0" });
-                    }
+                    // Afdeling 'geen' is mogelijk (en default) als het om leiding gaat.
+                    // In principe moet die er enkel staan als 'leiding maken' aangevinkt is.  Maar
+                    // omdat het tonen en verbergen via javascript loopt, voeg ik het item
+                    // sowieso eerst altijd toe, om problemen te vermijden als javascript 
+                    // gedisabled is.
+                    
+                    afdelingsLijstItems.Add(new SelectListItem { Selected = Model.PersoonEnLidInfos[j].LeidingMaken, Text = @"geen", Value = "0" });
+                    
+                    
                 %>
                                                                
                 <%=Html.DropDownListFor(mdl => mdl.PersoonEnLidInfos[j].AfdelingsJaarIDs, afdelingsLijstItems)%>
+
 				</td>
 
 			</tr>
 		<%}%>
 		</table>
+
 	</fieldset>
 	<%}%>
 </asp:Content>
