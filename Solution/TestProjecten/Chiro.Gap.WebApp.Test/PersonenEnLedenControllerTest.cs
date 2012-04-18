@@ -17,7 +17,81 @@ using Moq;
 
 namespace Chiro.Gap.WebApp.Test
 {
-  
+    /// <summary>
+    /// Fake ledenservice.  Ik kan moq niet gebruiken, omdat moq niet overweg kan
+    /// met de out-parameter van Inschrijven.
+    /// </summary>
+    internal class FakeLedenService: ILedenService
+    {
+        public static IEnumerable<InTeSchrijvenLid> DoorgekregenInschrijving { get; set; }
+
+        public IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten)
+        {
+            DoorgekregenInschrijving = lidInformatie;
+            foutBerichten = String.Empty;
+            return null;
+        }
+
+        #region irrelevante methods voor deze test
+
+        public IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FunctiesVervangen(int lidID, IEnumerable<int> functieIDs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LidAfdelingInfo AfdelingenOphalen(int lidID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int AfdelingenVervangen(int lidID, IEnumerable<int> afdelingsJaarIDs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AfdelingenVervangenBulk(IEnumerable<int> lidIDs, IEnumerable<int> afdelingsJaarIDs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int LoonVerliesVerzekeren(int lidID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PersoonLidInfo DetailsOphalen(int lidID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int LidGeldToggle(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int TypeToggle(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
     /// <summary>
     ///This is a test class for PersonenEnLedenControllerTest and is intended
     ///to contain all PersonenEnLedenControllerTest Unit Tests
@@ -120,15 +194,8 @@ namespace Chiro.Gap.WebApp.Test
                                                                                                    });
 
 
-            var ledenServiceMock = new Mock<ILedenService>();
-            IEnumerable<InTeSchrijvenLid> doorgekregenInschrijvingsVerzoek = new InTeSchrijvenLid[0];
-
-
-            ledenServiceMock.Setup(ls => ls.Inschrijven(It.IsAny<IEnumerable<InTeSchrijvenLid>>(), out foutBerichten))
-                .Callback<IEnumerable<InTeSchrijvenLid>, string>((ldn, ftn) => doorgekregenInschrijvingsVerzoek = ldn);
-
             Factory.InstantieRegistreren(veelGebruiktMock.Object);
-            Factory.InstantieRegistreren(ledenServiceMock.Object);
+            Factory.InstantieRegistreren<ILedenService>(new FakeLedenService());
 
             // we doen het volgende:
             // We roepen LedenMaken aan met een model waarbij '0' geselecteerd is als enige afdeling voor
@@ -146,7 +213,8 @@ namespace Chiro.Gap.WebApp.Test
                                                             new InschrijfbaarLid
                                                                 {
                                                                     AfdelingsJaarIDs = new int[] {0},
-                                                                    LeidingMaken = true
+                                                                    LeidingMaken = true,
+                                                                    InTeSchrijven = true
                                                                 }
                                                         }
                             };
@@ -157,7 +225,7 @@ namespace Chiro.Gap.WebApp.Test
 
             // assert
 
-            var probleem = from p in doorgekregenInschrijvingsVerzoek
+            var probleem = from p in FakeLedenService.DoorgekregenInschrijving
                            where p.AfdelingsJaarIDs.Any(ajid => ajid == 0)
                            select p;
 

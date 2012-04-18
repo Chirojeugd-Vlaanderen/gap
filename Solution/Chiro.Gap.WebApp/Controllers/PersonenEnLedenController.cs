@@ -129,6 +129,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // naar InTeSchrijvenLid, krijg ik een exception ivm datacontracts.  Vandaar dat
             // ik kloon ipv cast.
 
+
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.Inschrijven(inTeSchrijven, out foutBerichten));
 			if (String.IsNullOrEmpty(foutBerichten))
 			{
