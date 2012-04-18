@@ -156,5 +156,48 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             Assert.IsTrue(true);
         }
 
+
+        ///<summary>
+        ///Kijkt na of we een leid(st)er kunnen inschrijven zonder afdelingen
+        ///</summary>
+        [TestMethod()]
+        public void InschrijvenTest()
+        {
+            // LedenManager_Accessor, zodat we ook private members kunnen testen.
+            var target = Factory.Maak<LedenManager_Accessor>();
+
+            // Creeer een aantal dummygegevens om op te testen.
+
+            var groep = new ChiroGroep {ID = 493};
+            var gp = new GelieerdePersoon
+                         {
+                             Persoon = new Persoon
+                                           {
+                                               Geslacht = GeslachtsType.Man,
+                                               GeboorteDatum = new DateTime(1992, 3, 7)
+                                           },
+                             Groep = groep
+                         };
+            var gwj = new GroepsWerkJaar
+                          {
+                              Groep = groep,
+                              WerkJaar = 2011
+                          };
+            var voorstellid = new LidVoorstel
+                                  {
+                                      AfdelingsJaarIDs = new int[0],
+                                      AfdelingsJarenIrrelevant = false,
+                                      LeidingMaken = true
+                                  };
+
+            // act
+
+            var actual = target.Inschrijven(gp, gwj, false, voorstellid) as Leiding;
+
+            // assert
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(0, actual.AfdelingsJaar.Count);
+        }
     }
 }
