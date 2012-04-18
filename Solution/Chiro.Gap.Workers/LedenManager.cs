@@ -576,10 +576,6 @@ namespace Chiro.Gap.Workers
                     FoutNummer.OnbekendGeslachtFout, Resources.GeslachtVerplicht);
             }
 
-            // Bepaal of het een kind of leiding wordt.  Als de persoon qua leeftijd in een niet-speciale
-            // afdeling valt, wordt het een kind.
-
-
             bool leidingmaken;
             var afdelingsJaar = new List<AfdelingsJaar>();
 
@@ -594,12 +590,11 @@ namespace Chiro.Gap.Workers
                     }
 
                     afdelingsJaar = (from a in gwj.AfdelingsJaar
-                                     // NOTE: #1073: het gewenste gedrag is dat we het lid sowieso in de voorgestelde afdeling inschrijven , wat de leeftijd ook is.
                                      where
-                                         /*(leidingmaken /*|| (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)) &&*/
                                          voorstellid.AfdelingsJaarIDs.Contains(a.ID)
                                      select a).ToList();
-                    if (afdelingsJaar.Count() == 0)
+                    
+                    if (afdelingsJaar.Count() != voorstellid.AfdelingsJaarIDs.Count())
                     {
                         throw new GapException("Het gekozen afdelingsjaar is ongeldig.");
                     }
@@ -620,10 +615,15 @@ namespace Chiro.Gap.Workers
                 // Stop de geboortedatum in een lokale variabele [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement]
                 var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
+                // Bepaal of het een kind of leiding wordt.  Als de persoon qua leeftijd in een niet-speciale
+                // afdeling valt, wordt het een kind.
+
                 afdelingsJaar = (from a in gwj.AfdelingsJaar
                                  where (a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal)
                                        && (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)
                                  select a).ToList();
+
+
                 leidingmaken = afdelingsJaar.Count() == 0;
                 if (afdelingsJaar.Count() > 1)
                 {
