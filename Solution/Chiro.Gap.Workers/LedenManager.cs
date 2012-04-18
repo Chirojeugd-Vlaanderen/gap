@@ -564,11 +564,10 @@ namespace Chiro.Gap.Workers
         /// </returns>
         private Lid Inschrijven(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang, LidVoorstel voorstellid)
         {
-            if (!gp.GebDatumMetChiroLeefTijd.HasValue)
-            {
-                throw new GapException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
-            }
+            // Lid maken zonder geboortedatum is geen probleem meer, aangezien de afdeling
+            // bij in het voorstel zit. (en dus niet op dit moment bepaald moet worden.)
 
+            // Geslacht is wel verplicht; kipadmin kan geen onzijdige mensen aan.
             if (gp.Persoon.Geslacht != GeslachtsType.Man && gp.Persoon.Geslacht != GeslachtsType.Vrouw)
             {
                 // FIXME: (#530) De boodschap in onderstaande exception wordt getoond aan de user,
@@ -580,8 +579,6 @@ namespace Chiro.Gap.Workers
             // Bepaal of het een kind of leiding wordt.  Als de persoon qua leeftijd in een niet-speciale
             // afdeling valt, wordt het een kind.
 
-            // Stop de geboortedatum in een lokale variabele [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement]
-            var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
             bool leidingmaken;
             var afdelingsJaar = new List<AfdelingsJaar>();
@@ -613,6 +610,16 @@ namespace Chiro.Gap.Workers
                 // automagisch voorstel genereren
                 // TODO de check op speciale afdeling is vermoedelijk een fout, je wilt wel degelijk een voorstel genereren voor speciale afdelingen 
                 // TODO 1145 er kan geen voorstel worden gegenereerd als je in geen afdeling past => eigenlijk wil je dan ook gewoon een afdeling voorstellen, want je hoeft de chiroleeftijd niet aan te passen om lid te maken
+
+                if (!gp.GebDatumMetChiroLeefTijd.HasValue)
+                {
+                    // TODO: FoutnummerException van maken
+                    throw new GapException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
+                }
+                
+                // Stop de geboortedatum in een lokale variabele [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement]
+                var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
+
                 afdelingsJaar = (from a in gwj.AfdelingsJaar
                                  where (a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal)
                                        && (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)

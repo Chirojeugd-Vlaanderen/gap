@@ -129,6 +129,15 @@ namespace Chiro.Gap.WebApp.Controllers
             // naar InTeSchrijvenLid, krijg ik een exception ivm datacontracts.  Vandaar dat
             // ik kloon ipv cast.
 
+            // De user interface is zodanig gemaakt dat AfdelingsJaarIDs precies 1 ID bevat, dat
+            // 0 kan zijn als het over 'geen' gaat.  Dat is niet logisch.  Maar wel de praktijk.
+            // De service verwacht een lijst met AfdelingsJaarIDs.  Ik ga dus alle lijsten die
+            // enkel 0 bevatten, vervangen door lege lijsten.
+
+            foreach (var pli in inTeSchrijven.Where(pli => pli.AfdelingsJaarIDs.Count() == 1 && pli.AfdelingsJaarIDs.First() == 0))
+            {
+                pli.AfdelingsJaarIDs = new int[0];  // lege array van ints
+            }
 
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.Inschrijven(inTeSchrijven, out foutBerichten));
 			if (String.IsNullOrEmpty(foutBerichten))
