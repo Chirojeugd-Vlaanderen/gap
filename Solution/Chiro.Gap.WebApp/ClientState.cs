@@ -29,6 +29,12 @@ namespace Chiro.Gap.WebApp
 		{
 			get
 			{
+                // Workaround voor #1273
+                if (HttpContext.Current == null)
+                {
+                    return null;
+                }
+
 				var s = HttpContext.Current.Request.Cookies.Get(LIJSTCOOKIE);
 				if (s == null || String.IsNullOrEmpty(s.Value))
 				{
