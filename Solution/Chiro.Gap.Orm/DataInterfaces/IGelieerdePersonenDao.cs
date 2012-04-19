@@ -148,6 +148,20 @@ namespace Chiro.Gap.Orm.DataInterfaces
         IList<String> EersteLetterNamenOphalen(int groepID);
 
         /// <summary>
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="groepID">
+        /// GroepID van gevraagde groep
+        /// </param>
+        /// <param name="categorie">
+        /// Categorie waaruit we de letters willen halen
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        IList<String> EersteLetterNamenOphalenCategorie(int groepID, int categorie);
+
+        /// <summary>
         /// Haal een pagina op met gelieerde personen van een groep.
         /// </summary>
         /// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
@@ -194,7 +208,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
         /// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
         /// <returns>Lijst gelieerde personen</returns>
-        IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras);
+        IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras);
 
         /// <summary>
         /// Haalt een gelieerde persoon op, inclusief

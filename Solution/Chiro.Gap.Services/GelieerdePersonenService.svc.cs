@@ -238,14 +238,13 @@ namespace Chiro.Gap.Services
         /// <returns>Een lijst van persoonsgegevens</returns>
         /* zie #273 */
         // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
+        public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
         {
             try
             {
                 var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
                     categorieID,
-                    pagina,
-                    paginaGrootte,
+                    letter,
                     sortering,
                     PersoonsExtras.Categorieen | PersoonsExtras.LedenDitWerkJaar,
                     out aantalTotaal);
@@ -282,6 +281,17 @@ namespace Chiro.Gap.Services
         public IList<String> EersteLetterNamenOphalen(int groepID)
         {
             return _gpMgr.EersteLetterNamenOphalen(groepID);
+        }
+
+        /// <summary>
+        /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="groepID">De ID van de groep waaruit we de gelieerde persoonsnamen gaan halen</param>
+        /// <param name="categorie">Categorie waarbij we de eerste letter van de achternaam willen halen</param>
+        /// <returns>Lijst met de eerste letter van de namen</returns>
+        public IList<String> EersteLetterNamenOphalenCategorie(int groepID, int categorie)
+        {
+            return _gpMgr.EersteLetterNamenOphalenCategorie(groepID, categorie);
         }
 
         /// <summary>
@@ -539,8 +549,7 @@ namespace Chiro.Gap.Services
 
                 var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
                     categorieID,
-                    1,
-                    int.MaxValue,
+                    "A-Z",
                     sortering,
                     PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres,
                     out totaal);

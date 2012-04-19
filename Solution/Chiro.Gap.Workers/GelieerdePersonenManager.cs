@@ -269,6 +269,28 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="groepID">
+        /// GroepID van gevraagde groep
+        /// </param>
+        /// <param name="categorie">
+        /// Categorie waarbij we de eerste letter van de achternaam willen halen
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        public IList<String> EersteLetterNamenOphalenCategorie(int groepID, int categorie)
+        {
+            if (!_autorisatieMgr.IsGavGroep(groepID))
+            {
+                throw new GeenGavException(Resources.GeenGav);
+            }
+
+            return _gelieerdePersonenDao.EersteLetterNamenOphalenCategorie(groepID, categorie);
+        }
+
+        /// <summary>
         /// Haalt een pagina op met gelieerde personen van een groep.
         /// </summary>
         /// <param name="groepID">
@@ -389,8 +411,7 @@ namespace Chiro.Gap.Workers
         /// Lijst met GelieerdePersonen
         /// </returns>
         public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID,
-                                                                 int pagina,
-                                                                 int paginaGrootte,
+                                                                 string letter,
                                                                  PersoonSorteringsEnum sortering,
                                                                  PersoonsExtras extras,
                                                                  out int aantalTotaal)
@@ -401,8 +422,7 @@ namespace Chiro.Gap.Workers
             }
 
             return _gelieerdePersonenDao.PaginaOphalenUitCategorie(categorieID,
-                                                                   pagina,
-                                                                   paginaGrootte,
+                                                                   letter,
                                                                    sortering,
                                                                    out aantalTotaal,
                                                                    extras);

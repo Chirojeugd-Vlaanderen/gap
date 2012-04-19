@@ -138,7 +138,7 @@ namespace Chiro.Gap.Data.Test
 			// act
 			var pagina = _gpdao.PaginaOphalenUitCategorie(
 				TestInfo.CATEGORIEID,
-				1, 10, PersoonSorteringsEnum.Naam,
+				"A", PersoonSorteringsEnum.Naam,
 				out aantalTotaal,
 				PersoonsExtras.Geen);
 
@@ -158,7 +158,7 @@ namespace Chiro.Gap.Data.Test
 			// act
 			var pagina = _gpdao.PaginaOphalenUitCategorie(
 				TestInfo.CATEGORIE2ID,
-				1, 10, PersoonSorteringsEnum.Naam,
+				"A", PersoonSorteringsEnum.Naam,
 				out aantalTotaal,
 				PersoonsExtras.AlleLeden);
 

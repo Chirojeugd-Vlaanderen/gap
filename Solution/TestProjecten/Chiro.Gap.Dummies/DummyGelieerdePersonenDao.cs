@@ -65,7 +65,7 @@ namespace Chiro.Gap.Dummies
             throw new NotImplementedException();
         }
 
-		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
 		{
 			throw new NotImplementedException();
 		}
@@ -76,6 +76,11 @@ namespace Chiro.Gap.Dummies
 		}
 
         public IList<String> EersteLetterNamenOphalen(int groepID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<String> EersteLetterNamenOphalenCategorie(int groepID, int categorie)
         {
             throw new NotImplementedException();
         }

@@ -202,13 +202,37 @@ namespace Chiro.Gap.Data.Ef
 
             using (var db = new ChiroGroepEntities())
             {
-                /*lijst = (from gp in db.GelieerdePersoon
-                         where gp.Groep.ID == groepID
-                         group gp by gp.Persoon.Naam.Substring(0, 1)
-                         into gpgroup
-                         select new {FirstLetter = gpgroup.Key.ToString().ToLower(), Words = gpgroup}).toList();*/
                 lijst = (from gp in db.GelieerdePersoon
                          where gp.Groep.ID == groepID
+                         let letter = gp.Persoon.Naam.Substring(0, 1)
+                         orderby letter
+                         select letter).Distinct().ToList();
+            }
+
+            return lijst;
+        }
+
+        /// <summary>
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="groepID">
+        /// GroepID van gevraagde groep
+        /// </param>
+        /// <param name="categorie">
+        /// Categorie waaruit we de letters willen halen
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        public IList<String> EersteLetterNamenOphalenCategorie(int groepID, int categorie)
+        {
+            IList<String> lijst;
+
+            using (var db = new ChiroGroepEntities())
+            {
+                lijst = (from gp in db.GelieerdePersoon
+                         where gp.Groep.ID == groepID &&
+                         gp.Categorie.Any(cat => cat.ID == categorie)
                          let letter = gp.Persoon.Naam.Substring(0, 1)
                          orderby letter
                          select letter).Distinct().ToList();
@@ -382,6 +406,11 @@ namespace Chiro.Gap.Data.Ef
 
             using (var db = new ChiroGroepEntities())
             {
+                // Misschien een slechte oplossing voor alleen maar tellen hoeveel er in totaal zijn??
+                var gpQueryForCount = (from gp in db.GelieerdePersoon
+                               where gp.Groep.ID == groepID
+                               select gp) as ObjectQuery<GelieerdePersoon>;
+
                 // Haal de gelieerde personen op van de gevraagde groep
                 var gpQuery = (from gp in db.GelieerdePersoon
                                where gp.Groep.ID == groepID &&
@@ -397,7 +426,7 @@ namespace Chiro.Gap.Data.Ef
                     IncludesToepassen(gpQuery, paths),
                     sortering).ToList();
 
-                aantalTotaal = gpQuery.Count();
+                aantalTotaal = gpQueryForCount.Count();
 
                 // De moeilijkere gekoppelde entiteiten:
 
@@ -445,28 +474,31 @@ namespace Chiro.Gap.Data.Ef
         /// <returns>
         /// Lijst gelieerde personen
         /// </returns>
-        public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
+        public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
         {
             IList<GelieerdePersoon> lijst;
 
             using (var db = new ChiroGroepEntities())
             {
-                // Haal alle personen in de gevraagde categorie op
-
-                var query = from gp in db.GelieerdePersoon.Include(gp => gp.Categorie)
+                // Misschien een slechte oplossing voor alleen maar tellen hoeveel er in totaal zijn in de categorie??
+                var queryForCount = from gp in db.GelieerdePersoon.Include(gp => gp.Categorie)
                             where gp.Categorie.Any(cat => cat.ID == categorieID)
+                            select gp;
+
+                // Haal alle personen in de gevraagde categorie op
+                var query = from gp in db.GelieerdePersoon.Include(gp => gp.Categorie)
+                            where gp.Categorie.Any(cat => cat.ID == categorieID) &&
+                            gp.Persoon.Naam.Substring(0, 1) == letter
                             select gp;
 
                 var paths = ExtrasNaarLambdas(extras);
 
-                var queryMetExtras = IncludesToepassen(
-                    query as ObjectQuery<GelieerdePersoon>,
-                    paths);
+                var queryMetExtras = (letter != "A-Z") ? IncludesToepassen(query as ObjectQuery<GelieerdePersoon>, paths) : IncludesToepassen(queryForCount as ObjectQuery<GelieerdePersoon>, paths);
 
                 // Sorteer ze en bepaal totaal aantal personen
-                lijst = Sorteren(queryMetExtras, sortering).PaginaSelecteren(pagina, paginaGrootte).ToList();
+                lijst = Sorteren(queryMetExtras, sortering).ToList();
 
-                aantalTotaal = query.Count();
+                aantalTotaal = queryForCount.Count();
 
                 if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
                 {

@@ -78,7 +78,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal);
+		IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal);
 
 		/// <summary>
 		/// Haalt persoonsgegevens op voor alle gegeven gelieerde personen.
@@ -99,6 +99,17 @@ namespace Chiro.Gap.ServiceContracts
 	    [FaultContract(typeof(GapFault))]
 	    [FaultContract(typeof(FoutNummerFault))]
 	    IList<String> EersteLetterNamenOphalen(int groepID);
+
+        /// <summary>
+	    /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een categorie
+	    /// </summary>
+	    /// <param name="groepID">De ID van de groep waaruit we de gelieerde persoonsnamen gaan halen</param>
+        /// <param name="categorie">Categorie waaruit we de letters willen halen</param>
+	    /// <returns>Lijst met de eerste letter van de namen</returns>
+	    [OperationContract]
+	    [FaultContract(typeof(GapFault))]
+	    [FaultContract(typeof(FoutNummerFault))]
+        IList<String> EersteLetterNamenOphalenCategorie(int groepID, int categorie);
 
 		/// <summary>
 		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen

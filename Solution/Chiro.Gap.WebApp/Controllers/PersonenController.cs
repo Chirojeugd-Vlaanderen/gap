@@ -157,31 +157,58 @@ namespace Chiro.Gap.WebApp.Controllers
                 Naam = "Alle personen"
             });
 
-            if (id == 0)  // Alle personen bekijken
+            var categorieID = id;
+
+            if (categorieID == 0)  // Alle personen bekijken
             {
                 model.PersoonInfos = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.PaginaOphalenMetLidInfoViaLetter(groepID, page, sortering, out totaal));
                 model.HuidigePagina = page;
-                model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
+                //model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
                 model.Titel = "Personenoverzicht";
                 model.Totaal = totaal;
                 model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalen(groepID));
+
+                // Als er niemand met een naam is die met een A begint
+                // is het nog al nutteloos dat we eerst op die pagina belanden
+                if (page == "A" && !model.PersoonInfos.Any())
+                {
+                    return RedirectToAction("List", new
+                    {
+                        page = model.Paginas.First().ToUpper(),
+                        id = 0,
+                        sortering = PersoonSorteringsEnum.Naam
+                    });
+                }
             }
             else	// Alleen personen uit de gekozen categorie bekijken
             {
                 // TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
-                //model.PersoonInfos =
-                //    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-                //    (g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, sortering, out totaal));
+                model.PersoonInfos =
+                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
+                    (g => g.PaginaOphalenUitCategorieMetLidInfo(categorieID, page, sortering, out totaal));
                 model.HuidigePagina = page;
-                model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
+                //model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
 
                 // Ga in het lijstje met categorieën na welke er geselecteerd werd, zodat we de naam in de paginatitel kunnen zetten
                 String naam = (from c in model.GroepsCategorieen
-                               where c.ID == id
+                               where c.ID == categorieID
                                select c).First().Naam;
 
                 model.Titel = "Overzicht " + naam;
                 model.Totaal = totaal;
+                model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalenCategorie(groepID, id));
+
+                // Als er niemand met een naam is die met een A begint
+                // is het nog al nutteloos dat we eerst op die pagina belanden
+                if (page == "A" && !model.PersoonInfos.Any())
+                {
+                    return RedirectToAction("List", new
+                    {
+                        page = model.Paginas.First().ToUpper(),
+                        id = categorieID,
+                        sortering = PersoonSorteringsEnum.Naam
+                    });
+                }
             }
 
             return View("Index", model);
