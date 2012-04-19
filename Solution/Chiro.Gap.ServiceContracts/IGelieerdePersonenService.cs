@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 
@@ -32,6 +33,22 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		IList<PersoonDetail> OphalenMetLidInfo(IEnumerable<int> selectieGelieerdePersoonIDs);
+
+        
+        /// <summary>
+        /// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep,
+        /// inclusief eventueel lidobject voor het recentste werkjaar.
+        /// </summary>
+        /// <param name="groepID">ID van de betreffende groep</param>
+        /// <param name="letter">Beginletter van de achternaam</param>
+        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
+        /// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
+        /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        IList<PersoonDetail> PaginaOphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal);
+        
 
 		/// <summary>
 		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep,
@@ -72,6 +89,16 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		IList<PersoonInfo> PersoonInfoOphalen(IList<int> gelieerdePersoonIDs);
+
+	    /// <summary>
+	    /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+	    /// </summary>
+	    /// <param name="groepID">De ID van de groep waaruit we de gelieerde persoonsnamen gaan halen</param>
+	    /// <returns>Lijst met de eerste letter van de namen</returns>
+	    [OperationContract]
+	    [FaultContract(typeof(GapFault))]
+	    [FaultContract(typeof(FoutNummerFault))]
+	    IList<String> EersteLetterNamenOphalen(int groepID);
 
 		/// <summary>
 		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
@@ -203,6 +230,30 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		IDPersEnGP[] Opzoeken(int groepID, string naam, string voornaam);
+
+	    /// <summary>
+	    /// Zoekt naar (gelieerde)persoonID's  die ongeveer overéén komen met de opgegeven input (naam, voornaam)
+	    /// </summary>
+	    /// <param name="groepID">ID van de groep met de te vinden persoon</param>
+	    /// <param name="naam">Familie of voornaam van de te vinden persoon</param>
+	    /// <returns>GelieerdePersoonID en PersoonID van de gevonden personen, of <c>null</c> als
+	    /// niet gevonden.</returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        IEnumerable<PersoonInfo> ZoekenOpNaamOngeveer(int groepID, string naam);
+
+	    /// <summary>
+	    /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
+	    /// of voornaam ongeveer gelijk aan <paramref name="naamOngeveer"/>
+	    /// </summary>
+	    /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
+	    /// <param name="naam">Te zoeken voor- of achternaam (ongeveer)</param>
+	    /// <returns>Lijst met gevonden matches</returns>
+	    [OperationContract]
+	    [FaultContract(typeof(GapFault))]
+	    [FaultContract(typeof(FoutNummerFault))]
+	    IEnumerable<PersoonInfo> ZoekenOpVoorAchterNaamOngeveer(int groepID, string naamOngeveer);
 
 		#endregion
 

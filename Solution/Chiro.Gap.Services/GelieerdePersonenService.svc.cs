@@ -275,6 +275,84 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
+        /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="groepID">De ID van de groep waaruit we de gelieerde persoonsnamen gaan halen</param>
+        /// <returns>Lijst met de eerste letter van de namen</returns>
+        public IList<String> EersteLetterNamenOphalen(int groepID)
+        {
+            return _gpMgr.EersteLetterNamenOphalen(groepID);
+        }
+
+        /// <summary>
+        /// Haalt gelieerde personen op, met lidinfo, 
+        /// volgens de pagineringsparameters,
+        /// en telt over hoeveel personen het gaat
+        /// </summary>
+        /// <param name="groepID">De ID van de groep waartoe de gelieerde personen moeten behoren</param>
+        /// <param name="letter">De beginletter van de achternamen van de personen waarvan de lijst willen bekijken</param>
+        /// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
+        /// <param name="aantalTotaal">Het totaal aantal personen in de opgegeven categorie</param>
+        /// <returns>Een lijst van persoonsgegevens</returns>
+        /* zie #273 */
+        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public IList<PersoonDetail> PaginaOphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
+        {
+            try
+            {
+                var gelieerdePersonen = _gpMgr.PaginaOphalen(
+                    groepID,
+                    letter,
+                    sortering,
+                    PersoonsExtras.Categorieen | PersoonsExtras.LedenDitWerkJaar,
+                    out aantalTotaal);
+                var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+
+                /*
+                 * TODO dit staat mss niet op de beste plek
+                 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
+                 * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
+                 * als dit het geval is, kanlidworden op true zetten.
+                 * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
+                 * 
+                 * TODO dubbele code in detailsophalen
+                 */
+                GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
+                foreach (var p in result)
+                {
+                    if (p.GeboorteDatum == null)
+                    {
+                        continue;
+                    }
+                    if (p.SterfDatum.HasValue)
+                    {
+                        continue;
+                    }
+
+                    int geboortejaar = p.GeboorteDatum.Value.Year - p.ChiroLeefTijd;
+                    var afd = (from a in gwj.AfdelingsJaar
+                               where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
+                               select a).FirstOrDefault();
+                    if (afd != null)
+                    {
+                        p.KanLidWorden = true;
+                    }
+                    if (p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Settings.Default.LeidingVanafLeeftijd.ToString()) + p.ChiroLeefTijd)
+                    {
+                        p.KanLeidingWorden = true;
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                aantalTotaal = 0;
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Haalt gelieerde personen op, met lidinfo, 
         /// volgens de pagineringsparameters,
         /// en telt over hoeveel personen het gaat
@@ -532,6 +610,51 @@ namespace Chiro.Gap.Services
 
                 return (from g in gevonden
                         select new IDPersEnGP { GelieerdePersoonID = g.ID, PersoonID = g.Persoon.ID }).ToArray();
+            }
+            catch (GeenGavException ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                return null;
+            }
+        }
+
+
+        /// <summary>
+        /// Zoekt naar (gelieerde)persoonID's  die ongeveer overéén komen met de opgegeven input (naam)
+        /// </summary>
+        /// <param name="groepID">ID van de groep met de te vinden persoon</param>
+        /// <param name="naam">Familie of voornaam van de te vinden persoon</param>
+        /// <returns>GelieerdePersoonID en PersoonID van de gevonden personen, of <c>null</c> als
+        /// niet gevonden.</returns>
+        public IEnumerable<PersoonInfo> ZoekenOpNaamOngeveer(int groepID, string naam)
+        {
+            try
+            {
+                var gevonden = _gpMgr.ZoekenOpNaamOngeveer(groepID, naam, naam);
+
+                return (from g in gevonden
+                        select new PersoonInfo { GelieerdePersoonID = g.ID, Naam = g.Persoon.Naam, VoorNaam = g.Persoon.VoorNaam}).ToArray();
+            }
+            catch (GeenGavException ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                return null;
+            }
+        }
+
+        /// <summary>Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
+        /// of voornaam ongeveer gelijk aan <paramref name="naamOngeveer"/></summary>
+        /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
+        /// <param name="naam">Te zoeken voor- of achternaam (ongeveer)</param>
+        /// <returns>Lijst met gevonden matches</returns>
+        public IEnumerable<PersoonInfo> ZoekenOpVoorAchterNaamOngeveer(int groepID, string naamOngeveer)
+        {
+            try
+            {
+                var gevonden = _gpMgr.ZoekenOpVoorAchterNaamOngeveer(groepID, naamOngeveer);
+
+                return (from g in gevonden
+                        select new PersoonInfo { GelieerdePersoonID = g.ID, Naam = g.Persoon.Naam, VoorNaam = g.Persoon.VoorNaam }).ToArray();
             }
             catch (GeenGavException ex)
             {

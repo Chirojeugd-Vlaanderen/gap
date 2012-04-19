@@ -9,6 +9,7 @@ using System.Data.Objects;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -187,6 +188,36 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="groepID">
+        /// GroepID van gevraagde groep
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        public IList<String> EersteLetterNamenOphalen(int groepID)
+        {
+            IList<String> lijst;
+
+            using (var db = new ChiroGroepEntities())
+            {
+                /*lijst = (from gp in db.GelieerdePersoon
+                         where gp.Groep.ID == groepID
+                         group gp by gp.Persoon.Naam.Substring(0, 1)
+                         into gpgroup
+                         select new {FirstLetter = gpgroup.Key.ToString().ToLower(), Words = gpgroup}).toList();*/
+                lijst = (from gp in db.GelieerdePersoon
+                         where gp.Groep.ID == groepID
+                         let letter = gp.Persoon.Naam.Substring(0, 1)
+                         orderby letter
+                         select letter).Distinct().ToList();
+            }
+
+            return lijst;
+        }
+
+        /// <summary>
         /// Instantieert de abonnementen van de gegeven gelieerde personen voor het huidige werkjaar
         /// </summary>
         /// <param name="db">De Objectcontext</param>
@@ -305,6 +336,66 @@ namespace Chiro.Gap.Data.Ef
                 lijst = Sorteren(
                     IncludesToepassen(gpQuery, paths),
                     sortering).PaginaSelecteren(pagina, paginaGrootte).ToList();
+
+                aantalTotaal = gpQuery.Count();
+
+                // De moeilijkere gekoppelde entiteiten:
+
+                if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
+                {
+                    AdresHelper.AlleAdressenKoppelen(lijst);
+                }
+                else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+                {
+                    AdresHelper.VoorkeursAdresKoppelen(lijst);
+                }
+
+                if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
+                {
+                    HuidigeLedenKoppelen(db, lijst);
+                }
+            }
+
+            Utility.DetachObjectGraph(lijst);
+            return lijst;
+        }
+
+
+        /// <summary>
+        /// Haal een pagina op met gelieerde personen van een groep.
+        /// </summary>
+        /// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
+        /// <param name="letter">Eerste letter van de achternamen van de personen die we willen bekijken</param>
+        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
+        /// <param name="extras">Bepaalt de mee op te halen gekoppelde entiteiten</param>
+        /// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
+        /// zijn. </param>
+        /// <returns>De gevraagde lijst gelieerde personen</returns>
+        public IList<GelieerdePersoon> PaginaOphalen(
+            int groepID,
+            string letter,
+            PersoonSorteringsEnum sortering,
+            PersoonsExtras extras,
+            out int aantalTotaal)
+        {
+            IList<GelieerdePersoon> lijst;
+
+            using (var db = new ChiroGroepEntities())
+            {
+                // Haal de gelieerde personen op van de gevraagde groep
+                var gpQuery = (from gp in db.GelieerdePersoon
+                               where gp.Groep.ID == groepID &&
+                               gp.Persoon.Naam.Substring(0, 1) == letter
+                               select gp) as ObjectQuery<GelieerdePersoon>;
+
+                Debug.Assert(gpQuery != null);
+
+                // simpele includes toepassen, sorteren en tellen
+
+                var paths = ExtrasNaarLambdas(extras);
+                lijst = Sorteren(
+                    IncludesToepassen(gpQuery, paths),
+                    sortering).ToList();
 
                 aantalTotaal = gpQuery.Count();
 
@@ -655,6 +746,34 @@ namespace Chiro.Gap.Data.Ef
 
                 return IncludesToepassen(query, paths).ToList();
             }
+        }
+
+        /// <summary>
+        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
+        /// of voornaam ongeveer gelijk aan <paramref name="naamOngeveer"/>
+        /// </summary>
+        /// <param name="groepID">
+        /// GroepID dat bepaalt in welke gelieerde personen gezocht mag worden
+        /// </param>
+        /// <param name="naam">
+        /// Te zoeken voor- of achternaam (ongeveer)
+        /// </param>
+        /// <returns>
+        /// Lijst met gevonden matches
+        /// </returns>
+        public IList<GelieerdePersoon> ZoekenOpVoorAchterNaamOngeveer(int groepID, string naamOngeveer)
+        {
+            IList<GelieerdePersoon> personen;
+
+            using (var db = new ChiroGroepEntities())
+            {
+                personen = (
+                    from gp in db.GelieerdePersoon
+                        .Include(gp => gp.Persoon)
+                    where gp.Groep.ID == groepID && (gp.Persoon.Naam.StartsWith(naamOngeveer) || gp.Persoon.VoorNaam.StartsWith(naamOngeveer))
+                    select gp).ToList();
+            }
+            return personen;
         }
 
         /*public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)
