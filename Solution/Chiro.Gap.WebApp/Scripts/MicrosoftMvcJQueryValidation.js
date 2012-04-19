@@ -1,4 +1,4 @@
-﻿/// <reference path="jquery-1.3.2.js" />
+﻿/// <reference path="jquery-1.7.1.min.js" />
 /// <reference path="jquery.validate.js" />
 
 // register custom jQuery methods

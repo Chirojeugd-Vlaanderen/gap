@@ -4,7 +4,7 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>
-	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
+	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.7.1.min.js")%>"></script>
 	<script type="text/javascript">
 	    $(document).ready(function () {
 	        $('#filter').hide();
