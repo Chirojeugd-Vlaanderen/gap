@@ -1,4 +1,12 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2012
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+// <summary>
+//   Dit is een testclass voor Unit Tests van GelieerdePersonenServiceTest
+// </summary>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
 using System.Linq.Expressions;
@@ -40,7 +48,7 @@ namespace Chiro.Gap.Services.Test.CustomIoc
                 testContextInstance = value;
             }
         }
-        
+
         /// <summary>
         /// Run code before running first test
         /// </summary>
@@ -84,11 +92,11 @@ namespace Chiro.Gap.Services.Test.CustomIoc
 
             // het communicatietype zal worden opgevraagd, maar is irrelevant voor deze test.
             // zorg er wel voor dat alles valideert.
-            communicatieTypeDaoMock.Setup(dao => dao.Ophalen(3)).Returns(new CommunicatieType {Validatie = ".*"});
-            
+            communicatieTypeDaoMock.Setup(dao => dao.Ophalen(3)).Returns(new CommunicatieType { Validatie = ".*" });
+
             // idem voor gelieerde persoon
             gelieerdePersonenDaoMock.Setup(dao => dao.Ophalen(It.IsAny<IEnumerable<int>>(), It.IsAny<PersoonsExtras>()))
-                .Returns(new[] {new GelieerdePersoon{Persoon = new Persoon{AdInAanvraag = true}}});
+                .Returns(new[] { new GelieerdePersoon { Persoon = new Persoon { AdInAanvraag = true } } });
 
             // de communicatievorm zal ook worden bewaard
             communicatieVormDaoMock.Setup(
@@ -136,7 +144,7 @@ namespace Chiro.Gap.Services.Test.CustomIoc
             const int TESTCVID = 2345;      // en van een communicatievorm
             const int TESTCTID = 3;         // en diens communicatietype
 
-            var testCommunicatieType = new CommunicatieType {ID = TESTCTID, Validatie = ".*"};
+            var testCommunicatieType = new CommunicatieType { ID = TESTCTID, Validatie = ".*" };
             var testCommunicatieVorm = new CommunicatieVorm
                                            {
                                                ID = TESTCVID,

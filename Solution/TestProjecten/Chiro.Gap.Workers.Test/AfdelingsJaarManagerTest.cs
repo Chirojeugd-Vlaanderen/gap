@@ -39,12 +39,11 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		#region Additional test attributes
-		// 
+
 		//You can use the following additional attributes as you write your tests:
-		//
 
 		//Use ClassInitialize to run code before running the first test in the class
-		[ClassInitialize()]
+		[ClassInitialize]
 		public static void MyClassInitialize(TestContext testContext)
 		{
 			Factory.ContainerInit();

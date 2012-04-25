@@ -134,8 +134,7 @@ namespace Chiro.Gap.WebApp.Controllers
                         model.NieuweFunctie.MaxAantal,
                         model.NieuweFunctie.MinAantal,
                         model.NieuweFunctie.Type,
-                        model.NieuweFunctie.WerkJaarVan
-                        ));
+                        model.NieuweFunctie.WerkJaarVan));
 
                     return RedirectToAction("Index", new { groepID });
                 }

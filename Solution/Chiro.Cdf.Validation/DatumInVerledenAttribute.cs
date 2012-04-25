@@ -11,17 +11,27 @@ namespace System.ComponentModel.DataAnnotations
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 	public class DatumInVerledenAttribute : ValidationAttribute
 	{
-		public DatumInVerledenAttribute()
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="DatumInVerledenAttribute"/> class.
+	    /// </summary>
+	    public DatumInVerledenAttribute()
 		{
 			ErrorMessageResourceType = typeof(Properties.Resources);
 			ErrorMessageResourceName = "PastDate_ValidationError";
 		}
 
-		public override bool IsValid(object value)
+	    /// <summary>
+	    /// TODO (#190): documenteren
+	    /// </summary>
+	    /// <param name="value">
+	    /// </param>
+	    /// <returns>
+	    /// </returns>
+	    public override bool IsValid(object value)
 		{
             // null is ok.  Als de datum niet null mag zijn, moet je maar decoreren met [Verplicht]
 
-		    return value == null || (value is DateTime && (DateTime) value <= DateTime.Now);
+		    return value == null || (value is DateTime && (DateTime)value <= DateTime.Now);
 		}
 	}
 }

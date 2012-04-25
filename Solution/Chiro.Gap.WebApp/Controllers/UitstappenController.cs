@@ -384,8 +384,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => it.IsContact ? "Ja" : "Nee",
                 it => it.HeeftBetaald ? "Ja" : "Nee",
                 it => it.MedischeFicheOk ? "Ja" : "Nee",
-                it => it.Opmerkingen
-            );
+                it => it.Opmerkingen);
 
             return new ExcelResult(stream, bestandsNaam);
         }

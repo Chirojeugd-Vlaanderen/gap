@@ -81,7 +81,7 @@ namespace Chiro.Gap.Sync
                 // Haal adres opnieuw op, zodat we zeker gemeente of land mee hebben.
 
                 var adres = _adressenDao.Ophalen(uitstap.Plaats.Adres.ID);
-                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakPlaatsBewaren(uitstap.ID, uitstap.Plaats.Naam, Mapper.Map<Adres, Chiro.Kip.ServiceContracts.DataContracts.Adres>(adres)));
+                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakPlaatsBewaren(uitstap.ID, uitstap.Plaats.Naam, Mapper.Map<Adres, Kip.ServiceContracts.DataContracts.Adres>(adres)));
             }
 
             if (contactPersoon != null)

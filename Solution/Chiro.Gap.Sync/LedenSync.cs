@@ -212,7 +212,7 @@ namespace Chiro.Gap.Sync
                                  select _functieVertaling[(NationaleFunctie)f.ID]).ToList();
 
             ServiceHelper.CallService<ISyncPersoonService>(
-                svc => svc.FunctiesUpdaten(Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(
+                svc => svc.FunctiesUpdaten(Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
                     l.GelieerdePersoon.Persoon),
                                            l.GroepsWerkJaar.Groep.Code,
                                            l.GroepsWerkJaar.WerkJaar,
@@ -269,7 +269,7 @@ namespace Chiro.Gap.Sync
                                  select _afdelingVertaling[(NationaleAfdeling)(aj.OfficieleAfdeling.ID)]).ToList();
             }
 
-            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AfdelingenUpdaten(Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(l.GelieerdePersoon.Persoon),
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AfdelingenUpdaten(Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(l.GelieerdePersoon.Persoon),
                          chiroGroep.Code,
                          l.GroepsWerkJaar.WerkJaar,
                          kipAfdelingen));
@@ -293,7 +293,7 @@ namespace Chiro.Gap.Sync
             }
 
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidTypeUpdaten(
-                Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(l.GelieerdePersoon.Persoon),
+                Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(l.GelieerdePersoon.Persoon),
                 l.GroepsWerkJaar.Groep.Code,
                 l.GroepsWerkJaar.WerkJaar,
                 _lidTypeVertaling[lid.Type]));
