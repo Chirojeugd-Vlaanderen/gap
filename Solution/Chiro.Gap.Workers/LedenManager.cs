@@ -444,6 +444,7 @@ namespace Chiro.Gap.Workers
                                                  bool isJaarOvergang,
                                                  LidVoorstel voorstellid)
         {
+            Lid nieuwLid;
             if (!_autorisatieMgr.IsGavLid(lid.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
@@ -499,7 +500,7 @@ namespace Chiro.Gap.Workers
             }
 
             // Maak opnieuw lid
-            var nieuwLid = Inschrijven(gelieerdePersoon, groepsWerkJaar, isJaarOvergang, voorstellid);
+            nieuwLid = Inschrijven(gelieerdePersoon, groepsWerkJaar, isJaarOvergang, voorstellid);
             nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
             if (voorstellid.AfdelingsJarenIrrelevant)
             {
