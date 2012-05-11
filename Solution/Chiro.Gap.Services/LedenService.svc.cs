@@ -138,7 +138,6 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Gegeven een lijst van IDs van gelieerde personen.
         /// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken.
-        /// !Niet gebruiken voor automatische jaarovergang, hiervoor is er 'JaarOvergang' in de groepenservice.
         /// <para />
         /// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkjaar.
         /// </summary>
