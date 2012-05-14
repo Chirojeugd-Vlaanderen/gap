@@ -37,11 +37,11 @@ namespace Chiro.Gap.Sync
                 var bewoners = from pa in adr.PersoonsAdres
                                select new Bewoner
                                {
-                                   Persoon = Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(pa.Persoon),
+                                   Persoon = Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(pa.Persoon),
                                    AdresType = (AdresTypeEnum)pa.AdresType
                                };
 
-                var adres = Mapper.Map<Orm.Adres, Chiro.Kip.ServiceContracts.DataContracts.Adres>(adr);
+                var adres = Mapper.Map<Orm.Adres, Kip.ServiceContracts.DataContracts.Adres>(adr);
 
                 ServiceHelper.CallService<ISyncPersoonService>(svc => svc.StandaardAdresBewaren(adres, bewoners.ToList()));
             }

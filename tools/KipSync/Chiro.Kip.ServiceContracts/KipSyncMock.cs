@@ -275,7 +275,8 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="afdelingen">
         /// Het lijstje van afdelingen waar de persoon toe behoort
         /// </param>
-        public void AfdelingenUpdaten(Persoon persoon,
+        public void AfdelingenUpdaten(
+                                      Persoon persoon,
                                       string stamNummer,
                                       int werkJaar,
                                       IEnumerable<AfdelingEnum> afdelingen)

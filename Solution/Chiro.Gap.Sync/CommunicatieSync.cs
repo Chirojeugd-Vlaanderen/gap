@@ -36,7 +36,7 @@ namespace Chiro.Gap.Sync
             ServiceHelper.CallService<ISyncPersoonService>(
 		        svc =>
 		        svc.CommunicatieVerwijderen(
-		            Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(communicatieVorm.GelieerdePersoon.Persoon),
+		            Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(communicatieVorm.GelieerdePersoon.Persoon),
 		            new CommunicatieMiddel
 		                {
 		                    Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,
@@ -56,7 +56,7 @@ namespace Chiro.Gap.Sync
 		    ServiceHelper.CallService<ISyncPersoonService>(
 		        svc =>
 		        svc.CommunicatieToevoegen(
-		            Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(
+		            Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
 		                communicatieVorm.GelieerdePersoon.Persoon),
 		            new CommunicatieMiddel
 		                {

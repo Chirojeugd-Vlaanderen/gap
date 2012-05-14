@@ -1,6 +1,6 @@
 ﻿using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Workers;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -17,7 +17,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
     /// Dit is een testclass voor LedenManagerTest,
     ///to contain all LedenManagerTest Unit Tests
     /// </summary>
-    [TestClass()]
+    [TestClass]
     public class LedenManagerTest
     {
 
@@ -45,7 +45,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         //You can use the following additional attributes as you write your tests:
         //
         //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
+        //[ClassInitialize]
         //public static void MyClassInitialize(TestContext testContext)
         //{
         //}

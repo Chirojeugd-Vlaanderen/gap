@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+// <summary>
+//   Provides an adapter for the <see cref="T:System.ComponentModel.DataAnnotations.DatumInVerledenAttribute" /> attribute.
+// </summary>
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace System.Web.Mvc

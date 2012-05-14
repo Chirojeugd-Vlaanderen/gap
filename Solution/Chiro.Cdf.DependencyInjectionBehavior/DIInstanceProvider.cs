@@ -21,9 +21,9 @@ namespace Chiro.Cdf.DependencyInjection
 	public class DIInstanceProvider : IInstanceProvider
 	{
 		private readonly Type _serviceType;
-// ReSharper disable UnaccessedField.Local
+// ReSharper disable NotAccessedField.Local
 		List<TypeMapping> _typeMappings;
-// ReSharper restore UnaccessedField.Local
+// ReSharper restore NotAccessedField.Local
 
 		/// <summary>
 		/// Instantieert een DIInstanceProvider-object

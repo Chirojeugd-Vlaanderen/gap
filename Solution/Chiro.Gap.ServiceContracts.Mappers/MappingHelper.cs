@@ -359,8 +359,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             Mapper.CreateMap<Adres, AdresInfo>()
                 .ForMember(
                     dst => dst.PostNr,
-                    opt => opt.MapFrom(src => src.PostNummerGet())
-                    )
+                    opt => opt.MapFrom(src => src.PostNummerGet()))
                 .ForMember(dst => dst.StraatNaamNaam, opt => opt.MapFrom(src => src.StraatGet()))
                 .ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()))
                 .ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.LandGet()))

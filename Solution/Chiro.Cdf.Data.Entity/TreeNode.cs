@@ -70,7 +70,7 @@ namespace Chiro.Cdf.Data
 				if (!extendingTree)
 				{
 					T item1 = item;
-					itemNode = node.Children.Where(p => p.Item.Equals(item1)).FirstOrDefault();
+					itemNode = node.Children.FirstOrDefault(p => p.Item.Equals(item1));
 				}
 
 				// Extend the tree with a new node if none found:

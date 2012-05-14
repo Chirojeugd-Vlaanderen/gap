@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw" file="">
+//   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+// <summary>
+//   Worker class met operaties op afdelingen
+// </summary>
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;

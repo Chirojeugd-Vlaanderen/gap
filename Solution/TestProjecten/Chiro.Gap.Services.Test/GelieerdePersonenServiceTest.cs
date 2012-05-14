@@ -43,7 +43,7 @@ namespace Chiro.Gap.Services.Test
 		//You can use the following additional attributes as you write your tests:
 		//
 		//Use ClassInitialize to run code before running the first test in the class
-		//[ClassInitialize()]
+		//[ClassInitialize]
 		//public static void MyClassInitialize(TestContext testContext)
 		//{
 		//}
@@ -68,7 +68,7 @@ namespace Chiro.Gap.Services.Test
 		//
 		#endregion
 
-		[ClassInitialize()]
+		[ClassInitialize]
 		public static void MyClassInitialize(TestContext testContext)
 		{
 			Factory.ContainerInit();

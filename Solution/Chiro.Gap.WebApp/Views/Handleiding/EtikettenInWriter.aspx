@@ -23,7 +23,7 @@
 		alt="Database-assistent OpenOffice.org" />
 	<ul>
 		<li>Kies 'Met een bestaande database verbinden', met als bestandstype 'Werkblad'
-			(in plaats van 'JDBC'). Klik op Volgende.</li>
+			(in plaats van 'JDBC'). Klik op Volgende.</li> 
 	</ul>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/assistent_database_02.png") %>"
 		alt="Database-assistent OpenOffice.org" />
