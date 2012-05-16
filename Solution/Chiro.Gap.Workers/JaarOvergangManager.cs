@@ -79,6 +79,7 @@ namespace Chiro.Gap.Workers
         /// Komt voor als er een afdeling bij zit die niet gekend is in de groep, of als er een afdeling gekoppeld is
         /// aan een onbestaande nationale afdeling. Ook validatiefouten worden op deze manier doorgegeven.
         /// </exception>
+        /// <remarks>Er worden geen leden gemaakt door deze method.</remarks>
         public void JaarOvergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID)
         {
             // TODO (#1135): internal datacontract maken

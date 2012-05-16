@@ -154,7 +154,7 @@ namespace Chiro.Kip.Services
 		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners)
 		{
-			StringBuilder feedback = new StringBuilder();
+			var feedback = new StringBuilder();
 
 			var pMgr = new PersonenManager();
 
@@ -205,7 +205,6 @@ namespace Chiro.Kip.Services
 							_log.BerichtLoggen(0, String.Format(
 								"Adreswijziging: {0} {1} niet gevonden",
 								b.Persoon.VoorNaam, b.Persoon.Naam));
-							return;
 						}
 						else
 						{
