@@ -627,30 +627,6 @@ namespace Chiro.Gap.Services
             }
         }
 
-
-        /// <summary>
-        /// Zoekt naar (gelieerde)persoonID's  die ongeveer overéén komen met de opgegeven input (naam)
-        /// </summary>
-        /// <param name="groepID">ID van de groep met de te vinden persoon</param>
-        /// <param name="naam">Familie of voornaam van de te vinden persoon</param>
-        /// <returns>GelieerdePersoonID en PersoonID van de gevonden personen, of <c>null</c> als
-        /// niet gevonden.</returns>
-        public IEnumerable<PersoonInfo> ZoekenOpNaamOngeveer(int groepID, string naam)
-        {
-            try
-            {
-                var gevonden = _gpMgr.ZoekenOpNaamOngeveer(groepID, naam, naam);
-
-                return (from g in gevonden
-                        select new PersoonInfo { GelieerdePersoonID = g.ID, Naam = g.Persoon.Naam, VoorNaam = g.Persoon.VoorNaam}).ToArray();
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
-            }
-        }
-
         /// <summary>Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
         /// of voornaam ongeveer gelijk aan <paramref name="naamOngeveer"/></summary>
         /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
