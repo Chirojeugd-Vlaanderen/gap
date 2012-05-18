@@ -295,15 +295,15 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt gelieerde personen op, met lidinfo, 
-        /// volgens de pagineringsparameters,
-        /// en telt over hoeveel personen het gaat
+        /// Haalt de persoonsgegevens op van gelieerde personen van een groep
+        /// wiens familienaam begint met de letter <paramref name="letter"/>.
+        /// inclusief eventueel lidobject voor het recentste werkjaar.
         /// </summary>
-        /// <param name="groepID">De ID van de groep waartoe de gelieerde personen moeten behoren</param>
-        /// <param name="letter">De beginletter van de achternamen van de personen waarvan de lijst willen bekijken</param>
-        /// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
-        /// <param name="aantalTotaal">Het totaal aantal personen in de opgegeven categorie</param>
-        /// <returns>Een lijst van persoonsgegevens</returns>
+        /// <param name="groepID">ID van de betreffende groep</param>
+        /// <param name="letter">Beginletter van de achternaam</param>
+        /// <param name="sortering">Geeft aan hoe de personen gesorteerd moeten worden</param>
+        /// <param name="aantalTotaal">Outputparameter; levert het totaal aantal personen in de groep op</param>
+        /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
         /* zie #273 */
         // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
@@ -627,16 +627,19 @@ namespace Chiro.Gap.Services
             }
         }
 
-        /// <summary>Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
-        /// of voornaam ongeveer gelijk aan <paramref name="naamOngeveer"/></summary>
+        /// <summary>
+        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarbij
+        /// naam of voornaam ongeveer begint met <paramref name="teZoeken"/>
+        /// </summary>
         /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
-        /// <param name="naam">Te zoeken voor- of achternaam (ongeveer)</param>
+        /// <param name="teZoeken">Te zoeken voor- of achternaam (ongeveer)</param>
         /// <returns>Lijst met gevonden matches</returns>
-        public IEnumerable<PersoonInfo> ZoekenOpVoorAchterNaamOngeveer(int groepID, string naamOngeveer)
+        /// <remarks>Deze method levert enkel naam, voornaam en gelieerdePersoonID op!</remarks>
+        public IEnumerable<PersoonInfo> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
         {
             try
             {
-                var gevonden = _gpMgr.ZoekenOpVoorAchterNaamOngeveer(groepID, naamOngeveer);
+                var gevonden = _gpMgr.ZoekenOpNaamVoornaamBegin(groepID, teZoeken);
 
                 return (from g in gevonden
                         select new PersoonInfo { GelieerdePersoonID = g.ID, Naam = g.Persoon.Naam, VoorNaam = g.Persoon.VoorNaam }).ToArray();

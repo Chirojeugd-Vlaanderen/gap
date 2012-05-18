@@ -522,7 +522,7 @@ namespace Chiro.Gap.Workers
         /// <returns>
         /// Lijst met gevonden matches
         /// </returns>
-        public IList<GelieerdePersoon> ZoekenOpVoorAchterNaamOngeveer(int groepID, string naamOngeveer)
+        public IList<GelieerdePersoon> ZoekenOpNaamVoornaamBegin(int groepID, string naamOngeveer)
         {
             if (_autorisatieMgr.IsGavGroep(groepID))
             {

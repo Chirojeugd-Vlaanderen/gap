@@ -56,85 +56,17 @@ namespace Chiro.Gap.WebApp.Controllers
             });
         }
 
-        /*
         /// <summary>
-        /// Haal een 'pagina' met persoonsinformatie op (inclusief lidinfo) voor personen uit een
-        /// bepaalde categorie, en toont deze pagina via de view 'Index'.
+        /// Toont de persoonsinformatie op (inclusief lidinfo) voor personen waarvan de familienaam begint met
+        /// de letter <paramref name="page"/> uit een bepaalde categorie, en toont deze via de view 'Index'.
         /// </summary>
-        /// <param name="page">Nummer van de 'pagina'</param>
+        /// <param name="page">Beginletter familienamen te tonen personen</param>
         /// <param name="groepID">Huidige groep waarin de gebruiker aan het werken is</param>
         /// <param name="id">ID van de gevraagde categorie.  Kan ook 0 zijn; dan worden alle personen
         /// geselecteerd.</param>
         /// <param name="sortering">Geeft de sortering van de pagina en lijst aan</param>
         /// <returns>De personenlijst in de view 'Index'</returns>
-        /// /// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
-        /// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>
-        [HandleError]
-        [ParametersMatch]
-        public ActionResult List([QueryStringValue]int page, [RouteValue]int groepID, [RouteValue]int id, [QueryStringValue]PersoonSorteringsEnum sortering)
-        {
-            // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
-            ClientState.VorigeLijst = Request.Url.ToString();
-
-            int totaal = 0;
-
-            var model = new PersoonInfoModel();
-            BaseModelInit(model, groepID);
-            model.GekozenCategorieID = id;
-            model.Sortering = sortering;
-
-            model.GroepsCategorieen = ServiceHelper.CallService<IGroepenService, IList<CategorieInfo>>(
-                svc => svc.CategorieenOphalen(groepID)).ToList();
-            model.GroepsCategorieen.Add(new CategorieInfo
-            {
-                ID = 0,
-                Naam = "Alle personen"
-            });
-
-            if (id == 0)  // Alle personen bekijken
-            {
-                model.PersoonInfos =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-                    (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, sortering, out totaal));
-                model.HuidigePagina = page;
-                model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
-                model.Titel = "Personenoverzicht";
-                model.Totaal = totaal;
-                model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalen(groepID));
-            }
-            else	// Alleen personen uit de gekozen categorie bekijken
-            {
-                // TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
-                model.PersoonInfos =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-                    (g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, sortering, out totaal));
-                model.HuidigePagina = page;
-                model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
-
-                // Ga in het lijstje met categorieën na welke er geselecteerd werd, zodat we de naam in de paginatitel kunnen zetten
-                String naam = (from c in model.GroepsCategorieen
-                               where c.ID == id
-                               select c).First().Naam;
-
-                model.Titel = "Overzicht " + naam;
-                model.Totaal = totaal;
-            }
-
-            return View("Index", model);
-        }
-        */
-
-        /// <summary>
-        /// Haal een 'pagina' met persoonsinformatie op (inclusief lidinfo) voor personen uit een
-        /// bepaalde categorie, en toont deze pagina via de view 'Index'.
-        /// </summary>
-        /// <param name="page">Letter van de 'pagina'</param>
-        /// <param name="groepID">Huidige groep waarin de gebruiker aan het werken is</param>
-        /// <param name="id">ID van de gevraagde categorie.  Kan ook 0 zijn; dan worden alle personen
-        /// geselecteerd.</param>
-        /// <param name="sortering">Geeft de sortering van de pagina en lijst aan</param>
-        /// <returns>De personenlijst in de view 'Index'</returns>
-        /// /// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
+        /// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
         /// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>
         [HandleError]
         [ParametersMatch]
@@ -163,7 +95,6 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 model.PersoonInfos = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.OphalenMetLidInfoViaLetter(groepID, page, sortering, out totaal));
                 model.HuidigePagina = page;
-                //model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
                 model.Titel = "Personenoverzicht";
                 model.Totaal = totaal;
                 model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalen(groepID));
@@ -629,7 +560,7 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult PersoonZoeken(string naamOngeveer, int groepID)
         {
-            IEnumerable<PersoonInfo> mogelijkePersonen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(x => x.ZoekenOpVoorAchterNaamOngeveer(groepID, naamOngeveer));
+            IEnumerable<PersoonInfo> mogelijkePersonen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(x => x.ZoekenOpNaamVoornaamBegin(groepID, naamOngeveer));
 
             var personen = (from persoon in mogelijkePersonen
                          orderby persoon.Naam, persoon.VoorNaam

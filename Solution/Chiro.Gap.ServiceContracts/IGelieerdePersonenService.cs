@@ -244,16 +244,17 @@ namespace Chiro.Gap.ServiceContracts
 		IDPersEnGP[] Opzoeken(int groepID, string naam, string voornaam);
 
 	    /// <summary>
-	    /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
-	    /// of voornaam ongeveer gelijk aan <paramref name="naamOngeveer"/>
+	    /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarbij
+	    /// naam of voornaam ongeveer begint met <paramref name="teZoeken"/>
 	    /// </summary>
 	    /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
-	    /// <param name="naam">Te zoeken voor- of achternaam (ongeveer)</param>
+	    /// <param name="teZoeken">Te zoeken voor- of achternaam (ongeveer)</param>
 	    /// <returns>Lijst met gevonden matches</returns>
+        /// <remarks>Deze method levert enkel naam, voornaam en gelieerdePersoonID op!</remarks>
 	    [OperationContract]
 	    [FaultContract(typeof(GapFault))]
 	    [FaultContract(typeof(FoutNummerFault))]
-	    IEnumerable<PersoonInfo> ZoekenOpVoorAchterNaamOngeveer(int groepID, string naamOngeveer);
+	    IEnumerable<PersoonInfo> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken);
 
 		#endregion
 
