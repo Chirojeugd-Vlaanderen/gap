@@ -21,7 +21,6 @@ namespace Chiro.Gap.WebApp.Models
         }
 
 		public string HuidigePagina { get; set; }
-		public int AantalPaginas { get; set; }
 		public int Totaal { get; set; }
         public IList<String> Paginas { get; set; } 
 
