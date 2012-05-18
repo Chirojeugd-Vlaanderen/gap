@@ -80,7 +80,7 @@ namespace Chiro.Gap.Dummies
             throw new NotImplementedException();
         }
 
-        public IList<String> EersteLetterNamenOphalenCategorie(int groepID, int categorie)
+        public IList<string> EersteLetterNamenOphalenCategorie(int categorie)
         {
             throw new NotImplementedException();
         }

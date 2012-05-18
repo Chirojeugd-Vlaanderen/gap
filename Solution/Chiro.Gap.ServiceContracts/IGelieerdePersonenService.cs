@@ -101,16 +101,15 @@ namespace Chiro.Gap.ServiceContracts
 	    [FaultContract(typeof(FoutNummerFault))]
 	    IList<String> EersteLetterNamenOphalen(int groepID);
 
-        /// <summary>
+	    /// <summary>
 	    /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een categorie
 	    /// </summary>
-	    /// <param name="groepID">De ID van de groep waaruit we de gelieerde persoonsnamen gaan halen</param>
-        /// <param name="categorie">Categorie waaruit we de letters willen halen</param>
+	    /// <param name="categorie">Categorie waaruit we de letters willen halen</param>
 	    /// <returns>Lijst met de eerste letter van de namen</returns>
 	    [OperationContract]
 	    [FaultContract(typeof(GapFault))]
 	    [FaultContract(typeof(FoutNummerFault))]
-        IList<String> EersteLetterNamenOphalenCategorie(int groepID, int categorie);
+        IList<string> EersteLetterNamenOphalenCategorie(int categorie);
 
 		/// <summary>
 		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen

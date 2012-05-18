@@ -150,16 +150,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <summary>
         /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
         /// </summary>
-        /// <param name="groepID">
-        /// GroepID van gevraagde groep
-        /// </param>
         /// <param name="categorie">
-        /// Categorie waaruit we de letters willen halen
+        ///   Categorie waaruit we de letters willen halen
         /// </param>
         /// <returns>
         /// Lijst met de eerste letter gegroepeerd van de achternamen
         /// </returns>
-        IList<String> EersteLetterNamenOphalenCategorie(int groepID, int categorie);
+        IList<string> EersteLetterNamenOphalenCategorie(int categorie);
 
         /// <summary>
         /// Haal een pagina op met gelieerde personen van een groep.

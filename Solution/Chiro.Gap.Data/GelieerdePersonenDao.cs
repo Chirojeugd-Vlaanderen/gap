@@ -213,26 +213,22 @@ namespace Chiro.Gap.Data.Ef
 
         /// <summary>
         /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van
-        /// de gegeven categorie.
+        /// de categorie met ID <paramref name="categorieID"/>
         /// </summary>
-        /// <param name="groepID">
-        /// GroepID van gevraagde groep
-        /// </param>
         /// <param name="categorieID">
-        /// ID van de Categorie waaruit we de letters willen halen
+        ///   ID van de Categorie waaruit we de letters willen halen
         /// </param>
         /// <returns>
         /// Lijst met de eerste letter gegroepeerd van de achternamen
         /// </returns>
-        public IList<String> EersteLetterNamenOphalenCategorie(int groepID, int categorieID)
+        public IList<string> EersteLetterNamenOphalenCategorie(int categorieID)
         {
             IList<String> lijst;
 
             using (var db = new ChiroGroepEntities())
             {
                 lijst = (from gp in db.GelieerdePersoon
-                         where gp.Groep.ID == groepID &&
-                         gp.Categorie.Any(cat => cat.ID == categorieID)
+                         where gp.Categorie.Any(cat => cat.ID == categorieID)
                          let letter = gp.Persoon.Naam.Substring(0, 1)
                          orderby letter
                          select letter).Distinct().ToList();

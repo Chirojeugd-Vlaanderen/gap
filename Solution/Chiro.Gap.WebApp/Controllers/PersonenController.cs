@@ -127,7 +127,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 model.Titel = "Overzicht " + naam;
                 model.Totaal = totaal;
-                model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalenCategorie(groepID, id));
+                model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalenCategorie(id));
 
                 // Als er niemand met een naam is die met een A begint
                 // is het nog al nutteloos dat we eerst op die pagina belanden

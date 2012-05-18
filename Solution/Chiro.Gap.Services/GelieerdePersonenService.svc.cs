@@ -284,14 +284,18 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van
+        /// de categorie met ID <paramref name="categorieID"/>
         /// </summary>
-        /// <param name="groepID">De ID van de groep waaruit we de gelieerde persoonsnamen gaan halen</param>
-        /// <param name="categorie">Categorie waarbij we de eerste letter van de achternaam willen halen</param>
-        /// <returns>Lijst met de eerste letter van de namen</returns>
-        public IList<String> EersteLetterNamenOphalenCategorie(int groepID, int categorie)
+        /// <param name="categorieID">
+        ///   ID van de Categorie waaruit we de letters willen halen
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        public IList<string> EersteLetterNamenOphalenCategorie(int categorieID)
         {
-            return _gpMgr.EersteLetterNamenOphalenCategorie(groepID, categorie);
+            return _gpMgr.EersteLetterNamenOphalenCategorie(categorieID);
         }
 
         /// <summary>
