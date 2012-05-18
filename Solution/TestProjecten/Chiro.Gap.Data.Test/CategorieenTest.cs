@@ -147,10 +147,10 @@ namespace Chiro.Gap.Data.Test
 		}
 
 		/// <summary>
-		/// Controleert of PaginaOphalenMetLidInfo de lidinfo wel juist ophaalt.
+		/// Controleert of GelieerdePersonenDao.PaginaOphalenUitCategorie de lidinfo wel juist ophaalt.
 		/// </summary>
 		[TestMethod]
-		public void PaginaOphalenMetLidInfo()
+		public void PaginaOphalenUitCategorieLidInfo()
 		{
 			// arrange
 			int aantalTotaal;
@@ -158,7 +158,7 @@ namespace Chiro.Gap.Data.Test
 			// act
 			var pagina = _gpdao.PaginaOphalenUitCategorie(
 				TestInfo.CATEGORIE2ID,
-				"A", PersoonSorteringsEnum.Naam,
+                TestInfo.GP13LETTER.ToString(), PersoonSorteringsEnum.Naam,
 				out aantalTotaal,
 				PersoonsExtras.AlleLeden);
 
@@ -173,8 +173,8 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsNotNull(lid);
 			Assert.IsTrue(lid.Lid.First().ID > 0);
 
-			Assert.IsNotNull((geenLid));
-			Assert.IsTrue(geenLid.Lid.Count() == 0);
+			Assert.IsNotNull(geenLid);
+			Assert.IsTrue(!geenLid.Lid.Any());
 		}
 
 

@@ -14,6 +14,7 @@
         public const int GELIEERDEPERSOON3ID = 225185;
         public const int GELIEERDEPERSOON4ID = 225186;
         public const int GELIEERDEPERSOON5ID = 225187;
+	    public const char GP13LETTER = 'B'; // 1ste letter familienaam gelieerde persoon 1 en 3
         public const int MINAANTALGELPERS = 5;
         public const int LID3ID = 421600;
         public const int LID4ID = 421601;
