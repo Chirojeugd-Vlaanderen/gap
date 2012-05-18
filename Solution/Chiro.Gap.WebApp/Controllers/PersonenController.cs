@@ -550,22 +550,18 @@ namespace Chiro.Gap.WebApp.Controllers
 
 
         /// <summary>
-        /// Stelt op basis van een gedeeltelijke persoonnaam
+        /// Stelt op basis van het begin van een voor- of achternaam
         /// een lijst suggesties samen met personen die de
         /// gebruiker mogelijk wil vinden
         /// </summary>
         /// <param name="naamOngeveer">Wat de gebruiker al intikte van naam om te zoeken</param>
-        /// <param name="groepID">Groep ID waarin we aan het werken zijn</param>
+        /// <param name="groepID">GroepID waarin we aan het werken zijn</param>
         /// <returns>Voorgestelde personen in JSON formaat</returns>
         [HandleError]
         public ActionResult PersoonZoeken(string naamOngeveer, int groepID)
         {
             IEnumerable<PersoonInfo> mogelijkePersonen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(x => x.ZoekenOpNaamVoornaamBegin(groepID, naamOngeveer));
-
-            var personen = (from persoon in mogelijkePersonen
-                         orderby persoon.Naam, persoon.VoorNaam
-                            select new PersoonInfo { GelieerdePersoonID = persoon.GelieerdePersoonID, Naam = persoon.Naam, VoorNaam =  persoon.VoorNaam}).Distinct();
-
+            var personen = mogelijkePersonen.OrderBy(prs => prs.Naam).ThenBy(prs => prs.VoorNaam).Distinct();
             return Json(personen, JsonRequestBehavior.AllowGet);
         }
 
@@ -1249,7 +1245,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             if (model.GelieerdePersoonIDs.Count == 1)
             {
-                return RedirectToAction("EditRest", new { id = model.GelieerdePersoonIDs.First(), groepID });
+                return RedirectToAction("EditRest", "Personen", new { id = model.GelieerdePersoonIDs.First(), groepID });
             }
             else
             {

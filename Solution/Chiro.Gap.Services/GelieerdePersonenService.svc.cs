@@ -310,7 +310,7 @@ namespace Chiro.Gap.Services
         {
             try
             {
-                var gelieerdePersonen = _gpMgr.PaginaOphalen(
+                var gelieerdePersonen = _gpMgr.Ophalen(
                     groepID,
                     letter,
                     sortering,

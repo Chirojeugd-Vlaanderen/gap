@@ -341,7 +341,8 @@ namespace Chiro.Gap.Workers
 
 
         /// <summary>
-        /// Haalt een pagina op met gelieerde personen van een groep.
+        /// Haalt de gelieerde personen van een groep op, die een familienaam hebben
+        /// beginnend met de letter <paramref name="letter"/>.
         /// </summary>
         /// <param name="groepID">
         /// GroepID gevraagde groep
@@ -362,7 +363,7 @@ namespace Chiro.Gap.Workers
         /// <returns>
         /// Lijst met GelieerdePersonen
         /// </returns>
-        public IList<GelieerdePersoon> PaginaOphalen(
+        public IList<GelieerdePersoon> Ophalen(
             int groepID,
             string letter,
             PersoonSorteringsEnum sortering,
@@ -510,23 +511,17 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
-        /// of voornaam ongeveer gelijk aan <paramref name="naamOngeveer"/>
+        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarbij
+        /// naam of voornaam ongeveer begint met <paramref name="teZoeken"/>
         /// </summary>
-        /// <param name="groepID">
-        /// GroepID dat bepaalt in welke gelieerde personen gezocht mag worden
-        /// </param>
-        /// <param name="naamOngeveer">
-        /// Te zoeken voor- of achternaam (ongeveer)
-        /// </param>
-        /// <returns>
-        /// Lijst met gevonden matches
-        /// </returns>
-        public IList<GelieerdePersoon> ZoekenOpNaamVoornaamBegin(int groepID, string naamOngeveer)
+        /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
+        /// <param name="teZoeken">Te zoeken voor- of achternaam (ongeveer)</param>
+        /// <returns>Lijst met gevonden matches</returns>
+        public IList<GelieerdePersoon> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
         {
             if (_autorisatieMgr.IsGavGroep(groepID))
             {
-                return _gelieerdePersonenDao.ZoekenOpNaamVoornaamBegin(groepID, naamOngeveer);
+                return _gelieerdePersonenDao.ZoekenOpNaamVoornaamBegin(groepID, teZoeken);
             }
             else
             {
