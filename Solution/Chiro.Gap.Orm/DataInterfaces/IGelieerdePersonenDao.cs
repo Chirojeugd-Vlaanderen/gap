@@ -67,19 +67,19 @@ namespace Chiro.Gap.Orm.DataInterfaces
         IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam, params Expression<Func<GelieerdePersoon, object>>[] paths);
 
         /// <summary>
-        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
-        /// of voornaam ongeveer gelijk aan <paramref name="naamOngeveer"/>
+        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarvan de naam 
+        /// of voornaam begint met <paramref name="teZoeken"/>
         /// </summary>
         /// <param name="groepID">
         /// GroepID dat bepaalt in welke gelieerde personen gezocht mag worden
         /// </param>
-        /// <param name="naam">
-        /// Te zoeken voor- of achternaam (ongeveer)
+        /// <param name="teZoeken">
+        /// Patroon te vinden in voornaam of naam
         /// </param>
         /// <returns>
         /// Lijst met gevonden matches
         /// </returns>
-        IList<GelieerdePersoon> ZoekenOpVoorAchterNaamOngeveer(int groepID, string naamOngeveer);
+        IList<GelieerdePersoon> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken);
 
         /// <summary>
         /// Haalt de persoonsgegevens van alle gelieerde personen van een groep op.
@@ -181,7 +181,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
             out int aantalTotaal);
 
         /// <summary>
-        /// Haal een pagina op met gelieerde personen van een groep.
+        /// Haalt alle gelieerde personen op waarvan de familienaam begint met de letter <paramref name="letter"/>.
         /// </summary>
         /// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
         /// <param name="letter">Eerste letter van de achternamen van de personen die we willen bekijken</param>
@@ -190,7 +190,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
         /// zijn. </param>
         /// <returns>De gevraagde lijst gelieerde personen</returns>
-        IList<GelieerdePersoon> PaginaOphalen(
+        IList<GelieerdePersoon> Ophalen(
             int groepID,
             string letter,
             PersoonSorteringsEnum sortering,

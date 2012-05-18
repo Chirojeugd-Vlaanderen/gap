@@ -306,7 +306,7 @@ namespace Chiro.Gap.Services
         /// <returns>Een lijst van persoonsgegevens</returns>
         /* zie #273 */
         // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<PersoonDetail> PaginaOphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
+        public IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
         {
             try
             {

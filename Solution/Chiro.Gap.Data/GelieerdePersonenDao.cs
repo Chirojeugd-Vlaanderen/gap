@@ -9,7 +9,6 @@ using System.Data.Objects;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -386,7 +385,7 @@ namespace Chiro.Gap.Data.Ef
 
 
         /// <summary>
-        /// Haal een pagina op met gelieerde personen van een groep.
+        /// Haalt alle gelieerde personen op waarvan de familienaam begint met de letter <paramref name="letter"/>.
         /// </summary>
         /// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
         /// <param name="letter">Eerste letter van de achternamen van de personen die we willen bekijken</param>
@@ -395,7 +394,7 @@ namespace Chiro.Gap.Data.Ef
         /// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
         /// zijn. </param>
         /// <returns>De gevraagde lijst gelieerde personen</returns>
-        public IList<GelieerdePersoon> PaginaOphalen(
+        public IList<GelieerdePersoon> Ophalen(
             int groepID,
             string letter,
             PersoonSorteringsEnum sortering,
@@ -781,19 +780,19 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
-        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
-        /// of voornaam ongeveer gelijk aan <paramref name="naamOngeveer"/>
+        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarvan de naam 
+        /// of voornaam begint met <paramref name="teZoeken"/>
         /// </summary>
         /// <param name="groepID">
         /// GroepID dat bepaalt in welke gelieerde personen gezocht mag worden
         /// </param>
-        /// <param name="naam">
-        /// Te zoeken voor- of achternaam (ongeveer)
+        /// <param name="teZoeken">
+        /// Patroon te vinden in voornaam of naam
         /// </param>
         /// <returns>
         /// Lijst met gevonden matches
         /// </returns>
-        public IList<GelieerdePersoon> ZoekenOpVoorAchterNaamOngeveer(int groepID, string naamOngeveer)
+        public IList<GelieerdePersoon> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
         {
             IList<GelieerdePersoon> personen;
 
@@ -802,7 +801,7 @@ namespace Chiro.Gap.Data.Ef
                 personen = (
                     from gp in db.GelieerdePersoon
                         .Include(gp => gp.Persoon)
-                    where gp.Groep.ID == groepID && (gp.Persoon.Naam.StartsWith(naamOngeveer) || gp.Persoon.VoorNaam.StartsWith(naamOngeveer))
+                    where gp.Groep.ID == groepID && (gp.Persoon.Naam.StartsWith(teZoeken) || gp.Persoon.VoorNaam.StartsWith(teZoeken))
                     select gp).ToList();
             }
             return personen;

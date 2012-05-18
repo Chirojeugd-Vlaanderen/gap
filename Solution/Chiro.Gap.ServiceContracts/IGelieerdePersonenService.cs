@@ -36,18 +36,19 @@ namespace Chiro.Gap.ServiceContracts
 
         
         /// <summary>
-        /// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep,
+        /// Haalt de persoonsgegevens op van gelieerde personen van een groep
+        /// wiens familienaam begint met de letter <paramref name="letter"/>.
         /// inclusief eventueel lidobject voor het recentste werkjaar.
         /// </summary>
         /// <param name="groepID">ID van de betreffende groep</param>
         /// <param name="letter">Beginletter van de achternaam</param>
-        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-        /// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
+        /// <param name="sortering">Geeft aan hoe de personen gesorteerd moeten worden</param>
+        /// <param name="aantalTotaal">Outputparameter; levert het totaal aantal personen in de groep op</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
-        IList<PersoonDetail> PaginaOphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal);
+        IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal);
         
 
 		/// <summary>

@@ -371,7 +371,7 @@ namespace Chiro.Gap.Workers
         {
             if (_autorisatieMgr.IsGavGroep(groepID))
             {
-                return _gelieerdePersonenDao.PaginaOphalen(
+                return _gelieerdePersonenDao.Ophalen(
                     groepID,
                     letter,
                     sortering,
@@ -526,7 +526,7 @@ namespace Chiro.Gap.Workers
         {
             if (_autorisatieMgr.IsGavGroep(groepID))
             {
-                return _gelieerdePersonenDao.ZoekenOpVoorAchterNaamOngeveer(groepID, naamOngeveer);
+                return _gelieerdePersonenDao.ZoekenOpNaamVoornaamBegin(groepID, naamOngeveer);
             }
             else
             {

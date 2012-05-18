@@ -161,7 +161,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             if (categorieID == 0)  // Alle personen bekijken
             {
-                model.PersoonInfos = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.PaginaOphalenMetLidInfoViaLetter(groepID, page, sortering, out totaal));
+                model.PersoonInfos = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.OphalenMetLidInfoViaLetter(groepID, page, sortering, out totaal));
                 model.HuidigePagina = page;
                 //model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
                 model.Titel = "Personenoverzicht";
