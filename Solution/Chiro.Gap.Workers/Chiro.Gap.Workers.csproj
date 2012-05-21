@@ -79,6 +79,8 @@
     <Compile Include="CommVormManager.cs" />
     <Compile Include="AfdelingsJaarManager.cs" />
     <Compile Include="GebruikersRechtenManager.cs" />
+    <Compile Include="IChiroGroepenManager.cs" />
+    <Compile Include="IGroepsWerkJaarManager.cs" />
     <Compile Include="JaarOvergangManager.cs" />
     <Compile Include="DeelnemersManager.cs" />
     <Compile Include="Exceptions\BlokkerendeObjectenException.cs" />

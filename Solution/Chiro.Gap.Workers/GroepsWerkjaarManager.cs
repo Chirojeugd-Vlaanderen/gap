@@ -18,7 +18,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Worker die alle businesslogica i.v.m. groepswerkjaren bevat
     /// </summary>
-    public class GroepsWerkJaarManager
+    public class GroepsWerkJaarManager : IGroepsWerkJaarManager
     {
         private readonly IGroepsWerkJaarDao _groepsWjDao;
         private readonly IAutorisatieManager _autorisatieMgr;
@@ -306,7 +306,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public DateTime StartOvergang(int werkJaar)
         {
-            DateTime datum = Settings.Default.BeginOvergangsPeriode;
+            var datum = Settings.Default.BeginOvergangsPeriode;
             return new DateTime(werkJaar + 1, datum.Month, datum.Day);
         }
 

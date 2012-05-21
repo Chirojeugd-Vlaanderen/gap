@@ -17,7 +17,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Worker die alle businesslogica i.v.m. Chirogroepen bevat
     /// </summary>
-    public class ChiroGroepenManager
+    public class ChiroGroepenManager : IChiroGroepenManager
     {
         private readonly IDao<ChiroGroep> _dao;
         private readonly IAutorisatieManager _autorisatieMgr;
