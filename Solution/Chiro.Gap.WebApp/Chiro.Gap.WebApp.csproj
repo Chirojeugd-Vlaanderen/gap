@@ -317,7 +317,6 @@
     </Content>
     <Content Include="Content\Chirologo.png" />
     <Content Include="Content\favicon.ico" />
-    <Content Include="Content\GeenGroepGekozen.css" />
     <Compile Include="ActionFilters\ParametersMatchAttribute.cs" />
     <Compile Include="Controllers\AbonnementenController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
