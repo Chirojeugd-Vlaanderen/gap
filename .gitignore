@@ -2,6 +2,7 @@
 _ReSharper.*
 *.user
 *.suo
+*~
 
 
 # /
