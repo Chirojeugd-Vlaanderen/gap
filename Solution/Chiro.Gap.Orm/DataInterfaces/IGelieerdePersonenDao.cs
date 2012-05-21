@@ -205,7 +205,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
         /// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
         /// <returns>Lijst gelieerde personen</returns>
-        IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras);
+        IList<GelieerdePersoon> OphalenUitCategorie(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras);
 
         /// <summary>
         /// Haalt een gelieerde persoon op, inclusief

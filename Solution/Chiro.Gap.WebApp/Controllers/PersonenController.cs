@@ -118,7 +118,6 @@ namespace Chiro.Gap.WebApp.Controllers
                     ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
                     (g => g.PaginaOphalenUitCategorieMetLidInfo(categorieID, page, sortering, out totaal));
                 model.HuidigePagina = page;
-                //model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
 
                 // Ga in het lijstje met categorieën na welke er geselecteerd werd, zodat we de naam in de paginatitel kunnen zetten
                 String naam = (from c in model.GroepsCategorieen

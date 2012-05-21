@@ -420,7 +420,7 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            return _gelieerdePersonenDao.PaginaOphalenUitCategorie(categorieID,
+            return _gelieerdePersonenDao.OphalenUitCategorie(categorieID,
                                                                    letter,
                                                                    sortering,
                                                                    out aantalTotaal,

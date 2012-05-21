@@ -446,31 +446,17 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
-        /// Haal een pagina op met gelieerde personen uit een categorie, inclusief lidinfo voor het huidige
-        /// werkjaar.
+        /// Haalt alle gelieerde personen op uit categorie met ID <paramref name="categorieID"/> 
+        /// wiens familienaam begint met de letter <paramref name="letter"/>.
         /// </summary>
-        /// <param name="categorieID">
-        /// ID van de gevraagde categorie
-        /// </param>
-        /// <param name="pagina">
-        /// Gevraagde pagina
-        /// </param>
-        /// <param name="paginaGrootte">
-        /// Grootte van de pagina
-        /// </param>
-        /// <param name="sortering">
-        /// Sortering van de lijst
-        /// </param>
-        /// <param name="aantalTotaal">
-        /// Outputparameter die het totaal aantal personen in de categorie weergeeft
-        /// </param>
-        /// <param name="extras">
-        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-        /// </param>
-        /// <returns>
-        /// Lijst gelieerde personen
-        /// </returns>
-        public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
+        /// <param name="categorieID">ID van de categorie waarvan gelieerde personen op te halen zijn</param>
+        /// <param name="letter">Eerste letter van de achternamen van de personen die we willen bekijken</param>
+        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
+        /// <param name="extras">Bepaalt de mee op te halen gekoppelde entiteiten</param>
+        /// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
+        /// zijn. </param>
+        /// <returns>De gevraagde lijst gelieerde personen</returns>
+        public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
         {
             IList<GelieerdePersoon> lijst;
 
