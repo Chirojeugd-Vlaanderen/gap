@@ -24,7 +24,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
             {
                 var tag = new TagBuilder("a");   // Maakt een <a>-tag
                 tag.MergeAttribute("href", url(letter));
-                tag.InnerHtml = letter;
+                tag.InnerHtml = letter.ToUpper();
                 if (letter == huidigePagina)
                 {
                     tag.AddCssClass("geselecteerd");
