@@ -1,54 +1,48 @@
 ﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<IMasterViewModel>"
-	MasterPageFile="~/Views/Shared/Globaal.Master" %>
+    MasterPageFile="~/Views/Shared/Globaal.Master" %>
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ContentPlaceHolderID="HeaderTitleContent" runat="server">
-	<asp:ContentPlaceHolder runat="server" ID="title" />
+    <asp:ContentPlaceHolder runat="server" ID="title" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
-	<% // css? scripts? %>
+    <% // css? scripts? %>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="BodyContent" runat="server">
-	<% Html.RenderPartial("AlleHelpLinksControl"); %>
-	<div id="help">
-		<asp:ContentPlaceHolder ID="helpContent" runat="server" />
-	</div>
-	<%if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
-  {
-	  Html.RenderPartial("MededelingenControl"); 
-  }%>
+    <% Html.RenderPartial("AlleHelpLinksControl"); %>
+    <div id="help">
+        <asp:ContentPlaceHolder ID="helpContent" runat="server" />
+    </div>
+    <%if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
+      {
+          Html.RenderPartial("MededelingenControl");
+      }%>
 </asp:Content>
-
-<asp:Content ID="Content1" ContentPlaceHolderID="settingsitems" runat="server">           
+<asp:Content ID="Content1" ContentPlaceHolderID="settingsitems" runat="server">
     <% if (Model.GroepID > 0)
-	{ %>
-		    <li>[<%=Html.ActionLink("GAV's beheren", "Index" , "GebruikersRecht") %>]</li>
-	<%		
+       { %>
+    <li>[<%=Html.ActionLink("GAV's beheren", "Index" , "GebruikersRecht") %>]</li>
+    <%		
     } %>
     <% if (Model.MeerdereGroepen == true)
-	{ %>
-		    <li>[<%=Html.ActionLink("Andere groep kiezen", "Index", "Gav") %>]</li>
-	<%		
+       { %>
+    <li>[<%=Html.ActionLink("Andere groep kiezen", "Index", "Gav") %>]</li>
+    <%		
     } %>
 </asp:Content>
-
 <asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
-	<% if (Model.GroepID > 0)
-	{
-		Html.RenderPartial("GroepsGegevensControl");
-	}%>
-</asp:Content>
+  </asp:Content>
 <asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
-	<% if (Model.GroepID > 0)
-	{
-		Html.RenderPartial("NavigatieVolledigControl");
-	}
-	else
-	{%>
-	<ul>
-		<li>
-			<% =Html.ActionLink("Probeer aan te melden bij een groep", "Index", "Gav")%></li>
-	</ul>
-	<%
-		}%>
+    <% if (Model.GroepID > 0)
+       {
+           Html.RenderPartial("NavigatieVolledigControl");
+       }
+       else
+       {%>
+    <ul>
+        <li>
+            <% =Html.ActionLink("Probeer aan te melden bij een groep", "Index", "Gav")%></li>
+    </ul>
+    <%
+    }%>
 </asp:Content>
