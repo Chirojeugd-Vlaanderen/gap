@@ -79,8 +79,6 @@
     <Compile Include="CommVormManager.cs" />
     <Compile Include="AfdelingsJaarManager.cs" />
     <Compile Include="GebruikersRechtenManager.cs" />
-    <Compile Include="IChiroGroepenManager.cs" />
-    <Compile Include="IGroepsWerkJaarManager.cs" />
     <Compile Include="JaarOvergangManager.cs" />
     <Compile Include="DeelnemersManager.cs" />
     <Compile Include="Exceptions\BlokkerendeObjectenException.cs" />
@@ -90,9 +88,6 @@
     <Compile Include="Exceptions\OngeldigObjectException.cs" />
     <Compile Include="Exceptions\ValidatieException.cs" />
     <Compile Include="FunctiesManager.cs" />
-    <Compile Include="IAuthenticatieManager.cs" />
-    <Compile Include="IAutorisatieManager.cs" />
-    <Compile Include="IVeelGebruikt.cs" />
     <Compile Include="LidVoorstel.cs" />
     <Compile Include="PersonenManager.cs" />
     <Compile Include="GelieerdePersonenManager.cs" />
@@ -159,6 +154,10 @@
     <ProjectReference Include="..\Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj">
       <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
       <Name>Chiro.Gap.Validatie</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
+      <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
+      <Name>Chiro.Gap.WorkerInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

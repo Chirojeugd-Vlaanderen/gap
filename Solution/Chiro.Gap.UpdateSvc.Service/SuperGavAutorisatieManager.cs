@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 
 using Chiro.Gap.Orm;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.UpdateSvc.Service

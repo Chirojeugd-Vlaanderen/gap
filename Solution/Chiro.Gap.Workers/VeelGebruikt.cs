@@ -9,6 +9,7 @@ using System.Web.Caching;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Workers
 {

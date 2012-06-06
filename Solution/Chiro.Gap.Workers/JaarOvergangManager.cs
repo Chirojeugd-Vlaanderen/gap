@@ -13,6 +13,7 @@ using System.Linq;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 

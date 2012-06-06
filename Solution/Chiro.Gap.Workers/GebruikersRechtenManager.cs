@@ -14,6 +14,7 @@ using Chiro.Cdf.Mailer;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 

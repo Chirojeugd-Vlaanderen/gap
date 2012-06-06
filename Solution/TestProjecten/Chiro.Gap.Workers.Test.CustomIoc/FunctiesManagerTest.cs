@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

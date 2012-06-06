@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Dummies;
+using Chiro.Gap.WorkerInterfaces;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.Orm.DataInterfaces;

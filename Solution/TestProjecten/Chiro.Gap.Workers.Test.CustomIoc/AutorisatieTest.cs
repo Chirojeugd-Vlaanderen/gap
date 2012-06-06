@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using Chiro.Gap.Domain;
+using Chiro.Gap.WorkerInterfaces;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

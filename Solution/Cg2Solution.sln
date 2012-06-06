@@ -103,6 +103,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Mailer", "..\tool
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Services.Test.CustomIoc", "Chiro.Gap.Services.Test.CustomIoc\Chiro.Gap.Services.Test.CustomIoc.csproj", "{585E2DB2-1A93-41FA-85BE-0E752631EEA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.WorkerInterfaces", "Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj", "{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution2.vsmdi
@@ -598,6 +600,18 @@ Global
 		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Release|Win32.ActiveCfg = Release|Any CPU
 		{585E2DB2-1A93-41FA-85BE-0E752631EEA8}.Release|x86.ActiveCfg = Release|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Release|Win32.ActiveCfg = Release|Any CPU
+		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

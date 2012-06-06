@@ -15,6 +15,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
