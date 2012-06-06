@@ -12,6 +12,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -32,7 +33,7 @@ namespace Chiro.Gap.Services
         private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
         private readonly LedenManager _ledenMgr;
         private readonly FunctiesManager _functiesMgr;
-        private readonly AfdelingsJaarManager _afdelingsJaarMgr;
+        private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
         private readonly GroepsWerkJaarManager _groepwsWjMgr;
         private readonly VerzekeringenManager _verzekeringenMgr;
 
@@ -49,7 +50,7 @@ namespace Chiro.Gap.Services
             GelieerdePersonenManager gpm,
             LedenManager lm,
             FunctiesManager fm,
-            AfdelingsJaarManager ajm,
+            IAfdelingsJaarManager ajm,
             GroepsWerkJaarManager gwjm,
             VerzekeringenManager vrzm)
         {

@@ -11,7 +11,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using System.Collections.Generic;
 using Moq;
-using Chiro.Gap.TestDbInfo;
 
 namespace Chiro.Gap.Workers.Test
 {

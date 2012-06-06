@@ -319,6 +319,16 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// TODO (#190): documenteren
         /// </summary>

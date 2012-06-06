@@ -6,6 +6,7 @@
 using System;
 
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 
 namespace Chiro.WatiN.Test
@@ -16,13 +17,13 @@ namespace Chiro.WatiN.Test
 	public static class TestHelper
 	{
 		private static GroepenManager _gMgr;
-		private static AutorisatieManager _auMgr;
+		private static IAutorisatieManager _auMgr;
 
 		static TestHelper()
 		{
 			Factory.ContainerInit(); // Zeker zijn dat IOC-container geinitialiseerd is
 			_gMgr = Factory.Maak<GroepenManager>();
-			_auMgr = Factory.Maak<AutorisatieManager>();
+			_auMgr = Factory.Maak<IAutorisatieManager>();
 		}
 
 		/// <summary>

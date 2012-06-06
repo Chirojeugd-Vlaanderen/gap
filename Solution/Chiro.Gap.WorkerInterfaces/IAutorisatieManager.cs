@@ -2,6 +2,7 @@
 //   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 
 using Chiro.Gap.Orm;
@@ -303,5 +304,49 @@ namespace Chiro.Gap.WorkerInterfaces
         /// gebruikersrecht, anders <c>false</c>
         /// </returns>
         bool IsGavGebruikersRecht(int gebruikersRechtID);
+
+        /// <summary>
+        /// Geeft de gegeven <paramref name="gav"/> gebruikersrecht voor de gegeven <paramref name="groep"/>,
+        /// met een zekere <paramref name="vervalDatum"/>.  Persisteert niet.
+        /// </summary>
+        /// <param name="gav">
+        /// GAV die gebruikersrecht moet krijgen
+        /// </param>
+        /// <param name="groep">
+        /// Groep waarvoor gebruikersrecht verleend moet worden
+        /// </param>
+        /// <param name="vervalDatum">
+        /// Vervaldatum van het gebruikersrecht
+        /// </param>
+        /// <returns>
+        /// Het gegeven GebruikersRecht
+        /// </returns>
+        /// <remarks>
+        /// Aan de GAV moeten al zijn gebruikersrechten op voorhand gekoppeld zijn.
+        /// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.
+        /// </remarks>
+        GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum);
+
+        /// <summary>
+        /// Geeft de GAV met gegeven <paramref name="login"/> gebruikersrecht voor de groep met gegeven 
+        /// <paramref name="groepID"/>,
+        /// met een zekere <paramref name="vervalDatum"/>.  Persisteert WEL.
+        /// </summary>
+        /// <param name="login">
+        /// ID van GAV die gebruikersrecht moet krijgen
+        /// </param>
+        /// <param name="groepID">
+        /// ID van groep waarvoor gebruikersrecht verleend moet worden
+        /// </param>
+        /// <param name="vervalDatum">
+        /// Vervaldatum van het gebruikersrecht
+        /// </param>
+        /// <returns>
+        /// Het gegeven GebruikersRecht
+        /// </returns>
+        /// <remarks>
+        /// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.
+        /// </remarks>
+        GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum);
     }
 }

@@ -137,6 +137,16 @@ namespace Chiro.Gap.Dummies
 	        throw new NotImplementedException();
 	    }
 
+	    public GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum)
+	    {
+	        throw new NotImplementedException();
+	    }
+
 	    public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
 		{
 			return false;

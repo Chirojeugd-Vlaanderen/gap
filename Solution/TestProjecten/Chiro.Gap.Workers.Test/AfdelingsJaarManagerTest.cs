@@ -6,6 +6,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
+using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -87,7 +88,7 @@ namespace Chiro.Gap.Workers.Test
 			var a = new Afdeling {ChiroGroep = groep2};
 			var oa = new OfficieleAfdeling();
 
-			AfdelingsJaarManager target = Factory.Maak<AfdelingsJaarManager>();
+			var target = Factory.Maak<IAfdelingsJaarManager>();
 
 			target.Aanmaken(a, oa, gwj, 2001, 2002, GeslachtsType.Gemengd);
 

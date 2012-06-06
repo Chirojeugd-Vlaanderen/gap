@@ -7,6 +7,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.WorkerInterfaces;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Moq;
 
 using Chiro.Cdf.Ioc;
@@ -15,7 +16,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers.Exceptions;
 
-namespace Chiro.Gap.Workers.Test
+namespace Chiro.Gap.Workers.Test.CustomIoc
 {
 	/// <summary>
 	/// Tests op de security van de workers.
@@ -321,7 +322,7 @@ namespace Chiro.Gap.Workers.Test
 
 			Factory.InstantieRegistreren(auMgrMock.Object);
 
-			var ajMgr = Factory.Maak<AfdelingsJaarManager>();
+			var ajMgr = Factory.Maak<IAfdelingsJaarManager>();
 
 			ajMgr.Aanmaken(afd, oa, gwj, 200, 2001, GeslachtsType.Gemengd);
 

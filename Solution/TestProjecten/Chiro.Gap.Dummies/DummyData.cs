@@ -3,6 +3,7 @@
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Dummies
@@ -133,10 +134,10 @@ namespace Chiro.Gap.Dummies
 			var wjMgr = Factory.Maak<GroepsWerkJaarManager>();
 			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 			var gMgr = Factory.Maak<GroepenManager>();
-			var cgMgr = Factory.Maak<ChiroGroepenManager>();
+			var cgMgr = Factory.Maak<IChiroGroepenManager>();
 			var lMgr = Factory.Maak<LedenManager>();
 			var cMgr = Factory.Maak<CategorieenManager>();
-			var afdMgr = Factory.Maak<AfdelingsJaarManager>();
+			var afdMgr = Factory.Maak<IAfdelingsJaarManager>();
 			var fMgr = Factory.Maak<FunctiesManager>();
 
 			// Groep en groepswerkjaar
