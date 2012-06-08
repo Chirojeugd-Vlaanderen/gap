@@ -59,14 +59,7 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Stap1AfdelingenSelecteren(JaarOvergangAfdelingsModel model1, int groepID)
         {
-            if (!ModelState.IsValid)
-            {
-                return Stap1AfdelingenSelecteren(groepID);
-            }
-            else
-            {
-                return Stap2AfdelingsJarenVerdelen(model1.GekozenAfdelingsIDs, groepID);
-            }
+            return !ModelState.IsValid ? Stap1AfdelingenSelecteren(groepID) : Stap2AfdelingsJarenVerdelen(model1.GekozenAfdelingsIDs, groepID);
         }
 
         // Gegeven een lijst van afdelingen die in het volgende werkjaar gelden, 
@@ -77,11 +70,11 @@ namespace Chiro.Gap.WebApp.Controllers
             BaseModelInit(model, groepID);
 
             model.Titel = "Jaarovergang stap 2:  instellingen van je afdelingen";
-            model.NieuwWerkjaar = ServiceHelper.CallService<IGroepenService, int>(g => g.NieuwWerkJaarOphalen());
+            model.NieuwWerkjaar = ServiceHelper.CallService<IGroepenService, int>(g => g.NieuwWerkJaarOphalen(groepID));
             model.LedenMeteenInschrijven = true;
             model.OfficieleAfdelingen =
                 ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
-                    e => e.OfficieleAfdelingenOphalen(groepID));
+                    e => e.OfficieleAfdelingenOphalen(groepID)).ToArray();
 
             var afdelingsinfos = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(g => g.AlleAfdelingenOphalen(groepID));
             var huidigwerkjaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
@@ -118,13 +111,14 @@ namespace Chiro.Gap.WebApp.Controllers
                                        where actafd.AfdelingID == afd1.ID
                                        select actafd).FirstOrDefault();
 
-                if (actieveafdeling != null) // Er is een afdelingsjaar actief op dit moment, dus we kunnen meer info inladen
+                if (actieveafdeling == null)
                 {
-                    afddetail.OfficieleAfdelingID = actieveafdeling.OfficieleAfdelingID;
-                    afddetail.Geslacht = actieveafdeling.Geslacht;
-                    afddetail.GeboorteJaarTot = actieveafdeling.GeboorteJaarTot + werkJarenVerschil;
-                    afddetail.GeboorteJaarVan = actieveafdeling.GeboorteJaarVan + werkJarenVerschil;
+                    continue;
                 }
+                afddetail.OfficieleAfdelingID = actieveafdeling.OfficieleAfdelingID;
+                afddetail.Geslacht = actieveafdeling.Geslacht;
+                afddetail.GeboorteJaarTot = actieveafdeling.GeboorteJaarTot + werkJarenVerschil;
+                afddetail.GeboorteJaarVan = actieveafdeling.GeboorteJaarVan + werkJarenVerschil;
             }
 
             // Sorteer de afdelingsjaren: eerst die zonder gegevens, dan van ribbels naar aspiranten
@@ -135,7 +129,6 @@ namespace Chiro.Gap.WebApp.Controllers
 
             // TODO extra info pagina voor jaarovergang
             // TODO kan validatie in de listhelper worden bijgecodeerd?
-            // TODO foutmeldingen
             return View("Stap2AfdelingsJarenVerdelen", model);
         }
 
@@ -181,7 +174,6 @@ namespace Chiro.Gap.WebApp.Controllers
                                 LidType = LidType.Alles
                             };
 
-            // TODO nogal duur om eerst alle leden op te halen, best herschrijven
             var gelieerdepersoonIDs =
                 ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(svc => svc.Zoeken(filter, false)).Select(
                     e => e.GelieerdePersoonID).ToList();
@@ -275,7 +267,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Info = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(afdelingID));
 
             model.Titel = "Afdeling bewerken";
-            return View("Stap1AfdelingenSelecteren", model);
+            return View("Afdeling", model);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -299,7 +291,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.Info = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(model.Info.ID));
 
                 model.Titel = "Afdeling bewerken";
-                return View("Stap1AfdelingenSelecteren", model);
+                return View("Afdeling", model);
             }
         }
     }

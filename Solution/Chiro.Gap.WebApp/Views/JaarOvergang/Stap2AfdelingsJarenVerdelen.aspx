@@ -12,6 +12,15 @@
     <br />
     <%using (Html.BeginForm("Stap2AfdelingsJarenVerdelen", "JaarOvergang"))
       { %>
+     <%: Html.HiddenFor(mdl => mdl.NieuwWerkjaar) %>
+     <% for (var j = 0; j < Model.OfficieleAfdelingen.Count(); ++j)
+         {%>
+        <%: Html.HiddenFor(x => x.OfficieleAfdelingen[j].Naam) %>
+        <%: Html.HiddenFor(x => x.OfficieleAfdelingen[j].ID) %>
+        <%: Html.HiddenFor(x => x.OfficieleAfdelingen[j].LeefTijdTot) %>
+        <%: Html.HiddenFor(x => x.OfficieleAfdelingen[j].LeefTijdVan) %>
+        <%}%>
+        
     <table>
         <tr>
             <th>Afdeling</th>
@@ -20,10 +29,11 @@
             <th>Tot geboortejaar </th>
             <th>Geslacht </th>
         </tr>
-        <% for (int j = 0; j < Model.Afdelingen.Count(); ++j)
+        <% for (var j = 0; j < Model.Afdelingen.Count(); ++j)
            { %>
         <tr>
             <td>
+
                 <%: Html.HiddenFor(mdl => mdl.Afdelingen[j].AfdelingID) %>
                 <%: Model.Afdelingen[j].AfdelingNaam %>
             </td>

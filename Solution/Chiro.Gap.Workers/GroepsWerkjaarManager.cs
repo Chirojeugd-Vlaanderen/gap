@@ -255,10 +255,29 @@ namespace Chiro.Gap.Workers
             }
 
             // Bereken gewenste werkjaar
-            var werkjaar = NieuweWerkJaar();
+            var werkjaar = NieuweWerkJaar(g.ID);
 
             // Controle op dubbels moet gebeuren door data access.  (Zie #507)
             return new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };
+        }
+
+        /// <summary>
+        /// Bepaalt de datum vanaf wanneer het volgende werkjaar begonnen kan worden
+        /// </summary>
+        /// <param name="tijdstip"> </param>
+        /// <param name="werkJaar">
+        /// Jaartal van het 'huidige' werkjaar (i.e. 2010 voor 2010-2011 enz)
+        /// </param>
+        /// <returns>
+        /// Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden
+        /// </returns>
+        public bool OvergangMogelijk(DateTime tijdstip, int werkJaar)
+        {
+#if JAAROVERGANGDEBUG
+            return true;
+#endif
+            var datum = Settings.Default.BeginOvergangsPeriode;
+            return tijdstip >= new DateTime(werkJaar + 1, datum.Month, datum.Day);
         }
 
         /// <summary>
@@ -267,8 +286,11 @@ namespace Chiro.Gap.Workers
         /// <returns>
         /// Het jaar waarin dat nieuwe werkjaar begint
         /// </returns>
-        public int NieuweWerkJaar()
+        public int NieuweWerkJaar(int groepID)
         {
+#if JAAROVERGANGDEBUG
+            return RecentsteOphalen(groepID).WerkJaar+1;
+#endif
             // Bereken gewenste werkjaar
 
             // Het algoritme kijkt het volgende na:

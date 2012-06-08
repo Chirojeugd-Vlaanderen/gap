@@ -106,7 +106,7 @@ namespace Chiro.Gap.Workers.Test
 		    var gwmm = new Mock<IGroepsWerkJaarManager>(MockBehavior.Strict);
 			gwmm.Setup(e => e.RecentsteOphalen(groep.ID)).Returns(gwj);
 			gwmm.Setup(e => e.RecentsteOphalen(groep.ID, GroepsWerkJaarExtras.Afdelingen)).Returns(gwj);
-			gwmm.Setup(e => e.StartOvergang(It.IsAny<int>())).Returns(DateTime.Today.AddDays(-1));
+			gwmm.Setup(e => e.OvergangMogelijk(It.IsAny<DateTime>(), It.IsAny<int>())).Returns(true);
 			gwmm.Setup(e => e.VolgendGroepsWerkJaarMaken(groep)).Returns(gwj2);
 			gwmm.Setup(e => e.Bewaren(gwj2, GroepsWerkJaarExtras.Groep | GroepsWerkJaarExtras.Afdelingen)).Returns(gwj2);
 

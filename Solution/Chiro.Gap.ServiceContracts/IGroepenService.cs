@@ -471,7 +471,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <returns>Een jaartal</returns>
 		[OperationContract]
-		int NieuwWerkJaarOphalen();
+		int NieuwWerkJaarOphalen(int groepID);
 
 		#endregion
 
