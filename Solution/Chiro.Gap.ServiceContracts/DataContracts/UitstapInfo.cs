@@ -42,7 +42,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	    /// de groep zelf gekend moeten zijn (en die dus onvolledig mogen zijn).
 	    /// </summary>
 	    [DataMember]
-		[DisplayName(@"Deze uitstap is ons jaarlijks bivak")]
+        [DisplayName(@"Meesturen met bivakaangifte")]
 		public bool IsBivak { get; set; }
 
 	    /// <summary>

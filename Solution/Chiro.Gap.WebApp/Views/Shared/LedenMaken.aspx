@@ -43,8 +43,10 @@
 		<p>
             Selecteer voor iedereen de juiste afdeling. Voor leiding zet je een vinkje in de kolom 'Leiding maken'.
             Staat er iemand tussen die je toch niet wilt inschrijven, verwijder dan het vinkje in de eerste kolom.
-		</p>
-
+		    Iedereen die je inschrijft, krijgt een instapperiode
+			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is die instapperiode?" } ) %> van drie weken (of tot 
+            15 oktober). Tot die tijd kun je hen nog uitschrijven, daarna krijg je een 
+            factuur voor hun aansluiting.</p>
 		<table class="overzicht">
 		<tr>
 			<th><%: Html.CheckBox("checkall") %></th>

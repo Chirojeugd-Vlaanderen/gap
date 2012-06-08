@@ -4,7 +4,7 @@ USE master;
 GO
 
 -- aanpassen:
-DECLARE @backupFile AS VARCHAR(200); SET @backupFile = 'C:\tmp\gap_tst_201202171449.fbu';
+DECLARE @backupFile AS VARCHAR(200); SET @backupFile = 'C:\tmp\gap_backup_201206032130.fbu';
 DECLARE @dbNaam AS VARCHAR(200); SET @dbNaam = 'gap_tst';
 
 -- wordt berekend:

@@ -12,10 +12,9 @@
         De gegevens van je groep worden natuurlijk pas echt bruikbaar als je er meer
         mee kunt doen dan ze alleen online bekijken. Daarom kun je allerlei lijstjes
         downloaden als Excel-bestand. Je kunt ze dan openen in Excel van Microsoft,
-        Calc van OpenOffice.org of LibreOffice, en misschien ook nog in andere spreadsheetprogramma's.
-        Heb je geen programma waarmee je het bestand kunt openen? Calc is gratis, zowel
-        in de versie van <a href="http://nl.openoffice.org/downloaden.html">OpenOffice.org</a>
-        of als in die van <a href="http://www.libreoffice.org/download/">LibreOffice</a>.</p>
+        Calc van LibreOffice, en misschien ook nog in andere spreadsheetprogramma's.
+        Heb je geen programma waarmee je het bestand kunt openen? Calc van <a href="http://www.libreoffice.org/download/">
+            LibreOffice</a> is gratis.</p>
     <p>
         Microsoft Office voor Mac kan blijkbaar problemen hebben met de geboortedatums,
         daar moet je dus mee opletten.</p>
@@ -25,9 +24,9 @@
         eerst een <a href="http://www.microsoft.com/downloads/details.aspx?familyid=941b3470-3ae9-4aee-8f43-c6bb74cd1466&displaylang=nl"
             title="Hulpprogramma om Office 2007-bestanden te kunnen openen in Office 2003">
             extra programma</a> installeren. Zorg ook dat je <a href="http://update.microsoft.com">
-                de recentste updates van Office</a> geïnstalleerd hebt. Van OpenOffice.org
-        of LibreOffice heb je minstens versie 3.2 nodig. Gebruik de links in de eerste
-        alinea om die te downloaden.</p>
+                de recentste updates van Office</a> geïnstalleerd hebt. Van LibreOffice
+        heb je minstens versie 3.2 nodig. Gebruik de links in de eerste alinea om die
+        te downloaden.</p>
     <p>
         Als je in de kolom met geboortedata alleen ##### ziet staan, dan betekent dat
         gewoon dat de kolom te smal is. Er is dus niets foutgelopen. Maak de kolom wat

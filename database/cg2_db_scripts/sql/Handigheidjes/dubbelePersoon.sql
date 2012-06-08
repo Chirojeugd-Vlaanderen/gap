@@ -1,4 +1,5 @@
-create procedure data.spDubbelePersoonVerwijderen (@foutPID as int, @juistPID as int) as
+
+CREATE procedure [data].[spDubbelePersoonVerwijderen] (@foutPID as int, @juistPID as int) as
 -- alle referenties van persoon met @foutPID veranderen naar die van persoon met @juistPID
 begin
 
@@ -166,6 +167,15 @@ JOIN biv.Deelnemer fouteDn on fouteDn.GelieerdePersoonID = fouteGp.GelieerdePers
 JOIN pers.GelieerdePersoon juisteGp on fouteGp.GroepID = juisteGp.GroepID
 WHERE fouteGp.PersoonID=@foutPID AND juisteGp.PersoonID=@juistPID
 
+-- probeer dubbelpuntabonnement te verleggen
+
+UPDATE foutAb
+SET foutAb.GelieerdePersoonID=juisteGp.GelieerdePersoonID
+FROM pers.GelieerdePersoon fouteGp
+JOIN abo.Abonnement foutAb on foutAb.GelieerdePersoonID = fouteGp.GelieerdePersoonID
+JOIN pers.GelieerdePersoon juisteGp on fouteGp.GroepID = juisteGp.GroepID
+WHERE fouteGp.PersoonID=@foutPID AND juisteGp.PersoonID=@juistPID
+
 
 -- op dit moment kunnen de foute gelieerde personen verdwijnen
 
@@ -207,11 +217,22 @@ SET pv.PersoonID = @juistPID
 FROM verz.PersoonsVerzekering pv
 WHERE pv.PersoonID = @foutPID
 
+-- GAV-schap verleggen
+
+UPDATE gs
+SET gs.PersoonID = @juistPID
+FROM auth.gavSchap gs
+WHERE gs.PersoonID = @foutPID
+
 -- We gaan ervan uit dat de goeie informatie in het juiste
 -- persoonsrecord zit
 DELETE FROM pers.Persoon WHERE PersoonID=@foutPID
 
 COMMIT TRAN
 
-
 end
+
+
+
+GO
+

@@ -67,6 +67,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="WerkJaarManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">

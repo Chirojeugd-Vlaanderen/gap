@@ -281,6 +281,7 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="werkJaar">
         /// Werkjaar voor de verzekering
         /// </param>
+        [OperationContract(IsOneWay = true)]
         void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar);
 
         /// <summary>
