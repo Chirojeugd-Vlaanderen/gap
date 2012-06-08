@@ -259,9 +259,11 @@ namespace Chiro.Gap.Data.Ef
                         .ThenByDescending(gp => gp.Persoon.GeboorteDatum)
                         .ThenBy(gp => gp.Persoon.Naam).ThenBy(gp => gp.Persoon.VoorNaam);
                 case PersoonSorteringsEnum.Categorie:
+                    // gp.Categorie.First().Naam deed de webapp crashen, omdat First() alleen als laatste bewerking mag.
+                    // De YSOD suggereerde zelf om FirstOrDefault() te gebruiken, en dat werkt.
                     return lijst
                         .OrderBy(gp => gp.Categorie.FirstOrDefault() == null)
-                        .ThenBy(gp => (gp.Categorie.FirstOrDefault() == null ? null : gp.Categorie.First().Naam))
+                        .ThenBy(gp => (gp.Categorie.FirstOrDefault() == null ? null : gp.Categorie.FirstOrDefault().Naam))
                         .ThenBy(gp => gp.Persoon.Naam).ThenBy(gp => gp.Persoon.VoorNaam);
                 default:
                     throw new NotSupportedException();
