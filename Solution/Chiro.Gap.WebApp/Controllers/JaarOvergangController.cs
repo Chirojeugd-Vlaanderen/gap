@@ -48,7 +48,9 @@ namespace Chiro.Gap.WebApp.Controllers
             // Als we met een gewest/verbond te doen hebben, dan zijn de afdelingen niet relevant
             if (model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep))
             {
-                return Stap2AfdelingsJarenVerdelen(new JaarOvergangAfdelingsJaarModel(), groepID);
+                var postmodel = new JaarOvergangAfdelingsJaarModel();
+                postmodel.LedenMeteenInschrijven = true;
+                return Stap2AfdelingsJarenVerdelen(postmodel, groepID);
             }
 
             model.Titel = "Jaarovergang stap 1: welke afdelingen heeft je groep volgend jaar?";
