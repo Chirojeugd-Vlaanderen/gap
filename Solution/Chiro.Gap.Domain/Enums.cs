@@ -66,26 +66,26 @@ namespace Chiro.Gap.Domain
     [Flags]
     public enum Niveau
     {
-// FUTURE
-//        [EnumMember]
-//        Satelliet = 0x01,
-        [EnumMember]
-        LidInGroep = 0x02,
-        [EnumMember]
-        LeidingInGroep = 0x04,
-        [EnumMember]
-        Groep = LidInGroep | LeidingInGroep,
-        [EnumMember]
-        Gewest = 0x08,
-        [EnumMember]
-        Verbond = 0x20,
-        [EnumMember]
-        Nationaal = 0x80,
-		[EnumMember]
-		KaderGroep = Gewest | Verbond | Nationaal,
-        [EnumMember]
-        Alles = /*Satelliet |*/ Groep | KaderGroep
+        // FUTURE
+        //        [EnumMember]
+        //        Satelliet = 0x01,
+        [EnumMember] LidInGroep = 0x02,
+        [EnumMember] LeidingInGroep = 0x04,
+        [EnumMember] Groep = LidInGroep | LeidingInGroep,
+        [EnumMember] Gewest = 0x08,
+        [EnumMember] Verbond = 0x20,
+        [EnumMember] Nationaal = 0x80,
+        [EnumMember] KaderGroep = Gewest | Verbond | Nationaal,
+        [EnumMember] Alles = /*Satelliet |*/ Groep | KaderGroep
     };
+
+    public static class NiveauExtensions
+    {
+        public static bool HeeftNiveau(this Niveau orig, Niveau n)
+        {
+            return (n & orig) != 0;
+        }
+    }
 
     /// <summary>
     /// Bepaalt de 'status' van het adres

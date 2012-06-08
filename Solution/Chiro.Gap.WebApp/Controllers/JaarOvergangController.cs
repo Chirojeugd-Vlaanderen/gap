@@ -46,7 +46,7 @@ namespace Chiro.Gap.WebApp.Controllers
             BaseModelInit(model, groepID);
 
             // Als we met een gewest/verbond te doen hebben, dan zijn de afdelingen niet relevant
-            if (model.GroepsNiveau == Niveau.KaderGroep)
+            if (model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep))
             {
                 return Stap2AfdelingsJarenVerdelen(new JaarOvergangAfdelingsJaarModel(), groepID);
             }
