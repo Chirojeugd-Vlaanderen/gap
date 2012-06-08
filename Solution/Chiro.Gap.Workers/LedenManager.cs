@@ -646,57 +646,6 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Zet kinderen en leiding op non-actief. Geen van beide kunnen ooit verwijderd worden!!!
-        /// </summary>
-        /// <param name="lid">
-        /// Het lid dat we non-actief willen maken
-        /// </param>
-        /// <remarks>
-        /// Het <paramref name="lid"/> moet via het groepswerkjaar gekoppeld
-        /// aan zijn groep.  Als het om leiding gaat, moeten ook de afdelingen gekoppeld zijn.
-        /// </remarks>
-        public void NonActiefMaken(Lid lid)
-        {
-            Debug.Assert(lid.GroepsWerkJaar != null);
-            Debug.Assert(lid.GroepsWerkJaar.Groep != null);
-
-            if (!_autorisatieMgr.IsGavLid(lid.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            // checks:
-            if (lid.GroepsWerkJaar.ID != _veelGebruikt.GroepsWerkJaarOphalen(lid.GroepsWerkJaar.Groep.ID).ID)
-            {
-                throw new FoutNummerException(
-                    FoutNummer.GroepsWerkJaarNietBeschikbaar,
-                    Resources.GroepsWerkJaarVoorbij);
-            }
-
-            lid.NonActief = true;
-
-            // TODO (#683): functies afpakken
-            _daos.LedenDao.Bewaren(lid);
-        }
-
-        /// <summary>
-        /// Persisteert een lid met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
-        /// </summary>
-        /// <param name="lid">
-        /// Het <paramref name="lid"/> dat bewaard moet worden
-        /// </param>
-        /// <param name="extras">
-        /// De gekoppelde entiteiten
-        /// </param>
-        /// <returns>
-        /// Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld
-        /// </returns>
-        public Lid Bewaren(Lid lid, LidExtras extras)
-        {
-            return Bewaren(lid, extras, true);
-        }
-
-        /// <summary>
         /// Persisteert een lid met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
         /// </summary>
         /// <param name="lid">
