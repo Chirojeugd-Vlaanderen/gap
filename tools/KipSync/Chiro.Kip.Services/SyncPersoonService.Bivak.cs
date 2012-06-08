@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using Chiro.Kip.Data;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using Chiro.Kip.Workers;
 using Adres = Chiro.Kip.ServiceContracts.DataContracts.Adres;
 using Persoon = Chiro.Kip.Data.Persoon;
 
@@ -17,9 +18,11 @@ namespace Chiro.Kip.Services
 		/// Bivakaangifte
 		/// </summary>
 		/// <param name="bivak">gegevens voor de bivakaangifte</param>
+		/// <remarks>bivak.WerkJaar wordt genegeerd, het werkjaar wordt bepaald op basis van de startdatum van het bivak.</remarks>
 		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void BivakBewaren(Bivak bivak)
 		{
+            var wjm = new WerkJaarManager();
 			var feedback = new StringBuilder();
 
 			ChiroGroep groep;
@@ -32,16 +35,20 @@ namespace Chiro.Kip.Services
 				                select a).FirstOrDefault();
 
 				groep = (from cg in db.Groep.OfType<ChiroGroep>()
-				         where String.Compare(cg.STAMNR, bivak.StamNummer, true) == 0
+				         where System.String.Compare(cg.STAMNR, bivak.StamNummer, System.StringComparison.OrdinalIgnoreCase) == 0
 				         select cg).FirstOrDefault();
 
-				if (aangifte == null)
+                if (groep == null)
+                {
+                    _log.FoutLoggen(0, String.Format("Bivakaangifte: groep met stamnummer {0} niet gevonden", bivak.StamNummer));
+                }
+				else if (aangifte == null)
 				{
 					// Nieuwe maken
 
 					aangifte = new BivakAangifte
 					           	{
-					           		WerkJaar = bivak.WerkJaar,
+					           		WerkJaar = wjm.DatumNaarWerkJaar(bivak.DatumVan),
 					           		DatumVan = bivak.DatumVan,
 					           		DatumTot = bivak.DatumTot,
 								BivakNaam = bivak.Naam,
@@ -56,18 +63,18 @@ namespace Chiro.Kip.Services
 				{
 					// Het enige dat zou mogen veranderen, zijn de data, naam en opmerkingen
 					// (Anders zou er vanalles mislopen met de consistentie)
-					Debug.Assert(String.Compare(groep.STAMNR.Trim(), bivak.StamNummer.Trim(), true) == 0);
+					Debug.Assert(System.String.Compare(groep.STAMNR.Trim(), bivak.StamNummer.Trim(), System.StringComparison.OrdinalIgnoreCase) == 0);
 
 					// Boven 'Trim' toegevoegd, omdat de stamnummers uit GAP soms eindigen op een spatie? 
 					// Vermoedelijk omdat de groepscode een CHAR(10) is, en geen VARCHAR(10)?
-					// I kan mij niet voorstellen dat enkel hier problemen geeft...
+					// Ik kan mij niet voorstellen dat enkel hier problemen geeft...
 
-                    if (aangifte.WerkJaar != bivak.WerkJaar)
+                    if (aangifte.WerkJaar != wjm.DatumNaarWerkJaar(bivak.DatumVan))
                     {
-                        _log.FoutLoggen(groep.GroepID, String.Format("Bivakaangifte van vorig jaar gewijzigd {0}", groep.STAMNR));
+                        _log.FoutLoggen(groep.GroepID, String.Format("Poging tot wijzigen werkjaar bestaande bivakaangifte {0}", groep.STAMNR));
                         return;
                     }
-					Debug.Assert(aangifte.WerkJaar == bivak.WerkJaar);
+                    Debug.Assert(aangifte.WerkJaar == wjm.DatumNaarWerkJaar(bivak.DatumVan));
 					aangifte.BivakNaam = bivak.Naam;
 					aangifte.Opmerkingen = bivak.Opmerkingen;
 					aangifte.DatumVan = bivak.DatumVan;
@@ -79,7 +86,7 @@ namespace Chiro.Kip.Services
 				feedback.AppendLine(String.Format("BivakAangifteID:", aangifte.ID));
 			}
 			_log.BerichtLoggen(groep.GroepID, feedback.ToString());
-			FixOudeBivakTabel(groep.GroepID, bivak.WerkJaar);
+            FixOudeBivakTabel(groep.GroepID, wjm.DatumNaarWerkJaar(bivak.DatumVan));
 		}
 
 		/// <summary>
@@ -615,17 +622,14 @@ namespace Chiro.Kip.Services
 						uitstapID));
 					return;
 				}
-				else
-				{
-					// Bewaar groepID, want ik denk dat we daar niet meer aankunnen
-					// als bivak wordt verwijderd.
+			    // Bewaar groepID, want ik denk dat we daar niet meer aankunnen
+			    // als bivak wordt verwijderd.
 
-					groepID = bivak.Groep.GroepID;
-					werkJaar = bivak.WerkJaar;
-					bivakID = bivak.ID;
+			    groepID = bivak.Groep.GroepID;
+			    werkJaar = bivak.WerkJaar;
+			    bivakID = bivak.ID;
 
-					db.DeleteObject(bivak);
-				}
+			    db.DeleteObject(bivak);
 			}
 
 			FixOudeBivakTabel(groepID, werkJaar);

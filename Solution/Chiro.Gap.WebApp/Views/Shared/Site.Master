@@ -1,80 +1,87 @@
 <%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<Chiro.Gap.WebApp.Models.IMasterViewModel>"
-	MasterPageFile="~/Views/Shared/Globaal.Master" %>
+    MasterPageFile="~/Views/Shared/Globaal.Master" %>
 
 <asp:Content ContentPlaceHolderID="HeaderTitleContent" runat="server">
-	<%=Html.Encode(ViewData.Model.Titel) %>
-	|
-	<%=Html.Encode(ViewData.Model.GroepsNaam) %>
+    <%=Html.Encode(ViewData.Model.Titel) %>
+    |
+    <%=Html.Encode(ViewData.Model.GroepsNaam) %>
 </asp:Content>
-
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
     <% // Dit is geen nutteloze nesting: bij overerving, zoals in de handleiding, 
-       // kun je alleen de contentplaceholders van de directe parent gebruiken.
-       // En als je commentaar voor de developers in de UI-bestanden wilt zetten,
-       // gebruik je beter servercomments, zoals hier, dan html-comments. ;) %>
-	<asp:ContentPlaceHolder runat="server" ID="head" />
+    // kun je alleen de contentplaceholders van de directe parent gebruiken.
+    // En als je commentaar voor de developers in de UI-bestanden wilt zetten,
+    // gebruik je beter servercomments, zoals hier, dan html-comments. ;) %>
+    <asp:ContentPlaceHolder runat="server" ID="head" />
 </asp:Content>
-
-<asp:Content ID="Content1" ContentPlaceHolderID="settingsitems" runat="server">           
+<asp:Content ID="Content1" ContentPlaceHolderID="settingsitems" runat="server">
     <% if (Model.GroepID > 0)
-	{ %>
-		    <li>[<%=Html.ActionLink("GAV's beheren", "Index" , "GebruikersRecht") %>]</li>
-	<%		
-    } %>
+       { %>
+    <li>[<%=Html.ActionLink("GAV's beheren", "Index" , "GebruikersRecht") %>]</li>
+    <%		
+       } %>
     <% if (Model.MeerdereGroepen == true)
-	{ %>
-		    <li>[<%=Html.ActionLink("Andere groep kiezen", "Index", "Gav") %>]</li>
-	<%		
-    } %>
+       { %>
+    <li>[<%=Html.ActionLink("Andere groep kiezen", "Index", "Gav") %>]</li>
+    <%		
+       } %>
 </asp:Content>
-
 <asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
     <h1>
-		<%=Html.Encode(ViewData.Model.GroepsNaam)%> 
-<% if (ViewData.Model.HuidigWerkJaar > 0)
-   {%>
-	<%=ViewData.Model.HuidigWerkJaar%>-<%=ViewData.Model.HuidigWerkJaar + 1%>
-<%
-   }
-%>
-	</h1>
-	<%  if (ViewData.Model.Plaats != "geen" && ViewData.Model.Plaats != "nvt")
-	 { %>
-	<p>
-		<%=Html.Encode(ViewData.Model.Plaats)%>
-		<br />
-		Stamnummer:
-		<%=Html.Encode(ViewData.Model.StamNummer)%>
-	</p>
-	<%  }
-	 else
-	 { %>
-	<p>
-		Stamnummer:
-		<%=Html.Encode(ViewData.Model.StamNummer)%></p>
-	<%  }
-	%>
+        <%=Html.Encode(ViewData.Model.GroepsNaam)%>
+        <% if (ViewData.Model.HuidigWerkJaar > 0)
+           {%>
+        <%=ViewData.Model.HuidigWerkJaar%>-<%=ViewData.Model.HuidigWerkJaar + 1%>
+        <%
+           }
+        %>
+    </h1>
+    <%  if (ViewData.Model.Plaats != "geen" && ViewData.Model.Plaats != "nvt")
+        { %>
+    <p>
+        <%=Html.Encode(ViewData.Model.Plaats)%>
+        <br />
+        Stamnummer:
+        <%=Html.Encode(ViewData.Model.StamNummer)%>
+    </p>
+    <%  }
+        else
+        { %>
+    <p>
+        Stamnummer:
+        <%=Html.Encode(ViewData.Model.StamNummer)%></p>
+    <%  }
+    %>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
     <% if (Model.GroepID > 0)
-	{
-		Html.RenderPartial("NavigatieVolledigControl");
-	}
-	%>
+       {
+           Html.RenderPartial("NavigatieVolledigControl");
+       }
+       else if (Model.MeerdereGroepen == true)
+       {
+           Html.RenderPartial("NavigatieBeperktControl");
+       }
+       else
+       {%>
+    <ul>
+        <li>
+            <%= Html.ActionLink("Handleiding", "ViewTonen", "Handleiding")%></li></ul>
+    <%
+       } %>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="BodyContent" runat="server">
     <% if (Model.Titel != string.Empty)
-	{ %>
-	<h2>
-		<%=Html.Encode(ViewData.Model.Titel) %></h2>
-	<% }
+       { %>
+    <h2>
+        <%=Html.Encode(ViewData.Model.Titel) %></h2>
+    <% }
 
-	if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
-	{
-		Html.RenderPartial("MededelingenControl");
-	}
-	Html.RenderPartial("LiveTestControl");
+       if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
+       {
+           Html.RenderPartial("MededelingenControl");
+       }
+       Html.RenderPartial("LiveTestControl");
 		
-		%>
-	<asp:ContentPlaceHolder ID="MainContent" runat="server" />
+    %>
+    <asp:ContentPlaceHolder ID="MainContent" runat="server" />
 </asp:Content>
