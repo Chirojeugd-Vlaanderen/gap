@@ -23,15 +23,20 @@
        { %>
     <li>[<%=Html.ActionLink("GAV's beheren", "Index" , "GebruikersRecht") %>]</li>
     <%		
-    } %>
+       } %>
     <% if (Model.MeerdereGroepen == true)
        { %>
     <li>[<%=Html.ActionLink("Andere groep kiezen", "Index", "Gav") %>]</li>
     <%		
-    } %>
+       } %>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
-  </asp:Content>
+    <% if (Model.GroepID > 0)
+       {
+           Html.RenderPartial("GroepsGegevensControl");
+       }
+    %>
+</asp:Content>
 <asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
     <% if (Model.GroepID > 0)
        {
@@ -44,5 +49,5 @@
             <% =Html.ActionLink("Probeer aan te melden bij een groep", "Index", "Gav")%></li>
     </ul>
     <%
-    }%>
+       }%>
 </asp:Content>
