@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 
 using Chiro.Gap.Orm;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.UpdateSvc.Service
@@ -314,6 +315,16 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <returns>
         /// </returns>
         public bool IsGavGebruikersRecht(int gebruikersRechtID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum)
         {
             throw new NotImplementedException();
         }

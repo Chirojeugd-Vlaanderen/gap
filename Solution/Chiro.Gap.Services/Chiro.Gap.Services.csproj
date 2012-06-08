@@ -17,6 +17,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -148,6 +149,10 @@
     <ProjectReference Include="..\Chiro.Gap.Sync\Chiro.Gap.Sync.csproj">
       <Project>{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}</Project>
       <Name>Chiro.Gap.Sync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
+      <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
+      <Name>Chiro.Gap.WorkerInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
       <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>

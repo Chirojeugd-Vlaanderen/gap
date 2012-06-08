@@ -82,6 +82,7 @@
     <Compile Include="CategorieTest.cs" />
     <Compile Include="CategorieToevoegen.cs" />
     <Compile Include="CommVormManagerTest.cs" />
+    <Compile Include="JaarOvergangManagerTest.cs" />
     <Compile Include="UitstapAanmaken.cs" />
     <Compile Include="FunctiesManagerTest.cs" />
     <Compile Include="GapExceptionTest.cs" />
@@ -144,6 +145,10 @@
       <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
       <Name>Chiro.Gap.Validatie</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
+      <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
+      <Name>Chiro.Gap.WorkerInterfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
       <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
       <Name>Chiro.Gap.Workers</Name>
@@ -154,7 +159,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

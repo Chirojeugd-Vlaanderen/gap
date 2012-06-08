@@ -4,6 +4,8 @@
 
 using System.ServiceModel;
 
+using Chiro.Gap.WorkerInterfaces;
+
 namespace Chiro.Gap.Workers
 {
     /// <summary>

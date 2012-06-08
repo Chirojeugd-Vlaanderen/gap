@@ -1,4 +1,7 @@
 ﻿using System.Linq;
+
+using Chiro.Gap.WorkerInterfaces;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers;
@@ -151,7 +154,7 @@ namespace Chiro.Gap.Data.Test
 			var ajDao = Factory.Maak<IAfdelingsJarenDao>();
 			var oaDao = Factory.Maak<IDao<OfficieleAfdeling>>();
 
-			var afdMgr = Factory.Maak<AfdelingsJaarManager>();
+			var afdMgr = Factory.Maak<IAfdelingsJaarManager>();
 
 			const int GWJ_ID = TestInfo.GROEPSWERKJAARID;
 			const int AFD3_ID = TestInfo.AFDELING3ID;

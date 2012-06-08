@@ -7,6 +7,7 @@
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
