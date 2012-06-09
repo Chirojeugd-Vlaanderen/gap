@@ -24,7 +24,7 @@
 
 <div class="pager">
     Pagina's:
-    <%= Html.PagerLinksLetters(ViewData.Model.HuidigePagina, ViewData.Model.Paginas, letter => Url.Action("List", new { Controller = "Personen", page = letter, sortering = Model.Sortering }))%>
+    <%= Html.PagerLinksLetters(ViewData.Model.HuidigePagina, ViewData.Model.Paginas, letter => Url.Action("List", new { Controller = "Personen", page = letter, sortering = Model.Sortering }), ViewData.Model.GekozenCategorieID > 0)%>
     (Totaal:
     <%= Model.Totaal %>
     personen)
