@@ -261,7 +261,7 @@ namespace Chiro.Gap.Services
 
         /// <summary>
         /// Haalt een persoonsgegevens op van gelieerde personen van een groep,
-        /// inclusief eventueel lidobject voor het recentste werkjaar.
+        /// inclusief eventueel lidobject voor het recentste werkJaar.
         /// </summary>
         /// <param name="gelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
@@ -302,7 +302,7 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Haalt de persoonsgegevens op van gelieerde personen van een groep
         /// wiens familienaam begint met de letter <paramref name="letter"/>.
-        /// inclusief eventueel lidobject voor het recentste werkjaar.
+        /// inclusief eventueel lidobject voor het recentste werkJaar.
         /// </summary>
         /// <param name="groepID">ID van de betreffende groep</param>
         /// <param name="letter">Beginletter van de achternaam</param>
@@ -325,7 +325,7 @@ namespace Chiro.Gap.Services
 
                 /*
                  * TODO dit staat mss niet op de beste plek
-                 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
+                 * Ophalen afdelingsjaren in het huidige werkJaar (TODO niet als een vorig werkJaar bekeken wordt)
                  * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
                  * als dit het geval is, kanlidworden op true zetten.
                  * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
@@ -395,7 +395,7 @@ namespace Chiro.Gap.Services
 
                 /*
                  * TODO dit staat mss niet op de beste plek
-                 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
+                 * Ophalen afdelingsjaren in het huidige werkJaar (TODO niet als een vorig werkJaar bekeken wordt)
                  * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
                  * als dit het geval is, kanlidworden op true zetten.
                  * kanleidingworden wordt true als de persoon de juiste leeftijd heeft

@@ -65,14 +65,14 @@ namespace Chiro.Gap.Services.Test
 
 			// Maak de categorieën voor de tests aan, als ze niet bestaan
 
-			foreach (string code in TestInfo.ONBESTAANDECATEGORIECODES)
+			foreach (string code in TestInfo.ONBESTAANDE_CATEGORIE_CODES)
 			{
-				int catID = _groepenSvc.CategorieIDOphalen(TestInfo.GROEPID, code);
+				int catID = _groepenSvc.CategorieIDOphalen(TestInfo.GROEP_ID, code);
 
 				if (catID == 0)
 				{
 					catID = _groepenSvc.CategorieToevoegen(
-						TestInfo.GROEPID,
+						TestInfo.GROEP_ID,
 						code,
 						code);
 				}
@@ -85,9 +85,9 @@ namespace Chiro.Gap.Services.Test
 		[TestCleanup]
 		public void TearDown()
 		{
-			foreach (string code in TestInfo.ONBESTAANDECATEGORIECODES)
+			foreach (string code in TestInfo.ONBESTAANDE_CATEGORIE_CODES)
 			{
-				int catID = _groepenSvc.CategorieIDOphalen(TestInfo.GROEPID, code);
+				int catID = _groepenSvc.CategorieIDOphalen(TestInfo.GROEP_ID, code);
 
 				if (catID != 0)
 				{
@@ -107,16 +107,16 @@ namespace Chiro.Gap.Services.Test
 			// Arrange: Categorie-ID bepalen van te verwijderen categorie.
 
 			int catID = _groepenSvc.CategorieIDOphalen(
-				TestInfo.GROEPID,
-				TestInfo.ONBESTAANDECATEGORIECODES[0]);
+				TestInfo.GROEP_ID,
+				TestInfo.ONBESTAANDE_CATEGORIE_CODES[0]);
 
 			// Act: verwijder de categorie met gegeven ID, en probeer categorie
 			// opnieuw op te halen
 
 			_groepenSvc.CategorieVerwijderen(catID, false);
 			catID = _groepenSvc.CategorieIDOphalen(
-				TestInfo.GROEPID,
-				TestInfo.ONBESTAANDECATEGORIECODES[0]);
+				TestInfo.GROEP_ID,
+				TestInfo.ONBESTAANDE_CATEGORIE_CODES[0]);
 
 			// Assert: categorie niet meer gevonden.
 
@@ -134,11 +134,11 @@ namespace Chiro.Gap.Services.Test
 			// Arrange: categorie opzoeken, en persoon toevoegen.
 
 			int catID = _groepenSvc.CategorieIDOphalen(
-				TestInfo.GROEPID,
-				TestInfo.ONBESTAANDECATEGORIECODES[1]);
+				TestInfo.GROEP_ID,
+				TestInfo.ONBESTAANDE_CATEGORIE_CODES[1]);
 
 			_personenSvc.CategorieKoppelen(
-				new List<int> { TestInfo.GELIEERDEPERSOONID },
+				new List<int> { TestInfo.GELIEERDE_PERSOON_ID },
 				new List<int> { catID });
 
 			// Act
@@ -161,11 +161,11 @@ namespace Chiro.Gap.Services.Test
 			// Arrange: categorie opzoeken, en persoon toevoegen.
 
 			int catID = _groepenSvc.CategorieIDOphalen(
-				TestInfo.GROEPID,
-				TestInfo.ONBESTAANDECATEGORIECODES[2]);
+				TestInfo.GROEP_ID,
+				TestInfo.ONBESTAANDE_CATEGORIE_CODES[2]);
 
 			_personenSvc.CategorieKoppelen(
-				new List<int> { TestInfo.GELIEERDEPERSOONID },
+				new List<int> { TestInfo.GELIEERDE_PERSOON_ID },
 				new List<int> { catID });
 
 			// Act
@@ -177,12 +177,12 @@ namespace Chiro.Gap.Services.Test
 
 			// Probeer categorie terug op te halen.  Dat moet failen.
 			catID = _groepenSvc.CategorieIDOphalen(
-				TestInfo.GROEPID, 
-				TestInfo.ONBESTAANDECATEGORIECODES[2]);
+				TestInfo.GROEP_ID, 
+				TestInfo.ONBESTAANDE_CATEGORIE_CODES[2]);
 			Assert.IsTrue(catID == 0);
 
 			// Controleer ook of de gelieerde persoon niet per ongeluk mee is verwijderd
-			var gp = _personenSvc.DetailOphalen(TestInfo.GELIEERDEPERSOONID);
+			var gp = _personenSvc.DetailOphalen(TestInfo.GELIEERDE_PERSOON_ID);
 			Assert.IsTrue(gp != null);
 		}
 	}

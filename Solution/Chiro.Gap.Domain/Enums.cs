@@ -184,7 +184,7 @@ namespace Chiro.Gap.Domain
     }
 
     /// <summary>
-    /// Geeft aan of een werkjaar voorbij is, bezig is, of op zijn einde loopt (in overgang)
+    /// Geeft aan of een werkJaar voorbij is, bezig is, of op zijn einde loopt (in overgang)
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2217:DoNotMarkEnumsWithFlags"), DataContract]
     [Flags]
@@ -197,7 +197,7 @@ namespace Chiro.Gap.Domain
         [EnumMember]
         Bezig = 0x02,
         [EnumMember]
-        InOvergang = 0x06	// bewust 0x06, omdat een werkjaar in overgang dan ook bezig is.
+        InOvergang = 0x06	// bewust 0x06, omdat een werkJaar in overgang dan ook bezig is.
     }
 
 	/// <summary>

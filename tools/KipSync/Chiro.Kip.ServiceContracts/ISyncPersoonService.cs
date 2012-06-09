@@ -90,14 +90,14 @@ namespace Chiro.Kip.ServiceContracts
         /// <summary>
         /// Verwijdert een communicatiemiddel uit Kipadmin.
         /// </summary>
-        /// <param name="pers">
+        /// <param name="persoon">
         /// Persoonsgegevens van de persoon waarvan het communicatiemiddel moet verdwijnen.
         /// </param>
-        /// <param name="communicatie">
+        /// <param name="communicatieMiddel">
         /// Gegevens over het te verwijderen communicatiemiddel
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void CommunicatieVerwijderen(Persoon pers, CommunicatieMiddel communicatie);
+        void CommunicatieVerwijderen(Persoon persoon, CommunicatieMiddel communicatieMiddel);
 
         #endregion
 
@@ -136,7 +136,7 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer te verwijderen lid
         /// </param>
-        /// <param name="werkjaar">
+        /// <param name="werkJaar">
         /// Werkjaar te verwijderen lid
         /// </param>
         /// <remarks>
@@ -147,7 +147,7 @@ namespace Chiro.Kip.ServiceContracts
         void LidVerwijderen(
             int adNummer,
             string stamNummer,
-            int werkjaar);
+            int werkJaar);
 
         /// <summary>
         /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
@@ -158,7 +158,7 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">
         /// Stamnummer van het lid
         /// </param>
-        /// <param name="werkjaar">
+        /// <param name="werkJaar">
         /// Werkjaar van het lid
         /// </param>
         /// <remarks>
@@ -169,7 +169,7 @@ namespace Chiro.Kip.ServiceContracts
         void NieuwLidVerwijderen(
             PersoonDetails details,
             string stamNummer,
-            int werkjaar);
+            int werkJaar);
 
         /// <summary>
         /// Updatet de functies van een lid.

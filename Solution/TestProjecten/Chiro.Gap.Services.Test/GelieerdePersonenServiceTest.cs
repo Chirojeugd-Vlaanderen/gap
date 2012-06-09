@@ -79,7 +79,7 @@ namespace Chiro.Gap.Services.Test
 
 			var svc = Factory.Maak<GelieerdePersonenService>();
 
-			var gp = svc.AlleDetailsOphalen(TestInfo.GELIEERDEPERSOONID);
+			var gp = svc.AlleDetailsOphalen(TestInfo.GELIEERDE_PERSOON_ID);
 
 			foreach (var cv in gp.CommunicatieInfo)
 			{
@@ -99,16 +99,16 @@ namespace Chiro.Gap.Services.Test
 		{
 			var target = Factory.Maak<GelieerdePersonenService>();
 
-			var gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
+			var gelieerdePersoonID = TestInfo.GELIEERDE_PERSOON_ID;
 
 			var commInfo = new CommunicatieDetail()
                             	{
                             		CommunicatieTypeID = 1,
-                            		Nummer = TestInfo.ONGELDIGTELEFOONNR
+                            		Nummer = TestInfo.ONGELDIG_TELEFOON_NR
                             	};
 
 			target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);
-			Assert.IsTrue(false);
+
 		}
 
 		///<summary>
@@ -119,13 +119,13 @@ namespace Chiro.Gap.Services.Test
 		{
 			var target = Factory.Maak<GelieerdePersonenService>();
 
-			var gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
+			var gelieerdePersoonID = TestInfo.GELIEERDE_PERSOON_ID;
 
 			var commInfo = new CommunicatieDetail()
 			{
 				CommunicatieTypeID = 1,
 				Voorkeur = true,
-				Nummer = TestInfo.GELDIGTELEFOONNR
+				Nummer = TestInfo.GELDIG_TELEFOON_NR
 			};
 
 			target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);

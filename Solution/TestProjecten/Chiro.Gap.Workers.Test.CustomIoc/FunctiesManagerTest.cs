@@ -203,7 +203,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 
 		/// <summary>
 		/// probeert een functie die zowel dit jaar als vorig jaar gebruikt is, 
-		/// geforceerd te verwijderen.  We verwachten dat het 'werkjaar tot'  wordt
+		/// geforceerd te verwijderen.  We verwachten dat het 'werkJaar tot'  wordt
 		/// ingevuld.
 		/// </summary>
 		[TestMethod]
@@ -231,7 +231,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 			Assert.IsNotNull(result);
 			Assert.AreEqual(result.WerkJaarTot, testData.HuidigGwj.WerkJaar - 1);
 
-			// enkel het lid van dit werkjaar blijft over
+			// enkel het lid van dit werkJaar blijft over
 			Assert.AreEqual(result.Lid.Count, 1);
 		}
 	}

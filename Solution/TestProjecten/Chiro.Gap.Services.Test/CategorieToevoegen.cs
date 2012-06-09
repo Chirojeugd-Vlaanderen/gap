@@ -39,7 +39,7 @@ namespace Chiro.Gap.Services.Test
 		/// </summary>
 		private void VerwijderCategorieToevoegTest()
 		{
-			var categorieen = _groepenSvc.CategorieenOphalen(TestInfo.GROEPID);
+			var categorieen = _groepenSvc.CategorieenOphalen(TestInfo.GROEP_ID);
 
 			int catID = (from cInfo in categorieen
 				     where String.Compare(cInfo.Code, TestInfo.ONBESTAANDENIEUWECATCODE, true) == 0
@@ -84,12 +84,12 @@ namespace Chiro.Gap.Services.Test
 		[TestMethod]
 		public void CategorieToevoegenNormaal()
 		{
-			int catID = _groepenSvc.CategorieToevoegen(TestInfo.GROEPID,
+			int catID = _groepenSvc.CategorieToevoegen(TestInfo.GROEP_ID,
 				TestInfo.CATEGORIENAAM,
 				TestInfo.ONBESTAANDENIEUWECATCODE);
 			catlijst.Add(catID);
 
-			var categorieen = _groepenSvc.CategorieenOphalen(TestInfo.GROEPID);
+			var categorieen = _groepenSvc.CategorieenOphalen(TestInfo.GROEP_ID);
 
 			var query = (from cInfo in categorieen
 				     where cInfo.ID == catID

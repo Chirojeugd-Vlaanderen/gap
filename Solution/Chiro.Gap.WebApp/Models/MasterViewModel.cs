@@ -56,13 +56,13 @@ namespace Chiro.Gap.WebApp.Models
 		public string Titel { get; set; }
 
 		/// <summary>
-		/// Int die het *jaartal* van het huidige werkjaar voor de groep bepaalt.
+		/// Int die het *jaartal* van het huidige werkJaar voor de groep bepaalt.
 		/// (Bijv. 2010 voor 2010-2011)
 		/// </summary>
 		public int HuidigWerkJaar { get; set; }
 
 		/// <summary>
-		/// <c>True</c> indien de overgang naar het nieuwe werkjaar kan gebeuren
+		/// <c>True</c> indien de overgang naar het nieuwe werkJaar kan gebeuren
 		/// </summary>
 		public bool IsInOvergangsPeriode { get; set; }
 

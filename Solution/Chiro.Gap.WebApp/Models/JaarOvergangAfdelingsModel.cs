@@ -28,7 +28,7 @@ namespace Chiro.Gap.WebApp.Models
 		}
 
 		/// <summary>
-		/// Afdelingen die al actief zijn dit werkjaar (met afdelingsjaar dus)
+		/// Afdelingen die al actief zijn dit werkJaar (met afdelingsjaar dus)
 		/// </summary>
 		public IEnumerable<AfdelingInfo> Afdelingen { get; set; }
 

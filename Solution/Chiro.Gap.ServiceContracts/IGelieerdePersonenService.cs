@@ -25,7 +25,7 @@ namespace Chiro.Gap.ServiceContracts
 
 		/// <summary>
 		/// Haalt een persoonsgegevens op van gelieerde personen van een groep,
-		/// inclusief eventueel lidobject voor het recentste werkjaar.
+		/// inclusief eventueel lidobject voor het recentste werkJaar.
 		/// </summary>
 		/// <param name="selectieGelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
 		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
@@ -38,7 +38,7 @@ namespace Chiro.Gap.ServiceContracts
         /// <summary>
         /// Haalt de persoonsgegevens op van gelieerde personen van een groep
         /// wiens familienaam begint met de letter <paramref name="letter"/>.
-        /// inclusief eventueel lidobject voor het recentste werkjaar.
+        /// inclusief eventueel lidobject voor het recentste werkJaar.
         /// </summary>
         /// <param name="groepID">ID van de betreffende groep</param>
         /// <param name="letter">Beginletter van de achternaam</param>
@@ -53,7 +53,7 @@ namespace Chiro.Gap.ServiceContracts
 
 		/// <summary>
 		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep,
-		/// inclusief eventueel lidobject voor het recentste werkjaar.
+		/// inclusief eventueel lidobject voor het recentste werkJaar.
 		/// </summary>
 		/// <param name="groepID">ID van de betreffende groep</param>
 		/// <param name="pagina">Paginanummer (1 of hoger)</param>
@@ -68,7 +68,7 @@ namespace Chiro.Gap.ServiceContracts
 
 		/// <summary>
 		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
-		/// inclusief eventueel lidobject voor het recentste werkjaar.
+		/// inclusief eventueel lidobject voor het recentste werkJaar.
 		/// </summary>
 		/// <param name="categorieID">ID van de gevraagde categorie</param>
 		/// <param name="pagina">Paginanummer (1 of hoger)</param>

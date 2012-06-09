@@ -172,7 +172,7 @@ namespace Chiro.Gap.Data.Ef
                 if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
                 {
                     // Als niet alle lidobjecten gevraagd zijn, maar wel de lidobjecten van
-                    // het huidige werkjaar, dan moeten we die expliciet koppelen
+                    // het huidige werkJaar, dan moeten we die expliciet koppelen
 
                     HuidigeLedenKoppelen(db, resultaat);
                 }
@@ -238,7 +238,7 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
-        /// Instantieert de abonnementen van de gegeven gelieerde personen voor het huidige werkjaar
+        /// Instantieert de abonnementen van de gegeven gelieerde personen voor het huidige werkJaar
         /// </summary>
         /// <param name="db">De Objectcontext</param>
         /// <param name="gelieerdePersonen">Gelieerde personen waaraan abonnementen gekoppeld moeten worden</param>
@@ -491,7 +491,7 @@ namespace Chiro.Gap.Data.Ef
                     AdresHelper.VoorkeursAdresKoppelen(lijst);
                 }
 
-                // als enkel de lidobjecten van dit werkjaar opgevraagd worden, dan moeten we dat nog
+                // als enkel de lidobjecten van dit werkJaar opgevraagd worden, dan moeten we dat nog
                 // arrangeren:
 
                 if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
@@ -528,7 +528,7 @@ namespace Chiro.Gap.Data.Ef
         ///  - (alle!) adressen
         ///  - groepen
         ///  - categorieen
-        ///  - lidobjecten in het huidige werkjaar
+        ///  - lidobjecten in het huidige werkJaar
         ///  - afdelingen en functies van die lidobjecen
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
@@ -932,7 +932,7 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
-        /// Koppelt de lidobjecten van dit werkjaar aan de gegeven
+        /// Koppelt de lidobjecten van dit werkJaar aan de gegeven
         /// <paramref name="gelieerdePersonen"/>.
         /// </summary>
         /// <param name="db">Objectcontext waaraan de <paramref name="gelieerdePersonen"/> gekoppeld
@@ -1004,7 +1004,7 @@ namespace Chiro.Gap.Data.Ef
 
             if ((extras & (PersoonsExtras.Groep | PersoonsExtras.LedenDitWerkJaar)) != 0)
             {
-                // Als de leden van dit werkjaar opgevraagd worden, dan kunnen we
+                // Als de leden van dit werkJaar opgevraagd worden, dan kunnen we
                 // dat niet via een lambda-expressie uitdrukken.  Maar dan hebben
                 // we straks de groep wel nodig, dus halen we die meteen ook maar op.
 

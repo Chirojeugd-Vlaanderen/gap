@@ -23,5 +23,14 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public AdresTypeEnum AdresType { get; set; }
+
+        /// <summary>
+        /// Returns a System.String that represents the current Bewoner
+        /// </summary>
+        /// <returns>System.String that represents the current Bewoner</returns>
+        public override string ToString()
+        {
+            return this.Persoon + this.AdresType.ToString();
+        }
     }
 }

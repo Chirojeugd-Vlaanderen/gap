@@ -172,7 +172,7 @@ namespace Chiro.Gap.WebApp.Test
 
 
             const int GROEPID = 426;            // arbitrair
-            const int WERKJAAR = 2011;          // werkjaar 2011-2012, om iets te doen
+            const int WERKJAAR = 2011;          // werkJaar 2011-2012, om iets te doen
             const int GROEPSWERKJAARID = 2971;  // arbitrair
 
             // setup mocks

@@ -106,7 +106,7 @@ namespace Chiro.Gap.Workers
         /// </exception>
         public Abonnement Abonneren(Publicatie publicatie, GelieerdePersoon gp, GroepsWerkJaar groepsWerkJaar)
         {
-            // TODO (#767) nakijken of het nog wel de moeite loont om een abonnement te noemen voor het gegeven werkjaar.
+            // TODO (#767) nakijken of het nog wel de moeite loont om een abonnement te noemen voor het gegeven werkJaar.
             // (in augustus is dat bijvoorbeeld minder interessant)
             if (!publicatie.Actief)
             {

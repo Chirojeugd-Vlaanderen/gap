@@ -48,17 +48,17 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public int MinAantal { get; set; }
 		
 		/// <summary>
-		/// Het eerste werkjaar waarin de functie gebruikt werd in deze groep
+		/// Het eerste werkJaar waarin de functie gebruikt werd in deze groep
 		/// </summary>
 		[DataMember]
-		[DisplayName(@"Ingevoerd in het werkjaar")]
+		[DisplayName(@"Ingevoerd in het werkJaar")]
 		public int? WerkJaarVan { get; set; }
 		
 		/// <summary>
-		/// Het laatste werkjaar waarin de functie gebruikt werd in deze groep
+		/// Het laatste werkJaar waarin de functie gebruikt werd in deze groep
 		/// </summary>
 		[DataMember]
-		[DisplayName(@"Afgeschaft in het werkjaar")]
+		[DisplayName(@"Afgeschaft in het werkJaar")]
 		public int? WerkJaarTot { get; set; }
 		
 		/// <summary>

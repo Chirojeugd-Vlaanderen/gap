@@ -31,7 +31,8 @@ use gap_dev
 --
 -- Datums worden in gegeven in het formaat DD/MM/YYYY
 -- We definiteren dit hier (in de documentatie) omdat hier beneden we het gebruiken.
-SET DateFormat dmy;
+		SET DateFormat dmy; -- voor de geboortedatums
+		SET NOCOUNT ON;
 
 		DECLARE @contactPersoonCode AS VARCHAR(5);				SET @contactPersoonCode='CP';
 
@@ -747,12 +748,12 @@ PRINT 'Voor je deze database kan gebruiken moet je de volgende file update met d
 PRINT 'FILE: source:trunk\Solution\TestProjecten\Chiro.Gap.TestDbInfo\TestInfo.cs'
 PRINT 'aan te passen constanten: '
 PRINT '-'
-PRINT 'public const int GROEPID = ' + CAST(@testGroepID AS VARCHAR(10)) + ';';
-PRINT 'public const int GELIEERDEPERSOONID = ' + CAST(@testGelieerdePersoon1ID AS VARCHAR(10)) + ';';
-PRINT 'public const int GELIEERDEPERSOON2ID = ' + CAST(@testGelieerdePersoon2ID  AS VARCHAR(10)) + ';';
-PRINT 'public const int GELIEERDEPERSOON3ID = ' + CAST(@testGelieerdePersoon3ID  AS VARCHAR(10)) + ';';
-PRINT 'public const int GELIEERDEPERSOON4ID = ' + CAST(@testGelieerdePersoon4ID  AS VARCHAR(10)) + ';';
-PRINT 'public const int GELIEERDEPERSOON5ID = ' + CAST(@testGelieerdePersoon5ID  AS VARCHAR(10)) + ';';
+PRINT 'public const int GROEP_ID = ' + CAST(@testGroepID AS VARCHAR(10)) + '; // ' + @testGroepCode + ' ' + @testGroepNaam;
+PRINT 'public const int GELIEERDE_PERSOON_ID = ' + CAST(@testGelieerdePersoon1ID AS VARCHAR(10)) + + '; // Persoon ' + @testPersoon1VoorNaam + ' ' + @testPersoon1Naam;
+PRINT 'public const int GELIEERDE_PERSOON2_ID = ' + CAST(@testGelieerdePersoon2ID  AS VARCHAR(10)) + '; // Persoon ' + @testPersoon2VoorNaam + ' ' + @testPersoon2Naam;
+PRINT 'public const int GELIEERDE_PERSOON3_ID = ' + CAST(@testGelieerdePersoon3ID  AS VARCHAR(10)) + '; // Persoon ' + @testPersoon3VoorNaam + ' ' + @testPersoon3Naam;
+PRINT 'public const int GELIEERDE_PERSOON4_ID = ' + CAST(@testGelieerdePersoon4ID  AS VARCHAR(10)) + '; // Persoon ' + @testPersoon4VoorNaam + ' ' + @testPersoon4Naam;
+PRINT 'public const int GELIEERDE_PERSOON5_ID = ' + CAST(@testGelieerdePersoon5ID  AS VARCHAR(10)) + '; // Persoon ' + @testPersoon5VoorNaam + ' ' + @testPersoon5Naam;
 
 DECLARE @GELPERS AS INT;
 DECLARE @AantalInCategorie AS INT;
@@ -760,43 +761,34 @@ DECLARE @AantalInCategorie AS INT;
 SET @GELPERS = (SELECT count(*) from pers.GelieerdePersoon where GroepID = @testGroepID);
 SET @AantalInCategorie = (SELECT COUNT(*) FROM pers.PersoonsCategorie WHERE CategorieID=@testCategorie1ID);
 
-PRINT 'public const int MINAANTALGELPERS = '+ CAST(@GELPERS AS VARCHAR(10)) + ';';
-PRINT 'public const int LID3ID = ' + CAST(@testLid3ID AS VARCHAR(10)) + ';';
-PRINT 'public const int LID4ID = ' + CAST(@testLid4ID AS VARCHAR(10)) + ';';
-PRINT 'public const int LID5ID = ' + CAST(@testLid5ID AS VARCHAR(10)) + ';';
-PRINT 'public const int CATEGORIEID = ' + CAST(@testCategorie1ID AS VARCHAR(10)) + ';';
-PRINT 'public const string CATEGORIECODE = "' + CAST(@testCategorie1Code AS VARCHAR(10)) + '";';
-PRINT 'public const int CATEGORIE2ID = ' + CAST(@testCategorie2ID AS VARCHAR(10)) + ';';
-PRINT 'public const int CATEGORIE3ID = ' + CAST(@testCategorie3ID AS VARCHAR(10)) + ';';
-PRINT 'public const int FUNCTIEID = ' + CAST(@testFunctieID AS VARCHAR(10)) + ';';
-PRINT 'public const int AANTALINCATEGORIE = ' + CAST(@aantalInCategorie AS VARCHAR(10)) + ';'
-PRINT 'public const int AFDELING1ID = ' + CAST(@testAfdeling1ID AS VARCHAR(10)) + ';';
-PRINT 'public const int OFFICIELEAFDELINGID = ' + CAST(@testOfficieleAfdelingID1 AS VARCHAR(10)) + ';';
-PRINT 'public const int AFDELINGSJAAR1ID = ' + CAST(@testAfdelingsJaar1ID AS VARCHAR(10)) + ';';
-PRINT 'public const int AFDELING1VAN = ' + CAST(@testHuidigGeboorteJaarVanAfdelingID1 AS VARCHAR(10)) + ' ;'
-PRINT 'public const int AFDELING1TOT = ' + CAST(@testHuidigGeboorteJaarTotAfdelingID1 AS VARCHAR(10)) + ' ;'
-PRINT 'public const int AFDELING2ID = ' + CAST(@testAfdeling2ID AS VARCHAR(10)) + ';';
-PRINT 'public const int AFDELINGSJAAR2ID = ' + CAST(@testAfdelingsJaar2ID AS VARCHAR(10)) + ';';
-PRINT 'public const int AFDELING2VAN = ' + CAST(@testHuidigGeboorteJaarVanAfdelingID2 AS VARCHAR(10)) + ' ;'
-PRINT 'public const int AFDELING2TOT = ' + CAST(@testHuidigGeboorteJaarTotAfdelingID2 AS VARCHAR(10)) + ' ;'
-PRINT 'public const int AFDELING3ID = ' + CAST(@testAfdeling3ID AS VARCHAR(10)) + ';';
-PRINT 'public const int ADRESID = ' + CAST(@testAdresID AS VARCHAR(10)) + ';';
-PRINT 'public const int GROEPSWERKJAARID = ' + CAST(@testGroepsHuidigWerkJaarID AS VARCHAR(10)) + ';';
-PRINT 'public const string ZOEKNAAM = "' + CAST(@testPersoon1Naam AS VARCHAR(10)) + '";'; 
-PRINT 'public const char GP13LETTER = ''' + SUBSTRING(@testPersoon1Naam, 1, 1) + '''; // 1ste letter familienaam gelieerde persoon';
+PRINT 'public const int MIN_AANTAL_GEL_PERS = '+ CAST(@GELPERS AS VARCHAR(10)) + ';';
+PRINT 'public const int LID3_ID = ' + CAST(@testLid3ID AS VARCHAR(10)) + ';';
+PRINT 'public const int LID4_ID = ' + CAST(@testLid4ID AS VARCHAR(10)) + ';';
+PRINT 'public const int LID5_ID = ' + CAST(@testLid5ID AS VARCHAR(10)) + ';';
+PRINT 'public const int CATEGORIE_ID = ' + CAST(@testCategorie1ID AS VARCHAR(10)) + ';';
+PRINT 'public const string CATEGORIE_CODE = "' + CAST(@testCategorie1Code AS VARCHAR(10)) + '";';
+PRINT 'public const int CATEGORIE2_ID = ' + CAST(@testCategorie2ID AS VARCHAR(10)) + ';';
+PRINT 'public const int CATEGORIE3_ID = ' + CAST(@testCategorie3ID AS VARCHAR(10)) + ';';
+PRINT 'public const int FUNCTIE_ID = ' + CAST(@testFunctieID AS VARCHAR(10)) + ';';
+PRINT 'public const int AANTAL_IN_CATEGORIE = ' + CAST(@aantalInCategorie AS VARCHAR(10)) + ';'
+PRINT 'public const int AFDELING1_ID = ' + CAST(@testAfdeling1ID AS VARCHAR(10)) + ';';
+PRINT 'public const int OFFICIELE_AFDELING_ID = ' + CAST(@testOfficieleAfdelingID1 AS VARCHAR(10)) + ';';
+PRINT 'public const int AFDELINGS_JAAR1_ID = ' + CAST(@testAfdelingsJaar1ID AS VARCHAR(10)) + ';';
+PRINT 'public const int AFDELING1_VAN = ' + CAST(@testHuidigGeboorteJaarVanAfdelingID1 AS VARCHAR(10)) + ' ;'
+PRINT 'public const int AFDELING1_TOT = ' + CAST(@testHuidigGeboorteJaarTotAfdelingID1 AS VARCHAR(10)) + ' ;'
+PRINT 'public const int AFDELING2_ID = ' + CAST(@testAfdeling2ID AS VARCHAR(10)) + ';';
+PRINT 'public const int AFDELINGS_JAAR2_ID = ' + CAST(@testAfdelingsJaar2ID AS VARCHAR(10)) + ';';
+PRINT 'public const int AFDELING2_VAN = ' + CAST(@testHuidigGeboorteJaarVanAfdelingID2 AS VARCHAR(10)) + ' ;'
+PRINT 'public const int AFDELING2_TOT = ' + CAST(@testHuidigGeboorteJaarTotAfdelingID2 AS VARCHAR(10)) + ' ;'
+PRINT 'public const int AFDELING3_ID = ' + CAST(@testAfdeling3ID AS VARCHAR(10)) + ';';
+PRINT 'public const int ADRES_ID = ' + CAST(@testAdresID AS VARCHAR(10)) + ';';
+PRINT 'public const int GROEPS_WERKJAAR_ID = ' + CAST(@testGroepsHuidigWerkJaarID AS VARCHAR(10)) + ';';
+PRINT 'public const string ZOEK_NAAM = "' + CAST(@testPersoon1Naam AS VARCHAR(10)) + '";'; 
+PRINT 'public const char GP_1_3_LETTER = ''' + SUBSTRING(@testPersoon1Naam, 1, 1) + '''; // 1ste letter familienaam gelieerde persoon';
 PRINT 'public const string GAV1 = "' + CAST(@testGav1Login AS VARCHAR(10)) + '";';
 PRINT 'public const string GAV2 = "' + CAST(@testGav2Login AS VARCHAR(10)) + '";';
-PRINT '-'
-PRINT 'Blijkbaar wordt het onderstaande niet gebruikt in de tests: '
-PRINT '-'
-PRINT 'TestVorigGroepsWerkJaarID: ' + CAST(@testVorigGroepsWerkJaarID AS VARCHAR(10)) + ';';
-PRINT 'TestVorigAdfelingsJaarID: ' + CAST(@testVorigAfdelingsJaarID AS VARCHAR(10)) + ';';
-PRINT 'TestPersoonID: ' + CAST(@testPersoon1ID AS VARCHAR(10)) + ';';
-PRINT 'TestPersoon2ID: ' + CAST(@testPersoon2ID AS VARCHAR(10)) + ';';
-PRINT 'TestPersoon3ID: ' + CAST(@testPersoon3ID AS VARCHAR(10)) + ';';
-PRINT 'TestPersoon4ID: ' + CAST(@testPersoon4ID AS VARCHAR(10)) + ';';
-PRINT 'TestPersoon5ID: ' + CAST(@testPersoon5ID AS VARCHAR(10)) + ';';
-PRINT 'TestGav1ID: ' + CAST(@testGav1ID AS VARCHAR(10)) + ';';
+
+
 
 
 GO

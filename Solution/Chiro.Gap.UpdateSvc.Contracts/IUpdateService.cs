@@ -35,14 +35,14 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 		void AdNummerVervangen(int oudAd, int nieuwAd);
 
         /// <summary>
-        /// Synct alle leden van het recentste werkjaar van een groep opnieuw naar Kipadmin
+        /// Synct alle leden van het recentste werkJaar van een groep opnieuw naar Kipadmin
         /// </summary>
         /// <param name="stamNummer">Stamnummer van groep met te syncen leden</param>
 	    [OperationContract(IsOneWay = true)]
 	    void OpnieuwSyncen(string stamNummer);
 
 	    /// <summary>
-	    /// Synct alle abonnementen van het recentste werkjaar van een groep opnieuw naar Kipadmin
+	    /// Synct alle abonnementen van het recentste werkJaar van een groep opnieuw naar Kipadmin
 	    /// </summary>
 	    /// <param name="stamNummer">Stamnummer van groep met te syncen abonnementen</param>
 	    /// <remarks>Dit is eigenlijk geen sync van Kipadmin naar GAP, maar een vraag van Kipadmin

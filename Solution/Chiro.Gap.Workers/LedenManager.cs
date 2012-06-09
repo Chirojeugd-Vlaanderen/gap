@@ -27,7 +27,7 @@ namespace Chiro.Gap.Workers
     public static class GroepsWerkJaarHelper
     {
         /// <summary>
-        /// Berekend aan de hand van een gegeven werkjaar de datum van het verplichte einde van de instapperiode in dat jaar.
+        /// Berekend aan de hand van een gegeven werkJaar de datum van het verplichte einde van de instapperiode in dat jaar.
         /// Belangrijk =&gt; volgens de HUIDIGE settings van dat werkjaareinde (moest dat in de toekomst veranderen en we hebben dat van vroeger nodig)
         /// </summary>
         /// <param name="gwj">
@@ -38,7 +38,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public static DateTime GetEindeJaarovergang(this GroepsWerkJaar gwj)
         {
-            // Haal de einddatum voor de overgang/aansluiting uit de settings, en bereken wanneer die datum valt in dit werkjaar
+            // Haal de einddatum voor de overgang/aansluiting uit de settings, en bereken wanneer die datum valt in dit werkJaar
             var dt = Settings.Default.WerkjaarVerplichteOvergang;
             return new DateTime(gwj.WerkJaar, dt.Month, dt.Day);
         }
@@ -187,7 +187,7 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Maakt gelieerde persoon een kind (lid) voor het gegeven werkjaar.
+        /// Maakt gelieerde persoon een kind (lid) voor het gegeven werkJaar.
         /// <para>
         /// </para>
         /// Dit komt neer op 
@@ -294,7 +294,7 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Maakt gelieerde persoon leiding voor het gegeven werkjaar.
+        /// Maakt gelieerde persoon leiding voor het gegeven werkJaar.
         /// <returns>
         /// Nieuw leidingsobject; niet gepersisteerd
         /// </returns>
@@ -412,18 +412,18 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Schrijft een bestaand lid in voor het nieuwe werkjaar, en koppelt op basis 
+        /// Schrijft een bestaand lid in voor het nieuwe werkJaar, en koppelt op basis 
         /// van meegeleverde gegevens afdelingen aan die inschrijving. Het kan ook zijn 
         /// dat het lid via deze procedure leiding wordt.
         /// </summary>
         /// <param name="lid">
-        /// Het lidobject van de inschrijving in het vorige werkjaar
+        /// Het lidobject van de inschrijving in het vorige werkJaar
         /// </param>
         /// <param name="gelieerdePersoon">
         /// De gelieerde persoon die ingeschreven moet worden
         /// </param>
         /// <param name="groepsWerkJaar">
-        /// Geeft aan over welke groep en welk werkjaar het gaat
+        /// Geeft aan over welke groep en welk werkJaar het gaat
         /// </param>
         /// <param name="isJaarOvergang">
         /// TODO (#190): documenteren. <c>True</c> als de inschrijving tijdens de jaarovergang gebeurt?
@@ -741,7 +741,7 @@ namespace Chiro.Gap.Workers
                         }
                         else if (lid.EindeInstapPeriode > DateTime.Now)
                         {
-                            // Verwijderen tijdens probeerperiode mag natuurlijk nog wel op het einde van het werkjaar
+                            // Verwijderen tijdens probeerperiode mag natuurlijk nog wel op het einde van het werkJaar
                             _sync.Verwijderen(lid);
                         }
                     }
@@ -951,7 +951,7 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Controleert of de datum <paramref name="dateTime"/> zich in het werkjaar <paramref name="p"/> bevindt.
+        /// Controleert of de datum <paramref name="dateTime"/> zich in het werkJaar <paramref name="p"/> bevindt.
         /// </summary>
         /// <param name="dateTime">
         /// Te controleren datum
@@ -960,7 +960,7 @@ namespace Chiro.Gap.Workers
         /// Werkjaar.  (2010 voor 2010-2011 enz.)
         /// </param>
         /// <returns>
-        /// <c>True</c> als <paramref name="dateTime"/> zich in het werkjaar bevindt; anders <c>false</c>.
+        /// <c>True</c> als <paramref name="dateTime"/> zich in het werkJaar bevindt; anders <c>false</c>.
         /// </returns>
         public static bool DatumInWerkJaar(DateTime dateTime, int p)
         {

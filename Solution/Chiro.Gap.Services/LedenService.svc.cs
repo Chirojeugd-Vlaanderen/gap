@@ -138,9 +138,9 @@ namespace Chiro.Gap.Services
 
         /// <summary>
         /// Gegeven een lijst van IDs van gelieerde personen.
-        /// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken.
+        /// Haal al die gelieerde personen op en probeer ze in het huidige werkJaar lid te maken.
         /// <para />
-        /// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkjaar.
+        /// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkJaar.
         /// </summary>
         /// <param name="lidInformatie">Lijst van informatie over wie lid moet worden</param>
         /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een

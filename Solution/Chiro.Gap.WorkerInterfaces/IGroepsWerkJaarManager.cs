@@ -86,7 +86,7 @@ namespace Chiro.Gap.WorkerInterfaces
 		int RecentsteGroepsWerkJaarIDGet(int groepID);
 
 		/// <summary>
-		/// Maakt een nieuw groepswerkjaar in het gevraagde werkjaar.
+		/// Maakt een nieuw groepswerkjaar in het gevraagde werkJaar.
 		/// Persisteert niet ;-P
 		/// </summary>
 		/// <param name="g">
@@ -99,21 +99,21 @@ namespace Chiro.Gap.WorkerInterfaces
 		GroepsWerkJaar VolgendGroepsWerkJaarMaken(Groep g);
 
 		/// <summary>
-		/// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
+		/// Berekent wat het nieuwe werkJaar zal zijn als op deze moment de jaarovergang zou gebeuren.
 		/// </summary>
 		/// <returns>
-		/// Het jaar waarin dat nieuwe werkjaar begint
+		/// Het jaar waarin dat nieuwe werkJaar begint
 		/// </returns>
 		int NieuweWerkJaar();
 
 		/// <summary>
-		/// Bepaalt de datum vanaf wanneer het volgende werkjaar begonnen kan worden
+		/// Bepaalt de datum vanaf wanneer het volgende werkJaar begonnen kan worden
 		/// </summary>
 		/// <param name="werkJaar">
-		/// Jaartal van het 'huidige' werkjaar (i.e. 2010 voor 2010-2011 enz)
+		/// Jaartal van het 'huidige' werkJaar (i.e. 2010 voor 2010-2011 enz)
 		/// </param>
 		/// <returns>
-		/// Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden
+		/// Datum in het gegeven werkJaar vanaf wanneer het nieuwe aangemaakt mag worden
 		/// </returns>
 		DateTime StartOvergang(int werkJaar);
 

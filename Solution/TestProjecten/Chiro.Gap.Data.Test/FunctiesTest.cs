@@ -83,7 +83,7 @@ namespace Chiro.Gap.Data.Test
 			var dao = Factory.Maak<IFunctiesDao>();
 
 			// Act
-			var aantal = dao.AantalLeden(TestInfo.GROEPID, NationaleFunctie.ContactPersoon);
+			var aantal = dao.AantalLeden(TestInfo.GROEP_ID, NationaleFunctie.ContactPersoon);
 
 			// Assert
 			Assert.AreEqual(aantal, 1);

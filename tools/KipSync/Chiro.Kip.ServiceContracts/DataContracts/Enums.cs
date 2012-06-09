@@ -12,6 +12,8 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
     [DataContract]
     public enum AdresTypeEnum
     {
+        // EnumMembers hebben een remoting Value om te mappen op KipAdmin
+
         /// <summary>
         /// Aanduiding voor een thuisadres
         /// </summary>

@@ -17,7 +17,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Te koppelen officiële afdeling
         /// </param>
         /// <param name="gwj">
-        /// Groepswerkjaar (koppelt de afdeling aan een groep en een werkjaar)
+        /// Groepswerkjaar (koppelt de afdeling aan een groep en een werkJaar)
         /// </param>
         /// <param name="geboorteJaarBegin">
         /// Geboortejaar van

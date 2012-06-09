@@ -121,7 +121,7 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
-		/// Het toekennen van een functie die niet geldig is in het huidige werkjaar, moet
+		/// Het toekennen van een functie die niet geldig is in het huidige werkJaar, moet
 		/// een exception opleveren
 		/// </summary>
 		[ExpectedException(typeof(FoutNummerException))]

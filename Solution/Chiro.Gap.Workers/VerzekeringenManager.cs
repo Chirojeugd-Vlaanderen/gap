@@ -150,7 +150,7 @@ namespace Chiro.Gap.Workers
         /// Te persisteren persoonsverzekering
         /// </param>
         /// <param name="gwj">
-        /// Bepaalt werkjaar en groep die de factuur zal krijgen (Groep moet meegeleverd zijn)
+        /// Bepaalt werkJaar en groep die de factuur zal krijgen (Groep moet meegeleverd zijn)
         /// </param>
         /// <returns>
         /// De bewaarde versie van de persoonsverzekering

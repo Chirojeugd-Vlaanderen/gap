@@ -13,7 +13,7 @@ namespace Chiro.Gap.Orm.SyncInterfaces
 		/// Zet de gegeven <paramref name="persoonsVerzekering"/> over naar Kipadmin.
 		/// </summary>
 		/// <param name="persoonsVerzekering">Over te zetten persoonsverzekering</param>
-		/// <param name="gwj">Bepaalt werkjaar en groep die factuur zal krijgen</param>
+		/// <param name="gwj">Bepaalt werkJaar en groep die factuur zal krijgen</param>
 		void Bewaren(PersoonsVerzekering persoonsVerzekering, GroepsWerkJaar gwj);
 	}
 }

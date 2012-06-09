@@ -150,7 +150,7 @@ namespace Chiro.Gap.Workers
         /// ID gevraagde gelieerde persoon
         /// </param>
         /// <returns>
-        /// GelieerdePersoon met persoonsgegevens, adressen, categorieën, communicatievormen en eventuele lidgegevens uit het gegeven werkjaar.
+        /// GelieerdePersoon met persoonsgegevens, adressen, categorieën, communicatievormen en eventuele lidgegevens uit het gegeven werkJaar.
         /// </returns>
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
         {
@@ -609,13 +609,13 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Gaat na of een gelieerde persoon dit werkjaar ingeschreven is als lid
+        /// Gaat na of een gelieerde persoon dit werkJaar ingeschreven is als lid
         /// </summary>
         /// <param name="gelieerdePersoonID">
         /// De ID van de gelieerde persoon in kwestie
         /// </param>
         /// <returns>
-        /// <c>True</c> als de gelieerde persoon dit werkjaar ingeschreven is als lid,
+        /// <c>True</c> als de gelieerde persoon dit werkJaar ingeschreven is als lid,
         /// <c>false</c> in het andere geval
         /// </returns>
         public bool IsLid(int gelieerdePersoonID)

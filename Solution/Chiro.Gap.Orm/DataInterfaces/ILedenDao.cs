@@ -19,27 +19,27 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	{      
 		/// <summary>
 		/// Haalt een pagina op van de gevraagde gegevens:
-		/// leden van een bepaalde groep in een gegeven werkjaar, die in de gegeven afdeling zitten
+		/// leden van een bepaalde groep in een gegeven werkJaar, die in de gegeven afdeling zitten
 		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
+		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkJaar</param>
 		/// <param name="afdelingsID">ID van de afdeling waar de leden in moeten zitten</param>
 		/// <param name="sortering">Parameter waarop de gegevens gesorteerd zijn</param>
-		/// <returns>De leden die de groep in dat werkjaar heeft/had en die in de gegeven afdeling zitten/zaten</returns>
+		/// <returns>De leden die de groep in dat werkJaar heeft/had en die in de gegeven afdeling zitten/zaten</returns>
 		/// <remarks>
-		/// Pagineren gebeurt per werkjaar.
+		/// Pagineren gebeurt per werkJaar.
 		/// </remarks>
 		IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LidEigenschap sortering);
 
 		/// <summary>
 		/// Haalt een pagina op van de gevraagde gegevens:
-		/// leden van een bepaalde groep in een gegeven werkjaar, die een bepaalde functie hebben/hadden
+		/// leden van een bepaalde groep in een gegeven werkJaar, die een bepaalde functie hebben/hadden
 		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
+		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkJaar</param>
 		/// <param name="functieID">ID van de functie die de leden moeten hebben</param>
 		/// <param name="sortering">Parameter waarop de gegevens gesorteerd zijn</param>
-		/// <returns>De leden met de gegeven functie die de groep in dat werkjaar heeft/had</returns>
+		/// <returns>De leden met de gegeven functie die de groep in dat werkJaar heeft/had</returns>
 		/// <remarks>
-		/// Pagineren gebeurt per werkjaar.
+		/// Pagineren gebeurt per werkJaar.
 		/// Haalt GEEN afdeling mee op (nakijken of dit ook effectief niet nodig is?)
 		/// </remarks>
 		IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LidEigenschap sortering);

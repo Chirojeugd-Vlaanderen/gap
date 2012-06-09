@@ -445,8 +445,8 @@ betekenis hebben.
 \item Vermijd variabelenamen van 1 letter.
 \item Instanties van arrays\index{arrays!namen} en collecties\index{collecties!namen} hebben een naam in het meervoud.  Gebruik geen
 suffix \lstinline !Lijst! of dergelijk.
-\item Underscores\index{underscores} zijn enkel toegelaten als prefix van een member\index{membervariabelen!namen}
-variable.
+\item Publieke constanten \index{constanten} worden volledig in UPPER_CASE benoemd en de lettergrepen worden gesplitst met underscores\index{underscores}. Voorbeeld: OFFICIELE_AFDELING_ID
+\item Underscores \index{underscores} zijn enkel toegelaten in constanten en als (enkelvoudige) prefix van een member\index{membervariabelen!namen} variable.
 \item Gebruik geen prefixnotaties zoals Hongaarse notatie\index{Hongaarse notatie}.
 \item Vermijd het gebruik van cijfers\index{cijfers} in variabelenamen, tenzij
 \begin{itemize}
@@ -845,10 +845,10 @@ assigneren\index{bool}; vergelijk niet met `\lstinline !true!' of
 berekening, en niet als die waarde.
 \item Als er een logische connectie\index{constanten!relaties tussen} bestaat tussen constanten, definieer
 dan de ene constante in functie van de andere.
-\item Gebruik `\lstinline !const!' enkel voor `echte' constanten, in de
+\item Evalueer of u het beste gebaat bent met een publieke constante of een public static readonly member. Gebruik `\lstinline !const!' enkel voor `echte' constanten, in de
 andere gevallen gebruik je 
 `\lstinline !readonly!'\index{constanten!vs readonly}\index{readonly}.\footnote{\lstinline !const!-expressies worden
-berekend bij het compileren, \lstinline !readonly!-expressies at runtime.} 
+namelijk berekend en gesubstitueerd bij het compileren, \lstinline !readonly!-expressies at runtime.} 
 \end{enumerate}
 \begin{lstlisting}[float, caption=Constanten, label=lblLstConst]
 // Berekende en gerelateerde constanten
