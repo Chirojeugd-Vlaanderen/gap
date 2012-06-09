@@ -73,11 +73,11 @@
     <Compile Include="AfdelingenManager.cs" />
     <Compile Include="AuthenticatieManager.cs" />
     <Compile Include="AutorisatieManager.cs" />
-    <Compile Include="BestaatAlException.cs" />
     <Compile Include="CategorieenManager.cs" />
     <Compile Include="ChiroGroepenManager.cs" />
     <Compile Include="CommVormManager.cs" />
     <Compile Include="AfdelingsJaarManager.cs" />
+    <Compile Include="Exceptions\BestaatAlException.cs" />
     <Compile Include="GebruikersRechtenManager.cs" />
     <Compile Include="JaarOvergangManager.cs" />
     <Compile Include="DeelnemersManager.cs" />

@@ -17,7 +17,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	/// </summary>
 	public static class PagingHelper
 	{
-		public static string PagerLinksLetters(this HtmlHelper html, string huidigePagina, IList<String> paginas, Func<string, string> url)
+		public static string PagerLinksLetters(this HtmlHelper html, string huidigePagina, IList<String> paginas, Func<string, string> url, bool ookIedereen)
         {
             var resultaat = new StringBuilder();
             foreach (String letter in paginas)
@@ -32,7 +32,20 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
                 resultaat.AppendLine(tag.ToString());
             }
 
-            return resultaat.ToString();
+            // Na alle letters ook nog een link 'iedereen tonen'
+            if (ookIedereen)
+            {
+                var tag = new TagBuilder("a");   // Maakt een <a>-tag
+                tag.MergeAttribute("href", url("A-Z"));
+                tag.InnerHtml = "Iedereen";
+                if ("A-Z" == huidigePagina)
+                {
+                    tag.AddCssClass("geselecteerd");
+                }
+                resultaat.AppendLine(tag.ToString());
+            }
+
+		    return resultaat.ToString();
         }
 
 		/// <summary>
