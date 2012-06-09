@@ -18,6 +18,9 @@ namespace Chiro.Gap.Dummies
 	/// </summary>
 	public class DummyKindDao : DummyDao<Kind>, IKindDao
 	{
+	    private int _id = 0;
+	    private Dictionary<int, Kind> id2kind = new Dictionary<int, Kind>(); 
+
 		public IEnumerable<Kind> Zoeken(LidFilter filter, params Expression<Func<Kind, object>>[] paths)
 		{
 			throw new NotImplementedException();
@@ -30,12 +33,16 @@ namespace Chiro.Gap.Dummies
 
 		public Kind Bewaren(Kind kind, LidExtras extras)
 		{
-			throw new NotImplementedException();
+		    kind.ID = ++_id;
+            id2kind.Add(kind.ID, kind);
+		    return kind;
 		}
 
 		public Kind Ophalen(int lidID, LidExtras extras)
 		{
-			throw new NotImplementedException();
+		    Kind kind = null;
+		    id2kind.TryGetValue(lidID, out kind);
+		    return kind;
 		}
 	}
 }

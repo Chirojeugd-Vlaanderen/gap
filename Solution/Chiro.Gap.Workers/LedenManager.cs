@@ -49,7 +49,6 @@ namespace Chiro.Gap.Workers
     public class LedenManager
     {
         private readonly LedenDaoCollectie _daos;
-        private readonly IVeelGebruikt _veelGebruikt;
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly ILedenSync _sync;
 
@@ -60,9 +59,6 @@ namespace Chiro.Gap.Workers
         /// Een hele reeks van IDao-objecten, nodig
         /// voor data access.
         /// </param>
-        /// <param name="veelGebruikt">
-        /// Object dat toelaat veel gebruikte items te cachen.
-        /// </param>
         /// <param name="autorisatie">
         /// Een IAuthorisatieManager, die
         /// de GAV-permissies van de huidige user controleert.
@@ -71,12 +67,10 @@ namespace Chiro.Gap.Workers
         /// Zorgt voor synchronisate van adressen naar KipAdmin
         /// </param>
         public LedenManager(LedenDaoCollectie daos,
-                            IVeelGebruikt veelGebruikt,
                             IAutorisatieManager autorisatie,
                             ILedenSync sync)
         {
             _daos = daos;
-            _veelGebruikt = veelGebruikt;
             _autorisatieMgr = autorisatie;
             _sync = sync;
         }
@@ -331,7 +325,7 @@ namespace Chiro.Gap.Workers
         private Leiding LeidingMaken(GelieerdePersoon gp,
                                      GroepsWerkJaar gwj,
                                      bool isJaarovergang,
-                                     List<AfdelingsJaar> afdelingsJaren)
+                                     IEnumerable<AfdelingsJaar> afdelingsJaren)
         {
             Debug.Assert(gp != null && gp.GebDatumMetChiroLeefTijd != null);
 
@@ -589,6 +583,36 @@ namespace Chiro.Gap.Workers
             }
 
             return nieuwlid;
+        }
+
+        public static IList<AfdelingsJaar> AutomagischeAfdelingenBepalen(GelieerdePersoon gp, GroepsWerkJaar gwj, bool ookVoorstellenAlsErGeenPast)
+        {
+            if (!gp.GebDatumMetChiroLeefTijd.HasValue)
+            {
+                // TODO: FoutnummerException van maken
+                throw new GapException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
+            }
+
+            // Stop de geboortedatum in een lokale variabele [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement]
+            var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
+
+            // Bepaal of het een kind of leiding wordt.  Als de persoon qua leeftijd in een niet-speciale
+            // afdeling valt, wordt het een kind.
+
+            var afdelingsJaar = (from a in gwj.AfdelingsJaar
+                             where (a.OfficieleAfdeling.ID != (int) NationaleAfdeling.Speciaal)
+                                   && (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)
+                             select a).ToList();
+
+            if (afdelingsJaar.Count() > 1)
+            {
+                afdelingsJaar = new List<AfdelingsJaar> { afdelingsJaar.First() };
+            }
+            else if(ookVoorstellenAlsErGeenPast && gwj.AfdelingsJaar.Count>0)
+            {
+                afdelingsJaar = new List<AfdelingsJaar> { gwj.AfdelingsJaar.First() };
+            }
+            return afdelingsJaar;
         }
 
         /// <summary>

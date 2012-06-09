@@ -167,6 +167,6 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		int TypeToggle(int id);
+		int TypeToggle(int id, out string FoutBerichten);
 	}
 }

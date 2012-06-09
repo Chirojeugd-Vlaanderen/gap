@@ -743,14 +743,22 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult TypeToggle(int id, int groepID)
         {
-            int gelieerdePersoonID;
+            int gelieerdePersoonID = 0;
 
+            var reset = false;
             try
             {
-                gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.TypeToggle(id));
+                var Foutberichten = "";
+                gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.TypeToggle(id, out Foutberichten));
+                if(gelieerdePersoonID==0)
+                {
+                    TempData["fout"] = Foutberichten;
+                    reset = true;
+                }
             }
             catch (FaultException<FoutNummerFault> ex)
             {
+                reset = true;
                 switch (ex.Detail.FoutNummer)
                 {
                     case FoutNummer.AlgemeneKindFout:
@@ -762,7 +770,10 @@ namespace Chiro.Gap.WebApp.Controllers
                     default:
                         throw;
                 }
+            }
 
+            if (reset)
+            {
                 var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
                 gelieerdePersoonID = info.PersoonDetail.GelieerdePersoonID;
             }

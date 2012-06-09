@@ -84,7 +84,7 @@ namespace Chiro.Gap.WebApp.Test
             throw new NotImplementedException();
         }
 
-        public int TypeToggle(int id)
+        public int TypeToggle(int id, out string FoutBerichten)
         {
             throw new NotImplementedException();
         }
@@ -99,25 +99,6 @@ namespace Chiro.Gap.WebApp.Test
     [TestClass()]
     public class PersonenEnLedenControllerTest
     {
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
         #region Additional test attributes
         // 
         //You can use the following additional attributes as you write your tests:
@@ -148,7 +129,6 @@ namespace Chiro.Gap.WebApp.Test
         //}
         //
         #endregion
-
 
         internal virtual PersonenEnLedenController CreatePersonenEnLedenController()
         {

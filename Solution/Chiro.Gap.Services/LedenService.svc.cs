@@ -98,9 +98,9 @@ namespace Chiro.Gap.Services
                         {
                             var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
-                            if (l != null) // uitgeschreven
+                            if (l != null) // bestaat al
                             {
-                                if (!l.NonActief)
+                                if (!l.NonActief) // als niet uitgeschreven: overslaan (en laten weten)
                                 {
                                     foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
                                     continue;
@@ -149,10 +149,13 @@ namespace Chiro.Gap.Services
         /// Iedereen die kan lid gemaakt worden, wordt lid, zelfs als dit voor andere personen niet lukt. Voor die personen worden dan foutberichten
         /// teruggegeven.
         /// </remarks>
-        /// <throws>NotSupportedException</throws> // TODO handle
         public IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten)
         {
-            // TODO hier zat ik
+            if(lidInformatie==null)
+            {
+                foutBerichten = "";
+                return null;
+            }
             // TODO (#1053): beter systeem vinden voor deze feedback.
             try
             {
@@ -191,7 +194,7 @@ namespace Chiro.Gap.Services
 
                            // TODO (#195, #691): Dit is businesslogica, en hoort dus thuis in de workers.
 
-                            if (l != null) // uitgeschreven
+                            if (l != null) // al ingeschreven
                             {
                                 // We hebben al een lid, dat waarschijnlijk ooit uitgeschreven was.  Aan dat lid is meteen
                                 // een groepswerkjaar gekoppeld, maar daaraan hangen geen afdelingsjaren.  Dat is jammer,
@@ -271,8 +274,6 @@ namespace Chiro.Gap.Services
         /// string waarin wat uitleg staat.</param>
         public void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
         {
-            // TODO (#1053): beter systeem vinden voor deze feedback
-
             try
             {
                 var foutBerichtenBuilder = new StringBuilder();
@@ -286,8 +287,6 @@ namespace Chiro.Gap.Services
 
                     foreach (var gp in g.GelieerdePersoon)
                     {
-                        // FIXME: is dit niet te veel business logica?
-
                         var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
                         if (l == null)
@@ -350,7 +349,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="id">ID van lid met te togglen lidtype</param>
         /// <returns>GelieerdePersoonID van lid</returns>
-        public int TypeToggle(int id)
+        public int TypeToggle(int id, out string FoutBerichten)
         {
             var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon|LidExtras.Groep|LidExtras.AlleAfdelingen);
 
