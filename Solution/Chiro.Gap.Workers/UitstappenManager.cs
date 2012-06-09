@@ -179,6 +179,10 @@ namespace Chiro.Gap.Workers
             {
                 throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietBeschikbaar, Resources.GroepsWerkJaarVoorbij);
             }
+            if (uitstap.DatumVan > uitstap.DatumTot)
+            {
+                throw new FoutNummerException(FoutNummer.ValidatieFout, Resources.VanTotUitstap);
+            }
 
             // Sowieso groepswerkjaar koppelen.
             Debug.Assert(uitstap.GroepsWerkJaar != null);

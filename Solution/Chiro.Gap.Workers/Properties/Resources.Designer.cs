@@ -595,6 +595,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je uitstap kan niet eindigen voor hij begint..
+        /// </summary>
+        internal static string VanTotUitstap {
+            get {
+                return ResourceManager.GetString("VanTotUitstap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De begindatum van een verzekering kan niet in het verleden liggen..
         /// </summary>
         internal static string VerzekeringInVerleden {

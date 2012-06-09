@@ -72,6 +72,11 @@ namespace Chiro.Gap.WebApp.Controllers
             BaseModelInit(model, groepID);
             model.Titel = Properties.Resources.NieuweUitstap;
 
+            if (model.Uitstap.DatumVan > model.Uitstap.DatumTot)
+            {
+                TempData["fout"] = Properties.Resources.VanTotUitstap;
+                return View("Bewerken", model);
+            }
             if (ModelState.IsValid)
             {
                 int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
@@ -210,9 +215,15 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Uitstap.ID = id;
             model.Titel = model.Uitstap.Naam;
 
+            if(model.Uitstap.DatumVan>model.Uitstap.DatumTot)
+            {
+                TempData["fout"] = Properties.Resources.VanTotUitstap;
+                return View("Bewerken", model);    
+            }
+
             if (ModelState.IsValid)
             {
-                int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
+                var uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
                 VeelGebruikt.BivakStatusResetten(groepID);
                 return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
             }

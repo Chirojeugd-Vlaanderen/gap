@@ -754,6 +754,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je uitstap eindigt voor hij begint, heb je de data omgedraaid?.
+        /// </summary>
+        public static string VanTotUitstap {
+            get {
+                return ResourceManager.GetString("VanTotUitstap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De overgang naar werkjaar {0}-{1} moet nog gebeuren..
         /// </summary>
         public static string WerkJaarInOvergang {
