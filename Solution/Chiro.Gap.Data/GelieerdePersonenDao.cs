@@ -310,9 +310,10 @@ namespace Chiro.Gap.Data.Ef
                         .ThenByDescending(gp => gp.Persoon.GeboorteDatum)
                         .ThenBy(gp => gp.Persoon.Naam).ThenBy(gp => gp.Persoon.VoorNaam);
                 case PersoonSorteringsEnum.Categorie:
+                    // Een beetje een rare hack die ervoor zorgt dat de personen zonder categorie (bijna) altijd achteraan terecht komen.
+                    // TODO: Categorie ICompareable maken, maar ik ga dat niet doen in de 1.4-branch.
                     return lijst
-                        .OrderBy(gp => gp.Categorie.FirstOrDefault() == null)
-                        .ThenBy(gp => (gp.Categorie.FirstOrDefault() == null ? null : gp.Categorie.First().Naam))
+                        .OrderBy(gp => (gp.Categorie.FirstOrDefault() == null ? "zzz" : gp.Categorie.FirstOrDefault().Naam))
                         .ThenBy(gp => gp.Persoon.Naam).ThenBy(gp => gp.Persoon.VoorNaam);
                 default:
                     throw new NotSupportedException();
