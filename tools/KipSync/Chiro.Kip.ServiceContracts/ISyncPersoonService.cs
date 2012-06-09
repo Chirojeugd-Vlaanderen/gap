@@ -1,8 +1,6 @@
-﻿// 
-// <copyright company="Chirojeugd-Vlaanderen vzw" file="ISyncPersoonService.cs">
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw" file="ISyncPersoonService.cs">
 //   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
-// 
 
 using System.Collections.Generic;
 using System.ServiceModel;
@@ -147,8 +145,8 @@ namespace Chiro.Kip.ServiceContracts
         /// </remarks>
         [OperationContract(IsOneWay = true)]
         void LidVerwijderen(
-            int adNummer, 
-            string stamNummer, 
+            int adNummer,
+            string stamNummer,
             int werkjaar);
 
         /// <summary>
@@ -169,8 +167,8 @@ namespace Chiro.Kip.ServiceContracts
         /// </remarks>
         [OperationContract(IsOneWay = true)]
         void NieuwLidVerwijderen(
-            PersoonDetails details, 
-            string stamNummer, 
+            PersoonDetails details,
+            string stamNummer,
             int werkjaar);
 
         /// <summary>

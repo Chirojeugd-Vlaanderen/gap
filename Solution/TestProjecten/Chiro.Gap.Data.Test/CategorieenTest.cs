@@ -45,7 +45,7 @@ namespace Chiro.Gap.Data.Test
 		// You can use the following additional attributes as you write your tests:
 		//
 		// Use ClassInitialize to run code before running the first test in the class
-		// [ClassInitialize()]
+		// [ClassInitialize]
 		// public static void MyClassInitialize(TestContext testContext) { }
 		//
 		// Use ClassCleanup to run code after all tests in a class have run
@@ -136,9 +136,9 @@ namespace Chiro.Gap.Data.Test
 			int aantalTotaal;
 
 			// act
-			var pagina = _gpdao.PaginaOphalenUitCategorie(
+			var pagina = _gpdao.OphalenUitCategorie(
 				TestInfo.CATEGORIEID,
-				1, 10, PersoonSorteringsEnum.Naam,
+				"A", PersoonSorteringsEnum.Naam,
 				out aantalTotaal,
 				PersoonsExtras.Geen);
 
@@ -147,18 +147,18 @@ namespace Chiro.Gap.Data.Test
 		}
 
 		/// <summary>
-		/// Controleert of PaginaOphalenMetLidInfo de lidinfo wel juist ophaalt.
+		/// Controleert of GelieerdePersonenDao.PaginaOphalenUitCategorie de lidinfo wel juist ophaalt.
 		/// </summary>
 		[TestMethod]
-		public void PaginaOphalenMetLidInfo()
+		public void PaginaOphalenUitCategorieLidInfo()
 		{
 			// arrange
 			int aantalTotaal;
 
 			// act
-			var pagina = _gpdao.PaginaOphalenUitCategorie(
+			var pagina = _gpdao.OphalenUitCategorie(
 				TestInfo.CATEGORIE2ID,
-				1, 10, PersoonSorteringsEnum.Naam,
+                TestInfo.GP13LETTER.ToString(), PersoonSorteringsEnum.Naam,
 				out aantalTotaal,
 				PersoonsExtras.AlleLeden);
 
@@ -173,8 +173,8 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsNotNull(lid);
 			Assert.IsTrue(lid.Lid.First().ID > 0);
 
-			Assert.IsNotNull((geenLid));
-			Assert.IsTrue(geenLid.Lid.Count() == 0);
+			Assert.IsNotNull(geenLid);
+			Assert.IsTrue(!geenLid.Lid.Any());
 		}
 
 

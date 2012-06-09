@@ -17,22 +17,23 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	/// </summary>
 	public static class PagingHelper
 	{
-		public static string PagerLinks(this HtmlHelper html, int huidigePagina, int aantalPaginas, Func<int, string> url)
-		{
-			var resultaat = new StringBuilder();
-			for (int i = 1; i <= aantalPaginas; i++)
-			{
-				var tag = new TagBuilder("a");   // Maakt een <a>-tag
-				tag.MergeAttribute("href", url(i));
-				tag.InnerHtml = i.ToString();
-				if (i == huidigePagina)
-				{
-					tag.AddCssClass("geselecteerd");
-				}
-				resultaat.AppendLine(tag.ToString());
-			}
-			return resultaat.ToString();
-		}
+		public static string PagerLinksLetters(this HtmlHelper html, string huidigePagina, IList<String> paginas, Func<string, string> url)
+        {
+            var resultaat = new StringBuilder();
+            foreach (String letter in paginas)
+            {
+                var tag = new TagBuilder("a");   // Maakt een <a>-tag
+                tag.MergeAttribute("href", url(letter));
+                tag.InnerHtml = letter.ToUpper();
+                if (letter == huidigePagina)
+                {
+                    tag.AddCssClass("geselecteerd");
+                }
+                resultaat.AppendLine(tag.ToString());
+            }
+
+            return resultaat.ToString();
+        }
 
 		/// <summary>
 		/// Genereert een opeenvolging van links op basis van een rij werkjaren

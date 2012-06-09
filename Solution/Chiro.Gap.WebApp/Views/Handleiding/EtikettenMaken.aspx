@@ -12,11 +12,10 @@
 		Je kunt adresetiketten afdrukken met de gegevens uit het GAP. Dat kan niet rechtstreeks
 		vanuit het GAP: je moet eerst een
 		<%=Html.ActionLink("lijst downloaden", "ViewTonen", new { controller = "Handleiding", helpBestand = "LijstDownloaden" })%>
-		en dan een tekstverwerkingsprogramma als Word van Microsoft of Writer van OpenOffice.org
+		en dan een tekstverwerkingsprogramma als Word van Microsoft of Writer van LibreOffice
 		gebruiken. Het gaat waarschijnlijk ook met andere programma's, maar de meeste
 		mensen hebben Word of Writer op hun computer. Writer kun je overigens gratis
-		<a href="http://nl.openoffice.org/downloaden.html">downloaden</a> - je hebt wel
-		minstens versie 3.2 nodig.</p>
+		<a href="http://www.libreoffice.org/download/">downloaden</a>.</p>
 	<p>
 		Stappen in het proces:</p>
 	<ul>
@@ -30,7 +29,7 @@
 				<li>
 					<%=Html.ActionLink("Etiketten maken in Microsoft Word 2007 of 2010", "ViewTonen", new { controller = "Handleiding", helpBestand = "EtikettenInWordMetRibbon" })%></li>
 				<li>
-					<%=Html.ActionLink("Etiketten maken in OpenOffice.org Writer 3.2", "ViewTonen", new { controller = "Handleiding", helpBestand = "EtikettenInWriter" })%></li>
+					<%=Html.ActionLink("Etiketten maken in LibreOffice Writer 3.2", "ViewTonen", new { controller = "Handleiding", helpBestand = "EtikettenInWriter" })%></li>
 			</ul>
 		</li>
 	</ul>

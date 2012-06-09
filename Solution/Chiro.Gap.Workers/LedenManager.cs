@@ -15,6 +15,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
@@ -444,6 +445,7 @@ namespace Chiro.Gap.Workers
                                                  bool isJaarOvergang,
                                                  LidVoorstel voorstellid)
         {
+            Lid nieuwLid;
             if (!_autorisatieMgr.IsGavLid(lid.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
@@ -499,7 +501,7 @@ namespace Chiro.Gap.Workers
             }
 
             // Maak opnieuw lid
-            var nieuwLid = Inschrijven(gelieerdePersoon, groepsWerkJaar, isJaarOvergang, voorstellid);
+            nieuwLid = Inschrijven(gelieerdePersoon, groepsWerkJaar, isJaarOvergang, voorstellid);
             nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
             if (voorstellid.AfdelingsJarenIrrelevant)
             {

@@ -48,7 +48,7 @@ namespace Chiro.Gap.Workers.Test
 		// You can use the following additional attributes as you write your tests:
 		//
 		// Use ClassInitialize to run code before running the first test in the class
-		// [ClassInitialize()]
+		// [ClassInitialize]
 		// public static void MyClassInitialize(TestContext testContext) { }
 		//
 		// Use ClassCleanup to run code after all tests in a class have run

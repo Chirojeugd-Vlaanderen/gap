@@ -4,8 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using Chiro.Gap.Domain;
+using Chiro.Gap.WorkerInterfaces;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Moq;
 
 using Chiro.Cdf.Ioc;
@@ -14,7 +16,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers.Exceptions;
 
-namespace Chiro.Gap.Workers.Test
+namespace Chiro.Gap.Workers.Test.CustomIoc
 {
 	/// <summary>
 	/// Tests op de security van de workers.
@@ -29,7 +31,7 @@ namespace Chiro.Gap.Workers.Test
 		// You can use the following additional attributes as you write your tests:
 		//
 		// Use ClassInitialize to run code before running the first test in the class
-		// [ClassInitialize()]
+		// [ClassInitialize]
 		// public static void MyClassInitialize(TestContext testContext) { }
 		//
 		// Use ClassCleanup to run code after all tests in a class have run
@@ -320,7 +322,7 @@ namespace Chiro.Gap.Workers.Test
 
 			Factory.InstantieRegistreren(auMgrMock.Object);
 
-			var ajMgr = Factory.Maak<AfdelingsJaarManager>();
+			var ajMgr = Factory.Maak<IAfdelingsJaarManager>();
 
 			ajMgr.Aanmaken(afd, oa, gwj, 200, 2001, GeslachtsType.Gemengd);
 

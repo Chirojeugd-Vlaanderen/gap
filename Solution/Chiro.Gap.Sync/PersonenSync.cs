@@ -51,7 +51,7 @@ namespace Chiro.Gap.Sync
 
 			Debug.Assert(gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag);
 
-            var syncPersoon = Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon);
+            var syncPersoon = Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon);
 			ServiceHelper.CallService<ISyncPersoonService>(svc => svc.PersoonUpdaten(syncPersoon));
 
 			if (metStandaardAdres && gp.PersoonsAdres != null)
@@ -61,11 +61,11 @@ namespace Chiro.Gap.Sync
 				// alle adressen in gelieerdePersoon.Persoon.PersoonsAdres).
 
 				// TODO (#238): Buitenlandse adressen!
-                var syncAdres = Mapper.Map<Adres, Chiro.Kip.ServiceContracts.DataContracts.Adres>(gp.PersoonsAdres.Adres);
+                var syncAdres = Mapper.Map<Adres, Kip.ServiceContracts.DataContracts.Adres>(gp.PersoonsAdres.Adres);
 
 				var syncBewoner = new Bewoner
 				{
-                    Persoon = Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon),
+                    Persoon = Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon),
 					AdresType = (AdresTypeEnum)gp.PersoonsAdres.AdresType
 				};
 
@@ -89,7 +89,7 @@ namespace Chiro.Gap.Sync
 		/// <param name="gp">Gelieerde persoon</param>
 		public void CommunicatieUpdaten(GelieerdePersoon gp)
 		{
-			var syncPersoon = Mapper.Map<Persoon, Chiro.Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon);
+			var syncPersoon = Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon);
 			var syncCommunicatie = Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(_cVormDao.ZoekenOpPersoon(gp.Persoon.ID));
 
 			ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie));

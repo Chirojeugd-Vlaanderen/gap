@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 
 using Chiro.Gap.Domain;
@@ -19,9 +20,9 @@ namespace Chiro.Gap.WebApp.Models
             GroepsCategorieen = new List<CategorieInfo>();
         }
 
-		public int HuidigePagina { get; set; }
-		public int AantalPaginas { get; set; }
+		public string HuidigePagina { get; set; }
 		public int Totaal { get; set; }
+        public IList<String> Paginas { get; set; } 
 
 		public IList<PersoonDetail> PersoonInfos { get; set; }
 

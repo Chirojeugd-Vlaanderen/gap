@@ -20,9 +20,11 @@
 
     int j = 0;
 %>
+
+
 <div class="pager">
     Pagina's:
-    <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalPaginas, i => Url.Action("List", new { Controller="Personen", page = i, sortering=Model.Sortering })) %>
+    <%= Html.PagerLinksLetters(ViewData.Model.HuidigePagina, ViewData.Model.Paginas, letter => Url.Action("List", new { Controller = "Personen", page = letter, sortering = Model.Sortering }))%>
     (Totaal:
     <%= Model.Totaal %>
     personen)

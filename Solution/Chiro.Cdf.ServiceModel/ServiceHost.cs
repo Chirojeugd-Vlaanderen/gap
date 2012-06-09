@@ -44,7 +44,7 @@ namespace Chiro.Cdf.ServiceModel
 
         static Uri[] Convert(string[] baseAddresses)
         {
-            Converter<string, Uri> convert = (address) => new Uri(address);
+            Converter<string, Uri> convert = address => new Uri(address);
             return baseAddresses.ConvertAll(convert);
         }
 

@@ -1,10 +1,9 @@
-﻿using Chiro.Gap.ServiceContracts;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 using Moq;

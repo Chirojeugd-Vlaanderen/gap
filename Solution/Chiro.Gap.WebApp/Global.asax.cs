@@ -10,8 +10,6 @@ using System.Web.Routing;
 
 using Chiro.Cdf.Ioc;
 
-using Microsoft.Practices.Unity;
-
 namespace Chiro.Gap.WebApp
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -127,8 +125,7 @@ namespace Chiro.Gap.WebApp
             routes.MapRoute(
                 "Catch All",
                 "{*path}",
-                new { controller = "Error", action = "NietGevonden" }
-                );
+                new { controller = "Error", action = "NietGevonden" });
         }
 
         private static void InitializeContainer()

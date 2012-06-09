@@ -14,6 +14,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
@@ -250,6 +251,45 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="groepID">
+        /// GroepID van gevraagde groep
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        public IList<String> EersteLetterNamenOphalen(int groepID)
+        {
+            if (!_autorisatieMgr.IsGavGroep(groepID))
+            {
+                throw new GeenGavException(Resources.GeenGav);
+            }
+
+            return _gelieerdePersonenDao.EersteLetterNamenOphalen(groepID);
+        }
+
+        /// <summary>
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van
+        /// de categorie met ID <paramref name="categorieID"/>
+        /// </summary>
+        /// <param name="categorieID">
+        ///   ID van de Categorie waaruit we de letters willen halen
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        public IList<string> EersteLetterNamenOphalenCategorie(int categorieID)
+        {
+            if (!_autorisatieMgr.IsGavCategorie(categorieID))
+            {
+                throw new GeenGavException(Resources.GeenGav);
+            }
+
+            return _gelieerdePersonenDao.EersteLetterNamenOphalenCategorie(categorieID);
+        }
+
+        /// <summary>
         /// Haalt een pagina op met gelieerde personen van een groep.
         /// </summary>
         /// <param name="groepID">
@@ -298,6 +338,52 @@ namespace Chiro.Gap.Workers
             }
         }
 
+
+        /// <summary>
+        /// Haalt de gelieerde personen van een groep op, die een familienaam hebben
+        /// beginnend met de letter <paramref name="letter"/>.
+        /// </summary>
+        /// <param name="groepID">
+        /// GroepID gevraagde groep
+        /// </param>
+        /// <param name="letter">
+        /// Eerste letter van de achternamen van de personen die we willen bekijken
+        /// </param>
+        /// <param name="sortering">
+        /// Geeft aan hoe de pagina gesorteerd moet worden
+        /// </param>
+        /// <param name="extras">
+        /// Bepaalt de mee op te halen gekoppelde objecten
+        /// </param>
+        /// <param name="aantalTotaal">
+        /// Outputparameter voor totaal aantal
+        /// personen in de groep
+        /// </param>
+        /// <returns>
+        /// Lijst met GelieerdePersonen
+        /// </returns>
+        public IList<GelieerdePersoon> Ophalen(
+            int groepID,
+            string letter,
+            PersoonSorteringsEnum sortering,
+            PersoonsExtras extras,
+            out int aantalTotaal)
+        {
+            if (_autorisatieMgr.IsGavGroep(groepID))
+            {
+                return _gelieerdePersonenDao.Ophalen(
+                    groepID,
+                    letter,
+                    sortering,
+                    extras,
+                    out aantalTotaal);
+            }
+            else
+            {
+                throw new GeenGavException(Resources.GeenGav);
+            }
+        }
+
         /// <summary>
         /// Haalt een pagina op met gelieerde personen van een groep die tot de categorie behoren,
         /// inclusief eventuele lidobjecten voor deze groep
@@ -325,8 +411,7 @@ namespace Chiro.Gap.Workers
         /// Lijst met GelieerdePersonen
         /// </returns>
         public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID,
-                                                                 int pagina,
-                                                                 int paginaGrootte,
+                                                                 string letter,
                                                                  PersoonSorteringsEnum sortering,
                                                                  PersoonsExtras extras,
                                                                  out int aantalTotaal)
@@ -336,9 +421,8 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            return _gelieerdePersonenDao.PaginaOphalenUitCategorie(categorieID,
-                                                                   pagina,
-                                                                   paginaGrootte,
+            return _gelieerdePersonenDao.OphalenUitCategorie(categorieID,
+                                                                   letter,
                                                                    sortering,
                                                                    out aantalTotaal,
                                                                    extras);
@@ -418,6 +502,25 @@ namespace Chiro.Gap.Workers
             if (_autorisatieMgr.IsGavGroep(groepID))
             {
                 return _gelieerdePersonenDao.ZoekenOpNaam(groepID, naam, voornaam);
+            }
+            else
+            {
+                throw new GeenGavException(Resources.GeenGav);
+            }
+        }
+
+        /// <summary>
+        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarbij
+        /// naam of voornaam ongeveer begint met <paramref name="teZoeken"/>
+        /// </summary>
+        /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
+        /// <param name="teZoeken">Te zoeken voor- of achternaam (ongeveer)</param>
+        /// <returns>Lijst met gevonden matches</returns>
+        public IList<GelieerdePersoon> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
+        {
+            if (_autorisatieMgr.IsGavGroep(groepID))
+            {
+                return _gelieerdePersonenDao.ZoekenOpNaamVoornaamBegin(groepID, teZoeken);
             }
             else
             {

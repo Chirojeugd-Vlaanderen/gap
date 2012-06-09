@@ -15,6 +15,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -33,9 +34,9 @@ namespace Chiro.Gap.Services
         #region Manager Injection
 
         private readonly GroepenManager _groepenMgr;
-        private readonly ChiroGroepenManager _chiroGroepenMgr;
+        private readonly IChiroGroepenManager _chiroGroepenMgr;
         private readonly AfdelingenManager _afdelingenMgr;
-        private readonly AfdelingsJaarManager _afdelingsJaarMgr;
+        private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
         private readonly AdressenManager _adresMgr;
         private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
         private readonly JaarOvergangManager _jaarOvergangManager;
@@ -86,9 +87,9 @@ namespace Chiro.Gap.Services
         /// </param>
         public GroepenService(
             GroepenManager groepenMgr,
-            ChiroGroepenManager cgm,
+            IChiroGroepenManager cgm,
             AfdelingenManager afdm,
-            AfdelingsJaarManager ajm,
+            IAfdelingsJaarManager ajm,
             GroepsWerkJaarManager wm,
             AdressenManager adresMgr,
             CategorieenManager cm,
@@ -1130,6 +1131,7 @@ namespace Chiro.Gap.Services
         /// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkjaar</param>
         /// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
         /// <remarks>Voor kadergroepen laat je teActiveren gewoon leeg.</remarks>
+        /// <remarks>Er worden geen leden gemaakt in het nieuwe werkjaar.</remarks>
         public void JaarovergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID)
         {
             try

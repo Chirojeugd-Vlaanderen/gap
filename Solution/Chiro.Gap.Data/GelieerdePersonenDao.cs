@@ -187,6 +187,57 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="groepID">
+        /// GroepID van gevraagde groep
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        public IList<String> EersteLetterNamenOphalen(int groepID)
+        {
+            IList<String> lijst;
+
+            using (var db = new ChiroGroepEntities())
+            {
+                lijst = (from gp in db.GelieerdePersoon
+                         where gp.Groep.ID == groepID
+                         let letter = gp.Persoon.Naam.Substring(0, 1)
+                         orderby letter
+                         select letter).Distinct().ToList();
+            }
+
+            return lijst;
+        }
+
+        /// <summary>
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van
+        /// de categorie met ID <paramref name="categorieID"/>
+        /// </summary>
+        /// <param name="categorieID">
+        ///   ID van de Categorie waaruit we de letters willen halen
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        public IList<string> EersteLetterNamenOphalenCategorie(int categorieID)
+        {
+            IList<String> lijst;
+
+            using (var db = new ChiroGroepEntities())
+            {
+                lijst = (from gp in db.GelieerdePersoon
+                         where gp.Categorie.Any(cat => cat.ID == categorieID)
+                         let letter = gp.Persoon.Naam.Substring(0, 1)
+                         orderby letter
+                         select letter).Distinct().ToList();
+            }
+
+            return lijst;
+        }
+
+        /// <summary>
         /// Instantieert de abonnementen van de gegeven gelieerde personen voor het huidige werkjaar
         /// </summary>
         /// <param name="db">De Objectcontext</param>
@@ -329,53 +380,107 @@ namespace Chiro.Gap.Data.Ef
             return lijst;
         }
 
+
         /// <summary>
-        /// Haal een pagina op met gelieerde personen uit een categorie, inclusief lidinfo voor het huidige
-        /// werkjaar.
+        /// Haalt alle gelieerde personen op waarvan de familienaam begint met de letter <paramref name="letter"/>.
         /// </summary>
-        /// <param name="categorieID">
-        /// ID van de gevraagde categorie
-        /// </param>
-        /// <param name="pagina">
-        /// Gevraagde pagina
-        /// </param>
-        /// <param name="paginaGrootte">
-        /// Grootte van de pagina
-        /// </param>
-        /// <param name="sortering">
-        /// Sortering van de lijst
-        /// </param>
-        /// <param name="aantalTotaal">
-        /// Outputparameter die het totaal aantal personen in de categorie weergeeft
-        /// </param>
-        /// <param name="extras">
-        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-        /// </param>
-        /// <returns>
-        /// Lijst gelieerde personen
-        /// </returns>
-        public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
+        /// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
+        /// <param name="letter">Eerste letter van de achternamen van de personen die we willen bekijken</param>
+        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
+        /// <param name="extras">Bepaalt de mee op te halen gekoppelde entiteiten</param>
+        /// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
+        /// zijn. </param>
+        /// <returns>De gevraagde lijst gelieerde personen</returns>
+        public IList<GelieerdePersoon> Ophalen(
+            int groepID,
+            string letter,
+            PersoonSorteringsEnum sortering,
+            PersoonsExtras extras,
+            out int aantalTotaal)
         {
             IList<GelieerdePersoon> lijst;
 
             using (var db = new ChiroGroepEntities())
             {
-                // Haal alle personen in de gevraagde categorie op
+                // Misschien een slechte oplossing voor alleen maar tellen hoeveel er in totaal zijn??
+                var gpQueryForCount = (from gp in db.GelieerdePersoon
+                               where gp.Groep.ID == groepID
+                               select gp) as ObjectQuery<GelieerdePersoon>;
 
-                var query = from gp in db.GelieerdePersoon.Include(gp => gp.Categorie)
+                // Haal de gelieerde personen op van de gevraagde groep
+                var gpQuery = (from gp in db.GelieerdePersoon
+                               where gp.Groep.ID == groepID &&
+                               gp.Persoon.Naam.Substring(0, 1) == letter
+                               select gp) as ObjectQuery<GelieerdePersoon>;
+
+                Debug.Assert(gpQuery != null);
+
+                // simpele includes toepassen, sorteren en tellen
+
+                var paths = ExtrasNaarLambdas(extras);
+                lijst = Sorteren(
+                    IncludesToepassen(gpQuery, paths),
+                    sortering).ToList();
+
+                aantalTotaal = gpQueryForCount.Count();
+
+                // De moeilijkere gekoppelde entiteiten:
+
+                if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
+                {
+                    AdresHelper.AlleAdressenKoppelen(lijst);
+                }
+                else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+                {
+                    AdresHelper.VoorkeursAdresKoppelen(lijst);
+                }
+
+                if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
+                {
+                    HuidigeLedenKoppelen(db, lijst);
+                }
+            }
+
+            Utility.DetachObjectGraph(lijst);
+            return lijst;
+        }
+
+        /// <summary>
+        /// Haalt alle gelieerde personen op uit categorie met ID <paramref name="categorieID"/> 
+        /// wiens familienaam begint met de letter <paramref name="letter"/>.
+        /// </summary>
+        /// <param name="categorieID">ID van de categorie waarvan gelieerde personen op te halen zijn</param>
+        /// <param name="letter">Eerste letter van de achternamen van de personen die we willen bekijken</param>
+        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
+        /// <param name="extras">Bepaalt de mee op te halen gekoppelde entiteiten</param>
+        /// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
+        /// zijn. </param>
+        /// <returns>De gevraagde lijst gelieerde personen</returns>
+        public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras)
+        {
+            IList<GelieerdePersoon> lijst;
+
+            using (var db = new ChiroGroepEntities())
+            {
+                // Misschien een slechte oplossing voor alleen maar tellen hoeveel er in totaal zijn in de categorie??
+                var queryForCount = from gp in db.GelieerdePersoon.Include(gp => gp.Categorie)
                             where gp.Categorie.Any(cat => cat.ID == categorieID)
+                            select gp;
+
+                // Haal alle personen in de gevraagde categorie op
+                var query = from gp in db.GelieerdePersoon.Include(gp => gp.Categorie)
+                            where gp.Categorie.Any(cat => cat.ID == categorieID) &&
+                            gp.Persoon.Naam.Substring(0, 1) == letter
                             select gp;
 
                 var paths = ExtrasNaarLambdas(extras);
 
-                var queryMetExtras = IncludesToepassen(
-                    query as ObjectQuery<GelieerdePersoon>,
-                    paths);
+                var queryMetExtras = (letter != "A-Z") ? IncludesToepassen(query as ObjectQuery<GelieerdePersoon>, paths) : IncludesToepassen(queryForCount as ObjectQuery<GelieerdePersoon>, paths);
 
                 // Sorteer ze en bepaal totaal aantal personen
-                lijst = Sorteren(queryMetExtras, sortering).PaginaSelecteren(pagina, paginaGrootte).ToList();
+                lijst = Sorteren(queryMetExtras, sortering).ToList();
 
-                aantalTotaal = query.Count();
+                aantalTotaal = queryForCount.Count();
 
                 if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
                 {
@@ -655,6 +760,34 @@ namespace Chiro.Gap.Data.Ef
 
                 return IncludesToepassen(query, paths).ToList();
             }
+        }
+
+        /// <summary>
+        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarvan de naam 
+        /// of voornaam begint met <paramref name="teZoeken"/>
+        /// </summary>
+        /// <param name="groepID">
+        /// GroepID dat bepaalt in welke gelieerde personen gezocht mag worden
+        /// </param>
+        /// <param name="teZoeken">
+        /// Patroon te vinden in voornaam of naam
+        /// </param>
+        /// <returns>
+        /// Lijst met gevonden matches
+        /// </returns>
+        public IList<GelieerdePersoon> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
+        {
+            IList<GelieerdePersoon> personen;
+
+            using (var db = new ChiroGroepEntities())
+            {
+                personen = (
+                    from gp in db.GelieerdePersoon
+                        .Include(gp => gp.Persoon)
+                    where gp.Groep.ID == groepID && (gp.Persoon.Naam.StartsWith(teZoeken) || gp.Persoon.VoorNaam.StartsWith(teZoeken))
+                    select gp).ToList();
+            }
+            return personen;
         }
 
         /*public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)

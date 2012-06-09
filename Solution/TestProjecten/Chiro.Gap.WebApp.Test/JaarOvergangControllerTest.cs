@@ -6,11 +6,9 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using System.Collections.Generic;
+
 using System.Web.Mvc;
-using Chiro.Gap.WebApp;
+
 using Chiro.Gap.WebApp.Models;
 
 using Moq;
@@ -23,7 +21,7 @@ namespace Chiro.Gap.WebApp.Test
     /// Dit is een testclass voor JaarOvergangControllerTest,
     ///to contain all JaarOvergangControllerTest Unit Tests
     /// </summary>
-    [TestClass()]
+    [TestClass]
     public class JaarOvergangControllerTest
     {
 
@@ -51,7 +49,7 @@ namespace Chiro.Gap.WebApp.Test
         //You can use the following additional attributes as you write your tests:
         //
         //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
+        //[ClassInitialize]
         //public static void MyClassInitialize(TestContext testContext)
         //{
         //}

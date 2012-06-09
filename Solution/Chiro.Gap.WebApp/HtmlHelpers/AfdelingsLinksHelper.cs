@@ -40,8 +40,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
                     html.Encode(afd.Afkorting),
                     "Afdeling",
                     new { Controller = "Leden", groepsWerkJaarID, groepID, afd.ID },
-                    new { title = String.Format(Properties.Resources.AfdelingsLinkTitel, afd.Naam) }
-                                ).ToString());
+                    new { title = String.Format(Properties.Resources.AfdelingsLinkTitel, afd.Naam) }).ToString());
                 builder.Append(' ');
             }
 

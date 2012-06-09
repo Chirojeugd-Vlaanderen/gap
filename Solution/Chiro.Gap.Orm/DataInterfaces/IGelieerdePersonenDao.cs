@@ -67,6 +67,21 @@ namespace Chiro.Gap.Orm.DataInterfaces
         IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam, params Expression<Func<GelieerdePersoon, object>>[] paths);
 
         /// <summary>
+        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarvan de naam 
+        /// of voornaam begint met <paramref name="teZoeken"/>
+        /// </summary>
+        /// <param name="groepID">
+        /// GroepID dat bepaalt in welke gelieerde personen gezocht mag worden
+        /// </param>
+        /// <param name="teZoeken">
+        /// Patroon te vinden in voornaam of naam
+        /// </param>
+        /// <returns>
+        /// Lijst met gevonden matches
+        /// </returns>
+        IList<GelieerdePersoon> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken);
+
+        /// <summary>
         /// Haalt de persoonsgegevens van alle gelieerde personen van een groep op.
         /// </summary>
         /// <param name="groepID">ID van de groep</param>
@@ -122,6 +137,28 @@ namespace Chiro.Gap.Orm.DataInterfaces
         GelieerdePersoon Ophalen(int gelieerdePersoonID, PersoonsExtras extras);
 
         /// <summary>
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="groepID">
+        /// GroepID van gevraagde groep
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        IList<String> EersteLetterNamenOphalen(int groepID);
+
+        /// <summary>
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="categorie">
+        ///   Categorie waaruit we de letters willen halen
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        IList<string> EersteLetterNamenOphalenCategorie(int categorie);
+
+        /// <summary>
         /// Haal een pagina op met gelieerde personen van een groep.
         /// </summary>
         /// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
@@ -141,6 +178,23 @@ namespace Chiro.Gap.Orm.DataInterfaces
             out int aantalTotaal);
 
         /// <summary>
+        /// Haalt alle gelieerde personen op waarvan de familienaam begint met de letter <paramref name="letter"/>.
+        /// </summary>
+        /// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
+        /// <param name="letter">Eerste letter van de achternamen van de personen die we willen bekijken</param>
+        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
+        /// <param name="extras">Bepaalt de mee op te halen gekoppelde entiteiten</param>
+        /// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
+        /// zijn. </param>
+        /// <returns>De gevraagde lijst gelieerde personen</returns>
+        IList<GelieerdePersoon> Ophalen(
+            int groepID,
+            string letter,
+            PersoonSorteringsEnum sortering,
+            PersoonsExtras extras,
+            out int aantalTotaal);
+
+        /// <summary>
         /// Haal een pagina op met gelieerde personen uit een categorie, inclusief lidinfo voor het huidige
         /// werkjaar.
         /// </summary>
@@ -151,7 +205,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
         /// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
         /// <returns>Lijst gelieerde personen</returns>
-        IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras);
+        IList<GelieerdePersoon> OphalenUitCategorie(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal, PersoonsExtras extras);
 
         /// <summary>
         /// Haalt een gelieerde persoon op, inclusief

@@ -73,7 +73,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// verschillende communicatievormen van dit type heeft
         /// </summary>
         [DataMember]
-        [DisplayName(@"Gebruiken om persoon te contacteren?")]
+        [DisplayName(@"Als standaard gebruiken?")]
         public bool Voorkeur { get; set; }
 
         /// <summary>

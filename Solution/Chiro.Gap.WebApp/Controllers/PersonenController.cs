@@ -50,27 +50,27 @@ namespace Chiro.Gap.WebApp.Controllers
             // redirect naar alle personen van de groep, pagina 1.
             return RedirectToAction("List", new
             {
-                page = 1,
+                page = "A",
                 id = 0,
                 sortering = PersoonSorteringsEnum.Naam
             });
         }
 
         /// <summary>
-        /// Haal een 'pagina' met persoonsinformatie op (inclusief lidinfo) voor personen uit een
-        /// bepaalde categorie, en toont deze pagina via de view 'Index'.
+        /// Toont de persoonsinformatie op (inclusief lidinfo) voor personen waarvan de familienaam begint met
+        /// de letter <paramref name="page"/> uit een bepaalde categorie, en toont deze via de view 'Index'.
         /// </summary>
-        /// <param name="page">Nummer van de 'pagina'</param>
+        /// <param name="page">Beginletter familienamen te tonen personen</param>
         /// <param name="groepID">Huidige groep waarin de gebruiker aan het werken is</param>
         /// <param name="id">ID van de gevraagde categorie.  Kan ook 0 zijn; dan worden alle personen
         /// geselecteerd.</param>
         /// <param name="sortering">Geeft de sortering van de pagina en lijst aan</param>
         /// <returns>De personenlijst in de view 'Index'</returns>
-        /// /// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
+        /// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
         /// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>
         [HandleError]
         [ParametersMatch]
-        public ActionResult List([QueryStringValue]int page, [RouteValue]int groepID, [RouteValue]int id, [QueryStringValue]PersoonSorteringsEnum sortering)
+        public ActionResult List([QueryStringValue]string page, [RouteValue]int groepID, [RouteValue]int id, [QueryStringValue]PersoonSorteringsEnum sortering)
         {
             // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
             ClientState.VorigeLijst = Request.Url.ToString();
@@ -82,43 +82,96 @@ namespace Chiro.Gap.WebApp.Controllers
             model.GekozenCategorieID = id;
             model.Sortering = sortering;
 
-            model.GroepsCategorieen = ServiceHelper.CallService<IGroepenService, IList<CategorieInfo>>(
-                svc => svc.CategorieenOphalen(groepID)).ToList();
+            model.GroepsCategorieen = ServiceHelper.CallService<IGroepenService, IList<CategorieInfo>>(svc => svc.CategorieenOphalen(groepID)).ToList();
             model.GroepsCategorieen.Add(new CategorieInfo
             {
                 ID = 0,
                 Naam = "Alle personen"
             });
 
-            if (id == 0)  // Alle personen bekijken
+            var categorieID = id;
+
+            if (categorieID == 0)  // Alle personen bekijken
             {
-                model.PersoonInfos =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-                    (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, sortering, out totaal));
+                model.PersoonInfos = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.OphalenMetLidInfoViaLetter(groepID, page, sortering, out totaal));
                 model.HuidigePagina = page;
-                model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
                 model.Titel = "Personenoverzicht";
                 model.Totaal = totaal;
+                model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalen(groepID));
+
+                // Als er niemand met een naam is die met een A begint
+                // is het nog al nutteloos dat we eerst op die pagina belanden
+                if (page == "A" && !model.PersoonInfos.Any())
+                {
+                    return RedirectToAction("List", new
+                    {
+                        page = model.Paginas.First().ToUpper(),
+                        id = 0,
+                        sortering = PersoonSorteringsEnum.Naam
+                    });
+                }
             }
             else	// Alleen personen uit de gekozen categorie bekijken
             {
                 // TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
                 model.PersoonInfos =
                     ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-                    (g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, sortering, out totaal));
+                    (g => g.PaginaOphalenUitCategorieMetLidInfo(categorieID, page, sortering, out totaal));
                 model.HuidigePagina = page;
-                model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
 
                 // Ga in het lijstje met categorieën na welke er geselecteerd werd, zodat we de naam in de paginatitel kunnen zetten
                 String naam = (from c in model.GroepsCategorieen
-                               where c.ID == id
+                               where c.ID == categorieID
                                select c).First().Naam;
 
                 model.Titel = "Overzicht " + naam;
                 model.Totaal = totaal;
+                model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalenCategorie(id));
+
+                // Als er niemand met een naam is die met een A begint
+                // is het nog al nutteloos dat we eerst op die pagina belanden
+                if (page == "A" && !model.PersoonInfos.Any())
+                {
+                    return RedirectToAction("List", new
+                    {
+                        page = model.Paginas.First().ToUpper(),
+                        id = categorieID,
+                        sortering = PersoonSorteringsEnum.Naam
+                    });
+                }
             }
 
             return View("Index", model);
+        }
+
+        /// <summary>
+        /// Afhandelen postback naar list.  Als er iets relevant in 'GekozenActie' zit,
+        /// wordt 'ToepassenOpSelectie' aangeroepen.  In het andere geval werd gewoon
+        /// een categorie geselecterd.
+        /// </summary>
+        /// <param name="model">De property model.GekozenCategorieID bevat de ID van de categorie waarvan de
+        /// personen getoond moeten worden.  Is deze 0, dan worden alle personen getoond</param>
+        /// <param name="groepID">ID van de groep waarin de gebruiker momenteel werkt</param>
+        /// <returns>Een redirect naar de juiste lijst</returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        [HandleError]
+        public ActionResult List(PersoonInfoModel model, int groepID)
+        {
+            if (model.GekozenActie > 0)
+            {
+                return ToepassenOpSelectie(model, groepID);
+            }
+            else
+            {
+                return RedirectToAction(
+                    "List",
+                    new
+                    {
+                        page = "A",
+                        id = model.GekozenCategorieID,
+                        sortering = model.Sortering
+                    });
+            }
         }
 
         /// <summary>
@@ -178,35 +231,7 @@ namespace Chiro.Gap.WebApp.Controllers
             return new ExcelResult(stream, "personen.xlsx");
         }
 
-        /// <summary>
-        /// Afhandelen postback naar list.  Als er iets relevant in 'GekozenActie' zit,
-        /// wordt 'ToepassenOpSelectie' aangeroepen.  In het andere geval werd gewoon
-        /// een categorie geselecterd.
-        /// </summary>
-        /// <param name="model">De property model.GekozenCategorieID bevat de ID van de categorie waarvan de
-        /// personen getoond moeten worden.  Is deze 0, dan worden alle personen getoond</param>
-        /// <param name="groepID">ID van de groep waarin de gebruiker momenteel werkt</param>
-        /// <returns>Een redirect naar de juiste lijst</returns>
-        [AcceptVerbs(HttpVerbs.Post)]
-        [HandleError]
-        public ActionResult List(PersoonInfoModel model, int groepID)
-        {
-            if (model.GekozenActie > 0)
-            {
-                return ToepassenOpSelectie(model, groepID);
-            }
-            else
-            {
-                return RedirectToAction(
-                    "List",
-                    new
-                        {
-                            page = 1,
-                            id = model.GekozenCategorieID,
-                            sortering = model.Sortering
-                        });
-            }
-        }
+        
 
         /// <summary>
         /// Voert de gekozen actie in de dropdownlist van de personenlijst uit op de geselecteerde
@@ -520,6 +545,23 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
                 (groep => groep.ActieveAfdelingenOphalen(model.PersoonLidInfo.LidInfo.GroepsWerkJaarID));
             }
+        }
+
+
+        /// <summary>
+        /// Stelt op basis van het begin van een voor- of achternaam
+        /// een lijst suggesties samen met personen die de
+        /// gebruiker mogelijk wil vinden
+        /// </summary>
+        /// <param name="naamOngeveer">Wat de gebruiker al intikte van naam om te zoeken</param>
+        /// <param name="groepID">GroepID waarin we aan het werken zijn</param>
+        /// <returns>Voorgestelde personen in JSON formaat</returns>
+        [HandleError]
+        public ActionResult PersoonZoeken(string naamOngeveer, int groepID)
+        {
+            IEnumerable<PersoonInfo> mogelijkePersonen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(x => x.ZoekenOpNaamVoornaamBegin(groepID, naamOngeveer));
+            var personen = mogelijkePersonen.OrderBy(prs => prs.Naam).ThenBy(prs => prs.VoorNaam).Distinct();
+            return Json(personen, JsonRequestBehavior.AllowGet);
         }
 
         #endregion personen

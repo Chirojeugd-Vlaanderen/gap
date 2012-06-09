@@ -217,6 +217,10 @@
     <Content Include="Views\Leden\AfdelingenBewerken.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\OverledenPersoon.aspx" />
+    <Content Include="Views\Shared\NavigatieBeperktControl.ascx" />
+    <Content Include="Views\Shared\PersoonZoekenScriptsControl.ascx" />
+    <Content Include="Views\Shared\PersoonZoekenControl.ascx" />
+    <Content Include="Views\Shared\NavigatieBeperktControl.ascx" />
     <Content Include="Views\Shared\LedenMaken.aspx" />
     <Content Include="Views\Personen\AdresVerwijderen.aspx" />
     <Content Include="Views\Personen\CommVormBewerken.aspx" />
@@ -314,7 +318,6 @@
     </Content>
     <Content Include="Content\Chirologo.png" />
     <Content Include="Content\favicon.ico" />
-    <Content Include="Content\GeenGroepGekozen.css" />
     <Compile Include="ActionFilters\ParametersMatchAttribute.cs" />
     <Compile Include="Controllers\AbonnementenController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />

@@ -49,7 +49,7 @@ namespace Chiro.Gap.Workers.Test
         /// Code uit te voeren voor de 1ste test uitgevoerd wordt.
         /// </summary>
         /// <param name="testContext"></param>
-        [ClassInitialize()]
+        [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
             Factory.ContainerInit();

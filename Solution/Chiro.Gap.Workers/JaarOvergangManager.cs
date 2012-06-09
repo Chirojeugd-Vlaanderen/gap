@@ -13,6 +13,7 @@ using System.Linq;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
@@ -24,42 +25,32 @@ namespace Chiro.Gap.Workers
     public class JaarOvergangManager
     {
         private readonly GroepenManager _groepenMgr;
-        private readonly ChiroGroepenManager _chiroGroepenMgr;
-        private readonly AfdelingsJaarManager _afdelingsJaarMgr;
-        private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
-        private readonly LedenManager _ledenMgr;
+		private readonly IChiroGroepenManager _chiroGroepenMgr;
+        private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
+		private readonly IGroepsWerkJaarManager _groepsWerkJaarManager;
 
-        /// <summary>
-        /// Maakt een nieuwe jaarovergangsmanager aan
-        /// </summary>
-        /// <param name="gm">
-        /// De worker voor Groepen
-        /// </param>
-        /// <param name="cgm">
-        /// De worker voor Chirogroepen
-        /// </param>
-        /// <param name="ajm">
-        /// De worker voor AfdelingsJaren
-        /// </param>
-        /// <param name="wm">
-        /// De worker voor GroepsWerkJaren
-        /// </param>
-        /// <param name="lm">
-        /// De worker voor Leden
-        /// </param>
-        public JaarOvergangManager(
-            GroepenManager gm,
-            ChiroGroepenManager cgm,
-            AfdelingsJaarManager ajm,
-            GroepsWerkJaarManager wm,
-            LedenManager lm)
+    	/// <summary>
+    	/// Maakt een nieuwe jaarovergangsmanager aan
+    	/// </summary>
+    	/// <param name="gm">
+    	/// 	De worker voor Groepen
+    	/// </param>
+    	/// <param name="cgm">
+    	/// 	De worker voor Chirogroepen
+    	/// </param>
+    	/// <param name="ajm">
+    	/// 	De worker voor AfdelingsJaren
+    	/// </param>
+    	/// <param name="wm">
+    	/// 	De worker voor GroepsWerkJaren
+    	/// </param>
+		public JaarOvergangManager(GroepenManager gm, IChiroGroepenManager cgm, IAfdelingsJaarManager ajm, IGroepsWerkJaarManager wm)
         {
             // TODO (#1095): visie ontwikkelen over wanneer we IoC toepassen
             _groepenMgr = gm;
             _chiroGroepenMgr = cgm;
             _afdelingsJaarMgr = ajm;
             _groepsWerkJaarManager = wm;
-            _ledenMgr = lm;
         }
 
         /// <summary>
@@ -79,6 +70,7 @@ namespace Chiro.Gap.Workers
         /// Komt voor als er een afdeling bij zit die niet gekend is in de groep, of als er een afdeling gekoppeld is
         /// aan een onbestaande nationale afdeling. Ook validatiefouten worden op deze manier doorgegeven.
         /// </exception>
+        /// <remarks>Er worden geen leden gemaakt door deze method.</remarks>
         public void JaarOvergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID)
         {
             // TODO (#1135): internal datacontract maken
@@ -94,7 +86,6 @@ namespace Chiro.Gap.Workers
             // TODO check dat roll-back gebeurt
             // TODO check of er meer voorwaarden gecontroleerd moeten worden
 #if KIPDORP
-    
     // We proberen eens met een hogere timeout. (5 minuten ipv standaard 1)
     // (refs #866)
 
@@ -138,7 +129,7 @@ namespace Chiro.Gap.Workers
                 // Lokale variabele om "Access to modified closure" te vermijden [wiki:VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure]
 
                 // Zoek de afdeling van de groep met het gevraagde ID
-                var afd = (from a in (g as ChiroGroep).Afdeling
+                var afd = (from a in ((ChiroGroep) g).Afdeling
                            where afdinfo1.AfdelingID == a.ID
                            select a).FirstOrDefault();
 
@@ -178,7 +169,7 @@ namespace Chiro.Gap.Workers
             // Bewaar nu 'in 1 trek'  meteen groepswerkjaar *en* afdelingsjaren.
             _groepsWerkJaarManager.Bewaren(gwj, GroepsWerkJaarExtras.Groep | GroepsWerkJaarExtras.Afdelingen);
 
-            // gwj is nu meteen gekoppeld aan de afdelngsjaren, en vice versa.
+            // gwj is nu meteen gekoppeld aan de afdelingsjaren, en vice versa.
 #if KIPDORP
                     scope.Complete();
                 }

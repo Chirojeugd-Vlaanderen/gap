@@ -2,12 +2,6 @@
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-	<%	// De stylesheet en de shortcut icon worden hier 2 keer gereferencet. De eerste is in principe niet nodig, maar als die
-		// ontbreekt, protesteert de aspx-editor dat hij klasses niet vindt. De tweede is nodig als de app niet in
-		// de 'root' van de webserver staat (zoals het geval is in de live-omgeving). 
-		// En dit staat in servercomments ipv html-comments omdat gebruikers daar geen zaken mee hebben. :)		%>	
-	<link href="/Content/GeenGroepGekozen.css" rel="stylesheet" type="text/css" />
-	<link href="<%=ResolveUrl("~/Content/GeenGroepGekozen.css")%>" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<ul>

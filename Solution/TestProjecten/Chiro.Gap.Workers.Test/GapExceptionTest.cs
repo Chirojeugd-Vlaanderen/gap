@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Linq;
@@ -9,8 +9,6 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Workers.Test
 {
-    
-    
     /// <summary>
     /// Dit is een testclass voor Unit Tests van GapExceptionTest,
     /// to contain all GapExceptionTest Unit Tests
@@ -43,7 +41,7 @@ namespace Chiro.Gap.Workers.Test
 		//You can use the following additional attributes as you write your tests:
 		//
 		//Use ClassInitialize to run code before running the first test in the class
-		//[ClassInitialize()]
+		//[ClassInitialize]
 		//public static void MyClassInitialize(TestContext testContext)
 		//{
 		//}
@@ -99,3 +97,4 @@ namespace Chiro.Gap.Workers.Test
 		}
 	}
 }
+

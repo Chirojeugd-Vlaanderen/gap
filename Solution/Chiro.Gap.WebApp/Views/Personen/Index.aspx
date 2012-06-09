@@ -4,7 +4,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>
 	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.7.1.min.js")%>"></script>
-	<script type="text/javascript">
+	
+    <% Html.RenderPartial("PersoonZoekenScriptsControl", Model); %>
+    
+    <script type="text/javascript">
 		$(document).ready(function() {
 			$('#kiesCategorie').hide();
 			$("#GekozenCategorieID").change(function() {
@@ -64,6 +67,8 @@
 		</ul>
 
 	</div>
+    
+    <% Html.RenderPartial("PersoonZoekenControl", Model); %>
 	
 	<% Html.RenderPartial("PersonenLijstControl", Model); %>
 

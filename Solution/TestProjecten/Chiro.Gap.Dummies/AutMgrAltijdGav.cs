@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Chiro.Gap.Orm;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Dummies
@@ -133,6 +134,16 @@ namespace Chiro.Gap.Dummies
 	    }
 
 	    public bool IsGavGebruikersRecht(int gebruikersRechtID)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum)
 	    {
 	        throw new NotImplementedException();
 	    }

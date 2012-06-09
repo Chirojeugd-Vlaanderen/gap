@@ -17,6 +17,7 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Services.Properties;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -238,14 +239,13 @@ namespace Chiro.Gap.Services
         /// <returns>Een lijst van persoonsgegevens</returns>
         /* zie #273 */
         // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
+        public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
         {
             try
             {
                 var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
                     categorieID,
-                    pagina,
-                    paginaGrootte,
+                    letter,
                     sortering,
                     PersoonsExtras.Categorieen | PersoonsExtras.LedenDitWerkJaar,
                     out aantalTotaal);
@@ -272,6 +272,99 @@ namespace Chiro.Gap.Services
             var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
 
             return result;
+        }
+
+        /// <summary>
+        /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="groepID">De ID van de groep waaruit we de gelieerde persoonsnamen gaan halen</param>
+        /// <returns>Lijst met de eerste letter van de namen</returns>
+        public IList<String> EersteLetterNamenOphalen(int groepID)
+        {
+            return _gpMgr.EersteLetterNamenOphalen(groepID);
+        }
+
+        /// <summary>
+        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van
+        /// de categorie met ID <paramref name="categorieID"/>
+        /// </summary>
+        /// <param name="categorieID">
+        ///   ID van de Categorie waaruit we de letters willen halen
+        /// </param>
+        /// <returns>
+        /// Lijst met de eerste letter gegroepeerd van de achternamen
+        /// </returns>
+        public IList<string> EersteLetterNamenOphalenCategorie(int categorieID)
+        {
+            return _gpMgr.EersteLetterNamenOphalenCategorie(categorieID);
+        }
+
+        /// <summary>
+        /// Haalt de persoonsgegevens op van gelieerde personen van een groep
+        /// wiens familienaam begint met de letter <paramref name="letter"/>.
+        /// inclusief eventueel lidobject voor het recentste werkjaar.
+        /// </summary>
+        /// <param name="groepID">ID van de betreffende groep</param>
+        /// <param name="letter">Beginletter van de achternaam</param>
+        /// <param name="sortering">Geeft aan hoe de personen gesorteerd moeten worden</param>
+        /// <param name="aantalTotaal">Outputparameter; levert het totaal aantal personen in de groep op</param>
+        /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
+        /* zie #273 */
+        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
+        {
+            try
+            {
+                var gelieerdePersonen = _gpMgr.Ophalen(
+                    groepID,
+                    letter,
+                    sortering,
+                    PersoonsExtras.Categorieen | PersoonsExtras.LedenDitWerkJaar,
+                    out aantalTotaal);
+                var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+
+                /*
+                 * TODO dit staat mss niet op de beste plek
+                 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
+                 * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
+                 * als dit het geval is, kanlidworden op true zetten.
+                 * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
+                 * 
+                 * TODO dubbele code in detailsophalen
+                 */
+                GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
+                foreach (var p in result)
+                {
+                    if (p.GeboorteDatum == null)
+                    {
+                        continue;
+                    }
+                    if (p.SterfDatum.HasValue)
+                    {
+                        continue;
+                    }
+
+                    int geboortejaar = p.GeboorteDatum.Value.Year - p.ChiroLeefTijd;
+                    var afd = (from a in gwj.AfdelingsJaar
+                               where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
+                               select a).FirstOrDefault();
+                    if (afd != null)
+                    {
+                        p.KanLidWorden = true;
+                    }
+                    if (p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Settings.Default.LeidingVanafLeeftijd.ToString()) + p.ChiroLeefTijd)
+                    {
+                        p.KanLeidingWorden = true;
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                aantalTotaal = 0;
+                return null;
+            }
         }
 
         /// <summary>
@@ -461,8 +554,7 @@ namespace Chiro.Gap.Services
 
                 var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
                     categorieID,
-                    1,
-                    int.MaxValue,
+                    "A-Z",
                     sortering,
                     PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres,
                     out totaal);
@@ -532,6 +624,30 @@ namespace Chiro.Gap.Services
 
                 return (from g in gevonden
                         select new IDPersEnGP { GelieerdePersoonID = g.ID, PersoonID = g.Persoon.ID }).ToArray();
+            }
+            catch (GeenGavException ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarbij
+        /// naam of voornaam ongeveer begint met <paramref name="teZoeken"/>
+        /// </summary>
+        /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
+        /// <param name="teZoeken">Te zoeken voor- of achternaam (ongeveer)</param>
+        /// <returns>Lijst met gevonden matches</returns>
+        /// <remarks>Deze method levert enkel naam, voornaam en gelieerdePersoonID op!</remarks>
+        public IEnumerable<PersoonInfo> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
+        {
+            try
+            {
+                var gevonden = _gpMgr.ZoekenOpNaamVoornaamBegin(groepID, teZoeken);
+
+                return (from g in gevonden
+                        select new PersoonInfo { GelieerdePersoonID = g.ID, Naam = g.Persoon.Naam, VoorNaam = g.Persoon.VoorNaam }).ToArray();
             }
             catch (GeenGavException ex)
             {

@@ -17,3 +17,5 @@ where (gav.Login not like 'kipdorp\' and (p.AdNummer is null or p.AdNummer not i
 -- gebruikers testsysteem opnieuw toevoegen
 
 exec auth.spGebruikersRechtToekennen 'mm /0706', 'chiropublic\vermeti'
+exec auth.spGebruikersRechtToekennen 'mj /0108', 'kipdorp\gauweme'
+exec auth.spGebruikersRechtToekennen 'mm /0108', 'kipdorp\gauweme'
