@@ -13,6 +13,7 @@ using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using System.Transactions;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -25,7 +26,8 @@ namespace Chiro.Gap.Services.Test
     [TestClass]
     public class LedenServiceTest
     {
-
+        private ILedenService _ledenService = null;
+        private IGelieerdePersonenService _personenSvc = null;
 
         private TestContext testContextInstance;
 
@@ -46,10 +48,8 @@ namespace Chiro.Gap.Services.Test
         }
 
         #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
+
+        // Use ClassInitialize to run static code before running the first test in the class
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
@@ -62,13 +62,15 @@ namespace Chiro.Gap.Services.Test
         //public static void MyClassCleanup()
         //{
         //}
-        //
+        
         //Use TestInitialize to run code before running each test
-        //[TestInitialize]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
+        [TestInitialize]
+        public void MyTestInitialize()
+        {
+            _ledenService = Factory.Maak<LedenService>();
+            _personenSvc = Factory.Maak<GelieerdePersonenService>();
+        }
+        
         //Use TestCleanup to run code after each test has run
         //[TestCleanup()]
         //public void MyTestCleanup()
@@ -84,13 +86,10 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void OphalenTest()
         {
-            // Arrange
-            var target = Factory.Maak<LedenService>();
-
             // Act
             const int lidID = TestInfo.LID3_ID;
 
-            var actual = target.DetailsOphalen(lidID);
+            var actual = _ledenService.DetailsOphalen(lidID);
 
             // Assert
             var ids = (from f in actual.LidInfo.Functies select f.ID);
@@ -99,81 +98,85 @@ namespace Chiro.Gap.Services.Test
         }
 
         ///<summary>
-        ///A test for FunctiesVervangen
+        /// A test for FunctiesVervangen
         /// </summary>
         [TestMethod]
         public void FunctiesVervangenTest()
         {
-            #region arrange
-            LedenService target = Factory.Maak<LedenService>();
-            #endregion
 
-            #region act
-            // Lid3 heeft functies contactpersoon en redactie (eigen functie)
-            // Vervang door financieel verantwoordelijke, vb en redactie
+            using (new TransactionScope())
+            {
+                #region act
+                // Lid3 heeft functies contactpersoon en redactie (eigen functie)
+                // Vervang door financieel verantwoordelijke, vb en redactie
 
-            int lidID = TestInfo.LID3_ID;
-            IEnumerable<int> functieIDs = new int[] {
-				(int)NationaleFunctie.FinancieelVerantwoordelijke,
-				(int)NationaleFunctie.Vb,
-				TestInfo.FUNCTIE_ID};
-            target.FunctiesVervangen(lidID, functieIDs);
-            #endregion
+                int lidID = TestInfo.LID3_ID;
+                IEnumerable<int> functieIDs = new int[] {
+				    (int)NationaleFunctie.FinancieelVerantwoordelijke,
+				    (int)NationaleFunctie.Vb,
+				    TestInfo.FUNCTIE_ID};
+                _ledenService.FunctiesVervangen(lidID, functieIDs);
+                #endregion
 
-            #region Assert
-            var l = target.DetailsOphalen(lidID);
-            var funIDs = (from f in l.LidInfo.Functies select f.ID);
+                #region Assert
+                var l = _ledenService.DetailsOphalen(lidID);
+                var funIDs = (from f in l.LidInfo.Functies select f.ID);
 
-            Assert.AreEqual(funIDs.Count(), 3);
-            Assert.IsTrue(funIDs.Contains((int)NationaleFunctie.FinancieelVerantwoordelijke));
-            Assert.IsTrue(funIDs.Contains((int)NationaleFunctie.Vb));
-            Assert.IsTrue(funIDs.Contains(TestInfo.FUNCTIE_ID));
-            #endregion
+                Assert.AreEqual(funIDs.Count(), 3);
+                Assert.IsTrue(funIDs.Contains((int)NationaleFunctie.FinancieelVerantwoordelijke));
+                Assert.IsTrue(funIDs.Contains((int)NationaleFunctie.Vb));
+                Assert.IsTrue(funIDs.Contains(TestInfo.FUNCTIE_ID));
+                #endregion
 
-            #region Cleanup
-            target.FunctiesVervangen(lidID, new int[]{
-				(int)NationaleFunctie.ContactPersoon,
-				TestInfo.FUNCTIE_ID});
-            #endregion
+            } // Rollback
+
+
+
         }
 
         [TestMethod]
         public void TestLidMakenBuitenVoorstel()
         {
-            LedenService target = Factory.Maak<LedenService>();
-            string fouten;
-            List<int> gps = new List<int>();
 
-            try
+            using (var ts = new TransactionScope())
             {
                 #region Arrange
+                string fouten;
 
-                // GP4 zit niet in een afdeling, we vragen zijn voorgestelde afdeling en steken hem/haar dan in de andere
-                gps.Add(TestInfo.GELIEERDE_PERSOON2_ID);
-                var voorstel = target.VoorstelTotInschrijvenGenereren(gps, out fouten).First();
+                // Maak een nieuwe persoon
+                var gp = _personenSvc.AanmakenForceer(
+                        new PersoonInfo
+                        {
+                            AdNummer = null,
+                            ChiroLeefTijd = 0,
+                            GeboorteDatum = new System.DateTime(2003, 5, 8),
+                            Geslacht = GeslachtsType.Vrouw,
+                            Naam = "TestLidMakenBuitenVoorstel",
+                            VoorNaam = "Sabine",
+                        },
+                        groepID: TestInfo.GROEP_ID,
+                        forceer: true);
+
+                // GP2 zit niet in een afdeling, we vragen zijn voorgestelde afdeling en steken hem/haar dan in de andere
+                var gelieerdePersoonIDs = new List<int> { gp.GelieerdePersoonID };
+                #endregion
+
+                var voorstel = _ledenService.VoorstelTotInschrijvenGenereren(gelieerdePersoonIDs, out fouten).First();
                 int gekozenafdelingsjaarID = voorstel.AfdelingsJaarIDs.Contains(TestInfo.AFDELINGS_JAAR2_ID) ? TestInfo.AFDELINGS_JAAR1_ID : TestInfo.AFDELINGS_JAAR2_ID;
                 voorstel.AfdelingsJaarIDs = new[] { gekozenafdelingsjaarID };
                 voorstel.AfdelingsJaarIrrelevant = false;
-                List<InTeSchrijvenLid> defvoorstel = new List<InTeSchrijvenLid>();
-                defvoorstel.Add(voorstel);
-                #endregion
+                var defvoorstel = new List<InTeSchrijvenLid> { voorstel };
 
                 #region Act
-                int lidID = target.Inschrijven(defvoorstel, out fouten).First();
+                int lidID = _ledenService.Inschrijven(defvoorstel, out fouten).First();
                 #endregion
 
                 #region Assert
-                var l = target.DetailsOphalen(lidID);
+                var l = _ledenService.DetailsOphalen(lidID);
                 Assert.IsTrue(l.LidInfo.AfdelingIdLijst.Contains(TestInfo.AFDELING2_ID));
                 #endregion
 
-            }
-            finally
-            {
-                #region Cleanup
-                target.Uitschrijven(gps, out fouten);
-                #endregion
-            }
+            } // Rollback
 
         }
     }

@@ -202,8 +202,7 @@ namespace Chiro.Gap.Services
                 groep.Naam = g.Naam;
                 groep.Code = g.StamNummer;
 
-                // TODO: Hier gaat natuurlijk nooit een concurrency exception optreden,
-                // aangezien GroepInfo (nog?) geen versiestring bevat.
+                // TODO Hier gaat natuurlijk nooit een concurrency exception optreden, aangezien GroepInfo (nog?) geen versiestring bevat.
 
                 _groepenMgr.Bewaren(groep);
             }
@@ -439,7 +438,7 @@ namespace Chiro.Gap.Services
                 FoutAfhandelaar.FoutAfhandelen(ex);
             }
 
-            // TODO: Concurrency exception catchen
+            // TODO Concurrency exception catchen
             // OPM: FoutAfhandelaar.FoutAfhandelen vangt OptimisticConcurrencyException op. Zijn er nog andere?
         }
 
@@ -908,11 +907,13 @@ namespace Chiro.Gap.Services
         /// <c>false</c> krijg je een exception als de categorie niet leeg is.</param>
         public void CategorieVerwijderen(int categorieID, bool forceren)
         {
-            // Personen moeten mee opgehaald worden; anders werkt 
-            // CategorieenManager.Verwijderen niet.
+            // Personen moeten mee opgehaald worden; anders werkt CategorieenManager.Verwijderen niet.
+
+            Categorie c = null;
+
             try
             {
-                Categorie c = _categorieenMgr.Ophalen(categorieID, true);
+                c = _categorieenMgr.Ophalen(categorieID, true);
                 _categorieenMgr.Verwijderen(c, forceren);
             }
             catch (BlokkerendeObjectenException<GelieerdePersoon> ex)
@@ -920,7 +921,7 @@ namespace Chiro.Gap.Services
                 var fault = Mapper.Map<BlokkerendeObjectenException<GelieerdePersoon>,
                     BlokkerendeObjectenFault<PersoonDetail>>(ex);
 
-                throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault);
+                throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault, new FaultReason("Er zijn nog gelieerde personen."));
             }
             catch (Exception ex)
             {

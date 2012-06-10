@@ -198,8 +198,7 @@ namespace Chiro.Gap.ServiceContracts
 		IDPersEnGP Aanmaken(PersoonInfo info, int groepID);
 
 		/// <summary>
-		/// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
-		/// <paramref>groepID</paramref>
+		/// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven <paramref>groepID</paramref>
 		/// </summary>
 		/// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren</param>
 		/// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
@@ -215,7 +214,7 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IDPersEnGP GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer);
+		IDPersEnGP AanmakenForceer(PersoonInfo info, int groepID, bool forceer);
 
 		/// <summary>
 		/// Haalt PersoonID op van een gelieerde persoon
@@ -441,7 +440,7 @@ namespace Chiro.Gap.ServiceContracts
 		#endregion
 
         #region gebruikersrecht
-        // TODO: (#1146) deze zaken verhuizen naar een aparte service
+        // TODO (#1146) deze zaken verhuizen naar een aparte service
 
         /// <summary>
         /// Kent een gebruikersrecht voor 14 maanden toe aan de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>.

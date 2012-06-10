@@ -183,5 +183,4 @@ namespace Chiro.Gap.WorkerInterfaces
         /// </returns>
         IEnumerable<Lid> Vervangen(IEnumerable<Lid> leden, IEnumerable<AfdelingsJaar> afdelingsJaren);
     }
-
 }

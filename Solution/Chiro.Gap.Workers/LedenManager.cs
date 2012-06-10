@@ -610,7 +610,7 @@ namespace Chiro.Gap.Workers
 
                 if (!gp.GebDatumMetChiroLeefTijd.HasValue)
                 {
-                    // TODO: FoutnummerException van maken
+                    // TODO FoutnummerException van maken
                     throw new GapException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
                 }
                 

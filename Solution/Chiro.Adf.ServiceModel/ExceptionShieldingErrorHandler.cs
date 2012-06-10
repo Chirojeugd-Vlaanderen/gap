@@ -7,40 +7,53 @@ using System.ServiceModel.Dispatcher;
 namespace Chiro.Adf.ServiceModel
 {
     /// <summary>
-    /// TODO (#190): Documenteren!
+    /// 
     /// </summary>
+    /// <remarks></remarks>
 	public class ExceptionShieldingErrorHandler : IErrorHandler
 	{
+        /// <summary>
+        /// 
+        /// </summary>
 		private readonly Type[] _knownFaultTypes;
-		private readonly Type[] _exceptionTypes;
 
         /// <summary>
-        /// TODO (#190): Documenteren!
+        /// 
         /// </summary>
-        /// <param name="knownFaultTypes"></param>
-        /// <param name="exceptionTypes"></param>
+		private readonly Type[] _exceptionTypes;
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExceptionShieldingErrorHandler"/> class.
+        /// </summary>
+        /// <param name="knownFaultTypes">The known fault types.</param>
+        /// <param name="exceptionTypes">The exception types.</param>
+        /// <remarks></remarks>
 		public ExceptionShieldingErrorHandler(Type[] knownFaultTypes, Type[] exceptionTypes)
 		{
 			_knownFaultTypes = knownFaultTypes;
 			_exceptionTypes = exceptionTypes;
 		}
-
+        
         /// <summary>
-        /// TODO (#190): Documenteren!
+        /// Enables error-related processing and returns a value that indicates whether the dispatcher aborts the session and the instance context in certain cases.
         /// </summary>
-        /// <param name="error"></param>
-        /// <returns></returns>
+        /// <param name="error">The exception thrown during processing.</param>
+        /// <returns>true if  should not abort the session (if there is one) and instance context if the instance context is not <see cref="F:System.ServiceModel.InstanceContextMode.Single"/>; otherwise, false. The default is false.</returns>
+        /// <remarks></remarks>
 		public bool HandleError(Exception error)
 		{
 			return true; // session should not be killed, or should it?
 		}
 
+
         /// <summary>
-        /// TODO (#190): Documenteren!
+        /// Enables the creation of a custom <see cref="T:System.ServiceModel.FaultException`1"/> that is returned from an exception in the course of a service method.
         /// </summary>
-        /// <param name="error"></param>
-        /// <param name="version"></param>
-        /// <param name="fault"></param>
+        /// <param name="error">The <see cref="T:System.Exception"/> object thrown in the course of the service operation.</param>
+        /// <param name="version">The SOAP version of the message.</param>
+        /// <param name="fault">The <see cref="T:System.ServiceModel.Channels.Message"/> object that is returned to the client, or service, in the duplex case.</param>
+        /// <remarks></remarks>
 		public void ProvideFault(Exception error, MessageVersion version, ref Message fault)
 		{
 			if (error is FaultException) return;
@@ -54,11 +67,12 @@ namespace Chiro.Adf.ServiceModel
 		}
 
         /// <summary>
-        /// TODO (#190): Documenteren!
+        /// Creates the fault exception.
         /// </summary>
-        /// <param name="faultType"></param>
-        /// <param name="exception"></param>
+        /// <param name="faultType">Type of the fault.</param>
+        /// <param name="exception">The exception.</param>
         /// <returns></returns>
+        /// <remarks></remarks>
 		private static FaultException CreateFaultException(Type faultType, Exception exception)
 		{
 			var ctor = faultType.GetConstructor(new[] { exception.GetType() })   // .ctor with specific exception?

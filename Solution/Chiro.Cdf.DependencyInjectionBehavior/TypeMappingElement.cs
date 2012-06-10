@@ -10,7 +10,7 @@ using System.Configuration;
 namespace Chiro.Cdf.DependencyInjection
 {
     /// <summary>
-    /// TODO (#190): documenteren
+    /// TODO (#190): Johan nog documenteren
     /// </summary>
 	public class TypeMappingElement : ConfigurationElement
 	{

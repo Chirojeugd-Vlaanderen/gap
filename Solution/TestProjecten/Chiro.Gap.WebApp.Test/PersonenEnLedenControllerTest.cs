@@ -152,7 +152,7 @@ namespace Chiro.Gap.WebApp.Test
 
         internal virtual PersonenEnLedenController CreatePersonenEnLedenController()
         {
-            // TODO: Instantiate an appropriate concrete class.
+            // TODO Instantiate an appropriate concrete class
             PersonenEnLedenController target = null;
             return target;
         }

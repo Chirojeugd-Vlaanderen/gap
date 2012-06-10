@@ -320,7 +320,7 @@ namespace Chiro.Gap.WebApp.Controllers
             try
             {
                 // (ivm forceer: 0: false, 1: true)
-                ids = ServiceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
+                ids = ServiceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(l => l.AanmakenForceer(model.HuidigePersoon, groepID, model.Forceer));
             }
             catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> fault)
             {
@@ -332,7 +332,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // Voorlopig opnieuw redirecten naar EditRest;
             // er zou wel gemeld moeten worden dat het wijzigen
             // gelukt is.
-            // TODO: wat als er een fout optreedt bij PersoonBewaren?
+            // TODO Wat als er een fout optreedt bij PersoonBewaren?
             TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
             // (er wordt hier geredirect ipv de view te tonen,
@@ -401,7 +401,7 @@ namespace Chiro.Gap.WebApp.Controllers
             try
             {
                 // (ivm forceer: 0: false, 1: true)
-                ids = ServiceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
+                ids = ServiceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(l => l.AanmakenForceer(model.HuidigePersoon, groepID, model.Forceer));
             }
             catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> fault)
             {
@@ -482,7 +482,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // Voorlopig opnieuw redirecten naar EditRest;
             // er zou wel gemeld moeten worden dat het wijzigen
             // gelukt is.
-            // TODO: wat als er een fout optreedt bij PersoonBewaren?
+            // TODO Wat als er een fout optreedt bij PersoonBewaren?
             TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
             // (er wordt hier geredirect ipv de view te tonen,

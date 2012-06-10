@@ -27,7 +27,7 @@ namespace System.Web.Mvc
         public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()
         {
             return null;
-            // TODO: find rule
+            // TODO find rule
             // return new[] { new ModelClientValidationRequiredRule(base.ErrorMessage) };
         }
     }

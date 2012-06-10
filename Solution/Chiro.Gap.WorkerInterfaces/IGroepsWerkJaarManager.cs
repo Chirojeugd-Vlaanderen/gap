@@ -5,6 +5,9 @@ using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.WorkerInterfaces
 {
+    /// <summary>
+    /// Worker interface voor GroepsWerkJaar operaties
+    /// </summary>
 	public interface IGroepsWerkJaarManager
 	{
 		/// <summary>

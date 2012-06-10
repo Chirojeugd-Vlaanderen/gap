@@ -152,15 +152,13 @@ namespace Chiro.Gap.Services
         // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IDPersEnGP Aanmaken(PersoonInfo info, int groepID)
         {
-            return GeforceerdAanmaken(info, groepID, false);
+            return this.AanmakenForceer(info, groepID, false);
         }
 
         /// <summary>
-        /// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
-        /// <paramref>groepID</paramref>
+        /// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven <paramref>groepID</paramref>
         /// </summary>
-        /// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en
-        /// de velden van <c>info.Persoon</c></param>
+        /// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en de velden van <c>info.Persoon</c></param>
         /// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
         /// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
         /// <param name="forceer">Als deze <c>true</c> is, wordt de nieuwe persoon sowieso gemaakt, ook
@@ -171,7 +169,7 @@ namespace Chiro.Gap.Services
         /// en de Chiroleeftijd.</remarks>
         /* zie #273 */
         // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IDPersEnGP GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer)
+        public IDPersEnGP AanmakenForceer(PersoonInfo info, int groepID, bool forceer)
         {
             // Indien 'forceer' niet gezet is, moet een FaultException opgeworpen worden
             // als de  nieuwe persoon te hard lijkt op een bestaande Gelieerde Persoon.
@@ -500,7 +498,7 @@ namespace Chiro.Gap.Services
 
                 if (gebruikersrecht != null)
                 {
-                    // TODO: use automapper
+                    // TODO Gebruik automapper
 
                     result.GebruikersInfo = new GebruikersInfo
                                                      {
@@ -1132,6 +1130,10 @@ namespace Chiro.Gap.Services
             try
             {
                 IList<GelieerdePersoon> gelpersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
+                if (gelpersonen == null)
+                {
+                    throw new ArgumentException("Geen gelieerden gevonden met deze IDs", "gelieerdepersonenIDs");
+                }
 
                 foreach (int catID in categorieIDs)
                 {
