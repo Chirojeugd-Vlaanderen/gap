@@ -100,8 +100,10 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalen(groepID));
 
                 // Als er niemand met een naam is die met een A begint
-                // is het nog al nutteloos dat we eerst op die pagina belanden
-                if (page == "A" && !model.PersoonInfos.Any())
+                // is het nogal nutteloos dat we eerst op die pagina belanden.
+                // Maar als de hele lijst leeg is, is het natuurlijk ook onnozel
+                // dat we naar een andere pagina proberen te gaan.
+                if (page == "A" && !model.PersoonInfos.Any() && model.Paginas.Count > 0)
                 {
                     return RedirectToAction("List", new
                     {
@@ -113,7 +115,7 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             else	// Alleen personen uit de gekozen categorie bekijken
             {
-                // TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
+                // TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt te veel op PaginaOphalenLidInfo(groepid, ...))
                 model.PersoonInfos =
                     ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
                     (g => g.PaginaOphalenUitCategorieMetLidInfo(categorieID, page, sortering, out totaal));
@@ -129,8 +131,10 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalenCategorie(id));
 
                 // Als er niemand met een naam is die met een A begint
-                // is het nog al nutteloos dat we eerst op die pagina belanden
-                if (page == "A" && !model.PersoonInfos.Any())
+                // is het nogal nutteloos dat we eerst op die pagina belanden.
+                // Maar als de hele lijst leeg is, is het natuurlijk ook onnozel
+                // dat we naar een andere pagina proberen te gaan.
+                if (page == "A" && !model.PersoonInfos.Any() && model.Paginas.Count > 0)
                 {
                     return RedirectToAction("List", new
                     {
@@ -230,8 +234,6 @@ namespace Chiro.Gap.WebApp.Controllers
 
             return new ExcelResult(stream, "personen.xlsx");
         }
-
-        
 
         /// <summary>
         /// Voert de gekozen actie in de dropdownlist van de personenlijst uit op de geselecteerde
@@ -546,7 +548,6 @@ namespace Chiro.Gap.WebApp.Controllers
                 (groep => groep.ActieveAfdelingenOphalen(model.PersoonLidInfo.LidInfo.GroepsWerkJaarID));
             }
         }
-
 
         /// <summary>
         /// Stelt op basis van het begin van een voor- of achternaam
