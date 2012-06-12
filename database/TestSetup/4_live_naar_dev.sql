@@ -4,3 +4,12 @@
 -- om te zetten naar de db die gebruikt wordt in dev.
 
 -- Voorlopig zijn er dat geen.  De structuur van live en dev is nog hetzelfde.
+
+USE [master]
+GO
+
+ALTER DATABASE [Gap_Dev] SET COMPATIBILITY_LEVEL = 100
+GO
+
+ALTER DATABASE [Gap_Dev] SET RECOVERY SIMPLE WITH NO_WAIT
+GO
