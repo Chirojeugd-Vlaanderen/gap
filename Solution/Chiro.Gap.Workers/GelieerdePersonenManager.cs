@@ -176,49 +176,45 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public GelieerdePersoon Bewaren(GelieerdePersoon gelieerdePersoon, PersoonsExtras extras)
         {
-            if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoon.ID))
-            {
-                // Hier mapping gebruiken om te vermijden dat het AD-nummer
-                // overschreven wordt, lijkt me wat overkill.  Ik vergelijk
-                // het nieuwe AD-nummer gewoon met het bestaande.
-
-                // Er mag niet gepoterd worden met AdNummer
-                var origineel = _gelieerdePersonenDao.Ophalen(gelieerdePersoon.ID, gp => gp.Persoon);
-
-                if (origineel == null || origineel.Persoon.AdNummer == gelieerdePersoon.Persoon.AdNummer)
-                {
-                    GelieerdePersoon q; // hier komt de bewaarde persoon, met eventuele
-
-                    // nieuwe ID's
-#if KIPDORP
-					using (var tx = new TransactionScope())
-					{
-#endif
-                    q = _gelieerdePersonenDao.Bewaren(gelieerdePersoon, extras);
-
-                    if (gelieerdePersoon.Persoon.AdNummer != null || gelieerdePersoon.Persoon.AdInAanvraag)
-                    {
-                        _personenSync.Bewaren(
-                            gelieerdePersoon,
-                            (extras & PersoonsExtras.Adressen) != 0,
-                            (extras & PersoonsExtras.Communicatie) != 0);
-                    }
-
-#if KIPDORP
-						tx.Complete();
-					}
-#endif
-                    return q;
-                }
-                else
-                {
-                    throw new InvalidOperationException(Resources.AdNummerNietWijzigen);
-                }
-            }
-            else
+            Debug.Assert(gelieerdePersoon != null);
+            if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoon.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
+            // Hier mapping gebruiken om te vermijden dat het AD-nummer
+            // overschreven wordt, lijkt me wat overkill.  Ik vergelijk
+            // het nieuwe AD-nummer gewoon met het bestaande.
+
+            // Er mag niet gepoterd worden met AdNummer
+            var origineel = _gelieerdePersonenDao.Ophalen(gelieerdePersoon.ID, gp => gp.Persoon);
+
+            if (origineel != null && origineel.Persoon.AdNummer != gelieerdePersoon.Persoon.AdNummer)
+            {
+                throw new InvalidOperationException(Resources.AdNummerNietWijzigen);
+            }
+            GelieerdePersoon q; // hier komt de bewaarde persoon, met eventuele
+
+            // nieuwe ID's
+#if KIPDORP
+			using (var tx = new TransactionScope())
+			{
+#endif
+                q = _gelieerdePersonenDao.Bewaren(gelieerdePersoon, extras);
+
+                if (gelieerdePersoon.Persoon.AdNummer != null || gelieerdePersoon.Persoon.AdInAanvraag)
+                {
+                    _personenSync.Bewaren(
+                        gelieerdePersoon,
+                        (extras & PersoonsExtras.Adressen) != 0,
+                        (extras & PersoonsExtras.Communicatie) != 0);
+                }
+
+#if KIPDORP
+				tx.Complete();
+			}
+#endif
+            Debug.Assert(q != null);
+            return q;
         }
 
         /// <summary>

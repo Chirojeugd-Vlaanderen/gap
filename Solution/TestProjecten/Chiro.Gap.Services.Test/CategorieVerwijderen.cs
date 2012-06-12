@@ -45,7 +45,6 @@ namespace Chiro.Gap.Services.Test
             // Vandaar op deze manier:
 
             MappingHelper.MappingsDefinieren();
-            Factory.ContainerInit();
         }
 
         [ClassCleanup]
@@ -63,6 +62,12 @@ namespace Chiro.Gap.Services.Test
             var roles = new[] { Properties.Settings.Default.TestSecurityGroep };
             var principal = new GenericPrincipal(identity, roles);
             Thread.CurrentPrincipal = principal;
+
+            // Bij elke test de container opnieuw initialiseren, op basis van de configuratiefile.
+            // De container is namelijk globaal, en andere tests durven wel eens iets te veranderen.
+            // Dit is natuurlijk nog geen waterdichte oplossing.  Misschien moeten we voor de tests
+            // de dependency injection gewoon altijd zelf doen. (?)
+            Factory.ContainerInit();
 
             _groepenSvc = Factory.Maak<GroepenService>(); // Geen interface hier, want dat werkt hij niet
             _personenSvc = Factory.Maak<GelieerdePersonenService>(); // Geen interface hier, want dat werkt hij niet
