@@ -37,9 +37,9 @@
         public const int ADRESID = 53;
         public const int GROEPSWERKJAARID = 5033;
         public const string ZOEKNAAM = "Bosmans";
+        public const char GP13LETTER = 'B'; // 1ste letter familienaam gelieerde persoon
         public const string GAV1 = "Yvonne";
         public const string GAV2 = "Yvette";
-        public const char GP13LETTER = 'B'; 
 		#endregion
 
 		

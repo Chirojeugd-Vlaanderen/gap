@@ -186,7 +186,7 @@ namespace Chiro.Gap.Domain
     /// <summary>
     /// Geeft aan of een werkjaar voorbij is, bezig is, of op zijn einde loopt (in overgang)
     /// </summary>
-    [DataContract]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2217:DoNotMarkEnumsWithFlags"), DataContract]
     [Flags]
     public enum WerkJaarStatus
     {

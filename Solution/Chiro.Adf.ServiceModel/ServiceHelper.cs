@@ -31,17 +31,23 @@ namespace Chiro.Adf.ServiceModel
 			}
 			catch (TimeoutException)
 			{
-				if (service is IClientChannel) ((IClientChannel)service).Abort();
+			    var clientChannel = service as IClientChannel;
+			    if (clientChannel != null)
+			        (clientChannel).Abort();
 				throw;
 			}
 			catch (FaultException)
 			{
-                if (service is IClientChannel) ((IClientChannel)service).Close();
+			    var clientChannel = service as IClientChannel;
+			    if (clientChannel != null)
+			        (clientChannel).Close();
 				throw;
 			}
 			catch (CommunicationException)
 			{
-                if (service is IClientChannel) ((IClientChannel)service).Abort();
+			    var clientChannel = service as IClientChannel;
+			    if (clientChannel != null)
+			        (clientChannel).Abort();
 				throw;
 			}
 			finally
