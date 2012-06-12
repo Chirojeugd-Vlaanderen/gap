@@ -67,13 +67,16 @@ namespace Chiro.Gap.Services
         #region leden managen
 
         /// <summary>
-        /// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
+        /// Genereert de lijst van in te schrijven leden met de informatie die ze zouden krijgen als ze automagisch 
+        /// zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde persoon IDs.
         /// </summary>
-        /// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
-        /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
-        /// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
+        /// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarvoor we een voorstel willen</param>
+        /// <param name="foutBerichten">Als er sommige personen geen lid mogen worden, bevat foutBerichten een string waarin wat uitleg staat.</param>
+        /// <returns>De lidvoorstellen voor de personen</returns>
         public IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
         {
+            foutBerichten = string.Empty; 
+            
             try
             {
                 var foutBerichtenBuilder = new StringBuilder();
@@ -131,16 +134,16 @@ namespace Chiro.Gap.Services
             catch (Exception ex)
             {
                 FoutAfhandelaar.FoutAfhandelen(ex);
-                foutBerichten = null;
-                return null;
+                
+                return null; // fake code analysis :-)
             }
         }
 
         /// <summary>
         /// Gegeven een lijst van IDs van gelieerde personen.
-        /// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken.
+        /// Haal al die gelieerde personen op en probeer ze in het huidige werkJaar lid te maken.
         /// <para />
-        /// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkjaar.
+        /// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkJaar.
         /// </summary>
         /// <param name="lidInformatie">Lijst van informatie over wie lid moet worden</param>
         /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
@@ -153,8 +156,10 @@ namespace Chiro.Gap.Services
         /// <throws>NotSupportedException</throws> // TODO handle
         public IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten)
         {
-            // TODO hier zat ik
             // TODO (#1053): beter systeem vinden voor deze feedback.
+
+            foutBerichten = string.Empty;
+
             try
             {
                 var lidIDs = new List<int>();
@@ -235,7 +240,6 @@ namespace Chiro.Gap.Services
             catch (Exception ex)
             {
                 FoutAfhandelaar.FoutAfhandelen(ex);
-                foutBerichten = null;
                 return null;
             }
         }

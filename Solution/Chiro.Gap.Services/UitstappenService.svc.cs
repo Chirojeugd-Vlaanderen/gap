@@ -119,7 +119,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="groepID">ID van de groep</param>
         /// <param name="inschrijvenMogelijk">Als deze <c>true</c> is, worden enkel de uitstappen opgehaald
-        /// waarvoor je nog kunt inschrijven.  In praktijk zijn dit de uitstappen van het huidige werkjaar.
+        /// waarvoor je nog kunt inschrijven.  In praktijk zijn dit de uitstappen van het huidige werkJaar.
         /// </param>
         /// <returns>Details van uitstappen</returns>
         /// <remarks>We laten toe om inschrijvingen te doen voor uitstappen uit het verleden, om als dat
@@ -434,7 +434,7 @@ namespace Chiro.Gap.Services
 
         /// <summary>
         /// Haalt informatie over de bivakaangifte op van de groep <paramref name="groepID"/> voor diens recentste 
-        /// werkjaar.
+        /// werkJaar.
         /// </summary>
         /// <param name="groepID">
         /// De groep waarvan info wordt gevraagd

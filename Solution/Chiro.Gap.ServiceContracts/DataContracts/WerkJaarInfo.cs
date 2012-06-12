@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
-	/// DataContract voor summiere info over een werkjaar
+	/// DataContract voor summiere info over een werkJaar
 	/// </summary>
 	[DataContract]
 	public class WerkJaarInfo
@@ -20,7 +20,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public int ID { get; set; }
 
 		/// <summary>
-		/// Kalenderjaar waarin het werkjaar *begint*.
+		/// Kalenderjaar waarin het werkJaar *begint*.
 		/// </summary>
 		[DataMember]
 		public int WerkJaar { get; set; }

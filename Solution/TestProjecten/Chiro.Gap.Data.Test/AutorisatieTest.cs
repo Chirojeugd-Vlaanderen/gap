@@ -68,7 +68,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			bool resultaat = dao.IsGavGroepsWerkJaar(TestInfo.GAV1, TestInfo.GROEPSWERKJAARID);
+			bool resultaat = dao.IsGavGroepsWerkJaar(TestInfo.GAV1, TestInfo.GROEPS_WERKJAAR_ID);
 
 			// Assert
 
@@ -92,7 +92,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			bool resultaat = dao.IsGavGroepsWerkJaar(TestInfo.GAV2, TestInfo.GROEPSWERKJAARID);
+			bool resultaat = dao.IsGavGroepsWerkJaar(TestInfo.GAV2, TestInfo.GROEPS_WERKJAAR_ID);
 
 			// Assert
 
@@ -117,7 +117,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			bool resultaat = dao.IsGavGelieerdePersoon(TestInfo.GAV2, TestInfo.ONBESTAANDEGELIEERDEPERSOONID);
+			bool resultaat = dao.IsGavGelieerdePersoon(TestInfo.GAV2, TestInfo.ONBESTAANDE_GELIEERDE_PERSOON_ID);
 
 			// Assert
 

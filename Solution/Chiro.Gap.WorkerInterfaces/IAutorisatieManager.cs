@@ -242,7 +242,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <summary>
         /// Geeft true als de aangelogde user
         /// 'superrechten' heeft
-        /// (zoals het verwijderen van leden uit vorig werkjaar, het 
+        /// (zoals het verwijderen van leden uit vorig werkJaar, het 
         /// verwijderen van leden waarvan de probeerperiode voorbij is,...)
         /// </summary>
         /// <returns>

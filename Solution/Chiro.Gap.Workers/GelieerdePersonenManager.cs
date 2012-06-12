@@ -98,8 +98,7 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public GelieerdePersoon Ophalen(int gelieerdePersoonID)
         {
-            // TODO: uitzoeken of we dit niet gewoon kunnen
-            // doorschakelen naar Ophalen(gelieerdePersoonID, PersoonsExtras.Geen).
+            // TODO Uitzoeken of we dit niet gewoon kunnen doorschakelen naar Ophalen(gelieerdePersoonID, PersoonsExtras.Geen)
             if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
                 return _gelieerdePersonenDao.Ophalen(gelieerdePersoonID, foo => foo.Persoon);
@@ -150,7 +149,7 @@ namespace Chiro.Gap.Workers
         /// ID gevraagde gelieerde persoon
         /// </param>
         /// <returns>
-        /// GelieerdePersoon met persoonsgegevens, adressen, categorieën, communicatievormen en eventuele lidgegevens uit het gegeven werkjaar.
+        /// GelieerdePersoon met persoonsgegevens, adressen, categorieën, communicatievormen en eventuele lidgegevens uit het gegeven werkJaar.
         /// </returns>
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
         {
@@ -609,13 +608,13 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Gaat na of een gelieerde persoon dit werkjaar ingeschreven is als lid
+        /// Gaat na of een gelieerde persoon dit werkJaar ingeschreven is als lid
         /// </summary>
         /// <param name="gelieerdePersoonID">
         /// De ID van de gelieerde persoon in kwestie
         /// </param>
         /// <returns>
-        /// <c>True</c> als de gelieerde persoon dit werkjaar ingeschreven is als lid,
+        /// <c>True</c> als de gelieerde persoon dit werkJaar ingeschreven is als lid,
         /// <c>false</c> in het andere geval
         /// </returns>
         public bool IsLid(int gelieerdePersoonID)
@@ -629,33 +628,42 @@ namespace Chiro.Gap.Workers
         /// <param name="gelieerdePersonen">
         /// Te koppelen gelieerde persoon
         /// </param>
-        /// <param name="c">
+        /// <param name="categorie">
         /// Te koppelen categorie
         /// </param>
-        public void CategorieKoppelen(IList<GelieerdePersoon> gelieerdePersonen, Categorie c)
+        public void CategorieKoppelen(IList<GelieerdePersoon> gelieerdePersonen, Categorie categorie)
         {
+            if (gelieerdePersonen == null)
+            {
+                throw new ArgumentNullException("gelieerdePersonen");
+            }
+            if (categorie == null)
+            {
+                throw new ArgumentNullException("categorie");
+            }
+
             // Heeft de gebruiker rechten voor de groep en de categorie?
             if (gelieerdePersonen.Any(x => !_autorisatieMgr.IsGavGelieerdePersoon(x.ID)))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            if (!_autorisatieMgr.IsGavCategorie(c.ID))
+            if (!_autorisatieMgr.IsGavCategorie(categorie.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
 
             foreach (GelieerdePersoon x in gelieerdePersonen)
             {
-                if (!x.Groep.Equals(c.Groep))
+                if (!x.Groep.Equals(categorie.Groep))
                 {
                     throw new FoutNummerException(
                         FoutNummer.CategorieNietVanGroep,
                         Resources.FoutieveGroepCategorie);
                 }
 
-                x.Categorie.Add(c);
-                c.GelieerdePersoon.Add(x);
+                x.Categorie.Add(categorie);
+                categorie.GelieerdePersoon.Add(x);
             }
         }
 

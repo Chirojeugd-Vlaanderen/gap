@@ -432,7 +432,7 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Controleert of de aangelogde user
         /// 'superrechten' heeft
-        /// (zoals leden verwijderen uit vorig werkjaar, 
+        /// (zoals leden verwijderen uit vorig werkJaar, 
         /// leden verwijderen voor wie de probeerperiode voorbij is, enz.)
         /// </summary>
         /// <returns>

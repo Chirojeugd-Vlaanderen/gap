@@ -43,7 +43,7 @@ namespace Chiro.Gap.Domain
 		UitstapNietVanGroep,
 		#endregion
 
-		#region niet beschikbaar in werkjaar
+		#region niet beschikbaar in werkJaar
 		GroepsWerkJaarNietBeschikbaar,
 		FunctieNietBeschikbaar,
 		AfdelingNietBeschikbaar,

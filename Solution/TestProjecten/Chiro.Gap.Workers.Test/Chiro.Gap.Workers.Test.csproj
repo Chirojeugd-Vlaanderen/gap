@@ -79,10 +79,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AfdelingsJaarManagerTest.cs" />
+    <Compile Include="AutorisatieTest.cs" />
     <Compile Include="CategorieTest.cs" />
     <Compile Include="CategorieToevoegen.cs" />
     <Compile Include="CommVormManagerTest.cs" />
+    <Compile Include="GroepsWerkJaarManagerTest.cs" />
     <Compile Include="JaarOvergangManagerTest.cs" />
+    <Compile Include="LedenManagerTest.cs" />
     <Compile Include="UitstapAanmaken.cs" />
     <Compile Include="FunctiesManagerTest.cs" />
     <Compile Include="GapExceptionTest.cs" />
@@ -92,9 +95,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
@@ -166,6 +166,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Settings.StyleCop" />
+    <Shadow Include="Test References\Chiro.Gap.Workers.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

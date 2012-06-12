@@ -9,13 +9,12 @@ using Chiro.Gap.Orm;
 namespace Chiro.Gap.WorkerInterfaces
 {
     /// <summary>
-    /// TODO (#190): documenteren
+    /// Levert veel gebruikte basislijstje op, eventueel via een cache
     /// </summary>
     public interface IVeelGebruikt
     {
         /// <summary>
-        /// Verwijdert het recentste groepswerkjaar van groep met ID <paramref name="groepID"/>
-        /// uit de cache.
+        /// Verwijdert het recentste groepswerkjaar van groep met ID <paramref name="groepID"/> uit de cache.
         /// </summary>
         /// <param name="groepID">
         /// ID van de groep waarvan groepswerkjaarcache te resetten
@@ -23,8 +22,7 @@ namespace Chiro.Gap.WorkerInterfaces
         void GroepsWerkJaarResetten(int groepID);
 
         /// <summary>
-        /// Haalt van de groep met gegeven <paramref name="groepID"/> het recentste
-        /// groepswerkjaar op, inclusief de groep zelf.
+        /// Haalt van de groep met gegeven <paramref name="groepID"/> het recentste groepswerkjaar op, inclusief de groep zelf.
         /// </summary>
         /// <param name="groepID">
         /// ID van de groep waarvan groepswerkjaar gevraagd

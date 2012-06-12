@@ -384,7 +384,7 @@ namespace Chiro.Gap.Workers
         {
             Lid resultaat;
 
-            // In deze method zitten geen checks op GAV-schap, juiste werkjaar,... dat gebeurt al in
+            // In deze method zitten geen checks op GAV-schap, juiste werkJaar,... dat gebeurt al in
             // 'Toekennen' en 'Loskoppelen', dewelke door deze method worden aangeroepen.
             IList<Functie> toeTeVoegen = (from fn in functies
                                           where !lid.Functie.Contains(fn)
@@ -417,14 +417,14 @@ namespace Chiro.Gap.Workers
         /// </param>
         /// <param name="forceren">
         /// Indien <c>true</c> wordt de functie ook verwijderd als er
-        ///  dit werkjaar personen met de gegeven functie zijn.  Anders krijg je een exception.
+        ///  dit werkJaar personen met de gegeven functie zijn.  Anders krijg je een exception.
         /// </param>
         /// <returns>
         /// <c>Null</c> als de functie effectief verwijderd is, anders het functie-object met
         /// aangepast 'werkjaartot'.
         /// </returns>
         /// <remarks>
-        /// Als de functie geen leden meer bevat na verwijdering van die van het huidige werkjaar,
+        /// Als de functie geen leden meer bevat na verwijdering van die van het huidige werkJaar,
         /// dan wordt ze verwijderd.  Zo niet, wordt er een stopdatum op geplakt.
         /// </remarks>
         public Functie Verwijderen(Functie functie, bool forceren)
@@ -478,7 +478,7 @@ namespace Chiro.Gap.Workers
         /// minimumaantallen van de functies (eigen en nationaal bepaald) niet overschreden zijn.
         /// </summary>
         /// <param name="groepsWerkJaar">
-        /// Te controleren werkjaar
+        /// Te controleren werkJaar
         /// </param>
         /// <returns>
         /// Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.
@@ -503,7 +503,7 @@ namespace Chiro.Gap.Workers
         /// minimumaantallen van de functies <paramref name="functies"/> niet overschreden zijn.
         /// </summary>
         /// <param name="groepsWerkJaar">
-        /// Te controleren werkjaar
+        /// Te controleren werkJaar
         /// </param>
         /// <param name="functies">
         /// Functies waarop te controleren

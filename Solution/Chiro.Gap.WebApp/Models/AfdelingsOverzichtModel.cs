@@ -21,12 +21,12 @@ namespace Chiro.Gap.WebApp.Models
 		}
 
 		/// <summary>
-		/// Afdelingen niet-actief dit werkjaar
+		/// Afdelingen niet-actief dit werkJaar
 		/// </summary>
 		public IEnumerable<AfdelingInfo> NietActief { get; set; }
 
 		/// <summary>
-		/// Afdelingen die al actief zijn dit werkjaar (met afdelingsjaar dus)
+		/// Afdelingen die al actief zijn dit werkJaar (met afdelingsjaar dus)
 		/// </summary>
 		public IEnumerable<AfdelingDetail> Actief { get; set; }
 	}

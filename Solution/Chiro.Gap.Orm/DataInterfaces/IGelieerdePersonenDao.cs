@@ -196,7 +196,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 
         /// <summary>
         /// Haal een pagina op met gelieerde personen uit een categorie, inclusief lidinfo voor het huidige
-        /// werkjaar.
+        /// werkJaar.
         /// </summary>
         /// <param name="categorieID">ID van de gevraagde categorie</param>
         /// <param name="pagina">Paginanummer (1 of groter)</param>
@@ -214,7 +214,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         ///  - adressen
         ///  - groepen
         ///  - categorieen
-        ///  - lidobjecten in het huidige werkjaar
+        ///  - lidobjecten in het huidige werkJaar
         ///  - afdelingen en functies van die lidobjecen
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>

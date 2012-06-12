@@ -134,7 +134,7 @@ namespace Chiro.Gap.Workers
         /// </param>
         public void Verlengen(GebruikersRecht gebruikersRecht)
         {
-            // TODO: Nakijken of deze method niet in onderstaande gebruikt kan worden.
+            // TODO Nakijken of deze method niet in onderstaande gebruikt kan worden
 
             if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersRecht.ID))
             {
@@ -236,7 +236,7 @@ namespace Chiro.Gap.Workers
                     gebruikersRecht.ID = _autorisatieDao.IdOphalen(gav.ID, groep.ID);
                 }
 
-                // TODO: Eigenlijk is dat niet goed, want gebruikersrecht.Versie gaat bijv. niet kloppen.  
+                // TODO Eigenlijk is dat niet goed, want gebruikersrecht.Versie gaat bijv niet kloppen
                 // Maar aangezien concurrency control toch ook niet overal werkt, zal het 
                 // momenteel zo misschien wel lukken. :-P
                 // Als we op termijn de koppeling GAV-Persoon verplicht kunnen maken, dan is dit gedoe

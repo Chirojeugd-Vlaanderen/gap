@@ -54,7 +54,7 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Maakt voor de groep met de opgegeven <paramref name="groepID"/> een nieuw werkjaar aan
+        /// Maakt voor de groep met de opgegeven <paramref name="groepID"/> een nieuw werkJaar aan
         /// en maakt daarin de opgegeven afdelingen aan, met hun respectieve leeftijdsgrenzen (geboortejaren).
         /// </summary>
         /// <param name="teActiveren">

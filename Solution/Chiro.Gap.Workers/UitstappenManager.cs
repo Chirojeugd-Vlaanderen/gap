@@ -391,20 +391,20 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Stuurt alle bivakken van werkjaar <paramref name="werkjaar"/> opnieuw naar
+        /// Stuurt alle bivakken van werkJaar <paramref name="werkJaar"/> opnieuw naar
         /// kipadmin.
         /// </summary>
-        /// <param name="werkjaar">
-        /// Het werkjaar waarvan de gegevens opnieuw gesynct moeten worden
+        /// <param name="werkJaar">
+        /// Het werkJaar waarvan de gegevens opnieuw gesynct moeten worden
         /// </param>
-        public void OpnieuwSyncen(int werkjaar)
+        public void OpnieuwSyncen(int werkJaar)
         {
             if (!_autorisatieManager.IsSuperGav())
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            var alles = _uitstappenDao.AlleBivakkenOphalen(werkjaar);
+            var alles = _uitstappenDao.AlleBivakkenOphalen(werkJaar);
 
             foreach (var bivak in alles)
             {
@@ -420,7 +420,7 @@ namespace Chiro.Gap.Workers
         /// De ID van de groep waar het over gaat.
         /// </param>
         /// <param name="groepsWerkJaar">
-        /// Het werkjaar waarvoor de gegevens opgehaald moeten worden.
+        /// Het werkJaar waarvoor de gegevens opgehaald moeten worden.
         /// </param>
         /// <returns>
         /// Een lijstje met opmerkingen/feedback voor de gebruiker, zodat die weet 

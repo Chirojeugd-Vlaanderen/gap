@@ -79,5 +79,14 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public bool GeenMailings { get; set; }
+
+        /// <summary>
+        /// Returns a System.String that represents the current Communicatiemiddel
+        /// </summary>
+        /// <returns>System.String that represents the current communicatiemiddel</returns>
+        public override string ToString()
+        {
+            return this.Type.ToString() + '[' + this.Waarde + ']';
+        }
     }
 }

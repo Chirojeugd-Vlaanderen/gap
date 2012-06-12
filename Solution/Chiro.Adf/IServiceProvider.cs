@@ -33,13 +33,14 @@ namespace Chiro.Adf
 		/// <returns></returns>
 		I GetService<I>(string instanceName) where I : class;
 
-		/// <summary>
-		/// TODO (#190): Documenteren!
-		/// </summary>
-		/// <typeparam name="I"></typeparam>
-		/// <param name="instanceName"></param>
-		/// <param name="arguments"></param>
-		/// <returns></returns>
+        /// <summary>
+        /// Gets the service.
+        /// </summary>
+        /// <typeparam name="I"></typeparam>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
 		I GetService<I>(string instanceName, object arguments) where I : class;
 		
 		/// <summary>
@@ -72,19 +73,20 @@ namespace Chiro.Adf
 		IEnumerable GetServices(Type serviceType);
 
 		/// <summary>
-		/// TODO (#190): Documenteren
+		/// Try and get the requested service
 		/// </summary>
 		/// <typeparam name="I"></typeparam>
 		/// <param name="service"></param>
 		/// <returns></returns>
 		bool TryGetService<I>(out I service) where I : class;
 
-		/// <summary>
-		/// TODO (#190): Documenteren
-		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="service"></param>
-		/// <returns></returns>
+        /// <summary>
+        /// Tries the get service.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
 		bool TryGetService(Type type, out object service);
 	}
 }

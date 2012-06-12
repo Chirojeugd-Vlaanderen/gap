@@ -61,7 +61,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			var gevonden = dao.MogelijkhedenOphalen(TestInfo.TEZOEKENSTRAAT, TestInfo.POSTNR);
+			var gevonden = dao.MogelijkhedenOphalen(TestInfo.TE_ZOEKEN_STRAAT, TestInfo.POSTNR);
 
 			// Assert
 
@@ -81,7 +81,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			var gevonden = dao.BewonersOphalen(TestInfo.ADRESID, new[] {TestInfo.GROEPID}, false);
+			var gevonden = dao.BewonersOphalen(TestInfo.ADRES_ID, new[] {TestInfo.GROEP_ID}, false);
 
 			// Assert
 
@@ -103,7 +103,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			var gevonden = dao.BewonersOphalen(TestInfo.ADRESID, new[] { TestInfo.GROEPID }, false);
+			var gevonden = dao.BewonersOphalen(TestInfo.ADRES_ID, new[] { TestInfo.GROEP_ID }, false);
 
 			// Assert
 
@@ -127,7 +127,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			var gevonden = dao.Ophalen(TestInfo.ADRESID);
+			var gevonden = dao.Ophalen(TestInfo.ADRES_ID);
 
 			// Assert
 

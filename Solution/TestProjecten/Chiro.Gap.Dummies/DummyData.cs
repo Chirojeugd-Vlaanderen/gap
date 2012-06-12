@@ -126,7 +126,7 @@ namespace Chiro.Gap.Dummies
 		{
 			Factory.ContainerInit();
 
-			// TODO: Door de objecten te bewaren krijgen ze ID's, waardoor de tests betrouwbaarder
+			// TODO Door de objecten te bewaren krijgen ze ID's, waardoor de tests betrouwbaarder
 			// worden.  Op het einden zou er dus ergens 
 			// GroepenDao.Bewaren(_dummyGroep, lambda-expressie-die-alles-meeneemt)
 			// aangeroepen moeten worden.

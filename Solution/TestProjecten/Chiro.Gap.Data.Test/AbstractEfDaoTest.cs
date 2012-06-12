@@ -65,7 +65,7 @@ namespace Chiro.Gap.Data.Test
 			// Verwijder onbestaande categorie, zodat ze zeker onbestaand is :-)
 			var catDao = Factory.Maak<ICategorieenDao>();
 
-			Categorie cat = catDao.Ophalen(TestInfo.GROEPID, TestInfo.ONBESTAANDENIEUWECATCODE);
+			Categorie cat = catDao.Ophalen(TestInfo.GROEP_ID, TestInfo.ONBESTAANDENIEUWECATCODE);
 			if (cat != null)
 			{
 				cat.TeVerwijderen = true;
@@ -112,7 +112,7 @@ namespace Chiro.Gap.Data.Test
 			var cDao = Factory.Maak<ICategorieenDao>();
 			var mgr = Factory.Maak<GroepenManager>();
 
-			Groep g = gDao.Ophalen(TestInfo.GROEPID, grp => grp.Categorie);
+			Groep g = gDao.Ophalen(TestInfo.GROEP_ID, grp => grp.Categorie);
 
 			#endregion
 
@@ -174,7 +174,7 @@ namespace Chiro.Gap.Data.Test
 			var dao = Factory.Maak<IDao<Groep>>();
 
 			// Act            
-			Groep g = dao.Ophalen(TestInfo.GROEPID);
+			Groep g = dao.Ophalen(TestInfo.GROEP_ID);
 			g = dao.Bewaren(g);
 
 			// Assert
@@ -194,7 +194,7 @@ namespace Chiro.Gap.Data.Test
 			var cDao = Factory.Maak<ICategorieenDao>();
 			var mgr = Factory.Maak<GroepenManager>();
 
-			Groep g = gDao.Ophalen(TestInfo.GROEPID, grp => grp.Categorie);
+			Groep g = gDao.Ophalen(TestInfo.GROEP_ID, grp => grp.Categorie);
 
 			// categorie maken en toevoegen, zodat we kunnen zien of we ze goed kunnen verwijderen
 
@@ -234,7 +234,7 @@ namespace Chiro.Gap.Data.Test
 			var gDao = Factory.Maak<IGroepenDao>();
 			var mgr = Factory.Maak<GroepenManager>();
 
-			Groep g = gDao.Ophalen(TestInfo.GROEPID, grp => grp.Categorie);
+			Groep g = gDao.Ophalen(TestInfo.GROEP_ID, grp => grp.Categorie);
 
 			// categorie maken en toevoegen, zodat we kunnen zien of we ze goed kunnen verwijderen
 
@@ -282,7 +282,7 @@ namespace Chiro.Gap.Data.Test
 			// Arrange
 
 			var dao = Factory.Maak<IDao<GelieerdePersoon>>();
-			int[] gpIDs = { TestInfo.GELIEERDEPERSOONID, TestInfo.GELIEERDEPERSOON2ID };
+			int[] gpIDs = { TestInfo.GELIEERDE_PERSOON_ID, TestInfo.GELIEERDE_PERSOON2_ID };
 
 			// Act
 
@@ -306,11 +306,11 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			IEnumerable<GelieerdePersoon> opgehaaldePersonen = dao.PaginaOphalen(TestInfo.GROEPID, gprs => gprs.Groep.ID, 1, 10, out totaal);
+			IEnumerable<GelieerdePersoon> opgehaaldePersonen = dao.PaginaOphalen(TestInfo.GROEP_ID, gprs => gprs.Groep.ID, 1, 10, out totaal);
 
 			// Assert
 
-			Assert.IsTrue(opgehaaldePersonen.Count() >= TestInfo.MINAANTALGELPERS);
+			Assert.IsTrue(opgehaaldePersonen.Count() >= TestInfo.MIN_AANTAL_GEL_PERS);
 		}
 	}
 }

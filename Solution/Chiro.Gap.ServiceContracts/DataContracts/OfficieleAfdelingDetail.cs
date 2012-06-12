@@ -42,23 +42,23 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		// jaren hoort thuis in de business, en mag niet door het datacontract zelf gebeuren
 
 		/// <summary>
-		/// Standaard 'geboortejaar van' voor gegeven werkjaar
+		/// Standaard 'geboortejaar van' voor gegeven werkJaar
 		/// </summary>
-		/// <param name="werkjaar">Het werkjaar waar het over gaat</param>
+		/// <param name="werkJaar">Het werkJaar waar het over gaat</param>
 		/// <returns>Een jaartal</returns>
-		public int StandaardGeboorteJaarVan(int werkjaar)
+		public int StandaardGeboorteJaarVan(int werkJaar)
 		{
-			return werkjaar - LeefTijdTot;
+			return werkJaar - LeefTijdTot;
 		}
 
 		/// <summary>
-		/// Standaard 'geboortejaar van' voor dit werkjaar
+		/// Standaard 'geboortejaar van' voor dit werkJaar
 		/// </summary>
-		/// <param name="werkjaar">Het werkjaar waar het over gaat</param>
+		/// <param name="werkJaar">Het werkJaar waar het over gaat</param>
 		/// <returns>Een jaartal</returns>
-		public int StandaardGeboorteJaarTot(int werkjaar)
+		public int StandaardGeboorteJaarTot(int werkJaar)
 		{
-			return werkjaar - LeefTijdVan;
+			return werkJaar - LeefTijdVan;
 		}
 	}
 }

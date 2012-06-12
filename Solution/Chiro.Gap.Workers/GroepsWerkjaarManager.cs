@@ -229,7 +229,7 @@ namespace Chiro.Gap.Workers
         /// Groepswerkjaar, met daaraan gekoppeld een werkjaarobject
         /// </param>
         /// <returns>
-        /// Einddatum van het gekoppelde werkjaar.
+        /// Einddatum van het gekoppelde werkJaar.
         /// </returns>
         public static DateTime EindDatum(GroepsWerkJaar groepsWerkJaar)
         {
@@ -238,7 +238,7 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Maakt een nieuw groepswerkjaar in het gevraagde werkjaar.
+        /// Maakt een nieuw groepswerkjaar in het gevraagde werkJaar.
         /// Persisteert niet ;-P
         /// </summary>
         /// <param name="g">
@@ -255,28 +255,28 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            // Bereken gewenste werkjaar
-            var werkjaar = NieuweWerkJaar();
+            // Bereken gewenste werkJaar
+            var werkJaar = NieuweWerkJaar();
 
             // Controle op dubbels moet gebeuren door data access.  (Zie #507)
-            return new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };
+            return new GroepsWerkJaar { Groep = g, WerkJaar = werkJaar };
         }
 
         /// <summary>
-        /// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
+        /// Berekent wat het nieuwe werkJaar zal zijn als op deze moment de jaarovergang zou gebeuren.
         /// </summary>
         /// <returns>
-        /// Het jaar waarin dat nieuwe werkjaar begint
+        /// Het jaar waarin dat nieuwe werkJaar begint
         /// </returns>
         public int NieuweWerkJaar()
         {
-            // Bereken gewenste werkjaar
+            // Bereken gewenste werkJaar
 
             // Het algoritme kijkt het volgende na:
             // Stel dat de jaarovergang mogelijk wordt vanaf 1 augustus.
-            // Als vandaag voor 1 augustus is, dan is het werkjaar vorig jaar begonnen => huidig jaar - 1
-            // Als vandaag 1 augustus of later is, dan begint het werkjaar dit kalenderjaar => huidig jaar.
-            int werkjaar;
+            // Als vandaag voor 1 augustus is, dan is het werkJaar vorig jaar begonnen => huidig jaar - 1
+            // Als vandaag 1 augustus of later is, dan begint het werkJaar dit kalenderjaar => huidig jaar.
+            int werkJaar;
 
             var startdate = new DateTime(
                 DateTime.Today.Year,
@@ -286,24 +286,24 @@ namespace Chiro.Gap.Workers
             if (DateTime.Today < startdate)
             {
                 // vroeger
-                werkjaar = DateTime.Today.Year - 1;
+                werkJaar = DateTime.Today.Year - 1;
             }
             else
             {
-                werkjaar = DateTime.Today.Year;
+                werkJaar = DateTime.Today.Year;
             }
 
-            return werkjaar;
+            return werkJaar;
         }
 
         /// <summary>
-        /// Bepaalt de datum vanaf wanneer het volgende werkjaar begonnen kan worden
+        /// Bepaalt de datum vanaf wanneer het volgende werkJaar begonnen kan worden
         /// </summary>
         /// <param name="werkJaar">
-        /// Jaartal van het 'huidige' werkjaar (i.e. 2010 voor 2010-2011 enz)
+        /// Jaartal van het 'huidige' werkJaar (i.e. 2010 voor 2010-2011 enz)
         /// </param>
         /// <returns>
-        /// Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden
+        /// Datum in het gegeven werkJaar vanaf wanneer het nieuwe aangemaakt mag worden
         /// </returns>
         public DateTime StartOvergang(int werkJaar)
         {

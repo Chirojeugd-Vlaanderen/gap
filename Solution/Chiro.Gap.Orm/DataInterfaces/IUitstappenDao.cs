@@ -19,7 +19,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// </summary>
         /// <param name="groepID">ID van de groep</param>
         /// <param name="inschrijvenMogelijk">Als dit <c>true</c> is, worden enkel de uitstappen van het
-        /// huidige werkjaar van de groep opgehaald.</param>
+        /// huidige werkJaar van de groep opgehaald.</param>
         /// <returns>Details van uitstappen</returns>
         IEnumerable<Uitstap> OphalenVanGroep(int groepID, bool inschrijvenMogelijk);
 
@@ -32,11 +32,11 @@ namespace Chiro.Gap.Orm.DataInterfaces
     	IEnumerable<Deelnemer> DeelnemersOphalen(int uitstapID);
 
         /// <summary>
-        /// Haalt alle bivakken op van alle groepen, uit gegeven <paramref name="werkjaar"/>,
+        /// Haalt alle bivakken op van alle groepen, uit gegeven <paramref name="werkJaar"/>,
         /// inclusief bivakplaats (met adres), contactpersoon, groepswerkjaar (met groep)
         /// </summary>
-        /// <param name="werkjaar">Werkjaar waarvan de bivakken opgehaald moeten worden.</param>
-        /// <returns>Alle bivakken uit het <paramref name="werkjaar"/></returns>
-    	IEnumerable<Uitstap> AlleBivakkenOphalen(int werkjaar);
+        /// <param name="werkJaar">Werkjaar waarvan de bivakken opgehaald moeten worden.</param>
+        /// <returns>Alle bivakken uit het <paramref name="werkJaar"/></returns>
+    	IEnumerable<Uitstap> AlleBivakkenOphalen(int werkJaar);
     }
 }

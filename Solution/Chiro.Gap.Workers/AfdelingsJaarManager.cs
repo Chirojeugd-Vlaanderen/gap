@@ -92,7 +92,7 @@ namespace Chiro.Gap.Workers
         /// Te koppelen officiële afdeling
         /// </param>
         /// <param name="gwj">
-        /// Groepswerkjaar (koppelt de afdeling aan een groep en een werkjaar)
+        /// Groepswerkjaar (koppelt de afdeling aan een groep en een werkJaar)
         /// </param>
         /// <param name="geboorteJaarBegin">
         /// Geboortejaar van
@@ -417,7 +417,7 @@ namespace Chiro.Gap.Workers
             Debug.Assert(groepsWerkJaren.First() != null);
             Debug.Assert(groepsWerkJaren.First().Groep != null);
 
-            int werkjaar = groepsWerkJaren.First().WerkJaar;
+            int werkJaar = groepsWerkJaren.First().WerkJaar;
 
             IEnumerable<Lid> resultaat;
 

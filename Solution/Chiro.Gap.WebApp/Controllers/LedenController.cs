@@ -238,7 +238,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Toont de ledenlijst van de gegeven groep in het huidige werkjaar
+        /// Toont de ledenlijst van de gegeven groep in het huidige werkJaar
         /// </summary>
         /// <param name="groepID">ID van de groep waarvan we de ledenlijst willen tonen</param>
         /// <returns></returns>
@@ -266,7 +266,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new LidInfoModel();
             BaseModelInit(model, groepID);
 
-            // Laad de lijst van werkjaren in van de groep en zet de juiste info over het te tonen werkjaar
+            // Laad de lijst van werkjaren in van de groep en zet de juiste info over het te tonen werkJaar
             model.WerkJaarInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<WerkJaarInfo>>(e => e.WerkJarenOphalen(groepID));
 
             var gevraagdwerkjaar = (from g in model.WerkJaarInfos
@@ -543,7 +543,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// een nieuwe afdeling te kiezen.
         /// </summary>
         /// <param name="selectieGelieerdePersoonIDs">ID's van de *gelieerde* personen</param>
-        /// <param name="groepID">Groep waarvoor de gelieerde personen dit werkjaar lid moeten zijn</param>
+        /// <param name="groepID">Groep waarvoor de gelieerde personen dit werkJaar lid moeten zijn</param>
         /// <returns>Een view die toelaat een andere afdeling te kiezen</returns>
         [AcceptVerbs(HttpVerbs.Get)]
         private ActionResult AfdelingenBewerken(IEnumerable<int> selectieGelieerdePersoonIDs, int groepID)
@@ -832,7 +832,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Toont de leden uit een bepaalde afdeling in het meest recente werkjaar
+        /// Toont de leden uit een bepaalde afdeling in het meest recente werkJaar
         /// </summary>
         /// <param name="id">ID van de afdeling.</param>
         /// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
@@ -867,7 +867,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Toont de leden uit een bepaalde functie in het meest recente werkjaar
+        /// Toont de leden uit een bepaalde functie in het meest recente werkJaar
         /// </summary>
         /// <param name="id">ID van de functie.</param>
         /// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>

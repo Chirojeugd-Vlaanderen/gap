@@ -1,0 +1,113 @@
+<stylecopresultscache>
+  <version>11</version>
+  <project key="433208125">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
+  <sourcecode name="IAuthenticatieManager.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>04/25/2012 22:13:09</timestamp>
+      <milliseconds>810</milliseconds>
+    </settings>
+    <timestamp>06/09/2012 03:33:29</timestamp>
+    <milliseconds>262</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="IAfdelingsJaarManager.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>04/25/2012 22:13:09</timestamp>
+      <milliseconds>810</milliseconds>
+    </settings>
+    <timestamp>06/09/2012 17:56:26</timestamp>
+    <milliseconds>367</milliseconds>
+    <violations>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="FileMustHaveHeader" ruleCheckId="SA1633">
+        <context>The file has no header, the header Xml is invalid, or the header is not located at the top of the file.</context>
+        <line>1</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="ClosingCurlyBracketsMustNotBePrecededByBlankLine" ruleCheckId="SA1508">
+        <context>A closing curly bracket must not be preceded by a blank line.</context>
+        <line>187</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The interface must have a documentation header.</context>
+        <line>8</line>
+        <warning>False</warning>
+      </violation>
+    </violations>
+  </sourcecode>
+  <sourcecode name="IAutorisatieManager.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>04/25/2012 22:13:09</timestamp>
+      <milliseconds>810</milliseconds>
+    </settings>
+    <timestamp>06/09/2012 17:56:26</timestamp>
+    <milliseconds>351</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="IChiroGroepenManager.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>04/25/2012 22:13:09</timestamp>
+      <milliseconds>810</milliseconds>
+    </settings>
+    <timestamp>06/09/2012 03:33:29</timestamp>
+    <milliseconds>11</milliseconds>
+    <violations>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="FileMustHaveHeader" ruleCheckId="SA1633">
+        <context>The file has no header, the header Xml is invalid, or the header is not located at the top of the file.</context>
+        <line>1</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The interface must have a documentation header.</context>
+        <line>5</line>
+        <warning>False</warning>
+      </violation>
+    </violations>
+  </sourcecode>
+  <sourcecode name="IGroepsWerkJaarManager.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>04/25/2012 22:13:09</timestamp>
+      <milliseconds>810</milliseconds>
+    </settings>
+    <timestamp>06/09/2012 17:56:26</timestamp>
+    <milliseconds>332</milliseconds>
+    <violations>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="FileMustHaveHeader" ruleCheckId="SA1633">
+        <context>The file has no header, the header Xml is invalid, or the header is not located at the top of the file.</context>
+        <line>1</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The interface must have a documentation header.</context>
+        <line>8</line>
+        <warning>False</warning>
+      </violation>
+    </violations>
+  </sourcecode>
+  <sourcecode name="IVeelGebruikt.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>04/25/2012 22:13:09</timestamp>
+      <milliseconds>810</milliseconds>
+    </settings>
+    <timestamp>06/10/2012 10:53:46</timestamp>
+    <milliseconds>856</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="AssemblyInfo.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>04/25/2012 22:13:09</timestamp>
+      <milliseconds>810</milliseconds>
+    </settings>
+    <timestamp>06/09/2012 03:33:29</timestamp>
+    <milliseconds>15</milliseconds>
+    <violations>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="FileMustHaveHeader" ruleCheckId="SA1633">
+        <context>The file has no header, the header Xml is invalid, or the header is not located at the top of the file.</context>
+        <line>1</line>
+        <warning>False</warning>
+      </violation>
+    </violations>
+  </sourcecode>
+</stylecopresultscache>

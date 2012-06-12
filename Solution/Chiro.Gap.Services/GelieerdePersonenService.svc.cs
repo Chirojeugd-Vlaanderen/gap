@@ -152,15 +152,13 @@ namespace Chiro.Gap.Services
         // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IDPersEnGP Aanmaken(PersoonInfo info, int groepID)
         {
-            return GeforceerdAanmaken(info, groepID, false);
+            return this.AanmakenForceer(info, groepID, false);
         }
 
         /// <summary>
-        /// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
-        /// <paramref>groepID</paramref>
+        /// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven <paramref>groepID</paramref>
         /// </summary>
-        /// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en
-        /// de velden van <c>info.Persoon</c></param>
+        /// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en de velden van <c>info.Persoon</c></param>
         /// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
         /// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
         /// <param name="forceer">Als deze <c>true</c> is, wordt de nieuwe persoon sowieso gemaakt, ook
@@ -171,7 +169,7 @@ namespace Chiro.Gap.Services
         /// en de Chiroleeftijd.</remarks>
         /* zie #273 */
         // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IDPersEnGP GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer)
+        public IDPersEnGP AanmakenForceer(PersoonInfo info, int groepID, bool forceer)
         {
             // Indien 'forceer' niet gezet is, moet een FaultException opgeworpen worden
             // als de  nieuwe persoon te hard lijkt op een bestaande Gelieerde Persoon.
@@ -261,7 +259,7 @@ namespace Chiro.Gap.Services
 
         /// <summary>
         /// Haalt een persoonsgegevens op van gelieerde personen van een groep,
-        /// inclusief eventueel lidobject voor het recentste werkjaar.
+        /// inclusief eventueel lidobject voor het recentste werkJaar.
         /// </summary>
         /// <param name="gelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
@@ -302,7 +300,7 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Haalt de persoonsgegevens op van gelieerde personen van een groep
         /// wiens familienaam begint met de letter <paramref name="letter"/>.
-        /// inclusief eventueel lidobject voor het recentste werkjaar.
+        /// inclusief eventueel lidobject voor het recentste werkJaar.
         /// </summary>
         /// <param name="groepID">ID van de betreffende groep</param>
         /// <param name="letter">Beginletter van de achternaam</param>
@@ -325,7 +323,7 @@ namespace Chiro.Gap.Services
 
                 /*
                  * TODO dit staat mss niet op de beste plek
-                 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
+                 * Ophalen afdelingsjaren in het huidige werkJaar (TODO niet als een vorig werkJaar bekeken wordt)
                  * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
                  * als dit het geval is, kanlidworden op true zetten.
                  * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
@@ -395,7 +393,7 @@ namespace Chiro.Gap.Services
 
                 /*
                  * TODO dit staat mss niet op de beste plek
-                 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
+                 * Ophalen afdelingsjaren in het huidige werkJaar (TODO niet als een vorig werkJaar bekeken wordt)
                  * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
                  * als dit het geval is, kanlidworden op true zetten.
                  * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
@@ -500,7 +498,7 @@ namespace Chiro.Gap.Services
 
                 if (gebruikersrecht != null)
                 {
-                    // TODO: use automapper
+                    // TODO Gebruik automapper
 
                     result.GebruikersInfo = new GebruikersInfo
                                                      {
@@ -1132,6 +1130,10 @@ namespace Chiro.Gap.Services
             try
             {
                 IList<GelieerdePersoon> gelpersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
+                if (gelpersonen == null)
+                {
+                    throw new ArgumentException("Geen gelieerden gevonden met deze IDs", "gelieerdepersonenIDs");
+                }
 
                 foreach (int catID in categorieIDs)
                 {

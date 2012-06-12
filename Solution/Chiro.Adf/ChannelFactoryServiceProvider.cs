@@ -29,15 +29,16 @@ namespace Chiro.Adf
 		public I GetService<I>(object arguments) where I : class { throw new NotSupportedException(); }
 
         /// <summary>
-        /// Gebruikt WCF om een proxy naar de service met interface I te instantieren.
+        /// Gebruikt WCF om een proxy naar de service met interface I te instantieren, volgens een in de config benoemd endpoint
         /// </summary>
         /// <typeparam name="I">Service interface</typeparam>
         /// <returns>Een instantie van <typeparamref name="I"/>.  Als die niet geresolved kon worden, dan <c>null</c></returns>
-		public I GetService<I>(string instanceName) where I : class
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")] // Disposing gebeurt verder in <cref>Chiro.Adf.ServiceModel</cref>
+        public I GetService<I>(string instanceName) where I : class
 		{
 			if (typeof(I).IsDefined(typeof(ServiceContractAttribute), true))
 			{
-			    ChannelFactory<I> factory;
+                ChannelFactory<I> factory;
                 try
                 {
                     factory = new ChannelFactory<I>(instanceName); // use the named endpoint
@@ -113,7 +114,7 @@ namespace Chiro.Adf
 		}
 
         /// <summary>
-        /// TODO (#190): Documenteren
+        /// Probe for the service, and return it when found
         /// </summary>
         /// <typeparam name="I"></typeparam>
         /// <param name="service"></param>
@@ -125,7 +126,7 @@ namespace Chiro.Adf
 		}
 
         /// <summary>
-        /// TODO (#190): Documenteren
+        /// Niet-generische versie van  <see cref="TryGetService&lt;I&gt;" />
         /// </summary>
         /// <param name="type"></param>
         /// <param name="service"></param>

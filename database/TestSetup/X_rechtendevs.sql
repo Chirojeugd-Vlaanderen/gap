@@ -28,6 +28,8 @@ exec auth.spGebruikersRechtToekennen 'MJ /0106', 'Mathias-PC\Mathias'
 exec auth.spGebruikersRechtToekennen 'OM /2514', 'CORP\THaeper'
 exec auth.spGebruikersRechtToekennen 'OG /1504', 'CORP\THaeper'
 exec auth.spGebruikersRechtToekennen 'MG /0300', 'CORP\THaeper'
+exec auth.spGebruikersRechtToekennen 'tst/0001', 'CORP\THaeper'
+
 
 -- Broes De Cat
 exec auth.spGebruikersRechtToekennen 'BJ /0204', 'broes-laptop2\Broes'

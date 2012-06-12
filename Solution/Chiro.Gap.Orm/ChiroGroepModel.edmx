@@ -1740,7 +1740,7 @@
           <Property Name="WerkJaarVan" Type="Int32" Nullable="true" />
           <Property Name="WerkJaarTot" Type="Int32" Nullable="true">
             <Documentation>
-              <Summary>Laatste werkjaar waarin deze functie geldig was</Summary>
+              <Summary>Laatste werkJaar waarin deze functie geldig was</Summary>
               <LongDescription>'Werkjaar tot en met' zou een betere naam zijn</LongDescription>
             </Documentation>
           </Property>

@@ -69,7 +69,7 @@ namespace Chiro.Gap.WebApp.Controllers
             }
         }
 
-        // Gegeven een lijst van afdelingen die in het volgende werkjaar gelden, 
+        // Gegeven een lijst van afdelingen die in het volgende werkJaar gelden, 
         // haal de 
         private ActionResult Stap2AfdelingsJarenVerdelen(IEnumerable<int> gekozenAfdelingsIDs, int groepID)
         {
@@ -91,7 +91,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             var actievelijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingDetail>>(g => g.ActieveAfdelingenOphalen(huidigwerkjaar.WerkJaarID));
 
-            // laadt de details in van alle afdelingen die geselecteerd zijn voor het nieuwe werkjaar
+            // laadt de details in van alle afdelingen die geselecteerd zijn voor het nieuwe werkJaar
             var afdelingDetails = new List<AfdelingDetail>();
             foreach (var afd in afdelingsinfos)
             {
@@ -148,7 +148,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 return View("Stap2AfdelingsJarenVerdelen", model);
             }
 
-            // Leden zoeken in het vorige actieve werkjaar, dus opvragen voor we de jaarovergang zelf doen
+            // Leden zoeken in het vorige actieve werkJaar, dus opvragen voor we de jaarovergang zelf doen
             var vorigGwjID = ServiceHelper.CallService<IGroepenService, int>(g => g.RecentsteGroepsWerkJaarIDGet(groepID));
 
             try
@@ -168,7 +168,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 return RedirectToAction("Index", "Leden");
             }
 
-            // Leden uit het oude werkjaar opvragen om lid te maken
+            // Leden uit het oude werkJaar opvragen om lid te maken
             var filter = new LidFilter
                             {
                                 GroepsWerkJaarID = vorigGwjID,

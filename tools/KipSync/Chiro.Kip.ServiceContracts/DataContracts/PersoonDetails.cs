@@ -38,5 +38,14 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public IEnumerable<CommunicatieMiddel> Communicatie { get; set; }
+
+        /// <summary>
+        /// Returns a System.String that represents the current PersoonDetails
+        /// </summary>
+        /// <returns>System.String that represents the current PersoonDetails</returns>
+        public override string ToString()
+        {
+            return this.Persoon.ToString() + ' ' + this.AdresType.ToString() + ' ' + this.Adres + ' ' + this.Communicatie;
+        }
     }
 }

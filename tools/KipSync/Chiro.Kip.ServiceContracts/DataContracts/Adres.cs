@@ -55,5 +55,14 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public string Land { get; set; }
+
+        /// <summary>
+        /// Returns a System.String that represents the current Persoon
+        /// </summary>
+        /// <returns>System.String that represents the current Persoon</returns>
+        public override string ToString()
+        {
+            return this.Straat + ' ' + this.HuisNr + ' ' + this.WoonPlaats;
+        }
     }
 }

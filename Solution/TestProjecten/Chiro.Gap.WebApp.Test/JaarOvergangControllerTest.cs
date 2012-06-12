@@ -92,13 +92,13 @@ namespace Chiro.Gap.WebApp.Test
         {
             const int GROEPID = 426;            // arbitrair
 
-            const int VORIGWERKJAAR = 2010;     // vorig werkjaar was zogezegd 2010-2011
+            const int VORIGWERKJAAR = 2010;     // vorig werkJaar was zogezegd 2010-2011
             const int GROEPSWERKJAARID = 2971;  // arbitrair groepswerkjaarid
 
-            const int NIEUWWERKJAAR = 2011;     // nieuw werkjaar, zogezegd 2011-2012
+            const int NIEUWWERKJAAR = 2011;     // nieuw werkJaar, zogezegd 2011-2012
 
             const int AFDELINGID = 2337;            // ook arbitrair; bij wijze van test slechts 1 afdeling
-            const int OUDGEBOORTEJAARVAN = 2003;    // geboortejaar van en tot in vorig werkjaar
+            const int OUDGEBOORTEJAARVAN = 2003;    // geboortejaar van en tot in vorig werkJaar
             const int OUDGEBOORTEJAARTOT = 2004;
 
             // setup mocks

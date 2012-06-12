@@ -60,5 +60,14 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public GeslachtsEnum Geslacht { get; set; }
+
+        /// <summary>
+        /// Leesbare identiticatie
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return this.Naam + ' ' + this.VoorNaam + " (" + this.AdNummer + ')';
+        }
     }
 }

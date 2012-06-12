@@ -57,8 +57,8 @@ namespace Chiro.Gap.Data.Test
 		{
 			#region Arrange
 			var gwjDao = Factory.Maak<IGroepsWerkJaarDao>();
-			int gwjID = TestInfo.GROEPSWERKJAARID;
-			int testGroepID = TestInfo.GROEPID;
+			int gwjID = TestInfo.GROEPS_WERKJAAR_ID;
+			int testGroepID = TestInfo.GROEP_ID;
 			#endregion
 
 			#region Act
@@ -81,7 +81,7 @@ namespace Chiro.Gap.Data.Test
 			var dao = Factory.Maak<IGroepsWerkJaarDao>();
 
 			// act
-			GroepsWerkJaar gwj = dao.RecentsteOphalen(TestInfo.GROEPID, grwj=>grwj.AfdelingsJaar);
+			GroepsWerkJaar gwj = dao.RecentsteOphalen(TestInfo.GROEP_ID, grwj=>grwj.AfdelingsJaar);
 
 			//assert
 			Assert.IsTrue(gwj.AfdelingsJaar.Count >= 1);

@@ -77,7 +77,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// TODO exceptions
 			var model = new GeselecteerdePersonenEnLedenModel();
 			BaseModelInit(model, groepID);
-			model.Titel = "Personen inschrijven in het huidige werkjaar";
+			model.Titel = "Personen inschrijven in het huidige werkJaar";
 
 			// TODO model laden, gegeven:
 			object value;

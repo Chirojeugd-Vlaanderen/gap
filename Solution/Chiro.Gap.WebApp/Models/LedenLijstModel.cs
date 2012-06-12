@@ -22,7 +22,7 @@ namespace Chiro.Gap.WebApp.Models
 
         /// <summary>
         /// Kunnen de gegevens van de leden gewijzigd worden?
-        /// (i.e. zijn ze lid in huidig werkjaar)
+        /// (i.e. zijn ze lid in huidig werkJaar)
         /// </summary>
         public bool KanLedenBewerken { get; set; }
     }
