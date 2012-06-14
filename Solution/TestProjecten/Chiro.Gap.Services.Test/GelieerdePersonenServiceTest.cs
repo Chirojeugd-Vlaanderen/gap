@@ -22,8 +22,11 @@ using Chiro.Gap.ServiceContracts.Mappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
+using System.ServiceModel;
+using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.TestDbInfo;
 
-namespace Chiro.Gap.Services.Test.CustomIoc
+namespace Chiro.Gap.Services.Test
 {
     /// <summary>
     /// Dit is een testclass voor Unit Tests van GelieerdePersonenServiceTest
@@ -71,6 +74,48 @@ namespace Chiro.Gap.Services.Test.CustomIoc
             // de configuratiefile.)
 
             Factory.ContainerInit();
+        }
+
+        /// <summary>
+        ///A test for CommunicatieVormToevoegen
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FaultException<FoutNummerFault>))]
+        public void CommunicatieVormToevoegenTestOngeldig()
+        {
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            var gelieerdePersoonID = TestInfo.GELIEERDE_PERSOON_ID;
+
+            var commInfo = new CommunicatieDetail()
+            {
+                CommunicatieTypeID = 1,
+                Nummer = TestInfo.ONGELDIG_TELEFOON_NR
+            };
+
+            target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);
+            Assert.IsTrue(false);
+        }
+
+        ///<summary>
+        ///Toevoegen van een geldig telefoonnr
+        /// </summary>
+        [TestMethod]
+        public void CommunicatieVormToevoegenTestGeldig()
+        {
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            var gelieerdePersoonID = TestInfo.GELIEERDE_PERSOON_ID;
+
+            var commInfo = new CommunicatieDetail()
+            {
+                CommunicatieTypeID = 1,
+                Voorkeur = true,
+                Nummer = TestInfo.GELDIG_TELEFOON_NR
+            };
+
+            target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);
+            Assert.IsTrue(true);	// al blij als er geen exception optreedt
         }
 
         /// <summary>

@@ -1130,10 +1130,10 @@ namespace Chiro.Gap.Services
             try
             {
                 IList<GelieerdePersoon> gelpersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
-                if (gelpersonen == null)
-                {
-                    throw new ArgumentException("Geen gelieerden gevonden met deze IDs", "gelieerdepersonenIDs");
-                }
+
+                Debug.Assert(gelpersonen != null);
+                // Als er geen personen gevonden zijn, dan krijg je een lege lijst.  
+                // Als gelpersonen null is, dan heeft de manager waarschijnlijk een mock opgeroepen van de DAO.
 
                 foreach (int catID in categorieIDs)
                 {

@@ -921,7 +921,7 @@ namespace Chiro.Gap.Services
                 var fault = Mapper.Map<BlokkerendeObjectenException<GelieerdePersoon>,
                     BlokkerendeObjectenFault<PersoonDetail>>(ex);
 
-                throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault, new FaultReason("Er zijn nog gelieerde personen."));
+                throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault, new FaultReason(Properties.Resources.CategorieNietLeeg));
             }
             catch (Exception ex)
             {
