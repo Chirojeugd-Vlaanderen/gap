@@ -16,7 +16,7 @@ using Chiro.Gap.Orm;
 
 using Moq;
 
-namespace Chiro.Gap.Workers.Test.CustomIoc
+namespace Chiro.Gap.Workers.Test
 {
     /// <summary>
     /// Dit is een testclass voor Unit Tests van GroepsWerkJaarManagerTest

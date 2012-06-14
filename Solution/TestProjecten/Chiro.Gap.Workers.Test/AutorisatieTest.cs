@@ -16,7 +16,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers.Exceptions;
 
-namespace Chiro.Gap.Workers.Test.CustomIoc
+namespace Chiro.Gap.Workers.Test
 {
 	/// <summary>
 	/// Tests op de security van de workers.
