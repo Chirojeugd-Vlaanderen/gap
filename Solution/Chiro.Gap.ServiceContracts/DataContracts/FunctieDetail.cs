@@ -51,14 +51,14 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// Het eerste werkJaar waarin de functie gebruikt werd in deze groep
 		/// </summary>
 		[DataMember]
-		[DisplayName(@"Ingevoerd in het werkJaar")]
+		[DisplayName(@"Ingevoerd in het werkjaar")]
 		public int? WerkJaarVan { get; set; }
 		
 		/// <summary>
 		/// Het laatste werkJaar waarin de functie gebruikt werd in deze groep
 		/// </summary>
 		[DataMember]
-		[DisplayName(@"Afgeschaft in het werkJaar")]
+		[DisplayName(@"Afgeschaft in het werkjaar")]
 		public int? WerkJaarTot { get; set; }
 		
 		/// <summary>

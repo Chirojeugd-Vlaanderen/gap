@@ -120,7 +120,7 @@ namespace Chiro.Gap.UpdateSvc.Service
                     _ledenSync.Bewaren(lid);
                 }
 
-                Console.WriteLine("Leden van {0} voor werkJaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
+                Console.WriteLine("Leden van {0} voor werkjaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
             }
         }
 
@@ -152,7 +152,7 @@ namespace Chiro.Gap.UpdateSvc.Service
                     _dubbelpuntSync.Abonneren(ab);
                 }
 
-                Console.WriteLine("Abonnementen van {0} voor werkJaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
+                Console.WriteLine("Abonnementen van {0} voor werkjaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
             }
         }
 	}
