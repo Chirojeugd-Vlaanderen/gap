@@ -26,7 +26,7 @@ namespace Chiro.Gap.Workers
     public static class GroepsWerkJaarHelper
     {
         /// <summary>
-        /// Berekend aan de hand van een gegeven werkjaar de datum van het verplichte einde van de instapperiode in dat jaar.
+        /// Berekent aan de hand van een gegeven werkJaar de datum van het verplichte einde van de instapperiode in dat jaar.
         /// Belangrijk =&gt; volgens de HUIDIGE settings van dat werkjaareinde (moest dat in de toekomst veranderen en we hebben dat van vroeger nodig)
         /// </summary>
         /// <param name="gwj">

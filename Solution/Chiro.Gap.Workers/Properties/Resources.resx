@@ -177,7 +177,7 @@
   </data>
   <data name="GeenGav" xml:space="preserve">
     <value>Geen toegang.</value>
-    <comment>Zo weinig mogelijk details voor potentiele krakers.</comment>
+    <comment>Zo weinig mogelijk details voor potentiële krakers.</comment>
   </data>
   <data name="WonenDaarAl" xml:space="preserve">
     <value>Een of meerdere personen wonen al op het aangeduide adres.</value>
