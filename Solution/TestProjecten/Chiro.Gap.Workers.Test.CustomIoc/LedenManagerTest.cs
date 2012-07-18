@@ -8,6 +8,7 @@ using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Orm;
 
 using Moq;
+using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Workers.Test.CustomIoc
 {
@@ -53,6 +54,49 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         //}
         //
         #endregion
+
+        private ChiroGroep _groep;
+        private GelieerdePersoon _gp;
+        private GroepsWerkJaar _gwj;
+        private LidVoorstel _voorstel;
+        private AfdelingsJaar _afd1;
+        private AfdelingsJaar _afd2;
+
+        // FIXME: Een aantal van onderstaande tests gaan _gp in- en uitschrijven als lid en leiding.
+        // Het is echter niet gezegd dat de tests in volgorde uitgevoerd worden; het kan goed zijn
+        // dat sommige tests tegelijkertijd lopen.  In die gevallen gaan ze elkaar in de weg lopen,
+        // en failen.
+
+        private void Setup()
+        {
+            // Creeer een aantal dummygegevens om op te testen.
+            _groep = new ChiroGroep { ID = 493 };
+            _gp = new GelieerdePersoon
+            {
+                Persoon = new Persoon
+                {
+                    Geslacht = GeslachtsType.Man,
+                    GeboorteDatum = new DateTime(1992, 3, 7)
+                },
+                Groep = _groep
+            };
+            _gwj = new GroepsWerkJaar
+            {
+                Groep = _groep,
+                WerkJaar = 2011
+            };
+            _voorstel = new LidVoorstel
+            {
+                AfdelingsJaarIDs = new int[0],
+                AfdelingsJarenIrrelevant = false,
+                LeidingMaken = true
+            };
+            _afd1 = new AfdelingsJaar { ID = 1 };
+            _afd2 = new AfdelingsJaar { ID = 2 };
+            _gwj.AfdelingsJaar.Add(new AfdelingsJaar { ID = 0 });
+            _gwj.AfdelingsJaar.Add(_afd1);
+            _gwj.AfdelingsJaar.Add(_afd2);
+        }
 
         ///<summary>
         /// Controleert of uitschrijvingen van kadermedewerkers (waarvan de probeerperiode per definitie
@@ -134,48 +178,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             Assert.IsTrue(true);
         }
 
-        private ChiroGroep _groep;
-        private GelieerdePersoon _gp;
-        private GroepsWerkJaar _gwj;
-        private LidVoorstel _voorstel;
-        private AfdelingsJaar _afd1;
-        private AfdelingsJaar _afd2;
 
-        // FIXME: Een aantal van onderstaande tests gaan _gp in- en uitschrijven als lid en leiding.
-        // Het is echter niet gezegd dat de tests in volgorde uitgevoerd worden; het kan goed zijn
-        // dat sommige tests tegelijkertijd lopen.  In die gevallen gaan ze elkaar in de weg lopen,
-        // en failen.
-
-        private void Setup()
-        {
-            // Creeer een aantal dummygegevens om op te testen.
-            _groep = new ChiroGroep { ID = 493 };
-            _gp = new GelieerdePersoon
-            {
-                Persoon = new Persoon
-                {
-                    Geslacht = GeslachtsType.Man,
-                    GeboorteDatum = new DateTime(1992, 3, 7)
-                },
-                Groep = _groep
-            };
-            _gwj = new GroepsWerkJaar
-            {
-                Groep = _groep,
-                WerkJaar = 2011
-            };
-            _voorstel = new LidVoorstel
-            {
-                AfdelingsJaarIDs = new int[0],
-                AfdelingsJarenIrrelevant = false,
-                LeidingMaken = true
-            };
-            _afd1 = new AfdelingsJaar {ID = 1};
-            _afd2 = new AfdelingsJaar {ID = 2};
-            _gwj.AfdelingsJaar.Add(new AfdelingsJaar { ID = 0 });
-            _gwj.AfdelingsJaar.Add(_afd1);
-            _gwj.AfdelingsJaar.Add(_afd2);
-        }
 
 
         ///<summary>
@@ -185,11 +188,11 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         public void InschrijvenTest()
         {
             // LedenManager_Accessor, zodat we ook private members kunnen testen.
-            var target = Factory.Maak<LedenManager_Accessor>();
+            var target = Factory.Maak<LedenManager>();
             Setup();
 
             // act
-            var actual = target.Inschrijven(_gp, _gwj, false, _voorstel) as Leiding;
+            var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Leiding;
 
             // assert
             Assert.IsNotNull(actual);
@@ -202,12 +205,18 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         [TestMethod()]
         public void HerInschrijvenAlsLidTest()
         {
-            // LedenManager_Accessor, zodat we ook private members kunnen testen.
+            var kindDaoMock = new Mock<IKindDao>();
+            kindDaoMock.Setup(src => src.Bewaren(It.IsAny<Kind>(), It.IsAny<LidExtras>())).Returns<Kind, LidExtras>((kind, extra) => kind);
+
+            // we verwachten dat het kind bewaard zal worden
+
+            Factory.InstantieRegistreren(kindDaoMock.Object);
+
             var target = Factory.Maak<LedenManager>();
             Setup();
             
             // act
-            var actual = target.InschrijvenVolgensVoorstel(_gp, _gwj, false, _voorstel) as Leiding;
+            var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Leiding;
             actual.NonActief = true;
             
             var voorstel2 = new LidVoorstel
@@ -217,7 +226,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
                 LeidingMaken = false
             };
 
-            var newlid = target.HerInschrijvenVolgensVoorstel(actual, _gp, _gwj, false, voorstel2) as Kind;
+            var newlid = target.Wijzigen(actual, voorstel2) as Kind;
 
             // assert
             Assert.IsNotNull(newlid);
@@ -231,14 +240,20 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         [TestMethod()]
         public void HerInschrijvenAlsLeidingTest()
         {
-            // LedenManager_Accessor, zodat we ook private members kunnen testen.
+            var leidingDaoMock = new Mock<ILeidingDao>();
+            leidingDaoMock.Setup(src => src.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns<Leiding, LidExtras>((ld, extra) => ld);
+
+            // we verwachten dat de leid(st)er bewaard zal worden
+
+            Factory.InstantieRegistreren(leidingDaoMock.Object);
+
             var target = Factory.Maak<LedenManager>();
             Setup();
 
             // act
             _voorstel.LeidingMaken = false;
             _voorstel.AfdelingsJaarIDs = new[] {0};
-            var actual = target.InschrijvenVolgensVoorstel(_gp, _gwj, false, _voorstel) as Kind;
+            var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Kind;
             actual.NonActief = true;
 
             var voorstel2 = new LidVoorstel
@@ -248,7 +263,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
                 LeidingMaken = true
             };
 
-            var newlid = target.HerInschrijvenVolgensVoorstel(actual, _gp, _gwj, false, voorstel2) as Leiding;
+            var newlid = target.Wijzigen(actual, voorstel2) as Leiding;
 
             // assert
             Assert.IsNotNull(newlid);

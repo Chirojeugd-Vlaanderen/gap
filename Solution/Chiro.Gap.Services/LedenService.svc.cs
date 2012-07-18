@@ -178,6 +178,9 @@ namespace Chiro.Gap.Services
 
                     foreach (var gp in g.GelieerdePersoon)
                     {
+                        // Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
+                        // verhindert dat de rest bewaard wordt.
+
                         try
                         {
                             // Kijk of het lid al bestaat (eventueel niet-actief).  In de meeste gevallen zal dit geen
@@ -196,21 +199,25 @@ namespace Chiro.Gap.Services
                                     continue;
                                 }
                                 var gp1 = gp;
-                                l = _ledenMgr.HerInschrijvenVolgensVoorstel(l, gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                l = _ledenMgr.Wijzigen(l, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+
+                                // 'Wijzigen' persisteert zelf
                             }
                             else // nieuw lid
                             {
                                 var gp1 = gp;
-                                l = _ledenMgr.InschrijvenVolgensVoorstel(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                l = _ledenMgr.NieuwInschrijven(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+
+                                // InschrijvenVolgensVoorstel persisteert niet.  Dat doen we hier.
+
+                                if (l != null)
+                                {
+                                    l = _ledenMgr.Bewaren(l, LidExtras.Afdelingen | LidExtras.Persoon, true);
+                                    lidIDs.Add(l.ID);
+                                }
+
                             }
 
-                            // Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
-                            // verhindert dat de rest bewaard wordt.
-                            if (l != null)
-                            {
-                                l = _ledenMgr.Bewaren(l, LidExtras.Afdelingen | LidExtras.Persoon, true);
-                                lidIDs.Add(l.ID);
-                            }
                         }
                         catch (BestaatAlException<Kind>)
                         {
