@@ -141,6 +141,11 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         private AfdelingsJaar _afd1;
         private AfdelingsJaar _afd2;
 
+        // FIXME: Een aantal van onderstaande tests gaan _gp in- en uitschrijven als lid en leiding.
+        // Het is echter niet gezegd dat de tests in volgorde uitgevoerd worden; het kan goed zijn
+        // dat sommige tests tegelijkertijd lopen.  In die gevallen gaan ze elkaar in de weg lopen,
+        // en failen.
+
         private void Setup()
         {
             // Creeer een aantal dummygegevens om op te testen.
