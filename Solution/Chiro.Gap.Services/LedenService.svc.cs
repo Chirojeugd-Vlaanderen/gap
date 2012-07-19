@@ -352,18 +352,16 @@ namespace Chiro.Gap.Services
         /// <returns>GelieerdePersoonID van lid</returns>
         public int TypeToggle(int id)
         {
-            var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon);
+            var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon|LidExtras.Groep|LidExtras.AlleAfdelingen);
 
-            var l = new List<InTeSchrijvenLid>();
-            var voorstel = new InTeSchrijvenLid
-                            {
-                                GelieerdePersoonID = lid.GelieerdePersoon.ID,
-                                LeidingMaken = lid is Kind,
-                                AfdelingsJaarIrrelevant = true
-                            };
-            l.Add(voorstel);
-            string berichten;
-            return Inschrijven(l, out berichten).First();
+            var voorstel = new LidVoorstel
+                         {
+                             AfdelingsJaarIDs = null,
+                             AfdelingsJarenIrrelevant = true,
+                             LeidingMaken = lid is Kind
+                         };
+
+            return _ledenMgr.Wijzigen(lid, voorstel).GelieerdePersoon.ID;
         }
 
         #endregion

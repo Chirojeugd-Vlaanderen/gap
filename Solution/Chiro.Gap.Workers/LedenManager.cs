@@ -466,33 +466,6 @@ namespace Chiro.Gap.Workers
             // dan ook geen bestaande leden gewijzigd, enkel nieuwe gemaakt.
 
             nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
-            if (voorstellid.AfdelingsJarenIrrelevant)
-            {
-                if (lid is Kind)
-                {
-                    var kind = lid as Kind;
-                    var lijst = groepsWerkJaar.AfdelingsJaar.Where(e => voorstellid.AfdelingsJaarIDs.Contains(e.ID));
-
-                    // TODO check lijst lengte 1
-                    foreach (var afdelingsJaar in lijst)
-                    {
-                        kind.AfdelingsJaar = afdelingsJaar;
-                        afdelingsJaar.Kind.Add(kind);
-                    }
-                }
-                else
-                {
-                    var leiding = lid as Leiding;
-                    Debug.Assert(leiding != null);
-                    var lijst = groepsWerkJaar.AfdelingsJaar.Where(e => voorstellid.AfdelingsJaarIDs.Contains(e.ID));
-                    foreach (var afdelingsJaar in lijst)
-                    {
-                        leiding.AfdelingsJaar.Add(afdelingsJaar);
-                        afdelingsJaar.Leiding.Add(leiding);
-                    }
-                }
-            }
-
             nieuwLid = Bewaren(nieuwLid, LidExtras.Afdelingen | LidExtras.Persoon, true);
             // bewaren gaat voor ons de sync oproepen
 
@@ -539,12 +512,33 @@ namespace Chiro.Gap.Workers
             }
 
             bool leidingmaken;
-            var afdelingsJaar = new List<AfdelingsJaar>();
+            List<AfdelingsJaar> afdelingsJaar;
+
+            // We moeten kunnen bepalen hoe oud iemand is, om hem/haar ofwel in een afdeling te steken,
+            // of te kijken of hij/zij oud genoeg is om leiding te zijn.
+
+            if (!gp.GebDatumMetChiroLeefTijd.HasValue)
+            {
+                // TODO: FoutnummerException van maken
+                throw new GapException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
+            }
+
+            var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
             if (voorstellid != null)
             {
                 leidingmaken = voorstellid.LeidingMaken;
-                if (!voorstellid.AfdelingsJarenIrrelevant)
+                if (voorstellid.AfdelingsJarenIrrelevant)
+                {
+                    // Meegegeven afdelingsjaren zijn irrelevant.  Als er een lid gemaakt moet worden,
+                    // bepalen we hier automatisch het juiste afdelingsjaar.
+
+                    afdelingsJaar = (from a in gwj.AfdelingsJaar
+                                     where (a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal)
+                                           && (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)
+                                     select a).ToList();
+                }
+                else
                 {
                     if (voorstellid.AfdelingsJaarIDs.Count() != 1 && !leidingmaken)
                     {
@@ -555,7 +549,7 @@ namespace Chiro.Gap.Workers
                                      where
                                          voorstellid.AfdelingsJaarIDs.Contains(a.ID)
                                      select a).ToList();
-                    
+
                     if (afdelingsJaar.Count() != voorstellid.AfdelingsJaarIDs.Count())
                     {
                         throw new GapException("Het gekozen afdelingsjaar is ongeldig.");
@@ -567,15 +561,6 @@ namespace Chiro.Gap.Workers
                 // automagisch voorstel genereren
                 // TODO de check op speciale afdeling is vermoedelijk een fout, je wilt wel degelijk een voorstel genereren voor speciale afdelingen 
                 // TODO 1145 er kan geen voorstel worden gegenereerd als je in geen afdeling past => eigenlijk wil je dan ook gewoon een afdeling voorstellen, want je hoeft de chiroleeftijd niet aan te passen om lid te maken
-
-                if (!gp.GebDatumMetChiroLeefTijd.HasValue)
-                {
-                    // TODO: FoutnummerException van maken
-                    throw new GapException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
-                }
-                
-                // Stop de geboortedatum in een lokale variabele [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement]
-                var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
                 // Bepaal of het een kind of leiding wordt.  Als de persoon qua leeftijd in een niet-speciale
                 // afdeling valt, wordt het een kind.
