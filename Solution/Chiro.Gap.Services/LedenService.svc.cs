@@ -189,10 +189,27 @@ namespace Chiro.Gap.Services
 
                             var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
-                            // TODO (#195, #691): Dit is businesslogica, en hoort dus thuis in de workers.
+                           // TODO (#195, #691): Dit is businesslogica, en hoort dus thuis in de workers.
 
                             if (l != null) // uitgeschreven
                             {
+                                // We hebben al een lid, dat waarschijnlijk ooit uitgeschreven was.  Aan dat lid is meteen
+                                // een groepswerkjaar gekoppeld, maar daaraan hangen geen afdelingsjaren.  Dat is jammer,
+                                // want LedenManager.Wijzigen heeft die nodig om te zien of de gevraagde afdeling wel
+                                // overeenkomt met een afdelingsjaar van het huidige groepswerkjaar.
+                                //
+                                // We hebben die afdelingsjaren echter al, want die zijn daarnet mee opgehaald met gwj.
+                                // Ik ga die afdelingsjaren dus stieken overzetten van gwj naar l.GroepsWerkJaar.  Proper
+                                // is het alleszins niet, maar ik doe het toch, omdat ik weet dat het hier geen kwaad kan,
+                                // en omdat er geen tijd is voor een mooie oplossing.  Er zal waarschijnlijk eerst een 
+                                // refactoring van de backend nodig zijn (#1250).
+
+                                foreach (var aj in gwj.AfdelingsJaar.ToArray())
+                                {
+                                    aj.GroepsWerkJaar = l.GroepsWerkJaar;
+                                    l.GroepsWerkJaar.AfdelingsJaar.Add(aj);
+                                }
+
                                 if (!l.NonActief)
                                 {
                                     foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));

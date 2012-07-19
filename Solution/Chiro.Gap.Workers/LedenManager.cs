@@ -789,7 +789,18 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            return _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID, groepsWerkJaarID);
+            var lid = _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID, groepsWerkJaarID);
+
+            if (lid != null)
+            {
+                // We weten dat lid.GroepsWerkJaar.Groep steeds gelijk is aan lid.GelieerdePersoon.Groep.
+                // Die laatste is echter niet opgehaald, maar het is erg gemakkelijk om die extra informatie
+                // hier mee te geven:
+
+                lid.GelieerdePersoon.Groep = lid.GroepsWerkJaar.Groep;
+            }
+
+            return lid;
         }
 
         /// <summary>
