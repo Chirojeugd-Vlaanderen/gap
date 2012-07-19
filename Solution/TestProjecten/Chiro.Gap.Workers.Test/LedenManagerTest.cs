@@ -8,11 +8,10 @@ using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Orm;
 
 using Moq;
+using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Workers.Test.CustomIoc
 {
-    
-    
     /// <summary>
     /// Dit is een testclass voor LedenManagerTest,
     ///to contain all LedenManagerTest Unit Tests
@@ -20,25 +19,6 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
     [TestClass]
     public class LedenManagerTest
     {
-
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        /// </summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
 
         #region Additional test attributes
         // 
@@ -75,6 +55,48 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         //
         #endregion
 
+        private ChiroGroep _groep;
+        private GelieerdePersoon _gp;
+        private GroepsWerkJaar _gwj;
+        private LidVoorstel _voorstel;
+        private AfdelingsJaar _afd1;
+        private AfdelingsJaar _afd2;
+
+        // FIXME: Een aantal van onderstaande tests gaan _gp in- en uitschrijven als lid en leiding.
+        // Het is echter niet gezegd dat de tests in volgorde uitgevoerd worden; het kan goed zijn
+        // dat sommige tests tegelijkertijd lopen.  In die gevallen gaan ze elkaar in de weg lopen,
+        // en failen.
+
+        private void Setup()
+        {
+            // Creeer een aantal dummygegevens om op te testen.
+            _groep = new ChiroGroep { ID = 493 };
+            _gp = new GelieerdePersoon
+            {
+                Persoon = new Persoon
+                {
+                    Geslacht = GeslachtsType.Man,
+                    GeboorteDatum = new DateTime(1992, 3, 7)
+                },
+                Groep = _groep
+            };
+            _gwj = new GroepsWerkJaar
+            {
+                Groep = _groep,
+                WerkJaar = 2011
+            };
+            _voorstel = new LidVoorstel
+            {
+                AfdelingsJaarIDs = new int[0],
+                AfdelingsJarenIrrelevant = false,
+                LeidingMaken = true
+            };
+            _afd1 = new AfdelingsJaar { ID = 1 };
+            _afd2 = new AfdelingsJaar { ID = 2 };
+            _gwj.AfdelingsJaar.Add(new AfdelingsJaar { ID = 0 });
+            _gwj.AfdelingsJaar.Add(_afd1);
+            _gwj.AfdelingsJaar.Add(_afd2);
+        }
 
         ///<summary>
         /// Controleert of uitschrijvingen van kadermedewerkers (waarvan de probeerperiode per definitie
@@ -157,6 +179,8 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         }
 
 
+
+
         ///<summary>
         ///Kijkt na of we een leid(st)er kunnen inschrijven zonder afdelingen
         ///</summary>
@@ -164,40 +188,88 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         public void InschrijvenTest()
         {
             // LedenManager_Accessor, zodat we ook private members kunnen testen.
-            var target = Factory.Maak<LedenManager_Accessor>();
-
-            // Creeer een aantal dummygegevens om op te testen.
-
-            var groep = new ChiroGroep {ID = 493};
-            var gp = new GelieerdePersoon
-                         {
-                             Persoon = new Persoon
-                                           {
-                                               Geslacht = GeslachtsType.Man,
-                                               GeboorteDatum = new DateTime(1992, 3, 7)
-                                           },
-                             Groep = groep
-                         };
-            var gwj = new GroepsWerkJaar
-                          {
-                              Groep = groep,
-                              WerkJaar = 2011
-                          };
-            var voorstellid = new LidVoorstel
-                                  {
-                                      AfdelingsJaarIDs = new int[0],
-                                      AfdelingsJarenIrrelevant = false,
-                                      LeidingMaken = true
-                                  };
+            var target = Factory.Maak<LedenManager>();
+            Setup();
 
             // act
-
-            var actual = target.Inschrijven(gp, gwj, false, voorstellid) as Leiding;
+            var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Leiding;
 
             // assert
-
             Assert.IsNotNull(actual);
             Assert.AreEqual(0, actual.AfdelingsJaar.Count);
+        }
+
+        ///<summary>
+        /// Test herinschrijven van leiding als lid en in een andere afdeling
+        ///</summary>
+        [TestMethod()]
+        public void HerInschrijvenAlsLidTest()
+        {
+            var kindDaoMock = new Mock<IKindDao>();
+            kindDaoMock.Setup(src => src.Bewaren(It.IsAny<Kind>(), It.IsAny<LidExtras>())).Returns<Kind, LidExtras>((kind, extra) => kind);
+
+            // we verwachten dat het kind bewaard zal worden
+
+            Factory.InstantieRegistreren(kindDaoMock.Object);
+
+            var target = Factory.Maak<LedenManager>();
+            Setup();
+            
+            // act
+            var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Leiding;
+            actual.NonActief = true;
+            
+            var voorstel2 = new LidVoorstel
+            {
+                AfdelingsJaarIDs = new[]{1},
+                AfdelingsJarenIrrelevant = false,
+                LeidingMaken = false
+            };
+
+            var newlid = target.Wijzigen(actual, voorstel2) as Kind;
+
+            // assert
+            Assert.IsNotNull(newlid);
+            Assert.AreEqual(_afd1, newlid.AfdelingsJaar);
+            Assert.IsFalse(newlid.NonActief);
+        }
+
+        ///<summary>
+        /// Test herinschrijven van lid als leiding met 2 afdelingen
+        ///</summary>
+        [TestMethod()]
+        public void HerInschrijvenAlsLeidingTest()
+        {
+            var leidingDaoMock = new Mock<ILeidingDao>();
+            leidingDaoMock.Setup(src => src.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns<Leiding, LidExtras>((ld, extra) => ld);
+
+            // we verwachten dat de leid(st)er bewaard zal worden
+
+            Factory.InstantieRegistreren(leidingDaoMock.Object);
+
+            var target = Factory.Maak<LedenManager>();
+            Setup();
+
+            // act
+            _voorstel.LeidingMaken = false;
+            _voorstel.AfdelingsJaarIDs = new[] {0};
+            var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Kind;
+            actual.NonActief = true;
+
+            var voorstel2 = new LidVoorstel
+            {
+                AfdelingsJaarIDs = new[] { 1, 2 },
+                AfdelingsJarenIrrelevant = false,
+                LeidingMaken = true
+            };
+
+            var newlid = target.Wijzigen(actual, voorstel2) as Leiding;
+
+            // assert
+            Assert.IsNotNull(newlid);
+            Assert.IsTrue(newlid.AfdelingsJaar.Contains(_afd1));
+            Assert.IsTrue(newlid.AfdelingsJaar.Contains(_afd2));
+            Assert.IsFalse(newlid.NonActief);
         }
     }
 }

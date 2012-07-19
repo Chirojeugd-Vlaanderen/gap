@@ -184,6 +184,9 @@ namespace Chiro.Gap.Services
 
                     foreach (var gp in g.GelieerdePersoon)
                     {
+                        // Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
+                        // verhindert dat de rest bewaard wordt.
+
                         try
                         {
                             // Kijk of het lid al bestaat (eventueel niet-actief).  In de meeste gevallen zal dit geen
@@ -192,31 +195,52 @@ namespace Chiro.Gap.Services
 
                             var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
-                            // TODO (#195, #691): Dit is businesslogica, en hoort dus thuis in de workers.
+                           // TODO (#195, #691): Dit is businesslogica, en hoort dus thuis in de workers.
 
                             if (l != null) // uitgeschreven
                             {
+                                // We hebben al een lid, dat waarschijnlijk ooit uitgeschreven was.  Aan dat lid is meteen
+                                // een groepswerkjaar gekoppeld, maar daaraan hangen geen afdelingsjaren.  Dat is jammer,
+                                // want LedenManager.Wijzigen heeft die nodig om te zien of de gevraagde afdeling wel
+                                // overeenkomt met een afdelingsjaar van het huidige groepswerkjaar.
+                                //
+                                // We hebben die afdelingsjaren echter al, want die zijn daarnet mee opgehaald met gwj.
+                                // Ik ga die afdelingsjaren dus stieken overzetten van gwj naar l.GroepsWerkJaar.  Proper
+                                // is het alleszins niet, maar ik doe het toch, omdat ik weet dat het hier geen kwaad kan,
+                                // en omdat er geen tijd is voor een mooie oplossing.  Er zal waarschijnlijk eerst een 
+                                // refactoring van de backend nodig zijn (#1250).
+
+                                foreach (var aj in gwj.AfdelingsJaar.ToArray())
+                                {
+                                    aj.GroepsWerkJaar = l.GroepsWerkJaar;
+                                    l.GroepsWerkJaar.AfdelingsJaar.Add(aj);
+                                }
+
                                 if (!l.NonActief)
                                 {
                                     foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
                                     continue;
                                 }
                                 var gp1 = gp;
-                                l = _ledenMgr.HerInschrijvenVolgensVoorstel(l, gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                l = _ledenMgr.Wijzigen(l, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+
+                                // 'Wijzigen' persisteert zelf
                             }
                             else // nieuw lid
                             {
                                 var gp1 = gp;
-                                l = _ledenMgr.InschrijvenVolgensVoorstel(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                l = _ledenMgr.NieuwInschrijven(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+
+                                // InschrijvenVolgensVoorstel persisteert niet.  Dat doen we hier.
+
+                                if (l != null)
+                                {
+                                    l = _ledenMgr.Bewaren(l, LidExtras.Afdelingen | LidExtras.Persoon, true);
+                                    lidIDs.Add(l.ID);
+                                }
+
                             }
 
-                            // Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
-                            // verhindert dat de rest bewaard wordt.
-                            if (l != null)
-                            {
-                                l = _ledenMgr.Bewaren(l, LidExtras.Afdelingen | LidExtras.Persoon, true);
-                                lidIDs.Add(l.ID);
-                            }
                         }
                         catch (BestaatAlException<Kind>)
                         {
@@ -333,18 +357,16 @@ namespace Chiro.Gap.Services
         /// <returns>GelieerdePersoonID van lid</returns>
         public int TypeToggle(int id)
         {
-            var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon);
+            var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon|LidExtras.Groep|LidExtras.AlleAfdelingen);
 
-            var l = new List<InTeSchrijvenLid>();
-            var voorstel = new InTeSchrijvenLid
-                            {
-                                GelieerdePersoonID = lid.GelieerdePersoon.ID,
-                                LeidingMaken = lid is Kind,
-                                AfdelingsJaarIrrelevant = true
-                            };
-            l.Add(voorstel);
-            string berichten;
-            return Inschrijven(l, out berichten).First();
+            var voorstel = new LidVoorstel
+                         {
+                             AfdelingsJaarIDs = null,
+                             AfdelingsJarenIrrelevant = true,
+                             LeidingMaken = lid is Kind
+                         };
+
+            return _ledenMgr.Wijzigen(lid, voorstel).GelieerdePersoon.ID;
         }
 
         #endregion

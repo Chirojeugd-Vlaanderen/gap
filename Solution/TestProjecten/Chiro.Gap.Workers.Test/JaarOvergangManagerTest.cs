@@ -52,6 +52,20 @@ namespace Chiro.Gap.Workers.Test
 		//
 		#endregion
 
+        AfdelingsJaar call(Afdeling afd1, OfficieleAfdeling ribbeloff, GroepsWerkJaar gwj2, int GeboorteJaarVan, int GeboorteJaarTot, GeslachtsType Geslacht)
+        {
+            var x = new AfdelingsJaar
+            {
+                Afdeling = afd1,
+                GeboorteJaarTot = GeboorteJaarTot,
+                GeboorteJaarVan = GeboorteJaarVan,
+                Geslacht = Geslacht,
+                GroepsWerkJaar = gwj2,
+                OfficieleAfdeling = ribbeloff
+            }
+            ; gwj2.AfdelingsJaar.Add(x); return x;
+        }
+
 		/// <summary>
 		///A test for JaarOvergangUitvoeren
 		///</summary>
@@ -87,9 +101,9 @@ namespace Chiro.Gap.Workers.Test
 
 			var ajmm = new Mock<IAfdelingsJaarManager>(MockBehavior.Strict);
 			ajmm.Setup(e => e.OfficieleAfdelingenOphalen()).Returns(new List<OfficieleAfdeling> {ribbeloff});
-			ajmm.Setup(e => e.Aanmaken(afd1, ribbeloff, gwj2, newafdjaar.GeboorteJaarVan, newafdjaar.GeboorteJaarTot, newafdjaar.Geslacht)).Returns(new AfdelingsJaar());
+            ajmm.Setup(e => e.Aanmaken(afd1, ribbeloff, gwj2, newafdjaar.GeboorteJaarVan, newafdjaar.GeboorteJaarTot, newafdjaar.Geslacht)).Returns(call(afd1, ribbeloff, gwj2, newafdjaar.GeboorteJaarVan, newafdjaar.GeboorteJaarTot, newafdjaar.Geslacht));
 
-			var gwmm = new Mock<IGroepsWerkJaarManager>(MockBehavior.Strict);
+		    var gwmm = new Mock<IGroepsWerkJaarManager>(MockBehavior.Strict);
 			gwmm.Setup(e => e.RecentsteOphalen(groep.ID)).Returns(gwj);
 			gwmm.Setup(e => e.RecentsteOphalen(groep.ID, GroepsWerkJaarExtras.Afdelingen)).Returns(gwj);
 			gwmm.Setup(e => e.StartOvergang(It.IsAny<int>())).Returns(DateTime.Today.AddDays(-1));
