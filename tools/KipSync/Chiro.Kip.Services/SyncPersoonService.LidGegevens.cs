@@ -242,8 +242,6 @@ namespace Chiro.Kip.Services
                                   HeeftFunctie = null,
                                   MAILING_TOEVOEG = null,
                                   Persoon = persoon,
-                                  SOORT =
-                                      groep.IsGewestVerbond ? "KA" : (gedoe.LidType == LidTypeEnum.Kind ? "LI" : "LE"),
                                   STATUS = null,
                                   STEMPEL = DateTime.Now,
                                   VERZ_NR = 0,
@@ -255,12 +253,10 @@ namespace Chiro.Kip.Services
 
                 lid.EindeInstapPeriode = gedoe.EindeInstapPeriode;
 
-                // Afdelingen toekennen/updaten
+                // LidType, Afdelingen, Functies
 
+                ledenMgr.LidTypeInstellen(lid, gedoe.LidType);
                 ledenMgr.AfdelingenZetten(lid, gedoe.OfficieleAfdelingen.ToArray(), db);
-
-                // Functies toekennen/updaten
-
                 ledenMgr.FunctiesVervangen(lid, gedoe.NationaleFuncties.ToArray(), db);
 
                 // In de aansluitingslijn zit ook telkens een telling: het aantal leden wordt geteld per afdeling en geslacht,
@@ -386,6 +382,7 @@ namespace Chiro.Kip.Services
 
 			using (var db = new kipadminEntities())
 			{
+			    var ledenMgr = new LedenManager();
 				Lid lid;
 
 				// Eens kijken of we het lid waarvan sprake kunnen vinden.
@@ -408,10 +405,7 @@ namespace Chiro.Kip.Services
 						werkJaar));
 				}
 
-				lid.SOORT = lidType == LidTypeEnum.Kind ? "LI" : "LE";
-
-				// Niet helemaal juist, want in Kipadmin behouden we afelingen en functies, waar
-				// die in GAP verdwijnen.  #toobad
+			    ledenMgr.LidTypeInstellen(lid,lidType);
 
 				feedback = String.Format(
 					"Lidtype veranderd naar {0}: ID{1} {2} {3} AD{4}",
@@ -426,7 +420,7 @@ namespace Chiro.Kip.Services
 			_log.BerichtLoggen(0, feedback);
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Updatet de afdelingen van een lid.
 		/// </summary>
 		/// <param name="pers">Persoon waarvan de afdelingen geupdatet moeten worden</param>

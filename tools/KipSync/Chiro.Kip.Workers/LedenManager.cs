@@ -122,5 +122,19 @@ namespace Chiro.Kip.Workers
             }
             return feedback.ToString();
         }
+
+        /// <summary>
+        /// Verandert het lidtype van <paramref name="lid"/>
+        /// </summary>
+        /// <param name="lid">Lid in Kipadmin</param>
+        /// <param name="lidType">LidType in GAP</param>
+        /// <remarks>Opgelet: in het kader hebben de medewerkers gewoon type 'leiding', terwijl
+        /// er in Kipadmin een onderscheid is tussen leiding en kader.  Vandaar de hacky code.</remarks>
+        public void LidTypeInstellen(Lid lid, LidTypeEnum lidType)
+        {
+            lid.SOORT = (lid.Groep is ChiroGroep) && (lid.Groep as ChiroGroep).IsGewestVerbond
+                            ? "KA"
+                            : lidType == LidTypeEnum.Kind ? "LI" : "LE";
+        }
     }
 }
