@@ -57,7 +57,7 @@ namespace Chiro.Kip.Workers
         {
             var feedback = new StringBuilder();
 
-            var teVerwijderen = lid.HeeftFunctie.Where(hf => !functies.Cast<int>().Contains(hf.Functie.id));
+            var teVerwijderen = lid.HeeftFunctie.Where(hf => !functies.Cast<int>().Contains(hf.Functie.id)).ToArray();
 
             foreach (var hf in teVerwijderen)
             {
