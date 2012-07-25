@@ -5,6 +5,8 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using AutoMapper;
+using Chiro.Adf.ServiceModel;
+using Chiro.Gap.UpdateSvc.Contracts;
 using Chiro.Kip.Data;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Chiro.Kip.Workers;
@@ -77,7 +79,8 @@ namespace Chiro.Kip.Services
 
 			// AD-nummer overnemen in persoon en GAP
 			persoon.AdNummer = gevonden.AdNummer;
-			_svc.AdNummerToekennen(persoon.ID, gevonden.AdNummer);
+
+            ServiceHelper.CallService<IUpdateService>(svc => svc.AdNummerToekennen(persoon.ID, gevonden.AdNummer));
 
 			if (adres != null)
 			{
@@ -133,7 +136,7 @@ namespace Chiro.Kip.Services
 				if (persoon.AdNummer != kipPersoon.AdNummer)
 				{
 					persoon.AdNummer = kipPersoon.AdNummer;
-					_svc.AdNummerToekennen(persoon.ID, kipPersoon.AdNummer);
+					ServiceHelper.CallService<IUpdateService>(svc => svc.AdNummerToekennen(persoon.ID, kipPersoon.AdNummer));
 				}
 			}
 

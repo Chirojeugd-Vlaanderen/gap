@@ -1,7 +1,6 @@
 ﻿using System;
 using Chiro.Kip.Log;
 using Chiro.Kip.ServiceContracts;
-using Chiro.Kip.Services.UpdateService;
 using Adres = Chiro.Kip.ServiceContracts.DataContracts.Adres;
 
 namespace Chiro.Kip.Services
@@ -28,8 +27,6 @@ namespace Chiro.Kip.Services
 	/// </summary>
 	public partial class SyncPersoonService : ISyncPersoonService
 	{
-
-		private readonly IUpdateService _svc;
 		private readonly IMiniLog _log;
 
 		/// <summary>
@@ -66,10 +63,8 @@ namespace Chiro.Kip.Services
 		/// <summary>
 		/// Standaardconstructor
 		/// </summary>
-		/// <param name="updateService">Service die gebruikt moet worden om updates terug te sturen naar GAP</param>
-		public SyncPersoonService(IUpdateService updateService)
+		public SyncPersoonService()
 		{
-			_svc = updateService;
 			_log = new MiniLog();
 		}
 	}

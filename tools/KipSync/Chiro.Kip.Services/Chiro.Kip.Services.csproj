@@ -75,23 +75,21 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Service References\UpdateService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="SyncPersoonService.Bivak.cs" />
     <Compile Include="SyncPersoonService.cs" />
     <Compile Include="SyncPersoonService.LidGegevens.cs" />
     <Compile Include="SyncPersoonService.PersoonsGegevens.cs" />
     <Compile Include="SyncPersoonService.Publicaties.cs" />
     <Compile Include="SyncPersoonService.Verzekeringen.cs" />
-    <Compile Include="UpdateService\UnityWorkAround.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
+      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
+      <Name>Chiro.Adf.ServiceModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
       <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
       <Name>Chiro.Cdf.Data.Entity</Name>
@@ -99,6 +97,10 @@
     <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Gap.UpdateSvc.Contracts\Chiro.Gap.UpdateSvc.Contracts.csproj">
+      <Project>{EFA70FDE-2295-4A91-9553-847C272E7FA4}</Project>
+      <Name>Chiro.Gap.UpdateSvc.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Kip.Data\Chiro.Kip.Data.csproj">
       <Project>{6E07BADE-3705-44AB-A77A-41189D14806F}</Project>
@@ -127,28 +129,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\UpdateService\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\UpdateService\GapUpdateSvc.disco" />
-    <None Include="Service References\UpdateService\GapUpdateSvc.xsd" />
-    <None Include="Service References\UpdateService\GapUpdateSvc1.xsd" />
-    <None Include="Service References\UpdateService\UpdateService.wsdl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\UpdateService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\UpdateService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\UpdateService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
