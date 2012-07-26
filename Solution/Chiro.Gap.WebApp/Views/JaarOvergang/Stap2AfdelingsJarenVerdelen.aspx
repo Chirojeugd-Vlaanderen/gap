@@ -25,7 +25,7 @@
         <tr>
             <td>
                 <%: Html.HiddenFor(mdl => mdl.Afdelingen[j].AfdelingID) %>
-                <%: Html.LabelFor(mdl => mdl.Afdelingen[j].AfdelingNaam) %>
+                <%: Model.Afdelingen[j].AfdelingNaam %>
             </td>
             <td>
                 <%
