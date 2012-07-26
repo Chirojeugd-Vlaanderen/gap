@@ -114,7 +114,7 @@ namespace Chiro.Gap.WebApp.Test
                 new BivakAangifteLijstInfo {AlgemeneStatus = BivakAangifteStatus.NogNietVanBelang});
 
             var groepenServiceMock = new Mock<IGroepenService>();
-            groepenServiceMock.Setup(svc => svc.NieuwWerkJaarOphalen()).Returns(NIEUWWERKJAAR);
+            groepenServiceMock.Setup(svc => svc.NieuwWerkJaarOphalen(GROEPID)).Returns(NIEUWWERKJAAR);
             groepenServiceMock.Setup(svc => svc.AlleAfdelingenOphalen(GROEPID)).Returns(new[]
                                                                                             {
                                                                                                 new AfdelingInfo

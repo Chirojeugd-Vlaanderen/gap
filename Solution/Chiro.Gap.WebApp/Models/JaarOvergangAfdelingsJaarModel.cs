@@ -22,7 +22,7 @@ namespace Chiro.Gap.WebApp.Models
         /// <summary>
         /// Lijst van alle officiele afdelingen
         /// </summary>
-		public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingen { get; set; }
+		public OfficieleAfdelingDetail[] OfficieleAfdelingen { get; set; }
 
         /// <summary>
         /// Als de verdeling van toepassing is op een toekomstig werkJaar, bevat

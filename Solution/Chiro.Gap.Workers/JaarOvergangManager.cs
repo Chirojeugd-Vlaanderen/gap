@@ -77,12 +77,11 @@ namespace Chiro.Gap.Workers
 
             var voriggwj = _groepsWerkJaarManager.RecentsteOphalen(groepID);
 
-            if (DateTime.Today <= _groepsWerkJaarManager.StartOvergang(voriggwj.WerkJaar))
+            if (!_groepsWerkJaarManager.OvergangMogelijk(DateTime.Today, voriggwj.WerkJaar))
             {
                 throw new GapException(Resources.JaarovergangTeVroeg);
             }
 
-            // TODO unit tests
             // TODO check dat roll-back gebeurt
             // TODO check of er meer voorwaarden gecontroleerd moeten worden
 #if KIPDORP

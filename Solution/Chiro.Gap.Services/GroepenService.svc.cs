@@ -254,7 +254,7 @@ namespace Chiro.Gap.Services
 
             var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(gwj);
 
-            result.Status = (DateTime.Now >= _groepsWerkJaarManager.StartOvergang(gwj.WerkJaar)
+            result.Status = (_groepsWerkJaarManager.OvergangMogelijk(DateTime.Now, gwj.WerkJaar)
                                 ? WerkJaarStatus.InOvergang
                                 : WerkJaarStatus.Bezig);
 
@@ -1149,9 +1149,9 @@ namespace Chiro.Gap.Services
         /// Berekent wat het nieuwe werkJaar zal zijn als op dit moment de jaarovergang zou gebeuren.
         /// </summary>
         /// <returns>Een jaartal (bv. 2011 voor 2011-2012)</returns>
-        public int NieuwWerkJaarOphalen()
+        public int NieuwWerkJaarOphalen(int groepID)
         {
-            return _groepsWerkJaarManager.NieuweWerkJaar();
+            return _groepsWerkJaarManager.NieuweWerkJaar(groepID);
         }
 
         #endregion

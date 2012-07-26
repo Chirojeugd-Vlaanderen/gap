@@ -101,13 +101,28 @@ namespace Chiro.Gap.WorkerInterfaces
 		/// <throws>OngeldigObjectException</throws>
 		GroepsWerkJaar VolgendGroepsWerkJaarMaken(Groep g);
 
-		/// <summary>
-		/// Berekent wat het nieuwe werkJaar zal zijn als op deze moment de jaarovergang zou gebeuren.
-		/// </summary>
-		/// <returns>
-		/// Het jaar waarin dat nieuwe werkJaar begint
-		/// </returns>
-		int NieuweWerkJaar();
+        /// <summary>
+        /// Bepaalt of in het gegeven <paramref name='werkJaar' /> op
+        /// het gegeven <paramref name='tijdstip' /> de jaarovergang al
+        /// kan doorgaan.
+        /// </summary>
+        /// <param name="tijdstip"> </param>
+        /// <param name="werkJaar">
+        /// Jaartal van het 'huidige' werkjaar (i.e. 2010 voor 2010-2011 enz)
+        /// </param>
+        /// <returns>
+        /// Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden
+        /// </returns>
+        bool OvergangMogelijk(DateTime tijdstip, int werkJaar);
+
+        /// <summary>
+        /// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
+        /// </summary>
+        /// <returns>
+        /// Het jaar waarin dat nieuwe werkJaar begint
+        /// </returns>
+        /// <remarks>De paramter <paramref name="groepID"/> is er enkel voor debugging purposes</remarks>
+		int NieuweWerkJaar(int groepID);
 
 		/// <summary>
 		/// Bepaalt de datum vanaf wanneer het volgende werkJaar begonnen kan worden

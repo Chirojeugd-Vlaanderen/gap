@@ -255,22 +255,46 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            // Bereken gewenste werkJaar
-            var werkJaar = NieuweWerkJaar();
+            // Bereken gewenste werkjaar
+            var werkJaar = NieuweWerkJaar(g.ID);
 
             // Controle op dubbels moet gebeuren door data access.  (Zie #507)
             return new GroepsWerkJaar { Groep = g, WerkJaar = werkJaar };
         }
 
         /// <summary>
-        /// Berekent wat het nieuwe werkJaar zal zijn als op deze moment de jaarovergang zou gebeuren.
+        /// Bepaalt of in het gegeven <paramref name='werkJaar' /> op
+	    /// het gegeven <paramref name='tijdstip' /> de jaarovergang al
+	    /// kan doorgaan.
+        /// </summary>
+        /// <param name="tijdstip"> </param>
+        /// <param name="werkJaar">
+        /// Jaartal van het 'huidige' werkjaar (i.e. 2010 voor 2010-2011 enz)
+        /// </param>
+        /// <returns>
+        /// Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden
+        /// </returns>
+        public bool OvergangMogelijk(DateTime tijdstip, int werkJaar)
+        {
+#if JAAROVERGANGDEBUG
+            return true;
+#endif
+            return tijdstip >= StartOvergang(werkJaar);
+        }
+
+        /// <summary>
+        /// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
         /// </summary>
         /// <returns>
         /// Het jaar waarin dat nieuwe werkJaar begint
         /// </returns>
-        public int NieuweWerkJaar()
+        /// <remarks>De paramter <paramref name="groepID"/> is er enkel voor debugging purposes</remarks>
+        public int NieuweWerkJaar(int groepID)
         {
-            // Bereken gewenste werkJaar
+#if JAAROVERGANGDEBUG
+            return RecentsteOphalen(groepID).WerkJaar+1;
+#endif
+            // Bereken gewenste werkjaar
 
             // Het algoritme kijkt het volgende na:
             // Stel dat de jaarovergang mogelijk wordt vanaf 1 augustus.
