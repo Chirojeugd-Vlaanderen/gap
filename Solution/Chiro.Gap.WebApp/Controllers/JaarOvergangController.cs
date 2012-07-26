@@ -134,8 +134,8 @@ namespace Chiro.Gap.WebApp.Controllers
                 {
                     afdelingsJaarDetail.OfficieleAfdelingID = bestaandAfdelingsJaar.OfficieleAfdelingID;
                     afdelingsJaarDetail.Geslacht = bestaandAfdelingsJaar.Geslacht;
-                    afdelingsJaarDetail.GeboorteJaarTot = bestaandAfdelingsJaar.GeboorteJaarTot;
-                    afdelingsJaarDetail.GeboorteJaarVan = bestaandAfdelingsJaar.GeboorteJaarVan;
+                    afdelingsJaarDetail.GeboorteJaarTot = bestaandAfdelingsJaar.GeboorteJaarTot + werkJarenVerschil;
+                    afdelingsJaarDetail.GeboorteJaarVan = bestaandAfdelingsJaar.GeboorteJaarVan + werkJarenVerschil;
                 }
             }
 
