@@ -153,11 +153,23 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Stap2AfdelingsJarenVerdelen(JaarOvergangAfdelingsJaarModel model, int groepID)
         {
-            if (model.Afdelingen.Any(e => e.GeboorteJaarVan == 0 && e.GeboorteJaarTot == 0))
+            // Geldigheid van het model moet gecontroleerd worden met ModelState.
+
+            if (!ModelState.IsValid)
             {
-                TempData["fout"] = "Niet alle informatie is ingevuld, gelieve aan te vullen.";
+                // Model herstellen op basis van ingevulde gegevens.
+                
+                BaseModelInit(model, groepID);
+
+                model.NieuwWerkjaar =
+                    ServiceHelper.CallService<IGroepenService, int>(g => g.NieuwWerkJaarOphalen(groepID));
+                model.OfficieleAfdelingen =
+                    ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
+                        e => e.OfficieleAfdelingenOphalen(groepID)).ToArray();
+                
                 return View("Stap2AfdelingsJarenVerdelen", model);
             }
+
 
             // Leden zoeken in het vorige actieve werkjaar, dus opvragen voor we de jaarovergang zelf doen
             var vorigGwjID = ServiceHelper.CallService<IGroepenService, int>(g => g.RecentsteGroepsWerkJaarIDGet(groepID));

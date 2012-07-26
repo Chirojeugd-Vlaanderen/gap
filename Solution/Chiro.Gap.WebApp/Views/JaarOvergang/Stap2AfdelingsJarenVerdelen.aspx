@@ -8,25 +8,21 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <%=Html.ActionLink("Terug naar stap 1", "Stap1AfdelingenSelecteren", new { Controller = "JaarOvergang" })%>
+
     <br />
+
+    <%:Html.ValidationSummary() %>
+
     <br />
     <%using (Html.BeginForm("Stap2AfdelingsJarenVerdelen", "JaarOvergang"))
       { %>
-     <%: Html.HiddenFor(mdl => mdl.NieuwWerkjaar) %>
-     <% for (var j = 0; j < Model.OfficieleAfdelingen.Count(); ++j)
-         {%>
-        <%: Html.HiddenFor(x => x.OfficieleAfdelingen[j].Naam) %>
-        <%: Html.HiddenFor(x => x.OfficieleAfdelingen[j].ID) %>
-        <%: Html.HiddenFor(x => x.OfficieleAfdelingen[j].LeefTijdTot) %>
-        <%: Html.HiddenFor(x => x.OfficieleAfdelingen[j].LeefTijdVan) %>
-        <%}%>
-        
+
     <table>
         <tr>
             <th>Afdeling</th>
             <th>Officiële afdeling</th>
-            <th>Vanaf geboortejaar </th>
-            <th>Tot geboortejaar </th>
+            <th>Geboren vanaf </th>
+            <th>tot en met </th>
             <th>Geslacht </th>
         </tr>
         <% for (var j = 0; j < Model.Afdelingen.Count(); ++j)
