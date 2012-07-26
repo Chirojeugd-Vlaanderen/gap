@@ -276,8 +276,7 @@ namespace Chiro.Gap.Workers
 #if JAAROVERGANGDEBUG
             return true;
 #endif
-            var datum = Settings.Default.BeginOvergangsPeriode;
-            return tijdstip >= new DateTime(werkJaar + 1, datum.Month, datum.Day);
+            return tijdstip >= StartOvergang(werkJaar);
         }
 
         /// <summary>
@@ -286,6 +285,7 @@ namespace Chiro.Gap.Workers
         /// <returns>
         /// Het jaar waarin dat nieuwe werkjaar begint
         /// </returns>
+        /// <remarks>De paramter <paramref name="groepID"/> is er enkel voor debugging purposes</remarks>
         public int NieuweWerkJaar(int groepID)
         {
 #if JAAROVERGANGDEBUG
