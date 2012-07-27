@@ -493,6 +493,10 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public Lid NieuwInschrijven(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang, LidVoorstel voorstellid)
         {
+            // Deze method MAG NIET PERSISTEREN, want ze wordt ook gebruikt om een suggestie te doen voor
+            // een nieuw lid.  Misschien moet die functionaliteit gewoon naar een andere method, want eigenlijk is dit
+            // een grote if die kiest tussen 2 implementaties.
+
             // Lid maken zonder geboortedatum is geen probleem meer, aangezien de afdeling
             // bij in het voorstel zit. (en dus niet op dit moment bepaald moet worden.)
 
@@ -565,7 +569,7 @@ namespace Chiro.Gap.Workers
                                  select a).ToList();
 
 
-                leidingmaken = afdelingsJaar.Count() == 0;
+                leidingmaken = !afdelingsJaar.Any();
                 if (afdelingsJaar.Count() > 1)
                 {
                     afdelingsJaar = new List<AfdelingsJaar> { afdelingsJaar.First() };

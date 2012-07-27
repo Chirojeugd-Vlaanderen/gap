@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using AutoMapper;
@@ -149,14 +150,19 @@ namespace Chiro.Gap.Services
         /// Iedereen die kan lid gemaakt worden, wordt lid, zelfs als dit voor andere personen niet lukt. Voor die personen worden dan foutberichten
         /// teruggegeven.
         /// </remarks>
-        public IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten)
+        public IEnumerable<int> Inschrijven(InTeSchrijvenLid[] lidInformatie, out string foutBerichten)
         {
-            if(lidInformatie==null)
-            {
-                foutBerichten = "";
-                return null;
-            }
-            // TODO (#1053): beter systeem vinden voor deze feedback.
+            // TODO (#1053): systeem foutBerichten vervangen door iets beters voor feedback.
+            // (want op deze manier wordt er output voor de UI in de backend gegenereerd, dat breekt 
+            // seperation of concerns)
+
+
+            // Als lidInformatie null is, gaan we dat niet negeren. Dat wil zeggen dat er ergens
+            // anders in de code iets serieus is misgelopen.  Om dit soort van problemen op te kunnen
+            // sporen, gebruiken we best een assertion. 
+
+            Debug.Assert(lidInformatie != null);
+
             try
             {
                 var lidIDs = new List<int>();
@@ -219,14 +225,14 @@ namespace Chiro.Gap.Services
                                     continue;
                                 }
                                 var gp1 = gp;
-                                l = _ledenMgr.Wijzigen(l, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                l = _ledenMgr.Wijzigen(l, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
 
                                 // 'Wijzigen' persisteert zelf
                             }
                             else // nieuw lid
                             {
                                 var gp1 = gp;
-                                l = _ledenMgr.NieuwInschrijven(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                l = _ledenMgr.NieuwInschrijven(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
 
                                 // InschrijvenVolgensVoorstel persisteert niet.  Dat doen we hier.
 
@@ -274,6 +280,9 @@ namespace Chiro.Gap.Services
         /// string waarin wat uitleg staat.</param>
         public void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
         {
+            // TODO (#1053): beter systeem bedenken voor feedback dan via foutBerichten.
+            // Foutberichten bevat nu een string die gewoon in de UI wordt geplakt, en dat breekt
+            // de seperation of concerns.
             try
             {
                 var foutBerichtenBuilder = new StringBuilder();
@@ -287,6 +296,7 @@ namespace Chiro.Gap.Services
 
                     foreach (var gp in g.GelieerdePersoon)
                     {
+                        // TODO (#195): onderstaande logica verhuizen naar de workers
                         var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
                         if (l == null)
@@ -349,7 +359,9 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="id">ID van lid met te togglen lidtype</param>
         /// <returns>GelieerdePersoonID van lid</returns>
-        public int TypeToggle(int id, out string FoutBerichten)
+        /// <remarks>Bij het omschakelen van leiding naar lid, wordt - als er geen geschikte afdeling is
+        /// gevonden - een afdeling gegokt.</remarks>
+        public int TypeToggle(int id)
         {
             var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon|LidExtras.Groep|LidExtras.AlleAfdelingen);
 
@@ -359,8 +371,24 @@ namespace Chiro.Gap.Services
                              AfdelingsJarenIrrelevant = true,
                              LeidingMaken = lid is Kind
                          };
+            try
+            {
+                return _ledenMgr.Wijzigen(lid, voorstel).GelieerdePersoon.ID;
+            }
+            catch (FoutNummerException e)
+            {
+                if (e.FoutNummer==FoutNummer.AfdelingNietBeschikbaar)
+                {
+                    // Een exception die we verwachten, laten we afhandelen
+                    FoutAfhandelaar.FoutAfhandelen(e);
+                }
 
-            return _ledenMgr.Wijzigen(lid, voorstel).GelieerdePersoon.ID;
+                // Als we een onverwachte exception hebben, dan is er waarschijnlijk een bug die
+                // we nog niet opmerkten/fixten.  Opdat dit soort situaties opgemerkt zouden
+                // worden, throwen we de exception gewoon opnieuw.
+
+                throw;
+            }
         }
 
         #endregion

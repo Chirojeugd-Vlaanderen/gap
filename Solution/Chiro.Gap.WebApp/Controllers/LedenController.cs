@@ -737,7 +737,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// Verandert een kind in leiding of vice versa
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">LidID</param>
         /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
         /// <returns>Opnieuw de persoonsfiche</returns>
         [HandleError]
@@ -745,37 +745,38 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             int gelieerdePersoonID = 0;
 
-            var reset = false;
             try
             {
-                var Foutberichten = "";
-                gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.TypeToggle(id, out Foutberichten));
-                if(gelieerdePersoonID==0)
-                {
-                    TempData["fout"] = Foutberichten;
-                    reset = true;
-                }
+                gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.TypeToggle(id));
             }
             catch (FaultException<FoutNummerFault> ex)
             {
-                reset = true;
                 switch (ex.Detail.FoutNummer)
                 {
-                    case FoutNummer.AlgemeneKindFout:
-                        TempData["fout"] = Properties.Resources.FoutToggleNaarKind;
-                        break;
-                    case FoutNummer.AlgemeneLeidingFout:
-                        TempData["fout"] = Properties.Resources.FoutToggleNaarLeiding;
+                    case FoutNummer.AfdelingNietBeschikbaar:
+                        // Hier komen we terecht als we van een leid(st)er een lid willen maken, maar er zijn
+                        // geen afdelingen.
+
+                        // In dat geval moeten we het GelieerdePersoonID opnieuw ophalen.
+                        // Op dit moment kan dat enkel door alle liddetails op te vragen.
+                        // TODO: Makkelijkere manier implementeren om lidID om te zetten naar persoonID.
+                        // (Omdat we typisch van een lidfiche komen, zouden we die mapping kunnen cachen; het is maar een idee.)
+                        var info =
+                            ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
+                        gelieerdePersoonID = info.PersoonDetail.GelieerdePersoonID;
+
+                        // Normaalgezien geven we foutmeldingen graag door via de modelstate.
+                        // Maar omdat we hier geen model opbouwen, maar naar een redirect gaan, doe ik
+                        // het toch maar via TempData, hoewel dat niet echt mooi is.
+
+                        TempData["fout"] = Properties.Resources.GeenActieveAfdelingen;
+
                         break;
                     default:
+                        // Een onverwachte exception throwen we sowieso opnieuw, zodat eventuele bugs aan
+                        // de basis van deze exceptions niet ongemerkt blijven zitten.
                         throw;
                 }
-            }
-
-            if (reset)
-            {
-                var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
-                gelieerdePersoonID = info.PersoonDetail.GelieerdePersoonID;
             }
 
             return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });

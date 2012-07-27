@@ -40,7 +40,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten);
+        IEnumerable<int> Inschrijven(InTeSchrijvenLid[] lidInformatie, out string foutBerichten);
 
 		/// <summary>
 		/// Maakt lid met gegeven ID nonactief
@@ -167,6 +167,6 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		int TypeToggle(int id, out string FoutBerichten);
+		int TypeToggle(int id);
 	}
 }
