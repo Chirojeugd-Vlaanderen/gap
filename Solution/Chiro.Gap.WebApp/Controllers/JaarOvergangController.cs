@@ -46,9 +46,20 @@ namespace Chiro.Gap.WebApp.Controllers
             BaseModelInit(model, groepID);
 
             // Als we met een gewest/verbond te doen hebben, dan zijn de afdelingen niet relevant
-            if (model.GroepsNiveau == Niveau.KaderGroep)
+            if (model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep))
             {
-                return Stap2AfdelingsJarenVerdelen(new JaarOvergangAfdelingsJaarModel(), groepID);
+                // Een 'gewone' groep krijgt eerst de mogelijkheid om zijn afdelingsjaren te 
+                // definieren, en krijgt dan de mogelijkheid om meteen voor alle leden te bevestigen
+                // of ze opnieuw ingeschreven moeten worden of niet.
+
+                // Een gewest of verbond heeft geen afdelingen, dus we kunnen deze stap gerust overslaan.
+                // We schakelen wel direct door naar het scherm dat toelaat de in te schrijven leden
+                // aan te vinken; voor een gewest/verbond is dat typisch niet veel werk, en 
+                // het aansluitingsgeld is toch onafhankelijk van het aantal ploegleden.
+
+                var postmodel = new JaarOvergangAfdelingsJaarModel();
+                postmodel.LedenMeteenInschrijven = true;
+                return Stap2AfdelingsJarenVerdelen(postmodel, groepID);
             }
 
             model.Titel = "Jaarovergang stap 1: welke afdelingen heeft je groep volgend jaar?";

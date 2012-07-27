@@ -14,15 +14,21 @@ namespace Chiro.Gap.WebApp.Models
 	/// </summary>
 	public class JaarOvergangAfdelingsJaarModel : MasterViewModel
 	{
+	    public JaarOvergangAfdelingsJaarModel()
+        {
+            Afdelingen = new List<AfdelingDetail>();
+            OfficieleAfdelingen = new List<OfficieleAfdelingDetail>();
+        }
+
 		/// <summary>
 		/// Afdelingsjaren voor dit werkJaar
 		/// </summary>
-		public AfdelingDetail[] Afdelingen { get; set; }
+		public IList<AfdelingDetail> Afdelingen { get; set; }
 
         /// <summary>
         /// Lijst van alle officiele afdelingen
         /// </summary>
-		public OfficieleAfdelingDetail[] OfficieleAfdelingen { get; set; }
+		public IList<OfficieleAfdelingDetail> OfficieleAfdelingen { get; set; }
 
         /// <summary>
         /// Als de verdeling van toepassing is op een toekomstig werkJaar, bevat
