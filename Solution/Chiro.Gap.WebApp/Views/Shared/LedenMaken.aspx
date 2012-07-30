@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<GeselecteerdePersonenEnLedenModel>" %>
 
+<%@ Import Namespace="System.Globalization" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 	    <script src="<%= ResolveUrl("~/Scripts/jquery-1.7.1.min.js")%>" type="text/javascript"></script>
@@ -68,14 +69,22 @@
 				<td>
 
 				<%
+                    // Dit formulier selecteert by default het voorgestelde afdelingsjaar van ieder in te schrijven lid.
+                    // In principe is InTeSchrijvenLid.AfdelingsJaarIDs een array, maar in praktijk kunnen we voor dit
+                    // formulier maar 1 keuze aan. Vandaar dat enkel naar het eerste item in die array wordt gekeken.
+
+				    int voorgesteldAjID = Model.PersoonEnLidInfos[j].AfdelingsJaarIDs == null
+				                              ? 0
+				                              : Model.PersoonEnLidInfos[j].AfdelingsJaarIDs.FirstOrDefault();
+                                              
                     var afdelingsLijstItems = (from ba in Model.BeschikbareAfdelingen
                            select
                                new SelectListItem
                                {
                                    // voorlopig maar 1 afdeling tegelijk (first or default)
-                                   Selected = (Model.PersoonEnLidInfos[j].AfdelingsJaarIDs.FirstOrDefault() == ba.AfdelingsJaarID),
+                                   Selected = (voorgesteldAjID == ba.AfdelingsJaarID),
                                    Text = ba.Naam,
-                                   Value = ba.AfdelingsJaarID.ToString()
+                                   Value = ba.AfdelingsJaarID.ToString(CultureInfo.InvariantCulture)
                                }).ToList();
                                
                     // Afdeling 'geen' is mogelijk (en default) als het om leiding gaat.

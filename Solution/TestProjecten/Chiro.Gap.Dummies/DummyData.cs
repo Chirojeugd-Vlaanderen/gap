@@ -219,10 +219,22 @@ namespace Chiro.Gap.Dummies
 			// We moeten hier expliciet lid maken in _huidigGwj, anders werken een aantal
 			// unit tests niet meer.  (Zie #259)
 
-			_leiderJos = lMgr.AutomagischInschrijven(_gelieerdeJos, _huidigGwj, false);
-			_leiderJosVorigJaar = lMgr.AutomagischInschrijven(_gelieerdeJos, _vorigGwj, false);
-			_lidYvonne = lMgr.AutomagischInschrijven(_gelieerdeYvonne, _huidigGwj, false);
-			_kaderJos = lMgr.AutomagischInschrijven(_gelieerdeKaderJos, _gwjGewest, false);
+		    _leiderJos = lMgr.NieuwInschrijven(_gelieerdeJos,
+		                                       _huidigGwj,
+		                                       false,
+		                                       new LidVoorstel {LeidingMaken = true, AfdelingsJarenIrrelevant = true});
+            _leiderJosVorigJaar = lMgr.NieuwInschrijven(_gelieerdeJos,
+                                               _vorigGwj,
+                                               false,
+                                               new LidVoorstel { LeidingMaken = true, AfdelingsJarenIrrelevant = true });
+            _lidYvonne = lMgr.NieuwInschrijven(_gelieerdeYvonne,
+                                               _huidigGwj,
+                                               false,
+                                               new LidVoorstel { LeidingMaken = false, AfdelingsJarenIrrelevant = true });
+            _kaderJos = lMgr.NieuwInschrijven(_gelieerdeKaderJos,
+                                               _gwjGewest,
+                                               false,
+                                               new LidVoorstel { LeidingMaken = true, AfdelingsJarenIrrelevant = true });
 
 			// ID's worden niet toegekend als de DAO's gemockt zijn, dus delen we die manueel
 			// uit.

@@ -97,28 +97,29 @@ namespace Chiro.Gap.Services
                     {
                         try
                         {
-                            var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+                            var bestaandLid = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
-                            if (l != null) // bestaat al
+                            if (bestaandLid != null && !bestaandLid.NonActief) // bestaat al als actief lid
                             {
-                                if (!l.NonActief) // als niet uitgeschreven: overslaan (en laten weten)
-                                {
                                     foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
                                     continue;
-                                }
                             }
-                            else // nieuw lid
-                            {
-                                l = _ledenMgr.AutomagischInschrijven(gp, gwj, false);
-                            }
+                            var voorstel = _ledenMgr.InschrijvingVoorstellen(gp, gwj, true);
 
-                            if (l != null)
-                            {
-                                voorgesteldelijst.Add(Mapper.Map<Lid, InTeSchrijvenLid>(l));
-                            }
+                            voorgesteldelijst.Add(new InTeSchrijvenLid
+                                                      {
+                                                          AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant,
+                                                          AfdelingsJaarIDs = voorstel.AfdelingsJaarIDs,
+                                                          GelieerdePersoonID = gp.ID,
+                                                          LeidingMaken = voorstel.LeidingMaken,
+                                                          VolledigeNaam = gp.Persoon.VolledigeNaam
+                                                      });
                         }
                         catch (GapException ex)
                         {
+                            //TODO (#95): ex.Message, wat een bericht voor de programmeur moet zijn, wordt meegegeven met 'foutberichten',
+                            //waarvan de inhoud rechtstreeks op de GUI getoond zal worden. Dit breekt de seperation of concerns.
+
                             foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
                         }
                     }
