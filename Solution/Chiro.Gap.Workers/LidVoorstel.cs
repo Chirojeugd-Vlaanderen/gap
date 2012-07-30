@@ -14,7 +14,7 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// In welk afdelingsjaren het lid moet worden ingeschreven.
         /// </summary>
-        public IEnumerable<int> AfdelingsJaarIDs;
+        public int[] AfdelingsJaarIDs;
 
         /// <summary>
         /// True als er geen rekening moet worden gehouden met de inhoud van afdelingsjaarIDs

@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using AutoMapper;
@@ -100,28 +101,29 @@ namespace Chiro.Gap.Services
                     {
                         try
                         {
-                            var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+                            var bestaandLid = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
-                            if (l != null) // uitgeschreven
+                            if (bestaandLid != null && !bestaandLid.NonActief) // bestaat al als actief lid
                             {
-                                if (!l.NonActief)
-                                {
                                     foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
                                     continue;
-                                }
                             }
-                            else // nieuw lid
-                            {
-                                l = _ledenMgr.AutomagischInschrijven(gp, gwj, false);
-                            }
+                            var voorstel = _ledenMgr.InschrijvingVoorstellen(gp, gwj, true);
 
-                            if (l != null)
-                            {
-                                voorgesteldelijst.Add(Mapper.Map<Lid, InTeSchrijvenLid>(l));
-                            }
+                            voorgesteldelijst.Add(new InTeSchrijvenLid
+                                                      {
+                                                          AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant,
+                                                          AfdelingsJaarIDs = voorstel.AfdelingsJaarIDs,
+                                                          GelieerdePersoonID = gp.ID,
+                                                          LeidingMaken = voorstel.LeidingMaken,
+                                                          VolledigeNaam = gp.Persoon.VolledigeNaam
+                                                      });
                         }
                         catch (GapException ex)
                         {
+                            //TODO (#95): ex.Message, wat een bericht voor de programmeur moet zijn, wordt meegegeven met 'foutberichten',
+                            //waarvan de inhoud rechtstreeks op de GUI getoond zal worden. Dit breekt de seperation of concerns.
+
                             foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
                         }
                     }
@@ -153,12 +155,20 @@ namespace Chiro.Gap.Services
         /// Iedereen die kan lid gemaakt worden, wordt lid, zelfs als dit voor andere personen niet lukt. Voor die personen worden dan foutberichten
         /// teruggegeven.
         /// </remarks>
-        /// <throws>NotSupportedException</throws> // TODO handle
-        public IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten)
+        public IEnumerable<int> Inschrijven(InTeSchrijvenLid[] lidInformatie, out string foutBerichten)
         {
-            // TODO (#1053): beter systeem vinden voor deze feedback.
+            foutBerichten = String.Empty;
 
-            foutBerichten = string.Empty;
+            // TODO (#1053): systeem foutBerichten vervangen door iets beters voor feedback.
+            // (want op deze manier wordt er output voor de UI in de backend gegenereerd, dat breekt 
+            // seperation of concerns)
+
+
+            // Als lidInformatie null is, gaan we dat niet negeren. Dat wil zeggen dat er ergens
+            // anders in de code iets serieus is misgelopen.  Om dit soort van problemen op te kunnen
+            // sporen, gebruiken we best een assertion. 
+
+            Debug.Assert(lidInformatie != null);
 
             try
             {
@@ -197,7 +207,7 @@ namespace Chiro.Gap.Services
 
                            // TODO (#195, #691): Dit is businesslogica, en hoort dus thuis in de workers.
 
-                            if (l != null) // uitgeschreven
+                            if (l != null) // al ingeschreven
                             {
                                 // We hebben al een lid, dat waarschijnlijk ooit uitgeschreven was.  Aan dat lid is meteen
                                 // een groepswerkjaar gekoppeld, maar daaraan hangen geen afdelingsjaren.  Dat is jammer,
@@ -222,14 +232,14 @@ namespace Chiro.Gap.Services
                                     continue;
                                 }
                                 var gp1 = gp;
-                                l = _ledenMgr.Wijzigen(l, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                l = _ledenMgr.Wijzigen(l, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
 
                                 // 'Wijzigen' persisteert zelf
                             }
                             else // nieuw lid
                             {
                                 var gp1 = gp;
-                                l = _ledenMgr.NieuwInschrijven(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                l = _ledenMgr.NieuwInschrijven(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
 
                                 // InschrijvenVolgensVoorstel persisteert niet.  Dat doen we hier.
 
@@ -276,8 +286,9 @@ namespace Chiro.Gap.Services
         /// string waarin wat uitleg staat.</param>
         public void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
         {
-            // TODO (#1053): beter systeem vinden voor deze feedback
-
+            // TODO (#1053): beter systeem bedenken voor feedback dan via foutBerichten.
+            // Foutberichten bevat nu een string die gewoon in de UI wordt geplakt, en dat breekt
+            // de seperation of concerns.
             try
             {
                 var foutBerichtenBuilder = new StringBuilder();
@@ -291,8 +302,7 @@ namespace Chiro.Gap.Services
 
                     foreach (var gp in g.GelieerdePersoon)
                     {
-                        // FIXME: is dit niet te veel business logica?
-
+                        // TODO (#195): onderstaande logica verhuizen naar de workers
                         var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
                         if (l == null)
@@ -355,6 +365,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="id">ID van lid met te togglen lidtype</param>
         /// <returns>GelieerdePersoonID van lid</returns>
+        /// <remarks>Bij het omschakelen van leiding naar lid, wordt - als er geen geschikte afdeling is
+        /// gevonden - een afdeling gegokt.</remarks>
         public int TypeToggle(int id)
         {
             var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon|LidExtras.Groep|LidExtras.AlleAfdelingen);
@@ -365,8 +377,24 @@ namespace Chiro.Gap.Services
                              AfdelingsJarenIrrelevant = true,
                              LeidingMaken = lid is Kind
                          };
+            try
+            {
+                return _ledenMgr.Wijzigen(lid, voorstel).GelieerdePersoon.ID;
+            }
+            catch (FoutNummerException e)
+            {
+                if (e.FoutNummer==FoutNummer.AfdelingNietBeschikbaar)
+                {
+                    // Een exception die we verwachten, laten we afhandelen
+                    FoutAfhandelaar.FoutAfhandelen(e);
+                }
 
-            return _ledenMgr.Wijzigen(lid, voorstel).GelieerdePersoon.ID;
+                // Als we een onverwachte exception hebben, dan is er waarschijnlijk een bug die
+                // we nog niet opmerkten/fixten.  Opdat dit soort situaties opgemerkt zouden
+                // worden, throwen we de exception gewoon opnieuw.
+
+                throw;
+            }
         }
 
         #endregion

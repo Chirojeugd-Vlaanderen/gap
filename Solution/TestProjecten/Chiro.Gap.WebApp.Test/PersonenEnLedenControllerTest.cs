@@ -25,18 +25,18 @@ namespace Chiro.Gap.WebApp.Test
     {
         public static IEnumerable<InTeSchrijvenLid> DoorgekregenInschrijving { get; set; }
 
-        public IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten)
-        {
-            DoorgekregenInschrijving = lidInformatie;
-            foutBerichten = String.Empty;
-            return null;
-        }
-
         #region irrelevante methods voor deze test
 
         public IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<int> Inschrijven(InTeSchrijvenLid[] lidInformatie, out string foutBerichten)
+        {
+            DoorgekregenInschrijving = lidInformatie;
+            foutBerichten = String.Empty;
+            return null;
         }
 
         public void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
@@ -99,25 +99,6 @@ namespace Chiro.Gap.WebApp.Test
     [TestClass()]
     public class PersonenEnLedenControllerTest
     {
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
         #region Additional test attributes
         // 
         //You can use the following additional attributes as you write your tests:
@@ -148,7 +129,6 @@ namespace Chiro.Gap.WebApp.Test
         //}
         //
         #endregion
-
 
         internal virtual PersonenEnLedenController CreatePersonenEnLedenController()
         {

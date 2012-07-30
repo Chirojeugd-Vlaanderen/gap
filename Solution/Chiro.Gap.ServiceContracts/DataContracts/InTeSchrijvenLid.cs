@@ -32,7 +32,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         public bool LeidingMaken { get; set; }
 
         /// <summary>
-        /// De IDs van de eventuele gekozen afdelingsjaars.
+        /// De IDs van de eventuele gekozen afdelingsjaren.
         /// </summary>
         [DataMember]
         public int[] AfdelingsJaarIDs { get; set; }
