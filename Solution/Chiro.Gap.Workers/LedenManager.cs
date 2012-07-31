@@ -640,36 +640,6 @@ namespace Chiro.Gap.Workers
             return nieuwlid;
         }
 
-        public static IList<AfdelingsJaar> AutomagischeAfdelingenBepalen(GelieerdePersoon gp, GroepsWerkJaar gwj, bool ookVoorstellenAlsErGeenPast)
-        {
-            if (!gp.GebDatumMetChiroLeefTijd.HasValue)
-            {
-                // TODO: FoutnummerException van maken
-                throw new GapException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
-            }
-
-            // Stop de geboortedatum in een lokale variabele [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement]
-            var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
-
-            // Bepaal of het een kind of leiding wordt.  Als de persoon qua leeftijd in een niet-speciale
-            // afdeling valt, wordt het een kind.
-
-            var afdelingsJaar = (from a in gwj.AfdelingsJaar
-                             where (a.OfficieleAfdeling.ID != (int) NationaleAfdeling.Speciaal)
-                                   && (geboortejaar <= a.GeboorteJaarTot && a.GeboorteJaarVan <= geboortejaar)
-                             select a).ToList();
-
-            if (afdelingsJaar.Count() > 1)
-            {
-                afdelingsJaar = new List<AfdelingsJaar> { afdelingsJaar.First() };
-            }
-            else if(ookVoorstellenAlsErGeenPast && gwj.AfdelingsJaar.Count>0)
-            {
-                afdelingsJaar = new List<AfdelingsJaar> { gwj.AfdelingsJaar.First() };
-            }
-            return afdelingsJaar;
-        }
-
         /// <summary>
         /// Persisteert een lid met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
         /// </summary>

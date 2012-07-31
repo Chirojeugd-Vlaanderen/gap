@@ -71,9 +71,9 @@ namespace Chiro.Gap.Services
         /// Genereert de lijst van in te schrijven leden met de informatie die ze zouden krijgen als ze automagisch 
         /// zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde persoon IDs.
         /// </summary>
-        /// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarvoor we een voorstel willen</param>
-        /// <param name="foutBerichten">Als er sommige personen geen lid mogen worden, bevat foutBerichten een string waarin wat uitleg staat.</param>
-        /// <returns>De lidvoorstellen voor de personen</returns>
+        /// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
+        /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
+        /// <returns>Een lijst met inschrijvingsvoorstellen, per groep gesorteerd op geboortejaar met Chiroleeftijd</returns>
         public IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
         {
             foutBerichten = string.Empty; 
@@ -99,7 +99,7 @@ namespace Chiro.Gap.Services
                     // Zoek eerst recentste groepswerkjaar.
                     var gwj = _groepwsWjMgr.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Groep);
 
-                    foreach (var gp in g.GelieerdePersoon)
+                    foreach (var gp in g.GelieerdePersoon.OrderByDescending(gp=>gp.GebDatumMetChiroLeefTijd))
                     {
                         try
                         {
