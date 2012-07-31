@@ -10,10 +10,12 @@ using System.Linq;
 
 using AutoMapper;
 
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -320,7 +322,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src.LidgeldBetaald))
                 .ForMember(
                     dst => dst.AfdelingIdLijst,
-                    opt => opt.MapFrom(src => LedenManager.AfdelingIdLijstGet(src)))
+                    opt => opt.MapFrom(src => src.AfdelingIds))
                 .ForMember(
                     dst => dst.Functies,
                     opt => opt.MapFrom(src => src.Functie))
@@ -644,10 +646,12 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 return false;
             }
 
+            var gwjMgr = Factory.Maak<IGroepsWerkJaarManager>();
+
             var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
                                         where v.VerzekeringsType.ID == (int)verzekering &&
-                                          (LedenManager.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
-                                           LedenManager.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
+                                          (gwjMgr.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
+                                           gwjMgr.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
                                         select v;
 
             return persoonsverzekeringen.FirstOrDefault() != null;

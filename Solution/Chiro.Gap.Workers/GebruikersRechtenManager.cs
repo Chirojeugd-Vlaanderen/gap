@@ -409,7 +409,7 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            string mailAdres = GelieerdePersonenManager.EMailKiezen(notificatieOntvanger);
+            string mailAdres = notificatieOntvanger.ContactEmail;
 
             if (string.IsNullOrEmpty(mailAdres))
             {

@@ -31,11 +31,11 @@ namespace Chiro.Gap.Services
     {
         #region Manager Injection
 
-        private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
-        private readonly LedenManager _ledenMgr;
+        private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
+        private readonly ILedenManager _ledenMgr;
         private readonly FunctiesManager _functiesMgr;
         private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
-        private readonly GroepsWerkJaarManager _groepwsWjMgr;
+        private readonly IGroepsWerkJaarManager _groepwsWjMgr;
         private readonly VerzekeringenManager _verzekeringenMgr;
 
         /// <summary>
@@ -48,11 +48,11 @@ namespace Chiro.Gap.Services
         /// <param name="gwjm">De worker voor GroepsWerkJaren</param>
         /// <param name="vrzm">De worker voor Verzekeringen</param>
         public LedenService(
-            GelieerdePersonenManager gpm,
-            LedenManager lm,
+            IGelieerdePersonenManager gpm,
+            ILedenManager lm,
             FunctiesManager fm,
             IAfdelingsJaarManager ajm,
-            GroepsWerkJaarManager gwjm,
+            IGroepsWerkJaarManager gwjm,
             VerzekeringenManager vrzm)
         {
             _gelieerdePersonenMgr = gpm;
@@ -80,6 +80,8 @@ namespace Chiro.Gap.Services
             
             try
             {
+                // TODO: dit lijkt op businesslogica; ik denk dat er wel wat van onderstaande code naar de workers moet.
+
                 var foutBerichtenBuilder = new StringBuilder();
 
                 // Haal meteen alle gelieerde personen op, gecombineerd met hun groep
@@ -419,7 +421,7 @@ namespace Chiro.Gap.Services
                 var verzekering = _verzekeringenMgr.Verzekeren(
                     l,
                     verz,
-                    DateTime.Today, GroepsWerkJaarManager.EindDatum(l.GroepsWerkJaar));
+                    DateTime.Today, _groepwsWjMgr.EindDatum(l.GroepsWerkJaar));
 
                 _verzekeringenMgr.PersoonsVerzekeringBewaren(verzekering, l.GroepsWerkJaar);
 

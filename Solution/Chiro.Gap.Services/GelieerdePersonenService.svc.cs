@@ -35,11 +35,11 @@ namespace Chiro.Gap.Services
     {
         #region Manager Injection
 
-        private readonly GelieerdePersonenManager _gpMgr;
+        private readonly IGelieerdePersonenManager _gpMgr;
         private readonly PersonenManager _pMgr;
         private readonly AdressenManager _adrMgr;
         private readonly GroepenManager _groepenMgr;
-        private readonly GroepsWerkJaarManager _gwjMgr;
+        private readonly IGroepsWerkJaarManager _gwjMgr;
         private readonly CommVormManager _cvMgr;
         private readonly CategorieenManager _catMgr;
         private readonly AbonnementenManager _abMgr;
@@ -80,11 +80,11 @@ namespace Chiro.Gap.Services
         /// De worker voor Autorisatie
         /// </param>
         public GelieerdePersonenService(
-            GelieerdePersonenManager gpm,
+            IGelieerdePersonenManager gpm,
             PersonenManager pm,
             AdressenManager adm,
             GroepenManager groepenMgr,
-            GroepsWerkJaarManager gwjm,
+            IGroepsWerkJaarManager gwjm,
             CommVormManager cvm,
             CategorieenManager cm,
             AbonnementenManager abm,
@@ -1244,7 +1244,7 @@ namespace Chiro.Gap.Services
 
             // Creëer/verleng en bewaar gebruikersrecht
 
-            _gebruikersRechtenMgr.ToekennenOfVerlengen(gp.Persoon, gp.Groep, GelieerdePersonenManager.EMailKiezen(gp));
+            _gebruikersRechtenMgr.ToekennenOfVerlengen(gp.Persoon, gp.Groep, gp.ContactEmail);
         }
 
         /// <summary>

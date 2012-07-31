@@ -124,19 +124,26 @@ namespace Chiro.Gap.Dummies
 		/// wordt door vorige tests die met de IOC-container hebben 'gemoost'.</remarks>
 		public DummyData()
 		{
+            // Oeps: Onderstaande leest de IOC-configuratie uit de configuratiefile van het
+            // testproject. Dat is een probleem als dat testproject geconfigureerd is om met
+            // de echte database te werken (bijv. Chiro.Gap.Services.Test)
+            // TODO: IOC-container in code configureren om dummy-dao's te gebruiken.
 			Factory.ContainerInit();
 
-			// TODO Door de objecten te bewaren krijgen ze ID's, waardoor de tests betrouwbaarder
+            // TODO: is het niet beter om de workers over te slaan bij het maken van dummydata?
+            // Op die manier zijn we zekerder dat er getest wordt wat er echt getest moet worden.
+
+			// TODO: Door de objecten te bewaren krijgen ze ID's, waardoor de tests betrouwbaarder
 			// worden.  Op het einden zou er dus ergens 
 			// GroepenDao.Bewaren(_dummyGroep, lambda-expressie-die-alles-meeneemt)
 			// aangeroepen moeten worden.
+            // (UPDATE: Ik weet niet zeker of dat wel een goed idee is. Als we de ID's 
+            // zelf bepalen, hebben we meer controle op de tests.)
 
-			var wjMgr = Factory.Maak<GroepsWerkJaarManager>();
 			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 			var gMgr = Factory.Maak<GroepenManager>();
 			var cgMgr = Factory.Maak<IChiroGroepenManager>();
 			var lMgr = Factory.Maak<LedenManager>();
-			var cMgr = Factory.Maak<CategorieenManager>();
 			var afdMgr = Factory.Maak<IAfdelingsJaarManager>();
 			var fMgr = Factory.Maak<FunctiesManager>();
 

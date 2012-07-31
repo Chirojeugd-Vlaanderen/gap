@@ -63,6 +63,7 @@
     <Compile Include="Foutnummers.cs" />
     <Compile Include="ICommunicatie.cs" />
     <Compile Include="LidFilter.cs" />
+    <Compile Include="LidVoorstel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

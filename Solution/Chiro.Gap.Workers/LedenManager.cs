@@ -47,7 +47,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Worker die alle businesslogica i.v.m. leden bevat
     /// </summary>
-    public class LedenManager
+    public class LedenManager : ILedenManager
     {
         private readonly LedenDaoCollectie _daos;
         private readonly IAutorisatieManager _autorisatieMgr;
@@ -891,74 +891,6 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
-        }
-
-        /// <summary>
-        /// Geeft een lijst terug van alle afdelingen waaraan het lid gegeven gekoppeld is.
-        /// </summary>
-        /// <param name="l">
-        /// Het gegeven lid
-        /// </param>
-        /// <returns>
-        /// Lijst met afdelingen
-        /// </returns>
-        /// <remarks>
-        /// Een kind is hoogstens aan 1 afdeling gekoppeld
-        /// </remarks>
-        public static IList<int> AfdelingIdLijstGet(Lid l)
-        {
-            IList<int> result = new List<int>();
-            if (l is Kind)
-            {
-                if ((l as Kind).AfdelingsJaar != null)
-                {
-                    result.Add((l as Kind).AfdelingsJaar.Afdeling.ID);
-                }
-            }
-            else if (l is Leiding)
-            {
-                // ReSharper disable LoopCanBeConvertedToQuery
-                // Als ReShaper hier een Linq-query van maakt, staat er result.AddRange, en dat wordt niet herkend
-                foreach (AfdelingsJaar aj in (l as Leiding).AfdelingsJaar)
-                {
-                    result.Add(aj.Afdeling.ID);
-                }
-
-                // ReSharper restore LoopCanBeConvertedToQuery
-            }
-            else
-            {
-                Debug.Assert(false, "Lid moet kind of leiding zijn.");
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Controleert of de datum <paramref name="dateTime"/> zich in het werkJaar <paramref name="p"/> bevindt.
-        /// </summary>
-        /// <param name="dateTime">
-        /// Te controleren datum
-        /// </param>
-        /// <param name="p">
-        /// Werkjaar.  (2010 voor 2010-2011 enz.)
-        /// </param>
-        /// <returns>
-        /// <c>True</c> als <paramref name="dateTime"/> zich in het werkJaar bevindt; anders <c>false</c>.
-        /// </returns>
-        public static bool DatumInWerkJaar(DateTime dateTime, int p)
-        {
-            var werkJaarStart = new DateTime(
-                p,
-                Settings.Default.WerkjaarStartNationaal.Month,
-                Settings.Default.WerkjaarStartNationaal.Day);
-
-            DateTime werkJaarStop = new DateTime(
-                p + 1,
-                Settings.Default.WerkjaarStartNationaal.Month,
-                Settings.Default.WerkjaarStartNationaal.Day).AddDays(-1);
-
-            return werkJaarStart <= dateTime && dateTime <= werkJaarStop;
         }
 
         /// <summary>

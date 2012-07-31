@@ -231,7 +231,7 @@ namespace Chiro.Gap.Workers
         /// <returns>
         /// Einddatum van het gekoppelde werkJaar.
         /// </returns>
-        public static DateTime EindDatum(GroepsWerkJaar groepsWerkJaar)
+        public DateTime EindDatum(GroepsWerkJaar groepsWerkJaar)
         {
             DateTime wjStart = Settings.Default.WerkjaarStartNationaal;
             return new DateTime(groepsWerkJaar.WerkJaar + 1, wjStart.Month, wjStart.Day).AddDays(-1);
@@ -364,6 +364,33 @@ namespace Chiro.Gap.Workers
             {
                 throw new BestaatAlException<GroepsWerkJaar>(gwj);
             }
+        }
+
+        /// <summary>
+        /// Controleert of de datum <paramref name="dateTime"/> zich in het werkJaar <paramref name="p"/> bevindt.
+        /// </summary>
+        /// <param name="dateTime">
+        /// Te controleren datum
+        /// </param>
+        /// <param name="p">
+        /// Werkjaar.  (2010 voor 2010-2011 enz.)
+        /// </param>
+        /// <returns>
+        /// <c>True</c> als <paramref name="dateTime"/> zich in het werkJaar bevindt; anders <c>false</c>.
+        /// </returns>
+        public bool DatumInWerkJaar(DateTime dateTime, int p)
+        {
+            var werkJaarStart = new DateTime(
+                p,
+                Settings.Default.WerkjaarStartNationaal.Month,
+                Settings.Default.WerkjaarStartNationaal.Day);
+
+            DateTime werkJaarStop = new DateTime(
+                p + 1,
+                Settings.Default.WerkjaarStartNationaal.Month,
+                Settings.Default.WerkjaarStartNationaal.Day).AddDays(-1);
+
+            return werkJaarStart <= dateTime && dateTime <= werkJaarStop;
         }
     }
 }

@@ -38,12 +38,12 @@ namespace Chiro.Gap.Services
         private readonly AfdelingenManager _afdelingenMgr;
         private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
         private readonly AdressenManager _adresMgr;
-        private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
+        private readonly IGroepsWerkJaarManager _groepsWerkJaarManager;
         private readonly JaarOvergangManager _jaarOvergangManager;
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly CategorieenManager _categorieenMgr;
         private readonly FunctiesManager _functiesMgr;
-        private readonly LedenManager _ledenMgr;
+        private readonly ILedenManager _ledenMgr;
         private readonly GebruikersRechtenManager _gebruikersRechtenManager;
 
         /// <summary>
@@ -90,11 +90,11 @@ namespace Chiro.Gap.Services
             IChiroGroepenManager cgm,
             AfdelingenManager afdm,
             IAfdelingsJaarManager ajm,
-            GroepsWerkJaarManager wm,
+            IGroepsWerkJaarManager wm,
             AdressenManager adresMgr,
             CategorieenManager cm,
             FunctiesManager fm,
-            LedenManager lm,
+            ILedenManager lm,
             IAutorisatieManager am,
             JaarOvergangManager jm,
             GebruikersRechtenManager gebruikersRechtenMgr)

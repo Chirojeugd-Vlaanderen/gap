@@ -27,7 +27,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Worker die alle businesslogica i.v.m. gelieerde personen bevat
     /// </summary>
-    public class GelieerdePersonenManager
+    public class GelieerdePersonenManager : IGelieerdePersonenManager
     {
         private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
         private readonly ICategorieenDao _categorieenDao;
@@ -1047,26 +1047,6 @@ namespace Chiro.Gap.Workers
 				tx.Complete();
 			}
 #endif
-        }
-
-        /// <summary>
-        /// Dit 'kiest' een e-mailadres van een gelieerde persoon dat we zullen gebruiken om hem/haar te mailen.
-        /// </summary>
-        /// <param name="gp">
-        /// Slachtoffer van onze spam
-        /// </param>
-        /// <returns>
-        /// Een e-mailadres van <paramref name="gp"/>
-        /// </returns>
-        public static string EMailKiezen(GelieerdePersoon gp)
-        {
-            // Orden eerst op 'we mogen er e-mail naar sturen', en dan op 'is het voorkeursadres'.
-            // Om maar iets te doen he.
-            return (from a in gp.Communicatie
-                    where a.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email
-                    select a).OrderByDescending(cm => cm.IsVoorOptIn)
-                             .ThenBy(cm => cm.Voorkeur)
-                             .Select(cm => cm.Nummer).FirstOrDefault();
         }
     }
 }

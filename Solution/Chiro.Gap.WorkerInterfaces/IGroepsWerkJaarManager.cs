@@ -149,5 +149,31 @@ namespace Chiro.Gap.WorkerInterfaces
 		/// Het gepersisteerde groepswerkjaar, met eventuele nieuwe ID's
 		/// </returns>
 		GroepsWerkJaar Bewaren(GroepsWerkJaar gwj, GroepsWerkJaarExtras groepsWerkJaarExtras);
+
+        /// <summary>
+        /// Controleert of de datum <paramref name="dateTime"/> zich in het werkJaar <paramref name="p"/> bevindt.
+        /// </summary>
+        /// <param name="dateTime">
+        /// Te controleren datum
+        /// </param>
+        /// <param name="p">
+        /// Werkjaar.  (2010 voor 2010-2011 enz.)
+        /// </param>
+        /// <returns>
+        /// <c>True</c> als <paramref name="dateTime"/> zich in het werkJaar bevindt; anders <c>false</c>.
+        /// </returns>
+        bool DatumInWerkJaar(DateTime dateTime, int p);
+
+
+        /// <summary>
+        /// Berekent de theoretische einddatum van het gegeven groepswerkjaar.
+        /// </summary>
+        /// <param name="groepsWerkJaar">
+        /// Groepswerkjaar, met daaraan gekoppeld een werkjaarobject
+        /// </param>
+        /// <returns>
+        /// Einddatum van het gekoppelde werkJaar.
+        /// </returns>
+        DateTime EindDatum(GroepsWerkJaar groepsWerkJaar);
 	}
 }
