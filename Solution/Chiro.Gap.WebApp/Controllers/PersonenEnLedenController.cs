@@ -85,7 +85,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			var gekozengelieerdepersoonsids = value as List<int>;
 
 			var foutBerichten = String.Empty;
-			var personenOverzicht = ServiceHelper.CallService<ILedenService, IEnumerable<InTeSchrijvenLid>>(e => e.VoorstelTotInschrijvenGenereren(gekozengelieerdepersoonsids, out foutBerichten));
+
+            var personenOverzicht =
+		        ServiceHelper.CallService<ILedenService, IEnumerable<InTeSchrijvenLid>>(
+		            e => e.VoorstelTotInschrijvenGenereren(gekozengelieerdepersoonsids, out foutBerichten));
+
 			if (!String.IsNullOrEmpty(foutBerichten))
 			{
 				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
