@@ -271,5 +271,53 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             Assert.IsTrue(newlid.AfdelingsJaar.Contains(_afd2));
             Assert.IsFalse(newlid.NonActief);
         }
+
+        ///<summary>
+        ///Controleer of er bij het voorstellen van een afdeling wel rekening wordt gehouden met het geslacht.
+        ///</summary>
+        [TestMethod()]
+        public void InschrijvingVoorstellenTest()
+        {
+            // Arrange
+
+            GelieerdePersoon gp = new GelieerdePersoon
+            {
+                Persoon =
+                    new Persoon
+                    {
+                        GeboorteDatum = new DateTime(1996, 03, 07),
+                        Geslacht = GeslachtsType.Vrouw,
+                    }
+            };
+
+            GroepsWerkJaar gwj = new GroepsWerkJaar();
+            gwj.AfdelingsJaar.Add(new AfdelingsJaar
+            {
+                ID = 1,
+                GeboorteJaarVan = 1996,
+                GeboorteJaarTot = 1997,
+                Geslacht = GeslachtsType.Man,
+                OfficieleAfdeling = new OfficieleAfdeling()
+            });
+            gwj.AfdelingsJaar.Add(new AfdelingsJaar
+            {
+                ID = 2,
+                GeboorteJaarVan = 1996,
+                GeboorteJaarTot = 1997,
+                Geslacht = GeslachtsType.Vrouw,
+                OfficieleAfdeling = new OfficieleAfdeling()
+            });
+
+
+            LedenManager target = Factory.Maak<LedenManager>();
+
+            // Act
+
+            var actual = target.InschrijvingVoorstellen(gp, gwj, false);
+
+            // Assert
+
+            Assert.AreEqual(actual.AfdelingsJaarIDs[0], 2);
+        }
     }
 }

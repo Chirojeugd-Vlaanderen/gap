@@ -408,14 +408,14 @@ namespace Chiro.Gap.Workers
             var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
             // Bestaat er een afdeling waar de gelieerde persoon als kind in zou passen?
-            // (Als er meerdere mogelijkheden zijn zullen we gewoon de eerste kiezen)
+            // (Als er meerdere mogelijkheden zijn zullen we gewoon de eerste kiezen, maar we sorteren op
+            // overenkomst geslacht)
 
-            var mogelijkeAfdelingsJaren = (from a in gwj.AfdelingsJaar
-                                           where (a.OfficieleAfdeling.ID != (int) NationaleAfdeling.Speciaal)
-                                                 &&
-                                                 (geboortejaar <= a.GeboorteJaarTot &&
-                                                  a.GeboorteJaarVan <= geboortejaar)
-                                           select a).ToArray();
+            var mogelijkeAfdelingsJaren =
+                gwj.AfdelingsJaar.Where(a => a.OfficieleAfdeling.ID != (int) NationaleAfdeling.Speciaal &&
+                                             geboortejaar <= a.GeboorteJaarTot &&
+                                             a.GeboorteJaarVan <= geboortejaar).OrderByDescending(
+                                                 a => (gp.Persoon.Geslacht & a.Geslacht)).ToArray();
 
             if (mogelijkeAfdelingsJaren.Any())
             {
@@ -431,12 +431,15 @@ namespace Chiro.Gap.Workers
                 resultaat.LeidingMaken = true;
             }
             else
-            {
-                // Zoek afdeling waarvan geboortejaar dichtst bij leeftijd ligt
+            {               
+                // Sorteer eerst aflopend op persoonsgeslacht|afdelingsgeslacht, zodat de
+                // afdelingen met overeenkomstig geslacht eerst staan. Daarna sorteren we
+                // op verschil geboortejaar-afdelingsgeboortejaar
                 var geschiktsteAfdelingsjaar =
-                    gwj.AfdelingsJaar.OrderBy(aj => (Math.Abs(geboortejaar - aj.GeboorteJaarTot))).FirstOrDefault();
+                    gwj.AfdelingsJaar.OrderByDescending(a => (gp.Persoon.Geslacht & a.Geslacht)).ThenBy(
+                        aj => (Math.Abs(geboortejaar - aj.GeboorteJaarTot))).FirstOrDefault();
 
-                // Als niet gevonden, dan wil dat zeggen dat er geen afdelingen zijn
+                // Als niet gevonden, proberen we nog eens zonder geslacht:
 
                 if (geschiktsteAfdelingsjaar == null)
                 {
