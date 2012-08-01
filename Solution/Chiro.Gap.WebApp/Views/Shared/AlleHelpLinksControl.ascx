@@ -61,6 +61,8 @@
         <li>
             <%=Html.ActionLink("Adressen aanpassen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Verhuizen" })%></li>
         <li>
+            <%=Html.ActionLink("Iemands afdeling veranderen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "LeidingVanAfdelingVeranderen" })%></li>
+        <li>
             <%=Html.ActionLink("Iemands functies aanpassen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "IemandsFunctiesAanpassen" })%></li>
         <li>
             <%=Html.ActionLink("Mensen in categorieën stoppen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Categoriseren" })%></li>

@@ -189,6 +189,7 @@
     <Content Include="Content\Screenshots\Formulier_bivakdetails.png" />
     <Content Include="Content\Screenshots\Gebruikersrecht_toekennen.png" />
     <Content Include="Content\Screenshots\Inschrijving_uitstap_bevestigen.png" />
+    <Content Include="Content\Screenshots\Links_rechts_bovenaan.png" />
     <Content Include="Content\Screenshots\Link_Groepscategorieen.png" />
     <Content Include="Content\Screenshots\Nieuwe_uitstap.png" />
     <Content Include="Content\Screenshots\Overzicht_gebruikersrechten.png" />
@@ -211,6 +212,7 @@
     <Content Include="Views\Handleiding\Deelnemersadministratie.aspx" />
     <Content Include="Views\Handleiding\DeelnemersInschrijven.aspx" />
     <Content Include="Views\Handleiding\GavsBeheren.aspx" />
+    <Content Include="Views\Handleiding\LeidingVanAfdelingVeranderen.aspx" />
     <Content Include="Views\Handleiding\MedewerkersInschrijven.aspx" />
     <Content Include="Views\Handleiding\UitstapBewerken.aspx" />
     <Content Include="Views\Handleiding\Uitstappen.aspx" />
