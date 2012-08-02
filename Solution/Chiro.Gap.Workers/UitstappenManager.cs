@@ -442,7 +442,7 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            var statuslijst = new BivakAangifteLijstInfo();
+            var statuslijst = new BivakAangifteLijstInfo {Bivakinfos = new List<BivakAangifteInfo>()};
 
             var aangiftesetting = Settings.Default.BivakAangifteStart;
             var aangiftestart = new DateTime(groepsWerkJaar.WerkJaar + 1, aangiftesetting.Month, aangiftesetting.Day);
