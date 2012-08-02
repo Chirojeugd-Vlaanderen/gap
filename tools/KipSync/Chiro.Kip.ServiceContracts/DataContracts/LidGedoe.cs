@@ -49,5 +49,14 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public DateTime? EindeInstapPeriode { get; set; }
+
+        /// <summary>
+        /// Returns a System.String that represents the current LidGedoe
+        /// </summary>
+        /// <returns>System.String that represents the current LidGedoe</returns>
+        public override string ToString()
+        {
+            return this.LidType.ToString() + this.WerkJaar + this.StamNummer;
+        }
     }
 }

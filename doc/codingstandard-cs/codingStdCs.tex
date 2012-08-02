@@ -64,11 +64,19 @@
 %%
 
 
-\noindent {\Large \bf CODING STANDARD C\#, doc. v. 0.6}
+\noindent {\Large \bf CODING STANDARD C\#, doc. v. 0.7}
 
 \tableofcontents
 
 \section{Over dit document}
+
+\subsection{Opmerkingen vooraf}
+
+Dit document is opgesteld vooraleer we begonnen met programmeerwerk.  Wat
+betreft indentatie en maximale lijnlengte, is het niet meer helemaal up to
+date.  In praktijk gebruiken we voor indentatie en maximale lijnlengte
+de standaardinstellingen van Visual Studio en Resharper 6.  (Voor
+Resharper zitten de configuratiebestanden bij in de repo.)
 
 \subsection{Doel van het document}
 
@@ -445,8 +453,7 @@ betekenis hebben.
 \item Vermijd variabelenamen van 1 letter.
 \item Instanties van arrays\index{arrays!namen} en collecties\index{collecties!namen} hebben een naam in het meervoud.  Gebruik geen
 suffix \lstinline !Lijst! of dergelijk.
-\item Underscores\index{underscores} zijn enkel toegelaten als prefix van een member\index{membervariabelen!namen}
-variable.
+\item Underscores \index{underscores} zijn enkel toegelaten in publieke constanten en als (enkelvoudige) prefix van een member\index{membervariabelen!namen} variable.
 \item Gebruik geen prefixnotaties zoals Hongaarse notatie\index{Hongaarse notatie}.
 \item Vermijd het gebruik van cijfers\index{cijfers} in variabelenamen, tenzij
 \begin{itemize}
@@ -642,7 +649,9 @@ MVC gebruiken.  Er zijn dus geen objecten gekoppeld aan de UI-elementen}
 \item Een \lstinline !enum!\index{enum!namen} krijgt een naam in het enkelvoud, tenzij de
 enum als bitset wordt gebruikt.
 \item Namen van \lstinline !struct!s\index{struct} beginnen met een hoofdletter.
-\item Namen van \lstinline !const!s\index{const} zijn volledig in hoofdletters.
+\item Namen van \lstinline !const!s\index{const} zijn volledig in
+hoofdletters, waarbij de `deelwoorden' van elkaar gescheiden worden met
+een underscore.  Bijvoorbeeld \lstinline!MIJN_GROEP_ID!.
 \item Namen van compiler variabelen\index{compiler!variabelen} zijn volledig in hoofdletters.
 \item Resources hebben alfanumerieke namen\index{resources!namen}, maar mogen een punt (.)
 bevatten om een soort van nesting\index{resources!nesting} te emuleren.
@@ -845,10 +854,10 @@ assigneren\index{bool}; vergelijk niet met `\lstinline !true!' of
 berekening, en niet als die waarde.
 \item Als er een logische connectie\index{constanten!relaties tussen} bestaat tussen constanten, definieer
 dan de ene constante in functie van de andere.
-\item Gebruik `\lstinline !const!' enkel voor `echte' constanten, in de
+\item Evalueer of je het beste gebaat bent met een publieke constante of een public static readonly member. Gebruik `\lstinline !const!' enkel voor `echte' constanten, in de
 andere gevallen gebruik je 
 `\lstinline !readonly!'\index{constanten!vs readonly}\index{readonly}.\footnote{\lstinline !const!-expressies worden
-berekend bij het compileren, \lstinline !readonly!-expressies at runtime.} 
+berekend en gesubstitueerd bij het compileren, \lstinline !readonly!-expressies at runtime.} 
 \end{enumerate}
 \begin{lstlisting}[float, caption=Constanten, label=lblLstConst]
 // Berekende en gerelateerde constanten

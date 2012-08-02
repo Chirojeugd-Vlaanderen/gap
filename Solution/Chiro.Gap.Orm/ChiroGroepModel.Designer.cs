@@ -3200,7 +3200,7 @@ namespace Chiro.Gap.Orm
         partial void OnWerkJaarVanChanged();
     
         /// <summary>
-        /// Laatste werkjaar waarin deze functie geldig was
+        /// Laatste werkJaar waarin deze functie geldig was
         /// </summary>
         /// <LongDescription>
         /// &apos;Werkjaar tot en met&apos; zou een betere naam zijn

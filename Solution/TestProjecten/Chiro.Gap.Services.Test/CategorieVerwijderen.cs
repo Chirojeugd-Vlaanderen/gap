@@ -22,168 +22,190 @@ using Chiro.Gap.TestDbInfo;
 
 namespace Chiro.Gap.Services.Test
 {
-	/// <summary>
-	/// Summary description for CategorieToevoegen
-	/// </summary>
-	[TestClass]
-	public class CategorieVerwijderen
-	{
-		IGroepenService _groepenSvc;
-		IGelieerdePersonenService _personenSvc;
+    using System.Transactions;
 
-		#region initialisatie en afronding
+    using Chiro.Gap.Domain;
 
-		[ClassInitialize]
-		static public void InitialiseerTests(TestContext tc)
-		{
-			// Dit gebeurt normaal gesproken bij het starten van de service,
-			// maar blijkbaar is het moeilijk de service te herstarten bij het testen.
-			// Vandaar op deze manier:
+    /// <summary>
+    /// Summary description for CategorieToevoegen
+    /// </summary>
+    [TestClass]
+    public class CategorieVerwijderen
+    {
+        private IGroepenService _groepenSvc;
+        private IGelieerdePersonenService _personenSvc;
 
-			MappingHelper.MappingsDefinieren();
-			Factory.ContainerInit();
-		}
+        #region initialisatie en afronding
 
-		[ClassCleanup]
-		static public void TestsAfsluiten()
-		{
-		}
+        [ClassInitialize]
+        static public void InitialiseerTests(TestContext tc)
+        {
+            // Dit gebeurt normaal gesproken bij het starten van de service,
+            // maar blijkbaar is het moeilijk de service te herstarten bij het testen.
+            // Vandaar op deze manier:
 
-		[TestInitialize]
-		public void SetUp()
-		{
-			// Zorg ervoor dat de PrincipalPermissionAttributes op de service methods
-			// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
-			
-			var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
-			var roles = new[] { Properties.Settings.Default.TestSecurityGroep };
-			var principal = new GenericPrincipal(identity, roles);
-			Thread.CurrentPrincipal = principal;
+            MappingHelper.MappingsDefinieren();
+        }
 
-			_groepenSvc = Factory.Maak<GroepenService>();
-			_personenSvc = Factory.Maak<GelieerdePersonenService>();
+        [ClassCleanup]
+        static public void TestsAfsluiten()
+        {
+        }
 
-			// Maak de categorieën voor de tests aan, als ze niet bestaan
+        [TestInitialize]
+        public void SetUp()
+        {
+            // Zorg ervoor dat de PrincipalPermissionAttributes op de service methods
+            // geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
 
-			foreach (string code in TestInfo.ONBESTAANDECATEGORIECODES)
-			{
-				int catID = _groepenSvc.CategorieIDOphalen(TestInfo.GROEPID, code);
+            var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
+            var roles = new[] { Properties.Settings.Default.TestSecurityGroep };
+            var principal = new GenericPrincipal(identity, roles);
+            Thread.CurrentPrincipal = principal;
 
-				if (catID == 0)
-				{
-					catID = _groepenSvc.CategorieToevoegen(
-						TestInfo.GROEPID,
-						code,
-						code);
-				}
-			}
-		}
+            // Bij elke test de container opnieuw initialiseren, op basis van de configuratiefile.
+            // De container is namelijk globaal, en andere tests durven wel eens iets te veranderen.
+            // Dit is natuurlijk nog geen waterdichte oplossing.  Misschien moeten we voor de tests
+            // de dependency injection gewoon altijd zelf doen. (?)
+            Factory.ContainerInit();
 
-		/// <summary>
-		/// Verwijder eventuele overblijvende categorieën
-		/// </summary>
-		[TestCleanup]
-		public void TearDown()
-		{
-			foreach (string code in TestInfo.ONBESTAANDECATEGORIECODES)
-			{
-				int catID = _groepenSvc.CategorieIDOphalen(TestInfo.GROEPID, code);
+            _groepenSvc = Factory.Maak<GroepenService>(); // Geen interface hier, want dat werkt hij niet
+            _personenSvc = Factory.Maak<GelieerdePersonenService>(); // Geen interface hier, want dat werkt hij niet
 
-				if (catID != 0)
-				{
-					_groepenSvc.CategorieVerwijderen(catID, true);
-				}
-			}
-		}
+        }
 
-		#endregion
+        /// <summary>
+        /// Verwijder eventuele overblijvende categorieën
+        /// </summary>
+        [TestCleanup]
+        public void TearDown()
+        {
+        }
 
-		/// <summary>
-		/// Verwijderen van een lege categorie
-		/// </summary>
-		[TestMethod]
-		public void CategorieVerwijderenNormaal()
-		{
-			// Arrange: Categorie-ID bepalen van te verwijderen categorie.
+        #endregion
 
-			int catID = _groepenSvc.CategorieIDOphalen(
-				TestInfo.GROEPID,
-				TestInfo.ONBESTAANDECATEGORIECODES[0]);
+        /// <summary>
+        /// Verwijderen van een lege categorie
+        /// </summary>
+        [TestMethod]
+        public void CategorieVerwijderenNormaal()
+        {
+            using (new TransactionScope())
+            {
+                var catID = _groepenSvc.CategorieToevoegen(TestInfo.GROEP_ID, "CategorieVerwijderenNormaal", "TempCat3");
 
-			// Act: verwijder de categorie met gegeven ID, en probeer categorie
-			// opnieuw op te halen
+                // Act: verwijder de categorie met gegeven ID, en probeer categorie opnieuw op te halen
 
-			_groepenSvc.CategorieVerwijderen(catID, false);
-			catID = _groepenSvc.CategorieIDOphalen(
-				TestInfo.GROEPID,
-				TestInfo.ONBESTAANDECATEGORIECODES[0]);
+                _groepenSvc.CategorieVerwijderen(catID, false);
 
-			// Assert: categorie niet meer gevonden.
+                var catIDTest = _groepenSvc.CategorieIDOphalen(
+                    TestInfo.GROEP_ID,
+                    "TempCat3");
 
-			Assert.IsTrue(catID == 0);
-		}
+                // Assert: categorie niet meer gevonden.
+                Assert.IsTrue(catIDTest == 0);
 
-		/// <summary>
-		/// Probeert een categorie te verwijderen waaraan een persoon gekoppeld is.  Er wordt een
-		/// exception verwacht.
-		/// </summary>
-		[TestMethod]
-		[ExpectedException(typeof(FaultException<BlokkerendeObjectenFault<PersoonDetail>>))]
-		public void CategorieVerwijderenMetPersoon()
-		{
-			// Arrange: categorie opzoeken, en persoon toevoegen.
+            }
 
-			int catID = _groepenSvc.CategorieIDOphalen(
-				TestInfo.GROEPID,
-				TestInfo.ONBESTAANDECATEGORIECODES[1]);
+        }
 
-			_personenSvc.CategorieKoppelen(
-				new List<int> { TestInfo.GELIEERDEPERSOONID },
-				new List<int> { catID });
+        /// <summary>
+        /// Probeert een categorie te verwijderen waaraan een persoon gekoppeld is.  
+        /// Er wordt een exception verwacht.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FaultException<BlokkerendeObjectenFault<PersoonDetail>>))]
+        public void CategorieVerwijderenMetPersoon()
+        {
+            // Arrange: categorie opzoeken, en een nieuwe persoon toevoegen.
 
-			// Act
+            using (new TransactionScope())
+            {
+                // Maak een nieuwe persoon
+                var gp =
+                    _personenSvc.AanmakenForceer(
+                        new PersoonInfo
+                            {
+                                AdNummer = null,
+                                ChiroLeefTijd = 0,
+                                GeboorteDatum = new DateTime(2003, 5, 8),
+                                Geslacht = GeslachtsType.Vrouw,
+                                Naam = "CategorieVerwijderenMetPersoon",
+                                VoorNaam = "Anneke",
+                            },
+                        groepID: TestInfo.GROEP_ID,
+                        forceer: true);
 
-			// Verwijder categorie zonder te forceren
-			_groepenSvc.CategorieVerwijderen(catID, false);
+                var persoonID = gp.PersoonID;
+                var gelPersoonID = gp.GelieerdePersoonID;
 
-			// Assert
+                var catID = _groepenSvc.CategorieToevoegen(TestInfo.GROEP_ID, "CategorieVerwijderenMetPersoon", "TempCat");
 
-			// Als we hier geraken, liep er iets mis.
-			Assert.IsTrue(false);
-		}
+                _personenSvc.CategorieKoppelen(
+                    new List<int> { gelPersoonID },
+                    new List<int> { catID });
 
-		/// <summary>
-		/// Geforceerd een categorie met personen verwijderen
-		/// </summary>
-		[TestMethod]
-		public void CategorieVerwijderenMetPersoonForceer()
-		{
-			// Arrange: categorie opzoeken, en persoon toevoegen.
+                // Act
 
-			int catID = _groepenSvc.CategorieIDOphalen(
-				TestInfo.GROEPID,
-				TestInfo.ONBESTAANDECATEGORIECODES[2]);
+                // Verwijder categorie zonder te forceren
+                _groepenSvc.CategorieVerwijderen(catID, false);
 
-			_personenSvc.CategorieKoppelen(
-				new List<int> { TestInfo.GELIEERDEPERSOONID },
-				new List<int> { catID });
+                // Assert
 
-			// Act
+                // Als we hier geraken, liep er iets mis.
+                Assert.IsTrue(false);
+            }
 
-			// Verwijder categorie met forceren
-			_groepenSvc.CategorieVerwijderen(catID, true);
+        }
 
-			// Assert
+        /// <summary>
+        /// Geforceerd een categorie met personen verwijderen
+        /// </summary>
+        [TestMethod]
+        public void CategorieVerwijderenMetPersoonForceer()
+        {
 
-			// Probeer categorie terug op te halen.  Dat moet failen.
-			catID = _groepenSvc.CategorieIDOphalen(
-				TestInfo.GROEPID, 
-				TestInfo.ONBESTAANDECATEGORIECODES[2]);
-			Assert.IsTrue(catID == 0);
+            using (new TransactionScope())
+            {
+                // Arrange: categorie maken, en persoon toevoegen.
+                var catIDDieVerwijderdZalWorden = _groepenSvc.CategorieToevoegen(TestInfo.GROEP_ID, "CategorieVerwijderenMetPersoonForceer", "TempCat2");
 
-			// Controleer ook of de gelieerde persoon niet per ongeluk mee is verwijderd
-			var gp = _personenSvc.DetailOphalen(TestInfo.GELIEERDEPERSOONID);
-			Assert.IsTrue(gp != null);
-		}
-	}
+                // Maak een nieuwe persoon
+                var gp =
+                    _personenSvc.AanmakenForceer(
+                        new PersoonInfo
+                        {
+                            AdNummer = null,
+                            ChiroLeefTijd = 0,
+                            GeboorteDatum = new DateTime(2005, 5, 8),
+                            Geslacht = GeslachtsType.Man,
+                            Naam = "CategorieVerwijderenMetPersoonForceer",
+                            VoorNaam = "Pierre",
+                        },
+                        groepID: TestInfo.GROEP_ID,
+                        forceer: true);
+
+
+                _personenSvc.CategorieKoppelen(
+                    new List<int> { gp.GelieerdePersoonID },
+                    new List<int> { catIDDieVerwijderdZalWorden });
+
+                // Act
+                _groepenSvc.CategorieVerwijderen(catIDDieVerwijderdZalWorden, true);
+
+                // Assert
+
+                // Probeer categorie terug op te halen.  Dat moet failen.
+                var newCatID = _groepenSvc.CategorieIDOphalen(
+                    TestInfo.GROEP_ID,
+                    "TempCat2");
+                Assert.IsTrue(newCatID == 0);
+
+                // Controleer ook of de gelieerde persoon niet per ongeluk mee is verwijderd
+                var persoon = _personenSvc.DetailOphalen(gp.GelieerdePersoonID);
+                Assert.IsNotNull(persoon);
+            }
+
+        }
+    }
 }

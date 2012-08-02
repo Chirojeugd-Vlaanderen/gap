@@ -17,7 +17,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// voor gegeven groepswerkjaar.
 		/// </summary>
 		/// <remarks>Deze functie haalde origineel de afdelingen op voor een groep in het
-		/// huidige werkjaar, maar 'huidige werkjaar' vind ik precies wat veel business
+		/// huidige werkJaar, maar 'huidige werkJaar' vind ik precies wat veel business
 		/// voor in de DAL.</remarks>
 		/// <param name="groepsWerkJaarID">ID van gevraagde groepswerkjaar</param>
 		/// <returns>Groep, afdelingsjaar, afdelingen en officiële afdelingen</returns>

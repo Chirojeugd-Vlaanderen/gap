@@ -8,6 +8,7 @@ using System.Linq;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
@@ -199,9 +200,9 @@ namespace Chiro.Gap.Workers
             if (!forceren && categorie.GelieerdePersoon.Count > 0)
             {
                 throw new BlokkerendeObjectenException<GelieerdePersoon>(
-                    categorie.GelieerdePersoon, 
-                    categorie.GelieerdePersoon.Count(), 
-                    Resources.CategorieNietLeeg);
+                    objecten: categorie.GelieerdePersoon.ToArray(), 
+                    aantalTotaal: categorie.GelieerdePersoon.Count(), 
+                    message: Resources.CategorieNietLeeg);
             }
 
             LeegMaken(categorie); // verwijdert alle gel. personen, en persisteert

@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using AutoMapper;
@@ -12,6 +13,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -29,11 +31,11 @@ namespace Chiro.Gap.Services
     {
         #region Manager Injection
 
-        private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
-        private readonly LedenManager _ledenMgr;
+        private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
+        private readonly ILedenManager _ledenMgr;
         private readonly FunctiesManager _functiesMgr;
-        private readonly AfdelingsJaarManager _afdelingsJaarMgr;
-        private readonly GroepsWerkJaarManager _groepwsWjMgr;
+        private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
+        private readonly IGroepsWerkJaarManager _groepwsWjMgr;
         private readonly VerzekeringenManager _verzekeringenMgr;
 
         /// <summary>
@@ -46,11 +48,11 @@ namespace Chiro.Gap.Services
         /// <param name="gwjm">De worker voor GroepsWerkJaren</param>
         /// <param name="vrzm">De worker voor Verzekeringen</param>
         public LedenService(
-            GelieerdePersonenManager gpm,
-            LedenManager lm,
+            IGelieerdePersonenManager gpm,
+            ILedenManager lm,
             FunctiesManager fm,
-            AfdelingsJaarManager ajm,
-            GroepsWerkJaarManager gwjm,
+            IAfdelingsJaarManager ajm,
+            IGroepsWerkJaarManager gwjm,
             VerzekeringenManager vrzm)
         {
             _gelieerdePersonenMgr = gpm;
@@ -66,15 +68,20 @@ namespace Chiro.Gap.Services
         #region leden managen
 
         /// <summary>
-        /// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
+        /// Genereert de lijst van in te schrijven leden met de informatie die ze zouden krijgen als ze automagisch 
+        /// zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde persoon IDs.
         /// </summary>
         /// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
         /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
-        /// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
+        /// <returns>Een lijst met inschrijvingsvoorstellen, per groep gesorteerd op geboortejaar met Chiroleeftijd</returns>
         public IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
         {
+            foutBerichten = string.Empty; 
+            
             try
             {
+                // TODO: dit lijkt op businesslogica; ik denk dat er wel wat van onderstaande code naar de workers moet.
+
                 var foutBerichtenBuilder = new StringBuilder();
 
                 // Haal meteen alle gelieerde personen op, gecombineerd met hun groep
@@ -92,32 +99,33 @@ namespace Chiro.Gap.Services
                     // Zoek eerst recentste groepswerkjaar.
                     var gwj = _groepwsWjMgr.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Groep);
 
-                    foreach (var gp in g.GelieerdePersoon)
+                    foreach (var gp in g.GelieerdePersoon.OrderByDescending(gp=>gp.GebDatumMetChiroLeefTijd))
                     {
                         try
                         {
-                            var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+                            var bestaandLid = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
-                            if (l != null) // uitgeschreven
+                            if (bestaandLid != null && !bestaandLid.NonActief) // bestaat al als actief lid
                             {
-                                if (!l.NonActief)
-                                {
                                     foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
                                     continue;
-                                }
                             }
-                            else // nieuw lid
-                            {
-                                l = _ledenMgr.AutomagischInschrijven(gp, gwj, false);
-                            }
+                            var voorstel = _ledenMgr.InschrijvingVoorstellen(gp, gwj, true);
 
-                            if (l != null)
-                            {
-                                voorgesteldelijst.Add(Mapper.Map<Lid, InTeSchrijvenLid>(l));
-                            }
+                            voorgesteldelijst.Add(new InTeSchrijvenLid
+                                                      {
+                                                          AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant,
+                                                          AfdelingsJaarIDs = voorstel.AfdelingsJaarIDs,
+                                                          GelieerdePersoonID = gp.ID,
+                                                          LeidingMaken = voorstel.LeidingMaken,
+                                                          VolledigeNaam = gp.Persoon.VolledigeNaam
+                                                      });
                         }
                         catch (GapException ex)
                         {
+                            //TODO (#95): ex.Message, wat een bericht voor de programmeur moet zijn, wordt meegegeven met 'foutberichten',
+                            //waarvan de inhoud rechtstreeks op de GUI getoond zal worden. Dit breekt de seperation of concerns.
+
                             foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
                         }
                     }
@@ -130,16 +138,16 @@ namespace Chiro.Gap.Services
             catch (Exception ex)
             {
                 FoutAfhandelaar.FoutAfhandelen(ex);
-                foutBerichten = null;
-                return null;
+                
+                return null; // fake code analysis :-)
             }
         }
 
         /// <summary>
         /// Gegeven een lijst van IDs van gelieerde personen.
-        /// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken.
+        /// Haal al die gelieerde personen op en probeer ze in het huidige werkJaar lid te maken.
         /// <para />
-        /// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkjaar.
+        /// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkJaar.
         /// </summary>
         /// <param name="lidInformatie">Lijst van informatie over wie lid moet worden</param>
         /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
@@ -149,11 +157,21 @@ namespace Chiro.Gap.Services
         /// Iedereen die kan lid gemaakt worden, wordt lid, zelfs als dit voor andere personen niet lukt. Voor die personen worden dan foutberichten
         /// teruggegeven.
         /// </remarks>
-        /// <throws>NotSupportedException</throws> // TODO handle
-        public IEnumerable<int> Inschrijven(IEnumerable<InTeSchrijvenLid> lidInformatie, out string foutBerichten)
+        public IEnumerable<int> Inschrijven(InTeSchrijvenLid[] lidInformatie, out string foutBerichten)
         {
-            // TODO hier zat ik
-            // TODO (#1053): beter systeem vinden voor deze feedback.
+            foutBerichten = String.Empty;
+
+            // TODO (#1053): systeem foutBerichten vervangen door iets beters voor feedback.
+            // (want op deze manier wordt er output voor de UI in de backend gegenereerd, dat breekt 
+            // seperation of concerns)
+
+
+            // Als lidInformatie null is, gaan we dat niet negeren. Dat wil zeggen dat er ergens
+            // anders in de code iets serieus is misgelopen.  Om dit soort van problemen op te kunnen
+            // sporen, gebruiken we best een assertion. 
+
+            Debug.Assert(lidInformatie != null);
+
             try
             {
                 var lidIDs = new List<int>();
@@ -178,6 +196,9 @@ namespace Chiro.Gap.Services
 
                     foreach (var gp in g.GelieerdePersoon)
                     {
+                        // Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
+                        // verhindert dat de rest bewaard wordt.
+
                         try
                         {
                             // Kijk of het lid al bestaat (eventueel niet-actief).  In de meeste gevallen zal dit geen
@@ -186,31 +207,52 @@ namespace Chiro.Gap.Services
 
                             var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
-                            // TODO (#195, #691): Dit is businesslogica, en hoort dus thuis in de workers.
+                           // TODO (#195, #691): Dit is businesslogica, en hoort dus thuis in de workers.
 
-                            if (l != null) // uitgeschreven
+                            if (l != null) // al ingeschreven
                             {
+                                // We hebben al een lid, dat waarschijnlijk ooit uitgeschreven was.  Aan dat lid is meteen
+                                // een groepswerkjaar gekoppeld, maar daaraan hangen geen afdelingsjaren.  Dat is jammer,
+                                // want LedenManager.Wijzigen heeft die nodig om te zien of de gevraagde afdeling wel
+                                // overeenkomt met een afdelingsjaar van het huidige groepswerkjaar.
+                                //
+                                // We hebben die afdelingsjaren echter al, want die zijn daarnet mee opgehaald met gwj.
+                                // Ik ga die afdelingsjaren dus stieken overzetten van gwj naar l.GroepsWerkJaar.  Proper
+                                // is het alleszins niet, maar ik doe het toch, omdat ik weet dat het hier geen kwaad kan,
+                                // en omdat er geen tijd is voor een mooie oplossing.  Er zal waarschijnlijk eerst een 
+                                // refactoring van de backend nodig zijn (#1250).
+
+                                foreach (var aj in gwj.AfdelingsJaar.ToArray())
+                                {
+                                    aj.GroepsWerkJaar = l.GroepsWerkJaar;
+                                    l.GroepsWerkJaar.AfdelingsJaar.Add(aj);
+                                }
+
                                 if (!l.NonActief)
                                 {
                                     foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
                                     continue;
                                 }
                                 var gp1 = gp;
-                                l = _ledenMgr.HerInschrijvenVolgensVoorstel(l, gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                l = _ledenMgr.Wijzigen(l, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
+
+                                // 'Wijzigen' persisteert zelf
                             }
                             else // nieuw lid
                             {
                                 var gp1 = gp;
-                                l = _ledenMgr.InschrijvenVolgensVoorstel(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.Where(e => e.GelieerdePersoonID == gp1.ID).First()));
+                                l = _ledenMgr.NieuwInschrijven(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
+
+                                // InschrijvenVolgensVoorstel persisteert niet.  Dat doen we hier.
+
+                                if (l != null)
+                                {
+                                    l = _ledenMgr.Bewaren(l, LidExtras.Afdelingen | LidExtras.Persoon, true);
+                                    lidIDs.Add(l.ID);
+                                }
+
                             }
 
-                            // Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
-                            // verhindert dat de rest bewaard wordt.
-                            if (l != null)
-                            {
-                                l = _ledenMgr.Bewaren(l, LidExtras.Afdelingen | LidExtras.Persoon, true);
-                                lidIDs.Add(l.ID);
-                            }
                         }
                         catch (BestaatAlException<Kind>)
                         {
@@ -234,7 +276,6 @@ namespace Chiro.Gap.Services
             catch (Exception ex)
             {
                 FoutAfhandelaar.FoutAfhandelen(ex);
-                foutBerichten = null;
                 return null;
             }
         }
@@ -247,8 +288,9 @@ namespace Chiro.Gap.Services
         /// string waarin wat uitleg staat.</param>
         public void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
         {
-            // TODO (#1053): beter systeem vinden voor deze feedback
-
+            // TODO (#1053): beter systeem bedenken voor feedback dan via foutBerichten.
+            // Foutberichten bevat nu een string die gewoon in de UI wordt geplakt, en dat breekt
+            // de seperation of concerns.
             try
             {
                 var foutBerichtenBuilder = new StringBuilder();
@@ -262,8 +304,7 @@ namespace Chiro.Gap.Services
 
                     foreach (var gp in g.GelieerdePersoon)
                     {
-                        // FIXME: is dit niet te veel business logica?
-
+                        // TODO (#195): onderstaande logica verhuizen naar de workers
                         var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
                         if (l == null)
@@ -326,20 +367,36 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="id">ID van lid met te togglen lidtype</param>
         /// <returns>GelieerdePersoonID van lid</returns>
+        /// <remarks>Bij het omschakelen van leiding naar lid, wordt - als er geen geschikte afdeling is
+        /// gevonden - een afdeling gegokt.</remarks>
         public int TypeToggle(int id)
         {
-            var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon);
+            var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon|LidExtras.Groep|LidExtras.AlleAfdelingen);
 
-            var l = new List<InTeSchrijvenLid>();
-            var voorstel = new InTeSchrijvenLid
-                            {
-                                GelieerdePersoonID = lid.GelieerdePersoon.ID,
-                                LeidingMaken = lid is Kind,
-                                AfdelingsJaarIrrelevant = true
-                            };
-            l.Add(voorstel);
-            string berichten;
-            return Inschrijven(l, out berichten).First();
+            var voorstel = new LidVoorstel
+                         {
+                             AfdelingsJaarIDs = null,
+                             AfdelingsJarenIrrelevant = true,
+                             LeidingMaken = lid is Kind
+                         };
+            try
+            {
+                return _ledenMgr.Wijzigen(lid, voorstel).GelieerdePersoon.ID;
+            }
+            catch (FoutNummerException e)
+            {
+                if (e.FoutNummer==FoutNummer.AfdelingNietBeschikbaar)
+                {
+                    // Een exception die we verwachten, laten we afhandelen
+                    FoutAfhandelaar.FoutAfhandelen(e);
+                }
+
+                // Als we een onverwachte exception hebben, dan is er waarschijnlijk een bug die
+                // we nog niet opmerkten/fixten.  Opdat dit soort situaties opgemerkt zouden
+                // worden, throwen we de exception gewoon opnieuw.
+
+                throw;
+            }
         }
 
         #endregion
@@ -364,7 +421,7 @@ namespace Chiro.Gap.Services
                 var verzekering = _verzekeringenMgr.Verzekeren(
                     l,
                     verz,
-                    DateTime.Today, GroepsWerkJaarManager.EindDatum(l.GroepsWerkJaar));
+                    DateTime.Today, _groepwsWjMgr.EindDatum(l.GroepsWerkJaar));
 
                 _verzekeringenMgr.PersoonsVerzekeringBewaren(verzekering, l.GroepsWerkJaar);
 

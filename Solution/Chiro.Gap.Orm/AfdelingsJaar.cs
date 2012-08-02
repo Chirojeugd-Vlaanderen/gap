@@ -14,7 +14,7 @@ namespace Chiro.Gap.Orm
 	/// </summary>
 	/// <remarks>
 	/// Een afdelingsjaar bepaalt welke geboortejaren, geslacht en officiële afdelingen
-	/// in een bepaald werkjaar overeenkomen met een gegeven afdeling.
+	/// in een bepaald werkJaar overeenkomen met een gegeven afdeling.
 	/// </remarks>
 	public partial class AfdelingsJaar : IEfBasisEntiteit
 	{

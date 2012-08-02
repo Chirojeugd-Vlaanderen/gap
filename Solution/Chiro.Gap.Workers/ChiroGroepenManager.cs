@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Orm;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
@@ -17,7 +18,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Worker die alle businesslogica i.v.m. Chirogroepen bevat
     /// </summary>
-    public class ChiroGroepenManager
+    public class ChiroGroepenManager : IChiroGroepenManager
     {
         private readonly IDao<ChiroGroep> _dao;
         private readonly IAutorisatieManager _autorisatieMgr;

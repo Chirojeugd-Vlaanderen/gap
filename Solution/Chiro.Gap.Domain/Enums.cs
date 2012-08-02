@@ -66,26 +66,26 @@ namespace Chiro.Gap.Domain
     [Flags]
     public enum Niveau
     {
-// FUTURE
-//        [EnumMember]
-//        Satelliet = 0x01,
-        [EnumMember]
-        LidInGroep = 0x02,
-        [EnumMember]
-        LeidingInGroep = 0x04,
-        [EnumMember]
-        Groep = LidInGroep | LeidingInGroep,
-        [EnumMember]
-        Gewest = 0x08,
-        [EnumMember]
-        Verbond = 0x20,
-        [EnumMember]
-        Nationaal = 0x80,
-		[EnumMember]
-		KaderGroep = Gewest | Verbond | Nationaal,
-        [EnumMember]
-        Alles = /*Satelliet |*/ Groep | KaderGroep
+        // FUTURE
+        //        [EnumMember]
+        //        Satelliet = 0x01,
+        [EnumMember] LidInGroep = 0x02,
+        [EnumMember] LeidingInGroep = 0x04,
+        [EnumMember] Groep = LidInGroep | LeidingInGroep,
+        [EnumMember] Gewest = 0x08,
+        [EnumMember] Verbond = 0x20,
+        [EnumMember] Nationaal = 0x80,
+        [EnumMember] KaderGroep = Gewest | Verbond | Nationaal,
+        [EnumMember] Alles = /*Satelliet |*/ Groep | KaderGroep
     };
+
+    public static class NiveauExtensions
+    {
+        public static bool HeeftNiveau(this Niveau orig, Niveau n)
+        {
+            return (n & orig) != 0;
+        }
+    }
 
     /// <summary>
     /// Bepaalt de 'status' van het adres
@@ -184,9 +184,9 @@ namespace Chiro.Gap.Domain
     }
 
     /// <summary>
-    /// Geeft aan of een werkjaar voorbij is, bezig is, of op zijn einde loopt (in overgang)
+    /// Geeft aan of een werkJaar voorbij is, bezig is, of op zijn einde loopt (in overgang)
     /// </summary>
-    [DataContract]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2217:DoNotMarkEnumsWithFlags"), DataContract]
     [Flags]
     public enum WerkJaarStatus
     {
@@ -197,7 +197,7 @@ namespace Chiro.Gap.Domain
         [EnumMember]
         Bezig = 0x02,
         [EnumMember]
-        InOvergang = 0x06	// bewust 0x06, omdat een werkjaar in overgang dan ook bezig is.
+        InOvergang = 0x06	// bewust 0x06, omdat een werkJaar in overgang dan ook bezig is.
     }
 
 	/// <summary>

@@ -99,7 +99,7 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             else
             {
-                #region gekozen groep en werkjaar
+                #region gekozen groep en werkJaar
 
                 var gwjDetail = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
 
@@ -238,10 +238,21 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         private void VoegBivakStatusMededelingenToe(BivakAangifteLijstInfo aangiftestatus, IList<Mededeling> mededelingen)
         {
+            if (aangiftestatus == null)
+            {
+                return;
+            }
+            
+            if (aangiftestatus.Bivakinfos == null)
+            {
+                return;
+            }
+            
             if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.NogNietVanBelang || aangiftestatus.AlgemeneStatus == BivakAangifteStatus.Ingevuld)
             {
                 return;
             }
+            
             if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.DringendInTeVullen && aangiftestatus.Bivakinfos.Count == 0)
             {
                 var url = Url.Action("Nieuw", "Uitstappen");

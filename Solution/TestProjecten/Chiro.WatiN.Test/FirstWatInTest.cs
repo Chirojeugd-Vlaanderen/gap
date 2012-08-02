@@ -354,7 +354,7 @@ namespace Chiro.WatiN.Test
 								// Let Op: Geen regex want we willen een exacte match
 								if (vindPersoon.IsMatch(personenLijstEnum.Current.TableCell(Find.ByIndex(2)).ToString()))
 								{
-									// TODO: Nakijken of GeboorteDatum en Geslacht correct zijn.
+									// TODO Nakijken of GeboorteDatum en Geslacht correct zijn
 
 									// Maak de persoon lid, maar er bestaat een kans dat die persoon al lid is, 
 									// Dus voor de link gaan ophalen kijken of die wel bestaat.

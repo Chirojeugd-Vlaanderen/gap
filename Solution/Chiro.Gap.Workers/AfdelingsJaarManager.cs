@@ -13,16 +13,17 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
-    /// <summary>
+	/// <summary>
     /// Worker die alle businesslogica i.v.m. afdelingsjaren bevat
     /// </summary>
-    public class AfdelingsJaarManager
-    {
+    public class AfdelingsJaarManager : IAfdelingsJaarManager
+	{
         private readonly IAfdelingsJarenDao _afdJarenDao;
         private readonly IAfdelingenDao _afdelingenDao;
         private readonly IGroepsWerkJaarDao _groepsWjDao;
@@ -91,7 +92,7 @@ namespace Chiro.Gap.Workers
         /// Te koppelen officiële afdeling
         /// </param>
         /// <param name="gwj">
-        /// Groepswerkjaar (koppelt de afdeling aan een groep en een werkjaar)
+        /// Groepswerkjaar (koppelt de afdeling aan een groep en een werkJaar)
         /// </param>
         /// <param name="geboorteJaarBegin">
         /// Geboortejaar van
@@ -416,7 +417,7 @@ namespace Chiro.Gap.Workers
             Debug.Assert(groepsWerkJaren.First() != null);
             Debug.Assert(groepsWerkJaren.First().Groep != null);
 
-            int werkjaar = groepsWerkJaren.First().WerkJaar;
+            int werkJaar = groepsWerkJaren.First().WerkJaar;
 
             IEnumerable<Lid> resultaat;
 

@@ -27,8 +27,7 @@ namespace Chiro.Gap.WebApp.Models
 		public int PageHuidig { get; set; }
 		public int PageTotaal { get; set; }
 
-		// TODO: Aangezien in AfdelingDetail en FunctieDetail ook de ID's zitten, 
-		// is het overbodig om hieronder dictionary's te gebruiken.
+		// TODO Aangezien in AfdelingDetail en FunctieDetail ook de ID's zitten, is het overbodig om hieronder dictionary's te gebruiken.
 
 		public Dictionary<int, AfdelingDetail> AfdelingsInfoDictionary { get; set; }
 		public Dictionary<int, FunctieDetail> FunctieInfoDictionary { get; set; }

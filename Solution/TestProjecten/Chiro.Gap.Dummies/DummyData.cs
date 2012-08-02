@@ -3,6 +3,7 @@
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Dummies
@@ -123,20 +124,27 @@ namespace Chiro.Gap.Dummies
 		/// wordt door vorige tests die met de IOC-container hebben 'gemoost'.</remarks>
 		public DummyData()
 		{
+            // Oeps: Onderstaande leest de IOC-configuratie uit de configuratiefile van het
+            // testproject. Dat is een probleem als dat testproject geconfigureerd is om met
+            // de echte database te werken (bijv. Chiro.Gap.Services.Test)
+            // TODO: IOC-container in code configureren om dummy-dao's te gebruiken.
 			Factory.ContainerInit();
+
+            // TODO: is het niet beter om de workers over te slaan bij het maken van dummydata?
+            // Op die manier zijn we zekerder dat er getest wordt wat er echt getest moet worden.
 
 			// TODO: Door de objecten te bewaren krijgen ze ID's, waardoor de tests betrouwbaarder
 			// worden.  Op het einden zou er dus ergens 
 			// GroepenDao.Bewaren(_dummyGroep, lambda-expressie-die-alles-meeneemt)
 			// aangeroepen moeten worden.
+            // (UPDATE: Ik weet niet zeker of dat wel een goed idee is. Als we de ID's 
+            // zelf bepalen, hebben we meer controle op de tests.)
 
-			var wjMgr = Factory.Maak<GroepsWerkJaarManager>();
 			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 			var gMgr = Factory.Maak<GroepenManager>();
-			var cgMgr = Factory.Maak<ChiroGroepenManager>();
+			var cgMgr = Factory.Maak<IChiroGroepenManager>();
 			var lMgr = Factory.Maak<LedenManager>();
-			var cMgr = Factory.Maak<CategorieenManager>();
-			var afdMgr = Factory.Maak<AfdelingsJaarManager>();
+			var afdMgr = Factory.Maak<IAfdelingsJaarManager>();
 			var fMgr = Factory.Maak<FunctiesManager>();
 
 			// Groep en groepswerkjaar
@@ -219,10 +227,22 @@ namespace Chiro.Gap.Dummies
 			// We moeten hier expliciet lid maken in _huidigGwj, anders werken een aantal
 			// unit tests niet meer.  (Zie #259)
 
-			_leiderJos = lMgr.AutomagischInschrijven(_gelieerdeJos, _huidigGwj, false);
-			_leiderJosVorigJaar = lMgr.AutomagischInschrijven(_gelieerdeJos, _vorigGwj, false);
-			_lidYvonne = lMgr.AutomagischInschrijven(_gelieerdeYvonne, _huidigGwj, false);
-			_kaderJos = lMgr.AutomagischInschrijven(_gelieerdeKaderJos, _gwjGewest, false);
+		    _leiderJos = lMgr.NieuwInschrijven(_gelieerdeJos,
+		                                       _huidigGwj,
+		                                       false,
+		                                       new LidVoorstel {LeidingMaken = true, AfdelingsJarenIrrelevant = true});
+            _leiderJosVorigJaar = lMgr.NieuwInschrijven(_gelieerdeJos,
+                                               _vorigGwj,
+                                               false,
+                                               new LidVoorstel { LeidingMaken = true, AfdelingsJarenIrrelevant = true });
+            _lidYvonne = lMgr.NieuwInschrijven(_gelieerdeYvonne,
+                                               _huidigGwj,
+                                               false,
+                                               new LidVoorstel { LeidingMaken = false, AfdelingsJarenIrrelevant = true });
+            _kaderJos = lMgr.NieuwInschrijven(_gelieerdeKaderJos,
+                                               _gwjGewest,
+                                               false,
+                                               new LidVoorstel { LeidingMaken = true, AfdelingsJarenIrrelevant = true });
 
 			// ID's worden niet toegekend als de DAO's gemockt zijn, dus delen we die manueel
 			// uit.

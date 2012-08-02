@@ -10,23 +10,29 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 namespace Chiro.Gap.WebApp.Models
 {
 	/// <summary>
-	/// Model voor het vastleggen van de afdelingsjaren dit werkjaar
+	/// Model voor het vastleggen van de afdelingsjaren dit werkJaar
 	/// </summary>
 	public class JaarOvergangAfdelingsJaarModel : MasterViewModel
 	{
+	    public JaarOvergangAfdelingsJaarModel()
+        {
+            Afdelingen = new List<AfdelingDetail>();
+            OfficieleAfdelingen = new List<OfficieleAfdelingDetail>();
+        }
+
 		/// <summary>
-		/// Afdelingsjaren voor dit werkjaar
+		/// Afdelingsjaren voor dit werkJaar
 		/// </summary>
-		public AfdelingDetail[] Afdelingen { get; set; }
+		public IList<AfdelingDetail> Afdelingen { get; set; }
 
         /// <summary>
         /// Lijst van alle officiele afdelingen
         /// </summary>
-		public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingen { get; set; }
+		public IList<OfficieleAfdelingDetail> OfficieleAfdelingen { get; set; }
 
         /// <summary>
-        /// Als de verdeling van toepassing is op een toekomstig werkjaar, bevat
-        /// deze property dat werkjaar
+        /// Als de verdeling van toepassing is op een toekomstig werkJaar, bevat
+        /// deze property dat werkJaar
         /// </summary>
 		public int NieuwWerkjaar { get; set; }
 

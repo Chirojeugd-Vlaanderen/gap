@@ -15,6 +15,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -33,16 +34,16 @@ namespace Chiro.Gap.Services
         #region Manager Injection
 
         private readonly GroepenManager _groepenMgr;
-        private readonly ChiroGroepenManager _chiroGroepenMgr;
+        private readonly IChiroGroepenManager _chiroGroepenMgr;
         private readonly AfdelingenManager _afdelingenMgr;
-        private readonly AfdelingsJaarManager _afdelingsJaarMgr;
+        private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
         private readonly AdressenManager _adresMgr;
-        private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
+        private readonly IGroepsWerkJaarManager _groepsWerkJaarManager;
         private readonly JaarOvergangManager _jaarOvergangManager;
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly CategorieenManager _categorieenMgr;
         private readonly FunctiesManager _functiesMgr;
-        private readonly LedenManager _ledenMgr;
+        private readonly ILedenManager _ledenMgr;
         private readonly GebruikersRechtenManager _gebruikersRechtenManager;
 
         /// <summary>
@@ -86,14 +87,14 @@ namespace Chiro.Gap.Services
         /// </param>
         public GroepenService(
             GroepenManager groepenMgr,
-            ChiroGroepenManager cgm,
+            IChiroGroepenManager cgm,
             AfdelingenManager afdm,
-            AfdelingsJaarManager ajm,
-            GroepsWerkJaarManager wm,
+            IAfdelingsJaarManager ajm,
+            IGroepsWerkJaarManager wm,
             AdressenManager adresMgr,
             CategorieenManager cm,
             FunctiesManager fm,
-            LedenManager lm,
+            ILedenManager lm,
             IAutorisatieManager am,
             JaarOvergangManager jm,
             GebruikersRechtenManager gebruikersRechtenMgr)
@@ -201,8 +202,7 @@ namespace Chiro.Gap.Services
                 groep.Naam = g.Naam;
                 groep.Code = g.StamNummer;
 
-                // TODO: Hier gaat natuurlijk nooit een concurrency exception optreden,
-                // aangezien GroepInfo (nog?) geen versiestring bevat.
+                // TODO Hier gaat natuurlijk nooit een concurrency exception optreden, aangezien GroepInfo (nog?) geen versiestring bevat.
 
                 _groepenMgr.Bewaren(groep);
             }
@@ -254,7 +254,7 @@ namespace Chiro.Gap.Services
 
             var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(gwj);
 
-            result.Status = (DateTime.Now >= _groepsWerkJaarManager.StartOvergang(gwj.WerkJaar)
+            result.Status = (_groepsWerkJaarManager.OvergangMogelijk(DateTime.Now, gwj.WerkJaar)
                                 ? WerkJaarStatus.InOvergang
                                 : WerkJaarStatus.Bezig);
 
@@ -309,7 +309,7 @@ namespace Chiro.Gap.Services
 
         // Bedoeling van het afdelingsgedeelte:
         // er zijn een aantal officiële afdelingen, die een range van leeftijden hebben. Blijven dat altijd dezelfde?
-        // Elke Chirogroep heeft elk werkjaar haar eigen afdelingen, die ook een range van leeftijden hebben.
+        // Elke Chirogroep heeft elk werkJaar haar eigen afdelingen, die ook een range van leeftijden hebben.
         // 
         // Elke afdeling moet overeenkomen met een officiële afdeling.
         // Er is niet gespecifieerd of het mogelijk is om een eerste-jaar-rakkers en een tweede-jaar-rakkers te hebben
@@ -438,7 +438,7 @@ namespace Chiro.Gap.Services
                 FoutAfhandelaar.FoutAfhandelen(ex);
             }
 
-            // TODO: Concurrency exception catchen
+            // TODO Concurrency exception catchen
             // OPM: FoutAfhandelaar.FoutAfhandelen vangt OptimisticConcurrencyException op. Zijn er nog andere?
         }
 
@@ -659,7 +659,7 @@ namespace Chiro.Gap.Services
 
         /// <summary>
         /// Zoekt naar problemen ivm de maximum- en minimumaantallen van functies voor het
-        /// huidige werkjaar.
+        /// huidige werkJaar.
         /// </summary>
         /// <param name="groepID">ID van de groep waarvoor de functies gecontroleerd moeten worden.</param>
         /// <returns>
@@ -770,10 +770,10 @@ namespace Chiro.Gap.Services
         /// <param name="groepID">ID van de groep waarvoor nieuwe functie wordt gemaakt</param>
         /// <param name="naam">Naam voor de nieuwe functie</param>
         /// <param name="code">Code voor de nieuwe functie</param>
-        /// <param name="maxAantal">Eventueel het maximumaantal leden met die functie in een werkjaar</param>
-        /// <param name="minAantal">Het minimumaantal leden met die functie in een werkjaar</param>
+        /// <param name="maxAantal">Eventueel het maximumaantal leden met die functie in een werkJaar</param>
+        /// <param name="minAantal">Het minimumaantal leden met die functie in een werkJaar</param>
         /// <param name="lidType">Gaat het over een functie voor leden, leiding of beide?</param>
-        /// <param name="werkJaarVan">Eventueel het vroegste werkjaar waarvoor de functie beschikbaar moet zijn</param>
+        /// <param name="werkJaarVan">Eventueel het vroegste werkJaar waarvoor de functie beschikbaar moet zijn</param>
         /// <returns>De ID van de aangemaakte Functie</returns>
         public int FunctieToevoegen(int groepID, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan)
         {
@@ -839,7 +839,7 @@ namespace Chiro.Gap.Services
         #endregion
 
         /// <summary>
-        /// Haalt de werkjaren op waarin de groep aangesloten was (te beginnen met het werkjaar voor
+        /// Haalt de werkjaren op waarin de groep aangesloten was (te beginnen met het werkJaar voor
         /// deze applicatie in gebruik genomen werd)
         /// </summary>
         /// <param name="groepID">De ID van de Groep die we willen bekijken</param>
@@ -907,11 +907,13 @@ namespace Chiro.Gap.Services
         /// <c>false</c> krijg je een exception als de categorie niet leeg is.</param>
         public void CategorieVerwijderen(int categorieID, bool forceren)
         {
-            // Personen moeten mee opgehaald worden; anders werkt 
-            // CategorieenManager.Verwijderen niet.
+            // Personen moeten mee opgehaald worden; anders werkt CategorieenManager.Verwijderen niet.
+
+            Categorie c = null;
+
             try
             {
-                Categorie c = _categorieenMgr.Ophalen(categorieID, true);
+                c = _categorieenMgr.Ophalen(categorieID, true);
                 _categorieenMgr.Verwijderen(c, forceren);
             }
             catch (BlokkerendeObjectenException<GelieerdePersoon> ex)
@@ -919,7 +921,7 @@ namespace Chiro.Gap.Services
                 var fault = Mapper.Map<BlokkerendeObjectenException<GelieerdePersoon>,
                     BlokkerendeObjectenFault<PersoonDetail>>(ex);
 
-                throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault);
+                throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault, new FaultReason(Properties.Resources.CategorieNietLeeg));
             }
             catch (Exception ex)
             {
@@ -1127,10 +1129,10 @@ namespace Chiro.Gap.Services
         ///		AFDELINGID van de afdelingen die geactiveerd zullen worden
         ///		Geboortejaren voor elk van die afdelingen
         /// </summary>
-        /// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkjaar</param>
+        /// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkJaar</param>
         /// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
         /// <remarks>Voor kadergroepen laat je teActiveren gewoon leeg.</remarks>
-        /// <remarks>Er worden geen leden gemaakt in het nieuwe werkjaar.</remarks>
+        /// <remarks>Er worden geen leden gemaakt in het nieuwe werkJaar.</remarks>
         public void JaarovergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID)
         {
             try
@@ -1144,12 +1146,12 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Berekent wat het nieuwe werkjaar zal zijn als op dit moment de jaarovergang zou gebeuren.
+        /// Berekent wat het nieuwe werkJaar zal zijn als op dit moment de jaarovergang zou gebeuren.
         /// </summary>
         /// <returns>Een jaartal (bv. 2011 voor 2011-2012)</returns>
-        public int NieuwWerkJaarOphalen()
+        public int NieuwWerkJaarOphalen(int groepID)
         {
-            return _groepsWerkJaarManager.NieuweWerkJaar();
+            return _groepsWerkJaarManager.NieuweWerkJaar(groepID);
         }
 
         #endregion

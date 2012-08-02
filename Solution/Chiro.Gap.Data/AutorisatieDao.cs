@@ -353,7 +353,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="login">De login van de gebruiker in kwestie</param>
 		/// <param name="groepsWerkJaarID">De ID van het groepswerkjaar in kwestie</param>
 		/// <returns><c>True</c> als de bezoeker GAV is van de gevraagde groep in het
-		/// gekoppelde werkjaar, <c>false</c> in het andere geval</returns>
+		/// gekoppelde werkJaar, <c>false</c> in het andere geval</returns>
 		public bool IsGavGroepsWerkJaar(string login, int groepsWerkJaarID)
 		{
 			if (groepsWerkJaarID == 0) // is het geval bij een nieuw groepswerkjaar

@@ -11,7 +11,7 @@ namespace Chiro.Gap.WebApp.Models
 {
     /// <summary>
     /// Wordt voor de jaarovergang gebruikt; lijst met leden die al dan niet over te zetten
-    /// zijn naar het nieuwe werkjaar
+    /// zijn naar het nieuwe werkJaar
     /// </summary>
     public class GeselecteerdePersonenEnLedenModel : MasterViewModel
     {
@@ -21,7 +21,7 @@ namespace Chiro.Gap.WebApp.Models
         public InschrijfbaarLid[] PersoonEnLidInfos { get; set; }
 
         /// <summary>
-        /// Lijst met de actieve afdelingen dit werkjaar
+        /// Lijst met de actieve afdelingen dit werkJaar
         /// </summary>
         public IEnumerable<ActieveAfdelingInfo> BeschikbareAfdelingen { get; set; }
     }

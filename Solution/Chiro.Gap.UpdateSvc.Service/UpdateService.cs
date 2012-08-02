@@ -9,6 +9,7 @@ using System.ServiceModel;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.UpdateSvc.Contracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.UpdateSvc.Service
@@ -20,7 +21,7 @@ namespace Chiro.Gap.UpdateSvc.Service
 	{
 		private readonly PersonenManager _personenMgr;
 	    private readonly GroepenManager _groepenMgr;
-	    private readonly LedenManager _ledenMgr;
+	    private readonly ILedenManager _ledenMgr;
 	    private readonly AbonnementenManager _abonnementenManager;
 	    private readonly ILedenSync _ledenSync;
 	    private readonly IDubbelpuntSync _dubbelpuntSync;
@@ -46,7 +47,7 @@ namespace Chiro.Gap.UpdateSvc.Service
 	    /// <param name="dubbelpuntSync">
         /// Te gebruiken DubbelpuntSync terug naar Kipadmin
 	    /// </param>
-	    public UpdateService(PersonenManager personenManager, GroepenManager groepenManager, LedenManager ledenManager, AbonnementenManager abonnementenManager, ILedenSync ledenSync, IDubbelpuntSync dubbelpuntSync)
+	    public UpdateService(PersonenManager personenManager, GroepenManager groepenManager, ILedenManager ledenManager, AbonnementenManager abonnementenManager, ILedenSync ledenSync, IDubbelpuntSync dubbelpuntSync)
 		{
 			_personenMgr = personenManager;
 		    _groepenMgr = groepenManager;
@@ -92,7 +93,7 @@ namespace Chiro.Gap.UpdateSvc.Service
 		}
 
         /// <summary>
-        /// Synct alle leden van het recentste werkjaar van een groep opnieuw naar Kipadmin
+        /// Synct alle leden van het recentste werkJaar van een groep opnieuw naar Kipadmin
         /// </summary>
         /// <param name="stamNummer">Stamnummer van groep met te syncen leden</param>
         /// <remarks>Dit is eigenlijk geen sync van Kipadmin naar GAP, maar een vraag van Kipadmin
@@ -119,12 +120,12 @@ namespace Chiro.Gap.UpdateSvc.Service
                     _ledenSync.Bewaren(lid);
                 }
 
-                Console.WriteLine("Leden van {0} voor werkjaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
+                Console.WriteLine("Leden van {0} voor werkJaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
             }
         }
 
         /// <summary>
-        /// Synct alle abonnementen van het recentste werkjaar van een groep opnieuw naar Kipadmin
+        /// Synct alle abonnementen van het recentste werkJaar van een groep opnieuw naar Kipadmin
         /// </summary>
         /// <param name="stamNummer">Stamnummer van groep met te syncen abonnementen</param>
         /// <remarks>Dit is eigenlijk geen sync van Kipadmin naar GAP, maar een vraag van Kipadmin
@@ -151,7 +152,7 @@ namespace Chiro.Gap.UpdateSvc.Service
                     _dubbelpuntSync.Abonneren(ab);
                 }
 
-                Console.WriteLine("Abonnementen van {0} voor werkjaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
+                Console.WriteLine("Abonnementen van {0} voor werkJaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
             }
         }
 	}

@@ -24,8 +24,8 @@ namespace Chiro.Gap.Dummies
 
 		public Leiding Bewaren(Leiding entiteit, LidExtras extras)
 		{
-			throw new NotImplementedException();
-		}
+            throw new NotImplementedException();
+        }
 
 		public Leiding Ophalen(int lidID, LidExtras extras)
 		{

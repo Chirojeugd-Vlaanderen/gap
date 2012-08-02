@@ -15,6 +15,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -26,10 +27,10 @@ namespace Chiro.Gap.Services
     public class UitstappenService : IUitstappenService
     {
         private readonly UitstappenManager _uitstappenMgr;
-        private readonly GroepsWerkJaarManager _groepsWerkJaarMgr;
+        private readonly IGroepsWerkJaarManager _groepsWerkJaarMgr;
         private readonly PlaatsenManager _plaatsenMgr;
         private readonly AdressenManager _adressenMgr;
-        private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
+        private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
         private readonly DeelnemersManager _deelnemersMgr;
 
         /// <summary>
@@ -43,10 +44,10 @@ namespace Chiro.Gap.Services
         /// <param name="dMgr">De worker voor Deelnemers</param>
         public UitstappenService(
             UitstappenManager uMgr,
-            GroepsWerkJaarManager gwjMgr,
+            IGroepsWerkJaarManager gwjMgr,
             PlaatsenManager plMgr,
             AdressenManager adMgr,
-            GelieerdePersonenManager gpMgr,
+            IGelieerdePersonenManager gpMgr,
             DeelnemersManager dMgr)
         {
             _uitstappenMgr = uMgr;
@@ -119,7 +120,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="groepID">ID van de groep</param>
         /// <param name="inschrijvenMogelijk">Als deze <c>true</c> is, worden enkel de uitstappen opgehaald
-        /// waarvoor je nog kunt inschrijven.  In praktijk zijn dit de uitstappen van het huidige werkjaar.
+        /// waarvoor je nog kunt inschrijven.  In praktijk zijn dit de uitstappen van het huidige werkJaar.
         /// </param>
         /// <returns>Details van uitstappen</returns>
         /// <remarks>We laten toe om inschrijvingen te doen voor uitstappen uit het verleden, om als dat
@@ -434,7 +435,7 @@ namespace Chiro.Gap.Services
 
         /// <summary>
         /// Haalt informatie over de bivakaangifte op van de groep <paramref name="groepID"/> voor diens recentste 
-        /// werkjaar.
+        /// werkJaar.
         /// </summary>
         /// <param name="groepID">
         /// De groep waarvan info wordt gevraagd

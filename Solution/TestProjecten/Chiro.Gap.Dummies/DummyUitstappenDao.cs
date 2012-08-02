@@ -26,7 +26,7 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<Uitstap> AlleBivakkenOphalen(int werkjaar)
+		public IEnumerable<Uitstap> AlleBivakkenOphalen(int werkJaar)
 		{
 			throw new NotImplementedException();
 		}

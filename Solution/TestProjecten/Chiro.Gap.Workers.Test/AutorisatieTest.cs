@@ -4,8 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using Chiro.Gap.Domain;
+using Chiro.Gap.WorkerInterfaces;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Moq;
 
 using Chiro.Cdf.Ioc;
@@ -320,7 +322,7 @@ namespace Chiro.Gap.Workers.Test
 
 			Factory.InstantieRegistreren(auMgrMock.Object);
 
-			var ajMgr = Factory.Maak<AfdelingsJaarManager>();
+			var ajMgr = Factory.Maak<IAfdelingsJaarManager>();
 
 			ajMgr.Aanmaken(afd, oa, gwj, 200, 2001, GeslachtsType.Gemengd);
 

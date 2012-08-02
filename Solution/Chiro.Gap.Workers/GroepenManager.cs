@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
@@ -265,7 +266,7 @@ namespace Chiro.Gap.Workers
         /// Maakt een nieuwe (groepseigen) functie voor groep <paramref name="g"/>.  Persisteert niet.
         /// </summary>
         /// <param name="g">
-        /// Groep waarvoor de functie gemaakt wordt, inclusief minstens het recentste werkjaar
+        /// Groep waarvoor de functie gemaakt wordt, inclusief minstens het recentste werkJaar
         /// </param>
         /// <param name="naam">
         /// Naam van de functie
@@ -358,7 +359,7 @@ namespace Chiro.Gap.Workers
         /// Groep waarvoor een groepswerkjaar gemaakt moet worden
         /// </param>
         /// <param name="werkJaar">
-        /// Int die het werkjaar identificeert (bv. 2009 voor 2009-2010)
+        /// Int die het werkJaar identificeert (bv. 2009 voor 2009-2010)
         /// </param>
         /// <returns>
         /// Het gemaakte groepswerkjaar.

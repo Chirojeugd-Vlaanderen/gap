@@ -3,6 +3,10 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
+using System.Diagnostics;
+using System.Linq;
+
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Domain;
@@ -65,5 +69,35 @@ namespace Chiro.Gap.Orm
 				return resultaat;
 			}
 		}
+
+	    /// <summary>
+	    /// Geeft een lijst terug van alle afdelingen waaraan het lid gegeven gekoppeld is.
+	    /// </summary>
+	    /// <returns>
+	    /// Lijst met afdelingIDs
+	    /// </returns>
+	    /// <remarks>
+	    /// Een kind is hoogstens aan 1 afdeling gekoppeld
+	    /// </remarks>
+	    public int[] AfdelingIds
+	    {
+	        get
+	        {
+	            if (this is Kind)
+	            {
+	                var k = this as Kind;
+	                Debug.Assert(k != null);
+                    return new[] {k.AfdelingsJaar.Afdeling.ID};
+	            }
+	            if (this is Leiding)
+	            {
+	                var l = this as Leiding;
+	                Debug.Assert(l != null);
+
+	                return (from aj in l.AfdelingsJaar select aj.Afdeling.ID).ToArray();
+	            }
+                throw new NotSupportedException("Lid moet kind of leiding zijn.");
+	        }
+	    }
 	}
 }

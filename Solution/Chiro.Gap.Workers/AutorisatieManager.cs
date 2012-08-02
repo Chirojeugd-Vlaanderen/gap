@@ -9,6 +9,7 @@ using System.Linq;
 using Chiro.Cdf.Data;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
@@ -431,7 +432,7 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Controleert of de aangelogde user
         /// 'superrechten' heeft
-        /// (zoals leden verwijderen uit vorig werkjaar, 
+        /// (zoals leden verwijderen uit vorig werkJaar, 
         /// leden verwijderen voor wie de probeerperiode voorbij is, enz.)
         /// </summary>
         /// <returns>

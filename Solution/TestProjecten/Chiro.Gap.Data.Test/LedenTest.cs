@@ -61,14 +61,14 @@ namespace Chiro.Gap.Data.Test
 		{
 			Factory.ContainerInit();
 
-			var afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
+			var afdelingsJaarID = TestInfo.AFDELINGS_JAAR1_ID;
 
 			var ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
 			var aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep, afj => afj.OfficieleAfdeling);
 
 			// Voeg kind toe (GelieerdePersoonID2 in AfdelingsJaarID) om in test te kunnen verwijderen
 
-			var gelieerdePersoon2ID = TestInfo.GELIEERDEPERSOON2ID;
+			var gelieerdePersoon2ID = TestInfo.GELIEERDE_PERSOON2_ID;
 
 			var gpdao = Factory.Maak<IGelieerdePersonenDao>();
 			var kdao = Factory.Maak<IDao<Kind>>();
@@ -90,7 +90,11 @@ namespace Chiro.Gap.Data.Test
 				// GelieerdePersoon2 moet Kind gemaakt worden, want in de test KindVerwijderen
 				// zal geprobeerd worden op GelieerdePersoon2 te 'ontkinden'.  Zie #184.
 
-				var k = lm.AutomagischInschrijven(gp, aj.GroepsWerkJaar, false);
+			    var k = lm.NieuwInschrijven(gp,
+			                                aj.GroepsWerkJaar,
+			                                false,
+			                                new LidVoorstel {LeidingMaken = false, AfdelingsJarenIrrelevant = true});
+
 
 				Debug.Assert(k is Kind);
 
@@ -109,8 +113,8 @@ namespace Chiro.Gap.Data.Test
 		{
 			// Verwijder lid (GelieerdePersoonID in AfdelingsJaarID) om achteraf opnieuw toe te voegen
 
-			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
-			int afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
+			int gelieerdePersoonID = TestInfo.GELIEERDE_PERSOON_ID;
+			int afdelingsJaarID = TestInfo.AFDELINGS_JAAR1_ID;
 
 			var ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
 			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
@@ -135,8 +139,8 @@ namespace Chiro.Gap.Data.Test
 		public void NieuwKind()
 		{
 			#region Arrange
-			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
-			int afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
+			int gelieerdePersoonID = TestInfo.GELIEERDE_PERSOON_ID;
+			int afdelingsJaarID = TestInfo.AFDELINGS_JAAR1_ID;
 
 			var lm = Factory.Maak<LedenManager>();
 
@@ -176,8 +180,8 @@ namespace Chiro.Gap.Data.Test
 		{
 			// Arrange
 
-			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOON2ID;
-			int afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
+			int gelieerdePersoonID = TestInfo.GELIEERDE_PERSOON2_ID;
+			int afdelingsJaarID = TestInfo.AFDELINGS_JAAR1_ID;
 
 			var ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
 			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
@@ -204,7 +208,7 @@ namespace Chiro.Gap.Data.Test
 		{
 			// Arrange
 
-			int lid3ID = TestInfo.LID3ID;
+			int lid3ID = TestInfo.LID3_ID;
 
 			var ldao = Factory.Maak<ILeidingDao>();
 			Leiding l = ldao.Ophalen(lid3ID);
@@ -232,7 +236,7 @@ namespace Chiro.Gap.Data.Test
 
 			var result = dao.OphalenUitFunctie(
 				NationaleFunctie.ContactPersoon,
-				TestInfo.GROEPSWERKJAARID,
+				TestInfo.GROEPS_WERKJAAR_ID,
 				ld => ld.GroepsWerkJaar.Groep,
 				ld => ld.Functie,
 				ld => ld.GelieerdePersoon.Persoon);
@@ -240,8 +244,8 @@ namespace Chiro.Gap.Data.Test
 			// Assert
 
 			Assert.AreEqual(result.Count(), 1);
-			Assert.AreEqual(result.First().GelieerdePersoon.ID, TestInfo.GELIEERDEPERSOON3ID);
-			Assert.AreEqual(result.First().GroepsWerkJaar.Groep.ID, TestInfo.GROEPID);
+			Assert.AreEqual(result.First().GelieerdePersoon.ID, TestInfo.GELIEERDE_PERSOON3_ID);
+			Assert.AreEqual(result.First().GroepsWerkJaar.Groep.ID, TestInfo.GROEP_ID);
 			Assert.AreEqual(result.First().Functie.First().ID, (int)NationaleFunctie.ContactPersoon);
 		}
 
@@ -259,14 +263,14 @@ namespace Chiro.Gap.Data.Test
 			// Act
 
 			var result = dao.OphalenUitFunctie(
-				TestInfo.FUNCTIEID,
-				TestInfo.GROEPSWERKJAARID,
+				TestInfo.FUNCTIE_ID,
+				TestInfo.GROEPS_WERKJAAR_ID,
 				ld => ld.GroepsWerkJaar.Groep,
 				ld => ld.Functie,
 				ld => ld.GelieerdePersoon.Persoon);
 
 			var opgehaaldeFunctie = (from fun in result.First().Functie
-									 where fun.ID == TestInfo.FUNCTIEID
+									 where fun.ID == TestInfo.FUNCTIE_ID
 									 select fun).First();
 			// query nodig om - in geval van meerdere gekoppelde functies -
 			// zeker de juiste te heben
@@ -290,15 +294,15 @@ namespace Chiro.Gap.Data.Test
 			// Act
 
 			// Zoek leden zonder adres
-			var result = dao.Zoeken(new LidFilter {HeeftVoorkeurAdres = false, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID, LidType = LidType.Alles}, LidExtras.Geen);
+			var result = dao.Zoeken(new LidFilter {HeeftVoorkeurAdres = false, GroepsWerkJaarID = TestInfo.GROEPS_WERKJAAR_ID, LidType = LidType.Alles}, LidExtras.Geen);
 
 			var ids = from ld in result
 			          select ld.ID;
 
 			// Assert
 
-			Assert.IsTrue(ids.Contains(TestInfo.LID4ID));	// We verwachten dat lid 4 een adres heeft
-			Assert.IsFalse(ids.Contains(TestInfo.LID3ID));	// ... en lid 3 niet
+			Assert.IsTrue(ids.Contains(TestInfo.LID4_ID));	// We verwachten dat lid 4 een adres heeft
+			Assert.IsFalse(ids.Contains(TestInfo.LID3_ID));	// ... en lid 3 niet
 		}
 
 		/// <summary>
@@ -316,15 +320,15 @@ namespace Chiro.Gap.Data.Test
 			// Act
 
 			// Zoek leden zonder adres
-			var result = dao.Zoeken(new LidFilter { HeeftVoorkeurAdres = false, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID, LidType = LidType.Alles }, LidExtras.VoorkeurAdres);
+			var result = dao.Zoeken(new LidFilter { HeeftVoorkeurAdres = false, GroepsWerkJaarID = TestInfo.GROEPS_WERKJAAR_ID, LidType = LidType.Alles }, LidExtras.VoorkeurAdres);
 
 			var ids = from ld in result
 				  select ld.ID;
 
 			// Assert
 
-			Assert.IsTrue(ids.Contains(TestInfo.LID4ID));	// We verwachten dat lid 4 een adres heeft
-			Assert.IsFalse(ids.Contains(TestInfo.LID3ID));	// ... en lid 3 niet
+			Assert.IsTrue(ids.Contains(TestInfo.LID4_ID));	// We verwachten dat lid 4 een adres heeft
+			Assert.IsFalse(ids.Contains(TestInfo.LID3_ID));	// ... en lid 3 niet
 		}
 
 
@@ -340,15 +344,15 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			var result = dao.Zoeken(new LidFilter { HeeftTelefoonNummer = true, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID, LidType = LidType.Alles }, LidExtras.Geen);
+			var result = dao.Zoeken(new LidFilter { HeeftTelefoonNummer = true, GroepsWerkJaarID = TestInfo.GROEPS_WERKJAAR_ID, LidType = LidType.Alles }, LidExtras.Geen);
 
 			var ids = from ld in result
 				  select ld.ID;
 
 			// Assert
 
-			Assert.IsTrue(ids.Contains(TestInfo.LID4ID));	// We verwachten dat lid 4 een adres heeft
-			Assert.IsFalse(ids.Contains(TestInfo.LID3ID));	// ... en lid 3 niet
+			Assert.IsTrue(ids.Contains(TestInfo.LID4_ID));	// We verwachten dat lid 4 een adres heeft
+			Assert.IsFalse(ids.Contains(TestInfo.LID3_ID));	// ... en lid 3 niet
 		}
 
 		/// <summary>
@@ -363,7 +367,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			var result = dao.Ophalen(TestInfo.LID3ID, LidExtras.VoorkeurAdres);
+			var result = dao.Ophalen(TestInfo.LID3_ID, LidExtras.VoorkeurAdres);
 
 			// Assert
 
@@ -384,7 +388,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			var result = dao.Ophalen(new int[] {TestInfo.LID3ID, TestInfo.LID5ID}, LidExtras.Afdelingen);
+			var result = dao.Ophalen(new int[] {TestInfo.LID3_ID, TestInfo.LID5_ID}, LidExtras.Afdelingen);
 
 			var kinderen = result.OfType<Kind>();
 			var leiding = result.OfType<Leiding>();

@@ -12,6 +12,7 @@ using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
@@ -26,6 +27,7 @@ namespace Chiro.Gap.Workers
         private readonly IDao<VerzekeringsType> _verzekeringenDao;
         private readonly IDao<PersoonsVerzekering> _persoonsVerzekeringenDao;
         private readonly IAutorisatieManager _autorisatieMgr;
+        private readonly IGroepsWerkJaarManager _groepsWerkJaarManager;
         private readonly IVerzekeringenSync _sync;
 
         /// <summary>
@@ -37,9 +39,8 @@ namespace Chiro.Gap.Workers
         /// <param name="pvdao">
         /// Data Access Object voor persoonsverzekeringen
         /// </param>
-        /// <param name="auMgr">
-        /// Data Access Object voor autorisatie
-        /// </param>
+        /// <param name="auMgr">Businesslogica ivm autorisatie</param>
+        /// <param name="gwjMgr">Businesslogica ivm groepswerkjaren</param>
         /// <param name="sync">
         /// Proxy naar service om verzekeringen te syncen met Kipadmin
         /// </param>
@@ -47,10 +48,12 @@ namespace Chiro.Gap.Workers
             IDao<VerzekeringsType> vdao,
             IDao<PersoonsVerzekering> pvdao,
             IAutorisatieManager auMgr,
+            IGroepsWerkJaarManager gwjMgr,
             IVerzekeringenSync sync)
         {
             _verzekeringenDao = vdao;
             _persoonsVerzekeringenDao = pvdao;
+            _groepsWerkJaarManager = gwjMgr;
             _autorisatieMgr = auMgr;
             _sync = sync;
         }
@@ -105,7 +108,7 @@ namespace Chiro.Gap.Workers
                 throw new FoutNummerException(FoutNummer.ChronologieFout, Resources.VerzekeringInVerleden);
             }
 
-            if (verz.TotEindeWerkJaar && eindDatum != GroepsWerkJaarManager.EindDatum(l.GroepsWerkJaar))
+            if (verz.TotEindeWerkJaar && eindDatum != _groepsWerkJaarManager.EindDatum(l.GroepsWerkJaar))
             {
                 throw new FoutNummerException(
                     FoutNummer.ValidatieFout,
@@ -149,7 +152,7 @@ namespace Chiro.Gap.Workers
         /// Te persisteren persoonsverzekering
         /// </param>
         /// <param name="gwj">
-        /// Bepaalt werkjaar en groep die de factuur zal krijgen (Groep moet meegeleverd zijn)
+        /// Bepaalt werkJaar en groep die de factuur zal krijgen (Groep moet meegeleverd zijn)
         /// </param>
         /// <returns>
         /// De bewaarde versie van de persoonsverzekering

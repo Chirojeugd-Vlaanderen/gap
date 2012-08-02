@@ -238,7 +238,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Toont de ledenlijst van de gegeven groep in het huidige werkjaar
+        /// Toont de ledenlijst van de gegeven groep in het huidige werkJaar
         /// </summary>
         /// <param name="groepID">ID van de groep waarvan we de ledenlijst willen tonen</param>
         /// <returns></returns>
@@ -266,7 +266,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new LidInfoModel();
             BaseModelInit(model, groepID);
 
-            // Laad de lijst van werkjaren in van de groep en zet de juiste info over het te tonen werkjaar
+            // Laad de lijst van werkjaren in van de groep en zet de juiste info over het te tonen werkJaar
             model.WerkJaarInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<WerkJaarInfo>>(e => e.WerkJarenOphalen(groepID));
 
             var gevraagdwerkjaar = (from g in model.WerkJaarInfos
@@ -543,7 +543,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// een nieuwe afdeling te kiezen.
         /// </summary>
         /// <param name="selectieGelieerdePersoonIDs">ID's van de *gelieerde* personen</param>
-        /// <param name="groepID">Groep waarvoor de gelieerde personen dit werkjaar lid moeten zijn</param>
+        /// <param name="groepID">Groep waarvoor de gelieerde personen dit werkJaar lid moeten zijn</param>
         /// <returns>Een view die toelaat een andere afdeling te kiezen</returns>
         [AcceptVerbs(HttpVerbs.Get)]
         private ActionResult AfdelingenBewerken(IEnumerable<int> selectieGelieerdePersoonIDs, int groepID)
@@ -737,13 +737,13 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// Verandert een kind in leiding of vice versa
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">LidID</param>
         /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
         /// <returns>Opnieuw de persoonsfiche</returns>
         [HandleError]
         public ActionResult TypeToggle(int id, int groepID)
         {
-            int gelieerdePersoonID;
+            int gelieerdePersoonID = 0;
 
             try
             {
@@ -753,18 +753,30 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 switch (ex.Detail.FoutNummer)
                 {
-                    case FoutNummer.AlgemeneKindFout:
-                        TempData["fout"] = Properties.Resources.FoutToggleNaarKind;
-                        break;
-                    case FoutNummer.AlgemeneLeidingFout:
-                        TempData["fout"] = Properties.Resources.FoutToggleNaarLeiding;
+                    case FoutNummer.AfdelingNietBeschikbaar:
+                        // Hier komen we terecht als we van een leid(st)er een lid willen maken, maar er zijn
+                        // geen afdelingen.
+
+                        // In dat geval moeten we het GelieerdePersoonID opnieuw ophalen.
+                        // Op dit moment kan dat enkel door alle liddetails op te vragen.
+                        // TODO: Makkelijkere manier implementeren om lidID om te zetten naar persoonID.
+                        // (Omdat we typisch van een lidfiche komen, zouden we die mapping kunnen cachen; het is maar een idee.)
+                        var info =
+                            ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
+                        gelieerdePersoonID = info.PersoonDetail.GelieerdePersoonID;
+
+                        // Normaalgezien geven we foutmeldingen graag door via de modelstate.
+                        // Maar omdat we hier geen model opbouwen, maar naar een redirect gaan, doe ik
+                        // het toch maar via TempData, hoewel dat niet echt mooi is.
+
+                        TempData["fout"] = Properties.Resources.GeenActieveAfdelingen;
+
                         break;
                     default:
+                        // Een onverwachte exception throwen we sowieso opnieuw, zodat eventuele bugs aan
+                        // de basis van deze exceptions niet ongemerkt blijven zitten.
                         throw;
                 }
-
-                var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
-                gelieerdePersoonID = info.PersoonDetail.GelieerdePersoonID;
             }
 
             return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });
@@ -832,7 +844,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Toont de leden uit een bepaalde afdeling in het meest recente werkjaar
+        /// Toont de leden uit een bepaalde afdeling in het meest recente werkJaar
         /// </summary>
         /// <param name="id">ID van de afdeling.</param>
         /// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
@@ -867,7 +879,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Toont de leden uit een bepaalde functie in het meest recente werkjaar
+        /// Toont de leden uit een bepaalde functie in het meest recente werkJaar
         /// </summary>
         /// <param name="id">ID van de functie.</param>
         /// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>

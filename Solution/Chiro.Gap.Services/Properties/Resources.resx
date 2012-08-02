@@ -157,4 +157,7 @@
     <value>{0} was al als {1} ingeschreven.</value>
     <comment>Param 0: naam van de gelieerde persoon, 1: lidtype</comment>
   </data>
+  <data name="CategorieNietLeeg" xml:space="preserve">
+    <value>De categorie is niet leeg.</value>
+  </data>
 </root>

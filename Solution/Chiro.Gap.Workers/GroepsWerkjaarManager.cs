@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using Chiro.Cdf.Data;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
@@ -18,7 +19,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Worker die alle businesslogica i.v.m. groepswerkjaren bevat
     /// </summary>
-    public class GroepsWerkJaarManager
+    public class GroepsWerkJaarManager : IGroepsWerkJaarManager
     {
         private readonly IGroepsWerkJaarDao _groepsWjDao;
         private readonly IAutorisatieManager _autorisatieMgr;
@@ -228,16 +229,16 @@ namespace Chiro.Gap.Workers
         /// Groepswerkjaar, met daaraan gekoppeld een werkjaarobject
         /// </param>
         /// <returns>
-        /// Einddatum van het gekoppelde werkjaar.
+        /// Einddatum van het gekoppelde werkJaar.
         /// </returns>
-        public static DateTime EindDatum(GroepsWerkJaar groepsWerkJaar)
+        public DateTime EindDatum(GroepsWerkJaar groepsWerkJaar)
         {
             DateTime wjStart = Settings.Default.WerkjaarStartNationaal;
             return new DateTime(groepsWerkJaar.WerkJaar + 1, wjStart.Month, wjStart.Day).AddDays(-1);
         }
 
         /// <summary>
-        /// Maakt een nieuw groepswerkjaar in het gevraagde werkjaar.
+        /// Maakt een nieuw groepswerkjaar in het gevraagde werkJaar.
         /// Persisteert niet ;-P
         /// </summary>
         /// <param name="g">
@@ -255,27 +256,51 @@ namespace Chiro.Gap.Workers
             }
 
             // Bereken gewenste werkjaar
-            var werkjaar = NieuweWerkJaar();
+            var werkJaar = NieuweWerkJaar(g.ID);
 
             // Controle op dubbels moet gebeuren door data access.  (Zie #507)
-            return new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };
+            return new GroepsWerkJaar { Groep = g, WerkJaar = werkJaar };
+        }
+
+        /// <summary>
+        /// Bepaalt of in het gegeven <paramref name='werkJaar' /> op
+	    /// het gegeven <paramref name='tijdstip' /> de jaarovergang al
+	    /// kan doorgaan.
+        /// </summary>
+        /// <param name="tijdstip"> </param>
+        /// <param name="werkJaar">
+        /// Jaartal van het 'huidige' werkjaar (i.e. 2010 voor 2010-2011 enz)
+        /// </param>
+        /// <returns>
+        /// Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden
+        /// </returns>
+        public bool OvergangMogelijk(DateTime tijdstip, int werkJaar)
+        {
+#if JAAROVERGANGDEBUG
+            return true;
+#endif
+            return tijdstip >= StartOvergang(werkJaar);
         }
 
         /// <summary>
         /// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
         /// </summary>
         /// <returns>
-        /// Het jaar waarin dat nieuwe werkjaar begint
+        /// Het jaar waarin dat nieuwe werkJaar begint
         /// </returns>
-        public int NieuweWerkJaar()
+        /// <remarks>De paramter <paramref name="groepID"/> is er enkel voor debugging purposes</remarks>
+        public int NieuweWerkJaar(int groepID)
         {
+#if JAAROVERGANGDEBUG
+            return RecentsteOphalen(groepID).WerkJaar+1;
+#endif
             // Bereken gewenste werkjaar
 
             // Het algoritme kijkt het volgende na:
             // Stel dat de jaarovergang mogelijk wordt vanaf 1 augustus.
-            // Als vandaag voor 1 augustus is, dan is het werkjaar vorig jaar begonnen => huidig jaar - 1
-            // Als vandaag 1 augustus of later is, dan begint het werkjaar dit kalenderjaar => huidig jaar.
-            int werkjaar;
+            // Als vandaag voor 1 augustus is, dan is het werkJaar vorig jaar begonnen => huidig jaar - 1
+            // Als vandaag 1 augustus of later is, dan begint het werkJaar dit kalenderjaar => huidig jaar.
+            int werkJaar;
 
             var startdate = new DateTime(
                 DateTime.Today.Year,
@@ -285,28 +310,28 @@ namespace Chiro.Gap.Workers
             if (DateTime.Today < startdate)
             {
                 // vroeger
-                werkjaar = DateTime.Today.Year - 1;
+                werkJaar = DateTime.Today.Year - 1;
             }
             else
             {
-                werkjaar = DateTime.Today.Year;
+                werkJaar = DateTime.Today.Year;
             }
 
-            return werkjaar;
+            return werkJaar;
         }
 
         /// <summary>
-        /// Bepaalt de datum vanaf wanneer het volgende werkjaar begonnen kan worden
+        /// Bepaalt de datum vanaf wanneer het volgende werkJaar begonnen kan worden
         /// </summary>
         /// <param name="werkJaar">
-        /// Jaartal van het 'huidige' werkjaar (i.e. 2010 voor 2010-2011 enz)
+        /// Jaartal van het 'huidige' werkJaar (i.e. 2010 voor 2010-2011 enz)
         /// </param>
         /// <returns>
-        /// Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden
+        /// Datum in het gegeven werkJaar vanaf wanneer het nieuwe aangemaakt mag worden
         /// </returns>
         public DateTime StartOvergang(int werkJaar)
         {
-            DateTime datum = Settings.Default.BeginOvergangsPeriode;
+            var datum = Settings.Default.BeginOvergangsPeriode;
             return new DateTime(werkJaar + 1, datum.Month, datum.Day);
         }
 
@@ -339,6 +364,33 @@ namespace Chiro.Gap.Workers
             {
                 throw new BestaatAlException<GroepsWerkJaar>(gwj);
             }
+        }
+
+        /// <summary>
+        /// Controleert of de datum <paramref name="dateTime"/> zich in het werkJaar <paramref name="p"/> bevindt.
+        /// </summary>
+        /// <param name="dateTime">
+        /// Te controleren datum
+        /// </param>
+        /// <param name="p">
+        /// Werkjaar.  (2010 voor 2010-2011 enz.)
+        /// </param>
+        /// <returns>
+        /// <c>True</c> als <paramref name="dateTime"/> zich in het werkJaar bevindt; anders <c>false</c>.
+        /// </returns>
+        public bool DatumInWerkJaar(DateTime dateTime, int p)
+        {
+            var werkJaarStart = new DateTime(
+                p,
+                Settings.Default.WerkjaarStartNationaal.Month,
+                Settings.Default.WerkjaarStartNationaal.Day);
+
+            DateTime werkJaarStop = new DateTime(
+                p + 1,
+                Settings.Default.WerkjaarStartNationaal.Month,
+                Settings.Default.WerkjaarStartNationaal.Day).AddDays(-1);
+
+            return werkJaarStart <= dateTime && dateTime <= werkJaarStop;
         }
     }
 }

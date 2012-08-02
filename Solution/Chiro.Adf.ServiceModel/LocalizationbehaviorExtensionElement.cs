@@ -4,42 +4,52 @@ using System.ServiceModel.Configuration;
 
 namespace Chiro.Adf.ServiceModel
 {
+
     /// <summary>
-    /// Represents the configuration element that registers the LocalizationBehavior.
+    /// 
     /// </summary>
+    /// <remarks></remarks>
     public class LocalizationBehaviorExtensionElement : BehaviorExtensionElement
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private ConfigurationPropertyCollection _properties;
 
         /// <summary>
-        /// TODO (#190): Documenteren!
+        /// Creates a behavior extension based on the current configuration settings.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The behavior extension.</returns>
+        /// <remarks></remarks>
         protected override object CreateBehavior()
         {
             return new LocalizationBehavior();
         }
 
         /// <summary>
-        /// TODO (#190): Documenteren!
+        /// Gets the type of behavior.
         /// </summary>
+        /// <returns>A <see cref="T:System.Type"/>.</returns>
+        /// <remarks></remarks>
         public override Type BehaviorType
         {
             get { return typeof(LocalizationBehavior); }
         }
 
         /// <summary>
-        /// TODO (#190): Documenteren!
+        /// Gets the collection of properties.
         /// </summary>
+        /// <returns>The <see cref="T:System.Configuration.ConfigurationPropertyCollection"/> of properties for the element.</returns>
+        /// <remarks></remarks>
         protected override ConfigurationPropertyCollection Properties
         {
             get
             {
-                if (_properties == null)
+                if (this._properties == null)
                 {
-                    _properties = new ConfigurationPropertyCollection { new ConfigurationProperty("contextType", typeof(string)) };
+                    this._properties = new ConfigurationPropertyCollection { new ConfigurationProperty("contextType", typeof(string)) };
                 }
-                return _properties;
+                return this._properties;
             }
         }
     }

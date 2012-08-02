@@ -11,6 +11,7 @@ using System.Linq;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm.Properties;
 
 namespace Chiro.Gap.Orm
@@ -156,5 +157,25 @@ namespace Chiro.Gap.Orm
 				return Persoon.GeboorteDatum.HasValue ? Persoon.GeboorteDatum.Value.AddYears(-ChiroLeefTijd) : Persoon.GeboorteDatum;
 			}
 		}
+
+	    /// <summary>
+	    /// Dit 'kiest' een e-mailadres van een gelieerde persoon dat we zullen gebruiken om hem/haar te mailen.
+	    /// </summary>
+	    /// <returns>
+	    /// Een e-mailadres van deze gelieerde persoon/>
+	    /// </returns>
+	    public string ContactEmail
+	    {
+	        get
+	        {
+	            // Orden eerst op 'we mogen er e-mail naar sturen', en dan op 'is het voorkeursadres'.
+	            // Om maar iets te doen he.
+	            return (from a in Communicatie
+	                    where a.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email
+	                    select a).OrderByDescending(cm => cm.IsVoorOptIn)
+	                .ThenBy(cm => cm.Voorkeur)
+	                .Select(cm => cm.Nummer).FirstOrDefault();
+	        }
+	    }
 	}
 }

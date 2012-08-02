@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Dummies;
+using Chiro.Gap.WorkerInterfaces;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -15,7 +16,7 @@ using Chiro.Gap.Orm;
 
 using Moq;
 
-namespace Chiro.Gap.Workers.Test.CustomIoc
+namespace Chiro.Gap.Workers.Test
 {
     /// <summary>
     /// Dit is een testclass voor Unit Tests van GroepsWerkJaarManagerTest

@@ -21,7 +21,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public int WerkJaar { get; set; }
 
 	    /// <summary>
-	    /// De ID van het werkjaar
+	    /// De ID van het werkJaar
 	    /// </summary>
 	    [DataMember]
 		public int WerkJaarID { get; set; }
@@ -33,7 +33,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public WerkJaarStatus Status { get; set; }
 
 	    /// <summary>
-	    /// De ID van de groep die in het opgegeven werkjaar actief is
+	    /// De ID van de groep die in het opgegeven werkJaar actief is
 	    /// </summary>
 	    [DataMember]
 		public int GroepID { get; set; }

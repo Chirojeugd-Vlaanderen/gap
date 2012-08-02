@@ -74,12 +74,14 @@ namespace Chiro.Adf
 			return CallProviders(p => p.GetService<I>(instanceName), string.Format("Service type '{0}' could not be resolved.", typeof(I)));
 		}
 
+
         /// <summary>
-        /// TODO (#190): Documenteren!
+        /// Gets the configure service implementation for the specified interface.
         /// </summary>
         /// <typeparam name="I"></typeparam>
-        /// <param name="arguments"></param>
+        /// <param name="arguments">.ctor arguments</param>
         /// <returns></returns>
+        /// <remarks></remarks>
 		public I GetService<I>(object arguments) where I : class
 		{
 			return CallProviders(p => p.GetService<I>(arguments), string.Format("Service type '{0}' could not be resolved.", typeof(I)));
@@ -107,11 +109,12 @@ namespace Chiro.Adf
 		}
 
         /// <summary>
-        /// TODO (#190): Documenteren
+        /// Gets the configured service implementation for the specified interface and instance name.
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="instanceName"></param>
+        /// <param name="type">The type.</param>
+        /// <param name="instanceName">Name of the instance.</param>
         /// <returns></returns>
+        /// <remarks></remarks>
 		public object GetService(Type type, string instanceName)
 		{
 			return CallProviders(p => p.GetService(type, instanceName), string.Format("Service type '{0}' with name '{1}' could not be resolved.", type, instanceName));

@@ -25,7 +25,7 @@ namespace Chiro.Gap.Data.Ef
         /// </summary>
         /// <param name="groepID">ID van de groep</param>
         /// <param name="inschrijvenMogelijk">Als dit <c>true</c> is, worden enkel de uitstappen van het
-        /// huidige werkjaar van de groep opgehaald.</param>
+        /// huidige werkJaar van de groep opgehaald.</param>
         /// <returns>Details van uitstappen</returns>
         public IEnumerable<Uitstap> OphalenVanGroep(int groepID, bool inschrijvenMogelijk)
         {
@@ -97,12 +97,12 @@ namespace Chiro.Gap.Data.Ef
         }
 
         /// <summary>
-        /// Haalt alle bivakken (geen uitstappen) op van alle groepen, uit gegeven <paramref name="werkjaar"/>,
+        /// Haalt alle bivakken (geen uitstappen) op van alle groepen, uit gegeven <paramref name="werkJaar"/>,
         /// inclusief bivakplaats (met adres), contactpersoon, groepswerkjaar (met groep)
         /// </summary>
-        /// <param name="werkjaar">Werkjaar waarvan de bivakken opgehaald moeten worden.</param>
-        /// <returns>Alle bivakken uit het <paramref name="werkjaar"/></returns>
-        public IEnumerable<Uitstap> AlleBivakkenOphalen(int werkjaar)
+        /// <param name="werkJaar">Werkjaar waarvan de bivakken opgehaald moeten worden.</param>
+        /// <returns>Alle bivakken uit het <paramref name="werkJaar"/></returns>
+        public IEnumerable<Uitstap> AlleBivakkenOphalen(int werkJaar)
         {
             IEnumerable<Uitstap> bivakken;
             using (var db = new ChiroGroepEntities())
@@ -111,7 +111,7 @@ namespace Chiro.Gap.Data.Ef
                     (from u in
                          db.Uitstap.Include(b => b.ContactDeelnemer.GelieerdePersoon.Persoon).Include(
                              b => b.GroepsWerkJaar.Groep).Include(b => b.Plaats.Adres)
-                     where u.IsBivak && u.GroepsWerkJaar.WerkJaar == werkjaar
+                     where u.IsBivak && u.GroepsWerkJaar.WerkJaar == werkJaar
                      select u).ToArray();
 
                 var adressen = (from b in bivakken

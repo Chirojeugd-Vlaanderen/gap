@@ -93,11 +93,11 @@ namespace Chiro.Gap.Services.Test
 			#endregion
 
 			#region Act
-			GroepInfo g = svc.InfoOphalen(TestInfo.GROEPID);
+			GroepInfo g = svc.InfoOphalen(TestInfo.GROEP_ID);
 			#endregion
 
 			#region Assert
-			Assert.IsTrue(g.ID == TestInfo.GROEPID);
+			Assert.IsTrue(g.ID == TestInfo.GROEP_ID);
 			#endregion
 		}
 
@@ -112,19 +112,19 @@ namespace Chiro.Gap.Services.Test
 			#endregion
 
 			#region Act
-			GroepDetail g = svc.DetailOphalen(TestInfo.GROEPID);
+			GroepDetail g = svc.DetailOphalen(TestInfo.GROEP_ID);
 
 			CategorieInfo categorie = (from cat in g.Categorieen
-					           where cat.ID == TestInfo.CATEGORIEID
+					           where cat.ID == TestInfo.CATEGORIE_ID
 					           select cat).FirstOrDefault();
 
 			AfdelingsJaarDetail afdeling = (from afd in g.Afdelingen
-						 where afd.AfdelingID == TestInfo.AFDELING1ID
+						 where afd.AfdelingID == TestInfo.AFDELING1_ID
 						 select afd).FirstOrDefault();
 			#endregion
 
 			#region Assert
-			Assert.IsTrue(g.ID == TestInfo.GROEPID);
+			Assert.IsTrue(g.ID == TestInfo.GROEP_ID);
 			Assert.IsTrue(categorie != null);
 			Assert.IsTrue(afdeling != null);
 			#endregion

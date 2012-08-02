@@ -45,7 +45,9 @@
     <Compile Include="IAuthenticatieManager.cs" />
     <Compile Include="IAutorisatieManager.cs" />
     <Compile Include="IChiroGroepenManager.cs" />
+    <Compile Include="IGelieerdePersonenManager.cs" />
     <Compile Include="IGroepsWerkJaarManager.cs" />
+    <Compile Include="ILedenManager.cs" />
     <Compile Include="IVeelGebruikt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -10,10 +10,12 @@ using System.Linq;
 
 using AutoMapper;
 
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -141,7 +143,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam));
 
             // Die mapping naar PersoonDetail werkt enkel las er aan de persoon alleen leden
-            // uit het huidige werkjaar gekoppeld zijn.
+            // uit het huidige werkJaar gekoppeld zijn.
             // Idem voor abonnementen!
 
             Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
@@ -320,7 +322,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src.LidgeldBetaald))
                 .ForMember(
                     dst => dst.AfdelingIdLijst,
-                    opt => opt.MapFrom(src => LedenManager.AfdelingIdLijstGet(src)))
+                    opt => opt.MapFrom(src => src.AfdelingIds))
                 .ForMember(
                     dst => dst.Functies,
                     opt => opt.MapFrom(src => src.Functie))
@@ -509,7 +511,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             // Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
             // dus passen we de link aan in de andere richting!
             // Maar kunnen er meerdere leden zijn?
-            // @Broes: Ja.  Typisch als de persoon gedurende meer dan 1 werkjaar lid is.
+            // @Broes: Ja.  Typisch als de persoon gedurende meer dan 1 werkJaar lid is.
 
             Mapper.CreateMap<GelieerdePersoon, PersoonLidInfo>()
                 .ForMember(
@@ -631,7 +633,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         #region Helperfuncties waarvan ik niet zeker ben of ze hier goed staan.
 
         /// <summary>
-        /// Controleert of een lid <paramref name="src"/>in zijn werkjaar verzekerd is wat betreft de verzekering gegeven
+        /// Controleert of een lid <paramref name="src"/>in zijn werkJaar verzekerd is wat betreft de verzekering gegeven
         /// door <paramref name="verzekering"/>.
         /// </summary>
         /// <param name="src">Lid van wie moet nagekeken worden of het verzekerd is</param>
@@ -644,10 +646,12 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 return false;
             }
 
+            var gwjMgr = Factory.Maak<IGroepsWerkJaarManager>();
+
             var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
                                         where v.VerzekeringsType.ID == (int)verzekering &&
-                                          (LedenManager.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
-                                           LedenManager.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
+                                          (gwjMgr.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
+                                           gwjMgr.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
                                         select v;
 
             return persoonsverzekeringen.FirstOrDefault() != null;

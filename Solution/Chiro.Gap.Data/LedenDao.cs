@@ -339,15 +339,15 @@ namespace Chiro.Gap.Data.Ef
 
         /// <summary>
         /// Haalt een pagina op van de gevraagde gegevens:
-        /// leden van een bepaalde groep in een gegeven werkjaar en die niet uitgeschreven zijn
+        /// leden van een bepaalde groep in een gegeven werkJaar en die niet uitgeschreven zijn
         /// </summary>
-        /// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
+        /// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkJaar</param>
         /// <param name="sortering">Parameter waarop de gegevens gesorteerd zijn</param>
-        /// <returns>De leden die de groep in dat werkjaar heeft/had</returns>
+        /// <returns>De leden die de groep in dat werkJaar heeft/had</returns>
         /// <remarks>
-        /// Pagineren gebeurt per werkjaar.
+        /// Pagineren gebeurt per werkJaar.
         /// De parameters pagina, paginaGrootte en aantalTotaal zijn hier niet nodig
-        /// omdat alle leden van dat werkjaar samen getoond worden.
+        /// omdat alle leden van dat werkJaar samen getoond worden.
         /// </remarks>
         public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LidEigenschap sortering)
         {
@@ -373,14 +373,14 @@ namespace Chiro.Gap.Data.Ef
 
         /// <summary>
         /// Haalt een pagina op van de gevraagde gegevens:
-        /// leden van een bepaalde groep in een gegeven werkjaar, die in de gegeven afdeling zitten en die niet uitgeschreven zijn
+        /// leden van een bepaalde groep in een gegeven werkJaar, die in de gegeven afdeling zitten en die niet uitgeschreven zijn
         /// </summary>
-        /// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
+        /// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkJaar</param>
         /// <param name="afdelingsID">ID van de afdeling waar de leden in moeten zitten</param>
         /// <param name="sortering">Parameter waarop de gegevens gesorteerd zijn</param>
-        /// <returns>De leden die de groep in dat werkjaar heeft/had en die in de gegeven afdeling zitten/zaten</returns>
+        /// <returns>De leden die de groep in dat werkJaar heeft/had en die in de gegeven afdeling zitten/zaten</returns>
         /// <remarks>
-        /// Pagineren gebeurt per werkjaar.
+        /// Pagineren gebeurt per werkJaar.
         /// </remarks>
         public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LidEigenschap sortering)
         {
@@ -412,14 +412,14 @@ namespace Chiro.Gap.Data.Ef
 
         /// <summary>
         /// Haalt een pagina op van de gevraagde gegevens:
-        /// leden van een bepaalde groep in een gegeven werkjaar, die een bepaalde functie hebben/hadden en die niet uitgeschreven zijn
+        /// leden van een bepaalde groep in een gegeven werkJaar, die een bepaalde functie hebben/hadden en die niet uitgeschreven zijn
         /// </summary>
-        /// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
+        /// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkJaar</param>
         /// <param name="functieID">ID van de functie die de leden moeten hebben</param>
         /// <param name="sortering">Parameter waarop de gegevens gesorteerd zijn</param>
-        /// <returns>De leden met de gegeven functie die de groep in dat werkjaar heeft/had</returns>
+        /// <returns>De leden met de gegeven functie die de groep in dat werkJaar heeft/had</returns>
         /// <remarks>
-        /// Pagineren gebeurt per werkjaar.
+        /// Pagineren gebeurt per werkJaar.
         /// Haalt GEEN afdeling mee op (nakijken of dit ook effectief niet nodig is?)
         /// </remarks>
         public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LidEigenschap sortering)

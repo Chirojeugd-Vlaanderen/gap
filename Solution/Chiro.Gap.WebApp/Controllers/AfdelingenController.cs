@@ -39,7 +39,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// met dan de mogelijkheid  om ze te activeren.
         /// </summary>
         /// <param name="groepID">ID van de groep die de pagina oproept, en van dewelke we dus gegevens moeten tonen</param>
-        /// <returns>Het afdelingsoverzicht voor het huidige werkjaar</returns>
+        /// <returns>Het afdelingsoverzicht voor het huidige werkJaar</returns>
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
@@ -60,12 +60,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new AfdelingsOverzichtModel();
 			BaseModelInit(model, groepID);
 
-			// AfdelingDetails voor Afdelingen die in het opgegeven werkjaar voorkomen als AfdelingsJaar
+			// AfdelingDetails voor Afdelingen die in het opgegeven werkJaar voorkomen als AfdelingsJaar
 			model.Actief =
 				ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
 				(groep => groep.ActieveAfdelingenOphalen(groepsWerkJaarID));
 
-			// AfdelingDetails voor Afdelingen die in het opgegeven werkjaar voorkomen als AfdelingsJaar
+			// AfdelingDetails voor Afdelingen die in het opgegeven werkJaar voorkomen als AfdelingsJaar
 
 			model.NietActief
 				= ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>(svc => svc.OngebruikteAfdelingenOphalen(groepsWerkJaarID));
@@ -164,7 +164,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
         /// <summary>
-        /// Verwijdert een afdeling uit het lijstje van actieve afdelingen in een bepaald werkjaar.
+        /// Verwijdert een afdeling uit het lijstje van actieve afdelingen in een bepaald werkJaar.
         /// </summary>
         /// <param name="groepID">ID van de groep die we aan het bewerken zijn</param>
         /// <param name="id">ID van het afdelingsjaar dat we willen verwijderen</param>

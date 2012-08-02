@@ -30,12 +30,12 @@ namespace Chiro.Gap.Dummies
 
 		public Kind Bewaren(Kind kind, LidExtras extras)
 		{
-			throw new NotImplementedException();
-		}
+            throw new NotImplementedException();
+        }
 
 		public Kind Ophalen(int lidID, LidExtras extras)
 		{
-			throw new NotImplementedException();
+            throw new NotImplementedException();
 		}
 	}
 }

@@ -18,7 +18,7 @@ namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
     /// Controller die gebruikt wordt om een gelieerde persoon te abonneren op een tijdschrift, voor
-    /// het huidige werkjaar.  Momenteel zijn er enkel Dubbelpuntabonnementen, op termijn mogelijk
+    /// het huidige werkJaar.  Momenteel zijn er enkel Dubbelpuntabonnementen, op termijn mogelijk
     /// ook andere publicaties.
     /// </summary>
     public class AbonnementenController : BaseController

@@ -3,7 +3,7 @@ _ReSharper.*
 *.user
 *.suo
 *~
-
+*.ReSharper
 
 # /
 /*.ncb

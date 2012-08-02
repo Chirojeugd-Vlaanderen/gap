@@ -71,12 +71,12 @@ namespace Chiro.Gap.Data.Test
 		{
 			_catdao = Factory.Maak<ICategorieenDao>();
 			_gpdao = Factory.Maak<IGelieerdePersonenDao>();
-			_gp2ID = TestInfo.GELIEERDEPERSOON2ID;
+			_gp2ID = TestInfo.GELIEERDE_PERSOON2_ID;
 
 			// Als de persoon die we in ToevoegenAanCategorie aan de categorie willen toevoegen
 			// er al in zit, dan moet die eerst verwijderd worden.
 
-			var cat = _catdao.Ophalen(TestInfo.CATEGORIE3ID, ct => ct.GelieerdePersoon);
+			var cat = _catdao.Ophalen(TestInfo.CATEGORIE3_ID, ct => ct.GelieerdePersoon);
 			var gevondenPersoon = (from gpers in cat.GelieerdePersoon
 									where gpers.ID == _gp2ID
 									select gpers).FirstOrDefault();
@@ -106,10 +106,10 @@ namespace Chiro.Gap.Data.Test
 		public void CategorieOphalen()
 		{
 			// act
-			Categorie c = _catdao.Ophalen(TestInfo.CATEGORIEID, foo => foo.GelieerdePersoon);
+			Categorie c = _catdao.Ophalen(TestInfo.CATEGORIE_ID, foo => foo.GelieerdePersoon);
 
 			// assert
-			Assert.IsTrue(c.ID == TestInfo.CATEGORIEID);
+			Assert.IsTrue(c.ID == TestInfo.CATEGORIE_ID);
 		}
 
 		/// <summary>
@@ -119,7 +119,7 @@ namespace Chiro.Gap.Data.Test
 		public void CategorieOphalenGroepCode()
 		{
 			// act
-			Categorie c = _catdao.Ophalen(TestInfo.GROEPID, TestInfo.CATEGORIECODE);
+			Categorie c = _catdao.Ophalen(TestInfo.GROEP_ID, TestInfo.CATEGORIE_CODE);
 
 			// assert
 			Assert.IsTrue(c != null);
@@ -137,13 +137,13 @@ namespace Chiro.Gap.Data.Test
 
 			// act
 			var pagina = _gpdao.OphalenUitCategorie(
-				TestInfo.CATEGORIEID,
+				TestInfo.CATEGORIE_ID,
 				"A", PersoonSorteringsEnum.Naam,
 				out aantalTotaal,
 				PersoonsExtras.Geen);
 
 			// assert
-			Assert.IsTrue(aantalTotaal == TestInfo.AANTALINCATEGORIE);
+			Assert.IsTrue(aantalTotaal == TestInfo.AANTAL_IN_CATEGORIE);
 		}
 
 		/// <summary>
@@ -157,17 +157,17 @@ namespace Chiro.Gap.Data.Test
 
 			// act
 			var pagina = _gpdao.OphalenUitCategorie(
-				TestInfo.CATEGORIE2ID,
-                TestInfo.GP13LETTER.ToString(), PersoonSorteringsEnum.Naam,
+				TestInfo.CATEGORIE2_ID,
+                TestInfo.GP_1_3_LETTER.ToString(), PersoonSorteringsEnum.Naam,
 				out aantalTotaal,
 				PersoonsExtras.AlleLeden);
 
 			// assert
 			GelieerdePersoon lid = (from gp in pagina
-									where gp.ID == TestInfo.GELIEERDEPERSOON3ID
+									where gp.ID == TestInfo.GELIEERDE_PERSOON3_ID
 									select gp).FirstOrDefault();
 			GelieerdePersoon geenLid = (from gp in pagina
-										where gp.ID == TestInfo.GELIEERDEPERSOONID
+										where gp.ID == TestInfo.GELIEERDE_PERSOON_ID
 										select gp).FirstOrDefault();
 
 			Assert.IsNotNull(lid);
@@ -194,7 +194,7 @@ namespace Chiro.Gap.Data.Test
 			// categorie te hebben.
 
 			GelieerdePersoon gp = _gpdao.Ophalen(_gp2ID);
-			Categorie cat = _catdao.Ophalen(TestInfo.CATEGORIE3ID);
+			Categorie cat = _catdao.Ophalen(TestInfo.CATEGORIE3_ID);
 
 			// Act
 
@@ -206,7 +206,7 @@ namespace Chiro.Gap.Data.Test
 			_catdao.Bewaren(cat);
 
 			// Assert
-			var opgehaald = _catdao.Ophalen(TestInfo.CATEGORIE3ID, ctg => ctg.GelieerdePersoon);
+			var opgehaald = _catdao.Ophalen(TestInfo.CATEGORIE3_ID, ctg => ctg.GelieerdePersoon);
 			var toegevoegd = (from gpers in opgehaald.GelieerdePersoon
 								where gpers.ID == _gp2ID
 								select gpers).FirstOrDefault();
