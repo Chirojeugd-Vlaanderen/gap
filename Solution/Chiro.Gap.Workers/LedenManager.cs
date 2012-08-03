@@ -681,11 +681,12 @@ namespace Chiro.Gap.Workers
                     {
                         if (!lid.NonActief)
                         {
+                            // Actieve leden altijd syncen
                             _sync.Bewaren(lid);
                         }
                         else if (lid.EindeInstapPeriode > DateTime.Now)
                         {
-                            // Verwijderen tijdens probeerperiode mag natuurlijk nog wel op het einde van het werkjaar
+                            // Verwijderen tijdens probeerperiode mag natuurlijk nog wel
                             _sync.Verwijderen(lid);
                         }
                     }
@@ -713,11 +714,12 @@ namespace Chiro.Gap.Workers
                     {
                         if (!lid.NonActief)
                         {
+                            // Actieve leden altijd syncen
                             _sync.Bewaren(lid);
                         }
                         else if (lid.EindeInstapPeriode > DateTime.Now || lid.Niveau > Niveau.Groep)
                         {
-                            // verwijderen enkel in een van deze gevallen:
+                            // verwijderen uit Kipadmin enkel in een van deze gevallen:
                             // * instapperiode is nog niet voorbij (voor gewone groepen)
                             // * kaderleden.  Deze hebben namelijk geen instapperiode, en het lidgeld is onafhankelijk
                             // van het aantal ingeschreven personen.
