@@ -72,17 +72,20 @@ namespace Chiro.Gap.Services
         /// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
         /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
         /// <returns>Een lijst met inschrijvingsvoorstellen, per groep gesorteerd op geboortejaar met Chiroleeftijd</returns>
+        /// <remarks>We gaan er voorlopig van uit dat alle gelieerde personen aan dezelfde groep gekoppeld zijn. Anders 
+        /// zal GelieerdePersonenManager.Ophalen crashen (er staat daar een assert)</remarks>
         public IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
         {
             try
             {
                 var foutBerichtenBuilder = new StringBuilder();
 
-                // Haal meteen alle gelieerde personen op, gecombineerd met hun groep
-                var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Groep);
+                // Haal meteen alle gelieerde personen op, gecombineerd met hun groep en eventueel huidig lid
+                var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Groep|PersoonsExtras.LedenDitWerkJaar);
 
-                // Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
-                // al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
+                // We gaan ervan uit dat alle gelieerde personen op dit moment tot dezelfde groep behoren.
+                // Maar in de toekomst is dat misschien niet meer zo. Dus laten we onderstaande constructie
+                // maar staan.
                 var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
 
                 var voorgesteldelijst = new List<InTeSchrijvenLid>();
@@ -97,7 +100,7 @@ namespace Chiro.Gap.Services
                     {
                         try
                         {
-                            var bestaandLid = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+                            var bestaandLid = gp.Lid.FirstOrDefault();
 
                             if (bestaandLid != null && !bestaandLid.NonActief) // bestaat al als actief lid
                             {
