@@ -387,7 +387,11 @@ namespace Chiro.Gap.Services
             {
                 if (e.FoutNummer==FoutNummer.AfdelingNietBeschikbaar)
                 {
-                    // Een exception die we verwachten, laten we afhandelen
+                    // Deze exception treedt normaal gezien enkel op als er geen afdelingen zijn,
+                    // of als het lid te jong is (maar dat moeten we nog wel implementeren,
+                    // zie #1326).
+                    //
+                    // Omdat we weten dat de exception mogelijk optreedt, handelen we ze af.
                     FoutAfhandelaar.FoutAfhandelen(e);
                 }
 

@@ -481,7 +481,6 @@ namespace Chiro.Gap.Workers
             var gelieerdePersoon = lid.GelieerdePersoon;
             var groepsWerkJaar = lid.GroepsWerkJaar;
 
-            Lid nieuwLid;
             if (!_autorisatieMgr.IsGavLid(lid.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
@@ -537,7 +536,7 @@ namespace Chiro.Gap.Workers
             }
 
             // Maak opnieuw lid
-            nieuwLid = NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstellid);
+            Lid nieuwLid = NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstellid);
             // de 'false' hierboven geeft aan dat het niet om een jaarovergang gaat.  Bij een jaarovergang worden
             // dan ook geen bestaande leden gewijzigd, enkel nieuwe gemaakt.
 
