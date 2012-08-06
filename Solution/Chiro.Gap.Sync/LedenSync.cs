@@ -146,6 +146,7 @@ namespace Chiro.Gap.Sync
                 }
                 else
                 {
+                    Debug.Assert(l is Leiding);
                     officieleAfdelingen = (from a in (l as Leiding).AfdelingsJaar
                                            select _afdelingVertaling[(NationaleAfdeling)a.OfficieleAfdeling.ID]).ToList
                         ();
@@ -165,7 +166,8 @@ namespace Chiro.Gap.Sync
 
                 if (l.GelieerdePersoon.Persoon.AdNummer != null)
                 {
-                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidBewaren(l.GelieerdePersoon.Persoon.AdNummer ?? 0, lidGedoe));
+                    // AD-nummer gekend. Persoon dus zeker gekend door Kipadmin.
+                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidBewaren(l.GelieerdePersoon.Persoon.AdNummer.Value, lidGedoe));
                 }
                 else
                 {
@@ -176,9 +178,9 @@ namespace Chiro.Gap.Sync
 
                     // Ook persoonsgegevens meesturen
 
-                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidBewaren(
-                        Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon),
-                        lidGedoe));
+                    var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon);
+
+                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidBewaren(details, lidGedoe));
                 }
             }
         }

@@ -47,30 +47,35 @@ namespace Chiro.Gap.Data.Ef
         /// <remarks>De adresobjecten moeten al gekoppeld zijn; deze method instantieert enkel nog straat, gemeente en land.</remarks>
         public static IEnumerable<GelieerdePersoon> VoorkeursAdresKoppelen(IEnumerable<GelieerdePersoon> gelieerdePersonen)
         {
-            var alleAdressen = from gp in gelieerdePersonen
-                               where gp.PersoonsAdres != null
-                               select gp.PersoonsAdres.Adres;
-
-            // De truuk is gewoon de informatie van de adressen te instantiëren: eerst die van de 
-            // Belgische, dan die van de buitenlandse.
+            // De truuk is gewoon de informatie van de adressen te instantiëren, als Belgisch of
+            // buitenlands adres.
             // Entity framework zal ervoor zorgen dat de extra info aan de reeds geladen adresobjecten
             // wordt gekoppeld.
 
-            foreach (var adr in alleAdressen)
+            var alleGps = gelieerdePersonen.ToArray();
+
+            foreach (var gp in alleGps)
             {
-                if (adr is BelgischAdres)
+                gp.PersoonsAdresReference.Load();
+
+                if (gp.PersoonsAdres != null)
                 {
-                    (adr as BelgischAdres).StraatNaamReference.Load();
-                    (adr as BelgischAdres).WoonPlaatsReference.Load();
-                }
-                else
-                {
-                    Debug.Assert(adr is BuitenLandsAdres);
-                    ((BuitenLandsAdres)adr).LandReference.Load();
+                    gp.PersoonsAdres.AdresReference.Load();
+                    var adr = gp.PersoonsAdres.Adres;
+                    if (adr is BelgischAdres)
+                    {
+                        (adr as BelgischAdres).StraatNaamReference.Load();
+                        (adr as BelgischAdres).WoonPlaatsReference.Load();
+                    }
+                    else
+                    {
+                        Debug.Assert(adr is BuitenLandsAdres);
+                        ((BuitenLandsAdres) adr).LandReference.Load();
+                    }
                 }
             }
 
-            return gelieerdePersonen;
+            return alleGps;
         }
 
         /// <summary>
