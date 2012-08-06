@@ -189,7 +189,14 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// Gebruikersrechten die een (gelieerde) persoon heeft/had
         /// </summary>
-        GebruikersRechten = 0x800
+        GebruikersRechten = 0x800,
+
+        /// <summary>
+        /// Wat nodig is om de persoon naar Kipadmin te sturen. Als er een AD-nummer is, dan is dat
+        /// AD-nummer voldoende. Is het AD-nummer in aanvraag, dan is de PersoonID voldoende. In 
+        /// de andere gevallen moet voorkeursadres en communicatie mee.
+        /// </summary>
+        KipIdentificatie = 0x1000
     }
 
     /// <summary>

@@ -177,7 +177,7 @@ namespace Chiro.Gap.Services
 
                 var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(
                     lidInformatie.Select(e => e.GelieerdePersoonID),
-                    PersoonsExtras.Groep | PersoonsExtras.VoorkeurAdres);
+                    PersoonsExtras.Groep | PersoonsExtras.KipIdentificatie | PersoonsExtras.LedenDitWerkJaar);
 
                 // Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
                 // al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
@@ -200,36 +200,40 @@ namespace Chiro.Gap.Services
                             // resultaat opleveren.  Als er toch al een lid is, worden persoon, voorkeursadres, officiele afdeling,
                             // functies ook opgehaald, omdat een eventueel geheractiveerd lid opnieuw naar Kipadmin zal moeten.
 
-                            var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+                            var l = gp.Lid.FirstOrDefault();    // We hadden daarnet met de gelieerde persoon zijn huidig
+                                                                // lidobject mee opgehaald (if any)
 
                            // TODO (#195, #691): Dit is businesslogica, en hoort dus thuis in de workers.
 
                             if (l != null) // al ingeschreven
                             {
-                                // We hebben al een lid, dat waarschijnlijk ooit uitgeschreven was.  Aan dat lid is meteen
-                                // een groepswerkjaar gekoppeld, maar daaraan hangen geen afdelingsjaren.  Dat is jammer,
-                                // want LedenManager.Wijzigen heeft die nodig om te zien of de gevraagde afdeling wel
-                                // overeenkomt met een afdelingsjaar van het huidige groepswerkjaar.
-                                //
-                                // We hebben die afdelingsjaren echter al, want die zijn daarnet mee opgehaald met gwj.
-                                // Ik ga die afdelingsjaren dus stieken overzetten van gwj naar l.GroepsWerkJaar.  Proper
-                                // is het alleszins niet, maar ik doe het toch, omdat ik weet dat het hier geen kwaad kan,
-                                // en omdat er geen tijd is voor een mooie oplossing.  Er zal waarschijnlijk eerst een 
-                                // refactoring van de backend nodig zijn (#1250).
-
-                                foreach (var aj in gwj.AfdelingsJaar.ToArray())
-                                {
-                                    aj.GroepsWerkJaar = l.GroepsWerkJaar;
-                                    l.GroepsWerkJaar.AfdelingsJaar.Add(aj);
-                                }
-
                                 if (!l.NonActief)
                                 {
+                                    // Al ingeschreven als actief lid; we doen er verder niets mee.
+                                    // (Behalve een foutbericht meegeven, wat ook niet echt correct is, zie #1053)
+
                                     foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
                                     continue;
                                 }
+
+                                // We hebben al een lid, dat ooit uitgeschreven was.  Als we straks LedenManager.Wijzigen
+                                // gaan gebruiken om dat lid terug in te schrijven, gaat die method nakijken of afdelingen 
+                                // in lidInformatie wel gekoppeld zijn aan het groepswerkjaar waaraan het lid gekoppeld is.  Maar die
+                                // laatste koppeling hebben we niet mee opgehaald.
+
+                                // Daaorm een beetje foefelare. We hebben het groepswerkjaar wel, in gwj.  Daar hangen alle afdelingen
+                                // aan vast. Als we nu het gevonden lid koppelen aan dat groepswerkjaar, dan loopt het hopelijk goed
+                                // af.
+
+                                // Proper is dat niet, maar ik doe het toch, omdat ik weet dat het hier geen kwaad kan,
+                                // en omdat er geen tijd is voor een mooie oplossing.  Er zal waarschijnlijk eerst een 
+                                // refactoring van de backend nodig zijn (#1250).
+
+                                l.GroepsWerkJaar = gwj;
+                                gwj.Lid.Add(l);
+
                                 var gp1 = gp;
-                                l = _ledenMgr.Wijzigen(l, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
+                                _ledenMgr.Wijzigen(l, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
 
                                 // 'Wijzigen' persisteert zelf
                             }
