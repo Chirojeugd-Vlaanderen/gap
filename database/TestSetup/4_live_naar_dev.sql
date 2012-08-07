@@ -3,9 +3,10 @@
 -- Hier moeten alle aanpassingen komen aan de database die nodig zijn om de live-db
 -- om te zetten naar de db die gebruikt wordt in dev.
 
-USE gap_dev;
+USE gap_tst;
 
 ALTER TABLE lid.Lid ADD UitschrijfDatum DATETIME NULL;
+GO
 
 UPDATE lid.Lid SET UitschrijfDatum = '2012-08-01' WHERE NonActief=1;
 

@@ -485,6 +485,9 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
+            Lid nieuwLid;  // Deze declaratie moet buiten de TransactionScope staan,
+                           // anders compileert de solution niet met transactions enabled! (Zie #1336)
+
 #if KIPDORP
             using (var tx = new TransactionScope())
             {
@@ -535,7 +538,7 @@ namespace Chiro.Gap.Workers
             }
 
             // Maak opnieuw lid
-            Lid nieuwLid = NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstellid);
+            nieuwLid = NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstellid);
             // de 'false' hierboven geeft aan dat het niet om een jaarovergang gaat.  Bij een jaarovergang worden
             // dan ook geen bestaande leden gewijzigd, enkel nieuwe gemaakt.
 
