@@ -2,6 +2,7 @@
 //   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -88,7 +89,8 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="werkjaar">
         /// Het werkjaar waarin het lid uitgeschreven moet worden
         /// </param>
-        public void LidVerwijderen(int adNummer, string stamNummer, int werkjaar)
+        /// <param name="uitschrijfDatum"> </param>
+        public void LidVerwijderen(int adNummer, string stamNummer, int werkjaar, DateTime uitschrijfDatum)
         {
         }
 
@@ -105,7 +107,8 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="werkjaar">
         /// Het werkjaar waarin die persoon niet ingeschreven moet zijn
         /// </param>
-        public void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkjaar)
+        /// <param name="uitschrijfDatum"> </param>
+        public void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkjaar, DateTime uitschrijfDatum)
         {
         }
 

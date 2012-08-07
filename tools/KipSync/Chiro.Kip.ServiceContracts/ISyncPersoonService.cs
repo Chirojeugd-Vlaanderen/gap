@@ -2,6 +2,7 @@
 //   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 
@@ -139,15 +140,13 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="werkjaar">
         /// Werkjaar te verwijderen lid
         /// </param>
+        /// <param name="uitschrijfDatum"> uitschrijfdatum zoals geregistreerd in GAP</param>
         /// <remarks>
         /// Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void LidVerwijderen(
-            int adNummer,
-            string stamNummer,
-            int werkjaar);
+        void LidVerwijderen(int adNummer, string stamNummer, int werkjaar, DateTime uitschrijfDatum);
 
         /// <summary>
         /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
@@ -161,15 +160,13 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="werkjaar">
         /// Werkjaar van het lid
         /// </param>
+        /// <param name="uitschrijfDatum">uitschrijfdatum zoals geregistreerd in GAP</param>
         /// <remarks>
         /// Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void NieuwLidVerwijderen(
-            PersoonDetails details,
-            string stamNummer,
-            int werkjaar);
+        void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkjaar, DateTime uitschrijfDatum);
 
         /// <summary>
         /// Updatet de functies van een lid.
