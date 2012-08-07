@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ChiroGroepModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="ChiroGroepModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="ChiroGroepModelStoreContainer">
           <EntitySet Name="Abonnement" EntityType="ChiroGroepModel.Store.Abonnement" store:Type="Tables" Schema="abo" />
           <EntitySet Name="Publicatie" EntityType="ChiroGroepModel.Store.Publicatie" store:Type="Tables" Schema="abo" />
@@ -372,8 +372,8 @@
           <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="80" />
           <Property Name="AdresID" Type="int" Nullable="false" />
           <Property Name="GelieerdePersoonID" Type="int" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="GroepID" Type="int" Nullable="false" />
+          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Uitstap">
           <Key>
@@ -387,8 +387,8 @@
           <Property Name="Opmerkingen" Type="text" />
           <Property Name="PlaatsID" Type="int" />
           <Property Name="GroepsWerkJaarID" Type="int" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="ContactDeelnemerID" Type="int" />
+          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Categorie">
           <Key>
@@ -508,7 +508,6 @@
             <PropertyRef Name="LidID" />
           </Key>
           <Property Name="LidgeldBetaald" Type="bit" />
-          <Property Name="NonActief" Type="bit" />
           <Property Name="Verwijderd" Type="bit" />
           <Property Name="VolgendWerkjaar" Type="smallint" />
           <Property Name="LidID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
@@ -516,6 +515,8 @@
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
           <Property Name="EindeInstapPeriode" Type="smalldatetime" />
+          <Property Name="UitschrijfDatum" Type="datetime" />
+          <Property Name="NonActief" Type="bit" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="LidFunctie">
           <Key>
@@ -1577,7 +1578,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="LidgeldBetaald" Type="Boolean" Nullable="true" />
-          <Property Name="NonActief" Type="Boolean" Nullable="false" />
+          <Property Name="NonActief" Type="Boolean" Nullable="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="Verwijderd" Type="Boolean" Nullable="false" />
           <Property Name="VolgendWerkjaarInt" Type="Int16" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
@@ -1586,6 +1587,7 @@
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Lid_GelieerdePersoon" FromRole="Lid" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="Functie" Relationship="ChiroGroepModel.LidFunctie" FromRole="Lid" ToRole="Functie" />
           <Property Name="EindeInstapPeriode" Type="DateTime" Nullable="true" />
+          <Property Type="DateTime" Name="UitschrijfDatum" />
         </EntityType>
         <Association Name="FK_GroepsWerkjaar_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
@@ -2132,6 +2134,7 @@
           <EntitySetMapping Name="Lid">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Lid)">
               <MappingFragment StoreEntitySet="Lid">
+                <ScalarProperty Name="UitschrijfDatum" ColumnName="UitschrijfDatum" />
                 <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" />
                 <ScalarProperty Name="ID" ColumnName="LidID" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
@@ -2667,7 +2670,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="ChiroGroepModel" ZoomLevel="87" xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+      <Diagram Name="ChiroGroepModel" ZoomLevel="75" xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
         <EntityTypeShape EntityType="ChiroGroepModel.ChiroGroep" Width="1.5" PointX="1" PointY="32.125" Height="1.5956835937500102" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Groep" Width="1.5" PointX="1" PointY="25.375" Height="3.5186979166666674" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Persoon" Width="1.5" PointX="9" PointY="4.875" Height="3.5186979166666656" IsExpanded="true" />

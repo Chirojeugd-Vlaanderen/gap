@@ -679,7 +679,7 @@ namespace Chiro.Gap.Workers
 #endif
                     if (syncen)
                     {
-                        if (!lid.NonActief)
+                        if (lid.UitschrijfDatum == null)
                         {
                             // Actieve leden altijd syncen
                             _sync.Bewaren(lid);
@@ -712,7 +712,7 @@ namespace Chiro.Gap.Workers
 #endif
                     if (syncen)
                     {
-                        if (!lid.NonActief)
+                        if (lid.UitschrijfDatum == null)
                         {
                             // Actieve leden altijd syncen
                             _sync.Bewaren(lid);

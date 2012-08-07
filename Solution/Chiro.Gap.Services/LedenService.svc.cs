@@ -318,7 +318,7 @@ namespace Chiro.Gap.Services
                             continue;
                         }
 
-                        l.NonActief = true;
+                        l.UitschrijfDatum = DateTime.Now;
 
                         foreach (var fn in l.Functie)
                         {

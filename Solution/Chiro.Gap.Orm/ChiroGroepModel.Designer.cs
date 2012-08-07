@@ -5186,6 +5186,30 @@ namespace Chiro.Gap.Orm
         private Nullable<global::System.DateTime> _EindeInstapPeriode;
         partial void OnEindeInstapPeriodeChanging(Nullable<global::System.DateTime> value);
         partial void OnEindeInstapPeriodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> UitschrijfDatum
+        {
+            get
+            {
+                return _UitschrijfDatum;
+            }
+            set
+            {
+                OnUitschrijfDatumChanging(value);
+                ReportPropertyChanging("UitschrijfDatum");
+                _UitschrijfDatum = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UitschrijfDatum");
+                OnUitschrijfDatumChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _UitschrijfDatum;
+        partial void OnUitschrijfDatumChanging(Nullable<global::System.DateTime> value);
+        partial void OnUitschrijfDatumChanged();
 
         #endregion
     
