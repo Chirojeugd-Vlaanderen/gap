@@ -269,6 +269,8 @@ namespace Chiro.Gap.Data.Ef
         /// <param name="leiding">De lijst van leiders en/of leidsters</param>
         /// <param name="sortering">De parameter waarop de samengestelde lijst gesorteerd moet worden</param>
         /// <returns>De samengestelde en daarna gesorteerde lijst</returns>
+        /// <remarks>De lijst bevat eerst de leiding (gesorteerd) en dan de leden (gesorteerd); leden en leiding
+        /// worden niet gemengd bij het sorteren. Ik weet niet of dit een bug of een feature is.</remarks>
         private static List<Lid> MaakLedenLijst(List<Kind> kinderen, List<Leiding> leiding, LidEigenschap sortering)
         {
             kinderen = SorteerLijst(kinderen, sortering);
@@ -278,7 +280,7 @@ namespace Chiro.Gap.Data.Ef
             lijst.AddRange(leiding.Cast<Lid>());
             lijst.AddRange(kinderen.Cast<Lid>());
 
-            return lijst.OrderBy(e => e.NonActief).ToList();
+            return lijst.ToList();
         }
 
         /// <summary>
@@ -286,7 +288,7 @@ namespace Chiro.Gap.Data.Ef
         /// </summary>
         /// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
         /// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
-        /// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
+        /// <returns>Een lijst alle leden (inclusief uitgeschreven leden) voor het opgegeven groepswerkjaar</returns>
         public IList<Lid> AllesOphalen(int groepsWerkJaarID, LidEigenschap sortering)
         {
             using (var db = new ChiroGroepEntities())

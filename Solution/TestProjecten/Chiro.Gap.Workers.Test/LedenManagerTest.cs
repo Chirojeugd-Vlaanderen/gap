@@ -124,7 +124,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             Lid lid = new Leiding
                           {
                               EindeInstapPeriode = DateTime.Today,  // probeerperiode kadermedewerker is irrelevant
-                              NonActief = true,
+                              UitschrijfDatum = DateTime.Today,
                               GroepsWerkJaar = new GroepsWerkJaar {Groep = new KaderGroep {NiveauInt = (int)Niveau.Gewest}}
                           };
 
@@ -164,7 +164,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             Lid lid = new Leiding
             {
                 EindeInstapPeriode = DateTime.Today,  // probeerperiode kadermedewerker is irrelevant
-                NonActief = true,
+                UitschrijfDatum = DateTime.Today,
                 GroepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep() }
             };
 
@@ -217,7 +217,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             
             // act
             var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Leiding;
-            actual.NonActief = true;
+            actual.UitschrijfDatum = DateTime.Today;
             
             var voorstel2 = new LidVoorstel
             {
@@ -231,7 +231,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             // assert
             Assert.IsNotNull(newlid);
             Assert.AreEqual(_afd1, newlid.AfdelingsJaar);
-            Assert.IsFalse(newlid.NonActief);
+            Assert.IsNull(newlid.UitschrijfDatum);
         }
 
         ///<summary>
@@ -254,7 +254,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             _voorstel.LeidingMaken = false;
             _voorstel.AfdelingsJaarIDs = new[] {0};
             var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Kind;
-            actual.NonActief = true;
+            actual.UitschrijfDatum = DateTime.Today;
 
             var voorstel2 = new LidVoorstel
             {
@@ -269,7 +269,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             Assert.IsNotNull(newlid);
             Assert.IsTrue(newlid.AfdelingsJaar.Contains(_afd1));
             Assert.IsTrue(newlid.AfdelingsJaar.Contains(_afd2));
-            Assert.IsFalse(newlid.NonActief);
+            Assert.IsNull(newlid.UitschrijfDatum);
         }
 
         ///<summary>

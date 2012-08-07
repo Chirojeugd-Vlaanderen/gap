@@ -312,6 +312,7 @@ namespace Chiro.Gap.Sync
             Debug.Assert(lid.GelieerdePersoon != null);
             Debug.Assert(lid.GelieerdePersoon.Persoon != null);
             Debug.Assert(lid.GroepsWerkJaar != null);
+            Debug.Assert(lid.UitschrijfDatum != null);  // we schrijven enkel leden uit als ze uitgeschreven zijn. Ahem.
 
             var groep = lid.GelieerdePersoon.Groep ?? lid.GroepsWerkJaar.Groep;
 
@@ -319,14 +320,14 @@ namespace Chiro.Gap.Sync
 
             if (lid.GelieerdePersoon.Persoon.AdNummer != null)
             {
-                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidVerwijderen(lid.GelieerdePersoon.Persoon.AdNummer ?? 0, groep.Code, lid.GroepsWerkJaar.WerkJaar));
+                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidVerwijderen(lid.GelieerdePersoon.Persoon.AdNummer ?? 0, groep.Code, lid.GroepsWerkJaar.WerkJaar, lid.UitschrijfDatum.Value));
             }
             else
             {
                 ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidVerwijderen(
                     Mapper.Map<GelieerdePersoon, PersoonDetails>(lid.GelieerdePersoon),
                     groep.Code,
-                    lid.GroepsWerkJaar.WerkJaar));
+                    lid.GroepsWerkJaar.WerkJaar, lid.UitschrijfDatum.Value));
             }
         }
     }
