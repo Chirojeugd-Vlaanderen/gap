@@ -82,7 +82,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="gekozenAfdelingsIDs">ID's van de afdelingen waarvoor afdelingsjaren gedefinieerd moeten worden</param>
         /// <param name="groepID">ID van de groep waarin we werken</param>
         /// <returns>De view 'Stap2AfdelingsJarenVerdelen'</returns>
-        private ActionResult Stap2AfdelingsJarenVerdelen(int[] gekozenAfdelingsIDs, int groepID)
+        private ActionResult Stap2AfdelingsJarenVerdelen(IEnumerable<int> gekozenAfdelingsIDs, int groepID)
         {
             var model = new JaarOvergangAfdelingsJaarModel();
             BaseModelInit(model, groepID);
