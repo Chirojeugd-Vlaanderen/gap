@@ -4,10 +4,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
@@ -74,7 +76,7 @@ namespace Chiro.Gap.Workers
 
             GroepsWerkJaar resultaat = _groepsWjDao.Ophalen(
                 groepsWerkJaarID,
-                ExtrasNaarLambdas(extras));
+                extras);
 
             return resultaat;
         }
@@ -136,7 +138,7 @@ namespace Chiro.Gap.Workers
             }
             else
             {
-                return _groepsWjDao.RecentsteOphalen(groepID, ExtrasNaarLambdas(extras));
+                return _groepsWjDao.RecentsteOphalen(groepID, extras);
             }
         }
 
@@ -178,50 +180,6 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Converteert de GroepsWerkJaarExtras <paramref name="extras"/> naar lambda-expressies die mee naar 
-        /// de data access moeten om de extra's daadwerkelijk op te halen.
-        /// </summary>
-        /// <param name="extras">
-        /// Te converteren groepsextra's
-        /// </param>
-        /// <returns>
-        /// Lambda-expressies geschikt voor onze DAO's
-        /// </returns>
-        private static Expression<Func<GroepsWerkJaar, object>>[] ExtrasNaarLambdas(GroepsWerkJaarExtras extras)
-        {
-            var paths = new List<Expression<Func<GroepsWerkJaar, object>>>();
-
-            if ((extras & GroepsWerkJaarExtras.Afdelingen) != 0)
-            {
-                paths.Add(gwj => gwj.AfdelingsJaar.First().Afdeling);
-                paths.Add(gwj => gwj.AfdelingsJaar.First().OfficieleAfdeling.WithoutUpdate());
-            }
-
-            if ((extras & GroepsWerkJaarExtras.LidFuncties) != 0)
-            {
-                paths.Add(gwj => gwj.Lid.First().Functie);
-                paths.Add(gwj => gwj.AfdelingsJaar.First().Kind.First().Functie);
-                paths.Add(gwj => gwj.AfdelingsJaar.First().Leiding.First().Functie);
-            }
-            else if ((extras & GroepsWerkJaarExtras.Leden) != 0)
-            {
-                paths.Add(gwj => gwj.AfdelingsJaar.First().Kind);
-                paths.Add(gwj => gwj.AfdelingsJaar.First().Leiding);
-            }
-
-            if ((extras & GroepsWerkJaarExtras.GroepsFuncties) != 0)
-            {
-                paths.Add(gwj => gwj.Groep.Functie);
-            }
-            else if ((extras & GroepsWerkJaarExtras.Groep) != 0)
-            {
-                paths.Add(gwj => gwj.Groep);
-            }
-
-            return paths.ToArray();
-        }
-
-        /// <summary>
         /// Berekent de theoretische einddatum van het gegeven groepswerkjaar.
         /// </summary>
         /// <param name="groepsWerkJaar">
@@ -260,6 +218,79 @@ namespace Chiro.Gap.Workers
             // Controle op dubbels moet gebeuren door data access.  (Zie #507)
             return new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };
         }
+
+        /// <summary>
+        /// Stelt afdelingsjaren voor voor de gegeven <paramref name="groep"/> en <paramref name="afdelingen"/>
+        /// in het werkjaar <paramref name="nieuwWerkJaar"/> - <paramref name="nieuwWerkJaar"/>+1.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor afdelingsjaren moeten worden voorgesteld, met daaraan gekoppeld
+        /// het huidige groepswerkjaar, de huidige afdelingsjaren, en alle beschikbare afdelingen.</param>
+        /// <param name="afdelingen">Afdelingen waarvoor afdelingsjaren moeten worden voorgesteld</param>
+        /// <param name="nieuwWerkJaar">Bepaalt het werkjaar waarvoor de afdelingsjaren voorgesteld moeten worden.</param>
+        /// <returns>Lijstje afdelingsjaren</returns>
+        public IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, IEnumerable<Afdeling> afdelingen, int nieuwWerkJaar)
+        {
+            var huidigWerkJaar = groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
+
+            if (huidigWerkJaar == null)
+            {
+                // Eigenlijk gaan we ervan uit dat elke groep al wel een afdelingsjaar heeft.  Maar
+                // moest het toch niet zo zijn, dan geven we gauw een domme suggestie terug
+
+                return (from afd in afdelingen
+                        select
+                            new AfdelingsJaar
+                                {
+                                    Afdeling = afd,
+                                    Geslacht = GeslachtsType.Gemengd
+                                }).ToList();
+            }
+
+            var werkJarenVerschil = nieuwWerkJaar - huidigWerkJaar.WerkJaar;
+
+            // We halen de afdelingsjaren van het huidige (oude) werkjaar op, zodat we op basis daarvan geboortejaren
+            // en geslacht voor de nieuwe afdelingsjaren in het nieuwe werkjaar kunnen voorstellen.
+
+            var huidigeAfdelingsJaren = huidigWerkJaar.AfdelingsJaar;
+
+            // Creeer een voorstel voor de nieuwe afdelingsjaren
+
+            var nieuweAfdelingsJaren = new List<AfdelingsJaar>();
+
+            foreach (var afdeling in afdelingen)
+            {
+                // geboortejaren en geslacht gewoon default values, passen we zo nodig
+                // straks nog aan.
+
+                var afdelingsJaar = new AfdelingsJaar
+                    {Afdeling = afdeling, GeboorteJaarVan = 0, GeboorteJaarTot = 0, Geslacht = GeslachtsType.Gemengd};
+
+
+                nieuweAfdelingsJaren.Add(afdelingsJaar);
+
+                // Als de afdeling dit jaar al actief was, kunnen we de details automatisch bepalen
+
+                var bestaandAfdelingsJaar = (from aj in huidigeAfdelingsJaren
+                                             where aj.Afdeling.ID == afdeling.ID
+                                             select aj).FirstOrDefault();
+
+                if (bestaandAfdelingsJaar != null)
+                {
+                    afdelingsJaar.OfficieleAfdeling = bestaandAfdelingsJaar.OfficieleAfdeling;
+                    afdelingsJaar.Geslacht = bestaandAfdelingsJaar.Geslacht;
+                    afdelingsJaar.GeboorteJaarTot = bestaandAfdelingsJaar.GeboorteJaarTot + werkJarenVerschil;
+                    afdelingsJaar.GeboorteJaarVan = bestaandAfdelingsJaar.GeboorteJaarVan + werkJarenVerschil;
+                }
+            }
+
+            // Sorteer de afdelingsjaren: eerst die zonder geboortejaren, dan van jong naar oud
+            var resultaat = (from a in nieuweAfdelingsJaren
+                                orderby a.GeboorteJaarTot descending
+                                orderby a.GeboorteJaarTot == 0 descending
+                                select a).ToArray();
+            return resultaat;
+        }
+
 
         /// <summary>
         /// Bepaalt de datum vanaf wanneer het volgende werkjaar begonnen kan worden
@@ -355,7 +386,7 @@ namespace Chiro.Gap.Workers
             try
             {
                 _veelGebruikt.GroepsWerkJaarResetten(gwj.Groep.ID);
-                return _groepsWjDao.Bewaren(gwj, ExtrasNaarLambdas(groepsWerkJaarExtras));
+                return _groepsWjDao.Bewaren(gwj, groepsWerkJaarExtras);
             }
             catch (DubbeleEntiteitException<GroepsWerkJaar>)
             {

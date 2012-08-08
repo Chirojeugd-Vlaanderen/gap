@@ -499,5 +499,15 @@ namespace Chiro.Gap.ServiceContracts
         /// <returns>Lijstje met details van de gebruikersrechten</returns>
         [OperationContract]
 	    IEnumerable<GebruikersDetail> GebruikersOphalen(int groepID);
-	}
+
+        /// <summary>
+        /// Stelt afdelingsjaren voor voor het volgende werkjaar, gegeven de <paramref name="afdelingsIDs"/> van de
+        /// afdelingen die je volgend werkjaar wilt hebben.
+        /// </summary>
+        /// <param name="afdelingsIDs">ID's van de afdelingen die je graag wilt activeren</param>
+        /// <param name="groepID">ID van je groep</param>
+        /// <returns>Een voorstel voor de afdelingsjaren, in de vorm van een lijstje AfdelingDetails.</returns>
+        [OperationContract]
+        IList<AfdelingDetail> NieuweAfdelingsJarenVoorstellen(int[] afdelingsIDs, int groepID);
+    }
 }
