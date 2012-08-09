@@ -1,4 +1,4 @@
-﻿using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -273,47 +273,47 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             Assert.IsNull(newlid.UitschrijfDatum);
         }
 
-        ///<summary>
-        ///Controleer of er bij het voorstellen van een afdeling wel rekening wordt gehouden met het geslacht.
+        /// <summary>
+        /// Test of 'LedenManager.InschrijvingVoorstellen' rekening houdt met het geslacht van een persoon.
         ///</summary>
         [TestMethod()]
         public void InschrijvingVoorstellenTest()
         {
             // Arrange
 
-            GelieerdePersoon gp = new GelieerdePersoon
-            {
-                Persoon =
-                    new Persoon
-                    {
-                        GeboorteDatum = new DateTime(1996, 03, 07),
-                        Geslacht = GeslachtsType.Vrouw,
-                    }
-            };
+            var gp = new GelieerdePersoon
+                                      {
+                                          Persoon =
+                                              new Persoon
+                                                  {
+                                                      GeboorteDatum = new DateTime(1996, 03, 07),
+                                                      Geslacht = GeslachtsType.Vrouw,
+                                                  }
+                                      };
 
-            GroepsWerkJaar gwj = new GroepsWerkJaar();
+            var gwj = new GroepsWerkJaar {WerkJaar = 2011};
             gwj.AfdelingsJaar.Add(new AfdelingsJaar
-            {
-                ID = 1,
-                GeboorteJaarVan = 1996,
-                GeboorteJaarTot = 1997,
-                Geslacht = GeslachtsType.Man,
-                OfficieleAfdeling = new OfficieleAfdeling()
-            });
-            gwj.AfdelingsJaar.Add(new AfdelingsJaar
-            {
-                ID = 2,
-                GeboorteJaarVan = 1996,
-                GeboorteJaarTot = 1997,
-                Geslacht = GeslachtsType.Vrouw,
-                OfficieleAfdeling = new OfficieleAfdeling()
-            });
+                                      {
+                                          ID = 1,
+                                          GeboorteJaarVan = 1996,
+                                          GeboorteJaarTot = 1997,
+                                          Geslacht = GeslachtsType.Man,
+                                          OfficieleAfdeling = new OfficieleAfdeling()
+                                      });
+                        gwj.AfdelingsJaar.Add(new AfdelingsJaar
+                                      {
+                                          ID = 2,
+                                          GeboorteJaarVan = 1996,
+                                          GeboorteJaarTot = 1997,
+                                          Geslacht = GeslachtsType.Vrouw,
+                                          OfficieleAfdeling = new OfficieleAfdeling()
+                                      });
 
 
-            LedenManager target = Factory.Maak<LedenManager>();
+            var target = Factory.Maak<LedenManager>();
 
             // Act
-
+            
             var actual = target.InschrijvingVoorstellen(gp, gwj, false);
 
             // Assert
@@ -333,7 +333,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             // de geboortedatum van die persoon buiten de afdelingen valt. We verwachten
             // de afdeling die het meest logisch is (kleinste verschil met geboortedatum)
 
-            GelieerdePersoon gp = new GelieerdePersoon
+            var gp = new GelieerdePersoon
             {
                 Persoon =
                     new Persoon
@@ -343,7 +343,8 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
                     }
             };
 
-            GroepsWerkJaar gwj = new GroepsWerkJaar();
+            var gwj = new GroepsWerkJaar {WerkJaar = 2011};
+
             gwj.AfdelingsJaar.Add(new AfdelingsJaar
             {
                 ID = 1,
@@ -362,7 +363,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
             });
 
 
-            LedenManager target = Factory.Maak<LedenManager>();
+            var target = Factory.Maak<LedenManager>();
 
             // Act
 
