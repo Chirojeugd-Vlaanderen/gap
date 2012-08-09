@@ -141,7 +141,13 @@ namespace Chiro.Gap.Workers
                 throw new InvalidOperationException(Resources.GeboorteDatumOntbreekt);
             }
 
-            // Nog leven ook
+            // Je moet oud genoeg zijn
+            if (gwj.WerkJaar - gp.GebDatumMetChiroLeefTijd.Value.Year < Properties.Settings.Default.MinLidLeefTijd)
+            {
+                throw new FoutNummerException(FoutNummer.LidTeJong, Properties.Resources.MinimumLeeftijd);
+            }
+
+            // en nog leven ook
             if (gp.Persoon.SterfDatum.HasValue)
             {
                 throw new InvalidOperationException(Resources.PersoonIsOverleden);
@@ -247,7 +253,7 @@ namespace Chiro.Gap.Workers
             }
             else
             {
-                var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
+                var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;               
 
                 // Relevante afdelingsjaren opzoeken.  Afdelingen met speciale officiele afdeling
                 // worden in eerste instantie uitgesloten van de automatische verdeling.
@@ -406,6 +412,11 @@ namespace Chiro.Gap.Workers
 
             var resultaat = new LidVoorstel();
             var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
+
+            if (gwj.WerkJaar - geboortejaar < Properties.Settings.Default.MinLidLeefTijd)
+            {
+                throw new FoutNummerException(FoutNummer.LidTeJong, Properties.Resources.MinimumLeeftijd);
+            }
 
             // Bestaat er een afdeling waar de gelieerde persoon als kind in zou passen?
             // (Als er meerdere mogelijkheden zijn zullen we gewoon de eerste kiezen, maar we sorteren op

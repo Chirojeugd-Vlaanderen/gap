@@ -316,4 +316,7 @@ de helpdesk</value>
   <data name="OngeldigeAfdelingNationaal" xml:space="preserve">
     <value />
   </data>
+  <data name="MinimumLeeftijd" xml:space="preserve">
+    <value>Het is niet toegelaten om kleuters in te schrijven.</value>
+  </data>
 </root>

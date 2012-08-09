@@ -33,6 +33,7 @@ namespace Chiro.Gap.Domain
 		AlgemeneKindFout,
 		AlgemeneLeidingFout,
 		OnbekendGeslachtFout,
+        LidTeJong,
 		#endregion
 
 		#region verkeerde groep
