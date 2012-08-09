@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JaarOvergangControllerTest.cs" />
     <Compile Include="PersonenEnLedenControllerTest.cs" />
     <Compile Include="VeelGebruiktTest.cs" />
     <Compile Include="GroepControllerTest.cs" />
@@ -140,6 +141,10 @@
     <ProjectReference Include="..\..\Chiro.Gap.WebApp\Chiro.Gap.WebApp.csproj">
       <Project>{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}</Project>
       <Name>Chiro.Gap.WebApp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
+      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
+      <Name>Chiro.Gap.Workers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

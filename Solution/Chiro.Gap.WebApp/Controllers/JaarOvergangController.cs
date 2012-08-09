@@ -120,6 +120,19 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.OfficieleAfdelingen =
                     ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
                         e => e.OfficieleAfdelingenOphalen(groepID)).ToArray();
+
+                var alleAfdelingen =
+                    ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>(
+                        svc => svc.AlleAfdelingenOphalen(groepID));
+
+                // De meeste gegevens in model.Afdelingen komen mooi terug uit het form. We moeten
+                // enkel de namen van de afdelingen terug invullen.
+
+                foreach (var aj in model.Afdelingen)
+                {
+                    aj.AfdelingNaam =
+                        (from afd in alleAfdelingen where afd.ID == aj.AfdelingID select afd.Naam).FirstOrDefault();
+                }
                 
                 return View("Stap2AfdelingsJarenVerdelen", model);
             }
