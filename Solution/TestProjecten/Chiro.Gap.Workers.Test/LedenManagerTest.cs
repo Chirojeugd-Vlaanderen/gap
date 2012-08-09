@@ -1,15 +1,12 @@
-﻿using System.Data.Objects.DataClasses;
-
-using Chiro.Gap.Domain;
-using Chiro.Gap.Workers;
+﻿using Chiro.Gap.Domain;
 using Chiro.Gap.Workers.Exceptions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
+
 using Chiro.Gap.Orm;
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -225,6 +222,42 @@ namespace Chiro.Gap.Workers.Test
             // Assert
 
             Assert.Fail();  // Als we hier zonder problemen geraken, is het niet OK
+        }
+
+        /// <summary>
+        /// LidMaken moet weigeren kleuters in te schrijven.
+        ///</summary>
+        [TestMethod()]
+        public void LidMakenTest()
+        {
+            // Arrange
+            // Ik probeer iemand lid te maken die te jong is, en verwacht een exception.
+
+            var groep = new ChiroGroep() { ID = 1 };
+
+            var gwj = new GroepsWerkJaar { WerkJaar = 2012, Groep = groep };  // Werkjaar 2012-2013
+
+            var gp = new GelieerdePersoon
+            {
+                Persoon =
+                    new Persoon
+                    {
+                        GeboorteDatum = new DateTime(2010, 06, 21), // Geboren in 2010
+                        Geslacht = GeslachtsType.Vrouw,
+                    },
+                Groep = groep
+            };
+
+            var ledenMgr = Factory.Maak<LedenManager>();
+            var accessor = new PrivateObject(ledenMgr);
+
+            var target = new LedenManager_Accessor(accessor);
+
+            // Act
+            target.LidMaken(gp, gwj, LidType.Kind, false);
+
+            //Assert
+            Assert.Fail();  // Als we hier komen zonder exception, dan is het mislukt.
         }
     }
 }
