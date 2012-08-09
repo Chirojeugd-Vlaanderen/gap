@@ -228,8 +228,23 @@ namespace Chiro.Gap.Workers
         /// <param name="afdelingen">Afdelingen waarvoor afdelingsjaren moeten worden voorgesteld</param>
         /// <param name="nieuwWerkJaar">Bepaalt het werkjaar waarvoor de afdelingsjaren voorgesteld moeten worden.</param>
         /// <returns>Lijstje afdelingsjaren</returns>
-        public IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, IEnumerable<Afdeling> afdelingen, int nieuwWerkJaar)
+        public IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, Afdeling[] afdelingen, int nieuwWerkJaar)
         {
+            if (!_autorisatieMgr.IsGavGroep(groep.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+
+            if (_autorisatieMgr.EnkelMijnAfdelingen(afdelingen.Select(afd => afd.ID)).Count() < afdelingen.Count())
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+
+            if (afdelingen.FirstOrDefault(afd => afd.ChiroGroep.ID != groep.ID) != null)
+            {
+                throw new FoutNummerException(FoutNummer.AfdelingNietVanGroep, Properties.Resources.AfdelingNietVanGroep);
+            }
+
             var huidigWerkJaar = groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
 
             if (huidigWerkJaar == null)

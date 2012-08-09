@@ -142,6 +142,11 @@ namespace Chiro.Gap.Dummies
 	        throw new NotImplementedException();
 	    }
 
+	    public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs, string login)
+	    {
+	        throw new NotImplementedException();
+	    }
+
 	    #endregion
 	}
 }

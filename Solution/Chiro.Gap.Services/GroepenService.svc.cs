@@ -1146,13 +1146,16 @@ namespace Chiro.Gap.Services
 
             var afdelingen = (from a in groep.Afdeling
                               where afdelingsIDs.Contains(a.ID)
-                              select a);
+                              select a).ToArray();
+
+            var afdelingsJaren =
+                _groepsWerkJaarManager.AfdelingsJarenVoorstellen(groep,
+                                                                 afdelingen,
+                                                                 nieuwWerkJaar);
 
             var resultaat =
-                Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(
-                    _groepsWerkJaarManager.AfdelingsJarenVoorstellen(groep,
-                                                                     afdelingen,
-                                                                     nieuwWerkJaar));
+                Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(afdelingsJaren);
+
             return resultaat;
         }
 

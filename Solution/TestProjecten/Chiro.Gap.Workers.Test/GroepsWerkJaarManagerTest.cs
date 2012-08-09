@@ -1,4 +1,6 @@
-﻿using Chiro.Cdf.Ioc;
+﻿using System.Linq;
+
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -85,7 +87,7 @@ namespace Chiro.Gap.Workers.Test
 
             const int NIEUW_WERKJAAR = 2011;
 
-            var actual = target.AfdelingsJarenVoorstellen(groep, groep.Afdeling, NIEUW_WERKJAAR);
+            var actual = target.AfdelingsJarenVoorstellen(groep, groep.Afdeling.ToArray(), NIEUW_WERKJAAR);
 
             Assert.IsNotNull(actual);
             Assert.IsNotNull(actual[0]);

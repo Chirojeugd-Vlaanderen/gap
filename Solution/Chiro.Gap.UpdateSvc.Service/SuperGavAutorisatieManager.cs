@@ -65,6 +65,11 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// TODO (#190): documenteren
         /// </summary>

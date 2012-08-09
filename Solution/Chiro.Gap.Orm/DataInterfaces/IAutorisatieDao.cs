@@ -246,6 +246,17 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// gebruikersrecht, anders <c>false</c></returns>
 	    bool IsGavGebruikersRecht(int gebruikersRechtID, string login);
 
+        /// <summary>
+        /// Verwijdert uit een lijst <paramref name="afdelingIDs"/> de ID's van afdelingen voor wie de
+        /// gebruiker met username <paramref name="login"/> geen gebruikersrechten heeft
+        /// </summary>
+        /// <param name="afdelingIDs">ID's van afdelingen</param>
+        /// <param name="login">login van een user</param>
+        /// <returns>Enkel de <paramref name="afdelingIDs"/> van afdelingen waarvoor de user met gegeven
+        /// <paramref name="login"/> GAV is.</returns>
+        IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs, string login);
+
         #endregion
+
 	}
 }

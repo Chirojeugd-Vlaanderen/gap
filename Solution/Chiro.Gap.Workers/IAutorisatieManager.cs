@@ -50,6 +50,15 @@ namespace Chiro.Gap.Workers
         IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs);
 
         /// <summary>
+        /// Verwijdert uit een lijst <paramref name="afdelingIDs"/> de ID's van afdelingen voor wie de
+        /// aangemelde gebruiker geen GAV is.
+        /// </summary>
+        /// <param name="afdelingIDs">ID's van afdelingen</param>
+        /// <returns>Enkel de <paramref name="afdelingIDs"/> van afdelingen waarvoor de gebruiker GAV is.</returns>
+        IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs);
+
+
+        /// <summary>
         /// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
         /// </summary>
         /// <returns>
@@ -303,5 +312,6 @@ namespace Chiro.Gap.Workers
         /// gebruikersrecht, anders <c>false</c>
         /// </returns>
         bool IsGavGebruikersRecht(int gebruikersRechtID);
+
     }
 }
