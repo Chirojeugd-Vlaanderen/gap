@@ -228,6 +228,7 @@ namespace Chiro.Gap.Workers.Test
         /// LidMaken moet weigeren kleuters in te schrijven.
         ///</summary>
         [TestMethod()]
+        [ExpectedException(typeof(FoutNummerException))]
         public void LidMakenTest()
         {
             // Arrange
