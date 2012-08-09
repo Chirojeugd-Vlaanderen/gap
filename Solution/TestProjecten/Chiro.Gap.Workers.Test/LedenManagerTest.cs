@@ -79,7 +79,7 @@ namespace Chiro.Gap.Workers.Test
         {
             // Arrange
 
-            GelieerdePersoon gp = new GelieerdePersoon
+            var gp = new GelieerdePersoon
                                       {
                                           Persoon =
                                               new Persoon
@@ -89,7 +89,7 @@ namespace Chiro.Gap.Workers.Test
                                                   }
                                       };
 
-            GroepsWerkJaar gwj = new GroepsWerkJaar();
+            var gwj = new GroepsWerkJaar {WerkJaar = 2011};
             gwj.AfdelingsJaar.Add(new AfdelingsJaar
                                       {
                                           ID = 1,
@@ -108,7 +108,7 @@ namespace Chiro.Gap.Workers.Test
                                       });
 
 
-            LedenManager target = Factory.Maak<LedenManager>();
+            var target = Factory.Maak<LedenManager>();
 
             // Act
             
@@ -131,7 +131,7 @@ namespace Chiro.Gap.Workers.Test
             // de geboortedatum van die persoon buiten de afdelingen valt. We verwachten
             // de afdeling die het meest logisch is (kleinste verschil met geboortedatum)
 
-            GelieerdePersoon gp = new GelieerdePersoon
+            var gp = new GelieerdePersoon
             {
                 Persoon =
                     new Persoon
@@ -141,7 +141,8 @@ namespace Chiro.Gap.Workers.Test
                     }
             };
 
-            GroepsWerkJaar gwj = new GroepsWerkJaar();
+            var gwj = new GroepsWerkJaar {WerkJaar = 2011};
+
             gwj.AfdelingsJaar.Add(new AfdelingsJaar
             {
                 ID = 1,
@@ -160,7 +161,7 @@ namespace Chiro.Gap.Workers.Test
             });
 
 
-            LedenManager target = Factory.Maak<LedenManager>();
+            var target = Factory.Maak<LedenManager>();
 
             // Act
 
