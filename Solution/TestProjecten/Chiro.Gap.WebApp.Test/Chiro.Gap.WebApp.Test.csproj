@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JaarOvergangControllerTest.cs" />
     <Compile Include="PersonenEnLedenControllerTest.cs" />
     <Compile Include="VeelGebruiktTest.cs" />
     <Compile Include="GroepControllerTest.cs" />

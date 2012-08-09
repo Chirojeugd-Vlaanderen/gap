@@ -30,9 +30,11 @@ namespace Chiro.Gap.WebApp.Test
     {
         private TestContext testContextInstance;
 
-        const int GROEPID = 426;            // arbitrair
-        const int VORIGWERKJAAR = 2010;     // vorig werkjaar was zogezegd 2010-2011
-        const int GROEPSWERKJAARID = 2971;  // arbitrair groepswerkjaarid
+        private const int GROEP_ID = 426;            // arbitrair
+        private const int VORIG_WERKJAAR = 2010;     // vorig werkjaar was zogezegd 2010-2011
+        private const int GROEPSWERKJAAR_ID = 2971;  // arbitrair groepswerkjaarid
+        private const int AFDELING_ID = 1;           // arbitrair afdelingsid
+        private const string AFDELING_NAAM = "Dingskes"; // arbitraire naam van de afdeling
 
         private static Mock<IVeelGebruikt> _veelGebruiktMock;
 
@@ -59,13 +61,13 @@ namespace Chiro.Gap.WebApp.Test
         {    
             _veelGebruiktMock = new Mock<IVeelGebruikt>();
 
-            _veelGebruiktMock.Setup(vg => vg.GroepsWerkJaarOphalen(GROEPID)).Returns(new GroepsWerkJaarDetail
+            _veelGebruiktMock.Setup(vg => vg.GroepsWerkJaarOphalen(GROEP_ID)).Returns(new GroepsWerkJaarDetail
             {
-                GroepID = GROEPID,
-                WerkJaar = VORIGWERKJAAR,
-                WerkJaarID = GROEPSWERKJAARID
+                GroepID = GROEP_ID,
+                WerkJaar = VORIG_WERKJAAR,
+                WerkJaarID = GROEPSWERKJAAR_ID
             });
-            _veelGebruiktMock.Setup(vg => vg.BivakStatusHuidigWerkjaarOphalen(GROEPID)).Returns(
+            _veelGebruiktMock.Setup(vg => vg.BivakStatusHuidigWerkjaarOphalen(GROEP_ID)).Returns(
                 new BivakAangifteLijstInfo { AlgemeneStatus = BivakAangifteStatus.NogNietVanBelang });
         }
 
@@ -94,6 +96,8 @@ namespace Chiro.Gap.WebApp.Test
             Factory.InstantieRegistreren(_veelGebruiktMock.Object);
 
             var groepenServiceMock = new Mock<IGroepenService>();
+            groepenServiceMock.Setup(svc => svc.AlleAfdelingenOphalen(GROEP_ID)).Returns(new List<AfdelingInfo>
+                {new AfdelingInfo {ID = AFDELING_ID, Naam = AFDELING_NAAM}});
             Factory.InstantieRegistreren(groepenServiceMock.Object);
 
             var target = Factory.Maak<JaarOvergangController>();
@@ -117,14 +121,14 @@ namespace Chiro.Gap.WebApp.Test
             // zorg ervoor dat de controller actie zodadelijk weet dat er iets mis is
             target.ViewData.ModelState.AddModelError("Afdelingen[0].GeboorteJaarVan", Properties.Resources.OngeldigeGeboortejarenVoorAfdeling);
 
-            var actual = target.Stap2AfdelingsJarenVerdelen(model, GROEPID);
+            var actual = target.Stap2AfdelingsJarenVerdelen(model, GROEP_ID);
 
             var actualModel = ((ViewResult) actual).ViewData.Model as JaarOvergangAfdelingsJaarModel;
 
             Assert.IsNotNull(actualModel);
             var afdelingDetail = actualModel.Afdelingen.FirstOrDefault();
             Assert.IsNotNull(afdelingDetail);
-            Assert.IsNotNull(afdelingDetail.AfdelingNaam);
+            Assert.AreEqual(afdelingDetail.AfdelingNaam, AFDELING_NAAM);
         }
     }
 }
