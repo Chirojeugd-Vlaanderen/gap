@@ -4,6 +4,7 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 using Chiro.Cdf.Ioc;
@@ -80,5 +81,29 @@ namespace Chiro.Gap.Workers.Test
 			// Assert
 			veelGebruiktMock.Verify(vgb => vgb.GroepsWerkJaarResetten(testData.DummyGroep.ID), Times.Once());
 		}
-	}
+
+        /// <summary>
+        ///A test for AfdelingsJarenVoorstellen
+        ///</summary>
+        [TestMethod()]
+        public void AfdelingsJarenVoorstellenTest()
+        {
+            var target = Factory.Maak<GroepsWerkJaarManager>();
+
+            var groep = new ChiroGroep();
+            var groepsWerkJaar = new GroepsWerkJaar {WerkJaar = 2010, ID = 2971, Groep = groep};
+            var afdeling = new Afdeling {ID = 2337, ChiroGroep = groep};
+            var afdelingsJaar = new AfdelingsJaar
+                {GroepsWerkJaar = groepsWerkJaar, Afdeling = afdeling, GeboorteJaarVan = 2003, GeboorteJaarTot = 2004};
+
+            const int NIEUW_WERKJAAR = 2011;
+
+            var actual = target.AfdelingsJarenVoorstellen(groep, groep.Afdeling.ToArray(), NIEUW_WERKJAAR);
+
+            Assert.IsNotNull(actual);
+            Assert.IsNotNull(actual[0]);
+            Assert.AreEqual(actual[0].GeboorteJaarVan, afdelingsJaar.GeboorteJaarVan + 1);
+            Assert.AreEqual(actual[0].GeboorteJaarTot, afdelingsJaar.GeboorteJaarTot + 1);
+        }
+    }
 }

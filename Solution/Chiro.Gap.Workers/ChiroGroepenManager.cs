@@ -2,14 +2,11 @@
 //   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
-using Chiro.Cdf.Data;
 using Chiro.Gap.Orm;
 using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
@@ -20,7 +17,7 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class ChiroGroepenManager : IChiroGroepenManager
     {
-        private readonly IDao<ChiroGroep> _dao;
+        private readonly IChiroGroepenDao _dao;
         private readonly IAutorisatieManager _autorisatieMgr;
 
         /// <summary>
@@ -32,7 +29,7 @@ namespace Chiro.Gap.Workers
         /// <param name="autorisatieMgr">
         /// Regelt de autorisatie
         /// </param>
-        public ChiroGroepenManager(IDao<ChiroGroep> dao, IAutorisatieManager autorisatieMgr)
+        public ChiroGroepenManager(IChiroGroepenDao dao, IAutorisatieManager autorisatieMgr)
         {
             _dao = dao;
             _autorisatieMgr = autorisatieMgr;
@@ -60,8 +57,7 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            var paths = ExtrasNaarLambdas(extras);
-            return _dao.Ophalen(groepID, paths.ToArray());
+            return _dao.Ophalen(groepID, extras);
         }
 
         /// <summary>
@@ -87,8 +83,7 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            var paths = ExtrasNaarLambdas(extras);
-            return _dao.Bewaren(chiroGroep, paths.ToArray());
+            return _dao.Bewaren(chiroGroep, extras);
         }
 
         /// <summary>
@@ -139,45 +134,6 @@ namespace Chiro.Gap.Workers
             groep.Afdeling.Add(a);
 
             return a;
-        }
-
-        /// <summary>
-        /// Converteert ChiroGroepsExtras <paramref name="extras"/> naar lambda-expresses voor een
-        /// ChiroGroepenDao
-        /// </summary>
-        /// <param name="extras">
-        /// Te converteren Chirogroepsextras
-        /// </param>
-        /// <returns>
-        /// Lambda-expresses voor een KindDao
-        /// </returns>
-        private static IEnumerable<Expression<Func<ChiroGroep, object>>> ExtrasNaarLambdas(ChiroGroepsExtras extras)
-        {
-            var paths = new List<Expression<Func<ChiroGroep, object>>>();
-
-            if ((extras & ChiroGroepsExtras.GroepsWerkJaren) != 0)
-            {
-                // Withoutupdate-truuk om te vermijden dat groepswerkjaar overschreven
-                // wordt.
-                paths.Add(gr => gr.GroepsWerkJaar.First().WithoutUpdate());
-            }
-
-            if ((extras & ChiroGroepsExtras.AlleAfdelingen) != 0)
-            {
-                paths.Add(gr => gr.Afdeling);
-            }
-
-            if ((extras & ChiroGroepsExtras.Categorieen) != 0)
-            {
-                paths.Add(gr => gr.Categorie);
-            }
-
-            if ((extras & ChiroGroepsExtras.Functies) != 0)
-            {
-                paths.Add(gr => gr.Functie);
-            }
-
-            return paths;
         }
     }
 }

@@ -93,73 +93,16 @@ namespace Chiro.Gap.WebApp.Controllers
             model.OfficieleAfdelingen =
                 ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
                     e => e.OfficieleAfdelingenOphalen(groepID)).ToArray();
+            model.Afdelingen =
+                ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>(
+                    svc => svc.NieuweAfdelingsJarenVoorstellen(gekozenAfdelingsIDs, groepID));
 
-            var alleAfdelingen =
-                ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(
-                    g => g.AlleAfdelingenOphalen(groepID)).ToArray();
-            var huidigwerkjaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
-            var werkJarenVerschil = model.NieuwWerkjaar - huidigwerkjaar.WerkJaar;
-
-            // We halen de afdelingsjaren van het huidige (oude) werkjaar op, zodat we op basis daarvan geboortejaren
-            // en geslacht voor de nieuwe afdelingsjaren in het nieuwe werkjaar kunnen voorstellen.
-
-            var huidigeAfdelingsJaren =
-                ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingDetail>>(
-                    g => g.ActieveAfdelingenOphalen(huidigwerkjaar.WerkJaarID)).ToArray();
-
-            // Creeer een voorstel voor de nieuwe afdelingsjaren
-
-            var nieuweAfdelingsJaren = new List<AfdelingDetail>();
-
-            foreach (int afdelingsID in gekozenAfdelingsIDs)
-            {
-                // naam en afkorting nemen we over uit het lijstje van alle afdelingen.
-                // geboortejaren en geslacht gewoon default values, passen we zo nodig
-                // straks nog aan.
-
-                var afdelingsJaarDetail = (from afd in alleAfdelingen
-                                           where afd.ID == afdelingsID
-                                           select new AfdelingDetail
-                                                      {
-                                                          AfdelingAfkorting = afd.Afkorting,
-                                                          AfdelingID = afdelingsID,
-                                                          AfdelingNaam = afd.Naam,
-                                                          GeboorteJaarTot = 0,
-                                                          GeboorteJaarVan = 0,
-                                                          Geslacht = GeslachtsType.Onbekend
-                                                      }).FirstOrDefault();
-                
-                Debug.Assert(afdelingsJaarDetail != null); 
-                // Als er een afdelingID is gekozen die niet te vinden is in de afdelingen van de groep,
-                // dan is er iets mis.
-
-                nieuweAfdelingsJaren.Add(afdelingsJaarDetail);
-
-                // Als de afdeling dit jaar al actief was, kunnen we de details automatisch bepalen
-
-                var bestaandAfdelingsJaar = (from aj in huidigeAfdelingsJaren
-                                             where aj.AfdelingID == afdelingsID
-                                             select aj).FirstOrDefault();
-
-                if (bestaandAfdelingsJaar != null)
-                {
-                    afdelingsJaarDetail.OfficieleAfdelingID = bestaandAfdelingsJaar.OfficieleAfdelingID;
-                    afdelingsJaarDetail.Geslacht = bestaandAfdelingsJaar.Geslacht;
-                    afdelingsJaarDetail.GeboorteJaarTot = bestaandAfdelingsJaar.GeboorteJaarTot + werkJarenVerschil;
-                    afdelingsJaarDetail.GeboorteJaarVan = bestaandAfdelingsJaar.GeboorteJaarVan + werkJarenVerschil;
-                }
-            }
-
-            // Sorteer de afdelingsjaren: eerst die zonder geboortejaren, dan van jong naar oud
-            model.Afdelingen = (from a in nieuweAfdelingsJaren
-                                orderby a.GeboorteJaarTot descending
-                                orderby a.GeboorteJaarTot == 0 descending
-                                select a).ToArray();
 
             // TODO extra info pagina voor jaarovergang
             // TODO kan validatie in de listhelper worden bijgecodeerd?
             return View("Stap2AfdelingsJarenVerdelen", model);
         }
+
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Stap2AfdelingsJarenVerdelen(JaarOvergangAfdelingsJaarModel model, int groepID)

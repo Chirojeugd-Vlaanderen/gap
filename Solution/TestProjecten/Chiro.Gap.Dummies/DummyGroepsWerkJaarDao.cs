@@ -39,7 +39,22 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
-		#endregion
+	    public GroepsWerkJaar Bewaren(GroepsWerkJaar groepsWerkJaar, GroepsWerkJaarExtras groepsWerkJaarExtras)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public GroepsWerkJaar Ophalen(int groepsWerkJaarID, GroepsWerkJaarExtras extras)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public GroepsWerkJaar RecentsteOphalen(int groepID, GroepsWerkJaarExtras extras)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    #endregion
 
 		#region IDao<GroepsWerkJaar> Members
 

@@ -158,17 +158,22 @@ namespace Chiro.Gap.Workers
         {
             var paths = new List<Expression<Func<Groep, object>>>();
 
-            if ((extras & GroepsExtras.GroepsWerkJaren) != 0)
+            if (extras.HasFlag(GroepsExtras.HuidigWerkJaar) & !extras.HasFlag(GroepsExtras.GroepsWerkJaren))
+            {
+                throw new NotSupportedException();
+            }
+
+            if (extras.HasFlag(GroepsExtras.GroepsWerkJaren))
             {
                 paths.Add(gr => gr.GroepsWerkJaar);
             }
 
-            if ((extras & GroepsExtras.Categorieen) != 0)
+            if (extras.HasFlag(GroepsExtras.Categorieen))
             {
                 paths.Add(gr => gr.Categorie);
             }
 
-            if ((extras & GroepsExtras.Functies) != 0)
+            if (extras.HasFlag(GroepsExtras.Functies))
             {
                 paths.Add(gr => gr.Functie);
             }

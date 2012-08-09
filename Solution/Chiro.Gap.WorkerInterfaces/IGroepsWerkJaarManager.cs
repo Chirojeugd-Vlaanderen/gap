@@ -175,5 +175,16 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Einddatum van het gekoppelde werkJaar.
         /// </returns>
         DateTime EindDatum(GroepsWerkJaar groepsWerkJaar);
-	}
+
+        /// <summary>
+        /// Stelt afdelingsjaren voor voor de gegeven <paramref name="groep"/> en <paramref name="afdelingen"/>
+        /// in het werkjaar <paramref name="nieuwWerkJaar"/> - <paramref name="nieuwWerkJaar"/>+1.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor afdelingsjaren moeten worden voorgesteld, met daaraan gekoppeld
+        /// het huidige groepswerkjaar, de huidige afdelingsjaren, en alle beschikbare afdelingen.</param>
+        /// <param name="afdelingen">Afdelingen waarvoor afdelingsjaren moeten worden voorgesteld</param>
+        /// <param name="nieuwWerkJaar">Bepaalt het werkjaar waarvoor de afdelingsjaren voorgesteld moeten worden.</param>
+        /// <returns>Lijstje afdelingsjaren</returns>
+        IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, Afdeling[] afdelingen, int nieuwWerkJaar);
+    }
 }

@@ -58,6 +58,7 @@
     <Compile Include="AutMgrNooitGav.cs" />
     <Compile Include="DummyAbonnementenDao.cs" />
     <Compile Include="DummyAdressenDao.cs" />
+    <Compile Include="DummyChiroGroepenDao.cs" />
     <Compile Include="DummyGavDao.cs" />
     <Compile Include="DummyLandenDao.cs" />
     <Compile Include="DummyStratenDao.cs" />
