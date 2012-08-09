@@ -21,7 +21,8 @@ namespace Chiro.Gap.Orm
         Geen = 0x00,
         Functies = 0x01,
         Categorieen = 0x02,
-        GroepsWerkJaren = 0x04,
+        HuidigWerkJaar = 0x04,
+        GroepsWerkJaren = 0x0c,
     }
 
     /// <summary>
@@ -33,6 +34,7 @@ namespace Chiro.Gap.Orm
         Geen = GroepsExtras.Geen,
         Functies = GroepsExtras.Functies,
         Categorieen = GroepsExtras.Categorieen,
+        HuidigWerkJaar = GroepsExtras.HuidigWerkJaar,
         GroepsWerkJaren = GroepsExtras.GroepsWerkJaren,
         AlleAfdelingen = 0x10
     }
@@ -213,25 +215,30 @@ namespace Chiro.Gap.Orm
         Afdelingen = 0x01,
 
         /// <summary>
+        /// Haalt alle afdelingen van de groep mee op
+        /// </summary>
+        AlleAfdelingen = 0x02,
+
+        /// <summary>
         /// Haalt alle leden van het groepswerkjaar mee op
         /// </summary>
-        Leden = 0x02,
+        Leden = 0x04,
 
         /// <summary>
         /// Haalt de functies van de leden mee op
         /// </summary>
-        LidFuncties = 0x04,
+        LidFuncties = 0x08,
 
         /// <summary>
         /// Haalt de groep mee op.
         /// </summary>
-        Groep = 0x08,
+        Groep = 0x10,
 
         /// <summary>
         /// Haalt de groep mee op, samen met al zijn functies (ook diegene die niet relevant zijn in het
         /// gegeven groepswerkjaar.)
         /// </summary>
-        GroepsFuncties = 0x10
+        GroepsFuncties = 0x20
     }
 
     /// <summary>

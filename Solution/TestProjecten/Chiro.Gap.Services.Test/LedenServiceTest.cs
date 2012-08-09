@@ -1,16 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Workers;
-using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
-using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
@@ -154,17 +150,23 @@ namespace Chiro.Gap.Services.Test
 			voorstel.AfdelingsJaarIDs = new [] {gekozenafdelingsjaarID};
 			voorstel.AfdelingsJaarIrrelevant = false;
 		    var defvoorstel = new InTeSchrijvenLid[] {voorstel};
-			int lidID = target.Inschrijven(defvoorstel, out fouten).First();
-			#endregion
 
-			#region Assert
-			var l = target.DetailsOphalen(lidID);
-			Assert.IsTrue(l.LidInfo.AfdelingIdLijst.Contains(TestInfo.AFDELING2ID));
-			#endregion
+            using (new TransactionScope())
+            {
+                int lidID = target.Inschrijven(defvoorstel, out fouten).First();
 
-			#region Cleanup
-			target.Uitschrijven(gps, out fouten);
-			#endregion
+                #endregion
+
+                #region Assert
+
+                var l = target.DetailsOphalen(lidID);
+                Assert.IsTrue(l.LidInfo.AfdelingIdLijst.Contains(TestInfo.AFDELING2ID));
+
+                #endregion
+
+                // We committen de transactie niet, zodat we het lid achteraf niet
+                // opnieuw moeten uitschrijven.
+            }
 		}
 	}
 }

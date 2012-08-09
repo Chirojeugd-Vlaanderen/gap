@@ -310,6 +310,17 @@ namespace Chiro.Gap.Workers
         #region Ophalen/uitfilteren
 
         /// <summary>
+        /// Verwijdert uit een lijst <paramref name="afdelingIDs"/> de ID's van afdelingen voor wie de
+        /// aangemelde gebruiker geen GAV is.
+        /// </summary>
+        /// <param name="afdelingIDs">ID's van afdelingen</param>
+        /// <returns>Enkel de <paramref name="afdelingIDs"/> van afdelingen waarvoor de gebruiker GAV is.</returns>
+        public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs)
+        {
+            return _autorisatieDao.EnkelMijnAfdelingen(afdelingIDs, GebruikersNaamGet());
+        }
+
+        /// <summary>
         /// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
         /// </summary>
         /// <returns>

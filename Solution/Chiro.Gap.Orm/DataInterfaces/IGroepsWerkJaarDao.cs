@@ -41,5 +41,32 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
 		/// <returns><c>True</c> alss het groepswerkjaar het recentste is</returns>
 		bool IsRecentste(int groepsWerkJaarID);
+
+        /// <summary>
+        /// Bewaart het gegeven <paramref name="groepsWerkJaar"/>, samen met de gekoppelde entiteiten
+        /// bepaald door <paramref name="groepsWerkJaarExtras"/>.
+        /// </summary>
+        /// <param name="groepsWerkJaar">Te bewaren groepswerkjaar</param>
+        /// <param name="groepsWerkJaarExtras">Bepaalt welke entiteiten mee bewaard moeten worden</param>
+        /// <returns>Bewaarde groepswerkjaar en gekoppelde entiteiten.</returns>
+	    GroepsWerkJaar Bewaren(GroepsWerkJaar groepsWerkJaar, GroepsWerkJaarExtras groepsWerkJaarExtras);
+
+        /// <summary>
+        /// Haalt het groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/> op, samen met de
+        /// gekoppelde entiteiten bepaald door <paramref name="extras"/>.
+        /// </summary>
+        /// <param name="groepsWerkJaarID">ID op te halen groepswerkjaar</param>
+        /// <param name="extras">bepaalt de mee op te halen gekoppelde entiteiten</param>
+        /// <returns>Het groepswerkjaar met de gevraagde koppelingen</returns>
+	    GroepsWerkJaar Ophalen(int groepsWerkJaarID, GroepsWerkJaarExtras extras);
+
+        /// <summary>
+        /// Haalt het recenste groepswerkjaar van de groep met gegeven <paramref name="groepID"/> op,
+        /// samen met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
+        /// </summary>
+        /// <param name="groepID">ID van groep van op te halen groepswerkjaar</param>
+        /// <param name="extras">bepaalt de mee op te halen gekoppelde entiteiten</param>
+        /// <returns>De gevraagde groep met de gevraagde gekoppelde entiteiten</returns>
+	    GroepsWerkJaar RecentsteOphalen(int groepID, GroepsWerkJaarExtras extras);
 	}
 }

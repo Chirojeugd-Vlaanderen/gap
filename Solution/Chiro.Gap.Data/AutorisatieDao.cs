@@ -664,6 +664,27 @@ namespace Chiro.Gap.Data.Ef
 	        }
 	    }
 
+        /// <summary>
+        /// Verwijdert uit een lijst <paramref name="afdelingIDs"/> de ID's van afdelingen voor wie de
+        /// gebruiker met username <paramref name="login"/> geen gebruikersrechten heeft
+        /// </summary>
+        /// <param name="afdelingIDs">ID's van afdelingen</param>
+        /// <param name="login">login van een user</param>
+        /// <returns>Enkel de <paramref name="afdelingIDs"/> </returns>
+	    public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs, string login)
+	    {
+            using (var db = new ChiroGroepEntities())
+            {
+                return (db.Afdeling
+                    .Where(Utility.BuildContainsExpression<Afdeling, int>(af => af.ID, afdelingIDs))
+                    .Where(
+                        af =>
+                        af.ChiroGroep.GebruikersRecht.Any(
+                            r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)))
+                    .Select(ld => ld.ID).Distinct()).ToArray();
+            }
+        }
+
 	    #endregion
 	}
 }
