@@ -17,10 +17,14 @@ namespace GroepOpnieuwSyncen
             }
             else
             {
-                using (var svc = new GapUpdateService.UpdateServiceClient())
-                {
-                    svc.OpnieuwSyncen(args[0]);
-                }
+                throw new NotImplementedException();
+
+                // TODO: Als ik dit nog ooit zou gebruiken, moet dit opnieuw geimplementeerd worden met servicehelper.
+
+                //using (var svc = new GapUpdateService.UpdateServiceClient())
+                //{
+                //    svc.OpnieuwSyncen(args[0]);
+                //}
             }
         }
     }

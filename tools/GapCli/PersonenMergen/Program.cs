@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Chiro.Adf.ServiceModel;
+using Chiro.Gap.UpdateSvc.Contracts;
 using PersonenMergen.Properties;
 
 namespace PersonenMergen
@@ -15,10 +17,7 @@ namespace PersonenMergen
 			}
 			else
 			{
-				using (var svc = new GapUpdateService.UpdateServiceClient())
-				{
-					svc.AdNummerVervangen(int.Parse(args[0]), int.Parse(args[1]));
-				}
+			    ServiceHelper.CallService<IUpdateService>(svc => svc.AdNummerVervangen(int.Parse(args[0]), int.Parse(args[1])));
 			}
 		}
 	}
