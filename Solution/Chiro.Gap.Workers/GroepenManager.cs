@@ -120,6 +120,18 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
+
+            // We halen het oorspronkelijke stamnummer nog eens op uit de database,
+            // om na te kijken of de user daar niet mee gefoefeld heeft.
+
+            var oorspronkelijkeGroep = _groepenDao.Ophalen(g.ID);
+
+            if (System.String.Compare(oorspronkelijkeGroep.Code, g.Code, System.StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                // Ja dus.
+                throw new GeenGavException();
+            }
+
             return _groepenDao.Bewaren(g);
         }
 
