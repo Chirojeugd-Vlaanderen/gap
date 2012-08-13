@@ -86,6 +86,7 @@
     <Compile Include="CategorieTest.cs" />
     <Compile Include="CategorieToevoegen.cs" />
     <Compile Include="CommVormManagerTest.cs" />
+    <Compile Include="GroepenManagerTest.cs" />
     <Compile Include="GroepsWerkJaarManagerTest.cs" />
     <Compile Include="JaarOvergangManagerTest.cs" />
     <Compile Include="LedenManagerTest.cs" />
