@@ -128,7 +128,7 @@ namespace Chiro.Kip.Services
                     // dus alles op aansluiting 1.)
 
                     if (aansluiting == null || // er was nog geen aansluiting
-                        aansluiting.Datum.AddDays(Properties.Settings.Default.ToevoegTermijnAansluiting) < DateTime.Now ||
+                        IsTeOud(aansluiting, gedoe) ||
                         // vorige aansluiting te oud
                         (aansluiting.REKENING != null && aansluiting.REKENING.DOORGEBOE != "N"))
                         // vorige aansluiting heeft doorgeboekte factuur
@@ -281,6 +281,27 @@ namespace Chiro.Kip.Services
             }
 		    _log.BerichtLoggen(groep == null ? 0 : groep.GroepID, feedback);
 		}
+
+        /// <summary>
+        /// Levert <c>true</c> op als de gegeven <paramref name="aansluiting"/> te oud is om het lid bepaald door
+        /// <paramref name="gedoe"/> er aan toe te voegen.
+        /// </summary>
+        /// <param name="aansluiting">Te controleren aansluiting</param>
+        /// <param name="gedoe">Kandidaatlid om toe te voegen aan <paramref name="aansluiting"/></param>
+        /// <returns><c>true</c> als de gegeven <paramref name="aansluiting"/> te oud is om het lid bepaald door
+        /// <paramref name="gedoe"/> er aan toe te voegen.</returns>
+        /// <remarks>Als de probeerperiode van het lid niet later is dan 15/10 van het huidige werkjaar, is de
+        /// aansluiting nooit te oud.</remarks>
+	    private static bool IsTeOud(Aansluiting aansluiting, LidGedoe gedoe)
+        {
+            var eindePpJaarOvergang = new DateTime(gedoe.WerkJaar,
+                                                        Properties.Settings.Default.EindeProbeerperiodeJaarOvergang.
+                                                            Month,
+                                                        Properties.Settings.Default.EindeProbeerperiodeJaarOvergang.Day);
+            return aansluiting.Datum.AddDays(Properties.Settings.Default.ToevoegTermijnAansluiting) < DateTime.Now &&
+                   gedoe.EindeInstapPeriode > eindePpJaarOvergang;
+        }
+
 
 	    /// <summary>
 		/// Maakt een persoon zonder ad-nummer lid.  Dit is een dure operatie, omdat er gezocht zal 
