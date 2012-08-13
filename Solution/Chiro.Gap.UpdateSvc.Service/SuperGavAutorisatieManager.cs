@@ -67,6 +67,10 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV

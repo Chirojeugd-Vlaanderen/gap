@@ -141,7 +141,13 @@ namespace Chiro.Gap.Workers
                 throw new InvalidOperationException(Resources.GeboorteDatumOntbreekt);
             }
 
-            // Nog leven ook
+            // Je moet oud genoeg zijn
+            if (gwj.WerkJaar - gp.GebDatumMetChiroLeefTijd.Value.Year < Properties.Settings.Default.MinLidLeefTijd)
+            {
+                throw new FoutNummerException(FoutNummer.LidTeJong, Properties.Resources.MinimumLeeftijd);
+            }
+
+            // en nog leven ook
             if (gp.Persoon.SterfDatum.HasValue)
             {
                 throw new InvalidOperationException(Resources.PersoonIsOverleden);
@@ -247,7 +253,7 @@ namespace Chiro.Gap.Workers
             }
             else
             {
-                var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
+                var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;               
 
                 // Relevante afdelingsjaren opzoeken.  Afdelingen met speciale officiele afdeling
                 // worden in eerste instantie uitgesloten van de automatische verdeling.
@@ -407,6 +413,11 @@ namespace Chiro.Gap.Workers
             var resultaat = new LidVoorstel();
             var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
+            if (gwj.WerkJaar - geboortejaar < Properties.Settings.Default.MinLidLeefTijd)
+            {
+                throw new FoutNummerException(FoutNummer.LidTeJong, Properties.Resources.MinimumLeeftijd);
+            }
+
             // Bestaat er een afdeling waar de gelieerde persoon als kind in zou passen?
             // (Als er meerdere mogelijkheden zijn zullen we gewoon de eerste kiezen, maar we sorteren op
             // overenkomst geslacht)
@@ -481,11 +492,13 @@ namespace Chiro.Gap.Workers
             var gelieerdePersoon = lid.GelieerdePersoon;
             var groepsWerkJaar = lid.GroepsWerkJaar;
 
-            Lid nieuwLid;
             if (!_autorisatieMgr.IsGavLid(lid.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
+
+            Lid nieuwLid;  // Deze declaratie moet buiten de TransactionScope staan,
+                           // anders compileert de solution niet met transactions enabled! (Zie #1336)
 
 #if KIPDORP
             using (var tx = new TransactionScope())
@@ -681,13 +694,14 @@ namespace Chiro.Gap.Workers
 #endif
                     if (syncen)
                     {
-                        if (!lid.NonActief)
+                        if (lid.UitschrijfDatum == null)
                         {
+                            // Actieve leden altijd syncen
                             _sync.Bewaren(lid);
                         }
                         else if (lid.EindeInstapPeriode > DateTime.Now)
                         {
-                            // Verwijderen tijdens probeerperiode mag natuurlijk nog wel op het einde van het werkJaar
+                            // Verwijderen tijdens probeerperiode mag natuurlijk nog wel
                             _sync.Verwijderen(lid);
                         }
                     }
@@ -713,13 +727,14 @@ namespace Chiro.Gap.Workers
 #endif
                     if (syncen)
                     {
-                        if (!lid.NonActief)
+                        if (lid.UitschrijfDatum == null)
                         {
+                            // Actieve leden altijd syncen
                             _sync.Bewaren(lid);
                         }
                         else if (lid.EindeInstapPeriode > DateTime.Now || lid.Niveau > Niveau.Groep)
                         {
-                            // verwijderen enkel in een van deze gevallen:
+                            // verwijderen uit Kipadmin enkel in een van deze gevallen:
                             // * instapperiode is nog niet voorbij (voor gewone groepen)
                             // * kaderleden.  Deze hebben namelijk geen instapperiode, en het lidgeld is onafhankelijk
                             // van het aantal ingeschreven personen.

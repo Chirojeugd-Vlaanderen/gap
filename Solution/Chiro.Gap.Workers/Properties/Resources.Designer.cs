@@ -421,6 +421,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Het is niet toegelaten om kleuters in te schrijven..
+        /// </summary>
+        internal static string MinimumLeeftijd {
+            get {
+                return ResourceManager.GetString("MinimumLeeftijd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Een van de gevraagde afdelingen is geen afdeling van de gegeven groep..
         /// </summary>
         internal static string OngeldigeAfdelingBinnenGroep {

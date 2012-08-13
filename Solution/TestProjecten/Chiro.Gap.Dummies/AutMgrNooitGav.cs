@@ -31,7 +31,12 @@ namespace Chiro.Gap.Dummies
 			return new List<int>();
 		}
 
-		public IEnumerable<Groep> GekoppeldeGroepenGet()
+	    public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public IEnumerable<Groep> GekoppeldeGroepenGet()
 		{
 			return new List<Groep>();
 		}

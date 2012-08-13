@@ -31,13 +31,7 @@ namespace Chiro.Gap.Domain
         /// </summary>
         [Verplicht]
         [DataMember]
-        public IList<BivakAangifteInfo> Bivakinfos
-        {
-            get
-            {
-                return _bivakInfos;
-            }
-        }
+        public IList<BivakAangifteInfo> Bivakinfos { get; set; }
 
         /// <summary>
         /// Geeft aan wat er op dit moment moet gebeuren voor de bivakaangifte

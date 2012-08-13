@@ -113,6 +113,14 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View("LedenMaken", model);
 		}
 
+        /// <summary>
+        /// Krijgt in <paramref name="model"/> een lijst gelieerde personen mee, waarvan sommigen 'aangevinkt' zijn, 
+        /// en een optie lid/leiding en eventueel een afdeling hebben. De bedoeling is dat de aangevinkte personen 
+        /// worden ingeschreven
+        /// </summary>
+        /// <param name="model">model met informatie over in te schrijven leden</param>
+        /// <param name="groepID">ID van de groep waarin we werken</param>
+        /// <returns>Redirect naar vorige lijst. Niet zeker of dat een goed idee is.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HandleError]
 		public ActionResult LedenMaken(GeselecteerdePersonenEnLedenModel model, int groepID)

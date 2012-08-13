@@ -62,11 +62,11 @@ namespace Chiro.Gap.Data.Ef
                 var paths = ExtrasNaarLambdas(extras);
                 result = Sorteren(IncludesToepassen(query, paths), sortering).ToList();
 
-                if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
+                if (extras.HasFlag(PersoonsExtras.Adressen))
                 {
                     AdresHelper.AlleAdressenKoppelen(result);
                 }
-                else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+                else if (extras.HasFlag(PersoonsExtras.VoorkeurAdres))
                 {
                     AdresHelper.VoorkeursAdresKoppelen(result);
                 }
@@ -74,6 +74,11 @@ namespace Chiro.Gap.Data.Ef
                 if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
                 {
                     HuidigeLedenKoppelen(db, result);
+                }
+
+                if (extras.HasFlag(PersoonsExtras.KipIdentificatie))
+                {
+                    KipIdentificatieKoppelen(db, result);
                 }
             }
 
@@ -158,18 +163,21 @@ namespace Chiro.Gap.Data.Ef
                 resultaat =
                     db.GelieerdePersoon.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersoonIDs));
 
+                // Eerste de basisdingen opzoeken
                 resultaat = IncludesToepassen(resultaat as ObjectQuery<GelieerdePersoon>, ExtrasNaarLambdas(extras)).ToArray();
 
-                if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
+                // Dan de speciallekes:
+
+                if (extras.HasFlag(PersoonsExtras.Adressen))
                 {
                     AdresHelper.AlleAdressenKoppelen(resultaat);
                 }
-                else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+                else if (extras.HasFlag(PersoonsExtras.VoorkeurAdres))
                 {
                     AdresHelper.VoorkeursAdresKoppelen(resultaat);
                 }
 
-                if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
+                if (extras.HasFlag(PersoonsExtras.LedenDitWerkJaar))
                 {
                     // Als niet alle lidobjecten gevraagd zijn, maar wel de lidobjecten van
                     // het huidige werkJaar, dan moeten we die expliciet koppelen
@@ -177,9 +185,14 @@ namespace Chiro.Gap.Data.Ef
                     HuidigeLedenKoppelen(db, resultaat);
                 }
 
-                if ((extras & PersoonsExtras.AbonnementenDitWerkjaar) == PersoonsExtras.AbonnementenDitWerkjaar)
+                if (extras.HasFlag(PersoonsExtras.AbonnementenDitWerkjaar))
                 {
                     HuidigeAbonnementenKoppelen(db, resultaat);
+                }
+
+                if (extras.HasFlag(PersoonsExtras.KipIdentificatie))
+                {
+                    KipIdentificatieKoppelen(db, resultaat);
                 }
             }
 
@@ -239,6 +252,30 @@ namespace Chiro.Gap.Data.Ef
 
         /// <summary>
         /// Instantieert de abonnementen van de gegeven gelieerde personen voor het huidige werkJaar
+        /// Haalt voorkeursadres en communicatievormen op voor de gegeven <paramref name="gelieerdePersonen"/>
+        /// zonder AD-nummer en waarvan het AD-nummer ook niet in aanvraag is.
+        /// </summary>
+        /// <param name="db">Datacontext</param>
+        /// <param name="gelieerdePersonen">Gelieerde personen waarvan we de 'kipidientificatie' willen koppelen</param>
+        private void KipIdentificatieKoppelen(ChiroGroepEntities db, IEnumerable<GelieerdePersoon> gelieerdePersonen)
+        {
+            var relevanteGPs = (from gp in gelieerdePersonen
+                                where gp.Persoon.AdNummer == null && !gp.Persoon.AdInAanvraag
+                                select gp).ToArray();
+
+            var relevanteIDs = relevanteGPs.Select(gp => gp.ID);
+
+            var communicatieVormen =
+                db.CommunicatieVorm.Include(cv => cv.CommunicatieType).Include(cv => cv.GelieerdePersoon).Where(
+                    Utility.BuildContainsExpression<CommunicatieVorm, int>(cv => cv.GelieerdePersoon.ID, relevanteIDs)).
+                    ToArray();  // instantieren met ToArray, zodat ze gekoppeld worden aan de personen.
+
+            AdresHelper.VoorkeursAdresKoppelen(relevanteGPs);
+
+        }
+
+        /// <summary>
+        /// Instantieert de abonnementen van de gegeven gelieerde personen voor het huidige werkjaar
         /// </summary>
         /// <param name="db">De Objectcontext</param>
         /// <param name="gelieerdePersonen">Gelieerde personen waaraan abonnementen gekoppeld moeten worden</param>
@@ -362,18 +399,23 @@ namespace Chiro.Gap.Data.Ef
 
                 // De moeilijkere gekoppelde entiteiten:
 
-                if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
+                if (extras.HasFlag(PersoonsExtras.Adressen))
                 {
                     AdresHelper.AlleAdressenKoppelen(lijst);
                 }
-                else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+                else if (extras.HasFlag(PersoonsExtras.VoorkeurAdres))
                 {
                     AdresHelper.VoorkeursAdresKoppelen(lijst);
                 }
 
-                if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
+                if (extras.HasFlag(PersoonsExtras.LedenDitWerkJaar))
                 {
                     HuidigeLedenKoppelen(db, lijst);
+                }
+
+                if (extras.HasFlag(PersoonsExtras.KipIdentificatie))
+                {
+                    KipIdentificatieKoppelen(db, lijst);
                 }
             }
 
@@ -483,11 +525,11 @@ namespace Chiro.Gap.Data.Ef
 
                 aantalTotaal = queryForCount.Count();
 
-                if ((extras & PersoonsExtras.Adressen) == PersoonsExtras.Adressen)
+                if (extras.HasFlag(PersoonsExtras.Adressen))
                 {
                     AdresHelper.AlleAdressenKoppelen(lijst);
                 }
-                else if ((extras & PersoonsExtras.VoorkeurAdres) == PersoonsExtras.VoorkeurAdres)
+                else if (extras.HasFlag(PersoonsExtras.VoorkeurAdres))
                 {
                     AdresHelper.VoorkeursAdresKoppelen(lijst);
                 }
@@ -495,9 +537,14 @@ namespace Chiro.Gap.Data.Ef
                 // als enkel de lidobjecten van dit werkJaar opgevraagd worden, dan moeten we dat nog
                 // arrangeren:
 
-                if ((extras & PersoonsExtras.LedenDitWerkJaar) == PersoonsExtras.LedenDitWerkJaar)
+                if (extras.HasFlag(PersoonsExtras.LedenDitWerkJaar))
                 {
                     HuidigeLedenKoppelen(db, lijst);
+                }
+
+                if (extras.HasFlag(PersoonsExtras.KipIdentificatie))
+                {
+                    KipIdentificatieKoppelen(db, lijst);
                 }
             }
             Utility.DetachObjectGraph(lijst);

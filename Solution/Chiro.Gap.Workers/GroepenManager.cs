@@ -112,22 +112,28 @@ namespace Chiro.Gap.Workers
         /// <param name="g">
         /// Te persisteren groep
         /// </param>
-        /// <param name="paths">
-        /// Expressies die aangeven welke dependencies mee opgehaald moeten worden
-        /// </param>
         /// <returns>
         /// De bewaarde groep
         /// </returns>
-        public Groep Bewaren(Groep g, params Expression<Func<Groep, object>>[] paths)
+        public Groep Bewaren(Groep g)
         {
-            if (_autorisatieMgr.IsGavGroep(g.ID))
-            {
-                return _groepenDao.Bewaren(g, paths);
-            }
-            else
+            if (!_autorisatieMgr.IsGavGroep(g.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
+
+            // We halen het oorspronkelijke stamnummer nog eens op uit de database,
+            // om na te kijken of de user daar niet mee gefoefeld heeft.
+
+            var oorspronkelijkeGroep = _groepenDao.Ophalen(g.ID);
+
+            if (System.String.Compare(oorspronkelijkeGroep.Code, g.Code, System.StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                // Ja dus.
+                throw new GeenGavException();
+            }
+
+            return _groepenDao.Bewaren(g);
         }
 
         /// <summary>
@@ -158,17 +164,22 @@ namespace Chiro.Gap.Workers
         {
             var paths = new List<Expression<Func<Groep, object>>>();
 
-            if ((extras & GroepsExtras.GroepsWerkJaren) != 0)
+            if (extras.HasFlag(GroepsExtras.HuidigWerkJaar) & !extras.HasFlag(GroepsExtras.GroepsWerkJaren))
+            {
+                throw new NotSupportedException();
+            }
+
+            if (extras.HasFlag(GroepsExtras.GroepsWerkJaren))
             {
                 paths.Add(gr => gr.GroepsWerkJaar);
             }
 
-            if ((extras & GroepsExtras.Categorieen) != 0)
+            if (extras.HasFlag(GroepsExtras.Categorieen))
             {
                 paths.Add(gr => gr.Categorie);
             }
 
-            if ((extras & GroepsExtras.Functies) != 0)
+            if (extras.HasFlag(GroepsExtras.Functies))
             {
                 paths.Add(gr => gr.Functie);
             }

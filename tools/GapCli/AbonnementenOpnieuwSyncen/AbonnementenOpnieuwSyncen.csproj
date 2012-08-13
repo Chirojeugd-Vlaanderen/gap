@@ -52,42 +52,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Service References\UpdateServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Service References\UpdateServiceReference\GapUpdateSvc.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\UpdateServiceReference\GapUpdateSvc1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\UpdateServiceReference\UpdateService.wsdl" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\UpdateServiceReference\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\UpdateServiceReference\GapUpdateSvc.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\UpdateServiceReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\UpdateServiceReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\UpdateServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -17,10 +17,14 @@ namespace AbonnementenOpnieuwSyncen
             }
             else
             {
-                using (var svc = new UpdateServiceReference.UpdateServiceClient())
-                {
-                    svc.AbonnementenOpnieuwSyncen(args[0]);
-                }
+                throw new NotImplementedException();
+
+                // TODO: Als ik dit nog ooit zou gebruiken, moet dit opnieuw geimplementeerd worden met servicehelper.
+
+                //using (var svc = new UpdateServiceReference.UpdateServiceClient())
+                //{
+                //    svc.AbonnementenOpnieuwSyncen(args[0]);
+                //}
             }
         }
     }

@@ -128,7 +128,7 @@ namespace Chiro.Kip.Services
                     // dus alles op aansluiting 1.)
 
                     if (aansluiting == null || // er was nog geen aansluiting
-                        aansluiting.Datum.AddDays(Properties.Settings.Default.ToevoegTermijnAansluiting) < DateTime.Now ||
+                        IsTeOud(aansluiting, gedoe) ||
                         // vorige aansluiting te oud
                         (aansluiting.REKENING != null && aansluiting.REKENING.DOORGEBOE != "N"))
                         // vorige aansluiting heeft doorgeboekte factuur
@@ -281,6 +281,27 @@ namespace Chiro.Kip.Services
             }
 		    _log.BerichtLoggen(groep == null ? 0 : groep.GroepID, feedback);
 		}
+
+        /// <summary>
+        /// Levert <c>true</c> op als de gegeven <paramref name="aansluiting"/> te oud is om het lid bepaald door
+        /// <paramref name="gedoe"/> er aan toe te voegen.
+        /// </summary>
+        /// <param name="aansluiting">Te controleren aansluiting</param>
+        /// <param name="gedoe">Kandidaatlid om toe te voegen aan <paramref name="aansluiting"/></param>
+        /// <returns><c>true</c> als de gegeven <paramref name="aansluiting"/> te oud is om het lid bepaald door
+        /// <paramref name="gedoe"/> er aan toe te voegen.</returns>
+        /// <remarks>Als de probeerperiode van het lid niet later is dan 15/10 van het huidige werkjaar, is de
+        /// aansluiting nooit te oud.</remarks>
+	    private static bool IsTeOud(Aansluiting aansluiting, LidGedoe gedoe)
+        {
+            var eindePpJaarOvergang = new DateTime(gedoe.WerkJaar,
+                                                        Properties.Settings.Default.EindeProbeerperiodeJaarOvergang.
+                                                            Month,
+                                                        Properties.Settings.Default.EindeProbeerperiodeJaarOvergang.Day);
+            return aansluiting.Datum.AddDays(Properties.Settings.Default.ToevoegTermijnAansluiting) < DateTime.Now &&
+                   gedoe.EindeInstapPeriode > eindePpJaarOvergang;
+        }
+
 
 	    /// <summary>
 		/// Maakt een persoon zonder ad-nummer lid.  Dit is een dure operatie, omdat er gezocht zal 
@@ -480,22 +501,23 @@ namespace Chiro.Kip.Services
 
 
 	    /// <summary>
-        /// Verwijdert een persoon met gekend AD-nummer als lid
-        /// </summary>
-        /// <param name="adNummer">AD-nummer te verwijderen lid</param>
-        /// <param name="stamNummer">Stamnummer te verwijderen lid</param>
-        /// <param name="werkjaar">Werkjaar te verwijderen lid</param>
-        /// <remarks>Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
-        /// in GAP.</remarks>
-        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void LidVerwijderen(int adNummer, string stamNummer, int werkjaar)
+	    /// Verwijdert een persoon met gekend AD-nummer als lid
+	    /// </summary>
+	    /// <param name="adNummer">AD-nummer te verwijderen lid</param>
+	    /// <param name="stamNummer">Stamnummer te verwijderen lid</param>
+	    /// <param name="werkjaar">Werkjaar te verwijderen lid</param>
+	    /// <param name="uitschrijfDatum">uitschrijfdatum zoals geregistreerd in GAP</param>
+	    /// <remarks>Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
+	    /// in GAP.</remarks>
+	    [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void LidVerwijderen(int adNummer, string stamNummer, int werkjaar, DateTime uitschrijfDatum)
         {
             using (var db = new kipadminEntities())
             {
                 var lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie)
                            where
                                l.Persoon.AdNummer == adNummer && (l.Groep is ChiroGroep) &&
-                               String.Compare((l.Groep as ChiroGroep).STAMNR, stamNummer, true) == 0 &&
+                               String.Compare((l.Groep as ChiroGroep).STAMNR, stamNummer, StringComparison.OrdinalIgnoreCase) == 0 &&
                                l.werkjaar == werkjaar
                            select l).FirstOrDefault();
 
@@ -517,25 +539,25 @@ namespace Chiro.Kip.Services
                     db.SaveChanges();
 
                     _log.BerichtLoggen(0, String.Format(
-                        "{2} - Lid verwijderd. AD{0} wj{1}",
+                        "{2} - Lid verwijderd. AD{0} wj{1} uitschrijfdatum {3}",
                         adNummer,
                         werkjaar,
-                        stamNummer));
-
+                        stamNummer, uitschrijfDatum));
                 }
             }
         }
 
-        /// <summary>
-        /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
-        /// </summary>
-        /// <param name="details">Gegevens die hopelijk toelaten het lid te identificeren</param>
-        /// <param name="stamNummer">Stamnummer van het lid</param>
-        /// <param name="werkjaar">Werkjaar van het lid</param>
-        /// <remarks>Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
-        /// in GAP.</remarks>
-        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkjaar)
+	    /// <summary>
+	    /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
+	    /// </summary>
+	    /// <param name="details">Gegevens die hopelijk toelaten het lid te identificeren</param>
+	    /// <param name="stamNummer">Stamnummer van het lid</param>
+	    /// <param name="werkjaar">Werkjaar van het lid</param>
+	    /// <param name="uitschrijfDatum">Uitschrijfdatum zoals geregistreerd in GAP </param>
+	    /// <remarks>Lid wordt hoe dan ook verwijderd.  De check op probeerperiode gebeurt
+	    /// in GAP.</remarks>
+	    [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkjaar, DateTime uitschrijfDatum)
         {
             // Als het AD-nummer al gekend is, moet (gewoon) 'LidBewaren' gebruikt worden.
             Debug.Assert(details.Persoon.AdNummer == null);
@@ -549,7 +571,7 @@ namespace Chiro.Kip.Services
             }
             int adnr = UpdatenOfMaken(details);
 
-            LidVerwijderen(adnr, stamNummer, werkjaar);
+            LidVerwijderen(adnr, stamNummer, werkjaar, uitschrijfDatum);
         }
 	}
 }

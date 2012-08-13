@@ -6,10 +6,12 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 
 using AutoMapper;
+
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
@@ -783,12 +785,10 @@ namespace Chiro.Gap.Services
                                                                              GroepsWerkJaarExtras.GroepsFuncties);
                 Groep g = gwj.Groep;
 
-                _groepenMgr.FunctieToevoegen(g, naam, code, maxAantal, minAantal, lidType);
-                g = _groepenMgr.Bewaren(g, e => e.Functie);
+                var f = _groepenMgr.FunctieToevoegen(g, naam, code, maxAantal, minAantal, lidType);
+                f = _functiesMgr.Bewaren(f);
 
-                return (from fun in g.Functie
-                        where fun.Code == code
-                        select fun.ID).FirstOrDefault();
+                return f.ID;
             }
             catch (BestaatAlException<Functie> ex)
             {
@@ -876,13 +876,10 @@ namespace Chiro.Gap.Services
             {
                 Groep g = _groepenMgr.Ophalen(groepID, GroepsExtras.Categorieen);
 
-                _groepenMgr.CategorieToevoegen(g, naam, code);
+                var c = _groepenMgr.CategorieToevoegen(g, naam, code);
+                c = _categorieenMgr.Bewaren(c);
 
-                g = _groepenMgr.Bewaren(g, e => e.Categorie);
-
-                return (from ctg in g.Categorie
-                        where ctg.Code == code
-                        select ctg.ID).FirstOrDefault();
+                return c.ID;
             }
             catch (BestaatAlException<Categorie> ex)
             {
@@ -1121,6 +1118,43 @@ namespace Chiro.Gap.Services
         #endregion
 
         #region jaarovergang
+
+        /// <summary>
+        /// Stelt afdelingsjaren voor voor het volgende werkjaar, gegeven de <paramref name="afdelingsIDs"/> van de
+        /// afdelingen die je volgend werkjaar wilt hebben.
+        /// </summary>
+        /// <param name="afdelingsIDs">ID's van de afdelingen die je graag wilt activeren</param>
+        /// <param name="groepID">ID van je groep</param>
+        /// <returns>Een voorstel voor de afdelingsjaren, in de vorm van een lijstje AfdelingDetails.</returns>
+        public IList<AfdelingDetail> NieuweAfdelingsJarenVoorstellen(int[] afdelingsIDs, int groepID)
+        {
+            var groepsWerkJaar = _groepsWerkJaarManager.RecentsteOphalen(groepID,
+                                                                         GroepsWerkJaarExtras.Groep |
+                                                                         GroepsWerkJaarExtras.Afdelingen |
+                                                                         GroepsWerkJaarExtras.AlleAfdelingen);
+
+            int nieuwWerkJaar = _groepsWerkJaarManager.NieuweWerkJaar(groepID);
+
+            var groep = groepsWerkJaar.Groep as ChiroGroep;
+
+            // Ik ga ervan uit dat je alleen afdelingsjaren nodig hebt voor een Chirogroep,
+            // dus niet voor kaderploegen of satellieten
+            Debug.Assert(groep != null);
+
+            var afdelingen = (from a in groep.Afdeling
+                              where afdelingsIDs.Contains(a.ID)
+                              select a).ToArray();
+
+            var afdelingsJaren =
+                _groepsWerkJaarManager.AfdelingsJarenVoorstellen(groep,
+                                                                 afdelingen,
+                                                                 nieuwWerkJaar);
+
+            var resultaat =
+                Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(afdelingsJaren);
+
+            return resultaat;
+        }
 
         /// <summary>
         /// Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.

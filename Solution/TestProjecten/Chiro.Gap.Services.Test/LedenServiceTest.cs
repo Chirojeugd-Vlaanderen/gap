@@ -1,20 +1,19 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+﻿using Chiro.Gap.Orm;
+using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.Workers;
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Workers;
-using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
-using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using System.Transactions;
-using System;
 using Chiro.Gap.WorkerInterfaces;
 using Moq;
 
@@ -140,9 +139,9 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void TestLidMakenBuitenVoorstel()
         {
-
             using (var ts = new TransactionScope())
             {
+
                 #region Arrange
 
                 string fouten;
@@ -186,6 +185,9 @@ namespace Chiro.Gap.Services.Test
                 Assert.IsTrue(l.LidInfo.AfdelingIdLijst.Contains(TestInfo.AFDELING2_ID));
 
                 #endregion
+
+                // We committen de transactie niet, zodat we het lid achteraf niet
+                // opnieuw moeten uitschrijven.
 
             } // Rollback
         }
@@ -238,8 +240,6 @@ namespace Chiro.Gap.Services.Test
                 src => src.InschrijvingVoorstellen(It.IsAny<GelieerdePersoon>(), It.IsAny<GroepsWerkJaar>(), true)).
                 Returns(
                     new LidVoorstel {AfdelingsJaarIDs = null, AfdelingsJarenIrrelevant = true, LeidingMaken = true});
-
-            var vlaggen = GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Groep;
 
             IGelieerdePersonenManager gpm = gpmMock.Object;
             IGroepsWerkJaarManager gwjm = gwjmMock.Object;

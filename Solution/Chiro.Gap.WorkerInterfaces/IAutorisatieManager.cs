@@ -2,7 +2,6 @@
 //   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 
 using Chiro.Gap.Orm;
@@ -49,6 +48,15 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Enkel de ID's van leden waarvoor de gebruiker GAV is.
         /// </returns>
         IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs);
+
+        /// <summary>
+        /// Verwijdert uit een lijst <paramref name="afdelingIDs"/> de ID's van afdelingen voor wie de
+        /// aangemelde gebruiker geen GAV is.
+        /// </summary>
+        /// <param name="afdelingIDs">ID's van afdelingen</param>
+        /// <returns>Enkel de <paramref name="afdelingIDs"/> van afdelingen waarvoor de gebruiker GAV is.</returns>
+        IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs);
+
 
         /// <summary>
         /// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
@@ -242,7 +250,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <summary>
         /// Geeft true als de aangelogde user
         /// 'superrechten' heeft
-        /// (zoals het verwijderen van leden uit vorig werkJaar, het 
+        /// (zoals het verwijderen van leden uit vorig werkjaar, het 
         /// verwijderen van leden waarvan de probeerperiode voorbij is,...)
         /// </summary>
         /// <returns>
@@ -325,28 +333,6 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Aan de GAV moeten al zijn gebruikersrechten op voorhand gekoppeld zijn.
         /// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.
         /// </remarks>
-        GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum);
-
-        /// <summary>
-        /// Geeft de GAV met gegeven <paramref name="login"/> gebruikersrecht voor de groep met gegeven 
-        /// <paramref name="groepID"/>,
-        /// met een zekere <paramref name="vervalDatum"/>.  Persisteert WEL.
-        /// </summary>
-        /// <param name="login">
-        /// ID van GAV die gebruikersrecht moet krijgen
-        /// </param>
-        /// <param name="groepID">
-        /// ID van groep waarvoor gebruikersrecht verleend moet worden
-        /// </param>
-        /// <param name="vervalDatum">
-        /// Vervaldatum van het gebruikersrecht
-        /// </param>
-        /// <returns>
-        /// Het gegeven GebruikersRecht
-        /// </returns>
-        /// <remarks>
-        /// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.
-        /// </remarks>
-        GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum);
+        GebruikersRecht GebruikersRechtToekennen(string gav, int groep, System.DateTime vervalDatum);
     }
 }

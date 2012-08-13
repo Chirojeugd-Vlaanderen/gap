@@ -183,7 +183,7 @@ namespace Chiro.Gap.Workers
         {
             var paths = new List<Expression<Func<Persoon, object>>>();
 
-            if ((extras & (PersoonsExtras.Communicatie | PersoonsExtras.Categorieen | PersoonsExtras.Uitstappen)) != 0)
+            if ((extras & (PersoonsExtras.Communicatie | PersoonsExtras.Categorieen | PersoonsExtras.Uitstappen | PersoonsExtras.KipIdentificatie)) != 0)
             {
                 // niet ondersteund, want dan moeten we eerst nog gaan uitvlooien
                 // welke gelieerde persoon we precies nodig hebben.
@@ -244,7 +244,7 @@ namespace Chiro.Gap.Workers
 
             var paths = new List<Expression<Func<Persoon, object>>>();
 
-            if ((extras & (PersoonsExtras.Communicatie | PersoonsExtras.Categorieen | PersoonsExtras.Uitstappen)) != 0)
+            if ((extras & (PersoonsExtras.Communicatie | PersoonsExtras.Categorieen | PersoonsExtras.Uitstappen | PersoonsExtras.KipIdentificatie)) != 0)
             {
                 // niet ondersteund, want dan moeten we eerst nog gaan uitvlooien
                 // welke gelieerde persoon we precies nodig hebben.
