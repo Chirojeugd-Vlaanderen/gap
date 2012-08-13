@@ -250,11 +250,16 @@ namespace Chiro.Gap.Workers
                 // Eigenlijk gaan we ervan uit dat elke groep al wel een afdelingsjaar heeft.  Maar
                 // moest het toch niet zo zijn, dan geven we gauw een domme suggestie terug
 
+                // Als officiële afdeling, geven we ribbels, om te vermijden dat de groepen te snel
+                // 'speciaal' zouden kiezen.
+                var ribbels = _afdelingenDao.OfficieleAfdelingOphalen((int) NationaleAfdeling.Ribbels);
+
                 return (from afd in afdelingen
                         select
                             new AfdelingsJaar
                                 {
                                     Afdeling = afd,
+                                    OfficieleAfdeling = ribbels,
                                     Geslacht = GeslachtsType.Gemengd
                                 }).ToList();
             }
@@ -293,6 +298,16 @@ namespace Chiro.Gap.Workers
                     afdelingsJaar.Geslacht = bestaandAfdelingsJaar.Geslacht;
                     afdelingsJaar.GeboorteJaarTot = bestaandAfdelingsJaar.GeboorteJaarTot + werkJarenVerschil;
                     afdelingsJaar.GeboorteJaarVan = bestaandAfdelingsJaar.GeboorteJaarVan + werkJarenVerschil;
+                }
+                else
+                {
+                    // Als officiële afdeling, geven we ribbels, om te vermijden dat de groepen te snel
+                    // 'speciaal' zouden kiezen.
+                    var ribbels = _afdelingenDao.OfficieleAfdelingOphalen((int)NationaleAfdeling.Ribbels);
+                    afdelingsJaar.OfficieleAfdeling = ribbels;
+                    afdelingsJaar.Geslacht = GeslachtsType.Gemengd;
+                    afdelingsJaar.GeboorteJaarTot = nieuwWerkJaar - ribbels.LeefTijdVan;
+                    afdelingsJaar.GeboorteJaarVan = nieuwWerkJaar - ribbels.LeefTijdTot;
                 }
             }
 

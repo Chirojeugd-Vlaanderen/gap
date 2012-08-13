@@ -2,12 +2,15 @@
 using System.Linq;
 
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
 using System.Collections.Generic;
+
+using Moq;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -106,6 +109,11 @@ namespace Chiro.Gap.Workers.Test
         public void AfdelingsJarenVoorstellenTest1()
         {
             // -- Arrange --
+
+            var afdelingenDaoMock = new Mock<IAfdelingenDao>();
+            afdelingenDaoMock.Setup(dao => dao.OfficieleAfdelingOphalen((int)NationaleAfdeling.Ribbels)).Returns(
+                new OfficieleAfdeling {ID = (int) NationaleAfdeling.Ribbels, LeefTijdVan = 6, LeefTijdTot = 7});
+            Factory.InstantieRegistreren(afdelingenDaoMock.Object);
 
             var target = Factory.Maak<GroepsWerkJaarManager>();
 
