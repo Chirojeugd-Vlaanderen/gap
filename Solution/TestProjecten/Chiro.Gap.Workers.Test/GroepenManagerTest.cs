@@ -1,4 +1,5 @@
 ﻿using Chiro.Cdf.Ioc;
+using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -88,13 +89,17 @@ namespace Chiro.Gap.Workers.Test
                 {Groep = new ChiroGroep {ID = GROEP_ID, Code = "TST/0001"}});
             Factory.InstantieRegistreren(veelGebruiktMock.Object);
 
+            var groepenDaoMock = new Mock<IGroepenDao>();
+            groepenDaoMock.Setup(dao => dao.Ophalen(GROEP_ID)).Returns(new ChiroGroep {ID = GROEP_ID, Code = "TST/0001"});
+            Factory.InstantieRegistreren(groepenDaoMock.Object);
+
             var target = Factory.Maak<GroepenManager>();
 
             Groep g = target.Ophalen(GROEP_ID);
 
             // act
 
-            g.Code = "TST/0001";
+            g.Code = "TST/0002";
             target.Bewaren(g);
 
             // assert
