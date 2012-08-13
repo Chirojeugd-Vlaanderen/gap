@@ -56,6 +56,7 @@
     <Compile Include="DataContracts\Bewoner.cs" />
     <Compile Include="DataContracts\Communicatiemiddel.cs" />
     <Compile Include="DataContracts\Enums.cs" />
+    <Compile Include="DataContracts\Groep.cs" />
     <Compile Include="DataContracts\LidGedoe.cs" />
     <Compile Include="DataContracts\Persoon.cs" />
     <Compile Include="DataContracts\PersoonDetails.cs" />

@@ -262,6 +262,10 @@ namespace Chiro.Kip.ServiceContracts
         {
         }
 
+        public void GroepUpdaten(Groep g)
+        {
+        }
+
         /// <summary>
         /// Registreren bij welke afdelingen de opgegeven persoon hoort in de opgegeven
         /// groep en voor het opgegeven werkjaar

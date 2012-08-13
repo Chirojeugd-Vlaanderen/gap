@@ -145,6 +145,18 @@ namespace Chiro.Gap.Services.Test
 			List<int> gps = new List<int>();
 			gps.Add(TestInfo.GELIEERDEPERSOON2ID);
 			string fouten;
+
+            // Als deze crasht, dan is 'gelieerde persoon 2' al lid in de database. Dat kan gebeuren als er onderweg
+            // iets fout loopt met het testen. Te fixen met deze query's:
+            //
+            // DECLARE @gpID AS INTEGER; SET @gpID = 225184; -- vervangen door GELIEERDEPERSOON2ID
+            //
+            // DELETE k FROM lid.Lid l JOIN lid.Kind k ON l.LidID = k.KindID
+            // WHERE l.GelieerdePersoonID = @gpID;
+            // 
+            // DELETE FROM lid.Lid WHERE GelieerdePersoonID = @gpID;
+
+
 			var voorstel = target.VoorstelTotInschrijvenGenereren(gps, out fouten).First();
 			int gekozenafdelingsjaarID = voorstel.AfdelingsJaarIDs.Contains(TestInfo.AFDELINGSJAAR2ID) ? TestInfo.AFDELINGSJAAR1ID : TestInfo.AFDELINGSJAAR2ID;
 			voorstel.AfdelingsJaarIDs = new [] {gekozenafdelingsjaarID};

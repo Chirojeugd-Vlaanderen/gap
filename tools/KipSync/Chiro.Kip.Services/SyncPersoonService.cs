@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Chiro.Kip.Log;
 using Chiro.Kip.ServiceContracts;
 using Adres = Chiro.Kip.ServiceContracts.DataContracts.Adres;
@@ -43,8 +44,8 @@ namespace Chiro.Kip.Services
             // TODO: test of het resultaat van KipPostNr niet langer wordt dan 10 tekens.
 
 		    string resultaat = (String.IsNullOrEmpty(adres.PostCode) ||
-		                        String.Compare(adres.PostNr.ToString(), adres.PostCode) == 0)
-		                           ? adres.PostNr.ToString()
+		                        String.CompareOrdinal(adres.PostNr.ToString(CultureInfo.InvariantCulture), adres.PostCode) == 0)
+		                           ? adres.PostNr.ToString(CultureInfo.InvariantCulture)
 		                           : String.Format(
 		                               "{0} {1}",
 		                               adres.PostNr,

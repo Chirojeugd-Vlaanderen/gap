@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
@@ -24,6 +25,7 @@ namespace Chiro.Gap.Workers
         private readonly IGelieerdePersonenDao _gelPersDao;
         private readonly IVeelGebruikt _veelGebruikt;
         private readonly IAutorisatieManager _autorisatieMgr;
+        private readonly IGroepenSync _groepenSync;
 
         /// <summary>
         /// De standaardconstructor voor GroepenManagers
@@ -40,16 +42,19 @@ namespace Chiro.Gap.Workers
         /// <param name="autorisatieMgr">
         /// Worker die autorisatie regelt
         /// </param>
+        /// <param name="groepenSync">verzorgt de synchronisatie van groepsgegevens naar Kipadmin</param>
         public GroepenManager(
             IGroepenDao grpDao, 
             IGelieerdePersonenDao gelPersDao, 
             IVeelGebruikt veelGebruikt, 
-            IAutorisatieManager autorisatieMgr)
+            IAutorisatieManager autorisatieMgr,
+            IGroepenSync groepenSync)
         {
             _groepenDao = grpDao;
             _autorisatieMgr = autorisatieMgr;
             _gelPersDao = gelPersDao;
             _veelGebruikt = veelGebruikt;
+            _groepenSync = groepenSync;
         }
 
         /// <summary>
@@ -132,7 +137,18 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException();
             }
 
-            return _groepenDao.Bewaren(g);
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _groepenDao.Bewaren(g);
+                _groepenSync.Bewaren(g);
+                
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
+            return g;
         }
 
         /// <summary>
