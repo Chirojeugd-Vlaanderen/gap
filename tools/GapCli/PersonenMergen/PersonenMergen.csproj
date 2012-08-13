@@ -71,6 +71,10 @@
       <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
       <Name>Chiro.Adf.ServiceModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Adf\Chiro.Adf.csproj">
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
+      <Name>Chiro.Adf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Solution\Chiro.Gap.UpdateSvc.Contracts\Chiro.Gap.UpdateSvc.Contracts.csproj">
       <Project>{EFA70FDE-2295-4A91-9553-847C272E7FA4}</Project>
       <Name>Chiro.Gap.UpdateSvc.Contracts</Name>
