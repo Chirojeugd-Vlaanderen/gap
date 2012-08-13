@@ -785,12 +785,10 @@ namespace Chiro.Gap.Services
                                                                              GroepsWerkJaarExtras.GroepsFuncties);
                 Groep g = gwj.Groep;
 
-                _groepenMgr.FunctieToevoegen(g, naam, code, maxAantal, minAantal, lidType);
-                g = _groepenMgr.Bewaren(g, e => e.Functie);
+                var f = _groepenMgr.FunctieToevoegen(g, naam, code, maxAantal, minAantal, lidType);
+                f = _functiesMgr.Bewaren(f);
 
-                return (from fun in g.Functie
-                        where fun.Code == code
-                        select fun.ID).FirstOrDefault();
+                return f.ID;
             }
             catch (BestaatAlException<Functie> ex)
             {
@@ -878,13 +876,10 @@ namespace Chiro.Gap.Services
             {
                 Groep g = _groepenMgr.Ophalen(groepID, GroepsExtras.Categorieen);
 
-                _groepenMgr.CategorieToevoegen(g, naam, code);
+                var c = _groepenMgr.CategorieToevoegen(g, naam, code);
+                c = _categorieenMgr.Bewaren(c);
 
-                g = _groepenMgr.Bewaren(g, e => e.Categorie);
-
-                return (from ctg in g.Categorie
-                        where ctg.Code == code
-                        select ctg.ID).FirstOrDefault();
+                return c.ID;
             }
             catch (BestaatAlException<Categorie> ex)
             {

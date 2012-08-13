@@ -111,22 +111,16 @@ namespace Chiro.Gap.Workers
         /// <param name="g">
         /// Te persisteren groep
         /// </param>
-        /// <param name="paths">
-        /// Expressies die aangeven welke dependencies mee opgehaald moeten worden
-        /// </param>
         /// <returns>
         /// De bewaarde groep
         /// </returns>
-        public Groep Bewaren(Groep g, params Expression<Func<Groep, object>>[] paths)
+        public Groep Bewaren(Groep g)
         {
-            if (_autorisatieMgr.IsGavGroep(g.ID))
-            {
-                return _groepenDao.Bewaren(g, paths);
-            }
-            else
+            if (!_autorisatieMgr.IsGavGroep(g.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
+            return _groepenDao.Bewaren(g);
         }
 
         /// <summary>
