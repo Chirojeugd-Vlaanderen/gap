@@ -101,6 +101,8 @@ namespace Chiro.Gap.Sync
                 .ForMember(dst => dst.UitstapID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar));
 
+            Mapper.CreateMap<Orm.Groep, Kip.ServiceContracts.DataContracts.Groep>();
+
             Mapper.AssertConfigurationIsValid();
         }
     }
