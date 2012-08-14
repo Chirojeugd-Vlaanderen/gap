@@ -293,6 +293,10 @@ namespace Chiro.Kip.ServiceContracts
             Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, _ikke + "BivakVerwijderen {0}", uitstapID));
         }
 
+        public void GroepUpdaten(Groep g)
+        {
+        }
+
         /// <summary>
         /// Registreren bij welke afdelingen de opgegeven persoon hoort in de opgegeven
         /// groep en voor het opgegeven werkJaar

@@ -99,7 +99,6 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void FunctiesVervangenTest()
         {
-
             using (new TransactionScope())
             {
                 #region act

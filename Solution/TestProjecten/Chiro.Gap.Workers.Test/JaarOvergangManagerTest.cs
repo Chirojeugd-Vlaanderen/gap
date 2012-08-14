@@ -3,6 +3,7 @@ using System.Data.Objects.DataClasses;
 using System.Linq.Expressions;
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Dummies;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
@@ -95,7 +96,7 @@ namespace Chiro.Gap.Workers.Test
 			autmanag.Setup(vg => vg.IsSuperGav()).Returns(false);
 			autmanag.Setup(vg => vg.IsGavGroep(It.IsAny<int>())).Returns(true);
 
-			var gm = new GroepenManager(groepdao.Object, geldao.Object, vgdao.Object, autmanag.Object);
+			var gm = new GroepenManager(groepdao.Object, geldao.Object, vgdao.Object, autmanag.Object, new DummySync());
 			var cgmm = new Mock<IChiroGroepenManager>(MockBehavior.Strict);
 			cgmm.Setup(e => e.Ophalen(10, ChiroGroepsExtras.AlleAfdelingen | ChiroGroepsExtras.GroepsWerkJaren)).Returns(groep);
 

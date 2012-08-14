@@ -77,6 +77,7 @@
     </Compile>
     <Compile Include="SyncPersoonService.Bivak.cs" />
     <Compile Include="SyncPersoonService.cs" />
+    <Compile Include="SyncPersoonService.GroepsGegevens.cs" />
     <Compile Include="SyncPersoonService.LidGegevens.cs" />
     <Compile Include="SyncPersoonService.PersoonsGegevens.cs" />
     <Compile Include="SyncPersoonService.Publicaties.cs" />
