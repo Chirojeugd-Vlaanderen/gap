@@ -14,7 +14,7 @@
 		<li>Klik op het tabblad 'Groep'</li>
 		<li>Klik op de link 'categorieën toevoegen/verwijderen'</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Link_Groepscategorieën.png") %>"
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Link_Groepscategorieen.png") %>"
 		alt="De categorieënlijst aanpssen op de groepsfiche" />
 	<ul>
 		<li>Je komt nu op het formulier met de categorieën van je groep. Bovenaan zie je

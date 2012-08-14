@@ -189,6 +189,7 @@
     <Content Include="Content\Screenshots\Formulier_bivakdetails.png" />
     <Content Include="Content\Screenshots\Gebruikersrecht_toekennen.png" />
     <Content Include="Content\Screenshots\Inschrijving_uitstap_bevestigen.png" />
+    <Content Include="Content\Screenshots\Link_Groepscategorieen.png" />
     <Content Include="Content\Screenshots\Nieuwe_uitstap.png" />
     <Content Include="Content\Screenshots\Overzicht_gebruikersrechten.png" />
     <Content Include="Content\Screenshots\Tabblad_bivak.png" />
@@ -404,7 +405,6 @@
     <Content Include="Content\Screenshots\Link_Afdelingsverdeling_aanpassen.png" />
     <Content Include="Content\Screenshots\Link_Broer_of_zus.png" />
     <Content Include="Content\Screenshots\Link_Functies_aanpassen.png" />
-    <Content Include="Content\Screenshots\Link_Groepscategorieën.png" />
     <Content Include="Content\Screenshots\Link_Inschrijven_op_overzicht.png" />
     <Content Include="Content\Screenshots\Link_Loonverlies.png" />
     <Content Include="Content\Screenshots\Link_Nieuwe_persoon.png" />
