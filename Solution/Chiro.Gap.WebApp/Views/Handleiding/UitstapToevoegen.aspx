@@ -19,7 +19,7 @@
             Voor een bivak moet je namelijk een bivakaangifte
            &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
             doen. Dat vinkje zorgt ervoor dat de gegevens automatisch doorgegeven worden aan
-            het nationaal secretariaat.</li>
+            het nationaal secretariaat. (<%=Html.ActionLink("Waarom is een bivakaangifte nodig?", "ViewTonen", new { controller = "Handleiding", helpBestand = "WaaromBivakaangifte" })%>)</li>
     </ul>
     <img src="<%=ResolveUrl("~/Content/Screenshots/Nieuwe_uitstap.png") %>" alt="Nieuwe uitstap registreren" />
     <ul>

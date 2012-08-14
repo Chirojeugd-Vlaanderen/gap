@@ -4,7 +4,6 @@
 // </copyright>
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -15,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Chirojeugd-Vlaanderen vzw")]
 [assembly: AssemblyProduct("Chiro.Gap.Workers.Test")]
-[assembly: AssemblyCopyright("Copyright © Chirojeugd-Vlaanderen vzw 2007-2010")]
+[assembly: AssemblyCopyright("Copyright © Chirojeugd-Vlaanderen vzw 2007-2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Chirojeugd-Vlaanderen vzw")]
 [assembly: AssemblyProduct("Chiro.Gap.Workers.Test.CustomIoc")]
-[assembly: AssemblyCopyright("Copyright © Chirojeugd-Vlaanderen vzw 2007-2010")]
+[assembly: AssemblyCopyright("Copyright © Chirojeugd-Vlaanderen vzw 2007-2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
