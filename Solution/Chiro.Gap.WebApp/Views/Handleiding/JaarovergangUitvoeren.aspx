@@ -10,7 +10,7 @@
 	<p>
 		Stappen in het proces:</p>
 	<ul>
-		<li>Klik op het tabblad 'Jaarovergang' (dat is alleen zichtbaar tussen 1 september
+		<li>Klik op het tabblad 'Jaarovergang' (dat is alleen zichtbaar tussen eind augustus
 			en het moment dat een GAV van je groep het proces doorlopen heeft).</li>
 		<li>Het eerste wat je moet doen, is aanvinken welke afdelingen je hebt in het nieuwe
 			werkjaar. In het lijstje staan alle afdelingen die je het jaar ervoor had, dus

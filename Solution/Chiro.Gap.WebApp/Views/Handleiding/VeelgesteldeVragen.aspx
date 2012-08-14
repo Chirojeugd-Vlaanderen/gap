@@ -17,8 +17,6 @@
             postnummer als een postcode invullen. Wat is het verschil?</a></li>
         <li><a href="#WieVerzekerd">Hoe kan ik zien wie er allemaal verzekerd is?</a></li>
         <li><a href="#WieAangesloten">Hoe kan ik zien wie er allemaal aangesloten is?</a></li>
-        <li><a href="#Doorsturen">Ik vind geen knop om de aansluiting door te sturen naar
-            het nationaal secretariaat.</a></li>
         <li><a href="#Uitstel">Kunnen we uitstel krijgen voor de jaarovergang/inschrijving/aansluiting?</a></li>
         <li><a href="#LateInschrijving">Onze inschrijvingsdag is kort voor/na de deadline
             van 15 oktober. Wat nu?</a></li>
@@ -37,25 +35,20 @@
         <a class="anchor" id="NieuweGav">Mag ik mijn login doorgeven aan mijn opvolger?</a></h3>
     <p>
         Het kan natuurlijk, maar het is niet de bedoeling. Een login is persoonlijk
-        - hij is dan ook samengesteld uit delen van je naam. Vraag voor je opvolger(s)
-        een nieuwe login aan, via <a href="http://www.chiro.be/eloket/aansluitingen-chirogroepen">
-            het e-loket</a>. <strong>Vermeld je stamnummer</strong>, zodat we weten
-        over welke groep het gaat. Van de persoon zelf hebben we de volledige naam en
-        het mailadres nodig. Als je ook het AD-nummer meegeeft, is het voor het secretariaat
-        makkelijker om de juiste persoon te vinden - zeker als het iemand is met naamgenoten
-        in andere groepen.</p>
+        - hij is dan ook samengesteld uit delen van je naam. Maak voor je opvolger(s)
+        een nieuwe login aan. Zie
+        <%=Html.ActionLink("Gebruikersrechten regelen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "GAVsBeheren" })%>
+        voor de handleiding.</p>
     <h3>
         <a class="anchor" id="ExtraLogins">Kan ik extra logins aanvragen voor mede-GAV's?</a></h3>
     <p>
-        Ja. Vraag er één aan via <a href="http://www.chiro.be/eloket/aansluitingen-chirogroepen">
-            het e-loket</a>. <strong>Vermeld je stamnummer</strong>, zodat we weten
-        over welke groep het gaat.</p>
+        Meer zelfs: je kunt ze <%=Html.ActionLink("zelf aanmaken", "ViewTonen", new { Controller = "Handleiding", helpBestand = "GAVsBeheren" })%>.</p>
     <h3>
         <a class="anchor" id="AansluitingInOrde">Hoe weet ik of mijn aansluiting in orde
             is?</a></h3>
     <p>
         Je moet daarvoor niet bellen of mailen naar het nationaal secretariaat: als
-        je de jaarovergang pas uitvoerde, wéten wij dat niet. Je kunt het wel zelf controleren:
+        je nog maar pas de jaarovergang uitvoerde, wéten wij dat zelfs niet. Je kunt het wel zelf controleren:
         bovenaan zie je het juiste (nieuwe) werkjaar, en op het tabblad 'Ingeschreven'
         zie je al je leden.</p>
     <h3>
@@ -91,16 +84,7 @@
         die je uitschrijft, staan niet meer op het tabblad 'Ingeschreven', maar ze blijven
         wel aangesloten. Als je hen achteraf dus opnieuw inschrijft, krijg je geen nieuwe
         factuur.</p>
-    <h3>
-        <a class="anchor" id="Doorsturen">Ik vind geen knop om de aansluiting door te sturen
-            naar het nationaal secretariaat.</a></h3>
-    <p>
-        Die knop zul je ook niet vinden. Iemand die ingeschreven is, krijgt een instapperiode.
-        Na die instapperiode worden de gegevens automatisch doorgestuurd, wordt de persoon
-        aangesloten en verzekerd bij Chirojeugd Vlaanderen, en zul je een factuur krijgen
-        voor het lidgeld. De aanduiding 'lidgeld betaald' heeft daar niets mee te maken,
-        dat is informatie voor de groep.</p>
-    <h3>
+   <h3>
         <a class="anchor" id="Uitstel">Kunnen we uitstel krijgen voor de jaarovergang/inschrijving/aansluiting?</a></h3>
     <p>
         Op 15 oktober moet je de jaarovergang uitgevoerd hebben. Niemand krijgt uitstel.
@@ -118,7 +102,7 @@
         Op 15 oktober moet de jaarovergang uitgevoerd zijn. Dat betekent niet dat je
         leden allemaal aangesloten worden op die dag. Doe je de jaarovergang op 14 oktober,
         dan krijgen je automatisch ingeschreven leden een instapperiode
-        <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een instapperiode?" } ) %>
+       &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een instapperiode?" } ) %>
         tot 4 november. Je hebt dus tot 4 november de tijd om diegenen uit te schrijven
         die niet meer komen. Nieuwe leden kun je het hele jaar door toevoegen en inschrijven.</p>
     <h3>
@@ -126,9 +110,9 @@
             ze niet open.</a></h3>
     <p>
         De lijsten die je kunt downloaden, zijn opgemaakt in het formaat van Office
-        2007. Als je Office 2003 hebt en je krijgt het bestand niet open, dan moet je
+        2010. Als je Office 2003 hebt en je krijgt het bestand niet open, dan moet je
         eerst een <a href="http://www.microsoft.com/downloads/details.aspx?familyid=941b3470-3ae9-4aee-8f43-c6bb74cd1466&displaylang=nl"
-            title="Hulpprogramma om Office 2007-bestanden te kunnen openen in Office 2003">
+            title="Hulpprogramma om Office 2010-bestanden te kunnen openen in Office 2003">
             extra programma</a> installeren. Zorg ook dat je <a href="http://update.microsoft.com">
                 de recentste updates van Office</a> geïnstalleerd hebt.</p>
     <p>

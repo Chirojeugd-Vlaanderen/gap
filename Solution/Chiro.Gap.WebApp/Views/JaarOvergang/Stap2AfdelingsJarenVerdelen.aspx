@@ -81,7 +81,7 @@
     <p>
         De leden en de leiding van vorig jaar wordt automatisch opnieuw ingeschreven.
         Ze krijgen daarbij opnieuw een instapperiode
-        <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is die instapperiode?" } ) %>.
+       &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is die instapperiode?" } ) %>.
         Je hebt dus drie weken (of tot 15 oktober) de tijd om de nodige mensen uit te
         schrijven, zodat je geen factuur krijgt voor hun aansluiting. Achteraf kun je
         nog inschrijven wie je wilt, het hele jaar door.</p>
