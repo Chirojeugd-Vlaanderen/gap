@@ -90,7 +90,10 @@ namespace Chiro.Adf.ServiceModel.Test
         [TestMethod]
         public void NietGemockteServiceTest()
         {
-            
+            // OPGELET:
+            // Als deze test failt, dan kan dat zijn omdat devsrv1 je niet herkent. (Lokale user?)
+            // Open dan in windows explorer \\devsrv1.chiro.wereld, en geef je credentials in.
+            // Dat lost dan normaal gezien het probleem op.
             try
             {
                 string actual = ServiceHelper.CallService<IGroepenService, string>(svc=>svc.WieBenIk());
