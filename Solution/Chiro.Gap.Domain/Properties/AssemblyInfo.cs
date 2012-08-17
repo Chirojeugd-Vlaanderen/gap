@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Chirojeugd-Vlaanderen vzw")]
 [assembly: AssemblyProduct("Chiro.Gap.Domain")]
-[assembly: AssemblyCopyright("Copyright © Chirojeugd-Vlaanderen vzw 2010")]
+[assembly: AssemblyCopyright("Copyright © Chirojeugd-Vlaanderen vzw 2007-2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -39,4 +39,4 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly:CLSCompliant(true)]
+[assembly: CLSCompliant(true)]

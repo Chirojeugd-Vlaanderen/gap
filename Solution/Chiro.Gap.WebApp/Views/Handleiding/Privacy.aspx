@@ -20,7 +20,7 @@
         <li>Geboortedatum</li>
         <li>Geslacht</li>
         <li>Het voorkeursadres
-           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is het voorkeursadres, en waarvoor dient dat?"})%></li>
+           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Voorkeursadres", new { helpBestand = "Trefwoorden" }, new { title = "Wat is het voorkeursadres, en waarvoor dient dat?"})%></li>
         <li>Mailadressen en telefoonnummers</li>
     </ul>
     <p>

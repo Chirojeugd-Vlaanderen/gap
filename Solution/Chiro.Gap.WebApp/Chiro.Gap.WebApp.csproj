@@ -189,7 +189,9 @@
     <Content Include="Content\Screenshots\Formulier_bivakdetails.png" />
     <Content Include="Content\Screenshots\Gebruikersrecht_toekennen.png" />
     <Content Include="Content\Screenshots\Inschrijving_uitstap_bevestigen.png" />
+    <Content Include="Content\Screenshots\Links_rechts_bovenaan.png" />
     <Content Include="Content\Screenshots\Link_Groepscategorieen.png" />
+    <Content Include="Content\Screenshots\Mensen_van_afdeling_veranderen.png" />
     <Content Include="Content\Screenshots\Nieuwe_uitstap.png" />
     <Content Include="Content\Screenshots\Overzicht_gebruikersrechten.png" />
     <Content Include="Content\Screenshots\Tabblad_bivak.png" />
@@ -211,10 +213,13 @@
     <Content Include="Views\Handleiding\Deelnemersadministratie.aspx" />
     <Content Include="Views\Handleiding\DeelnemersInschrijven.aspx" />
     <Content Include="Views\Handleiding\GavsBeheren.aspx" />
+    <Content Include="Views\Handleiding\LeidingVanAfdelingVeranderen.aspx" />
     <Content Include="Views\Handleiding\MedewerkersInschrijven.aspx" />
     <Content Include="Views\Handleiding\UitstapBewerken.aspx" />
     <Content Include="Views\Handleiding\Uitstappen.aspx" />
     <Content Include="Views\Handleiding\UitstapToevoegen.aspx" />
+    <Content Include="Views\Handleiding\WaaromBivakaangifte.aspx" />
+    <Content Include="Views\Handleiding\WaaromContactgegevens.aspx" />
     <Content Include="Views\JaarOvergang\Afdeling.aspx" />
     <Content Include="Views\Leden\AfdelingenBewerken.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
@@ -313,10 +318,12 @@
     <Content Include="App_GlobalResources\MyResources.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>MyResources.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\MyResources.nl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>MyResources.nl.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\Chirologo.png" />
     <Content Include="Content\favicon.ico" />

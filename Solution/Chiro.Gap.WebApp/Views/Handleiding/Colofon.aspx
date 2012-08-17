@@ -13,7 +13,7 @@
 	<ul>
 		<li>De <strong>werkgroep GAP</strong>: Johan Vervloet (hoofdprogrammeur en projectleider),
 			Bart Boone, Peter Bertels, Broes Decat, Tim Mallezie, Koen Meersman, Tom Haepers,
-            Mathias Keustermans</li>
+            Mathias Keustermans, Sven Maes, Mattias Deparcq, Steven Lemmens</li>
 		<li>De <strong>testers</strong>: Merijn Gouweloose, Maarten Perpet, Roel Vercammen, Ben Bridts en heel wat
 			anderen</li>
 		<li>En verder: alle mensen die ooit feedback gaven over het vroegere Chirogroepprogramma,

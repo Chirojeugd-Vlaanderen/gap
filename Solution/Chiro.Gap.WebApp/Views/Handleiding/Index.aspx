@@ -51,10 +51,12 @@
         <li>Zorgen dat eventuele opvolgers een login krijgen: zie
             <%=Html.ActionLink("Logins beheren", "ViewTonen", new { Controller = "Handleiding", helpBestand = "GavsBeheren" })%></li>
         <li>
-            <%=Html.ActionLink("De jaarovergang uitvoeren", "ViewTonen", new { Controller = "Handleiding", helpBestand = "JaarovergangUitvoeren" })%></li>
+            <%=Html.ActionLink("De jaarovergang uitvoeren", "ViewTonen", new { Controller = "Handleiding", helpBestand = "JaarovergangUitvoeren" })%>:
+            je afdelingen instellen, en leden en leiding inschrijven die vorig jaar al aangesloten
+            was</li>
         <li>Controleren of je leden van vorig werkjaar in de juiste afdeling terechtgekomen
             zijn</li>
-        <li>De leiding bij de juiste afdeling zetten</li>
+        <li>De leiding bij de juiste afdeling zetten: belangrijk voor afdelingsgebonden post!</li>
         <li>Nieuwe leden
             <%=Html.ActionLink("toevoegen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwePersoon" })%>
             en

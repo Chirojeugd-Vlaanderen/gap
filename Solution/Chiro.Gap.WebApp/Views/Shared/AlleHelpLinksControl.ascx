@@ -3,6 +3,15 @@
     <h2>
         Handleiding</h2>
     <h3>
+        Scenario's:</h3>
+    <ul>
+        <li><%=Html.ActionLink("Gebruikersrechten regelen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "GAVsBeheren" })%></li>
+        <li><%=Html.ActionLink("Jaarovergang uitvoeren", "ViewTonen", new { Controller = "Handleiding", helpBestand = "JaarovergangUitvoeren" })%></li>
+        <li><%=Html.ActionLink("Ledenadministratie regelen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwLid" }, new { title = "Gegevens van een nieuw lid toevoegen (= iemand inschrijven)" })%></li>
+        <li><%=Html.ActionLink("Bivakaangifte regelen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "UitstapToevoegen" })%></li>
+        <li><a href="http://www.chiro.be/sites/default/files/page/2010/02/handleiding_groepsadministratiewebsite.pdf">Pdf-versie downloaden</a></li>
+    </ul>
+    <h3>
         Algemeen:</h3>
     <ul>
         <li><a href="http://www.chiro.be/eloket/feedback-gap">Vragen of feedback?</a></li>
@@ -60,6 +69,8 @@
             <%=Html.ActionLink("Andere persoonsgegevens", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Persoonsfiche" })%></li>
         <li>
             <%=Html.ActionLink("Adressen aanpassen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Verhuizen" })%></li>
+        <li>
+            <%=Html.ActionLink("Iemands afdeling veranderen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "LeidingVanAfdelingVeranderen" })%></li>
         <li>
             <%=Html.ActionLink("Iemands functies aanpassen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "IemandsFunctiesAanpassen" })%></li>
         <li>
