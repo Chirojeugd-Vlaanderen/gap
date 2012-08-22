@@ -3,8 +3,8 @@
 use gap;
 
 
-declare @AdFoutePersoon as int; set @AdFoutePersoon=252045;		-- AD-nummer van dubbele persoon
-declare @AdJuistePersoon as int; set @AdJuistePersoon=251388;	-- AD-nummer van de persoon met de juiste persoonsgegevens (adressen, contactinfo)
+declare @AdFoutePersoon as int; set @AdFoutePersoon=276838;		-- AD-nummer van dubbele persoon
+declare @AdJuistePersoon as int; set @AdJuistePersoon=277754;	-- AD-nummer van de persoon met de juiste persoonsgegevens (adressen, contactinfo)
 declare @JuisteAd as int; set @JuisteAd=@AdFoutePersoon;		-- Typisch heeft de persoon met de juiste gegevens het verkeerde AD-nummer :-)
 
 -- PersoonIDs opzoeken
