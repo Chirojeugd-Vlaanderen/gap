@@ -61,12 +61,15 @@ namespace Chiro.Kip.Workers
 
             foreach (var hf in teVerwijderen)
             {
-                feedback.AppendLine(String.Format(
-                    "Functie {4} verwijderen van ID{0} {1} {2} AD{3}",
-                    lid.Persoon.GapID,
-                    lid.Persoon.VoorNaam,
-                    lid.Persoon.Naam,
-                    lid.Persoon.AdNummer, hf.Functie.CODE));
+                if (lid.Persoon != null)
+                {
+                    feedback.AppendLine(String.Format(
+                        "Functie {4} verwijderen van ID{0} {1} {2} AD{3}",
+                        lid.Persoon.GapID,
+                        lid.Persoon.VoorNaam,
+                        lid.Persoon.Naam,
+                        lid.Persoon.AdNummer, hf.Functie.CODE));
+                }
                 db.DeleteObject(hf);
             }
 
@@ -90,13 +93,16 @@ namespace Chiro.Kip.Workers
                 };
                 db.AddToHeeftFunctieSet(hf);
 
-                feedback.AppendLine(String.Format(
-                    "Functie toegekend aan ID{0} {1} {2} AD{3}: {4}",
-                    lid.Persoon.GapID,
-                    lid.Persoon.VoorNaam,
-                    lid.Persoon.Naam,
-                    lid.Persoon.AdNummer,
-                    functie.CODE));
+                if (lid.Persoon != null)
+                {
+                    feedback.AppendLine(String.Format(
+                        "Functie toegekend aan ID{0} {1} {2} AD{3}: {4}",
+                        lid.Persoon.GapID,
+                        lid.Persoon.VoorNaam,
+                        lid.Persoon.Naam,
+                        lid.Persoon.AdNummer,
+                        functie.CODE));
+                }
 
                 // Als functie fin. ver. is, pas dan ook betaler in groepsrecord
                 // aan.
@@ -112,6 +118,13 @@ namespace Chiro.Kip.Workers
                     if (cg != null)
                     {
                         // OH NEE, dat is geen foreign key :-(
+
+                        if (lid.Persoon == null)
+                        {
+                            lid.PersoonReference.Load();
+                        }
+                        
+                        Debug.Assert(lid.Persoon != null);  // een lid zonder persoon kan niet in Kipadmin, en we hebben net de persoon geladen.
 
                         cg.BET_ADNR = lid.Persoon.AdNummer;
                         cg.STEMPEL = DateTime.Now;
