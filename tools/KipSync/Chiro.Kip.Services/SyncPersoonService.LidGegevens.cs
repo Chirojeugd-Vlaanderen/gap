@@ -40,12 +40,6 @@ namespace Chiro.Kip.Services
                          where g.STAMNR == gedoe.StamNummer
                          select g).FirstOrDefault();
 
-                if (groep == null)
-                {
-                    _log.FoutLoggen(0, String.Format("Inschrijving voor onbestaande groep {0}", gedoe.StamNummer));
-                    return;
-                }
-
                 // Bestaat het lid al?
                 // De moeilijkheid is dat bij het begin van het nieuwe werkjaar standaard
                 // alle leden van het vorige werkjaar in kipadmin zitten, met 'aansl_nr' = 0.
@@ -61,11 +55,7 @@ namespace Chiro.Kip.Services
                                l.werkjaar == gedoe.WerkJaar
                            select l).FirstOrDefault();
 
-                if (lid != null)
-                {
-                    _log.BerichtLoggen(groep.GroepID, String.Format("Bewaren van bestaand lid, met AD-nr {0}", adNummer));
-                }
-                else
+                if (lid == null)
                 {
                     // Nieuw lid.
 
@@ -78,7 +68,7 @@ namespace Chiro.Kip.Services
                     if (persoon == null)
                     {
                         _log.FoutLoggen(
-                            groep.GroepID,
+                            groep == null ? 0 : groep.GroepID,
                             String.Format(
                                 "genegeerd: Lid met onbekend AD-nr. {0}",
                                 adNummer));
