@@ -1,4 +1,3 @@
-
 CREATE procedure [data].[spDubbelePersoonVerwijderen] (@foutPID as int, @juistPID as int) as
 -- alle referenties van persoon met @foutPID veranderen naar die van persoon met @juistPID
 begin
@@ -167,15 +166,14 @@ JOIN biv.Deelnemer fouteDn on fouteDn.GelieerdePersoonID = fouteGp.GelieerdePers
 JOIN pers.GelieerdePersoon juisteGp on fouteGp.GroepID = juisteGp.GroepID
 WHERE fouteGp.PersoonID=@foutPID AND juisteGp.PersoonID=@juistPID
 
--- probeer dubbelpuntabonnement te verleggen
+-- foute abonnementen
 
-UPDATE foutAb
-SET foutAb.GelieerdePersoonID=juisteGp.GelieerdePersoonID
+UPDATE fouteAb
+SET fouteAb.GelieerdePersoonID=juisteGp.GelieerdePersoonID
 FROM pers.GelieerdePersoon fouteGp
-JOIN abo.Abonnement foutAb on foutAb.GelieerdePersoonID = fouteGp.GelieerdePersoonID
+JOIN abo.Abonnement fouteAb on fouteAb.GelieerdePersoonID = fouteGp.GelieerdePersoonID
 JOIN pers.GelieerdePersoon juisteGp on fouteGp.GroepID = juisteGp.GroepID
 WHERE fouteGp.PersoonID=@foutPID AND juisteGp.PersoonID=@juistPID
-
 
 -- op dit moment kunnen de foute gelieerde personen verdwijnen
 
@@ -235,4 +233,6 @@ end
 
 
 GO
+
+
 
