@@ -69,6 +69,11 @@
     <Compile Include="DataInterfaces\IUitstappenDao.cs" />
     <Compile Include="Deelnemer.cs" />
     <Compile Include="Plaats.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Publicatie.cs" />
     <Compile Include="SyncInterfaces\IBivakSync.cs" />
     <Compile Include="SyncInterfaces\IGroepenSync.cs" />
@@ -141,6 +146,10 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ChiroGroepModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">

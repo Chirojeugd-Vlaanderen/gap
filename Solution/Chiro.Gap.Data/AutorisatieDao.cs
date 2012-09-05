@@ -652,17 +652,37 @@ namespace Chiro.Gap.Data.Ef
         /// <returns><c>True</c> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde 
         /// gebruikersrecht, anders <c>false</c></returns>
 	    public bool IsGavGebruikersRecht(int gebruikersRechtID, string login)
-	    {
-	        using (var db = new ChiroGroepEntities())
-	        {
-	            var query = from gr in db.GebruikersRecht
-	                        where gr.Groep.GebruikersRecht.Any(
-	                            r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
-	                        select gr;
+        {
+            return IsGavGebruikersRechten(new[] {gebruikersRechtID}, login);
+        }
 
-	            return query.FirstOrDefault() != null;
-	        }
-	    }
+        /// <summary>
+        /// Controleert of de gebruiker met gegeven <paramref name="login"/> GAV-rechten heeft op de gebruikersrechten met gegeven
+        /// <paramref name="gebruikersRechtIDs"/>
+        /// </summary>
+        /// <param name="gebruikersRechtIDs">ID's van gebruikersrechten die gecontroleerd moeten worden</param>
+        /// <param name="login">login van de gebruiker waarvoor gebruikersrecht gecontroleerd moet worden</param>
+        /// <returns><c>true</c> als de gebruiker GAV-rechten heeft op de gebruikersrechten met gegeven
+        /// <paramref name="gebruikersRechtIDs"/></returns>
+        public bool IsGavGebruikersRechten(int[] gebruikersRechtIDs, string login)
+        {
+            using (var db = new ChiroGroepEntities())
+            {
+                var probleemgeval =
+                    // de gebruikersrechten met gegeven ID's
+                    db.GebruikersRecht.Where(Utility.BuildContainsExpression<GebruikersRecht, int>(gr => gr.ID,
+                                                                                                   gebruikersRechtIDs)).
+                        // en waarvoor er een bestaat waarbij alle accounts die gekoppeld zijn aan dezelfde groep
+                        // een username hebben die verschillen van 'login'
+                        FirstOrDefault(
+                            gbr =>
+                            gbr.Groep.GebruikersRecht.All(
+                                gr => String.Compare(gr.Gav.Login, login, StringComparison.OrdinalIgnoreCase) != 0));
+
+                return probleemgeval == null;
+            }
+        }
+
 
         /// <summary>
         /// Verwijdert uit een lijst <paramref name="afdelingIDs"/> de ID's van afdelingen voor wie de
@@ -684,6 +704,29 @@ namespace Chiro.Gap.Data.Ef
                     .Select(ld => ld.ID).Distinct()).ToArray();
             }
         }
+
+        /// <summary>
+        /// Kijkt na of de user met gegeven <paramref name="login"/> GAV is van de account met gegeven <paramref name="accountID"/>.
+        /// </summary>
+        /// <param name="accountID">ID van de te controleren account</param>
+        /// <param name="login">login van de te controleren user</param>
+        /// <returns><c>true</c> als de aangelogde gebruiker GAV is van de account met gegeven <paramref name="accountID"/></returns>
+        /// <remarks>met account bedoel ik hetgeen nu de Gav-klasse is. Maar op termijn moet die klasse hernoemd worden naar
+        /// account (zie #1357)</remarks>
+	    public bool IsGavAccount(int accountID, string login)
+	    {
+	        using (var db = new ChiroGroepEntities())
+	        {
+	            var resultaat = (from gr in db.GebruikersRecht
+	                             where
+	                                 String.Compare(gr.Gav.Login, login, StringComparison.OrdinalIgnoreCase) == 0 &&
+	                                 gr.Groep.GelieerdePersoon.Any(gp => gp.Persoon.Gav.Any(act => act.ID == accountID))
+	                             select gr).FirstOrDefault();
+
+	            return resultaat != null;
+	        }
+	    }
+
 
 	    #endregion
 	}

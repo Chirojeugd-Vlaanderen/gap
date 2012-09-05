@@ -151,6 +151,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to De rol {0} wordt nog niet ondersteund..
+        /// </summary>
+        internal static string RolNietOndersteund {
+            get {
+                return ResourceManager.GetString("RolNietOndersteund", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} was al leiding..
         /// </summary>
         internal static string WasAlLeiding {

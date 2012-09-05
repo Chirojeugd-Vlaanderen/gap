@@ -153,6 +153,16 @@ namespace Chiro.Gap.Dummies
 	        throw new NotImplementedException();
 	    }
 
+	    public bool IsGavAccount(int accountID)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public bool IsGavGebruikersRechten(int[] gebruikersRechtIDs)
+	    {
+	        throw new NotImplementedException();
+	    }
+
 	    public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
 		{
 			return true;

@@ -20,7 +20,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Worker die alle businesslogica i.v.m. groepen bevat (dat is breder dan 'Chirogroepen', bv. satellieten)
     /// </summary>
-    public class GroepenManager
+    public class GroepenManager : IGroepenManager
     {
         private readonly IGroepenDao _groepenDao;
         private readonly IGelieerdePersonenDao _gelPersDao;
@@ -164,6 +164,20 @@ namespace Chiro.Gap.Workers
         public Groep Ophalen(int groepID)
         {
             return Ophalen(groepID, GroepsExtras.Geen);
+        }
+
+        /// <summary>
+        /// Haalt de groepen met gegeven <paramref name="groepIDs"/> op, zonder gekoppelde entiteiten.
+        /// </summary>
+        /// <param name="groepIDs">ID's van op te halen groepen</param>
+        /// <returns>De opgehaalde groepen</returns>
+        public Groep[] Ophalen(int[] groepIDs)
+        {
+            if (!_autorisatieMgr.IsGavGroepen(groepIDs))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+            return _groepenDao.Ophalen(groepIDs).ToArray();
         }
 
         /// <summary>

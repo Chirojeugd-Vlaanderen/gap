@@ -256,7 +256,27 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <paramref name="login"/> GAV is.</returns>
         IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs, string login);
 
+        /// <summary>
+        /// Kijkt na of de user met gegeven <paramref name="login"/> GAV is van de account met gegeven <paramref name="accountID"/>.
+        /// </summary>
+        /// <param name="accountID">ID van de te controleren account</param>
+        /// <param name="login">login van de te controleren user</param>
+        /// <returns><c>true</c> als de aangelogde gebruiker GAV is van de account met gegeven <paramref name="accountID"/></returns>
+        /// <remarks>met account bedoel ik hetgeen nu de Gav-klasse is. Maar op termijn moet die klasse hernoemd worden naar
+        /// account (zie #1357)</remarks>
+	    bool IsGavAccount(int accountID, string login);
+
+        /// <summary>
+        /// Controleert of de gebruiker met gegeven <paramref name="login"/> GAV-rechten heeft op de gebruikersrechten met gegeven
+        /// <paramref name="gebruikersRechtIDs"/>
+        /// </summary>
+        /// <param name="gebruikersRechtIDs">ID's van gebruikersrechten die gecontroleerd moeten worden</param>
+        /// <param name="login">login van de gebruiker waarvoor gebruikersrecht gecontroleerd moet worden</param>
+        /// <returns><c>true</c> als de gebruiker GAV-rechten heeft op de gebruikersrechten met gegeven
+        /// <paramref name="gebruikersRechtIDs"/></returns>
+	    bool IsGavGebruikersRechten(int[] gebruikersRechtIDs, string login);
+
         #endregion
 
-	}
+    }
 }

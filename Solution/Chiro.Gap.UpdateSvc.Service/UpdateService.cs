@@ -20,7 +20,7 @@ namespace Chiro.Gap.UpdateSvc.Service
     public class UpdateService : IUpdateService
 	{
 		private readonly PersonenManager _personenMgr;
-	    private readonly GroepenManager _groepenMgr;
+	    private readonly IGroepenManager _groepenMgr;
 	    private readonly ILedenManager _ledenMgr;
 	    private readonly AbonnementenManager _abonnementenManager;
 	    private readonly ILedenSync _ledenSync;
@@ -47,7 +47,7 @@ namespace Chiro.Gap.UpdateSvc.Service
 	    /// <param name="dubbelpuntSync">
         /// Te gebruiken DubbelpuntSync terug naar Kipadmin
 	    /// </param>
-	    public UpdateService(PersonenManager personenManager, GroepenManager groepenManager, ILedenManager ledenManager, AbonnementenManager abonnementenManager, ILedenSync ledenSync, IDubbelpuntSync dubbelpuntSync)
+	    public UpdateService(PersonenManager personenManager, IGroepenManager groepenManager, ILedenManager ledenManager, AbonnementenManager abonnementenManager, ILedenSync ledenSync, IDubbelpuntSync dubbelpuntSync)
 		{
 			_personenMgr = personenManager;
 		    _groepenMgr = groepenManager;

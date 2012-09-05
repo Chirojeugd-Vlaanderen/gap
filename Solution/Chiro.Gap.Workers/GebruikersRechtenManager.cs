@@ -24,7 +24,7 @@ namespace Chiro.Gap.Workers
     /// Manager die informatie ophaalt over gebruikersrechten van personen waar jij 
     /// gebruikersrecht op hebt.
     /// </summary>
-    public class GebruikersRechtenManager
+    public class GebruikersRechtenManager : IGebruikersRechtenManager
     {
         private readonly IAutorisatieDao _autorisatieDao;
         private readonly IGavDao _gavDao;
@@ -86,46 +86,6 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Geeft <c>true</c> als de 'gebruikersrechtvervaldatum' <paramref name="datum"/>  in de
-        /// nabije toekomst is, anders <c>false</c>.
-        /// </summary>
-        /// <param name="datum">
-        /// Vervaldatum van een gebruikersrecht
-        /// </param>
-        /// <returns>
-        /// <c>True</c> als de 'gebruikersrechtvervaldatum' <paramref name="datum"/>  in de
-        /// nabije toekomst is, anders <c>false</c>.
-        /// </returns>
-        public static bool VervalDatumNabij(DateTime? datum)
-        {
-            return datum == null
-                       ? false
-                       : ((DateTime)datum) < DateTime.Now.AddMonths(
-                           Settings.Default.MaandenGebruikersRechtVerlengbaar);
-        }
-
-        /// <summary>
-        /// Geeft <c>true</c> als het gegeven <paramref name="gebruikersrecht"/> verlengd
-        /// kan worden, anders <c>false</c>
-        /// </summary>
-        /// <param name="gebruikersrecht">
-        /// Gebruikersrecht waarvan de verlengbaarheid te controleren is
-        /// </param>
-        /// <returns>
-        /// <c>True</c> als het gegeven <paramref name="gebruikersrecht"/> verlengd
-        /// kan worden, anders <c>false</c>.
-        /// </returns>
-        public bool IsVerlengbaar(GebruikersRecht gebruikersrecht)
-        {
-            if (!(_autorisatieManager.IsSuperGav() || _autorisatieManager.IsGavGebruikersRecht(gebruikersrecht.ID)))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return VervalDatumNabij(gebruikersrecht.VervalDatum);
-        }
-
-        /// <summary>
         /// Verlengt het gegeven <paramref name="gebruikersRecht"/> (indien mogelijk) tot het standaard aantal maanden
         /// na vandaag.
         /// </summary>
@@ -140,7 +100,8 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
-            else if (!IsVerlengbaar(gebruikersRecht))
+            
+            if (!gebruikersRecht.IsVerlengbaar)
             {
                 // Als er gebruikersrecht is, maar dat is niet verlengbaar, dan gooien
                 // we er een exception tegenaan.
@@ -153,105 +114,93 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Geeft <paramref name="persoon"/> GAV-recht op <paramref name="groep"/> voor de standaardduur.  Als er al
-        /// gebruikersrechten bestonden, worden die zo mogelijk verlengd.  MOET PERSISTEREN, want er wordt een login 
-        /// aangemaakt in AD, en dat moet dus allemaal in 1 transactie.
+        /// Maakt een account voor de gegeven <paramref name="gelieerdePersoon"/>. In principe is het niet nodig
+        /// dat de persoon gelieerd is aan een groep, maar we hebben wel een e-mailadres nodig, en laat die nu
+        /// net gekoppeld zijn aan gelieerde personen.
+        /// Deze method persisteert, want het aanmaken en bewaren van de account in Gap en het aanmaken van de 
+        /// account in AD moeten in 1 transactie gebeuren.
         /// </summary>
-        /// <param name="persoon">
-        /// Persoon die gebruikersrecht moet krijgen, met daaraan gekoppeld eventueel bestaande
-        /// gebruikersrechten, en e-mailadres
-        /// </param>
-        /// <param name="groep">
-        /// Groep waarvoor <paramref name="persoon"/> gebruikersrecht moet krijgen
-        /// </param>
-        /// <param name="eMail">
-        /// E-mailadres dat gebruikt moet worden om accountinfo op te sturen
-        /// </param>
-        /// <returns>
-        /// Het gecreeerde gebruikersrechtobject
-        /// </returns>
-        public GebruikersRecht ToekennenOfVerlengen(Persoon persoon, Groep groep, string eMail)
+        /// <param name="gelieerdePersoon">Gelieerde persoon waarvoor een account gezocht of gemaakt moet 
+        /// worden. Er wordt verondersteld dat die al gekoppeld is aan zijn accounts. Wat mogelijk een
+        /// beetje stom is. Soit.</param>
+        /// <returns>GAV-object voor de gelieerde persoon</returns>
+        /// <remarks>Gav is eigenlijk een verkeerde naam; het was beter Login geweest.</remarks>
+        public Gav AccountZoekenOfMaken(GelieerdePersoon gelieerdePersoon)
         {
-            Gav gav;
-            GebruikersRecht resultaat;
-            int adNr;
+            return AccountZoekenOfMaken(gelieerdePersoon, true);
+        }
 
-            if (!_autorisatieManager.IsGavPersoon(persoon.ID) || !_autorisatieManager.IsGavGroep(groep.ID))
+        /// <summary>
+        /// Zoekt een account voor de gegeven <paramref name="gelieerdePersoon"/>. Als geen account wordt
+        /// gevonden, en <paramref name="makenAlsNietGevonden"/> <c>true</c> is, wordt een nieuwe account 
+        /// aangemaakt, en krijgt de gelieerde persoon een e-mail via zijn voorkeursmailadres.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Gelieerde persoon waarvoor een account gezocht of gemaakt moet 
+        /// worden. Er wordt verondersteld dat die al gekoppeld is aan zijn accounts. Wat mogelijk een
+        /// beetje stom is. Soit.</param>
+        /// <param name="makenAlsNietGevonden"> Indien <c>true</c> wordt een nieuwe account gemaakt als
+        /// er geen is gevonden.</param>
+        /// <returns>Account voor de gelieerde persoon (klasse Gav zou beter hernoemd worden als account, 
+        /// zie #1357)</returns>
+        /// <remarks>De gemaakte account heeft geen rechten.</remarks>
+        public Gav AccountZoekenOfMaken(GelieerdePersoon gelieerdePersoon, bool makenAlsNietGevonden)
+        {
+            var p = gelieerdePersoon.Persoon;
+
+            if (!_autorisatieManager.IsGavGelieerdePersoon(gelieerdePersoon.ID))
             {
-                throw new GeenGavException(Resources.GeenGav);
+                throw new GeenGavException(Properties.Resources.GeenGav);
             }
 
-            if (persoon.AdNummer == null)
+            var account = p.Gav.FirstOrDefault();
+
+            if (account != null || !makenAlsNietGevonden)
             {
-                throw new FoutNummerException(FoutNummer.AdNummerVerplicht, Resources.AdNummerVerplicht);
+                // Als we al een account gevonden hebben, of als we er geen nieuwe moeten maken, dan zijn we
+                // hier al klaar.
+                return account;
             }
 
-            adNr = (int)persoon.AdNummer;
 
-            if (persoon.Gav.FirstOrDefault() != null)
+            // Check op ad-nummer en e-mailadres
+
+            if (p.AdNummer == null)
             {
-                // Er is al een GAV.
-                gav = persoon.Gav.FirstOrDefault();
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(eMail))
-                {
-                    throw new FoutNummerException(FoutNummer.EMailVerplicht, Resources.EMailVerplicht);
-                }
-
-                // Maak GAV
-                gav = new Gav();
-
-                gav.Persoon.Add(persoon);
-                persoon.Gav.Add(gav);
+                throw new FoutNummerException(FoutNummer.AdNummerVerplicht, Properties.Resources.AdNummerVerplicht);
             }
 
-            var gebruikersRecht = ToekennenOfVerlengen(gav,
-                                                       groep,
-                                                       DateTime.Now.AddMonths(
-                                                           Settings.Default.MaandenGebruikersRechtStandaard));
+            if (string.IsNullOrEmpty(gelieerdePersoon.ContactEmail))
+            {
+                throw new FoutNummerException(FoutNummer.EMailVerplicht, Properties.Resources.EMailVerplicht);
+            }
 
-            // transactie voor AD-account aanmaken en persisteren.
+            account = new Gav();
+            account.Persoon.Add(p);
+            p.Gav.Add(account);
+
 #if KIPDORP
             using (var tx = new TransactionScope())
             {
 #endif
-            if (gav.ID == 0)
-            {
-                // Als het om een nieuwe GAV gaat, vraag dan een AD-account aan, en bewaar
-                // de login
-                string username = ServiceHelper.CallService<IAdService, string>(
-                    svc => svc.GapLoginAanvragen(adNr, persoon.VoorNaam, persoon.Naam, eMail));
+                string username =
+                    ServiceHelper.CallService<IAdService, string>(
+                        svc => svc.GapLoginAanvragen(p.AdNummer.Value, p.VoorNaam, p.Naam, gelieerdePersoon.ContactEmail));
 
-                gav.Login = string.Format(@"CHIROPUBLIC\{0}", username);
+                account.Login = string.Format(@"CHIROPUBLIC\{0}", username);
 
-                // Het zou kunnen dat de gevraagde GAV al in de database zat, maar nog niet
-                // gekoppeld was aan een persoon.  Om key violations en dergelijke te vermijden,
-                // een minder mooie hack:
-                gav.ID = _gavDao.IdOphalen(gav.Login);
+                // Het zou kunnen dat de nieuwe login toch al ergens gekend was. Om key violations te vermijden, halen
+                // we lelijke-hackgewijze het account-ID op.
 
-                if (gav.ID != 0)
-                {
-                    gebruikersRecht.ID = _autorisatieDao.IdOphalen(gav.ID, groep.ID);
-                }
+                account.ID = _gavDao.IdOphalen(account.Login);
 
-                // TODO Eigenlijk is dat niet goed, want gebruikersrecht.Versie gaat bijv niet kloppen
-                // Maar aangezien concurrency control toch ook niet overal werkt, zal het 
-                // momenteel zo misschien wel lukken. :-P
-                // Als we op termijn de koppeling GAV-Persoon verplicht kunnen maken, dan is dit gedoe
-                // helemaal niet meer nodig.
-            }
+                account = _gavDao.Bewaren(account, act => act.Persoon);
 
-            resultaat = _autorisatieDao.Bewaren(gebruikersRecht,
-                                                gr => gr.Gav.Persoon.First().WithoutUpdate(),
-                                                gr => gr.Groep.WithoutUpdate());
 #if KIPDORP
                 tx.Complete();
             }
 #endif
+            return account;
 
-            return resultaat;
         }
 
         /// <summary>
@@ -263,18 +212,28 @@ namespace Chiro.Gap.Workers
         /// </param>
         public void Intrekken(GebruikersRecht gebruikersRecht)
         {
-            if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersRecht.ID))
+            Intrekken(new[] {gebruikersRecht});
+        }
+
+        /// <summary>
+        /// Pas de vervaldatum van het de <paramref name="gebruikersRechten"/> aan, zodanig dat
+        /// ze niet meer geldig zijn.  ZONDER TE PERSISTEREN.
+        /// </summary>
+        /// <param name="gebruikersRechten">
+        /// Te vervallen gebruikersrechten
+        /// </param>
+        /// <remarks>Gebruikersrechten die al vervallen zijn, blijven onaangeroerd</remarks>
+        public void Intrekken(GebruikersRecht[] gebruikersRechten)
+        {
+            if (!_autorisatieManager.IsGavGebruikersRechten(gebruikersRechten.Select(gr => gr.ID).ToArray()))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            if (gebruikersRecht.VervalDatum < DateTime.Now)
+            foreach (var gr in gebruikersRechten.Where(r => r.VervalDatum > DateTime.Now))
             {
-                throw new FoutNummerException(FoutNummer.GebruikersRechtWasAlVervallen,
-                                              Resources.GebruikersRechtWasAlVervallen);
+                gr.VervalDatum = DateTime.Now.AddDays(-1);
             }
-
-            gebruikersRecht.VervalDatum = DateTime.Now.AddDays(-1);
         }
 
         /// <summary>
@@ -285,12 +244,21 @@ namespace Chiro.Gap.Workers
         /// </param>
         public void Bewaren(GebruikersRecht gebruikersRecht)
         {
-            if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersRecht.ID))
+            Bewaren(new [] {gebruikersRecht});
+        }
+
+        /// <summary>
+        /// Persisteert de gegeven <paramref name="gebruikersRechten"/>, met koppelingen naar account en groep.
+        /// </summary>
+        /// <param name="gebruikersRechten">Te persisteren gebruikersrechten</param>
+        public void Bewaren(GebruikersRecht[] gebruikersRechten)
+        {
+            if (!_autorisatieManager.IsGavGebruikersRechten(gebruikersRechten.Select(gr => gr.ID).ToArray()))
             {
-                throw new GeenGavException(Resources.GeenGav);
+                throw new GeenGavException(Properties.Resources.GeenGav);
             }
 
-            _autorisatieDao.Bewaren(gebruikersRecht);
+            _autorisatieDao.Bewaren(gebruikersRechten, gr => gr.Gav.WithoutUpdate(), gr => gr.Groep.WithoutUpdate());
         }
 
         /// <summary>
@@ -474,7 +442,7 @@ namespace Chiro.Gap.Workers
                 gav.GebruikersRecht.Add(gebruikersrecht);
                 groep.GebruikersRecht.Add(gebruikersrecht);
             }
-            else if (!IsVerlengbaar(gebruikersrecht))
+            else if (!gebruikersrecht.IsVerlengbaar)
             {
                 throw new FoutNummerException(FoutNummer.GebruikersRechtNietVerlengbaar,
                                               Resources.GebruikersRechtNietVerlengbaar);
@@ -499,6 +467,25 @@ namespace Chiro.Gap.Workers
             var gav = _gavDao.Ophalen(login) ?? new Gav { ID = 0, Login = login };
 
             return gav;
+        }
+
+        /// <summary>
+        /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="account"/>.
+        /// Standaard zijn deze rechten 14 maand geldig. Als de gebruikersrechten al bestonden, worden ze indien
+        /// mogelijk verlengd.
+        /// </summary>
+        /// <param name="account">account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
+        /// <param name="groep">groep waarvoor <paramref name="account"/> gebruikersrecht moet krijgen</param>
+        /// <returns>Het gebruikersrecht</returns>
+        /// <remarks>Persisteert niet.</remarks>
+        public GebruikersRecht ToekennenOfVerlengen(Gav account, Groep groep)
+        {
+            if (!_autorisatieManager.IsGavAccount(account.ID) || !_autorisatieManager.IsGavGroep(groep.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+            return ToekennenOfVerlengen(account, groep,
+                                        DateTime.Now.AddMonths(Settings.Default.MaandenGebruikersRechtStandaard));
         }
     }
 }

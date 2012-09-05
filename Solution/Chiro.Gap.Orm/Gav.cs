@@ -9,7 +9,10 @@ using Chiro.Cdf.Data.Entity;
 namespace Chiro.Gap.Orm
 {
 	/// <summary>
-	/// Instantieert een Gav-object dat zorgt voor samenwerking met Entity Framework
+	/// De klasse Gav heeft eigenlijk een verkeerde naam, en zou beter Account heten. Gav wordt op termijn een rol
+	/// die aan een gebruikersrecht gekoppeld kan worden.
+	/// 
+	/// Deze klasse stelt dus gewoon een login voor.
 	/// </summary>
 	public partial class Gav : IEfBasisEntiteit
 	{

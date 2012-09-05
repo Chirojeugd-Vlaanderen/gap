@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FoutAfhandelaar.cs" />
+    <Compile Include="GebruikersService.cs" />
     <Compile Include="GelieerdePersonenService.svc.cs">
       <DependentUpon>GelieerdePersonenService.svc</DependentUpon>
     </Compile>

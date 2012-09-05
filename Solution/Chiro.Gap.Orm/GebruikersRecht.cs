@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 
@@ -42,5 +43,19 @@ namespace Chiro.Gap.Orm
 		{
 			return 10;
 		}
+
+        /// <summary>
+        /// Geeft weer of de vervaldatum verlengbaar is. Dit is eigenlijk business, dus dat
+        /// staat hier verkeerd.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsVerlengbaar
+        {
+            get
+            {
+                return VervalDatum != null && ((DateTime) VervalDatum) < DateTime.Now.AddMonths(
+                    Properties.Settings.Default.MaandenGebruikersRechtVerlengbaar);
+            }
+        }
 	}
 }

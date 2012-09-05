@@ -306,6 +306,19 @@ namespace Chiro.Gap.Workers
             return _autorisatieDao.IsGavUitstap(uitstapID, GebruikersNaamGet());
         }
 
+        /// <summary>
+        /// Kijkt na of de aangelogde gebruiker GAV is van de account met gegeven <paramref name="accountID"/>.
+        /// </summary>
+        /// <param name="accountID">ID van de te controleren account</param>
+        /// <returns><c>true</c> als de aangelogde gebruiker GAV is van de account met gegeven <paramref name="accountID"/></returns>
+        /// <remarks>met account bedoel ik hetgeen nu de Gav-klasse is. Maar op termijn moet die klasse hernoemd worden naar
+        /// account (zie #1357)</remarks>
+        public bool IsGavAccount(int accountID)
+        {
+            return _autorisatieDao.IsGavAccount(accountID, GebruikersNaamGet());
+        }
+
+
         #endregion
 
         #region Ophalen/uitfilteren
@@ -388,7 +401,19 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public bool IsGavGebruikersRecht(int gebruikersRechtID)
         {
-            return _autorisatieDao.IsGavGebruikersRecht(gebruikersRechtID, GebruikersNaamGet());
+            return IsGavGebruikersRechten(new [] {gebruikersRechtID});
+        }
+
+        /// <summary>
+        /// Controleert of de aangelogde gebruiker GAV-rechten heeft op de gebruikersrechten met gegeven
+        /// <paramref name="gebruikersRechtIDs"/>
+        /// </summary>
+        /// <param name="gebruikersRechtIDs">ID's van gebruikersrechten die gecontroleerd moeten worden</param>
+        /// <returns><c>true</c> als de aangelogde gebruiker GAV-rechten heeft op de gebruikersrechten met gegeven
+        /// <paramref name="gebruikersRechtIDs"/></returns>
+        public bool IsGavGebruikersRechten(int[] gebruikersRechtIDs)
+        {
+            return _autorisatieDao.IsGavGebruikersRechten(gebruikersRechtIDs, GebruikersNaamGet());
         }
 
         /// <summary>
@@ -560,6 +585,7 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
         }
+
 
         /// <summary>
         /// Bepaalt de gebruikersnaam van de huidig aangemelde gebruiker.

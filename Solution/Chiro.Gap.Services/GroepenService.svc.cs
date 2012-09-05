@@ -35,7 +35,7 @@ namespace Chiro.Gap.Services
     {
         #region Manager Injection
 
-        private readonly GroepenManager _groepenMgr;
+        private readonly IGroepenManager _groepenMgr;
         private readonly IChiroGroepenManager _chiroGroepenMgr;
         private readonly AfdelingenManager _afdelingenMgr;
         private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
@@ -46,7 +46,7 @@ namespace Chiro.Gap.Services
         private readonly CategorieenManager _categorieenMgr;
         private readonly FunctiesManager _functiesMgr;
         private readonly ILedenManager _ledenMgr;
-        private readonly GebruikersRechtenManager _gebruikersRechtenManager;
+        private readonly IGebruikersRechtenManager _gebruikersRechtenManager;
 
         /// <summary>
         /// Constructor met via IoC toegekende workers
@@ -88,7 +88,7 @@ namespace Chiro.Gap.Services
         /// Worker ivm gebruikersrechten
         /// </param>
         public GroepenService(
-            GroepenManager groepenMgr,
+            IGroepenManager groepenMgr,
             IChiroGroepenManager cgm,
             AfdelingenManager afdm,
             IAfdelingsJaarManager ajm,
@@ -99,7 +99,7 @@ namespace Chiro.Gap.Services
             ILedenManager lm,
             IAutorisatieManager am,
             JaarOvergangManager jm,
-            GebruikersRechtenManager gebruikersRechtenMgr)
+            IGebruikersRechtenManager gebruikersRechtenMgr)
         {
             _groepenMgr = groepenMgr;
             _chiroGroepenMgr = cgm;
@@ -1111,7 +1111,7 @@ namespace Chiro.Gap.Services
         public IEnumerable<GebruikersDetail> GebruikersOphalen(int groepID)
         {
             var rechten = _gebruikersRechtenManager.AllesOphalen(groepID);
-            var resultaat = Mapper.Map<IEnumerable<GebruikersRecht>, GebruikersDetail[]>(rechten);
+            var resultaat = Mapper.Map<IEnumerable<Orm.GebruikersRecht>, GebruikersDetail[]>(rechten);
             return resultaat;
         }
 

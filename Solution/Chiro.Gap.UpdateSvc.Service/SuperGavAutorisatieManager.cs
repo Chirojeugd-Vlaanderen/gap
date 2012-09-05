@@ -385,6 +385,16 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public bool IsGavAccount(int accountID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGavGebruikersRechten(int[] gebruikersRechtIDs)
+        {
+            throw new NotImplementedException();
+        }
+
 
         /// <summary>
         /// Gebruikerses the recht gelieerde persoon.

@@ -281,4 +281,16 @@ namespace Chiro.Gap.Domain
         Aspis = 6,
         Speciaal = 7
     }
+
+    /// <summary>
+    /// Mogelijke rollen van een gebruiker. Deze zijn altijd van toepassing op een groep.
+    /// (en dus niet globaal)
+    /// </summary>
+    [DataContract]
+    [Flags]
+    public enum Rol
+    {
+        Geen = 0x00,        // Geen rechten
+        Gav = 0x80          // GAV (voorlopig zijn de mogelijkheden beperkt)
+    }
 }

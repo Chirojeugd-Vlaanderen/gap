@@ -38,12 +38,12 @@ namespace Chiro.Gap.Services
         private readonly IGelieerdePersonenManager _gpMgr;
         private readonly PersonenManager _pMgr;
         private readonly AdressenManager _adrMgr;
-        private readonly GroepenManager _groepenMgr;
+        private readonly IGroepenManager _groepenMgr;
         private readonly IGroepsWerkJaarManager _gwjMgr;
         private readonly CommVormManager _cvMgr;
         private readonly CategorieenManager _catMgr;
         private readonly AbonnementenManager _abMgr;
-        private readonly GebruikersRechtenManager _gebruikersRechtenMgr;
+        private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
         private readonly IAutorisatieManager _auMgr;
 
         /// <summary>
@@ -83,12 +83,12 @@ namespace Chiro.Gap.Services
             IGelieerdePersonenManager gpm,
             PersonenManager pm,
             AdressenManager adm,
-            GroepenManager groepenMgr,
+            IGroepenManager groepenMgr,
             IGroepsWerkJaarManager gwjm,
             CommVormManager cvm,
             CategorieenManager cm,
             AbonnementenManager abm,
-            GebruikersRechtenManager gebruikersRechtenMgr,
+            IGebruikersRechtenManager gebruikersRechtenMgr,
             IAutorisatieManager aum)
         {
             _gpMgr = gpm;
@@ -498,15 +498,7 @@ namespace Chiro.Gap.Services
 
                 if (gebruikersrecht != null)
                 {
-                    // TODO Gebruik automapper
-
-                    result.GebruikersInfo = new GebruikersInfo
-                                                     {
-                                                         VervalDatum = gebruikersrecht.VervalDatum,
-                                                         Verlengbaar = _gebruikersRechtenMgr.IsVerlengbaar(gebruikersrecht),
-                                                         GavLogin = gebruikersrecht.Gav.Login,
-                                                         ID = gebruikersrecht.ID
-                                                     };
+                    result.GebruikersInfo = Mapper.Map<Orm.GebruikersRecht, GebruikersInfo>(gebruikersrecht);
                 }
 
                 // Dit lijkt me meer business
@@ -1229,22 +1221,6 @@ namespace Chiro.Gap.Services
             }
 
             _abMgr.Bewaren(abonnement);
-        }
-
-        /// <summary>
-        /// Kent een gebruikersrecht voor 14 maanden toe aan de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>.
-        /// Als het gebruikersrecht al bestaat, dan wordt het indien mogelijk verlengd tot 14 maanden vanaf vandaag.
-        /// </summary>
-        /// <param name="id">ID van de gelieerde persoon die gebruikersrecht moet krijgen</param>
-        public void GelieerdePersoonRechtenGeven(int id)
-        {
-            // Haal gelieerde persoon op met eventuele bestaande gebruikersrechten en communicatie
-
-            var gp = _gpMgr.Ophalen(id, PersoonsExtras.GebruikersRechten | PersoonsExtras.Groep | PersoonsExtras.Communicatie);
-
-            // Creëer/verleng en bewaar gebruikersrecht
-
-            _gebruikersRechtenMgr.ToekennenOfVerlengen(gp.Persoon, gp.Groep, gp.ContactEmail);
         }
 
         /// <summary>

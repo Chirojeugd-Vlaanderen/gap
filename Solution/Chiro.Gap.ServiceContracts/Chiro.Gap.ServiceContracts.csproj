@@ -70,6 +70,7 @@
     <Compile Include="DataContracts\CommunicatieInfo.cs" />
     <Compile Include="DataContracts\GebruikersDetail.cs" />
     <Compile Include="DataContracts\GebruikersInfo.cs" />
+    <Compile Include="DataContracts\GebruikersRecht.cs" />
     <Compile Include="DataContracts\InTeSchrijvenLid.cs" />
     <Compile Include="DataContracts\DeelnemerInfo.cs" />
     <Compile Include="DataContracts\GroepsWerkJaarDetail.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="FaultContracts\OngeldigObjectFault.cs" />
     <Compile Include="FaultContracts\BlokkerendeObjectenFault.cs" />
     <Compile Include="FaultContracts\GapFault.cs" />
+    <Compile Include="IGebruikersService.cs" />
     <Compile Include="IGelieerdePersonenService.cs" />
     <Compile Include="IGroepenService.cs" />
     <Compile Include="ILedenService.cs" />

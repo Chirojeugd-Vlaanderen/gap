@@ -18,6 +18,7 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
+using GebruikersRecht = Chiro.Gap.Orm.GebruikersRecht;
 
 namespace Chiro.Gap.ServiceContracts.Mappers
 {
@@ -559,13 +560,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src.LeidingMaken));
 
             Mapper.CreateMap<GebruikersRecht, GebruikersDetail>()
-                .ForMember(dst => dst.Verlengbaar,
-                           opt =>
-                           opt.MapFrom(src => GebruikersRechtenManager.VervalDatumNabij(src.VervalDatum)))
+                .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsVerlengbaar))
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => GelieerdePersoonIDGet(src)))
                 .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? 0 : src.Gav.Persoon.First().ID))
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? String.Empty : src.Gav.Persoon.First().Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? String.Empty : src.Gav.Persoon.First().VoorNaam));
+
+            Mapper.CreateMap<GebruikersRecht, GebruikersInfo>();
 
             #region mapping van datacontracts naar entity's
 

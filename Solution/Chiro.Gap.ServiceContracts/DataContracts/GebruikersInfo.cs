@@ -37,6 +37,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// Geeft aan of het gebruikersrecht verlengbaar is
         /// </summary>
         [DataMember]
-        public bool Verlengbaar { get; set; }
+        public bool IsVerlengbaar { get; set; }
     }
 }

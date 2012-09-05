@@ -147,6 +147,16 @@ namespace Chiro.Gap.Dummies
 	        throw new NotImplementedException();
 	    }
 
+	    public bool IsGavAccount(int accountID, string login)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public bool IsGavGebruikersRechten(int[] gebruikersRechtIDs, string login)
+	    {
+	        throw new NotImplementedException();
+	    }
+
 	    #endregion
 	}
 }

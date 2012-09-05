@@ -334,5 +334,23 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.
         /// </remarks>
         GebruikersRecht GebruikersRechtToekennen(string gav, int groep, System.DateTime vervalDatum);
+
+        /// <summary>
+        /// Kijkt na of de aangelogde gebruiker GAV is van de account met gegeven <paramref name="accountID"/>.
+        /// </summary>
+        /// <param name="accountID">ID van de te controleren account</param>
+        /// <returns><c>true</c> als de aangelogde gebruiker GAV is van de account met gegeven <paramref name="accountID"/></returns>
+        /// <remarks>met account bedoel ik hetgeen nu de Gav-klasse is. Maar op termijn moet die klasse hernoemd worden naar
+        /// account (zie #1357)</remarks>
+        bool IsGavAccount(int accountID);
+
+        /// <summary>
+        /// Controleert of de aangelogde gebruiker GAV-rechten heeft op de gebruikersrechten met gegeven
+        /// <paramref name="gebruikersRechtIDs"/>
+        /// </summary>
+        /// <param name="gebruikersRechtIDs">ID's van gebruikersrechten die gecontroleerd moeten worden</param>
+        /// <returns><c>true</c> als de aangelogde gebruiker GAV-rechten heeft op de gebruikersrechten met gegeven
+        /// <paramref name="gebruikersRechtIDs"/></returns>
+        bool IsGavGebruikersRechten(int[] gebruikersRechtIDs);
     }
 }

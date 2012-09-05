@@ -160,4 +160,7 @@
   <data name="CategorieNietLeeg" xml:space="preserve">
     <value>De categorie is niet leeg.</value>
   </data>
+  <data name="RolNietOndersteund" xml:space="preserve">
+    <value>De rol {0} wordt nog niet ondersteund.</value>
+  </data>
 </root>

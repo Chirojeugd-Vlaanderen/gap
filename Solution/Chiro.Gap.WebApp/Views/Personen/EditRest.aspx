@@ -86,7 +86,7 @@
             <li>Vervaldatum:
                 <%=Html.DisplayFor(s => s.PersoonLidInfo.GebruikersInfo.VervalDatum)%></li>
             <% 
-                if (Model.PersoonLidInfo.GebruikersInfo.Verlengbaar)
+                if (Model.PersoonLidInfo.GebruikersInfo.IsVerlengbaar)
                 {
                     // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
             %>
