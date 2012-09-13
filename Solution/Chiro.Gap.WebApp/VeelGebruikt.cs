@@ -376,6 +376,10 @@ namespace Chiro.Gap.WebApp
             int? id = (int?)_cache.Get(String.Format(UNIEKEGROEPCACHEKEY, login));
             if (id == null)
             {
+                // Als de toepassing hier crasht, dan is er mogelijk iets mis met de unity mappings
+                // in Web.config van Chiro.Gap.Services. Controleer of alle type mappings er staan,
+                // of er geen typfouten in assembly's of klasses staan, en of 'mapTo' met een
+                // hoofdletter T is.
                 var mijnGroepen = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
                     (g => g.MijnGroepenOphalen());
 
