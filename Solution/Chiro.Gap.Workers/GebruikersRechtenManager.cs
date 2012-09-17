@@ -204,6 +204,24 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Haalt de account op met gegeven <paramref name="gebruikersNaam"/>, met daaraan gekoppeld alle
+        /// groepen waar de account gebruikersrechten op heeft.
+        /// </summary>
+        /// <param name="gebruikersNaam">Gebruikersnaam op te halen account</param>
+        /// <returns>Account voor de gelieerde persoon (klasse Gav zou beter hernoemd worden als account, 
+        /// zie #1357)</returns>
+        public Gav AccountOphalen(string gebruikersNaam)
+        {
+            // Omdat een account niet echt aan een specifieke groep gebonden is, is het niet te definieren
+            // of een gebruiker rechten heeft op die account. Iedereen mag dus elke account ophalen. Met
+            // gekoppelde groepen. We gaan er dus maar vanuit dat dat 'publieke' informatie is. Maar koppel
+            // dus zeker niet te veel extra informatie aan wat je hier teruggeeft.
+            // Het lijkt erop dat hier iets niet klopt. Maar ik zou niet goed weten hoe het te fixen.
+
+            return (_gavDao.Ophalen(gebruikersNaam));
+        }
+
+        /// <summary>
         /// Pas de vervaldatum van het gegeven <paramref name="gebruikersRecht"/> aan, zodanig dat
         /// het niet meer geldig is.  ZONDER TE PERSISTEREN.
         /// </summary>
@@ -253,7 +271,8 @@ namespace Chiro.Gap.Workers
         /// <param name="gebruikersRechten">Te persisteren gebruikersrechten</param>
         public void Bewaren(GebruikersRecht[] gebruikersRechten)
         {
-            if (!_autorisatieManager.IsGavGebruikersRechten(gebruikersRechten.Select(gr => gr.ID).ToArray()))
+            var groepIDs = gebruikersRechten.Select(gr => gr.Groep.ID);
+            if (!_autorisatieManager.IsGavGroepen(groepIDs))
             {
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }
@@ -480,7 +499,10 @@ namespace Chiro.Gap.Workers
         /// <remarks>Persisteert niet.</remarks>
         public GebruikersRecht ToekennenOfVerlengen(Gav account, Groep groep)
         {
-            if (!_autorisatieManager.IsGavAccount(account.ID) || !_autorisatieManager.IsGavGroep(groep.ID))
+            // Omdat een account niet per se aan een gelieerde persoon gekoppeld is, controleren we enkel of
+            // we gebruikersrechten hebben op de groep. Een koppeling account-groep hebben we vooralsnog niet.
+
+            if (!_autorisatieManager.IsGavGroep(groep.ID))
             {
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }

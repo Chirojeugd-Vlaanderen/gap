@@ -56,6 +56,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <remarks>De gemaakte account heeft geen rechten.</remarks>
         Gav AccountZoekenOfMaken(GelieerdePersoon gelieerdePersoon, bool makenAlsNietGevonden);
 
+        /// <summary>
+        /// Haalt de account op met gegeven <paramref name="gebruikersNaam"/>, met daaraan gekoppeld alle
+        /// groepen waar de account gebruikersrechten op heeft.
+        /// </summary>
+        /// <param name="gebruikersNaam">Gebruikersnaam op te halen account</param>
+        /// <returns>Account voor de gelieerde persoon (klasse Gav zou beter hernoemd worden als account, 
+        /// zie #1357)</returns>
+        Gav AccountOphalen(string gebruikersNaam);
 
         /// <summary>
         /// Pas de vervaldatum van het gegeven <paramref name="gebruikersRecht"/> aan, zodanig dat
@@ -184,6 +192,5 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns>Het gebruikersrecht</returns>
         /// <remarks>Persisteert niet.</remarks>
         GebruikersRecht ToekennenOfVerlengen(Gav account, Groep groep);
-
     }
 }

@@ -46,7 +46,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns>Redirect naar personenfiche</returns>
         public ActionResult VanGpAfnemen(int groepID, int id)
         {
-            ServiceHelper.CallService<IGebruikersService>(svc => svc.GebruikersRechtenAfnemen(id, new[] {groepID}));
+            ServiceHelper.CallService<IGebruikersService>(svc => svc.RechtenAfnemen(id, new[] {groepID}));
             return RedirectToAction("EditRest", new { Controller = "Personen", id });
         }
 
