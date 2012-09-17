@@ -21,14 +21,14 @@
             <% if (gebr.IsVerlengbaar)
                 { // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
             %>
-              <%=Html.ActionLink("Verlengen", "Verlengen", new { id = gebr.ID }) %>
+              <%=Html.ActionLink("Verlengen", "AanmakenOfVerlengen", new { gebruikersNaam = gebr.GavLogin }) %>
             <%              
                 }
 
                 if (Model.GebruikersDetails.Count() > 1)
                 {
 %>
-              <%= Html.ActionLink("Afnemen", "Intrekken", new {id = gebr.ID}) %>
+              <%= Html.ActionLink("Afnemen", "Intrekken", new { gebruikersNaam = gebr.GavLogin })%>
             <% } %>
         </td>
     </tr>

@@ -65,5 +65,38 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Titel = Properties.Resources.GebruikersOverzicht;
             return View(model);
         }
+
+        /// <summary>
+        /// Creert of verlengt het gebruikersrecht op de groep met gegeven <paramref name="groepID"/> van de
+        /// gebruiker met gegeven <paramref name="gebruikersNaam"/>
+        /// </summary>
+        /// <param name="gebruikersNaam">gebruikersnaam van gebruiker met aan te maken of te verlengen 
+        /// gebruikersrecht.</param>
+        /// <param name="groepID">ID van groep waarvoor gebruikersrecht aan te maken of te verlengen</param>
+        /// <returns>Een redirect naar het gebruikersrechtenoverzicht</returns>
+        public ActionResult AanmakenOfVerlengen(int groepID, string gebruikersNaam)
+        {
+            ServiceHelper.CallService<IGebruikersService>(
+                gs =>
+                gs.RechtenToekennenGebruiker(gebruikersNaam,
+                                             new[] {new GebruikersRecht {GroepID = groepID, Rol = Rol.Gav}}));
+
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Ontneemt de user met gegeven <paramref name="gebruikersNaam"/> alle rechten op de groep met
+        /// gegeven <paramref name="groepID"/>
+        /// </summary>
+        /// <param name="groepID">groepID van groep waarop de user geen gebruikersrechten meer mag hebben</param>
+        /// <param name="gebruikersNaam">gebruikersnaam van user die geen gebruikersrechten meer mag hebben op
+        /// gegeven groep</param>
+        /// <returns>Een redirect naar het gebruikersrechtenoverzicht</returns>
+        public ActionResult Intrekken(int groepID, string gebruikersNaam)
+        {
+            ServiceHelper.CallService<IGebruikersService>(
+                gs => gs.RechtenAfnemenGebruiker(gebruikersNaam, new[] {groepID}));
+            return RedirectToAction("Index");
+        }
     }
 }

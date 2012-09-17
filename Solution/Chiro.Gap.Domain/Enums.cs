@@ -290,7 +290,7 @@ namespace Chiro.Gap.Domain
     [Flags]
     public enum Rol
     {
-        Geen = 0x00,        // Geen rechten
-        Gav = 0x80          // GAV (voorlopig zijn de mogelijkheden beperkt)
+        [EnumMember] Geen = 0x00,        // Geen rechten
+        [EnumMember] Gav = 0x80          // GAV (voorlopig zijn de mogelijkheden beperkt)
     }
 }

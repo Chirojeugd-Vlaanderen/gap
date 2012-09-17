@@ -69,6 +69,7 @@
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+    <Content Include="GebruikersService.svc" />
     <Content Include="GelieerdePersonenService.svc" />
     <Content Include="Global.asax" />
     <Content Include="GroepenService.svc" />
@@ -80,7 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FoutAfhandelaar.cs" />
-    <Compile Include="GebruikersService.cs" />
+    <Compile Include="GebruikersService.svc.cs">
+      <DependentUpon>GebruikersService.svc</DependentUpon>
+    </Compile>
     <Compile Include="GelieerdePersonenService.svc.cs">
       <DependentUpon>GelieerdePersonenService.svc</DependentUpon>
     </Compile>

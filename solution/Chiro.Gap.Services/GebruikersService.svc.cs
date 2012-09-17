@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
 using GebruikersRecht = Chiro.Gap.ServiceContracts.DataContracts.GebruikersRecht;
 
 namespace Chiro.Gap.Services
@@ -14,7 +11,7 @@ namespace Chiro.Gap.Services
     /// <summary>
     /// Interface voor de service voor gebruikersrechtenbeheer.
     /// </summary>
-    public class GebruikersService: IGebruikersService
+    public class GebruikersService : IGebruikersService
     {
         private readonly IGelieerdePersonenManager _gelieerdePersonenManager;
         private readonly IGebruikersRechtenManager _gebruikersRechtenManager;
@@ -27,8 +24,8 @@ namespace Chiro.Gap.Services
         /// <param name="gebruikersRechtenManager">businesslogica voor gebruikersrechten</param>
         /// <param name="groepenManager">businesslogica voor groepen</param>
         public GebruikersService(
-            IGelieerdePersonenManager gelieerdePersonenManager, 
-            IGebruikersRechtenManager gebruikersRechtenManager, 
+            IGelieerdePersonenManager gelieerdePersonenManager,
+            IGebruikersRechtenManager gebruikersRechtenManager,
             IGroepenManager groepenManager)
         {
             _gelieerdePersonenManager = gelieerdePersonenManager;
@@ -82,10 +79,10 @@ namespace Chiro.Gap.Services
                                          gelieerdePersoon.Groep.ID == id    // als het toevallig de groep van de gelieerde persoon is...
                                              ? gelieerdePersoon.Groep       // ... dan hebben we hem al
                                              : _groepenManager.Ophalen(id)  // ... en anders komt hij uit de database
-                                     into groep 
-                                     // voor het lijstje groepen waarvoor we nog geen rechten hebben, kennen we er toe.
-                                     // Het resultaat selecteren we in toegekendeRechten.
-                                     select _gebruikersRechtenManager.ToekennenOfVerlengen(account, groep)).ToArray();
+                                         into groep
+                                         // voor het lijstje groepen waarvoor we nog geen rechten hebben, kennen we er toe.
+                                         // Het resultaat selecteren we in toegekendeRechten.
+                                         select _gebruikersRechtenManager.ToekennenOfVerlengen(account, groep)).ToArray();
 
             // Veel gedoe voor in een service method. Zie #1250.
 
