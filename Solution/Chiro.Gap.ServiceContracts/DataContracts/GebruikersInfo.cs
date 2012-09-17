@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
@@ -15,10 +16,12 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
     public class GebruikersInfo
     {
         /// <summary>
-        /// ID van het gebruikersrecht
+        /// Rol van de gebruiker
         /// </summary>
+        /// <remarks>In praktijk heeft een niet-vervallen gebruiker voorlopig altijd
+        /// de rol GAV. Zie ook #844</remarks>
         [DataMember]
-        public int ID { get; set; }
+        public Rol Rol { get; set; }
 
         /// <summary>
         /// Vervaldatum gebruikersrecht

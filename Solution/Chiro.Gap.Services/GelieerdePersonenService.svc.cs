@@ -483,6 +483,7 @@ namespace Chiro.Gap.Services
         /// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
         /// functies
         /// </returns>
+        /// <remarks>Ook vervallen gebruikersrechten worden mee opgeleverd</remarks>
         public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID)
         {
             try
@@ -494,11 +495,19 @@ namespace Chiro.Gap.Services
 
                 var result = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
 
-                var gebruikersrecht = _gebruikersRechtenMgr.GebruikersRechtGelieerdePersoon(gp.ID);
+                // selecteer gebruikersrecht voor eigen groep.
+
+                var gebruikersrecht = gp.Persoon.Gav.SelectMany(gav => gav.GebruikersRecht).FirstOrDefault(gr => gr.Groep.ID == gp.Groep.ID);
 
                 if (gebruikersrecht != null)
                 {
+                    // Als er gebruikersrecht is, map dat dan naar GebruikersInfo
                     result.GebruikersInfo = Mapper.Map<Orm.GebruikersRecht, GebruikersInfo>(gebruikersrecht);
+                }
+                else if (gp.Persoon.Gav.Any())
+                {
+                    // Als er een gebruiker zonder rechten is, map dan ook naar GebruikersInfo
+                    result.GebruikersInfo = Mapper.Map<Gav, GebruikersInfo>(gp.Persoon.Gav.FirstOrDefault());
                 }
 
                 // Dit lijkt me meer business

@@ -6,6 +6,7 @@
 using System;
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm
 {
@@ -57,5 +58,13 @@ namespace Chiro.Gap.Orm
                     Properties.Settings.Default.MaandenGebruikersRechtVerlengbaar);
             }
         }
-	}
+
+        /// <summary>
+        /// Rol van de gebruiker. Op dit moment ondersteunen we enkel GAV (zie #844)
+        /// </summary>
+	    public Rol Rol
+	    {
+	        get { return VervalDatum == null || VervalDatum < DateTime.Now ? Rol.Geen : Rol.Gav; }
+	    }
+    }
 }

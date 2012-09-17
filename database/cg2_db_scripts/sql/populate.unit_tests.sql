@@ -1,4 +1,4 @@
-use gap
+use gap_dev
 
 -- Creeer testgroep voor unittests, met deze testdata:
 -- @testHuidigWerkJaar en @testVorigWerkJaar
@@ -27,10 +27,12 @@ use gap
 --
 -- GelieerdePersoon 4  heeft geen voorkeurs(post)adres, maar wel een e-mailadres en een telefoonnummer
 --
--- 2 test-GAV's, en maakt de eerste GAV van testgroep1.
+-- 2 testaccounts, de eerste is GAV van testgroep 1.
+-- de tweede wordt gekoppeld aan persoon5 (om maar iets te doen), maar zonder rechten
 --
 -- Datums worden in gegeven in het formaat DD/MM/YYYY
 -- We definiteren dit hier (in de documentatie) omdat hier beneden we het gebruiken.
+
 SET DateFormat dmy;
 
 		DECLARE @contactPersoonCode AS VARCHAR(5);				SET @contactPersoonCode='CP';
@@ -168,20 +170,17 @@ SET DateFormat dmy;
 -- 9° Leden / Leiding aanmaken: 
 --    GelieerdePersoon 3, 4 en 5 worden lid
 		DECLARE @testLid3ID AS INT;
-		DECLARE @testLid3NonActief AS BIT;						SET @testLid3NonActief = 0;
 		DECLARE	@testLid3Verwijderd	AS BIT;						SET @testLid3Verwijderd	= 0;
 		DECLARE @testLid3LidGeldBetaald AS BIT;					SET @testLid3LidGeldBetaald = 0;
 		DECLARE @testLid3VolgendWerkjaar AS SMALLINT;			SET @testLid3VolgendWerkjaar = 0;
 
 		DECLARE @testLid4ID AS INT;
-		DECLARE @testLid4NonActief AS BIT;						SET @testLid4NonActief = 0;
 		DECLARE	@testLid4Verwijderd	AS BIT;						SET @testLid4Verwijderd	= 0;
 		DECLARE @testLid4LidGeldBetaald AS BIT;					SET @testLid4LidGeldBetaald = 0;
 		DECLARE @testLid4VolgendWerkjaar AS SMALLINT;			SET @testLid4VolgendWerkjaar = 0;
 		DECLARE @testVorigLid4ID AS INT;
 
 		DECLARE @testLid5ID AS INT;
-		DECLARE @testLid5NonActief AS BIT;						SET @testLid5NonActief = 0;
 		DECLARE	@testLid5Verwijderd	AS BIT;						SET @testLid5Verwijderd	= 0;
 		DECLARE @testLid5LidGeldBetaald AS BIT;					SET @testLid5LidGeldBetaald = 0;
 		DECLARE @testLid5VolgendWerkjaar AS SMALLINT;			SET @testLid5VolgendWerkjaar = 0;
@@ -555,8 +554,8 @@ END;
 
 IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon3ID AND GroepsWerkJaarID = @testGroepsHuidigWerkJaarID)
 BEGIN
-	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, NonActief, Verwijderd, LidGeldBetaald, VolgendWerkJaar) 
-		VALUES (@testGelieerdePersoon3ID, @testGroepsHuidigWerkJaarID, @testLid3NonActief, @testLid3Verwijderd, @testLid3LidGeldBetaald, @testLid3VolgendWerkjaar)
+	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, Verwijderd, LidGeldBetaald, VolgendWerkJaar) 
+		VALUES (@testGelieerdePersoon3ID, @testGroepsHuidigWerkJaarID, @testLid3Verwijderd, @testLid3LidGeldBetaald, @testLid3VolgendWerkjaar)
 	SET @testLid3ID = scope_identity();
 END
 ELSE
@@ -583,8 +582,8 @@ END
 
 IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon4ID AND GroepsWerkJaarID = @testGroepsHuidigWerkJaarID)
 BEGIN
-	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, NonActief, Verwijderd, LidGeldBetaald, VolgendWerkJaar) 
-		VALUES (@testGelieerdePersoon4ID, @testGroepsHuidigWerkJaarID, @testLid4NonActief, @testLid4Verwijderd, @testLid4LidGeldBetaald, @testLid4VolgendWerkjaar)
+	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, Verwijderd, LidGeldBetaald, VolgendWerkJaar) 
+		VALUES (@testGelieerdePersoon4ID, @testGroepsHuidigWerkJaarID, @testLid4Verwijderd, @testLid4LidGeldBetaald, @testLid4VolgendWerkjaar)
 	SET @testLid4ID = scope_identity();
 END
 ELSE
@@ -601,8 +600,8 @@ END
 
 IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon4ID AND GroepsWerkJaarID = @testVorigGroepsWerkJaarID)
 BEGIN
-	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, NonActief, Verwijderd, LidGeldBetaald, VolgendWerkJaar) 
-		VALUES (@testGelieerdePersoon4ID, @testVorigGroepsWerkJaarID, @testLid4NonActief, @testLid4Verwijderd, @testLid4LidGeldBetaald, @testLid4VolgendWerkjaar)
+	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, Verwijderd, LidGeldBetaald, VolgendWerkJaar) 
+		VALUES (@testGelieerdePersoon4ID, @testVorigGroepsWerkJaarID, @testLid4Verwijderd, @testLid4LidGeldBetaald, @testLid4VolgendWerkjaar)
 	SET @testVorigLid4ID = scope_identity();
 END
 ELSE
@@ -620,8 +619,8 @@ END
 
 IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon5ID AND GroepsWerkJaarID = @testGroepsHuidigWerkJaarID)
 BEGIN
-	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, NonActief, Verwijderd, LidGeldBetaald, VolgendWerkJaar) 
-		VALUES (@testGelieerdePersoon5ID, @testGroepsHuidigWerkJaarID, @testLid5NonActief, @testLid5Verwijderd, @testLid5LidGeldBetaald, @testLid5VolgendWerkjaar)
+	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, Verwijderd, LidGeldBetaald, VolgendWerkJaar) 
+		VALUES (@testGelieerdePersoon5ID, @testGroepsHuidigWerkJaarID, @testLid5Verwijderd, @testLid5LidGeldBetaald, @testLid5VolgendWerkjaar)
 	SET @testLid5ID = scope_identity();
 END
 ELSE
@@ -739,6 +738,11 @@ IF NOT EXISTS (SELECT 1 FROM pers.CommunicatieVorm WHERE GelieerdePersoonID=@tes
 BEGIN
 	INSERT INTO pers.CommunicatieVorm(GelieerdePersoonID, CommunicatieTypeID, Nummer, IsVoorOptIn)
 	VALUES(@testGelieerdePersoon4ID, 2, @testMail, 0)
+END
+
+IF NOT EXISTS(SELECT 1 FROM auth.GavSchap WHERE GavID = @testGav2ID AND PersoonID = @testPersoon5ID)
+BEGIN
+	INSERT INTO auth.GavSchap(GavID,PersoonID) VALUES(@testGav2ID, @testPersoon5ID);
 END
 
 

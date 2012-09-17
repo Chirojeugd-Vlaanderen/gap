@@ -25,6 +25,10 @@ using Moq;
 using System.ServiceModel;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.TestDbInfo;
+using Chiro.Gap.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -450,6 +454,51 @@ namespace Chiro.Gap.Services.Test
             // voorkeur verloren.
 
             Assert.AreEqual("bewaard", testCommunicatieVorm.Nota);
+        }
+
+        /// <summary>
+        /// Als een gelieerde persoon een account heeft zonder gebruikersrechten, moet deze informatie
+        /// ook opgeleverd worden door AlleDetailsOphalen.
+        ///</summary>
+        [TestMethod()]
+        public void AlleDetailsOphalenTest()
+        {
+            const int SOME_GID = 5;     // arbitrair
+            const int SOME_GPID = 3;    // arbitrair
+            const string SOME_USERNAME = "UserName";    //arbitrair
+
+            var gelieerdePersoon = new GelieerdePersoon
+                                       {
+                                           Persoon =
+                                               new Persoon
+                                                   {Gav = new EntityCollection<Gav> {new Gav {Login = SOME_USERNAME}}},
+                                           Groep = new ChiroGroep {ID = SOME_GID}
+                                       };
+
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = gelieerdePersoon.Groep};
+
+            // Setup IOC
+
+            var gpMgrMock = new Mock<IGelieerdePersonenManager>();
+            gpMgrMock.Setup(src => src.DetailsOphalen(SOME_GPID)).Returns(gelieerdePersoon);
+
+            var gwjMgrMock = new Mock<IGroepsWerkJaarManager>();
+            gwjMgrMock.Setup(src => src.RecentsteOphalen(SOME_GID, It.IsAny<GroepsWerkJaarExtras>())).Returns(
+                groepsWerkJaar);
+
+            Factory.InstantieRegistreren(gpMgrMock.Object);
+            Factory.InstantieRegistreren(gwjMgrMock.Object);
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            // act
+
+            int gelieerdePersoonID = SOME_GPID;
+            var actual = target.AlleDetailsOphalen(gelieerdePersoonID);
+
+            // assert
+
+            Assert.AreEqual(SOME_USERNAME, actual.GebruikersInfo.GavLogin);
         }
     }
 }

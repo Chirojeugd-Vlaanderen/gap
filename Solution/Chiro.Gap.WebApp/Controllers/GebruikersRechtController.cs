@@ -98,5 +98,18 @@ namespace Chiro.Gap.WebApp.Controllers
                 gs => gs.RechtenAfnemenGebruiker(gebruikersNaam, new[] {groepID}));
             return RedirectToAction("Index");
         }
+
+        /// <summary>
+        /// Maakt een login voor de gelieerde persoon met gelieerdepersoonID <paramref name="id"/>.
+        /// Kent geen rechten toe.
+        /// </summary>
+        /// <param name="groepID">ID van groep waarin we werken (eigenlijk irrelevant)</param>
+        /// <param name="id">GelieerdePersoonID van persoon die een gebruiker moet krijgen</param>
+        /// <returns>Een redirect naar de details van de gegeven gelieerdepersoon</returns>
+        public ActionResult LoginMaken(int groepID, int id)
+        {
+            ServiceHelper.CallService<IGebruikersService>(svc => svc.RechtenToekennen(id, null));
+            return RedirectToAction("EditRest", "Personen", new {groepID, id});
+        }
     }
 }

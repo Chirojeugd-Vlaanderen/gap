@@ -41,12 +41,17 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractEfDaoTest.cs" />
@@ -54,6 +59,7 @@
     <Compile Include="AutorisatieTest.cs" />
     <Compile Include="CategorieenTest.cs" />
     <Compile Include="FunctiesTest.cs" />
+    <Compile Include="GelieerdePersonenDaoTest.cs" />
     <Compile Include="LedenTest.cs" />
     <Compile Include="PersonenTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

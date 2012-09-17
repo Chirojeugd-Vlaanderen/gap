@@ -568,6 +568,14 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             Mapper.CreateMap<GebruikersRecht, GebruikersInfo>();
 
+            // Een gebruiker mappen naar GebruikersInfo mapt geen gebruikersrechten, omdat er maar rechten van 1
+            // groep gemapt kunnen worden.
+            Mapper.CreateMap<Gav, GebruikersInfo>()
+                .ForMember(dst => dst.GavLogin, opt => opt.MapFrom(src => src.Login))
+                .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => false))
+                .ForMember(dst => dst.Rol, opt => opt.MapFrom(src => Rol.Geen))
+                .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => DateTime.Now.AddDays(-1)));
+
             #region mapping van datacontracts naar entity's
 
             // Alwat hieronder ignore krijgt, wordt niet meegenomen van een teruggestuurde

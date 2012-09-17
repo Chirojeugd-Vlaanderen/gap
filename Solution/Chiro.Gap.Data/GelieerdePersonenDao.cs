@@ -578,6 +578,7 @@ namespace Chiro.Gap.Data.Ef
         ///  - categorieen
         ///  - lidobjecten in het huidige werkJaar
         ///  - afdelingen en functies van die lidobjecen
+        ///  - eventuele account en gebruikersrechten
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
         /// <returns>Gelieerde persoon met alle bovenvernoemde details</returns>
@@ -589,7 +590,7 @@ namespace Chiro.Gap.Data.Ef
             {
                 gelpers = (
                             from gp in db.GelieerdePersoon
-                                .Include(gp => gp.Persoon)
+                                .Include(gp => gp.Persoon.Gav.First().GebruikersRecht.First().Groep)
                                 .Include(gp => gp.Communicatie.First().CommunicatieType)
                                 .Include(gp => gp.PersoonsAdres)
                                 .Include(gp => gp.Persoon.PersoonsAdres.First().Adres)
