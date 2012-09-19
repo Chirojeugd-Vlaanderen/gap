@@ -28,7 +28,9 @@
 %>
 	Hiervoor zal <strong>&euro;
 		<%=Model.Prijs.ToString() %></strong> aangerekend worden. Klik op &lsquo;bevestigen&rsquo;
-	om Dubbelpunt te bestellen.
+	om Dubbelpunt te bestellen. <br />
+	
+    NB: De contactpersoon van je groep krijgt sowieso een gratis Dubbelpuntabonnement. <br />
 	<%
             	}
             }
