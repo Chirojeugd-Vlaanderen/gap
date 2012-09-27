@@ -20,7 +20,7 @@
       { %> (dit is gratis voor kaderleden)
     <% }else{ %>
     (Kostprijs: &euro;
-    <%= Model.PrijsVerzekeringLoonVerlies.ToString() %>) 
+    <%= Model.Prijs.ToString() %>) 
     <% } %>
     Klik op &lsquo;bevestigen&rsquo; om de verzekering af te sluiten.
 	<%} %>
