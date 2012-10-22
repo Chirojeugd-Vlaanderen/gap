@@ -37,6 +37,18 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>AdWijzigen.sql</FullPath>
         </FileNode>
+        <FileNode Name="DpVerwijderen.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>DpVerwijderen.sql</FullPath>
+        </FileNode>
+        <FileNode Name="DubbelAd.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>DubbelAd.sql</FullPath>
+        </FileNode>
         <FileNode Name="DubbelVerwijderen.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
@@ -79,11 +91,23 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>PersoonOpAd.sql</FullPath>
         </FileNode>
+        <FileNode Name="vAdresInfo.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>vAdresInfo.sql</FullPath>
+        </FileNode>
         <FileNode Name="TijdelijkeGebruiker.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>TijdelijkeGebruiker.sql</FullPath>
+        </FileNode>
+        <FileNode Name="VerzVerwijderen.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>VerzVerwijderen.sql</FullPath>
         </FileNode>
       </Items>
     </LogicalFolder>

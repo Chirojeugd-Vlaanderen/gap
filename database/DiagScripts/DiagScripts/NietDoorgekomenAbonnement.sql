@@ -1,5 +1,8 @@
 -- op zoek naar abonnementen die niet doorkwamen naar Kipadmin
 
+-- OPGELET! Het zou goed kunnen dat Ingrid die manueel verwijderde, omdat het groepsleiding
+-- is die het abonnement niet meer wil. Hier blijven we dan maar af.
+
 use gap
 
 

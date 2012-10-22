@@ -1,6 +1,8 @@
 -- persoonsinfo opzoeken op basis van AD-nr
 
-declare @AdNr as integer; set @AdNr=251388;
+use gap
+
+declare @AdNr as integer; set @AdNr=222662;
 
 select g.code, p.adnummer, p.naam, p.voornaam, gp.gelieerdepersoonid
 from pers.persoon p 
