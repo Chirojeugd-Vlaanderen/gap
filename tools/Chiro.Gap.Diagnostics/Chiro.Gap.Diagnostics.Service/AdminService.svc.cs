@@ -105,22 +105,22 @@ namespace Chiro.Gap.Diagnostics.Service
                                                         GroepsWerkJaarID = groepsWerkJaar.ID
                                                     },
                                                 LidExtras.Communicatie|LidExtras.Persoon)
-                 where !String.IsNullOrEmpty(GelieerdePersonenManager.EMailKiezen(l.GelieerdePersoon))
+                 where !String.IsNullOrEmpty(l.GelieerdePersoon.ContactEmail)
                  select new MailContactInfo
                             {
                                 GelieerdePersoonID = l.GelieerdePersoon.ID,
-                                EmailAdres = GelieerdePersonenManager.EMailKiezen(l.GelieerdePersoon),
+                                EmailAdres = l.GelieerdePersoon.ContactEmail,
                                 IsContact = false,
                                 IsGav = false,
                                 VolledigeNaam = l.GelieerdePersoon.Persoon.VolledigeNaam
                             }).ToArray();
 
             var gekendeGavs = (from gp in _gebruikersRechtenManager.GavGelieerdePersonenOphalen(groepsWerkJaar.Groep.ID)
-                               where !String.IsNullOrEmpty(GelieerdePersonenManager.EMailKiezen(gp))
+                               where !String.IsNullOrEmpty(gp.ContactEmail)
                                select new MailContactInfo
                                           {
                                               GelieerdePersoonID = gp.ID,
-                                              EmailAdres = GelieerdePersonenManager.EMailKiezen(gp),
+                                              EmailAdres = gp.ContactEmail,
                                               IsContact = false,
                                               IsGav = false,
                                               VolledigeNaam = gp.Persoon.VolledigeNaam

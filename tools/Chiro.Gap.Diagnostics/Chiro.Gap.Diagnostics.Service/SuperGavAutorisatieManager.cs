@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 
 using Chiro.Gap.Orm;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Diagnostics.Service
@@ -40,6 +41,17 @@ namespace Chiro.Gap.Diagnostics.Service
         }
 
         public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Verwijdert uit een lijst <paramref name="afdelingIDs"/> de ID's van afdelingen voor wie de
+        /// aangemelde gebruiker geen GAV is.
+        /// </summary>
+        /// <param name="afdelingIDs">ID's van afdelingen</param>
+        /// <returns>Enkel de <paramref name="afdelingIDs"/> van afdelingen waarvoor de gebruiker GAV is.</returns>
+        public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs)
         {
             throw new NotImplementedException();
         }
@@ -146,6 +158,55 @@ namespace Chiro.Gap.Diagnostics.Service
         }
 
         public bool IsGavGebruikersRecht(int gebruikersRechtID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Geeft de gegeven <paramref name="gav"/> gebruikersrecht voor de gegeven <paramref name="groep"/>,
+        /// met een zekere <paramref name="vervalDatum"/>.  Persisteert niet.
+        /// </summary>
+        /// <param name="gav">
+        /// GAV die gebruikersrecht moet krijgen
+        /// </param>
+        /// <param name="groep">
+        /// Groep waarvoor gebruikersrecht verleend moet worden
+        /// </param>
+        /// <param name="vervalDatum">
+        /// Vervaldatum van het gebruikersrecht
+        /// </param>
+        /// <returns>
+        /// Het gegeven GebruikersRecht
+        /// </returns>
+        /// <remarks>
+        /// Aan de GAV moeten al zijn gebruikersrechten op voorhand gekoppeld zijn.
+        /// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.
+        /// </remarks>
+        public GebruikersRecht GebruikersRechtToekennen(string gav, int groep, DateTime vervalDatum)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Kijkt na of de aangelogde gebruiker GAV is van de account met gegeven <paramref name="accountID"/>.
+        /// </summary>
+        /// <param name="accountID">ID van de te controleren account</param>
+        /// <returns><c>true</c> als de aangelogde gebruiker GAV is van de account met gegeven <paramref name="accountID"/></returns>
+        /// <remarks>met account bedoel ik hetgeen nu de Gav-klasse is. Maar op termijn moet die klasse hernoemd worden naar
+        /// account (zie #1357)</remarks>
+        public bool IsGavAccount(int accountID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Controleert of de aangelogde gebruiker GAV-rechten heeft op de gebruikersrechten met gegeven
+        /// <paramref name="gebruikersRechtIDs"/>
+        /// </summary>
+        /// <param name="gebruikersRechtIDs">ID's van gebruikersrechten die gecontroleerd moeten worden</param>
+        /// <returns><c>true</c> als de aangelogde gebruiker GAV-rechten heeft op de gebruikersrechten met gegeven
+        /// <paramref name="gebruikersRechtIDs"/></returns>
+        public bool IsGavGebruikersRechten(int[] gebruikersRechtIDs)
         {
             throw new NotImplementedException();
         }

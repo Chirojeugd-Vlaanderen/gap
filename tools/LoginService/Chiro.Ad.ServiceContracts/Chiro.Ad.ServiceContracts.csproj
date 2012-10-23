@@ -45,16 +45,6 @@
     <Compile Include="IAdService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Solution\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
-      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
-      <Name>Chiro.Adf.ServiceModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Solution\Chiro.Adf\Chiro.Adf.csproj">
-      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
-      <Name>Chiro.Adf</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
