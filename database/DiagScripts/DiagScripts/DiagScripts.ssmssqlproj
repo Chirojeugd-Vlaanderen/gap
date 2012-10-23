@@ -55,6 +55,12 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>DubbelVerwijderen.sql</FullPath>
         </FileNode>
+        <FileNode Name="ix_persoon_AdNummer.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>ix_persoon_AdNummer.sql</FullPath>
+        </FileNode>
         <FileNode Name="KipSyncLog.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
@@ -91,6 +97,12 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>PersoonOpAd.sql</FullPath>
         </FileNode>
+        <FileNode Name="RecentGewijzigdeAdressen.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>RecentGewijzigdeAdressen.sql</FullPath>
+        </FileNode>
         <FileNode Name="vAdresInfo.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
@@ -103,11 +115,29 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>TijdelijkeGebruiker.sql</FullPath>
         </FileNode>
+        <FileNode Name="VerkeerdeAdressen.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>VerkeerdeAdressen.sql</FullPath>
+        </FileNode>
         <FileNode Name="VerzVerwijderen.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>VerzVerwijderen.sql</FullPath>
+        </FileNode>
+        <FileNode Name="vVerlorenAdressen.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>vVerlorenAdressen.sql</FullPath>
+        </FileNode>
+        <FileNode Name="ZoekLogs.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>ZoekLogs.sql</FullPath>
         </FileNode>
       </Items>
     </LogicalFolder>

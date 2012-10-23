@@ -3,7 +3,7 @@ go
 create view adr.vPersoonsAdresInfo as
 -- voorkeursadres(sen) van een persoon
 -- (kunnen er meerdere zijn als een persoon aan meerdere groepen is gekoppeld)
-select  p.adnummer,gp.gelieerdepersoonid, p.naam, p.voornaam,
+select  p.adnummer,gp.gelieerdepersoonid,gp.persoonid,pa.persoonsadresid, p.naam, p.voornaam,
 case when bua.buitenlandsadresid is null then sn.naam else bua.straat end as straatnaam,
 a.huisnr, a.bus, 
 isnull(bua.postnummer, sn.postnummer) as postnr,

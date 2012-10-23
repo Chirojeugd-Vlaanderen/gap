@@ -32,7 +32,7 @@ namespace Chiro.Gap.Diagnostics.Service
 
             // Mappings voor kipsync
 
-            Sync.MappingHelper.MappingsDefinieren();
+            Chiro.Gap.Sync.MappingHelper.MappingsDefinieren();
         }
     }
 }
