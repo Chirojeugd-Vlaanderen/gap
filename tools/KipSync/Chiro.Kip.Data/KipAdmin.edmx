@@ -1105,7 +1105,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Straat" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="Straat" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="Nr" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
           <Property Name="PostNr" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
           <Property Name="Gemeente" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
