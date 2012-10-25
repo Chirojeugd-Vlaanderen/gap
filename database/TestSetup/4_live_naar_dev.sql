@@ -12,29 +12,3 @@ GO
 ALTER DATABASE [Gap_Dev] SET RECOVERY SIMPLE WITH NO_WAIT
 GO
 
-USE gap_dev;
-
-ALTER TABLE lid.Lid ADD UitschrijfDatum DATETIME NULL;
-GO
-
-UPDATE lid.Lid SET UitschrijfDatum = '2012-08-01' WHERE NonActief=1;
-
-DROP INDEX [IDX_Lid_EindeInstapPeriode_NonActief] ON [lid].[Lid]
-
-DROP INDEX [IDX_Lid_GroepsWerkJaarID_NonActief] ON [lid].[Lid]
-
-ALTER TABLE lid.Lid DROP COLUMN NonActief;
-
-ALTER TABLE lid.Lid ADD NonActief AS (CASE WHEN UitschrijfDatum IS NULL THEN CAST(0 AS BIT) ELSE CAST(1 AS BIT) END);
-
-CREATE NONCLUSTERED INDEX [IDX_Lid_EindeInstapPeriode_UitschrijfDatum] ON [lid].[Lid]
-(
-	[EindeInstapPeriode] ASC,
-	[UitschrijfDatum] ASC
-)
-
-CREATE NONCLUSTERED INDEX [IDX_Lid_GroepsWerkJaarID_UitschrijfDatum] ON [lid].[Lid]
-(
-	[GroepsWerkjaarID] ASC,
-	[UitschrijfDatum] ASC
-)
