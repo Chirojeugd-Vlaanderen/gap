@@ -175,11 +175,24 @@ namespace Chiro.Gap.WebApp.Controllers
                                 HeeftEmailAdres = null,
                                 LidType = LidType.Alles
                             };
+            List<int> gelieerdepersoonIDs;
 
-            var gelieerdepersoonIDs =
-                ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(svc => svc.Zoeken(filter, false)).Select(
+            try
+            {
+                gelieerdepersoonIDs =
+					ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(svc => svc.Zoeken(filter, false)).Select(
                     e => e.GelieerdePersoonID).ToList();
-
+            }
+            catch (FaultException<FoutNummerFault> ex)
+            {
+                var error = "Er is iets foutgegaan bij het laden van de volledige ledenlijst.\n" +
+                            "Je bent nu in het nieuwe werkjaar, maar er zijn nog geen leden overgezet.\n" +
+                            "Je kan dit doen door onder Leden te klikken op het vorige werkjaar, daar de leden te \n" +
+                            "selecteren die je wilt lid maken voor het komende jaar en klikken op Lid maken.\n";
+                TempData["fout"] = error;
+                return RedirectToAction("Index", "Leden");
+            }
+			
             TempData["list"] = gelieerdepersoonIDs;
             return RedirectToAction("LedenMaken", "Leden");
         }
