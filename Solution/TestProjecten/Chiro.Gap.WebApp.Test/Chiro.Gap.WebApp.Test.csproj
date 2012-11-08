@@ -110,10 +110,6 @@
       <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
       <Name>Chiro.Cdf.Data.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
-      <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
-      <Name>Chiro.Cdf.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
@@ -125,10 +121,6 @@
     <ProjectReference Include="..\..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
       <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
       <Name>Chiro.Gap.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
-      <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
-      <Name>Chiro.Gap.Orm</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>

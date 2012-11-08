@@ -8,8 +8,8 @@ using System.Data;
 using System.ServiceModel;
 
 using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Services
 {

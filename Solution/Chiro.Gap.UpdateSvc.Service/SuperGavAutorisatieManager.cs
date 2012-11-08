@@ -6,10 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
-
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.UpdateSvc.Service
 {
@@ -26,7 +24,7 @@ namespace Chiro.Gap.UpdateSvc.Service
     /// om te vermijden dat je super-gav kunt worden door gewoon de unity-configuration
     /// aan te passen.  Nu kun je dat enkel als Chiro.Gap.Diagnostics.Service.dll
     /// beschikbaar is.</remarks>
-    public class SuperGavAutorisatieManager : IAutorisatieManager
+    public class SuperGavAutorisatieManager: IAutorisatieManager
     {
 
         /// <summary>
@@ -360,27 +358,37 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// Geeft de gegeven <paramref name="gav"/> gebruikersrecht voor de gegeven <paramref name="groep"/>,
         /// met een zekere <paramref name="vervalDatum"/>.  Persisteert niet.
         /// </summary>
-        /// <param name="gav">GAV die gebruikersrecht moet krijgen</param>
-        /// <param name="groep">Groep waarvoor gebruikersrecht verleend moet worden</param>
-        /// <param name="vervalDatum">Vervaldatum van het gebruikersrecht</param>
-        /// <returns>Het gegeven GebruikersRecht</returns>
-        /// <remarks></remarks>
-        public GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
+        /// <param name="gav">
+        /// GAV die gebruikersrecht moet krijgen
+        /// </param>
+        /// <param name="groep">
+        /// Groep waarvoor gebruikersrecht verleend moet worden
+        /// </param>
+        /// <param name="vervalDatum">
+        /// Vervaldatum van het gebruikersrecht
+        /// </param>
+        /// <returns>
+        /// Het gegeven GebruikersRecht
+        /// </returns>
+        /// <remarks>
+        /// Aan de GAV moeten al zijn gebruikersrechten op voorhand gekoppeld zijn.
+        /// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.
+        /// </remarks>
+        public Chiro.Gap.Poco.Model.GebruikersRecht GebruikersRechtToekennen(string gav, int groep, DateTime vervalDatum)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Geeft de GAV met gegeven <paramref name="login"/> gebruikersrecht voor de groep met gegeven
-        /// <paramref name="groepID"/>,
-        /// met een zekere <paramref name="vervalDatum"/>.  Persisteert WEL.
+        /// Geeft de gegeven <paramref name="gav"/> gebruikersrecht voor de gegeven <paramref name="groep"/>,
+        /// met een zekere <paramref name="vervalDatum"/>.  Persisteert niet.
         /// </summary>
-        /// <param name="login">ID van GAV die gebruikersrecht moet krijgen</param>
-        /// <param name="groepID">ID van groep waarvoor gebruikersrecht verleend moet worden</param>
+        /// <param name="gav">GAV die gebruikersrecht moet krijgen</param>
+        /// <param name="groep">Groep waarvoor gebruikersrecht verleend moet worden</param>
         /// <param name="vervalDatum">Vervaldatum van het gebruikersrecht</param>
         /// <returns>Het gegeven GebruikersRecht</returns>
         /// <remarks></remarks>
-        public GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum)
+        public Poco.Model.GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
         {
             throw new NotImplementedException();
         }

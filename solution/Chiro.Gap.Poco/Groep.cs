@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
@@ -29,6 +30,11 @@ namespace Chiro.Gap.Poco.Model
         public virtual ICollection<Categorie> Categorie { get; set; }
         public virtual ICollection<Functie> Functie { get; set; }
         public virtual ICollection<Plaats> BivakPlaats { get; set; }
+
+        /// </summary>
+        public abstract Niveau Niveau { get; }
+
+
     }
     
 }

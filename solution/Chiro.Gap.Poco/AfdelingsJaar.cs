@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
@@ -21,6 +22,16 @@ namespace Chiro.Gap.Poco.Model
         public virtual OfficieleAfdeling OfficieleAfdeling { get; set; }
         public virtual ICollection<Leiding> Leiding { get; set; }
         public virtual ICollection<Kind> Kind { get; set; }
+
+        /// <summary>
+        /// Enumwaarde voor het 'geslacht' van de afdeling
+        /// </summary>
+        public GeslachtsType Geslacht
+        {
+            get { return (GeslachtsType)GeslachtsInt; }
+            set { GeslachtsInt = (int)value; }
+        }
+
     }
     
 }

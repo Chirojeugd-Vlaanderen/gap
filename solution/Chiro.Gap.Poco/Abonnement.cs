@@ -1,10 +1,12 @@
+using Chiro.Cdf.Poco;
+
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class Abonnement
+    public partial class Abonnement: BasisEntiteit
     {
-        public int ID { get; set; }
+        public override int ID { get; set; }
         public System.DateTime AanvraagDatum { get; set; }
-        public byte[] Versie { get; set; }
+        public override byte[] Versie { get; set; }
     
         public virtual GelieerdePersoon GelieerdePersoon { get; set; }
         public virtual GroepsWerkJaar GroepsWerkJaar { get; set; }

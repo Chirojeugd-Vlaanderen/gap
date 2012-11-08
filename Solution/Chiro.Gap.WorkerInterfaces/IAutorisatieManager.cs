@@ -3,8 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
-
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WorkerInterfaces
 {
@@ -333,7 +332,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Aan de GAV moeten al zijn gebruikersrechten op voorhand gekoppeld zijn.
         /// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.
         /// </remarks>
-        GebruikersRecht GebruikersRechtToekennen(string gav, int groep, System.DateTime vervalDatum);
+        Chiro.Gap.Poco.Model.GebruikersRecht GebruikersRechtToekennen(string gav, int groep, System.DateTime vervalDatum);
 
         /// <summary>
         /// Kijkt na of de aangelogde gebruiker GAV is van de account met gegeven <paramref name="accountID"/>.

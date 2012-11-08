@@ -1,4 +1,4 @@
-﻿using Chiro.Gap.Orm;
+﻿using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Workers;
 
@@ -201,66 +201,64 @@ namespace Chiro.Gap.Services.Test
         [TestMethod()]
         public void VoorstelTotInschrijvenGenererenTest()
         {
-            // Ik ga hier toch niet met data uit de database werken.
-            // Om problemen te vermijden escape ik hier dan maar de IOC-container.
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            //// Ik ga hier toch niet met data uit de database werken.
+            //// Om problemen te vermijden escape ik hier dan maar de IOC-container.
 
-            // Gauw wat handgemaakte dummydata:
+            //// Gauw wat handgemaakte dummydata:
 
-            var g = new ChiroGroep
-                          {
-                              ID = 1,
-                              GroepsWerkJaar = {new GroepsWerkJaar()},
-                              GelieerdePersoon =
-                                  {
-                                      new GelieerdePersoon
-                                          {ID = 1, Persoon = new Persoon {GeboorteDatum = new DateTime(1987, 3, 8)}},
-                                      new GelieerdePersoon
-                                          {ID = 2, Persoon = new Persoon {GeboorteDatum = new DateTime(1989, 3, 2)}}
-                                  }
-                          };
+            //var g = new ChiroGroep
+            //              {
+            //                  ID = 1,
+            //                  GroepsWerkJaar = {new GroepsWerkJaar()},
+            //                  GelieerdePersoon =
+            //                      {
+            //                          new GelieerdePersoon
+            //                              {ID = 1, Persoon = new Persoon {GeboorteDatum = new DateTime(1987, 3, 8)}},
+            //                          new GelieerdePersoon
+            //                              {ID = 2, Persoon = new Persoon {GeboorteDatum = new DateTime(1989, 3, 2)}}
+            //                      }
+            //              };
 
-            var gwj = g.GroepsWerkJaar.FirstOrDefault();
+            //var gwj = g.GroepsWerkJaar.FirstOrDefault();
 
-            // We mocken een en ander:
+            //// We mocken een en ander:
 
-            var gpmMock = new Mock<IGelieerdePersonenManager>();
-            gpmMock.Setup(
-                src =>
-                src.Ophalen(It.IsAny<int[]>(), It.IsAny<PersoonsExtras>())).Returns(g.GelieerdePersoon);
+            //var gpmMock = new Mock<IGelieerdePersonenManager>();
 
-            var gwjmMock = new Mock<IGroepsWerkJaarManager>();
-            gwjmMock.Setup(src => src.RecentsteOphalen(It.IsAny<int>(),It.IsAny<GroepsWerkJaarExtras>())).Returns(gwj);
+            //var gwjmMock = new Mock<IGroepsWerkJaarManager>();
 
-            var lmMock = new Mock<ILedenManager>();
-            // Simulatie: 'het lid bestaat nog niet'
-            lmMock.Setup(src => src.OphalenViaPersoon(It.IsAny<int>(), It.IsAny<int>())).Returns((Lid)null);
-            // Simulatie: 'we maken de persoon leid(st)er'
-            lmMock.Setup(
-                src => src.InschrijvingVoorstellen(It.IsAny<GelieerdePersoon>(), It.IsAny<GroepsWerkJaar>(), true)).
-                Returns(
-                    new LidVoorstel {AfdelingsJaarIDs = null, AfdelingsJarenIrrelevant = true, LeidingMaken = true});
+            //var lmMock = new Mock<ILedenManager>();
 
-            IGelieerdePersonenManager gpm = gpmMock.Object;
-            IGroepsWerkJaarManager gwjm = gwjmMock.Object;
-            ILedenManager lm = lmMock.Object;
+            //// Simulatie: 'het lid bestaat nog niet'
+            //lmMock.Setup(src => src.OphalenViaPersoon(It.IsAny<int>(), It.IsAny<int>())).Returns((Lid)null);
+            //// Simulatie: 'we maken de persoon leid(st)er'
+            //lmMock.Setup(
+            //    src => src.InschrijvingVoorstellen(It.IsAny<GelieerdePersoon>(), It.IsAny<GroepsWerkJaar>(), true)).
+            //    Returns(
+            //        new LidVoorstel {AfdelingsJaarIDs = null, AfdelingsJarenIrrelevant = true, LeidingMaken = true});
 
-            // Dingen die we niet gebruiken, mogen null blijven.
+            //IGelieerdePersonenManager gpm = gpmMock.Object;
+            //IGroepsWerkJaarManager gwjm = gwjmMock.Object;
+            //ILedenManager lm = lmMock.Object;
 
-            FunctiesManager fm = null;
-            AfdelingsJaarManager ajm = null; 
-            VerzekeringenManager vrzm = null;
-            LedenService target = new LedenService(gpm, lm, fm, ajm, gwjm, vrzm);
+            //// Dingen die we niet gebruiken, mogen null blijven.
 
-            IEnumerable<int> gelieerdePersoonIDs = new[] {1, 2};
-            string foutBerichten = string.Empty;
-            IEnumerable<InTeSchrijvenLid> actual;
-            actual = target.VoorstelTotInschrijvenGenereren(gelieerdePersoonIDs, out foutBerichten);
+            //FunctiesManager fm = null;
+            //AfdelingsJaarManager ajm = null; 
+            //VerzekeringenManager vrzm = null;
+            //LedenService target = new LedenService(gpm, lm, fm, ajm, gwjm, vrzm);
 
-            // We verwachten nu dat de personen opgeleverd worden van jong naar oud.  Dus
-            // eerst persoon 2, dan persoon 1.
+            //IEnumerable<int> gelieerdePersoonIDs = new[] {1, 2};
+            //string foutBerichten = string.Empty;
+            //IEnumerable<InTeSchrijvenLid> actual;
+            //actual = target.VoorstelTotInschrijvenGenereren(gelieerdePersoonIDs, out foutBerichten);
 
-            Assert.IsTrue(actual.First().GelieerdePersoonID == 2);
-            Assert.IsTrue(actual.Last().GelieerdePersoonID == 1);
+            //// We verwachten nu dat de personen opgeleverd worden van jong naar oud.  Dus
+            //// eerst persoon 2, dan persoon 1.
+
+            //Assert.IsTrue(actual.First().GelieerdePersoonID == 2);
+            //Assert.IsTrue(actual.Last().GelieerdePersoonID == 1);
         }
     }
 }

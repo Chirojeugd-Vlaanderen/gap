@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using AutoMapper;
+﻿using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 
 namespace Chiro.Gap.Sync

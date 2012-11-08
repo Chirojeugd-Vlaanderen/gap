@@ -12,13 +12,12 @@ using AutoMapper;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
-using Chiro.Gap.Workers.Exceptions;
-using GebruikersRecht = Chiro.Gap.Orm.GebruikersRecht;
+using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 
 namespace Chiro.Gap.ServiceContracts.Mappers
 {
@@ -184,7 +183,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src.Persoon.VoorNaam))
                 .ForMember(
                     dst => dst.CategorieLijst,
-                    opt => opt.MapFrom(src => src.CategorieLijstGet()))
+                    opt => opt.MapFrom(src => src.Categorie.ToList()))
                 .ForMember(
                     dst => dst.Geslacht,
                     opt => opt.MapFrom(src => src.Persoon.Geslacht))
@@ -462,22 +461,14 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                             src => src.Groep is ChiroGroep ? (src.Groep as ChiroGroep).Plaats : Properties.Resources.NietVanToepassing));
 
             Mapper.CreateMap<CommunicatieInfo, CommunicatieVorm>()
-                .ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
                 .ForMember(dst => dst.Versie, opt => opt.Ignore())
                 .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
-                .ForMember(dst => dst.GelieerdePersoonReference, opt => opt.Ignore())
-                .ForMember(dst => dst.CommunicatieType, opt => opt.Ignore())
-                .ForMember(dst => dst.CommunicatieTypeReference, opt => opt.Ignore())
-                .ForMember(dst => dst.EntityKey, opt => opt.Ignore());
+                .ForMember(dst => dst.CommunicatieType, opt => opt.Ignore());
 
             Mapper.CreateMap<CommunicatieDetail, CommunicatieVorm>()
-                .ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
                 .ForMember(dst => dst.Versie, opt => opt.Ignore())
                 .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
-                .ForMember(dst => dst.GelieerdePersoonReference, opt => opt.Ignore())
-                .ForMember(dst => dst.CommunicatieType, opt => opt.Ignore())
-                .ForMember(dst => dst.CommunicatieTypeReference, opt => opt.Ignore())
-                .ForMember(dst => dst.EntityKey, opt => opt.Ignore());
+                .ForMember(dst => dst.CommunicatieType, opt => opt.Ignore());
 
             Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
                 .ForMember(
@@ -583,27 +574,20 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             Mapper.CreateMap<PersoonInfo, Persoon>()
                 .ForMember(dst => dst.ID, opt => opt.Ignore())
-                .ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
                 .ForMember(dst => dst.VolledigeNaam, opt => opt.Ignore())
                 .ForMember(dst => dst.SterfDatum, opt => opt.Ignore())
                 .ForMember(dst => dst.Versie, opt => opt.Ignore())
                 .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
                 .ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
-                .ForMember(dst => dst.EntityKey, opt => opt.Ignore())
                 .ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
                 .ForMember(dst => dst.AdInAanvraag, opt => opt.Ignore())
                 .ForMember(dst => dst.Gav, opt => opt.Ignore());
 
             Mapper.CreateMap<UitstapInfo, Uitstap>()
-                .ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
-                .ForMember(dst => dst.EntityKey, opt => opt.Ignore())
-                .ForMember(dst => dst.PlaatsReference, opt => opt.Ignore())
                 .ForMember(dst => dst.GroepsWerkJaar, opt => opt.Ignore())
-                .ForMember(dst => dst.GroepsWerkJaarReference, opt => opt.Ignore())
                 .ForMember(dst => dst.Versie, opt => opt.Ignore())
                 .ForMember(dst => dst.Plaats, opt => opt.Ignore())
                 .ForMember(dst => dst.ContactDeelnemer, opt => opt.Ignore())
-                .ForMember(dst => dst.ContactDeelnemerReference, opt => opt.Ignore())
                 .ForMember(dst => dst.Deelnemer, opt => opt.Ignore());
 
             #endregion

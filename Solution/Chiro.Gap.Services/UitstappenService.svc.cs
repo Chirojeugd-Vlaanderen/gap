@@ -3,21 +3,11 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.ServiceModel;
-
-using AutoMapper;
-
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
-using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Services
 {
@@ -26,38 +16,6 @@ namespace Chiro.Gap.Services
     /// </summary>
     public class UitstappenService : IUitstappenService
     {
-        private readonly UitstappenManager _uitstappenMgr;
-        private readonly IGroepsWerkJaarManager _groepsWerkJaarMgr;
-        private readonly PlaatsenManager _plaatsenMgr;
-        private readonly AdressenManager _adressenMgr;
-        private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
-        private readonly DeelnemersManager _deelnemersMgr;
-
-        /// <summary>
-        /// Constructor.  De managers moeten m.b.v. dependency injection gecreeerd worden.
-        /// </summary>
-        /// <param name="uMgr">De worker voor Uitstappen</param>
-        /// <param name="gwjMgr">De worker voor Groepswerkjaren</param>
-        /// <param name="plMgr">De worker voor Plaatsen</param>
-        /// <param name="adMgr">De worker voor Adressen</param>
-        /// <param name="gpMgr">De worker voor GelieerdePersonen</param>
-        /// <param name="dMgr">De worker voor Deelnemers</param>
-        public UitstappenService(
-            UitstappenManager uMgr,
-            IGroepsWerkJaarManager gwjMgr,
-            PlaatsenManager plMgr,
-            AdressenManager adMgr,
-            IGelieerdePersonenManager gpMgr,
-            DeelnemersManager dMgr)
-        {
-            _uitstappenMgr = uMgr;
-            _groepsWerkJaarMgr = gwjMgr;
-            _plaatsenMgr = plMgr;
-            _adressenMgr = adMgr;
-            _gelieerdePersonenMgr = gpMgr;
-            _deelnemersMgr = dMgr;
-        }
-
         /// <summary>
         /// Bewaart een uitstap aan voor de groep met gegeven <paramref name="groepID"/>
         /// </summary>
@@ -68,51 +26,7 @@ namespace Chiro.Gap.Services
         /// <returns>ID van de uitstap</returns>
         public int Bewaren(int groepID, UitstapInfo info)
         {
-            // Als de uitstap een ID heeft, moet een bestaande uitstap worden opgehaald.
-            // Anders maken we een nieuwe.
-
-            Uitstap uitstap;
-
-            if (info.ID == 0)
-            {
-                var gwj = _groepsWerkJaarMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Groep);
-                uitstap = Mapper.Map<UitstapInfo, Uitstap>(info);
-                _uitstappenMgr.Koppelen(uitstap, gwj);
-            }
-            else
-            {
-                // haal origineel op, gekoppeld aan groepswerkjaar
-                // (en ook aan groep, want die is nodig voor sync met kipadmin)
-                uitstap = _uitstappenMgr.Ophalen(info.ID, UitstapExtras.Groep);
-                // overschrijf met gegevens uit 'info'
-                Mapper.Map(info, uitstap);
-            }
-
-            try
-            {
-                return _uitstappenMgr.Bewaren(uitstap, UitstapExtras.GroepsWerkJaar, true).ID;
-            }
-            // Afhandelen van verwachte exceptions
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-
-                throw;
-                // Enkel pro forma, want FoutAfhandelen throwt normaal gesproken
-                // een fault.
-            }
-            catch (FoutNummerException ex)
-            {
-                if (ex.FoutNummer == FoutNummer.GroepsWerkJaarNietBeschikbaar)
-                {
-                    FoutAfhandelaar.FoutAfhandelen(ex);
-                }
-
-                // Onverwachte exceptions gewoon terug throwen, zodat we ze tegenkomen
-                // bij het debuggen.
-
-                throw;
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -127,15 +41,7 @@ namespace Chiro.Gap.Services
         /// nodig is achteraf fouten in de administratie recht te zetten.</remarks>
         public IEnumerable<UitstapInfo> OphalenVanGroep(int groepID, bool inschrijvenMogelijk)
         {
-            try
-            {
-                return Mapper.Map<IEnumerable<Uitstap>, IEnumerable<UitstapInfo>>(_uitstappenMgr.OphalenVanGroep(groepID, inschrijvenMogelijk));
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -145,87 +51,18 @@ namespace Chiro.Gap.Services
         /// <returns>Details over de uitstap</returns>
         public UitstapOverzicht DetailsOphalen(int uitstapID)
         {
-            try
-            {
-                var uitstap = _uitstappenMgr.Ophalen(uitstapID, UitstapExtras.GroepsWerkJaar | UitstapExtras.Plaats);
-                var uitstapDetail = Mapper.Map<Uitstap, UitstapOverzicht>(uitstap);
-                return uitstapDetail;
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
-        /// Updatet de plaats voor de uitstap met gegeven <paramref name="uitstapID"/>
+        /// Bewaart de plaats voor een uitstap
         /// </summary>
-        /// <param name="uitstapID">ID van uitstap waarvan plaats geüpdatet moet worden</param>
+        /// <param name="id">ID van de uitstap</param>
         /// <param name="plaatsNaam">Naam van de plaats</param>
-        /// <param name="adresInfo">Adres van de plaats</param>
-        public void PlaatsBewaren(int uitstapID, string plaatsNaam, AdresInfo adresInfo)
+        /// <param name="adres">Adres van de plaats</param>
+        public void PlaatsBewaren(int id, string plaatsNaam, AdresInfo adres)
         {
-            Uitstap uitstap;
-            Plaats plaats;
-            Adres adres;
-
-            try
-            {
-                uitstap = _uitstappenMgr.Ophalen(uitstapID, UitstapExtras.Groep | UitstapExtras.Plaats);
-                if (uitstap == null)
-                {
-                    // Als er geen uitstap is gevonden, dan is de gebruiker waarschijnlijk iets
-                    // aan het doen dat niet mag.  Bij deze een algemene exception.
-                    throw new GeenGavException();
-                }
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
-
-            Debug.Assert(uitstap != null);
-
-            try
-            {
-                adres = _adressenMgr.ZoekenOfMaken(adresInfo);
-            }
-            catch (OngeldigObjectException ex)
-            {
-                // Verkeerde straatnaam of zo
-                var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-                throw new FaultException<OngeldigObjectFault>(fault);
-            }
-
-            try
-            {
-                plaats = _plaatsenMgr.ZoekenOfMaken(uitstap.GroepsWerkJaar.Groep.ID, plaatsNaam, adres.ID);
-            }
-            catch (OngeldigObjectException ex)
-            {
-                // Verkeerde straatnaam of zo      
-                // OPM van Bart: hier kan geen fout optreden ivm straatnaam, maar zijn er andere mogelijkheden?
-                var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-                throw new FaultException<OngeldigObjectFault>(fault);
-            }
-
-            Debug.Assert(plaats != null);
-
-            try
-            {
-                uitstap = _uitstappenMgr.Koppelen(uitstap, plaats);
-            }
-            catch (BlokkerendeObjectenException<Plaats> ex)
-            {
-                // Was al gekoppeld
-
-                var fault = Mapper.Map<BlokkerendeObjectenException<Plaats>, BlokkerendeObjectenFault<PlaatsInfo>>(ex);
-                throw new FaultException<BlokkerendeObjectenFault<PlaatsInfo>>(fault);
-            }
-
-            _uitstappenMgr.Bewaren(uitstap, UitstapExtras.Plaats, true);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -238,62 +75,10 @@ namespace Chiro.Gap.Services
         /// <param name="geselecteerdeUitstapID">ID van uitstap waarvoor in te schrijven</param>
         /// <param name="logistiekDeelnemer">Bepaalt of al dan niet ingeschreven wordt als 
         /// logistieker</param>
-        /// <returns>Het uitstap-object met de bijgewerkte deelnemerslijst</returns>
+        /// <returns>De basisgegevens van de uitstap, zodat die in de feedback gebruikt kan worden</returns>
         public UitstapInfo Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapID, bool logistiekDeelnemer)
         {
-            IEnumerable<GelieerdePersoon> gelieerdePersonen;
-            Uitstap uitstap;
-
-            // Ik haal de personen op, samen met de uitstappen waarvoor ze ooit waren ingeschreven.
-            // Dat is overkill, maar op die manier kunnen de workers wel controleren wie er al wel/nog niet
-            // ingeschreven is voor de gevraagde uitstap. (-> proper :))
-
-            try
-            {
-                gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Uitstappen | PersoonsExtras.Groep);
-            }
-            catch (GeenGavException ex)
-            {
-                var fault = Mapper.Map<GeenGavException, GapFault>(ex);
-                throw new FaultException<GapFault>(fault);
-            }
-
-            try
-            {
-                // Als de uitstap al gekoppeld was aan een gelieerde persoon, dan hebben we die al opgehaald.  Zo niet
-                // halen we de uitstap op via de uitstappenMgr.
-
-                uitstap = gelieerdePersonen.SelectMany(gp => gp.Deelnemer)
-                                           .Select(d => d.Uitstap)
-                                           .Where(u => u.ID == geselecteerdeUitstapID)
-                                           .FirstOrDefault() ?? _uitstappenMgr.Ophalen(geselecteerdeUitstapID, UitstapExtras.Groep);
-            }
-            catch (GeenGavException ex)
-            {
-                var fault = Mapper.Map<GeenGavException, GapFault>(ex);
-                throw new FaultException<GapFault>(fault);
-            }
-
-            try
-            {
-                _uitstappenMgr.Inschrijven(uitstap, gelieerdePersonen, logistiekDeelnemer);
-            }
-            catch (FoutNummerException ex)
-            {
-                if (ex.FoutNummer == FoutNummer.UitstapNietVanGroep || ex.FoutNummer == FoutNummer.GroepsWerkJaarNietBeschikbaar)
-                {
-                    var fault = Mapper.Map<FoutNummerException, FoutNummerFault>(ex);
-                    throw new FaultException<FoutNummerFault>(fault);
-                }
-
-                // Als het foutnummer iets anders is, dan is er iets
-                // onverwachts gebeurd.  Gewoon throwen.
-                throw;
-            }
-
-            _uitstappenMgr.Bewaren(uitstap, UitstapExtras.Deelnemers, false);
-
-            return Mapper.Map<Uitstap, UitstapInfo>(uitstap);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -303,37 +88,17 @@ namespace Chiro.Gap.Services
         /// <returns>Informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/></returns>
         public IEnumerable<DeelnemerDetail> DeelnemersOphalen(int uitstapID)
         {
-            IEnumerable<Deelnemer> deelnemers;
-            try
-            {
-                deelnemers = _uitstappenMgr.DeelnemersOphalen(uitstapID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
-
-            var resultaat = Mapper.Map<IEnumerable<Deelnemer>, IEnumerable<DeelnemerDetail>>(deelnemers);
-
-            return resultaat;
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
-        /// Verwijdert een uitstap
+        /// Verwijderd een uitstap met als ID <paramref name="uitstapID"/>
         /// </summary>
-        /// <param name="uitstapID">ID van de uitstap die verwijderd moet worden</param>
+        /// <param name="uitstapID">ID van de te verwijderen uitstap</param>
+        /// <returns>Verwijderd de uitstap en toont daarna het overzicht scherm</returns>
         public void UitstapVerwijderen(int uitstapID)
         {
-            try
-            {
-                _uitstappenMgr.UitstapVerwijderen(uitstapID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -344,45 +109,17 @@ namespace Chiro.Gap.Services
         /// <returns>De ID van de uitstap, ter controle, en misschien handig voor feedback</returns>
         public int ContactInstellen(int deelnemerID)
         {
-            Deelnemer deelnemer;
-            try
-            {
-                deelnemer = _deelnemersMgr.Ophalen(deelnemerID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
-
-            _deelnemersMgr.InstellenAlsContact(deelnemer);
-
-            _uitstappenMgr.Bewaren(deelnemer.Uitstap, UitstapExtras.Contact, true);
-
-            return deelnemer.Uitstap.ID;
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
         /// Schrijft de deelnemer met gegeven <paramref name="deelnemerID"/> uit voor zijn uitstap.
         /// </summary>
         /// <param name="deelnemerID">ID uit te schrijven deelnemer</param>
-        /// <returns>ID van de uitstap, ter controle, en handig voor feedback</returns>
+        /// <returns>ID van de uitstap, ter controle, en h andig voor feedback</returns>
         public int Uitschrijven(int deelnemerID)
         {
-            Deelnemer deelnemer;
-            try
-            {
-                deelnemer = _deelnemersMgr.Ophalen(deelnemerID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
-
-            _deelnemersMgr.Verwijderen(deelnemer);
-
-            return deelnemer.Uitstap.ID;
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -392,20 +129,7 @@ namespace Chiro.Gap.Services
         /// <returns>Informatie over de deelnemer met ID <paramref name="deelnemerID"/></returns>
         public DeelnemerDetail DeelnemerOphalen(int deelnemerID)
         {
-            Deelnemer d;
-            try
-            {
-                d = _deelnemersMgr.Ophalen(deelnemerID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
-
-            var resultaat = Mapper.Map<Deelnemer, DeelnemerDetail>(d);
-
-            return resultaat;
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -414,23 +138,7 @@ namespace Chiro.Gap.Services
         /// <param name="info">Info nodig voor de update</param>
         public void DeelnemerBewaren(DeelnemerInfo info)
         {
-            Deelnemer d;
-            try
-            {
-                d = _deelnemersMgr.Ophalen(info.DeelnemerID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
-
-            d.IsLogistieker = info.IsLogistieker;
-            d.HeeftBetaald = info.HeeftBetaald;
-            d.MedischeFicheOk = info.MedischeFicheOk;
-            d.Opmerkingen = info.Opmerkingen;
-
-            _deelnemersMgr.Bewaren(d);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -441,21 +149,12 @@ namespace Chiro.Gap.Services
         /// De groep waarvan info wordt gevraagd
         /// </param>
         /// <returns>
-        /// Een lijstje met opmerkingen over wat er nog moet gebeuren voor de groep in orde is met de
-        /// administratie voor de bivakaangifte
+        /// Een lijstje met de geregistreerde bivakken en feedback over wat er op dit moment moet gebeuren 
+        /// voor de bivakaangifte
         /// </returns>
         public BivakAangifteLijstInfo BivakStatusOphalen(int groepID)
         {
-            var gwj = _groepsWerkJaarMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Groep);
-            try
-            {
-                return _uitstappenMgr.BivakStatusOphalen(groepID, gwj);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
     }
 }

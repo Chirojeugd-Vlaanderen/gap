@@ -57,25 +57,17 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
-      <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
-      <Name>Chiro.Cdf.Data.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
-      <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
-      <Name>Chiro.Cdf.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Gap.Data\Chiro.Gap.Data.csproj">
-      <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
-      <Name>Chiro.Gap.Data</Name>
+    <ProjectReference Include="..\..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
+      <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
+      <Name>Chiro.Cdf.Poco</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
-      <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
-      <Name>Chiro.Gap.Orm</Name>
+    <ProjectReference Include="..\..\Chiro.Gap.Poco\Chiro.Gap.Poco.Model.csproj">
+      <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
+      <Name>Chiro.Gap.Poco.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj">
       <Project>{08F94344-8414-4136-8314-4B7380B10CD7}</Project>

@@ -3,8 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
-
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WorkerInterfaces
 {

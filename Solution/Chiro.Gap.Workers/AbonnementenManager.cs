@@ -9,14 +9,11 @@ using System.Transactions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
@@ -26,34 +23,13 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class AbonnementenManager
     {
-        private readonly IDao<Publicatie> _pubDao;
-        private readonly IAbonnementenDao _abDao;
         private readonly IAutorisatieManager _auMgr;
         private readonly IDubbelpuntSync _dubbelpuntSync;
 
-        /// <summary>
-        /// Constructor, die zorg draagt voor dependency injection
-        /// </summary>
-        /// <param name="pubDao">
-        /// Data Access Object voor publicaties
-        /// </param>
-        /// <param name="abDao">
-        /// Data Access Object voor abonnement
-        /// </param>
-        /// <param name="auMgr">
-        /// Neemt de autorisatie voor zijn rekening
-        /// </param>
-        /// <param name="dpSync">
-        /// Sync voor Dubbelpuntabonnementen
-        /// </param>
         public AbonnementenManager(
-            IDao<Publicatie> pubDao,
-            IAbonnementenDao abDao,
             IAutorisatieManager auMgr,
             IDubbelpuntSync dpSync)
         {
-            _pubDao = pubDao;
-            _abDao = abDao;
             _auMgr = auMgr;
 
             // Momenteel hebben we enkel nog dubbelpunt.  Als er ooit meerdere publicaties komen waarop je je kunt
@@ -61,19 +37,6 @@ namespace Chiro.Gap.Workers
             _dubbelpuntSync = dpSync;
         }
 
-        /// <summary>
-        /// Haalt een publicatie op, gegeven zijn <paramref name="publicatieID"/>
-        /// </summary>
-        /// <param name="publicatieID">
-        /// Bepaalt op te halen publicatie
-        /// </param>
-        /// <returns>
-        /// De gevraagde publicatie
-        /// </returns>
-        public Publicatie PublicatieOphalen(PublicatieID publicatieID)
-        {
-            return _pubDao.Ophalen((int)publicatieID);
-        }
 
         /// <summary>
         /// Creëert een abonnement voor de gelieerde persoon <paramref name="gp"/> op publicatie
@@ -175,51 +138,5 @@ namespace Chiro.Gap.Workers
             return abonnement;
         }
 
-        /// <summary>
-        /// Persisteert een abonnement
-        /// </summary>
-        /// <param name="abonnement">
-        /// Te persisteren abonnement
-        /// </param>
-        public void Bewaren(Abonnement abonnement)
-        {
-#if KIPDORP
-            using (var tx = new TransactionScope())
-            {
-#endif
-            _abDao.Bewaren(abonnement, ab => ab.GelieerdePersoon, ab => ab.GroepsWerkJaar, ab => ab.Publicatie);
-            if (abonnement.Publicatie.ID == (int)PublicatieID.Dubbelpunt)
-            {
-                _dubbelpuntSync.Abonneren(abonnement);
-            }
-
-#if KIPDORP
-                tx.Complete();
-            }
-#endif
-        }
-
-        /// <summary>
-        /// Haalt alle abonnementen op uit een gegeven groepswerkjaar, inclusief personen, voorkeursadressen, 
-        /// groepswerkjaar en groep.
-        /// </summary>
-        /// <param name="gwjID">
-        /// ID van het gegeven groepswerkjaar
-        /// </param>
-        /// <returns>
-        /// Alle abonnementen op uit een gegeven groepswerkjaar, inclusief personen, voorkeursadressen, 
-        /// groepswerkjaar en groep.
-        /// </returns>
-        public IEnumerable<Abonnement> OphalenUitGroepsWerkJaar(int gwjID)
-        {
-            if (_auMgr.IsSuperGav() || _auMgr.IsGavGroepsWerkJaar(gwjID))
-            {
-                return _abDao.OphalenUitGroepsWerkJaar(gwjID);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
     }
 }

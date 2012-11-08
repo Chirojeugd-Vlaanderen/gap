@@ -91,10 +91,6 @@
       <Project>{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}</Project>
       <Name>Chiro.Cdf.ServiceModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Data\Chiro.Gap.Data.csproj">
-      <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
-      <Name>Chiro.Gap.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Sync\Chiro.Gap.Sync.csproj">
       <Project>{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}</Project>
       <Name>Chiro.Gap.Sync</Name>
@@ -103,13 +99,13 @@
       <Project>{EFA70FDE-2295-4A91-9553-847C272E7FA4}</Project>
       <Name>Chiro.Gap.UpdateSvc.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.UpdateSvc.Service\Chiro.Gap.UpdateSvc.Service.csproj">
-      <Project>{B2E725F5-E3F8-4511-99AB-2EB84124F302}</Project>
-      <Name>Chiro.Gap.UpdateSvc.Service</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\tools\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.UpdateSvc.Service\Chiro.Gap.UpdateSvc.Service.csproj">
+      <Project>{B2E725F5-E3F8-4511-99AB-2EB84124F302}</Project>
+      <Name>Chiro.Gap.UpdateSvc.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -3,21 +3,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.ServiceModel;
-using System.Text;
 using System.Threading;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
-using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
 
 namespace Chiro.Gap.Services.Test

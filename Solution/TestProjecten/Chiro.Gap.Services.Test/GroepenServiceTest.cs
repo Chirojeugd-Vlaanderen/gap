@@ -1,14 +1,7 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm.DataInterfaces;
-using Moq;
-using Chiro.Gap.Dummies;
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.TestDbInfo;
 using System.Security.Principal;

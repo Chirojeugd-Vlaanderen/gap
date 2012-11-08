@@ -7,12 +7,11 @@ using System;
 using System.Diagnostics;
 
 using AutoMapper;
-
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
-using Adres = Chiro.Gap.Orm.Adres;
-using Persoon = Chiro.Gap.Orm.Persoon;
+using Adres = Chiro.Gap.Poco.Model.Adres;
+using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync
 {
@@ -101,7 +100,7 @@ namespace Chiro.Gap.Sync
                 .ForMember(dst => dst.UitstapID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar));
 
-            Mapper.CreateMap<Orm.Groep, Kip.ServiceContracts.DataContracts.Groep>();
+            Mapper.CreateMap<Poco.Model.Groep, Kip.ServiceContracts.DataContracts.Groep>();
 
             Mapper.AssertConfigurationIsValid();
         }

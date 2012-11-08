@@ -84,10 +84,6 @@
       <Project>{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}</Project>
       <Name>Chiro.Cdf.ServiceModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Data\Chiro.Gap.Data.csproj">
-      <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
-      <Name>Chiro.Gap.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Sync\Chiro.Gap.Sync.csproj">
       <Project>{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}</Project>
       <Name>Chiro.Gap.Sync</Name>

@@ -1,18 +1,19 @@
 using System.Collections.Generic;
+using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class Categorie
+    public partial class Categorie: BasisEntiteit
     {
         public Categorie()
         {
             this.GelieerdePersoon = new HashSet<GelieerdePersoon>();
         }
     
-        public int ID { get; set; }
+        public override int ID { get; set; }
         public string Naam { get; set; }
         public string Code { get; set; }
-        public byte[] Versie { get; set; }
+        public override byte[] Versie { get; set; }
     
         public virtual Groep Groep { get; set; }
         public virtual ICollection<GelieerdePersoon> GelieerdePersoon { get; set; }

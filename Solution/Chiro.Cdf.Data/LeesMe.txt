@@ -1,7 +1,0 @@
-﻿Project voor generische data access.  Dit project moet onafhankelijk zijn van de achterliggende ORM-technologie.
-
-In Chiro.Cdf.Data.Entity zit alles voor data access via Entity Framework.
-
-Alwat met AttachObjectGraph en DetachObjectGraph te maken heeft, is gebaseerd op dit artikel:
-http://www.codeproject.com/KB/architecture/attachobjectgraph.aspx
-

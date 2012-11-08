@@ -3,20 +3,20 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
-using Adres = Chiro.Gap.Orm.Adres;
-using Persoon = Chiro.Gap.Orm.Persoon;
+using Adres = Chiro.Gap.Poco.Model.Adres;
+using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync
 {
@@ -25,17 +25,6 @@ namespace Chiro.Gap.Sync
 	/// </summary>
 	public class PersonenSync : IPersonenSync
 	{
-		private readonly ICommunicatieVormDao _cVormDao;
-
-		/// <summary>
-		/// Constructor voor PersonenSync
-		/// </summary>
-		/// <param name="cVormDao">Data access object voor communicatievormen</param>
-		public PersonenSync(ICommunicatieVormDao cVormDao)
-		{
-			_cVormDao = cVormDao;
-		}
-
 		/// <summary>
 		/// Stuurt de persoonsgegevens, samen met eventueel adressen en/of communicatie, naar Kipadmin
 		/// </summary>
@@ -73,12 +62,7 @@ namespace Chiro.Gap.Sync
 			}
 			if (metCommunicatie)
 			{
-				// Haal expliciet alle communicatievormen op, want de aanroepende method
-				// kent waarschijnlijk enkel de communicatievormen van 1 gelieerde persoon
-
-				var syncCommunicatie = Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(_cVormDao.ZoekenOpPersoon(gp.Persoon.ID));
-
-				ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie));
+                throw new NotImplementedException();
 			}
 		}
 
@@ -89,10 +73,7 @@ namespace Chiro.Gap.Sync
 		/// <param name="gp">Gelieerde persoon</param>
 		public void CommunicatieUpdaten(GelieerdePersoon gp)
 		{
-			var syncPersoon = Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon);
-			var syncCommunicatie = Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(_cVormDao.ZoekenOpPersoon(gp.Persoon.ID));
-
-			ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie));
+            throw new NotImplementedException();
 		}
 	}
 }

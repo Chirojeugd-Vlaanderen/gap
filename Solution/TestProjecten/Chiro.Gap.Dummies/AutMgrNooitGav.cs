@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
-using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.Dummies
 {

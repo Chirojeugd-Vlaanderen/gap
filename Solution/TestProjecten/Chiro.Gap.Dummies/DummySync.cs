@@ -5,9 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.SyncInterfaces;
 
 namespace Chiro.Gap.Dummies
 {

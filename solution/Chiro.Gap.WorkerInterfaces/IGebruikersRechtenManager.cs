@@ -1,24 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WorkerInterfaces
 {
     public interface IGebruikersRechtenManager
     {
-        /// <summary>
-        /// Als een gelieerde persoon een gebruikersrecht heeft/had voor zijn eigen groep, dan
-        /// levert deze call dat gebruikersrecht op, inclusief GAV-object.
-        /// </summary>
-        /// <param name="gelieerdePersoonID">
-        /// ID van een gelieerde persoon
-        /// </param>
-        /// <returns>
-        /// Gebruikersrecht van de gelieerde persoon met ID <paramref name="gelieerdePersoonID"/>
-        /// op zijn eigen groep (if any, anders null)
-        /// </returns>
-        GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID);
-
         /// <summary>
         /// Verlengt het gegeven <paramref name="gebruikersRecht"/> (indien mogelijk) tot het standaard aantal maanden
         /// na vandaag.
@@ -57,15 +44,6 @@ namespace Chiro.Gap.WorkerInterfaces
         Gav AccountZoekenOfMaken(GelieerdePersoon gelieerdePersoon, bool makenAlsNietGevonden);
 
         /// <summary>
-        /// Haalt de account op met gegeven <paramref name="gebruikersNaam"/>, met daaraan gekoppeld alle
-        /// groepen waar de account gebruikersrechten op heeft.
-        /// </summary>
-        /// <param name="gebruikersNaam">Gebruikersnaam op te halen account</param>
-        /// <returns>Account voor de gelieerde persoon (klasse Gav zou beter hernoemd worden als account, 
-        /// zie #1357)</returns>
-        Gav AccountOphalen(string gebruikersNaam);
-
-        /// <summary>
         /// Pas de vervaldatum van het gegeven <paramref name="gebruikersRecht"/> aan, zodanig dat
         /// het niet meer geldig is.  ZONDER TE PERSISTEREN.
         /// </summary>
@@ -82,45 +60,6 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Te vervallen gebruikersrecht
         /// </param>
         void Intrekken(GebruikersRecht[] gebruikersRechten);
-
-        /// <summary>
-        /// Persisteert het gegeven <paramref name="gebruikersRecht"/>, met koppelingen naar account en groep.
-        /// </summary>
-        /// <param name="gebruikersRecht">
-        /// Te bewaren gebruikersrecht
-        /// </param>
-        void Bewaren(GebruikersRecht gebruikersRecht);
-
-        /// <summary>
-        /// Persisteert de gegeven <paramref name="gebruikersRechten"/>, met koppelingen naar account en groep.
-        /// </summary>
-        /// <param name="gebruikersRechten">Te persisteren gebruikersrechten</param>
-        void Bewaren(GebruikersRecht[] gebruikersRechten);
-
-        /// <summary>
-        /// Haalt alle gebruikersrechten op uit de groep met ID <paramref name="groepID"/>, inclusief
-        /// persoon.
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van de groep waarvan we de gebruikersrechten willen ophalen
-        /// </param>
-        /// <returns>
-        /// Alle gebruikersrechten uit de groep met ID <paramref name="groepID"/>, inclusief
-        /// persoon.
-        /// </returns>
-        IEnumerable<GebruikersRecht> AllesOphalen(int groepID);
-
-        /// <summary>
-        /// Haalt een gebruikersrecht op, gegeven zijn <paramref name="gebruikersRechtID"/>,
-        /// zonder koppelingen.
-        /// </summary>
-        /// <param name="gebruikersRechtID">
-        /// ID op te halen gebruikersrecht
-        /// </param>
-        /// <returns>
-        /// Het gevraagde gebruikersrecht, zonder koppelingen
-        /// </returns>
-        GebruikersRecht Ophalen(int gebruikersRechtID);
 
         /// <summary>
         /// Gegeven een <paramref name="groepID"/>, haal van de GAV's waarvan 

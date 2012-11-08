@@ -1,5 +1,5 @@
 use gap
 
 update p
-set p.adnummer=142975 
-from pers.persoon p where p.adnummer=184689
+set p.adnummer=134283
+from pers.persoon p where p.adnummer= 290172

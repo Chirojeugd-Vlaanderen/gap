@@ -6,9 +6,9 @@
 using System;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.UpdateSvc.Service;
 using Chiro.Cdf.ServiceModel;
 using Chiro.Gap.Sync;
+using Chiro.Gap.UpdateSvc.Service;
 
 namespace Chiro.Gap.UpdateSvc.ConsoleServiceHost
 {

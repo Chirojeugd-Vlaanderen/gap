@@ -8,14 +8,11 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Transactions;
-
-using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
@@ -37,148 +34,22 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class FunctiesManager
     {
-        private readonly IFunctiesDao _funDao;
-        private readonly ILedenDao _ledenDao;
-        private readonly IGroepsWerkJaarDao _groepsWjDao;
         private readonly IVeelGebruikt _veelGebruikt;
         private readonly IAutorisatieManager _autorisatieMgr;
 
         private readonly ILedenSync _ledenSync;
 
-        /// <summary>
-        /// Instantieert een FunctiesManager-object
-        /// </summary>
-        /// <param name="funDao">
-        /// Een dao voor data access mbt functies
-        /// </param>
-        /// <param name="ledenDao">
-        /// Een dao voor data access mbt leden
-        /// </param>
-        /// <param name="gwjDao">
-        /// Data access object voor groepswerkjaren
-        /// </param>
-        /// <param name="veelGebruikt">
-        /// Object dat veel gebruikte items cachet
-        /// </param>
-        /// <param name="auMgr">
-        /// Een IAutorisatieManager voor de autorisatie
-        /// </param>
-        /// <param name="ledenSync">
-        /// Wordt gebruikt om lidinformatie te syncen naar kipadmin
-        /// </param>
         public FunctiesManager(
-            IFunctiesDao funDao,
-            ILedenDao ledenDao,
-            IGroepsWerkJaarDao gwjDao,
             IVeelGebruikt veelGebruikt,
             IAutorisatieManager auMgr,
             ILedenSync ledenSync)
         {
-            _funDao = funDao;
-            _ledenDao = ledenDao;
-            _groepsWjDao = gwjDao;
             _veelGebruikt = veelGebruikt;
             _autorisatieMgr = auMgr;
 
             _ledenSync = ledenSync;
         }
 
-        /// <summary>
-        /// Persisteert de gegeven <paramref name="functie"/> in de database, samen met zijn koppeling
-        /// naar groep.
-        /// </summary>
-        /// <param name="functie">
-        /// Te persisteren functie
-        /// </param>
-        /// <returns>
-        /// De bewaarde functie
-        /// </returns>
-        public Functie Bewaren(Functie functie)
-        {
-            if (NationaalBepaaldeFunctiesOphalen().Contains(functie)
-                || functie.IsNationaal
-                || !_autorisatieMgr.IsGavGroep(functie.Groep.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-            else
-            {
-                return _funDao.Bewaren(functie, fn => fn.Groep.WithoutUpdate());
-            }
-        }
-
-        /// <summary>
-        /// Haalt 1 functie op, samen met de gekoppelde groep
-        /// </summary>
-        /// <param name="functieID">
-        /// ID op te halen functie
-        /// </param>
-        /// <returns>
-        /// De opgehaalde functie met de gekoppelde groep
-        /// </returns>
-        public Functie Ophalen(int functieID)
-        {
-            return Ophalen(new[] { functieID }).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Een functie ophalen op basis van de ID, samen met de gekoppelde leden
-        /// </summary>
-        /// <param name="functieID">
-        /// ID op te halen functie
-        /// </param>
-        /// <param name="metHannekesNest">
-        /// Bij <c>true</c> worden leden, personen, groepswerkjaar en groep mee opgehaald
-        /// </param>
-        /// <returns>
-        /// De opgehaalde functie met de gekoppelde leden
-        /// </returns>
-        public Functie Ophalen(int functieID, bool metHannekesNest)
-        {
-            if (_autorisatieMgr.IsGavFunctie(functieID))
-            {
-                if (metHannekesNest)
-                {
-                    return _funDao.Ophalen(
-                        functieID,
-                        fnc => fnc.Groep,
-                        fie => fie.Lid.First().GroepsWerkJaar,
-                        fie => fie.Lid.First().GelieerdePersoon.Persoon);
-                }
-                else
-                {
-                    return _funDao.Ophalen(functieID);
-                }
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-        /// <summary>
-        /// Haalt een lijstje functies op, uiteraard met gekoppelde groepen (indien van toepassing)
-        /// </summary>
-        /// <param name="functieIDs">
-        /// ID's op te halen functies
-        /// </param>
-        /// <returns>
-        /// Lijst opgehaalde functies, met gekoppelde groepen (indien van toepassing)
-        /// </returns>
-        public IList<Functie> Ophalen(IEnumerable<int> functieIDs)
-        {
-            var resultaat = _funDao.Ophalen(functieIDs, fn => fn.Groep);
-            var groepIDs = (from fn in resultaat
-                            where fn.Groep != null
-                            select fn.Groep.ID).Distinct();
-
-            if (groepIDs.Any(id => !_autorisatieMgr.IsGavGroep(id)))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return resultaat.ToList();
-        }
 
         /// <summary>
         /// Haalt alle functies op die mogelijk toegekend kunnen worden aan een lid uit het groepswerkjaar
@@ -197,33 +68,34 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public IList<Functie> OphalenRelevant(int groepsWerkJaarID, LidType lidType)
         {
-            if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            //if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+            //{
+            //    throw new GeenGavException(Resources.GeenGav);
+            //}
 
-            GroepsWerkJaar gwj = _groepsWjDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep.Functie);
+            //GroepsWerkJaar gwj = _groepsWjDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep.Functie);
 
-            // bepaal het niveau van de nationale functies
-            Niveau niveau = gwj.Groep.Niveau;
-            if ((niveau & Niveau.Groep) != 0)
-            {
-                if ((lidType & LidType.Leiding) == 0)
-                {
-                    niveau &= ~Niveau.LeidingInGroep;
-                }
+            //// bepaal het niveau van de nationale functies
+            //Niveau niveau = gwj.Groep.Niveau;
+            //if ((niveau & Niveau.Groep) != 0)
+            //{
+            //    if ((lidType & LidType.Leiding) == 0)
+            //    {
+            //        niveau &= ~Niveau.LeidingInGroep;
+            //    }
 
-                if ((lidType & LidType.Kind) == 0)
-                {
-                    niveau &= ~Niveau.LidInGroep;
-                }
-            }
+            //    if ((lidType & LidType.Kind) == 0)
+            //    {
+            //        niveau &= ~Niveau.LidInGroep;
+            //    }
+            //}
 
-            return (from f in gwj.Groep.Functie.Union(NationaalBepaaldeFunctiesOphalen())
-                    where (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar)
-                          && (f.WerkJaarTot == null || f.WerkJaarTot >= gwj.WerkJaar)
-                          && ((f.Niveau & niveau) != 0)
-                    select f).ToList();
+            //return (from f in gwj.Groep.Functie.Union(NationaalBepaaldeFunctiesOphalen())
+            //        where (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar)
+            //              && (f.WerkJaarTot == null || f.WerkJaarTot >= gwj.WerkJaar)
+            //              && ((f.Niveau & niveau) != 0)
+            //        select f).ToList();
         }
 
         /// <summary>
@@ -246,122 +118,76 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public void Toekennen(Lid lid, IEnumerable<Functie> functies)
         {
-            Debug.Assert(lid.GroepsWerkJaar != null);
-            Debug.Assert(lid.GroepsWerkJaar.Groep != null);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            //Debug.Assert(lid.GroepsWerkJaar != null);
+            //Debug.Assert(lid.GroepsWerkJaar.Groep != null);
 
-            if (!_autorisatieMgr.IsGavLid(lid.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
+            //if (!_autorisatieMgr.IsGavLid(lid.ID))
+            //{
+            //    throw new GeenGavException(Resources.GeenGav);
+            //}
 
-            if (!_groepsWjDao.IsRecentste(lid.GroepsWerkJaar.ID))
-            {
-                throw new FoutNummerException(
-                    FoutNummer.GroepsWerkJaarNietBeschikbaar,
-                    Resources.GroepsWerkJaarVoorbij);
-            }
+            //if (!_groepsWjDao.IsRecentste(lid.GroepsWerkJaar.ID))
+            //{
+            //    throw new FoutNummerException(
+            //        FoutNummer.GroepsWerkJaarNietBeschikbaar,
+            //        Resources.GroepsWerkJaarVoorbij);
+            //}
 
-            // Eerst alle checks, zodat als er ergens een exceptie optreedt, er geen enkele
-            // functie wordt toegekend.
+            //// Eerst alle checks, zodat als er ergens een exceptie optreedt, er geen enkele
+            //// functie wordt toegekend.
 
-            foreach (Functie f in functies)
-            {
-                if (!_autorisatieMgr.IsGavFunctie(f.ID))
-                {
-                    throw new GeenGavException(Resources.GeenGav);
-                }
+            //foreach (Functie f in functies)
+            //{
+            //    if (!_autorisatieMgr.IsGavFunctie(f.ID))
+            //    {
+            //        throw new GeenGavException(Resources.GeenGav);
+            //    }
 
-                if (!f.IsNationaal && f.Groep.ID != lid.GroepsWerkJaar.Groep.ID)
-                {
-                    throw new FoutNummerException(
-                        FoutNummer.FunctieNietVanGroep,
-                        Resources.FoutieveGroepFunctie);
-                }
+            //    if (!f.IsNationaal && f.Groep.ID != lid.GroepsWerkJaar.Groep.ID)
+            //    {
+            //        throw new FoutNummerException(
+            //            FoutNummer.FunctieNietVanGroep,
+            //            Resources.FoutieveGroepFunctie);
+            //    }
 
-                if (f.WerkJaarTot < lid.GroepsWerkJaar.WerkJaar // false als wjtot null
-                    || f.WerkJaarVan > lid.GroepsWerkJaar.WerkJaar)
-                {
-                    // false als wjvan null
-                    throw new FoutNummerException(
-                        FoutNummer.FunctieNietBeschikbaar,
-                        Resources.FoutiefGroepsWerkJaarFunctie);
-                }
+            //    if (f.WerkJaarTot < lid.GroepsWerkJaar.WerkJaar // false als wjtot null
+            //        || f.WerkJaarVan > lid.GroepsWerkJaar.WerkJaar)
+            //    {
+            //        // false als wjvan null
+            //        throw new FoutNummerException(
+            //            FoutNummer.FunctieNietBeschikbaar,
+            //            Resources.FoutiefGroepsWerkJaarFunctie);
+            //    }
 
-                if ((f.Niveau & lid.Niveau) == 0)
-                {
-                    throw new InvalidOperationException(Resources.FoutiefLidType);
-                }
+            //    if ((f.Niveau & lid.Niveau) == 0)
+            //    {
+            //        throw new InvalidOperationException(Resources.FoutiefLidType);
+            //    }
 
-                // Ik test hier bewust niet of er niet te veel leden zijn met de functie;
-                // op die manier worden inconsistenties bij het veranderen van functies toegelaten,
-                // wat me voor de UI makkelijker lijkt.  De method 'AantallenControleren' kan
-                // te allen tijde gebruikt worden om problemen met functieaantallen op te sporen.
-            }
+            //    // Ik test hier bewust niet of er niet te veel leden zijn met de functie;
+            //    // op die manier worden inconsistenties bij het veranderen van functies toegelaten,
+            //    // wat me voor de UI makkelijker lijkt.  De method 'AantallenControleren' kan
+            //    // te allen tijde gebruikt worden om problemen met functieaantallen op te sporen.
+            //}
 
-            // Alle checks goed overleefd; als we nog niet uit de method 'gethrowd' zijn, kunnen we
-            // nu de functies toekennen.
+            //// Alle checks goed overleefd; als we nog niet uit de method 'gethrowd' zijn, kunnen we
+            //// nu de functies toekennen.
 
-            foreach (var f in functies)
-            {
-                // Lokale variabele om "Access to modified closure" te vermijden [wiki:VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure]
-                Functie f1 = f;
-                if ((from fnc in lid.Functie where fnc.ID == f1.ID select fnc).FirstOrDefault() == null)
-                {
-                    lid.Functie.Add(f);
-                }
+            //foreach (var f in functies)
+            //{
+            //    // Lokale variabele om "Access to modified closure" te vermijden [wiki:VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure]
+            //    Functie f1 = f;
+            //    if ((from fnc in lid.Functie where fnc.ID == f1.ID select fnc).FirstOrDefault() == null)
+            //    {
+            //        lid.Functie.Add(f);
+            //    }
 
-                if ((from ld in f.Lid where ld.ID == lid.ID select ld).FirstOrDefault() == null)
-                {
-                    f.Lid.Add(lid);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Koppelt de functies met ID's <paramref name="functieIDs"/> los van het lid
-        /// <paramref name="lid"/>.  PERSISTEERT.
-        /// </summary>
-        /// <param name="lid">
-        /// Lid waarvan functies losgekoppeld moeten worden
-        /// </param>
-        /// <param name="functieIDs">
-        /// ID's van de los te koppelen functies
-        /// </param>
-        /// <returns>
-        /// Het lidobject met daaraan gekoppeld de overblijvende functies
-        /// </returns>
-        /// <remarks>
-        /// * Functie-ID's van functies die niet aan het lid gekoppeld zijn, worden genegeerd.
-        /// * Er wordt verwacht dat voor elke te verwijderen functie alle leden met groepswerkjaar geladen zijn
-        /// * Er wordt niet echt losgekoppeld; de koppeling lid-functie wordt op 'te verwijderen'
-        ///  gezet.  (Wat wil zeggen dat verwijderen via het lid moet gebeuren, en niet via de functie)
-        /// (Dat systeem met 'teVerwijderen' is eigenlijk toch verre van ideaal.)
-        /// </remarks>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1628:DocumentationTextMustBeginWithACapitalLetter",
-            Justification = "Moet niet gemarkeerd worden door ReSharper/StyleCop")]
-        public Lid LosKoppelen(Lid lid, IEnumerable<int> functieIDs)
-        {
-            if (!_autorisatieMgr.IsGavLid(lid.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            var losTeKoppelen = from fun in lid.Functie
-                                where functieIDs.Contains(fun.ID)
-                                select fun;
-
-            foreach (Functie f in losTeKoppelen)
-            {
-                // Ik test hier bewust niet of er niet te weinig leden zijn met de functie;
-                // op die manier worden inconsistenties bij het veranderen van functies toegelaten,
-                // wat me voor de UI makkelijker lijkt.  De method 'AantallenControleren' kan
-                // te allen tijde gebruikt worden om problemen met functieaantallen op te sporen.
-
-                // De essentie van deze prachtige method:
-                f.TeVerwijderen = true;
-            }
-
-            return _ledenDao.Bewaren(lid, ld => ld.Functie);
+            //    if ((from ld in f.Lid where ld.ID == lid.ID select ld).FirstOrDefault() == null)
+            //    {
+            //        f.Lid.Add(lid);
+            //    }
+            //}
         }
 
         /// <summary>
@@ -382,30 +208,31 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public Lid Vervangen(Lid lid, IEnumerable<Functie> functies)
         {
-            Lid resultaat;
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+//            Lid resultaat;
 
-            // In deze method zitten geen checks op GAV-schap, juiste werkJaar,... dat gebeurt al in
-            // 'Toekennen' en 'Loskoppelen', dewelke door deze method worden aangeroepen.
-            IList<Functie> toeTeVoegen = (from fn in functies
-                                          where !lid.Functie.Contains(fn)
-                                          select fn).ToList();
-            IList<int> teVerwijderen = (from fn in lid.Functie
-                                        where !functies.Contains(fn)
-                                        select fn.ID).ToList();
+//            // In deze method zitten geen checks op GAV-schap, juiste werkJaar,... dat gebeurt al in
+//            // 'Toekennen' en 'Loskoppelen', dewelke door deze method worden aangeroepen.
+//            IList<Functie> toeTeVoegen = (from fn in functies
+//                                          where !lid.Functie.Contains(fn)
+//                                          select fn).ToList();
+//            IList<int> teVerwijderen = (from fn in lid.Functie
+//                                        where !functies.Contains(fn)
+//                                        select fn.ID).ToList();
 
-#if KIPDORP
-			using (var tx = new TransactionScope())
-			{
-#endif
-            Toekennen(lid, toeTeVoegen);
-            resultaat = LosKoppelen(lid, teVerwijderen); // LosKoppelen persisteert
+//#if KIPDORP
+//            using (var tx = new TransactionScope())
+//            {
+//#endif
+//            Toekennen(lid, toeTeVoegen);
+//            resultaat = LosKoppelen(lid, teVerwijderen); // LosKoppelen persisteert
 
-            _ledenSync.FunctiesUpdaten(lid);
-#if KIPDORP
-				tx.Complete();
-			}
-#endif
-            return resultaat;
+//            _ledenSync.FunctiesUpdaten(lid);
+//#if KIPDORP
+//                tx.Complete();
+//            }
+//#endif
+//            return resultaat;
         }
 
         /// <summary>
@@ -429,48 +256,49 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public Functie Verwijderen(Functie functie, bool forceren)
         {
-            if (!_autorisatieMgr.IsGavFunctie(functie.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            //if (!_autorisatieMgr.IsGavFunctie(functie.ID))
+            //{
+            //    throw new GeenGavException(Resources.GeenGav);
+            //}
 
-            // Leden moeten gekoppeld zijn
-            // (null verschilt hier expliciet van een lege lijst)
-            Debug.Assert(functie.Lid != null);
+            //// Leden moeten gekoppeld zijn
+            //// (null verschilt hier expliciet van een lege lijst)
+            //Debug.Assert(functie.Lid != null);
 
-            int huidigGwjID = _veelGebruikt.GroepsWerkJaarOphalen(functie.Groep.ID).ID;
+            //int huidigGwjID = _veelGebruikt.GroepsWerkJaarOphalen(functie.Groep.ID).ID;
 
-            var metFunctieDitJaar = from ld in functie.Lid
-                                    where ld.GroepsWerkJaar.ID == huidigGwjID
-                                    select ld;
+            //var metFunctieDitJaar = from ld in functie.Lid
+            //                        where ld.GroepsWerkJaar.ID == huidigGwjID
+            //                        select ld;
 
-            if (!forceren && metFunctieDitJaar.FirstOrDefault() != null)
-            {
-                throw new BlokkerendeObjectenException<Lid>(
-                    metFunctieDitJaar,
-                    metFunctieDitJaar.Count(),
-                    Resources.FunctieNietLeeg);
-            }
+            //if (!forceren && metFunctieDitJaar.FirstOrDefault() != null)
+            //{
+            //    throw new BlokkerendeObjectenException<Lid>(
+            //        metFunctieDitJaar,
+            //        metFunctieDitJaar.Count(),
+            //        Resources.FunctieNietLeeg);
+            //}
 
-            foreach (var ld in metFunctieDitJaar)
-            {
-                ld.TeVerwijderen = true; // markeer link lid->functie als te verwdrn
-            }
+            //foreach (var ld in metFunctieDitJaar)
+            //{
+            //    ld.TeVerwijderen = true; // markeer link lid->functie als te verwdrn
+            //}
 
-            var metFunctieVroeger = from ld in functie.Lid
-                                    where ld.GroepsWerkJaar.ID != huidigGwjID
-                                    select ld;
+            //var metFunctieVroeger = from ld in functie.Lid
+            //                        where ld.GroepsWerkJaar.ID != huidigGwjID
+            //                        select ld;
 
-            if (metFunctieVroeger.FirstOrDefault() == null)
-            {
-                functie.TeVerwijderen = true;
-            }
-            else
-            {
-                functie.WerkJaarTot = _veelGebruikt.GroepsWerkJaarOphalen(functie.Groep.ID).WerkJaar - 1;
-            }
+            //if (metFunctieVroeger.FirstOrDefault() == null)
+            //{
+            //    functie.TeVerwijderen = true;
+            //}
+            //else
+            //{
+            //    functie.WerkJaarTot = _veelGebruikt.GroepsWerkJaarOphalen(functie.Groep.ID).WerkJaar - 1;
+            //}
 
-            return _funDao.Bewaren(functie, fn => fn.Lid);
+            //return _funDao.Bewaren(functie, fn => fn.Lid);
         }
 
         /// <summary>

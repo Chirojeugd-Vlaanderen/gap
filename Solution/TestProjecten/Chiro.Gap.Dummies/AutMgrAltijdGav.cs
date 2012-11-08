@@ -6,10 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Dummies
 {

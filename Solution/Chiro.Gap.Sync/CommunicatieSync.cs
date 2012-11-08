@@ -8,13 +8,13 @@ using System.Diagnostics;
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
 using CommunicatieType = Chiro.Kip.ServiceContracts.DataContracts.CommunicatieType;
-using Persoon = Chiro.Gap.Orm.Persoon;
+using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync
 {

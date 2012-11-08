@@ -293,4 +293,12 @@ namespace Chiro.Gap.Domain
         [EnumMember] Geen = 0x00,        // Geen rechten
         [EnumMember] Gav = 0x80          // GAV (voorlopig zijn de mogelijkheden beperkt)
     }
+
+    public static class NIEUWEBACKEND
+    {
+        public static string Info
+        {
+            get { return "Gewoon een marker om bij te houden wat ik weggooide voor de nieuwe backend"; }
+        }
+    }
 }

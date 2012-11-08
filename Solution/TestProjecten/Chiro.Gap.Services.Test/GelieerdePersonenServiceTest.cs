@@ -10,25 +10,20 @@ using System;
 using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
 using System.Linq.Expressions;
-
-using Chiro.Cdf.Data;
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
-
+using Chiro.Gap.SyncInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 using System.ServiceModel;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.TestDbInfo;
-using Chiro.Gap.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
+using CommunicatieType = Chiro.Kip.ServiceContracts.DataContracts.CommunicatieType;
+using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -133,32 +128,12 @@ namespace Chiro.Gap.Services.Test
 
             const int TESTGPID = 1234;
 
-            var communicatieVormDaoMock = new Mock<ICommunicatieVormDao>();
-            var communicatieTypeDaoMock = new Mock<IDao<CommunicatieType>>();
-            var gelieerdePersonenDaoMock = new Mock<IGelieerdePersonenDao>();
-
             var communicatieSyncMock = new Mock<ICommunicatieSync>();
 
-            // het communicatietype zal worden opgevraagd, maar is irrelevant voor deze test.
-            // zorg er wel voor dat alles valideert.
-            communicatieTypeDaoMock.Setup(dao => dao.Ophalen(3)).Returns(new CommunicatieType { Validatie = ".*" });
-
-            // idem voor gelieerde persoon
-            gelieerdePersonenDaoMock.Setup(dao => dao.Ophalen(It.IsAny<IEnumerable<int>>(), It.IsAny<PersoonsExtras>()))
-                .Returns(new[] { new GelieerdePersoon { Persoon = new Persoon { AdInAanvraag = true } } });
-
-            // de communicatievorm zal ook worden bewaard
-            communicatieVormDaoMock.Setup(
-                dao =>
-                dao.Bewaren(It.IsAny<CommunicatieVorm>(), It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>())).
-                Returns((CommunicatieVorm cv, Expression<Func<CommunicatieVorm, object>>[] paths) => cv);
 
             // verwacht dat CommunicatieSync.Toevoegen wordt aangeroepen.
             communicatieSyncMock.Setup(snc => snc.Toevoegen(It.IsAny<CommunicatieVorm>())).Verifiable();
 
-            Factory.InstantieRegistreren(communicatieTypeDaoMock.Object);
-            Factory.InstantieRegistreren(gelieerdePersonenDaoMock.Object);
-            Factory.InstantieRegistreren(communicatieVormDaoMock.Object);
             Factory.InstantieRegistreren(communicatieSyncMock.Object);
 
             var target = Factory.Maak<GelieerdePersonenService>();
@@ -193,7 +168,7 @@ namespace Chiro.Gap.Services.Test
             const int TESTCVID = 2345;      // en van een communicatievorm
             const int TESTCTID = 3;         // en diens communicatietype
 
-            var testCommunicatieType = new CommunicatieType { ID = TESTCTID, Validatie = ".*" };
+            var testCommunicatieType = new Poco.Model.CommunicatieType { ID = TESTCTID, Validatie = ".*" };
             var testCommunicatieVorm = new CommunicatieVorm
                                            {
                                                ID = TESTCVID,
@@ -206,7 +181,7 @@ namespace Chiro.Gap.Services.Test
             var testGelieerdePersoon = new GelieerdePersoon
                                            {
                                                ID = TESTGPID,
-                                               Persoon = new Persoon(),
+                                               Persoon = new Poco.Model.Persoon(),
                                                Communicatie =
                                                    new EntityCollection<CommunicatieVorm>
                                                        {
@@ -215,26 +190,8 @@ namespace Chiro.Gap.Services.Test
                                            };
             testCommunicatieVorm.GelieerdePersoon = testGelieerdePersoon;
 
-            var communicatieTypeDaoMock = new Mock<IDao<CommunicatieType>>();
-            var communicatieVormDaoMock = new Mock<ICommunicatieVormDao>();
-
             var communicatieSyncMock = new Mock<ICommunicatieSync>();
 
-            // het communicatietype zal worden opgevraagd, maar is irrelevant voor deze test.
-            // zorg er wel voor dat alles valideert.
-            communicatieTypeDaoMock.Setup(dao => dao.Ophalen(TESTCTID)).Returns(testCommunicatieType);
-            // idem voor communicatievorm
-
-            // Toevallig weet ik dat IDao.Ophalen opgeroepen wordt met 4 lambda-expressies om de
-            // communicatievorm op te halen.  Dus die moet gemockt worden.
-            communicatieVormDaoMock.Setup(
-                dao =>
-                dao.Ophalen(TESTCVID,
-                            It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>()))
-                .Returns(testCommunicatieVorm);
-
-            Factory.InstantieRegistreren(communicatieTypeDaoMock.Object);
-            Factory.InstantieRegistreren(communicatieVormDaoMock.Object);
             Factory.InstantieRegistreren(communicatieSyncMock.Object);
 
             var target = Factory.Maak<GelieerdePersonenService>();
@@ -261,89 +218,90 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void VoorkeursCommunicatieVormToevoegenTest()
         {
-            // Arrange
+            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+            //// Arrange
 
-            const int TESTGPID = 1234;      // arbitrair ID van een gelieerde persoon
-            const int TESTCVID = 2345;      // en van een communicatievorm
-            const int TESTCTID = 3;         // en diens communicatietype
+            //const int TESTGPID = 1234;      // arbitrair ID van een gelieerde persoon
+            //const int TESTCVID = 2345;      // en van een communicatievorm
+            //const int TESTCTID = 3;         // en diens communicatietype
 
-            var testCommunicatieType = new CommunicatieType { ID = TESTCTID, Validatie = ".*" };
-            var testCommunicatieVorm = new CommunicatieVorm
-            {
-                ID = TESTCVID,
-                CommunicatieType = testCommunicatieType,
-                Nummer = "jos@linux.be",
-                Voorkeur = true
-            };
+            //var testCommunicatieType = new Poco.Model.CommunicatieType { ID = TESTCTID, Validatie = ".*" };
+            //var testCommunicatieVorm = new CommunicatieVorm
+            //{
+            //    ID = TESTCVID,
+            //    CommunicatieType = testCommunicatieType,
+            //    Nummer = "jos@linux.be",
+            //    Voorkeur = true
+            //};
 
-            // Koppel gauw testCommunicatieVorm aan testGelieerdePersoon
+            //// Koppel gauw testCommunicatieVorm aan testGelieerdePersoon
 
-            var testGelieerdePersoon = new GelieerdePersoon
-            {
-                ID = TESTGPID,
-                Persoon = new Persoon(),
-                Communicatie =
-                    new EntityCollection<CommunicatieVorm>
-                                                       {
-                                                           testCommunicatieVorm
-                                                       }
-            };
-            testCommunicatieVorm.GelieerdePersoon = testGelieerdePersoon;
+            //var testGelieerdePersoon = new GelieerdePersoon
+            //{
+            //    ID = TESTGPID,
+            //    Persoon = new Poco.Model.Persoon(),
+            //    Communicatie =
+            //        new EntityCollection<CommunicatieVorm>
+            //                                           {
+            //                                               testCommunicatieVorm
+            //                                           }
+            //};
+            //testCommunicatieVorm.GelieerdePersoon = testGelieerdePersoon;
 
-            var communicatieTypeDaoMock = new Mock<IDao<CommunicatieType>>();
-            var communicatieVormDaoMock = new Mock<ICommunicatieVormDao>();
-            var gelieerdePersonenDaoMock = new Mock<IGelieerdePersonenDao>();
+            //var communicatieTypeDaoMock = new Mock<IDao<CommunicatieType>>();
+            //var communicatieVormDaoMock = new Mock<ICommunicatieVormDao>();
+            //var gelieerdePersonenDaoMock = new Mock<IGelieerdePersonenDao>();
 
-            var communicatieSyncMock = new Mock<ICommunicatieSync>();
+            //var communicatieSyncMock = new Mock<ICommunicatieSync>();
 
-            // het communicatietype zal worden opgevraagd, maar is irrelevant voor deze test.
-            // zorg er wel voor dat alles valideert.
-            communicatieTypeDaoMock.Setup(dao => dao.Ophalen(TESTCTID)).Returns(testCommunicatieType);
+            //// het communicatietype zal worden opgevraagd, maar is irrelevant voor deze test.
+            //// zorg er wel voor dat alles valideert.
+            //communicatieTypeDaoMock.Setup(dao => dao.Ophalen(TESTCTID)).Returns(testCommunicatieType);
 
-            // zorg ervoor dat de gelieerde persoon opgehaald wordt
-            gelieerdePersonenDaoMock.Setup(dao => dao.Ophalen(It.IsAny<IEnumerable<int>>(), It.IsAny<PersoonsExtras>()))
-                .Returns(new[] { testGelieerdePersoon });
+            //// zorg ervoor dat de gelieerde persoon opgehaald wordt
+            //gelieerdePersonenDaoMock.Setup(dao => dao.Ophalen(It.IsAny<IEnumerable<int>>(), It.IsAny<PersoonsExtras>()))
+            //    .Returns(new[] { testGelieerdePersoon });
 
-            // in plaats van een communicatievorm te bewaren, zetten we iets in zijn opmerkingenveld.
-            // Op die manier kunnen we achteraf zien welke communicatievormen bewaard zijn.
+            //// in plaats van een communicatievorm te bewaren, zetten we iets in zijn opmerkingenveld.
+            //// Op die manier kunnen we achteraf zien welke communicatievormen bewaard zijn.
 
-            // Dit gaat er nu vanuit dat de communicatievormen bewaard worden via CommunicatieVormDao.Bewaren;
-            // kan even goed iets anders zijn.  Unit test enkel ter illustratie
+            //// Dit gaat er nu vanuit dat de communicatievormen bewaard worden via CommunicatieVormDao.Bewaren;
+            //// kan even goed iets anders zijn.  Unit test enkel ter illustratie
 
-            communicatieVormDaoMock.Setup(
-                dao =>
-                dao.Bewaren(It.IsAny<CommunicatieVorm>(), It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>())).
-                Returns((CommunicatieVorm cv, Expression<Func<CommunicatieVorm, object>>[] paths) =>
-                            {
-                                cv.Nota = "bewaard";
-                                return cv;
-                            });
+            //communicatieVormDaoMock.Setup(
+            //    dao =>
+            //    dao.Bewaren(It.IsAny<CommunicatieVorm>(), It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>())).
+            //    Returns((CommunicatieVorm cv, Expression<Func<CommunicatieVorm, object>>[] paths) =>
+            //                {
+            //                    cv.Nota = "bewaard";
+            //                    return cv;
+            //                });
 
-            Factory.InstantieRegistreren(communicatieTypeDaoMock.Object);
-            Factory.InstantieRegistreren(communicatieVormDaoMock.Object);
-            Factory.InstantieRegistreren(gelieerdePersonenDaoMock.Object);
-            Factory.InstantieRegistreren(communicatieSyncMock.Object);
+            //Factory.InstantieRegistreren(communicatieTypeDaoMock.Object);
+            //Factory.InstantieRegistreren(communicatieVormDaoMock.Object);
+            //Factory.InstantieRegistreren(gelieerdePersonenDaoMock.Object);
+            //Factory.InstantieRegistreren(communicatieSyncMock.Object);
 
-            var target = Factory.Maak<GelieerdePersonenService>();
+            //var target = Factory.Maak<GelieerdePersonenService>();
 
-            var commDetail = new CommunicatieInfo
-            {
-                CommunicatieTypeID = 3,    // e-mail
-                ID = 0,                    // nieuwe communicatievorm
-                Nummer = "johan@linux.be", // arbitrair nieuw e-mailadres
-                Voorkeur = true
-            };
+            //var commDetail = new CommunicatieInfo
+            //{
+            //    CommunicatieTypeID = 3,    // e-mail
+            //    ID = 0,                    // nieuwe communicatievorm
+            //    Nummer = "johan@linux.be", // arbitrair nieuw e-mailadres
+            //    Voorkeur = true
+            //};
 
-            // Act
-            target.CommunicatieVormToevoegen(TESTGPID, commDetail);
+            //// Act
+            //target.CommunicatieVormToevoegen(TESTGPID, commDetail);
 
-            // Assert
+            //// Assert
 
-            // De nieuwe communicatievorm zal wel bewaard zijn.  Maar de
-            // oorspronkelijke moet ook bewaard zijn, want die is zijn
-            // voorkeur verloren.
+            //// De nieuwe communicatievorm zal wel bewaard zijn.  Maar de
+            //// oorspronkelijke moet ook bewaard zijn, want die is zijn
+            //// voorkeur verloren.
 
-            Assert.AreEqual("bewaard", testCommunicatieVorm.Nota);
+            //Assert.AreEqual("bewaard", testCommunicatieVorm.Nota);
         }
 
 
@@ -355,105 +313,106 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void CommunicatieVormVoorkeurMakenTest()
         {
-            // Arrange
+            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+            //// Arrange
 
-            const int TESTGPID = 1234;      // arbitrair ID van een gelieerde persoon
-            const int TESTCVID = 2345;      // en van een communicatievorm
-            const int TESTCVID2 = 2346;     // en van een andere communicatievorm
-            const int TESTCTID = 3;         // en hun communicatietype
+            //const int TESTGPID = 1234;      // arbitrair ID van een gelieerde persoon
+            //const int TESTCVID = 2345;      // en van een communicatievorm
+            //const int TESTCVID2 = 2346;     // en van een andere communicatievorm
+            //const int TESTCTID = 3;         // en hun communicatietype
 
-            var testCommunicatieType = new CommunicatieType { ID = TESTCTID, Validatie = ".*" };
-            var testCommunicatieVorm = new CommunicatieVorm
-            {
-                ID = TESTCVID,
-                CommunicatieType = testCommunicatieType,
-                Nummer = "jos@linux.be",
-                Voorkeur = true
-            };
-            var testCommunicatieVorm2 = new CommunicatieVorm
-                                            {
-                                                ID = TESTCVID2,
-                                                CommunicatieType = testCommunicatieType,
-                                                Nummer = "johan@linux.be",
-                                                Voorkeur = false
-                                            };
+            //var testCommunicatieType = new Poco.Model.CommunicatieType { ID = TESTCTID, Validatie = ".*" };
+            //var testCommunicatieVorm = new CommunicatieVorm
+            //{
+            //    ID = TESTCVID,
+            //    CommunicatieType = testCommunicatieType,
+            //    Nummer = "jos@linux.be",
+            //    Voorkeur = true
+            //};
+            //var testCommunicatieVorm2 = new CommunicatieVorm
+            //                                {
+            //                                    ID = TESTCVID2,
+            //                                    CommunicatieType = testCommunicatieType,
+            //                                    Nummer = "johan@linux.be",
+            //                                    Voorkeur = false
+            //                                };
 
-            // Koppel communicatievormen handmatig aan testGelieerdePersoon
+            //// Koppel communicatievormen handmatig aan testGelieerdePersoon
 
-            var testGelieerdePersoon = new GelieerdePersoon
-            {
-                ID = TESTGPID,
-                Persoon = new Persoon(),
-                Communicatie =
-                    new EntityCollection<CommunicatieVorm>
-                                                       {
-                                                           testCommunicatieVorm,
-                                                           testCommunicatieVorm2
-                                                       }
-            };
-            testCommunicatieVorm.GelieerdePersoon = testGelieerdePersoon;
-            testCommunicatieVorm2.GelieerdePersoon = testGelieerdePersoon;
+            //var testGelieerdePersoon = new GelieerdePersoon
+            //{
+            //    ID = TESTGPID,
+            //    Persoon = new Poco.Model.Persoon(),
+            //    Communicatie =
+            //        new EntityCollection<CommunicatieVorm>
+            //                                           {
+            //                                               testCommunicatieVorm,
+            //                                               testCommunicatieVorm2
+            //                                           }
+            //};
+            //testCommunicatieVorm.GelieerdePersoon = testGelieerdePersoon;
+            //testCommunicatieVorm2.GelieerdePersoon = testGelieerdePersoon;
 
-            var communicatieTypeDaoMock = new Mock<IDao<CommunicatieType>>();
-            var communicatieVormDaoMock = new Mock<ICommunicatieVormDao>();
-            var gelieerdePersonenDaoMock = new Mock<IGelieerdePersonenDao>();
+            //var communicatieTypeDaoMock = new Mock<IDao<CommunicatieType>>();
+            //var communicatieVormDaoMock = new Mock<ICommunicatieVormDao>();
+            //var gelieerdePersonenDaoMock = new Mock<IGelieerdePersonenDao>();
 
-            var communicatieSyncMock = new Mock<ICommunicatieSync>();
+            //var communicatieSyncMock = new Mock<ICommunicatieSync>();
 
-            // het communicatietype zal worden opgevraagd, maar is irrelevant voor deze test.
-            // zorg er wel voor dat alles valideert.
-            communicatieTypeDaoMock.Setup(dao => dao.Ophalen(TESTCTID)).Returns(testCommunicatieType);
+            //// het communicatietype zal worden opgevraagd, maar is irrelevant voor deze test.
+            //// zorg er wel voor dat alles valideert.
+            //communicatieTypeDaoMock.Setup(dao => dao.Ophalen(TESTCTID)).Returns(testCommunicatieType);
 
-            // Als communicatievorm met ID TESTCVID2 opgevraagd wordt, geef dan testCommunicatieVorm2.
+            //// Als communicatievorm met ID TESTCVID2 opgevraagd wordt, geef dan testCommunicatieVorm2.
 
-            communicatieVormDaoMock.Setup(
-                dao => dao.Ophalen(TESTCVID2, It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>())).Returns(
-                    testCommunicatieVorm2);
+            //communicatieVormDaoMock.Setup(
+            //    dao => dao.Ophalen(TESTCVID2, It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>())).Returns(
+            //        testCommunicatieVorm2);
 
-            // zorg ervoor dat de gelieerde persoon opgehaald wordt
-            gelieerdePersonenDaoMock.Setup(dao => dao.Ophalen(It.IsAny<IEnumerable<int>>(), It.IsAny<PersoonsExtras>()))
-                .Returns(new[] { testGelieerdePersoon });
+            //// zorg ervoor dat de gelieerde persoon opgehaald wordt
+            //gelieerdePersonenDaoMock.Setup(dao => dao.Ophalen(It.IsAny<IEnumerable<int>>(), It.IsAny<PersoonsExtras>()))
+            //    .Returns(new[] { testGelieerdePersoon });
 
-            // in plaats van een communicatievorm te bewaren, zetten we iets in zijn opmerkingenveld.
-            // Op die manier kunnen we achteraf zien welke communicatievormen bewaard zijn.
+            //// in plaats van een communicatievorm te bewaren, zetten we iets in zijn opmerkingenveld.
+            //// Op die manier kunnen we achteraf zien welke communicatievormen bewaard zijn.
 
-            // Dit gaat er nu vanuit dat de communicatievormen bewaard worden via CommunicatieVormDao.Bewaren;
-            // kan even goed iets anders zijn.  Unit test enkel ter illustratie
+            //// Dit gaat er nu vanuit dat de communicatievormen bewaard worden via CommunicatieVormDao.Bewaren;
+            //// kan even goed iets anders zijn.  Unit test enkel ter illustratie
 
-            communicatieVormDaoMock.Setup(
-                dao =>
-                dao.Bewaren(It.IsAny<CommunicatieVorm>(), It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>())).
-                Returns((CommunicatieVorm cv, Expression<Func<CommunicatieVorm, object>>[] paths) =>
-                {
-                    cv.Nota = "bewaard";
-                    return cv;
-                });
+            //communicatieVormDaoMock.Setup(
+            //    dao =>
+            //    dao.Bewaren(It.IsAny<CommunicatieVorm>(), It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>())).
+            //    Returns((CommunicatieVorm cv, Expression<Func<CommunicatieVorm, object>>[] paths) =>
+            //    {
+            //        cv.Nota = "bewaard";
+            //        return cv;
+            //    });
 
-            Factory.InstantieRegistreren(communicatieTypeDaoMock.Object);
-            Factory.InstantieRegistreren(communicatieVormDaoMock.Object);
-            Factory.InstantieRegistreren(gelieerdePersonenDaoMock.Object);
-            Factory.InstantieRegistreren(communicatieSyncMock.Object);
+            //Factory.InstantieRegistreren(communicatieTypeDaoMock.Object);
+            //Factory.InstantieRegistreren(communicatieVormDaoMock.Object);
+            //Factory.InstantieRegistreren(gelieerdePersonenDaoMock.Object);
+            //Factory.InstantieRegistreren(communicatieSyncMock.Object);
 
-            var target = Factory.Maak<GelieerdePersonenService>();
+            //var target = Factory.Maak<GelieerdePersonenService>();
 
-            var info = new CommunicatieInfo
-            {
-                CommunicatieTypeID = TESTCTID,    // ID testcommunicatietype
-                ID = TESTCVID2,                   // ID niet-voorkeurscommunicatie
-                Nummer = "johan@linux.be",        // arbitrair nieuw e-mailadres
-                Voorkeur = true                   // nu wel voorkeur
-            };
+            //var info = new CommunicatieInfo
+            //{
+            //    CommunicatieTypeID = TESTCTID,    // ID testcommunicatietype
+            //    ID = TESTCVID2,                   // ID niet-voorkeurscommunicatie
+            //    Nummer = "johan@linux.be",        // arbitrair nieuw e-mailadres
+            //    Voorkeur = true                   // nu wel voorkeur
+            //};
 
-            // Act
-            target.CommunicatieVormAanpassen(info);
+            //// Act
+            //target.CommunicatieVormAanpassen(info);
 
-            // Assert
+            //// Assert
 
-            // Wijzigingen voor communicatievorm2 zullen wel bewaard zijn.  Maar 
-            // communicatievorm1 moet ook bewaard zijn, want die is zijn
-            // voorkeur verloren.
+            //// Wijzigingen voor communicatievorm2 zullen wel bewaard zijn.  Maar 
+            //// communicatievorm1 moet ook bewaard zijn, want die is zijn
+            //// voorkeur verloren.
 
-            Assert.AreEqual("bewaard", testCommunicatieVorm.Nota);
+            //Assert.AreEqual("bewaard", testCommunicatieVorm.Nota);
         }
 
         /// <summary>
@@ -463,42 +422,43 @@ namespace Chiro.Gap.Services.Test
         [TestMethod()]
         public void AlleDetailsOphalenTest()
         {
-            const int SOME_GID = 5;     // arbitrair
-            const int SOME_GPID = 3;    // arbitrair
-            const string SOME_USERNAME = "UserName";    //arbitrair
+            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+            //const int SOME_GID = 5;     // arbitrair
+            //const int SOME_GPID = 3;    // arbitrair
+            //const string SOME_USERNAME = "UserName";    //arbitrair
 
-            var gelieerdePersoon = new GelieerdePersoon
-                                       {
-                                           Persoon =
-                                               new Persoon
-                                                   {Gav = new EntityCollection<Gav> {new Gav {Login = SOME_USERNAME}}},
-                                           Groep = new ChiroGroep {ID = SOME_GID}
-                                       };
+            //var gelieerdePersoon = new GelieerdePersoon
+            //                           {
+            //                               Persoon =
+            //                                   new Poco.Model.Persoon
+            //                                       {Gav = new EntityCollection<Gav> {new Gav {Login = SOME_USERNAME}}},
+            //                               Groep = new ChiroGroep {ID = SOME_GID}
+            //                           };
 
-            var groepsWerkJaar = new GroepsWerkJaar {Groep = gelieerdePersoon.Groep};
+            //var groepsWerkJaar = new GroepsWerkJaar {Groep = gelieerdePersoon.Groep};
 
-            // Setup IOC
+            //// Setup IOC
 
-            var gpMgrMock = new Mock<IGelieerdePersonenManager>();
-            gpMgrMock.Setup(src => src.DetailsOphalen(SOME_GPID)).Returns(gelieerdePersoon);
+            //var gpMgrMock = new Mock<IGelieerdePersonenManager>();
+            //gpMgrMock.Setup(src => src.DetailsOphalen(SOME_GPID)).Returns(gelieerdePersoon);
 
-            var gwjMgrMock = new Mock<IGroepsWerkJaarManager>();
-            gwjMgrMock.Setup(src => src.RecentsteOphalen(SOME_GID, It.IsAny<GroepsWerkJaarExtras>())).Returns(
-                groepsWerkJaar);
+            //var gwjMgrMock = new Mock<IGroepsWerkJaarManager>();
+            //gwjMgrMock.Setup(src => src.RecentsteOphalen(SOME_GID, It.IsAny<GroepsWerkJaarExtras>())).Returns(
+            //    groepsWerkJaar);
 
-            Factory.InstantieRegistreren(gpMgrMock.Object);
-            Factory.InstantieRegistreren(gwjMgrMock.Object);
+            //Factory.InstantieRegistreren(gpMgrMock.Object);
+            //Factory.InstantieRegistreren(gwjMgrMock.Object);
 
-            var target = Factory.Maak<GelieerdePersonenService>();
+            //var target = Factory.Maak<GelieerdePersonenService>();
 
-            // act
+            //// act
 
-            int gelieerdePersoonID = SOME_GPID;
-            var actual = target.AlleDetailsOphalen(gelieerdePersoonID);
+            //int gelieerdePersoonID = SOME_GPID;
+            //var actual = target.AlleDetailsOphalen(gelieerdePersoonID);
 
-            // assert
+            //// assert
 
-            Assert.AreEqual(SOME_USERNAME, actual.GebruikersInfo.GavLogin);
+            //Assert.AreEqual(SOME_USERNAME, actual.GebruikersInfo.GavLogin);
         }
     }
 }

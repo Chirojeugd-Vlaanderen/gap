@@ -9,14 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
-using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
@@ -49,29 +46,12 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class LedenManager : ILedenManager
     {
-        private readonly LedenDaoCollectie _daos;
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly ILedenSync _sync;
 
-        /// <summary>
-        /// Maakt een nieuwe ledenmanager aan
-        /// </summary>
-        /// <param name="daos">
-        /// Een hele reeks van IDao-objecten, nodig
-        /// voor data access.
-        /// </param>
-        /// <param name="autorisatie">
-        /// Een IAuthorisatieManager, die
-        /// de GAV-permissies van de huidige user controleert.
-        /// </param>
-        /// <param name="sync">
-        /// Zorgt voor synchronisate van adressen naar KipAdmin
-        /// </param>
-        public LedenManager(LedenDaoCollectie daos,
-                            IAutorisatieManager autorisatie,
+        public LedenManager(IAutorisatieManager autorisatie,
                             ILedenSync sync)
         {
-            _daos = daos;
             _autorisatieMgr = autorisatie;
             _sync = sync;
         }
@@ -489,80 +469,81 @@ namespace Chiro.Gap.Workers
         /// </exception>
         public Lid Wijzigen(Lid lid, LidVoorstel voorstellid)
         {
-            var gelieerdePersoon = lid.GelieerdePersoon;
-            var groepsWerkJaar = lid.GroepsWerkJaar;
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+//            var gelieerdePersoon = lid.GelieerdePersoon;
+//            var groepsWerkJaar = lid.GroepsWerkJaar;
 
-            if (!_autorisatieMgr.IsGavLid(lid.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
+//            if (!_autorisatieMgr.IsGavLid(lid.ID))
+//            {
+//                throw new GeenGavException(Resources.GeenGav);
+//            }
 
-            Lid nieuwLid;  // Deze declaratie moet buiten de TransactionScope staan,
-                           // anders compileert de solution niet met transactions enabled! (Zie #1336)
+//            Lid nieuwLid;  // Deze declaratie moet buiten de TransactionScope staan,
+//                           // anders compileert de solution niet met transactions enabled! (Zie #1336)
 
-#if KIPDORP
-            using (var tx = new TransactionScope())
-            {
-#endif
+//#if KIPDORP
+//            using (var tx = new TransactionScope())
+//            {
+//#endif
 
-            // Voor 't gemak eerst verwijderen, en dan terug aanmaken.
+//            // Voor 't gemak eerst verwijderen, en dan terug aanmaken.
 
-            // als type wisselt, dan functies deleten die het andere type niet mag hebben
-            if (lid is Kind && voorstellid.LeidingMaken)
-            {
-                foreach (var fn in lid.Functie)
-                {
-                    // TODO check whether it is a function which the new type does not have
-                    // {
-                    fn.TeVerwijderen = true;
+//            // als type wisselt, dan functies deleten die het andere type niet mag hebben
+//            if (lid is Kind && voorstellid.LeidingMaken)
+//            {
+//                foreach (var fn in lid.Functie)
+//                {
+//                    // TODO check whether it is a function which the new type does not have
+//                    // {
+//                    fn.TeVerwijderen = true;
 
-                    // }
-                    // TODO reassign functies to nieuw lid
-                }
-            }
+//                    // }
+//                    // TODO reassign functies to nieuw lid
+//                }
+//            }
 
-            if (lid is Kind)
-            {
-                var kind = lid as Kind;
-                kind.TeVerwijderen = true;
-                _daos.KindDao.Bewaren(kind, knd => knd.AfdelingsJaar, knd => knd.Functie);
-            }
-            else
-            {
-                var leiding = lid as Leiding;
-                Debug.Assert(leiding != null);
-                foreach (var aj in leiding.AfdelingsJaar)
-                {
-                    aj.TeVerwijderen = true;
-                }
+//            if (lid is Kind)
+//            {
+//                var kind = lid as Kind;
+//                kind.TeVerwijderen = true;
+//                _daos.KindDao.Bewaren(kind, knd => knd.AfdelingsJaar, knd => knd.Functie);
+//            }
+//            else
+//            {
+//                var leiding = lid as Leiding;
+//                Debug.Assert(leiding != null);
+//                foreach (var aj in leiding.AfdelingsJaar)
+//                {
+//                    aj.TeVerwijderen = true;
+//                }
 
-                leiding.TeVerwijderen = true;
-                _daos.LeidingDao.Bewaren(leiding, ld => ld.AfdelingsJaar, ld => ld.Functie);
-            }
+//                leiding.TeVerwijderen = true;
+//                _daos.LeidingDao.Bewaren(leiding, ld => ld.AfdelingsJaar, ld => ld.Functie);
+//            }
 
-            // Met heel dat 'TeVerwijderen'-gedoe, is het domein typisch
-            // niet meer consistent na iets te verwijderen.
-            gelieerdePersoon.Lid.Clear();
-            groepsWerkJaar.Lid.Clear();
-            foreach (var aj in groepsWerkJaar.AfdelingsJaar)
-            {
-                aj.TeVerwijderen = false;
-            }
+//            // Met heel dat 'TeVerwijderen'-gedoe, is het domein typisch
+//            // niet meer consistent na iets te verwijderen.
+//            gelieerdePersoon.Lid.Clear();
+//            groepsWerkJaar.Lid.Clear();
+//            foreach (var aj in groepsWerkJaar.AfdelingsJaar)
+//            {
+//                aj.TeVerwijderen = false;
+//            }
 
-            // Maak opnieuw lid
-            nieuwLid = NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstellid);
-            // de 'false' hierboven geeft aan dat het niet om een jaarovergang gaat.  Bij een jaarovergang worden
-            // dan ook geen bestaande leden gewijzigd, enkel nieuwe gemaakt.
+//            // Maak opnieuw lid
+//            nieuwLid = NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstellid);
+//            // de 'false' hierboven geeft aan dat het niet om een jaarovergang gaat.  Bij een jaarovergang worden
+//            // dan ook geen bestaande leden gewijzigd, enkel nieuwe gemaakt.
 
-            nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
-            nieuwLid = Bewaren(nieuwLid, LidExtras.Afdelingen | LidExtras.Persoon, true);
-            // bewaren gaat voor ons de sync oproepen
+//            nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
+//            nieuwLid = Bewaren(nieuwLid, LidExtras.Afdelingen | LidExtras.Persoon, true);
+//            // bewaren gaat voor ons de sync oproepen
 
-#if KIPDORP
-                tx.Complete();
-            }
-#endif
-            return nieuwLid;
+//#if KIPDORP
+//                tx.Complete();
+//            }
+//#endif
+//            return nieuwLid;
         }
 
         /// <summary>
@@ -654,271 +635,6 @@ namespace Chiro.Gap.Workers
             }
 
             return nieuwlid;
-        }
-
-        /// <summary>
-        /// Persisteert een lid met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
-        /// </summary>
-        /// <param name="lid">
-        /// Het <paramref name="lid"/> dat bewaard moet worden
-        /// </param>
-        /// <param name="extras">
-        /// De gekoppelde entiteiten
-        /// </param>
-        /// <param name="syncen">
-        /// Als <c>true</c>, dan wordt het lid gesynct met Kipadmin.
-        /// </param>
-        /// <returns>
-        /// Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld
-        /// </returns>
-        /// <remarks>
-        /// De parameter <paramref name="syncen"/> heeft als doel een sync te vermijden als een
-        /// irrelevante wijziging zoals 'lidgeld betaald' wordt bewaard.
-        /// </remarks>
-        public Lid Bewaren(Lid lid, LidExtras extras, bool syncen)
-        {
-            if (!_autorisatieMgr.IsGavLid(lid.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            Lid bewaardLid;
-
-            if (lid is Kind)
-            {
-                try
-                {
-#if KIPDORP
-                    using (var tx = new TransactionScope())
-                    {
-#endif
-                    if (syncen)
-                    {
-                        if (lid.UitschrijfDatum == null)
-                        {
-                            // Actieve leden altijd syncen
-                            _sync.Bewaren(lid);
-                        }
-                        else if (lid.EindeInstapPeriode > DateTime.Now)
-                        {
-                            // Verwijderen tijdens probeerperiode mag natuurlijk nog wel
-                            _sync.Verwijderen(lid);
-                        }
-                    }
-
-                    bewaardLid = _daos.KindDao.Bewaren((Kind)lid, extras);
-#if KIPDORP
-                        tx.Complete();
-                    }
-#endif
-                }
-                catch (DubbeleEntiteitException<Kind>)
-                {
-                    throw new BestaatAlException<Kind>(lid as Kind);
-                }
-            }
-            else if (lid is Leiding)
-            {
-                try
-                {
-#if KIPDORP
-                    using (var tx = new TransactionScope())
-                    {
-#endif
-                    if (syncen)
-                    {
-                        if (lid.UitschrijfDatum == null)
-                        {
-                            // Actieve leden altijd syncen
-                            _sync.Bewaren(lid);
-                        }
-                        else if (lid.EindeInstapPeriode > DateTime.Now || lid.Niveau > Niveau.Groep)
-                        {
-                            // verwijderen uit Kipadmin enkel in een van deze gevallen:
-                            // * instapperiode is nog niet voorbij (voor gewone groepen)
-                            // * kaderleden.  Deze hebben namelijk geen instapperiode, en het lidgeld is onafhankelijk
-                            // van het aantal ingeschreven personen.
-                            _sync.Verwijderen(lid);
-                        }
-                    }
-
-                    bewaardLid = _daos.LeidingDao.Bewaren((Leiding)lid, extras);
-#if KIPDORP
-                        tx.Complete();
-                    }
-#endif
-                }
-                catch (Exception)
-                {
-                    throw new BestaatAlException<Leiding>(lid as Leiding);
-                }
-            }
-            else
-            {
-                throw new NotSupportedException(Resources.OngeldigLidType);
-            }
-
-            return bewaardLid;
-        }
-
-        /// <summary>
-        /// Haalt leden op, op basis van de <paramref name="lidIDs"/>
-        /// </summary>
-        /// <param name="lidIDs">
-        /// ID gevraagde leden
-        /// </param>
-        /// <param name="lidExtras">
-        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-        /// </param>
-        /// <returns>
-        /// Kinderen of leiding met gevraagde <paramref name="lidExtras"/>.
-        /// </returns>
-        /// <remarks>
-        /// ID's van leden waarvoor de user geen GAV is, worden genegeerd
-        /// </remarks>
-        public IEnumerable<Lid> Ophalen(IEnumerable<int> lidIDs, LidExtras lidExtras)
-        {
-            var eigenLidIDs = _autorisatieMgr.IsSuperGav() ? lidIDs : _autorisatieMgr.EnkelMijnLeden(lidIDs);
-            return _daos.LedenDao.Ophalen(eigenLidIDs, lidExtras);
-        }
-
-        /// <summary>
-        /// Haalt lid op, op basis van zijn <paramref name="lidID"/>
-        /// </summary>
-        /// <param name="lidID">
-        /// ID gevraagde lid
-        /// </param>
-        /// <param name="extras">
-        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-        /// </param>
-        /// <returns>
-        /// Kind of Leiding met gevraagde <paramref name="extras"/>.
-        /// </returns>
-        public Lid Ophalen(int lidID, LidExtras extras)
-        {
-            if (!_autorisatieMgr.IsGavLid(lidID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return Ophalen(new[] { lidID }, extras).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Haalt lid en gekoppelde persoon op, op basis van <paramref name="lidID"/>
-        /// </summary>
-        /// <param name="lidID">
-        /// ID op te halen lid
-        /// </param>
-        /// <returns>
-        /// Lid, met daaraan gekoppeld gelieerde persoon en persoon.
-        /// </returns>
-        public Lid Ophalen(int lidID)
-        {
-            return Ophalen(lidID, LidExtras.Geen);
-        }
-
-        /// <summary>
-        /// Haalt het lid op bepaald door <paramref name="gelieerdePersoonID"/> en
-        /// <paramref name="groepsWerkJaarID"/>, inclusief de relevante details om het lid naar Kipadmin te krijgen:
-        /// persoon, afdelingen, officiële afdelingen, functies, groepswerkjaar, groep
-        /// </summary>
-        /// <param name="gelieerdePersoonID">
-        /// ID van de gelieerde persoon waarvoor het lidobject gevraagd is.
-        /// </param>
-        /// <param name="groepsWerkJaarID">
-        /// ID van groepswerkjaar in hetwelke het lidobject gevraagd is
-        /// </param>
-        /// <returns>
-        /// Het lid bepaald door <paramref name="gelieerdePersoonID"/> en
-        /// <paramref name="groepsWerkJaarID"/>, inclusief de relevante details om het lid naar Kipadmin te krijgen
-        /// </returns>
-        public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
-        {
-            if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID) ||
-                !_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            var lid = _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID, groepsWerkJaarID);
-
-            if (lid != null)
-            {
-                // We weten dat lid.GroepsWerkJaar.Groep steeds gelijk is aan lid.GelieerdePersoon.Groep.
-                // Die laatste is echter niet opgehaald, maar het is erg gemakkelijk om die extra informatie
-                // hier mee te geven:
-
-                lid.GelieerdePersoon.Groep = lid.GroepsWerkJaar.Groep;
-            }
-
-            return lid;
-        }
-
-        /// <summary>
-        /// Haalt leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens,
-        /// voorkeursadressen, functies en afdelingen.  (Geen communicatiemiddelen)
-        /// </summary>
-        /// <param name="gwjID">
-        /// ID van het gevraagde groepswerkjaar
-        /// </param>
-        /// <param name="ookInactief">
-        /// Geef hier <c>true</c> als ook de niet-actieve leden opgehaald
-        /// moeten worden.
-        /// </param>
-        /// <returns>
-        /// De lijst van leden
-        /// </returns>
-        public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID, bool ookInactief)
-        {
-            if (_autorisatieMgr.IsSuperGav() || _autorisatieMgr.IsGavGroepsWerkJaar(gwjID))
-            {
-                return _daos.LedenDao.OphalenUitGroepsWerkJaar(gwjID, ookInactief);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-        /// <summary>
-        /// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>.
-        /// </summary>
-        /// <param name="filter">
-        /// De niet-nulle properties van de filter
-        /// bepalen waarop gezocht moet worden
-        /// </param>
-        /// <param name="extras">
-        /// Bepaalt de mee op te halen gekoppelde entiteiten. 
-        /// (Adressen ophalen vertraagt aanzienlijk.)
-        /// </param>
-        /// <returns>
-        /// Lijst met info over gevonden leden
-        /// </returns>
-        /// <remarks>
-        /// Er worden enkel actieve leden opgehaald
-        /// </remarks>
-        public IEnumerable<Lid> Zoeken(LidFilter filter, LidExtras extras)
-        {
-            // Hieronder een hele hoop voorwaarden voor de GeenGavException.
-            // Ik denk dat het duidelijker zou zijn moest deze if geinverteerd worden,
-            // en dat er dus zou staan wanneer er wél gezocht mag worden.
-            if (!_autorisatieMgr.IsSuperGav() &&
-                (filter.GroepID != null && !_autorisatieMgr.IsGavGroep(filter.GroepID.Value) ||
-                 filter.GroepsWerkJaarID != null && !_autorisatieMgr.IsGavGroepsWerkJaar(filter.GroepsWerkJaarID.Value) ||
-                 filter.AfdelingID != null && !_autorisatieMgr.IsGavAfdeling(filter.AfdelingID.Value) ||
-                 filter.FunctieID != null && !_autorisatieMgr.IsGavFunctie(filter.FunctieID.Value)))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            var kinderen = _daos.KindDao.Zoeken(filter, extras);
-            IEnumerable<Lid> leiding = _daos.LeidingDao.Zoeken(filter, extras);
-
-            // Sorteren doen we hier niet; dat is presentatie :)
-            // Voeg kinderen en leiding samen, en haal de inactieve er uit
-            var alles = kinderen.Union(leiding);
-            return alles.Where(ld => ld.NonActief == false).ToArray();
         }
     }
 }
