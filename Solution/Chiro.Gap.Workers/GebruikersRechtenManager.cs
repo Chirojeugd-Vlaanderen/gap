@@ -86,8 +86,7 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Verlengt het gegeven <paramref name="gebruikersRecht"/> (indien mogelijk) tot het standaard aantal maanden
-        /// na vandaag.
+        /// Verlengt het gegeven <paramref name="gebruikersRecht"/> (indien mogelijk) tot 1 november van het komende werkjaar.
         /// </summary>
         /// <param name="gebruikersRecht">
         /// Te verlengen gebruikersrecht
@@ -100,7 +99,7 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
-            
+
             if (!gebruikersRecht.IsVerlengbaar)
             {
                 // Als er gebruikersrecht is, maar dat is niet verlengbaar, dan gooien
@@ -109,8 +108,8 @@ namespace Chiro.Gap.Workers
                                               Resources.GebruikersRechtNietVerlengbaar);
             }
 
-            // Vervaldatum aanpassen
-            gebruikersRecht.VervalDatum = DateTime.Now.AddMonths(Settings.Default.MaandenGebruikersRechtStandaard);
+            // Vervaldatum aanpassen. Als de toegang in de zomer verlengd wordt, gaat het waarschijnlijk al over rechten voor het komend werkjaar.
+            gebruikersRecht.VervalDatum = DateTime.Now.Month >= 7 ? new DateTime(DateTime.Now.Year + 1, 11, 1) : new DateTime(DateTime.Now.Year, 11, 1);
         }
 
         /// <summary>
@@ -149,7 +148,7 @@ namespace Chiro.Gap.Workers
 
             if (!_autorisatieManager.IsGavGelieerdePersoon(gelieerdePersoon.ID))
             {
-                throw new GeenGavException(Properties.Resources.GeenGav);
+                throw new GeenGavException(Resources.GeenGav);
             }
 
             var account = p.Gav.FirstOrDefault();
@@ -166,12 +165,12 @@ namespace Chiro.Gap.Workers
 
             if (p.AdNummer == null)
             {
-                throw new FoutNummerException(FoutNummer.AdNummerVerplicht, Properties.Resources.AdNummerVerplicht);
+                throw new FoutNummerException(FoutNummer.AdNummerVerplicht, Resources.AdNummerVerplicht);
             }
 
             if (string.IsNullOrEmpty(gelieerdePersoon.ContactEmail))
             {
-                throw new FoutNummerException(FoutNummer.EMailVerplicht, Properties.Resources.EMailVerplicht);
+                throw new FoutNummerException(FoutNummer.EMailVerplicht, Resources.EMailVerplicht);
             }
 
             account = new Gav();
@@ -230,7 +229,7 @@ namespace Chiro.Gap.Workers
         /// </param>
         public void Intrekken(GebruikersRecht gebruikersRecht)
         {
-            Intrekken(new[] {gebruikersRecht});
+            Intrekken(new[] { gebruikersRecht });
         }
 
         /// <summary>
@@ -262,7 +261,7 @@ namespace Chiro.Gap.Workers
         /// </param>
         public void Bewaren(GebruikersRecht gebruikersRecht)
         {
-            Bewaren(new [] {gebruikersRecht});
+            Bewaren(new[] { gebruikersRecht });
         }
 
         /// <summary>
@@ -409,18 +408,18 @@ namespace Chiro.Gap.Workers
             using (var tx = new TransactionScope())
             {
 #endif
-            gebruikersRecht = _autorisatieDao.Bewaren(gebruikersRecht,
-                                                      gr => gr.Gav.Persoon.First().WithoutUpdate(),
-                                                      gr => gr.Groep.WithoutUpdate());
-            _mailer.Verzenden(mailAdres,
-                              Resources.TijdelijkeRechtenMailOnderwerp,
-                              string.Format(
-                                  Resources.TijdelijkeRechtenMailBody,
-                                  notificatieOntvanger.Persoon.VolledigeNaam,
-                                  gav.Login,
-                                  vervalDatum,
-                                  reden,
-                                  notificatieOntvanger.Groep.ID));
+                gebruikersRecht = _autorisatieDao.Bewaren(gebruikersRecht,
+                                                          gr => gr.Gav.Persoon.First().WithoutUpdate(),
+                                                          gr => gr.Groep.WithoutUpdate());
+                _mailer.Verzenden(mailAdres,
+                                  Resources.TijdelijkeRechtenMailOnderwerp,
+                                  string.Format(
+                                      Resources.TijdelijkeRechtenMailBody,
+                                      notificatieOntvanger.Persoon.VolledigeNaam,
+                                      gav.Login,
+                                      vervalDatum,
+                                      reden,
+                                      notificatieOntvanger.Groep.ID));
 
 #if KIPDORP
                 tx.Complete();
@@ -490,11 +489,11 @@ namespace Chiro.Gap.Workers
 
         /// <summary>
         /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="account"/>.
-        /// Standaard zijn deze rechten 14 maand geldig. Als de gebruikersrechten al bestonden, worden ze indien
-        /// mogelijk verlengd.
+        /// Standaard zijn deze rechten geldig tot 1 november in het komende werkjaar. Als de gebruikersrechten al bestonden, 
+        /// worden ze indien mogelijk verlengd.
         /// </summary>
-        /// <param name="account">account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
-        /// <param name="groep">groep waarvoor <paramref name="account"/> gebruikersrecht moet krijgen</param>
+        /// <param name="account">Account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
+        /// <param name="groep">Groep waarvoor <paramref name="account"/> gebruikersrecht moet krijgen</param>
         /// <returns>Het gebruikersrecht</returns>
         /// <remarks>Persisteert niet.</remarks>
         public GebruikersRecht ToekennenOfVerlengen(Gav account, Groep groep)
@@ -504,10 +503,15 @@ namespace Chiro.Gap.Workers
 
             if (!_autorisatieManager.IsGavGroep(groep.ID))
             {
-                throw new GeenGavException(Properties.Resources.GeenGav);
+                throw new GeenGavException(Resources.GeenGav);
             }
-            return ToekennenOfVerlengen(account, groep,
-                                        DateTime.Now.AddMonths(Settings.Default.MaandenGebruikersRechtStandaard));
+
+            DateTime vervaldatum;
+
+            // Als de toegang in de zomer toegekend wordt, gaat het waarschijnlijk al over een login voor het komend werkjaar.
+            vervaldatum = DateTime.Now.Month >= 7 ? new DateTime(DateTime.Now.Year + 1, 11, 1) : new DateTime(DateTime.Now.Year, 11, 1);
+
+            return ToekennenOfVerlengen(account, groep, vervaldatum);
         }
     }
 }

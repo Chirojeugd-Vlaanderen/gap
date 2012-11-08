@@ -130,14 +130,5 @@ namespace Chiro.Gap.Workers.Properties {
                 return ((int)(this["MinWerkJaarLidOverzetten"]));
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("14")]
-        public int MaandenGebruikersRechtStandaard {
-            get {
-                return ((int)(this["MaandenGebruikersRechtStandaard"]));
-            }
-        }
     }
 }
