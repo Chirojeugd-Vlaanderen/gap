@@ -13,7 +13,7 @@
     <div id="help">
         <asp:ContentPlaceHolder ID="helpContent" runat="server" />
     </div>
-    <%if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
+    <%if (Model.Mededelingen != null && Model.Mededelingen.Any())
       {
           Html.RenderPartial("MededelingenControl");
       }%>

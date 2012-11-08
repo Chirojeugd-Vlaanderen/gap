@@ -462,7 +462,7 @@ namespace Chiro.Gap.Services
                 Lid lid = _ledenMgr.Ophalen(lidID, LidExtras.Groep | LidExtras.Functies);
                 IList<Functie> functies;
 
-                if (functieIDs != null && functieIDs.Count() > 0)
+                if (functieIDs != null && functieIDs.Any())
                 {
                     functies = _functiesMgr.Ophalen(functieIDs);
                 }

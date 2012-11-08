@@ -95,7 +95,7 @@ namespace Chiro.Gap.Services.Test
 				     where cInfo.ID == catID
 				     select cInfo);
 
-			Assert.IsTrue(query.Count() > 0);
+			Assert.IsTrue(query.Any());
 		}
 	}
 }

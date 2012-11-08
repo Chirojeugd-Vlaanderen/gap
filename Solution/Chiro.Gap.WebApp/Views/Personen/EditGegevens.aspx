@@ -20,7 +20,7 @@
 	<% using (Html.BeginForm())
 	{ %>
 	<%
-		if (Model.GelijkaardigePersonen != null && Model.GelijkaardigePersonen.Count() > 0)
+		if (Model.GelijkaardigePersonen != null && Model.GelijkaardigePersonen.Any())
 		{
 			if (Model.GelijkaardigePersonen.Count() == 1)
 			{

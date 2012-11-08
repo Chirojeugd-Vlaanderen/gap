@@ -514,7 +514,7 @@ namespace Chiro.Gap.Data.Test
 			               where tupel.I1 == bewaard.First().ID || tupel.I2 == bewaard.First().ID
 			               select tupel;
 
-			Assert.IsTrue(gevonden.Count() > 0);
+			Assert.IsTrue(gevonden.Any());
 
 			#endregion
 

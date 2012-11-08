@@ -144,7 +144,7 @@ namespace Chiro.Gap.WebApp
 			// Get the SharedStringTablePart. If it does not exist, create a new one.
 			SharedStringTablePart shareStringPart;
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-			if (spreadSheet.WorkbookPart.GetPartsOfType<SharedStringTablePart>().Count() > 0)
+			if (spreadSheet.WorkbookPart.GetPartsOfType<SharedStringTablePart>().Any())
 			{
 				shareStringPart = spreadSheet.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First();
 			}
@@ -256,7 +256,7 @@ namespace Chiro.Gap.WebApp
 
 			// Get a unique ID for the new sheet.
 			uint sheetId = 1;
-			if (sheets.Elements<Sheet>().Count() > 0)
+			if (sheets.Elements<Sheet>().Any())
 			{
 				sheetId = sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
 			}
@@ -320,7 +320,7 @@ namespace Chiro.Gap.WebApp
 			}
 
 			// If there is not a cell with the specified column name, insert one.  
-			if (row.Elements<Cell>().Where(c => c.CellReference.Value == columnName + rowIndex).Count() > 0)
+			if (row.Elements<Cell>().Where(c => c.CellReference.Value == columnName + rowIndex).Any())
 			{
 				return row.Elements<Cell>().Where(c => c.CellReference.Value == cellReference).First();
 			}

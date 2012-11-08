@@ -57,7 +57,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Toont de persoonsinformatie op (inclusief lidinfo) voor personen waarvan de familienaam begint met
+        /// Toont de persoonsinformatie (inclusief lidinfo) voor personen van wie de familienaam begint met
         /// de letter <paramref name="page"/> uit een bepaalde categorie, en toont deze via de view 'Index'.
         /// </summary>
         /// <param name="page">Beginletter familienamen te tonen personen</param>
@@ -1213,7 +1213,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Titel = "Toevoegen aan categorie";
             model.Categorieen = ServiceHelper.CallService<IGroepenService, IEnumerable<CategorieInfo>>(l => l.CategorieenOphalen(groepID));
 
-            if (model.Categorieen.Count() > 0)
+            if (model.Categorieen.Any())
             {
                 object value;
                 TempData.TryGetValue("list", out value);
