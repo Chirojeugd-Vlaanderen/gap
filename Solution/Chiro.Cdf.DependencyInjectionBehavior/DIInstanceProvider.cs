@@ -70,6 +70,10 @@ namespace Chiro.Cdf.DependencyInjection
 		/// <param name="instance"></param>
 		public void ReleaseInstance(InstanceContext instanceContext, object instance)
 		{
+            if (instance is IDisposable)
+            {
+                (instance as IDisposable).Dispose();
+            }
 		}
 	}
 }
