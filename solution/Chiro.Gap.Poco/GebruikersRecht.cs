@@ -1,12 +1,14 @@
 using System;
+using Chiro.Cdf.Poco;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class GebruikersRecht
+    public partial class GebruikersRecht: BasisEntiteit
     {
-        public int ID { get; set; }
+        public override int ID { get; set; }
         public Nullable<System.DateTime> VervalDatum { get; set; }
-        public byte[] Versie { get; set; }
+        public override byte[] Versie { get; set; }
     
         public virtual Gav Gav { get; set; }
         public virtual Groep Groep { get; set; }
@@ -23,6 +25,14 @@ namespace Chiro.Gap.Poco.Model
                 return VervalDatum != null && ((DateTime) VervalDatum) < DateTime.Now.AddMonths(
                     Properties.Settings.Default.MaandenGebruikersRechtVerlengbaar);
             }
+        }
+
+        /// <summary>
+        /// Rol van de gebruiker. Op dit moment ondersteunen we enkel GAV (zie #844)
+        /// </summary>
+        public Rol Rol
+        {
+            get { return VervalDatum == null || VervalDatum < DateTime.Now ? Rol.Geen : Rol.Gav; }
         }
     }
     

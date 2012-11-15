@@ -45,6 +45,15 @@ namespace Chiro.Gap.Poco.Model
             get { return (Niveau)NiveauInt; }
             set { NiveauInt = (int)value; }
         }
+
+        /// <summary>
+        /// Koppeling tussen enum LidType en databaseveld LidTypeInt
+        /// </summary>
+        public LidType Type
+        {
+            get { return (LidType)LidTypeInt; }
+            set { LidTypeInt = (int)value; }
+        }
     }
     
 }

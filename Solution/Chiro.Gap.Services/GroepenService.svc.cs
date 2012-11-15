@@ -5,9 +5,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Services
 {
@@ -21,6 +26,19 @@ namespace Chiro.Gap.Services
     /// </summary>
     public class GroepenService : IGroepenService
     {
+        private IRepository<Groep> _groepenRepo;
+        private IAuthenticatieManager _authenticatieMgr;
+
+        /// <summary>
+        /// Nieuwe groepenservice
+        /// </summary>
+        /// <param name="groepenRepo">Repository voor groepsgegevens</param>
+        public GroepenService(IRepository<Groep> groepenRepo, IAuthenticatieManager authenticatieMgr)
+        {
+            _groepenRepo = groepenRepo;
+            _authenticatieMgr = authenticatieMgr;
+        }
+
         /// <summary>
         /// Ophalen van Groepsinformatie
         /// </summary>
@@ -59,7 +77,9 @@ namespace Chiro.Gap.Services
         /// <returns>De (informatie over de) groepen van de gebruiker</returns>
         public IEnumerable<GroepInfo> MijnGroepenOphalen()
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            string mijnLogin = _authenticatieMgr.GebruikersNaamGet();
+            var groepen = _groepenRepo.Select().Where(src => src.GebruikersRecht.Any(gr => gr.Gav.Login == mijnLogin)).ToList();
+            return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
         }
 
         /// <summary>

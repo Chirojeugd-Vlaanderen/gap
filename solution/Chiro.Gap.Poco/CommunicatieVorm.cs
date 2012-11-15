@@ -1,8 +1,9 @@
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class CommunicatieVorm: ICommunicatie
+    public partial class CommunicatieVorm: BasisEntiteit, ICommunicatie
     {
         public string Nota { get; set; }
         public string Nummer { get; set; }
@@ -24,10 +25,10 @@ namespace Chiro.Gap.Poco.Model
             }
         }
 
-        public int ID { get; set; }
+        public override int ID { get; set; }
         public bool IsGezinsgebonden { get; set; }
         public bool Voorkeur { get; set; }
-        public byte[] Versie { get; set; }
+        public override byte[] Versie { get; set; }
         public bool IsVoorOptIn { get; set; }
     
         public virtual GelieerdePersoon GelieerdePersoon { get; set; }
