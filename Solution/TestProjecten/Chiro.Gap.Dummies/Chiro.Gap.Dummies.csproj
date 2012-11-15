@@ -60,10 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
-      <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
-      <Name>Chiro.Cdf.Data.Entity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>

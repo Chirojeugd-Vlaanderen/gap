@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Chiro.Cdf.Poco.Entity
+namespace Chiro.Cdf.Poco
 {
-    public class EfRepository<TContext, TEntity>: IRepository<TEntity> where TContext:IContext where TEntity: class
+    public class ContextRepository<TContext, TEntity>: IRepository<TEntity> where TContext:IContext where TEntity: class
     {
         private readonly TContext _context;
 
-        public EfRepository(TContext context)
+        public ContextRepository(TContext context)
         {
             _context = context;
         }

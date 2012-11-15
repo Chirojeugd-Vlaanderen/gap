@@ -24,19 +24,26 @@ namespace Chiro.Gap.Services
     /// <summary>
     /// Service voor operaties op groepsniveau
     /// </summary>
-    public class GroepenService : IGroepenService
+    public class GroepenService : IGroepenService, IDisposable
     {
+        private IContext _context;
         private IRepository<Groep> _groepenRepo;
         private IAuthenticatieManager _authenticatieMgr;
 
         /// <summary>
         /// Nieuwe groepenservice
         /// </summary>
-        /// <param name="groepenRepo">Repository voor groepsgegevens</param>
-        public GroepenService(IRepository<Groep> groepenRepo, IAuthenticatieManager authenticatieMgr)
+        /// <param name="authenticatieMgr">Verantwoordelijk voor authenticatiezaken</param>
+        public GroepenService(IAuthenticatieManager authenticatieMgr, IRepositoryProvider repositoryProvider)
         {
-            _groepenRepo = groepenRepo;
             _authenticatieMgr = authenticatieMgr;
+            _context = repositoryProvider.ContextGet();
+            _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using Chiro.Cdf.Poco.Entity;
+﻿using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Context;
 
 namespace Chiro.Gap.Poco.Repository
@@ -8,7 +8,7 @@ namespace Chiro.Gap.Poco.Repository
     /// </summary>
     /// <typeparam name="TEntity">Klasse; deze repository voert database-operaties uit voor entiteiten
     /// van dit type</typeparam>
-    public class GapRepository<TEntity>: EfRepository<ChiroGroepEntities, TEntity> where TEntity : class
+    public class GapRepository<TEntity>: ContextRepository<ChiroGroepEntities, TEntity> where TEntity : class
     {
         public GapRepository(ChiroGroepEntities context) : base(context)
         {
