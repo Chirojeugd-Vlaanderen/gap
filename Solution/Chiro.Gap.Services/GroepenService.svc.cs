@@ -26,18 +26,31 @@ namespace Chiro.Gap.Services
     /// </summary>
     public class GroepenService : IGroepenService, IDisposable
     {
+        /// <summary>
+        /// _context is verantwoordelijk voor het tracken van de wijzigingen aan de
+        /// entiteiten. Via _context.SaveChanges() kunnen wijzigingen gepersisteerd
+        /// worden.
+        /// 
+        /// Context is IDisposable. De context wordt aangemaakt door de IOC-container,
+        /// en gedisposed op het moment dat de service gedisposed wordt. Dit gebeurt
+        /// na iedere call.
+        /// </summary>
         private IContext _context;
 
-        // Repositories, voor data access
+        // Repositories, verantwoordelijk voor data access.
+
         private IRepository<Groep> _groepenRepo;
         // (Op dit moment nog maar 1, hier komen er vermoedelijk bij)
 
+        // Managers voor niet-triviale businesslogica
+        
         private IAuthenticatieManager _authenticatieMgr;
 
         /// <summary>
         /// Nieuwe groepenservice
         /// </summary>
         /// <param name="authenticatieMgr">Verantwoordelijk voor authenticatiezaken</param>
+        /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         public GroepenService(IAuthenticatieManager authenticatieMgr, IRepositoryProvider repositoryProvider)
         {
             _context = repositoryProvider.ContextGet();
@@ -91,7 +104,9 @@ namespace Chiro.Gap.Services
         public IEnumerable<GroepInfo> MijnGroepenOphalen()
         {
             string mijnLogin = _authenticatieMgr.GebruikersNaamGet();
-            var groepen = _groepenRepo.Select().Where(src => src.GebruikersRecht.Any(gr => gr.Gav.Login == mijnLogin)).ToList();
+            var groepen = from g in _groepenRepo.Select()
+                          where g.GebruikersRecht.Any(gr => gr.Gav.Login == mijnLogin)
+                          select g;
             return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
         }
 
