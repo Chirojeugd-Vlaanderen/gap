@@ -27,7 +27,11 @@ namespace Chiro.Gap.Services
     public class GroepenService : IGroepenService, IDisposable
     {
         private IContext _context;
+
+        // Repositories, voor data access
         private IRepository<Groep> _groepenRepo;
+        // (Op dit moment nog maar 1, hier komen er vermoedelijk bij)
+
         private IAuthenticatieManager _authenticatieMgr;
 
         /// <summary>
@@ -36,9 +40,11 @@ namespace Chiro.Gap.Services
         /// <param name="authenticatieMgr">Verantwoordelijk voor authenticatiezaken</param>
         public GroepenService(IAuthenticatieManager authenticatieMgr, IRepositoryProvider repositoryProvider)
         {
-            _authenticatieMgr = authenticatieMgr;
             _context = repositoryProvider.ContextGet();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
+
+            _authenticatieMgr = authenticatieMgr;
+
         }
 
         public void Dispose()

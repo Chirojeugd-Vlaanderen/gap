@@ -42,11 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasisEntiteit.cs" />
-    <Compile Include="ContextRepository.cs" />
+    <Compile Include="Repository.cs" />
     <Compile Include="IContext.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IRepositoryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

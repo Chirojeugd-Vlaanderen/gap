@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace Chiro.Cdf.Poco
 {
-    public class ContextRepository<TContext, TEntity>: IRepository<TEntity> where TContext:IContext where TEntity: class
+    public class Repository<TEntity>: IRepository<TEntity> where TEntity: class
     {
-        private readonly TContext _context;
+        private readonly IContext _context;
 
-        public ContextRepository(TContext context)
+        public Repository(IContext context)
         {
             _context = context;
         }
