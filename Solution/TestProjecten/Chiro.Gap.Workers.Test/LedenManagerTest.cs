@@ -1,15 +1,11 @@
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Workers.Exceptions;
-
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.SyncInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.Orm;
-
 using Moq;
-using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Workers.Test.CustomIoc
 {
@@ -106,37 +102,38 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         [TestMethod]
         public void KaderUitschrijvenTest()
         {
-            // arrange
+            //// arrange
 
-            var ledenSyncMock = new Mock<ILedenSync>();
-            ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>()));   // verwacht dat ledensync een lid moet bewaren
+            //var ledenSyncMock = new Mock<ILedenSync>();
+            //ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>()));   // verwacht dat ledensync een lid moet bewaren
 
-            var leidingDaoMock = new Mock<ILeidingDao>();
-            leidingDaoMock.Setup(dao => dao.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns(
-                (Leiding x, LidExtras y) => x);  // bewaren doet niets behalven het originele leiding terug opleveren
+            //var leidingDaoMock = new Mock<ILeidingDao>();
+            //leidingDaoMock.Setup(dao => dao.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns(
+            //    (Leiding x, LidExtras y) => x);  // bewaren doet niets behalven het originele leiding terug opleveren
 
-            Factory.InstantieRegistreren(ledenSyncMock.Object);
-            Factory.InstantieRegistreren(leidingDaoMock.Object);
+            //Factory.InstantieRegistreren(ledenSyncMock.Object);
+            //Factory.InstantieRegistreren(leidingDaoMock.Object);
 
-            var target = Factory.Maak<LedenManager>();
+            //var target = Factory.Maak<LedenManager>();
 
-            // construeer gauw een uitgeschreven kadermedewerker
+            //// construeer gauw een uitgeschreven kadermedewerker
 
-            Lid lid = new Leiding
-                          {
-                              EindeInstapPeriode = DateTime.Today,  // probeerperiode kadermedewerker is irrelevant
-                              UitschrijfDatum = DateTime.Today,
-                              GroepsWerkJaar = new GroepsWerkJaar {Groep = new KaderGroep {NiveauInt = (int)Niveau.Gewest}}
-                          };
+            //Lid lid = new Leiding
+            //              {
+            //                  EindeInstapPeriode = DateTime.Today,  // probeerperiode kadermedewerker is irrelevant
+            //                  UitschrijfDatum = DateTime.Today,
+            //                  GroepsWerkJaar = new GroepsWerkJaar {Groep = new KaderGroep {NiveauInt = (int)Niveau.Gewest}}
+            //              };
 
-            // act
+            //// act
 
-            target.Bewaren(lid, LidExtras.Geen, true);
+            //target.Bewaren(lid, LidExtras.Geen, true);
 
-            // assert: controleer of de ledensync is aangeroepen
+            //// assert: controleer of de ledensync is aangeroepen
 
-            ledenSyncMock.Verify(snc => snc.Verwijderen(It.IsAny<Lid>()));
-            Assert.IsTrue(true);
+            //ledenSyncMock.Verify(snc => snc.Verwijderen(It.IsAny<Lid>()));
+            //Assert.IsTrue(true);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         ///<summary>
@@ -146,37 +143,38 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         [TestMethod]
         public void LeidingUitschrijvenTest()
         {
-            // arrange
+            //// arrange
 
-            var ledenSyncMock = new Mock<ILedenSync>();
-            ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>()));   // deze mag niet aangeroepen worden
+            //var ledenSyncMock = new Mock<ILedenSync>();
+            //ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>()));   // deze mag niet aangeroepen worden
 
-            var leidingDaoMock = new Mock<ILeidingDao>();
-            leidingDaoMock.Setup(dao => dao.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns(
-                (Leiding x, LidExtras y) => x);  // bewaren doet niets behalven het originele leiding terug opleveren
+            //var leidingDaoMock = new Mock<ILeidingDao>();
+            //leidingDaoMock.Setup(dao => dao.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns(
+            //    (Leiding x, LidExtras y) => x);  // bewaren doet niets behalven het originele leiding terug opleveren
 
-            Factory.InstantieRegistreren(ledenSyncMock.Object);
-            Factory.InstantieRegistreren(leidingDaoMock.Object);
+            //Factory.InstantieRegistreren(ledenSyncMock.Object);
+            //Factory.InstantieRegistreren(leidingDaoMock.Object);
 
-            var target = Factory.Maak<LedenManager>();
+            //var target = Factory.Maak<LedenManager>();
 
-            // construeer gauw een uitgeschreven leid(st)er
+            //// construeer gauw een uitgeschreven leid(st)er
 
-            Lid lid = new Leiding
-            {
-                EindeInstapPeriode = DateTime.Today,  // probeerperiode kadermedewerker is irrelevant
-                UitschrijfDatum = DateTime.Today,
-                GroepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep() }
-            };
+            //Lid lid = new Leiding
+            //{
+            //    EindeInstapPeriode = DateTime.Today,  // probeerperiode kadermedewerker is irrelevant
+            //    UitschrijfDatum = DateTime.Today,
+            //    GroepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep() }
+            //};
 
-            // act
+            //// act
 
-            target.Bewaren(lid, LidExtras.Geen, true);
+            //target.Bewaren(lid, LidExtras.Geen, true);
 
-            // assert: controleer of de ledensync is aangeroepen
+            //// assert: controleer of de ledensync is aangeroepen
 
-            ledenSyncMock.Verify(snc => snc.Verwijderen(It.IsAny<Lid>()), Times.Never());
-            Assert.IsTrue(true);
+            //ledenSyncMock.Verify(snc => snc.Verwijderen(It.IsAny<Lid>()), Times.Never());
+            //Assert.IsTrue(true);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
 
@@ -188,16 +186,17 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         [TestMethod()]
         public void InschrijvenTest()
         {
-            // LedenManager_Accessor, zodat we ook private members kunnen testen.
-            var target = Factory.Maak<LedenManager>();
-            Setup();
+            //// LedenManager_Accessor, zodat we ook private members kunnen testen.
+            //var target = Factory.Maak<LedenManager>();
+            //Setup();
 
-            // act
-            var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Leiding;
+            //// act
+            //var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Leiding;
 
-            // assert
-            Assert.IsNotNull(actual);
-            Assert.AreEqual(0, actual.AfdelingsJaar.Count);
+            //// assert
+            //Assert.IsNotNull(actual);
+            //Assert.AreEqual(0, actual.AfdelingsJaar.Count);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         ///<summary>
@@ -206,33 +205,34 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         [TestMethod()]
         public void HerInschrijvenAlsLidTest()
         {
-            var kindDaoMock = new Mock<IKindDao>();
-            kindDaoMock.Setup(src => src.Bewaren(It.IsAny<Kind>(), It.IsAny<LidExtras>())).Returns<Kind, LidExtras>((kind, extra) => kind);
+            //var kindDaoMock = new Mock<IKindDao>();
+            //kindDaoMock.Setup(src => src.Bewaren(It.IsAny<Kind>(), It.IsAny<LidExtras>())).Returns<Kind, LidExtras>((kind, extra) => kind);
 
-            // we verwachten dat het kind bewaard zal worden
+            //// we verwachten dat het kind bewaard zal worden
 
-            Factory.InstantieRegistreren(kindDaoMock.Object);
+            //Factory.InstantieRegistreren(kindDaoMock.Object);
 
-            var target = Factory.Maak<LedenManager>();
-            Setup();
+            //var target = Factory.Maak<LedenManager>();
+            //Setup();
             
-            // act
-            var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Leiding;
-            actual.UitschrijfDatum = DateTime.Today;
+            //// act
+            //var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Leiding;
+            //actual.UitschrijfDatum = DateTime.Today;
             
-            var voorstel2 = new LidVoorstel
-            {
-                AfdelingsJaarIDs = new[]{1},
-                AfdelingsJarenIrrelevant = false,
-                LeidingMaken = false
-            };
+            //var voorstel2 = new LidVoorstel
+            //{
+            //    AfdelingsJaarIDs = new[]{1},
+            //    AfdelingsJarenIrrelevant = false,
+            //    LeidingMaken = false
+            //};
 
-            var newlid = target.Wijzigen(actual, voorstel2) as Kind;
+            //var newlid = target.Wijzigen(actual, voorstel2) as Kind;
 
-            // assert
-            Assert.IsNotNull(newlid);
-            Assert.AreEqual(_afd1, newlid.AfdelingsJaar);
-            Assert.IsNull(newlid.UitschrijfDatum);
+            //// assert
+            //Assert.IsNotNull(newlid);
+            //Assert.AreEqual(_afd1, newlid.AfdelingsJaar);
+            //Assert.IsNull(newlid.UitschrijfDatum);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         ///<summary>
@@ -241,36 +241,37 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         [TestMethod()]
         public void HerInschrijvenAlsLeidingTest()
         {
-            var leidingDaoMock = new Mock<ILeidingDao>();
-            leidingDaoMock.Setup(src => src.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns<Leiding, LidExtras>((ld, extra) => ld);
+            //var leidingDaoMock = new Mock<ILeidingDao>();
+            //leidingDaoMock.Setup(src => src.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns<Leiding, LidExtras>((ld, extra) => ld);
 
-            // we verwachten dat de leid(st)er bewaard zal worden
+            //// we verwachten dat de leid(st)er bewaard zal worden
 
-            Factory.InstantieRegistreren(leidingDaoMock.Object);
+            //Factory.InstantieRegistreren(leidingDaoMock.Object);
 
-            var target = Factory.Maak<LedenManager>();
-            Setup();
+            //var target = Factory.Maak<LedenManager>();
+            //Setup();
 
-            // act
-            _voorstel.LeidingMaken = false;
-            _voorstel.AfdelingsJaarIDs = new[] {0};
-            var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Kind;
-            actual.UitschrijfDatum = DateTime.Today;
+            //// act
+            //_voorstel.LeidingMaken = false;
+            //_voorstel.AfdelingsJaarIDs = new[] {0};
+            //var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Kind;
+            //actual.UitschrijfDatum = DateTime.Today;
 
-            var voorstel2 = new LidVoorstel
-            {
-                AfdelingsJaarIDs = new[] { 1, 2 },
-                AfdelingsJarenIrrelevant = false,
-                LeidingMaken = true
-            };
+            //var voorstel2 = new LidVoorstel
+            //{
+            //    AfdelingsJaarIDs = new[] { 1, 2 },
+            //    AfdelingsJarenIrrelevant = false,
+            //    LeidingMaken = true
+            //};
 
-            var newlid = target.Wijzigen(actual, voorstel2) as Leiding;
+            //var newlid = target.Wijzigen(actual, voorstel2) as Leiding;
 
-            // assert
-            Assert.IsNotNull(newlid);
-            Assert.IsTrue(newlid.AfdelingsJaar.Contains(_afd1));
-            Assert.IsTrue(newlid.AfdelingsJaar.Contains(_afd2));
-            Assert.IsNull(newlid.UitschrijfDatum);
+            //// assert
+            //Assert.IsNotNull(newlid);
+            //Assert.IsTrue(newlid.AfdelingsJaar.Contains(_afd1));
+            //Assert.IsTrue(newlid.AfdelingsJaar.Contains(_afd2));
+            //Assert.IsNull(newlid.UitschrijfDatum);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>

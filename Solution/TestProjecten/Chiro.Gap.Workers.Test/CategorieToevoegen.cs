@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Workers;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm.DataInterfaces;
-using System.IO;
-using System.Runtime.Serialization;
 using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.Workers.Test
 {

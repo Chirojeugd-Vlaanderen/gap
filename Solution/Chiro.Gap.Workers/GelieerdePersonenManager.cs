@@ -404,5 +404,10 @@ namespace Chiro.Gap.Workers
 //            }
 //#endif
         }
+
+        public void CategorieLoskoppelen(int[] ints, Categorie vervelend)
+        {
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+        }
     }
 }

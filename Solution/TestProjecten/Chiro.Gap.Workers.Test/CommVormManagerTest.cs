@@ -1,10 +1,5 @@
-﻿using Chiro.Gap.Workers;
+﻿using Chiro.Gap.Poco.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Chiro.Gap.Orm;
-using Chiro.Cdf.Data;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
 using System.Data.Objects.DataClasses;
 using Chiro.Cdf.Ioc;
 

@@ -98,5 +98,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// van gelieerde personen aan.
         /// </remarks>
         void AdressenVerwijderen(IEnumerable<PersoonsAdres> persoonsAdressen);
+
+        void CategorieLoskoppelen(int[] ints, Categorie vervelend);
     }
 }

@@ -1,12 +1,10 @@
-﻿using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Workers.Exceptions;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+﻿using System;
+using Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Orm;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Chiro.Gap.Workers.Test
@@ -79,32 +77,33 @@ namespace Chiro.Gap.Workers.Test
         [ExpectedException(typeof(GeenGavException))]
         public void BewarenTest()
         {
-            // arrabge
+            //// arrabge
 
-            const int GROEP_ID = 1;
+            //const int GROEP_ID = 1;
 
 
-            var veelGebruiktMock = new Mock<IVeelGebruikt>();
-            veelGebruiktMock.Setup(che => che.GroepsWerkJaarOphalen(GROEP_ID)).Returns(new GroepsWerkJaar
-                {Groep = new ChiroGroep {ID = GROEP_ID, Code = "TST/0001"}});
-            Factory.InstantieRegistreren(veelGebruiktMock.Object);
+            //var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            //veelGebruiktMock.Setup(che => che.GroepsWerkJaarOphalen(GROEP_ID)).Returns(new GroepsWerkJaar
+            //    {Groep = new ChiroGroep {ID = GROEP_ID, Code = "TST/0001"}});
+            //Factory.InstantieRegistreren(veelGebruiktMock.Object);
 
-            var groepenDaoMock = new Mock<IGroepenDao>();
-            groepenDaoMock.Setup(dao => dao.Ophalen(GROEP_ID)).Returns(new ChiroGroep {ID = GROEP_ID, Code = "TST/0001"});
-            Factory.InstantieRegistreren(groepenDaoMock.Object);
+            //var groepenDaoMock = new Mock<IGroepenDao>();
+            //groepenDaoMock.Setup(dao => dao.Ophalen(GROEP_ID)).Returns(new ChiroGroep {ID = GROEP_ID, Code = "TST/0001"});
+            //Factory.InstantieRegistreren(groepenDaoMock.Object);
 
-            var target = Factory.Maak<GroepenManager>();
+            //var target = Factory.Maak<GroepenManager>();
 
-            Groep g = target.Ophalen(GROEP_ID);
+            //Groep g = target.Ophalen(GROEP_ID);
 
-            // act
+            //// act
 
-            g.Code = "TST/0002";
-            target.Bewaren(g);
+            //g.Code = "TST/0002";
+            //target.Bewaren(g);
 
-            // assert
+            //// assert
 
-            Assert.Fail();  // we verwachtten een exception; komen we hier, dan is het niet gelukt
+            //Assert.Fail();  // we verwachtten een exception; komen we hier, dan is het niet gelukt
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
     }
 }

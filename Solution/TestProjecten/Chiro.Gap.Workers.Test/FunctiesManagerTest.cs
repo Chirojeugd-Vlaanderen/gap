@@ -1,4 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.WorkerInterfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,12 +11,7 @@ using System.Linq;
 using Moq;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Dummies;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Domain;
-using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -191,35 +190,36 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void NietToegekendeVerplichteFunctie()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            GroepenManager gm = Factory.Maak<GroepenManager>();
+            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
+            //GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 1,
-                LidType.Alles);
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 1,
+            //    LidType.Alles);
 
-            // Functie bewaren, zodat dummydao een ID toekent.
+            //// Functie bewaren, zodat dummydao een ID toekent.
 
-            f = fm.Bewaren(f);
+            //f = fm.Bewaren(f);
 
-            IEnumerable<Functie> functies = new Functie[] { f };
+            //IEnumerable<Functie> functies = new Functie[] { f };
 
-            // Act
+            //// Act
 
-            fm.Toekennen(testData.LeiderJos, functies);
-            fm.Toekennen(testData.LidYvonne, functies);
+            //fm.Toekennen(testData.LeiderJos, functies);
+            //fm.Toekennen(testData.LidYvonne, functies);
 
-            // Assert
+            //// Assert
 
-            var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
-            Assert.AreNotEqual(problemen.Count(), 0);
+            //var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
+            //Assert.AreNotEqual(problemen.Count(), 0);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -294,27 +294,28 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void FunctieBewarenTest()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            GroepenManager gm = Factory.Maak<GroepenManager>();
+            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
+            //GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                0);
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 0,
+            //    0);
 
-            // Act
+            //// Act
 
-            f = fm.Bewaren(f);
+            //f = fm.Bewaren(f);
 
-            // Assert
+            //// Assert
 
-            Assert.AreNotEqual(f.ID, 0);
+            //Assert.AreNotEqual(f.ID, 0);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -324,22 +325,23 @@ namespace Chiro.Gap.Workers.Test
         [ExpectedException(typeof(GeenGavException))]
         public void NationaalBepaaldeFunctieBewarenTest()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            var fm = Factory.Maak<FunctiesManager>();
+            //var fm = Factory.Maak<FunctiesManager>();
 
-            var f = fm.NationaalBepaaldeFunctiesOphalen().First();
+            //var f = fm.NationaalBepaaldeFunctiesOphalen().First();
 
-            // Act
+            //// Act
 
-            f = fm.Bewaren(f);
+            //f = fm.Bewaren(f);
 
-            // Assert
+            //// Assert
 
-            // Dit mogen we niet halen.
-            Assert.IsTrue(false);
+            //// Dit mogen we niet halen.
+            //Assert.IsTrue(false);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -348,40 +350,41 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void FunctiesVervangen()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            var fm = Factory.Maak<FunctiesManager>();
-            var gm = Factory.Maak<GroepenManager>();
+            //var fm = Factory.Maak<FunctiesManager>();
+            //var gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                LidType.Alles);
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 0,
+            //    LidType.Alles);
 
-            // Het DummyDao kent een ID toe aan f.  (Voor DummyDao is dat OK, maar in echte situaties
-            // niet, omdat de nieuwe f niet gekoppeld zou zijn aan de groep.  Eigenlijk moeten we
-            // de groep bewaren, samen met zijn functies.)
+            //// Het DummyDao kent een ID toe aan f.  (Voor DummyDao is dat OK, maar in echte situaties
+            //// niet, omdat de nieuwe f niet gekoppeld zou zijn aan de groep.  Eigenlijk moeten we
+            //// de groep bewaren, samen met zijn functies.)
 
-            f = fm.Bewaren(f);
+            //f = fm.Bewaren(f);
 
-            var natBepFuncties = fm.NationaalBepaaldeFunctiesOphalen();
-            // we weten dat er minstens 2 nat. bepaalde functies zijn.
-            IEnumerable<Functie> functies = new Functie[] { f, natBepFuncties.First() };
-            fm.Toekennen(testData.LeiderJos, functies);
+            //var natBepFuncties = fm.NationaalBepaaldeFunctiesOphalen();
+            //// we weten dat er minstens 2 nat. bepaalde functies zijn.
+            //IEnumerable<Functie> functies = new Functie[] { f, natBepFuncties.First() };
+            //fm.Toekennen(testData.LeiderJos, functies);
 
-            // Act
+            //// Act
 
-            fm.Vervangen(testData.LeiderJos, natBepFuncties);
+            //fm.Vervangen(testData.LeiderJos, natBepFuncties);
 
-            // Assert
+            //// Assert
 
-            Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.First()));
-            Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.Last()));
-            Assert.IsFalse(testData.LeiderJos.Functie.Contains(f));
+            //Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.First()));
+            //Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.Last()));
+            //Assert.IsFalse(testData.LeiderJos.Functie.Contains(f));
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
 
@@ -392,35 +395,36 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void NationaalBepaaldeFunctiesOphalenTest()
 		{
-			#region Arrange
+            //#region Arrange
 
-			// Deze DAO's nog eens expliciet registreren, om te vermijden dat wijzigingen in
-			// andere tests een vertekend beeld opleveren.
+            //// Deze DAO's nog eens expliciet registreren, om te vermijden dat wijzigingen in
+            //// andere tests een vertekend beeld opleveren.
 
-			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
-			Factory.InstantieRegistreren<ILedenDao>(new DummyLedenDao());
+            //Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+            //Factory.InstantieRegistreren<ILedenDao>(new DummyLedenDao());
 
-			// Mock voor IFunctieDao, die een lege lijst geeft als de nationaal bepaalde functies
-			// opgevraagd worden.  We willen gewoon tellen hoe dikwijls deze opgevraagd wordt.
-			var funDaoMock = new Mock<IFunctiesDao>();
-			funDaoMock.Setup(dao => dao.NationaalBepaaldeFunctiesOphalen()).Returns(new List<Functie>());
-			Factory.InstantieRegistreren(funDaoMock.Object);
+            //// Mock voor IFunctieDao, die een lege lijst geeft als de nationaal bepaalde functies
+            //// opgevraagd worden.  We willen gewoon tellen hoe dikwijls deze opgevraagd wordt.
+            //var funDaoMock = new Mock<IFunctiesDao>();
+            //funDaoMock.Setup(dao => dao.NationaalBepaaldeFunctiesOphalen()).Returns(new List<Functie>());
+            //Factory.InstantieRegistreren(funDaoMock.Object);
 
-			var target = Factory.Maak<FunctiesManager>();
+            //var target = Factory.Maak<FunctiesManager>();
 
-			#endregion
+            //#endregion
 
-			#region Act
-			// tweemaal opvragen
-			var resultaat = target.NationaalBepaaldeFunctiesOphalen();
-			resultaat = target.NationaalBepaaldeFunctiesOphalen();
-			#endregion
+            //#region Act
+            //// tweemaal opvragen
+            //var resultaat = target.NationaalBepaaldeFunctiesOphalen();
+            //resultaat = target.NationaalBepaaldeFunctiesOphalen();
+            //#endregion
 
-			#region Assert
+            //#region Assert
 
-			funDaoMock.Verify(dao => dao.NationaalBepaaldeFunctiesOphalen(), Times.AtMost(1), "Nationale functies waren niet gecachet.");
+            //funDaoMock.Verify(dao => dao.NationaalBepaaldeFunctiesOphalen(), Times.AtMost(1), "Nationale functies waren niet gecachet.");
 
-			#endregion
+            //#endregion
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
 		}
 
 		/// <summary>
@@ -429,31 +433,32 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void FunctieOphalenTest()
 		{
-			// Arrange
+            //// Arrange
 
-			var auMgrMock = new Mock<IAutorisatieManager>();
-			var funDaoMock = new Mock<IFunctiesDao>();
+            //var auMgrMock = new Mock<IAutorisatieManager>();
+            //var funDaoMock = new Mock<IFunctiesDao>();
 
-			auMgrMock.Setup(mgr => mgr.IsGavCategorie(It.IsAny<int>())).Returns(false);
-			auMgrMock.Setup(mgr => mgr.IsGavFunctie(It.IsAny<int>())).Returns(true);
+            //auMgrMock.Setup(mgr => mgr.IsGavCategorie(It.IsAny<int>())).Returns(false);
+            //auMgrMock.Setup(mgr => mgr.IsGavFunctie(It.IsAny<int>())).Returns(true);
 
-			funDaoMock.Setup(mgr => mgr.Ophalen(It.IsAny<int>())).Returns(new Functie());
+            //funDaoMock.Setup(mgr => mgr.Ophalen(It.IsAny<int>())).Returns(new Functie());
 
-			Factory.InstantieRegistreren<IAutorisatieManager>(auMgrMock.Object);
-			Factory.InstantieRegistreren<IFunctiesDao>(funDaoMock.Object);
+            //Factory.InstantieRegistreren<IAutorisatieManager>(auMgrMock.Object);
+            //Factory.InstantieRegistreren<IFunctiesDao>(funDaoMock.Object);
 
-			var funMgr = Factory.Maak<FunctiesManager>();
+            //var funMgr = Factory.Maak<FunctiesManager>();
 
-			// act
+            //// act
 
-			var resultaat = funMgr.Ophalen(100, false); // haal functie op zonder iets extra
+            //var resultaat = funMgr.Ophalen(100, false); // haal functie op zonder iets extra
 
-			// assert
+            //// assert
 
-			// Aangezien ik de autorisatiemanager gemockt heb, zodat je rechten krijgt op iedere
-			// functie, moet er een functie opgehaald zijn.
+            //// Aangezien ik de autorisatiemanager gemockt heb, zodat je rechten krijgt op iedere
+            //// functie, moet er een functie opgehaald zijn.
 
-			Assert.IsNotNull(resultaat);
+            //Assert.IsNotNull(resultaat);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
 		}
 
 		/// <summary>

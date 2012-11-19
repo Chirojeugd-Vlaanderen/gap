@@ -1,9 +1,7 @@
-﻿using Chiro.Gap.Workers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm;
-using System.Collections.Generic;
+﻿using System;
 using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.Workers.Test
@@ -101,25 +99,26 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void LoskoppelenCategorie()
 		{
-			// Arrange
+            //// Arrange
 
-			var testData = new DummyData();
-			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
-			// Voeg Irene voor het gemak toe aan de vervelende personen, zodat ze verwijderd kan worden.
-			gpMgr.CategorieKoppelen(
-				new GelieerdePersoon[] { testData.GelieerdeIrene }, 
-				testData.Vervelend);
+            //var testData = new DummyData();
+            //var gpMgr = Factory.Maak<GelieerdePersonenManager>();
+            //// Voeg Irene voor het gemak toe aan de vervelende personen, zodat ze verwijderd kan worden.
+            //gpMgr.CategorieKoppelen(
+            //    new GelieerdePersoon[] { testData.GelieerdeIrene }, 
+            //    testData.Vervelend);
 
-			// Act
+            //// Act
 
-			// opnieuw loskoppelen
-			gpMgr.CategorieLoskoppelen(new int[] { testData.GelieerdeIrene.ID }, testData.Vervelend);
+            //// opnieuw loskoppelen
+            //gpMgr.CategorieLoskoppelen(new int[] { testData.GelieerdeIrene.ID }, testData.Vervelend);
 
-			// Assert
+            //// Assert
 
-			// LosKoppelen is een 'delete', dus moet er direct bewaard worden.
+            //// LosKoppelen is een 'delete', dus moet er direct bewaard worden.
 
-			Assert.IsFalse(testData.Vervelend.GelieerdePersoon.Contains(testData.GelieerdeIrene));
+            //Assert.IsFalse(testData.Vervelend.GelieerdePersoon.Contains(testData.GelieerdeIrene));
+            throw new NotImplementedException();
 		}
 
 	}
