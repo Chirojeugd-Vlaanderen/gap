@@ -43,6 +43,12 @@
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
+        <FileNode Name="AantalLeden.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>AantalLeden.sql</FullPath>
+        </FileNode>
         <FileNode Name="AdWijzigen.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
@@ -66,6 +72,12 @@
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>DubbelVerwijderen.sql</FullPath>
+        </FileNode>
+        <FileNode Name="GpsOpAd.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>GpsOpAd.sql</FullPath>
         </FileNode>
         <FileNode Name="ix_persoon_AdNummer.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
