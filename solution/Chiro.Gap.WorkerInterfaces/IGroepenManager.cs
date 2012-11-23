@@ -49,5 +49,11 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="groep">De groep waarvoor het recentste werkjaar gevraagd is</param>
         /// <returns>Recente groepswerkjaar van de groep</returns>
         GroepsWerkJaar RecentsteWerkJaar(Groep groep);
+
+        /// <summary>
+        /// Geeft <c>true</c> als we in de live-omgeving werken
+        /// </summary>
+        /// <returns><c>true</c> als we in de live-omgeving werken</returns>
+        bool IsLive();
     }
 }

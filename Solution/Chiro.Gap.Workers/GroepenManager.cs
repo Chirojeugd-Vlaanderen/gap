@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;      // NIET VERWIJDEREN, nodig voor live deploy!
@@ -153,6 +154,19 @@ namespace Chiro.Gap.Workers
             return (from wj in groep.GroepsWerkJaar
                     orderby wj.WerkJaar
                     select wj).LastOrDefault();
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als we in de live-omgeving werken
+        /// </summary>
+        /// <returns><c>true</c> als we in de live-omgeving werken</returns>
+        public bool IsLive()
+        {
+            // TODO: Dit staat hier waarschijnlijk niet op zijn plaats
+            // We zoeken dit uit op basis van de connectionstring.
+
+            string connectionString = ConfigurationManager.ConnectionStrings["ChiroGroepEntities"].ConnectionString.ToUpper();
+            return connectionString.Contains(Settings.Default.LiveConnSubstring.ToUpper());
         }
 
         #endregion categorieën

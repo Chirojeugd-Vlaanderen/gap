@@ -578,7 +578,7 @@ namespace Chiro.Gap.Services
         /// <returns><c>True</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
         public bool IsLive()
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            return _groepenMgr.IsLive();
         }
 
         /// <summary>

@@ -158,10 +158,6 @@
       <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
       <Name>Chiro.Gap.WorkerInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
-      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
-      <Name>Chiro.Gap.Workers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj">
       <Project>{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}</Project>
       <Name>Chiro.Cdf.DependencyInjectionBehavior</Name>
@@ -173,6 +169,10 @@
     <ProjectReference Include="..\..\tools\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
+      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
+      <Name>Chiro.Gap.Workers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
