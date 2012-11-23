@@ -59,31 +59,32 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void TweeKeerUniekeFunctieToekennenTestVerschillendLid()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            var fm = Factory.Maak<FunctiesManager>();
-            var gm = Factory.Maak<GroepenManager>();
+            //var fm = Factory.Maak<FunctiesManager>();
+            //var gm = Factory.Maak<GroepenManager>();
 
-            var f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                LidType.Alles);
+            //var f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 0,
+            //    LidType.Alles);
 
-            IEnumerable<Functie> functies = new Functie[] { f };
+            //IEnumerable<Functie> functies = new Functie[] { f };
 
-            // Act
+            //// Act
 
-            fm.Toekennen(testData.LeiderJos, functies);
-            fm.Toekennen(testData.LidYvonne, functies);
+            //fm.Toekennen(testData.LeiderJos, functies);
+            //fm.Toekennen(testData.LidYvonne, functies);
 
-            // Assert
+            //// Assert
 
-            var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
-            Assert.AreNotEqual(problemen.Count(), 0);
+            //var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
+            //Assert.AreNotEqual(problemen.Count(), 0);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -93,31 +94,32 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void TweeKeerUniekeFunctieToekennenTestZelfdeLid()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            GroepenManager gm = Factory.Maak<GroepenManager>();
+            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
+            //GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                LidType.Alles);
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 0,
+            //    LidType.Alles);
 
-            IEnumerable<Functie> functies = new Functie[] { f };
+            //IEnumerable<Functie> functies = new Functie[] { f };
 
-            // Act
+            //// Act
 
-            fm.Toekennen(testData.LeiderJos, functies);
-            fm.Toekennen(testData.LeiderJos, functies);
+            //fm.Toekennen(testData.LeiderJos, functies);
+            //fm.Toekennen(testData.LeiderJos, functies);
 
-            // Assert
+            //// Assert
 
-            var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
-            Assert.AreEqual(problemen.Count(), 0);
+            //var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
+            //Assert.AreEqual(problemen.Count(), 0);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -128,30 +130,31 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void ToekennenFunctieOngeldigWerkJaar()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            GroepenManager gm = Factory.Maak<GroepenManager>();
+            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
+            //GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                LidType.Alles);
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 0,
+            //    LidType.Alles);
 
-            f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
+            //f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
 
-            IEnumerable<Functie> functies = new Functie[] { f };
+            //IEnumerable<Functie> functies = new Functie[] { f };
 
-            // Act
+            //// Act
 
-            fm.Toekennen(testData.LeiderJos, functies);
+            //fm.Toekennen(testData.LeiderJos, functies);
 
-            // Assert
-            Assert.IsTrue(false);
+            //// Assert
+            //Assert.IsTrue(false);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -161,27 +164,28 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void ToekennenLidFunctieAanLeiding()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            GroepenManager gm = Factory.Maak<GroepenManager>();
+            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
+            //GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                LidType.Kind);
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 0,
+            //    LidType.Kind);
 
-            IEnumerable<Functie> functies = new Functie[] { f };
+            //IEnumerable<Functie> functies = new Functie[] { f };
 
-            // Act
-            fm.Toekennen(testData.LeiderJos, functies);
+            //// Act
+            //fm.Toekennen(testData.LeiderJos, functies);
 
-            // Assert
-            Assert.IsTrue(false);
+            //// Assert
+            //Assert.IsTrue(false);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -229,38 +233,39 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void IrrelevanteVerplichteFunctie()
         {
-            // Arrange
+            //// Arrange
 
-            Factory.ContainerInit();	// Container resetten alvorens dummydata te maken.
-            var testData = new DummyData();
+            //Factory.ContainerInit();	// Container resetten alvorens dummydata te maken.
+            //var testData = new DummyData();
 
-            var fm = Factory.Maak<FunctiesManager>();
-            var gm = Factory.Maak<GroepenManager>();
+            //var fm = Factory.Maak<FunctiesManager>();
+            //var gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 1,
-                LidType.Alles);	// pas volgend jaar geldig
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 1,
+            //    LidType.Alles);	// pas volgend jaar geldig
 
-            f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
+            //f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
 
-            f.ID = testData.NieuweFunctieID;
+            //f.ID = testData.NieuweFunctieID;
 
-            // Jos krijgt alle nationaal bepaalde functies, zodat eventuele verplichte
-            // nationaal bepaalde functies OK zijn.
-            fm.Toekennen(testData.LeiderJos, fm.NationaalBepaaldeFunctiesOphalen());
+            //// Jos krijgt alle nationaal bepaalde functies, zodat eventuele verplichte
+            //// nationaal bepaalde functies OK zijn.
+            //fm.Toekennen(testData.LeiderJos, fm.NationaalBepaaldeFunctiesOphalen());
 
-            // Act
+            //// Act
 
-            var problemen = from p in fm.AantallenControleren(testData.HuidigGwj)
-                            where p.ID == testData.NieuweFunctieID
-                            select p;
+            //var problemen = from p in fm.AantallenControleren(testData.HuidigGwj)
+            //                where p.ID == testData.NieuweFunctieID
+            //                select p;
 
-            // Assert
+            //// Assert
 
-            Assert.AreEqual(problemen.Count(), 0);
+            //Assert.AreEqual(problemen.Count(), 0);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
