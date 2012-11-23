@@ -1,3 +1,4 @@
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 
@@ -25,36 +26,28 @@ namespace Chiro.Gap.WorkerInterfaces
         Categorie CategorieToevoegen(Groep g, string categorieNaam, string categorieCode);
 
         /// <summary>
-        /// Maakt een nieuwe (groepseigen) functie voor groep <paramref name="g"/>.  Persisteert niet.
+        /// Zoekt in de eigen functies de gegeven <paramref name="groep"/> en in de nationale functies een
+        /// functie met gegeven <paramref name="code"/>.
         /// </summary>
-        /// <param name="g">
-        /// Groep waarvoor de functie gemaakt wordt, inclusief minstens het recentste werkJaar
-        /// </param>
-        /// <param name="naam">
-        /// Naam van de functie
-        /// </param>
-        /// <param name="code">
-        /// Code van de functie
-        /// </param>
-        /// <param name="maxAantal">
-        /// Maximumaantal leden in de categorie.  Onbeperkt indien null.
-        /// </param>
-        /// <param name="minAantal">
-        /// Minimumaantal leden in de categorie.
-        /// </param>
-        /// <param name="lidType">
-        /// LidType waarvoor de functie van toepassing is
-        /// </param>
-        /// <returns>
-        /// De nieuwe (gekoppelde) functie
-        /// </returns>
-        Functie FunctieToevoegen(
-            Groep g, 
-            string naam, 
-            string code, 
-            int? maxAantal, 
-            int minAantal, 
-            LidType lidType);
+        /// <param name="groep">Groep waarvoor functie gezocht moet worden</param>
+        /// <param name="code">Code van de te zoeken functie</param>
+        /// <param name="functieRepo"></param>
+        Functie FunctieZoeken(Groep groep, string code, IRepository<Functie> functieRepo);
 
+        /// <summary>
+        /// Converteert een <paramref name="lidType"/> naar een niveau, gegeven het niveau van de
+        /// groep (<paramref name="groepsNiveau"/>)
+        /// </summary>
+        /// <param name="lidType">Leden, Leiding of allebei</param>
+        /// <param name="groepsNiveau">Plaatselijke groep, gewestploeg, verbondsploeg, satelliet</param>
+        /// <returns>Niveau van het <paramref name="lidType"/> voor een groep met gegeven <paramref name="groepsNiveau"/></returns>
+        Niveau LidTypeNaarMiveau(LidType lidType, Niveau groepsNiveau);
+        
+        /// <summary>
+        /// Bepaalt het recentste groepswerkjaar van de gegeven <paramref name="groep"/>
+        /// </summary>
+        /// <param name="groep">De groep waarvoor het recentste werkjaar gevraagd is</param>
+        /// <returns>Recente groepswerkjaar van de groep</returns>
+        GroepsWerkJaar RecentsteWerkJaar(Groep groep);
     }
 }

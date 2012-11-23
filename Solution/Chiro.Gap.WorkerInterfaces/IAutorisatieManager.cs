@@ -351,5 +351,16 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns><c>true</c> als de aangelogde gebruiker GAV-rechten heeft op de gebruikersrechten met gegeven
         /// <paramref name="gebruikersRechtIDs"/></returns>
         bool IsGavGebruikersRechten(int[] gebruikersRechtIDs);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
+        /// <paramref name="groep"/>.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor gebruikersrecht nagekeken moet worden</param>
+        /// <returns>
+        /// <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
+        /// <paramref name="groep"/>.
+        /// </returns>
+        bool IsGavGroep(Groep groep);
     }
 }

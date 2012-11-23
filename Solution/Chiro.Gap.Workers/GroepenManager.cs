@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;      // NIET VERWIJDEREN, nodig voor live deploy!
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -84,90 +85,76 @@ namespace Chiro.Gap.Workers
             }
         }
 
-        #endregion categorieën
+        /// <summary>
+        /// Zoekt in de eigen functies de gegeven <paramref name="groep"/> en in de nationale functies een
+        /// functie met gegeven <paramref name="code"/>.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor functie gezocht moet worden</param>
+        /// <param name="code">Code van de te zoeken functie</param>
+        /// <param name="functieRepo">Repository die gebruikt kan worden om functies in op te zoeken</param>
+        /// <remarks>De repository wordt bewust niet via de constructor meegeleverd, om te vermijden dat de
+        /// IOC-container een nieuwe context zou aanmaken.</remarks>
+        public Functie FunctieZoeken(Groep groep, string code, IRepository<Functie> functieRepo)
+        {
+            // Zoek eerst naar een nationale functie met gegeven code, want dat is
+            // gecachet, en bijgevolg snel.
+
+            var bestaandeNationaleFunctie = (from f in _veelGebruikt.NationaleFunctiesOphalen(functieRepo)
+                                             where String.Compare(f.Code, code, StringComparison.OrdinalIgnoreCase) == 0
+                                             select f).FirstOrDefault();
+
+            if (bestaandeNationaleFunctie != null)
+            {
+                return bestaandeNationaleFunctie;
+            }
+
+            // Niet gevonden: zoek nog eens in eigen functies
+
+            return (from f in groep.Functie
+                    where String.Compare(f.Code, code, StringComparison.OrdinalIgnoreCase) == 0
+                    select f).FirstOrDefault();
+        }
 
         /// <summary>
-        /// Maakt een nieuwe (groepseigen) functie voor groep <paramref name="g"/>.  Persisteert niet.
+        /// Converteert een <paramref name="lidType"/> naar een niveau, gegeven het niveau van de
+        /// groep (<paramref name="groepsNiveau"/>)
         /// </summary>
-        /// <param name="g">
-        /// Groep waarvoor de functie gemaakt wordt, inclusief minstens het recentste werkJaar
-        /// </param>
-        /// <param name="naam">
-        /// Naam van de functie
-        /// </param>
-        /// <param name="code">
-        /// Code van de functie
-        /// </param>
-        /// <param name="maxAantal">
-        /// Maximumaantal leden in de categorie.  Onbeperkt indien null.
-        /// </param>
-        /// <param name="minAantal">
-        /// Minimumaantal leden in de categorie.
-        /// </param>
-        /// <param name="lidType">
-        /// LidType waarvoor de functie van toepassing is
-        /// </param>
-        /// <returns>
-        /// De nieuwe (gekoppelde) functie
-        /// </returns>
-        public Functie FunctieToevoegen(
-            Groep g, 
-            string naam, 
-            string code, 
-            int? maxAantal, 
-            int minAantal, 
-            LidType lidType)
+        /// <param name="lidType">Leden, Leiding of allebei</param>
+        /// <param name="groepsNiveau">Plaatselijke groep, gewestploeg, verbondsploeg, satelliet</param>
+        /// <returns>Niveau van het <paramref name="lidType"/> voor een groep met gegeven <paramref name="groepsNiveau"/></returns>
+        public Niveau LidTypeNaarMiveau(LidType lidType, Niveau groepsNiveau)
         {
-            if (!_autorisatieMgr.IsGavGroep(g.ID))
+            if ((groepsNiveau & Niveau.Groep) == 0)
             {
-                throw new GeenGavException(Resources.GeenGav);
+                // Geen plaatselijke groep? groepsNiveau is wat we zoeken.
+                return groepsNiveau;
             }
 
-            // Controleer op dubbele code
-            var bestaande = (from fun in g.Functie
-                             where string.Compare(fun.Code, code, true) == 0
-                                   || string.Compare(fun.Naam, naam, true) == 0
-                             select fun).FirstOrDefault();
+            // Voor een plaastelijke groep is er een onderscheid lid/leiding.
 
-            if (bestaande != null)
+            switch (lidType)
             {
-                // TODO (#507): Check op bestaande afdeling door DB
-                // OPM: we krijgen pas een DubbeleEntiteitException op het moment dat we bewaren,
-                // maar hier doen we alleen een .Add
-                throw new BestaatAlException<Functie>(bestaande);
+                case LidType.Kind:
+                    return Niveau.LidInGroep;
+                case LidType.Leiding:
+                    return Niveau.LeidingInGroep;
+                default:
+                    return Niveau.Groep;
             }
-
-            // Zonder problemen hier geraakt.  Dan kunnen we verder.
-            Niveau niveau = g.Niveau;
-            if ((g.Niveau & Niveau.Groep) != 0)
-            {
-                if ((lidType & LidType.Leiding) == 0)
-                {
-                    niveau &= ~Niveau.LeidingInGroep;
-                }
-
-                if ((lidType & LidType.Kind) == 0)
-                {
-                    niveau &= ~Niveau.LidInGroep;
-                }
-            }
-
-            var f = new Functie
-                        {
-                            Code = code, 
-                            Groep = g, 
-                            MaxAantal = maxAantal, 
-                            MinAantal = minAantal, 
-                            Niveau = niveau, 
-                            Naam = naam, 
-                            WerkJaarTot = null, 
-                            WerkJaarVan = g.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First().WerkJaar, 
-                            IsNationaal = false
-                        };
-
-            g.Functie.Add(f);
-
-            return f;
         }
+
+        /// <summary>
+        /// Bepaalt het recentste groepswerkjaar van de gegeven <paramref name="groep"/>
+        /// </summary>
+        /// <param name="groep">De groep waarvoor het recentste werkjaar gevraagd is</param>
+        /// <returns>Recente groepswerkjaar van de groep</returns>
+        public GroepsWerkJaar RecentsteWerkJaar(Groep groep)
+        {
+            return (from wj in groep.GroepsWerkJaar
+                    orderby wj.WerkJaar
+                    select wj).LastOrDefault();
+        }
+
+        #endregion categorieën
     }
 }

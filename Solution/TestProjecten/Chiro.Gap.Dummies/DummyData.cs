@@ -163,9 +163,36 @@ namespace Chiro.Gap.Dummies
 
 			// Functie (nationaal bepaald, maar dit ter zijde)
 
-			_redactie = gMgr.FunctieToevoegen(_dummyGroep, "Hoofdredacteur boekje", "HRE", 1, 0, LidType.Alles);
-			_feestcomite = gMgr.FunctieToevoegen(_dummyGroep, "Feestcomite", "ZUIP", null, 0, LidType.Alles);
-			_wcmadam = gMgr.FunctieToevoegen(_dummyGroep, "WC-madam", "SHT", null, 0, LidType.Alles);
+		    _redactie = new Functie
+		                    {
+		                        Groep = _dummyGroep,
+		                        Naam = "Hoofdredacteur boekje",
+		                        Code = "HRE",
+		                        MaxAantal = 1,
+		                        MinAantal = 0,
+		                        Type = LidType.Alles
+		                    };
+
+		    _feestcomite = new Functie
+		                       {
+		                           Groep = _dummyGroep,
+		                           Naam = "Feestcomite",
+		                           Code = "ZUIP",
+		                           MaxAantal = null,
+		                           MinAantal = 0,
+		                           Type = LidType.Alles
+		                       };
+
+		    _wcmadam = new Functie
+		                   {
+		                       Groep = _dummyGroep,
+		                       Naam = "WC-Madam",
+		                       Code = "SHT",
+		                       MaxAantal = null,
+		                       MinAantal = 0,
+		                       Type = LidType.Alles
+		                   };
+
 
 			_contactPersoonFunctie = new Functie
 			                   	{

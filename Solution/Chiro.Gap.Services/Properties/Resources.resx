@@ -163,4 +163,10 @@
   <data name="RolNietOndersteund" xml:space="preserve">
     <value>De rol {0} wordt nog niet ondersteund.</value>
   </data>
+  <data name="GeenGav" xml:space="preserve">
+    <value>Geen toegang.</value>
+  </data>
+  <data name="GeenWerkJaar" xml:space="preserve">
+    <value>Er is nog geen werkjaar gemaakt voor deze groep.</value>
+  </data>
 </root>

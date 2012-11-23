@@ -1,4 +1,7 @@
 ﻿using System.Linq;
+using System.ServiceModel;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Cdf.Ioc;
@@ -7,6 +10,10 @@ using Chiro.Gap.TestDbInfo;
 using System.Security.Principal;
 using System.Threading;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using System;
+using Chiro.Cdf.Poco;
+using Chiro.Gap.Domain;
+using Moq;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -122,5 +129,68 @@ namespace Chiro.Gap.Services.Test
 			Assert.IsTrue(afdeling != null);
 			#endregion
 		}
+
+        ///<summary>
+        /// Kijkt na of er een foutmelding komt als een gebruiker probeert een functie bij te maken met een code
+        /// die al bestaat voor een nationale functie (in dit geval 'CP')
+        ///</summary>
+        [TestMethod()]
+        [ExpectedException(typeof(FaultException<BestaatAlFault<FunctieInfo>>))]
+        public void FunctieToevoegenNationaleCode()
+        {
+            // Arrange.
+
+            // De groep:
+            int groepID = 123;          // arbitraire groepID
+            var groep = new ChiroGroep {ID = groepID};
+
+            // De bestaande nationale functie:
+
+            var bestaandeFunctie = new Functie
+                                       {
+                                           Code = "CP",
+                                           IsNationaal = true
+                                       };
+
+
+            // Mocking opzetten. Maak een groepenrepository en een functiesrepository die enkel
+            // opleveren wat we hierboven creeerden.
+
+            var groepenRepositoryMock = new Mock<IRepository<Groep>>();
+            groepenRepositoryMock.Setup(src => src.Select()).Returns((new[] {groep}).AsQueryable());
+            var functieRepositoryMock = new Mock<IRepository<Functie>>();
+            functieRepositoryMock.Setup(src => src.Select()).Returns((new[] {bestaandeFunctie}).AsQueryable());
+
+            // Vervolgens configureren we een repositoryprovider, die de gemockte repository oplevert.
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>()).Returns(groepenRepositoryMock.Object);
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(functieRepositoryMock.Object);
+
+            // Tenslotte configureren we de IOC-container om de gemockte repository provider 
+            // te gebruiken.
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // Nu kunnen we de service die we willen testen creeren:
+
+            var target = Factory.Maak<GroepenService>();
+
+            // Act.
+
+            // gegevens van de nieuwe functie. Op de code na arbitrair
+            string naam = "Championplukker";    // naam van nieuwe functie
+            string code = bestaandeFunctie.Code;    // code die toevallig gelijk is aan die van de bestaande functie
+            Nullable<int> maxAantal = null;     // geen max. aantal voor de functie
+            int minAantal = 0;                  // ook geen min. aantal
+            LidType lidType = LidType.Alles;    // lidtype irrelevant voor deze functie
+            Nullable<int> werkJaarVan = 2012;   // in gebruik vanaf 2012-2013
+            
+            target.FunctieToevoegen(groepID, naam, code, maxAantal, minAantal, lidType, werkJaarVan);
+
+            // Assert
+
+            Assert.Fail();  // De bedoeling is dat we hier niet komen, maar dat een exception werd gethrowd.
+        }
 	}
 }

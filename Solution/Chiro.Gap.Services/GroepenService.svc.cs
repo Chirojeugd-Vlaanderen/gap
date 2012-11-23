@@ -6,12 +6,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Services
@@ -35,29 +37,35 @@ namespace Chiro.Gap.Services
         /// en gedisposed op het moment dat de service gedisposed wordt. Dit gebeurt
         /// na iedere call.
         /// </summary>
-        private IContext _context;
+        private readonly IContext _context;
 
         // Repositories, verantwoordelijk voor data access.
 
-        private IRepository<Groep> _groepenRepo;
-        // (Op dit moment nog maar 1, hier komen er vermoedelijk bij)
+        private readonly IRepository<Groep> _groepenRepo;
+        private readonly IRepository<Functie> _functiesRepo;
 
         // Managers voor niet-triviale businesslogica
         
-        private IAuthenticatieManager _authenticatieMgr;
+        private readonly IAuthenticatieManager _authenticatieMgr;
+        private readonly IAutorisatieManager _autorisatieMgr;
+        private readonly IGroepenManager _groepenMgr;
 
         /// <summary>
         /// Nieuwe groepenservice
         /// </summary>
-        /// <param name="authenticatieMgr">Verantwoordelijk voor authenticatiezaken</param>
+        /// <param name="authenticatieMgr">Verantwoordelijk voor authenticatie</param>
+        /// <param name="autorisatieMgr">Verantwoordelijke voor autorisatie</param>
+        /// <param name="groepenMgr">Businesslogica aangaande groepen</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
-        public GroepenService(IAuthenticatieManager authenticatieMgr, IRepositoryProvider repositoryProvider)
+        public GroepenService(IAuthenticatieManager authenticatieMgr, IAutorisatieManager autorisatieMgr, IGroepenManager groepenMgr, IRepositoryProvider repositoryProvider)
         {
             _context = repositoryProvider.ContextGet();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
+            _functiesRepo = repositoryProvider.RepositoryGet<Functie>();
 
+            _groepenMgr = groepenMgr;
             _authenticatieMgr = authenticatieMgr;
-
+            _autorisatieMgr = autorisatieMgr;
         }
 
         public void Dispose()
@@ -343,7 +351,65 @@ namespace Chiro.Gap.Services
         /// <returns>De ID van de aangemaakte Functie</returns>
         public int FunctieToevoegen(int groepID, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            // Haal groep op 
+
+            var groep = (from g in _groepenRepo.Select()
+                         where g.ID == groepID
+                         select g).FirstOrDefault();
+
+            // Heb ik daar rechten op?
+
+            if (groep == null || !_autorisatieMgr.IsGavGroep(groep))
+            {
+                // TODO: FaultException laten genereren door worker.
+                // Opgelet: niet laten thorwen door worker, want dan klopt de stack trace niet.
+                // Het zou zoiets moeten worden:
+                //  throw new _faultExceptionHelper.GeenGav();
+                throw new FaultException<FoutNummerFault>(new FoutNummerFault {FoutNummer = FoutNummer.GeenGav},
+                                                          new FaultReason(Properties.Resources.GeenGav));
+            }
+
+            // Bestaat er al een eigen of nationale functie met dezelfde code?
+
+            var bestaande = _groepenMgr.FunctieZoeken(groep, code, _functiesRepo);
+
+            if (bestaande != null)
+            {
+                // TODO: Ook hier faultexception door helper laten genereren.
+                throw new FaultException<BestaatAlFault<FunctieInfo>>(new BestaatAlFault<FunctieInfo>
+                                                                          {
+                                                                              Bestaande =
+                                                                                  Mapper.Map<Functie, FunctieInfo>(
+                                                                                      bestaande)
+                                                                          });
+            }
+
+            var recentsteWerkJaar = _groepenMgr.RecentsteWerkJaar(groep);
+
+            if (recentsteWerkJaar == null)
+            {
+                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GroepsWerkJaarNietBeschikbaar },
+                                                          new FaultReason(Properties.Resources.GeenWerkJaar));
+            }
+
+            var f = new Functie
+                        {
+                            Code = code,
+                            Groep = groep,
+                            MaxAantal = maxAantal,
+                            MinAantal = minAantal,
+                            Niveau = _groepenMgr.LidTypeNaarMiveau(lidType, groep.Niveau),
+                            Naam = naam,
+                            WerkJaarTot = null,
+                            WerkJaarVan = recentsteWerkJaar.WerkJaar,
+                            IsNationaal = false
+                        };
+
+            groep.Functie.Add(f);
+
+            _context.SaveChanges();
+
+            return f.ID;
         }
 
         /// <summary>

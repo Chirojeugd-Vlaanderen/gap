@@ -160,6 +160,11 @@ namespace Chiro.Gap.Dummies
 	        throw new NotImplementedException();
 	    }
 
+	    public bool IsGavGroep(Groep groep)
+	    {
+	        return false;
+	    }
+
 	    public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
 		{
 			return false;

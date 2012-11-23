@@ -319,32 +319,6 @@ namespace Chiro.Gap.Workers.Test
         }
 
         /// <summary>
-        /// Test op exception bij poging tot bewaren van nationaal bepaalde functie.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(GeenGavException))]
-        public void NationaalBepaaldeFunctieBewarenTest()
-        {
-            //// Arrange
-
-            //var testData = new DummyData();
-
-            //var fm = Factory.Maak<FunctiesManager>();
-
-            //var f = fm.NationaalBepaaldeFunctiesOphalen().First();
-
-            //// Act
-
-            //f = fm.Bewaren(f);
-
-            //// Assert
-
-            //// Dit mogen we niet halen.
-            //Assert.IsTrue(false);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-        }
-
-        /// <summary>
         /// Testfuncties vervangen
         /// </summary>
         [TestMethod]

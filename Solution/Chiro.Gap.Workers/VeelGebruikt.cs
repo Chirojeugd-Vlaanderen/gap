@@ -4,8 +4,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Caching;
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
 
@@ -70,22 +72,31 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Haalt alle nationale functies op
         /// </summary>
+        /// <param name="functieRepo">Repository die deze worker kan gebruiken om functies
+        /// op te vragen.</param>
         /// <returns>
         /// Lijstje nationale functies
         /// </returns>
-        public IEnumerable<Functie> NationaleFunctiesOphalen()
+        /// <remarks>
+        /// De repository wordt bewust niet geregeld door de constructor van deze klasse,
+        /// omdat we moeten vermijden dat de IOC-container hiervoor een nieuwe context aanmaakt.
+        /// </remarks>
+        public IEnumerable<Functie> NationaleFunctiesOphalen(IRepository<Functie> functieRepo)
         {
             if (_cache[NATIONALEFUNCTIESCACHEKEY] == null)
             {
-                throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
-                //_cache.Add(
-                //    NATIONALEFUNCTIESCACHEKEY,
-                //    _functiesDao.NationaalBepaaldeFunctiesOphalen(),
-                //    null,
-                //    Cache.NoAbsoluteExpiration,
-                //    new TimeSpan(1, 0, 0, 0) /* bewaar 1 dag */,
-                //    CacheItemPriority.Low,
-                //    null);
+                var nationaleFuncties = from fn in functieRepo.Select()
+                                        where fn.IsNationaal
+                                        select fn;
+
+                _cache.Add(
+                    NATIONALEFUNCTIESCACHEKEY,
+                    nationaleFuncties.ToArray(),
+                    null,
+                    Cache.NoAbsoluteExpiration,
+                    new TimeSpan(1, 0, 0, 0) /* bewaar 1 dag */,
+                    CacheItemPriority.Low,
+                    null);
             }
 
             return _cache[NATIONALEFUNCTIESCACHEKEY] as IEnumerable<Functie>;

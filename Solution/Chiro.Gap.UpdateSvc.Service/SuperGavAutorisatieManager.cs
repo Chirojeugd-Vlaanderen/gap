@@ -403,6 +403,11 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public bool IsGavGroep(Groep groep)
+        {
+            throw new NotImplementedException();
+        }
+
 
         /// <summary>
         /// Gebruikerses the recht gelieerde persoon.

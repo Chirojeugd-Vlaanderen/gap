@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WorkerInterfaces
@@ -34,10 +35,16 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <summary>
         /// Haalt alle nationale functies op
         /// </summary>
+        /// <param name="functieRepo">Repository die deze worker kan gebruiken om functies
+        /// op te vragen.</param>
         /// <returns>
         /// Lijstje nationale functies
         /// </returns>
-        IEnumerable<Functie> NationaleFunctiesOphalen();
+        /// <remarks>
+        /// De repository wordt bewust niet geregeld door de constructor van deze klasse,
+        /// omdat we moeten vermijden dat de IOC-container hiervoor een nieuwe context aanmaakt.
+        /// </remarks>
+        IEnumerable<Functie> NationaleFunctiesOphalen(IRepository<Functie> functieRepo);
 
         /// <summary>
         /// Haalt het groepID van de groep met gegeven stamnummer op uit de cache.

@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
@@ -16,6 +15,17 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class AutorisatieManager : IAutorisatieManager
     {
+        private readonly IAuthenticatieManager _authenticatieMgr;
+
+        /// <summary>
+        /// Creeert een nieuwe autorisatiemanager
+        /// </summary>
+        /// <param name="authenticatieMgr">Deze zal de gebruikersnaam van de user opleveren</param>
+        public AutorisatieManager(IAuthenticatieManager authenticatieMgr)
+        {
+            _authenticatieMgr = authenticatieMgr;
+        }
+
         /// <summary>
         /// Verwijdert uit een lijst van GelieerdePersoonID's de ID's
         /// van GelieerdePersonen voor wie de aangemelde gebruiker geen GAV is.
@@ -437,6 +447,24 @@ namespace Chiro.Gap.Workers
         public bool IsGavGebruikersRechten(int[] gebruikersRechtIDs)
         {
             throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
+        /// <paramref name="groep"/>.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor gebruikersrecht nagekeken moet worden</param>
+        /// <returns>
+        /// <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
+        /// <paramref name="groep"/>.
+        /// </returns>
+        public bool IsGavGroep(Groep groep)
+        {
+            string gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
+
+            return
+                groep.GebruikersRecht.Any(
+                    gr => String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) == 0);
         }
     }
 }

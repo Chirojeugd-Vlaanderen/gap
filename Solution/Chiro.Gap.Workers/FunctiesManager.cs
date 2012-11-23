@@ -319,11 +319,12 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public IEnumerable<Telling> AantallenControleren(GroepsWerkJaar groepsWerkJaar)
         {
-            var eigenFuncties = from fn in groepsWerkJaar.Groep.Functie select fn;
+            //var eigenFuncties = from fn in groepsWerkJaar.Groep.Functie select fn;
 
-            return AantallenControleren(
-                groepsWerkJaar,
-                eigenFuncties.Union(NationaalBepaaldeFunctiesOphalen()));
+            //return AantallenControleren(
+            //    groepsWerkJaar,
+            //    eigenFuncties.Union(NationaalBepaaldeFunctiesOphalen()));
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -405,17 +406,6 @@ namespace Chiro.Gap.Workers
 
                 return problemenToegekendeFuncties.Union(problemenOntbrekendeFuncties).ToArray();
             }
-        }
-
-        /// <summary>
-        /// Geeft de nationaal bepaalde functies terug
-        /// </summary>
-        /// <returns>
-        /// De rij nationaal bepaalde functies
-        /// </returns>
-        public IEnumerable<Functie> NationaalBepaaldeFunctiesOphalen()
-        {
-            return _veelGebruikt.NationaleFunctiesOphalen();
         }
     }
 }
