@@ -3,15 +3,17 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm
 {
     /// <summary>
     /// Instantieert een Uitstap-object dat zorgt voor samenwerking met Entity Framework
     /// </summary>
-    public partial class Uitstap : IEfBasisEntiteit
+    public partial class Uitstap : IEfBasisEntiteit, IPeriode
     {
         private bool _teVerwijderen;
 
@@ -68,6 +70,22 @@ namespace Chiro.Gap.Orm
             // Hebben beide objecten een ID verschillend van 0, en zijn deze
             // ID's gelijk, dan zijn de objecten ook gelijk.  Zo niet gebruiken we
             // base.Equals, wat eigenlijk niet helemaal correct is.
+        }
+
+        /// <summary>
+        /// Implementatie van IPeriode, dat gaat handig zijn voor validatie
+        /// </summary>
+        DateTime? IPeriode.DatumVan
+        {
+            get { return DatumVan; }
+        }
+
+        /// <summary>
+        /// Implementatie van IPeriode, dat gaat handig zijn voor validatie
+        /// </summary>
+        DateTime? IPeriode.DatumTot
+        {
+            get { return DatumTot; }
         }
     }
 }

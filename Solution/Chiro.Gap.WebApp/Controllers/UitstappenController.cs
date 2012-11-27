@@ -69,6 +69,14 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Nieuw(UitstapModel model, int groepID)
         {
+            var validator = new PeriodeValidator();
+
+            if (!validator.Valideer(model.Uitstap))
+            {
+                ModelState.AddModelError("Uitstap.DatumVan", string.Format(Properties.Resources.VanTotUitstap));
+                ModelState.AddModelError("Uitstap.DatumTot", string.Format(Properties.Resources.VanTotUitstap));
+            }
+
             BaseModelInit(model, groepID);
             model.Titel = Properties.Resources.NieuweUitstap;
 
@@ -205,6 +213,14 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Bewerken(UitstapModel model, int groepID, int id)
         {
+            var validator = new PeriodeValidator();
+
+            if (!validator.Valideer(model.Uitstap))
+            {
+                ModelState.AddModelError("Uitstap.DatumVan", string.Format(Properties.Resources.VanTotUitstap));
+                ModelState.AddModelError("Uitstap.DatumTot", string.Format(Properties.Resources.VanTotUitstap));
+            }
+
             BaseModelInit(model, groepID);
             // neem uitstapID over uit url, want ik denk dat daarvoor geen field is voorzien.
             model.Uitstap.ID = id;
@@ -212,7 +228,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
+                var uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
                 VeelGebruikt.BivakStatusResetten(groepID);
                 return RedirectToAction("Bekijken", new { groepID, id = uitstapID });
             }

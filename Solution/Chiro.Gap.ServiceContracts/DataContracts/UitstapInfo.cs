@@ -7,6 +7,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
@@ -20,7 +21,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// jaar 1 als ze niet nullable zijn.</remarks>
 	[DataContract]
 	[KnownType(typeof(UitstapOverzicht))]
-	public class UitstapInfo
+	public class UitstapInfo: IPeriode
 	{
 	    /// <summary>
 	    /// De unieke ID van de uitstap
@@ -48,6 +49,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	    /// <summary>
 	    /// De datum van vertrek
 	    /// </summary>
+	    /// <remarks>Nullable, om te kunnen opmerken dat de gebruiker niets invulde</remarks>
 	    [DataMember]
 		[DisplayName(@"Begindatum")]
 		[DataType(DataType.Date)]
@@ -57,6 +59,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	    /// <summary>
 	    /// De datum van thuiskomst
 	    /// </summary>
+        /// <remarks>Nullable, om te kunnen opmerken dat de gebruiker niets invulde</remarks>
 	    [DataMember]
 		[DisplayName(@"Einddatum")]
 		[DataType(DataType.Date)]
@@ -77,5 +80,5 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// </summary>
 	    [DataMember]
 		public string VersieString { get; set; }
-	}
+    }
 }

@@ -185,6 +185,9 @@
   <data name="OngeldigPostNummer" xml:space="preserve">
     <value>Ongeldig postnummer.</value>
   </data>
+  <data name="VanTotUitstap" xml:space="preserve">
+    <value>Je uitstap kan niet eindigen voor hij begint.</value>
+  </data>
   <data name="StraatOntbreekt" xml:space="preserve">
     <value>Je gaf geen straatnaam mee.</value>
   </data>

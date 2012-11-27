@@ -362,6 +362,9 @@
   <data name="UitstapVerwijderd" xml:space="preserve">
     <value>De uitstap is verwijderd</value>
   </data>
+  <data name="VanTotUitstap" xml:space="preserve">
+    <value>Je uitstap eindigt voor hij begint, heb je de data omgedraaid?</value>
+  </data>
   <data name="UitstapVerwijderenFout" xml:space="preserve">
     <value>De uitstap kon niet verwijderd worden</value>
   </data>

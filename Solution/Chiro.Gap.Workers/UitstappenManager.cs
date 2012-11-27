@@ -14,6 +14,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
@@ -167,6 +168,7 @@ namespace Chiro.Gap.Workers
             // kopieer eerst een aantal gekoppelde entiteiten (voor sync straks), want na het bewaren van het bivak zijn we die kwijt...
             var groep = uitstap.GroepsWerkJaar == null ? null : uitstap.GroepsWerkJaar.Groep;
             var plaats = uitstap.Plaats;
+            var validator = new PeriodeValidator();
 
             Debug.Assert(uitstap.GroepsWerkJaar != null);
 
@@ -178,6 +180,10 @@ namespace Chiro.Gap.Workers
             if (!_groepsWerkJaarDao.IsRecentste(uitstap.GroepsWerkJaar.ID))
             {
                 throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietBeschikbaar, Resources.GroepsWerkJaarVoorbij);
+            }
+            if (!validator.Valideer(uitstap))
+            {
+                throw new FoutNummerException(FoutNummer.ValidatieFout, Resources.VanTotUitstap);
             }
 
             // Sowieso groepswerkjaar koppelen.
