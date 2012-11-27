@@ -86,15 +86,13 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Verlengt het gegeven <paramref name="gebruikersRecht"/> (indien mogelijk) tot 1 november van het komende werkjaar.
+        /// Verlengt het gegeven <paramref name="gebruikersRecht"/> (indien mogelijk)
         /// </summary>
         /// <param name="gebruikersRecht">
         /// Te verlengen gebruikersrecht
         /// </param>
         public void Verlengen(GebruikersRecht gebruikersRecht)
         {
-            // TODO Nakijken of deze method niet in onderstaande gebruikt kan worden
-
             if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersRecht.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
@@ -108,8 +106,29 @@ namespace Chiro.Gap.Workers
                                               Resources.GebruikersRechtNietVerlengbaar);
             }
 
-            // Vervaldatum aanpassen. Als de toegang in de zomer verlengd wordt, gaat het waarschijnlijk al over rechten voor het komend werkjaar.
-            gebruikersRecht.VervalDatum = DateTime.Now.Month >= 7 ? new DateTime(DateTime.Now.Year + 1, 11, 1) : new DateTime(DateTime.Now.Year, 11, 1);
+            gebruikersRecht.VervalDatum = NieuweVervalDatum();
+        }
+
+        /// <summary>
+        /// Bepaalt een nieuwe vervaldatum voor nieuwe of te verlengen gebruikersrechten.
+        /// </summary>
+        /// <returns>De standaardvervaldatum voor gebruikersrechten die vandaag worden gemaakt of verlengd.</returns>
+        private DateTime NieuweVervalDatum()
+        {
+            // Vervaldatum aanpassen. Als de toegang in de zomer verlengd wordt (vanaf overgangsperiode), 
+            // gaat het waarschijnlijk al over rechten voor het komend werkjaar.
+
+            DateTime beginOvergang = new DateTime(
+                DateTime.Now.Year,
+                Settings.Default.BeginOvergangsPeriode.Month,
+                Settings.Default.BeginOvergangsPeriode.Day);
+
+            int jaar = DateTime.Now >= beginOvergang ? DateTime.Now.Year + 1 : DateTime.Now.Year;
+
+            return new DateTime(
+                jaar,
+                Settings.Default.EindeGebruikersRecht.Month,
+                Settings.Default.EindeGebruikersRecht.Day);
         }
 
         /// <summary>
@@ -489,8 +508,7 @@ namespace Chiro.Gap.Workers
 
         /// <summary>
         /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="account"/>.
-        /// Standaard zijn deze rechten geldig tot 1 november in het komende werkjaar. Als de gebruikersrechten al bestonden, 
-        /// worden ze indien mogelijk verlengd.
+        /// Als de gebruikersrechten al bestonden, worden ze indien mogelijk verlengd.
         /// </summary>
         /// <param name="account">Account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
         /// <param name="groep">Groep waarvoor <paramref name="account"/> gebruikersrecht moet krijgen</param>
@@ -506,10 +524,7 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            DateTime vervaldatum;
-
-            // Als de toegang in de zomer toegekend wordt, gaat het waarschijnlijk al over een login voor het komend werkjaar.
-            vervaldatum = DateTime.Now.Month >= 7 ? new DateTime(DateTime.Now.Year + 1, 11, 1) : new DateTime(DateTime.Now.Year, 11, 1);
+            DateTime vervaldatum = NieuweVervalDatum();
 
             return ToekennenOfVerlengen(account, groep, vervaldatum);
         }
