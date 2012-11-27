@@ -9,7 +9,7 @@
 		Gaat het over functies die niet toegekend zijn, dan vind je meer info in 
 		<%=Html.ActionLink("de handleiding", "ViewTonen", new { controller = "Handleiding", helpBestand = "IemandsFunctiesAanpassen" })%>.
 	</p>
-	<% if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
+	<% if (Model.Mededelingen != null && Model.Mededelingen.Any())
 	{
 	%>
 	<ul>

@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IMasterViewModel>" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
-<%	if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
+<%	if (Model.Mededelingen != null && Model.Mededelingen.Any())
 	{
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 		if (Model.Mededelingen.Count() == 1)

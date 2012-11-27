@@ -70,7 +70,7 @@ namespace Chiro.Gap.ServiceContracts.Test
 		{
 			var testData = new DummyData();
 			LidInfo li = Mapper.Map<Lid, LidInfo>(testData.LeiderJos);
-			Assert.IsTrue(li.Functies.Count() > 0);
+			Assert.IsTrue(li.Functies.Any());
 		}
 	}
 }

@@ -76,7 +76,7 @@
         <%=Html.Encode(ViewData.Model.Titel) %></h2>
     <% }
 
-       if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
+       if (Model.Mededelingen != null && Model.Mededelingen.Any())
        {
            Html.RenderPartial("MededelingenControl");
        }

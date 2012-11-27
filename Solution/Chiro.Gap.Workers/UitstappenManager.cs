@@ -339,7 +339,7 @@ namespace Chiro.Gap.Workers
 
             var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
 
-            Debug.Assert(groepen.Count() > 0); // De gelieerde personen moeten aan een groep gekoppeld zijn.
+            Debug.Assert(groepen.Any()); // De gelieerde personen moeten aan een groep gekoppeld zijn.
             Debug.Assert(uitstap.GroepsWerkJaar != null);
             Debug.Assert(uitstap.GroepsWerkJaar.Groep != null);
 

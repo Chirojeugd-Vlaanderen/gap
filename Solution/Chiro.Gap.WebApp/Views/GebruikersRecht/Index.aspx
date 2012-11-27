@@ -38,7 +38,7 @@
     %>
 </table>
 
-<p>TIP: Je kunt een gebruiker bijmaken door op een personenfiche op &lsquo;gebruikersrecht toekennen&rsquo; te klikken.</p>
+<p>TIP: Je kunt een gebruiker bijmaken door op een personenfiche op &lsquo;gebruikersrecht toekennen&rsquo; te klikken. Het e-mailadres van die persoon moet wel ingevuld zijn, anders kan het wachtwoord natuurlijk niet doorgemaild worden.</p>
 
 </asp:Content>
 

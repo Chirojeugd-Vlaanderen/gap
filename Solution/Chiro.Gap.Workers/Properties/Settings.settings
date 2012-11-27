@@ -38,8 +38,8 @@
     <Setting Name="MinWerkJaarLidOverzetten" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">2011</Value>
     </Setting>
-    <Setting Name="MaandenGebruikersRechtStandaard" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">14</Value>
+    <Setting Name="EindeGebruikersRecht" Type="System.DateTime" Scope="Application">
+      <Value Profile="(Default)">1990-11-01</Value>
     </Setting>
   </Settings>
 </SettingsFile>
