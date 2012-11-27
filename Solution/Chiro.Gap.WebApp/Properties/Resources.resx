@@ -166,7 +166,7 @@
     <value>Er zijn te weinig ingeschreven personen met de functie {0} ({1}).  Huidig aantal: {2}, verplicht minimum: {3}.</value>
   </data>
   <data name="GeenActieveAfdelingen" xml:space="preserve">
-    <value>Er zijn geen afdelingen geactiveerd voor dit werkJaar.  Pas eerst je &lt;a href='{0}'&gt;afdelingsverdeling&lt;/a&gt; aan.</value>
+    <value>Er zijn geen afdelingen geactiveerd voor dit werkjaar.  Pas eerst je &lt;a href='{0}'&gt;afdelingsverdeling&lt;/a&gt; aan.</value>
   </data>
   <data name="GroepsInstellingenTitel" xml:space="preserve">
     <value>Groepsinstellingen</value>
@@ -244,7 +244,7 @@
     <value>---/----</value>
   </data>
   <data name="WerkJaarInOvergang" xml:space="preserve">
-    <value>De overgang naar werkJaar {0}-{1} moet nog gebeuren.</value>
+    <value>De overgang naar werkjaar {0}-{1} moet nog gebeuren.</value>
   </data>
   <data name="BivakAangifteNogInTeVullen" xml:space="preserve">
     <value>Je moet je bivakaangifte nog &lt;a href='{0}'&gt; invullen &lt;/a&gt;.</value>
@@ -299,7 +299,7 @@
     <value>Verjaardagslijst</value>
   </data>
   <data name="AfdelingBestondNiet" xml:space="preserve">
-    <value>De gevraagde afdeling bestond niet in het werkJaar {0}-{1}.</value>
+    <value>De gevraagde afdeling bestond niet in het werkjaar {0}-{1}.</value>
   </data>
   <data name="LedenZonderAdres" xml:space="preserve">
     <value>Je moet het adres nog aanvullen van &lt;a href='{1}'&gt;{0} ingeschreven personen&lt;/a&gt;.</value>
@@ -348,10 +348,10 @@
     <value>Je hebt nog geen contactpersoon aangeduid. </value>
   </data>
   <data name="GeenBivak" xml:space="preserve">
-    <value>Je hebt nog geen bivak geregistreerd voor dit werkJaar</value>
+    <value>Je hebt nog geen bivak geregistreerd voor dit werkjaar</value>
   </data>
   <data name="BestelPeriodeDubbelpuntVoorbij" xml:space="preserve">
-    <value>Je kunt geen Dubbelpunt meer bestellen voor het werkJaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkJaar, moet je eerst de jaarovergang uitvoeren.</value>
+    <value>Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkJaar, moet je eerst de jaarovergang uitvoeren.</value>
   </data>
   <data name="LedenUitgeschreven" xml:space="preserve">
     <value>De geselecteerde leden werden uitgeschreven.</value>

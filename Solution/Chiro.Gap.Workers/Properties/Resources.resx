@@ -155,13 +155,13 @@
     <value>Minstens {0} leden moeten de functie '{1}' hebben.</value>
   </data>
   <data name="FoutiefGroepsWerkJaarFunctie" xml:space="preserve">
-    <value>Je probeert een lid te koppelen aan een functie die niet geldig is voor het gegeven werkJaar.</value>
+    <value>Je probeert een lid te koppelen aan een functie die niet geldig is voor het gegeven werkjaar.</value>
   </data>
   <data name="FoutiefLidType" xml:space="preserve">
     <value>Deze functie is niet toegelaten voor dit type lid (kind/leiding).</value>
   </data>
   <data name="AfdelingNietBeschikbaar" xml:space="preserve">
-    <value>Minstens 1 gevraagde afdeling is niet beschikbaar in dit werkJaar.</value>
+    <value>Minstens 1 gevraagde afdeling is niet beschikbaar in dit werkjaar.</value>
   </data>
   <data name="GemeenteNietGevonden" xml:space="preserve">
     <value>Ongeldige WoonPlaatsID.</value>
@@ -223,13 +223,13 @@
     <value>De begindatum van een verzekering kan niet in het verleden liggen.</value>
   </data>
   <data name="DubbelGroepswerkjaar" xml:space="preserve">
-    <value>Er bestaat al een groepswerkjaar in dat werkJaar</value>
+    <value>Er bestaat al een groepswerkjaar in dat werkjaar</value>
   </data>
   <data name="GeenAfdelingVoorLeeftijd" xml:space="preserve">
     <value>Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleer de leeftijd van wie je wilt inschrijven).</value>
   </data>
   <data name="InschrijvenZonderAfdelingen" xml:space="preserve">
-    <value>Je kan geen kinderen inschrijven als je groep geen afdelingen heeft in het huidige werkJaar!</value>
+    <value>Je kan geen kinderen inschrijven als je groep geen afdelingen heeft in het huidige werkjaar!</value>
   </data>
   <data name="DubbelPuntZonderAdres" xml:space="preserve">
     <value>Je hebt nog geen voorkeursadres ingegeven voor {0}; je kunt er dus ook geen Dubbelpuntabonnement voor bestellen.</value>
@@ -250,7 +250,7 @@
     <value>Het land {0} werd niet gevonden.</value>
   </data>
   <data name="UitstapAlGekoppeld" xml:space="preserve">
-    <value>De uitstap is al gekoppeld aan een ander werkJaar.</value>
+    <value>De uitstap is al gekoppeld aan een ander werkjaar.</value>
   </data>
   <data name="FoutieveGroepUitstap" xml:space="preserve">
     <value>De groep van de uitstap verschilt van de groep van de deelnemer.</value>
@@ -265,7 +265,7 @@
     <value>De publicatie '{0}' bestaat niet meer; je kunt geen abonnement meer nemen.</value>
   </data>
   <data name="BestelPeriodeDubbelpuntVoorbij" xml:space="preserve">
-    <value>Je kunt geen Dubbelpunt meer bestellen voor het werkJaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkJaar, moet je eerst de jaarovergang uitvoeren.</value>
+    <value>Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkJaar, moet je eerst de jaarovergang uitvoeren.</value>
   </data>
   <data name="AdNummerVerplicht" xml:space="preserve">
     <value>Enkel personen met een AD-nummer komen in aanmerking voor een login.</value>
