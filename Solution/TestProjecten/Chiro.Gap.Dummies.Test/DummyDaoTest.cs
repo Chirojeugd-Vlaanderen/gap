@@ -1,6 +1,6 @@
-﻿using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm;
-
+﻿using System;
+using Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Dummies.Test
@@ -59,20 +59,21 @@ namespace Chiro.Gap.Dummies.Test
 		[TestMethod]
 		public void BewarenTest()
 		{
-			#region Arrange
-			var testData = new DummyData();
-			var dao = new DummyGelieerdePersonenDao();
+            //#region Arrange
+            //var testData = new DummyData();
+            //var dao = new DummyGelieerdePersonenDao();
 
-			GelieerdePersoon gp = testData.GelieerdeJos;
-			#endregion
+            //GelieerdePersoon gp = testData.GelieerdeJos;
+            //#endregion
 
-			#region Act
-			var resultaat = dao.Bewaren(gp);
-			#endregion
+            //#region Act
+            //var resultaat = dao.Bewaren(gp);
+            //#endregion
 
-			#region Assert
-			Assert.IsNotNull(resultaat);
-			#endregion
+            //#region Assert
+            //Assert.IsNotNull(resultaat);
+            //#endregion
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
 		}
 	}
 }
