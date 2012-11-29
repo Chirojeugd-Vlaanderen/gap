@@ -65,5 +65,33 @@ namespace Chiro.Gap.Sync
 		                    GeenMailings = !communicatieVorm.IsVoorOptIn
 		                }));
 		}
+
+        /// <summary>
+        /// Stuurt de gegeven <paramref name="communicatieVorm"/> naar Kipadmin. Om te weten welk de
+        /// originele communicatievorm is, kijken we naar de gekoppelde persoon, en gebruiken we
+        /// het oorspronkelijke nummer (<paramref name="origineelNummer"/>)
+        /// </summary>
+        /// <param name="communicatieVorm">Te updaten communicatievorm</param>
+        /// <param name="origineelNummer">Oorspronkelijk nummer van die communicatievorm</param>
+        /// <remarks>Het is best mogelijk dat het 'nummer' niet is veranderd, maar bijv. enkel de vlag 
+        /// 'opt-in'</remarks>
+	    public void Bijwerken(CommunicatieVorm communicatieVorm, string origineelNummer)
+	    {
+            Debug.Assert(communicatieVorm.GelieerdePersoon != null);
+            Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon != null);
+
+            ServiceHelper.CallService<ISyncPersoonService>(
+                svc =>
+                svc.CommunicatieBijwerken(
+                    Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
+                        communicatieVorm.GelieerdePersoon.Persoon),
+                    origineelNummer,
+                    new CommunicatieMiddel
+                        {
+                            Type = (CommunicatieType) communicatieVorm.CommunicatieType.ID,
+                            Waarde = communicatieVorm.Nummer,
+                            GeenMailings = !communicatieVorm.IsVoorOptIn
+                        }));
+	    }
 	}
 }

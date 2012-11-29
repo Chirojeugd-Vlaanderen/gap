@@ -1,0 +1,40 @@
+using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
+
+namespace Chiro.Gap.WorkerInterfaces
+{
+    public interface ICommunicatieVormenManager
+    {
+        /// <summary>
+        /// Koppelt een communicatievorm aan een gelieerde persoon.
+        /// </summary>
+        /// <param name="gp">
+        /// De gelieerde persoon voor wie de communicatievorm toegevoegd of aangepast wordt
+        /// </param>
+        /// <param name="nieuwecv">
+        /// De nieuwe gegevens voor de communicatievorm
+        /// </param>
+        /// <remarks>
+        /// Als de communicatievorm de eerste van een bepaald type is, dan wordt dat ook de voorkeur.
+        /// </remarks>
+        void Koppelen(GelieerdePersoon gp, CommunicatieVorm nieuwecv);
+
+        /// <summary>
+        /// Stelt de gegeven communicatievorm in als voorkeurscommunicatievorm voor zijn
+        /// type en gelieerde persoon
+        /// </summary>
+        /// <param name="cv">
+        /// Communicatievorm die voorkeurscommunicatievorm moet worden,
+        /// gegeven zijn type en gelieerde persoon
+        /// </param>
+        void VoorkeurZetten(CommunicatieVorm cv);
+
+        /// <summary>
+        /// Werkt de gegeven <paramref name="communicatieVorm"/> bij op basis van de informatie
+        /// in <paramref name="communicatieInfo"/>.
+        /// </summary>
+        /// <param name="communicatieVorm">Bij te werken communicatievorm</param>
+        /// <param name="communicatieInfo">Nieuwe informatie communicatievorm</param>
+        void Bijwerken(CommunicatieVorm communicatieVorm, CommunicatieInfo communicatieInfo);
+    }
+}

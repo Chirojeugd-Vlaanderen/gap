@@ -27,6 +27,10 @@ namespace Chiro.Gap.Dummies
         {
         }
 
+        public void Bijwerken(CommunicatieVorm communicatieVorm, string origineelNummer)
+        {
+        }
+
         public void Bewaren(GelieerdePersoon gp, bool metStandaardAdres, bool metCommunicatie)
         {
             if (gp == null)

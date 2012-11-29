@@ -54,6 +54,11 @@ namespace Chiro.Kip.ServiceContracts
             Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, _ikke + "CommunicatieToevoegen {0} {1}", persoon, communicatieMiddel));
         }
 
+        public void CommunicatieBijwerken(Persoon persoon, string nummerBijTeWerken, CommunicatieMiddel communicatieMiddel)
+        {
+            Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, _ikke + "CommunicatieBijwerken {0} {1}, was: {2}", persoon, communicatieMiddel, nummerBijTeWerken));
+        }
+
         /// <summary>
         /// Doet alsof het een communicatievorm verwijdert van een persoon
         /// </summary>

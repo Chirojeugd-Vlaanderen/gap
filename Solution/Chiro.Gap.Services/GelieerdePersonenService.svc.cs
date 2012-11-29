@@ -5,9 +5,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Transactions;      // laten staan voor live!
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Services
 {
@@ -19,8 +25,52 @@ namespace Chiro.Gap.Services
     /// <summary>
     /// Service voor operaties op gelieerde personen
     /// </summary>
-    public class GelieerdePersonenService : IGelieerdePersonenService
+    public class GelieerdePersonenService : IGelieerdePersonenService, IDisposable
     {
+        /// <summary>
+        /// _context is verantwoordelijk voor het tracken van de wijzigingen aan de
+        /// entiteiten. Via _context.SaveChanges() kunnen wijzigingen gepersisteerd
+        /// worden.
+        /// 
+        /// Context is IDisposable. De context wordt aangemaakt door de IOC-container,
+        /// en gedisposed op het moment dat de service gedisposed wordt. Dit gebeurt
+        /// na iedere call.
+        /// </summary>
+        private readonly IContext _context;
+
+        // Repositories, verantwoordelijk voor data access.
+
+        private readonly IRepository<CommunicatieVorm> _communicatieVormRepo;
+
+        // Managers voor niet-triviale businesslogica
+
+        private readonly IAutorisatieManager _autorisatieMgr;
+        private readonly ICommunicatieVormenManager _communicatieVormenMgr;
+
+        // Sync-interfaces
+
+        private readonly ICommunicatieSync _communicatieSync;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="repositoryProvider">De repositoryprovider levert de te
+        /// gebruiken context en repository op.</param>
+        /// <param name="autorisatieMgr">Logica m.b.t. autorisatie</param>
+        /// <param name="communicatieVormenMgr">Logica m.b.t. communicatievormen</param>
+        /// <param name="communicatieSync">Zorgt voor synchronisatie met Kipadmin</param>
+        public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
+                                        ICommunicatieVormenManager communicatieVormenMgr, ICommunicatieSync communicatieSync)
+        {
+            _context = repositoryProvider.ContextGet();
+            _communicatieVormRepo = repositoryProvider.RepositoryGet<CommunicatieVorm>();
+
+            _autorisatieMgr = autorisatieMgr;
+            _communicatieVormenMgr = communicatieVormenMgr;
+
+            _communicatieSync = communicatieSync;
+        }
+
         /// <summary>
         /// Haalt een persoonsgegevens op van gelieerde personen van een groep,
         /// inclusief eventueel lidobject voor het recentste werkJaar.
@@ -347,7 +397,39 @@ namespace Chiro.Gap.Services
         /// <param name="c">De aan te passen communicatievorm</param>
         public void CommunicatieVormAanpassen(CommunicatieInfo c)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var communicatieVorm = (from cv in _communicatieVormRepo.Select()
+                                    where cv.ID == c.ID
+                                    select cv).FirstOrDefault();
+
+            // TODO: Ik weet eigenlijk nog niet of lazy loading werkt.
+            // Mag ik er vanuitgaan dat eender wat ik achteraf nodig heb, bijgeladen
+            // wordt?
+
+            // Autorisatie:
+
+            if (communicatieVorm == null || !_autorisatieMgr.IsGav(communicatieVorm))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            // Het origineel nummer gaan we nodig hebben, opdat KipSync zou weten
+            // welke communicatievorm te vervangen.
+
+            string origineelNummer = communicatieVorm.Nummer;
+
+            // Worker gebruiken voor bijwerken, owv de IsVoorkeur
+            _communicatieVormenMgr.Bijwerken(communicatieVorm, c);
+
+            // Niet vergeten te bewaren en te syncen
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _context.SaveChanges();
+                _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
+#if KIPDORP
+            }
+#endif
         }
 
         /// <summary>
@@ -406,6 +488,14 @@ namespace Chiro.Gap.Services
         public void DubbelPuntBestellen(int gelieerdePersoonID)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
+        }
+
+        /// <summary>
+        /// Disposet de context
+        /// </summary>
+        public void Dispose()
+        {
+            _context.Dispose();            
         }
     }
 }

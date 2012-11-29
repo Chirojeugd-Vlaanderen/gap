@@ -458,13 +458,28 @@ namespace Chiro.Gap.Workers
         /// <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
         /// <paramref name="groep"/>.
         /// </returns>
-        public bool IsGavGroep(Groep groep)
+        public bool IsGav(Groep groep)
         {
             string gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
 
             return
                 groep.GebruikersRecht.Any(
                     gr => String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) == 0);
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
+        /// <paramref name="communicatieVorm"/>.
+        /// </summary>
+        /// <param name="communicatieVorm">Een communicatievorm</param>
+        /// <returns><c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
+        /// <paramref name="communicatieVorm"/>.</returns>
+        public bool IsGav(CommunicatieVorm communicatieVorm)
+        {
+            string gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
+
+            return communicatieVorm.GelieerdePersoon.Groep.GebruikersRecht.Any(
+                gr => String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) == 0);
         }
     }
 }

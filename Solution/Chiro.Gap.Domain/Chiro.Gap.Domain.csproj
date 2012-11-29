@@ -58,6 +58,7 @@
     <Compile Include="AdresInfo.cs" />
     <Compile Include="BivakAangifteInfo.cs" />
     <Compile Include="BivakAangifteLijstInfo.cs" />
+    <Compile Include="CommunicatieInfo.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FoutBericht.cs" />
     <Compile Include="Foutnummers.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chiro.Cdf.Poco
 {
@@ -7,6 +8,7 @@ namespace Chiro.Cdf.Poco
         /// <summary>
         /// De bedoeling is dat Versie een timestamp (row version) is, voor concurrency control
         /// </summary>
+        [Timestamp]
         public abstract byte[] Versie { get; set; }
 
         /// <summary>

@@ -45,6 +45,7 @@
     <Compile Include="IAuthenticatieManager.cs" />
     <Compile Include="IAutorisatieManager.cs" />
     <Compile Include="IChiroGroepenManager.cs" />
+    <Compile Include="ICommunicatieVormenManager.cs" />
     <Compile Include="IGebruikersRechtenManager.cs" />
     <Compile Include="IGelieerdePersonenManager.cs" />
     <Compile Include="IGroepenManager.cs" />

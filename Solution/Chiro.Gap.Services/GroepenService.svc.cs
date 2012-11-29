@@ -359,14 +359,9 @@ namespace Chiro.Gap.Services
 
             // Heb ik daar rechten op?
 
-            if (groep == null || !_autorisatieMgr.IsGavGroep(groep))
+            if (groep == null || !_autorisatieMgr.IsGav(groep))
             {
-                // TODO: FaultException laten genereren door worker.
-                // Opgelet: niet laten thorwen door worker, want dan klopt de stack trace niet.
-                // Het zou zoiets moeten worden:
-                //  throw new _faultExceptionHelper.GeenGav();
-                throw new FaultException<FoutNummerFault>(new FoutNummerFault {FoutNummer = FoutNummer.GeenGav},
-                                                          new FaultReason(Properties.Resources.GeenGav));
+                throw FaultExceptionHelper.GeenGav();
             }
 
             // Bestaat er al een eigen of nationale functie met dezelfde code?

@@ -75,7 +75,7 @@
     <Compile Include="AutorisatieManager.cs" />
     <Compile Include="CategorieenManager.cs" />
     <Compile Include="ChiroGroepenManager.cs" />
-    <Compile Include="CommVormManager.cs" />
+    <Compile Include="CommunicatieVormenManager.cs" />
     <Compile Include="AfdelingsJaarManager.cs" />
     <Compile Include="GebruikersRechtenManager.cs" />
     <Compile Include="JaarOvergangManager.cs" />

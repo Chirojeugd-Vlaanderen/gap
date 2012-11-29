@@ -80,6 +80,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FaultExceptionHelper.cs" />
     <Compile Include="FoutAfhandelaar.cs" />
     <Compile Include="GebruikersService.svc.cs">
       <DependentUpon>GebruikersService.svc</DependentUpon>
@@ -146,9 +147,17 @@
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj">
+      <Project>{08F94344-8414-4136-8314-4B7380B10CD7}</Project>
+      <Name>Chiro.Gap.ServiceContracts.Mappers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
       <Name>Chiro.Gap.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
+      <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
+      <Name>Chiro.Gap.SyncInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Sync\Chiro.Gap.Sync.csproj">
       <Project>{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}</Project>
@@ -161,10 +170,6 @@
     <ProjectReference Include="..\Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj">
       <Project>{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}</Project>
       <Name>Chiro.Cdf.DependencyInjectionBehavior</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj">
-      <Project>{08F94344-8414-4136-8314-4B7380B10CD7}</Project>
-      <Name>Chiro.Gap.ServiceContracts.Mappers</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\tools\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>

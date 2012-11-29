@@ -160,7 +160,12 @@ namespace Chiro.Gap.Dummies
 	        throw new NotImplementedException();
 	    }
 
-	    public bool IsGavGroep(Groep groep)
+	    public bool IsGav(Groep groep)
+	    {
+	        return false;
+	    }
+
+	    public bool IsGav(CommunicatieVorm communicatieVorm)
 	    {
 	        return false;
 	    }

@@ -1058,8 +1058,12 @@ namespace Chiro.Gap.WebApp.Controllers
             else
             {
                 // vermijd bloat van te veel over de lijn te sturen
-                var comminfo = new CommunicatieInfo(model.NieuweCommVorm);
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gelieerdePersoonID, comminfo));
+
+                var commInfo = new CommunicatieInfo();
+                Mapper.CreateMap<CommunicatieDetail, CommunicatieInfo>();
+                Mapper.Map(model.NieuweCommVorm, commInfo);
+
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo));
                 VeelGebruikt.LedenProblemenResetten(groepID);
 
                 return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
@@ -1156,8 +1160,12 @@ namespace Chiro.Gap.WebApp.Controllers
             }
 
             // Om bloat over de lijn te vermijden: downgraden naar minimale info
-            var comminfo = new CommunicatieInfo(model.NieuweCommVorm);
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(comminfo));
+
+            var commInfo = new CommunicatieInfo();
+            Mapper.CreateMap<CommunicatieDetail, CommunicatieInfo>();
+            Mapper.Map(model.NieuweCommVorm, commInfo);
+
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(commInfo));
             return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
 

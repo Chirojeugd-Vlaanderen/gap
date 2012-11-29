@@ -403,7 +403,12 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
-        public bool IsGavGroep(Groep groep)
+        public bool IsGav(Groep groep)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGav(CommunicatieVorm communicatieVorm)
         {
             throw new NotImplementedException();
         }

@@ -67,7 +67,6 @@
     <Compile Include="DataContracts\CategorieInfo.cs" />
     <Compile Include="DataContracts\CommunicatieDetail.cs" />
     <Compile Include="DataContracts\CommunicatieTypeInfo.cs" />
-    <Compile Include="DataContracts\CommunicatieInfo.cs" />
     <Compile Include="DataContracts\GebruikersDetail.cs" />
     <Compile Include="DataContracts\GebruikersInfo.cs" />
     <Compile Include="DataContracts\GebruikersRecht.cs" />

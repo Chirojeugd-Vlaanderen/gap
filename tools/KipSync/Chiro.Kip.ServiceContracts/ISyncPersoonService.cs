@@ -76,6 +76,17 @@ namespace Chiro.Kip.ServiceContracts
         void CommunicatieToevoegen(Persoon persoon, CommunicatieMiddel communicatieMiddel);
 
         /// <summary>
+        /// Gaat op zoek naar de gegeven <paramref name="persoon"/>, en zoekt daarvan de communicatie van
+        /// type <c>communicatieMiddel.Type</c> en nummer <paramref name="nummerBijTeWerken"/>. Dat
+        /// gevonden communicatiemiddel wordt vervangen door <paramref name="communicatieMiddel"/>.
+        /// </summary>
+        /// <param name="persoon">persoon met te vervangen communicatiemiddel</param>
+        /// <param name="nummerBijTeWerken">huidig nummer van te vervangen communicatiemiddel</param>
+        /// <param name="communicatieMiddel">nieuwe info voor te vervangen communicatiemiddel</param>
+        [OperationContract(IsOneWay = true)]
+        void CommunicatieBijwerken(Persoon persoon, string nummerBijTeWerken, CommunicatieMiddel communicatieMiddel);
+
+        /// <summary>
         /// Verwijdert alle bestaande contactinfo, en vervangt door de contactinfo meegegeven in 
         /// <paramref name="communicatieMiddelen"/>.
         /// </summary>
@@ -377,5 +388,6 @@ namespace Chiro.Kip.ServiceContracts
         void GroepUpdaten(Groep g);
 
         #endregion
+
     }
 }

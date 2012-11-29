@@ -361,6 +361,15 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
         /// <paramref name="groep"/>.
         /// </returns>
-        bool IsGavGroep(Groep groep);
+        bool IsGav(Groep groep);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
+        /// <paramref name="communicatieVorm"/>.
+        /// </summary>
+        /// <param name="communicatieVorm">Een communicatievorm</param>
+        /// <returns><c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
+        /// <paramref name="communicatieVorm"/>.</returns>
+        bool IsGav(CommunicatieVorm communicatieVorm);
     }
 }
