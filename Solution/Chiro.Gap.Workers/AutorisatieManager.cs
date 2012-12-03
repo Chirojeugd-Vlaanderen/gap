@@ -481,5 +481,13 @@ namespace Chiro.Gap.Workers
             return communicatieVorm.GelieerdePersoon.Groep.GebruikersRecht.Any(
                 gr => String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) == 0);
         }
+
+        public bool IsGav(GroepsWerkJaar groepsWerkJaar)
+        {
+            string gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
+
+            return groepsWerkJaar.Groep.GebruikersRecht.Any(
+                gr => String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) == 0);
+        }
     }
 }

@@ -170,6 +170,11 @@ namespace Chiro.Gap.Dummies
 	        return false;
 	    }
 
+	    public bool IsGav(GroepsWerkJaar groepsWerkJaar)
+	    {
+	        return false;
+	    }
+
 	    public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
 		{
 			return false;

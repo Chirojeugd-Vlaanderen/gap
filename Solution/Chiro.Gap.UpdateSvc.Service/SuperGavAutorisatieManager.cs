@@ -413,6 +413,11 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public bool IsGav(GroepsWerkJaar groepsWerkJaar)
+        {
+            throw new NotImplementedException();
+        }
+
 
         /// <summary>
         /// Gebruikerses the recht gelieerde persoon.

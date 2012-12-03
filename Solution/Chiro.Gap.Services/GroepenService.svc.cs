@@ -43,12 +43,14 @@ namespace Chiro.Gap.Services
 
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Functie> _functiesRepo;
+        private readonly IRepository<GroepsWerkJaar> _groepsWerkJarenRepo;
 
         // Managers voor niet-triviale businesslogica
         
         private readonly IAuthenticatieManager _authenticatieMgr;
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IGroepenManager _groepenMgr;
+        private readonly IGroepsWerkJarenManager _groepsWerkJarenManager;
 
         /// <summary>
         /// Nieuwe groepenservice
@@ -56,14 +58,19 @@ namespace Chiro.Gap.Services
         /// <param name="authenticatieMgr">Verantwoordelijk voor authenticatie</param>
         /// <param name="autorisatieMgr">Verantwoordelijke voor autorisatie</param>
         /// <param name="groepenMgr">Businesslogica aangaande groepen</param>
+        /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
-        public GroepenService(IAuthenticatieManager authenticatieMgr, IAutorisatieManager autorisatieMgr, IGroepenManager groepenMgr, IRepositoryProvider repositoryProvider)
+        public GroepenService(IAuthenticatieManager authenticatieMgr, IAutorisatieManager autorisatieMgr,
+                              IGroepenManager groepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
+                              IRepositoryProvider repositoryProvider)
         {
             _context = repositoryProvider.ContextGet();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _functiesRepo = repositoryProvider.RepositoryGet<Functie>();
+            _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
 
             _groepenMgr = groepenMgr;
+            _groepsWerkJarenManager = groepsWerkJarenMgr;
             _authenticatieMgr = authenticatieMgr;
             _autorisatieMgr = autorisatieMgr;
         }
@@ -159,7 +166,26 @@ namespace Chiro.Gap.Services
         /// </returns>
         public GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepid)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var groepsWerkJaar =
+                _groepsWerkJarenRepo.Select()
+                                    .Where(gwj => gwj.Groep.ID == groepid)
+                                    .OrderByDescending(gwj => gwj.WerkJaar)
+                                    .FirstOrDefault();
+
+            // Autorisatie:
+
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(groepsWerkJaar);
+
+            result.Status = _groepsWerkJarenManager.OvergangMogelijk(DateTime.Now, result.WerkJaar)
+                                ? WerkJaarStatus.InOvergang
+                                : WerkJaarStatus.Bezig;
+
+            return result;
         }
 
         /// <summary>

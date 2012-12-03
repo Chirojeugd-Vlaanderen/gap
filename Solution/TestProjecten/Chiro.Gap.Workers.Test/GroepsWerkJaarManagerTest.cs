@@ -89,7 +89,7 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod()]
         public void AfdelingsJarenVoorstellenTest()
         {
-            var target = Factory.Maak<GroepsWerkJaarManager>();
+            var target = Factory.Maak<GroepsWerkJarenManager>();
 
             var groep = new ChiroGroep();
             var groepsWerkJaar = new GroepsWerkJaar {WerkJaar = 2010, ID = 2971, Groep = groep};

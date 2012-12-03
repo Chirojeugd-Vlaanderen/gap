@@ -23,12 +23,12 @@ namespace Chiro.Gap.Workers
     public class VerzekeringenManager
     {
         private readonly IAutorisatieManager _autorisatieMgr;
-        private readonly IGroepsWerkJaarManager _groepsWerkJaarManager;
+        private readonly IGroepsWerkJarenManager _groepsWerkJaarManager;
         private readonly IVerzekeringenSync _sync;
 
         public VerzekeringenManager(
             IAutorisatieManager auMgr,
-            IGroepsWerkJaarManager gwjMgr,
+            IGroepsWerkJarenManager gwjMgr,
             IVerzekeringenSync sync)
         {
             _groepsWerkJaarManager = gwjMgr;

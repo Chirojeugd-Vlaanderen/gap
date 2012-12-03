@@ -49,7 +49,7 @@
     <Compile Include="IGebruikersRechtenManager.cs" />
     <Compile Include="IGelieerdePersonenManager.cs" />
     <Compile Include="IGroepenManager.cs" />
-    <Compile Include="IGroepsWerkJaarManager.cs" />
+    <Compile Include="IGroepsWerkJarenManager.cs" />
     <Compile Include="ILedenManager.cs" />
     <Compile Include="IVeelGebruikt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

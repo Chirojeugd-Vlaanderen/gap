@@ -97,7 +97,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="GroepsWerkjaarManager.cs" />
+    <Compile Include="GroepsWerkJarenManager.cs" />
     <Compile Include="UitstappenManager.cs" />
     <Compile Include="VeelGebruikt.cs" />
     <Compile Include="VerzekeringenManager.cs" />

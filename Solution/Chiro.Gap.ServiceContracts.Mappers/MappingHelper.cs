@@ -639,7 +639,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 return false;
             }
 
-            var gwjMgr = Factory.Maak<IGroepsWerkJaarManager>();
+            var gwjMgr = Factory.Maak<IGroepsWerkJarenManager>();
 
             var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
                                         where v.VerzekeringsType.ID == (int)verzekering &&
