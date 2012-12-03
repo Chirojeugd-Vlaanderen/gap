@@ -122,6 +122,11 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public Groep Bewaren(Groep g)
         {
+			// Verwijder eventuele chiro-prefix uit de naam
+			if(g.Naam != null && g.Naam.StartsWith("chiro ", StringComparison.CurrentCultureIgnoreCase)){
+				g.Naam = g.Naam.Substring(6);
+			}
+		
             if (!_autorisatieMgr.IsGavGroep(g.ID))
             {
                 throw new GeenGavException(Resources.GeenGav);
