@@ -391,6 +391,9 @@ namespace Chiro.Gap.Workers
             }
 
             var resultaat = new LidVoorstel();
+
+            // TODO: Bekijken of we 'AfdelingsJaarVoorstellen' niet kunnen hergebruiken.
+
             var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
             if (gwj.WerkJaar - geboortejaar < Properties.Settings.Default.MinLidLeefTijd)
@@ -635,6 +638,73 @@ namespace Chiro.Gap.Workers
             }
 
             return nieuwlid;
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.
+        /// </summary>
+        /// <param name="gelieerdePersoon">een gelieerde persoon</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.</returns>
+        public bool KanLidWorden(GelieerdePersoon gelieerdePersoon)
+        {
+            return
+                AfdelingsJaarVoorstellen(gelieerdePersoon,
+                                         gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
+                                                         .FirstOrDefault()) == null;
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// leiding kan worden. Dit hangt eigenlijk enkel van de leeftijd af.
+        /// </summary>
+        /// <param name="gelieerdePersoon">een gelieerde persoon</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// leiding kan worden.</returns>
+        public bool KanLeidingWorden(GelieerdePersoon gelieerdePersoon)
+        {
+            return KanLeidingWorden(gelieerdePersoon,
+                                    gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
+                                                    .FirstOrDefault());
+        }
+
+
+        /// <summary>
+        /// Zoekt een afdelingsjaar van gegeven <paramref name="groepsWerkJaar"/>, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> (kind)lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.
+        /// </summary>
+        /// <param name="gelieerdePersoon">gelieerde persoon waarvoor we een afdeling zoeken</param>
+        /// <param name="groepsWerkJaar">groepswerkjaar waarin we zoeken naar een afdeling</param>
+        /// <returns>een afdelingsjaar van het recentste groepswerkjaar, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.</returns>
+        private AfdelingsJaar AfdelingsJaarVoorstellen(GelieerdePersoon gelieerdePersoon, GroepsWerkJaar groepsWerkJaar)
+        {
+            if (gelieerdePersoon.Persoon.GeboorteDatum == null)
+            {
+                return null;
+            }
+
+            var geboortejaar = gelieerdePersoon.GebDatumMetChiroLeefTijd.Value.Year;
+
+            if (groepsWerkJaar.WerkJaar - geboortejaar < Settings.Default.MinLidLeefTijd)
+            {
+                throw new FoutNummerException(FoutNummer.LidTeJong, Resources.MinimumLeeftijd);
+            }
+
+            // Bestaat er een afdeling waar de gelieerde persoon als kind in zou passen?
+            // (Als er meerdere mogelijkheden zijn zullen we gewoon de eerste kiezen, maar we sorteren op
+            // overenkomst geslacht)
+
+            var mogelijkeAfdelingsJaren =
+                groepsWerkJaar.AfdelingsJaar.Where(a => a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal &&
+                                             geboortejaar <= a.GeboorteJaarTot &&
+                                             a.GeboorteJaarVan <= geboortejaar).OrderByDescending(
+                                                 a => (gelieerdePersoon.Persoon.Geslacht & a.Geslacht)).ToArray();
+
+            return mogelijkeAfdelingsJaren.FirstOrDefault();
         }
     }
 }

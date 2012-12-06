@@ -7,9 +7,8 @@
 // </summary>
 
 using System;
-using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
-using System.Linq.Expressions;
+using System.Linq;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
@@ -24,8 +23,6 @@ using System.ServiceModel;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.TestDbInfo;
 using Chiro.Gap.WorkerInterfaces;
-using CommunicatieType = Chiro.Kip.ServiceContracts.DataContracts.CommunicatieType;
-using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -319,43 +316,68 @@ namespace Chiro.Gap.Services.Test
         [TestMethod()]
         public void AlleDetailsOphalenTest()
         {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
-            //const int SOME_GID = 5;     // arbitrair
-            //const int SOME_GPID = 3;    // arbitrair
-            //const string SOME_USERNAME = "UserName";    //arbitrair
+            // arbitraire dingen
 
-            //var gelieerdePersoon = new GelieerdePersoon
-            //                           {
-            //                               Persoon =
-            //                                   new Poco.Model.Persoon
-            //                                       {Gav = new EntityCollection<Gav> {new Gav {Login = SOME_USERNAME}}},
-            //                               Groep = new ChiroGroep {ID = SOME_GID}
-            //                           };
+            const int someGid = 5;     
+            const int someGpid = 3;    
+            const string someUsername = "UserName";   
+            DateTime someGeboorteDatum = new DateTime(1977,03,08);
+            const int someWerkJaar = 2012;
 
-            //var groepsWerkJaar = new GroepsWerkJaar {Groep = gelieerdePersoon.Groep};
+            // arrange
 
-            //// Setup IOC
+            var gelieerdePersoon = new GelieerdePersoon
+                                       {
+                                           ID = someGpid,
+                                           Persoon =
+                                               new Persoon
+                                                   {
+                                                       GeboorteDatum = someGeboorteDatum,
+                                                       Gav =
+                                                           new[]
+                                                               {
+                                                                   new Gav
+                                                                       {
+                                                                           Login
+                                                                               =
+                                                                               someUsername
+                                                                       }
+                                                               }
+                                                   },
+                                           Groep = new ChiroGroep
+                                                       {
+                                                           ID = someGid,
+                                                           GroepsWerkJaar =
+                                                               new[] {new GroepsWerkJaar {WerkJaar = someWerkJaar}}
+                                                       }
+                                       };
 
-            //var gpMgrMock = new Mock<IGelieerdePersonenManager>();
-            //gpMgrMock.Setup(src => src.DetailsOphalen(SOME_GPID)).Returns(gelieerdePersoon);
 
-            //var gwjMgrMock = new Mock<IGroepsWerkJaarManager>();
-            //gwjMgrMock.Setup(src => src.RecentsteOphalen(SOME_GID, It.IsAny<GroepsWerkJaarExtras>())).Returns(
-            //    groepsWerkJaar);
+            // IOC opzetten
 
-            //Factory.InstantieRegistreren(gpMgrMock.Object);
-            //Factory.InstantieRegistreren(gwjMgrMock.Object);
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            var communicatieVormenManagerMock = new Mock<ICommunicatieVormenManager>();
+            var gelieerdePersonenRepoMock = new Mock<IRepository<GelieerdePersoon>>();
 
-            //var target = Factory.Maak<GelieerdePersonenService>();
+            gelieerdePersonenRepoMock.Setup(mck => mck.Select()).Returns((new[] {gelieerdePersoon}).AsQueryable());
 
-            //// act
+            repositoryProviderMock.Setup(mck => mck.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(gelieerdePersonenRepoMock.Object);
 
-            //int gelieerdePersoonID = SOME_GPID;
-            //var actual = target.AlleDetailsOphalen(gelieerdePersoonID);
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+            Factory.InstantieRegistreren(communicatieVormenManagerMock.Object);
 
-            //// assert
 
-            //Assert.AreEqual(SOME_USERNAME, actual.GebruikersInfo.GavLogin);
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            // act
+
+            int gelieerdePersoonID = someGpid;
+            var actual = target.AlleDetailsOphalen(gelieerdePersoonID);
+
+            // assert
+
+            Assert.AreEqual(someUsername, actual.GebruikersInfo.GavLogin);
         }
     }
 }

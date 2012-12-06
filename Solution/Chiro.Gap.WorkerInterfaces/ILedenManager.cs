@@ -75,6 +75,22 @@ namespace Chiro.Gap.WorkerInterfaces
         /// </returns>
         Lid NieuwInschrijven(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang, LidVoorstel voorstellid);
 
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.
+        /// </summary>
+        /// <param name="gelieerdePersoon">een gelieerde persoon</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.</returns>
+        bool KanLidWorden(GelieerdePersoon gelieerdePersoon);
 
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// leiding kan worden. Dit hangt eigenlijk enkel van de leeftijd af.
+        /// </summary>
+        /// <param name="gelieerdePersoon">een gelieerde persoon</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// leiding kan worden.</returns>
+        bool KanLeidingWorden(GelieerdePersoon gelieerdePersoon);
     }
 }

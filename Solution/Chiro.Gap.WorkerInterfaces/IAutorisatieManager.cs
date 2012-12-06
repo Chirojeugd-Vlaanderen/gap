@@ -380,5 +380,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns><c>true</c> als de momenteel aangelogde gebruiker beheerder is van gegeven
         /// <paramref name="groepsWerkJaar"/>.</returns>
         bool IsGav(GroepsWerkJaar groepsWerkJaar);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van gegeven
+        /// <paramref name="gelieerdePersoon"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns><c>true</c> als de momenteel aangelogde gebruiker beheerder is van gegeven
+        /// <paramref name="gelieerdePersoon"/>.</returns>
+        bool IsGav(GelieerdePersoon gelieerdePersoon);
     }
 }

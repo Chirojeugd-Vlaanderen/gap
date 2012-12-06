@@ -482,11 +482,33 @@ namespace Chiro.Gap.Workers
                 gr => String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
+        /// <summary>
+        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van gegeven
+        /// <paramref name="groepsWerkJaar"/>.
+        /// </summary>
+        /// <param name="groepsWerkJaar">Een groepswerkjaar</param>
+        /// <returns><c>true</c> als de momenteel aangelogde gebruiker beheerder is van gegeven
+        /// <paramref name="groepsWerkJaar"/>.</returns>
         public bool IsGav(GroepsWerkJaar groepsWerkJaar)
         {
             string gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
 
             return groepsWerkJaar.Groep.GebruikersRecht.Any(
+                gr => String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) == 0);
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van gegeven
+        /// <paramref name="gelieerdePersoon"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns><c>true</c> als de momenteel aangelogde gebruiker beheerder is van gegeven
+        /// <paramref name="gelieerdePersoon"/>.</returns>
+        public bool IsGav(GelieerdePersoon gelieerdePersoon)
+        {
+            string gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
+
+            return gelieerdePersoon.Groep.GebruikersRecht.Any(
                 gr => String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) == 0);
         }
     }

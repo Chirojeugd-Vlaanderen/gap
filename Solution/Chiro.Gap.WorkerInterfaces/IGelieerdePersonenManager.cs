@@ -99,6 +99,12 @@ namespace Chiro.Gap.WorkerInterfaces
         /// </remarks>
         void AdressenVerwijderen(IEnumerable<PersoonsAdres> persoonsAdressen);
 
-        void CategorieLoskoppelen(int[] ints, Categorie vervelend);
+        /// <summary>
+        /// Koppelt de gelieerde personen met gegeven <paramref name="gelieerdePersoonIDs"/> los
+        /// van de gegeven <paramref name="categorie"/>
+        /// </summary>
+        /// <param name="gelieerdePersoonIDs">ID's van de los te koppelen gelieerde personen</param>
+        /// <param name="categorie">Categorie waar de gelieerde personen losgekoppeld van moeten worden</param>
+        void CategorieLoskoppelen(int[] gelieerdePersoonIDs, Categorie categorie);
     }
 }

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;      // laten staan voor live!
+using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -41,11 +42,13 @@ namespace Chiro.Gap.Services
         // Repositories, verantwoordelijk voor data access.
 
         private readonly IRepository<CommunicatieVorm> _communicatieVormRepo;
+        private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
 
         // Managers voor niet-triviale businesslogica
 
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly ICommunicatieVormenManager _communicatieVormenMgr;
+        private readonly ILedenManager _ledenMgr;
 
         // Sync-interfaces
 
@@ -58,15 +61,20 @@ namespace Chiro.Gap.Services
         /// gebruiken context en repository op.</param>
         /// <param name="autorisatieMgr">Logica m.b.t. autorisatie</param>
         /// <param name="communicatieVormenMgr">Logica m.b.t. communicatievormen</param>
+        /// <param name="ledenMgr">Logica m.b.t. leden en lid maken</param>
         /// <param name="communicatieSync">Zorgt voor synchronisatie met Kipadmin</param>
         public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
-                                        ICommunicatieVormenManager communicatieVormenMgr, ICommunicatieSync communicatieSync)
+                                        ICommunicatieVormenManager communicatieVormenMgr,
+                                        ILedenManager ledenMgr,
+                                        ICommunicatieSync communicatieSync)
         {
             _context = repositoryProvider.ContextGet();
             _communicatieVormRepo = repositoryProvider.RepositoryGet<CommunicatieVorm>();
+            _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
 
             _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
+            _ledenMgr = ledenMgr;
 
             _communicatieSync = communicatieSync;
         }
@@ -180,7 +188,48 @@ namespace Chiro.Gap.Services
         /// </returns>
         public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var gpQuery = _gelieerdePersonenRepo.Select();
+
+            var gelieerdePersoon = (from gp in gpQuery
+                                    where gp.ID == gelieerdePersoonID
+                                    select gp).FirstOrDefault();
+
+            if (gelieerdePersoon == null || !_autorisatieMgr.IsGav(gelieerdePersoon))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var groepsWerkJaar =
+                gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
+
+            var result = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gelieerdePersoon);
+
+            // Een aantal hacky mappings die (op dit moment) niet via automapper geimplementeerd zijn:
+
+            // Als er gebruikersrechten zijn op de eigen groep, dan mappen we die gebruikersrechten naar 
+            // GebruikersInfo
+
+            var gebruikersRecht =
+                gelieerdePersoon.Persoon.Gav.SelectMany(gav => gav.GebruikersRecht)
+                                .FirstOrDefault(gr => gr.Groep.ID == gelieerdePersoon.Groep.ID);
+
+            if (gebruikersRecht != null)
+            {
+                result.GebruikersInfo = Mapper.Map<Poco.Model.GebruikersRecht, GebruikersInfo>(gebruikersRecht);
+            }
+
+            // Als er geen gebruikersrecht is op eigen groep, maar wel een gebruiker, dan mappen we de gebruiker
+            // naar GebruikersInfo
+
+            if (gelieerdePersoon.Persoon.Gav.Any())
+            {
+                result.GebruikersInfo = Mapper.Map<Gav, GebruikersInfo>(gelieerdePersoon.Persoon.Gav.FirstOrDefault());
+            }
+
+            result.PersoonDetail.KanLidWorden = _ledenMgr.KanLidWorden(gelieerdePersoon);
+            result.PersoonDetail.KanLeidingWorden = _ledenMgr.KanLeidingWorden(gelieerdePersoon);
+
+            return result;
         }
 
         /// <summary>

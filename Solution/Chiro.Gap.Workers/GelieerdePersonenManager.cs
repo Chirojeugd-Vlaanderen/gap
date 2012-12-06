@@ -405,7 +405,13 @@ namespace Chiro.Gap.Workers
 //#endif
         }
 
-        public void CategorieLoskoppelen(int[] ints, Categorie vervelend)
+        /// <summary>
+        /// Koppelt de gelieerde personen met gegeven <paramref name="gelieerdePersoonIDs"/> los
+        /// van de gegeven <paramref name="categorie"/>
+        /// </summary>
+        /// <param name="gelieerdePersoonIDs">ID's van de los te koppelen gelieerde personen</param>
+        /// <param name="categorie">Categorie waar de gelieerde personen losgekoppeld van moeten worden</param>
+        public void CategorieLoskoppelen(int[] gelieerdePersoonIDs, Categorie categorie)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
