@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Chiro.Adf.ServiceModel;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ServiceModel;
 
 using Chiro.Ad.ServiceContracts;
-using Chiro.Adf.ServiceModel;
 
 namespace Chiro.Ad.Test
 {

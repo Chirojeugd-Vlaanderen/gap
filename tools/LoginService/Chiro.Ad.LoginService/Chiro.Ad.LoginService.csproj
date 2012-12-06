@@ -13,6 +13,7 @@
     <RootNamespace>Chiro.Ad.LoginService</RootNamespace>
     <AssemblyName>Chiro.Ad.LoginService</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,6 +84,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
+      <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
+      <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Ad.Domain\Chiro.Ad.Domain.csproj">
       <Project>{3C42C96B-2F4C-46DC-B24D-0ECEB9BC4EDD}</Project>
       <Name>Chiro.Ad.Domain</Name>
@@ -94,14 +99,6 @@
     <ProjectReference Include="..\Chiro.Ad.Workers\Chiro.Ad.Workers.csproj">
       <Project>{C28DE7B1-76DF-4C38-8F25-184A9248A81C}</Project>
       <Name>Chiro.Ad.Workers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj">
-      <Project>{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}</Project>
-      <Name>Chiro.Cdf.DependencyInjectionBehavior</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
-      <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
-      <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
       <Project>{18FF2008-106F-48A6-BEFB-5F8B301354D0}</Project>
