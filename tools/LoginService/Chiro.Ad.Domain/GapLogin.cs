@@ -39,11 +39,9 @@ namespace Chiro.Ad.Domain
         {
             if (!SecurityGroepen.Contains(Properties.Settings.Default.GapGebruikersGroep))
             {
-                DirectoryEntry groep;
-                var zoeker = new Zoekresultaat(Domein + Properties.Settings.Default.GapGroepenOU,
-                                               "Name=" + Properties.Settings.Default.GapGebruikersGroep);
+                DirectoryEntry groep = LdapHelper.ZoekenUniek(Domein + Properties.Settings.Default.GapGroepenOU,
+                                                            "Name=" + Properties.Settings.Default.GapGebruikersGroep);
 
-                groep = zoeker.UniekResultaat;
                 AanSecuritygroepToevoegen(groep);
             }
         }

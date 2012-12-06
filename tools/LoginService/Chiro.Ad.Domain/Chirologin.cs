@@ -199,13 +199,12 @@ namespace Chiro.Ad.Domain
         /// <param name="familienaam">De naam van de nieuwe gebruiker</param>
         public Chirologin(DomeinEnum domein, String ouPad, Int32 adNr, String voornaam, String familienaam)
         {
-            string naamVoluit = String.Concat(voornaam + " " + familienaam);
+            string naamVoluit = String.Concat(voornaam, " ", familienaam);
             DirectoryEntry ou;
 
             // Controleer of er nog geen account bestaat met die login, en suggereer eventueel een andere
             const int voornaamSeed = 2;
             const int familienaamSeed = 5;
-            Zoekresultaat zoeker;
 
             switch (domein)
             {
@@ -219,28 +218,25 @@ namespace Chiro.Ad.Domain
                     throw new ArgumentOutOfRangeException("domein");
             }
 
-            zoeker = new Zoekresultaat(Domein, string.Format("(pager={0})", adNr));
+            _gebruiker = LdapHelper.ZoekenUniek(Domein, string.Format("(pager={0})", adNr));
 
-            if (zoeker.UniekResultaat != null)
+            // Als we een uniek resultaat hebben, is onze gebruiker gevonden.
+            // Als we geen resultaat vinden, dan hebben we nog werk.
+
+            if (_gebruiker == null)
             {
-                // 't Is den diene!
-                _gebruiker = zoeker.UniekResultaat;
-            }
-            else
-            {
+
+
                 for (int i = 0; i < 4; i++)
                 {
                     string login = LoginSuggereren(voornaam, familienaam, familienaamSeed - i, voornaamSeed + i);
 
                     // Controleer of er nog geen account bestaat met die login
-                    zoeker = new Zoekresultaat(Domein, string.Concat("sAMAccountName=", login));
-
                     // Als we niets vinden, kunnen we hiermee verder.
-                    if (zoeker.UniekResultaat == null)
+                    if (LdapHelper.ZoekenUniek(Domein, string.Concat("sAMAccountName=", login)) == null)
                     {
                         // Tweede controle: bestaat er al iemand met die naam? Kan anders namelijk niet toegevoegd worden.
-                        zoeker = new Zoekresultaat(Domein, string.Format("(&(givenName={0})(sn={1}))", voornaam, familienaam));
-                        if (zoeker.UniekResultaat == null)
+                        if (LdapHelper.ZoekenUniek(Domein, string.Format("(&(givenName={0})(sn={1}))", voornaam, familienaam)) == null)
                         {
                             // Zoek de 'organisational unit' op waar de account in terecht moet komen en zet de account erin.    
                             ou = new DirectoryEntry(Domein + ouPad);

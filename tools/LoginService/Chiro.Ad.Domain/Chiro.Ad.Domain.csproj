@@ -57,7 +57,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Zoekresultaat.cs" />
+    <Compile Include="LdapHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
