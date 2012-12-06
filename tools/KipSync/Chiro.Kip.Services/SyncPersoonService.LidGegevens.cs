@@ -524,7 +524,7 @@ namespace Chiro.Kip.Services
         {
             using (var db = new kipadminEntities())
             {
-                var lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie)
+                var lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie).Include(ld => ld.Groep)
                            where
                                l.Persoon.AdNummer == adNummer && (l.Groep is ChiroGroep) &&
                                String.Compare((l.Groep as ChiroGroep).STAMNR, stamNummer, StringComparison.OrdinalIgnoreCase) == 0 &&
@@ -541,12 +541,42 @@ namespace Chiro.Kip.Services
                 }
                 else
                 {
+                    int? aansluitNr = lid.AANSL_NR;
+                    int groepID = lid.Groep.GroepID;
+
+                    // verwijder functies van lid
                     foreach (var f in lid.HeeftFunctie.ToArray())
                     {
                         db.DeleteObject(f);
                     }
+
+                    // verwijder lid zelf & bewaar
                     db.DeleteObject(lid);
                     db.SaveChanges();
+
+                    // als er geen andere leden meer zijn met hetzelfde 'aansluitnr', verwijder dan
+                    // die aansluiting
+
+                    var allesOp = (from l in db.Lid
+                                   where l.AANSL_NR == aansluitNr && l.Groep.GroepID == groepID && l.werkjaar == werkjaar
+                                   select l).FirstOrDefault() == null;
+
+                    if (allesOp)
+                    {
+                        var aansluiting = (from a in db.Aansluiting
+                                           where
+                                               a.WerkJaar == werkjaar && a.Groep.GroepID == groepID &&
+                                               a.VolgNummer == aansluitNr
+                                           select a).FirstOrDefault();
+                        db.DeleteObject(aansluiting);
+                        db.SaveChanges();
+
+                        _log.BerichtLoggen(0, String.Format(
+                            "{2} - Aansluiting verwijderd. Nr {0} wj {1} uitschrijfdatum {3}",
+                            aansluitNr,
+                            werkjaar,
+                            stamNummer, uitschrijfDatum));
+                    }
 
                     _log.BerichtLoggen(0, String.Format(
                         "{2} - Lid verwijderd. AD{0} wj{1} uitschrijfdatum {3}",
