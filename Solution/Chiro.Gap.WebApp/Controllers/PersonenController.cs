@@ -421,13 +421,12 @@ namespace Chiro.Gap.WebApp.Controllers
 
             if (gezinsComm.Count() != 0)
             {
-                // vermijd bloat van te veel over de lijn te sturen
                 foreach (var c in gezinsComm)
                 {
-                    var c1 = c;
-                    ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(ids.GelieerdePersoonID, c1));
-
-                    // TODO errors opvangen? #1047
+                    // Do not use var here
+                    CommunicatieDetail c1 = c;
+                    ServiceHelper.CallService<IGelieerdePersonenService>(
+                        l => l.CommunicatieVormToevoegen(ids.GelieerdePersoonID, c1));
                 }
             }
 

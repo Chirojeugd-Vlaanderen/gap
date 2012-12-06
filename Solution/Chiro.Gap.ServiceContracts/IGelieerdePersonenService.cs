@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 
 using Chiro.Gap.Domain;
@@ -19,7 +20,7 @@ namespace Chiro.Gap.ServiceContracts
 	/// ServiceContract voor de GelieerdePersonenService
 	/// </summary>
 	[ServiceContract]
-	public interface IGelieerdePersonenService
+    public interface IGelieerdePersonenService
 	{
 		#region ophalen
 
