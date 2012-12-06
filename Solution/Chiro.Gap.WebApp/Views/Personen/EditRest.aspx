@@ -263,7 +263,7 @@
         </li>
         <li>Instapperiode
             <%= String.Format(
-				      Model.PersoonLidInfo.LidInfo.EindeInstapperiode < DateTime.Today ? "verliep op {0:d}" : "t/m {0:d}",
+				      Model.PersoonLidInfo.LidInfo.EindeInstapperiode < DateTime.Today ? "verliep op {0:d}" : "tot {0:d}",
 							 Model.PersoonLidInfo.LidInfo.EindeInstapperiode)  %>
         </li>
         <%
