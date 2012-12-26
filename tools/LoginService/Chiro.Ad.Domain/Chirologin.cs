@@ -225,18 +225,41 @@ namespace Chiro.Ad.Domain
 
             if (_gebruiker == null)
             {
+                // Er bestaat nog geen gebruiker. Nu moeten we nakijken of er al een andere gebruiker bestaat met dezelfde
+                // naam, want daar kan Active Directory niet mee lachen. In dat laatste geval foefelen we wat, tot we toch
+                // verder kunnen. (foefelen in de zin van cijfers aan de voornaam plakken)
 
+                int teller = 0;
+                string oorspronkelijkeVoornaam = voornaam;
 
-                for (int i = 0; i < 4; i++)
+                while (
+                    LdapHelper.ZoekenUniek(Domein, string.Format("(&(givenName={0})(sn={1}))", voornaam, familienaam)) !=
+                    null)
                 {
-                    string login = LoginSuggereren(voornaam, familienaam, familienaamSeed - i, voornaamSeed + i);
+                    voornaam = String.Format("{0}{1}", oorspronkelijkeVoornaam, ++teller);
+                }
 
-                    // Controleer of er nog geen account bestaat met die login
-                    // Als we niets vinden, kunnen we hiermee verder.
-                    if (LdapHelper.ZoekenUniek(Domein, string.Concat("sAMAccountName=", login)) == null)
+                // Dan zou het nog kunnen dat we ergens een dubbele login hebben, en dat kan ook niet. Bart had hiervoor
+                // al een truuk, namelijk minder letters gebruiken van de familienaam, en meer van de voornaam. Maar voor het
+                // geval dat niet moest volstaan, plakken we daar ook een nummer achter
+
+                int teller2 = 0;
+                bool accountGemaakt = false;
+
+                while (!accountGemaakt)
+                {
+                    for (int i = 0; !accountGemaakt && i < 4; i++)
                     {
-                        // Tweede controle: bestaat er al iemand met die naam? Kan anders namelijk niet toegevoegd worden.
-                        if (LdapHelper.ZoekenUniek(Domein, string.Format("(&(givenName={0})(sn={1}))", voornaam, familienaam)) == null)
+                        string login = LoginSuggereren(voornaam, familienaam, familienaamSeed - i, voornaamSeed + i);
+
+                        if (teller2 > 0)
+                        {
+                            login = String.Format("{0}{1}", login, teller2);
+                        }
+
+                        // Controleer of er nog geen account bestaat met die login
+                        // Als we niets vinden, kunnen we hiermee verder.
+                        if (LdapHelper.ZoekenUniek(Domein, string.Concat("sAMAccountName=", login)) == null)
                         {
                             // Zoek de 'organisational unit' op waar de account in terecht moet komen en zet de account erin.    
                             ou = new DirectoryEntry(Domein + ouPad);
@@ -256,19 +279,10 @@ namespace Chiro.Ad.Domain
                             _gebruiker.Properties["description"].Value = _gebruiker.Path;
 
                             Opslaan();
-                            break;
-                        }
-                        else
-                        {
-                            throw new ArgumentException("We hebben al een account voor iemand met dezelfde naam");
+                            accountGemaakt = true;
                         }
                     }
-                    else if (i == 3)
-                    {
-                        // We vinden iemand, maar het is iemand anders, en we zitten in de laatste loop.
-                        throw new InvalidOperationException(
-                            "We kunnen die persoon geen login meer geven met de automatische procedure. Neem contact op met het nationaal secretariaat voor manuele verwerking.");
-                    }
+                    ++teller2;
                 }
             }
         }
