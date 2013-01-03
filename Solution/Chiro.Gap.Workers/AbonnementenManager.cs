@@ -24,7 +24,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Businesslogica wat abonnementen betreft
     /// </summary>
-    public class AbonnementenManager
+    public class AbonnementenManager : IAbonnementenManager
     {
         private readonly IDao<Publicatie> _pubDao;
         private readonly IAbonnementenDao _abDao;

@@ -77,7 +77,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             try
             {
-                ServiceHelper.CallService<IGelieerdePersonenService>(svc => svc.DubbelPuntBestellen(id));
+                ServiceHelper.CallService<IAbonnementenService>(svc => svc.DubbelPuntBestellen(id));
             }
             catch (FaultException<FoutNummerFault> ex)
             {
