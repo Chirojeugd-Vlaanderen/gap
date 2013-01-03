@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
-
+using System.Web.Routing;
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
@@ -1302,9 +1302,14 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult InschrijvenVoorUitstap(int groepID, UitstapInschrijfModel model)
         {
             var uitstap = ServiceHelper.CallService<IUitstappenService, UitstapInfo>(
-                svc => svc.Inschrijven(model.GelieerdePersoonIDs, model.GeselecteerdeUitstapID, model.LogistiekDeelnemer));
+                svc =>
+                svc.Inschrijven(model.GelieerdePersoonIDs, model.GeselecteerdeUitstapID, model.LogistiekDeelnemer));
 
-            TempData["succes"] = String.Format(Properties.Resources.DeelnemersToegevoegdFeedback, uitstap.Naam);
+            string uitstapLink = HtmlHelper.GenerateLink(ControllerContext.RequestContext,
+                                                         RouteTable.Routes, uitstap.Naam, null,
+                                                         "Bekijken", "Uitstappen", new RouteValueDictionary(new {groepID, uitstap.ID}), null);
+
+            TempData["succes"] = String.Format(Properties.Resources.DeelnemersToegevoegdFeedback, uitstapLink);
 
             return TerugNaarVorigeLijst();
         }
