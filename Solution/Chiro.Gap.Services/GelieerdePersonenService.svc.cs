@@ -42,7 +42,6 @@ namespace Chiro.Gap.Services
         private readonly IGroepsWerkJaarManager _gwjMgr;
         private readonly CommVormManager _cvMgr;
         private readonly CategorieenManager _catMgr;
-        private readonly AbonnementenManager _abMgr;
         private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
         private readonly IAutorisatieManager _auMgr;
 
@@ -70,9 +69,6 @@ namespace Chiro.Gap.Services
         /// <param name="cm">
         /// De worker voor Categorieën
         /// </param>
-        /// <param name="abm">
-        /// De worker voor Abonnementen
-        /// </param>
         /// <param name="gebruikersRechtenMgr">
         /// De worker voor Gebruikersrechten
         /// </param>
@@ -87,7 +83,6 @@ namespace Chiro.Gap.Services
             IGroepsWerkJaarManager gwjm,
             CommVormManager cvm,
             CategorieenManager cm,
-            AbonnementenManager abm,
             IGebruikersRechtenManager gebruikersRechtenMgr,
             IAutorisatieManager aum)
         {
@@ -99,7 +94,6 @@ namespace Chiro.Gap.Services
             _gwjMgr = gwjm;
             _cvMgr = cvm;
             _catMgr = cm;
-            _abMgr = abm;
             _gebruikersRechtenMgr = gebruikersRechtenMgr;
         }
 
@@ -1175,62 +1169,6 @@ namespace Chiro.Gap.Services
         }
 
         #endregion categorieën
-
-        /// <summary>
-        /// Bestelt Dubbelpunt voor de persoon met GelieerdePersoonID <paramref name="gelieerdePersoonID"/>.
-        /// </summary>
-        /// <param name="gelieerdePersoonID">ID van gelieerde persoon van persoon die Dubbelpunt wil</param>
-        public void DubbelPuntBestellen(int gelieerdePersoonID)
-        {
-            // TODO (#1048): exceptions op databaseniveau catchen
-
-            GelieerdePersoon gp = null;
-            Abonnement abonnement = null;
-
-            try
-            {
-                // Het ophalen van alle groepswerkjaren is overkill.  Maar ik doe het toch.
-                gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen | PersoonsExtras.AbonnementenDitWerkjaar | PersoonsExtras.GroepsWerkJaren);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
-            catch (FoutNummerException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
-
-            Debug.Assert(gp != null);
-
-            var groepsWerkJaar = gp.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();   // recentste groepswerkjaar
-            var dubbelpunt = _abMgr.PublicatieOphalen(PublicatieID.Dubbelpunt);
-
-            try
-            {
-                abonnement = _abMgr.Abonneren(dubbelpunt, gp, groepsWerkJaar);
-            }
-            catch (BlokkerendeObjectenException<Abonnement> ex)
-            {
-                // heeft al een abonnement
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
-            catch (FoutNummerException ex)
-            {
-                if (ex.FoutNummer == FoutNummer.AdresOntbreekt || ex.FoutNummer == FoutNummer.BestelPeriodeDubbelpuntVoorbij)
-                {
-                    // Verwachte exception afhandelen
-                    FoutAfhandelaar.FoutAfhandelen(ex);
-                }
-                else
-                {
-                    // Onverwachte exception opnieuw throwen
-                    throw;
-                }
-            }
-
-            _abMgr.Bewaren(abonnement);
-        }
 
         /// <summary>
         /// Verlengt het gebruikersrecht van de GAV met login <paramref name="gebruikersRechtID"/> tot 14 maanden na vandaag.

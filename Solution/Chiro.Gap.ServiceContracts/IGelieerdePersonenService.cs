@@ -426,17 +426,5 @@ namespace Chiro.Gap.ServiceContracts
 
 		#endregion categorieën
 
-		#region abonnementen
-
-		/// <summary>
-		/// Bestelt Dubbelpunt voor de persoon met GelieerdePersoonID <paramref name="gelieerdePersoonID"/>.
-		/// </summary>
-		/// <param name="gelieerdePersoonID">ID van gelieerde persoon van persoon die Dubbelpunt wil</param>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		void DubbelPuntBestellen(int gelieerdePersoonID);
-
-		#endregion
 	}
 }
