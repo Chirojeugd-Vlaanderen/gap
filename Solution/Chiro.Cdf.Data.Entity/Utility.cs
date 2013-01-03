@@ -115,14 +115,14 @@ namespace Chiro.Cdf.Data.Entity
 			}
 		}
 
-		public static IList<T> DetachObjectGraph<T>(IList<T> entities) where T : IEfBasisEntiteit
+		public static List<T> DetachObjectGraph<T>(IList<T> entities) where T : IEfBasisEntiteit
 		{
 			using (var stream = new MemoryStream())
 			{
 				var serializer = new BinaryFormatter();
-				serializer.Serialize(stream, entities);
+				serializer.Serialize(stream, entities.ToList());
 				stream.Position = 0;
-				return (IList<T>)serializer.Deserialize(stream);
+				return (List<T>)serializer.Deserialize(stream);
 			}
 		}
 	}

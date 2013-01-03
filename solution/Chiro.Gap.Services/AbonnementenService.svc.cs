@@ -18,6 +18,9 @@ namespace Chiro.Gap.Services
     {
         private readonly IGelieerdePersonenManager _gpMgr;
         private readonly IAbonnementenManager _abMgr;
+        private readonly ILedenManager _ledenMgr;
+        private readonly IVeelGebruikt _veelGebruikt;
+
 
 
         /// <summary>
@@ -25,10 +28,16 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdePersonenManager">Businesslogica voor gelieerde personen</param>
         /// <param name="abonnementenManager">Businesslogica voor abonnementen</param>
-        public AbonnementenService(IGelieerdePersonenManager gelieerdePersonenManager, IAbonnementenManager abonnementenManager)
+        /// <param name="ledenManager">Businesslogica voor leden</param>
+        /// <param name="veelGebruikt">cache</param>
+        public AbonnementenService(IGelieerdePersonenManager gelieerdePersonenManager,
+                                   IAbonnementenManager abonnementenManager, ILedenManager ledenManager,
+                                   IVeelGebruikt veelGebruikt)
         {
             _gpMgr = gelieerdePersonenManager;
             _abMgr = abonnementenManager;
+            _ledenMgr = ledenManager;
+            _veelGebruikt = veelGebruikt;
         }
 
         /// <summary>
@@ -87,5 +96,33 @@ namespace Chiro.Gap.Services
             _abMgr.Bewaren(abonnement);
         }
 
+        /// <summary>
+        /// Controleert of de gelieerde persoon met gegeven <paramref name="id"/> recht heeft op gratis Dubbelpunt.
+        /// </summary>
+        /// <param name="id">GelieerdePersoonID</param>
+        /// <returns><c>true</c> als de persoon zeker een gratis dubbelpuntabonnement krijgt voor jouw groep. <c>false</c>
+        /// als de persoon zeker geen gratis dubbelpuntabonnement krijgt voor jouw groep. En <c>null</c> als het niet
+        /// duidelijk is. (In praktijk: als de persoon contactpersoon is, maar als er meerdere contactpersonen zijn.)
+        /// </returns>
+        public bool? HeeftGratisDubbelpunt(int id)
+        {
+            var groep = _gpMgr.Ophalen(id, PersoonsExtras.Groep).Groep;
+            var groepsWerkJaar = _veelGebruikt.GroepsWerkJaarOphalen(groep.ID);
+            var contactPersonen = _ledenMgr.Ophalen(groepsWerkJaar.ID, NationaleFunctie.ContactPersoon);
+
+            if (contactPersonen.Any(ld => ld.GelieerdePersoon.ID == id))
+            {
+                if (contactPersonen.First() == contactPersonen.Last())
+                {
+                    // Er is maar 1 contactpersoon, en dat is de gelieerde persoon die we zoeken
+                    return true;    // gratis dubbelpunt
+                }
+                // Meerdere contactpersonen. Mogelijk gratis dubbelpunt.
+                return null;
+            }
+
+            // Persoon is geen contactpersoon van zijn groep. Geen gratis dubbelpunt.
+            return false;
+        }
     }
 }

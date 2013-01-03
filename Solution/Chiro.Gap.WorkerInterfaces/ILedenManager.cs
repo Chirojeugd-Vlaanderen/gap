@@ -189,5 +189,15 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Er worden enkel actieve leden opgehaald
         /// </remarks>
         IEnumerable<Lid> Zoeken(LidFilter filter, LidExtras extras);
+
+        /// <summary>
+        /// Haalt alle leden op uit groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/> en gegeven
+        /// <paramref name="nationaleFunctie"/>, met daaraan gekoppeld de gelieerde personen.
+        /// </summary>
+        /// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
+        /// <param name="nationaleFunctie">een nationale functie</param>
+        /// <returns>alle leden op uit groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/> en gegeven
+        /// <paramref name="nationaleFunctie"/>, met daaraan gekoppeld de gelieerde personen.</returns>
+        List<Lid> Ophalen(int groepsWerkJaarID, NationaleFunctie nationaleFunctie);
     }
 }

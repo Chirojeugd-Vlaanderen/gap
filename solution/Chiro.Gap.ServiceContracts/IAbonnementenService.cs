@@ -17,5 +17,16 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
         void DubbelPuntBestellen(int gelieerdePersoonID);
+
+        /// <summary>
+        /// Controleert of de gelieerde persoon met gegeven <paramref name="id"/> recht heeft op gratis Dubbelpunt.
+        /// </summary>
+        /// <param name="id">GelieerdePersoonID</param>
+        /// <returns><c>true</c> als de persoon zeker een gratis dubbelpuntabonnement krijgt voor jouw groep. <c>false</c>
+        /// als de persoon zeker geen gratis dubbelpuntabonnement krijgt voor jouw groep. En <c>null</c> als het niet
+        /// duidelijk is. (In praktijk: als de persoon contactpersoon is, maar als er meerdere contactpersonen zijn.)
+        /// </returns>
+        [OperationContract]
+        bool? HeeftGratisDubbelpunt(int id);
     }
 }

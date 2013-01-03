@@ -495,7 +495,7 @@ namespace Chiro.Gap.Data.Ef
         /// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten</param>
         /// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
         /// de functie bepaald door <paramref name="functieID"/> hebben.</returns>
-        public IList<Lid> OphalenUitFunctie(int functieID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
+        public List<Lid> OphalenUitFunctie(int functieID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
         {
             IList<Lid> result;
             using (var db = new ChiroGroepEntities())
