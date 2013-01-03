@@ -71,7 +71,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CategorieToevoegen.cs" />
     <Compile Include="CategorieVerwijderen.cs" />
     <Compile Include="GelieerdePersonenServiceTest.cs" />
     <Compile Include="LedenServiceTest.cs" />
