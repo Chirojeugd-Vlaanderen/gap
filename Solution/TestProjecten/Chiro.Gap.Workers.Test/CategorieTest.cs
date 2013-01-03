@@ -96,30 +96,5 @@ namespace Chiro.Gap.Workers.Test
 			Assert.IsTrue(testData.GelieerdeJos.Categorie.Count == aantalCategorieen);
 		}
 
-		[TestMethod]
-		public void LoskoppelenCategorie()
-		{
-            //// Arrange
-
-            //var testData = new DummyData();
-            //var gpMgr = Factory.Maak<GelieerdePersonenManager>();
-            //// Voeg Irene voor het gemak toe aan de vervelende personen, zodat ze verwijderd kan worden.
-            //gpMgr.CategorieKoppelen(
-            //    new GelieerdePersoon[] { testData.GelieerdeIrene }, 
-            //    testData.Vervelend);
-
-            //// Act
-
-            //// opnieuw loskoppelen
-            //gpMgr.CategorieLoskoppelen(new int[] { testData.GelieerdeIrene.ID }, testData.Vervelend);
-
-            //// Assert
-
-            //// LosKoppelen is een 'delete', dus moet er direct bewaard worden.
-
-            //Assert.IsFalse(testData.Vervelend.GelieerdePersoon.Contains(testData.GelieerdeIrene));
-            throw new NotImplementedException();
-		}
-
 	}
 }
