@@ -51,6 +51,7 @@
     <Compile Include="IGroepenManager.cs" />
     <Compile Include="IGroepsWerkJarenManager.cs" />
     <Compile Include="ILedenManager.cs" />
+    <Compile Include="IUitstappenManager.cs" />
     <Compile Include="IVeelGebruikt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

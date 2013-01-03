@@ -5,17 +5,45 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Services
 {
     /// <summary>
-    /// TODO (#190): documenteren
+    /// Service methods m.b.t. uitstappen
     /// </summary>
     public class UitstappenService : IUitstappenService
     {
+
+        // Repositories, verantwoordelijk voor data access
+
+        private readonly IRepository<GroepsWerkJaar> _groepsWerkJaarRepo;
+
+        // Managers voor niet-triviale businesslogica
+
+        private readonly IAutorisatieManager _autorisatieMgr;
+        private readonly IUitstappenManager _uitstappenMgr;
+
+        /// <summary>
+        /// Constructor, verantwoordelijk voor dependency injection
+        /// </summary>
+        /// <param name="repositoryProvider">de repositoryprovider zal de nodige repositories opleveren</param>
+        /// <param name="autorisatieManager">businesslogica m.b.t. autorisatie</param>
+        /// <param name="uitstappenManager">businesslogica m.b.t. uitstappen</param>
+        public UitstappenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieManager,
+                                 IUitstappenManager uitstappenManager)
+        {
+            _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
+            _autorisatieMgr = autorisatieManager;
+            _uitstappenMgr = uitstappenManager;
+        }
+
         /// <summary>
         /// Bewaart een uitstap aan voor de groep met gegeven <paramref name="groepID"/>
         /// </summary>
@@ -154,7 +182,49 @@ namespace Chiro.Gap.Services
         /// </returns>
         public BivakAangifteLijstInfo BivakStatusOphalen(int groepID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var resultaat = new BivakAangifteLijstInfo();
+
+            var gwjQuery = _groepsWerkJaarRepo.Select();
+
+            var groepsWerkJaar =
+                gwjQuery.Where(gwj => gwj.Groep.ID == groepID).OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
+
+            if (groepsWerkJaar == null || !_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            if (!_uitstappenMgr.BivakAangifteVanBelang(groepsWerkJaar))
+            {
+                resultaat.AlgemeneStatus = BivakAangifteStatus.NogNietVanBelang;
+            }
+            else
+            {
+                resultaat.Bivakinfos = (from u in groepsWerkJaar.Uitstap
+                                        where u.IsBivak
+                                        select
+                                            new BivakAangifteInfo
+                                                {
+                                                    ID = u.ID,
+                                                    Omschrijving = u.Naam,
+                                                    Status = _uitstappenMgr.StatusBepalen(u)
+                                                }).ToList();
+
+                if (resultaat.Bivakinfos.FirstOrDefault() == null)
+                {
+                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ontbrekend;
+                }
+                else if (resultaat.Bivakinfos.Any(bi => bi.Status != BivakAangifteStatus.Ok))
+                {
+                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ontbrekend;
+                }
+                else
+                {
+                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ok;
+                }
+            }
+
+            return resultaat;
         }
     }
 }

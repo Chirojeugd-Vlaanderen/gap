@@ -20,7 +20,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Businesslogica wat betreft uitstappen en bivakken
     /// </summary>
-    public class UitstappenManager
+    public class UitstappenManager : IUitstappenManager
     {
         private readonly IAutorisatieManager _autorisatieManager;
         private readonly IBivakSync _sync;
@@ -249,6 +249,41 @@ namespace Chiro.Gap.Workers
             //}
 
             //return statuslijst;
+        }
+
+        /// <summary>
+        /// Bepaalt of het de tijd van het jaar is voor de bivakaangifte
+        /// </summary>
+        /// <param name="groepsWerkJaar">huidige groepswerkjaar</param>
+        /// <returns><c>true</c> als de bivakaangifte voor <paramref name="groepsWerkJaar"/> moet worden doorgegeven, 
+        /// anders <c>false</c></returns>
+        public bool BivakAangifteVanBelang(GroepsWerkJaar groepsWerkJaar)
+        {
+            DateTime startAangifte = Settings.Default.BivakAangifteStart;
+            DateTime startAangifteDitWerkjaar = new DateTime(groepsWerkJaar.WerkJaar + 1, startAangifte.Month, startAangifte.Day);
+
+            return (DateTime.Today >= startAangifteDitWerkjaar);
+        }
+
+        /// <summary>
+        /// Bepaalt de status van de gegeven <paramref name="uitstap"/>
+        /// </summary>
+        /// <param name="uitstap">Uitstap, waarvan status bepaald moet worden</param>
+        /// <returns>De status van de gegeven <paramref name="uitstap"/></returns>
+        public BivakAangifteStatus StatusBepalen(Uitstap uitstap)
+        {
+            BivakAangifteStatus resultaat = BivakAangifteStatus.Ok;
+
+            if (uitstap.Plaats == null)
+            {
+                resultaat |= BivakAangifteStatus.PlaatsOntbreekt;
+            }
+            if (uitstap.ContactDeelnemer == null)
+            {
+                resultaat |= BivakAangifteStatus.ContactOntbreekt;
+            }
+
+            return resultaat;
         }
     }
 }

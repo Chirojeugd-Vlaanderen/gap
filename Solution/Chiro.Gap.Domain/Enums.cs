@@ -204,22 +204,23 @@ namespace Chiro.Gap.Domain
 	/// Geeft aan of de bivakaangifte al is ingevuld
 	/// </summary>
 	[DataContract]
+    [Flags]
 	public enum BivakAangifteStatus
 	{
 		[EnumMember]
-		Onbekend,
+		Ok = 0x00,
 		[EnumMember]
-		Ingevuld,
+		NogNietVanBelang = 0x01,
 		[EnumMember]
-		NogNietVanBelang,
+		Ontbrekend = 0x02,
 		[EnumMember]
-		DringendInTeVullen,
+		ContactOntbreekt = 0x04,
 		[EnumMember]
-		PersoonInTeVullen,
+		PlaatsOntbreekt = 0x08,
 		[EnumMember]
-		PlaatsInTeVullen,
-		[EnumMember]
-		PlaatsEnPersoonInTeVullen
+		PlaatsEnContactOntbreekt = ContactOntbreekt|PlaatsOntbreekt,
+        [EnumMember]
+        Onbekend = 0x10
 	}
 
     /// <summary>
