@@ -29,5 +29,10 @@ namespace Chiro.Gap.WebApp.Models
         /// Wettegijwel wadatakost?
         /// </summary>
         public decimal Prijs { get; set; }
+
+        /// <summary>
+        /// Extra waarschuwing die getoond wordt indien niet leeg
+        /// </summary>
+        public string ExtraWaarschuwing { get; set; }
     }
 }

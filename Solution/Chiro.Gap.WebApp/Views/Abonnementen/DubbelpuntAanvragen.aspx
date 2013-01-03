@@ -18,6 +18,19 @@
             		                                  "EditRest",
             		                                  new {Controller = "Personen", id = Model.GelieerdePersoonID})%></li>
 	</ul>
+    
+    <%
+        if (!String.IsNullOrEmpty(Model.ExtraWaarschuwing))
+        {
+            %>
+            <div class="Foutmelding">
+                <%=Model.ExtraWaarschuwing %>
+            </div>
+            <%
+        }
+    %>
+
+
 	Je staat op het punt om een <a href='http://www.chiro.be/dubbelpunt'>Dubbelpuntabonnement</a>
 	te bestellen voor
 	<%=Html.ActionLink(Model.VolledigeNaam,
@@ -29,8 +42,6 @@
 	Hiervoor zal <strong>&euro;
 		<%=Model.Prijs.ToString() %></strong> aangerekend worden. Klik op &lsquo;bevestigen&rsquo;
 	om Dubbelpunt te bestellen. <br />
-	
-    NB: De contactpersoon van je groep krijgt sowieso een gratis Dubbelpuntabonnement. <br />
 	<%
             	}
             }

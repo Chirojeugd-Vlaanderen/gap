@@ -920,5 +920,18 @@ namespace Chiro.Gap.Workers
             var alles = kinderen.Union(leiding);
             return alles.Where(ld => ld.NonActief == false).ToArray();
         }
+
+        /// <summary>
+        /// Haalt alle leden op uit groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/> en gegeven
+        /// <paramref name="nationaleFunctie"/>, met daaraan gekoppeld de gelieerde personen.
+        /// </summary>
+        /// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
+        /// <param name="nationaleFunctie">een nationale functie</param>
+        /// <returns>alle leden op uit groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/> en gegeven
+        /// <paramref name="nationaleFunctie"/>, met daaraan gekoppeld de gelieerde personen.</returns>
+        public List<Lid> Ophalen(int groepsWerkJaarID, NationaleFunctie nationaleFunctie)
+        {
+            return _daos.LedenDao.OphalenUitFunctie((int) nationaleFunctie, groepsWerkJaarID, ld => ld.GelieerdePersoon);
+        }
     }
 }

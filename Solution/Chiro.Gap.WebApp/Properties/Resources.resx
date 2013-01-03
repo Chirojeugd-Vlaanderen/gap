@@ -368,4 +368,10 @@
   <data name="UitstapVerwijderenFout" xml:space="preserve">
     <value>De uitstap kon niet verwijderd worden</value>
   </data>
+  <data name="KrijgtAlDubbelpunt" xml:space="preserve">
+    <value>Opgelet! {0} is de contactpersoon van je groep, en krijgt sowieso  een gratis Dubbelpuntabonnement. Ben je zeker dat je een extra abonnement wilt bestellen?</value>
+  </data>
+  <data name="MisschienGratisDubbelpunt" xml:space="preserve">
+    <value>Opgelet! De contactpersoon van je groep krijgt sowieso een gratis Dubbelpuntabonnement. Als {0} jullie contactpersoon is, hoef je voor hem/haar dus geen abonnement te bestellen. Maar er mag slechts één persoon contactpersoon zijn; dat is iets dat je blijkbaar nog in orde moet brengen.</value>
+  </data>
 </root>

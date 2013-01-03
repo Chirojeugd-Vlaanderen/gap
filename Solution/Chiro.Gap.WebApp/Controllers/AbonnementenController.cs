@@ -4,6 +4,9 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
 
@@ -48,18 +51,37 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new BevestigingsModel();
             BaseModelInit(model, groepID);
 
-            // TODO (#1140): DetailsOphalen is overkill, aangezien ik enkel de volledige naam nodig heb.
-            // OPM: als je de gebruiker wilt waarschuwen dat de kandidaat-abonnee eigenlijk te jong is om in aanmerking te komen,
-            //		heb je wel de geboortedatum of de leeftijd nodig
 
-            var info = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(svc => svc.DetailOphalen(id));
+            var info =
+                ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(
+                    svc => svc.PersoonInfoOphalen(new List<int> {id})).FirstOrDefault();
+
+
+            Debug.Assert(info != null);
 
             model.LidID = 0;	// LidID is hier niet relevant
 
             model.GelieerdePersoonID = info.GelieerdePersoonID;
-            model.VolledigeNaam = info.VolledigeNaam;
+            model.VolledigeNaam = string.Format("{0} {1}", info.VoorNaam, info.Naam);
+
             model.Prijs = Properties.Settings.Default.PrijsDubbelPunt;
             model.Titel = String.Format("Dubbelpunt bestellen voor {0}", model.VolledigeNaam);
+
+            switch (ServiceHelper.CallService<IAbonnementenService, Boolean?>(svc => svc.HeeftGratisDubbelpunt(id)))
+            {
+                case true:
+                    // Persoon is contactpersoon. Zal sowieso dubbelpunt krijgen.
+                    model.ExtraWaarschuwing = String.Format(Properties.Resources.KrijgtAlDubbelpunt, model.VolledigeNaam);
+                    break;
+                case null:
+                    // Persoon is contactpersoon, maar er zijn meerdere contactpersonen (wat een fout van de gebruiker is)
+                    // 1 contactpersoon krijgt gratis Dubbelpunt, dat zullen we al eens melden.
+                    model.ExtraWaarschuwing = String.Format(Properties.Resources.MisschienGratisDubbelpunt, model.VolledigeNaam);
+                    break;
+                default:
+                    model.ExtraWaarschuwing = null;
+                    break;
+            }
 
             return View(model);
         }
