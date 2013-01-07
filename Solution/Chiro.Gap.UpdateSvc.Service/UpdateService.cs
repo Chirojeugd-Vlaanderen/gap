@@ -93,6 +93,19 @@ namespace Chiro.Gap.UpdateSvc.Service
 		}
 
         /// <summary>
+        /// Markeert een groep in GAP als gestopt.
+        /// </summary>
+        /// <param name="stamNr">Stamnummer te stoppen groep</param>
+        /// <param name="stopDatum">Datum vanaf wanneer gestopt</param>
+        public void GroepDesactiveren(string stamNr, DateTime stopDatum)
+        {
+            var g = _groepenMgr.Ophalen(stamNr);
+            g.StopDatum = stopDatum;
+            _groepenMgr.Bewaren(g);
+            Console.WriteLine("Groep gedesactiveerd: {0}", stamNr);
+        }
+
+        /// <summary>
         /// Synct alle leden van het recentste werkJaar van een groep opnieuw naar Kipadmin
         /// </summary>
         /// <param name="stamNummer">Stamnummer van groep met te syncen leden</param>

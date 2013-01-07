@@ -2,6 +2,7 @@
 //   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.ServiceModel;
 
 namespace Chiro.Gap.UpdateSvc.Contracts
@@ -33,6 +34,14 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 		/// <param name="nieuwAd">Nieuw AD-nummer</param>
 		[OperationContract(IsOneWay = true)]
 		void AdNummerVervangen(int oudAd, int nieuwAd);
+
+        /// <summary>
+        /// Markeert een groep in GAP als gestopt.
+        /// </summary>
+        /// <param name="stamNr">Stamnummer te stoppen groep</param>
+        /// <param name="stopDatum">Datum vanaf wanneer gestopt</param>
+	    [OperationContract(IsOneWay = true)]
+	    void GroepDesactiveren(string stamNr, DateTime stopDatum);
 
         /// <summary>
         /// Synct alle leden van het recentste werkJaar van een groep opnieuw naar Kipadmin
