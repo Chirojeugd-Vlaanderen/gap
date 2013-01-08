@@ -35,13 +35,14 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 		[OperationContract(IsOneWay = true)]
 		void AdNummerVervangen(int oudAd, int nieuwAd);
 
-        /// <summary>
-        /// Markeert een groep in GAP als gestopt.
-        /// </summary>
-        /// <param name="stamNr">Stamnummer te stoppen groep</param>
-        /// <param name="stopDatum">Datum vanaf wanneer gestopt</param>
+	    /// <summary>
+	    /// Markeert een groep in GAP als gestopt. Of als terug actief.
+	    /// </summary>
+	    /// <param name="stamNr">Stamnummer te stoppen groep</param>
+	    /// <param name="stopDatum">Datum vanaf wanneer gestopt, <c>null</c> om de groep opnieuw te activeren.</param>
+	    /// <remarks>Als <paramref name="stopDatum"/> <c>null</c> is, wordt de groep opnieuw actief.</remarks>
 	    [OperationContract(IsOneWay = true)]
-	    void GroepDesactiveren(string stamNr, DateTime stopDatum);
+	    void GroepDesactiveren(string stamNr, DateTime? stopDatum);
 
         /// <summary>
         /// Synct alle leden van het recentste werkJaar van een groep opnieuw naar Kipadmin
