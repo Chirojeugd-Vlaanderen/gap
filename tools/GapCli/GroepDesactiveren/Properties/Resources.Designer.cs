@@ -61,7 +61,7 @@ namespace GroepDesactiveren.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GEBRUIK: {0} stamnummer.
+        ///   Looks up a localized string similar to GEBRUIK: {0} &quot;stamnummer&quot;.
         /// </summary>
         internal static string Gebruik {
             get {

@@ -127,7 +127,7 @@ namespace Chiro.Gap.Workers
 				g.Naam = g.Naam.Substring(6);
 			}
 		
-            if (!_autorisatieMgr.IsGavGroep(g.ID) && !_autorisatieMgr.IsSuperGav())
+            if (!_autorisatieMgr.IsSuperGav() && !_autorisatieMgr.IsGavGroep(g.ID))
             {
                 // Groepen wijzigen enkel als GAV of super-GAV
                 throw new GeenGavException(Resources.GeenGav);
