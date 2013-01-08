@@ -1,0 +1,592 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Chiro.Adf.ServiceModel</name>
+    </assembly>
+    <members>
+        <member name="T:Chiro.Adf.ServiceModel.LocalizationBehavior">
+            <summary>
+            
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="F:Chiro.Adf.ServiceModel.LocalizationBehavior.HEADER_NAME">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Chiro.Adf.ServiceModel.LocalizationBehavior.NAMESPACE">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.LocalizationBehavior.ApplyClientBehavior(System.ServiceModel.Description.ServiceEndpoint,System.ServiceModel.Dispatcher.ClientRuntime)">
+            <summary>
+            Implements a modification or extension of the client across an endpoint.
+            </summary>
+            <param name="endpoint">The endpoint that is to be customized.</param>
+            <param name="clientRuntime">The client runtime to be customized.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.LocalizationBehavior.BeforeSendRequest(System.ServiceModel.Channels.Message@,System.ServiceModel.IClientChannel)">
+            <summary>
+            Enables inspection or modification of a message before a request message is sent to a service.
+            </summary>
+            <param name="request">The message to be sent to the service.</param>
+            <param name="channel">The  client object channel.</param>
+            <returns>The object that is returned as the correlationState argument of the <see cref="M:System.ServiceModel.Dispatcher.IClientMessageInspector.AfterReceiveReply(System.ServiceModel.Channels.Message@,System.Object)"/> method. This is null if no correlation state is used.The best practice is to make this a <see cref="T:System.Guid"/> to ensure that no two correlationState objects are the same.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.LocalizationBehavior.ApplyDispatchBehavior(System.ServiceModel.Description.ServiceEndpoint,System.ServiceModel.Dispatcher.EndpointDispatcher)">
+            <summary>
+            Implements a modification or extension of the service across an endpoint.
+            </summary>
+            <param name="endpoint">The endpoint that exposes the contract.</param>
+            <param name="endpointDispatcher">The endpoint dispatcher to be modified or extended.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.LocalizationBehavior.AfterReceiveRequest(System.ServiceModel.Channels.Message@,System.ServiceModel.IClientChannel,System.ServiceModel.InstanceContext)">
+            <summary>
+            Called after an inbound message has been received but before the message is dispatched to the intended operation.
+            </summary>
+            <param name="request">The request message.</param>
+            <param name="channel">The incoming channel.</param>
+            <param name="instanceContext">The current service instance.</param>
+            <returns>The object used to correlate state. This object is passed back in the <see cref="M:System.ServiceModel.Dispatcher.IDispatchMessageInspector.BeforeSendReply(System.ServiceModel.Channels.Message@,System.Object)"/> method.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.LocalizationBehavior.AfterReceiveReply(System.ServiceModel.Channels.Message@,System.Object)">
+            <summary>
+            Enables inspection or modification of a message after a reply message is received but prior to passing it back to the client application.
+            </summary>
+            <param name="reply">The message to be transformed into types and handed back to the client application.</param>
+            <param name="correlationState">Correlation state data.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.LocalizationBehavior.Validate(System.ServiceModel.Description.ServiceEndpoint)">
+            <summary>
+            Implement to confirm that the endpoint meets some intended criteria.
+            </summary>
+            <param name="endpoint">The endpoint to validate.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.LocalizationBehavior.AddBindingParameters(System.ServiceModel.Description.ServiceEndpoint,System.ServiceModel.Channels.BindingParameterCollection)">
+            <summary>
+            Implement to pass data at runtime to bindings to support custom behavior.
+            </summary>
+            <param name="endpoint">The endpoint to modify.</param>
+            <param name="bindingParameters">The objects that binding elements require to support the behavior.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.LocalizationBehavior.BeforeSendReply(System.ServiceModel.Channels.Message@,System.Object)">
+            <summary>
+            Called after the operation has returned but before the reply message is sent.
+            </summary>
+            <param name="reply">The reply message. This value is null if the operation is one way.</param>
+            <param name="correlationState">The correlation object returned from the <see cref="M:System.ServiceModel.Dispatcher.IDispatchMessageInspector.AfterReceiveRequest(System.ServiceModel.Channels.Message@,System.ServiceModel.IClientChannel,System.ServiceModel.InstanceContext)"/> method.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:Chiro.Adf.ServiceModel.ExceptionShieldingMessageInspector">
+            <summary>
+            
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="F:Chiro.Adf.ServiceModel.ExceptionShieldingMessageInspector._knownFaultTypes">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ExceptionShieldingMessageInspector.#ctor(System.Type[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chiro.Adf.ServiceModel.ExceptionShieldingMessageInspector"/> class.
+            </summary>
+            <param name="knownFaultTypes">The known fault types.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ExceptionShieldingMessageInspector.BeforeSendRequest(System.ServiceModel.Channels.Message@,System.ServiceModel.IClientChannel)">
+            <summary>
+            Enables inspection or modification of a message before a request message is sent to a service.
+            </summary>
+            <param name="request">The message to be sent to the service.</param>
+            <param name="channel">The  client object channel.</param>
+            <returns>The object that is returned as the correlationState argument of the <see cref="M:System.ServiceModel.Dispatcher.IClientMessageInspector.AfterReceiveReply(System.ServiceModel.Channels.Message@,System.Object)"/> method. This is null if no correlation state is used.The best practice is to make this a <see cref="T:System.Guid"/> to ensure that no two correlationState objects are the same.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ExceptionShieldingMessageInspector.AfterReceiveReply(System.ServiceModel.Channels.Message@,System.Object)">
+            <summary>
+            Enables inspection or modification of a message after a reply message is received but prior to passing it back to the client application.
+            </summary>
+            <param name="reply">The message to be transformed into types and handed back to the client application.</param>
+            <param name="correlationState">Correlation state data.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ExceptionShieldingMessageInspector.ReadFaultDetail(System.ServiceModel.Channels.MessageFault,System.Type)">
+            <summary>
+            Reads the fault detail.
+            </summary>
+            <param name="reply">The reply.</param>
+            <param name="faultType">Type of the fault.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:Chiro.Adf.ServiceModel.ExceptionShieldingErrorHandler">
+            <summary>
+            
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="F:Chiro.Adf.ServiceModel.ExceptionShieldingErrorHandler._knownFaultTypes">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Chiro.Adf.ServiceModel.ExceptionShieldingErrorHandler._exceptionTypes">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ExceptionShieldingErrorHandler.#ctor(System.Type[],System.Type[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chiro.Adf.ServiceModel.ExceptionShieldingErrorHandler"/> class.
+            </summary>
+            <param name="knownFaultTypes">The known fault types.</param>
+            <param name="exceptionTypes">The exception types.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ExceptionShieldingErrorHandler.HandleError(System.Exception)">
+            <summary>
+            Enables error-related processing and returns a value that indicates whether the dispatcher aborts the session and the instance context in certain cases.
+            </summary>
+            <param name="error">The exception thrown during processing.</param>
+            <returns>true if  should not abort the session (if there is one) and instance context if the instance context is not <see cref="F:System.ServiceModel.InstanceContextMode.Single"/>; otherwise, false. The default is false.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ExceptionShieldingErrorHandler.ProvideFault(System.Exception,System.ServiceModel.Channels.MessageVersion,System.ServiceModel.Channels.Message@)">
+            <summary>
+            Enables the creation of a custom <see cref="T:System.ServiceModel.FaultException`1"/> that is returned from an exception in the course of a service method.
+            </summary>
+            <param name="error">The <see cref="T:System.Exception"/> object thrown in the course of the service operation.</param>
+            <param name="version">The SOAP version of the message.</param>
+            <param name="fault">The <see cref="T:System.ServiceModel.Channels.Message"/> object that is returned to the client, or service, in the duplex case.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ExceptionShieldingErrorHandler.CreateFaultException(System.Type,System.Exception)">
+            <summary>
+            Creates the fault exception.
+            </summary>
+            <param name="faultType">Type of the fault.</param>
+            <param name="exception">The exception.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:Chiro.Adf.ServiceModel.ShieldExceptionsAttribute">
+            <summary>
+            Makes sure that expected or unexpected exceptions are properly shielded from the client and translated to SOAP faults.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ShieldExceptionsAttribute.#ctor(System.Type[],System.Type[])">
+            <summary>
+            Creates a new instance of the ShieldExceptionsAttribute class.
+            </summary>
+            <param name="exceptionTypes">An array of possible types of exceptions to shield.</param>
+            <param name="knownFaultTypes">An array of corresponding fault types to which the exceptions should be translated.</param>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ShieldExceptionsAttribute.AddBindingParameters(System.ServiceModel.Description.ContractDescription,System.ServiceModel.Description.ServiceEndpoint,System.ServiceModel.Channels.BindingParameterCollection)">
+            <summary>
+             Adds the specified fault contracts to the service contract.
+             </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ShieldExceptionsAttribute.ApplyClientBehavior(System.ServiceModel.Description.ContractDescription,System.ServiceModel.Description.ServiceEndpoint,System.ServiceModel.Dispatcher.ClientRuntime)">
+            <summary>
+             Adds the ExceptionShieldingMessageInspector to the client runtime.
+             </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ShieldExceptionsAttribute.ApplyDispatchBehavior(System.ServiceModel.Description.ContractDescription,System.ServiceModel.Description.ServiceEndpoint,System.ServiceModel.Dispatcher.DispatchRuntime)">
+            <summary>
+            Adds the ExceptionShieldingErrorHandler to the channel dispatcher.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ShieldExceptionsAttribute.Validate(System.ServiceModel.Description.ContractDescription,System.ServiceModel.Description.ServiceEndpoint)">
+            <summary>
+             Ensures the specified exception and fault contract types are valid.
+             </summary>
+        </member>
+        <member name="T:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior">
+            <summary>
+            
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="F:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior._contextType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior"/> class.
+            </summary>
+            <param name="type">The type.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.System#ServiceModel#Description#IServiceBehavior#ApplyDispatchBehavior(System.ServiceModel.Description.ServiceDescription,System.ServiceModel.ServiceHostBase)">
+            <summary>
+            Provides the ability to change run-time property values or insert custom extension objects such as error handlers, message or parameter interceptors, security extensions, and other custom extension objects.
+            </summary>
+            <param name="serviceDescription">The service description.</param>
+            <param name="serviceHostBase">The host that is currently being built.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.System#ServiceModel#Description#IEndpointBehavior#ApplyDispatchBehavior(System.ServiceModel.Description.ServiceEndpoint,System.ServiceModel.Dispatcher.EndpointDispatcher)">
+            <summary>
+            Implements a modification or extension of the service across an endpoint.
+            </summary>
+            <param name="endpoint">The endpoint that exposes the contract.</param>
+            <param name="endpointDispatcher">The endpoint dispatcher to be modified or extended.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.System#ServiceModel#Description#IOperationBehavior#ApplyDispatchBehavior(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Dispatcher.DispatchOperation)">
+            <summary>
+            Implements a modification or extension of the service across an operation.
+            </summary>
+            <param name="operationDescription">The operation being examined. Use for examination only. If the operation description is modified, the results are undefined.</param>
+            <param name="dispatchOperation">The run-time object that exposes customization properties for the operation described by <paramref name="operationDescription"/>.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.Validate(System.ServiceModel.Description.ServiceDescription,System.ServiceModel.ServiceHostBase)">
+            <summary>
+            Provides the ability to inspect the service host and the service description to confirm that the service can run successfully.
+            </summary>
+            <param name="serviceDescription">The service description.</param>
+            <param name="serviceHostBase">The service host that is currently being constructed.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.AddBindingParameters(System.ServiceModel.Description.ServiceDescription,System.ServiceModel.ServiceHostBase,System.Collections.ObjectModel.Collection{System.ServiceModel.Description.ServiceEndpoint},System.ServiceModel.Channels.BindingParameterCollection)">
+            <summary>
+            Provides the ability to pass custom data to binding elements to support the contract implementation.
+            </summary>
+            <param name="serviceDescription">The service description of the service.</param>
+            <param name="serviceHostBase">The host of the service.</param>
+            <param name="endpoints">The service endpoints.</param>
+            <param name="bindingParameters">Custom objects to which binding elements have access.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.Validate(System.ServiceModel.Description.ServiceEndpoint)">
+            <summary>
+            Implement to confirm that the endpoint meets some intended criteria.
+            </summary>
+            <param name="endpoint">The endpoint to validate.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.AddBindingParameters(System.ServiceModel.Description.ServiceEndpoint,System.ServiceModel.Channels.BindingParameterCollection)">
+            <summary>
+            Implement to pass data at runtime to bindings to support custom behavior.
+            </summary>
+            <param name="endpoint">The endpoint to modify.</param>
+            <param name="bindingParameters">The objects that binding elements require to support the behavior.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.ApplyClientBehavior(System.ServiceModel.Description.ServiceEndpoint,System.ServiceModel.Dispatcher.ClientRuntime)">
+            <summary>
+            Implements a modification or extension of the client across an endpoint.
+            </summary>
+            <param name="endpoint">The endpoint that is to be customized.</param>
+            <param name="clientRuntime">The client runtime to be customized.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.Validate(System.ServiceModel.Description.OperationDescription)">
+            <summary>
+            Implement to confirm that the operation meets some intended criteria.
+            </summary>
+            <param name="operationDescription">The operation being examined. Use for examination only. If the operation description is modified, the results are undefined.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.ApplyClientBehavior(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Dispatcher.ClientOperation)">
+            <summary>
+            Implements a modification or extension of the client across an operation.
+            </summary>
+            <param name="operationDescription">The operation being examined. Use for examination only. If the operation description is modified, the results are undefined.</param>
+            <param name="clientOperation">The run-time object that exposes customization properties for the operation described by <paramref name="operationDescription"/>.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehavior.AddBindingParameters(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Channels.BindingParameterCollection)">
+            <summary>
+            Implement to pass data at runtime to bindings to support custom behavior.
+            </summary>
+            <param name="operationDescription">The operation being examined. Use for examination only. If the operation description is modified, the results are undefined.</param>
+            <param name="bindingParameters">The collection of objects that binding elements require to support the behavior.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:Chiro.Adf.ServiceModel.ServiceHelper">
+            <summary>
+            Provides helper/extension methods to call operations on service proxies and making sure the proxy is 
+            disposed or aborted in case of timeout or communication exceptions.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ServiceHelper.Call``1(``0,System.Action{``0})">
+            <summary>
+            Calls the specified operation on a service instance and safely disposes or aborts the service 
+            (proxy) in case of Timeout or communication exceptions.
+            </summary>
+            <typeparam name="I">The service type</typeparam>
+            <param name="service">The service instance to perform the opreation on.</param>
+            <param name="operation">The operation to invoke.</param>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ServiceHelper.Call``2(``0,System.Func{``0,``1})">
+            <summary>
+            Calls the specified operation on a service instance and safely disposes or aborts the service (proxy) in case of Timeout or communication exceptions.
+            </summary>
+            <typeparam name="I">The type of service.</typeparam>
+            <typeparam name="T">The return value type</typeparam>
+            <param name="service">The serivice instance to call the operation on.</param>
+            <param name="operation">The service operation to invoke.</param>
+            <returns>the return value of the service operation.</returns>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ServiceHelper.CallService``1(System.Action{``0})">
+            <summary>
+            Gebruik deze method om een method van een service aan te roepen.
+            </summary>
+            <typeparam name="I">ServiceContract aan te roepen service</typeparam>
+            <param name="operation">Lambda-expressie die de vertrekkende van <typeparamref name="I"/>
+            de gewenste method oproept.</param>
+            <example>
+            <c>CallService &lt;IMijnService, string&gt; (svc =&gt; svc.IetsDoen(id))</c>
+            </example>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ServiceHelper.CallService``2(System.Func{``0,``1})">
+            <summary>
+            Gebruik deze method om een functie aan te roepen van een service.
+            </summary>
+            <typeparam name="I">ServiceContract aan te roepen service</typeparam>
+            <typeparam name="T">Type van het resultaat van <paramref name="operation"/></typeparam>
+            <param name="operation">Lambda-expressie die de <typeparamref name="I"/> afbeeldt op het gewenste
+            resultaat.</param>
+            <returns>Resultaat van de functie-aanroep</returns>
+            <example>
+            <c>string = 
+            StaticAdfServiceHelper.CallService &lt;IMijnService, string&gt; (svc =&gt; svc.IetsDoen(id))</c>
+            </example>
+        </member>
+        <member name="T:Chiro.Adf.ServiceModel.Extensions.CallContextInitializer">
+            <summary>
+            
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="F:Chiro.Adf.ServiceModel.Extensions.CallContextInitializer._contextType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextInitializer.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chiro.Adf.ServiceModel.Extensions.CallContextInitializer"/> class.
+            </summary>
+            <param name="contextType">Type of the context.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextInitializer.System#ServiceModel#Dispatcher#ICallContextInitializer#BeforeInvoke(System.ServiceModel.InstanceContext,System.ServiceModel.IClientChannel,System.ServiceModel.Channels.Message)">
+            <summary>
+            Implement to participate in the initialization of the operation thread.
+            </summary>
+            <param name="instanceContext">The service instance for the operation.</param>
+            <param name="channel">The client channel.</param>
+            <param name="message">The incoming message.</param>
+            <returns>A correlation object passed back as the parameter of the <see cref="M:System.ServiceModel.Dispatcher.ICallContextInitializer.AfterInvoke(System.Object)"/> method.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextInitializer.System#ServiceModel#Dispatcher#ICallContextInitializer#AfterInvoke(System.Object)">
+            <summary>
+            Afters the invoke.
+            </summary>
+            <param name="state">The state.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:Chiro.Adf.ServiceModel.LocalizationBehaviorExtensionElement">
+            <summary>
+            
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="F:Chiro.Adf.ServiceModel.LocalizationBehaviorExtensionElement._properties">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.LocalizationBehaviorExtensionElement.CreateBehavior">
+            <summary>
+            Creates a behavior extension based on the current configuration settings.
+            </summary>
+            <returns>The behavior extension.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:Chiro.Adf.ServiceModel.LocalizationBehaviorExtensionElement.BehaviorType">
+            <summary>
+            Gets the type of behavior.
+            </summary>
+            <returns>A <see cref="T:System.Type"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:Chiro.Adf.ServiceModel.LocalizationBehaviorExtensionElement.Properties">
+            <summary>
+            Gets the collection of properties.
+            </summary>
+            <returns>The <see cref="T:System.Configuration.ConfigurationPropertyCollection"/> of properties for the element.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:Chiro.Adf.ServiceModel.Extensions.CallContext">
+            <summary>
+            
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="F:Chiro.Adf.ServiceModel.Extensions.CallContext._callContext">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContext.Initialize">
+            <summary>
+            Initializes this instance.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContext.Dispose">
+            <summary>
+            Disposes this instance.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:Chiro.Adf.ServiceModel.Extensions.CallContext.Current">
+            <summary>
+            Gets the context of the current operation.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:Chiro.Adf.ServiceModel.ReferencePreservingDataContractSerializerOperationBehavior">
+            <summary>
+            
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ReferencePreservingDataContractSerializerOperationBehavior.#ctor(System.ServiceModel.Description.OperationDescription)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Chiro.Adf.ServiceModel.ReferencePreservingDataContractSerializerOperationBehavior"/> class.
+            </summary>
+            <param name="operationDescription">The operation description.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ReferencePreservingDataContractSerializerOperationBehavior.CreateSerializer(System.Type,System.String,System.String,System.Collections.Generic.IList{System.Type})">
+            <summary>
+            Creates an instance of a class that inherits from <see cref="T:System.Runtime.Serialization.XmlObjectSerializer"/> for serialization and deserialization processes.
+            </summary>
+            <param name="type">The <see cref="T:System.Type"/> to create the serializer for.</param>
+            <param name="name">The name of the generated type.</param>
+            <param name="ns">The namespace of the generated type.</param>
+            <param name="knownTypes">An <see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:System.Type"/> that contains known types.</param>
+            <returns>An instance of a class that inherits from the <see cref="T:System.Runtime.Serialization.XmlObjectSerializer"/> class.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ReferencePreservingDataContractSerializerOperationBehavior.CreateDataContractSerializer(System.Type,System.String,System.String,System.Collections.Generic.IList{System.Type})">
+            <summary>
+            Creates the data contract serializer.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="name">The name.</param>
+            <param name="ns">The ns.</param>
+            <param name="knownTypes">The known types.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ReferencePreservingDataContractSerializerOperationBehavior.CreateSerializer(System.Type,System.Xml.XmlDictionaryString,System.Xml.XmlDictionaryString,System.Collections.Generic.IList{System.Type})">
+            <summary>
+            Creates an instance of a class that inherits from <see cref="T:System.Runtime.Serialization.XmlObjectSerializer"/> for serialization and deserialization processes with an <see cref="T:System.Xml.XmlDictionaryString"/> that contains the namespace.
+            </summary>
+            <param name="type">The type to serialize or deserialize.</param>
+            <param name="name">The name of the serialized type.</param>
+            <param name="ns">An <see cref="T:System.Xml.XmlDictionaryString"/> that contains the namespace of the serialized type.</param>
+            <param name="knownTypes">An <see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:System.Type"/> that contains known types.</param>
+            <returns>An instance of a class that inherits from the <see cref="T:System.Runtime.Serialization.XmlObjectSerializer"/> class.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:Chiro.Adf.ServiceModel.ReferencePreservingDataContractFormatAttribute">
+            <summary>
+            
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ReferencePreservingDataContractFormatAttribute.AddBindingParameters(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Channels.BindingParameterCollection)">
+            <summary>
+            Adds the binding parameters.
+            </summary>
+            <param name="description">The description.</param>
+            <param name="parameters">The parameters.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ReferencePreservingDataContractFormatAttribute.ApplyClientBehavior(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Dispatcher.ClientOperation)">
+            <summary>
+            Applies the client behavior.
+            </summary>
+            <param name="description">The description.</param>
+            <param name="proxy">The proxy.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ReferencePreservingDataContractFormatAttribute.ApplyDispatchBehavior(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Dispatcher.DispatchOperation)">
+            <summary>
+            Applies the dispatch behavior.
+            </summary>
+            <param name="description">The description.</param>
+            <param name="dispatch">The dispatch.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.ReferencePreservingDataContractFormatAttribute.Validate(System.ServiceModel.Description.OperationDescription)">
+            <summary>
+            Validates the specified description.
+            </summary>
+            <param name="description">The description.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:Chiro.Adf.ServiceModel.Extensions.CallContextBehaviorExtensionElement">
+            <summary>
+            
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="F:Chiro.Adf.ServiceModel.Extensions.CallContextBehaviorExtensionElement._properties">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceModel.Extensions.CallContextBehaviorExtensionElement.CreateBehavior">
+            <summary>
+            Creates a behavior extension based on the current configuration settings.
+            </summary>
+            <returns>The behavior extension.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:Chiro.Adf.ServiceModel.Extensions.CallContextBehaviorExtensionElement.BehaviorType">
+            <summary>
+            Gets the type of behavior.
+            </summary>
+            <returns>
+            A <see cref="T:System.Type"/>.
+              </returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:Chiro.Adf.ServiceModel.Extensions.CallContextBehaviorExtensionElement.Properties">
+            <summary>
+            Gets the collection of properties.
+            </summary>
+            <returns>The <see cref="T:System.Configuration.ConfigurationPropertyCollection"/> of properties for the element.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:Chiro.Adf.ServiceModel.Extensions.CallContextBehaviorExtensionElement.ContextType">
+            <summary>
+            Gets or sets the type of the context.
+            </summary>
+            <value>The type of the context.</value>
+            <remarks></remarks>
+        </member>
+    </members>
+</doc>

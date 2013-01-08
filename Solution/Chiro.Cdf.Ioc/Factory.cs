@@ -52,7 +52,11 @@ namespace Chiro.Cdf.Ioc
                     // Als je hier een IoException of zoiets krijgt, dan mis je waarschijnlijk referenties
                     // naar assemblies die in je untiy-configuratie voorkomen.
                     // Typisch voor services: Chiro.Cdf.DependencyInjectionBehavior.
-
+                    // Kijk ook eens na of alle assembly's in de types van de unity-configuratie
+                    // bij de 'References' van je project staan.
+                    // Ook een mogelijke bron van problemen, is als interfaces van assembly zijn veranderd,
+                    // maar als dat niet is aangepast in de configuratiefile :)
+                    
                     section.Configure(_container);
                 }
             }

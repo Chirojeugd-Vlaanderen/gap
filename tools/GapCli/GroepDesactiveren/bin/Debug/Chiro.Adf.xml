@@ -1,0 +1,701 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Chiro.Adf</name>
+    </assembly>
+    <members>
+        <member name="T:Chiro.Adf.IServiceProvider">
+            <summary>
+            Defines methods to obtain configuration-based instances of interface implementations.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.IServiceProvider.GetService``1">
+            <summary>
+            Lever een service-implementatie op voor servicecontract <typeparamref name="I"/>.
+            </summary>
+            <typeparam name="I">Servicecontract</typeparam>
+            <returns>Implementatie van het gevraagde service-contract, of <c>null</c> als er geen implementatie
+            beschikbaar is.</returns>
+        </member>
+        <member name="M:Chiro.Adf.IServiceProvider.GetService``1(System.Object)">
+            <summary>
+            Gets the configure service implementation for the specified interface.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <param name="arguments">.ctor arguments</param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.IServiceProvider.GetService``1(System.String)">
+            <summary>
+            Gets the configured service implementation instance with the specified name.
+            </summary>
+            <typeparam name="I">The interface or type to get the service for.</typeparam>
+            <param name="instanceName">The name of the service instance.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.IServiceProvider.GetService``1(System.String,System.Object)">
+            <summary>
+            Gets the service.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <param name="instanceName">Name of the instance.</param>
+            <param name="arguments">The arguments.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.IServiceProvider.GetServices``1">
+            <summary>
+            Gets all configured service instances of the specified interface type.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.IServiceProvider.GetService(System.Type)">
+            <summary>
+            Gets the configured service implementation for the specified interface.
+            </summary>
+            <param name="serviceType">The interface, type to get the service for</param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.IServiceProvider.GetService(System.Type,System.String)">
+            <summary>
+            Gets the configured service implementation for the specified interface and instance name.
+            </summary>
+            <param name="type"></param>
+            <param name="instanceName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.IServiceProvider.GetServices(System.Type)">
+            <summary>
+            Gets all service instances for the specified interface.
+            </summary>
+            <param name="serviceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.IServiceProvider.TryGetService``1(``0@)">
+            <summary>
+            Try and get the requested service
+            </summary>
+            <typeparam name="I"></typeparam>
+            <param name="service"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.IServiceProvider.TryGetService(System.Type,System.Object@)">
+            <summary>
+            Tries the get service.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="service">The service.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:Chiro.Adf.IocServiceProvider">
+            <summary>
+            Service provider die IOC gebruikt om implementaties van de service-interface te genereren.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.IocServiceProvider.GetService``1">
+            <summary>
+            Gebruikt IoC om de service met interface I te instantieren.
+            </summary>
+            <typeparam name="I">Service interface</typeparam>
+            <returns>Een instantie van <typeparamref name="I"/>.  Als die niet geresolved kon worden, dan <c>null</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.IocServiceProvider.GetService``1(System.Object)">
+            <summary>
+            Gets the configure service implementation for the specified interface.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <param name="arguments">.ctor arguments</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.IocServiceProvider.GetService``1(System.String)">
+            <summary>
+            Gets the configured service implementation instance with the specified name.
+            </summary>
+            <typeparam name="I">The interface or type to get the service for.</typeparam>
+            <param name="instanceName">The name of the service instance.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.IocServiceProvider.GetService``1(System.String,System.Object)">
+            <summary>
+            Gets the service.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <param name="instanceName">Name of the instance.</param>
+            <param name="arguments">The arguments.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.IocServiceProvider.GetServices``1">
+            <summary>
+            Gets all configured service instances of the specified interface type.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.IocServiceProvider.GetService(System.Type)">
+            <summary>
+            Gets the configured service implementation for the specified interface. Most simplified non-generic version.
+            </summary>
+            <param name="serviceType">The interface to get the service for</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.IocServiceProvider.GetService(System.Type,System.String)">
+            <summary>
+            Gets the configured service implementation for the specified interface and instance name.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="instanceName">Name of the instance.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.IocServiceProvider.GetServices(System.Type)">
+            <summary>
+            Gets all service instances for the specified interface.
+            </summary>
+            <param name="serviceType">Type of the service.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.IocServiceProvider.TryGetService``1(``0@)">
+            <summary>
+            Try and get the requested service
+            </summary>
+            <typeparam name="I"></typeparam>
+            <param name="service">The service.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.IocServiceProvider.TryGetService(System.Type,System.Object@)">
+            <summary>
+            Tries the get service.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="service">The service.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:Chiro.Adf.Configuration.AdfConfigurationSection">
+            <summary>
+            Represents the confgiuration section named 'chiroGroep'.
+            </summary>
+        </member>
+        <member name="P:Chiro.Adf.Configuration.AdfConfigurationSection.ServiceProviders">
+            <summary>
+            Gets the configured service providers.
+            </summary>
+        </member>
+        <member name="T:Chiro.Adf.Configuration.ServiceProviderSettingsCollection">
+            <summary>
+            Represents a collection of ServiceProvider configuration elements.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.Configuration.ServiceProviderSettingsCollection.CreateNewElement">
+            <summary>
+            When overridden in a derived class, creates a new <see cref="T:System.Configuration.ConfigurationElement" />.
+             </summary>
+            
+            <returns>
+            A new <see cref="T:System.Configuration.ConfigurationElement" />.
+            </returns>
+            
+        </member>
+        <member name="M:Chiro.Adf.Configuration.ServiceProviderSettingsCollection.GetElementKey(System.Configuration.ConfigurationElement)">
+            <summary>
+            Gets the element key for a specified configuration element when overridden in a derived class.
+             </summary>
+            
+            <returns>
+            An <see cref="T:System.Object" /> that acts as the key for the specified <see cref="T:System.Configuration.ConfigurationElement" />.
+            </returns>
+            
+            <param name="element">The <see cref="T:System.Configuration.ConfigurationElement" /> to return the key for. </param>
+        </member>
+        <member name="M:Chiro.Adf.Configuration.ServiceProviderSettingsCollection.Add(Chiro.Adf.Configuration.ServiceProviderConfigurationElement)">
+            <summary>
+            Adds a ServiceProviderConfigurationElement to the ServiceProviderSettingsCollection.
+            </summary>
+            <param name="configurationElement"></param>
+        </member>
+        <member name="T:Chiro.Adf.ServiceActivationException">
+            <summary>
+            Represent the error that occurs when no registered ServiceProvider manages to resolve a service interface.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceActivationException.#ctor">
+            <summary>
+            Initializes a new instance of the ServiceActivationException class.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceActivationException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the ServiceActivationException class with a specified error message.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:Chiro.Adf.ServiceActivationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Exception"/> class with serialized data.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceActivationException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the ServiceActivationException class with a specified error message
+            and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+            <param name="innerException">
+            The exception that is the cause of the current exception, 
+            or a null refernce if no inner exception is specified.
+            </param>
+        </member>
+        <member name="T:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2">
+            <summary>
+            Represents a thread safe collection of keys and values.
+            </summary>
+            <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
+            <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.#ctor">
+            <summary>
+            Initializes a new instance of the SynchronizedDictionary&lt;TKey, TValue&gt; class.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.Remove(`0)">
+            <summary>
+            Removes the element with the specified key from the <see cref="T:System.Collections.Generic.IDictionary`2" />.
+             </summary>
+            
+            <returns>
+            true if the element is successfully removed; otherwise, false.  This method also returns false if <paramref name="key" /> was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2" />.
+            </returns>
+            
+            <param name="key">The key of the element to remove.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is null.</exception>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.</exception>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.ContainsKey(`0)">
+            <summary>
+            Determines whether the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key.
+             </summary>
+            
+            <returns>
+            true if the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the key; otherwise, false.
+            </returns>
+            
+            <param name="key">The key to locate in the <see cref="T:System.Collections.Generic.IDictionary`2" />.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is null.</exception>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.TryGetValue(`0,`1@)">
+            <summary>
+            Gets the value associated with the specified key.
+             </summary>
+            
+            <returns>
+            true if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key; otherwise, false.
+            </returns>
+            
+            <param name="key">The key whose value to get.</param>
+            <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value" /> parameter. This parameter is passed uninitialized.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is null.</exception>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.Clear">
+            <summary>
+            Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+             </summary>
+            
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only. </exception>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.
+             </summary>
+            
+            <returns>
+            true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false.
+            </returns>
+            
+            <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
+             </summary>
+            
+            <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.Add(`0,`1)">
+            <summary>
+            Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2" />.
+             </summary>
+            
+            <param name="key">The object to use as the key of the element to add.</param>
+            <param name="value">The object to use as the value of the element to add.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is null.</exception>
+            <exception cref="T:System.ArgumentException">An element with the same key already exists in the <see cref="T:System.Collections.Generic.IDictionary`2" />.</exception>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.</exception>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+             </summary>
+            
+            <returns>
+            true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </returns>
+            
+            <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
+            <summary>
+            Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, 
+             starting at a particular <see cref="T:System.Array" /> index.
+             </summary>
+            <param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied 
+             from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
+            <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="array" /> is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex" /> is less than 0.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="array" /> is multidimensional.-or-<paramref name="arrayIndex" /> is equal to 
+             or greater than the length of <paramref name="array" />.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> 
+             is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+             </summary>
+            
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+            </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+             </summary>
+            
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.RemoveSafe(`0)">
+            <summary>
+            This is a blind remove. Prevents the need to check for existence first.
+            </summary>
+            <param name="key">Key to remove</param>
+        </member>
+        <member name="M:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.MergeSafe(`0,`1)">
+            <summary>
+            Merge does a blind remove, and then add.  Basically a blind Upsert.  
+            </summary>
+            <param name="key">Key to lookup</param>
+            <param name="newValue">New Value</param>
+        </member>
+        <member name="P:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.Item(`0)">
+            <summary>
+            Gets or sets the element with the specified key.
+             </summary>
+            
+            <returns>
+            The element with the specified key.
+            </returns>
+            
+            <param name="key">The key of the element to get or set.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is null.</exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">The property is retrieved and <paramref name="key" /> is not found.</exception>
+            <exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.</exception>
+        </member>
+        <member name="P:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.Keys">
+            <summary>
+            Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the <see cref="T:System.Collections.Generic.IDictionary`2" />.
+             </summary>
+            
+            <returns>
+            An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.
+            </returns>
+            
+        </member>
+        <member name="P:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.Values">
+            <summary>
+            Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the <see cref="T:System.Collections.Generic.IDictionary`2" />.
+             </summary>
+            
+            <returns>
+            An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.
+            </returns>
+            
+        </member>
+        <member name="P:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.Count">
+            <summary>
+            Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+             </summary>
+            
+            <returns>
+            The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </returns>
+            
+        </member>
+        <member name="P:Chiro.Adf.Collections.Generic.SynchronizedDictionary`2.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+             </summary>
+            
+            <returns>
+            true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.
+            </returns>
+            
+        </member>
+        <member name="T:Chiro.Adf.ChannelFactoryServiceProvider">
+            <summary>
+            Resolves WCF service implementations.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ChannelFactoryServiceProvider.GetService``1">
+            <summary>
+            Creates the service proxy for the default endpoint of interface I.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.ChannelFactoryServiceProvider.GetService``1(System.Object)">
+            <summary>
+            Throws a NotSupportedException.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <param name="arguments"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.ChannelFactoryServiceProvider.GetService``1(System.String)">
+            <summary>
+            Gebruikt WCF om een proxy naar de service met interface I te instantieren, volgens een in de config benoemd endpoint
+            </summary>
+            <typeparam name="I">Service interface</typeparam>
+            <returns>Een instantie van <typeparamref name="I"/>.  Als die niet geresolved kon worden, dan <c>null</c></returns>
+        </member>
+        <member name="M:Chiro.Adf.ChannelFactoryServiceProvider.GetService``1(System.String,System.Object)">
+            <summary>
+            Throws a NotSupportedException.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <param name="instanceName"></param>
+            <param name="arguments"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.ChannelFactoryServiceProvider.GetServices``1">
+            <summary>
+            Gets all configured service instances of the specified interface type.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.ChannelFactoryServiceProvider.GetService(System.Type)">
+            <summary>
+            Gets the configured service implementation for the specified interface.
+            </summary>
+            <param name="serviceType">The interface, type to get the service for</param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.ChannelFactoryServiceProvider.GetService(System.Type,System.String)">
+            <summary>
+            Gets the configured service implementation for the specified interface and instance name.
+            </summary>
+            <param name="type"></param>
+            <param name="instanceName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.ChannelFactoryServiceProvider.GetServices(System.Type)">
+            <summary>
+            Gets all service instances for the specified interface.
+            </summary>
+            <param name="serviceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.ChannelFactoryServiceProvider.TryGetService``1(``0@)">
+            <summary>
+            Probe for the service, and return it when found
+            </summary>
+            <typeparam name="I"></typeparam>
+            <param name="service"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.ChannelFactoryServiceProvider.TryGetService(System.Type,System.Object@)">
+            <summary>
+            Niet-generische versie van  <see cref="M:Chiro.Adf.ChannelFactoryServiceProvider.TryGetService``1(``0@)"/>
+            </summary>
+            <param name="type"></param>
+            <param name="service"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Chiro.Adf.ServiceProvider">
+            <summary>
+            Resolves dependencies through configured or registered service providers.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.#ctor">
+            <summary>
+            Initializes a new instance of the ServiceProvider class.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.#ctor(Chiro.Adf.Configuration.AdfConfigurationSection)">
+            <summary>
+            Initializes a new instance of the ServiceProvider class 
+            </summary>
+            <param name="configurationSection"></param>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.GetService``1">
+            <summary>
+            Gets the implementation for the specified service interface I.
+            </summary>
+            <typeparam name="I">The interface type to resolve.</typeparam>
+            <returns>The configured implementation of interface I or null.</returns>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.GetService``1(System.String)">
+            <summary>
+            Gets the implementation for the specified service interface I.
+            </summary>
+            <typeparam name="I">The interface type to resolve.</typeparam>
+            <param name="instanceName">The name of the configured implementation.</param>
+            <returns>The configured implementation of interface I or null.</returns>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.GetService``1(System.Object)">
+            <summary>
+            Gets the configure service implementation for the specified interface.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <param name="arguments">.ctor arguments</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.GetService``1(System.String,System.Object)">
+            <summary>
+            Gets the service implementation for the specified interface and .ctor arguments with the specified name.
+            </summary>
+            <typeparam name="I"></typeparam>
+            <param name="instanceName"></param>
+            <param name="arguments"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.GetService(System.Type)">
+            <summary>
+            Gets the implementation for the specified service interface type.
+            </summary>        
+            <returns>The configured implementation of interface I or null.</returns>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.GetService(System.Type,System.String)">
+            <summary>
+            Gets the configured service implementation for the specified interface and instance name.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="instanceName">Name of the instance.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.GetServices``1">
+            <summary>
+            Gets all implementation for the specified service interface type.
+            </summary>        
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.GetServices(System.Type)">
+            <summary>
+            Gets all implementation for the specified service interface type.
+            </summary>        
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.TryGetService``1(``0@)">
+            <summary>
+            Tries to get the implementation for the specified service interface I.
+            </summary>
+            <typeparam name="I">The interface type to resolve.</typeparam>
+            <returns>True if the service was found, otherwise false</returns>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.TryGetService(System.Type,System.Object@)">
+            <summary>
+            Tries to get the implementation for the specified service interface type.
+            </summary>        
+            <returns>Returns true if the service was found, otherwise false.</returns>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.TryGetService``1(System.String,``0@)">
+            <summary>
+            Tries to get the implementation for the specified service interface I.
+            </summary>
+            <typeparam name="I">The interface type to resolve.</typeparam>
+            <param name="instanceName">The name of the configured implementation.</param>
+            <param name="service">The configured implementation of interface I or null.</param>
+            <returns>True if the service was found, otherwise false</returns>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.RegisterProvider(Chiro.Adf.IServiceProvider)">
+            <summary>
+            Adds an IServiceProvider to the list of service providers to probe for services.
+            </summary>
+            <param name="provider">The IServiceProvider implementation tto register.</param>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.UnregisterProvider(Chiro.Adf.IServiceProvider)">
+            <summary>
+            Removes an IServiceProvider from the list of service providers.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.ApplyConfiguration(Chiro.Adf.Configuration.AdfConfigurationSection)">
+            <summary>
+            Configures the ServiceProviders with the specified configuration section
+            </summary>
+            <param name="configurationSection"></param>
+        </member>
+        <member name="M:Chiro.Adf.ServiceProvider.ClearProviders">
+            <summary>
+            Clear all service providers
+            </summary>
+        </member>
+        <member name="P:Chiro.Adf.ServiceProvider.Default">
+            <summary>
+            Gets the default ServiceProvider instance.
+            </summary>
+        </member>
+        <member name="T:Chiro.Adf.Configuration.ServiceProviderConfigurationElement">
+            <summary>
+            Represents a ServiceProvider configuration element.
+            </summary>
+        </member>
+        <member name="M:Chiro.Adf.Configuration.ServiceProviderConfigurationElement.OnDeserializeUnrecognizedAttribute(System.String,System.String)">
+            <summary>
+            Gets a value indicating whether an unknown attribute is encountered during deserialization.
+             </summary>
+            
+            <returns>
+            true when an unknown attribute is encountered while deserializing; otherwise, false.
+            </returns>
+            
+            <param name="name">The name of the unrecognized attribute.</param>
+            <param name="value">The value of the unrecognized attribute.</param>
+        </member>
+        <member name="P:Chiro.Adf.Configuration.ServiceProviderConfigurationElement.Name">
+            <summary>
+            Gets the logical configuration name of the service provider.
+            </summary>
+        </member>
+        <member name="P:Chiro.Adf.Configuration.ServiceProviderConfigurationElement.Type">
+            <summary>
+            Gets or sets the fully qualified name of the service provider type.
+            </summary>
+        </member>
+        <member name="P:Chiro.Adf.Configuration.ServiceProviderConfigurationElement.ConstructorParameters">
+            <summary>
+            Gets key value pairs representing the configured constructor parameters a service provider.
+            </summary>
+        </member>
+    </members>
+</doc>
