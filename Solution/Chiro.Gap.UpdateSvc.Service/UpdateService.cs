@@ -103,7 +103,7 @@ namespace Chiro.Gap.UpdateSvc.Service
             var g = _groepenMgr.Ophalen(stamNr);
             g.StopDatum = stopDatum;
             _groepenMgr.Bewaren(g);
-            Console.WriteLine("Groep gedesactiveerd: {0}", stamNr);
+            Console.WriteLine(stopDatum == null ? "Groep opnieuw geactiveerd: {0}" : "Groep gedesactiveerd: {0}", stamNr);
         }
 
         /// <summary>
