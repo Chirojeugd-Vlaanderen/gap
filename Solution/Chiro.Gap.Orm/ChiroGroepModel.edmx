@@ -420,6 +420,7 @@
           <Property Name="Logo" Type="image" />
           <Property Name="GroepID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="StopDatum" Type="datetime" />
         </EntityType>
         <EntityType Name="GroepsWerkJaar">
           <Key>
@@ -1467,6 +1468,7 @@
           <NavigationProperty Name="Categorie" Relationship="ChiroGroepModel.FK_Categorie_Groep" FromRole="Groep" ToRole="Categorie" />
           <NavigationProperty Name="Functie" Relationship="ChiroGroepModel.FK_Functie_Groep" FromRole="Groep" ToRole="Functie" />
           <NavigationProperty Name="BivakPlaats" Relationship="ChiroGroepModel.FK_Plaats_Groep" FromRole="Groep" ToRole="Plaats" />
+          <Property Type="DateTime" Name="StopDatum" />
         </EntityType>
         <EntityType Name="Persoon">
           <Key>
@@ -1988,6 +1990,7 @@
           <EntitySetMapping Name="Groep">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Groep)">
               <MappingFragment StoreEntitySet="Groep">
+                <ScalarProperty Name="StopDatum" ColumnName="StopDatum" />
                 <ScalarProperty Name="Naam" ColumnName="Naam" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="OprichtingsJaar" ColumnName="OprichtingsJaar" />

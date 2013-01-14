@@ -1,0 +1,17 @@
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Chiro.Gap.DependencyInjectionBehavior.Test.dll
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Chiro.Gap.DependencyInjectionBehavior.Test.pdb
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Chiro.Cdf.DependencyInjectionBehavior.dll
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Chiro.Cdf.Ioc.dll
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Moq.dll
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Microsoft.Practices.Unity.dll
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Microsoft.Practices.Unity.Configuration.dll
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Chiro.Cdf.DependencyInjectionBehavior.pdb
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Chiro.Cdf.Ioc.pdb
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Microsoft.Practices.Unity.pdb
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Microsoft.Practices.Unity.xml
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Microsoft.Practices.Unity.Configuration.pdb
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\bin\Debug\Microsoft.Practices.Unity.Configuration.xml
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\obj\Debug\Chiro.Gap.DependencyInjectionBehavior.Test.dll
+C:\Users\johanv\dev\gap\Solution\TestProjecten\Chiro.Gap.DependencyInjectionBehavior.Test\obj\Debug\Chiro.Gap.DependencyInjectionBehavior.Test.pdb

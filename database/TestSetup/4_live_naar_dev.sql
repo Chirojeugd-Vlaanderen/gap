@@ -11,3 +11,8 @@ GO
 
 ALTER DATABASE [Gap_Dev] SET RECOVERY SIMPLE WITH NO_WAIT
 GO
+
+USE gap_dev
+GO
+
+ALTER TABLE grp.Groep ADD StopDatum DateTime NULL;

@@ -4235,6 +4235,30 @@ namespace Chiro.Gap.Orm
         private global::System.Byte[] _Versie;
         partial void OnVersieChanging(global::System.Byte[] value);
         partial void OnVersieChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> StopDatum
+        {
+            get
+            {
+                return _StopDatum;
+            }
+            set
+            {
+                OnStopDatumChanging(value);
+                ReportPropertyChanging("StopDatum");
+                _StopDatum = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StopDatum");
+                OnStopDatumChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _StopDatum;
+        partial void OnStopDatumChanging(Nullable<global::System.DateTime> value);
+        partial void OnStopDatumChanged();
 
         #endregion
     

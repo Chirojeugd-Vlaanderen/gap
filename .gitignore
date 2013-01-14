@@ -4,8 +4,8 @@ _ReSharper.*
 *.suo
 *~
 *.ReSharper
-
 [Bb]in
+obj
 [Dd]ebug
 [Tt]est[Rr]esults
 
@@ -17,35 +17,30 @@ _ReSharper.*
 /Solution/*.orig
 
 # /Solution/Chiro.Adf/
-/Solution/Chiro.Adf/obj
 /Solution/Chiro.Adf/[Rr]elease
 /Solution/Chiro.Adf/*.aps
 /Solution/Chiro.Adf/*.eto
 /Solution/Chiro.Adf/*.Cache
 
 # /Solution/Chiro.Adf.ServiceModel/
-/Solution/Chiro.Adf.ServiceModel/obj
 /Solution/Chiro.Adf.ServiceModel/[Rr]elease
 /Solution/Chiro.Adf.ServiceModel/*.aps
 /Solution/Chiro.Adf.ServiceModel/*.eto
 /Solution/Chiro.Adf.ServiceModel/*.Cache
 
 # /Solution/Chiro.Cdf.Data/
-/Solution/Chiro.Cdf.Data/obj
 /Solution/Chiro.Cdf.Data/[Rr]elease
 /Solution/Chiro.Cdf.Data/*.aps
 /Solution/Chiro.Cdf.Data/*.eto
 /Solution/Chiro.Cdf.Data/*.Cache
 
 # /Solution/Chiro.Cdf.Data.Entity/
-/Solution/Chiro.Cdf.Data.Entity/obj
 /Solution/Chiro.Cdf.Data.Entity/[Rr]elease
 /Solution/Chiro.Cdf.Data.Entity/*.aps
 /Solution/Chiro.Cdf.Data.Entity/*.eto
 /Solution/Chiro.Cdf.Data.Entity/*.Cache
 
 # /Solution/Chiro.Cdf.DependencyInjectionBehavior/
-/Solution/Chiro.Cdf.DependencyInjectionBehavior/obj
 /Solution/Chiro.Cdf.DependencyInjectionBehavior/[Rr]elease
 /Solution/Chiro.Cdf.DependencyInjectionBehavior/*.aps
 /Solution/Chiro.Cdf.DependencyInjectionBehavior/*.eto
@@ -53,97 +48,83 @@ _ReSharper.*
 /Solution/Chiro.Cdf.DependencyInjectionBehavior/*.Cache
 
 # /Solution/Chiro.Cdf.Ioc/
-/Solution/Chiro.Cdf.Ioc/obj
 /Solution/Chiro.Cdf.Ioc/[Rr]elease
 /Solution/Chiro.Cdf.Ioc/*.aps
 /Solution/Chiro.Cdf.Ioc/*.eto
 /Solution/Chiro.Cdf.Ioc/*.Cache
 
 # /Solution/Chiro.Cdf.ServiceHelper/
-/Solution/Chiro.Cdf.ServiceHelper/obj
 /Solution/Chiro.Cdf.ServiceHelper/[Rr]elease
 /Solution/Chiro.Cdf.ServiceHelper/*.aps
 /Solution/Chiro.Cdf.ServiceHelper/*.eto
 /Solution/Chiro.Cdf.ServiceHelper/*.Cache
 
 # /Solution/Chiro.Cdf.ServiceModel/
-/Solution/Chiro.Cdf.ServiceModel/obj
 /Solution/Chiro.Cdf.ServiceModel/[Rr]elease
 /Solution/Chiro.Cdf.ServiceModel/*.aps
 /Solution/Chiro.Cdf.ServiceModel/*.eto
 /Solution/Chiro.Cdf.ServiceModel/*.Cache
 
 # /Solution/Chiro.Cdf.Validation/
-/Solution/Chiro.Cdf.Validation/obj
 /Solution/Chiro.Cdf.Validation/[Rr]elease
 /Solution/Chiro.Cdf.Validation/*.aps
 /Solution/Chiro.Cdf.Validation/*.eto
 /Solution/Chiro.Cdf.Validation/*.Cache
 
 # /Solution/Chiro.Gap.Data/
-/Solution/Chiro.Gap.Data/obj
 /Solution/Chiro.Gap.Data/[Rr]elease
 /Solution/Chiro.Gap.Data/*.aps
 /Solution/Chiro.Gap.Data/*.eto
 /Solution/Chiro.Gap.Data/*.Cache
 
 # /Solution/Chiro.Gap.Domain/
-/Solution/Chiro.Gap.Domain/obj
 /Solution/Chiro.Gap.Domain/[Rr]elease
 /Solution/Chiro.Gap.Domain/*.aps
 /Solution/Chiro.Gap.Domain/*.eto
 /Solution/Chiro.Gap.Domain/*.Cache
 
 # /Solution/Chiro.Gap.Fouten/
-/Solution/Chiro.Gap.Fouten/obj
 /Solution/Chiro.Gap.Fouten/[Rr]elease
 /Solution/Chiro.Gap.Fouten/*.aps
 /Solution/Chiro.Gap.Fouten/*.eto
 /Solution/Chiro.Gap.Fouten/*.Cache
 
 # /Solution/Chiro.Gap.KipUpdate/
-/Solution/Chiro.Gap.KipUpdate/obj
 /Solution/Chiro.Gap.KipUpdate/[Rr]elease
 /Solution/Chiro.Gap.KipUpdate/*.aps
 /Solution/Chiro.Gap.KipUpdate/*.eto
 
 # /Solution/Chiro.Gap.LidSyncer/
-/Solution/Chiro.Gap.LidSyncer/obj
 /Solution/Chiro.Gap.LidSyncer/[Rr]elease
 /Solution/Chiro.Gap.LidSyncer/*.aps
 /Solution/Chiro.Gap.LidSyncer/*.eto
 /Solution/Chiro.Gap.LidSyncer/*.Cache
 
 # /Solution/Chiro.Gap.Orm/
-/Solution/Chiro.Gap.Orm/obj
 /Solution/Chiro.Gap.Orm/[Rr]elease
 /Solution/Chiro.Gap.Orm/*.aps
 /Solution/Chiro.Gap.Orm/*.eto
 /Solution/Chiro.Gap.Orm/*.Cache
 
 # /Solution/Chiro.Gap.Orm.Test/
-/Solution/Chiro.Gap.Orm.Test/obj
 /Solution/Chiro.Gap.Orm.Test/[Rr]elease
 /Solution/Chiro.Gap.Orm.Test/*.aps
 /Solution/Chiro.Gap.Orm.Test/*.eto
 /Solution/Chiro.Gap.Orm.Test/*.Cache
 
 # /Solution/Chiro.Gap.ServiceContracts/
-/Solution/Chiro.Gap.ServiceContracts/obj
 /Solution/Chiro.Gap.ServiceContracts/[Rr]elease
 /Solution/Chiro.Gap.ServiceContracts/*.aps
 /Solution/Chiro.Gap.ServiceContracts/*.eto
 /Solution/Chiro.Gap.ServiceContracts/*.Cache
 
 # /Solution/Chiro.Gap.ServiceContracts.Mappers/
-/Solution/Chiro.Gap.ServiceContracts.Mappers/obj
 /Solution/Chiro.Gap.ServiceContracts.Mappers/[Rr]elease
 /Solution/Chiro.Gap.ServiceContracts.Mappers/*.aps
 /Solution/Chiro.Gap.ServiceContracts.Mappers/*.eto
 /Solution/Chiro.Gap.ServiceContracts.Mappers/*.Cache
 
 # /Solution/Chiro.Gap.Services/
-/Solution/Chiro.Gap.Services/obj
 /Solution/Chiro.Gap.Services/[Rr]elease
 /Solution/Chiro.Gap.Services/*.aps
 /Solution/Chiro.Gap.Services/*.eto
@@ -151,55 +132,47 @@ _ReSharper.*
 /Solution/Chiro.Gap.Services/*.Cache
 
 # /Solution/Chiro.Gap.Services.Test.CustomIoc/
-/Solution/Chiro.Gap.Services.Test.CustomIoc/obj
 /Solution/Chiro.Gap.Services.Test.CustomIoc/[Rr]elease
 /Solution/Chiro.Gap.Services.Test.CustomIoc/*.aps
 /Solution/Chiro.Gap.Services.Test.CustomIoc/*.eto
 
 # /Solution/Chiro.Gap.Sync/
-/Solution/Chiro.Gap.Sync/obj
 /Solution/Chiro.Gap.Sync/[Rr]elease
 /Solution/Chiro.Gap.Sync/*.aps
 /Solution/Chiro.Gap.Sync/*.eto
 /Solution/Chiro.Gap.Sync/*.Cache
 
 # /Solution/Chiro.Gap.UpdateSvc.ConsoleServiceHost/
-/Solution/Chiro.Gap.UpdateSvc.ConsoleServiceHost/obj
 /Solution/Chiro.Gap.UpdateSvc.ConsoleServiceHost/[Rr]elease
 /Solution/Chiro.Gap.UpdateSvc.ConsoleServiceHost/*.aps
 /Solution/Chiro.Gap.UpdateSvc.ConsoleServiceHost/*.eto
 /Solution/Chiro.Gap.UpdateSvc.ConsoleServiceHost/*.Cache
 
 # /Solution/Chiro.Gap.UpdateSvc.Contracts/
-/Solution/Chiro.Gap.UpdateSvc.Contracts/obj
 /Solution/Chiro.Gap.UpdateSvc.Contracts/[Rr]elease
 /Solution/Chiro.Gap.UpdateSvc.Contracts/*.aps
 /Solution/Chiro.Gap.UpdateSvc.Contracts/*.eto
 /Solution/Chiro.Gap.UpdateSvc.Contracts/*.Cache
 
 # /Solution/Chiro.Gap.UpdateSvc.Service/
-/Solution/Chiro.Gap.UpdateSvc.Service/obj
 /Solution/Chiro.Gap.UpdateSvc.Service/[Rr]elease
 /Solution/Chiro.Gap.UpdateSvc.Service/*.aps
 /Solution/Chiro.Gap.UpdateSvc.Service/*.eto
 /Solution/Chiro.Gap.UpdateSvc.Service/*.Cache
 
 # /Solution/Chiro.Gap.UpdateSvc.ServiceHost/
-/Solution/Chiro.Gap.UpdateSvc.ServiceHost/obj
 /Solution/Chiro.Gap.UpdateSvc.ServiceHost/[Rr]elease
 /Solution/Chiro.Gap.UpdateSvc.ServiceHost/*.aps
 /Solution/Chiro.Gap.UpdateSvc.ServiceHost/*.eto
 /Solution/Chiro.Gap.UpdateSvc.ServiceHost/*.Cache
 
 # /Solution/Chiro.Gap.Validatie/
-/Solution/Chiro.Gap.Validatie/obj
 /Solution/Chiro.Gap.Validatie/[Rr]elease
 /Solution/Chiro.Gap.Validatie/*.aps
 /Solution/Chiro.Gap.Validatie/*.eto
 /Solution/Chiro.Gap.Validatie/*.Cache
 
 # /Solution/Chiro.Gap.WebApp/
-/Solution/Chiro.Gap.WebApp/obj
 /Solution/Chiro.Gap.WebApp/[Rr]elease
 /Solution/Chiro.Gap.WebApp/*.aps
 /Solution/Chiro.Gap.WebApp/*.eto
@@ -209,116 +182,99 @@ _ReSharper.*
 /Solution/Chiro.Gap.WebApp/Content/Screenshots/etikettenwizard_schermpje_01.png
 
 # /Solution/Chiro.Gap.Workers/
-/Solution/Chiro.Gap.Workers/obj
 /Solution/Chiro.Gap.Workers/[Rr]elease
 /Solution/Chiro.Gap.Workers/*.aps
 /Solution/Chiro.Gap.Workers/*.eto
 /Solution/Chiro.Gap.Workers/*.Cache
 
 # /Solution/ConsoleApplication1/
-/Solution/ConsoleApplication1/obj
 /Solution/ConsoleApplication1/[Rr]elease
 /Solution/ConsoleApplication1/*.aps
 /Solution/ConsoleApplication1/*.eto
 
 # /Solution/TestProjecten/Chiro.Adf.ServiceModel.Test/
-/Solution/TestProjecten/Chiro.Adf.ServiceModel.Test/obj
 /Solution/TestProjecten/Chiro.Adf.ServiceModel.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Adf.ServiceModel.Test/*.aps
 /Solution/TestProjecten/Chiro.Adf.ServiceModel.Test/*.eto
 /Solution/TestProjecten/Chiro.Adf.ServiceModel.Test/*.Cache
 
 # /Solution/TestProjecten/Chiro.Cdf.EfWrapper.Test/
-/Solution/TestProjecten/Chiro.Cdf.EfWrapper.Test/obj
 /Solution/TestProjecten/Chiro.Cdf.EfWrapper.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Cdf.EfWrapper.Test/*.aps
 /Solution/TestProjecten/Chiro.Cdf.EfWrapper.Test/*.eto
 /Solution/TestProjecten/Chiro.Cdf.EfWrapper.Test/*.Cache
 
 # /Solution/TestProjecten/Chiro.Cdf.Ioc.Test/
-/Solution/TestProjecten/Chiro.Cdf.Ioc.Test/obj
 /Solution/TestProjecten/Chiro.Cdf.Ioc.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Cdf.Ioc.Test/*.aps
 /Solution/TestProjecten/Chiro.Cdf.Ioc.Test/*.eto
 /Solution/TestProjecten/Chiro.Cdf.Ioc.Test/*.Cache
 
 # /Solution/TestProjecten/Chiro.Gap.Data.Test/
-/Solution/TestProjecten/Chiro.Gap.Data.Test/obj
 /Solution/TestProjecten/Chiro.Gap.Data.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.Data.Test/*.aps
 /Solution/TestProjecten/Chiro.Gap.Data.Test/*.eto
 /Solution/TestProjecten/Chiro.Gap.Data.Test/*.Cache
 
 # /Solution/TestProjecten/Chiro.Gap.Dummies/
-/Solution/TestProjecten/Chiro.Gap.Dummies/obj
 /Solution/TestProjecten/Chiro.Gap.Dummies/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.Dummies/*.aps
 /Solution/TestProjecten/Chiro.Gap.Dummies/*.eto
 /Solution/TestProjecten/Chiro.Gap.Dummies/*.Cache
 
 # /Solution/TestProjecten/Chiro.Gap.Dummies.Test/
-/Solution/TestProjecten/Chiro.Gap.Dummies.Test/obj
 /Solution/TestProjecten/Chiro.Gap.Dummies.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.Dummies.Test/*.aps
 /Solution/TestProjecten/Chiro.Gap.Dummies.Test/*.eto
 /Solution/TestProjecten/Chiro.Gap.Dummies.Test/*.Cache
 
 # /Solution/TestProjecten/Chiro.Gap.ServiceContracts.Test/
-/Solution/TestProjecten/Chiro.Gap.ServiceContracts.Test/obj
 /Solution/TestProjecten/Chiro.Gap.ServiceContracts.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.ServiceContracts.Test/*.aps
 /Solution/TestProjecten/Chiro.Gap.ServiceContracts.Test/*.eto
 /Solution/TestProjecten/Chiro.Gap.ServiceContracts.Test/*.Cache
 
 # /Solution/TestProjecten/Chiro.Gap.Services.Test/
-/Solution/TestProjecten/Chiro.Gap.Services.Test/obj
 /Solution/TestProjecten/Chiro.Gap.Services.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.Services.Test/*.aps
 /Solution/TestProjecten/Chiro.Gap.Services.Test/*.eto
 /Solution/TestProjecten/Chiro.Gap.Services.Test/*.Cache
 
 # /Solution/TestProjecten/Chiro.Gap.Sync.Test/
-/Solution/TestProjecten/Chiro.Gap.Sync.Test/obj
 /Solution/TestProjecten/Chiro.Gap.Sync.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.Sync.Test/*.aps
 /Solution/TestProjecten/Chiro.Gap.Sync.Test/*.eto
 /Solution/TestProjecten/Chiro.Gap.Sync.Test/*.Cache
 
 # /Solution/TestProjecten/Chiro.Gap.TestDbInfo/
-/Solution/TestProjecten/Chiro.Gap.TestDbInfo/obj
 /Solution/TestProjecten/Chiro.Gap.TestDbInfo/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.TestDbInfo/*.aps
 /Solution/TestProjecten/Chiro.Gap.TestDbInfo/*.eto
 /Solution/TestProjecten/Chiro.Gap.TestDbInfo/*.Cache
 
 # /Solution/TestProjecten/Chiro.Gap.Validatie.Test/
-/Solution/TestProjecten/Chiro.Gap.Validatie.Test/obj
 /Solution/TestProjecten/Chiro.Gap.Validatie.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.Validatie.Test/*.aps
 /Solution/TestProjecten/Chiro.Gap.Validatie.Test/*.eto
 
 # /Solution/TestProjecten/Chiro.Gap.WebApp.Test/
-/Solution/TestProjecten/Chiro.Gap.WebApp.Test/obj
 /Solution/TestProjecten/Chiro.Gap.WebApp.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.WebApp.Test/*.aps
 /Solution/TestProjecten/Chiro.Gap.WebApp.Test/*.eto
 /Solution/TestProjecten/Chiro.Gap.WebApp.Test/*.Cache
 
 # /Solution/TestProjecten/Chiro.Gap.WebServices.Test/
-/Solution/TestProjecten/Chiro.Gap.WebServices.Test/obj
 /Solution/TestProjecten/Chiro.Gap.WebServices.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.WebServices.Test/*.aps
 /Solution/TestProjecten/Chiro.Gap.WebServices.Test/*.eto
 
 # /Solution/TestProjecten/Chiro.Gap.Workers.Test/
-/Solution/TestProjecten/Chiro.Gap.Workers.Test/obj
 /Solution/TestProjecten/Chiro.Gap.Workers.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.Workers.Test/*.aps
 /Solution/TestProjecten/Chiro.Gap.Workers.Test/*.eto
 /Solution/TestProjecten/Chiro.Gap.Workers.Test/*.Cache
 
 # /Solution/TestProjecten/Chiro.Gap.Workers.Test.CustomIoc/
-/Solution/TestProjecten/Chiro.Gap.Workers.Test.CustomIoc/obj
 /Solution/TestProjecten/Chiro.Gap.Workers.Test.CustomIoc/[Rr]elease
 /Solution/TestProjecten/Chiro.Gap.Workers.Test.CustomIoc/*.aps
 /Solution/TestProjecten/Chiro.Gap.Workers.Test.CustomIoc/*.eto
@@ -326,7 +282,6 @@ _ReSharper.*
 
 # /Solution/TestProjecten/Chiro.WatiN.Test/
 /Solution/TestProjecten/Chiro.WatiN.Test/bin
-/Solution/TestProjecten/Chiro.WatiN.Test/obj
 /Solution/TestProjecten/Chiro.WatiN.Test/[Rr]elease
 /Solution/TestProjecten/Chiro.WatiN.Test/*.aps
 /Solution/TestProjecten/Chiro.WatiN.Test/*.eto
@@ -356,19 +311,16 @@ _ReSharper.*
 /poc/*.ncb
 
 # /poc/BasisEntiteit/BasisEntiteit/
-/poc/BasisEntiteit/BasisEntiteit/obj
 /poc/BasisEntiteit/BasisEntiteit/[Rr]elease
 /poc/BasisEntiteit/BasisEntiteit/*.aps
 /poc/BasisEntiteit/BasisEntiteit/*.eto
 
 # /poc/BasisEntiteit/Core/
-/poc/BasisEntiteit/Core/obj
 /poc/BasisEntiteit/Core/[Rr]elease
 /poc/BasisEntiteit/Core/*.aps
 /poc/BasisEntiteit/Core/*.eto
 
 # /poc/BasisEntiteit/Data/
-/poc/BasisEntiteit/Data/obj
 /poc/BasisEntiteit/Data/[Rr]elease
 /poc/BasisEntiteit/Data/*.aps
 /poc/BasisEntiteit/Data/*.eto
@@ -381,55 +333,46 @@ _ReSharper.*
 /poc/Chiro.Poc.OData/ipch
 
 # /poc/Chiro.Poc.OData/Chiro.Poc.OData.WebApp/
-/poc/Chiro.Poc.OData/Chiro.Poc.OData.WebApp/obj
 /poc/Chiro.Poc.OData/Chiro.Poc.OData.WebApp/[Rr]elease
 /poc/Chiro.Poc.OData/Chiro.Poc.OData.WebApp/*.aps
 /poc/Chiro.Poc.OData/Chiro.Poc.OData.WebApp/*.eto
 
 # /poc/EntityFramework/Cg2.Core/
-/poc/EntityFramework/Cg2.Core/obj
 /poc/EntityFramework/Cg2.Core/[Rr]elease
 /poc/EntityFramework/Cg2.Core/*.aps
 /poc/EntityFramework/Cg2.Core/*.eto
 
 # /poc/EntityFramework/Cg2.Data/
-/poc/EntityFramework/Cg2.Data/obj
 /poc/EntityFramework/Cg2.Data/[Rr]elease
 /poc/EntityFramework/Cg2.Data/*.aps
 /poc/EntityFramework/Cg2.Data/*.eto
 
 # /poc/EntityFramework/Cg2.Test/
-/poc/EntityFramework/Cg2.Test/obj
 /poc/EntityFramework/Cg2.Test/[Rr]elease
 /poc/EntityFramework/Cg2.Test/*.aps
 /poc/EntityFramework/Cg2.Test/*.eto
 
 # /poc/EntityFramework/Cg2.Validatie/
-/poc/EntityFramework/Cg2.Validatie/obj
 /poc/EntityFramework/Cg2.Validatie/[Rr]elease
 /poc/EntityFramework/Cg2.Validatie/*.aps
 /poc/EntityFramework/Cg2.Validatie/*.eto
 
 # /poc/EntityFramework/Cg2.Workers/
-/poc/EntityFramework/Cg2.Workers/obj
 /poc/EntityFramework/Cg2.Workers/[Rr]elease
 /poc/EntityFramework/Cg2.Workers/*.aps
 /poc/EntityFramework/Cg2.Workers/*.eto
 
 # /poc/EntityFramework/WebServices/
-/poc/EntityFramework/WebServices/obj
 /poc/EntityFramework/WebServices/[Rr]elease
 /poc/EntityFramework/WebServices/*.aps
 /poc/EntityFramework/WebServices/*.eto
 
 # /poc/EntityFramework/WebServices.Test/
-/poc/EntityFramework/WebServices.Test/obj
 /poc/EntityFramework/WebServices.Test/[Rr]elease
 /poc/EntityFramework/WebServices.Test/*.aps
 /poc/EntityFramework/WebServices.Test/*.eto
 
 # /poc/HelloNhibernate/HelloNhibernate/
-/poc/HelloNhibernate/HelloNhibernate/obj
 /poc/HelloNhibernate/HelloNhibernate/[Rr]elease
 /poc/HelloNhibernate/HelloNhibernate/*.aps
 /poc/HelloNhibernate/HelloNhibernate/*.eto
@@ -439,67 +382,56 @@ _ReSharper.*
 /poc/LinqToSql/*.ncb
 
 # /poc/LinqToSql/Cg2.Core/
-/poc/LinqToSql/Cg2.Core/obj
 /poc/LinqToSql/Cg2.Core/[Rr]elease
 /poc/LinqToSql/Cg2.Core/*.aps
 /poc/LinqToSql/Cg2.Core/*.eto
 
 # /poc/LinqToSql/Cg2.Data/
-/poc/LinqToSql/Cg2.Data/obj
 /poc/LinqToSql/Cg2.Data/[Rr]elease
 /poc/LinqToSql/Cg2.Data/*.aps
 /poc/LinqToSql/Cg2.Data/*.eto
 
 # /poc/LinqToSql/Cg2.Tests/
-/poc/LinqToSql/Cg2.Tests/obj
 /poc/LinqToSql/Cg2.Tests/[Rr]elease
 /poc/LinqToSql/Cg2.Tests/*.aps
 /poc/LinqToSql/Cg2.Tests/*.eto
 
 # /poc/LinqToSql/Cg2.Validatie/
-/poc/LinqToSql/Cg2.Validatie/obj
 /poc/LinqToSql/Cg2.Validatie/[Rr]elease
 /poc/LinqToSql/Cg2.Validatie/*.aps
 /poc/LinqToSql/Cg2.Validatie/*.eto
 
 # /poc/LinqToSql/Cg2.Workers/
-/poc/LinqToSql/Cg2.Workers/obj
 /poc/LinqToSql/Cg2.Workers/[Rr]elease
 /poc/LinqToSql/Cg2.Workers/*.aps
 /poc/LinqToSql/Cg2.Workers/*.eto
 
 # /poc/LinqToSql/Cg2Services/
-/poc/LinqToSql/Cg2Services/obj
 /poc/LinqToSql/Cg2Services/[Rr]elease
 /poc/LinqToSql/Cg2Services/*.aps
 /poc/LinqToSql/Cg2Services/*.eto
 
 # /poc/LinqToSql/Cg2Services.Tests/
-/poc/LinqToSql/Cg2Services.Tests/obj
 /poc/LinqToSql/Cg2Services.Tests/[Rr]elease
 /poc/LinqToSql/Cg2Services.Tests/*.aps
 /poc/LinqToSql/Cg2Services.Tests/*.eto
 
 # /poc/LinqToSql/CgControls/
-/poc/LinqToSql/CgControls/obj
 /poc/LinqToSql/CgControls/[Rr]elease
 /poc/LinqToSql/CgControls/*.aps
 /poc/LinqToSql/CgControls/*.eto
 
 # /poc/LinqToSql/CgServerControls/
-/poc/LinqToSql/CgServerControls/obj
 /poc/LinqToSql/CgServerControls/[Rr]elease
 /poc/LinqToSql/CgServerControls/*.aps
 /poc/LinqToSql/CgServerControls/*.eto
 
 # /poc/LinqToSql/CgWeb/
-/poc/LinqToSql/CgWeb/obj
 /poc/LinqToSql/CgWeb/[Rr]elease
 /poc/LinqToSql/CgWeb/*.aps
 /poc/LinqToSql/CgWeb/*.eto
 
 # /poc/LinqToSql/WebApplication1/
-/poc/LinqToSql/WebApplication1/obj
 /poc/LinqToSql/WebApplication1/[Rr]elease
 /poc/LinqToSql/WebApplication1/*.aps
 /poc/LinqToSql/WebApplication1/*.eto
@@ -509,67 +441,56 @@ _ReSharper.*
 /poc/Nhibernate/*.ncb
 
 # /poc/Nhibernate/Cg2.Core/
-/poc/Nhibernate/Cg2.Core/obj
 /poc/Nhibernate/Cg2.Core/[Rr]elease
 /poc/Nhibernate/Cg2.Core/*.aps
 /poc/Nhibernate/Cg2.Core/*.eto
 
 # /poc/Nhibernate/Cg2.Data/
-/poc/Nhibernate/Cg2.Data/obj
 /poc/Nhibernate/Cg2.Data/[Rr]elease
 /poc/Nhibernate/Cg2.Data/*.aps
 /poc/Nhibernate/Cg2.Data/*.eto
 
 # /poc/Nhibernate/Cg2.Tests/
-/poc/Nhibernate/Cg2.Tests/obj
 /poc/Nhibernate/Cg2.Tests/[Rr]elease
 /poc/Nhibernate/Cg2.Tests/*.aps
 /poc/Nhibernate/Cg2.Tests/*.eto
 
 # /poc/Nhibernate/Cg2.Validatie/
-/poc/Nhibernate/Cg2.Validatie/obj
 /poc/Nhibernate/Cg2.Validatie/[Rr]elease
 /poc/Nhibernate/Cg2.Validatie/*.aps
 /poc/Nhibernate/Cg2.Validatie/*.eto
 
 # /poc/Nhibernate/Cg2.Workers/
-/poc/Nhibernate/Cg2.Workers/obj
 /poc/Nhibernate/Cg2.Workers/[Rr]elease
 /poc/Nhibernate/Cg2.Workers/*.aps
 /poc/Nhibernate/Cg2.Workers/*.eto
 
 # /poc/Nhibernate/Cg2Services/
-/poc/Nhibernate/Cg2Services/obj
 /poc/Nhibernate/Cg2Services/[Rr]elease
 /poc/Nhibernate/Cg2Services/*.aps
 /poc/Nhibernate/Cg2Services/*.eto
 
 # /poc/Nhibernate/Cg2Services.Tests/
-/poc/Nhibernate/Cg2Services.Tests/obj
 /poc/Nhibernate/Cg2Services.Tests/[Rr]elease
 /poc/Nhibernate/Cg2Services.Tests/*.aps
 /poc/Nhibernate/Cg2Services.Tests/*.eto
 
 # /poc/Nhibernate/CgControls/
-/poc/Nhibernate/CgControls/obj
 /poc/Nhibernate/CgControls/[Rr]elease
 /poc/Nhibernate/CgControls/*.aps
 /poc/Nhibernate/CgControls/*.eto
 
 # /poc/Nhibernate/CgServerControls/
-/poc/Nhibernate/CgServerControls/obj
 /poc/Nhibernate/CgServerControls/[Rr]elease
 /poc/Nhibernate/CgServerControls/*.aps
 /poc/Nhibernate/CgServerControls/*.eto
 
 # /poc/Nhibernate/CgWeb/
-/poc/Nhibernate/CgWeb/obj
 /poc/Nhibernate/CgWeb/[Rr]elease
 /poc/Nhibernate/CgWeb/*.aps
 /poc/Nhibernate/CgWeb/*.eto
 
 # /poc/Nhibernate/WebApplication1/
-/poc/Nhibernate/WebApplication1/obj
 /poc/Nhibernate/WebApplication1/[Rr]elease
 /poc/Nhibernate/WebApplication1/*.aps
 /poc/Nhibernate/WebApplication1/*.eto
@@ -582,103 +503,86 @@ _ReSharper.*
 /poc/WcfEnIoc/ipch
 
 # /poc/WcfEnIoc/Chiro.Poc.Client/
-/poc/WcfEnIoc/Chiro.Poc.Client/obj
 /poc/WcfEnIoc/Chiro.Poc.Client/[Rr]elease
 /poc/WcfEnIoc/Chiro.Poc.Client/*.aps
 /poc/WcfEnIoc/Chiro.Poc.Client/*.eto
 
 # /poc/WcfEnIoc/Chiro.Poc.Ioc/
-/poc/WcfEnIoc/Chiro.Poc.Ioc/obj
 /poc/WcfEnIoc/Chiro.Poc.Ioc/[Rr]elease
 /poc/WcfEnIoc/Chiro.Poc.Ioc/*.aps
 /poc/WcfEnIoc/Chiro.Poc.Ioc/*.eto
 
 # /poc/WcfEnIoc/Chiro.Poc.ServiceGedoe/
-/poc/WcfEnIoc/Chiro.Poc.ServiceGedoe/obj
 /poc/WcfEnIoc/Chiro.Poc.ServiceGedoe/[Rr]elease
 /poc/WcfEnIoc/Chiro.Poc.ServiceGedoe/*.aps
 /poc/WcfEnIoc/Chiro.Poc.ServiceGedoe/*.eto
 
 # /poc/WcfEnIoc/Chiro.Poc.UnitTests/
-/poc/WcfEnIoc/Chiro.Poc.UnitTests/obj
 /poc/WcfEnIoc/Chiro.Poc.UnitTests/[Rr]elease
 /poc/WcfEnIoc/Chiro.Poc.UnitTests/*.aps
 /poc/WcfEnIoc/Chiro.Poc.UnitTests/*.eto
 
 # /poc/WcfEnIoc/Chiro.Poc.WcfService/
-/poc/WcfEnIoc/Chiro.Poc.WcfService/obj
 /poc/WcfEnIoc/Chiro.Poc.WcfService/[Rr]elease
 /poc/WcfEnIoc/Chiro.Poc.WcfService/*.aps
 /poc/WcfEnIoc/Chiro.Poc.WcfService/*.eto
 
 # /poc/WcfEnIoc/Chiro.Poc.WcfService.ServiceContracts/
-/poc/WcfEnIoc/Chiro.Poc.WcfService.ServiceContracts/obj
 /poc/WcfEnIoc/Chiro.Poc.WcfService.ServiceContracts/[Rr]elease
 /poc/WcfEnIoc/Chiro.Poc.WcfService.ServiceContracts/*.aps
 /poc/WcfEnIoc/Chiro.Poc.WcfService.ServiceContracts/*.eto
 
 # /poc/ef2/Cg2.Data/
-/poc/ef2/Cg2.Data/obj
 /poc/ef2/Cg2.Data/[Rr]elease
 /poc/ef2/Cg2.Data/*.aps
 /poc/ef2/Cg2.Data/*.eto
 
 # /poc/ef2/Cg2.Orm/
-/poc/ef2/Cg2.Orm/obj
 /poc/ef2/Cg2.Orm/[Rr]elease
 /poc/ef2/Cg2.Orm/*.aps
 /poc/ef2/Cg2.Orm/*.eto
 
 # /poc/ef2/Cg2.ServiceInterfaces/
-/poc/ef2/Cg2.ServiceInterfaces/obj
 /poc/ef2/Cg2.ServiceInterfaces/[Rr]elease
 /poc/ef2/Cg2.ServiceInterfaces/*.aps
 /poc/ef2/Cg2.ServiceInterfaces/*.eto
 
 # /poc/ef2/Cg2.Test/
-/poc/ef2/Cg2.Test/obj
 /poc/ef2/Cg2.Test/[Rr]elease
 /poc/ef2/Cg2.Test/*.aps
 /poc/ef2/Cg2.Test/*.eto
 
 # /poc/ef2/Cg2.Validatie/
-/poc/ef2/Cg2.Validatie/obj
 /poc/ef2/Cg2.Validatie/[Rr]elease
 /poc/ef2/Cg2.Validatie/*.aps
 /poc/ef2/Cg2.Validatie/*.eto
 
 # /poc/ef2/Cg2.Workers/
-/poc/ef2/Cg2.Workers/obj
 /poc/ef2/Cg2.Workers/[Rr]elease
 /poc/ef2/Cg2.Workers/*.aps
 /poc/ef2/Cg2.Workers/*.eto
 
 # /poc/ef2/CodeProject.Data/
-/poc/ef2/CodeProject.Data/obj
 /poc/ef2/CodeProject.Data/[Rr]elease
 /poc/ef2/CodeProject.Data/*.aps
 /poc/ef2/CodeProject.Data/*.eto
 
 # /poc/ef2/MvcWebApp2/
-/poc/ef2/MvcWebApp2/obj
 /poc/ef2/MvcWebApp2/[Rr]elease
 /poc/ef2/MvcWebApp2/*.aps
 /poc/ef2/MvcWebApp2/*.eto
 
 # /poc/ef2/MvcWebApp2.Tests/
-/poc/ef2/MvcWebApp2.Tests/obj
 /poc/ef2/MvcWebApp2.Tests/[Rr]elease
 /poc/ef2/MvcWebApp2.Tests/*.aps
 /poc/ef2/MvcWebApp2.Tests/*.eto
 
 # /poc/ef2/WebServices/
-/poc/ef2/WebServices/obj
 /poc/ef2/WebServices/[Rr]elease
 /poc/ef2/WebServices/*.aps
 /poc/ef2/WebServices/*.eto
 
 # /poc/ef2/WebServices.Test/
-/poc/ef2/WebServices.Test/obj
 /poc/ef2/WebServices.Test/[Rr]elease
 /poc/ef2/WebServices.Test/*.aps
 /poc/ef2/WebServices.Test/*.eto
@@ -691,109 +595,91 @@ _ReSharper.*
 /poc/ef41/ipch
 
 # /poc/ef41/Algemeen.Data/
-/poc/ef41/Algemeen.Data/obj
 /poc/ef41/Algemeen.Data/[Rr]elease
 /poc/ef41/Algemeen.Data/*.aps
 /poc/ef41/Algemeen.Data/*.eto
 
 # /poc/ef41/Algemeen.Data.Entity/
-/poc/ef41/Algemeen.Data.Entity/obj
 /poc/ef41/Algemeen.Data.Entity/[Rr]elease
 /poc/ef41/Algemeen.Data.Entity/*.aps
 /poc/ef41/Algemeen.Data.Entity/*.eto
 
 # /poc/ef41/Algemeen.DependencyInjectionBehavior/
-/poc/ef41/Algemeen.DependencyInjectionBehavior/obj
 /poc/ef41/Algemeen.DependencyInjectionBehavior/[Rr]elease
 /poc/ef41/Algemeen.DependencyInjectionBehavior/*.aps
 /poc/ef41/Algemeen.DependencyInjectionBehavior/*.eto
 
 # /poc/ef41/Algemeen.IoC/
-/poc/ef41/Algemeen.IoC/obj
 /poc/ef41/Algemeen.IoC/[Rr]elease
 /poc/ef41/Algemeen.IoC/*.aps
 /poc/ef41/Algemeen.IoC/*.eto
 
 # /poc/ef41/Client/
-/poc/ef41/Client/obj
 /poc/ef41/Client/[Rr]elease
 /poc/ef41/Client/*.aps
 /poc/ef41/Client/*.eto
 
 # /poc/ef41/KipTest.Data/
-/poc/ef41/KipTest.Data/obj
 /poc/ef41/KipTest.Data/[Rr]elease
 /poc/ef41/KipTest.Data/*.aps
 /poc/ef41/KipTest.Data/*.eto
 
 # /poc/ef41/KipTest.Domain/
-/poc/ef41/KipTest.Domain/obj
 /poc/ef41/KipTest.Domain/[Rr]elease
 /poc/ef41/KipTest.Domain/*.aps
 /poc/ef41/KipTest.Domain/*.eto
 
 # /poc/ef41/KipTest.Service/
-/poc/ef41/KipTest.Service/obj
 /poc/ef41/KipTest.Service/[Rr]elease
 /poc/ef41/KipTest.Service/*.aps
 /poc/ef41/KipTest.Service/*.eto
 
 # /poc/ef41/KipTest.ServiceContracts/
-/poc/ef41/KipTest.ServiceContracts/obj
 /poc/ef41/KipTest.ServiceContracts/[Rr]elease
 /poc/ef41/KipTest.ServiceContracts/*.aps
 /poc/ef41/KipTest.ServiceContracts/*.eto
 
 # /poc/ef41/KipTest.Workers/
-/poc/ef41/KipTest.Workers/obj
 /poc/ef41/KipTest.Workers/[Rr]elease
 /poc/ef41/KipTest.Workers/*.aps
 /poc/ef41/KipTest.Workers/*.eto
 
 # /poc/references/CgBll/
-/poc/references/CgBll/obj
 /poc/references/CgBll/[Rr]elease
 /poc/references/CgBll/*.aps
 /poc/references/CgBll/*.eto
 
 # /poc/references/CgService/
-/poc/references/CgService/obj
 /poc/references/CgService/[Rr]elease
 /poc/references/CgService/*.aps
 /poc/references/CgService/*.eto
 
 # /poc/references/ConsoleApplication1/
-/poc/references/ConsoleApplication1/obj
 /poc/references/ConsoleApplication1/[Rr]elease
 /poc/references/ConsoleApplication1/*.aps
 /poc/references/ConsoleApplication1/*.eto
 
 # /poc/references/WcfService1/
-/poc/references/WcfService1/obj
 /poc/references/WcfService1/[Rr]elease
 /poc/references/WcfService1/*.aps
 /poc/references/WcfService1/*.eto
 
 # /poc/wcf/CgBll/
-/poc/wcf/CgBll/obj
 /poc/wcf/CgBll/[Rr]elease
 /poc/wcf/CgBll/*.aps
 /poc/wcf/CgBll/*.eto
 
 # /poc/wcf/CgService/
-/poc/wcf/CgService/obj
 /poc/wcf/CgService/[Rr]elease
 /poc/wcf/CgService/*.aps
 /poc/wcf/CgService/*.eto
 
 # /poc/wcf/ConsoleApplication1/
-/poc/wcf/ConsoleApplication1/obj
 /poc/wcf/ConsoleApplication1/[Rr]elease
 /poc/wcf/ConsoleApplication1/*.aps
 /poc/wcf/ConsoleApplication1/*.eto
 
 # /poc/wcf/WcfService1/
-/poc/wcf/WcfService1/obj
 /poc/wcf/WcfService1/[Rr]elease
 /poc/wcf/WcfService1/*.aps
 /poc/wcf/WcfService1/*.eto
@@ -806,37 +692,31 @@ _ReSharper.*
 /tools/Chiro.Gap.Diagnostics/ipch
 
 # /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Data/
-/tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Data/obj
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Data/[Rr]elease
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Data/*.aps
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Data/*.eto
 
 # /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Orm/
-/tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Orm/obj
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Orm/[Rr]elease
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Orm/*.aps
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Orm/*.eto
 
 # /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Service/
-/tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Service/obj
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Service/[Rr]elease
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Service/*.aps
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Service/*.eto
 
 # /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.ServiceContracts/
-/tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.ServiceContracts/obj
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.ServiceContracts/[Rr]elease
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.ServiceContracts/*.aps
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.ServiceContracts/*.eto
 
 # /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.WebApp/
-/tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.WebApp/obj
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.WebApp/[Rr]elease
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.WebApp/*.aps
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.WebApp/*.eto
 
 # /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Workers/
-/tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Workers/obj
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Workers/[Rr]elease
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Workers/*.aps
 /tools/Chiro.Gap.Diagnostics/Chiro.Gap.Diagnostics.Workers/*.eto
@@ -849,19 +729,16 @@ _ReSharper.*
 /tools/GapCli/ipch
 
 # /tools/GapCli/AbonnementenOpnieuwSyncen/
-/tools/GapCli/AbonnementenOpnieuwSyncen/obj
 /tools/GapCli/AbonnementenOpnieuwSyncen/[Rr]elease
 /tools/GapCli/AbonnementenOpnieuwSyncen/*.aps
 /tools/GapCli/AbonnementenOpnieuwSyncen/*.eto
 
 # /tools/GapCli/GroepOpnieuwSyncen/
-/tools/GapCli/GroepOpnieuwSyncen/obj
 /tools/GapCli/GroepOpnieuwSyncen/[Rr]elease
 /tools/GapCli/GroepOpnieuwSyncen/*.aps
 /tools/GapCli/GroepOpnieuwSyncen/*.eto
 
 # /tools/GapCli/PersonenMergen/
-/tools/GapCli/PersonenMergen/obj
 /tools/GapCli/PersonenMergen/[Rr]elease
 /tools/GapCli/PersonenMergen/*.aps
 /tools/GapCli/PersonenMergen/*.eto
@@ -869,25 +746,21 @@ _ReSharper.*
 # /tools/InitieleImport/
 
 # /tools/InitieleImport/Chiro.Gap.Data.Super/
-/tools/InitieleImport/Chiro.Gap.Data.Super/obj
 /tools/InitieleImport/Chiro.Gap.Data.Super/[Rr]elease
 /tools/InitieleImport/Chiro.Gap.Data.Super/*.aps
 /tools/InitieleImport/Chiro.Gap.Data.Super/*.eto
 
 # /tools/InitieleImport/Chiro.Gap.InitieleImport/
-/tools/InitieleImport/Chiro.Gap.InitieleImport/obj
 /tools/InitieleImport/Chiro.Gap.InitieleImport/[Rr]elease
 /tools/InitieleImport/Chiro.Gap.InitieleImport/*.aps
 /tools/InitieleImport/Chiro.Gap.InitieleImport/*.eto
 
 # /tools/InitieleImport/Chiro.Gap.InitieleImport.Test/
-/tools/InitieleImport/Chiro.Gap.InitieleImport.Test/obj
 /tools/InitieleImport/Chiro.Gap.InitieleImport.Test/[Rr]elease
 /tools/InitieleImport/Chiro.Gap.InitieleImport.Test/*.aps
 /tools/InitieleImport/Chiro.Gap.InitieleImport.Test/*.eto
 
 # /tools/InitieleImport/tar-cs/
-/tools/InitieleImport/tar-cs/obj
 /tools/InitieleImport/tar-cs/[Rr]elease
 /tools/InitieleImport/tar-cs/*.aps
 /tools/InitieleImport/tar-cs/*.eto
@@ -895,55 +768,46 @@ _ReSharper.*
 # /tools/KipSync/
 
 # /tools/KipSync/Chiro.Kip.ConsoleServiceHost/
-/tools/KipSync/Chiro.Kip.ConsoleServiceHost/obj
 /tools/KipSync/Chiro.Kip.ConsoleServiceHost/[Rr]elease
 /tools/KipSync/Chiro.Kip.ConsoleServiceHost/*.aps
 /tools/KipSync/Chiro.Kip.ConsoleServiceHost/*.eto
 
 # /tools/KipSync/Chiro.Kip.Data/
-/tools/KipSync/Chiro.Kip.Data/obj
 /tools/KipSync/Chiro.Kip.Data/[Rr]elease
 /tools/KipSync/Chiro.Kip.Data/*.aps
 /tools/KipSync/Chiro.Kip.Data/*.eto
 
 # /tools/KipSync/Chiro.Kip.Log/
-/tools/KipSync/Chiro.Kip.Log/obj
 /tools/KipSync/Chiro.Kip.Log/[Rr]elease
 /tools/KipSync/Chiro.Kip.Log/*.aps
 /tools/KipSync/Chiro.Kip.Log/*.eto
 
 # /tools/KipSync/Chiro.Kip.ResubmitDeadMessages/
-/tools/KipSync/Chiro.Kip.ResubmitDeadMessages/obj
 /tools/KipSync/Chiro.Kip.ResubmitDeadMessages/[Rr]elease
 /tools/KipSync/Chiro.Kip.ResubmitDeadMessages/*.aps
 /tools/KipSync/Chiro.Kip.ResubmitDeadMessages/*.eto
 
 # /tools/KipSync/Chiro.Kip.ServiceContracts/
-/tools/KipSync/Chiro.Kip.ServiceContracts/obj
 /tools/KipSync/Chiro.Kip.ServiceContracts/[Rr]elease
 /tools/KipSync/Chiro.Kip.ServiceContracts/*.aps
 /tools/KipSync/Chiro.Kip.ServiceContracts/*.eto
 
 # /tools/KipSync/Chiro.Kip.Services/
-/tools/KipSync/Chiro.Kip.Services/obj
 /tools/KipSync/Chiro.Kip.Services/[Rr]elease
 /tools/KipSync/Chiro.Kip.Services/*.aps
 /tools/KipSync/Chiro.Kip.Services/*.eto
 
 # /tools/KipSync/Chiro.Kip.SyncService/
-/tools/KipSync/Chiro.Kip.SyncService/obj
 /tools/KipSync/Chiro.Kip.SyncService/[Rr]elease
 /tools/KipSync/Chiro.Kip.SyncService/*.aps
 /tools/KipSync/Chiro.Kip.SyncService/*.eto
 
 # /tools/KipSync/Chiro.Kip.Workers/
-/tools/KipSync/Chiro.Kip.Workers/obj
 /tools/KipSync/Chiro.Kip.Workers/[Rr]elease
 /tools/KipSync/Chiro.Kip.Workers/*.aps
 /tools/KipSync/Chiro.Kip.Workers/*.eto
 
 # /tools/KipSync/Test/Chiro.Kip.Services.Test/
-/tools/KipSync/Test/Chiro.Kip.Services.Test/obj
 /tools/KipSync/Test/Chiro.Kip.Services.Test/[Rr]elease
 /tools/KipSync/Test/Chiro.Kip.Services.Test/*.aps
 /tools/KipSync/Test/Chiro.Kip.Services.Test/*.eto
@@ -951,43 +815,36 @@ _ReSharper.*
 # /tools/LoginService/
 
 # /tools/LoginService/Chiro.Ad.Domain/
-/tools/LoginService/Chiro.Ad.Domain/obj
 /tools/LoginService/Chiro.Ad.Domain/[Rr]elease
 /tools/LoginService/Chiro.Ad.Domain/*.aps
 /tools/LoginService/Chiro.Ad.Domain/*.eto
 
 # /tools/LoginService/Chiro.Ad.LoginService/
-/tools/LoginService/Chiro.Ad.LoginService/obj
 /tools/LoginService/Chiro.Ad.LoginService/[Rr]elease
 /tools/LoginService/Chiro.Ad.LoginService/*.aps
 /tools/LoginService/Chiro.Ad.LoginService/*.eto
 
 # /tools/LoginService/Chiro.Ad.ServiceContracts/
-/tools/LoginService/Chiro.Ad.ServiceContracts/obj
 /tools/LoginService/Chiro.Ad.ServiceContracts/[Rr]elease
 /tools/LoginService/Chiro.Ad.ServiceContracts/*.aps
 /tools/LoginService/Chiro.Ad.ServiceContracts/*.eto
 
 # /tools/LoginService/Chiro.Ad.Test/
-/tools/LoginService/Chiro.Ad.Test/obj
 /tools/LoginService/Chiro.Ad.Test/[Rr]elease
 /tools/LoginService/Chiro.Ad.Test/*.aps
 /tools/LoginService/Chiro.Ad.Test/*.eto
 
 # /tools/LoginService/Chiro.Ad.Workers/
-/tools/LoginService/Chiro.Ad.Workers/obj
 /tools/LoginService/Chiro.Ad.Workers/[Rr]elease
 /tools/LoginService/Chiro.Ad.Workers/*.aps
 /tools/LoginService/Chiro.Ad.Workers/*.eto
 
 # /tools/LoginService/Chiro.Cdf.Mailer/
-/tools/LoginService/Chiro.Cdf.Mailer/obj
 /tools/LoginService/Chiro.Cdf.Mailer/[Rr]elease
 /tools/LoginService/Chiro.Cdf.Mailer/*.aps
 /tools/LoginService/Chiro.Cdf.Mailer/*.eto
 
 # /tools/LoginService/DommeTests.cs/
-/tools/LoginService/DommeTests.cs/obj
 /tools/LoginService/DommeTests.cs/[Rr]elease
 /tools/LoginService/DommeTests.cs/*.aps
 /tools/LoginService/DommeTests.cs/*.eto
@@ -995,31 +852,26 @@ _ReSharper.*
 # /tools/Loginbeheer/
 
 # /tools/Loginbeheer/LoginTestClient/
-/tools/Loginbeheer/LoginTestClient/obj
 /tools/Loginbeheer/LoginTestClient/[Rr]elease
 /tools/Loginbeheer/LoginTestClient/*.aps
 /tools/Loginbeheer/LoginTestClient/*.eto
 
 # /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Generics/
-/voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Generics/obj
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Generics/[Rr]elease
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Generics/*.aps
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Generics/*.eto
 
 # /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.LambdaExpressies/
-/voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.LambdaExpressies/obj
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.LambdaExpressies/[Rr]elease
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.LambdaExpressies/*.aps
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.LambdaExpressies/*.eto
 
 # /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Linq/
-/voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Linq/obj
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Linq/[Rr]elease
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Linq/*.aps
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Linq/*.eto
 
 # /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Net35Algemeen/
-/voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Net35Algemeen/obj
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Net35Algemeen/[Rr]elease
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Net35Algemeen/*.aps
 /voorbeelden/VoorbeeldProgrammas/Chiro.Voorbeeld.Net35Algemeen/*.eto
