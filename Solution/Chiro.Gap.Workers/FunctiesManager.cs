@@ -291,32 +291,6 @@ namespace Chiro.Gap.Workers
 
         /// <summary>
         /// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of de maximum- en
-        /// minimumaantallen van de functies (eigen en nationaal bepaald) niet overschreden zijn.
-        /// </summary>
-        /// <param name="groepsWerkJaar">
-        /// Te controleren werkJaar
-        /// </param>
-        /// <returns>
-        /// Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.
-        /// </returns>
-        /// <remarks>
-        /// <para>
-        /// Deze functie is zich niet bewust van de aanwezigheid van een database, en verwacht
-        /// dat groepsWerkJaar.Groep.Functie en groepsWerkJaar.Lid[i].Functie geladen zijn.
-        /// </para>
-        /// </remarks>
-        public IEnumerable<Telling> AantallenControleren(GroepsWerkJaar groepsWerkJaar)
-        {
-            //var eigenFuncties = from fn in groepsWerkJaar.Groep.Functie select fn;
-
-            //return AantallenControleren(
-            //    groepsWerkJaar,
-            //    eigenFuncties.Union(NationaalBepaaldeFunctiesOphalen()));
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-        }
-
-        /// <summary>
-        /// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of de maximum- en
         /// minimumaantallen van de functies <paramref name="functies"/> niet overschreden zijn.
         /// </summary>
         /// <param name="groepsWerkJaar">
@@ -345,7 +319,7 @@ namespace Chiro.Gap.Workers
             GroepsWerkJaar groepsWerkJaar,
             IEnumerable<Functie> functies)
         {
-            if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaar.ID))
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }

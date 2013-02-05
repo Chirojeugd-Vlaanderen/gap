@@ -53,6 +53,7 @@ namespace Chiro.Gap.Services
         private readonly IGroepenManager _groepenMgr;
         private readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
         private readonly IFunctiesManager _functiesMgr;
+        private readonly IVeelGebruikt _veelGebruikt;
 
         /// <summary>
         /// Nieuwe groepenservice
@@ -62,10 +63,11 @@ namespace Chiro.Gap.Services
         /// <param name="groepenMgr">Businesslogica aangaande groepen</param>
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
         /// <param name="functiesMgr">Businesslogica aangaande functies</param>
+        /// <param name="veelGebruikt">Cache voor veelgebruikte zaken</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         public GroepenService(IAuthenticatieManager authenticatieMgr, IAutorisatieManager autorisatieMgr,
                               IGroepenManager groepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
-                              IFunctiesManager functiesMgr,
+                              IFunctiesManager functiesMgr, IVeelGebruikt veelGebruikt,
                               IRepositoryProvider repositoryProvider)
         {
             _context = repositoryProvider.ContextGet();
@@ -78,6 +80,7 @@ namespace Chiro.Gap.Services
             _functiesMgr = functiesMgr;
             _authenticatieMgr = authenticatieMgr;
             _autorisatieMgr = autorisatieMgr;
+            _veelGebruikt = veelGebruikt;
         }
 
         public void Dispose()
@@ -368,8 +371,10 @@ namespace Chiro.Gap.Services
             }
 
             Debug.Assert(groepsWerkJaar != null);
-            
-            var problemen = _functiesMgr.AantallenControleren(groepsWerkJaar);
+
+            var problemen = _functiesMgr.AantallenControleren(
+                groepsWerkJaar,
+                groepsWerkJaar.Groep.Functie.Union(_veelGebruikt.NationaleFunctiesOphalen(_functiesRepo)));
 
             var resultaat = (from f in groepsWerkJaar.Groep.Functie
                              join p in problemen on f.ID equals p.ID
@@ -392,7 +397,73 @@ namespace Chiro.Gap.Services
         /// <returns>Een rij LedenProbleemInfo.  Leeg bij gebrek aan problemen.</returns>
         public IEnumerable<LedenProbleemInfo> LedenControleren(int groepID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var resultaat = new List<LedenProbleemInfo>();
+            var groepsWerkJaar =
+                _groepsWerkJarenRepo.Select()
+                                    .Where(gwj => gwj.Groep.ID == groepID)
+                                    .OrderByDescending(gwj => gwj.WerkJaar)
+                                    .FirstOrDefault();
+
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            Debug.Assert(groepsWerkJaar != null);
+
+            int aantalLedenZonderAdres = (from ld in groepsWerkJaar.Lid
+                                          where ld.GelieerdePersoon.PersoonsAdres == null
+                                          // geen voorkeursadres
+                                          select ld).Count();
+
+            int aantalLedenZonderTelefoonNr = (from ld in groepsWerkJaar.Lid
+                                               where
+                                                   !ld.GelieerdePersoon.Communicatie.Any(
+                                                       cmm =>
+                                                       cmm.CommunicatieType.ID ==
+                                                       (int) CommunicatieTypeEnum.TelefoonNummer)
+                                               select ld).Count();
+            // Hierboven: tel de personen waarbij er geen enkel communicatiemiddel is van het type
+            // 'telefoonnummer'. Resharper zal voorstellen om dit te vervangen door
+            // alle communicatiemiddelen hebben een type verschillend van telefoonnummer, maar dat
+            // is niet equivalent, IHB als er geen communicatietypes zijn.
+
+            int aantalLeidingZonderEmail = (from ld in groepsWerkJaar.Lid
+                                               where ld.Type == LidType.Leiding &&
+                                                   !ld.GelieerdePersoon.Communicatie.Any(
+                                                       cmm =>
+                                                       cmm.CommunicatieType.ID ==
+                                                       (int) CommunicatieTypeEnum.Email)
+                                               select ld).Count();
+
+            if (aantalLedenZonderAdres > 0)
+            {
+                resultaat.Add(new LedenProbleemInfo
+                                  {
+                                      Probleem = LidProbleem.AdresOntbreekt,
+                                      Aantal = aantalLedenZonderAdres
+                                  });
+            }
+
+            if (aantalLedenZonderTelefoonNr > 0)
+            {
+                resultaat.Add(new LedenProbleemInfo
+                                  {
+                                      Probleem = LidProbleem.TelefoonNummerOntbreekt,
+                                      Aantal = aantalLedenZonderTelefoonNr
+                                  });
+            }
+
+            if (aantalLeidingZonderEmail > 0)
+            {
+                resultaat.Add(new LedenProbleemInfo
+                                  {
+                                      Probleem = LidProbleem.EmailOntbreekt,
+                                      Aantal = aantalLeidingZonderEmail
+                                  });
+            }
+
+            return resultaat;
         }
 
         /// <summary>

@@ -84,24 +84,6 @@ namespace Chiro.Gap.WorkerInterfaces
 
         /// <summary>
         /// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of de maximum- en
-        /// minimumaantallen van de functies (eigen en nationaal bepaald) niet overschreden zijn.
-        /// </summary>
-        /// <param name="groepsWerkJaar">
-        /// Te controleren werkJaar
-        /// </param>
-        /// <returns>
-        /// Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.
-        /// </returns>
-        /// <remarks>
-        /// <para>
-        /// Deze functie is zich niet bewust van de aanwezigheid van een database, en verwacht
-        /// dat groepsWerkJaar.Groep.Functie en groepsWerkJaar.Lid[i].Functie geladen zijn.
-        /// </para>
-        /// </remarks>
-        IEnumerable<Telling> AantallenControleren(GroepsWerkJaar groepsWerkJaar);
-
-        /// <summary>
-        /// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of de maximum- en
         /// minimumaantallen van de functies <paramref name="functies"/> niet overschreden zijn.
         /// </summary>
         /// <param name="groepsWerkJaar">
