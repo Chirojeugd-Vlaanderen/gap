@@ -18,21 +18,9 @@ using Chiro.Gap.Workers.Properties;
 namespace Chiro.Gap.Workers
 {
     /// <summary>
-    /// Struct die gebruikt wordt om van een functie max aantal leden, min aantal leden en totaal aantal
-    /// leden te stockeren.
-    /// </summary>
-    public struct Telling
-    {
-        public int ID;
-        public int Aantal;
-        public int? Max;
-        public int Min;
-    }
-
-    /// <summary>
     /// Businesslogica ivm functies
     /// </summary>
-    public class FunctiesManager
+    public class FunctiesManager : IFunctiesManager
     {
         private readonly IVeelGebruikt _veelGebruikt;
         private readonly IAutorisatieManager _autorisatieMgr;

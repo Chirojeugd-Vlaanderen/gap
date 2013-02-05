@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using AutoMapper;
@@ -50,7 +51,8 @@ namespace Chiro.Gap.Services
         private readonly IAuthenticatieManager _authenticatieMgr;
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IGroepenManager _groepenMgr;
-        private readonly IGroepsWerkJarenManager _groepsWerkJarenManager;
+        private readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
+        private readonly IFunctiesManager _functiesMgr;
 
         /// <summary>
         /// Nieuwe groepenservice
@@ -59,9 +61,11 @@ namespace Chiro.Gap.Services
         /// <param name="autorisatieMgr">Verantwoordelijke voor autorisatie</param>
         /// <param name="groepenMgr">Businesslogica aangaande groepen</param>
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
+        /// <param name="functiesMgr">Businesslogica aangaande functies</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         public GroepenService(IAuthenticatieManager authenticatieMgr, IAutorisatieManager autorisatieMgr,
                               IGroepenManager groepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
+                              IFunctiesManager functiesMgr,
                               IRepositoryProvider repositoryProvider)
         {
             _context = repositoryProvider.ContextGet();
@@ -70,7 +74,8 @@ namespace Chiro.Gap.Services
             _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
 
             _groepenMgr = groepenMgr;
-            _groepsWerkJarenManager = groepsWerkJarenMgr;
+            _groepsWerkJarenMgr = groepsWerkJarenMgr;
+            _functiesMgr = functiesMgr;
             _authenticatieMgr = authenticatieMgr;
             _autorisatieMgr = autorisatieMgr;
         }
@@ -181,7 +186,7 @@ namespace Chiro.Gap.Services
 
             var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(groepsWerkJaar);
 
-            result.Status = _groepsWerkJarenManager.OvergangMogelijk(DateTime.Now, result.WerkJaar)
+            result.Status = _groepsWerkJarenMgr.OvergangMogelijk(DateTime.Now, result.WerkJaar)
                                 ? WerkJaarStatus.InOvergang
                                 : WerkJaarStatus.Bezig;
 
@@ -351,7 +356,33 @@ namespace Chiro.Gap.Services
         /// </returns>
         public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var groepsWerkJaar =
+                _groepsWerkJarenRepo.Select()
+                                    .Where(gwj => gwj.Groep.ID == groepID)
+                                    .OrderByDescending(gwj => gwj.WerkJaar)
+                                    .FirstOrDefault();
+
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            Debug.Assert(groepsWerkJaar != null);
+            
+            var problemen = _functiesMgr.AantallenControleren(groepsWerkJaar);
+
+            var resultaat = (from f in groepsWerkJaar.Groep.Functie
+                             join p in problemen on f.ID equals p.ID
+                             select new FunctieProbleemInfo
+                                        {
+                                            Code = f.Code,
+                                            EffectiefAantal = p.Aantal,
+                                            ID = f.ID,
+                                            MaxAantal = p.Max,
+                                            MinAantal = p.Min
+                                        }).ToList();
+
+            return resultaat;
         }
 
         /// <summary>
