@@ -88,6 +88,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je probeerde een entiteit toe te voegen die al bestond..
+        /// </summary>
+        internal static string EntiteitBestondAl {
+            get {
+                return ResourceManager.GetString("EntiteitBestondAl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De opgegeven afdeling is geen afdeling van groep {0}..
         /// </summary>
         internal static string FouteAfdelingVoorGroepString {

@@ -600,7 +600,34 @@ namespace Chiro.Gap.Services
         /// <returns>De ID van de aangemaakte categorie</returns>
         public int CategorieToevoegen(int groepID, string naam, string code)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var groep = (from g in _groepenRepo.Select()
+                         where g.ID == groepID
+                         select g).FirstOrDefault();
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            Debug.Assert(groep != null);
+
+            // Check of de categorie al bestaat
+
+            var bestaande = (from c in groep.Categorie
+                             where String.Compare(c.Code, code, StringComparison.OrdinalIgnoreCase) == 0
+                             select c).FirstOrDefault();
+
+            if (bestaande != null)
+            {
+                var info = Mapper.Map<Categorie, CategorieInfo>(bestaande);
+                throw FaultExceptionHelper.BestaatAl(info);
+            }
+
+            var nieuwe = new Categorie {Code = code, Naam = naam};
+            groep.Categorie.Add(nieuwe);
+            _context.SaveChanges();
+
+            return nieuwe.ID;
         }
 
         /// <summary>

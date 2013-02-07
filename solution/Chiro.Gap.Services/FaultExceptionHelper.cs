@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -17,6 +18,20 @@ namespace Chiro.Gap.Services
         {
             return new FaultException<FoutNummerFault>(new FoutNummerFault {FoutNummer = FoutNummer.GeenGav},
                                                        new FaultReason(Properties.Resources.GeenGav));
+        }
+
+        /// <summary>
+        /// Levert een 'BestaatAl-fout' op, die de service can throwen
+        /// </summary>
+        /// <typeparam name="TInfo">Een datacontract van de servie</typeparam>
+        /// <param name="bestaande">info over het ding dat al bestaat</param>
+        /// <returns>Een 'BestaatAl-fout'</returns>
+        public static FaultException<BestaatAlFault<TInfo>> BestaatAl<TInfo>(TInfo bestaande)
+        {
+            // Hier kan misschien best een overload van gemaakt worden, zodat je een reason kunt
+            // meegeven.
+            return new FaultException<BestaatAlFault<TInfo>>(new BestaatAlFault<TInfo> {Bestaande = bestaande},
+                                                             new FaultReason(Properties.Resources.EntiteitBestondAl));
         }
     }
 }
