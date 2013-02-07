@@ -117,7 +117,28 @@ namespace Chiro.Gap.Services
         /// <returns>Groepsdetails, inclusief categorieen en huidige actieve afdelingen</returns>
         public GroepDetail DetailOphalen(int groepID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var resultaat = new GroepDetail
+                                {
+                                    Afdelingen = new List<AfdelingDetail>()
+                                };
+
+            var groepsWerkJaar =
+                _groepsWerkJarenRepo.Select()
+                                    .Where(gwj => gwj.Groep.ID == groepID)
+                                    .OrderByDescending(gwj => gwj.WerkJaar)
+                                    .FirstOrDefault();
+
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            Debug.Assert(groepsWerkJaar != null);
+
+            Mapper.Map(groepsWerkJaar.Groep, resultaat);
+            Mapper.Map(groepsWerkJaar.AfdelingsJaar, resultaat.Afdelingen);
+
+            return resultaat;
         }
 
         /// <summary>
