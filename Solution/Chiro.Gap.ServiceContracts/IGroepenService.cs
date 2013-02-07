@@ -76,12 +76,12 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Persisteert een groep in de database
 		/// </summary>
-		/// <param name="g">Te persisteren groep</param>
+		/// <param name="groepInfo">Te persisteren groep</param>
 		/// <remarks>FIXME: gedetailleerde exception</remarks>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void Bewaren(GroepInfo g);
+		void Bewaren(GroepInfo groepInfo);
 
 		#region werkjaren
 

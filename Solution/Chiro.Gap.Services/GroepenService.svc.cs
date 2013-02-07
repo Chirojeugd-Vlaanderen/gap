@@ -167,11 +167,34 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Persisteert een groep in de database
         /// </summary>
-        /// <param name="g">Te persisteren groep</param>
+        /// <param name="groepInfo">Te persisteren groep</param>
         /// <remarks>FIXME: gedetailleerde exception</remarks>
-        public void Bewaren(GroepInfo g)
+        public void Bewaren(GroepInfo groepInfo)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var groep = (from g in _groepenRepo.Select()
+                         where g.ID == groepInfo.ID
+                         select g).FirstOrDefault();
+
+            // Momenteel ondersteunen we enkel het wijzigen van groepsnaam
+            // en stamnummer. (En dat stamnummer wijzigen, mag dan nog enkel
+            // als we super-gav zijn.)
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            Debug.Assert(groep != null);
+
+            if (String.Compare(groepInfo.StamNummer, groep.Code, StringComparison.OrdinalIgnoreCase) != 0 && !_autorisatieMgr.IsSuperGav())
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            groep.Naam = groepInfo.Naam;
+            groep.Code = groepInfo.StamNummer;
+
+            _context.SaveChanges();
         }
 
         /// <summary>
