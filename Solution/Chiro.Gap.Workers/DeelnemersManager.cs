@@ -37,7 +37,7 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public Deelnemer InstellenAlsContact(Deelnemer deelnemer)
         {
-            if (!_autorisatieMgr.IsGavDeelnemer(deelnemer.ID))
+            if (!_autorisatieMgr.IsGav(deelnemer))
             {
                 throw new GeenGavException();
             }

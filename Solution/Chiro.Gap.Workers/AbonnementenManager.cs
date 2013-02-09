@@ -79,7 +79,7 @@ namespace Chiro.Gap.Workers
                                                   publicatie.Naam));
             }
 
-            if (!_auMgr.IsGavGelieerdePersoon(gp.ID) || !_auMgr.IsGavGroepsWerkJaar(groepsWerkJaar.ID))
+            if (!_auMgr.IsGav(gp) || !_auMgr.IsGav(groepsWerkJaar))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }

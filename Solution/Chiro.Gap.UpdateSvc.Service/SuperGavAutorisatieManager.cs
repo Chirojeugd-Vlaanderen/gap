@@ -79,203 +79,7 @@ namespace Chiro.Gap.UpdateSvc.Service
         {
             throw new NotImplementedException();
         }
-
-
-        /// <summary>
-        /// Geeft true als (en slechts als) de ingelogde user correspondeert
-        /// met een GAV van een groep gelieerd aan de gelieerde
-        /// persoon met gegeven ID
-        /// </summary>
-        /// <param name="gelieerdePersoonID">ID van te checken gelieerde persoon</param>
-        /// <returns><c>True</c> als de user de persoonsgegevens mag zien/bewerken</returns>
-        /// <remarks></remarks>
-        public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// IsGav geeft true als de aangelogde user
-        /// gav is voor de groep met gegeven ID
-        /// </summary>
-        /// <param name="groepID">ID van de groep</param>
-        /// <returns><c>True</c> (enkel) als user GAV is</returns>
-        /// <remarks></remarks>
-        public bool IsGavGroep(int groepID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// IsGavGroepen geeft <c>true</c> als de aangelogde user
-        /// gav is voor alle groepen met gegeven ID's
-        /// </summary>
-        /// <param name="groepIDs">ID's van de groepen</param>
-        /// <returns><c>True</c> (enkel) als user GAV is van alle groepen</returns>
-        /// <remarks></remarks>
-        public bool IsGavGroepen(IEnumerable<int> groepIDs)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Geeft true alss de aangemelde user correspondeert
-        /// met een GAV van de groep van een GroepsWerkJaar
-        /// </summary>
-        /// <param name="groepsWerkJaarID">ID gevraagde groepswerkjaar</param>
-        /// <returns><c>True</c> als aangemelde gebruiker GAV is</returns>
-        /// <remarks></remarks>
-        public bool IsGavGroepsWerkJaar(int groepsWerkJaarID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Geeft true als (en slechts als) de ingelogde user correspondeert
-        /// met een GAV van een groep gelieerd aan de
-        /// persoon met gegeven ID
-        /// </summary>
-        /// <param name="persoonID">ID van te checken Persoon</param>
-        /// <returns><c>True</c> als de user de persoonsgegevens mag zien/bewerken</returns>
-        /// <remarks></remarks>
-        public bool IsGavPersoon(int persoonID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Controleert of een afdeling gekoppeld is aan een groep waarvan
-        /// de gebruiker GAV is.
-        /// </summary>
-        /// <param name="afdelingsID">ID gevraagde afdeling</param>
-        /// <returns><c>True</c> als de gebruiker GAV is van de groep van de
-        /// afdeling</returns>
-        /// <remarks></remarks>
-        public bool IsGavAfdeling(int afdelingsID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Controleert of een afdelingsjaar gekoppeld is aan een groep waarvan
-        /// de gebruiker GAV is.
-        /// </summary>
-        /// <param name="afdelingsJaarID">ID gevraagde afdelingsJaar</param>
-        /// <returns><c>True</c> als de gebruiker GAV is van de groep van het
-        /// afdelingsjaar</returns>
-        /// <remarks></remarks>
-        public bool IsGavAfdelingsJaar(int afdelingsJaarID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Controleert of een lid lid is van een groep waarvan de gebruiker
-        /// GAV is.
-        /// </summary>
-        /// <param name="lidID">ID van het betreffende lid</param>
-        /// <returns><c>True</c> als het een lid van een eigen groep is</returns>
-        /// <remarks></remarks>
-        public bool IsGavLid(int lidID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Controleert of de huidig aangelogde gebruiker momenteel
-        /// GAV is van de groep gekoppeld aan een zekere categorie.
-        /// </summary>
-        /// <param name="categorieID">ID van de categorie</param>
-        /// <returns><c>True</c> indien GAV</returns>
-        /// <remarks></remarks>
-        public bool IsGavCategorie(int categorieID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Controleert of de huidig aangelogde gebruiker momenteel
-        /// GAV is van de groep gekoppeld aan een zekere communicatievorm.
-        /// </summary>
-        /// <param name="commvormID">ID van de communicatievorm</param>
-        /// <returns><c>True</c> indien GAV</returns>
-        /// <remarks></remarks>
-        public bool IsGavCommVorm(int commvormID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Geeft <c>true</c> als de functie met ID <paramref name="functieID"/> nationaal gedefinieerd is
-        /// of gekoppeld is aan een groep waar de aangelogde gebruiker momenteel GAV van is.  Anders
-        /// <c>false</c>.
-        /// </summary>
-        /// <param name="functieID">ID van de functie</param>
-        /// <returns><c>true</c> als de functie met ID <paramref name="functieID"/> nationaal gedefinieerd is
-        /// of gekoppeld is aan een groep waar de aangelogde gebruiker momenteel GAV van is.  Anders
-        /// <c>false</c>.</returns>
-        /// <remarks></remarks>
-        public bool IsGavFunctie(int functieID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Geeft <c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
-        /// waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
-        /// <c>false</c>.
-        /// </summary>
-        /// <param name="persoonsAdresID">ID van de functie</param>
-        /// <returns><c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
-        /// waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
-        /// <c>false</c>.</returns>
-        /// <remarks></remarks>
-        public bool IsGavPersoonsAdres(int persoonsAdresID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Geeft <c>true</c> als alle persoonsAdressen met ID in <paramref name="persoonsAdresIDs"/> gekoppeld zijn aan een
-        /// personen waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
-        /// <c>false</c>.
-        /// </summary>
-        /// <param name="persoonsAdresIDs">ID van de functie</param>
-        /// <returns><c>true</c> als alle persoonsAdressen met ID in <paramref name="persoonsAdresIDs"/> gekoppeld zijn aan een
-        /// personen waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
-        /// <c>false</c>.</returns>
-        /// <remarks></remarks>
-        public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Controleert of de aangelogde gebruiker GAV-rechten heeft op de uitstap
-        /// met id <paramref name="uitstapID"/>.
-        /// </summary>
-        /// <param name="uitstapID">ID van een uitstap</param>
-        /// <returns><c>true</c> als de aangemelde user GAV is voor de uitstap, anders <c>false</c>.</returns>
-        /// <remarks></remarks>
-        public bool IsGavUitstap(int uitstapID)
-        {
-            throw new NotImplementedException();
-        }
-
-
+        
         /// <summary>
         /// Geeft true als de aangelogde user
         /// 'superrechten' heeft
@@ -309,47 +113,6 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <returns>GroepID's van de goepen waarvoor de gebruiker GAV is.</returns>
         /// <remarks></remarks>
         public IEnumerable<int> MijnGroepIDsOphalen()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Controleert of de aangelogde gebruiker op dit moment GAV-rechten heeft op de plaats
-        /// met id <paramref name="plaatsID"/>.
-        /// </summary>
-        /// <param name="plaatsID">ID van een bivakplaats</param>
-        /// <returns><c>true</c> als de aangemelde user nu GAV is voor de plaats, anders <c>false</c>.</returns>
-        /// <remarks></remarks>
-        public bool IsGavPlaats(int plaatsID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Controleert of de aangelogde gebruiker op dit moment GAV-rechten heeft op de deelnemer
-        /// met ID <paramref name="deelnemerID"/>
-        /// </summary>
-        /// <param name="deelnemerID">ID van een (uitstap)deelnemer</param>
-        /// <returns><c>true</c> als de aangemelde gebruiker GAV-rechten heeft voor de gevraagde
-        /// deelnemer, anders <c>false</c></returns>
-        /// <remarks></remarks>
-        public bool IsGavDeelnemer(int deelnemerID)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Controleert of de aangelogde gebruiker op dit moment GAV-rechten heeft op het gebruikersrecht
-        /// met ID <paramref name="gebruikersRechtID"/>
-        /// </summary>
-        /// <param name="gebruikersRechtID">ID van een gebruikersrecht</param>
-        /// <returns><c>true</c> als de aangemelde gebruiker GAV-rechten heeft voor het gevraagde
-        /// gebruikersrecht, anders <c>false</c></returns>
-        /// <remarks></remarks>
-        public bool IsGavGebruikersRecht(int gebruikersRechtID)
         {
             throw new NotImplementedException();
         }
@@ -393,15 +156,6 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
-        public bool IsGavAccount(int accountID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsGavGebruikersRechten(int[] gebruikersRechtIDs)
-        {
-            throw new NotImplementedException();
-        }
 
         public bool IsGav(Groep groep)
         {
@@ -423,6 +177,40 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public bool IsGav(Deelnemer gelieerdePersoon)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGav(Plaats gelieerdePersoon)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGav(Uitstap gelieerdePersoon)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGav(GebruikersRecht gelieerdePersoon)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public bool IsGav(Lid gelieerdePersoon)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGav(Afdeling gelieerdePersoon)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGav(Categorie gelieerdePersoon)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Gebruikerses the recht gelieerde persoon.

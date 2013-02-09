@@ -58,7 +58,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public GelieerdePersoon Koppelen(Persoon persoon, Groep groep, int chiroLeeftijd)
         {
-            if (_autorisatieMgr.IsGavGroep(groep.ID))
+            if (_autorisatieMgr.IsGav(groep))
             {
                 var resultaat = new GelieerdePersoon();
 
@@ -99,12 +99,12 @@ namespace Chiro.Gap.Workers
             }
 
             // Heeft de gebruiker rechten voor de groep en de categorie?
-            if (gelieerdePersonen.Any(x => !_autorisatieMgr.IsGavGelieerdePersoon(x.ID)))
+            if (gelieerdePersonen.Any(x => !_autorisatieMgr.IsGav(x)))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            if (!_autorisatieMgr.IsGavCategorie(categorie.ID))
+            if (!_autorisatieMgr.IsGav(categorie))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
@@ -183,8 +183,7 @@ namespace Chiro.Gap.Workers
             Debug.Assert(gp.Persoon != null);
             Debug.Assert(voorkeur.Persoon != null);
 
-            if (checkGav && !_autorisatieMgr.IsGavGelieerdePersoon(gp.ID) ||
-                !_autorisatieMgr.IsGavPersoonsAdres(voorkeur.ID))
+            if (checkGav && !_autorisatieMgr.IsGav(gp) || !voorkeur.GelieerdePersoon.Any(e => _autorisatieMgr.IsGav(e.Groep)))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }

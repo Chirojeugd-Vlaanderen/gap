@@ -52,7 +52,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public PersoonsVerzekering Verzekeren(Lid l, VerzekeringsType verz, DateTime beginDatum, DateTime eindDatum)
         {
-            if (!_autorisatieMgr.IsGavLid(l.ID))
+            if (!_autorisatieMgr.IsGav(l))
             {
                 throw new GeenGavException();
             }

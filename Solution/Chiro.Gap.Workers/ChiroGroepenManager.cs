@@ -43,7 +43,7 @@ namespace Chiro.Gap.Workers
         /// </exception>
         public Afdeling AfdelingToevoegen(ChiroGroep groep, string naam, string afkorting)
         {
-            if (!_autorisatieMgr.IsGavGroep(groep.ID))
+            if (!_autorisatieMgr.IsGav(groep))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }

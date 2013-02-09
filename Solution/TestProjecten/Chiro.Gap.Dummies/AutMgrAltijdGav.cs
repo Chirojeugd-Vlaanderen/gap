@@ -45,78 +45,12 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
-		{
-			return true;
-		}
-
-		public bool IsGavGroep(int groepID)
-		{
-			return true;
-		}
-
-		public bool IsGavGroepsWerkJaar(int groepsWerkJaarID)
-		{
-			return true;
-		}
-
-		public bool IsGavPersoon(int persoonID)
-		{
-			return true;
-		}
-
 		public string GebruikersNaamGet()
 		{
 			throw new NotImplementedException();
 		}
 
-		public bool IsGavAfdeling(int afdelingsID)
-		{
-			return true;
-		}
-
-		public bool IsGavLid(int lidID)
-		{
-			return true;
-		}
-
-		public bool IsGavCategorie(int categorieID)
-		{
-			return true;
-		}
-
-		public bool IsGavCommVorm(int commvormID)
-		{
-			return true;
-		}
-
-		public bool IsGavUitstap(int uitstapID)
-		{
-			return true;
-		}
-
 		public bool IsSuperGav()
-		{
-			return true;
-		}
-
-		public bool IsGavFunctie(int functieID)
-		{
-			return true;
-		}
-
-		public bool IsGavAfdelingsJaar(int afdelingsJaarID)
-		{
-			return true;
-		}
-
-		public bool IsGavPersoonsAdres(int persoonsAdresID)
-		{
-			return true;
-		}
-
-
-		public bool IsGavGroepen(IEnumerable<int> groepIDs)
 		{
 			return true;
 		}
@@ -126,37 +60,12 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public bool IsGavPlaats(int plaatsID)
-		{
-			return true;
-		}
-
-	    public bool IsGavDeelnemer(int deelnemerID)
-	    {
-	        return true;
-	    }
-
-	    public bool IsGavGebruikersRecht(int gebruikersRechtID)
-	    {
-	        throw new NotImplementedException();
-	    }
-
 	    public GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
 	    {
 	        throw new NotImplementedException();
 	    }
 
 	    public GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum)
-	    {
-	        throw new NotImplementedException();
-	    }
-
-	    public bool IsGavAccount(int accountID)
-	    {
-	        throw new NotImplementedException();
-	    }
-
-	    public bool IsGavGebruikersRechten(int[] gebruikersRechtIDs)
 	    {
 	        throw new NotImplementedException();
 	    }
@@ -181,10 +90,40 @@ namespace Chiro.Gap.Dummies
 	        return true;
 	    }
 
-	    public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
-		{
-			return true;
-		}
+	    public bool IsGav(Deelnemer gelieerdePersoon)
+	    {
+	        return true;
+	    }
+
+	    public bool IsGav(Plaats gelieerdePersoon)
+	    {
+            return true;
+	    }
+
+	    public bool IsGav(Uitstap gelieerdePersoon)
+	    {
+            return true;
+	    }
+
+	    public bool IsGav(GebruikersRecht gelieerdePersoon)
+	    {
+            return true;
+	    }
+
+        public bool IsGav(Lid gelieerdePersoon)
+        {
+            return true;
+        }
+
+        public bool IsGav(Afdeling gelieerdePersoon)
+        {
+            return true;
+        }
+
+        public bool IsGav(Categorie gelieerdePersoon)
+        {
+            return true;
+        }
 
 		#endregion
 	}

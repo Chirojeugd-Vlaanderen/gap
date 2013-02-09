@@ -65,7 +65,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public Uitstap Koppelen(Uitstap uitstap, Plaats plaats)
         {
-            if (!_autorisatieManager.IsGavUitstap(uitstap.ID) || !_autorisatieManager.IsGavPlaats(plaats.ID))
+            if (!_autorisatieManager.IsGav(uitstap) || !_autorisatieManager.IsGav(plaats))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }

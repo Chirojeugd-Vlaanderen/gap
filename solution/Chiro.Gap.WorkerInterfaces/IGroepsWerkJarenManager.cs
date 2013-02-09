@@ -9,17 +9,6 @@ namespace Chiro.Gap.WorkerInterfaces
     /// </summary>
 	public interface IGroepsWerkJarenManager
 	{
-		/// <summary>
-		/// Bepaalt ID van het recentste GroepsWerkJaar gemaakt voor een
-		/// gegeven groep.
-		/// </summary>
-		/// <param name="groepID">
-		/// ID van Groep
-		/// </param>
-		/// <returns>
-		/// ID van het recentste GroepsWerkJaar
-		/// </returns>
-		int RecentsteGroepsWerkJaarIDGet(int groepID);
 
 		/// <summary>
 		/// Maakt een nieuw groepswerkjaar in het gevraagde werkJaar.

@@ -104,7 +104,7 @@ namespace Chiro.Gap.Workers
                     break;
             }
 
-            if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID) || !_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
+            if (!_autorisatieMgr.IsGav(gp) || !_autorisatieMgr.IsGav(gwj))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
@@ -376,7 +376,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public LidVoorstel InschrijvingVoorstellen(GelieerdePersoon gp, GroepsWerkJaar gwj, bool leidingIndienMogelijk)
         {
-            if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID) || !_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
+            if (!_autorisatieMgr.IsGav(gp) || !_autorisatieMgr.IsGav(gwj))
             {
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }

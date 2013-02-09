@@ -55,7 +55,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public Categorie CategorieToevoegen(Groep g, string categorieNaam, string categorieCode)
         {
-            if (!_autorisatieMgr.IsGavGroep(g.ID))
+            if (!_autorisatieMgr.IsGav(g))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }

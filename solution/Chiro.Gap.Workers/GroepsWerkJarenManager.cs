@@ -31,26 +31,6 @@ namespace Chiro.Gap.Workers
 
 
         /// <summary>
-        /// Bepaalt ID van het recentste GroepsWerkJaar gemaakt voor een
-        /// gegeven groep.
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van Groep
-        /// </param>
-        /// <returns>
-        /// ID van het recentste GroepsWerkJaar
-        /// </returns>
-        public int RecentsteGroepsWerkJaarIDGet(int groepID)
-        {
-            if (!_autorisatieMgr.IsGavGroep(groepID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return _veelGebruikt.GroepsWerkJaarOphalen(groepID).ID;
-        }
-
-        /// <summary>
         /// Berekent de theoretische einddatum van het gegeven groepswerkjaar.
         /// </summary>
         /// <param name="groepsWerkJaar">
@@ -78,7 +58,7 @@ namespace Chiro.Gap.Workers
         /// <throws>OngeldigObjectException</throws>
         public GroepsWerkJaar VolgendGroepsWerkJaarMaken(Groep g)
         {
-            if (!_autorisatieMgr.IsGavGroep(g.ID))
+            if (!_autorisatieMgr.IsGav(g))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }

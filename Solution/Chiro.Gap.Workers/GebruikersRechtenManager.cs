@@ -46,7 +46,7 @@ namespace Chiro.Gap.Workers
         {
             // TODO Nakijken of deze method niet in onderstaande gebruikt kan worden
 
-            if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersRecht.ID))
+            if (!_autorisatieManager.IsGav(gebruikersRecht))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
@@ -176,7 +176,7 @@ namespace Chiro.Gap.Workers
         /// <remarks>Gebruikersrechten die al vervallen zijn, blijven onaangeroerd</remarks>
         public void Intrekken(GebruikersRecht[] gebruikersRechten)
         {
-            if (!_autorisatieManager.IsGavGebruikersRechten(gebruikersRechten.Select(gr => gr.ID).ToArray()))
+            if (gebruikersRechten.Any(e => !_autorisatieManager.IsGav(e)))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
@@ -351,7 +351,7 @@ namespace Chiro.Gap.Workers
             // Omdat een account niet per se aan een gelieerde persoon gekoppeld is, controleren we enkel of
             // we gebruikersrechten hebben op de groep. Een koppeling account-groep hebben we vooralsnog niet.
 
-            if (!_autorisatieManager.IsGavGroep(groep.ID))
+            if (!_autorisatieManager.IsGav(groep))
             {
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }

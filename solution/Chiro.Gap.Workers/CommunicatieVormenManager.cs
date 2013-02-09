@@ -55,7 +55,7 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public void Koppelen(GelieerdePersoon gp, CommunicatieVorm nieuwecv)
         {
-            if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+            if (!_autorisatieMgr.IsGav(gp))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
