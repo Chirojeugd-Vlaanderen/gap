@@ -8,21 +8,6 @@ namespace Chiro.Gap.WorkerInterfaces
     public interface IUitstappenManager
     {
         /// <summary>
-        /// Koppelt een uitstap aan een groepswerkjaar.  Dit moet typisch
-        /// enkel gebeuren bij een nieuwe uitstap.
-        /// </summary>
-        /// <param name="uitstap">
-        /// Te koppelen uitstap
-        /// </param>
-        /// <param name="gwj">
-        /// Te koppelen groepswerkjaar
-        /// </param>
-        /// <returns>
-        /// <paramref name="uitstap"/>, gekoppeld aan <paramref name="gwj"/>.
-        /// </returns>
-        Uitstap Koppelen(Uitstap uitstap, GroepsWerkJaar gwj);
-
-        /// <summary>
         /// Koppelt een plaats aan een uitstap
         /// </summary>
         /// <param name="uitstap">
@@ -35,35 +20,6 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Uitstap, met plaats gekoppeld.  Persisteert niet
         /// </returns>
         Uitstap Koppelen(Uitstap uitstap, Plaats plaats);
-
-        /// <summary>
-        /// Stuurt alle bivakken van werkJaar <paramref name="werkJaar"/> opnieuw naar
-        /// kipadmin.
-        /// </summary>
-        /// <param name="werkJaar">
-        /// Het werkJaar waarvan de gegevens opnieuw gesynct moeten worden
-        /// </param>
-        void OpnieuwSyncen(int werkJaar);
-
-        /// <summary>
-        /// Gaat na welke gegevens er nog ontbreken in de geregistreerde bivakken om van een
-        /// geldige bivakaangifte te kunnen spreken.
-        /// </summary>
-        /// <param name="groepID">
-        /// De ID van de groep waar het over gaat.
-        /// </param>
-        /// <param name="groepsWerkJaar">
-        /// Het werkjaar waarvoor de gegevens opgehaald moeten worden.
-        /// </param>
-        /// <returns>
-        /// Een lijstje met opmerkingen/feedback voor de gebruiker, zodat die weet 
-        /// of er nog iets extra's ingevuld moet worden.
-        /// </returns>
-        /// <exception cref="GeenGavException">
-        /// Komt voor als de gebruiker op dit moment geen GAV is voor de groep met de opgegeven <paramref name="groepID"/>,
-        /// maar ook als de gebruiker geen GAV was/is in het opgegeven <paramref name="groepsWerkJaar"/>.
-        /// </exception>
-        BivakAangifteLijstInfo BivakStatusOphalen(int groepID, GroepsWerkJaar groepsWerkJaar);
 
         /// <summary>
         /// Bepaalt of het de tijd van het jaar is voor de bivakaangifte

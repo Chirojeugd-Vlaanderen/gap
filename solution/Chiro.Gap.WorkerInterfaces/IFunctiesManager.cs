@@ -7,23 +7,6 @@ namespace Chiro.Gap.WorkerInterfaces
     public interface IFunctiesManager
     {
         /// <summary>
-        /// Haalt alle functies op die mogelijk toegekend kunnen worden aan een lid uit het groepswerkjaar
-        /// bepaald door <paramref name="groepsWerkJaarID"/> en van het type <paramref name="lidType"/>.
-        /// </summary>
-        /// <param name="groepsWerkJaarID">
-        /// ID van het groepswerkjaar waarvoor de relevante functies gevraagd
-        /// zijn.
-        /// </param>
-        /// <param name="lidType">
-        /// <c>LidType.Kind</c> of <c>LidType.Leiding</c>
-        /// </param>
-        /// <returns>
-        /// Lijst met functies die mogelijk toegekend kunnen worden aan een lid uit het groepswerkjaar
-        /// bepaald door <paramref name="groepsWerkJaarID"/> en van het type <paramref name="lidType"/>.
-        /// </returns>
-        IList<Functie> OphalenRelevant(int groepsWerkJaarID, LidType lidType);
-
-        /// <summary>
         /// Kent de meegegeven <paramref name="functies"/> toe aan het gegeven <paramref name="lid"/>.
         /// Als het lid al andere functies had, blijven die behouden.  Persisteert niet.
         /// </summary>
@@ -42,24 +25,6 @@ namespace Chiro.Gap.WorkerInterfaces
         ///  - functie.groep
         /// </remarks>
         void Toekennen(Lid lid, IEnumerable<Functie> functies);
-
-        /// <summary>
-        /// Vervangt de functies van het lid <paramref name="lid"/> door de functies in 
-        /// <paramref name="functies"/>.  Persisteert.
-        /// </summary>
-        /// <param name="lid">
-        /// Lid waarvan de functies vervangen moeten worden
-        /// </param>
-        /// <param name="functies">
-        /// Nieuwe lijst functies
-        /// </param>
-        /// <returns>
-        /// Het <paramref name="lid"/> met daaraan gekoppeld de nieuwe functies
-        /// </returns>
-        /// <remarks>
-        /// Aan <paramref name="lid"/>moeten de huidige functies gekoppeld zijn
-        /// </remarks>
-        Lid Vervangen(Lid lid, IEnumerable<Functie> functies);
 
         /// <summary>
         /// Verwijdert een functie (PERSISTEERT!)

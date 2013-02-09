@@ -40,53 +40,6 @@ namespace Chiro.Gap.Workers
 
 
         /// <summary>
-        /// Haalt alle functies op die mogelijk toegekend kunnen worden aan een lid uit het groepswerkjaar
-        /// bepaald door <paramref name="groepsWerkJaarID"/> en van het type <paramref name="lidType"/>.
-        /// </summary>
-        /// <param name="groepsWerkJaarID">
-        /// ID van het groepswerkjaar waarvoor de relevante functies gevraagd
-        /// zijn.
-        /// </param>
-        /// <param name="lidType">
-        /// <c>LidType.Kind</c> of <c>LidType.Leiding</c>
-        /// </param>
-        /// <returns>
-        /// Lijst met functies die mogelijk toegekend kunnen worden aan een lid uit het groepswerkjaar
-        /// bepaald door <paramref name="groepsWerkJaarID"/> en van het type <paramref name="lidType"/>.
-        /// </returns>
-        public IList<Functie> OphalenRelevant(int groepsWerkJaarID, LidType lidType)
-        {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-            //if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-            //{
-            //    throw new GeenGavException(Resources.GeenGav);
-            //}
-
-            //GroepsWerkJaar gwj = _groepsWjDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep.Functie);
-
-            //// bepaal het niveau van de nationale functies
-            //Niveau niveau = gwj.Groep.Niveau;
-            //if ((niveau & Niveau.Groep) != 0)
-            //{
-            //    if ((lidType & LidType.Leiding) == 0)
-            //    {
-            //        niveau &= ~Niveau.LeidingInGroep;
-            //    }
-
-            //    if ((lidType & LidType.Kind) == 0)
-            //    {
-            //        niveau &= ~Niveau.LidInGroep;
-            //    }
-            //}
-
-            //return (from f in gwj.Groep.Functie.Union(NationaalBepaaldeFunctiesOphalen())
-            //        where (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar)
-            //              && (f.WerkJaarTot == null || f.WerkJaarTot >= gwj.WerkJaar)
-            //              && ((f.Niveau & niveau) != 0)
-            //        select f).ToList();
-        }
-
-        /// <summary>
         /// Kent de meegegeven <paramref name="functies"/> toe aan het gegeven <paramref name="lid"/>.
         /// Als het lid al andere functies had, blijven die behouden.  Persisteert niet.
         /// </summary>
@@ -177,52 +130,7 @@ namespace Chiro.Gap.Workers
             //    }
             //}
         }
-
-        /// <summary>
-        /// Vervangt de functies van het lid <paramref name="lid"/> door de functies in 
-        /// <paramref name="functies"/>.  Persisteert.
-        /// </summary>
-        /// <param name="lid">
-        /// Lid waarvan de functies vervangen moeten worden
-        /// </param>
-        /// <param name="functies">
-        /// Nieuwe lijst functies
-        /// </param>
-        /// <returns>
-        /// Het <paramref name="lid"/> met daaraan gekoppeld de nieuwe functies
-        /// </returns>
-        /// <remarks>
-        /// Aan <paramref name="lid"/>moeten de huidige functies gekoppeld zijn
-        /// </remarks>
-        public Lid Vervangen(Lid lid, IEnumerable<Functie> functies)
-        {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-//            Lid resultaat;
-
-//            // In deze method zitten geen checks op GAV-schap, juiste werkJaar,... dat gebeurt al in
-//            // 'Toekennen' en 'Loskoppelen', dewelke door deze method worden aangeroepen.
-//            IList<Functie> toeTeVoegen = (from fn in functies
-//                                          where !lid.Functie.Contains(fn)
-//                                          select fn).ToList();
-//            IList<int> teVerwijderen = (from fn in lid.Functie
-//                                        where !functies.Contains(fn)
-//                                        select fn.ID).ToList();
-
-//#if KIPDORP
-//            using (var tx = new TransactionScope())
-//            {
-//#endif
-//            Toekennen(lid, toeTeVoegen);
-//            resultaat = LosKoppelen(lid, teVerwijderen); // LosKoppelen persisteert
-
-//            _ledenSync.FunctiesUpdaten(lid);
-//#if KIPDORP
-//                tx.Complete();
-//            }
-//#endif
-//            return resultaat;
-        }
-
+        
         /// <summary>
         /// Verwijdert een functie (PERSISTEERT!)
         /// </summary>
