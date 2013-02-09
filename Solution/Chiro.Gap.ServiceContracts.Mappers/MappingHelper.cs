@@ -253,6 +253,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                   .ForMember(dst => dst.WoonPlaats, opt => opt.Ignore())
                   .ForMember(dst => dst.Land, opt => opt.Ignore());
 
+            Mapper.CreateMap<KleinLidOverzicht, LidOverzicht>();
+
             Mapper.CreateMap<Lid, LidOverzicht>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
                 .ForMember(dst => dst.Bus,

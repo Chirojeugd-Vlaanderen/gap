@@ -539,14 +539,21 @@ namespace Chiro.Gap.Services
             var leden = (from g in _ledenRepo.Select()
                          where (filter.GroepID == null || g.GroepsWerkJaar.Groep.ID == filter.GroepID) &&
                              (filter.GroepsWerkJaarID == null || g.GroepsWerkJaar.ID == filter.GroepsWerkJaarID) &&
-                             (filter.AfdelingID == null || g.AfdelingIds.ToList().Contains(filter.AfdelingID.Value)) &&
                              (filter.FunctieID == null || g.Functie.Select(e => e.ID == filter.FunctieID).Any()) &&
                              (filter.ProbeerPeriodeNa == null || !g.EindeInstapPeriode.HasValue || filter.ProbeerPeriodeNa < g.EindeInstapPeriode.Value) &&
                              (filter.HeeftVoorkeurAdres == null || g.GelieerdePersoon.PersoonsAdres != null) &&
                              (filter.HeeftTelefoonNummer == null || g.GelieerdePersoon.Communicatie.Select(e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.TelefoonNummer).Any() == filter.HeeftTelefoonNummer) &&
-                             (filter.HeeftEmailAdres == null || g.GelieerdePersoon.Communicatie.Select(e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email).Any() == filter.HeeftEmailAdres) &&
-                             (filter.LidType != LidType.Kind || g.Type == LidType.Kind) && (filter.LidType != LidType.Leiding || g.Type == LidType.Leiding)
+                             (filter.HeeftEmailAdres == null || g.GelieerdePersoon.Communicatie.Select(e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email).Any() == filter.HeeftEmailAdres)
                          select g).ToList();
+
+            if (filter.AfdelingID != null)
+            {
+                leden = leden.Where(e => e.AfdelingIds.Contains(filter.AfdelingID.Value)).ToList();
+            }
+
+            leden =
+                leden.Where(e => (filter.LidType != LidType.Kind || e.Type == LidType.Kind) &&
+                            (filter.LidType != LidType.Leiding || e.Type == LidType.Leiding)).ToList();
 
             if (metAdressen)
             {

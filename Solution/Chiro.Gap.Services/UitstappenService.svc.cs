@@ -144,7 +144,7 @@ namespace Chiro.Gap.Services
                 Mapper.Map(info, uitstap);
             }
 
-            _uitstappenRepo.SaveChanges();
+            _groepsWerkJaarRepo.SaveChanges();
             return uitstap.ID;
         }
 
@@ -279,7 +279,7 @@ namespace Chiro.Gap.Services
                 uitstap.Deelnemer.Add(deelnemer);
             }
 
-            _uitstappenRepo.SaveChanges();
+            _gelieerdePersonenRepo.SaveChanges();
             return Mapper.Map<Uitstap, UitstapInfo>(uitstap);
         }
 
@@ -363,7 +363,7 @@ namespace Chiro.Gap.Services
             }
 
             uitstap.Deelnemer.Remove(deelnemer);
-            _uitstappenRepo.SaveChanges();
+            _deelnemersRepo.SaveChanges();
 
             return uitstap.ID;
         }
@@ -393,7 +393,7 @@ namespace Chiro.Gap.Services
 
             // Nieuwe waarden invullen en opslaan
             Mapper.Map(info, deelnemer);
-            _uitstappenRepo.SaveChanges();
+            _deelnemersRepo.SaveChanges();
         }
 
         /// <summary>

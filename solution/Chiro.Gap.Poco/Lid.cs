@@ -44,7 +44,7 @@ namespace Chiro.Gap.Poco.Model
         /// <remarks>
         /// Een kind is hoogstens aan 1 afdeling gekoppeld
         /// </remarks>
-        public int[] AfdelingIds
+        public IList<int> AfdelingIds
         {
             get
             {
@@ -52,14 +52,14 @@ namespace Chiro.Gap.Poco.Model
                 {
                     var k = this as Kind;
                     Debug.Assert(k != null);
-                    return new[] {k.AfdelingsJaar.Afdeling.ID};
+                    return new List<int>{k.AfdelingsJaar.Afdeling.ID};
                 }
                 if (this is Leiding)
                 {
                     var l = this as Leiding;
                     Debug.Assert(l != null);
 
-                    return (from aj in l.AfdelingsJaar select aj.Afdeling.ID).ToArray();
+                    return (from aj in l.AfdelingsJaar select aj.Afdeling.ID).ToList();
                 }
                 throw new NotSupportedException("Lid moet kind of leiding zijn.");
             }
