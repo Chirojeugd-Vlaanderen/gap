@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -143,7 +144,7 @@ namespace Chiro.Gap.Services
                 Mapper.Map(info, uitstap);
             }
 
-            _context.SaveChanges();
+            _uitstappenRepo.SaveChanges();
             return uitstap.ID;
         }
 
@@ -216,7 +217,7 @@ namespace Chiro.Gap.Services
             uitstap.Plaats.Naam = plaatsNaam;
             uitstap.Plaats.Adres = _adressenMgr.ZoekenOfMaken(adresInfo, _adressenRepo.Select());
 
-            _context.SaveChanges();
+            _uitstappenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -278,7 +279,7 @@ namespace Chiro.Gap.Services
                 uitstap.Deelnemer.Add(deelnemer);
             }
 
-            _context.SaveChanges();
+            _uitstappenRepo.SaveChanges();
             return Mapper.Map<Uitstap, UitstapInfo>(uitstap);
         }
 
@@ -308,7 +309,7 @@ namespace Chiro.Gap.Services
             if (uitstap != null)
             {
                 _uitstappenRepo.Delete(uitstap);
-                _context.SaveChanges();
+                _uitstappenRepo.SaveChanges();
             }
         }
 
@@ -362,7 +363,7 @@ namespace Chiro.Gap.Services
             }
 
             uitstap.Deelnemer.Remove(deelnemer);
-            _context.SaveChanges();
+            _uitstappenRepo.SaveChanges();
 
             return uitstap.ID;
         }
@@ -392,7 +393,7 @@ namespace Chiro.Gap.Services
 
             // Nieuwe waarden invullen en opslaan
             Mapper.Map(info, deelnemer);
-            _context.SaveChanges();
+            _uitstappenRepo.SaveChanges();
         }
 
         /// <summary>
