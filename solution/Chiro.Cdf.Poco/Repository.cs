@@ -6,7 +6,7 @@ namespace Chiro.Cdf.Poco
 {
     public class Repository<TEntity>: IRepository<TEntity> where TEntity: BasisEntiteit
     {
-        private readonly IContext _context;
+        protected readonly IContext _context;
 
         public Repository(IContext context)
         {

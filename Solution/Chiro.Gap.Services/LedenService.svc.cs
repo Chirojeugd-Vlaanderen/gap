@@ -7,13 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using AutoMapper;
-
 using Chiro.Cdf.Poco;
+
+
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.Repositories;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WorkerInterfaces;
@@ -43,7 +44,7 @@ namespace Chiro.Gap.Services
 
         // Repositories, verantwoordelijk voor data access.
 
-        private readonly IRepository<Lid> _ledenRepo;
+        private readonly ILedenRepository _ledenRepo;
         private readonly IRepository<VerzekeringsType> _verzekerRepo;
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
         private readonly IRepository<AfdelingsJaar> _afdelingsJaarRepo;
@@ -66,13 +67,13 @@ namespace Chiro.Gap.Services
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
         /// <param name="verzekeringenMgr">Businesslogica aangaande verzekeringen</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
-        public LedenService(IAutorisatieManager autorisatieMgr,
+        public LedenService(ILedenRepository ledenRepo, IAutorisatieManager autorisatieMgr,
                               IVerzekeringenManager verzekeringenMgr,
                                 ILedenManager ledenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                               IRepositoryProvider repositoryProvider)
         {
             _context = repositoryProvider.ContextGet();
-            _ledenRepo = repositoryProvider.RepositoryGet<Lid>();
+            _ledenRepo = ledenRepo;
             _afdelingsJaarRepo = repositoryProvider.RepositoryGet<AfdelingsJaar>();
             _functiesRepo = repositoryProvider.RepositoryGet<Functie>();
             _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
@@ -188,8 +189,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception ex)
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
+                throw;
             }
         }
 
@@ -303,8 +303,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception ex)
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
+                throw;
             }
         }
 
@@ -351,8 +350,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception ex)
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                foutBerichten = null;
+                throw;
             }
 
             _context.SaveChanges();
@@ -481,7 +479,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception ex)
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
+                throw;
             }
 
             _context.SaveChanges();
@@ -492,8 +490,7 @@ namespace Chiro.Gap.Services
         /// Haalt actief lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies
         /// </summary>
         /// <param name="lidId">Id op te halen lid</param>
-        /// <returns>Lidinfo; bevat info over gelieerde persoon, persoon, groep, afdelingen 
-        /// en functies </returns>
+        /// <returns>Lidinfo; bevat info over gelieerde persoon, persoon, groep, afdelingen en functies</returns>
         public PersoonLidInfo DetailsOphalen(int lidId)
         {
             var lid = _ledenRepo.ByID(lidId);
@@ -503,11 +500,10 @@ namespace Chiro.Gap.Services
                 FaultExceptionHelper.GeenGav();
             }
             return Mapper.Map<Lid, PersoonLidInfo>(lid);
-        }
+		}
 
-        /// <summary>
-        /// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>.
         /// </summary>
+        //        /// </summary>
         /// <param name="filter">De niet-nulle properties van de filter
         /// bepalen waarop gezocht moet worden</param>
         /// <param name="metAdressen">Indien <c>true</c>, worden de
@@ -589,7 +585,7 @@ namespace Chiro.Gap.Services
                     // zie #1326).
                     //
                     // Omdat we weten dat de exception mogelijk optreedt, handelen we ze af.
-                    FoutAfhandelaar.FoutAfhandelen(e);
+                    throw;
                 }
 
                 throw;

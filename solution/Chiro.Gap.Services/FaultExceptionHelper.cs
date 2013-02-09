@@ -1,5 +1,4 @@
-﻿using System;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -38,5 +37,24 @@ namespace Chiro.Gap.Services
         {
             return new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = nummer }, new FaultReason(reason));
         }
+
+        /*
+                    if (ex is GeenGavException)
+            {
+                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenGav }, new FaultReason(ex.Message));
+            }
+            if (ex is EntityException | ex is EntityCommandExecutionException)
+            {
+                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenDatabaseVerbinding }, new FaultReason(ex.Message));
+            }
+            if (ex is OptimisticConcurrencyException)
+            {
+                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.Concurrency }, new FaultReason(ex.Message));
+            }
+            if (ex is FoutNummerException)
+            {
+                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = (ex as FoutNummerException).FoutNummer }, new FaultReason(ex.Message));
+            }
+         */
     }
 }

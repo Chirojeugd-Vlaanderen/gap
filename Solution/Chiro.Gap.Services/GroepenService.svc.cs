@@ -281,7 +281,7 @@ namespace Chiro.Gap.Services
             }
             catch (BestaatAlException<Afdeling> ex)
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
+                throw;
             }
 
             _context.SaveChanges();
@@ -376,7 +376,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception ex)
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
+                throw;
             }
 
             _context.SaveChanges();
@@ -875,8 +875,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception ex)
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
+                throw;
             }
         }
 
@@ -917,7 +916,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception ex)
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
+                throw;
             }
         }
 
