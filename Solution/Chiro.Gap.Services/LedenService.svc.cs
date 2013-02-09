@@ -62,6 +62,7 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Nieuwe groepenservice
         /// </summary>
+        /// <param name="ledenRepo">Repository voor leden</param>
         /// <param name="autorisatieMgr">Verantwoordelijke voor autorisatie</param>
         /// <param name="ledenMgr">Businesslogica aangaande leden</param>
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
@@ -189,7 +190,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception ex)
             {
-                throw;
+                throw FaultExceptionHelper.Afhandelen(ex);
             }
         }
 
@@ -303,7 +304,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception ex)
             {
-                throw;
+                throw FaultExceptionHelper.Afhandelen(ex);
             }
         }
 
@@ -350,7 +351,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception ex)
             {
-                throw;
+                throw FaultExceptionHelper.Afhandelen(ex);
             }
 
             _context.SaveChanges();
@@ -479,7 +480,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception ex)
             {
-                throw;
+                throw FaultExceptionHelper.Afhandelen(ex);
             }
 
             _context.SaveChanges();
@@ -502,8 +503,7 @@ namespace Chiro.Gap.Services
             return Mapper.Map<Lid, PersoonLidInfo>(lid);
 		}
 
-        /// </summary>
-        //        /// </summary>
+        /// <summary></summary>
         /// <param name="filter">De niet-nulle properties van de filter
         /// bepalen waarop gezocht moet worden</param>
         /// <param name="metAdressen">Indien <c>true</c>, worden de
@@ -533,12 +533,8 @@ namespace Chiro.Gap.Services
             {
                 return Mapper.Map<IList<Lid>, IList<LidOverzicht>>(leden);
             }
-            else
-            {
-                var list = Mapper.Map<IList<Lid>, IList<KleinLidOverzicht>>(leden);
-                return Mapper.Map<IList<KleinLidOverzicht>, IList<LidOverzicht>>(list);
-            }
-            
+            var list = Mapper.Map<IList<Lid>, IList<KleinLidOverzicht>>(leden);
+            return Mapper.Map<IList<KleinLidOverzicht>, IList<LidOverzicht>>(list);
         }
 
         /// <summary>

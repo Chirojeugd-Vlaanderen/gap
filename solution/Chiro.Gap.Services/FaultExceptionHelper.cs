@@ -1,5 +1,8 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.Data;
+using System.ServiceModel;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.Services
@@ -38,23 +41,25 @@ namespace Chiro.Gap.Services
             return new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = nummer }, new FaultReason(reason));
         }
 
-        /*
-                    if (ex is GeenGavException)
+        public static FaultException<FoutNummerFault> Afhandelen(Exception ex)
+        {
+            if (ex is GeenGavException)
             {
-                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenGav }, new FaultReason(ex.Message));
+                return new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = Domain.FoutNummer.GeenGav }, new FaultReason(ex.Message));
             }
             if (ex is EntityException | ex is EntityCommandExecutionException)
             {
-                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenDatabaseVerbinding }, new FaultReason(ex.Message));
+                return new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = Domain.FoutNummer.GeenDatabaseVerbinding }, new FaultReason(ex.Message));
             }
             if (ex is OptimisticConcurrencyException)
             {
-                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.Concurrency }, new FaultReason(ex.Message));
+                return new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = Domain.FoutNummer.Concurrency }, new FaultReason(ex.Message));
             }
             if (ex is FoutNummerException)
             {
-                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = (ex as FoutNummerException).FoutNummer }, new FaultReason(ex.Message));
+                return new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = (ex as FoutNummerException).FoutNummer }, new FaultReason(ex.Message));
             }
-         */
+            return new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = Domain.FoutNummer.AlgemeneFout }, new FaultReason("Niet vrijgegeven"));
+        }
     }
 }
