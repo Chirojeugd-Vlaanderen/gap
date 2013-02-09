@@ -30,17 +30,6 @@ namespace Chiro.Gap.Services
     /// </summary>
     public class GroepenService : IGroepenService, IDisposable
     {
-        /// <summary>
-        /// _context is verantwoordelijk voor het tracken van de wijzigingen aan de
-        /// entiteiten. Via _context.SaveChanges() kunnen wijzigingen gepersisteerd
-        /// worden.
-        /// 
-        /// Context is IDisposable. De context wordt aangemaakt door de IOC-container,
-        /// en gedisposed op het moment dat de service gedisposed wordt. Dit gebeurt
-        /// na iedere call.
-        /// </summary>
-        private readonly IContext _context;
-
         // Repositories, verantwoordelijk voor data access.
 
         private readonly IRepository<StraatNaam> _straatRepo;
@@ -86,7 +75,6 @@ namespace Chiro.Gap.Services
                               IFunctiesManager functiesMgr, IVeelGebruikt veelGebruikt,
                               IRepositoryProvider repositoryProvider)
         {
-            _context = repositoryProvider.ContextGet();
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
             _adresRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
             _landRepo = repositoryProvider.RepositoryGet<Land>();
@@ -115,11 +103,45 @@ namespace Chiro.Gap.Services
             get { return _gav; }
         }
 
+        
+#region Disposable etc
+
+        private bool disposed = false;
+
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    _straatRepo.Dispose();
+                    _adresRepo.Dispose();
+                    _landRepo.Dispose();
+                    _groepenRepo.Dispose();
+                    _categorieenRepo.Dispose();
+                    _afdelingenRepo.Dispose();
+                    _officieleAfdelingenRepo.Dispose();
+                    _afdelingsJaarRepo.Dispose();
+                    _functiesRepo.Dispose();
+                    _groepsWerkJarenRepo.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
+        ~GroepenService()
+        {
+            Dispose(false);
+        }
+
+        #endregion
         /// <summary>
         /// Ophalen van Groepsinformatie
         /// </summary>
@@ -228,7 +250,7 @@ namespace Chiro.Gap.Services
             groep.Naam = groepInfo.Naam;
             groep.Code = groepInfo.StamNummer;
 
-            _context.SaveChanges();
+            _groepenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -284,7 +306,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.BestaatAl(ex);
             }
 
-            _context.SaveChanges();
+            _groepenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -304,7 +326,7 @@ namespace Chiro.Gap.Services
             {
                 ai.Afkorting = info.Afkorting;
             }
-            _context.SaveChanges();
+            _afdelingenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -369,6 +391,9 @@ namespace Chiro.Gap.Services
                     afdelingsJaar.Geslacht = detail.Geslacht;
                     afdelingsJaar.VersieString = detail.VersieString;
                 }
+                
+                _afdelingenRepo.SaveChanges();
+
             }
             catch (ValidatieException ex)
             {
@@ -378,8 +403,7 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.Afhandelen(ex);
             }
-
-            _context.SaveChanges();
+            
         }
 
         /// <summary>
@@ -393,7 +417,7 @@ namespace Chiro.Gap.Services
             Gav.Check(afdelingsJaar);
 
             _afdelingsJaarRepo.Delete(afdelingsJaar);
-            _context.SaveChanges();
+            _afdelingsJaarRepo.SaveChanges();
         }
 
         /// <summary>
@@ -406,7 +430,7 @@ namespace Chiro.Gap.Services
             Gav.Check(afdeling);
 
             _afdelingenRepo.Delete(afdeling);
-            _context.SaveChanges();
+            _afdelingenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -665,7 +689,7 @@ namespace Chiro.Gap.Services
 
             groep.Functie.Add(f);
 
-            _context.SaveChanges();
+            _groepenRepo.SaveChanges();
 
             return f.ID;
         }
@@ -687,7 +711,7 @@ namespace Chiro.Gap.Services
                 functie.Lid.Clear();
             }
             _functiesRepo.Delete(functie);
-            _context.SaveChanges();
+            _functiesRepo.SaveChanges();
         }
 
         /// <summary>
@@ -713,7 +737,7 @@ namespace Chiro.Gap.Services
 
             var nieuweCategorie = new Categorie { Code = code, Naam = naam };
             groep.Categorie.Add(nieuweCategorie);
-            _context.SaveChanges();
+            _groepenRepo.SaveChanges();
 
             return nieuweCategorie.ID;
         }
@@ -762,7 +786,7 @@ namespace Chiro.Gap.Services
             }
             categorie.Naam = nieuwenaam;
 
-            _context.SaveChanges();
+            _categorieenRepo.SaveChanges();
         }
 
         /// <summary>

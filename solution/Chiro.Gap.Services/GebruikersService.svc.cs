@@ -15,8 +15,40 @@ namespace Chiro.Gap.Services
     /// <summary>
     /// Interface voor de service voor gebruikersrechtenbeheer.
     /// </summary>
-    public class GebruikersService : IGebruikersService
+    public class GebruikersService : IGebruikersService, IDisposable
     {
+        #region Disposable etc
+
+        private bool disposed = false;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    // TODO, release repositories
+                    //_someRepo.Dispose();
+                    
+                }
+                disposed = true;
+            }
+        }
+
+        ~GebruikersService()
+        {
+            Dispose(false);
+        }
+
+        #endregion
+
         /// <summary>
         /// _context is verantwoordelijk voor het tracken van de wijzigingen aan de
         /// entiteiten. Via _context.SaveChanges() kunnen wijzigingen gepersisteerd
@@ -170,5 +202,7 @@ namespace Chiro.Gap.Services
 
             _context.SaveChanges();
         }
+
+       
     }
 }

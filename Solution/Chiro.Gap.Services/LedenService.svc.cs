@@ -31,16 +31,6 @@ namespace Chiro.Gap.Services
     /// </summary>
     public class LedenService : ILedenService, IDisposable
     {
-        /// <summary>
-        /// _context is verantwoordelijk voor het tracken van de wijzigingen aan de
-        /// entiteiten. Via _context.SaveChanges() kunnen wijzigingen gepersisteerd
-        /// worden.
-        /// 
-        /// Context is Idisposable. De context wordt aangemaakt door de IOC-container,
-        /// en gedisposed op het moment dat de service gedisposed wordt. Dit gebeurt
-        /// na iedere call.
-        /// </summary>
-        private readonly IContext _context;
 
         // Repositories, verantwoordelijk voor data access.
 
@@ -73,7 +63,6 @@ namespace Chiro.Gap.Services
                                 ILedenManager ledenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                               IRepositoryProvider repositoryProvider)
         {
-            _context = repositoryProvider.ContextGet();
             _ledenRepo = ledenRepo;
             _afdelingsJaarRepo = repositoryProvider.RepositoryGet<AfdelingsJaar>();
             _functiesRepo = repositoryProvider.RepositoryGet<Functie>();
@@ -93,10 +82,40 @@ namespace Chiro.Gap.Services
             get { return _gav; }
         }
 
+        #region Disposable etc
+
+        private bool disposed = false;
+
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    _ledenRepo.Dispose();
+                    _verzekerRepo.Dispose();
+                    _gelieerdePersonenRepo.Dispose();
+                    _afdelingsJaarRepo.Dispose();
+                    _functiesRepo.Dispose();
+                    _groepsWerkJarenRepo.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
+        ~LedenService()
+        {
+            Dispose(false);
+        }
+
+        #endregion
 
         GroepsWerkJaar GetRecentsteGroepsWerkJaarEnCheckGav(int groepId)
         {
@@ -298,7 +317,7 @@ namespace Chiro.Gap.Services
 
                 foutBerichten = foutBerichtenBuilder.ToString();
 
-                _context.SaveChanges();
+                _gelieerdePersonenRepo.SaveChanges();
 
                 return lidIDs;
             }
@@ -354,7 +373,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.Afhandelen(ex);
             }
 
-            _context.SaveChanges();
+            _gelieerdePersonenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -375,7 +394,7 @@ namespace Chiro.Gap.Services
 
             lid.Functie = functies;
 
-            _context.SaveChanges();
+            _ledenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -456,7 +475,7 @@ namespace Chiro.Gap.Services
                 }
             }
 
-            _context.SaveChanges();
+            _ledenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -483,10 +502,10 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.Afhandelen(ex);
             }
 
-            _context.SaveChanges();
+            _ledenRepo.SaveChanges();
             return lid.GelieerdePersoon.ID;
         }
-        
+
         /// <summary>
         /// Haalt actief lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies
         /// </summary>
@@ -501,7 +520,7 @@ namespace Chiro.Gap.Services
                 FaultExceptionHelper.GeenGav();
             }
             return Mapper.Map<Lid, PersoonLidInfo>(lid);
-		}
+        }
 
         /// <summary></summary>
         /// <param name="filter">De niet-nulle properties van de filter
@@ -548,7 +567,7 @@ namespace Chiro.Gap.Services
             var lid = _ledenRepo.ByID(lidId);
             Gav.Check(lid);
             lid.LidgeldBetaald = !lid.LidgeldBetaald;
-            _context.SaveChanges();
+            _ledenRepo.SaveChanges();
             return lid.GelieerdePersoon.ID;
         }
 

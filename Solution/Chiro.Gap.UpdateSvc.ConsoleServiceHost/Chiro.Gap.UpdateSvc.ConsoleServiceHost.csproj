@@ -72,10 +72,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj">
-      <Project>{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}</Project>
-      <Name>Chiro.Cdf.DependencyInjectionBehavior</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>

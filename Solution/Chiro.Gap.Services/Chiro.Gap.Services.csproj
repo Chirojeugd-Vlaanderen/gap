@@ -109,8 +109,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SecurityGroepen.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="UitstappenService.svc.cs">
       <DependentUpon>UitstappenService.svc</DependentUpon>
     </Compile>
@@ -175,10 +173,6 @@
     <ProjectReference Include="..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
       <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
       <Name>Chiro.Gap.WorkerInterfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj">
-      <Project>{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}</Project>
-      <Name>Chiro.Cdf.DependencyInjectionBehavior</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\tools\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>

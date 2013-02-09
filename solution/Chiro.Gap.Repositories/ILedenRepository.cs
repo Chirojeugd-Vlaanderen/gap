@@ -9,7 +9,7 @@ namespace Chiro.Gap.Repositories
     /// </summary>
     public interface ILedenRepository : IRepository<Lid>
     {
-
+        
     }
 
 }

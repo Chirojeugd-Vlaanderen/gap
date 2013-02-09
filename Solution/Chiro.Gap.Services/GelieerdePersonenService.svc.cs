@@ -30,17 +30,6 @@ namespace Chiro.Gap.Services
     /// </summary>
     public class GelieerdePersonenService : IGelieerdePersonenService, IDisposable
     {
-        /// <summary>
-        /// _context is verantwoordelijk voor het tracken van de wijzigingen aan de
-        /// entiteiten. Via _context.SaveChanges() kunnen wijzigingen gepersisteerd
-        /// worden.
-        /// 
-        /// Context is IDisposable. De context wordt aangemaakt door de IOC-container,
-        /// en gedisposed op het moment dat de service gedisposed wordt. Dit gebeurt
-        /// na iedere call.
-        /// </summary>
-        private readonly IContext _context;
-
         // Repositories, verantwoordelijk voor data access.
 
         private readonly IRepository<CommunicatieVorm> _communicatieVormRepo;
@@ -72,7 +61,6 @@ namespace Chiro.Gap.Services
                                         ILedenManager ledenMgr,
                                         ICommunicatieSync communicatieSync)
         {
-            _context = repositoryProvider.ContextGet();
             _communicatieVormRepo = repositoryProvider.RepositoryGet<CommunicatieVorm>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
             _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
@@ -84,6 +72,37 @@ namespace Chiro.Gap.Services
 
             _communicatieSync = communicatieSync;
         }
+
+        #region Disposable etc
+
+        private bool disposed = false;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    _communicatieVormRepo.Dispose();
+                    _gelieerdePersonenRepo.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
+        ~GelieerdePersonenService()
+        {
+            Dispose(false);
+        }
+
+        #endregion
 
         /// <summary>
         /// Haalt een persoonsgegevens op van gelieerde personen van een groep,
@@ -542,8 +561,8 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
-                _context.SaveChanges();
-                _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
+            _communicatieVormRepo.SaveChanges();
+            _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
 #if KIPDORP
             }
 #endif
@@ -606,13 +625,6 @@ namespace Chiro.Gap.Services
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
-
-        /// <summary>
-        /// Disposet de context
-        /// </summary>
-        public void Dispose()
-        {
-            _context.Dispose();            
-        }
+        
     }
 }

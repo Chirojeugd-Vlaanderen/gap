@@ -71,5 +71,41 @@ namespace Chiro.Cdf.Poco
 
             _context.Set<TEntity>().Attach(entity);
         }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
+        #region Disposable etc
+
+        private bool disposed = false;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                   _context.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
+        ~Repository()
+        {
+            Dispose(false);
+        }
+
+        #endregion
+
     }
 }

@@ -22,21 +22,9 @@ namespace Chiro.Gap.Services
     /// <summary>
     /// Service methods m.b.t. uitstappen
     /// </summary>
-    public class UitstappenService : IUitstappenService
+    public class UitstappenService : IUitstappenService, IDisposable
     {
-        /// <summary>
-        /// _context is verantwoordelijk voor het tracken van de wijzigingen aan de
-        /// entiteiten. Via _context.SaveChanges() kunnen wijzigingen gepersisteerd
-        /// worden.
-        /// 
-        /// Context is IDisposable. De context wordt aangemaakt door de IOC-container,
-        /// en gedisposed op het moment dat de service gedisposed wordt. Dit gebeurt
-        /// na iedere call.
-        /// </summary>
-        private readonly IContext _context;
-
         // Repositories, verantwoordelijk voor data access
-
         private readonly IRepository<GroepsWerkJaar> _groepsWerkJaarRepo;
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Adres> _adressenRepo;
@@ -62,8 +50,6 @@ namespace Chiro.Gap.Services
                                  IUitstappenManager uitstappenManager,
                                  IAdressenManager adressenManager)
         {
-            _context = repositoryProvider.ContextGet();
-
             _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _adressenRepo = repositoryProvider.RepositoryGet<Adres>();
@@ -76,10 +62,36 @@ namespace Chiro.Gap.Services
             _adressenMgr = adressenManager;
         }
 
+        #region Disposable etc
+
+        private bool disposed = false;
+
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    _groepsWerkJaarRepo.Dispose();
+
+                }
+                disposed = true;
+            }
+        }
+
+        ~UitstappenService()
+        {
+            Dispose(false);
+        }
+
+        #endregion
 
         /// <summary>
         /// Bewaart een uitstap voor de groep met gegeven <paramref name="groepID"/>

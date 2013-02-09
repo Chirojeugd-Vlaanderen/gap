@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Chiro.Cdf.Poco
 {
-    public interface IRepository<TEntity> where TEntity: class
+    public interface IRepository<TEntity> : IDisposable where TEntity: BasisEntiteit
     {
         IQueryable<TEntity> Select();
         IEnumerable<TEntity> GetAll();
@@ -20,5 +20,7 @@ namespace Chiro.Cdf.Poco
         void Add(TEntity entity);
         void Delete(TEntity entity);
         void Attach(TEntity entity);
+
+        void SaveChanges();
     }
 }

@@ -1,4 +1,9 @@
-﻿namespace Chiro.Cdf.Poco
+﻿using System;
+
+using Chiro.Cdf.Ioc;
+
+
+namespace Chiro.Cdf.Poco
 {
     /// <summary>
     /// Een repository provider levert eender welke repository af, en de
@@ -23,6 +28,7 @@
         /// Vraagt de (gedeelde) context van alle repository's op
         /// </summary>
         /// <returns>de (gedeelde) context van alle repository's</returns>
+        [Obsolete]
         public IContext ContextGet()
         {
             return _context;
@@ -35,7 +41,7 @@
         /// <returns>Een repository voor entiteiten van type <typeparamref name="TEntity"/></returns>
         public IRepository<TEntity> RepositoryGet<TEntity>() where TEntity : BasisEntiteit
         {
-            return new Repository<TEntity>(_context);
+            return Factory.Maak<IRepository<TEntity>>();
         }
     }
 }
