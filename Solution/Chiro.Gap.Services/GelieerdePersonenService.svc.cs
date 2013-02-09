@@ -87,7 +87,18 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
         public IList<PersoonDetail> OphalenMetLidInfo(IEnumerable<int> selectieGelieerdePersoonIDs)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var gelieerdePersonen = from gp in _gelieerdePersonenRepo.Select()
+                                    where selectieGelieerdePersoonIDs.Contains(gp.ID)
+                                    select gp;
+
+            if (gelieerdePersonen.Any(gp => !_autorisatieMgr.IsGav(gp)))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
+
+            return result;
         }
 
         /// <summary>
