@@ -1,4 +1,6 @@
-﻿using Chiro.Gap.Poco.Model;
+﻿using System.Linq;
+
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Services
@@ -23,6 +25,18 @@ namespace Chiro.Gap.Services
         public void Check(Functie g)
         {
             if (g == null || !_autorisatieMgr.IsGav(g.Groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+        }
+
+        public void Check(Gav g)
+        {
+            if (g == null)
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+            if ( ! g.Persoon.SelectMany(persoon => persoon.GelieerdePersoon).Any(gelieerdePersoon => _autorisatieMgr.IsGav(gelieerdePersoon)))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
