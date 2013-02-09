@@ -47,7 +47,7 @@ namespace Chiro.Gap.Services
         private readonly IRepository<GroepsWerkJaar> _groepsWerkJarenRepo;
 
         // Managers voor niet-triviale businesslogica
-        
+
         private readonly IAuthenticatieManager _authenticatieMgr;
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IGroepenManager _groepenMgr;
@@ -91,11 +91,11 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Ophalen van Groepsinformatie
         /// </summary>
-        /// <param name="groepID">GroepID van groep waarvan we de informatie willen opvragen</param>
+        /// <param name="groepId">groepId van groep waarvan we de informatie willen opvragen</param>
         /// <returns>
-        /// De gevraagde informatie over de groep met id <paramref name="groepID"/>
+        /// De gevraagde informatie over de groep met id <paramref name="groepId"/>
         /// </returns>
-        public GroepInfo InfoOphalen(int groepID)
+        public GroepInfo InfoOphalen(int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -110,34 +110,62 @@ namespace Chiro.Gap.Services
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
-        /// <summary>
-        /// Ophalen van gedetailleerde informatie over de groep met ID <paramref name="groepID"/>
-        /// </summary>
-        /// <param name="groepID">ID van de groep waarvoor de informatie opgehaald moet worden</param>
-        /// <returns>Groepsdetails, inclusief categorieen en huidige actieve afdelingen</returns>
-        public GroepDetail DetailOphalen(int groepID)
+        void CheckGav(GelieerdePersoon g)
         {
-            var resultaat = new GroepDetail
-                                {
-                                    Afdelingen = new List<AfdelingDetail>()
-                                };
-
-            var groepsWerkJaar =
-                _groepsWerkJarenRepo.Select()
-                                    .Where(gwj => gwj.Groep.ID == groepID)
-                                    .OrderByDescending(gwj => gwj.WerkJaar)
-                                    .FirstOrDefault();
-
-            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            if (!_autorisatieMgr.IsGav(g))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
+        }
 
-            Debug.Assert(groepsWerkJaar != null);
+        void CheckGav(GroepsWerkJaar g)
+        {
+            if (!_autorisatieMgr.IsGav(g))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+        }
 
-            Mapper.Map(groepsWerkJaar.Groep, resultaat);
+        void CheckGav(CommunicatieVorm g)
+        {
+            if (!_autorisatieMgr.IsGav(g))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+        }
+
+        void CheckGav(Groep g)
+        {
+            if (!_autorisatieMgr.IsGav(g))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+        }
+
+        GroepsWerkJaar GetGroepsWerkJaarEnCheckGav(int groepId)
+        {
+            var groepsWerkJaar =
+    _groepsWerkJarenRepo.Select()
+                        .Where(gwj => gwj.Groep.ID == groepId)
+                        .OrderByDescending(gwj => gwj.WerkJaar)
+                        .First();
+
+            CheckGav(groepsWerkJaar);
+
+            return groepsWerkJaar;
+        }
+
+        /// <summary>
+        /// Ophalen van gedetailleerde informatie over de groep met ID <paramref name="groepId"/>
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvoor de informatie opgehaald moet worden</param>
+        /// <returns>Groepsdetails, inclusief categorieen en huidige actieve afdelingen</returns>
+        public GroepDetail DetailOphalen(int groepId)
+        {
+            var groepsWerkJaar = GetGroepsWerkJaarEnCheckGav(groepId);
+
+            var resultaat = Mapper.Map<Groep, GroepDetail>(groepsWerkJaar.Groep);
             Mapper.Map(groepsWerkJaar.AfdelingsJaar, resultaat.Afdelingen);
-
             return resultaat;
         }
 
@@ -147,46 +175,42 @@ namespace Chiro.Gap.Services
         /// <returns>De (informatie over de) groepen van de gebruiker</returns>
         public IEnumerable<GroepInfo> MijnGroepenOphalen()
         {
-            string mijnLogin = _authenticatieMgr.GebruikersNaamGet();
+            var mijnLogin = _authenticatieMgr.GebruikersNaamGet();
             var groepen = from g in _groepenRepo.Select()
                           where g.GebruikersRecht.Any(gr => gr.Gav.Login == mijnLogin)
                           select g;
+
             return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
         }
 
         /// <summary>
         /// Haalt informatie op over alle werkjaren waarin een groep actief was/is.
         /// </summary>
-        /// <param name="groepsID">ID van de groep</param>
+        /// <param name="groepId">ID van de groep</param>
         /// <returns>Info over alle werkjaren waarin een groep actief was/is.</returns>
-        public IEnumerable<WerkJaarInfo> WerkJarenOphalen(int groepsID)
+        public IEnumerable<WerkJaarInfo> WerkJarenOphalen(int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
+        static bool Equal(string links, string rechts)
+        {
+            return String.Compare(links, rechts, StringComparison.OrdinalIgnoreCase) == 0;
+        }
+
         /// <summary>
         /// Persisteert een groep in de database
+        /// Momenteel ondersteunen we enkel het wijzigen van groepsnaam
+        /// en stamnummer. (En dat stamnummer wijzigen, mag dan nog enkel
+        /// als we super-gav zijn.)
         /// </summary>
         /// <param name="groepInfo">Te persisteren groep</param>
         /// <remarks>FIXME: gedetailleerde exception</remarks>
         public void Bewaren(GroepInfo groepInfo)
         {
-            var groep = (from g in _groepenRepo.Select()
-                         where g.ID == groepInfo.ID
-                         select g).FirstOrDefault();
+            var groep = GetGroepEnCheckGav(groepInfo.ID);
 
-            // Momenteel ondersteunen we enkel het wijzigen van groepsnaam
-            // en stamnummer. (En dat stamnummer wijzigen, mag dan nog enkel
-            // als we super-gav zijn.)
-
-            if (!_autorisatieMgr.IsGav(groep))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            Debug.Assert(groep != null);
-
-            if (String.Compare(groepInfo.StamNummer, groep.Code, StringComparison.OrdinalIgnoreCase) != 0 && !_autorisatieMgr.IsSuperGav())
+            if (!Equal(groepInfo.StamNummer, groep.Code) && !_autorisatieMgr.IsSuperGav())
             {
                 throw FaultExceptionHelper.GeenGav();
             }
@@ -197,13 +221,18 @@ namespace Chiro.Gap.Services
             _context.SaveChanges();
         }
 
+        public int RecentsteGroepsWerkJaarIDGet(int groepId)
+        {
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+        }
+
         /// <summary>
-        /// Haalt GroepsWerkJaarID van het recentst gemaakte groepswerkjaar
+        /// Haalt groepswerkjaarId van het recentst gemaakte groepswerkjaar
         /// voor een gegeven groep op.
         /// </summary>
-        /// <param name="groepID">GroepID van groep</param>
+        /// <param name="groepId">groepId van groep</param>
         /// <returns>ID van het recentste GroepsWerkJaar</returns>
-        public int RecentsteGroepsWerkJaarIDGet(int groepID)
+        public int RecentstegroepswerkjaarIdGet(int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -212,27 +241,15 @@ namespace Chiro.Gap.Services
         /// Haalt gedetailleerde gegevens op van het recentst gemaakte groepswerkjaar
         /// voor een gegeven groep op.
         /// </summary>
-        /// <param name="groepid">GroepID van groep</param>
+        /// <param name="groepId">groepId van groep</param>
         /// <returns>
         /// De details van het recentste groepswerkjaar
         /// </returns>
-        public GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepid)
+        public GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepId)
         {
-            var groepsWerkJaar =
-                _groepsWerkJarenRepo.Select()
-                                    .Where(gwj => gwj.Groep.ID == groepid)
-                                    .OrderByDescending(gwj => gwj.WerkJaar)
-                                    .FirstOrDefault();
-
-            // Autorisatie:
-
-            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
+            var groepsWerkJaar = GetGroepsWerkJaarEnCheckGav(groepId);
 
             var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(groepsWerkJaar);
-
             result.Status = _groepsWerkJarenMgr.OvergangMogelijk(DateTime.Now, result.WerkJaar)
                                 ? WerkJaarStatus.InOvergang
                                 : WerkJaarStatus.Bezig;
@@ -243,10 +260,10 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Maakt een nieuwe afdeling voor een gegeven ChiroGroep
         /// </summary>
-        /// <param name="chiroGroepID">ID van de groep</param>
+        /// <param name="chirogroepId">ID van de groep</param>
         /// <param name="naam">Naam van de afdeling</param>
         /// <param name="afkorting">Afkorting van de afdeling (voor lijsten, overzichten,...)</param>
-        public void AfdelingAanmaken(int chiroGroepID, string naam, string afkorting)
+        public void AfdelingAanmaken(int chirogroepId, string naam, string afkorting)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -263,9 +280,9 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Uitgebreide info ophalen over het afdelingsjaar met de opgegeven ID
         /// </summary>
-        /// <param name="afdelingsJaarID">De ID van het afdelingsjaar in kwestie</param>
+        /// <param name="afdelingsJaarId">De ID van het afdelingsjaar in kwestie</param>
         /// <returns>Uitgebreide info over het afdelingsjaar met de opgegeven ID</returns>
-        public AfdelingsJaarDetail AfdelingsJaarOphalen(int afdelingsJaarID)
+        public AfdelingsJaarDetail AfdelingsJaarOphalen(int afdelingsJaarId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -286,8 +303,8 @@ namespace Chiro.Gap.Services
         /// Verwijdert een afdelingsjaar 
         /// en controleert of er geen leden in zitten.
         /// </summary>
-        /// <param name="afdelingsJaarID">ID van het afdelingsjaar waarover het gaat</param>
-        public void AfdelingsJaarVerwijderen(int afdelingsJaarID)
+        /// <param name="afdelingsJaarId">ID van het afdelingsjaar waarover het gaat</param>
+        public void AfdelingsJaarVerwijderen(int afdelingsJaarId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -295,8 +312,8 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Verwijdert een afdeling
         /// </summary>
-        /// <param name="afdelingID">ID van de afdeling waarover het gaat</param>
-        public void AfdelingVerwijderen(int afdelingID)
+        /// <param name="afdelingId">ID van de afdeling waarover het gaat</param>
+        public void AfdelingVerwijderen(int afdelingId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -304,45 +321,45 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Haalt details over alle officiele afdelingen op.
         /// </summary>
-        /// <param name="groepID">ID van een groep, zodat aan de hand van het recenste groepswerkjaar
+        /// <param name="groepId">ID van een groep, zodat aan de hand van het recenste groepswerkjaar
         /// de standaardgeboortejaren van en tot bepaald kunnen worden</param>
         /// <returns>Rij met details over de officiele afdelingen</returns>
-        public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingenOphalen(int groepID)
+        public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingenOphalen(int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
-        /// Haat een afdeling op, op basis van <paramref name="afdelingID"/>
+        /// Haat een afdeling op, op basis van <paramref name="afdelingId"/>
         /// </summary>
-        /// <param name="afdelingID">ID van op te halen afdeling</param>
+        /// <param name="afdelingId">ID van op te halen afdeling</param>
         /// <returns>Info van de gevraagde afdeling</returns>
-        public AfdelingInfo AfdelingOphalen(int afdelingID)
+        public AfdelingInfo AfdelingOphalen(int afdelingId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
-        /// Haalt details op van een afdeling, gebaseerd op het <paramref name="afdelingsJaarID"/>
+        /// Haalt details op van een afdeling, gebaseerd op het <paramref name="afdelingsJaarId"/>
         /// </summary>
-        /// <param name="afdelingsJaarID">ID van het AFDELINGSJAAR waarvoor de details opgehaald moeten 
+        /// <param name="afdelingsJaarId">ID van het AFDELINGSJAAR waarvoor de details opgehaald moeten 
         /// worden.</param>
         /// <returns>De details van de afdeling in het gegeven afdelingsjaar.</returns>
-        public AfdelingDetail AfdelingDetailOphalen(int afdelingsJaarID)
+        public AfdelingDetail AfdelingDetailOphalen(int afdelingsJaarId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
         /// Haalt details op over alle actieve afdelingen in het groepswerkjaar met 
-        /// ID <paramref name="groepsWerkJaarID"/>
+        /// ID <paramref name="groepswerkjaarId"/>
         /// </summary>
-        /// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+        /// <param name="groepswerkjaarId">ID van het groepswerkjaar</param>
         /// <returns>
         /// Informatie over alle actieve afdelingen in het groepswerkjaar met 
-        /// ID <paramref name="groepsWerkJaarID"/>
+        /// ID <paramref name="groepswerkjaarId"/>
         /// </returns>
-        public IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepsWerkJaarID)
+        public IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepswerkjaarId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -351,9 +368,9 @@ namespace Chiro.Gap.Services
         /// Haalt beperkte informatie op over de beschikbare afdelingen van een groep in het huidige
         /// groepswerkjaar.
         /// </summary>
-        /// <param name="groepID">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
+        /// <param name="groepId">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
         /// <returns>Lijst van ActieveAfdelingInfo</returns>
-        public IList<AfdelingInfo> AlleAfdelingenOphalen(int groepID)
+        public IList<AfdelingInfo> AlleAfdelingenOphalen(int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -362,33 +379,33 @@ namespace Chiro.Gap.Services
         /// Haalt informatie op over de beschikbare afdelingsjaren en hun gelinkte afdelingen van een groep in het huidige
         /// groepswerkjaar.
         /// </summary>
-        /// <param name="groepID">ID van de groep waarvoor de info gevraagd is</param>
+        /// <param name="groepId">ID van de groep waarvoor de info gevraagd is</param>
         /// <returns>Lijst van AfdelingInfo</returns>
-        public IList<ActieveAfdelingInfo> HuidigeAfdelingsJarenOphalen(int groepID)
+        public IList<ActieveAfdelingInfo> HuidigeAfdelingsJarenOphalen(int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
         /// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
-        /// groepswerkjaar, op basis van een <paramref name="groepswerkjaarID"/>
+        /// groepswerkjaar, op basis van een <paramref name="groepswerkjaarId"/>
         /// </summary>
-        /// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
+        /// <param name="groepswerkjaarId">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
         /// opgezocht moeten worden.</param>
         /// <returns>Info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
-        public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID)
+        public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
-        /// Haalt uit groepswerkjaar met ID <paramref name="groepsWerkJaarID"/> alle beschikbare functies
+        /// Haalt uit groepswerkjaar met ID <paramref name="groepswerkjaarId"/> alle beschikbare functies
         /// op voor een lid van type <paramref name="lidType"/>.
         /// </summary>
-        /// <param name="groepsWerkJaarID">ID van het groepswerkjaar van de gevraagde functies</param>
+        /// <param name="groepswerkjaarId">ID van het groepswerkjaar van de gevraagde functies</param>
         /// <param name="lidType"><c>LidType.Kind</c> of <c>LidType.Leiding</c></param>
         /// <returns>De gevraagde lijst afdelingsinfo</returns>
-        public IEnumerable<FunctieDetail> FunctiesOphalen(int groepsWerkJaarID, LidType lidType)
+        public IEnumerable<FunctieDetail> FunctiesOphalen(int groepswerkjaarId, LidType lidType)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -397,29 +414,15 @@ namespace Chiro.Gap.Services
         /// Zoekt naar problemen ivm de maximum- en minimumaantallen van functies voor het
         /// huidige werkJaar.
         /// </summary>
-        /// <param name="groepID">ID van de groep waarvoor de functies gecontroleerd moeten worden.</param>
+        /// <param name="groepId">ID van de groep waarvoor de functies gecontroleerd moeten worden.</param>
         /// <returns>
         /// Een rij FunctieProbleemInfo.  Als er geen problemen zijn, is deze leeg.
         /// </returns>
-        public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepID)
+        public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepId)
         {
-            var groepsWerkJaar =
-                _groepsWerkJarenRepo.Select()
-                                    .Where(gwj => gwj.Groep.ID == groepID)
-                                    .OrderByDescending(gwj => gwj.WerkJaar)
-                                    .FirstOrDefault();
+            var groepsWerkJaar = GetGroepsWerkJaarEnCheckGav(groepId);
 
-            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            Debug.Assert(groepsWerkJaar != null);
-
-            var problemen = _functiesMgr.AantallenControleren(
-                groepsWerkJaar,
-                groepsWerkJaar.Groep.Functie.Union(_veelGebruikt.NationaleFunctiesOphalen(_functiesRepo)));
-
+            var problemen = _functiesMgr.AantallenControleren(groepsWerkJaar, groepsWerkJaar.Groep.Functie.Union(_veelGebruikt.NationaleFunctiesOphalen(_functiesRepo)));
             var resultaat = (from f in groepsWerkJaar.Groep.Functie
                              join p in problemen on f.ID equals p.ID
                              select new FunctieProbleemInfo
@@ -430,73 +433,51 @@ namespace Chiro.Gap.Services
                                             MaxAantal = p.Max,
                                             MinAantal = p.Min
                                         }).ToList();
-
             return resultaat;
         }
 
         /// <summary>
         /// Controleert de verplicht in te vullen lidgegevens.
         /// </summary>
-        /// <param name="groepID">ID van de groep waarvan de leden te controleren zijn</param>
+        /// <param name="groepId">ID van de groep waarvan de leden te controleren zijn</param>
         /// <returns>Een rij LedenProbleemInfo.  Leeg bij gebrek aan problemen.</returns>
-        public IEnumerable<LedenProbleemInfo> LedenControleren(int groepID)
+        public IEnumerable<LedenProbleemInfo> LedenControleren(int groepId)
         {
             var resultaat = new List<LedenProbleemInfo>();
-            var groepsWerkJaar =
-                _groepsWerkJarenRepo.Select()
-                                    .Where(gwj => gwj.Groep.ID == groepID)
-                                    .OrderByDescending(gwj => gwj.WerkJaar)
-                                    .FirstOrDefault();
 
-            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
+            var groepsWerkJaar = GetGroepsWerkJaarEnCheckGav(groepId);
 
-            Debug.Assert(groepsWerkJaar != null);
-
-            int aantalLedenZonderAdres = (from ld in groepsWerkJaar.Lid
-                                          where ld.GelieerdePersoon.PersoonsAdres == null
-                                          // geen voorkeursadres
+            var aantalLedenZonderAdres = (from ld in groepsWerkJaar.Lid
+                                          where ld.GelieerdePersoon.PersoonsAdres == null // geen voorkeursadres
                                           select ld).Count();
-
-            int aantalLedenZonderTelefoonNr = (from ld in groepsWerkJaar.Lid
-                                               where
-                                                   !ld.GelieerdePersoon.Communicatie.Any(
-                                                       cmm =>
-                                                       cmm.CommunicatieType.ID ==
-                                                       (int) CommunicatieTypeEnum.TelefoonNummer)
-                                               select ld).Count();
-            // Hierboven: tel de personen waarbij er geen enkel communicatiemiddel is van het type
-            // 'telefoonnummer'. Resharper zal voorstellen om dit te vervangen door
-            // alle communicatiemiddelen hebben een type verschillend van telefoonnummer, maar dat
-            // is niet equivalent, IHB als er geen communicatietypes zijn.
-
-            int aantalLeidingZonderEmail = (from ld in groepsWerkJaar.Lid
-                                               where ld.Type == LidType.Leiding &&
-                                                   !ld.GelieerdePersoon.Communicatie.Any(
-                                                       cmm =>
-                                                       cmm.CommunicatieType.ID ==
-                                                       (int) CommunicatieTypeEnum.Email)
-                                               select ld).Count();
 
             if (aantalLedenZonderAdres > 0)
             {
                 resultaat.Add(new LedenProbleemInfo
-                                  {
-                                      Probleem = LidProbleem.AdresOntbreekt,
-                                      Aantal = aantalLedenZonderAdres
-                                  });
+                {
+                    Probleem = LidProbleem.AdresOntbreekt,
+                    Aantal = aantalLedenZonderAdres
+                });
             }
+
+            var aantalLedenZonderTelefoonNr = (from ld in groepsWerkJaar.Lid
+                                               where
+                                                   ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.TelefoonNummer)
+                                               select ld).Count();
 
             if (aantalLedenZonderTelefoonNr > 0)
             {
                 resultaat.Add(new LedenProbleemInfo
-                                  {
-                                      Probleem = LidProbleem.TelefoonNummerOntbreekt,
-                                      Aantal = aantalLedenZonderTelefoonNr
-                                  });
+                {
+                    Probleem = LidProbleem.TelefoonNummerOntbreekt,
+                    Aantal = aantalLedenZonderTelefoonNr
+                });
             }
+
+            var aantalLeidingZonderEmail = (from ld in groepsWerkJaar.Lid
+                                            where ld.Type == LidType.Leiding &&
+                                                ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.Email)
+                                            select ld).Count();
 
             if (aantalLeidingZonderEmail > 0)
             {
@@ -510,10 +491,19 @@ namespace Chiro.Gap.Services
             return resultaat;
         }
 
+        Groep GetGroepEnCheckGav(int groepId)
+        {
+            var groep = (from g in _groepenRepo.Select()
+                         where g.ID == groepId
+                         select g).First();
+            CheckGav(groep);
+            return groep;
+        }
+
         /// <summary>
         /// Voegt een functie toe aan de groep
         /// </summary>
-        /// <param name="groepID">De groep waaraan het wordt toegevoegd</param>
+        /// <param name="groepId">De groep waaraan het wordt toegevoegd</param>
         /// <param name="naam">De naam van de nieuwe functie</param>
         /// <param name="code">Code voor de nieuwe functie</param>
         /// <param name="maxAantal">Eventueel het maximumaantal leden met die functie in een werkJaar</param>
@@ -521,42 +511,23 @@ namespace Chiro.Gap.Services
         /// <param name="lidType">Gaat het over een functie voor leden, leiding of beide?</param>
         /// <param name="werkJaarVan">Eventueel het vroegste werkJaar waarvoor de functie beschikbaar moet zijn</param>
         /// <returns>De ID van de aangemaakte Functie</returns>
-        public int FunctieToevoegen(int groepID, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan)
+        public int FunctieToevoegen(int groepId, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan)
         {
-            // Haal groep op 
-
-            var groep = (from g in _groepenRepo.Select()
-                         where g.ID == groepID
-                         select g).FirstOrDefault();
-
-            // Heb ik daar rechten op?
-
-            if (groep == null || !_autorisatieMgr.IsGav(groep))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
+            var groep = GetGroepEnCheckGav(groepId);
 
             // Bestaat er al een eigen of nationale functie met dezelfde code?
-
-            var bestaande = _groepenMgr.FunctieZoeken(groep, code, _functiesRepo);
-
-            if (bestaande != null)
+            var bestaandeFunctie = _groepenMgr.FunctieZoeken(groep, code, _functiesRepo);
+            if (bestaandeFunctie != null)
             {
-                // TODO: Ook hier faultexception door helper laten genereren.
-                throw new FaultException<BestaatAlFault<FunctieInfo>>(new BestaatAlFault<FunctieInfo>
-                                                                          {
-                                                                              Bestaande =
-                                                                                  Mapper.Map<Functie, FunctieInfo>(
-                                                                                      bestaande)
-                                                                          });
+                throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(
+                    bestaandeFunctie));
             }
 
             var recentsteWerkJaar = _groepenMgr.RecentsteWerkJaar(groep);
-
             if (recentsteWerkJaar == null)
             {
-                throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GroepsWerkJaarNietBeschikbaar },
-                                                          new FaultReason(Properties.Resources.GeenWerkJaar));
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepsWerkJaarNietBeschikbaar,
+                                                Properties.Resources.GeenWerkJaar);
             }
 
             var f = new Functie
@@ -580,13 +551,13 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Verwijdert de functie met gegeven <paramref name="functieID"/>
+        /// Verwijdert de functie met gegeven <paramref name="functieId"/>
         /// </summary>
-        /// <param name="functieID">ID van de te verwijderen functie</param>
+        /// <param name="functieId">ID van de te verwijderen functie</param>
         /// <param name="forceren">Indien <c>true</c>, worden eventuele personen uit de
         /// te verwijderen functie eerst uit de functie weggehaald.  Indien
         /// <c>false</c> krijg je een exception als de functie niet leeg is.</param>
-        public void FunctieVerwijderen(int functieID, bool forceren)
+        public void FunctieVerwijderen(int functieId, bool forceren)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -594,50 +565,39 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Voegt een categorie toe aan de groep
         /// </summary>
-        /// <param name="groepID">De groep waaraan het wordt toegevoegd</param>
+        /// <param name="groepId">De groep waaraan het wordt toegevoegd</param>
         /// <param name="naam">De naam van de nieuwe categorie</param>
         /// <param name="code">Code voor de nieuwe categorie</param>
         /// <returns>De ID van de aangemaakte categorie</returns>
-        public int CategorieToevoegen(int groepID, string naam, string code)
+        public int CategorieToevoegen(int groepId, string naam, string code)
         {
-            var groep = (from g in _groepenRepo.Select()
-                         where g.ID == groepID
-                         select g).FirstOrDefault();
+            var groep = GetGroepEnCheckGav(groepId);
 
-            if (!_autorisatieMgr.IsGav(groep))
+            var bestaandeCategorie = (from c in groep.Categorie
+                                      where String.Compare(c.Code, code, StringComparison.OrdinalIgnoreCase) == 0
+                                      select c).FirstOrDefault();
+
+            if (bestaandeCategorie != null)
             {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            Debug.Assert(groep != null);
-
-            // Check of de categorie al bestaat
-
-            var bestaande = (from c in groep.Categorie
-                             where String.Compare(c.Code, code, StringComparison.OrdinalIgnoreCase) == 0
-                             select c).FirstOrDefault();
-
-            if (bestaande != null)
-            {
-                var info = Mapper.Map<Categorie, CategorieInfo>(bestaande);
+                var info = Mapper.Map<Categorie, CategorieInfo>(bestaandeCategorie);
                 throw FaultExceptionHelper.BestaatAl(info);
             }
 
-            var nieuwe = new Categorie {Code = code, Naam = naam};
-            groep.Categorie.Add(nieuwe);
+            var nieuweCategorie = new Categorie { Code = code, Naam = naam };
+            groep.Categorie.Add(nieuweCategorie);
             _context.SaveChanges();
 
-            return nieuwe.ID;
+            return nieuweCategorie.ID;
         }
 
         /// <summary>
         /// Verwijdert de gegeven categorie
         /// </summary>
-        /// <param name="categorieID">De ID van de te verwijderen categorie</param>
+        /// <param name="categorieId">De ID van de te verwijderen categorie</param>
         /// <param name="forceren">Indien <c>true</c>, worden eventuele personen uit de
         /// te verwijderen categorie eerst uit de categorie weggehaald.  Indien
         /// <c>false</c> krijg je een exception als de categorie niet leeg is.</param>
-        public void CategorieVerwijderen(int categorieID, bool forceren)
+        public void CategorieVerwijderen(int categorieId, bool forceren)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -645,45 +605,45 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Het veranderen van de naam van een categorie
         /// </summary>
-        /// <param name="categorieID">De ID van de categorie</param>
+        /// <param name="categorieId">De ID van de categorie</param>
         /// <param name="nieuwenaam">De nieuwe naam van de categorie</param>
         /// <exception cref="InvalidOperationException">Gegooid als de naam al bestaat, leeg is of null is</exception>
-        public void CategorieAanpassen(int categorieID, string nieuwenaam)
+        public void CategorieAanpassen(int categorieId, string nieuwenaam)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
-        /// Zoekt een categorie op, op basis van <paramref name="groepID"/> en
+        /// Zoekt een categorie op, op basis van <paramref name="groepId"/> en
         /// <paramref name="categorieCode"/>
         /// </summary>
-        /// <param name="groepID">ID van de groep waaraan de categorie gekoppeld moet zijn.</param>
+        /// <param name="groepId">ID van de groep waaraan de categorie gekoppeld moet zijn.</param>
         /// <param name="categorieCode">Code van de categorie</param>
         /// <returns>De categorie met code <paramref name="categorieCode"/> die van toepassing is op
-        /// de groep met ID <paramref name="groepID"/>.</returns>
-        public CategorieInfo CategorieOpzoeken(int groepID, string categorieCode)
+        /// de groep met ID <paramref name="groepId"/>.</returns>
+        public CategorieInfo CategorieOpzoeken(int groepId, string categorieCode)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
-        /// Haalt alle categorieeen op van de groep met ID <paramref name="groepID"/>
+        /// Haalt alle categorieeen op van de groep met ID <paramref name="groepId"/>
         /// </summary>
-        /// <param name="groepID">ID van de groep waarvan de categorieen zijn gevraagd</param>
+        /// <param name="groepId">ID van de groep waarvan de categorieen zijn gevraagd</param>
         /// <returns>Lijst met categorie-info van de categorieen van de gevraagde groep</returns>
-        public IList<CategorieInfo> CategorieenOphalen(int groepID)
+        public IList<CategorieInfo> CategorieenOphalen(int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
         /// Zoekt de categorieID op van de categorie bepaald door de gegeven 
-        /// <paramref name="groepID"/> en <paramref name="code"/>.
+        /// <paramref name="groepId"/> en <paramref name="code"/>.
         /// </summary>
-        /// <param name="groepID">ID van groep waaraan de gezochte categorie gekoppeld is</param>
+        /// <param name="groepId">ID van groep waaraan de gezochte categorie gekoppeld is</param>
         /// <param name="code">Code van de te zoeken categorie</param>
         /// <returns>Het categorieID als de categorie gevonden is, anders 0.</returns>
-        public int CategorieIDOphalen(int groepID, string code)
+        public int CategorieIDOphalen(int groepId, string code)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -741,8 +701,8 @@ namespace Chiro.Gap.Services
         ///		Geboortejaren voor elk van die afdelingen
         /// </summary>
         /// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkJaar</param>
-        /// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
-        public void JaarovergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID)
+        /// <param name="groepId">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
+        public void JaarovergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -751,7 +711,7 @@ namespace Chiro.Gap.Services
         /// Berekent wat het nieuwe werkJaar zal zijn als op deze moment de jaarovergang zou gebeuren.
         /// </summary>
         /// <returns>Een jaartal</returns>
-        public int NieuwWerkJaarOphalen(int groepID)
+        public int NieuwWerkJaarOphalen(int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -778,9 +738,9 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Haalt informatie over alle gebruikersrechten van de gegeven groep op.
         /// </summary>
-        /// <param name="groepID">ID van de groep waarvan de gebruikersrechten op te vragen zijn</param>
+        /// <param name="groepId">ID van de groep waarvan de gebruikersrechten op te vragen zijn</param>
         /// <returns>Lijstje met details van de gebruikersrechten</returns>
-        public IEnumerable<GebruikersDetail> GebruikersOphalen(int groepID)
+        public IEnumerable<GebruikersDetail> GebruikersOphalen(int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
@@ -790,9 +750,9 @@ namespace Chiro.Gap.Services
         /// afdelingen die je volgend werkjaar wilt hebben.
         /// </summary>
         /// <param name="afdelingsIDs">ID's van de afdelingen die je graag wilt activeren</param>
-        /// <param name="groepID">ID van je groep</param>
+        /// <param name="groepId">ID van je groep</param>
         /// <returns>Een voorstel voor de afdelingsjaren, in de vorm van een lijstje AfdelingDetails.</returns>
-        public IList<AfdelingDetail> NieuweAfdelingsJarenVoorstellen(int[] afdelingsIDs, int groepID)
+        public IList<AfdelingDetail> NieuweAfdelingsJarenVoorstellen(int[] afdelingsIDs, int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }

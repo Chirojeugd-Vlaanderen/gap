@@ -16,7 +16,7 @@ namespace Chiro.Gap.Services
         /// <returns>Een GeenGav-fout</returns>
         public static FaultException<FoutNummerFault> GeenGav()
         {
-            return new FaultException<FoutNummerFault>(new FoutNummerFault {FoutNummer = FoutNummer.GeenGav},
+            return new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = Domain.FoutNummer.GeenGav },
                                                        new FaultReason(Properties.Resources.GeenGav));
         }
 
@@ -30,8 +30,13 @@ namespace Chiro.Gap.Services
         {
             // Hier kan misschien best een overload van gemaakt worden, zodat je een reason kunt
             // meegeven.
-            return new FaultException<BestaatAlFault<TInfo>>(new BestaatAlFault<TInfo> {Bestaande = bestaande},
+            return new FaultException<BestaatAlFault<TInfo>>(new BestaatAlFault<TInfo> { Bestaande = bestaande },
                                                              new FaultReason(Properties.Resources.EntiteitBestondAl));
+        }
+
+        public static FaultException<FoutNummerFault> FoutNummer(FoutNummer nummer, string reason)
+        {
+            return new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = nummer }, new FaultReason(reason));
         }
     }
 }

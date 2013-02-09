@@ -45,14 +45,14 @@ namespace Chiro.Gap.ServiceContracts
 		GroepInfo InfoOphalenCode(string code);
 
 		/// <summary>
-		/// Ophalen van gedetailleerde informatie over de groep met ID <paramref name="groepID"/>
+		/// Ophalen van gedetailleerde informatie over de groep met ID <paramref name="groepId"/>
 		/// </summary>
-		/// <param name="groepID">ID van de groep waarvoor de informatie opgehaald moet worden</param>
+		/// <param name="groepId">ID van de groep waarvoor de informatie opgehaald moet worden</param>
 		/// <returns>Groepsdetails, inclusief categorieen en huidige actieve afdelingen</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		GroepDetail DetailOphalen(int groepID);
+		GroepDetail DetailOphalen(int groepId);
 
 		/// <summary>
 		/// Haalt de groepen op waarvoor de gebruiker (GAV-)rechten heeft
@@ -118,14 +118,14 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Maakt een nieuwe afdeling voor een gegeven ChiroGroep
 		/// </summary>
-		/// <param name="chiroGroepID">ID van de groep</param>
+		/// <param name="chiroGroepId">ID van de groep</param>
 		/// <param name="naam">Naam van de afdeling</param>
 		/// <param name="afkorting">Afkorting van de afdeling (voor lijsten, overzichten,...)</param>
 		[OperationContract]
 		[FaultContract(typeof(BestaatAlFault<AfdelingInfo>))]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void AfdelingAanmaken(int chiroGroepID, string naam, string afkorting);
+		void AfdelingAanmaken(int chiroGroepId, string naam, string afkorting);
 
 		/// <summary>
 		/// Bewaart een afdeling met de nieuwe informatie.
@@ -189,50 +189,50 @@ namespace Chiro.Gap.ServiceContracts
 		IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingenOphalen(int groepID);
 
 		/// <summary>
-		/// Haat een afdeling op, op basis van <paramref name="afdelingID"/>
+		/// Haat een afdeling op, op basis van <paramref name="afdelingId"/>
 		/// </summary>
-		/// <param name="afdelingID">ID van op te halen afdeling</param>
+		/// <param name="afdelingId">ID van op te halen afdeling</param>
 		/// <returns>Info van de gevraagde afdeling</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		AfdelingInfo AfdelingOphalen(int afdelingID);
+		AfdelingInfo AfdelingOphalen(int afdelingId);
 
 		/// <summary>
-		/// Haalt details op van een afdeling, gebaseerd op het <paramref name="afdelingsJaarID"/>
+		/// Haalt details op van een afdeling, gebaseerd op het <paramref name="afdelingsJaarId"/>
 		/// </summary>
-		/// <param name="afdelingsJaarID">ID van het AFDELINGSJAAR waarvoor de details opgehaald moeten 
+		/// <param name="afdelingsJaarId">ID van het AFDELINGSJAAR waarvoor de details opgehaald moeten 
 		/// worden.</param>
 		/// <returns>De details van de afdeling in het gegeven afdelingsjaar.</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		AfdelingDetail AfdelingDetailOphalen(int afdelingsJaarID);
+		AfdelingDetail AfdelingDetailOphalen(int afdelingsJaarId);
 
 		/// <summary>
 		/// Haalt details op over alle actieve afdelingen in het groepswerkjaar met 
-		/// ID <paramref name="groepsWerkJaarID"/>
+		/// ID <paramref name="groepsWerkJaarId"/>
 		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <param name="groepsWerkJaarId">ID van het groepswerkjaar</param>
 		/// <returns>
 		/// Informatie over alle actieve afdelingen in het groepswerkjaar met 
-		/// ID <paramref name="groepsWerkJaarID"/>
+		/// ID <paramref name="groepsWerkJaarId"/>
 		/// </returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepsWerkJaarID);
+		IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepsWerkJaarId);
 
 		/// <summary>
 		/// Haalt beperkte informatie op over de beschikbare afdelingen van een groep in het huidige
 		/// groepswerkjaar.
 		/// </summary>
-		/// <param name="groepID">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
+		/// <param name="groepId">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
 		/// <returns>Lijst van ActieveAfdelingInfo</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<AfdelingInfo> AlleAfdelingenOphalen(int groepID);
+		IList<AfdelingInfo> AlleAfdelingenOphalen(int groepId);
 
 		/// <summary>
 		/// Haalt informatie op over de beschikbare afdelingsjaren en hun gelinkte afdelingen van een groep in het huidige
