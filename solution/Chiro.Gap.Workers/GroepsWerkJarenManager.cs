@@ -99,7 +99,7 @@ namespace Chiro.Gap.Workers
         /// <param name="afdelingen">Afdelingen waarvoor afdelingsjaren moeten worden voorgesteld</param>
         /// <param name="nieuwWerkJaar">Bepaalt het werkjaar waarvoor de afdelingsjaren voorgesteld moeten worden.</param>
         /// <returns>Lijstje afdelingsjaren</returns>
-        public IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, Afdeling[] afdelingen, int nieuwWerkJaar)
+        public IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, IList<Afdeling> afdelingen, int nieuwWerkJaar)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
             //if (!_autorisatieMgr.IsGavGroep(groep.ID))

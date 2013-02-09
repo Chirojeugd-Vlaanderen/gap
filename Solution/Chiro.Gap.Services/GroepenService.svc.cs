@@ -16,6 +16,8 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WorkerInterfaces;
 
+using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
+
 namespace Chiro.Gap.Services
 {
     // OPM: als je de naam van de class "GroepenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
@@ -41,6 +43,9 @@ namespace Chiro.Gap.Services
 
         // Repositories, verantwoordelijk voor data access.
 
+        private readonly IRepository<StraatNaam> _straatRepo;
+        private readonly IRepository<WoonPlaats> _adresRepo;
+        private readonly IRepository<Land> _landRepo;
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Categorie> _categorieenRepo;
         private readonly IRepository<Afdeling> _afdelingenRepo;
@@ -57,6 +62,7 @@ namespace Chiro.Gap.Services
         private readonly IGroepenManager _groepenMgr;
         private readonly IChiroGroepenManager _chiroGroepenMgr;
         private readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
+        private readonly IJaarOvergangManager _jaarOvergangManager;
         private readonly IFunctiesManager _functiesMgr;
         private readonly IVeelGebruikt _veelGebruikt;
 
@@ -70,14 +76,19 @@ namespace Chiro.Gap.Services
         /// <param name="chiroGroepenMgr">Businesslogica aangaande chirogroepen</param>
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
         /// <param name="functiesMgr">Businesslogica aangaande functies</param>
+        /// <param name="jaarOvergangMgr">Businesslogica aangaande de jaarovergang</param>
         /// <param name="veelGebruikt">Cache voor veelgebruikte zaken</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         public GroepenService(IAfdelingsJaarManager afdelingsJaarMgr, IAuthenticatieManager authenticatieMgr, IAutorisatieManager autorisatieMgr,
-                              IGroepenManager groepenMgr, IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
+                              IGroepenManager groepenMgr, IJaarOvergangManager jaarOvergangMgr,
+                                IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                               IFunctiesManager functiesMgr, IVeelGebruikt veelGebruikt,
                               IRepositoryProvider repositoryProvider)
         {
             _context = repositoryProvider.ContextGet();
+            _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
+            _adresRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
+            _landRepo = repositoryProvider.RepositoryGet<Land>();
             _categorieenRepo = repositoryProvider.RepositoryGet<Categorie>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _afdelingsJaarRepo = repositoryProvider.RepositoryGet<AfdelingsJaar>();
@@ -86,6 +97,7 @@ namespace Chiro.Gap.Services
             _functiesRepo = repositoryProvider.RepositoryGet<Functie>();
             _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
 
+            _jaarOvergangManager = jaarOvergangMgr;
             _groepenMgr = groepenMgr;
             _chiroGroepenMgr = chiroGroepenMgr;
             _groepsWerkJarenMgr = groepsWerkJarenMgr;
@@ -843,7 +855,7 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst met alle beschikbare deelgemeentes</returns>
         public IEnumerable<WoonPlaatsInfo> GemeentesOphalen()
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            return Mapper.Map<IEnumerable<WoonPlaats>, IEnumerable<WoonPlaatsInfo>>(_adresRepo.GetAll());
         }
 
         /// <summary>
@@ -852,7 +864,7 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst met alle beschikbare landen</returns>
         public IEnumerable<LandInfo> LandenOphalen()
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            return Mapper.Map<IEnumerable<Land>, IEnumerable<LandInfo>>(_landRepo.GetAll());
         }
 
         /// <summary>
@@ -864,7 +876,7 @@ namespace Chiro.Gap.Services
         /// <returns>Gegevens van de gevonden straten</returns>
         public IEnumerable<StraatInfo> StratenOphalen(string straatBegin, int postNr)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            return Mapper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(_straatRepo.Where(e => e.PostNummer == postNr && e.Naam.StartsWith(straatBegin, StringComparison.OrdinalIgnoreCase)));
         }
 
         /// <summary>
@@ -878,21 +890,7 @@ namespace Chiro.Gap.Services
         /// WCF-functies met dezelfde naam in 1 service hebben.  Spijtig.</remarks>
         public IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(string straatBegin, IEnumerable<int> postNrs)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-        }
-
-        /// <summary>
-        /// Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.
-        /// <para />
-        /// Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
-        ///		AFDELINGID van de afdelingen die geactiveerd zullen worden
-        ///		Geboortejaren voor elk van die afdelingen
-        /// </summary>
-        /// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkJaar</param>
-        /// <param name="groepId">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
-        public void JaarovergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepId)
-        {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            return Mapper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(_straatRepo.Where(e => postNrs.Contains(e.PostNummer) && e.Naam.StartsWith(straatBegin, StringComparison.OrdinalIgnoreCase)));
         }
 
         /// <summary>
@@ -901,7 +899,8 @@ namespace Chiro.Gap.Services
         /// <returns>Een jaartal</returns>
         public int NieuwWerkJaarOphalen(int groepId)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            GetGroepEnCheckGav(groepId);
+            return _groepsWerkJarenMgr.NieuweWerkJaar(groepId);
         }
 
         /// <summary>
@@ -938,7 +937,29 @@ namespace Chiro.Gap.Services
         /// <returns>Lijstje met details van de gebruikersrechten</returns>
         public IEnumerable<GebruikersDetail> GebruikersOphalen(int groepId)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var groep = GetGroepEnCheckGav(groepId);
+            return Mapper.Map<IEnumerable<GebruikersRecht>, IEnumerable<GebruikersDetail>>(groep.GebruikersRecht);
+        }
+
+        /// <summary>
+        /// Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.
+        /// <para />
+        /// Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
+        ///		AFDELINGID van de afdelingen die geactiveerd zullen worden
+        ///		Geboortejaren voor elk van die afdelingen
+        /// </summary>
+        /// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkJaar</param>
+        /// <param name="groepId">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
+        public void JaarovergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepId)
+        {
+            try
+            {
+                _jaarOvergangManager.JaarOvergangUitvoeren(teActiveren, groepId);
+            }
+            catch (Exception ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+            }
         }
 
         /// <summary>
@@ -950,7 +971,18 @@ namespace Chiro.Gap.Services
         /// <returns>Een voorstel voor de afdelingsjaren, in de vorm van een lijstje AfdelingDetails.</returns>
         public IList<AfdelingDetail> NieuweAfdelingsJarenVoorstellen(int[] afdelingsIDs, int groepId)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var groepsWerkJaar = GetRecentsteGroepsWerkJaarEnCheckGav(groepId);
+            var nieuwWerkJaar = NieuwWerkJaarOphalen(groepId);
+            var groep = groepsWerkJaar.Groep as ChiroGroep;
+
+            Debug.Assert(groep != null, "groep != null");
+            var afdelingen = (from a in groep.Afdeling
+                              where afdelingsIDs.Contains(a.ID)
+                              select a).ToList();
+
+            var afdelingsJaren = _groepsWerkJarenMgr.AfdelingsJarenVoorstellen(groep,afdelingen,nieuwWerkJaar);
+
+            return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(afdelingsJaren);
         }
     }
 }

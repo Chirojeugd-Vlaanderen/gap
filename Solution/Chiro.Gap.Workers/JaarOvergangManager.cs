@@ -7,22 +7,18 @@ using System.Transactions;
 #endif
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 using Chiro.Gap.Domain;
-using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
     /// <summary>
     /// Worker die alle businesslogica i.v.m. de jaarovergang bevat
     /// </summary>
-    public class JaarOvergangManager
+    public class JaarOvergangManager : IJaarOvergangManager
     {
         private readonly IGroepenManager _groepenMgr;
 		private readonly IChiroGroepenManager _chiroGroepenMgr;

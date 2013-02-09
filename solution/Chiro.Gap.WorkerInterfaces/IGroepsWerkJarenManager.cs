@@ -103,7 +103,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="afdelingen">Afdelingen waarvoor afdelingsjaren moeten worden voorgesteld</param>
         /// <param name="nieuwWerkJaar">Bepaalt het werkjaar waarvoor de afdelingsjaren voorgesteld moeten worden.</param>
         /// <returns>Lijstje afdelingsjaren</returns>
-        IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, Afdeling[] afdelingen, int nieuwWerkJaar);
+        IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, IList<Afdeling> afdelingen, int nieuwWerkJaar);
 
         GroepsWerkJaar RecentsteOphalen(int groepID);
 	}
