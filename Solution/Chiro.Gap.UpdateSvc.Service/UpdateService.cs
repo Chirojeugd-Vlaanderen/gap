@@ -3,12 +3,14 @@
 // </copyright>
 
 using System;
-using System.ServiceModel;
+using System.Linq;
+
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Services;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.UpdateSvc.Contracts;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.UpdateSvc.Service
 {
@@ -16,19 +18,68 @@ namespace Chiro.Gap.UpdateSvc.Service
     /// Service die updates doorgeeft van GAP naar KipAdmin of omgekeerd
     /// </summary>
     public class UpdateService : IUpdateService
-	{
+    {
         /// <summary>
-        /// Stelt het AD-nummer van de persoon met ID <paramref name="persoonID"/> in.  
+        /// _context is verantwoordelijk voor het tracken van de wijzigingen aan de
+        /// entiteiten. Via _context.SaveChanges() kunnen wijzigingen gepersisteerd
+        /// worden.
+        /// 
+        /// Context is IDisposable. De context wordt aangemaakt door de IOC-container,
+        /// en gedisposed op het moment dat de service gedisposed wordt. Dit gebeurt
+        /// na iedere call.
         /// </summary>
-        /// <param name="persoonID">
-        /// ID van de persoon
+        private readonly IContext _context;
+
+        private readonly ILedenSync _ledenSync;
+        private readonly IDubbelpuntSync _dubbelpuntSync;
+
+        private readonly IRepository<Groep> _groepenRepo;
+        private readonly IRepository<Persoon> _personenRepo;
+        
+        private readonly GavChecker _gav;
+
+        public UpdateService(IAutorisatieManager autorisatieMgr, ILedenSync ledenSync, IDubbelpuntSync dubbelpuntSync, IRepositoryProvider repositoryProvider)
+        {
+            _context = repositoryProvider.ContextGet();
+            _personenRepo = repositoryProvider.RepositoryGet<Persoon>();
+            _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
+            _ledenSync = ledenSync;
+            _dubbelpuntSync = dubbelpuntSync;
+            _gav = new GavChecker(autorisatieMgr);
+        }
+
+        public GavChecker Gav
+        {
+            get { return _gav; }
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+
+        /// <summary>
+        /// Stelt het AD-nummer van de persoon met Id <paramref name="persoonId"/> in.  
+        /// </summary>
+        /// <param name="persoonId">
+        /// Id van de persoon
         /// </param>
         /// <param name="adNummer">
         /// Nieuw AD-nummer
         /// </param>
-        public void AdNummerToekennen(int persoonID, int adNummer)
+        public void AdNummerToekennen(int persoonId, int adNummer)
         {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+            var persoon = _personenRepo.ByID(persoonId);
+            if (persoon == null)
+            {
+                return;
+            }
+
+            AdNummerToekennen(persoon, adNummer);
+
+            Console.WriteLine("Ad-nummer {0} toegekend aan {1}. (ID {2})", adNummer, persoon.VolledigeNaam, persoon.ID);
+
+            _context.SaveChanges();
         }
 
         /// <summary>
@@ -40,7 +91,33 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <param name="nieuwAd">Nieuw AD-nummer</param>
         public void AdNummerVervangen(int oudAd, int nieuwAd)
         {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+            var personen = (from g in _personenRepo.Select() where g.AdNummer == oudAd select g);
+            foreach (var p in personen)
+            {
+                AdNummerToekennen(p, nieuwAd);
+                Console.WriteLine("Ad-nummer {0} vervangen door {1}. ({2}, ID {3})", oudAd, nieuwAd, p.VolledigeNaam, p.ID);
+            }
+
+            _context.SaveChanges();
+        }
+
+        private void AdNummerToekennen(Persoon persoon, int adNummer)
+        {
+            Gav.CheckSuperGav();
+
+            // Wie heeft het gegeven AD-nummer al?
+            var personenAlBestaand = (from g in _personenRepo.Select() where g.AdNummer == adNummer select g);
+
+            foreach (var p in personenAlBestaand.Where(prs => prs.ID != persoon.ID))
+            {
+                // Als er andere personen zijn met hetzelfde AD-nummer, merge dan met deze persoon.
+                // Door 'persoon.ID' als origineel te kiezen, vermijden we dat persoon van ID verandert.
+                throw new NotImplementedException();
+                // Was vroeger blijkbaar een stored procedure
+                // _dao.DubbelVerwijderen(persoon.ID, p.ID);
+            }
+
+            persoon.AdNummer = adNummer;
         }
 
         /// <summary>
@@ -49,7 +126,26 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <param name="stamNummer">Stamnummer van groep met te syncen leden</param>
         public void OpnieuwSyncen(string stamNummer)
         {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+            var groep = (from g in _groepenRepo where Equals(g.Code, stamNummer) select g).FirstOrDefault();
+            if (groep == null)
+            {
+                Console.WriteLine("Geen groep gevonden voor {0}", stamNummer);
+                return;
+            }
+
+            var gwj = groep.GroepsWerkJaar.OrderByDescending(e => e.WerkJaar).FirstOrDefault();
+            if (gwj == null)
+            {
+                Console.WriteLine("Geen groepswerkjaar gevonden voor {0}", stamNummer);
+                return;
+            }
+
+            foreach (var lid in gwj.Lid)
+            {
+                _ledenSync.Bewaren(lid);
+            }
+
+            Console.WriteLine("Leden van {0} voor werkJaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);
         }
 
         /// <summary>
@@ -62,7 +158,26 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// enige manier is om communicatie van KIP naar GAP te arrangeren.</remarks>
         public void AbonnementenOpnieuwSyncen(string stamNummer)
         {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+            var groep = (from g in _groepenRepo where Equals(g.Code, stamNummer) select g).FirstOrDefault();
+            if (groep == null)
+            {
+                Console.WriteLine("Geen groep gevonden voor {0}", stamNummer);
+                return;
+            }
+
+            var gwj = groep.GroepsWerkJaar.OrderByDescending(e => e.WerkJaar).FirstOrDefault();
+            if (gwj == null)
+            {
+                Console.WriteLine("Geen groepswerkjaar gevonden voor {0}", stamNummer);
+                return;
+            }
+
+            foreach (var ab in gwj.Abonnement)
+            {
+                _dubbelpuntSync.Abonneren(ab);
+            }
+
+            Console.WriteLine("Abonnementen van {0} voor werkJaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);
         }
-	}
+    }
 }

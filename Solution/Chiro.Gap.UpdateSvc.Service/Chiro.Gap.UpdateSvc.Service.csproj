@@ -89,6 +89,10 @@
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Services\Chiro.Gap.Services.csproj">
+      <Project>{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}</Project>
+      <Name>Chiro.Gap.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
       <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
       <Name>Chiro.Gap.SyncInterfaces</Name>

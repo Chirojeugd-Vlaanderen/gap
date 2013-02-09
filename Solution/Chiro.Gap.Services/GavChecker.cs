@@ -89,5 +89,13 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
         }
+
+        public void CheckSuperGav()
+        {
+            if (!_autorisatieMgr.IsSuperGav())
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+        }
     }
 }
