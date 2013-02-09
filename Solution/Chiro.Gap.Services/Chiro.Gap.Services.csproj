@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="FaultExceptionHelper.cs" />
     <Compile Include="FoutAfhandelaar.cs" />
+    <Compile Include="GavChecker.cs" />
     <Compile Include="GebruikersService.svc.cs">
       <DependentUpon>GebruikersService.svc</DependentUpon>
     </Compile>

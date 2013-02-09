@@ -25,7 +25,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
 		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
-		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
+		/// <returns>De lidIds van de personen die lid zijn gemaakt</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
@@ -36,7 +36,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="lidInformatie">Lijst van informatie over wie lid moet worden</param>
 		/// <param name="foutBerichten">Als er sommige personen geen lid konden worden gemaakt, bevat foutBerichten een string waarin wat uitleg staat. </param>
-		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
+		/// <returns>De lidIds van de personen die lid zijn gemaakt</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
@@ -54,53 +54,53 @@ namespace Chiro.Gap.ServiceContracts
 		void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
 
 		/// <summary>
-		/// Vervangt de functies van het lid bepaald door <paramref name="lidID"/> door de functies
+		/// Vervangt de functies van het lid bepaald door <paramref name="lidId"/> door de functies
 		/// met ID's <paramref name="functieIDs"/>
 		/// </summary>
-		/// <param name="lidID">ID van lid met te vervangen functies</param>
+		/// <param name="lidId">ID van lid met te vervangen functies</param>
 		/// <param name="functieIDs">IDs van nieuwe functies voor het lid</param>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void FunctiesVervangen(int lidID, IEnumerable<int> functieIDs);
+		void FunctiesVervangen(int lidId, IEnumerable<int> functieIDs);
 
 		/// <summary>
-		/// Haalt de ID's van de groepswerkjaren van een lid op.
+		/// Haalt de ID's van de afdelingsjaren van een lid op.
 		/// </summary>
-		/// <param name="lidID">ID van het lid waarin we geinteresseerd zijn</param>
+		/// <param name="lidId">ID van het lid waarin we geinteresseerd zijn</param>
 		/// <returns>Een LidAfdelingInfo-object</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		LidAfdelingInfo AfdelingenOphalen(int lidID);
+		LidAfdelingInfo AfdelingenOphalen(int lidId);
 
 		/// <summary>
-		/// Vervangt de afdelingen van het lid met ID <paramref name="lidID"/> door de afdelingen
+		/// Vervangt de afdelingen van het lid met ID <paramref name="lidId"/> door de afdelingen
 		/// met AFDELINGSJAARIDs gegeven door <paramref name="afdelingsJaarIDs"/>.
 		/// </summary>
-		/// <param name="lidID">Lid dat nieuwe afdelingen moest krijgen</param>
+		/// <param name="lidId">Lid dat nieuwe afdelingen moest krijgen</param>
 		/// <param name="afdelingsJaarIDs">ID's van de te koppelen afdelingsjaren</param>
 		/// <returns>De GelieerdePersoonID van het lid</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		int AfdelingenVervangen(int lidID, IEnumerable<int> afdelingsJaarIDs);
+		int AfdelingenVervangen(int lidId, IEnumerable<int> afdelingsJaarIDs);
 
 		/// <summary>
-		/// Vervangt de afdelingen van de leden met gegeven <paramref name="lidIDs"/> door de afdelingen
+		/// Vervangt de afdelingen van de leden met gegeven <paramref name="lidIds"/> door de afdelingen
 		/// met AFDELINGSJAARIDs gegeven door <paramref name="afdelingsJaarIDs"/>.
 		/// </summary>
-		/// <param name="lidIDs">ID's van leden die nieuwe afdelingen moeten krijgen</param>
+		/// <param name="lidIds">ID's van leden die nieuwe afdelingen moeten krijgen</param>
 		/// <param name="afdelingsJaarIDs">ID's van de te koppelen afdelingsjaren</param>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void AfdelingenVervangenBulk(IEnumerable<int> lidIDs, IEnumerable<int> afdelingsJaarIDs);
+		void AfdelingenVervangenBulk(IEnumerable<int> lidIds, IEnumerable<int> afdelingsJaarIDs);
 
 		/// <summary>
-		/// Verzekert lid met ID <paramref name="lidID"/> tegen loonverlies
+		/// Verzekert lid met ID <paramref name="lidId"/> tegen loonverlies
 		/// </summary>
-		/// <param name="lidID">ID van te verzekeren lid</param>
+		/// <param name="lidId">ID van te verzekeren lid</param>
 		/// <returns>GelieerdePersoonID van het verzekerde lid</returns>
 		/// <remarks>Dit is nogal een specifieke method.  In ons domain model is gegeven dat verzekeringen gekoppeld zijn aan
 		/// personen, voor een bepaalde periode.  Maar in eerste instantie zal alleen de verzekering loonverlies gebruikt worden,
@@ -108,7 +108,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		int LoonVerliesVerzekeren(int lidID);
+		int LoonVerliesVerzekeren(int lidId);
 
 		#region Ophalen
 
@@ -119,22 +119,22 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Haalt lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies
 		/// </summary>
-		/// <param name="lidID">ID op te halen lid</param>
+		/// <param name="lidId">ID op te halen lid</param>
 		/// <returns>Lidinfo; bevat info over gelieerde persoon, persoon, groep, afdelingen 
 		/// en functies </returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		PersoonLidInfo DetailsOphalen(int lidID);
+		PersoonLidInfo DetailsOphalen(int lidId);
 
 		/// <summary>
 		/// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>.
 		/// </summary>
 		/// <param name="filter">De niet-nulle properties van de filter
 		/// bepalen waarop gezocht moet worden</param>
-		/// <param name="metAdressen">Indien <c>true</c>, worden de
-		/// adressen mee opgehaald. (Adressen ophalen vertraagt aanzienlijk.)
-		/// </param>
+        /// <param name="metAdressen">Indien <c>true</c>, worden de
+        /// adressen mee opgehaald. (Adressen ophalen vertraagt aanzienlijk.)
+        /// </param>
 		/// <returns>Lijst met info over gevonden leden</returns>
 		/// <remarks>
 		/// Er worden enkel actieve leden opgehaald.
@@ -149,24 +149,24 @@ namespace Chiro.Gap.ServiceContracts
 		#endregion
 
 		/// <summary>
-		/// Togglet het vlagje 'lidgeld betaald' van het lid met LidID <paramref name="id"/>.  Geeft als resultaat
+		/// Togglet het vlagje 'lidgeld betaald' van het lid met lidId <paramref name="lidId"/>.  Geeft als resultaat
 		/// het GelieerdePersoonID.  (Niet proper, maar wel interessant voor redirect.)
 		/// </summary>
-		/// <param name="id">ID van lid met te togglen lidgeld</param>
+		/// <param name="lidId">ID van lid met te togglen lidgeld</param>
 		/// <returns>GelieerdePersoonID van lid</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		int LidGeldToggle(int id);
+		int LidGeldToggle(int lidId);
 
 		/// <summary>
 		/// Verandert een kind in leiding of vice versa
 		/// </summary>
-		/// <param name="id">ID van lid met te togglen lidtype</param>
+		/// <param name="lidId">ID van lid met te togglen lidtype</param>
 		/// <returns>GelieerdePersoonID van lid</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		int TypeToggle(int id);
+		int TypeToggle(int lidId);
 	}
 }

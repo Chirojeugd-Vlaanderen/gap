@@ -169,6 +169,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Een kind moet in exact 1 afdeling zitten..
+        /// </summary>
+        internal static string KindInEenAfdelingsJaar {
+            get {
+                return ResourceManager.GetString("KindInEenAfdelingsJaar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De naam van een categorie mag niet leeg zijn..
         /// </summary>
         internal static string OngeldigeCategorieNaam {

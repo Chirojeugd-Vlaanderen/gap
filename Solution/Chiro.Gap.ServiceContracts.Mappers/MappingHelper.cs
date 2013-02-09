@@ -222,6 +222,26 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.PostCodeGet()))
                 .ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.LandGet()));
 
+            Mapper.CreateMap<Lid, KleinLidOverzicht>()
+                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
+                 .ForMember(dst => dst.Email,
+                            opt => opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.Email)))
+                 .ForMember(dst => dst.GeboorteDatum, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.GeboorteDatum))
+                 .ForMember(dst => dst.SterfDatum, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.SterfDatum))
+                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.GelieerdePersoon.ID))
+                 .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Geslacht))
+                 .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
+                 .ForMember(dst => dst.TelefoonNummer,
+                            opt =>
+                            opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.TelefoonNummer)))
+                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
+                 .ForMember(dst => dst.Functies, opt => opt.MapFrom(src => src.Functie))
+                 .ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(Afdelingen))
+                 .ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd))
+                 .ForMember(dst => dst.LidID, opt => opt.MapFrom(src => src.ID))
+                 .ForMember(dst => dst.EindeInstapPeriode,
+                            opt => opt.MapFrom(src => src.EindeInstapPeriode < DateTime.Now ? null : src.EindeInstapPeriode));
+
             Mapper.CreateMap<Lid, LidOverzicht>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
                 .ForMember(dst => dst.Bus,
@@ -526,12 +546,12 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(
                     dst => dst.GelieerdePersoonID,
                     opt => opt.MapFrom(src => src.GelieerdePersoon.ID))
-				.ForMember(
-					dst => dst.AfdelingsJaarIrrelevant,
-					opt => opt.MapFrom(src => false))
+                .ForMember(
+                    dst => dst.AfdelingsJaarIrrelevant,
+                    opt => opt.MapFrom(src => false))
                 .ForMember(
                     dst => dst.AfdelingsJaarIDs,
-                    opt => opt.MapFrom(src => src is Leiding ? (((Leiding)src).AfdelingsJaar.Select(e => e.ID)) : new List<int>{ ((Kind)src).AfdelingsJaar.ID }))
+                    opt => opt.MapFrom(src => src is Leiding ? (((Leiding)src).AfdelingsJaar.Select(e => e.ID)) : new List<int> { ((Kind)src).AfdelingsJaar.ID }))
                 .ForMember(
                     dst => dst.LeidingMaken,
                     opt => opt.MapFrom(src => src is Leiding))
@@ -541,11 +561,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             Mapper.CreateMap<InTeSchrijvenLid, LidVoorstel>()
                 .ForMember(
-					dst => dst.AfdelingsJaarIDs,
-					opt => opt.MapFrom(src => src.AfdelingsJaarIDs))
-				.ForMember(
-					dst => dst.AfdelingsJarenIrrelevant,
-					opt => opt.MapFrom(src => src.AfdelingsJaarIrrelevant))
+                    dst => dst.AfdelingsJaarIDs,
+                    opt => opt.MapFrom(src => src.AfdelingsJaarIDs))
+                .ForMember(
+                    dst => dst.AfdelingsJarenIrrelevant,
+                    opt => opt.MapFrom(src => src.AfdelingsJaarIrrelevant))
                 .ForMember(
                     dst => dst.LeidingMaken,
                     opt => opt.MapFrom(src => src.LeidingMaken));

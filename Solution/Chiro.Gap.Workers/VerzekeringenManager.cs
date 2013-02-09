@@ -10,7 +10,6 @@ using System.Transactions;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Properties;
 
@@ -20,20 +19,17 @@ namespace Chiro.Gap.Workers
     /// Manager voor al wat met verzekeringen te maken heeft.
     /// TODO (#1045): Dit was misschien beter een 'PersoonsVerzekeringenManager' geweest?
     /// </summary>
-    public class VerzekeringenManager
+    public class VerzekeringenManager : IVerzekeringenManager
     {
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IGroepsWerkJarenManager _groepsWerkJaarManager;
-        private readonly IVerzekeringenSync _sync;
 
         public VerzekeringenManager(
             IAutorisatieManager auMgr,
-            IGroepsWerkJarenManager gwjMgr,
-            IVerzekeringenSync sync)
+            IGroepsWerkJarenManager gwjMgr)
         {
             _groepsWerkJaarManager = gwjMgr;
             _autorisatieMgr = auMgr;
-            _sync = sync;
         }
 
         /// <summary>

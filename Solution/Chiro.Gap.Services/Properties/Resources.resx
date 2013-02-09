@@ -172,6 +172,9 @@
   <data name="GeenWerkJaar" xml:space="preserve">
     <value>Er is nog geen werkjaar gemaakt voor deze groep.</value>
   </data>
+  <data name="KindInEenAfdelingsJaar" xml:space="preserve">
+    <value>Een kind moet in exact 1 afdeling zitten.</value>
+  </data>
   <data name="EntiteitBestondAl" xml:space="preserve">
     <value>Je probeerde een entiteit toe te voegen die al bestond.</value>
   </data>

@@ -65,6 +65,7 @@ namespace Chiro.Gap.Services
         private readonly IJaarOvergangManager _jaarOvergangManager;
         private readonly IFunctiesManager _functiesMgr;
         private readonly IVeelGebruikt _veelGebruikt;
+        private readonly GavChecker _gav;
 
         /// <summary>
         /// Nieuwe groepenservice
@@ -106,6 +107,12 @@ namespace Chiro.Gap.Services
             _authenticatieMgr = authenticatieMgr;
             _autorisatieMgr = autorisatieMgr;
             _veelGebruikt = veelGebruikt;
+            _gav = new GavChecker(_autorisatieMgr);
+        }
+
+        public GavChecker Gav
+        {
+            get { return _gav; }
         }
 
         public void Dispose()
@@ -137,61 +144,13 @@ namespace Chiro.Gap.Services
             return Mapper.Map<Groep, GroepInfo>(groep);
         }
 
-        void CheckGav(Afdeling g)
-        {
-            if (g == null || !_autorisatieMgr.IsGav(g.ChiroGroep))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-        }
-
-        void CheckGav(Functie g)
-        {
-            if (g == null || !_autorisatieMgr.IsGav(g.Groep))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-        }
-
-        void CheckGav(Categorie g)
-        {
-            if (g == null || !_autorisatieMgr.IsGav(g.Groep))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-        }
-
-        void CheckGav(AfdelingsJaar g)
-        {
-            if (g == null || !_autorisatieMgr.IsGav(g.GroepsWerkJaar))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-        }
-
-        void CheckGav(GroepsWerkJaar g)
-        {
-            if (g == null || !_autorisatieMgr.IsGav(g))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-        }
-
-        void CheckGav(Groep g)
-        {
-            if (g == null || !_autorisatieMgr.IsGav(g))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-        }
-
         GroepsWerkJaar GetRecentsteGroepsWerkJaarEnCheckGav(int groepId)
         {
             var groepsWerkJaar = _groepsWerkJarenRepo.Select()
                 .Where(gwj => gwj.Groep.ID == groepId)
                 .OrderByDescending(gwj => gwj.WerkJaar)
                 .First();
-            CheckGav(groepsWerkJaar);
+            Gav.Check(groepsWerkJaar);
             return groepsWerkJaar;
         }
 
@@ -235,7 +194,7 @@ namespace Chiro.Gap.Services
                                   .OrderByDescending(gwj => gwj.WerkJaar).ToList();
             if (groepsWerkJaren.Count > 0)
             {
-                CheckGav(groepsWerkJaren.First());
+                Gav.Check(groepsWerkJaren.First());
             }
 
             return Mapper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(groepsWerkJaren);
@@ -335,7 +294,7 @@ namespace Chiro.Gap.Services
         public void AfdelingBewaren(AfdelingInfo info)
         {
             var ai = _afdelingenRepo.ByID(info.ID);
-            CheckGav(ai);
+            Gav.Check(ai);
             Debug.Assert(ai != null, "ai != null");
             if (!Equal(info.Naam, ai.Naam))
             {
@@ -356,7 +315,7 @@ namespace Chiro.Gap.Services
         public AfdelingsJaarDetail AfdelingsJaarOphalen(int afdelingsJaarId)
         {
             var afd = _afdelingsJaarRepo.ByID(afdelingsJaarId);
-            CheckGav(afd);
+            Gav.Check(afd);
             return Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afd);
         }
 
@@ -370,7 +329,7 @@ namespace Chiro.Gap.Services
         public void AfdelingsJaarBewaren(AfdelingsJaarDetail detail)
         {
             var afdeling = _afdelingenRepo.ByID(detail.AfdelingID);
-            CheckGav(afdeling);
+            Gav.Check(afdeling);
 
             var officieleAfdeling = _officieleAfdelingenRepo.ByID(detail.OfficieleAfdelingID);
 
@@ -396,7 +355,7 @@ namespace Chiro.Gap.Services
                 {
                     // wijzigen
                     var afdelingsJaar = _afdelingsJaarRepo.ByID(detail.AfdelingsJaarID);
-                    CheckGav(afdelingsJaar);
+                    Gav.Check(afdelingsJaar);
 
                     Debug.Assert(afdelingsJaar != null, "afdelingsJaar != null");
                     if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID || afdelingsJaar.Afdeling.ID != detail.AfdelingID)
@@ -431,7 +390,7 @@ namespace Chiro.Gap.Services
         public void AfdelingsJaarVerwijderen(int afdelingsJaarId)
         {
             var afdelingsJaar = _afdelingsJaarRepo.ByID(afdelingsJaarId);
-            CheckGav(afdelingsJaar);
+            Gav.Check(afdelingsJaar);
 
             _afdelingsJaarRepo.Delete(afdelingsJaar);
             _context.SaveChanges();
@@ -444,7 +403,7 @@ namespace Chiro.Gap.Services
         public void AfdelingVerwijderen(int afdelingId)
         {
             var afdeling = _afdelingenRepo.ByID(afdelingId);
-            CheckGav(afdeling);
+            Gav.Check(afdeling);
 
             _afdelingenRepo.Delete(afdeling);
             _context.SaveChanges();
@@ -469,7 +428,7 @@ namespace Chiro.Gap.Services
         public AfdelingInfo AfdelingOphalen(int afdelingId)
         {
             var afdeling = _afdelingenRepo.ByID(afdelingId);
-            CheckGav(afdeling);
+            Gav.Check(afdeling);
             return Mapper.Map<Afdeling, AfdelingInfo>(afdeling);
         }
 
@@ -482,7 +441,7 @@ namespace Chiro.Gap.Services
         public AfdelingDetail AfdelingDetailOphalen(int afdelingsJaarId)
         {
             var afdelingsJaar = _afdelingsJaarRepo.ByID(afdelingsJaarId);
-            CheckGav(afdelingsJaar);
+            Gav.Check(afdelingsJaar);
             Debug.Assert(afdelingsJaar != null, "afdelingsJaar != null");
             return Mapper.Map<Afdeling, AfdelingDetail>(afdelingsJaar.Afdeling);
         }
@@ -499,7 +458,7 @@ namespace Chiro.Gap.Services
         public IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepswerkjaarId)
         {
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
-            CheckGav(gwj);
+            Gav.Check(gwj);
             Debug.Assert(gwj != null, "gwj != null");
             return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<AfdelingDetail>>(gwj.AfdelingsJaar);
         }
@@ -540,7 +499,7 @@ namespace Chiro.Gap.Services
         public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarId)
         {
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
-            CheckGav(gwj);
+            Gav.Check(gwj);
             Debug.Assert(gwj != null, "gwj != null");
             var ongebruikteAfdelingen = (from g in _afdelingenRepo.Select()
                                          where g.ChiroGroep.ID == gwj.Groep.ID && g.AfdelingsJaar.Count == 0
@@ -558,7 +517,7 @@ namespace Chiro.Gap.Services
         public IEnumerable<FunctieDetail> FunctiesOphalen(int groepswerkjaarId, LidType lidType)
         {
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
-            CheckGav(gwj);
+            Gav.Check(gwj);
             var functies = (from g in _functiesRepo.Select()
                             where g.Type == lidType
                             select g);
@@ -648,7 +607,7 @@ namespace Chiro.Gap.Services
         Groep GetGroepEnCheckGav(int groepId)
         {
             var groep = _groepenRepo.ByID(groepId);
-            CheckGav(groep);
+            Gav.Check(groep);
             return groep;
         }
 
@@ -657,7 +616,7 @@ namespace Chiro.Gap.Services
             var groep = (from g in _groepenRepo.Select()
                          where Equal(g.Code, groepCode)
                          select g).FirstOrDefault();
-            CheckGav(groep);
+            Gav.Check(groep);
             return groep;
         }
 
@@ -721,7 +680,7 @@ namespace Chiro.Gap.Services
         public void FunctieVerwijderen(int functieId, bool forceren)
         {
             var functie = _functiesRepo.ByID(functieId);
-            CheckGav(functie);
+            Gav.Check(functie);
             Debug.Assert(functie != null, "functie != null");
             if (forceren)
             {
@@ -769,7 +728,7 @@ namespace Chiro.Gap.Services
         public void CategorieVerwijderen(int categorieId, bool forceren)
         {
             var categorie = _categorieenRepo.ByID(categorieId);
-            CheckGav(categorie);
+            Gav.Check(categorie);
             Debug.Assert(categorie != null, "categorie != null");
             if (forceren)
             {
@@ -787,7 +746,7 @@ namespace Chiro.Gap.Services
         public void CategorieAanpassen(int categorieId, string nieuwenaam)
         {
             var categorie = _categorieenRepo.ByID(categorieId);
-            CheckGav(categorie);
+            Gav.Check(categorie);
             Debug.Assert(categorie != null, "categorie != null");
 
             if (string.IsNullOrEmpty(nieuwenaam))

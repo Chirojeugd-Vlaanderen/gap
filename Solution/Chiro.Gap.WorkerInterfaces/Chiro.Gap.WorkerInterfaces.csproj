@@ -55,6 +55,7 @@
     <Compile Include="ILedenManager.cs" />
     <Compile Include="IUitstappenManager.cs" />
     <Compile Include="IVeelGebruikt.cs" />
+    <Compile Include="IVerzekeringenManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
