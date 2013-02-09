@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Transactions;      // laten staan voor live!
 using AutoMapper;
@@ -13,6 +14,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Services.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
 
@@ -43,6 +45,8 @@ namespace Chiro.Gap.Services
 
         private readonly IRepository<CommunicatieVorm> _communicatieVormRepo;
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
+        private readonly IRepository<GroepsWerkJaar> _groepsWerkJarenRepo;
+        private readonly IRepository<Groep> _groepenRepo;
 
         // Managers voor niet-triviale businesslogica
 
@@ -71,6 +75,8 @@ namespace Chiro.Gap.Services
             _context = repositoryProvider.ContextGet();
             _communicatieVormRepo = repositoryProvider.RepositoryGet<CommunicatieVorm>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
+            _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
+            _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
 
             _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
@@ -113,7 +119,39 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
         public IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var gelieerdePersonen = from gp in _gelieerdePersonenRepo.Select()
+                                    where
+                                        gp.Groep.ID == groepID &&
+                                        String.Compare(gp.Persoon.Naam.Substring(0,1), letter, StringComparison.InvariantCultureIgnoreCase) == 0
+                                    select gp;
+
+            var groepsWerkJaar = _groepsWerkJarenRepo.Select()
+                                                     .Where(gwj => gwj.Groep.ID == groepID)
+                                                     .OrderByDescending(gwj => gwj.WerkJaar)
+                                                     .First();
+
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
+            aantalTotaal = result.Count();
+
+            // Bepaal of persoon lid of leiding kan worden.
+            // (TODO: Dit moet naar een worker)
+
+            foreach (var detail in result.Where(det => det.GeboorteDatum.HasValue && det.SterfDatum == null))
+            {
+                Debug.Assert(detail.GeboorteDatum.HasValue); // altijd true, zie boven
+
+                int geboortejaar = detail.GeboorteDatum.Value.Year - detail.ChiroLeefTijd;
+                var afd = (from a in groepsWerkJaar.AfdelingsJaar
+                           where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
+                           select a).FirstOrDefault();
+
+                detail.KanLidWorden = (afd != null);
+
+                detail.KanLeidingWorden = (detail.GeboorteDatum.Value.Year <
+                                           DateTime.Today.Year - Settings.Default.LeidingVanafLeeftijd +
+                                           detail.ChiroLeefTijd);
+            }
+            return result;
         }
 
         /// <summary>
@@ -163,7 +201,19 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst met de eerste letter van de namen</returns>
         public IList<string> EersteLetterNamenOphalen(int groepID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            // ik concatenate hieronder naam en voornaam, om personen op te vangen 
+            // zonder familienaam. Blijkbaar zijn er zo. (Als dat maar goed komt...)
+
+            return (from gp in groep.GelieerdePersoon
+                          orderby gp.Persoon.Naam + gp.Persoon.VoorNaam
+                          select (gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1)).Distinct().ToList();
         }
 
         /// <summary>
