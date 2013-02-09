@@ -62,66 +62,6 @@ namespace Chiro.Gap.WorkerInterfaces
         void Intrekken(GebruikersRecht[] gebruikersRechten);
 
         /// <summary>
-        /// Gegeven een <paramref name="groepID"/>, haal van de GAV's waarvan 
-        /// de personen gekend zijn, de gelieerde personen op (die dus de
-        /// koppeling bepalen tussen de persoon en de groep met gegeven
-        /// <paramref name="groepID"/>).
-        /// Voorlopig worden ook de communicatiemiddelen mee opgeleverd.
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van een groep
-        /// </param>
-        /// <returns>
-        /// Beschikbare gelieerde personen waarvan we weten dat ze GAV zijn
-        /// voor die groep
-        /// </returns>
-        /// <remarks>
-        /// Vervallen GAV's worden niet opgeleverd
-        /// </remarks>
-        IEnumerable<GelieerdePersoon> GavGelieerdePersonenOphalen(int groepID);
-
-        /// <summary>
-        /// Geeft de gegeven <paramref name="gav"/> gebruikersrechten op de groep van <paramref name="notificatieOntvanger"/>,
-        /// en stuurt <paramref name="notificatieOntvanger"/> een mailtje dat jij dat gebruikersrecht hebt gekregen.
-        /// (Dit is uiteraard enkel zinvol wanneer je supergav-rechten hebt, en ook gewone gebruikersrechten wil krijgen).
-        /// PERSISTEERT, want GAV-maken en mailtje sturen moet in 1 transactie
-        /// </summary>
-        /// <param name="gav">
-        /// GAV die gebruikersrecht moet krijgen, met daaraan gekoppeld de groepen waarop hij/zij
-        /// al gebruikersrecht heeft.
-        /// </param>
-        /// <param name="notificatieOntvanger">
-        /// De gelieerde persoon die de groep bepaalt de <paramref name="gav"/> 
-        /// rechten voor moet krijgen, en die een mailtje zal krijgen waarin staat dat hij/zij rechten hebt gekregen.  
-        /// </param>
-        /// <param name="vervalDatum">
-        /// Vervaldatum van het nieuwe gebruikersrecht.
-        /// </param>
-        /// <param name="reden">
-        /// Reden waarom het gebruikersrecht aangevraagd werd.  Wordt mee gemaild naar de
-        /// <paramref name="notificatieOntvanger"/>
-        /// </param>
-        /// <returns>
-        /// Het gecreëerde gebruikersrecht
-        /// </returns>
-        /// <remarks>
-        /// Als de gebruiker al een gebruikersrecht heeft, wordt enkel de vervaldatum aangepast
-        /// </remarks>
-        GebruikersRecht ToekennenOfVerlengen(Gav gav,
-                                                             GelieerdePersoon notificatieOntvanger,
-                                                             DateTime vervalDatum,
-                                                             string reden);
-
-        /// <summary>
-        /// Haalt de GAV op voor de gebruiker die momenteel is aangemeld.  Als er zo nog geen bestaat, wordt
-        /// die aangemaakt.
-        /// </summary>
-        /// <returns>
-        /// GAV, met eventueel gekoppelde groepen
-        /// </returns>
-        Gav MijnGavOphalen();
-
-        /// <summary>
         /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="account"/>.
         /// Standaard zijn deze rechten 14 maand geldig. Als de gebruikersrechten al bestonden, worden ze indien
         /// mogelijk verlengd.
