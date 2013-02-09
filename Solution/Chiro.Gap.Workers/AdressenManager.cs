@@ -19,7 +19,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Worker die alle businesslogica i.v.m. adressen bevat
     /// </summary>
-    public class AdressenManager
+    public class AdressenManager : IAdressenManager
     {
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IAdressenSync _sync;
