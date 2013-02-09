@@ -501,7 +501,7 @@ namespace Chiro.Gap.Services
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
             CheckGav(gwj);
             Debug.Assert(gwj != null, "gwj != null");
-            return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingDetail>>(gwj.AfdelingsJaar.Select(e => e.Afdeling));
+            return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<AfdelingDetail>>(gwj.AfdelingsJaar);
         }
 
         /// <summary>
