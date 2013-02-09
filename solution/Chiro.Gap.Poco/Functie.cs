@@ -22,7 +22,7 @@ namespace Chiro.Gap.Poco.Model
         public Nullable<int> WerkJaarTot { get; set; }
         public bool IsNationaal { get; set; }
         public int LidTypeInt { internal get; set; }
-        public int NiveauInt { get; set; }
+        public int NiveauInt { internal get; set; }
     
         public virtual Groep Groep { get; set; }
         public virtual ICollection<Lid> Lid { get; set; }

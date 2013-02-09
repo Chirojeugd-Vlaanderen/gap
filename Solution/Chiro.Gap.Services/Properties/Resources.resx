@@ -133,6 +133,9 @@
   <data name="OngeldigLidType" xml:space="preserve">
     <value>Ongeldig lidtype.</value>
   </data>
+  <data name="OngeldigeCategorieNaam" xml:space="preserve">
+    <value>De naam van een categorie mag niet leeg zijn.</value>
+  </data>
   <data name="IsNogNietIngeschreven" xml:space="preserve">
     <value>{0} is nog niet ingeschreven in je groep.</value>
     <comment>Param 0: naam van de gelieerde persoon</comment>
