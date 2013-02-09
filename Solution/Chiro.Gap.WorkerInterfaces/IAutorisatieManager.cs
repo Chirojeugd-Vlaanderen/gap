@@ -35,35 +35,6 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Enkel de ID's van die personen voor wie de gebruiker GAV is
         /// </returns>
         IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs);
-
-        /// <summary>
-        /// Verwijdert uit een lijst van LidID's de ID's
-        /// van leden voor wie de aangemelde gebruiker geen GAV is.
-        /// </summary>
-        /// <param name="lidIDs">
-        /// ID's van leden
-        /// </param>
-        /// <returns>
-        /// Enkel de ID's van leden waarvoor de gebruiker GAV is.
-        /// </returns>
-        IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs);
-
-        /// <summary>
-        /// Verwijdert uit een lijst <paramref name="afdelingIDs"/> de ID's van afdelingen voor wie de
-        /// aangemelde gebruiker geen GAV is.
-        /// </summary>
-        /// <param name="afdelingIDs">ID's van afdelingen</param>
-        /// <returns>Enkel de <paramref name="afdelingIDs"/> van afdelingen waarvoor de gebruiker GAV is.</returns>
-        IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs);
-
-
-        /// <summary>
-        /// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
-        /// </summary>
-        /// <returns>
-        /// ID's van gekoppelde groepen
-        /// </returns>
-        IEnumerable<Groep> MijnGroepenOphalen();
         
         /// <summary>
         /// Geeft true als de aangelogde user
@@ -84,36 +55,6 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Username aangemelde gebruiker
         /// </returns>
         string GebruikersNaamGet();
-
-        /// <summary>
-        /// Levert het lijstje groepID's op van de groepen waarvoor de gebruiker GAV is.
-        /// </summary>
-        /// <returns>
-        /// GroepID's van de goepen waarvoor de gebruiker GAV is.
-        /// </returns>
-        IEnumerable<int> MijnGroepIDsOphalen();
-
-        /// <summary>
-        /// Geeft de gegeven <paramref name="gav"/> gebruikersrecht voor de gegeven <paramref name="groep"/>,
-        /// met een zekere <paramref name="vervalDatum"/>.  Persisteert niet.
-        /// </summary>
-        /// <param name="gav">
-        /// GAV die gebruikersrecht moet krijgen
-        /// </param>
-        /// <param name="groep">
-        /// Groep waarvoor gebruikersrecht verleend moet worden
-        /// </param>
-        /// <param name="vervalDatum">
-        /// Vervaldatum van het gebruikersrecht
-        /// </param>
-        /// <returns>
-        /// Het gegeven GebruikersRecht
-        /// </returns>
-        /// <remarks>
-        /// Aan de GAV moeten al zijn gebruikersrechten op voorhand gekoppeld zijn.
-        /// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.
-        /// </remarks>
-        GebruikersRecht GebruikersRechtToekennen(string gav, int groep, System.DateTime vervalDatum);
 
         /// <summary>
         /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van het gegeven object

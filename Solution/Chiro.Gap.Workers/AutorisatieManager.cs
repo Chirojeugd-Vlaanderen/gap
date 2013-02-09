@@ -55,44 +55,7 @@ namespace Chiro.Gap.Workers
         {
             throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
         }
-
-        /// <summary>
-        /// Verwijdert uit een lijst van LidID's de ID's
-        /// van leden voor wie de aangemelde gebruiker geen GAV is.
-        /// </summary>
-        /// <param name="lidIDs">
-        /// ID's van leden
-        /// </param>
-        /// <returns>
-        /// Enkel de ID's van leden waarvoor de gebruiker GAV is.
-        /// </returns>
-        public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs)
-        {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
-        }
-
-        /// <summary>
-        /// Verwijdert uit een lijst <paramref name="afdelingIDs"/> de ID's van afdelingen voor wie de
-        /// aangemelde gebruiker geen GAV is.
-        /// </summary>
-        /// <param name="afdelingIDs">ID's van afdelingen</param>
-        /// <returns>Enkel de <paramref name="afdelingIDs"/> van afdelingen waarvoor de gebruiker GAV is.</returns>
-        public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs)
-        {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
-        }
-
-        /// <summary>
-        /// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
-        /// </summary>
-        /// <returns>
-        /// ID's van gekoppelde groepen
-        /// </returns>
-        public IEnumerable<Groep> MijnGroepenOphalen()
-        {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
-        }
-
+        
         /// <summary>
         /// Geeft true als de aangelogde user
         /// 'superrechten' heeft
@@ -115,42 +78,6 @@ namespace Chiro.Gap.Workers
         /// Username aangemelde gebruiker
         /// </returns>
         public string GebruikersNaamGet()
-        {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
-        }
-
-        /// <summary>
-        /// Levert het lijstje groepID's op van de groepen waarvoor de gebruiker GAV is.
-        /// </summary>
-        /// <returns>
-        /// GroepID's van de goepen waarvoor de gebruiker GAV is.
-        /// </returns>
-        public IEnumerable<int> MijnGroepIDsOphalen()
-        {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
-        }
-
-        /// <summary>
-        /// Geeft de gegeven <paramref name="gav"/> gebruikersrecht voor de gegeven <paramref name="groep"/>,
-        /// met een zekere <paramref name="vervalDatum"/>.  Persisteert niet.
-        /// </summary>
-        /// <param name="gav">
-        /// GAV die gebruikersrecht moet krijgen
-        /// </param>
-        /// <param name="groep">
-        /// Groep waarvoor gebruikersrecht verleend moet worden
-        /// </param>
-        /// <param name="vervalDatum">
-        /// Vervaldatum van het gebruikersrecht
-        /// </param>
-        /// <returns>
-        /// Het gegeven GebruikersRecht
-        /// </returns>
-        /// <remarks>
-        /// Aan de GAV moeten al zijn gebruikersrechten op voorhand gekoppeld zijn.
-        /// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.
-        /// </remarks>
-        public GebruikersRecht GebruikersRechtToekennen(string gav, int groep, DateTime vervalDatum)
         {
             throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
         }

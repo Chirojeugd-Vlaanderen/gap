@@ -39,7 +39,6 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
-
         /// <summary>
         /// Verwijdert uit een lijst van PersoonID's de ID's
         /// van personen voor wie de aangemelde gebruiker geen GAV is.
@@ -52,34 +51,6 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
-
-        /// <summary>
-        /// Verwijdert uit een lijst van LidID's de ID's
-        /// van leden voor wie de aangemelde gebruiker geen GAV is.
-        /// </summary>
-        /// <param name="lidIDs">ID's van leden</param>
-        /// <returns>Enkel de ID's van leden waarvoor de gebruiker GAV is.</returns>
-        /// <remarks></remarks>
-        public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
-        /// </summary>
-        /// <returns>ID's van gekoppelde groepen</returns>
-        /// <remarks></remarks>
-        public IEnumerable<Groep> MijnGroepenOphalen()
-        {
-            throw new NotImplementedException();
-        }
-        
         /// <summary>
         /// Geeft true als de aangelogde user
         /// 'superrechten' heeft
@@ -105,58 +76,7 @@ namespace Chiro.Gap.UpdateSvc.Service
             return ServiceSecurityContext.Current == null ? String.Empty
                 : ServiceSecurityContext.Current.WindowsIdentity.Name;
         }
-
-
-        /// <summary>
-        /// Levert het lijstje groepID's op van de groepen waarvoor de gebruiker GAV is.
-        /// </summary>
-        /// <returns>GroepID's van de goepen waarvoor de gebruiker GAV is.</returns>
-        /// <remarks></remarks>
-        public IEnumerable<int> MijnGroepIDsOphalen()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Geeft de gegeven <paramref name="gav"/> gebruikersrecht voor de gegeven <paramref name="groep"/>,
-        /// met een zekere <paramref name="vervalDatum"/>.  Persisteert niet.
-        /// </summary>
-        /// <param name="gav">
-        /// GAV die gebruikersrecht moet krijgen
-        /// </param>
-        /// <param name="groep">
-        /// Groep waarvoor gebruikersrecht verleend moet worden
-        /// </param>
-        /// <param name="vervalDatum">
-        /// Vervaldatum van het gebruikersrecht
-        /// </param>
-        /// <returns>
-        /// Het gegeven GebruikersRecht
-        /// </returns>
-        /// <remarks>
-        /// Aan de GAV moeten al zijn gebruikersrechten op voorhand gekoppeld zijn.
-        /// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.
-        /// </remarks>
-        public Chiro.Gap.Poco.Model.GebruikersRecht GebruikersRechtToekennen(string gav, int groep, DateTime vervalDatum)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Geeft de gegeven <paramref name="gav"/> gebruikersrecht voor de gegeven <paramref name="groep"/>,
-        /// met een zekere <paramref name="vervalDatum"/>.  Persisteert niet.
-        /// </summary>
-        /// <param name="gav">GAV die gebruikersrecht moet krijgen</param>
-        /// <param name="groep">Groep waarvoor gebruikersrecht verleend moet worden</param>
-        /// <param name="vervalDatum">Vervaldatum van het gebruikersrecht</param>
-        /// <returns>Het gegeven GebruikersRecht</returns>
-        /// <remarks></remarks>
-        public Poco.Model.GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
-        {
-            throw new NotImplementedException();
-        }
-
-
+        
         public bool IsGav(Groep groep)
         {
             throw new NotImplementedException();

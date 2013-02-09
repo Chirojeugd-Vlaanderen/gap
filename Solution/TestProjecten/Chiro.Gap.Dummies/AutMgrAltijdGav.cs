@@ -30,21 +30,6 @@ namespace Chiro.Gap.Dummies
 			return personenIDs.ToList();
 		}
 
-		public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs)
-		{
-			return lidIDs;
-		}
-
-	    public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs)
-	    {
-	        return afdelingIDs;
-	    }
-
-	    public IEnumerable<Groep> MijnGroepenOphalen()
-		{
-			throw new NotImplementedException();
-		}
-
 		public string GebruikersNaamGet()
 		{
 			throw new NotImplementedException();
@@ -54,21 +39,6 @@ namespace Chiro.Gap.Dummies
 		{
 			return true;
 		}
-
-		public IEnumerable<int> MijnGroepIDsOphalen()
-		{
-			throw new NotImplementedException();
-		}
-
-	    public GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
-	    {
-	        throw new NotImplementedException();
-	    }
-
-	    public GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum)
-	    {
-	        throw new NotImplementedException();
-	    }
 
 	    public bool IsGav(Groep groep)
 	    {
