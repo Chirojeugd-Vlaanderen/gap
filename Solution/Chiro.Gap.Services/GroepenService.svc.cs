@@ -322,9 +322,7 @@ namespace Chiro.Gap.Services
         /// <param name="info">De afdelingsinfo die opgeslagen moet worden</param>
         public void AfdelingBewaren(AfdelingInfo info)
         {
-            var ai = (from g in _afdelingenRepo.Select()
-                      where g.ID == info.ID
-                      select g).FirstOrDefault();
+            var ai = _afdelingenRepo.ByID(info.ID);
             CheckGav(ai);
             Debug.Assert(ai != null, "ai != null");
             if (!Equal(info.Naam, ai.Naam))
@@ -345,9 +343,7 @@ namespace Chiro.Gap.Services
         /// <returns>Uitgebreide info over het afdelingsjaar met de opgegeven ID</returns>
         public AfdelingsJaarDetail AfdelingsJaarOphalen(int afdelingsJaarId)
         {
-            var afd = (from g in _afdelingsJaarRepo.Select()
-                       where g.ID == afdelingsJaarId
-                       select g).FirstOrDefault();
+            var afd = _afdelingsJaarRepo.ByID(afdelingsJaarId);
             CheckGav(afd);
             return Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afd);
         }
@@ -361,14 +357,10 @@ namespace Chiro.Gap.Services
         /// (ID > 0), of een bestaand (ID == 0)</param>
         public void AfdelingsJaarBewaren(AfdelingsJaarDetail detail)
         {
-            var afdeling = (from g in _afdelingenRepo.Select()
-                            where g.ID == detail.AfdelingID
-                            select g).FirstOrDefault();
+            var afdeling = _afdelingenRepo.ByID(detail.AfdelingID);
             CheckGav(afdeling);
 
-            var officieleAfdeling = (from g in _officieleAfdelingenRepo.Select()
-                                     where g.ID == detail.OfficieleAfdelingID
-                                     select g).FirstOrDefault();
+            var officieleAfdeling = _officieleAfdelingenRepo.ByID(detail.OfficieleAfdelingID);
 
             Debug.Assert(afdeling != null, "afdeling != null");
             var huidigGwj = GetRecentsteGroepsWerkJaarEnCheckGav(afdeling.ChiroGroep.ID);
@@ -391,9 +383,7 @@ namespace Chiro.Gap.Services
                 else
                 {
                     // wijzigen
-                    var afdelingsJaar = (from g in _afdelingsJaarRepo.Select()
-                                         where g.ID == detail.AfdelingsJaarID
-                                         select g).FirstOrDefault();
+                    var afdelingsJaar = _afdelingsJaarRepo.ByID(detail.AfdelingsJaarID);
                     CheckGav(afdelingsJaar);
 
                     Debug.Assert(afdelingsJaar != null, "afdelingsJaar != null");
@@ -428,9 +418,7 @@ namespace Chiro.Gap.Services
         /// <param name="afdelingsJaarId">ID van het afdelingsjaar waarover het gaat</param>
         public void AfdelingsJaarVerwijderen(int afdelingsJaarId)
         {
-            var afdelingsJaar = (from g in _afdelingsJaarRepo.Select()
-                                 where g.ID == afdelingsJaarId
-                                 select g).FirstOrDefault();
+            var afdelingsJaar = _afdelingsJaarRepo.ByID(afdelingsJaarId);
             CheckGav(afdelingsJaar);
 
             _afdelingsJaarRepo.Delete(afdelingsJaar);
@@ -443,9 +431,7 @@ namespace Chiro.Gap.Services
         /// <param name="afdelingId">ID van de afdeling waarover het gaat</param>
         public void AfdelingVerwijderen(int afdelingId)
         {
-            var afdeling = (from g in _afdelingenRepo.Select()
-                            where g.ID == afdelingId
-                            select g).FirstOrDefault();
+            var afdeling = _afdelingenRepo.ByID(afdelingId);
             CheckGav(afdeling);
 
             _afdelingenRepo.Delete(afdeling);
@@ -470,9 +456,7 @@ namespace Chiro.Gap.Services
         /// <returns>Info van de gevraagde afdeling</returns>
         public AfdelingInfo AfdelingOphalen(int afdelingId)
         {
-            var afdeling = (from g in _afdelingenRepo.Select()
-                            where g.ID == afdelingId
-                            select g).FirstOrDefault();
+            var afdeling = _afdelingenRepo.ByID(afdelingId);
             CheckGav(afdeling);
             return Mapper.Map<Afdeling, AfdelingInfo>(afdeling);
         }
@@ -485,9 +469,7 @@ namespace Chiro.Gap.Services
         /// <returns>De details van de afdeling in het gegeven afdelingsjaar.</returns>
         public AfdelingDetail AfdelingDetailOphalen(int afdelingsJaarId)
         {
-            var afdelingsJaar = (from g in _afdelingsJaarRepo.Select()
-                                 where g.ID == afdelingsJaarId
-                                 select g).FirstOrDefault();
+            var afdelingsJaar = _afdelingsJaarRepo.ByID(afdelingsJaarId);
             CheckGav(afdelingsJaar);
             Debug.Assert(afdelingsJaar != null, "afdelingsJaar != null");
             return Mapper.Map<Afdeling, AfdelingDetail>(afdelingsJaar.Afdeling);
@@ -504,9 +486,7 @@ namespace Chiro.Gap.Services
         /// </returns>
         public IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepswerkjaarId)
         {
-            var gwj = (from g in _groepsWerkJarenRepo.Select()
-                       where g.ID == groepswerkjaarId
-                       select g).FirstOrDefault();
+            var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
             CheckGav(gwj);
             Debug.Assert(gwj != null, "gwj != null");
             return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingDetail>>(gwj.AfdelingsJaar.Select(e => e.Afdeling));
@@ -547,9 +527,7 @@ namespace Chiro.Gap.Services
         /// <returns>Info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
         public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarId)
         {
-            var gwj = (from g in _groepsWerkJarenRepo.Select()
-                       where g.ID == groepswerkjaarId
-                       select g).FirstOrDefault();
+            var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
             CheckGav(gwj);
             Debug.Assert(gwj != null, "gwj != null");
             var ongebruikteAfdelingen = (from g in _afdelingenRepo.Select()
@@ -567,9 +545,7 @@ namespace Chiro.Gap.Services
         /// <returns>De gevraagde lijst afdelingsinfo</returns>
         public IEnumerable<FunctieDetail> FunctiesOphalen(int groepswerkjaarId, LidType lidType)
         {
-            var gwj = (from g in _groepsWerkJarenRepo.Select()
-                       where g.ID == groepswerkjaarId
-                       select g).FirstOrDefault();
+            var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
             CheckGav(gwj);
             var functies = (from g in _functiesRepo.Select()
                             where g.Type == lidType
@@ -628,8 +604,7 @@ namespace Chiro.Gap.Services
             }
 
             var aantalLedenZonderTelefoonNr = (from ld in groepsWerkJaar.Lid
-                                               where
-                                                   ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.TelefoonNummer)
+                                               where ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.TelefoonNummer)
                                                select ld).Count();
 
             if (aantalLedenZonderTelefoonNr > 0)
@@ -660,9 +635,7 @@ namespace Chiro.Gap.Services
 
         Groep GetGroepEnCheckGav(int groepId)
         {
-            var groep = (from g in _groepenRepo.Select()
-                         where g.ID == groepId
-                         select g).FirstOrDefault();
+            var groep = _groepenRepo.ByID(groepId);
             CheckGav(groep);
             return groep;
         }
@@ -735,9 +708,7 @@ namespace Chiro.Gap.Services
         /// <c>false</c> krijg je een exception als de functie niet leeg is.</param>
         public void FunctieVerwijderen(int functieId, bool forceren)
         {
-            var functie = (from g in _functiesRepo.Select()
-                            where g.ID == functieId
-                            select g).FirstOrDefault();
+            var functie = _functiesRepo.ByID(functieId);
             CheckGav(functie);
             Debug.Assert(functie != null, "functie != null");
             if (forceren)
@@ -785,9 +756,7 @@ namespace Chiro.Gap.Services
         /// <c>false</c> krijg je een exception als de categorie niet leeg is.</param>
         public void CategorieVerwijderen(int categorieId, bool forceren)
         {
-            var categorie = (from g in _categorieenRepo.Select()
-                           where g.ID == categorieId
-                           select g).FirstOrDefault();
+            var categorie = _categorieenRepo.ByID(categorieId);
             CheckGav(categorie);
             Debug.Assert(categorie != null, "categorie != null");
             if (forceren)
@@ -805,9 +774,7 @@ namespace Chiro.Gap.Services
         /// <exception cref="FoutNummerException">Gegooid als de naam leeg is of null is</exception>
         public void CategorieAanpassen(int categorieId, string nieuwenaam)
         {
-            var categorie = (from g in _categorieenRepo.Select()
-                             where g.ID == categorieId
-                             select g).FirstOrDefault();
+            var categorie = _categorieenRepo.ByID(categorieId);
             CheckGav(categorie);
             Debug.Assert(categorie != null, "categorie != null");
 
@@ -816,7 +783,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.ValidatieFout, Properties.Resources.OngeldigeCategorieNaam);
             }
             bool bestaatal = (from g in _categorieenRepo.Select()
-                              where Equal(g.Naam,nieuwenaam)
+                              where Equal(g.Naam, nieuwenaam)
                               select g).Any();
             if (bestaatal)
             {
@@ -944,7 +911,15 @@ namespace Chiro.Gap.Services
         /// <returns>Gebruikersnaam waarmee aangemeld</returns>
         public string WieBenIk()
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            try
+            {
+                return _autorisatieMgr.GebruikersNaamGet();
+            }
+            catch (Exception ex)
+            {
+                FoutAfhandelaar.FoutAfhandelen(ex);
+                return null;
+            }
         }
 
         /// <summary>
