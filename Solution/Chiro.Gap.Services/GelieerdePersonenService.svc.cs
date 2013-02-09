@@ -172,7 +172,14 @@ namespace Chiro.Gap.Services
         /// <returns>GelieerdePersoon met persoonsgegevens, communicatievorm en adressen</returns>
         public PersoonDetail DetailOphalen(int gelieerdePersoonID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var p = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
+
+            if (!_autorisatieMgr.IsGav(p))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            return Mapper.Map<GelieerdePersoon, PersoonDetail>(p);
         }
 
         /// <summary>

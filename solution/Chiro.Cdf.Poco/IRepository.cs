@@ -11,6 +11,7 @@ namespace Chiro.Cdf.Poco
         IEnumerable<TEntity> Where(Func<TEntity, bool> predicate);
         TEntity GetSingle(Func<TEntity, bool> predicate);
         TEntity GetFirst(Func<TEntity, bool> predicate);
+        TEntity ByID(int id);
         void Add(TEntity entity);
         void Delete(TEntity entity);
         void Attach(TEntity entity);

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Chiro.Cdf.Poco
 {
-    public class Repository<TEntity>: IRepository<TEntity> where TEntity: class
+    public class Repository<TEntity>: IRepository<TEntity> where TEntity: BasisEntiteit
     {
         private readonly IContext _context;
 
@@ -36,6 +36,11 @@ namespace Chiro.Cdf.Poco
         public TEntity GetFirst(Func<TEntity, bool> predicate)
         {
             return _context.Set<TEntity>().First(predicate);
+        }
+
+        public TEntity ByID(int id)
+        {
+            return _context.Set<TEntity>().FirstOrDefault(x => x.ID == id);
         }
 
         public void Add(TEntity entity)

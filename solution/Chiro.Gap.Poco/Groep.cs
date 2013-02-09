@@ -1,28 +1,29 @@
 using System;
 using System.Collections.Generic;
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public abstract partial class Groep
+    public abstract partial class Groep: BasisEntiteit
     {
         public Groep()
         {
-            this.GelieerdePersoon = new HashSet<GelieerdePersoon>();
-            this.GroepsWerkJaar = new HashSet<GroepsWerkJaar>();
-            this.GebruikersRecht = new HashSet<GebruikersRecht>();
-            this.Categorie = new HashSet<Categorie>();
-            this.Functie = new HashSet<Functie>();
-            this.BivakPlaats = new HashSet<Plaats>();
+            GelieerdePersoon = new HashSet<GelieerdePersoon>();
+            GroepsWerkJaar = new HashSet<GroepsWerkJaar>();
+            GebruikersRecht = new HashSet<GebruikersRecht>();
+            Categorie = new HashSet<Categorie>();
+            Functie = new HashSet<Functie>();
+            BivakPlaats = new HashSet<Plaats>();
         }
     
         public string Naam { get; set; }
         public string Code { get; set; }
-        public Nullable<int> OprichtingsJaar { get; set; }
+        public int? OprichtingsJaar { get; set; }
         public string WebSite { get; set; }
         public byte[] Logo { get; set; }
-        public int ID { get; set; }
-        public byte[] Versie { get; set; }
+        public override int ID { get; set; }
+        public override byte[] Versie { get; set; }
     
         public virtual ICollection<GelieerdePersoon> GelieerdePersoon { get; set; }
         public virtual ICollection<GroepsWerkJaar> GroepsWerkJaar { get; set; }
@@ -31,7 +32,6 @@ namespace Chiro.Gap.Poco.Model
         public virtual ICollection<Functie> Functie { get; set; }
         public virtual ICollection<Plaats> BivakPlaats { get; set; }
 
-        /// </summary>
         public abstract Niveau Niveau { get; }
 
 

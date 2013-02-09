@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class Gav
+    public partial class Gav: BasisEntiteit
     {
         public Gav()
         {
@@ -10,9 +11,9 @@ namespace Chiro.Gap.Poco.Model
             this.Persoon = new HashSet<Persoon>();
         }
     
-        public int ID { get; set; }
+        public override int ID { get; set; }
         public string Login { get; set; }
-        public byte[] Versie { get; set; }
+        public override byte[] Versie { get; set; }
     
         public virtual ICollection<GebruikersRecht> GebruikersRecht { get; set; }
         public virtual ICollection<Persoon> Persoon { get; set; }

@@ -33,7 +33,7 @@
         /// </summary>
         /// <typeparam name="TEntity">type van entiteit waarvoor repository gevraagd</typeparam>
         /// <returns>Een repository voor entiteiten van type <typeparamref name="TEntity"/></returns>
-        public IRepository<TEntity> RepositoryGet<TEntity>() where TEntity : class
+        public IRepository<TEntity> RepositoryGet<TEntity>() where TEntity : BasisEntiteit
         {
             return new Repository<TEntity>(_context);
         }

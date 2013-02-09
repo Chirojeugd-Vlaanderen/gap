@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class OfficieleAfdeling
+    public partial class OfficieleAfdeling: BasisEntiteit
     {
         public OfficieleAfdeling()
         {
@@ -10,8 +11,8 @@ namespace Chiro.Gap.Poco.Model
         }
     
         public string Naam { get; set; }
-        public int ID { get; set; }
-        public byte[] Versie { get; set; }
+        public override int ID { get; set; }
+        public override byte[] Versie { get; set; }
         public int LeefTijdVan { get; set; }
         public int LeefTijdTot { get; set; }
     

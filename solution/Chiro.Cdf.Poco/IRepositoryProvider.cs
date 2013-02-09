@@ -23,6 +23,6 @@
         /// </summary>
         /// <typeparam name="TEntity">type van entiteit waarvoor repository gevraagd</typeparam>
         /// <returns>Een repository voor entiteiten van type <typeparamref name="TEntity"/></returns>
-        IRepository<TEntity> RepositoryGet<TEntity>() where TEntity : class;
+        IRepository<TEntity> RepositoryGet<TEntity>() where TEntity : BasisEntiteit;
     }
 }

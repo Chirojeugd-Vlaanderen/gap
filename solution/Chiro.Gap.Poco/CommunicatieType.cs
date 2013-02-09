@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class CommunicatieType
+    public partial class CommunicatieType: BasisEntiteit
     {
         public CommunicatieType()
         {
@@ -11,8 +12,8 @@ namespace Chiro.Gap.Poco.Model
     
         public string Omschrijving { get; set; }
         public string Validatie { get; set; }
-        public int ID { get; set; }
-        public byte[] Versie { get; set; }
+        public override int ID { get; set; }
+        public override byte[] Versie { get; set; }
         public string Voorbeeld { get; set; }
         public bool IsOptIn { get; set; }
     

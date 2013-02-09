@@ -1,17 +1,18 @@
 using System.Collections.Generic;
+using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class Publicatie
+    public partial class Publicatie: BasisEntiteit
     {
         public Publicatie()
         {
             this.Abonnement = new HashSet<Abonnement>();
         }
     
-        public int ID { get; set; }
+        public override int ID { get; set; }
         public string Naam { get; set; }
-        public byte[] Versie { get; set; }
+        public override byte[] Versie { get; set; }
         public bool Actief { get; set; }
     
         public virtual ICollection<Abonnement> Abonnement { get; set; }
