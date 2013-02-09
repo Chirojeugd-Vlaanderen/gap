@@ -542,10 +542,12 @@ namespace Chiro.Gap.Services
         {
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
             Gav.Check(gwj);
+
             var functies = (from g in _functiesRepo.Select()
-                            where g.Type == lidType
-                            select g);
-            return Mapper.Map<IEnumerable<Functie>, IEnumerable<FunctieDetail>>(functies);
+                            where gwj.Groep.ID == g.Groep.ID && (!g.WerkJaarTot.HasValue || g.WerkJaarTot.Value<gwj.WerkJaar)
+                            select g).ToList();
+
+            return Mapper.Map<IEnumerable<Functie>, IEnumerable<FunctieDetail>>(functies.Where(e => e.Type==lidType));
         }
 
         /// <summary>
