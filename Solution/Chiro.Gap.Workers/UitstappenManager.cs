@@ -77,72 +77,6 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Schrijft de gegeven <paramref name="gelieerdePersonen"/> in voor de gegeven
-        /// <paramref name="uitstap"/>, al dan niet als <paramref name="logistiekDeelnemer"/>.
-        /// </summary>
-        /// <param name="uitstap">
-        /// Uitstap waarvoor in te schrijven, gekoppeld aan groep
-        /// </param>
-        /// <param name="gelieerdePersonen">
-        /// In te schrijven gelieerde personen, gekoppeld aan groep
-        /// </param>
-        /// <param name="logistiekDeelnemer">
-        /// Als <c>true</c>, dan worden de 
-        /// <paramref name="gelieerdePersonen"/> ingeschreven als logistiek deelnemer.
-        /// </param>
-        public void Inschrijven(Uitstap uitstap,
-                                IEnumerable<GelieerdePersoon> gelieerdePersonen,
-                                bool logistiekDeelnemer)
-        {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-            //var alleGpIDs = (from gp in gelieerdePersonen select gp.ID).Distinct();
-            //var mijnGpIDs = _autorisatieManager.EnkelMijnGelieerdePersonen(alleGpIDs);
-
-            //if (alleGpIDs.Count() != mijnGpIDs.Count() || !_autorisatieManager.IsGavUitstap(uitstap.ID))
-            //{
-            //    throw new GeenGavException(Resources.GeenGav);
-            //}
-
-            //var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
-
-            //Debug.Assert(groepen.Count() > 0); // De gelieerde personen moeten aan een groep gekoppeld zijn.
-            //Debug.Assert(uitstap.GroepsWerkJaar != null);
-            //Debug.Assert(uitstap.GroepsWerkJaar.Groep != null);
-
-            //// Als er meer dan 1 groep is, dan is er minstens een groep verschillend van de groep
-            //// van de uitstap (duivenkotenprincipe));););
-            //if (groepen.Count() > 1 || groepen.First().ID != uitstap.GroepsWerkJaar.Groep.ID)
-            //{
-            //    throw new FoutNummerException(
-            //        FoutNummer.UitstapNietVanGroep,
-            //        Resources.FoutieveGroepUitstap);
-            //}
-
-            //if (!_groepsWerkJaarDao.IsRecentste(uitstap.GroepsWerkJaar.ID))
-            //{
-            //    throw new FoutNummerException(
-            //        FoutNummer.GroepsWerkJaarNietBeschikbaar,
-            //        Resources.GroepsWerkJaarVoorbij);
-            //}
-
-            //// Als er nu nog geen exception gethrowd is, dan worden eindelijk de deelnemers gemaakt.
-            //// (koppel enkel de gelieerde personen die nog niet aan de uitstap gekoppeld zijn)
-            //foreach (var gp in gelieerdePersonen.Where(gp => !gp.Deelnemer.Any(d => d.Uitstap.ID == uitstap.ID)))
-            //{
-            //    var deelnemer = new Deelnemer
-            //                        {
-            //                            GelieerdePersoon = gp,
-            //                            Uitstap = uitstap,
-            //                            HeeftBetaald = false,
-            //                            IsLogistieker = logistiekDeelnemer,
-            //                            MedischeFicheOk = false
-            //                        };
-            //    gp.Deelnemer.Add(deelnemer);
-            //    uitstap.Deelnemer.Add(deelnemer);
-            //}
-        }
-
-        /// <summary>
         /// Stuurt alle bivakken van werkJaar <paramref name="werkJaar"/> opnieuw naar
         /// kipadmin.
         /// </summary>
@@ -272,7 +206,7 @@ namespace Chiro.Gap.Workers
         /// <returns>De status van de gegeven <paramref name="uitstap"/></returns>
         public BivakAangifteStatus StatusBepalen(Uitstap uitstap)
         {
-            BivakAangifteStatus resultaat = BivakAangifteStatus.Ok;
+            var resultaat = BivakAangifteStatus.Ok;
 
             if (uitstap.Plaats == null)
             {
@@ -284,6 +218,46 @@ namespace Chiro.Gap.Workers
             }
 
             return resultaat;
+        }
+
+        /// <summary>
+        /// Nagaan of alle vereisten voldaan zijn om de opgegeven gelieerde personen allemaal in te schrijven
+        /// voor de opgegeven uitstap.
+        /// </summary>
+        /// <param name="uitstap">De uitstap waar we mensen voor willen inschrijven</param>
+        /// <param name="gelieerdePersonen">De mensen die we willen inschrijven</param>
+        /// <exception cref="FoutNummerException"></exception>
+        /// <returns><c>True</c> als alle voorwaarden voldaan zijn, anders <c>false</c></returns>
+        public bool InschrijvingenValideren(Uitstap uitstap, List<GelieerdePersoon> gelieerdePersonen)
+        {
+            // De gelieerde personen moeten aan een groep gekoppeld zijn.
+            var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct().ToList();
+
+            if (!groepen.Any())
+            {
+                return false;
+            }
+
+            if (uitstap.GroepsWerkJaar == null)
+            {
+                return false;
+            }
+
+            if (uitstap.GroepsWerkJaar.Groep == null)
+            {
+                return false;
+            }
+
+            // Als er meer dan 1 groep is, dan is er minstens een groep verschillend van de groep
+            // van de uitstap (duivenkotenprincipe));););
+            if (groepen.Count() > 1 || groepen.First().ID != uitstap.GroepsWerkJaar.Groep.ID)
+            {
+                throw new FoutNummerException(
+                    FoutNummer.UitstapNietVanGroep,
+                    Resources.FoutieveGroepUitstap);
+            }
+
+            return true;
         }
     }
 }

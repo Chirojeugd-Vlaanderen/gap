@@ -252,9 +252,6 @@
   <data name="UitstapAlGekoppeld" xml:space="preserve">
     <value>De uitstap is al gekoppeld aan een ander werkJaar.</value>
   </data>
-  <data name="FoutieveGroepUitstap" xml:space="preserve">
-    <value>De groep van de uitstap verschilt van de groep van de deelnemer.</value>
-  </data>
   <data name="DeelnemerNietVanUitstap" xml:space="preserve">
     <value>Dit is een deelnemer van een andere uitstap.</value>
   </data>
@@ -318,5 +315,8 @@ de helpdesk</value>
   </data>
   <data name="MinimumLeeftijd" xml:space="preserve">
     <value>Het is niet toegelaten om kleuters in te schrijven.</value>
+  </data>
+  <data name="FoutieveGroepUitstap" xml:space="preserve">
+    <value>De groep van de uitstap verschilt van de groep van de deelnemer.</value>
   </data>
 </root>

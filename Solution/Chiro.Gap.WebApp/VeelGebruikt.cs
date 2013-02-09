@@ -383,7 +383,7 @@ namespace Chiro.Gap.WebApp
                 // Als dat allemaal OK is, stop dan alle cassini-instances (de dev webserver van
                 // Visual Studio)
                 var mijnGroepen = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
-                    (g => g.MijnGroepenOphalen());
+                    (g => g.MijnGroepenOphalen()).ToList();
 
                 id = mijnGroepen.Count() == 1 ? mijnGroepen.First().ID : 0;
 

@@ -37,24 +37,6 @@ namespace Chiro.Gap.WorkerInterfaces
         Uitstap Koppelen(Uitstap uitstap, Plaats plaats);
 
         /// <summary>
-        /// Schrijft de gegeven <paramref name="gelieerdePersonen"/> in voor de gegeven
-        /// <paramref name="uitstap"/>, al dan niet als <paramref name="logistiekDeelnemer"/>.
-        /// </summary>
-        /// <param name="uitstap">
-        /// Uitstap waarvoor in te schrijven, gekoppeld aan groep
-        /// </param>
-        /// <param name="gelieerdePersonen">
-        /// In te schrijven gelieerde personen, gekoppeld aan groep
-        /// </param>
-        /// <param name="logistiekDeelnemer">
-        /// Als <c>true</c>, dan worden de 
-        /// <paramref name="gelieerdePersonen"/> ingeschreven als logistiek deelnemer.
-        /// </param>
-        void Inschrijven(Uitstap uitstap,
-                                         IEnumerable<GelieerdePersoon> gelieerdePersonen,
-                                         bool logistiekDeelnemer);
-
-        /// <summary>
         /// Stuurt alle bivakken van werkJaar <paramref name="werkJaar"/> opnieuw naar
         /// kipadmin.
         /// </summary>
@@ -71,7 +53,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// De ID van de groep waar het over gaat.
         /// </param>
         /// <param name="groepsWerkJaar">
-        /// Het werkJaar waarvoor de gegevens opgehaald moeten worden.
+        /// Het werkjaar waarvoor de gegevens opgehaald moeten worden.
         /// </param>
         /// <returns>
         /// Een lijstje met opmerkingen/feedback voor de gebruiker, zodat die weet 
@@ -86,8 +68,8 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <summary>
         /// Bepaalt of het de tijd van het jaar is voor de bivakaangifte
         /// </summary>
-        /// <param name="groepsWerkJaar">huidige groepswerkjaar</param>
-        /// <returns><c>true</c> als de bivakaangifte voor <paramref name="groepsWerkJaar"/> moet worden doorgegeven, 
+        /// <param name="groepsWerkJaar">Huidige groepswerkjaar</param>
+        /// <returns><c>True</c> als de bivakaangifte voor <paramref name="groepsWerkJaar"/> moet worden doorgegeven, 
         /// anders <c>false</c></returns>
         bool BivakAangifteVanBelang(GroepsWerkJaar groepsWerkJaar);
 
@@ -97,5 +79,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="uitstap">Uitstap, waarvan status bepaald moet worden</param>
         /// <returns>De status van de gegeven <paramref name="uitstap"/></returns>
         BivakAangifteStatus StatusBepalen(Uitstap uitstap);
+
+        /// <summary>
+        /// Nagaan of alle vereisten voldaan zijn om de opgegeven gelieerde personen allemaal in te schrijven
+        /// voor de opgegeven uitstap.
+        /// </summary>
+        /// <param name="uitstap">De uitstap waar we mensen voor willen inschrijven</param>
+        /// <param name="gelieerdePersonen">De mensen die we willen inschrijven</param>
+        /// <returns><c>True</c> als alle voorwaarden voldaan zijn, anders <c>false</c></returns>
+        bool InschrijvingenValideren(Uitstap uitstap, List<GelieerdePersoon> gelieerdePersonen);
     }
 }

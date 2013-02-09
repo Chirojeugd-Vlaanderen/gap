@@ -5,12 +5,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Services.Properties;
 using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Services
@@ -20,32 +25,63 @@ namespace Chiro.Gap.Services
     /// </summary>
     public class UitstappenService : IUitstappenService
     {
+        /// <summary>
+        /// _context is verantwoordelijk voor het tracken van de wijzigingen aan de
+        /// entiteiten. Via _context.SaveChanges() kunnen wijzigingen gepersisteerd
+        /// worden.
+        /// 
+        /// Context is IDisposable. De context wordt aangemaakt door de IOC-container,
+        /// en gedisposed op het moment dat de service gedisposed wordt. Dit gebeurt
+        /// na iedere call.
+        /// </summary>
+        private readonly IContext _context;
 
         // Repositories, verantwoordelijk voor data access
 
         private readonly IRepository<GroepsWerkJaar> _groepsWerkJaarRepo;
+        private readonly IRepository<Groep> _groepenRepo;
+        private readonly IRepository<Adres> _adressenRepo;
+        private readonly IRepository<Uitstap> _uitstappenRepo;
+        private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
 
         // Managers voor niet-triviale businesslogica
 
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IUitstappenManager _uitstappenMgr;
+        private readonly IAdressenManager _adressenMgr;
 
         /// <summary>
         /// Constructor, verantwoordelijk voor dependency injection
         /// </summary>
-        /// <param name="repositoryProvider">de repositoryprovider zal de nodige repositories opleveren</param>
-        /// <param name="autorisatieManager">businesslogica m.b.t. autorisatie</param>
-        /// <param name="uitstappenManager">businesslogica m.b.t. uitstappen</param>
-        public UitstappenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieManager,
-                                 IUitstappenManager uitstappenManager)
+        /// <param name="repositoryProvider">De repositoryprovider zal de nodige repositories opleveren</param>
+        /// <param name="autorisatieManager">Businesslogica m.b.t. autorisatie</param>
+        /// <param name="uitstappenManager">Businesslogica m.b.t. uitstappen</param>
+        /// <param name="adressenManager">Businesslogica m.b.t. adressen</param>
+        public UitstappenService(IRepositoryProvider repositoryProvider,
+                                 IAutorisatieManager autorisatieManager,
+                                 IUitstappenManager uitstappenManager,
+                                 IAdressenManager adressenManager)
         {
+            _context = repositoryProvider.ContextGet();
+
             _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
+            _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
+            _adressenRepo = repositoryProvider.RepositoryGet<Adres>();
+            _uitstappenRepo = repositoryProvider.RepositoryGet<Uitstap>();
+            _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
+
             _autorisatieMgr = autorisatieManager;
             _uitstappenMgr = uitstappenManager;
+            _adressenMgr = adressenManager;
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
 
         /// <summary>
-        /// Bewaart een uitstap aan voor de groep met gegeven <paramref name="groepID"/>
+        /// Bewaart een uitstap voor de groep met gegeven <paramref name="groepID"/>
         /// </summary>
         /// <param name="groepID">ID van de groep horende bij de uitstap.
         ///  Is eigenlijk enkel relevant als het om een nieuwe uitstap gaat.</param>
@@ -54,7 +90,44 @@ namespace Chiro.Gap.Services
         /// <returns>ID van de uitstap</returns>
         public int Bewaren(int groepID, UitstapInfo info)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            // Als de uitstap een ID heeft, moet een bestaande uitstap opgehaald worden.
+            // Anders maken we een nieuwe.
+
+            Uitstap uitstap;
+
+            var groepsWerkJaar = _groepsWerkJaarRepo.Select()
+                                                    .Where(gwj => gwj.Groep.ID == groepID)
+                                                    .OrderByDescending(gwj => gwj.WerkJaar)
+                                                    .First();
+
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar.Groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            if (info.ID == 0)
+            {
+                // Nieuwe uitstap
+                uitstap = Mapper.Map<UitstapInfo, Uitstap>(info);
+                _uitstappenMgr.Koppelen(uitstap, groepsWerkJaar);
+            }
+            else
+            {
+                // Haal origineel op, gekoppeld aan groepswerkjaar
+                // (en ook aan groep, want die is nodig voor sync met kipadmin)
+
+                // uitstap = _uitstappenMgr.Ophalen(info.ID, UitstapExtras.Groep);
+
+                uitstap = (from u in groepsWerkJaar.Uitstap
+                           where u.ID == info.ID
+                           select u).First();
+
+                // overschrijf met gegevens uit 'info'
+                Mapper.Map(info, uitstap);
+            }
+
+            _context.SaveChanges();
+            return uitstap.ID;
         }
 
         /// <summary>
@@ -62,14 +135,47 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="groepID">ID van de groep</param>
         /// <param name="inschrijvenMogelijk">Als deze <c>true</c> is, worden enkel de uitstappen opgehaald
-        /// waarvoor je nog kunt inschrijven.  In praktijk zijn dit de uitstappen van het huidige werkJaar.
+        /// waarvoor je nog kunt inschrijven.  In praktijk zijn dit de uitstappen van het huidige werkjaar.
         /// </param>
         /// <returns>Details van uitstappen</returns>
         /// <remarks>We laten toe om inschrijvingen te doen voor uitstappen uit het verleden, om als dat
         /// nodig is achteraf fouten in de administratie recht te zetten.</remarks>
         public IEnumerable<UitstapInfo> OphalenVanGroep(int groepID, bool inschrijvenMogelijk)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            IEnumerable<Uitstap> resultaat;
+
+            var groep = (from g in _groepenRepo.Select()
+                         where g.ID == groepID
+                         select g).FirstOrDefault();
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+
+            if (inschrijvenMogelijk)
+            {
+                // Enkel uitstappen van recentste groepswerkjaar
+                var groepsWerkJaar = _groepsWerkJaarRepo.Select()
+                                                        .Where(gwj => gwj.Groep.ID == groepID)
+                                                        .OrderByDescending(gwj => gwj.WerkJaar)
+                                                        .First();
+
+                resultaat = groepsWerkJaar.Uitstap.ToArray();
+            }
+            else
+            {
+                using (var db = new ChiroGroepEntities())
+                {
+                    // Alle uitstappen ophalen
+                    resultaat = (from u in db.Uitstap
+                                 where u.GroepsWerkJaar.Groep.ID == groepID
+                                 select u).ToArray();
+                }
+            }
+
+            return Mapper.Map<IEnumerable<Uitstap>, IEnumerable<UitstapInfo>>(resultaat);
         }
 
         /// <summary>
@@ -79,7 +185,15 @@ namespace Chiro.Gap.Services
         /// <returns>Details over de uitstap</returns>
         public UitstapOverzicht DetailsOphalen(int uitstapID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            Uitstap resultaat;
+
+            if (!_autorisatieMgr.IsGavUitstap(uitstapID))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            resultaat = _uitstappenRepo.Select().FirstOrDefault(u => u.ID == uitstapID);
+            return Mapper.Map<Uitstap, UitstapOverzicht>(resultaat);
         }
 
         /// <summary>
@@ -87,10 +201,22 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="id">ID van de uitstap</param>
         /// <param name="plaatsNaam">Naam van de plaats</param>
-        /// <param name="adres">Adres van de plaats</param>
-        public void PlaatsBewaren(int id, string plaatsNaam, AdresInfo adres)
+        /// <param name="adresInfo">Adres van de plaats</param>
+        public void PlaatsBewaren(int id, string plaatsNaam, AdresInfo adresInfo)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            Uitstap resultaat;
+
+            if (!_autorisatieMgr.IsGavUitstap(id))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            resultaat = _uitstappenRepo.Select().First(u => u.ID == id);
+            resultaat.Plaats.Naam = plaatsNaam;
+
+            resultaat.Plaats.Adres = _adressenMgr.ZoekenOfMaken(adresInfo, _adressenRepo.Select());
+
+            _context.SaveChanges();
         }
 
         /// <summary>
@@ -104,9 +230,55 @@ namespace Chiro.Gap.Services
         /// <param name="logistiekDeelnemer">Bepaalt of al dan niet ingeschreven wordt als 
         /// logistieker</param>
         /// <returns>De basisgegevens van de uitstap, zodat die in de feedback gebruikt kan worden</returns>
-        public UitstapInfo Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapID, bool logistiekDeelnemer)
+        public UitstapInfo Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapID,
+                                       bool logistiekDeelnemer)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            List<GelieerdePersoon> gelieerdePersonen;
+            Uitstap uitstap;
+
+            var alleGpIDs = gelieerdePersoonIDs.Distinct().ToList();
+            var mijnGpIDs = _autorisatieMgr.EnkelMijnGelieerdePersonen(alleGpIDs);
+
+            if (alleGpIDs.Count() != mijnGpIDs.Count() || !_autorisatieMgr.IsGavUitstap(geselecteerdeUitstapID))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            uitstap = _uitstappenRepo.Select().First(u => u.ID == geselecteerdeUitstapID);
+            gelieerdePersonen =
+                _gelieerdePersonenRepo.Select().Where(gp => gelieerdePersoonIDs.Contains(gp.ID)).ToList();
+
+            var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct().ToList();
+
+            Debug.Assert(groepen.Any()); // De gelieerde personen moeten aan een groep gekoppeld zijn.
+            Debug.Assert(uitstap.GroepsWerkJaar != null);
+            Debug.Assert(uitstap.GroepsWerkJaar.Groep != null);
+
+            // Als er meer dan 1 groep is, dan is er minstens een groep verschillend van de groep
+            // van de uitstap (duivenkotenprincipe));););
+            if (groepen.Count() > 1 || groepen.First().ID != uitstap.GroepsWerkJaar.Groep.ID)
+            {
+                throw new FoutNummerException(
+                    FoutNummer.UitstapNietVanGroep,
+                    Resources.FoutieveGroepUitstap);
+            }
+
+            // Koppel enkel de gelieerde personen die nog niet aan de uitstap gekoppeld zijn
+            foreach (var gp in gelieerdePersonen.Where(gp => gp.Deelnemer.All(d => d.Uitstap.ID != uitstap.ID)))
+            {
+                var deelnemer = new Deelnemer
+                    {
+                        GelieerdePersoon = gp,
+                        Uitstap = uitstap,
+                        HeeftBetaald = false,
+                        IsLogistieker = logistiekDeelnemer,
+                        MedischeFicheOk = false
+                    };
+                gp.Deelnemer.Add(deelnemer);
+                uitstap.Deelnemer.Add(deelnemer);
+            }
+
+            return Mapper.Map<Uitstap, UitstapInfo>(uitstap);
         }
 
         /// <summary>
@@ -116,11 +288,20 @@ namespace Chiro.Gap.Services
         /// <returns>Informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/></returns>
         public IEnumerable<DeelnemerDetail> DeelnemersOphalen(int uitstapID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            Uitstap uitstap;
+
+            if (!_autorisatieMgr.IsGavUitstap(uitstapID))
+            {
+                throw new GeenGavException(Resources.GeenGav);
+            }
+
+            uitstap = _uitstappenRepo.Select().First(u => u.ID == uitstapID);
+
+            return Mapper.Map<IEnumerable<Deelnemer>, IEnumerable<DeelnemerDetail>>(uitstap.Deelnemer);
         }
 
         /// <summary>
-        /// Verwijderd een uitstap met als ID <paramref name="uitstapID"/>
+        /// Verwijdert een uitstap met als ID <paramref name="uitstapID"/>
         /// </summary>
         /// <param name="uitstapID">ID van de te verwijderen uitstap</param>
         /// <returns>Verwijderd de uitstap en toont daarna het overzicht scherm</returns>

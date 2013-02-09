@@ -43,6 +43,7 @@
     <Reference Include="DocumentFormat.OpenXml">
       <HintPath>..\References\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -126,6 +127,10 @@
     <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
       <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
       <Name>Chiro.Gap.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Poco.Context\Chiro.Gap.Poco.Context.csproj">
+      <Project>{C83B2DF6-4352-4FAD-A09E-9C59DC335B05}</Project>
+      <Name>Chiro.Gap.Poco.Context</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Poco\Chiro.Gap.Poco.Model.csproj">
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>

@@ -4,9 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Transactions;
-
+using System.Linq;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -149,84 +147,97 @@ namespace Chiro.Gap.Workers
         /// <param name="adresInfo">
         /// Bevat de gegevens van het te zoeken/maken adres
         /// </param>
+        /// <param name="adressen">
+        /// Lijst met bestaande adressen om na te kijken of het nieuwe adres al bestaat
+        /// </param>
         /// <returns>
         /// Gevonden adres
         /// </returns>
         /// <remarks>
         /// Ieder heeft het recht adressen op te zoeken
         /// </remarks>
-        public Adres ZoekenOfMaken(AdresInfo adresInfo)
+        public Adres ZoekenOfMaken(AdresInfo adresInfo, IQueryable<Adres> adressen)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-            //var problemen = new Dictionary<string, FoutBericht>();
+            Adres resultaat;
+            var problemen = new Dictionary<string, FoutBericht>();
 
-            //// Al maar preventief een collectie fouten verzamelen.  Als daar uiteindelijk
-            //// geen foutberichten inzitten, dan is er geen probleem.  Anders
-            //// creëer ik een exception.
-            //if (adresInfo.StraatNaamNaam == string.Empty)
-            //{
-            //    problemen.Add("StraatNaamNaam",
-            //                  new FoutBericht
-            //                      {
-            //                          FoutNummer = FoutNummer.StraatOntbreekt,
-            //                          Bericht = string.Format(
-            //                              Resources.StraatOntbreekt,
-            //                              adresInfo.StraatNaamNaam,
-            //                              adresInfo.PostNr)
-            //                      });
-            //}
+            // Al maar preventief een collectie fouten verzamelen.  Als daar uiteindelijk
+            // geen foutberichten in zitten, dan is er geen probleem.  Anders
+            // creëer ik een exception.
+            if (adresInfo.StraatNaamNaam == string.Empty)
+            {
+                problemen.Add("StraatNaamNaam",
+                              new FoutBericht
+                                  {
+                                      FoutNummer = FoutNummer.StraatOntbreekt,
+                                      Bericht = string.Format(
+                                          Resources.StraatOntbreekt,
+                                          adresInfo.StraatNaamNaam,
+                                          adresInfo.PostNr)
+                                  });
+            }
 
-            //// Controle formaat postnummer enkel voor belgische adressen.
-            //if ((string.IsNullOrEmpty(adresInfo.LandNaam) ||
-            //     string.Compare(adresInfo.LandNaam, Resources.Belgie, true) == 0) &&
-            //    (adresInfo.PostNr < 1000 || adresInfo.PostNr > 9999))
-            //{
-            //    problemen.Add("PostNr",
-            //                  new FoutBericht
-            //                      {
-            //                          FoutNummer = FoutNummer.OngeldigPostNummer,
-            //                          Bericht = string.Format(
-            //                              Resources.OngeldigPostNummer,
-            //                              adresInfo.StraatNaamNaam,
-            //                              adresInfo.PostNr)
-            //                      });
-            //}
+            // Controle formaat postnummer enkel voor Belgische adressen.
+            if ((string.IsNullOrEmpty(adresInfo.LandNaam) ||
+                 string.Compare(adresInfo.LandNaam, Resources.Belgie, true) == 0) &&
+                (adresInfo.PostNr < 1000 || adresInfo.PostNr > 9999))
+            {
+                problemen.Add("PostNr",
+                              new FoutBericht
+                                  {
+                                      FoutNummer = FoutNummer.OngeldigPostNummer,
+                                      Bericht = string.Format(
+                                          Resources.OngeldigPostNummer,
+                                          adresInfo.StraatNaamNaam,
+                                          adresInfo.PostNr)
+                                  });
+            }
 
-            //if (adresInfo.WoonPlaatsNaam == string.Empty)
-            //{
-            //    problemen.Add("WoonPlaatsNaam",
-            //                  new FoutBericht
-            //                      {
-            //                          FoutNummer = FoutNummer.WoonPlaatsOntbreekt,
-            //                          Bericht = string.Format(
-            //                              Resources.WoonPlaatsOntbreekt,
-            //                              adresInfo.StraatNaamNaam,
-            //                              adresInfo.PostNr)
-            //                      });
-            //}
+            if (adresInfo.WoonPlaatsNaam == string.Empty)
+            {
+                problemen.Add("WoonPlaatsNaam",
+                              new FoutBericht
+                                  {
+                                      FoutNummer = FoutNummer.WoonPlaatsOntbreekt,
+                                      Bericht = string.Format(
+                                          Resources.WoonPlaatsOntbreekt,
+                                          adresInfo.StraatNaamNaam,
+                                          adresInfo.PostNr)
+                                  });
+            }
 
-            //// Als er hier al fouten zijn: gewoon throwen.  Me hiel 't stad, mor ni me maa!
-            //if (problemen.Count != 0)
-            //{
-            //    throw new OngeldigObjectException(problemen);
-            //}
+            // Als er hier al fouten zijn: gewoon throwen.  Me hiel 't stad, mor ni me maa!
+            if (problemen.Count != 0)
+            {
+                throw new OngeldigObjectException(problemen);
+            }
 
-            //var adresInDb = _adressenDao.Ophalen(adresInfo, false);
+            // Nagaan of het adres al bestaat
+            resultaat = (from adr in adressen.OfType<BelgischAdres>()
+                         where adr.StraatNaam.Naam == adresInfo.StraatNaamNaam
+                               && adr.StraatNaam.PostNummer == adresInfo.PostNr
+                               && adr.HuisNr == adresInfo.HuisNr
+                         select adr).FirstOrDefault();
 
-            //if (adresInDb == null)
-            //{
-            //    return Maken(adresInfo);
-            //}
-            //else
-            //{
-            //    if (adresInDb is BelgischAdres)
-            //    {
-            //        Debug.Assert(((BelgischAdres)adresInDb).StraatNaam != null);
-            //        Debug.Assert(((BelgischAdres)adresInDb).WoonPlaats != null);
-            //    }
+            if (resultaat == null)
+            {
+                // Niet gevonden als Belgisch adres. Tweede controle: bestaat het als buitenlands adres?
+                resultaat = (from adr in adressen.OfType<BuitenLandsAdres>()
+                             where adr.Straat == adresInfo.StraatNaamNaam
+                                   && adr.PostNummer == adresInfo.PostNr
+                                   && adr.HuisNr == adresInfo.HuisNr
+                                   && adr.Land.Naam == adresInfo.LandNaam
+                                   && adr.PostCode == adresInfo.PostCode
+                             select adr).FirstOrDefault();
 
-            //    return adresInDb;
-            //}
+                if (resultaat == null)
+                {
+                    // Adres is niet gevonden en bestaat dus nog niet in de databank
+                    resultaat = Maken(adresInfo);
+                }
+            }
+
+            return resultaat;
         }
     }
 }

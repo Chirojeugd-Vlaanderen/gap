@@ -79,6 +79,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to België.
+        /// </summary>
+        internal static string Belgie {
+            get {
+                return ResourceManager.GetString("Belgie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De categorie is niet leeg..
         /// </summary>
         internal static string CategorieNietLeeg {
@@ -120,6 +129,15 @@ namespace Chiro.Gap.Services.Properties {
         internal static string FouteCommunicatieVormVoorPersoonString {
             get {
                 return ResourceManager.GetString("FouteCommunicatieVormVoorPersoonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to De groep van de uitstap verschilt van de groep van de deelnemer..
+        /// </summary>
+        internal static string FoutieveGroepUitstap {
+            get {
+                return ResourceManager.GetString("FoutieveGroepUitstap", resourceCulture);
             }
         }
         
