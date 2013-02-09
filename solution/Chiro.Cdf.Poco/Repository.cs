@@ -38,6 +38,11 @@ namespace Chiro.Cdf.Poco
             return _context.Set<TEntity>().First(predicate);
         }
 
+        /// <summary>
+        /// Zoekt de entiteit op met de gegeven ID
+        /// </summary>
+        /// <param name="id">ID van op te zoeken entiteit</param>
+        /// <returns>Entiteit met de gegeven ID. <c>null</c> als ze niet is gevonden.</returns>
         public TEntity ByID(int id)
         {
             return _context.Set<TEntity>().FirstOrDefault(x => x.ID == id);
