@@ -22,6 +22,22 @@ namespace Chiro.Gap.Services
             }
         }
 
+        public void Check(Uitstap g)
+        {
+            if (g == null || !_autorisatieMgr.IsGav(g))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+        }
+
+        public void Check(Deelnemer g)
+        {
+            if (g == null || !_autorisatieMgr.IsGav(g))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+        }
+
         public void Check(Functie g)
         {
             if (g == null || !_autorisatieMgr.IsGav(g.Groep))
