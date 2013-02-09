@@ -3,7 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -43,6 +42,7 @@ namespace Chiro.Gap.Services
         private readonly IRepository<Adres> _adressenRepo;
         private readonly IRepository<Uitstap> _uitstappenRepo;
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
+        private readonly IRepository<Deelnemer> _deelnemersRepo;
 
         // Managers voor niet-triviale businesslogica
 
@@ -69,6 +69,7 @@ namespace Chiro.Gap.Services
             _adressenRepo = repositoryProvider.RepositoryGet<Adres>();
             _uitstappenRepo = repositoryProvider.RepositoryGet<Uitstap>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
+            _deelnemersRepo = repositoryProvider.RepositoryGet<Deelnemer>();
 
             _autorisatieMgr = autorisatieManager;
             _uitstappenMgr = uitstappenManager;
@@ -114,10 +115,6 @@ namespace Chiro.Gap.Services
             else
             {
                 // Haal origineel op, gekoppeld aan groepswerkjaar
-                // (en ook aan groep, want die is nodig voor sync met kipadmin)
-
-                // uitstap = _uitstappenMgr.Ophalen(info.ID, UitstapExtras.Groep);
-
                 uitstap = (from u in groepsWerkJaar.Uitstap
                            where u.ID == info.ID
                            select u).First();
@@ -166,13 +163,8 @@ namespace Chiro.Gap.Services
             }
             else
             {
-                using (var db = new ChiroGroepEntities())
-                {
-                    // Alle uitstappen ophalen
-                    resultaat = (from u in db.Uitstap
-                                 where u.GroepsWerkJaar.Groep.ID == groepID
-                                 select u).ToArray();
-                }
+                // Alle uitstappen ophalen
+                resultaat = _uitstappenRepo.Select().Where(u => u.GroepsWerkJaar.Groep.ID == groepID).ToList();
             }
 
             return Mapper.Map<IEnumerable<Uitstap>, IEnumerable<UitstapInfo>>(resultaat);
@@ -274,10 +266,13 @@ namespace Chiro.Gap.Services
                         IsLogistieker = logistiekDeelnemer,
                         MedischeFicheOk = false
                     };
+
+                // Moet dat nu nog alle twee gebeuren?
                 gp.Deelnemer.Add(deelnemer);
                 uitstap.Deelnemer.Add(deelnemer);
             }
 
+            _context.SaveChanges();
             return Mapper.Map<Uitstap, UitstapInfo>(uitstap);
         }
 
@@ -307,7 +302,17 @@ namespace Chiro.Gap.Services
         /// <returns>Verwijderd de uitstap en toont daarna het overzicht scherm</returns>
         public void UitstapVerwijderen(int uitstapID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            if (!_autorisatieMgr.IsGavUitstap(uitstapID))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var uitstap = _uitstappenRepo.Select().First(u => u.ID == uitstapID);
+            if (uitstap != null)
+            {
+                _uitstappenRepo.Delete(uitstap);
+                _context.SaveChanges();
+            }
         }
 
         /// <summary>
@@ -318,17 +323,67 @@ namespace Chiro.Gap.Services
         /// <returns>De ID van de uitstap, ter controle, en misschien handig voor feedback</returns>
         public int ContactInstellen(int deelnemerID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            Deelnemer deelnemer;
+
+            if (!_autorisatieMgr.IsGavDeelnemer(deelnemerID))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var resultaat = DeelnemerOphalen(deelnemerID);
+            deelnemer = Mapper.Map<DeelnemerDetail, Deelnemer>(resultaat);
+
+            Debug.Assert(deelnemer.Uitstap != null);
+
+            if (deelnemer.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() == null)
+            {
+                // Een deelnemer kan alleen contact zijn voor zijn eigen uitstap.  Is de deelnemer
+                // al contact voor een uitstap, dan volgt daaruit dat hij al contact is voor zijn
+                // eigen uitstap.
+                var vorigeVerantwoordelijke = deelnemer.Uitstap.ContactDeelnemer;
+
+                if (vorigeVerantwoordelijke != null)
+                {
+                    vorigeVerantwoordelijke.UitstapWaarvoorVerantwoordelijk = null;
+                }
+
+                deelnemer.Uitstap.ContactDeelnemer = deelnemer;
+                deelnemer.UitstapWaarvoorVerantwoordelijk.Add(deelnemer.Uitstap);
+            }
+
+            return deelnemer.Uitstap.ID;
         }
 
         /// <summary>
         /// Schrijft de deelnemer met gegeven <paramref name="deelnemerID"/> uit voor zijn uitstap.
         /// </summary>
         /// <param name="deelnemerID">ID uit te schrijven deelnemer</param>
-        /// <returns>ID van de uitstap, ter controle, en h andig voor feedback</returns>
+        /// <returns>ID van de uitstap, ter controle, en handig voor feedback</returns>
         public int Uitschrijven(int deelnemerID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            Deelnemer deelnemer;
+            Uitstap uitstap;
+
+            if (!_autorisatieMgr.IsGavDeelnemer(deelnemerID))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var resultaat = DeelnemerOphalen(deelnemerID);
+
+            deelnemer = Mapper.Map<DeelnemerDetail, Deelnemer>(resultaat);
+            uitstap = deelnemer.Uitstap;
+
+            // Als die deelnemer contactpersoon is, moet eerst de contactpersoon van de uitstap verwijderd worden.
+            if (uitstap.ContactDeelnemer == deelnemer)
+            {
+                uitstap.ContactDeelnemer = null;
+            }
+
+            uitstap.Deelnemer.Remove(deelnemer);
+            _context.SaveChanges();
+
+            return uitstap.ID;
         }
 
         /// <summary>
@@ -338,7 +393,8 @@ namespace Chiro.Gap.Services
         /// <returns>Informatie over de deelnemer met ID <paramref name="deelnemerID"/></returns>
         public DeelnemerDetail DeelnemerOphalen(int deelnemerID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var resultaat = _deelnemersRepo.Select().FirstOrDefault(dln => dln.ID == deelnemerID);
+            return Mapper.Map<Deelnemer, DeelnemerDetail>(resultaat);
         }
 
         /// <summary>
@@ -347,7 +403,19 @@ namespace Chiro.Gap.Services
         /// <param name="info">Info nodig voor de update</param>
         public void DeelnemerBewaren(DeelnemerInfo info)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            Deelnemer deelnemer;
+
+            if (!_autorisatieMgr.IsGavDeelnemer(info.DeelnemerID))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            // Oorspronkelijke deelnemer ophalen
+            deelnemer = _deelnemersRepo.Select().First(dln => dln.ID == info.DeelnemerID);
+
+            // Nieuwe waarden invullen en opslaan
+            Mapper.Map(info, deelnemer);
+            _context.SaveChanges();
         }
 
         /// <summary>

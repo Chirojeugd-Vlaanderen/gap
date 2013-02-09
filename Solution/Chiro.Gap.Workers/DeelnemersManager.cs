@@ -22,7 +22,6 @@ namespace Chiro.Gap.Workers
             _autorisatieMgr = autorisatieManager;
         }
 
-
         /// <summary>
         /// Stelt de gegeven <paramref name="deelnemer"/> in als contactpersoon voor de uitstap waaraan
         /// hij deelneemt.

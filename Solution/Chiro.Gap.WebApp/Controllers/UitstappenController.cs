@@ -306,7 +306,7 @@ namespace Chiro.Gap.WebApp.Controllers
                                     ServiceHelper.CallService<IUitstappenService, DeelnemerDetail>(svc => svc.DeelnemerOphalen(id))
                             };
 
-            // We zouden hier waarschijnlijk beter wat meer details opvragen, maar omdat dat nog niet geimplementeerd is
+            // We zouden hier waarschijnlijk beter wat meer details opvragen, maar omdat dat nog niet geïmplementeerd is
             // in de backend, houden we het bij de beperkte gegevens.
 
             BaseModelInit(model, groepID, String.Format(Properties.Resources.DeelnemerBewerken, model.Deelnemer.VoorNaam, model.Deelnemer.FamilieNaam));
