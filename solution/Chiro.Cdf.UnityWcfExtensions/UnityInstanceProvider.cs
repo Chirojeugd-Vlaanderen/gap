@@ -3,7 +3,7 @@ using System.Configuration;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
-
+using Chiro.Cdf.Ioc;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 
@@ -14,16 +14,6 @@ namespace Chiro.Cdf.UnityWcfExtensions
     /// </summary>
     public class UnityInstanceProvider : IInstanceProvider
     {
-        /// <summary>
-        /// Configuration section name for Unity.
-        /// </summary>
-        private const string UnityConfigurationSectionName = "unity";
-
-        /// <summary>
-        /// Unity container.
-        /// </summary>
-        private readonly IUnityContainer container;
-
         /// <summary>
         /// The <see cref="System.Type"/> to create.
         /// </summary>
@@ -48,7 +38,6 @@ namespace Chiro.Cdf.UnityWcfExtensions
         {
             this.type = type;
             this.containerName = containerName;
-            this.container = UnityInstanceProvider.CreateUnityContainer(this.containerName);
         }
 
         /// <summary>
@@ -79,7 +68,7 @@ namespace Chiro.Cdf.UnityWcfExtensions
         /// </remarks>
         public object GetInstance(InstanceContext instanceContext, Message message)
         {
-            return this.container.Resolve(this.type);
+            return Factory.Maak(this.type);
         }
 
         /// <summary>
@@ -95,38 +84,6 @@ namespace Chiro.Cdf.UnityWcfExtensions
             {
                 disposable.Dispose();
             }
-        }
-
-        /// <summary>
-        /// Creates an instance of <see cref="Microsoft.Practices.Unity.UnityContainer"/> from configuration using the provided container name.
-        /// </summary>
-        /// <param name="containerName">Container name to configure.  If containerName is null or empty, the default container is configured.</param>
-        /// <returns>Created and configured <see cref="Microsoft.Practices.Unity.UnityContainer"/>.</returns>
-        private static IUnityContainer CreateUnityContainer(string containerName)
-        {
-            IUnityContainer unityContainer = new UnityContainer();
-            try
-            {
-                var section = ConfigurationManager.GetSection(UnityInstanceProvider.UnityConfigurationSectionName) as UnityConfigurationSection;
-                if (section != null)
-                {
-                    if (string.IsNullOrEmpty(containerName))
-                    {
-                        section.Configure(unityContainer);
-                    }
-                    else
-                    {
-                        section.Configure(unityContainer, containerName);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                unityContainer.Dispose();
-                throw;
-            }
-
-            return unityContainer;
         }
     }
 }
