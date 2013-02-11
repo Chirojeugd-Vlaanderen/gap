@@ -21,7 +21,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Businesslogica wat abonnementen betreft
     /// </summary>
-    public class AbonnementenManager
+    public class AbonnementenManager : IAbonnementenManager
     {
         private readonly IAutorisatieManager _auMgr;
         private readonly IDubbelpuntSync _dubbelpuntSync;
@@ -138,5 +138,24 @@ namespace Chiro.Gap.Workers
             return abonnement;
         }
 
+        /// <summary>
+        /// Geeft <c>true</c> als de <paramref name="gelieerdePersoon"/> een Dubbelpuntabonnement heeft voor
+        /// het huidige werkjaar.
+        /// </summary>
+        /// <param name="gelieerdePersoon">een gelieerde persoon</param>
+        /// <returns>
+        /// <c>true</c> als de <paramref name="gelieerdePersoon"/> een Dubbelpuntabonnement heeft voor
+        /// het huidige werkjaar.
+        /// </returns>
+        public bool KrijgtDubbelpunt(GelieerdePersoon gelieerdePersoon)
+        {
+            return
+                gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
+                                .First()
+                                .Abonnement.Any(
+                                    ab =>
+                                    ab.GelieerdePersoon.ID == gelieerdePersoon.ID &&
+                                    ab.Publicatie.ID == (int) PublicatieID.Dubbelpunt);
+        }
     }
 }
