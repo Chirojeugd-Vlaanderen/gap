@@ -21,6 +21,11 @@ namespace Chiro.Cdf.Poco
         void Delete(TEntity entity);
         void Attach(TEntity entity);
 
+        /// <summary>
+        /// Hash code van de achterliggende context. Enkel voor diagnostic purposes.
+        /// </summary>
+        int ContextHash { get; }
+        
         void SaveChanges();
     }
 }

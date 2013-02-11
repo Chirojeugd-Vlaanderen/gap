@@ -86,6 +86,10 @@ namespace Chiro.Gap.Services
             _functiesRepo = repositoryProvider.RepositoryGet<Functie>();
             _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
 
+            // De bedoeling is dat alle repositories dezelfde hash code delen.
+            // Ik test er twee. Als dat goed is, zal het overal wel goed zijn.
+            Debug.Assert(_straatRepo.ContextHash == _adresRepo.ContextHash);
+
             _jaarOvergangManager = jaarOvergangMgr;
             _groepenMgr = groepenMgr;
             _chiroGroepenMgr = chiroGroepenMgr;

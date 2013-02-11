@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Chiro.Cdf.Poco
@@ -72,6 +73,14 @@ namespace Chiro.Cdf.Poco
             _context.Set<TEntity>().Attach(entity);
         }
 
+        /// <summary>
+        /// Hash van de achterliggende context. Enkel voor diagnostic purposes.
+        /// </summary>
+        public int ContextHash
+        {
+            get { return _context.GetHashCode(); }
+        }
+
         public void SaveChanges()
         {
             _context.SaveChanges();
@@ -94,6 +103,7 @@ namespace Chiro.Cdf.Poco
                 if (disposing)
                 {
                     // Dispose managed resources.
+                    Debug.WriteLine("Disposing context {0}", _context.GetHashCode());
                    _context.Dispose();
                 }
                 disposed = true;
