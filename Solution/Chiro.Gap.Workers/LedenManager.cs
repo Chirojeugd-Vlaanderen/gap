@@ -700,6 +700,21 @@ namespace Chiro.Gap.Workers
                                                             .First());
         }
 
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// kind of leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als kind
+        /// of leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </returns>
+        public bool IsActiefLid(GelieerdePersoon gelieerdePersoon)
+        {
+            return HuidigLidGet(gelieerdePersoon) != null;
+        }
+
         /// <summary>
         /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
         /// (kind)lid in het huidige werkjaar van zijn groep. Anders <c>false</c>.

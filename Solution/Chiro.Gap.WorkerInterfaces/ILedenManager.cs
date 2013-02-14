@@ -147,5 +147,16 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <paramref name="gelieerdePersoon"/> lid zou kunnen worden. <c>null</c> als er zo geen
         /// bestaat.</returns>
         AfdelingsJaar AfdelingsJaarVoorstellen(GelieerdePersoon gelieerdePersoon);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// kind of leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als kind
+        /// of leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </returns>
+        bool IsActiefLid(GelieerdePersoon gelieerdePersoon);
     }
 }

@@ -406,11 +406,7 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
             }
-            catch (Exception ex)
-            {
-                throw FaultExceptionHelper.Afhandelen(ex);
-            }
-            
+           
         }
 
         /// <summary>
@@ -918,14 +914,7 @@ namespace Chiro.Gap.Services
         /// <returns>Gebruikersnaam waarmee aangemeld</returns>
         public string WieBenIk()
         {
-            try
-            {
-                return _autorisatieMgr.GebruikersNaamGet();
-            }
-            catch (Exception ex)
-            {
-                throw FaultExceptionHelper.Afhandelen(ex);
-            }
+            return _autorisatieMgr.GebruikersNaamGet();
         }
 
         /// <summary>
@@ -959,14 +948,8 @@ namespace Chiro.Gap.Services
         /// <param name="groepId">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
         public void JaarovergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepId)
         {
-            try
-            {
-                _jaarOvergangManager.JaarOvergangUitvoeren(teActiveren, groepId);
-            }
-            catch (Exception ex)
-            {
-                throw FaultExceptionHelper.Afhandelen(ex);
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            // _jaarOvergangManager.JaarOvergangUitvoeren(teActiveren, groepId);
         }
 
         /// <summary>

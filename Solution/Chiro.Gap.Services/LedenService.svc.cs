@@ -47,6 +47,7 @@ namespace Chiro.Gap.Services
         private readonly IVerzekeringenManager _verzekeringenMgr;
         private readonly ILedenManager _ledenMgr;
         private readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
+        private readonly IGroepenManager _groepenMgr;
         private readonly GavChecker _gav;
 
         /// <summary>
@@ -57,11 +58,13 @@ namespace Chiro.Gap.Services
         /// <param name="ledenMgr">Businesslogica aangaande leden</param>
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
         /// <param name="verzekeringenMgr">Businesslogica aangaande verzekeringen</param>
+        /// <param name="groepenMgr">Businesslogica m.b.t. groepen</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         public LedenService(ILedenRepository ledenRepo, IAutorisatieManager autorisatieMgr,
-                              IVerzekeringenManager verzekeringenMgr,
-                                ILedenManager ledenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
-                              IRepositoryProvider repositoryProvider)
+                            IVerzekeringenManager verzekeringenMgr,
+                            ILedenManager ledenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
+                            IGroepenManager groepenMgr,
+                            IRepositoryProvider repositoryProvider)
         {
             _ledenRepo = ledenRepo;
             _afdelingsJaarRepo = repositoryProvider.RepositoryGet<AfdelingsJaar>();
@@ -74,6 +77,8 @@ namespace Chiro.Gap.Services
             _ledenMgr = ledenMgr;
             _groepsWerkJarenMgr = groepsWerkJarenMgr;
             _autorisatieMgr = autorisatieMgr;
+            _groepenMgr = groepenMgr;
+
             _gav = new GavChecker(_autorisatieMgr);
         }
 
@@ -127,9 +132,6 @@ namespace Chiro.Gap.Services
             return groepsWerkJaar;
         }
 
-        // TODO (#195): van onderstaande logica moet wel wat verhuizen naar de workers!
-        // TODO (#1053): beter systeem bedenken voor feedback dan via foutBerichten.
-        //      Foutberichten bevat nu een string die gewoon in de UI wordt geplakt, en dat breekt de seperation of concerns.
 
         /// <summary>
         /// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
@@ -139,6 +141,10 @@ namespace Chiro.Gap.Services
         /// <returns>De LidIds van de personen die lid zijn gemaakt</returns>
         public List<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IList<int> gelieerdePersoonIds, out string foutBerichten)
         {
+            // TODO (#195): van onderstaande logica moet wel wat verhuizen naar de workers!
+            // TODO (#1053): beter systeem bedenken voor feedback dan via foutBerichten.
+            //      Foutberichten bevat nu een string die gewoon in de UI wordt geplakt, en dat breekt de seperation of concerns.
+
             foutBerichten = string.Empty;
             var foutBerichtenBuilder = new StringBuilder();
 
@@ -159,38 +165,38 @@ namespace Chiro.Gap.Services
 
             foreach (var g in groepen)
             {
-                var gwj = GetRecentsteGroepsWerkJaarEnCheckGav(g.ID);
+                var gwj = _groepenMgr.HuidigWerkJaar(g);
 
-                foreach (var gp in g.GelieerdePersoon.OrderByDescending(gp => gp.GebDatumMetChiroLeefTijd))
+                foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g.ID).OrderByDescending(gp => gp.GebDatumMetChiroLeefTijd))
                 {
-                    try
+                    if (_ledenMgr.IsActiefLid(gp))
                     {
-                        var bestaandLid = gp.Lid.FirstOrDefault();
-
-                        if (bestaandLid != null && !bestaandLid.NonActief) // bestaat al als actief lid
-                        {
-                            foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven,
-                                                                          gp.Persoon.VolledigeNaam));
-                            continue;
-                        }
-                        var voorstel = _ledenMgr.InschrijvingVoorstellen(gp, gwj, true);
-
-                        voorgesteldelijst.Add(new InTeSchrijvenLid
-                                                  {
-                                                      AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant,
-                                                      AfdelingsJaarIDs = voorstel.AfdelingsJaarIDs,
-                                                      GelieerdePersoonID = gp.ID,
-                                                      LeidingMaken = voorstel.LeidingMaken,
-                                                      VolledigeNaam = gp.Persoon.VolledigeNaam
-                                                  });
+                        foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven,
+                                                                      gp.Persoon.VolledigeNaam));
                     }
-                    catch (GapException ex)
+                    else
                     {
-                        // TODO (#95): ex.Message, wat een bericht voor de programmeur moet zijn, wordt meegegeven met 'foutberichten', 
-                        //      waarvan de inhoud rechtstreeks op de GUI getoond zal worden. Dit breekt de seperation of concerns.
+                        try
+                        {
+                            var voorstel = _ledenMgr.InschrijvingVoorstellen(gp, gwj, true);
 
-                        foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam,
-                                                                      ex.Message));
+                            voorgesteldelijst.Add(new InTeSchrijvenLid
+                                                      {
+                                                          AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant,
+                                                          AfdelingsJaarIDs = voorstel.AfdelingsJaarIDs,
+                                                          GelieerdePersoonID = gp.ID,
+                                                          LeidingMaken = voorstel.LeidingMaken,
+                                                          VolledigeNaam = gp.Persoon.VolledigeNaam
+                                                      });
+                        }
+                        catch (GapException ex)
+                        {
+                            // TODO (#95): ex.Message, wat een bericht voor de programmeur moet zijn, wordt meegegeven met 'foutberichten', 
+                            //      waarvan de inhoud rechtstreeks op de GUI getoond zal worden. Dit breekt de seperation of concerns.
+
+                            foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam,
+                                                                          ex.Message));
+                        }
                     }
                 }
             }
@@ -491,11 +497,17 @@ namespace Chiro.Gap.Services
 
             try
             {
-                _verzekeringenMgr.Verzekeren(lid, verzekeringstype, DateTime.Today, _groepsWerkJarenMgr.EindDatum(lid.GroepsWerkJaar));
+                _verzekeringenMgr.Verzekeren(lid, verzekeringstype, DateTime.Today,
+                                             _groepsWerkJarenMgr.EindDatum(lid.GroepsWerkJaar));
             }
-            catch (Exception ex)
+            catch (FoutNummerException ex)
             {
-                throw FaultExceptionHelper.Afhandelen(ex);
+                throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
+            }
+            catch (BlokkerendeObjectenException<PersoonsVerzekering>)
+            {
+                // TODO: beter faultcontract. (VerzkeringsInfo?)
+                throw FaultExceptionHelper.BestaatAl("Verzekering");
             }
 
             _ledenRepo.SaveChanges();
