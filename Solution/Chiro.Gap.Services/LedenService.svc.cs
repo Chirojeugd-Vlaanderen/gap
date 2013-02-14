@@ -122,17 +122,7 @@ namespace Chiro.Gap.Services
 
         #endregion
 
-        GroepsWerkJaar GetRecentsteGroepsWerkJaarEnCheckGav(int groepId)
-        {
-            var groepsWerkJaar = _groepsWerkJarenRepo.Select()
-                .Where(gwj => gwj.Groep.ID == groepId)
-                .OrderByDescending(gwj => gwj.WerkJaar)
-                .First();
-            Gav.Check(groepsWerkJaar);
-            return groepsWerkJaar;
-        }
-
-
+ 
         /// <summary>
         /// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
         /// </summary>
@@ -238,7 +228,7 @@ namespace Chiro.Gap.Services
             {
                 // Per groep lid maken.
                 // Zoek eerst recentste groepswerkjaar.
-                var gwj = GetRecentsteGroepsWerkJaarEnCheckGav(g.ID);
+                var gwj = _groepenMgr.HuidigWerkJaar(g);
 
                 foreach (var gp in g.GelieerdePersoon)
                 {
@@ -349,7 +339,7 @@ namespace Chiro.Gap.Services
 
             foreach (var g in groepen)
             {
-                var gwj = GetRecentsteGroepsWerkJaarEnCheckGav(g.ID);
+                var gwj = _groepenMgr.HuidigWerkJaar(g);
 
                 foreach (var gp in g.GelieerdePersoon)
                 {
