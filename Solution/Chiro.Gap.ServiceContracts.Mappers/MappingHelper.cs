@@ -549,11 +549,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.ID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Naam));
 
-            // Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
-            // dus passen we de link aan in de andere richting!
-            // Maar kunnen er meerdere leden zijn?
-            // @Broes: Ja.  Typisch als de persoon gedurende meer dan 1 werkJaar lid is.
 
+            // Let op: Gebruikersrechten worden niet automatisch gemapt, want dat staat
+            // nog niet helemaal op punt.
             Mapper.CreateMap<GelieerdePersoon, PersoonLidInfo>()
                 .ForMember(
                     dst => dst.PersoonDetail,
@@ -566,7 +564,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src.Communicatie))
                 .ForMember(
                     dst => dst.LidInfo,
-                    opt => opt.MapFrom(src => src.Lid.FirstOrDefault())) // dit werkt enkel als er maar 1 lid aan de persoon is gekoppeld!
+                    opt => opt.MapFrom(src => _ledenMgr.HuidigLidGet(src)))
                 .ForMember(
                     dst => dst.GebruikersInfo,
                     opt => opt.Ignore());

@@ -252,5 +252,23 @@ namespace Chiro.Gap.Workers
             return ToekennenOfVerlengen(account, groep,
                                         DateTime.Now.AddMonths(Settings.Default.MaandenGebruikersRechtStandaard));
         }
+
+        /// <summary>
+        /// Levert het gebruikersrecht op dat een <paramref name="gelieerdePersoon"/> heeft op zijn eigen groep. 
+        /// If any.  Als <paramref name="gelieerdePersoon"/> geen gebruikersrechten heeft op zijn groep, wordt 
+        /// <c>null</c> opgeleverd.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// Het gebruikersrecht op dat een <paramref name="gelieerdePersoon"/> heeft op zijn eigen groep. If any. 
+        /// Als <paramref name="gelieerdePersoon"/> geen gebruikersrechten heeft op zijn groep, wordt <c>null</c> 
+        /// opgeleverd.
+        /// </returns>
+        public GebruikersRecht GebruikersRechtGet(GelieerdePersoon gelieerdePersoon)
+        {
+            return
+                gelieerdePersoon.Groep.GebruikersRecht.FirstOrDefault(
+                    gr => gr.Gav.Persoon.Any(p => p.ID == gelieerdePersoon.Persoon.ID));
+        }
     }
 }

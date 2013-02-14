@@ -41,7 +41,7 @@ namespace Chiro.Gap.Services
 
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly ICommunicatieVormenManager _communicatieVormenMgr;
-        private readonly ILedenManager _ledenMgr;
+        private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
 
         // Sync-interfaces
 
@@ -54,11 +54,11 @@ namespace Chiro.Gap.Services
         /// gebruiken context en repository op.</param>
         /// <param name="autorisatieMgr">Logica m.b.t. autorisatie</param>
         /// <param name="communicatieVormenMgr">Logica m.b.t. communicatievormen</param>
-        /// <param name="ledenMgr">Logica m.b.t. leden en lid maken</param>
+        /// <param name="gebruikersRechtenMgr">Logica m.b.t. gebruikersrechten</param>
         /// <param name="communicatieSync">Zorgt voor synchronisatie met Kipadmin</param>
         public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
                                         ICommunicatieVormenManager communicatieVormenMgr,
-                                        ILedenManager ledenMgr,
+                                        IGebruikersRechtenManager gebruikersRechtenMgr,
                                         ICommunicatieSync communicatieSync)
         {
             _communicatieVormRepo = repositoryProvider.RepositoryGet<CommunicatieVorm>();
@@ -68,7 +68,7 @@ namespace Chiro.Gap.Services
 
             _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
-            _ledenMgr = ledenMgr;
+            _gebruikersRechtenMgr = gebruikersRechtenMgr;
 
             _communicatieSync = communicatieSync;
         }
@@ -275,30 +275,21 @@ namespace Chiro.Gap.Services
         /// </returns>
         public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID)
         {
-            var gpQuery = _gelieerdePersonenRepo.Select();
-
-            var gelieerdePersoon = (from gp in gpQuery
-                                    where gp.ID == gelieerdePersoonID
-                                    select gp).FirstOrDefault();
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
 
             if (gelieerdePersoon == null || !_autorisatieMgr.IsGav(gelieerdePersoon))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            var groepsWerkJaar =
-                gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
-
             var result = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gelieerdePersoon);
 
-            // Een aantal hacky mappings die (op dit moment) niet via automapper geimplementeerd zijn:
+            // Gebruikersrechten kunnen nog niet automatisch gemapt worden.
 
             // Als er gebruikersrechten zijn op de eigen groep, dan mappen we die gebruikersrechten naar 
             // GebruikersInfo
 
-            var gebruikersRecht =
-                gelieerdePersoon.Persoon.Gav.SelectMany(gav => gav.GebruikersRecht)
-                                .FirstOrDefault(gr => gr.Groep.ID == gelieerdePersoon.Groep.ID);
+            var gebruikersRecht = _gebruikersRechtenMgr.GebruikersRechtGet(gelieerdePersoon);
 
             if (gebruikersRecht != null)
             {
@@ -312,9 +303,6 @@ namespace Chiro.Gap.Services
             {
                 result.GebruikersInfo = Mapper.Map<Gav, GebruikersInfo>(gelieerdePersoon.Persoon.Gav.FirstOrDefault());
             }
-
-            result.PersoonDetail.KanLidWorden = _ledenMgr.KanInschrijvenAlsKind(gelieerdePersoon);
-            result.PersoonDetail.KanLeidingWorden = _ledenMgr.KanInschrijvenAlsLeiding(gelieerdePersoon);
 
             return result;
         }

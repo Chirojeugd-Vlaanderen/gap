@@ -71,5 +71,18 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns>Het gebruikersrecht</returns>
         /// <remarks>Persisteert niet.</remarks>
         GebruikersRecht ToekennenOfVerlengen(Gav account, Groep groep);
+
+        /// <summary>
+        /// Levert het gebruikersrecht op dat een <paramref name="gelieerdePersoon"/> heeft op zijn eigen groep. 
+        /// If any.  Als <paramref name="gelieerdePersoon"/> geen gebruikersrechten heeft op zijn groep, wordt 
+        /// <c>null</c> opgeleverd.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// Het gebruikersrecht op dat een <paramref name="gelieerdePersoon"/> heeft op zijn eigen groep. If any. 
+        /// Als <paramref name="gelieerdePersoon"/> geen gebruikersrechten heeft op zijn groep, wordt <c>null</c> 
+        /// opgeleverd.
+        /// </returns>
+        GebruikersRecht GebruikersRechtGet(GelieerdePersoon gelieerdePersoon);
     }
 }

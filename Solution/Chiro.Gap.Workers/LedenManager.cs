@@ -649,10 +649,7 @@ namespace Chiro.Gap.Workers
         /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.</returns>
         public bool KanInschrijvenAlsKind(GelieerdePersoon gelieerdePersoon)
         {
-            return
-                AfdelingsJaarVoorstellen(gelieerdePersoon,
-                                         gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
-                                                         .FirstOrDefault()) == null;
+            return AfdelingsJaarVoorstellen(gelieerdePersoon) != null;
         }
 
         /// <summary>
@@ -685,6 +682,22 @@ namespace Chiro.Gap.Workers
                                 .First()
                                 .Lid.Where(ld => !ld.NonActief)
                                 .FirstOrDefault(ld => ld.GelieerdePersoon.ID == gelieerdePersoon.ID);
+        }
+
+        /// <summary>
+        /// Zoekt een afdelingsjaar van het recentste groepswerkjaar, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> (kind)lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.
+        /// </summary>
+        /// <param name="gelieerdePersoon">gelieerde persoon waarvoor we een afdeling zoeken</param>
+        /// <returns>een afdelingsjaar van het recentste groepswerkjaar, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.</returns>
+        public AfdelingsJaar AfdelingsJaarVoorstellen(GelieerdePersoon gelieerdePersoon)
+        {
+            return AfdelingsJaarVoorstellen(gelieerdePersoon,
+                                            gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
+                                                            .First());
         }
 
         /// <summary>

@@ -125,5 +125,27 @@ namespace Chiro.Gap.WorkerInterfaces
         /// van zijn groep, anders <c>null</c>.
         /// </returns>
         int? LidIDGet(GelieerdePersoon gelieerdePersoon);
+
+        /// <summary>
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn groep, dan
+        /// levert deze method het overeenkomstige lidobject op. In het andere geval <c>null</c>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn groep, dan
+        /// levert deze method het overeenkomstige lidobject op. In het andere geval <c>null</c>.
+        /// </returns>
+        Lid HuidigLidGet(GelieerdePersoon gelieerdePersoon);
+
+        /// <summary>
+        /// Zoekt een afdelingsjaar van het recentste groepswerkjaar, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> (kind)lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.
+        /// </summary>
+        /// <param name="gelieerdePersoon">gelieerde persoon waarvoor we een afdeling zoeken</param>
+        /// <returns>een afdelingsjaar van het recentste groepswerkjaar, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.</returns>
+        AfdelingsJaar AfdelingsJaarVoorstellen(GelieerdePersoon gelieerdePersoon);
     }
 }
