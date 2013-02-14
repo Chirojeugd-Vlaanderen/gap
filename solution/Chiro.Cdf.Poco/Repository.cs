@@ -103,7 +103,7 @@ namespace Chiro.Cdf.Poco
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    Debug.WriteLine("Disposing context {0}", _context.GetHashCode());
+                    //Debug.WriteLine("Disposing context {0}", _context.GetHashCode());
                    _context.Dispose();
                 }
                 disposed = true;

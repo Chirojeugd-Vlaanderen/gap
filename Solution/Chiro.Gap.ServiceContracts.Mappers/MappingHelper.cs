@@ -26,7 +26,25 @@ namespace Chiro.Gap.ServiceContracts.Mappers
     /// </summary>
     public static class MappingHelper
     {
-        #region Mappings voor service
+
+        #region Systeem om workers op te halen
+
+        // Sommige worker methods zijn nuttig bij het mappen. Omdat de workers sinds de nieuwe
+        // backend geen toegang meer moeten hebben tot de repository's, kunnen we ze hier
+        // rechtstreeks gebruiken.
+
+        // Probleem: de workers worden normaalgezien geinjecteerd. En dat is niet vanzelfsprekend
+        // in een statische klasse. Om problemen te vermijden (zoals de dependency injection die
+        // geconfigureerd worden als de workers hier al bestaan), wordt een worker, als die van
+        // doen is, iedere keer opgeleverd door de IOC-container.
+
+        // Dat doen we alleen in deze klasse! In alle andere gevallen doen we dependency
+        // injection via de constructor.
+
+        private static ILedenManager _ledenMgr { get { return Factory.Maak<ILedenManager>(); } }
+        private static IAbonnementenManager _abonnementenMgr { get { return Factory.Maak<IAbonnementenManager>(); } }
+
+        #endregion
 
         #region Private extension methods om gemakkelijker adressen te mappen.
 
@@ -120,6 +138,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
         #endregion
 
+        #region Mappings voor service
+
         /// <summary>
         /// Definieert meteen alle nodige mappings.
         /// </summary>
@@ -142,10 +162,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.VersieString, opt => opt.MapFrom(src => src.Persoon.VersieString))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam));
 
-            // Die mapping naar PersoonDetail werkt enkel las er aan de persoon alleen leden
-            // uit het huidige werkJaar gekoppeld zijn.
-            // Idem voor abonnementen!
-
             Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
                 .ForMember(
                     dst => dst.GelieerdePersoonID,
@@ -153,19 +169,19 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 // TODO (#968): opkuis
                 .ForMember(
                     dst => dst.IsLid,
-                    opt => opt.MapFrom(src => (src.Lid.Any(e => e.Type == LidType.Kind && !e.NonActief))))
+                    opt => opt.MapFrom(src => _ledenMgr.IsActiefKind(src)))
                 .ForMember(
                     dst => dst.IsLeiding,
-                    opt => opt.MapFrom(src => (src.Lid.Any(e => e.Type == LidType.Leiding && !e.NonActief))))
+                    opt => opt.MapFrom(src => _ledenMgr.IsActieveLeiding(src)))
                 .ForMember(
                     dst => dst.LidID,
-                    opt => opt.MapFrom(src => (src.Lid != null && src.Lid.FirstOrDefault() != null ? (int?)(src.Lid.First().ID) : null)))
+                    opt => opt.MapFrom(src => _ledenMgr.LidIDGet(src)))
                 .ForMember(
                     dst => dst.KanLidWorden,
-                    opt => opt.MapFrom(src => false)) // Wordt in de service ingevuld, te ingewikkelde code
+                    opt => opt.MapFrom(src => _ledenMgr.KanInschrijvenAlsKind(src)))
                 .ForMember(
                     dst => dst.KanLeidingWorden,
-                    opt => opt.MapFrom(src => false)) // Wordt in de service ingevuld, te ingewikkelde code
+                    opt => opt.MapFrom(src => _ledenMgr.KanInschrijvenAlsLeiding(src)))
                 .ForMember(
                     dst => dst.AdNummer,
                     opt => opt.MapFrom(src => src.Persoon.AdNummer))
@@ -201,7 +217,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.Ignore())
                 .ForMember(
                     dst => dst.DubbelPuntAbonnement,
-                    opt => opt.MapFrom(src => src.Abonnement.FirstOrDefault() != null));
+                    opt => opt.MapFrom(src => _abonnementenMgr.KrijgtDubbelpunt(src)));
 
             Mapper.CreateMap<GelieerdePersoon, PersoonOverzicht>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))

@@ -647,7 +647,7 @@ namespace Chiro.Gap.Workers
         /// <param name="gelieerdePersoon">een gelieerde persoon</param>
         /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
         /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.</returns>
-        public bool KanLidWorden(GelieerdePersoon gelieerdePersoon)
+        public bool KanInschrijvenAlsKind(GelieerdePersoon gelieerdePersoon)
         {
             return
                 AfdelingsJaarVoorstellen(gelieerdePersoon,
@@ -662,13 +662,75 @@ namespace Chiro.Gap.Workers
         /// <param name="gelieerdePersoon">een gelieerde persoon</param>
         /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
         /// leiding kan worden.</returns>
-        public bool KanLeidingWorden(GelieerdePersoon gelieerdePersoon)
+        public bool KanInschrijvenAlsLeiding(GelieerdePersoon gelieerdePersoon)
         {
             return KanLeidingWorden(gelieerdePersoon,
                                     gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
                                                     .FirstOrDefault());
         }
 
+        /// <summary>
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn groep, dan
+        /// levert deze method het overeenkomstige lidobject op. In het andere geval <c>null</c>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn groep, dan
+        /// levert deze method het overeenkomstige lidobject op. In het andere geval <c>null</c>.
+        /// </returns>
+        public Lid HuidigLidGet(GelieerdePersoon gelieerdePersoon)
+        {
+            return
+                gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
+                                .First()
+                                .Lid.Where(ld => !ld.NonActief)
+                                .FirstOrDefault(ld => ld.GelieerdePersoon.ID == gelieerdePersoon.ID);
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// (kind)lid in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// (kind)lid in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </returns>
+        public bool IsActiefKind(GelieerdePersoon gelieerdePersoon)
+        {
+            var lid = HuidigLidGet(gelieerdePersoon);
+            return lid != null && lid is Kind;
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </returns>
+        public bool IsActieveLeiding(GelieerdePersoon gelieerdePersoon)
+        {
+            var lid = HuidigLidGet(gelieerdePersoon);
+            return lid != null && lid is Leiding;
+        }
+
+        /// <summary>
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn
+        /// groep, wordt het lidID opgeleverd, zo niet <c>null</c>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// Het lidID als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar
+        /// van zijn groep, anders <c>null</c>.
+        /// </returns>
+        public int? LidIDGet(GelieerdePersoon gelieerdePersoon)
+        {
+            var lid = HuidigLidGet(gelieerdePersoon);
+            return lid == null ? null : (int?)lid.ID;
+        }
 
         /// <summary>
         /// Zoekt een afdelingsjaar van gegeven <paramref name="groepsWerkJaar"/>, waarin de gegeven 

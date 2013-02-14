@@ -77,12 +77,12 @@ namespace Chiro.Gap.WorkerInterfaces
 
         /// <summary>
         /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
-        /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.
+        /// (kind)lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.
         /// </summary>
         /// <param name="gelieerdePersoon">een gelieerde persoon</param>
         /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
         /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.</returns>
-        bool KanLidWorden(GelieerdePersoon gelieerdePersoon);
+        bool KanInschrijvenAlsKind(GelieerdePersoon gelieerdePersoon);
 
         /// <summary>
         /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
@@ -91,6 +91,39 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="gelieerdePersoon">een gelieerde persoon</param>
         /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
         /// leiding kan worden.</returns>
-        bool KanLeidingWorden(GelieerdePersoon gelieerdePersoon);
+        bool KanInschrijvenAlsLeiding(GelieerdePersoon gelieerdePersoon);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// (kind)lid in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// (kind)lid in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </returns>
+        bool IsActiefKind(GelieerdePersoon gelieerdePersoon);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </returns>
+        bool IsActieveLeiding(GelieerdePersoon gelieerdePersoon);
+
+        /// <summary>
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn
+        /// groep, wordt het lidID opgeleverd, zo niet <c>null</c>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// Het lidID als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar
+        /// van zijn groep, anders <c>null</c>.
+        /// </returns>
+        int? LidIDGet(GelieerdePersoon gelieerdePersoon);
     }
 }

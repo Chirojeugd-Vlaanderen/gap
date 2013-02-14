@@ -313,8 +313,8 @@ namespace Chiro.Gap.Services
                 result.GebruikersInfo = Mapper.Map<Gav, GebruikersInfo>(gelieerdePersoon.Persoon.Gav.FirstOrDefault());
             }
 
-            result.PersoonDetail.KanLidWorden = _ledenMgr.KanLidWorden(gelieerdePersoon);
-            result.PersoonDetail.KanLeidingWorden = _ledenMgr.KanLeidingWorden(gelieerdePersoon);
+            result.PersoonDetail.KanLidWorden = _ledenMgr.KanInschrijvenAlsKind(gelieerdePersoon);
+            result.PersoonDetail.KanLeidingWorden = _ledenMgr.KanInschrijvenAlsLeiding(gelieerdePersoon);
 
             return result;
         }
