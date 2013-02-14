@@ -44,11 +44,11 @@ namespace Chiro.Gap.WorkerInterfaces
         Niveau LidTypeNaarMiveau(LidType lidType, Niveau groepsNiveau);
         
         /// <summary>
-        /// Bepaalt het recentste groepswerkjaar van de gegeven <paramref name="groep"/>
+        /// Bepaalt het huidige groepswerkjaar van de gegeven <paramref name="groep"/>
         /// </summary>
-        /// <param name="groep">De groep waarvoor het recentste werkjaar gevraagd is</param>
-        /// <returns>Recente groepswerkjaar van de groep</returns>
-        GroepsWerkJaar RecentsteWerkJaar(Groep groep);
+        /// <param name="groep">De groep waarvoor het huidige werkjaar gevraagd is</param>
+        /// <returns>Huidige groepswerkjaar van de groep</returns>
+        GroepsWerkJaar HuidigWerkJaar(Groep groep);
 
         /// <summary>
         /// Geeft <c>true</c> als we in de live-omgeving werken

@@ -170,16 +170,6 @@ namespace Chiro.Gap.Services
             return Mapper.Map<Groep, GroepInfo>(groep);
         }
 
-        GroepsWerkJaar GetRecentsteGroepsWerkJaarEnCheckGav(int groepId)
-        {
-            var groepsWerkJaar = _groepsWerkJarenRepo.Select()
-                .Where(gwj => gwj.Groep.ID == groepId)
-                .OrderByDescending(gwj => gwj.WerkJaar)
-                .First();
-            Gav.Check(groepsWerkJaar);
-            return groepsWerkJaar;
-        }
-
         /// <summary>
         /// Ophalen van gedetailleerde informatie over de groep met ID <paramref name="groepId"/>
         /// </summary>
@@ -187,7 +177,11 @@ namespace Chiro.Gap.Services
         /// <returns>Groepsdetails, inclusief categorieen en huidige actieve afdelingen</returns>
         public GroepDetail DetailOphalen(int groepId)
         {
-            var groepsWerkJaar = GetRecentsteGroepsWerkJaarEnCheckGav(groepId);
+            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
 
             var resultaat = Mapper.Map<Groep, GroepDetail>(groepsWerkJaar.Groep);
             Mapper.Map(groepsWerkJaar.AfdelingsJaar, resultaat.Afdelingen);
@@ -265,7 +259,12 @@ namespace Chiro.Gap.Services
         /// <returns>ID van het recentste GroepsWerkJaar</returns>
         public int RecentsteGroepsWerkJaarIDGet(int groepId)
         {
-            return GetRecentsteGroepsWerkJaarEnCheckGav(groepId).ID;
+            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+            return groepsWerkJaar.ID;
         }
 
         /// <summary>
@@ -278,7 +277,11 @@ namespace Chiro.Gap.Services
         /// </returns>
         public GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepId)
         {
-            var groepsWerkJaar = GetRecentsteGroepsWerkJaarEnCheckGav(groepId);
+            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
 
             var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(groepsWerkJaar);
             result.Status = _groepsWerkJarenMgr.OvergangMogelijk(DateTime.Now, result.WerkJaar)
@@ -355,12 +358,12 @@ namespace Chiro.Gap.Services
         public void AfdelingsJaarBewaren(AfdelingsJaarDetail detail)
         {
             var afdeling = _afdelingenRepo.ByID(detail.AfdelingID);
-            Gav.Check(afdeling);
+            Gav.Check(afdeling);  // throws als geen GAV van afdeling
 
             var officieleAfdeling = _officieleAfdelingenRepo.ByID(detail.OfficieleAfdelingID);
 
             Debug.Assert(afdeling != null, "afdeling != null");
-            var huidigGwj = GetRecentsteGroepsWerkJaarEnCheckGav(afdeling.ChiroGroep.ID);
+            var huidigGwj = _groepenMgr.HuidigWerkJaar(afdeling.ChiroGroep);
 
             try
             {
@@ -497,7 +500,12 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst van ActieveAfdelingInfo</returns>
         public IList<AfdelingInfo> AlleAfdelingenOphalen(int groepId)
         {
-            var gwj = GetRecentsteGroepsWerkJaarEnCheckGav(groepId);
+            var gwj = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(gwj))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
             Debug.Assert(gwj != null, "gwj != null");
             return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(gwj.AfdelingsJaar.Select(e => e.Afdeling));
         }
@@ -510,7 +518,12 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst van AfdelingInfo</returns>
         public IList<ActieveAfdelingInfo> HuidigeAfdelingsJarenOphalen(int groepId)
         {
-            var gwj = GetRecentsteGroepsWerkJaarEnCheckGav(groepId);
+            var gwj = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(gwj))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
             Debug.Assert(gwj != null, "gwj != null");
             return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
         }
@@ -562,7 +575,11 @@ namespace Chiro.Gap.Services
         /// </returns>
         public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepId)
         {
-            var groepsWerkJaar = GetRecentsteGroepsWerkJaarEnCheckGav(groepId);
+            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
 
             var problemen = _functiesMgr.AantallenControleren(groepsWerkJaar, groepsWerkJaar.Groep.Functie.Union(_veelGebruikt.NationaleFunctiesOphalen(_functiesRepo)));
             var resultaat = (from f in groepsWerkJaar.Groep.Functie
@@ -587,7 +604,11 @@ namespace Chiro.Gap.Services
         {
             var resultaat = new List<LedenProbleemInfo>();
 
-            var groepsWerkJaar = GetRecentsteGroepsWerkJaarEnCheckGav(groepId);
+            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
 
             var aantalLedenZonderAdres = (from ld in groepsWerkJaar.Lid
                                           where ld.GelieerdePersoon.PersoonsAdres == null // geen voorkeursadres
@@ -671,7 +692,7 @@ namespace Chiro.Gap.Services
                     bestaandeFunctie));
             }
 
-            var recentsteWerkJaar = _groepenMgr.RecentsteWerkJaar(groep);
+            var recentsteWerkJaar = _groepenMgr.HuidigWerkJaar(groep);
             if (recentsteWerkJaar == null)
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepsWerkJaarNietBeschikbaar,
@@ -957,7 +978,12 @@ namespace Chiro.Gap.Services
         /// <returns>Een voorstel voor de afdelingsjaren, in de vorm van een lijstje AfdelingDetails.</returns>
         public IList<AfdelingDetail> NieuweAfdelingsJarenVoorstellen(int[] afdelingsIDs, int groepId)
         {
-            var groepsWerkJaar = GetRecentsteGroepsWerkJaarEnCheckGav(groepId);
+            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
             var nieuwWerkJaar = NieuwWerkJaarOphalen(groepId);
             var groep = groepsWerkJaar.Groep as ChiroGroep;
 

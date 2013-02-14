@@ -145,11 +145,11 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Bepaalt het recentste groepswerkjaar van de gegeven <paramref name="groep"/>
+        /// Bepaalt het huidige groepswerkjaar van de gegeven <paramref name="groep"/>
         /// </summary>
-        /// <param name="groep">De groep waarvoor het recentste werkjaar gevraagd is</param>
-        /// <returns>Recente groepswerkjaar van de groep</returns>
-        public GroepsWerkJaar RecentsteWerkJaar(Groep groep)
+        /// <param name="groep">De groep waarvoor het huidige werkjaar gevraagd is</param>
+        /// <returns>Huidige groepswerkjaar van de groep</returns>
+        public GroepsWerkJaar HuidigWerkJaar(Groep groep)
         {
             return (from wj in groep.GroepsWerkJaar
                     orderby wj.WerkJaar
