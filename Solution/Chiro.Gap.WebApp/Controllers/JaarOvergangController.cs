@@ -92,7 +92,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.LedenMeteenInschrijven = true;
             model.OfficieleAfdelingen =
                 ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
-                    e => e.OfficieleAfdelingenOphalen(groepID)).ToArray();
+                    e => e.OfficieleAfdelingenOphalen()).ToArray();
             model.Afdelingen =
                 ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>(
                     svc => svc.NieuweAfdelingsJarenVoorstellen(gekozenAfdelingsIDs, groepID));
@@ -119,7 +119,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     ServiceHelper.CallService<IGroepenService, int>(g => g.NieuwWerkJaarOphalen(groepID));
                 model.OfficieleAfdelingen =
                     ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
-                        e => e.OfficieleAfdelingenOphalen(groepID)).ToArray();
+                        e => e.OfficieleAfdelingenOphalen()).ToArray();
 
                 var alleAfdelingen =
                     ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>(

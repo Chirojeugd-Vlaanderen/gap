@@ -440,12 +440,10 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Haalt details over alle officiele afdelingen op.
         /// </summary>
-        /// <param name="groepId">ID van een groep, zodat aan de hand van het recenste groepswerkjaar
-        /// de standaardgeboortejaren van en tot bepaald kunnen worden</param>
         /// <returns>Rij met details over de officiele afdelingen</returns>
-        public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingenOphalen(int groepId)
+        public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingenOphalen()
         {
-            return Mapper.Map<IEnumerable<OfficieleAfdeling>, IEnumerable<OfficieleAfdelingDetail>>(GetRecentsteGroepsWerkJaarEnCheckGav(groepId).AfdelingsJaar.Select(e => e.OfficieleAfdeling));
+            return Mapper.Map<IEnumerable<OfficieleAfdeling>, IEnumerable<OfficieleAfdelingDetail>>(_officieleAfdelingenRepo.GetAll());
         }
 
         /// <summary>
