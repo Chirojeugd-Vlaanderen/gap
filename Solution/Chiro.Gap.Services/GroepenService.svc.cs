@@ -461,7 +461,7 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt details op van een afdeling, gebaseerd op het <paramref name="afdelingsJaarId"/>
+        /// Haalt details op van een afdelingsjaar, gebaseerd op het <paramref name="afdelingsJaarId"/>
         /// </summary>
         /// <param name="afdelingsJaarId">ID van het AFDELINGSJAAR waarvoor de details opgehaald moeten 
         /// worden.</param>
@@ -471,7 +471,7 @@ namespace Chiro.Gap.Services
             var afdelingsJaar = _afdelingsJaarRepo.ByID(afdelingsJaarId);
             Gav.Check(afdelingsJaar);
             Debug.Assert(afdelingsJaar != null, "afdelingsJaar != null");
-            return Mapper.Map<Afdeling, AfdelingDetail>(afdelingsJaar.Afdeling);
+            return Mapper.Map<AfdelingsJaar, AfdelingDetail>(afdelingsJaar);
         }
 
         /// <summary>
