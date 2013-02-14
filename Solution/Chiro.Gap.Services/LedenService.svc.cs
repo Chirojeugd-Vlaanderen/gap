@@ -127,18 +127,6 @@ namespace Chiro.Gap.Services
             return groepsWerkJaar;
         }
 
-        IEnumerable<GelieerdePersoon> GetGelieerdePersonen(IEnumerable<int> gelieerdePersoonIds)
-        {
-            var gelieerdePersonen = new List<GelieerdePersoon>();
-            foreach (var p in gelieerdePersoonIds.Select(gelieerdePersoonId => _gelieerdePersonenRepo.ByID(gelieerdePersoonId)))
-            {
-                Gav.Check(p);
-                gelieerdePersonen.Add(p);
-            }
-            return gelieerdePersonen;
-        }
-
-
         // TODO (#195): van onderstaande logica moet wel wat verhuizen naar de workers!
         // TODO (#1053): beter systeem bedenken voor feedback dan via foutBerichten.
         //      Foutberichten bevat nu een string die gewoon in de UI wordt geplakt, en dat breekt de seperation of concerns.
@@ -149,68 +137,67 @@ namespace Chiro.Gap.Services
         /// <param name="gelieerdePersoonIds">Lijst van gelieerde persoonIds waarover we inforamtie willen</param>
         /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
         /// <returns>De LidIds van de personen die lid zijn gemaakt</returns>
-        public IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIds, out string foutBerichten)
+        public List<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IList<int> gelieerdePersoonIds, out string foutBerichten)
         {
             foutBerichten = string.Empty;
+            var foutBerichtenBuilder = new StringBuilder();
 
-            try
+            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIds);
+
+            if (!_autorisatieMgr.IsGav(gelieerdePersonen) || gelieerdePersoonIds.Count != gelieerdePersonen.Count)
             {
-                var foutBerichtenBuilder = new StringBuilder();
+                throw FaultExceptionHelper.GeenGav();
+            }
 
-                // Haal meteen alle gelieerde personen op, gecombineerd met hun groep en eventueel huidig lid
-                var gelieerdePersonen = GetGelieerdePersonen(gelieerdePersoonIds);
 
-                // We gaan ervan uit dat alle gelieerde personen op dit moment tot dezelfde groep behoren.
-                // Maar in de toekomst is dat misschien niet meer zo. Dus laten we onderstaande constructie
-                // maar staan.
-                var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
+            // We gaan ervan uit dat alle gelieerde personen op dit moment tot dezelfde groep behoren.
+            // Maar in de toekomst is dat misschien niet meer zo. Dus laten we onderstaande constructie
+            // maar staan.
+            var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
 
-                var voorgesteldelijst = new List<InTeSchrijvenLid>();
+            var voorgesteldelijst = new List<InTeSchrijvenLid>();
 
-                foreach (var g in groepen)
+            foreach (var g in groepen)
+            {
+                var gwj = GetRecentsteGroepsWerkJaarEnCheckGav(g.ID);
+
+                foreach (var gp in g.GelieerdePersoon.OrderByDescending(gp => gp.GebDatumMetChiroLeefTijd))
                 {
-                    var gwj = GetRecentsteGroepsWerkJaarEnCheckGav(g.ID);
-
-                    foreach (var gp in g.GelieerdePersoon.OrderByDescending(gp => gp.GebDatumMetChiroLeefTijd))
+                    try
                     {
-                        try
+                        var bestaandLid = gp.Lid.FirstOrDefault();
+
+                        if (bestaandLid != null && !bestaandLid.NonActief) // bestaat al als actief lid
                         {
-                            var bestaandLid = gp.Lid.FirstOrDefault();
-
-                            if (bestaandLid != null && !bestaandLid.NonActief) // bestaat al als actief lid
-                            {
-                                foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
-                                continue;
-                            }
-                            var voorstel = _ledenMgr.InschrijvingVoorstellen(gp, gwj, true);
-
-                            voorgesteldelijst.Add(new InTeSchrijvenLid
-                                                      {
-                                                          AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant,
-                                                          AfdelingsJaarIDs = voorstel.AfdelingsJaarIDs,
-                                                          GelieerdePersoonID = gp.ID,
-                                                          LeidingMaken = voorstel.LeidingMaken,
-                                                          VolledigeNaam = gp.Persoon.VolledigeNaam
-                                                      });
+                            foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven,
+                                                                          gp.Persoon.VolledigeNaam));
+                            continue;
                         }
-                        catch (GapException ex)
-                        {
-                            // TODO (#95): ex.Message, wat een bericht voor de programmeur moet zijn, wordt meegegeven met 'foutberichten', 
-                            //      waarvan de inhoud rechtstreeks op de GUI getoond zal worden. Dit breekt de seperation of concerns.
+                        var voorstel = _ledenMgr.InschrijvingVoorstellen(gp, gwj, true);
 
-                            foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
-                        }
+                        voorgesteldelijst.Add(new InTeSchrijvenLid
+                                                  {
+                                                      AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant,
+                                                      AfdelingsJaarIDs = voorstel.AfdelingsJaarIDs,
+                                                      GelieerdePersoonID = gp.ID,
+                                                      LeidingMaken = voorstel.LeidingMaken,
+                                                      VolledigeNaam = gp.Persoon.VolledigeNaam
+                                                  });
+                    }
+                    catch (GapException ex)
+                    {
+                        // TODO (#95): ex.Message, wat een bericht voor de programmeur moet zijn, wordt meegegeven met 'foutberichten', 
+                        //      waarvan de inhoud rechtstreeks op de GUI getoond zal worden. Dit breekt de seperation of concerns.
+
+                        foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam,
+                                                                      ex.Message));
                     }
                 }
-
-                foutBerichten = foutBerichtenBuilder.ToString();
-
-                return voorgesteldelijst;
             }
-            catch (Exception ex)
-            {
-                throw FaultExceptionHelper.Afhandelen(ex);
-            }
+
+            foutBerichten = foutBerichtenBuilder.ToString();
+
+            return voorgesteldelijst;
         }
 
         /// <summary>
@@ -223,108 +210,116 @@ namespace Chiro.Gap.Services
         {
             foutBerichten = String.Empty;
 
-            try
+            var lidIDs = new List<int>();
+            var foutBerichtenBuilder = new StringBuilder();
+
+            // Haal meteen alle gelieerde personen op, samen met alle info die nodig is om het lid
+            // over te zetten naar Kipadmin: groep, persoon, voorkeursadres
+
+            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(lidInformatie.Select(e => e.GelieerdePersoonID));
+
+            if (!_autorisatieMgr.IsGav(gelieerdePersonen) || lidInformatie.Count() != gelieerdePersonen.Count)
             {
-                var lidIDs = new List<int>();
-                var foutBerichtenBuilder = new StringBuilder();
+                throw FaultExceptionHelper.GeenGav();
+            }
 
-                // Haal meteen alle gelieerde personen op, samen met alle info die nodig is om het lid
-                // over te zetten naar Kipadmin: groep, persoon, voorkeursadres
 
-                var gelieerdePersonen = GetGelieerdePersonen(lidInformatie.Select(e => e.GelieerdePersoonID));
+            // Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
+            // al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
+            var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
 
-                // Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
-                // al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
-                var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
+            foreach (var g in groepen)
+            {
+                // Per groep lid maken.
+                // Zoek eerst recentste groepswerkjaar.
+                var gwj = GetRecentsteGroepsWerkJaarEnCheckGav(g.ID);
 
-                foreach (var g in groepen)
+                foreach (var gp in g.GelieerdePersoon)
                 {
-                    // Per groep lid maken.
-                    // Zoek eerst recentste groepswerkjaar.
-                    var gwj = GetRecentsteGroepsWerkJaarEnCheckGav(g.ID);
+                    // Behandel leden 1 voor 1 zodat een probleem met 1 lid niet verhindert dat de rest bewaard wordt.
 
-                    foreach (var gp in g.GelieerdePersoon)
+                    try
                     {
-                        // Behandel leden 1 voor 1 zodat een probleem met 1 lid niet verhindert dat de rest bewaard wordt.
+                        // Kijk of het lid al bestaat (eventueel niet-actief).  In de meeste gevallen zal dit geen
+                        // resultaat opleveren.  Als er toch al een lid is, worden persoon, voorkeursadres, officiele afdeling,
+                        // functies ook opgehaald, omdat een eventueel geheractiveerd lid opnieuw naar Kipadmin zal moeten.
 
-                        try
+                        var l = gp.Lid.FirstOrDefault();
+                            // We hadden daarnet met de gelieerde persoon zijn huidig lidobject mee opgehaald (if any)
+
+                        if (l != null) // al ingeschreven
                         {
-                            // Kijk of het lid al bestaat (eventueel niet-actief).  In de meeste gevallen zal dit geen
-                            // resultaat opleveren.  Als er toch al een lid is, worden persoon, voorkeursadres, officiele afdeling,
-                            // functies ook opgehaald, omdat een eventueel geheractiveerd lid opnieuw naar Kipadmin zal moeten.
-
-                            var l = gp.Lid.FirstOrDefault();    // We hadden daarnet met de gelieerde persoon zijn huidig lidobject mee opgehaald (if any)
-
-                            if (l != null) // al ingeschreven
+                            if (!l.NonActief)
                             {
-                                if (!l.NonActief)
-                                {
-                                    // Al ingeschreven als actief lid; we doen er verder niets mee.
-                                    // (Behalve een foutbericht meegeven, wat ook niet echt correct is, zie #1053)
+                                // Al ingeschreven als actief lid; we doen er verder niets mee.
+                                // (Behalve een foutbericht meegeven, wat ook niet echt correct is, zie #1053)
 
-                                    foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
-                                    continue;
-                                }
-
-                                // We hebben al een lid, dat ooit uitgeschreven was.  Als we straks LedenManager.Wijzigen
-                                // gaan gebruiken om dat lid terug in te schrijven, gaat die method nakijken of afdelingen 
-                                // in lidInformatie wel gekoppeld zijn aan het groepswerkjaar waaraan het lid gekoppeld is.  Maar die
-                                // laatste koppeling hebben we niet mee opgehaald.
-
-                                // Daaorm een beetje foefelare. We hebben het groepswerkjaar wel, in gwj.  Daar hangen alle afdelingen
-                                // aan vast. Als we nu het gevonden lid koppelen aan dat groepswerkjaar, dan loopt het hopelijk goed
-                                // af.
-
-                                // Proper is dat niet, maar ik doe het toch, omdat ik weet dat het hier geen kwaad kan,
-                                // en omdat er geen tijd is voor een mooie oplossing.  Er zal waarschijnlijk eerst een 
-                                // refactoring van de backend nodig zijn (#1250).
-
-                                l.GroepsWerkJaar = gwj;
-                                gwj.Lid.Add(l);
-
-                                var gp1 = gp;
-                                _ledenMgr.Wijzigen(l, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
-
-                                // 'Wijzigen' persisteert zelf
+                                foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven,
+                                                                              gp.Persoon.VolledigeNaam));
+                                continue;
                             }
-                            else // nieuw lid
+
+                            // We hebben al een lid, dat ooit uitgeschreven was.  Als we straks LedenManager.Wijzigen
+                            // gaan gebruiken om dat lid terug in te schrijven, gaat die method nakijken of afdelingen 
+                            // in lidInformatie wel gekoppeld zijn aan het groepswerkjaar waaraan het lid gekoppeld is.  Maar die
+                            // laatste koppeling hebben we niet mee opgehaald.
+
+                            // Daaorm een beetje foefelare. We hebben het groepswerkjaar wel, in gwj.  Daar hangen alle afdelingen
+                            // aan vast. Als we nu het gevonden lid koppelen aan dat groepswerkjaar, dan loopt het hopelijk goed
+                            // af.
+
+                            // Proper is dat niet, maar ik doe het toch, omdat ik weet dat het hier geen kwaad kan,
+                            // en omdat er geen tijd is voor een mooie oplossing.  Er zal waarschijnlijk eerst een 
+                            // refactoring van de backend nodig zijn (#1250).
+
+                            l.GroepsWerkJaar = gwj;
+                            gwj.Lid.Add(l);
+
+                            var gp1 = gp;
+                            _ledenMgr.Wijzigen(l,
+                                               Mapper.Map<InTeSchrijvenLid, LidVoorstel>(
+                                                   lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
+
+                            // 'Wijzigen' persisteert zelf
+                        }
+                        else // nieuw lid
+                        {
+                            var gp1 = gp;
+                            l = _ledenMgr.NieuwInschrijven(gp, gwj, false,
+                                                           Mapper.Map<InTeSchrijvenLid, LidVoorstel>(
+                                                               lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
+
+                            // InschrijvenVolgensVoorstel persisteert niet.  Dat doen we hier.
+
+                            if (l != null)
                             {
-                                var gp1 = gp;
-                                l = _ledenMgr.NieuwInschrijven(gp, gwj, false, Mapper.Map<InTeSchrijvenLid, LidVoorstel>(lidInformatie.First(e => e.GelieerdePersoonID == gp1.ID)));
-
-                                // InschrijvenVolgensVoorstel persisteert niet.  Dat doen we hier.
-
-                                if (l != null)
-                                {
-                                    lidIDs.Add(l.ID);
-                                }
+                                lidIDs.Add(l.ID);
                             }
-                        }
-                        catch (BestaatAlException<Kind>)
-                        {
-                            foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLid, gp.Persoon.VolledigeNaam));
-                        }
-                        catch (BestaatAlException<Leiding>)
-                        {
-                            foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLeiding, gp.Persoon.VolledigeNaam));
-                        }
-                        catch (GapException ex)
-                        {
-                            foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
                         }
                     }
+                    catch (BestaatAlException<Kind>)
+                    {
+                        foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLid,
+                                                                      gp.Persoon.VolledigeNaam));
+                    }
+                    catch (BestaatAlException<Leiding>)
+                    {
+                        foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLeiding,
+                                                                      gp.Persoon.VolledigeNaam));
+                    }
+                    catch (GapException ex)
+                    {
+                        foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam,
+                                                                      ex.Message));
+                    }
                 }
-
-                foutBerichten = foutBerichtenBuilder.ToString();
-
-                _gelieerdePersonenRepo.SaveChanges();
-
-                return lidIDs;
             }
-            catch (Exception ex)
-            {
-                throw FaultExceptionHelper.Afhandelen(ex);
-            }
+
+            foutBerichten = foutBerichtenBuilder.ToString();
+
+            _gelieerdePersonenRepo.SaveChanges();
+
+            return lidIDs;
         }
 
         /// <summary>
@@ -332,46 +327,47 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdePersoonIds">Id's van de gelieerde personen</param>
         /// <param name="foutBerichten">Als voor sommige personen die actie mislukte, bevat foutBerichten een
-        /// string waarin wat uitleg staat.</param>
-        public void Uitschrijven(IEnumerable<int> gelieerdePersoonIds, out string foutBerichten)
+        ///     string waarin wat uitleg staat.</param>
+        public void Uitschrijven(IList<int> gelieerdePersoonIds, out string foutBerichten)
         {
-            try
+            var foutBerichtenBuilder = new StringBuilder();
+
+            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIds);
+
+            if (!_autorisatieMgr.IsGav(gelieerdePersonen) || gelieerdePersoonIds.Count() != gelieerdePersonen.Count)
             {
-                var foutBerichtenBuilder = new StringBuilder();
+                throw FaultExceptionHelper.GeenGav();
+            }
 
-                var gelieerdePersonen = GetGelieerdePersonen(gelieerdePersoonIds);
-                var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
+            var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
 
-                foreach (var g in groepen)
+            foreach (var g in groepen)
+            {
+                var gwj = GetRecentsteGroepsWerkJaarEnCheckGav(g.ID);
+
+                foreach (var gp in g.GelieerdePersoon)
                 {
-                    var gwj = GetRecentsteGroepsWerkJaarEnCheckGav(g.ID);
+                    var lid = gp.Lid.FirstOrDefault(e => e.GroepsWerkJaar.ID == gwj.ID);
 
-                    foreach (var gp in g.GelieerdePersoon)
+                    if (lid == null)
                     {
-                        var lid = gp.Lid.FirstOrDefault(e => e.GroepsWerkJaar.ID == gwj.ID);
-
-                        if (lid == null)
-                        {
-                            foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogNietIngeschreven, gp.Persoon.VolledigeNaam));
-                            continue;
-                        }
-                        if (lid.NonActief)
-                        {
-                            foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsAlUitgeschreven, gp.Persoon.VolledigeNaam));
-                            continue;
-                        }
-
-                        lid.UitschrijfDatum = DateTime.Now;
-                        lid.Functie.Clear();
+                        foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogNietIngeschreven,
+                                                                      gp.Persoon.VolledigeNaam));
+                        continue;
                     }
-                }
+                    if (lid.NonActief)
+                    {
+                        foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsAlUitgeschreven,
+                                                                      gp.Persoon.VolledigeNaam));
+                        continue;
+                    }
 
-                foutBerichten = foutBerichtenBuilder.ToString();
+                    lid.UitschrijfDatum = DateTime.Now;
+                    lid.Functie.Clear();
+                }
             }
-            catch (Exception ex)
-            {
-                throw FaultExceptionHelper.Afhandelen(ex);
-            }
+
+            foutBerichten = foutBerichtenBuilder.ToString();
 
             _gelieerdePersonenRepo.SaveChanges();
         }

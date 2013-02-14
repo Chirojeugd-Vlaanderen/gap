@@ -94,6 +94,11 @@ namespace Chiro.Gap.Dummies
             return false;
         }
 
-		#endregion
+	    public bool IsGav(IList<GelieerdePersoon> gelieerdePersonen)
+	    {
+	        return false;
+	    }
+
+	    #endregion
 	}
 }

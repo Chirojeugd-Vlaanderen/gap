@@ -49,6 +49,19 @@ namespace Chiro.Cdf.Poco
             return _context.Set<TEntity>().FirstOrDefault(x => x.ID == id);
         }
 
+        /// <summary>
+        /// Zoekt de entiteiten met gegeven <paramref name="IDs"/>.
+        /// </summary>
+        /// <param name="IDs">ID's van op te halen entiteiten</param>
+        /// <returns>
+        /// Entiteiten met gegeven <paramref name="IDs"/>. Onbestaande entiteiten worden
+        /// genegeerd.
+        /// </returns>
+        public List<TEntity> ByIDs(IEnumerable<int> IDs)
+        {
+            return _context.Set<TEntity>().Where(x => IDs.Contains(x.ID)).ToList();
+        }
+
         public void Add(TEntity entity)
         {
             if (entity == null)

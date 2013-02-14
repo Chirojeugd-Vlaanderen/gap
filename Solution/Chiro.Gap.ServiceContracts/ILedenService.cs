@@ -20,16 +20,16 @@ namespace Chiro.Gap.ServiceContracts
 	[ServiceContract]
 	public interface ILedenService
 	{
-		/// <summary>
-		/// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
-		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
-		/// <returns>De lidIds van de personen die lid zijn gemaakt</returns>
-		[OperationContract]
+	    /// <summary>
+	    /// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
+	    /// </summary>
+	    /// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
+	    /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
+	    /// <returns>De lidIds van de personen die lid zijn gemaakt</returns>
+	    [OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
+		List<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IList<int> gelieerdePersoonIDs, out string foutBerichten);
 
 		/// <summary>
 		/// Probeert de opgegeven personen in te schrijven met de meegegeven informatie. Als dit niet mogelijk blijkt te zijn, wordt er niemand ingeschreven.
@@ -42,16 +42,16 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
         IEnumerable<int> Inschrijven(InTeSchrijvenLid[] lidInformatie, out string foutBerichten);
 
-		/// <summary>
-		/// Maakt lid met gegeven ID nonactief
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
-		/// <param name="foutBerichten">Als voor sommige personen die actie mislukte, bevat foutBerichten een
-		/// string waarin wat uitleg staat.</param>
-		[OperationContract]
+	    /// <summary>
+	    /// Maakt lid met gegeven ID nonactief
+	    /// </summary>
+	    /// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
+	    /// <param name="foutBerichten">Als voor sommige personen die actie mislukte, bevat foutBerichten een
+	    ///     string waarin wat uitleg staat.</param>
+	    [OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
+		void Uitschrijven(IList<int> gelieerdePersoonIDs, out string foutBerichten);
 
 		/// <summary>
 		/// Vervangt de functies van het lid bepaald door <paramref name="lidId"/> door de functies

@@ -57,13 +57,13 @@ namespace Chiro.Gap.WorkerInterfaces
         string GebruikersNaamGet();
 
         /// <summary>
-        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van het gegeven object
-        /// <paramref name="obj"/>.
+        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van gegeven
+        /// <paramref name="groep"/>.
         /// </summary>
-        /// <param name="obj">Object waarvoor gebruikersrecht nagekeken moet worden</param>
+        /// <param name="groep">Groep waarvoor gebruikersrecht nagekeken moet worden</param>
         /// <returns>
         /// <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
-        /// <paramref name="obj"/>.
+        /// <paramref name="groep"/>.
         /// </returns>
         bool IsGav(Groep groep);
         bool IsGav(CommunicatieVorm communicatie);
@@ -76,5 +76,17 @@ namespace Chiro.Gap.WorkerInterfaces
         bool IsGav(Lid l);
         bool IsGav(Afdeling a);
         bool IsGav(Categorie c);
+
+        /// <summary>
+        /// Controleert of de aangelogde persoon GAV is voor alle meegegeven
+        /// <paramref name="gelieerdePersonen"/>
+        /// </summary>
+        /// <param name="gelieerdePersonen">Gelieerde personen waarvoor gebruikersrechten
+        /// nagekeken moeten worden.</param>
+        /// <returns>
+        /// <c>true</c> als de aangelogde persoon GAV is voor alle meegegeven
+        /// <paramref name="gelieerdePersonen"/>
+        /// </returns>
+        bool IsGav(IList<GelieerdePersoon> gelieerdePersonen);
     }
 }

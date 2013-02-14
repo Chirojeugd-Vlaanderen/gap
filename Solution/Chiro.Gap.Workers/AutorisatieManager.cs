@@ -136,5 +136,28 @@ namespace Chiro.Gap.Workers
         {
             return IsGav(categorie.Groep);
         }
+
+        /// <summary>
+        /// Controleert of de aangelogde persoon GAV is voor alle meegegeven
+        /// <paramref name="gelieerdePersonen"/>
+        /// </summary>
+        /// <param name="gelieerdePersonen">Gelieerde personen waarvoor gebruikersrechten
+        /// nagekeken moeten worden.</param>
+        /// <returns>
+        /// <c>true</c> als de aangelogde persoon GAV is voor alle meegegeven
+        /// <paramref name="gelieerdePersonen"/>
+        /// </returns>
+        public bool IsGav(IList<GelieerdePersoon> gelieerdePersonen)
+        {
+            // Als er een gelieerde persoon is waarvoor alle GAV's een gebruikersnaam hebben
+            // verschillend van de mijne, dan ben ik geen GAV voor alle gegeven personen.
+
+            var gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
+            return (from gp in gelieerdePersonen
+                    where
+                        gp.Groep.GebruikersRecht.All(
+                            gr => String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) != 0)
+                    select gp).FirstOrDefault() == null;
+        }
     }
 }
