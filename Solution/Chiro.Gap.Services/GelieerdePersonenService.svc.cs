@@ -232,7 +232,7 @@ namespace Chiro.Gap.Services
 
             return (from gp in groep.GelieerdePersoon
                           orderby gp.Persoon.Naam + gp.Persoon.VoorNaam
-                          select (gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1)).Distinct().ToList();
+                          select (gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1).ToUpper()).Distinct().ToList();
         }
 
         /// <summary>

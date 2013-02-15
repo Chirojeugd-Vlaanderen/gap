@@ -60,6 +60,9 @@ namespace Chiro.Gap.WebApp.Controllers
 					BaseModelInit(model, 0);    // 0: nog geen groep gekozen
 
 					model.Titel = "Kies je Chirogroep";
+
+                    // Als we hier crashen, kill dan de backend eens, zodat die wordt herstart.
+
 					model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
 						(g => g.MijnGroepenOphalen());
 					

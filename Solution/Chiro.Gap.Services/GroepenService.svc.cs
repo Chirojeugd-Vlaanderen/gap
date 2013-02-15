@@ -199,6 +199,9 @@ namespace Chiro.Gap.Services
                           where g.GebruikersRecht.Any(gr => gr.Gav.Login == mijnLogin)
                           select g;
 
+            // Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
+            // Check je netwerkconfiguratie, of (als je thuis werkt) je VPN.
+
             return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
         }
 
