@@ -141,32 +141,9 @@ namespace Chiro.Gap.Services
                                         String.Compare(gp.Persoon.Naam.Substring(0,1), letter, StringComparison.InvariantCultureIgnoreCase) == 0
                                     select gp;
 
-            var groepsWerkJaar = _groepsWerkJarenRepo.Select()
-                                                     .Where(gwj => gwj.Groep.ID == groepID)
-                                                     .OrderByDescending(gwj => gwj.WerkJaar)
-                                                     .First();
-
             var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
             aantalTotaal = result.Count();
 
-            // Bepaal of persoon lid of leiding kan worden.
-            // (TODO: Dit moet naar een worker)
-
-            foreach (var detail in result.Where(det => det.GeboorteDatum.HasValue && det.SterfDatum == null))
-            {
-                Debug.Assert(detail.GeboorteDatum.HasValue); // altijd true, zie boven
-
-                int geboortejaar = detail.GeboorteDatum.Value.Year - detail.ChiroLeefTijd;
-                var afd = (from a in groepsWerkJaar.AfdelingsJaar
-                           where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
-                           select a).FirstOrDefault();
-
-                detail.KanLidWorden = (afd != null);
-
-                detail.KanLeidingWorden = (detail.GeboorteDatum.Value.Year <
-                                           DateTime.Today.Year - Settings.Default.LeidingVanafLeeftijd +
-                                           detail.ChiroLeefTijd);
-            }
             return result;
         }
 
