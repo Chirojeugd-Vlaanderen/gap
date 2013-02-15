@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
 using System.Transactions;      // laten staan voor live!
 using AutoMapper;
 using Chiro.Cdf.Poco;
@@ -135,12 +136,19 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
         public IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, out int aantalTotaal)
         {
-            var gelieerdePersonen = from gp in _gelieerdePersonenRepo.Select()
-                                    where
-                                        gp.Groep.ID == groepID &&
-                                        String.Compare(gp.Persoon.Naam.Substring(0,1), letter, StringComparison.InvariantCultureIgnoreCase) == 0
-                                    select gp;
+            var groep = _groepenRepo.ByID(groepID);
 
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var gelieerdePersonen = from gp in groep.GelieerdePersoon
+                                    where
+                                        String.Compare((gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1), letter,
+                                                       StringComparison.InvariantCultureIgnoreCase) == 0
+                                    select gp;
+            
             var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
             aantalTotaal = result.Count();
 
