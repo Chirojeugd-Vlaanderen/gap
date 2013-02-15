@@ -42,13 +42,12 @@ namespace Chiro.Gap.ServiceContracts
         /// </summary>
         /// <param name="groepID">ID van de betreffende groep</param>
         /// <param name="letter">Beginletter van de achternaam</param>
-        /// <param name="sortering">Geeft aan hoe de personen gesorteerd moeten worden</param>
         /// <param name="aantalTotaal">Outputparameter; levert het totaal aantal personen in de groep op</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
-        IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal);
+        IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, out int aantalTotaal);
         
 
 		/// <summary>

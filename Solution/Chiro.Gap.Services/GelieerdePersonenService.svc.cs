@@ -133,10 +133,9 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="groepID">ID van de betreffende groep</param>
         /// <param name="letter">Beginletter van de achternaam</param>
-        /// <param name="sortering">Geeft aan hoe de personen gesorteerd moeten worden</param>
         /// <param name="aantalTotaal">Outputparameter; levert het totaal aantal personen in de groep op</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
-        public IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
+        public IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, out int aantalTotaal)
         {
             var gelieerdePersonen = from gp in _gelieerdePersonenRepo.Select()
                                     where

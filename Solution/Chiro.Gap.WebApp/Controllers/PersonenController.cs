@@ -93,7 +93,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             if (categorieID == 0)  // Alle personen bekijken
             {
-                model.PersoonInfos = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.OphalenMetLidInfoViaLetter(groepID, page, sortering, out totaal));
+                model.PersoonInfos = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.OphalenMetLidInfoViaLetter(groepID, page, out totaal)).Sorteren(sortering);
                 model.HuidigePagina = page;
                 model.Titel = "Personenoverzicht";
                 model.Totaal = totaal;

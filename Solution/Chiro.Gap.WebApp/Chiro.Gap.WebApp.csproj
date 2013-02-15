@@ -112,6 +112,7 @@
     </Compile>
     <Compile Include="Controllers\PersonenEnLedenController.cs" />
     <Compile Include="Controllers\UitstappenController.cs" />
+    <Compile Include="GapSortering.cs" />
     <Compile Include="HtmlHelpers\AfdelingsLinksHelper.cs" />
     <Compile Include="HtmlHelpers\CheckBoxListHelper.cs" />
     <Compile Include="Controllers\BaseController.cs" />
