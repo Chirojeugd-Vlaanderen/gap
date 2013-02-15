@@ -366,26 +366,17 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt de Id's van de afdelingsjaren van een lid op.
+        /// Haalt summiere info van een lid met gegeven <paramref name="lidId"/> op.
+        /// (naam van lid, afdeling, en lidtype)
         /// </summary>
         /// <param name="lidId">Id van het lid waarin we geinteresseerd zijn</param>
-        /// <returns>Een LidAfdelingInfo-object</returns>
+        /// <returns>naam, afdeling en lidtype van het gegeven lid</returns>
         public LidAfdelingInfo AfdelingenOphalen(int lidId)
         {
             var lid = _ledenRepo.ByID(lidId);
-            Gav.Check(lid);
+            Gav.Check(lid); // throwt als je geen rechten hebt.
 
-            var info = new LidAfdelingInfo
-                {
-                    Type = lid.Type,
-                    VolledigeNaam = lid.GelieerdePersoon.Persoon.VolledigeNaam,
-                    AfdelingsJaarIDs =
-                        (from g in _afdelingsJaarRepo.Select()
-                         where g.Kind.Contains(lid) || g.Leiding.Contains(lid)
-                         select g.ID).ToList()
-                };
-
-            return info;
+            return Mapper.Map<Lid, LidAfdelingInfo>(lid);
         }
 
         /// <summary>

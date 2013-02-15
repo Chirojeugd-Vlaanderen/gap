@@ -269,6 +269,12 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                   .ForMember(dst => dst.WoonPlaats, opt => opt.Ignore())
                   .ForMember(dst => dst.Land, opt => opt.Ignore());
 
+            Mapper.CreateMap<Lid, LidAfdelingInfo>()
+                  .ForMember(dst => dst.VolledigeNaam,
+                             opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VolledigeNaam))
+                  .ForMember(dst => dst.Type, opt => opt.MapFrom(src => src.Type))
+                  .ForMember(dst => dst.AfdelingsJaarIDs, opt => opt.MapFrom(src => src.AfdelingsJaarIDs));
+
             Mapper.CreateMap<KleinLidOverzicht, LidOverzicht>();
 
             Mapper.CreateMap<Lid, LidOverzicht>()

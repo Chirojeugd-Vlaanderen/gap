@@ -37,6 +37,7 @@ namespace Chiro.Gap.Poco.Model
 
         /// <summary>
         /// Geeft een lijst terug van alle afdelingen waaraan het lid gegeven gekoppeld is.
+        /// (komt van past bij het mappen)
         /// </summary>
         /// <returns>
         /// Lijst met afdelingIDs
@@ -60,6 +61,37 @@ namespace Chiro.Gap.Poco.Model
                     Debug.Assert(l != null);
 
                     return (from aj in l.AfdelingsJaar select aj.Afdeling.ID).ToList();
+                }
+                throw new NotSupportedException("Lid moet kind of leiding zijn.");
+            }
+        }
+
+        /// <summary>
+        /// Geeft een lijst terug van ID's van de afdelingsjaren waaraan het lid gekoppeld is.
+        /// (komt van past bij het mappen)
+        /// </summary>
+        /// <returns>
+        /// ID's van de afdelingsjaren waaraan het lid gekopeld is.
+        /// </returns>
+        /// <remarks>
+        /// Een kind is hoogstens aan 1 afdelingsjaar gekoppeld
+        /// </remarks>
+        public IList<int> AfdelingsJaarIDs
+        {
+            get
+            {
+                if (this is Kind)
+                {
+                    var k = this as Kind;
+                    Debug.Assert(k != null);
+                    return new List<int> { k.AfdelingsJaar.ID };
+                }
+                if (this is Leiding)
+                {
+                    var l = this as Leiding;
+                    Debug.Assert(l != null);
+
+                    return (from aj in l.AfdelingsJaar select aj.ID).ToList();
                 }
                 throw new NotSupportedException("Lid moet kind of leiding zijn.");
             }
