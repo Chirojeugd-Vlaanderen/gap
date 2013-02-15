@@ -347,7 +347,10 @@ namespace Chiro.Gap.Workers
         /// groepswerkjaar <paramref name="gwj"/></returns>
         private static bool KanLeidingWorden(GelieerdePersoon gp, GroepsWerkJaar gwj)
         {
-            // private, want we doen hier geen check op GAV-schap.
+            if (gp.Persoon.GeboorteDatum == null)
+            {
+                return false;
+            }
 
             Debug.Assert(gp.GebDatumMetChiroLeefTijd != null, "gp.GebDatumMetChiroLeefTijd != null");
             return gwj.WerkJaar - gp.GebDatumMetChiroLeefTijd.Value.Year >= Settings.Default.MinLeidingLeefTijd;
