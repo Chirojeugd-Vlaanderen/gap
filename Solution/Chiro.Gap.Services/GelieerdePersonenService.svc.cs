@@ -150,7 +150,7 @@ namespace Chiro.Gap.Services
                                     select gp;
             
             var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
-            aantalTotaal = result.Count();
+            aantalTotaal = groep.GelieerdePersoon.Count;
 
             return result;
         }
