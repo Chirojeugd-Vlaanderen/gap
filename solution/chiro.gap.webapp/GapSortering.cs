@@ -68,7 +68,48 @@ namespace Chiro.Gap.WebApp
         /// <param name="details">details van personen</param>
         /// <param name="sortering">bepaalt de manier waarop de <paramref name="details gesorteerd moeten worden"/></param>
         /// <returns>De <paramref name="details"/>, gesorteerd volgens <paramref name="sortering"/></returns>
+        public static IQueryable<PersoonOverzicht> Sorteren(this IQueryable<PersoonOverzicht> details,
+                                                         PersoonSorteringsEnum sortering)
+        {
+            switch (sortering)
+            {
+                case PersoonSorteringsEnum.Categorie:
+                    {
+                        throw new NotSupportedException();
+                    }
+                case PersoonSorteringsEnum.Leeftijd:
+                    {
+                        return details.OrderByDescending(dst => dst.GeboorteDatum);
+                    }
+                case PersoonSorteringsEnum.Naam:
+                    {
+                        return details.OrderBy(dst => dst.Naam).ThenBy(dst => dst.VoorNaam);
+                    }
+                default:
+                    {
+                        return details;
+                    }
+            }
+        }
+
+        /// <summary>
+        /// Sorteert de <paramref name="details"/> volgens de gegeven <paramref name="sortering"/>
+        /// </summary>
+        /// <param name="details">details van personen</param>
+        /// <param name="sortering">bepaalt de manier waarop de <paramref name="details gesorteerd moeten worden"/></param>
+        /// <returns>De <paramref name="details"/>, gesorteerd volgens <paramref name="sortering"/></returns>
         public static List<PersoonDetail> Sorteren(this IList<PersoonDetail> details, PersoonSorteringsEnum sortering)
+        {
+            return details.AsQueryable().Sorteren(sortering).ToList();
+        }
+
+        /// <summary>
+        /// Sorteert de <paramref name="details"/> volgens de gegeven <paramref name="sortering"/>
+        /// </summary>
+        /// <param name="details">details van personen</param>
+        /// <param name="sortering">bepaalt de manier waarop de <paramref name="details gesorteerd moeten worden"/></param>
+        /// <returns>De <paramref name="details"/>, gesorteerd volgens <paramref name="sortering"/></returns>
+        public static List<PersoonOverzicht> Sorteren(this IList<PersoonOverzicht> details, PersoonSorteringsEnum sortering)
         {
             return details.AsQueryable().Sorteren(sortering).ToList();
         }

@@ -189,20 +189,20 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult Download(int groepID, int id)
         {
-            IEnumerable<PersoonOverzicht> data;
+            IList<PersoonOverzicht> data;
 
             // Alle personen bekijken
             if (id == 0)
             {
                 data =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>
+                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonOverzicht>>
                     (g => g.AllenOphalenUitGroep(groepID, PersoonSorteringsEnum.Naam));
             }
             else
             {
                 data =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>
-                    (g => g.AllenOphalenUitCategorie(id, PersoonSorteringsEnum.Naam));
+                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonOverzicht>>
+                    (g => g.AllenOphalenUitCategorie(id)).Sorteren(PersoonSorteringsEnum.Naam);
             }
 
             // Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName

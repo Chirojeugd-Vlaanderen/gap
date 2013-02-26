@@ -125,12 +125,11 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="categorieID">Indien verschillend van 0, worden alle personen uit de categore met
 		/// gegeven CategoreID opgehaald.  Anders alle personen tout court.</param>
-		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID, PersoonSorteringsEnum sortering);
+		IList<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID);
 
 		/// <summary>
 		/// Haalt gegevens op van alle personen uit groep met ID <paramref name="groepID"/>.
@@ -141,7 +140,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering);
+		IList<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering);
 
 		/// <summary>
 		/// Haalt gegevens op van alle gelieerdepersonen met IDs in <paramref name="gelieerdePersoonIDs"/>.

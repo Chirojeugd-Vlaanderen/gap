@@ -316,11 +316,22 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="categorieID">Indien verschillend van 0, worden alle personen uit de categore met
         /// gegeven CategoreID opgehaald.  Anders alle personen tout court.</param>
-        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
         /// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
-        public IEnumerable<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID, PersoonSorteringsEnum sortering)
+        public IList<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var categorie = _categorieenRepo.ByID(categorieID);
+
+            if (!_autorisatieMgr.IsGav(categorie))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var gelieerdePersonen = from gp in categorie.GelieerdePersoon
+                                    select gp;
+
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonOverzicht>>(gelieerdePersonen);
+
+            return result;
         }
 
         /// <summary>
@@ -329,7 +340,7 @@ namespace Chiro.Gap.Services
         /// <param name="groepID">ID van de groep waaruit de personen gehaald moeten worden</param>
         /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
         /// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
-        public IEnumerable<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering)
+        public IList<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
