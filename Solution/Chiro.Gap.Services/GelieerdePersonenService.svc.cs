@@ -156,21 +156,6 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep,
-        /// inclusief eventueel lidobject voor het recentste werkJaar.
-        /// </summary>
-        /// <param name="groepID">ID van de betreffende groep</param>
-        /// <param name="pagina">Paginanummer (1 of hoger)</param>
-        /// <param name="paginaGrootte">Aantal records per pagina (1 of meer)</param>
-        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-        /// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
-        /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
-        public IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
-        {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-        }
-
-        /// <summary>
         /// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
         /// inclusief eventueel lidobject voor het recentste werkJaar.
         /// </summary>
