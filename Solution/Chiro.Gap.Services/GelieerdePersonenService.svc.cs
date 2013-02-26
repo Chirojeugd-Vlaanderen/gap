@@ -38,6 +38,7 @@ namespace Chiro.Gap.Services
         private readonly IRepository<GroepsWerkJaar> _groepsWerkJarenRepo;
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Categorie> _categorieenRepo;
+        private readonly IRepository<CommunicatieType> _communicatieTypesRepo;
 
         // Managers voor niet-triviale businesslogica
 
@@ -71,6 +72,7 @@ namespace Chiro.Gap.Services
             _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _categorieenRepo = repositoryProvider.RepositoryGet<Categorie>();
+            _communicatieTypesRepo = repositoryProvider.RepositoryGet<CommunicatieType>();
 
             _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
@@ -632,7 +634,11 @@ namespace Chiro.Gap.Services
         /// <returns>Info over het gevraagde communicatietype</returns>
         public CommunicatieTypeInfo CommunicatieTypeOphalen(int commTypeID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            // Communicatietypes zijn voor iedereen leesbaar
+            // (het gaat hier om 'e-mail','telefoonnr',...
+            var communicatietype = _communicatieTypesRepo.ByID(commTypeID);
+            return Mapper.Map<CommunicatieType, CommunicatieTypeInfo>(communicatietype);
+
         }
 
         /// <summary>
@@ -641,7 +647,8 @@ namespace Chiro.Gap.Services
         /// <returns>Een lijst op met alle communicatietypes</returns>
         public IEnumerable<CommunicatieTypeInfo> CommunicatieTypesOphalen()
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var communicatietypes = _communicatieTypesRepo.GetAll();
+            return Mapper.Map<IEnumerable<CommunicatieType>, List<CommunicatieTypeInfo>>(communicatietypes);
         }
 
         /// <summary>
