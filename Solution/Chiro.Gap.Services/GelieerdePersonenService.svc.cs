@@ -361,9 +361,16 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdePersoonIDs">IDs van de gelieerdepersonen waarover informatie opgehaald moet worden</param>
         /// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
-        public IEnumerable<PersoonOverzicht> AllenOphalenUitLijst(IList<int> gelieerdePersoonIDs)
+        public IEnumerable<PersoonOverzicht> OverzichtOphalen(IList<int> gelieerdePersoonIDs)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var p = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIDs);
+
+            if (!_autorisatieMgr.IsGav(p))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            return Mapper.Map<IList<GelieerdePersoon>, List<PersoonOverzicht>>(p);
         }
 
         /// <summary>

@@ -149,7 +149,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<PersoonOverzicht> AllenOphalenUitLijst(IList<int> gelieerdePersoonIDs);
+		IEnumerable<PersoonOverzicht> OverzichtOphalen(IList<int> gelieerdePersoonIDs);
 
 		#endregion ophalen
 

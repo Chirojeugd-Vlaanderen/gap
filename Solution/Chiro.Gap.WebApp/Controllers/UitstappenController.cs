@@ -350,7 +350,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var uitstap = ServiceHelper.CallService<IUitstappenService, UitstapOverzicht>(s => s.DetailsOphalen(id));
             var lijst = ServiceHelper.CallService<IUitstappenService, IEnumerable<DeelnemerDetail>>(s => s.DeelnemersOphalen(id)).ToList();
 
-            var personenlijst = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>(g => g.AllenOphalenUitLijst(lijst.Select(e => e.GelieerdePersoonID).ToList()));
+            var personenlijst = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>(g => g.OverzichtOphalen(lijst.Select(e => e.GelieerdePersoonID).ToList()));
             foreach (var persoonLidInfo in personenlijst)
             {
                 PersoonOverzicht info = persoonLidInfo;
