@@ -184,4 +184,7 @@
   <data name="FoutieveGroepUitstap" xml:space="preserve">
     <value>De groep van de uitstap verschilt van de groep van de deelnemer.</value>
   </data>
+  <data name="AdNummerNietWijzigen" xml:space="preserve">
+    <value>Enkel het nationaal secretariaat mag AD-nummers wijzigen.</value>
+  </data>
 </root>

@@ -48,6 +48,7 @@ namespace Chiro.Gap.Services
         // Sync-interfaces
 
         private readonly ICommunicatieSync _communicatieSync;
+        private readonly IPersonenSync _personenSync;
 
         /// <summary>
         /// Constructor
@@ -57,11 +58,13 @@ namespace Chiro.Gap.Services
         /// <param name="autorisatieMgr">Logica m.b.t. autorisatie</param>
         /// <param name="communicatieVormenMgr">Logica m.b.t. communicatievormen</param>
         /// <param name="gebruikersRechtenMgr">Logica m.b.t. gebruikersrechten</param>
-        /// <param name="communicatieSync">Zorgt voor synchronisatie met Kipadmin</param>
+        /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
+        /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
                                         ICommunicatieVormenManager communicatieVormenMgr,
                                         IGebruikersRechtenManager gebruikersRechtenMgr,
-                                        ICommunicatieSync communicatieSync)
+                                        ICommunicatieSync communicatieSync,
+                                        IPersonenSync personenSync)
         {
             _communicatieVormRepo = repositoryProvider.RepositoryGet<CommunicatieVorm>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
@@ -74,6 +77,7 @@ namespace Chiro.Gap.Services
             _gebruikersRechtenMgr = gebruikersRechtenMgr;
 
             _communicatieSync = communicatieSync;
+            _personenSync = personenSync;
         }
 
         #region Disposable etc
@@ -374,13 +378,41 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Updatet een persoon op basis van <paramref name="persoonInfo"/>
+        /// Updatet een bestaand persoon op basis van <paramref name="persoonInfo"/>
         /// </summary>
         /// <param name="persoonInfo">Info over te bewaren persoon</param>
-        /// <returns>ID van de bewaarde persoon</returns>
+        /// <returns>GelieerdePersoonID van de bewaarde persoon</returns>
         public int Bewaren(PersoonInfo persoonInfo)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var gp = _gelieerdePersonenRepo.ByID(persoonInfo.GelieerdePersoonID);
+
+            if (gp == null || !_autorisatieMgr.IsGav(gp))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            if (gp.Persoon.AdNummer != null && gp.Persoon.AdNummer != persoonInfo.AdNummer)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout, Resources.AdNummerNietWijzigen);
+            }
+
+            gp.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;   // Chiroleeftijd vullen we gauw zo in
+            Mapper.Map(persoonInfo, gp.Persoon);    // overschrijf persoonsgegevens met info uit persoonInfo
+
+
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+            _gelieerdePersonenRepo.SaveChanges();
+            if (gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag)
+            {
+                _personenSync.Bewaren(gp, false, false);
+            }
+#if KIPDORP    
+            }
+#endif
+            return gp.ID;
         }
 
         /// <summary>
@@ -583,7 +615,11 @@ namespace Chiro.Gap.Services
             {
 #endif
             _communicatieVormRepo.SaveChanges();
-            _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
+            if (communicatieVorm.GelieerdePersoon.Persoon.AdNummer != null ||
+                communicatieVorm.GelieerdePersoon.Persoon.AdInAanvraag)
+            {
+                _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
+            }
 #if KIPDORP
             }
 #endif

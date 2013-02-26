@@ -159,7 +159,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// Updatet een persoon op basis van <paramref name="persoonInfo"/>
 		/// </summary>
 		/// <param name="persoonInfo">Info over te bewaren persoon</param>
-		/// <returns>ID van de bewaarde persoon</returns>
+		/// <returns>GelieerderPersoonID van de bewaarde gelieerde persoon</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
