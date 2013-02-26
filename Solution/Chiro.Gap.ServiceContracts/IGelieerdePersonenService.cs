@@ -72,7 +72,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonInfo> PersoonInfoOphalen(IList<int> gelieerdePersoonIDs);
+		IList<PersoonInfo> InfoOphalen(IList<int> gelieerdePersoonIDs);
 
 	    /// <summary>
 	    /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep

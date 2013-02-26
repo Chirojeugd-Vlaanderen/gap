@@ -193,9 +193,16 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
         /// <returns>List van PersoonInfo overeenkomend met die IDs</returns>
-        public IList<PersoonInfo> PersoonInfoOphalen(IList<int> gelieerdePersoonIDs)
+        public IList<PersoonInfo> InfoOphalen(IList<int> gelieerdePersoonIDs)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var p = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIDs);
+
+            if (!_autorisatieMgr.IsGav(p))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            return Mapper.Map<IList<GelieerdePersoon>, List<PersoonInfo>>(p);
         }
 
         /// <summary>
