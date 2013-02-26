@@ -37,6 +37,7 @@ namespace Chiro.Gap.Services
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
         private readonly IRepository<GroepsWerkJaar> _groepsWerkJarenRepo;
         private readonly IRepository<Groep> _groepenRepo;
+        private readonly IRepository<Categorie> _categorieenRepo;
 
         // Managers voor niet-triviale businesslogica
 
@@ -66,6 +67,7 @@ namespace Chiro.Gap.Services
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
             _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
+            _categorieenRepo = repositoryProvider.RepositoryGet<Categorie>();
 
             _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
@@ -205,11 +207,23 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een categorie
         /// </summary>
-        /// <param name="categorie">Categorie waaruit we de letters willen halen</param>
+        /// <param name="categorieID">ID van de categorie waaruit we de letters willen halen</param>
         /// <returns>Lijst met de eerste letter van de namen</returns>
-        public IList<string> EersteLetterNamenOphalenCategorie(int categorie)
+        public IList<string> EersteLetterNamenOphalenCategorie(int categorieID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var categorie = _categorieenRepo.ByID(categorieID);
+
+            if (!_autorisatieMgr.IsGav(categorie))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            // ik concatenate hieronder naam en voornaam, om personen op te vangen 
+            // zonder familienaam. Blijkbaar zijn er zo. (Als dat maar goed komt...)
+
+            return (from gp in categorie.GelieerdePersoon
+                    orderby gp.Persoon.Naam + gp.Persoon.VoorNaam
+                    select (gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1).ToUpper()).Distinct().ToList();
         }
 
         /// <summary>
