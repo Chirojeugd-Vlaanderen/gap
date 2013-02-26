@@ -118,7 +118,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 // TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt te veel op PaginaOphalenLidInfo(groepid, ...))
                 model.PersoonInfos =
                     ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-                    (g => g.PaginaOphalenUitCategorieMetLidInfo(categorieID, page, sortering, out totaal));
+                    (g => g.OphalenUitCategorieMetLidInfo(categorieID, page, sortering, out totaal));
                 model.HuidigePagina = page;
 
                 // Ga in het lijstje met categorieën na welke er geselecteerd werd, zodat we de naam in de paginatitel kunnen zetten

@@ -158,18 +158,34 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
+        /// Haalt persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
+        /// waarvan de naam begint met de gegeven <paramref name="letter"/>
         /// inclusief eventueel lidobject voor het recentste werkJaar.
         /// </summary>
         /// <param name="categorieID">ID van de gevraagde categorie</param>
-        /// <param name="pagina">Paginanummer (1 of hoger)</param>
-        /// <param name="paginaGrootte">Aantal records per pagina (1 of meer)</param>
+        /// <param name="letter">letter waarmee de naam moet beginnen</param>
         /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
         /// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
-        public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
+        public IList<PersoonDetail> OphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var categorie = _categorieenRepo.ByID(categorieID);
+
+            if (!_autorisatieMgr.IsGav(categorie))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var gelieerdePersonen = from gp in categorie.GelieerdePersoon
+                                    where
+                                        String.Compare((gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1), letter,
+                                                       StringComparison.InvariantCultureIgnoreCase) == 0
+                                    select gp;
+
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
+            aantalTotaal = categorie.GelieerdePersoon.Count;
+
+            return result;
         }
 
         /// <summary>

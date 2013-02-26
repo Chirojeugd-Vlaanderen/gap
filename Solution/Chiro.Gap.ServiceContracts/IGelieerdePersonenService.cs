@@ -48,21 +48,21 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
         IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, out int aantalTotaal);
-        
-		/// <summary>
-		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
-		/// inclusief eventueel lidobject voor het recentste werkJaar.
-		/// </summary>
-		/// <param name="categorieID">ID van de gevraagde categorie</param>
-		/// <param name="pagina">Paginanummer (1 of hoger)</param>
-		/// <param name="paginaGrootte">Aantal records per pagina (1 of meer)</param>
-		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
-		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
-		[OperationContract]
+
+	    /// <summary>
+	    /// Haalt persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
+	    /// waarvan de naam begint met de gegeven <paramref name="letter"/>
+	    /// inclusief eventueel lidobject voor het recentste werkJaar.
+	    /// </summary>
+	    /// <param name="categorieID">ID van de gevraagde categorie</param>
+	    /// <param name="letter">letter waarmee de naam moet beginnen</param>
+	    /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
+	    /// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
+	    /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
+	    [OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal);
+		IList<PersoonDetail> OphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal);
 
 		/// <summary>
 		/// Haalt persoonsgegevens op voor alle gegeven gelieerde personen.
