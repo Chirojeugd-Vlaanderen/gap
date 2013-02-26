@@ -196,7 +196,7 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 data =
                     ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonOverzicht>>
-                    (g => g.AllenOphalenUitGroep(groepID, PersoonSorteringsEnum.Naam));
+                    (g => g.AllenOphalenUitGroep(groepID)).Sorteren(PersoonSorteringsEnum.Naam);
             }
             else
             {
