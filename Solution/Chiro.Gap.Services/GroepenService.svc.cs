@@ -88,7 +88,8 @@ namespace Chiro.Gap.Services
 
             // De bedoeling is dat alle repositories dezelfde hash code delen.
             // Ik test er twee. Als dat goed is, zal het overal wel goed zijn.
-            Debug.Assert(_straatRepo.ContextHash == _adresRepo.ContextHash);
+            Debug.Assert(_straatRepo == null || _adresRepo == null || _straatRepo.ContextHash == _adresRepo.ContextHash);
+            // (checks op null zijn van belang voor bij unit tests)
 
             _jaarOvergangManager = jaarOvergangMgr;
             _groepenMgr = groepenMgr;

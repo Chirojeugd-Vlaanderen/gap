@@ -157,7 +157,7 @@ namespace Chiro.Gap.Services.Test
             // opleveren wat we hierboven creeerden.
 
             var groepenRepositoryMock = new Mock<IRepository<Groep>>();
-            groepenRepositoryMock.Setup(src => src.Select()).Returns((new[] {groep}).AsQueryable());
+            groepenRepositoryMock.Setup(src => src.ByID(It.IsAny<int>())).Returns(groep);
             var functieRepositoryMock = new Mock<IRepository<Functie>>();
             functieRepositoryMock.Setup(src => src.Select()).Returns((new[] {bestaandeFunctie}).AsQueryable());
 
@@ -192,5 +192,6 @@ namespace Chiro.Gap.Services.Test
 
             Assert.Fail();  // De bedoeling is dat we hier niet komen, maar dat een exception werd gethrowd.
         }
+
 	}
 }
