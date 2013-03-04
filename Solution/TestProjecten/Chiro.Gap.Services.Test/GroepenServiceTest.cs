@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.ServiceModel;
+using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,6 +15,10 @@ using System;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Moq;
+using Chiro.Gap.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using Chiro.Gap.WorkerInterfaces;
+using System.Collections.Generic;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -193,5 +198,48 @@ namespace Chiro.Gap.Services.Test
             Assert.Fail();  // De bedoeling is dat we hier niet komen, maar dat een exception werd gethrowd.
         }
 
+
+        /// <summary>
+        ///Kijkt na of 'functiesOphalen' al minstens de nationale functies ophaalt.
+        ///</summary>
+        [TestMethod]
+        public void FunctiesOphalenTest()
+        {
+            // groepswerkjaar
+            var groepsWerkJaar = new GroepsWerkJaar
+                                     {
+                                         ID = 1,
+                                         Groep = new ChiroGroep(),
+                                         WerkJaar = 2012
+                                     };
+
+            // nationale functie
+            var nationaleFunctie = new Functie
+                                       {
+                                           ID = 2,
+                                           IsNationaal = true,
+                                           Type = LidType.Alles
+                                       };
+
+            // zet repositoryprovider zodanig op dat ons testgroepswerkjaar wordt opgeleverd
+            // door de GroepsWerkJarenRepository, en onze testnationalefunctie door de FunctiesRepository
+
+            var gwjRepo = new DummyRepo<GroepsWerkJaar>(new[] {groepsWerkJaar});
+            var funRepo = new DummyRepo<Functie>(new[] {nationaleFunctie});
+
+
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>()).Returns(gwjRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(funRepo);
+
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            var target = Factory.Maak<GroepenService>();
+
+            // Haal alle functies op relevant voor het groepswerkjaar met ID 1.
+            var actual = target.FunctiesOphalen(1, LidType.Alles);
+
+            Assert.AreEqual(actual.First().ID, 2);
+        }
 	}
 }
