@@ -63,7 +63,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <remarks>
         /// <para>
         /// Deze functie is zich niet bewust van de aanwezigheid van een database, en verwacht
-        /// dat groepsWerkJaar.Lid[i].Functie geladen is.
+        /// dat groepsWerkJaar.Lid[i].Functie beschikbaar is.
         /// </para>
         /// <para>
         /// Functies in <paramref name="functies"/> waar geen groep aan gekoppeld is, worden als

@@ -279,11 +279,11 @@ namespace Chiro.Gap.Workers.Test
 
             var testData = new DummyData();
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
+            var fm = Factory.Maak<FunctiesManager>();
 
             // Act
 
-            var problemen = fm.AantallenControleren(testData.HuidigGwj);
+            var problemen = fm.AantallenControleren(testData.HuidigGwj, testData.HuidigGwj.Groep.Functie);
             // Het DummyFunctieDao voorziet nationaal bepaalde verplichte functies.
 
             // Assert

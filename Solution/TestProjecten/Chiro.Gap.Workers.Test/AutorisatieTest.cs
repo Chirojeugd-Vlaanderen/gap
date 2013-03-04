@@ -319,7 +319,7 @@ namespace Chiro.Gap.Workers.Test
 			// van het gegeven groepswerkjaar.
 
 			var auMgrMock = new Mock<IAutorisatieManager>();
-			auMgrMock.Setup(mgr => mgr.IsGavGroepsWerkJaar(1)).Returns(false);
+			auMgrMock.Setup(mgr => mgr.IsGav(gwj)).Returns(false);
 
 			Factory.InstantieRegistreren(auMgrMock.Object);
 
