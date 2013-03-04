@@ -150,10 +150,6 @@
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Repositories\Chiro.Gap.Repositories.csproj">
-      <Project>{452967B8-FB34-45DB-8ECA-2ABF18FA88E7}</Project>
-      <Name>Chiro.Gap.Repositories</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj">
       <Project>{08F94344-8414-4136-8314-4B7380B10CD7}</Project>
       <Name>Chiro.Gap.ServiceContracts.Mappers</Name>

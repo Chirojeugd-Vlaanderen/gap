@@ -14,7 +14,6 @@ using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.Repositories;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WorkerInterfaces;
@@ -34,7 +33,7 @@ namespace Chiro.Gap.Services
 
         // Repositories, verantwoordelijk voor data access.
 
-        private readonly ILedenRepository _ledenRepo;
+        private readonly IRepository<Lid> _ledenRepo;
         private readonly IRepository<VerzekeringsType> _verzekerRepo;
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
         private readonly IRepository<AfdelingsJaar> _afdelingsJaarRepo;
@@ -53,20 +52,19 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Nieuwe groepenservice
         /// </summary>
-        /// <param name="ledenRepo">Repository voor leden</param>
         /// <param name="autorisatieMgr">Verantwoordelijke voor autorisatie</param>
         /// <param name="ledenMgr">Businesslogica aangaande leden</param>
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
         /// <param name="verzekeringenMgr">Businesslogica aangaande verzekeringen</param>
         /// <param name="groepenMgr">Businesslogica m.b.t. groepen</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
-        public LedenService(ILedenRepository ledenRepo, IAutorisatieManager autorisatieMgr,
+        public LedenService(IAutorisatieManager autorisatieMgr,
                             IVerzekeringenManager verzekeringenMgr,
                             ILedenManager ledenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                             IGroepenManager groepenMgr,
                             IRepositoryProvider repositoryProvider)
         {
-            _ledenRepo = ledenRepo;
+            _ledenRepo = repositoryProvider.RepositoryGet<Lid>();
             _afdelingsJaarRepo = repositoryProvider.RepositoryGet<AfdelingsJaar>();
             _functiesRepo = repositoryProvider.RepositoryGet<Functie>();
             _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
