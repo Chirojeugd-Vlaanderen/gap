@@ -38,9 +38,14 @@ namespace Chiro.Gap.Services
             }
         }
 
-        public void Check(Functie g)
+        /// <summary>
+        /// Controleert of de aangelogde gebruiker GAV is voor de gegeven <paramref name="functie"/>,
+        /// en throwt de GeenGav-FaultException indien niet.
+        /// </summary>
+        /// <param name="functie">te controleren functie</param>
+        public void Check(Functie functie)
         {
-            if (g == null || !_autorisatieMgr.IsGav(g.Groep))
+            if (functie == null ||  !(functie.IsNationaal || _autorisatieMgr.IsGav(functie.Groep)))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
