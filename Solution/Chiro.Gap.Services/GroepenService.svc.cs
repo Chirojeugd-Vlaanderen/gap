@@ -556,13 +556,20 @@ namespace Chiro.Gap.Services
         public IEnumerable<FunctieDetail> FunctiesOphalen(int groepswerkjaarId, LidType lidType)
         {
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
-            Gav.Check(gwj);
+            Gav.Check(gwj); // throwt als ik geen GAV ben voor dit groepswerkjaar.
 
-            var functies = (from g in _functiesRepo.Select()
-                            where gwj.Groep.ID == g.Groep.ID && (!g.WerkJaarTot.HasValue || g.WerkJaarTot.Value<gwj.WerkJaar)
-                            select g).ToList();
+            var nationaleFuncties = (from f in _functiesRepo.Select()
+                                     where f.IsNationaal && ((f.NiveauInt & (int)gwj.Groep.Niveau) != 0)
+                                     select f).ToList();
 
-            return Mapper.Map<IEnumerable<Functie>, IEnumerable<FunctieDetail>>(functies.Where(e => e.Type==lidType));
+            var eigenRelevanteFuncties = (from f in gwj.Groep.Functie
+                                          where
+                                              f.WerkJaarVan <= gwj.WerkJaar &&
+                                              (f.WerkJaarTot == null || gwj.WerkJaar <= f.WerkJaarTot) &&
+                                              ((f.Type & lidType) != 0)
+                                          select f).ToList();
+
+            return Mapper.Map<IEnumerable<Functie>, IEnumerable<FunctieDetail>>(nationaleFuncties.Union(eigenRelevanteFuncties));
         }
 
         /// <summary>

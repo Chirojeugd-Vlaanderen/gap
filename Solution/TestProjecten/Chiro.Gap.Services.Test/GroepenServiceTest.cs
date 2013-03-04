@@ -218,7 +218,8 @@ namespace Chiro.Gap.Services.Test
                                        {
                                            ID = 2,
                                            IsNationaal = true,
-                                           Type = LidType.Alles
+                                           Type = LidType.Alles,
+                                           Niveau = Niveau.Alles
                                        };
 
             // zet repositoryprovider zodanig op dat ons testgroepswerkjaar wordt opgeleverd
