@@ -137,6 +137,11 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public List<GelieerdePersoon> MijnGelieerdePersonen(IList<Persoon> personen)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gebruikerses the recht gelieerde persoon.
         /// </summary>

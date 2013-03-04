@@ -88,5 +88,24 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <paramref name="gelieerdePersonen"/>
         /// </returns>
         bool IsGav(IList<GelieerdePersoon> gelieerdePersonen);
+
+        /// <summary>
+        /// Vertrekt van een lijst <paramref name="personen"/>. Van al die personen
+        /// waarvoor de aangelogde gebruiker GAV is, worden nu de overeenkomstige
+        /// gelieerde personen opgeleverd. (Dat kunnen dus meer gelieerde personen
+        /// per persoon bij zitten.)
+        /// </summary>
+        /// <param name="personen">
+        ///     Lijst van personen
+        /// </param>
+        /// <returns>
+        /// Voor de <paramref name="personen"/>
+        /// waarvoor de aangelogde gebruiker GAV is, de overeenkomstige
+        /// gelieerde personen
+        /// </returns>
+        /// <remarks>
+        /// Mogelijk zijn er meerdere gelieerde personen per persoon.
+        /// </remarks>
+        List<GelieerdePersoon> MijnGelieerdePersonen(IList<Persoon> personen);
     }
 }

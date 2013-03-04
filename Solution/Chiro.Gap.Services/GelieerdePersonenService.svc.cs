@@ -569,7 +569,43 @@ namespace Chiro.Gap.Services
         /// <param name="commInfo">De communicatievorm die aan die persoon gekoppeld moet worden</param>
         public void CommunicatieVormToevoegen(int gelieerdePersoonID, CommunicatieInfo commInfo)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
+            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var communicatieVorm = new CommunicatieVorm();
+
+            Mapper.Map(commInfo, communicatieVorm);
+            communicatieVorm.ID = 0;    // zodat die zeker als nieuw wordt beschouwd
+            communicatieVorm.CommunicatieType = _communicatieTypesRepo.ByID(commInfo.CommunicatieTypeID);
+
+            // Communicatievormen koppelen is een beetje een gedoe, omdat je die voorkeuren hebt,
+            // en het concept 'gezinsgebonden' (wat eigenlijk niet helemaal klopt)
+            // Al die brol handelen we af in de manager.
+
+            var gekoppeld = _communicatieVormenMgr.Koppelen(gelieerdePersoon, communicatieVorm);
+            var tesyncen = (from cv in gekoppeld
+                            where
+                                cv.GelieerdePersoon.Persoon.AdNummer != null || cv.GelieerdePersoon.Persoon.AdInAanvraag
+                            select cv).ToList();
+
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                    _communicatieVormRepo.SaveChanges();
+                    // TODO (#1409): welke communicatievorm de voorkeur heeft, gaat verloren bij de sync
+                    // naar Kipadmin. 
+                    foreach (var cv in tesyncen)
+                    {
+                        _communicatieSync.Toevoegen(cv);
+                    }
+#if KIPDORP    
+            }
+#endif
+
         }
 
         /// <summary>

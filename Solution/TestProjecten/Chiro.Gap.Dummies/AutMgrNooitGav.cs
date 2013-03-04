@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
 
@@ -97,6 +96,11 @@ namespace Chiro.Gap.Dummies
 	    public bool IsGav(IList<GelieerdePersoon> gelieerdePersonen)
 	    {
 	        return false;
+	    }
+
+	    public List<GelieerdePersoon> MijnGelieerdePersonen(IList<Persoon> personen)
+	    {
+	        return new List<GelieerdePersoon>();
 	    }
 
 	    #endregion

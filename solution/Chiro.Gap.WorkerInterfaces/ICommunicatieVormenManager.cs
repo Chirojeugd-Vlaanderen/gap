@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 
@@ -8,16 +9,20 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <summary>
         /// Koppelt een communicatievorm aan een gelieerde persoon.
         /// </summary>
-        /// <param name="gp">
+        /// <param name="gelieerdePersoon">
         /// De gelieerde persoon voor wie de communicatievorm toegevoegd of aangepast wordt
         /// </param>
-        /// <param name="nieuwecv">
+        /// <param name="nieuweCommunicatieVorm">
         /// De nieuwe gegevens voor de communicatievorm
         /// </param>
+        /// <returns>
+        /// De lijst van effectief gekoppelde communicatievormen. Als <paramref name="nieuweCommunicatieVorm"/>
+        /// gezinsgebonden is, kunnen dat er meer zijn.
+        /// </returns>
         /// <remarks>
         /// Als de communicatievorm de eerste van een bepaald type is, dan wordt dat ook de voorkeur.
         /// </remarks>
-        void Koppelen(GelieerdePersoon gp, CommunicatieVorm nieuwecv);
+        List<CommunicatieVorm> Koppelen(GelieerdePersoon gelieerdePersoon, CommunicatieVorm nieuweCommunicatieVorm);
 
         /// <summary>
         /// Stelt de gegeven communicatievorm in als voorkeurscommunicatievorm voor zijn

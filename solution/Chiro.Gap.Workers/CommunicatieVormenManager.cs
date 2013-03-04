@@ -10,6 +10,7 @@ using System.Transactions;
 #endif
 using System.Collections.Generic;
 using System.Diagnostics;
+using AutoMapper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -44,44 +45,100 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Koppelt een communicatievorm aan een gelieerde persoon.
         /// </summary>
-        /// <param name="gp">
+        /// <param name="gelieerdePersoon">
         /// De gelieerde persoon voor wie de communicatievorm toegevoegd of aangepast wordt
         /// </param>
-        /// <param name="nieuwecv">
+        /// <param name="nieuweCommunicatieVorm">
         /// De nieuwe gegevens voor de communicatievorm
         /// </param>
+        /// <returns>
+        /// De lijst van effectief gekoppelde communicatievormen. Als <paramref name="nieuweCommunicatieVorm"/>
+        /// gezinsgebonden is, kunnen dat er meer zijn.
+        /// </returns>
         /// <remarks>
         /// Als de communicatievorm de eerste van een bepaald type is, dan wordt dat ook de voorkeur.
         /// </remarks>
-        public void Koppelen(GelieerdePersoon gp, CommunicatieVorm nieuwecv)
+        public List<CommunicatieVorm> Koppelen(GelieerdePersoon gelieerdePersoon, CommunicatieVorm nieuweCommunicatieVorm)
         {
-            if (!_autorisatieMgr.IsGav(gp))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
+            // Opmerking: gebruik dit niet als referentie-implementatie:
+            // Te veel rommel!
+
+            var gekoppeld = new List<CommunicatieVorm>();
 
             var cvValid = new CommunicatieVormValidator();
 
-            if (!cvValid.Valideer(nieuwecv))
+            if (!cvValid.Valideer(nieuweCommunicatieVorm))
             {
                 throw new ValidatieException(string.Format(Resources.CommunicatieVormValidatieFeedback, 
-                                                           nieuwecv.Nummer, 
-                                                           nieuwecv.CommunicatieType.Omschrijving));
+                                                           nieuweCommunicatieVorm.Nummer, 
+                                                           nieuweCommunicatieVorm.CommunicatieType.Omschrijving));
             }
 
-            Debug.Assert(nieuwecv.ID == 0);
+            Debug.Assert(nieuweCommunicatieVorm.ID == 0);
 
-            bool eersteVanType = (from c in gp.Communicatie
-                                  where c.CommunicatieType.ID == nieuwecv.CommunicatieType.ID
-                                  select c).FirstOrDefault() == null;
+            nieuweCommunicatieVorm.GelieerdePersoon = gelieerdePersoon;
+            gelieerdePersoon.Communicatie.Add(nieuweCommunicatieVorm);
 
-            gp.Communicatie.Add(nieuwecv);
-            nieuwecv.GelieerdePersoon = gp;
+            gekoppeld.Add(nieuweCommunicatieVorm);
 
-            if (eersteVanType || nieuwecv.Voorkeur)
+            if (nieuweCommunicatieVorm.IsGezinsgebonden)
             {
-                VoorkeurZetten(nieuwecv);
+                // Beetje gepruts voor gezinsgebonden communicatie. Dit zit niet juist op database-niveau. (#1070)
+                // Als er gezinsgebonden communicatie wordt toegevoegd, dan voegen we die hier toe aan alle andere
+                // gezinsleden, of juister: adresgenoten.
+
+                var alleAdresgenoten =
+                    gelieerdePersoon.Persoon.PersoonsAdres.Select(pa => pa.Adres)
+                      .SelectMany(adr => adr.PersoonsAdres)
+                      .Select(pa => pa.Persoon).ToList();
+                var mijnAdresGenoten = _autorisatieMgr.MijnGelieerdePersonen(alleAdresgenoten);
+
+                // adresgenoten die ik niet zelf ben, en die het e-mailadres nog niet hebben.
+                var relevanteAdresGenoten = (from gp in mijnAdresGenoten
+                                             where gp.ID != gelieerdePersoon.ID
+                                                   &&
+                                                   !gp.Communicatie.Any(
+                                                       cv =>
+                                                       cv.CommunicatieType.ID ==
+                                                       nieuweCommunicatieVorm.CommunicatieType.ID &&
+                                                       String.Compare(cv.Nummer, nieuweCommunicatieVorm.Nummer,
+                                                                             StringComparison.OrdinalIgnoreCase) == 0)
+                                             select gp).ToList();
+
+                // Automapper gauw gebruiken om te klonen. (mogelijk niet zo mooi ;))
+                Mapper.CreateMap<CommunicatieVorm, CommunicatieVorm>();
+
+                foreach (var adresgenoot in relevanteAdresGenoten)
+                {
+                    var cvKloon = new CommunicatieVorm();
+                    Mapper.Map(nieuweCommunicatieVorm, cvKloon);
+
+                    cvKloon.GelieerdePersoon = adresgenoot;
+                    adresgenoot.Communicatie.Add(cvKloon);
+                    gekoppeld.Add(cvKloon);
+                }
             }
+
+            // Voorkeurscommunicatie zetten voor toegevoegde communicatievorm.
+            // Opgelet: als de communicatievorm gezinsgebonden was, en voorkeur, dan zal die
+            // bij de gezinsgenoten die hem nog niet hebben als voorkeurscommunicatie van dat
+            // type toegevoegd worden. Dit is misschien gewenst, misschien ook niet. Maar
+            // alleszins erg verwarrend. Zie ook #1070.
+
+            foreach (var cv in gekoppeld)
+            {
+                bool eersteVanType = (from c in cv.GelieerdePersoon.Communicatie
+                                      where c.CommunicatieType.ID == nieuweCommunicatieVorm.CommunicatieType.ID
+                                            && !Equals(c, cv)
+                                      select c).FirstOrDefault() == null;
+
+                if (eersteVanType || cv.Voorkeur)
+                {
+                    VoorkeurZetten(nieuweCommunicatieVorm);
+                }
+            }
+
+            return gekoppeld;
         }
 
         /// <summary>
@@ -99,7 +156,7 @@ namespace Chiro.Gap.Workers
                     cv.GelieerdePersoon.Communicatie.Where(c => c.CommunicatieType.ID == cv.CommunicatieType.ID).ToArray
                         ())
             {
-                communicatieVorm.Voorkeur = communicatieVorm == cv;
+                communicatieVorm.Voorkeur = Equals(communicatieVorm, cv);
             }
         }
 

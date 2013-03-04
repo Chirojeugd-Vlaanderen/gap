@@ -100,6 +100,11 @@ namespace Chiro.Gap.Dummies
 	        return true;
 	    }
 
+	    public List<GelieerdePersoon> MijnGelieerdePersonen(IList<Persoon> personen)
+	    {
+            return personen.SelectMany(p => p.GelieerdePersoon).ToList();
+	    }
+
 	    #endregion
 	}
 }

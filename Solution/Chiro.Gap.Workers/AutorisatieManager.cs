@@ -159,5 +159,29 @@ namespace Chiro.Gap.Workers
                             gr => String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) != 0)
                     select gp).FirstOrDefault() == null;
         }
+
+        /// <summary>
+        /// Vertrekt van een lijst <paramref name="personen"/>. Van al die personen
+        /// waarvoor de aangelogde gebruiker GAV is, worden nu de overeenkomstige
+        /// gelieerde personen opgeleverd. (Dat kunnen dus meer gelieerde personen
+        /// per persoon bij zitten.)
+        /// </summary>
+        /// <param name="personen">
+        ///     Lijst van personen
+        /// </param>
+        /// <returns>
+        /// Voor de <paramref name="personen"/>
+        /// waarvoor de aangelogde gebruiker GAV is, de overeenkomstige
+        /// gelieerde personen
+        /// </returns>
+        /// <remarks>
+        /// Mogelijk zijn er meerdere gelieerde personen per persoon.
+        /// </remarks>
+        public List<GelieerdePersoon> MijnGelieerdePersonen(IList<Persoon> personen)
+        {
+            return (from gp in personen.SelectMany(p => p.GelieerdePersoon)
+                    where IsGav(gp)
+                    select gp).ToList();
+        }
     }
 }
