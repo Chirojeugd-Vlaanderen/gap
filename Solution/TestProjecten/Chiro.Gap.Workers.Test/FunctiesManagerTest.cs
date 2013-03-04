@@ -194,36 +194,32 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void NietToegekendeVerplichteFunctie()
         {
-            //// Arrange
+            // Arrange
 
-            //var testData = new DummyData();
+            var testData = new DummyData();
 
-            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            //GroepenManager gm = Factory.Maak<GroepenManager>();
+            var fm = Factory.Maak<FunctiesManager>();
 
-            //Functie f = gm.FunctieToevoegen(
-            //    testData.DummyGroep,
-            //    testData.NieuweFunctieNaam,
-            //    testData.NieuweFunctieCode,
-            //    1, 1,
-            //    LidType.Alles);
+            var f = new Functie
+                        {
+                            Groep = testData.DummyGroep,
+                            Naam = testData.NieuweFunctieNaam,
+                            Code = testData.NieuweFunctieCode,
+                            MaxAantal = 1,
+                            MinAantal = 1,
+                            Type = LidType.Alles,
+                            ID = testData.NieuweFunctieID
+                        };
 
-            //// Functie bewaren, zodat dummydao een ID toekent.
+            IEnumerable<Functie> functies = new Functie[] { f };
 
-            //f = fm.Bewaren(f);
+            // Act
 
-            //IEnumerable<Functie> functies = new Functie[] { f };
+            var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
 
-            //// Act
+            // Assert
 
-            //fm.Toekennen(testData.LeiderJos, functies);
-            //fm.Toekennen(testData.LidYvonne, functies);
-
-            //// Assert
-
-            //var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
-            //Assert.AreNotEqual(problemen.Count(), 0);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            Assert.IsTrue(problemen.Any(prb => prb.ID == f.ID));
         }
 
         /// <summary>
