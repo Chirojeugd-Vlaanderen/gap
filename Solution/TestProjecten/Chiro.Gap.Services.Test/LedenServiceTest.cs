@@ -1,7 +1,8 @@
-﻿using Chiro.Gap.Poco.Model;
+﻿using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System;
@@ -14,8 +15,9 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.TestDbInfo;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.WorkerInterfaces;
+using Chiro.Cdf.Poco;
 using Moq;
+using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -59,12 +61,10 @@ namespace Chiro.Gap.Services.Test
         //}
 
         //Use TestInitialize to run code before running each test
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-            _ledenService = Factory.Maak<LedenService>();
-            _personenSvc = Factory.Maak<GelieerdePersonenService>();
-        }
+        //[TestInitialize]
+        //public void MyTestInitialize()
+        //{
+        //}
 
         //Use TestCleanup to run code after each test has run
         //[TestCleanup()]
@@ -99,38 +99,108 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void FunctiesVervangenTest()
         {
-            using (new TransactionScope())
-            {
-                #region act
+            #region arrange
 
-                // Lid3 heeft functies contactpersoon en redactie (eigen functie)
-                // Vervang door financieel verantwoordelijke, vb en redactie
+            // testdata genereren
 
-                int lidID = TestInfo.LID3_ID;
-                IEnumerable<int> functieIDs = new int[]
-                                                  {
-                                                      (int) NationaleFunctie.FinancieelVerantwoordelijke,
-                                                      (int) NationaleFunctie.Vb,
-                                                      TestInfo.FUNCTIE_ID
-                                                  };
-                _ledenService.FunctiesVervangen(lidID, functieIDs);
+            var groep = new ChiroGroep();
+            var contactPersoon = new Functie
+                                     {
+                                         ID = 1,
+                                         IsNationaal = true,
+                                         Niveau = Niveau.Alles,
+                                         Naam = "Contactpersoon",
+                                         Type = LidType.Leiding
+                                     };
+            var finVer = new Functie
+                             {
+                                 ID = 2,
+                                 IsNationaal = true,
+                                 Niveau = Niveau.Alles,
+                                 Naam = "FinancieelVerantwoordelijke",
+                                 Type = LidType.Leiding
+                             };
+            var vb = new Functie
+                         {
+                             ID = 3,
+                             IsNationaal = true,
+                             Niveau = Niveau.Alles,
+                             Naam = "VB",
+                             Type = LidType.Leiding
+                         };
+            var redactie = new Functie
+                               {
+                                   ID = 4,
+                                   IsNationaal = false,
+                                   Niveau = Niveau.Groep,
+                                   Naam = "RED",
+                                   Type = LidType.Leiding,
+                                   Groep = groep
+                               };
+            var leiding = new Leiding
+                              {
+                                  ID = 100,
+                                  GroepsWerkJaar = new GroepsWerkJaar {Groep = groep},
+                                  Functie = new[] {contactPersoon, redactie},
+                                  GelieerdePersoon = new GelieerdePersoon {Groep = groep}
+                              };
 
-                #endregion
+            // repositories maken die de testdata opleveren
 
-                #region Assert
+            var ledenRepo = new DummyRepo<Lid>(new[] {leiding});
+            var functieRepo = new DummyRepo<Functie>(new[] {contactPersoon, finVer, vb, redactie});
 
-                var l = _ledenService.DetailsOphalen(lidID);
-                var funIDs = (from f in l.LidInfo.Functies select f.ID);
+            // repositoryprovider opzetten
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(ledenRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(functieRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
 
-                Assert.AreEqual(funIDs.Count(), 3);
-                Assert.IsTrue(funIDs.Contains((int) NationaleFunctie.FinancieelVerantwoordelijke));
-                Assert.IsTrue(funIDs.Contains((int) NationaleFunctie.Vb));
-                Assert.IsTrue(funIDs.Contains(TestInfo.FUNCTIE_ID));
+            // om #1413 te detecteren, moeten we de echte authorisatiemanager
+            // gebruiken. Dat wil dan weer zeggen dat we met de authenticatiemanager
+            // moeten foefelen, en gebruikersrechten moeten simuleren.
 
-                #endregion
+            var authenticatieMgrMock = new Mock<IAuthenticatieManager>();
+            authenticatieMgrMock.Setup(src => src.GebruikersNaamGet()).Returns("testGebruiker");
+            groep.GebruikersRecht.Add(new GebruikersRecht
+                                          {
+                                              Groep = groep,
+                                              Gav = new Gav
+                                                        {
+                                                            Login = "testGebruiker"
+                                                        }
+                                          });
 
-            } // Rollback
+            Factory.InstantieRegistreren<IAutorisatieManager>(new AutorisatieManager(authenticatieMgrMock.Object));
 
+            // Hier maken we uiteindelijk de ledenservice
+
+            var ledenService = Factory.Maak<LedenService>();
+            #endregion
+
+            #region act
+
+            IEnumerable<int> functieIDs = new int[]
+                                              {
+                                                  finVer.ID,
+                                                  vb.ID,
+                                                  redactie.ID
+                                              };
+
+            ledenService.FunctiesVervangen(leiding.ID, functieIDs);
+
+            #endregion
+
+            #region Assert
+
+            var funIDs = (from f in leiding.Functie select f.ID).ToList();
+
+            Assert.AreEqual(funIDs.Count(), 3);
+            Assert.IsTrue(funIDs.Contains(finVer.ID));
+            Assert.IsTrue(funIDs.Contains(vb.ID));
+            Assert.IsTrue(funIDs.Contains(redactie.ID));
+
+            #endregion
 
 
         }
@@ -260,5 +330,6 @@ namespace Chiro.Gap.Services.Test
             //Assert.IsTrue(actual.First().GelieerdePersoonID == 2);
             //Assert.IsTrue(actual.Last().GelieerdePersoonID == 1);
         }
+
     }
 }
