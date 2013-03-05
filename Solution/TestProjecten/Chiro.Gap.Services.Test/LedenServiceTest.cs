@@ -460,5 +460,59 @@ namespace Chiro.Gap.Services.Test
 
             ledenSyncMock.VerifyAll();
         }
+
+        /// <summary>
+        ///A test for Uitschrijven
+        ///</summary>
+        [TestMethod()]
+        public void UitschrijvenTest()
+        {
+            // ARRANGE
+
+            // testsituatie opbouwen
+            var groepsWerkJaar = new GroepsWerkJaar { Groep = new KaderGroep { NiveauInt = (int)Niveau.Gewest } };
+            groepsWerkJaar.Groep.GroepsWerkJaar = new List<GroepsWerkJaar> { groepsWerkJaar };
+
+            var gelieerdePersoon1 = new GelieerdePersoon { ID = 1, Groep = groepsWerkJaar.Groep };
+            var gelieerdePersoon2 = new GelieerdePersoon { ID = 2, Groep = groepsWerkJaar.Groep };
+            groepsWerkJaar.Groep.GelieerdePersoon = new List<GelieerdePersoon> { gelieerdePersoon1, gelieerdePersoon2 };
+
+            var medewerker1 = new Leiding
+            {
+                EindeInstapPeriode = DateTime.Today,
+                // probeerperiode kadermedewerker is irrelevant
+                GroepsWerkJaar = groepsWerkJaar,
+                GelieerdePersoon = gelieerdePersoon1
+            };
+            var medewerker2 = new Leiding
+            {
+                EindeInstapPeriode = DateTime.Today,
+                // probeerperiode kadermedewerker is irrelevant
+                GroepsWerkJaar = groepsWerkJaar,
+                GelieerdePersoon = gelieerdePersoon2
+            };
+            gelieerdePersoon1.Lid = new List<Lid> { medewerker1 };
+            gelieerdePersoon2.Lid = new List<Lid> { medewerker2 };
+
+            // data access opzetten
+            var dummyLeidingRepo = new DummyRepo<Leiding>(new List<Leiding> { medewerker1, medewerker2 });
+            var dummyGpRepo = new DummyRepo<GelieerdePersoon>(groepsWerkJaar.Groep.GelieerdePersoon.ToList());
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Leiding>()).Returns(dummyLeidingRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>()).Returns(dummyGpRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            var target = Factory.Maak<LedenService>();
+
+            // ACT
+
+            string foutBerichten = string.Empty; 
+            target.Uitschrijven(new [] {gelieerdePersoon1.ID}, out foutBerichten);
+
+            // ASSERT
+
+            Assert.IsNotNull(medewerker1.UitschrijfDatum);  // medewerker 1 uitgeschreven
+            Assert.IsNull(medewerker2.UitschrijfDatum);     // medewerker 2 niet uitgeschreven
+        }
     }
 }
