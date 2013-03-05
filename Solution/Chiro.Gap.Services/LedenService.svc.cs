@@ -305,18 +305,19 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Maakt lid met gegeven Id nonactief
+        /// Schrijft de leden met gegeven <paramref name="gelieerdePersoonIDs"/> uit. We gaan ervan uit dat
+        /// ze allemaal ingeschreven zijn.
         /// </summary>
-        /// <param name="gelieerdePersoonIds">Id's van de gelieerde personen</param>
+        /// <param name="gelieerdePersoonIDs">Id's van de gelieerde personen</param>
         /// <param name="foutBerichten">Als voor sommige personen die actie mislukte, bevat foutBerichten een
         ///     string waarin wat uitleg staat.</param>
-        public void Uitschrijven(IList<int> gelieerdePersoonIds, out string foutBerichten)
+        public void Uitschrijven(IList<int> gelieerdePersoonIDs, out string foutBerichten)
         {
             var foutBerichtenBuilder = new StringBuilder();
 
-            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIds);
+            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIDs);
 
-            if (!_autorisatieMgr.IsGav(gelieerdePersonen) || gelieerdePersoonIds.Count() != gelieerdePersonen.Count)
+            if (!_autorisatieMgr.IsGav(gelieerdePersonen) || gelieerdePersoonIDs.Count() != gelieerdePersonen.Count)
             {
                 throw FaultExceptionHelper.GeenGav();
             }
