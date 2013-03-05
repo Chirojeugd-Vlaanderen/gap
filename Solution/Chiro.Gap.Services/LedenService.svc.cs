@@ -313,6 +313,8 @@ namespace Chiro.Gap.Services
         ///     string waarin wat uitleg staat.</param>
         public void Uitschrijven(IList<int> gelieerdePersoonIDs, out string foutBerichten)
         {
+            // Deze code is tamelijk rommelig; gebruik ze niet als referentie-implementatie
+            // (Ik ben er ook niet van overtuigd of het werken met 'foutBerichten' wel in orde is.)
             var teSyncen = new List<Lid>();
 
             var foutBerichtenBuilder = new StringBuilder();
@@ -330,7 +332,10 @@ namespace Chiro.Gap.Services
             {
                 var gwj = _groepenMgr.HuidigWerkJaar(g);
 
-                foreach (var gp in g.GelieerdePersoon)
+                // Handel per groep de uitschrijvingen af, zodat we per groep kunnen
+                // controleren of de persoon wel ingeschreven is in het recentste groepswerkjaar.
+
+                foreach (var gp in gelieerdePersonen.Where(gp => Equals(gp.Groep, g)))
                 {
                     var lid = gp.Lid.FirstOrDefault(e => e.GroepsWerkJaar.ID == gwj.ID);
 
