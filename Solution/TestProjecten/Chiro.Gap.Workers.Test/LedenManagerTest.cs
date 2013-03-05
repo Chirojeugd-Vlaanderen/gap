@@ -96,47 +96,6 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         }
 
         ///<summary>
-        /// Controleert of uitschrijvingen van kadermedewerkers (waarvan de probeerperiode per definitie
-        /// voorbij is, want ze hebben geen probeerperiode) toch gesynct worden.
-        /// </summary>
-        [TestMethod]
-        public void KaderUitschrijvenTest()
-        {
-            //// arrange
-
-            //var ledenSyncMock = new Mock<ILedenSync>();
-            //ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>()));   // verwacht dat ledensync een lid moet bewaren
-
-            //var leidingDaoMock = new Mock<ILeidingDao>();
-            //leidingDaoMock.Setup(dao => dao.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns(
-            //    (Leiding x, LidExtras y) => x);  // bewaren doet niets behalven het originele leiding terug opleveren
-
-            //Factory.InstantieRegistreren(ledenSyncMock.Object);
-            //Factory.InstantieRegistreren(leidingDaoMock.Object);
-
-            //var target = Factory.Maak<LedenManager>();
-
-            //// construeer gauw een uitgeschreven kadermedewerker
-
-            //Lid lid = new Leiding
-            //              {
-            //                  EindeInstapPeriode = DateTime.Today,  // probeerperiode kadermedewerker is irrelevant
-            //                  UitschrijfDatum = DateTime.Today,
-            //                  GroepsWerkJaar = new GroepsWerkJaar {Groep = new KaderGroep {NiveauInt = (int)Niveau.Gewest}}
-            //              };
-
-            //// act
-
-            //target.Bewaren(lid, LidExtras.Geen, true);
-
-            //// assert: controleer of de ledensync is aangeroepen
-
-            //ledenSyncMock.Verify(snc => snc.Verwijderen(It.IsAny<Lid>()));
-            //Assert.IsTrue(true);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-        }
-
-        ///<summary>
         /// Controleert of uitschrijvingen van leiding waarvan de probeerperiode voorbij is,
         /// niet naar kipadmin gesynct worden.
         /// </summary>

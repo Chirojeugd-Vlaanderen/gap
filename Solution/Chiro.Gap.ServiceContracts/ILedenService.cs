@@ -43,8 +43,8 @@ namespace Chiro.Gap.ServiceContracts
         IEnumerable<int> Inschrijven(InTeSchrijvenLid[] lidInformatie, out string foutBerichten);
 
 	    /// <summary>
-	    /// Schrijft de leden met gegeven <paramref name="gelieerdePersoonIDs"/> uit. We gaan ervan uit dat
-	    /// ze allemaal ingeschreven zijn.
+        /// Schrijft de leden met gegeven <paramref name="gelieerdePersoonIDs"/> uit voor het huidige
+        /// werkjaar. We gaan ervan uit dat ze allemaal ingeschreven zijn.
 	    /// </summary>
 	    /// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
 	    /// <param name="foutBerichten">Als voor sommige personen die actie mislukte, bevat foutBerichten een

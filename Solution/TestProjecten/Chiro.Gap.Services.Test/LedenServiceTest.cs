@@ -408,5 +408,50 @@ namespace Chiro.Gap.Services.Test
             ledenSyncMock.Verify();
             #endregion
         }
+
+        ///<summary>
+        /// Controleert of de uitschrijving van kadermedewerkers wordt gesynct naar kipadmin.
+        /// (Voor kadermedewerkers is er geen probeerperiode, want kaderinschrijvingen zijn gratis)
+        ///</summary>
+        [TestMethod()]
+        public void UitschrijvenKaderSyncTest()
+        {
+            // arrange
+
+            // testsituatie opbouwen
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = new KaderGroep()};
+
+            var medewerker = new Leiding
+                                 {
+                                     EindeInstapPeriode = DateTime.Today,
+                                     // probeerperiode kadermedewerker is irrelevant
+                                     GroepsWerkJaar = groepsWerkJaar,
+                                     GelieerdePersoon = new GelieerdePersoon {ID = 1, Groep = groepsWerkJaar.Groep}
+                                 };
+
+            // data access opzetten
+            var dummyLeidingRepo = new DummyRepo<Leiding>(new List<Leiding>{medewerker});
+            var dummyGpRepo = new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {medewerker.GelieerdePersoon});
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Leiding>()).Returns(dummyLeidingRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>()).Returns(dummyGpRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            // synchronisatie mocken
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>())).Verifiable();   // verwacht dat ledensync een lid moet bewaren
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+
+            var target = Factory.Maak<LedenService>();
+
+            // ACT
+
+            string foutbericht;
+            target.Uitschrijven(new[] {medewerker.GelieerdePersoon.ID}, out foutbericht);
+
+            // ASSERT: controleer of de ledensync is aangeroepen
+
+            ledenSyncMock.VerifyAll();
+        }
     }
 }
