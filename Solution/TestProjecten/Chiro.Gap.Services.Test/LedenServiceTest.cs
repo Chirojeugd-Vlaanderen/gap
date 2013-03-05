@@ -1,6 +1,7 @@
 ﻿using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,6 +19,8 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Cdf.Poco;
 using Moq;
 using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
+using Chiro.Gap.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -47,12 +50,10 @@ namespace Chiro.Gap.Services.Test
         #region Additional test attributes
 
         // Use ClassInitialize to run static code before running the first test in the class
-        [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            Factory.ContainerInit();
-            MappingHelper.MappingsDefinieren();
-        }
+        //[ClassInitialize]
+        //public static void MyClassInitialize(TestContext testContext)
+        //{
+        //}
 
         //Use ClassCleanup to run code after all tests in a class have run
         //[ClassCleanup()]
@@ -61,10 +62,13 @@ namespace Chiro.Gap.Services.Test
         //}
 
         //Use TestInitialize to run code before running each test
-        //[TestInitialize]
-        //public void MyTestInitialize()
-        //{
-        //}
+        [TestInitialize]
+        public void MyTestInitialize()
+        {
+            // Reset de IOC-container voor iedere test.
+            Factory.ContainerInit();
+            MappingHelper.MappingsDefinieren();
+        }
 
         //Use TestCleanup to run code after each test has run
         //[TestCleanup()]
@@ -341,5 +345,68 @@ namespace Chiro.Gap.Services.Test
             //Assert.IsTrue(actual.Last().GelieerdePersoonID == 1);
         }
 
+
+        ///<summary>
+        ///Controleert of het vervangen van functies gesynct wordt naar Kipadmin.
+        ///</summary>
+        [TestMethod()]
+        public void FunctiesVervangenSyncTest()
+        {
+            #region arrange
+
+            // testdata genereren
+
+            var gwj = new GroepsWerkJaar();
+            var groep = new ChiroGroep
+            {
+                GroepsWerkJaar = new List<GroepsWerkJaar> { gwj }
+            };
+            gwj.Groep = groep;
+
+            var contactPersoon = new Functie
+            {
+                ID = 1,
+                IsNationaal = true,
+                Niveau = Niveau.Alles,
+                Naam = "Contactpersoon",
+                Type = LidType.Leiding
+            };
+
+            var leiding = new Leiding
+            {
+                ID = 100,
+                GroepsWerkJaar = gwj,
+                Functie = new List<Functie>(),
+                GelieerdePersoon = new GelieerdePersoon { Groep = groep }
+            };
+
+            // repositories maken die de testdata opleveren
+            var ledenRepo = new DummyRepo<Lid>(new[] { leiding });
+            var functieRepo = new DummyRepo<Functie>(new[] { contactPersoon });
+
+            // repositoryprovider opzetten
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(ledenRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(functieRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            // sync mocken.
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(src => src.FunctiesUpdaten(leiding)).Verifiable();
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+
+            // Hier maken we uiteindelijk de ledenservice
+
+            var ledenService = Factory.Maak<LedenService>();
+            #endregion
+
+            #region act
+            ledenService.FunctiesVervangen(leiding.ID, new [] { contactPersoon.ID });
+            #endregion
+
+            #region Assert
+            ledenSyncMock.Verify();
+            #endregion
+        }
     }
 }
