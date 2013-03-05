@@ -73,7 +73,7 @@ namespace Chiro.Gap.Workers
         /// Haalt alle nationale functies op
         /// </summary>
         /// <param name="functieRepo">Repository die deze worker kan gebruiken om functies
-        /// op te vragen.</param>
+        ///     op te vragen.</param>
         /// <returns>
         /// Lijstje nationale functies
         /// </returns>
@@ -81,7 +81,7 @@ namespace Chiro.Gap.Workers
         /// De repository wordt bewust niet geregeld door de constructor van deze klasse,
         /// omdat we moeten vermijden dat de IOC-container hiervoor een nieuwe context aanmaakt.
         /// </remarks>
-        public IEnumerable<Functie> NationaleFunctiesOphalen(IRepository<Functie> functieRepo)
+        public List<Functie> NationaleFunctiesOphalen(IRepository<Functie> functieRepo)
         {
             if (_cache[NATIONALEFUNCTIESCACHEKEY] == null)
             {
@@ -91,7 +91,7 @@ namespace Chiro.Gap.Workers
 
                 _cache.Add(
                     NATIONALEFUNCTIESCACHEKEY,
-                    nationaleFuncties.ToArray(),
+                    nationaleFuncties.ToList(),
                     null,
                     Cache.NoAbsoluteExpiration,
                     new TimeSpan(1, 0, 0, 0) /* bewaar 1 dag */,
@@ -99,7 +99,7 @@ namespace Chiro.Gap.Workers
                     null);
             }
 
-            return _cache[NATIONALEFUNCTIESCACHEKEY] as IEnumerable<Functie>;
+            return _cache[NATIONALEFUNCTIESCACHEKEY] as List<Functie>;
         }
 
         /// <summary>
