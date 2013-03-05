@@ -196,20 +196,24 @@ namespace Chiro.Gap.Workers.Test
         {
             // ARRANGE
 
-            // een functie waarvan er precies 1 moet zijn
+            var g = new ChiroGroep();
+
+            // een (eigen) functie waarvan er precies 1 moet zijn
             var f = new Functie
                         {
                             MinAantal = 1,
                             Type = LidType.Alles,
                             ID = 1,
-                            IsNationaal = true,
-                            Niveau = Niveau.Alles
+                            IsNationaal = false,
+                            Niveau = Niveau.Alles,
+                            Groep = g,
                         };
 
             // groepswerkjaar zonder leden
             var gwj = new GroepsWerkJaar
                           {
-                              Lid = new List<Lid>()
+                              Lid = new List<Lid>(),
+                              Groep = g
                           };
 
             // Maak een functiesmanager
@@ -272,20 +276,33 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void OntbrekendeNationaalBepaaldeFuncties()
         {
-            // Arrange
+            // ARRANGE
 
-            var testData = new DummyData();
+            // een nationale functie waarvan er precies 1 moet zijn
+            var f = new Functie
+            {
+                MinAantal = 1,
+                Type = LidType.Alles,
+                ID = 1,
+                IsNationaal = true,
+                Niveau = Niveau.Alles
+            };
 
+            // groepswerkjaar zonder leden
+            var gwj = new GroepsWerkJaar
+            {
+                Lid = new List<Lid>()
+            };
+
+            // Maak een functiesmanager
             var fm = Factory.Maak<FunctiesManager>();
 
-            // Act
 
-            var problemen = fm.AantallenControleren(testData.HuidigGwj, testData.HuidigGwj.Groep.Functie);
-            // Het DummyFunctieDao voorziet nationaal bepaalde verplichte functies.
+            // ACT
+            var problemen = fm.AantallenControleren(gwj, new[] { f });
 
-            // Assert
-
-            Assert.AreNotEqual(problemen.Count(), 0);
+            // ASSERT
+            Assert.IsTrue(problemen.Any(prb => prb.ID == f.ID));
         }
 
 

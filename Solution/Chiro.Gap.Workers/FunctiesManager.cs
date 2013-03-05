@@ -11,7 +11,6 @@ using System.Transactions;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Properties;
 
@@ -22,23 +21,6 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class FunctiesManager : IFunctiesManager
     {
-        private readonly IVeelGebruikt _veelGebruikt;
-        private readonly IAutorisatieManager _autorisatieMgr;
-
-        private readonly ILedenSync _ledenSync;
-
-        public FunctiesManager(
-            IVeelGebruikt veelGebruikt,
-            IAutorisatieManager auMgr,
-            ILedenSync ledenSync)
-        {
-            _veelGebruikt = veelGebruikt;
-            _autorisatieMgr = auMgr;
-
-            _ledenSync = ledenSync;
-        }
-
-
         /// <summary>
         /// Kent de meegegeven <paramref name="functies"/> toe aan het gegeven <paramref name="lid"/>.
         /// Als het lid al andere functies had, blijven die behouden.
@@ -188,10 +170,10 @@ namespace Chiro.Gap.Workers
         /// minimumaantallen van de functies <paramref name="functies"/> niet overschreden zijn.
         /// </summary>
         /// <param name="groepsWerkJaar">
-        /// Te controleren werkJaar
+        ///     Te controleren werkJaar
         /// </param>
         /// <param name="functies">
-        /// Functies waarop te controleren
+        ///     Functies waarop te controleren
         /// </param>
         /// <returns>
         /// Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.
@@ -209,59 +191,59 @@ namespace Chiro.Gap.Workers
         /// Functies die niet geldig zijn in het gevraagde groepswerkjaar, worden genegeerd
         /// </para>
         /// </remarks>
-        public IEnumerable<Telling> AantallenControleren(
+        public List<Telling> AantallenControleren(
             GroepsWerkJaar groepsWerkJaar,
-            IEnumerable<Functie> functies)
+            IList<Functie> functies)
         {
-            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-            else
-            {
-                var toegekendeFuncties =
-                    groepsWerkJaar.Lid.SelectMany(ld => ld.Functie)
-                        .Distinct()
-                        .Where(fn => functies.Contains(fn));
+            var toegekendeFuncties =
+                groepsWerkJaar.Lid.SelectMany(ld => ld.Functie)
+                              .Distinct()
+                              .Where(functies.Contains);
 
-                var nietToegekendeFuncties = from fn in functies
-                                             where !toegekendeFuncties.Contains(fn)
-                                                   && (fn.IsNationaal || fn.Groep == groepsWerkJaar.Groep)
-                                             // bovenstaande vermijdt groepsvreemde functies
-                                             select fn;
+            var nietToegekendeFuncties = from fn in functies
+                                         where !toegekendeFuncties.Contains(fn)
+                                               && (fn.IsNationaal || Equals(fn.Groep, groepsWerkJaar.Groep))
+                                         // bovenstaande vermijdt groepsvreemde functies
+                                         select fn;
 
-                // toegekende functies waarvan er te veel of te weinig zijn
-                var problemenToegekendeFuncties =
-                    from fn in toegekendeFuncties
-                    where (fn.WerkJaarVan == null || fn.WerkJaarVan <= groepsWerkJaar.WerkJaar)
-                          && (fn.WerkJaarTot == null || fn.WerkJaarTot >= groepsWerkJaar.WerkJaar)
-                          && (fn.Lid.Count() > fn.MaxAantal // geeft false als maxaant == null
-                              || fn.Lid.Count() < fn.MinAantal)
-                    // geeft false als minaant null
-                    select new Telling
-                               {
-                                   ID = fn.ID,
-                                   Aantal = fn.Lid.Count(),
-                                   Max = fn.MaxAantal,
-                                   Min = fn.MinAantal
-                               };
+            // toegekende functies waarvan er te veel of te weinig zijn
+            var problemenToegekendeFuncties =
+                toegekendeFuncties.Where(fn => (fn.WerkJaarVan == null ||
+                                                fn.WerkJaarVan <= groepsWerkJaar.WerkJaar)
+                                               &&
+                                               (fn.WerkJaarTot == null ||
+                                                fn.WerkJaarTot >= groepsWerkJaar.WerkJaar)
+                                               &&
+                                               (fn.Lid.Count() > fn.MaxAantal
+                                                // geeft false als maxaant == null
+                                                || fn.Lid.Count() < fn.MinAantal)).Select(fn => new Telling
+                                                                                                       {
+                                                                                                           ID = fn.ID,
+                                                                                                           Aantal =
+                                                                                                               fn.Lid
+                                                                                                                 .Count(),
+                                                                                                           Max =
+                                                                                                               fn
+                                                                                                               .MaxAantal,
+                                                                                                           Min =
+                                                                                                               fn
+                                                                                                               .MinAantal
+                                                                                                       });
 
-                // niet-toegekende functies waarvan er te weinig zijn
-                var problemenOntbrekendeFuncties =
-                    from fn in nietToegekendeFuncties
-                    where (fn.WerkJaarVan == null || fn.WerkJaarVan <= groepsWerkJaar.WerkJaar)
-                          && (fn.WerkJaarTot == null || fn.WerkJaarTot >= groepsWerkJaar.WerkJaar)
-                          && fn.MinAantal > 0
-                    select new Telling
-                               {
-                                   ID = fn.ID,
-                                   Aantal = 0,
-                                   Max = fn.MaxAantal,
-                                   Min = fn.MinAantal
-                               };
+            // niet-toegekende functies waarvan er te weinig zijn
+            var problemenOntbrekendeFuncties =
+                nietToegekendeFuncties.Where(fn => (fn.WerkJaarVan == null || fn.WerkJaarVan <= groepsWerkJaar.WerkJaar)
+                                                   &&
+                                                   (fn.WerkJaarTot == null || fn.WerkJaarTot >= groepsWerkJaar.WerkJaar)
+                                                   && fn.MinAantal > 0).Select(fn => new Telling
+                                                                                         {
+                                                                                             ID = fn.ID,
+                                                                                             Aantal = 0,
+                                                                                             Max = fn.MaxAantal,
+                                                                                             Min = fn.MinAantal
+                                                                                         });
 
-                return problemenToegekendeFuncties.Union(problemenOntbrekendeFuncties).ToArray();
-            }
+            return problemenToegekendeFuncties.Union(problemenOntbrekendeFuncties).ToList();
         }
 
         /// <summary>

@@ -52,10 +52,10 @@ namespace Chiro.Gap.WorkerInterfaces
         /// minimumaantallen van de functies <paramref name="functies"/> niet overschreden zijn.
         /// </summary>
         /// <param name="groepsWerkJaar">
-        /// Te controleren werkJaar
+        ///     Te controleren werkJaar
         /// </param>
         /// <param name="functies">
-        /// Functies waarop te controleren
+        ///     Functies waarop te controleren
         /// </param>
         /// <returns>
         /// Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.
@@ -73,9 +73,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Functies die niet geldig zijn in het gevraagde groepswerkjaar, worden genegeerd
         /// </para>
         /// </remarks>
-        IEnumerable<Telling> AantallenControleren(
-            GroepsWerkJaar groepsWerkJaar,
-            IEnumerable<Functie> functies);
+        List<Telling> AantallenControleren(GroepsWerkJaar groepsWerkJaar, IList<Functie> functies);
 
         /// <summary>
         /// Vervangt de functies van het gegeven <paramref name="lid"/> door de meegegeven
