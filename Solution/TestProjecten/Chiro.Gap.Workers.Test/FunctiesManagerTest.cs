@@ -194,31 +194,32 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void NietToegekendeVerplichteFunctie()
         {
-            // Arrange
+            // ARRANGE
 
-            var testData = new DummyData();
-
-            var fm = Factory.Maak<FunctiesManager>();
-
+            // een functie waarvan er precies 1 moet zijn
             var f = new Functie
                         {
-                            Groep = testData.DummyGroep,
-                            Naam = testData.NieuweFunctieNaam,
-                            Code = testData.NieuweFunctieCode,
-                            MaxAantal = 1,
                             MinAantal = 1,
                             Type = LidType.Alles,
-                            ID = testData.NieuweFunctieID
+                            ID = 1,
+                            IsNationaal = true,
+                            Niveau = Niveau.Alles
                         };
 
-            IEnumerable<Functie> functies = new Functie[] { f };
+            // groepswerkjaar zonder leden
+            var gwj = new GroepsWerkJaar
+                          {
+                              Lid = new List<Lid>()
+                          };
 
-            // Act
+            // Maak een functiesmanager
+            var fm = Factory.Maak<FunctiesManager>();
 
-            var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
 
-            // Assert
+            // ACT
+            var problemen = fm.AantallenControleren(gwj, new[] {f});
 
+            // ASSERT
             Assert.IsTrue(problemen.Any(prb => prb.ID == f.ID));
         }
 

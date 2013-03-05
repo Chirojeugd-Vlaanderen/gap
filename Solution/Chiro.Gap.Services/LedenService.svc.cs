@@ -395,10 +395,16 @@ namespace Chiro.Gap.Services
                 }
             }
 
-#if KIPDORP			using (var tx = new TransactionScope())			{#endif
+#if KIPDORP
+			using (var tx = new TransactionScope())
+			{
+#endif
                 _ledenRepo.SaveChanges();
                 _ledenSync.FunctiesUpdaten(lid);
-#if KIPDORP				tx.Complete();			}#endif
+#if KIPDORP
+				tx.Complete();
+			}
+#endif
             // TODO: sync naar kipadmin
             
         }
