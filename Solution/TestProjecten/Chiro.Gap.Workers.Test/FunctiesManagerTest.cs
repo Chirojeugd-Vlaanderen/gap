@@ -94,32 +94,35 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void TweeKeerUniekeFunctieToekennenTestZelfdeLid()
         {
-            //// Arrange
+            // Arrange
 
-            //var testData = new DummyData();
+            // Genereer de situatie
 
-            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            //GroepenManager gm = Factory.Maak<GroepenManager>();
+            var groep = new ChiroGroep();
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = groep};
+            groep.GroepsWerkJaar = new List<GroepsWerkJaar> {groepsWerkJaar};
 
-            //Functie f = gm.FunctieToevoegen(
-            //    testData.DummyGroep,
-            //    testData.NieuweFunctieNaam,
-            //    testData.NieuweFunctieCode,
-            //    1, 0,
-            //    LidType.Alles);
+            var leider = new Leiding {GroepsWerkJaar = groepsWerkJaar};
+            var functie = new Functie
+                              {
+                                  MaxAantal = 1,
+                                  Type = LidType.Alles,
+                                  IsNationaal = true,
+                                  Niveau = Niveau.Alles
+                              };
 
-            //IEnumerable<Functie> functies = new Functie[] { f };
 
-            //// Act
+            var fm = Factory.Maak<FunctiesManager>();
 
-            //fm.Toekennen(testData.LeiderJos, functies);
-            //fm.Toekennen(testData.LeiderJos, functies);
+            // Act
 
-            //// Assert
+            fm.Toekennen(leider, new[]{functie});
+            fm.Toekennen(leider, new[]{functie});
 
-            //var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
-            //Assert.AreEqual(problemen.Count(), 0);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            // Assert
+
+            var problemen = fm.AantallenControleren(groepsWerkJaar, new[]{functie});
+            Assert.AreEqual(problemen.Count(), 0);
         }
 
         /// <summary>
