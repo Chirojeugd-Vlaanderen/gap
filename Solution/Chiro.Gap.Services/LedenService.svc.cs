@@ -313,6 +313,8 @@ namespace Chiro.Gap.Services
         ///     string waarin wat uitleg staat.</param>
         public void Uitschrijven(IList<int> gelieerdePersoonIDs, out string foutBerichten)
         {
+            var teSyncen = new List<Lid>();
+
             var foutBerichtenBuilder = new StringBuilder();
 
             var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIDs);
@@ -347,12 +349,29 @@ namespace Chiro.Gap.Services
 
                     lid.UitschrijfDatum = DateTime.Now;
                     lid.Functie.Clear();
+
+                    if (lid.EindeInstapPeriode > lid.UitschrijfDatum || lid.Niveau > Niveau.Groep)
+                    {
+                        teSyncen.Add(lid);
+                    }
                 }
             }
 
             foutBerichten = foutBerichtenBuilder.ToString();
 
-            _gelieerdePersonenRepo.SaveChanges();
+#if KIPDORP
+			using (var tx = new TransactionScope())
+			{
+#endif
+                _gelieerdePersonenRepo.SaveChanges();
+                foreach (var l in teSyncen)
+                {
+                    _ledenSync.Verwijderen(l);
+                }
+#if KIPDORP
+				tx.Complete();
+			}
+#endif
         }
 
         /// <summary>
@@ -406,8 +425,7 @@ namespace Chiro.Gap.Services
 				tx.Complete();
 			}
 #endif
-            // TODO: sync naar kipadmin
-            
+           
         }
 
         /// <summary>

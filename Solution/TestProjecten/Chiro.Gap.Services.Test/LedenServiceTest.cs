@@ -419,15 +419,22 @@ namespace Chiro.Gap.Services.Test
             // arrange
 
             // testsituatie opbouwen
-            var groepsWerkJaar = new GroepsWerkJaar {Groep = new KaderGroep()};
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = new KaderGroep {NiveauInt = (int) Niveau.Gewest}};
+            groepsWerkJaar.Groep.GroepsWerkJaar = new List<GroepsWerkJaar> { groepsWerkJaar };
+
+            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Groep = groepsWerkJaar.Groep};
+            groepsWerkJaar.Groep.GelieerdePersoon = new List<GelieerdePersoon> { gelieerdePersoon };          
 
             var medewerker = new Leiding
                                  {
                                      EindeInstapPeriode = DateTime.Today,
                                      // probeerperiode kadermedewerker is irrelevant
                                      GroepsWerkJaar = groepsWerkJaar,
-                                     GelieerdePersoon = new GelieerdePersoon {ID = 1, Groep = groepsWerkJaar.Groep}
+                                     GelieerdePersoon = gelieerdePersoon
                                  };
+            gelieerdePersoon.Lid = new List<Lid> {medewerker};
+            
+
 
             // data access opzetten
             var dummyLeidingRepo = new DummyRepo<Leiding>(new List<Leiding>{medewerker});
