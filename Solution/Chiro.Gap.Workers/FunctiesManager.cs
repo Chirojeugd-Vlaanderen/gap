@@ -41,94 +41,80 @@ namespace Chiro.Gap.Workers
 
         /// <summary>
         /// Kent de meegegeven <paramref name="functies"/> toe aan het gegeven <paramref name="lid"/>.
-        /// Als het lid al andere functies had, blijven die behouden.  Persisteert niet.
+        /// Als het lid al andere functies had, blijven die behouden.
+        /// Deze method controleert ook of alles wel volgens de business rules verloopt.
         /// </summary>
         /// <param name="lid">
-        /// Lid dat de functies moet krijgen, gekoppeld aan zijn groep
+        ///     Lid dat de functies moet krijgen, gekoppeld aan zijn groep
         /// </param>
         /// <param name="functies">
-        /// Rij toe te kennen functies
+        ///     Rij toe te kennen functies
         /// </param>
         /// <remarks>
-        /// Er wordt verondersteld dat er heel wat geladen is!
+        /// Er wordt verondersteld dat er heel wat opgevraagd kan worden:
         /// - lid.groepswerkjaar.groep
         /// - lid.functie
         /// - voor elke functie:
         ///  - functie.lid (voor leden van dezelfde groep)
         ///  - functie.groep
         /// </remarks>
-        public void Toekennen(Lid lid, IEnumerable<Functie> functies)
+        public void Toekennen(Lid lid, IList<Functie> functies)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-            //Debug.Assert(lid.GroepsWerkJaar != null);
-            //Debug.Assert(lid.GroepsWerkJaar.Groep != null);
+            Debug.Assert(lid.GroepsWerkJaar != null);
+            Debug.Assert(lid.GroepsWerkJaar.Groep != null);
 
-            //if (!_autorisatieMgr.IsGavLid(lid.ID))
-            //{
-            //    throw new GeenGavException(Resources.GeenGav);
-            //}
+            // Leden van een oud groepswerkjaar kunnen niet meer worden aangepast.
+            var recentsteGwj = lid.GroepsWerkJaar.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
 
-            //if (!_groepsWjDao.IsRecentste(lid.GroepsWerkJaar.ID))
-            //{
-            //    throw new FoutNummerException(
-            //        FoutNummer.GroepsWerkJaarNietBeschikbaar,
-            //        Resources.GroepsWerkJaarVoorbij);
-            //}
+            if (!Equals(lid.GroepsWerkJaar, recentsteGwj))
+            {
+                throw new FoutNummerException(
+                    FoutNummer.GroepsWerkJaarNietBeschikbaar,
+                    Resources.GroepsWerkJaarVoorbij);
+            }
 
-            //// Eerst alle checks, zodat als er ergens een exceptie optreedt, er geen enkele
-            //// functie wordt toegekend.
+            // Eerst alle checks, zodat als er ergens een exceptie optreedt, er geen enkele
+            // functie wordt toegekend.
 
-            //foreach (Functie f in functies)
-            //{
-            //    if (!_autorisatieMgr.IsGavFunctie(f.ID))
-            //    {
-            //        throw new GeenGavException(Resources.GeenGav);
-            //    }
+            foreach (var f in functies)
+            {
+                if (!f.IsNationaal && f.Groep.ID != lid.GroepsWerkJaar.Groep.ID)
+                {
+                    throw new FoutNummerException(
+                        FoutNummer.FunctieNietVanGroep,
+                        Resources.FoutieveGroepFunctie);
+                }
 
-            //    if (!f.IsNationaal && f.Groep.ID != lid.GroepsWerkJaar.Groep.ID)
-            //    {
-            //        throw new FoutNummerException(
-            //            FoutNummer.FunctieNietVanGroep,
-            //            Resources.FoutieveGroepFunctie);
-            //    }
+                if (f.WerkJaarTot < lid.GroepsWerkJaar.WerkJaar // false als wjtot null
+                    || f.WerkJaarVan > lid.GroepsWerkJaar.WerkJaar)
+                {
+                    // false als wjvan null
+                    throw new FoutNummerException(
+                        FoutNummer.FunctieNietBeschikbaar,
+                        Resources.FoutiefGroepsWerkJaarFunctie);
+                }
 
-            //    if (f.WerkJaarTot < lid.GroepsWerkJaar.WerkJaar // false als wjtot null
-            //        || f.WerkJaarVan > lid.GroepsWerkJaar.WerkJaar)
-            //    {
-            //        // false als wjvan null
-            //        throw new FoutNummerException(
-            //            FoutNummer.FunctieNietBeschikbaar,
-            //            Resources.FoutiefGroepsWerkJaarFunctie);
-            //    }
+                if ((f.Niveau & lid.Niveau) == 0)
+                {
+                    throw new FoutNummerException(
+                        FoutNummer.LidTypeVerkeerd,
+                        Resources.FoutiefLidType);
+                }
 
-            //    if ((f.Niveau & lid.Niveau) == 0)
-            //    {
-            //        throw new InvalidOperationException(Resources.FoutiefLidType);
-            //    }
+                // Ik test hier bewust niet of er niet te veel leden zijn met de functie;
+                // op die manier worden inconsistenties bij het veranderen van functies toegelaten,
+                // wat me voor de UI makkelijker lijkt.  De method 'AantallenControleren' kan
+                // te allen tijde gebruikt worden om problemen met functieaantallen op te sporen.
+            }
 
-            //    // Ik test hier bewust niet of er niet te veel leden zijn met de functie;
-            //    // op die manier worden inconsistenties bij het veranderen van functies toegelaten,
-            //    // wat me voor de UI makkelijker lijkt.  De method 'AantallenControleren' kan
-            //    // te allen tijde gebruikt worden om problemen met functieaantallen op te sporen.
-            //}
+            // Alle checks goed overleefd; als we nog niet uit de method 'gethrowd' zijn, kunnen we
+            // nu de functies toekennen.
 
-            //// Alle checks goed overleefd; als we nog niet uit de method 'gethrowd' zijn, kunnen we
-            //// nu de functies toekennen.
+            foreach (var f in functies)
+            {
+                lid.Functie.Add(f);
+            }
 
-            //foreach (var f in functies)
-            //{
-            //    // Lokale variabele om "Access to modified closure" te vermijden [wiki:VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure]
-            //    Functie f1 = f;
-            //    if ((from fnc in lid.Functie where fnc.ID == f1.ID select fnc).FirstOrDefault() == null)
-            //    {
-            //        lid.Functie.Add(f);
-            //    }
-
-            //    if ((from ld in f.Lid where ld.ID == lid.ID select ld).FirstOrDefault() == null)
-            //    {
-            //        f.Lid.Add(lid);
-            //    }
-            //}
         }
         
         /// <summary>
@@ -275,6 +261,33 @@ namespace Chiro.Gap.Workers
                                };
 
                 return problemenToegekendeFuncties.Union(problemenOntbrekendeFuncties).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Vervangt de functies van het gegeven <paramref name="lid"/> door de meegegeven
+        /// <paramref name="functies"/>. Deze method kijkt ook na of de functies wel aan
+        /// de juiste groep gekoppeld zijn, en van het juiste niveau zijn.
+        /// </summary>
+        /// <param name="lid">Lid waarvan de functies vervangen moeten worden</param>
+        /// <param name="functies">Nieuwe functies voor <paramref name="lid"/></param>
+        public void Vervangen(Lid lid, List<Functie> functies)
+        {
+            // In deze method zitten geen checks op GAV-schap, juiste werkJaar,... dat gebeurt al in
+            // 'Toekennen' en 'Loskoppelen', dewelke door deze method worden aangeroepen.
+            var toeTeVoegen = (from fn in functies
+                               where !lid.Functie.Contains(fn)
+                               select fn).ToList();
+
+            var teVerwijderen = (from fn in lid.Functie
+                                 where !functies.Contains(fn)
+                                 select fn).ToList();
+
+            Toekennen(lid, toeTeVoegen);
+
+            foreach (var f in teVerwijderen)
+            {
+                lid.Functie.Remove(f);
             }
         }
     }

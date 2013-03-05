@@ -1,8 +1,5 @@
-﻿using System;
-using System.Data;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.Services

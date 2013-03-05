@@ -96,6 +96,30 @@ namespace Chiro.Gap.Poco.Model
                 throw new NotSupportedException("Lid moet kind of leiding zijn.");
             }
         }
+
+
+        /// <summary>
+        /// Bepaalt het niveau van het lid.  Hiervoor moet wel de groep beschikbaar zijn.
+        /// </summary>
+        public Niveau Niveau
+        {
+            get
+            {
+                var resultaat = GroepsWerkJaar.Groep.Niveau;
+                if ((resultaat & Niveau.Groep) != 0)
+                {
+                    if (!(this is Leiding))
+                    {
+                        resultaat &= ~Niveau.LeidingInGroep;
+                    }
+                    if (!(this is Kind))
+                    {
+                        resultaat &= ~Niveau.LidInGroep;
+                    }
+                }
+                return resultaat;
+            }
+        }
     }
     
 }

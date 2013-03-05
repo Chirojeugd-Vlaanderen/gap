@@ -103,7 +103,13 @@ namespace Chiro.Gap.Services.Test
 
             // testdata genereren
 
-            var groep = new ChiroGroep();
+            var gwj = new GroepsWerkJaar();
+            var groep = new ChiroGroep
+                            {
+                                GroepsWerkJaar = new List<GroepsWerkJaar> {gwj}
+                            };
+            gwj.Groep = groep;
+
             var contactPersoon = new Functie
                                      {
                                          ID = 1,
@@ -140,7 +146,7 @@ namespace Chiro.Gap.Services.Test
             var leiding = new Leiding
                               {
                                   ID = 100,
-                                  GroepsWerkJaar = new GroepsWerkJaar {Groep = groep},
+                                  GroepsWerkJaar = gwj,
                                   Functie = new List<Functie> {contactPersoon, redactie},
                                   GelieerdePersoon = new GelieerdePersoon {Groep = groep}
                               };

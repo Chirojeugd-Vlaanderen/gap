@@ -11,20 +11,20 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Als het lid al andere functies had, blijven die behouden.  Persisteert niet.
         /// </summary>
         /// <param name="lid">
-        /// Lid dat de functies moet krijgen, gekoppeld aan zijn groep
+        ///     Lid dat de functies moet krijgen, gekoppeld aan zijn groep
         /// </param>
         /// <param name="functies">
-        /// Rij toe te kennen functies
+        ///     Rij toe te kennen functies
         /// </param>
         /// <remarks>
-        /// Er wordt verondersteld dat er heel wat geladen is!
+        /// Er wordt verondersteld dat er heel wat opgevraagd kan worden:
         /// - lid.groepswerkjaar.groep
         /// - lid.functie
         /// - voor elke functie:
         ///  - functie.lid (voor leden van dezelfde groep)
         ///  - functie.groep
         /// </remarks>
-        void Toekennen(Lid lid, IEnumerable<Functie> functies);
+        void Toekennen(Lid lid, IList<Functie> functies);
 
         /// <summary>
         /// Verwijdert een functie (PERSISTEERT!)
@@ -76,6 +76,14 @@ namespace Chiro.Gap.WorkerInterfaces
         IEnumerable<Telling> AantallenControleren(
             GroepsWerkJaar groepsWerkJaar,
             IEnumerable<Functie> functies);
+
+        /// <summary>
+        /// Vervangt de functies van het gegeven <paramref name="lid"/> door de meegegeven
+        /// <paramref name="functies"/>.
+        /// </summary>
+        /// <param name="lid">Lid waarvan de functies vervangen moeten worden</param>
+        /// <param name="functies">Nieuwe functies voor <paramref name="lid"/></param>
+        void Vervangen(Lid lid, List<Functie> functies);
     }
 
     /// <summary>

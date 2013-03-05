@@ -47,6 +47,8 @@ namespace Chiro.Gap.Services
         private readonly ILedenManager _ledenMgr;
         private readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
         private readonly IGroepenManager _groepenMgr;
+        private readonly IFunctiesManager _functiesMgr;
+
         private readonly GavChecker _gav;
 
         /// <summary>
@@ -57,11 +59,12 @@ namespace Chiro.Gap.Services
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
         /// <param name="verzekeringenMgr">Businesslogica aangaande verzekeringen</param>
         /// <param name="groepenMgr">Businesslogica m.b.t. groepen</param>
+        /// <param name="functiesMgr">Businesslogica m.b.t. functies</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         public LedenService(IAutorisatieManager autorisatieMgr,
                             IVerzekeringenManager verzekeringenMgr,
                             ILedenManager ledenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
-                            IGroepenManager groepenMgr,
+                            IGroepenManager groepenMgr, IFunctiesManager functiesMgr,
                             IRepositoryProvider repositoryProvider)
         {
             _ledenRepo = repositoryProvider.RepositoryGet<Lid>();
@@ -76,6 +79,7 @@ namespace Chiro.Gap.Services
             _groepsWerkJarenMgr = groepsWerkJarenMgr;
             _autorisatieMgr = autorisatieMgr;
             _groepenMgr = groepenMgr;
+            _functiesMgr = functiesMgr;
 
             _gav = new GavChecker(_autorisatieMgr);
         }
@@ -352,14 +356,38 @@ namespace Chiro.Gap.Services
         {
             var lid = _ledenRepo.ByID(lidId);
             Gav.Check(lid);
-            var functies = (from g in functieIds select _functiesRepo.ByID(g)).ToList();
+
+            var functies = _functiesRepo.ByIDs(functieIds);
+
+            // TODO: optimaliseren. Tien tegen 1 zijn al die functies aan dezelfde groep gekoppeld.
+            // In dat geval volstaat het om 1 check te doen, ipv een check per functie.
+            // TIP: controleer GAV-schap functies.SelectMany(fn=>fn.Groep).Distinct().
             foreach (var functie in functies)
             {
                 Gav.Check(functie);
             }
 
-            lid.Functie = functies;
+            try
+            {
+                _functiesMgr.Vervangen(lid, functies);
+            }
+            catch (FoutNummerException ex)
+            {
+                switch (ex.FoutNummer)
+                {
+                    case FoutNummer.GroepsWerkJaarNietBeschikbaar:
+                    case FoutNummer.FunctieNietVanGroep:
+                    case FoutNummer.FunctieNietBeschikbaar: 
+                    case FoutNummer.LidTypeVerkeerd:
+                        // Deze exceptions verwachten we; we sturen een foutnummerfault
+                        throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
+                    default:
+                        // Onverwachte exception gooien we opnieuw op.
+                        throw;
+                }
+            }
 
+            // TODO: sync naar kipadmin
             _ledenRepo.SaveChanges();
         }
 
