@@ -141,7 +141,7 @@ namespace Chiro.Gap.Services.Test
                               {
                                   ID = 100,
                                   GroepsWerkJaar = new GroepsWerkJaar {Groep = groep},
-                                  Functie = new[] {contactPersoon, redactie},
+                                  Functie = new List<Functie> {contactPersoon, redactie},
                                   GelieerdePersoon = new GelieerdePersoon {Groep = groep}
                               };
 
@@ -180,6 +180,8 @@ namespace Chiro.Gap.Services.Test
 
             #region act
 
+            var leidingsFuncties = leiding.Functie;
+
             IEnumerable<int> functieIDs = new int[]
                                               {
                                                   finVer.ID,
@@ -193,12 +195,14 @@ namespace Chiro.Gap.Services.Test
 
             #region Assert
 
-            var funIDs = (from f in leiding.Functie select f.ID).ToList();
+            Assert.AreEqual(leiding.Functie.Count(), 3);
+            Assert.IsTrue(leiding.Functie.Contains(finVer));
+            Assert.IsTrue(leiding.Functie.Contains(vb));
+            Assert.IsTrue(leiding.Functie.Contains(redactie));
 
-            Assert.AreEqual(funIDs.Count(), 3);
-            Assert.IsTrue(funIDs.Contains(finVer.ID));
-            Assert.IsTrue(funIDs.Contains(vb.ID));
-            Assert.IsTrue(funIDs.Contains(redactie.ID));
+            // om problemen te vermijden met entity framework, mag je bestaande collecties niet zomaar vervangen;
+            // je moet entiteiten toevoegen aan/verwijderen uit bestaande collecties.
+            Assert.AreEqual(leiding.Functie, leidingsFuncties);
 
             #endregion
 
