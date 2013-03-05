@@ -514,5 +514,56 @@ namespace Chiro.Gap.Services.Test
             Assert.IsNotNull(medewerker1.UitschrijfDatum);  // medewerker 1 uitgeschreven
             Assert.IsNull(medewerker2.UitschrijfDatum);     // medewerker 2 niet uitgeschreven
         }
+
+        ///<summary>
+        /// Test of leiding waarvan de probeerperiode voor bij is, daadwerkelijk NIET gesynct
+        /// wordt met Kipadmin.
+        ///</summary>
+        [TestMethod()]
+        public void UitschrijvenLeidingSyncTest()
+        {
+            // arrange
+
+            // testsituatie opbouwen
+            var groepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep () };
+            groepsWerkJaar.Groep.GroepsWerkJaar = new List<GroepsWerkJaar> { groepsWerkJaar };
+
+            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Groep = groepsWerkJaar.Groep };
+            groepsWerkJaar.Groep.GelieerdePersoon = new List<GelieerdePersoon> { gelieerdePersoon };
+
+            var leiding = new Leiding
+            {
+                EindeInstapPeriode = DateTime.Today, // (defaults naar 0:00 uur; instapperiode voorbij)
+                GroepsWerkJaar = groepsWerkJaar,
+                GelieerdePersoon = gelieerdePersoon
+            };
+            gelieerdePersoon.Lid = new List<Lid> { leiding };
+
+
+
+            // data access opzetten
+            var dummyLeidingRepo = new DummyRepo<Leiding>(new List<Leiding> { leiding });
+            var dummyGpRepo = new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { leiding.GelieerdePersoon });
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Leiding>()).Returns(dummyLeidingRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>()).Returns(dummyGpRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            // synchronisatie mocken
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>())).Verifiable();   // verwacht dat ledensync een lid moet bewaren
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+
+            var target = Factory.Maak<LedenService>();
+
+            // ACT
+
+            string foutbericht;
+            target.Uitschrijven(new[] { leiding.GelieerdePersoon.ID }, out foutbericht);
+
+            // ASSERT: controleer dat de ledensync NIET werd aangeroepen
+
+            ledenSyncMock.Verify(src=>src.Verwijderen(leiding), Times.Never());
+        }
     }
 }

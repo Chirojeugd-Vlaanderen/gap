@@ -96,50 +96,6 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
         }
 
         ///<summary>
-        /// Controleert of uitschrijvingen van leiding waarvan de probeerperiode voorbij is,
-        /// niet naar kipadmin gesynct worden.
-        /// </summary>
-        [TestMethod]
-        public void LeidingUitschrijvenTest()
-        {
-            //// arrange
-
-            //var ledenSyncMock = new Mock<ILedenSync>();
-            //ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>()));   // deze mag niet aangeroepen worden
-
-            //var leidingDaoMock = new Mock<ILeidingDao>();
-            //leidingDaoMock.Setup(dao => dao.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns(
-            //    (Leiding x, LidExtras y) => x);  // bewaren doet niets behalven het originele leiding terug opleveren
-
-            //Factory.InstantieRegistreren(ledenSyncMock.Object);
-            //Factory.InstantieRegistreren(leidingDaoMock.Object);
-
-            //var target = Factory.Maak<LedenManager>();
-
-            //// construeer gauw een uitgeschreven leid(st)er
-
-            //Lid lid = new Leiding
-            //{
-            //    EindeInstapPeriode = DateTime.Today,  // probeerperiode kadermedewerker is irrelevant
-            //    UitschrijfDatum = DateTime.Today,
-            //    GroepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep() }
-            //};
-
-            //// act
-
-            //target.Bewaren(lid, LidExtras.Geen, true);
-
-            //// assert: controleer of de ledensync is aangeroepen
-
-            //ledenSyncMock.Verify(snc => snc.Verwijderen(It.IsAny<Lid>()), Times.Never());
-            //Assert.IsTrue(true);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-        }
-
-
-
-
-        ///<summary>
         ///Kijkt na of we een leid(st)er kunnen inschrijven zonder afdelingen
         ///</summary>
         [TestMethod()]
