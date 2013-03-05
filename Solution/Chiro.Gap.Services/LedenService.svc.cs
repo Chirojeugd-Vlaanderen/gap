@@ -16,6 +16,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Services
@@ -49,23 +50,28 @@ namespace Chiro.Gap.Services
         private readonly IGroepenManager _groepenMgr;
         private readonly IFunctiesManager _functiesMgr;
 
+        // Sync
+
+        private readonly ILedenSync _ledenSync;
+
         private readonly GavChecker _gav;
 
         /// <summary>
-        /// Nieuwe groepenservice
+        /// Nieuwe ledenservice
         /// </summary>
         /// <param name="autorisatieMgr">Verantwoordelijke voor autorisatie</param>
+        /// <param name="verzekeringenMgr">Businesslogica aangaande verzekeringen</param>
         /// <param name="ledenMgr">Businesslogica aangaande leden</param>
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
-        /// <param name="verzekeringenMgr">Businesslogica aangaande verzekeringen</param>
         /// <param name="groepenMgr">Businesslogica m.b.t. groepen</param>
         /// <param name="functiesMgr">Businesslogica m.b.t. functies</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
+        /// <param name="ledenSync">Voor synchronisatie lidgegevens met Kipadmin</param>
         public LedenService(IAutorisatieManager autorisatieMgr,
                             IVerzekeringenManager verzekeringenMgr,
                             ILedenManager ledenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                             IGroepenManager groepenMgr, IFunctiesManager functiesMgr,
-                            IRepositoryProvider repositoryProvider)
+                            IRepositoryProvider repositoryProvider, ILedenSync ledenSync)
         {
             _ledenRepo = repositoryProvider.RepositoryGet<Lid>();
             _afdelingsJaarRepo = repositoryProvider.RepositoryGet<AfdelingsJaar>();
@@ -80,6 +86,8 @@ namespace Chiro.Gap.Services
             _autorisatieMgr = autorisatieMgr;
             _groepenMgr = groepenMgr;
             _functiesMgr = functiesMgr;
+
+            _ledenSync = ledenSync;
 
             _gav = new GavChecker(_autorisatieMgr);
         }
@@ -387,8 +395,12 @@ namespace Chiro.Gap.Services
                 }
             }
 
+#if KIPDORP			using (var tx = new TransactionScope())			{#endif
+                _ledenRepo.SaveChanges();
+                _ledenSync.FunctiesUpdaten(lid);
+#if KIPDORP				tx.Complete();			}#endif
             // TODO: sync naar kipadmin
-            _ledenRepo.SaveChanges();
+            
         }
 
         /// <summary>
