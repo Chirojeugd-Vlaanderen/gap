@@ -314,41 +314,74 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void FunctiesVervangen()
         {
-            //// Arrange
+            // Arrange
 
-            //var testData = new DummyData();
+            // testdata
+            var gwj = new GroepsWerkJaar();
+            var groep = new ChiroGroep
+            {
+                GroepsWerkJaar = new List<GroepsWerkJaar> { gwj }
+            };
+            gwj.Groep = groep;
 
-            //var fm = Factory.Maak<FunctiesManager>();
-            //var gm = Factory.Maak<GroepenManager>();
+            var contactPersoon = new Functie
+            {
+                ID = 1,
+                IsNationaal = true,
+                Niveau = Niveau.Alles,
+                Naam = "Contactpersoon",
+                Type = LidType.Leiding
+            };
+            var finVer = new Functie
+            {
+                ID = 2,
+                IsNationaal = true,
+                Niveau = Niveau.Alles,
+                Naam = "FinancieelVerantwoordelijke",
+                Type = LidType.Leiding
+            };
+            var vb = new Functie
+            {
+                ID = 3,
+                IsNationaal = true,
+                Niveau = Niveau.Alles,
+                Naam = "VB",
+                Type = LidType.Leiding
+            };
+            var redactie = new Functie
+            {
+                ID = 4,
+                IsNationaal = false,
+                Niveau = Niveau.Groep,
+                Naam = "RED",
+                Type = LidType.Leiding,
+                Groep = groep
+            };
+            var leiding = new Leiding
+            {
+                ID = 100,
+                GroepsWerkJaar = gwj,
+                Functie = new List<Functie> { contactPersoon, redactie },
+                GelieerdePersoon = new GelieerdePersoon { Groep = groep }
+            };
 
-            //Functie f = gm.FunctieToevoegen(
-            //    testData.DummyGroep,
-            //    testData.NieuweFunctieNaam,
-            //    testData.NieuweFunctieCode,
-            //    1, 0,
-            //    LidType.Alles);
+            var functiesMgr = Factory.Maak<FunctiesManager>();
 
-            //// Het DummyDao kent een ID toe aan f.  (Voor DummyDao is dat OK, maar in echte situaties
-            //// niet, omdat de nieuwe f niet gekoppeld zou zijn aan de groep.  Eigenlijk moeten we
-            //// de groep bewaren, samen met zijn functies.)
+            // ACT
 
-            //f = fm.Bewaren(f);
+            var leidingsFuncties = leiding.Functie; // bewaren voor latere referentie
+            functiesMgr.Vervangen(leiding, new List<Functie> { finVer, vb, redactie });
 
-            //var natBepFuncties = fm.NationaalBepaaldeFunctiesOphalen();
-            //// we weten dat er minstens 2 nat. bepaalde functies zijn.
-            //IEnumerable<Functie> functies = new Functie[] { f, natBepFuncties.First() };
-            //fm.Toekennen(testData.LeiderJos, functies);
+            // ASSERT
 
-            //// Act
+            Assert.AreEqual(leiding.Functie.Count(), 3);
+            Assert.IsTrue(leiding.Functie.Contains(finVer));
+            Assert.IsTrue(leiding.Functie.Contains(vb));
+            Assert.IsTrue(leiding.Functie.Contains(redactie));
 
-            //fm.Vervangen(testData.LeiderJos, natBepFuncties);
-
-            //// Assert
-
-            //Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.First()));
-            //Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.Last()));
-            //Assert.IsFalse(testData.LeiderJos.Functie.Contains(f));
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            // om problemen te vermijden met entity framework, mag je bestaande collecties niet zomaar vervangen;
+            // je moet entiteiten toevoegen aan/verwijderen uit bestaande collecties.
+            Assert.AreEqual(leiding.Functie, leidingsFuncties);
         }
 
 
