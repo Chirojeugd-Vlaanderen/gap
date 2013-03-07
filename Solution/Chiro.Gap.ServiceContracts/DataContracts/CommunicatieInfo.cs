@@ -13,6 +13,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
     /// DataContract voor summiere info over communicatievormen
     /// </summary>
     [DataContract]
+    [KnownType(typeof(CommunicatieDetail))] // Laten weten welke subtypes gebruikt worden
     public class CommunicatieInfo
     {
         /// <summary>
