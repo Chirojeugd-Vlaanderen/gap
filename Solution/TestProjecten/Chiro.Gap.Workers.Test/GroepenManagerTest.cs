@@ -104,29 +104,5 @@ namespace Chiro.Gap.Workers.Test
             //Assert.Fail();  // we verwachtten een exception; komen we hier, dan is het niet gelukt
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
-
-        /// <summary>
-        /// In de groepenmanager zit logica die ervoor zorgt dat het bewaren van een groep met naam
-        /// 'chiro blabla', het prefix 'chiro' weghaalt. Maar we gaan dat enkel doen als de naam
-        /// begint met 'chiro ' (inclusief spatie). Dat wordt hier getest.
-        /// </summary>
-        [TestMethod()]
-        public void BewarenTest1()
-        {
-            //var oorspronkelijkeGroep = new ChiroGroep {Naam = "TRALALA", ID = 1};
-            //var aangepasteGroep = new ChiroGroep { Naam = "CHIROKEE", ID = 1 };
-
-            //var groepenDaoMock = new Mock<IGroepenDao>();
-            //groepenDaoMock.Setup(src => src.Ophalen(1)).Returns(oorspronkelijkeGroep);
-
-            //Factory.InstantieRegistreren(groepenDaoMock.Object);
-                    
-            //var target = Factory.Maak<GroepenManager>();
-
-            //target.Bewaren(aangepasteGroep);
-
-            //Assert.AreEqual(aangepasteGroep.Naam, "CHIROKEE");
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-        }
     }
 }

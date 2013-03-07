@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
@@ -15,10 +16,8 @@ using System;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Moq;
-using Chiro.Gap.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using Chiro.Gap.WorkerInterfaces;
-using System.Collections.Generic;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -242,5 +241,69 @@ namespace Chiro.Gap.Services.Test
 
             Assert.AreEqual(actual.First().ID, 2);
         }
+
+        ///<summary>
+        ///Controleert of een groepsnaam die begint met 'chiro ' bijgewerkt wordt bij het saven.
+        ///</summary>
+        [TestMethod()]
+        public void BewarenGroepsNaamChiroTest()
+        {
+            // (Dit is een referentie-implementatie van een eenvoudige unit test voor de services)
+
+            // ARRANGE
+
+            // eenvoudig modelleke
+            var groep = new ChiroGroep { ID = 1, Naam = "Blabla" };
+
+            // repositoryprovider opzetten met dummy-groepenrepo
+            var dummyGroepenRepo = new DummyRepo<Groep>(new[] {groep});
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Groep>()).Returns(dummyGroepenRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            // te testen service construeren
+            var target = Factory.Maak<GroepenService>();
+
+            // ACT
+
+            target.Bewaren(new GroepInfo {ID = 1, Naam = " Chiro  Blibli"});
+
+            // ASSERT
+
+            Assert.AreEqual(groep.Naam, "Blibli", true);
+        }
+
+        ///<summary>
+        /// Controleert of een groepsnaam die begint met 'chiro' (zonder spatie daarna)
+        /// correct wordt gesaved
+        ///</summary>
+        [TestMethod()]
+        public void BewarenGroepsNaamChiroTest2()
+        {
+            // (Dit is een referentie-implementatie van een eenvoudige unit test voor de services)
+
+            // ARRANGE
+
+            // eenvoudig modelleke
+            var groep = new ChiroGroep { ID = 1, Naam = "Blabla" };
+
+            // repositoryprovider opzetten met dummy-groepenrepo
+            var dummyGroepenRepo = new DummyRepo<Groep>(new[] { groep });
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Groep>()).Returns(dummyGroepenRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            // te testen service construeren
+            var target = Factory.Maak<GroepenService>();
+
+            // ACT
+
+            target.Bewaren(new GroepInfo { ID = 1, Naam = "Chirokidoki" });
+
+            // ASSERT
+
+            Assert.AreEqual(groep.Naam, "Chirokidoki", true);
+        }
+
 	}
 }
