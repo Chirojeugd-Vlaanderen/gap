@@ -214,6 +214,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ongeldige groepsnaam..
+        /// </summary>
+        internal static string OngeldigeGroepsNaam {
+            get {
+                return ResourceManager.GetString("OngeldigeGroepsNaam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ongeldig lidtype..
         /// </summary>
         internal static string OngeldigLidType {

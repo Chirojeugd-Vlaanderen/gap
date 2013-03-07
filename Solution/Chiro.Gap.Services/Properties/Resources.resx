@@ -187,4 +187,7 @@
   <data name="AdNummerNietWijzigen" xml:space="preserve">
     <value>Enkel het nationaal secretariaat mag AD-nummers wijzigen.</value>
   </data>
+  <data name="OngeldigeGroepsNaam" xml:space="preserve">
+    <value>Ongeldige groepsnaam.</value>
+  </data>
 </root>

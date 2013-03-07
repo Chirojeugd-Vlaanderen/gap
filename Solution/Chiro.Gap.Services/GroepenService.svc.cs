@@ -249,7 +249,22 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            groep.Naam = groepInfo.Naam;
+            // Naam hier maar fixen (zie #1349)
+
+            if (groepInfo.Naam == null)
+            {
+                // TODO (#1420): Validator maken in Chiro.Gap.Validatie
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.ValidatieFout, Properties.Resources.OngeldigeGroepsNaam);
+            }
+
+            groep.Naam = groepInfo.Naam.Trim();
+
+            // misschien moet dit ook via de validator?
+            if (groep.Naam.StartsWith("chiro ", StringComparison.CurrentCultureIgnoreCase))
+            {
+                groep.Naam = groep.Naam.Substring(6).Trim();
+            }
+
             groep.Code = groepInfo.StamNummer;
 
             _groepenRepo.SaveChanges();
