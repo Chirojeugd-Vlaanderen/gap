@@ -305,5 +305,43 @@ namespace Chiro.Gap.Services.Test
             Assert.AreEqual(groep.Naam, "Chirokidoki", true);
         }
 
+
+        /// <summary>
+        ///Test of FunctieToevoegen wel echt een functie toevoegt. (Flauw)
+        ///</summary>
+        [TestMethod()]
+        public void FunctieToevoegenTest()
+        {
+            // ARRANGE
+
+            // eenvoudig modelletje met data
+            var groep = new ChiroGroep
+                            {
+                                ID = 1,
+                                Functie = new List<Functie>(),
+                                GroepsWerkJaar = new[] {new GroepsWerkJaar()}
+                            };
+
+            // repositoryprovider registreren, die de groep oplevert
+            var dummyGroepenRepo = new DummyRepo<Groep>(new[] {groep});
+            var dummyFunctiesRepo = new DummyRepo<Functie>(new List<Functie>());
+
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Groep>()).Returns(dummyGroepenRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(dummyFunctiesRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            // de te testen groepenservice
+            var target = Factory.Maak<GroepenService>();
+
+            // ACT
+
+            target.FunctieToevoegen(1, "MijnFunctie", "mfn", null, 0, LidType.Alles, null);
+
+            // ASSERT
+
+            Assert.AreEqual(groep.Functie.Count, 1);
+            Assert.AreEqual(groep.Functie.First().Code, "mfn", true);
+        }
 	}
 }

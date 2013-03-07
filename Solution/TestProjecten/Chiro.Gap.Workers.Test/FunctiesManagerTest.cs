@@ -308,38 +308,6 @@ namespace Chiro.Gap.Workers.Test
             Assert.IsTrue(problemen.Any(prb => prb.ID == f.ID));
         }
 
-
-
-        /// <summary>
-        /// Test of regelementaire 'FunctieBewaren' geen exception oplevert.
-        /// </summary>
-        [TestMethod]
-        public void FunctieBewarenTest()
-        {
-            //// Arrange
-
-            //var testData = new DummyData();
-
-            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            //GroepenManager gm = Factory.Maak<GroepenManager>();
-
-            //Functie f = gm.FunctieToevoegen(
-            //    testData.DummyGroep,
-            //    testData.NieuweFunctieNaam,
-            //    testData.NieuweFunctieCode,
-            //    1, 0,
-            //    0);
-
-            //// Act
-
-            //f = fm.Bewaren(f);
-
-            //// Assert
-
-            //Assert.AreNotEqual(f.ID, 0);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-        }
-
         /// <summary>
         /// Testfuncties vervangen
         /// </summary>
