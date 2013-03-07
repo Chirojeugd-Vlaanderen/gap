@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel;
 using Chiro.Gap.Dummies;
@@ -106,29 +107,46 @@ namespace Chiro.Gap.Services.Test
 		}
 
 		/// <summary>
-		/// Ophalen groepsinfo met categorieën en afdelingen
+		/// Ophalen groepsinfo; controleert of categorieën en afdelingen meekomen.
 		/// </summary>
 		[TestMethod]
 		public void GroepDetailOphalen()
 		{
 			#region Arrange
+
+		    var afdeling = new Afdeling {ID = 11};
+		    var categorie = new Categorie {ID = 21};
+            var groepsWerkJaar = new GroepsWerkJaar { AfdelingsJaar = new[] { new AfdelingsJaar { Afdeling = afdeling } } };
+		    var groep = new ChiroGroep
+		                    {
+		                        ID = 1,
+		                        Categorie = new[] {categorie},
+		                        GroepsWerkJaar = new[] {groepsWerkJaar}
+		                    };
+		    groepsWerkJaar.Groep = groep;
+            
+		    var dummyGroepenRepo = new DummyRepo<Groep>(new[] {groep});
+		    var repoProviderMock = new Mock<IRepositoryProvider>();
+		    repoProviderMock.Setup(src => src.RepositoryGet<Groep>()).Returns(dummyGroepenRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
 			IGroepenService svc = Factory.Maak<GroepenService>();
 			#endregion
 
 			#region Act
-			GroepDetail g = svc.DetailOphalen(TestInfo.GROEP_ID);
+			GroepDetail g = svc.DetailOphalen(groep.ID);
 
-			CategorieInfo categorie = (from cat in g.Categorieen
-					           where cat.ID == TestInfo.CATEGORIE_ID
-					           select cat).FirstOrDefault();
+		    CategorieInfo catInfo = (from cat in g.Categorieen
+		                             where cat.ID == categorie.ID
+		                             select cat).FirstOrDefault();
 
-			AfdelingsJaarDetail afdeling = (from afd in g.Afdelingen
-						 where afd.AfdelingID == TestInfo.AFDELING1_ID
-						 select afd).FirstOrDefault();
+		    AfdelingsJaarDetail afdInfo = (from afd in g.Afdelingen
+		                                   where afd.AfdelingID == afdeling.ID
+		                                   select afd).FirstOrDefault();
 			#endregion
 
 			#region Assert
-			Assert.IsTrue(g.ID == TestInfo.GROEP_ID);
+			Assert.IsTrue(g.ID == groep.ID);
 			Assert.IsTrue(categorie != null);
 			Assert.IsTrue(afdeling != null);
 			#endregion
