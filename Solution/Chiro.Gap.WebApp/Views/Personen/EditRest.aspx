@@ -277,8 +277,16 @@
            { %>
         <li>Niet extra verzekerd tegen loonverlies.
             <%=Html.ActionLink("[verzekeren tegen loonverlies]", "LoonVerliesVerzekeren", new {Controller="Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
+            <%if (Model.GroepsNiveau.HasFlag(Niveau.KaderGroep))
+              { %>
+              (dit is gratis voor kaderleden)
+              <% }
+              else
+              { %>
             (Kostprijs: &euro;
-            <%=Model.PrijsVerzekeringLoonVerlies.ToString() %>) </li>
+            <%= Model.PrijsVerzekeringLoonVerlies.ToString()%>) 
+            <% } %>
+        </li>
         <%}%>
         <li>
             <%=Html.ActionLink("Uitschrijven", "Uitschrijven", new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })
