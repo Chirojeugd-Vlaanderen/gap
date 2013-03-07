@@ -93,7 +93,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             if (categorieID == 0)  // Alle personen bekijken
             {
-                model.PersoonInfos = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.OphalenMetLidInfoViaLetter(groepID, page, sortering, out totaal));
+                model.PersoonInfos = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.OphalenMetLidInfoViaLetter(groepID, page, out totaal)).Sorteren(sortering);
                 model.HuidigePagina = page;
                 model.Titel = "Personenoverzicht";
                 model.Totaal = totaal;
@@ -118,7 +118,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 // TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt te veel op PaginaOphalenLidInfo(groepid, ...))
                 model.PersoonInfos =
                     ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-                    (g => g.PaginaOphalenUitCategorieMetLidInfo(categorieID, page, sortering, out totaal));
+                    (g => g.OphalenUitCategorieMetLidInfo(categorieID, page, sortering, out totaal));
                 model.HuidigePagina = page;
 
                 // Ga in het lijstje met categorieën na welke er geselecteerd werd, zodat we de naam in de paginatitel kunnen zetten
@@ -189,20 +189,20 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult Download(int groepID, int id)
         {
-            IEnumerable<PersoonOverzicht> data;
+            IList<PersoonOverzicht> data;
 
             // Alle personen bekijken
             if (id == 0)
             {
                 data =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>
-                    (g => g.AllenOphalenUitGroep(groepID, PersoonSorteringsEnum.Naam));
+                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonOverzicht>>
+                    (g => g.AllenOphalenUitGroep(groepID)).Sorteren(PersoonSorteringsEnum.Naam);
             }
             else
             {
                 data =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>
-                    (g => g.AllenOphalenUitCategorie(id, PersoonSorteringsEnum.Naam));
+                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonOverzicht>>
+                    (g => g.AllenOphalenUitCategorie(id)).Sorteren(PersoonSorteringsEnum.Naam);
             }
 
             // Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
@@ -1057,8 +1057,12 @@ namespace Chiro.Gap.WebApp.Controllers
             else
             {
                 // vermijd bloat van te veel over de lijn te sturen
-                var comminfo = new CommunicatieInfo(model.NieuweCommVorm);
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gelieerdePersoonID, comminfo));
+
+                var commInfo = new CommunicatieInfo();
+                Mapper.CreateMap<CommunicatieDetail, CommunicatieInfo>();
+                Mapper.Map(model.NieuweCommVorm, commInfo);
+
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo));
                 VeelGebruikt.LedenProblemenResetten(groepID);
 
                 return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
@@ -1155,8 +1159,12 @@ namespace Chiro.Gap.WebApp.Controllers
             }
 
             // Om bloat over de lijn te vermijden: downgraden naar minimale info
-            var comminfo = new CommunicatieInfo(model.NieuweCommVorm);
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(comminfo));
+
+            var commInfo = new CommunicatieInfo();
+            Mapper.CreateMap<CommunicatieDetail, CommunicatieInfo>();
+            Mapper.Map(model.NieuweCommVorm, commInfo);
+
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(commInfo));
             return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
 
@@ -1217,7 +1225,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 object value;
                 TempData.TryGetValue("list", out value);
                 model.GelieerdePersoonIDs = (List<int>)value;
-                var persoonsnamen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(l => l.PersoonInfoOphalen(model.GelieerdePersoonIDs));
+                var persoonsnamen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(l => l.InfoOphalen(model.GelieerdePersoonIDs));
                 model.GelieerdePersoonNamen = persoonsnamen.Select(e => e.VoorNaam + " " + e.Naam).ToList();
                 return View("CategorieToevoegenAanLijst", model);
             }
@@ -1284,7 +1292,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 model.GelieerdePersonen =
                     ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(
-                        svc => svc.PersoonInfoOphalen(gelieerdePersoonIDs));
+                        svc => svc.InfoOphalen(gelieerdePersoonIDs));
                 return View(model);
             }
         }

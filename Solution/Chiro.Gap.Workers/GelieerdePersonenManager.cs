@@ -11,16 +11,15 @@ using System.Diagnostics;
 using System.Linq;
 
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
-using Adres = Chiro.Gap.Orm.Adres;
+using Adres = Chiro.Gap.Poco.Model.Adres;
 using AdresTypeEnum = Chiro.Gap.Domain.AdresTypeEnum;
-using Persoon = Chiro.Gap.Orm.Persoon;
+using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Workers
 {
@@ -29,502 +28,19 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class GelieerdePersonenManager : IGelieerdePersonenManager
     {
-        private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
-        private readonly ICategorieenDao _categorieenDao;
-        private readonly ICommunicatieVormDao _communicatieVormDao;
-        private readonly IPersonenDao _personenDao;
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IPersonenSync _personenSync;
         private readonly IAdressenSync _adressenSync;
 
-        /// <summary>
-        /// Creëert een GelieerdePersonenManager
-        /// </summary>
-        /// <param name="gelieerdePersonenDao">
-        /// Repository voor gelieerde personen
-        /// </param>
-        /// <param name="categorieenDao">
-        /// Repository voor categorieën
-        /// </param>
-        /// <param name="pDao">
-        /// Repository voor personen
-        /// </param>
-        /// <param name="cvDao">
-        /// Repostiory voor communicatievormen
-        /// </param>
-        /// <param name="autorisatieMgr">
-        /// Worker die autorisatie regelt
-        /// </param>
-        /// <param name="personenSync">
-        /// Zorgt voor synchronisate van personen naar Kipadmin
-        /// </param>
-        /// <param name="adressenSync">
-        /// Zorgt voor synchronisate van adressen naar Kipadmin
-        /// </param>
         public GelieerdePersonenManager(
-            IGelieerdePersonenDao gelieerdePersonenDao,
-            ICategorieenDao categorieenDao,
-            IPersonenDao pDao,
-            ICommunicatieVormDao cvDao,
             IAutorisatieManager autorisatieMgr,
             IPersonenSync personenSync,
             IAdressenSync adressenSync)
         {
-            _gelieerdePersonenDao = gelieerdePersonenDao;
-            _categorieenDao = categorieenDao;
             _autorisatieMgr = autorisatieMgr;
-            _personenDao = pDao;
             _personenSync = personenSync;
             _adressenSync = adressenSync;
-            _communicatieVormDao = cvDao;
         }
-
-        #region proxy naar data access
-
-        // Wel altijd rekening houden met authorisatie!
-
-        /// <summary>
-        /// Haalt gelieerde persoon met gekoppelde persoon op.
-        /// </summary>
-        /// <param name="gelieerdePersoonID">
-        /// ID van de gelieerde persoon.
-        /// </param>
-        /// <returns>
-        /// Gelieerde persoon, met gekoppeld persoonsobject.
-        /// </returns>
-        /// <remarks>
-        /// De groepsinfo wordt niet mee opgehaald, omdat we die in de
-        /// meeste gevallen niet nodig zullen hebben.
-        /// </remarks>
-        public GelieerdePersoon Ophalen(int gelieerdePersoonID)
-        {
-            // TODO Uitzoeken of we dit niet gewoon kunnen doorschakelen naar Ophalen(gelieerdePersoonID, PersoonsExtras.Geen)
-            if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
-            {
-                return _gelieerdePersonenDao.Ophalen(gelieerdePersoonID, foo => foo.Persoon);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-        /// <summary>
-        /// Haalt een gelieerde persoon op, met de gevraagde 'extra's'.
-        /// </summary>
-        /// <param name="gelieerdePersoonID">
-        /// ID op te halen gelieerde persoon
-        /// </param>
-        /// <param name="extras">
-        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-        /// </param>
-        /// <returns>
-        /// De gevraagde gelieerde persoon, met de gevraagde gekoppelde entiteiten.
-        /// </returns>
-        public GelieerdePersoon Ophalen(int gelieerdePersoonID, PersoonsExtras extras)
-        {
-            return Ophalen(new List<int> { gelieerdePersoonID }, extras).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Haalt een lijst op van gelieerde personen.
-        /// </summary>
-        /// <param name="gelieerdePersonenIDs">
-        /// ID's van de op te vragen
-        /// gelieerde personen.
-        /// </param>
-        /// <returns>
-        /// Lijst met gelieerde personen
-        /// </returns>
-        public IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs)
-        {
-            return _gelieerdePersonenDao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs));
-        }
-
-        /// <summary>
-        /// Haalt gelieerde persoon op met persoonsgegevens, adressen en
-        /// communicatievormen.
-        /// </summary>
-        /// <param name="gelieerdePersoonID">
-        /// ID gevraagde gelieerde persoon
-        /// </param>
-        /// <returns>
-        /// GelieerdePersoon met persoonsgegevens, adressen, categorieën, communicatievormen en eventuele lidgegevens uit het gegeven werkJaar.
-        /// </returns>
-        public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
-        {
-            if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return _gelieerdePersonenDao.DetailsOphalen(gelieerdePersoonID);
-        }
-
-        /// <summary>
-        /// Bewaart een gelieerde persoon, inclusief persoonsgegevens en extra koppelingen bepaald
-        /// door <paramref name="extras"/>.
-        /// </summary>
-        /// <param name="gelieerdePersoon">
-        /// Te bewaren gelieerde persoon
-        /// </param>
-        /// <param name="extras">
-        /// Bepaalt de mee te bewaren gekoppelde entiteiten
-        /// </param>
-        /// <returns>
-        /// De bewaarde gelieerde persoon
-        /// </returns>
-        public GelieerdePersoon Bewaren(GelieerdePersoon gelieerdePersoon, PersoonsExtras extras)
-        {
-            Debug.Assert(gelieerdePersoon != null);
-            if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoon.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-            // Hier mapping gebruiken om te vermijden dat het AD-nummer
-            // overschreven wordt, lijkt me wat overkill.  Ik vergelijk
-            // het nieuwe AD-nummer gewoon met het bestaande.
-
-            // Er mag niet gepoterd worden met AdNummer
-            var origineel = _gelieerdePersonenDao.Ophalen(gelieerdePersoon.ID, gp => gp.Persoon);
-
-            if (origineel != null && origineel.Persoon.AdNummer != gelieerdePersoon.Persoon.AdNummer)
-            {
-                throw new InvalidOperationException(Resources.AdNummerNietWijzigen);
-            }
-            GelieerdePersoon q; // hier komt de bewaarde persoon, met eventuele
-
-            // nieuwe ID's
-#if KIPDORP
-			using (var tx = new TransactionScope())
-			{
-#endif
-                q = _gelieerdePersonenDao.Bewaren(gelieerdePersoon, extras);
-
-                if (gelieerdePersoon.Persoon.AdNummer != null || gelieerdePersoon.Persoon.AdInAanvraag)
-                {
-                    _personenSync.Bewaren(
-                        gelieerdePersoon,
-                        (extras & PersoonsExtras.Adressen) != 0,
-                        (extras & PersoonsExtras.Communicatie) != 0);
-                }
-
-#if KIPDORP
-				tx.Complete();
-			}
-#endif
-            Debug.Assert(q != null);
-            return q;
-        }
-
-        /// <summary>
-        /// Haal een lijst op met alle gelieerde personen van een groep
-        /// </summary>
-        /// <param name="groepID">
-        /// GroepID van gevraagde groep
-        /// </param>
-        /// <param name="extras">
-        /// Bepaalt gekoppelde entity's die mee moeten worden opgehaald
-        /// </param>
-        /// <param name="sortering">
-        /// Geeft aan hoe de pagina gesorteerd moet worden
-        /// </param>
-        /// <returns>
-        /// Lijst met alle gelieerde personen
-        /// </returns>
-        /// <remarks>
-        /// Opgelet! Dit kan een zware query zijn!
-        /// </remarks>
-        public IList<GelieerdePersoon> AllenOphalen(int groepID, PersoonsExtras extras, PersoonSorteringsEnum sortering)
-        {
-            if (!_autorisatieMgr.IsGavGroep(groepID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return _gelieerdePersonenDao.AllenOphalen(groepID, sortering, extras);
-        }
-
-        /// <summary>
-        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
-        /// </summary>
-        /// <param name="groepID">
-        /// GroepID van gevraagde groep
-        /// </param>
-        /// <returns>
-        /// Lijst met de eerste letter gegroepeerd van de achternamen
-        /// </returns>
-        public IList<String> EersteLetterNamenOphalen(int groepID)
-        {
-            if (!_autorisatieMgr.IsGavGroep(groepID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return _gelieerdePersonenDao.EersteLetterNamenOphalen(groepID);
-        }
-
-        /// <summary>
-        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van
-        /// de categorie met ID <paramref name="categorieID"/>
-        /// </summary>
-        /// <param name="categorieID">
-        ///   ID van de Categorie waaruit we de letters willen halen
-        /// </param>
-        /// <returns>
-        /// Lijst met de eerste letter gegroepeerd van de achternamen
-        /// </returns>
-        public IList<string> EersteLetterNamenOphalenCategorie(int categorieID)
-        {
-            if (!_autorisatieMgr.IsGavCategorie(categorieID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return _gelieerdePersonenDao.EersteLetterNamenOphalenCategorie(categorieID);
-        }
-
-        /// <summary>
-        /// Haalt een pagina op met gelieerde personen van een groep.
-        /// </summary>
-        /// <param name="groepID">
-        /// GroepID gevraagde groep
-        /// </param>
-        /// <param name="pagina">
-        /// Paginanummer (&gt;=1)
-        /// </param>
-        /// <param name="paginaGrootte">
-        /// Aantal personen per pagina
-        /// </param>
-        /// <param name="sortering">
-        /// Geeft aan hoe de pagina gesorteerd moet worden
-        /// </param>
-        /// <param name="extras">
-        /// Bepaalt de mee op te halen gekoppelde objecten
-        /// </param>
-        /// <param name="aantalTotaal">
-        /// Outputparameter voor totaal aantal
-        /// personen in de groep
-        /// </param>
-        /// <returns>
-        /// Lijst met GelieerdePersonen
-        /// </returns>
-        public IList<GelieerdePersoon> PaginaOphalen(
-            int groepID,
-            int pagina,
-            int paginaGrootte,
-            PersoonSorteringsEnum sortering,
-            PersoonsExtras extras,
-            out int aantalTotaal)
-        {
-            if (_autorisatieMgr.IsGavGroep(groepID))
-            {
-                return _gelieerdePersonenDao.PaginaOphalen(
-                    groepID,
-                    pagina,
-                    paginaGrootte,
-                    sortering,
-                    extras,
-                    out aantalTotaal);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-
-        /// <summary>
-        /// Haalt de gelieerde personen van een groep op, die een familienaam hebben
-        /// beginnend met de letter <paramref name="letter"/>.
-        /// </summary>
-        /// <param name="groepID">
-        /// GroepID gevraagde groep
-        /// </param>
-        /// <param name="letter">
-        /// Eerste letter van de achternamen van de personen die we willen bekijken
-        /// </param>
-        /// <param name="sortering">
-        /// Geeft aan hoe de pagina gesorteerd moet worden
-        /// </param>
-        /// <param name="extras">
-        /// Bepaalt de mee op te halen gekoppelde objecten
-        /// </param>
-        /// <param name="aantalTotaal">
-        /// Outputparameter voor totaal aantal
-        /// personen in de groep
-        /// </param>
-        /// <returns>
-        /// Lijst met GelieerdePersonen
-        /// </returns>
-        public IList<GelieerdePersoon> Ophalen(
-            int groepID,
-            string letter,
-            PersoonSorteringsEnum sortering,
-            PersoonsExtras extras,
-            out int aantalTotaal)
-        {
-            if (_autorisatieMgr.IsGavGroep(groepID))
-            {
-                return _gelieerdePersonenDao.Ophalen(
-                    groepID,
-                    letter,
-                    sortering,
-                    extras,
-                    out aantalTotaal);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-        /// <summary>
-        /// Haalt een pagina op met gelieerde personen van een groep die tot de categorie behoren,
-        /// inclusief eventuele lidobjecten voor deze groep
-        /// </summary>
-        /// <param name="categorieID">
-        /// ID gevraagde categorie
-        /// </param>
-        /// <param name="pagina">
-        /// Paginanummer (minstens 1)
-        /// </param>
-        /// <param name="paginaGrootte">
-        /// Aantal personen per pagina
-        /// </param>
-        /// <param name="sortering">
-        /// Geeft aan hoe de pagina gesorteerd moet worden
-        /// </param>
-        /// <param name="extras">
-        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-        /// </param>
-        /// <param name="aantalTotaal">
-        /// Outputparameter voor totaal aantal
-        /// personen in de groep
-        /// </param>
-        /// <returns>
-        /// Lijst met GelieerdePersonen
-        /// </returns>
-        public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID,
-                                                                 string letter,
-                                                                 PersoonSorteringsEnum sortering,
-                                                                 PersoonsExtras extras,
-                                                                 out int aantalTotaal)
-        {
-            if (!_autorisatieMgr.IsGavCategorie(categorieID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return _gelieerdePersonenDao.OphalenUitCategorie(categorieID,
-                                                                   letter,
-                                                                   sortering,
-                                                                   out aantalTotaal,
-                                                                   extras);
-        }
-
-        /// <summary>
-        /// Koppelt het relevante groepsobject aan de gegeven
-        /// gelieerde persoon.
-        /// </summary>
-        /// <param name="gp">
-        /// Gelieerde persoon
-        /// </param>
-        /// <returns>
-        /// Diezelfde gelieerde persoon, met zijn of haar groep 
-        /// eraan gekoppeld.
-        /// </returns>
-        public GelieerdePersoon GroepLaden(GelieerdePersoon gp)
-        {
-            if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-            {
-                return _gelieerdePersonenDao.GroepLaden(gp);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-        /// <summary>
-        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
-        /// en voornaam gelijkaardig aan <paramref name="naam"/> en <paramref name="voornaam"/>.
-        /// (inclusief communicatie en adressen)
-        /// </summary>
-        /// <param name="groepID">
-        /// GroepID dat bepaalt in welke gelieerde personen gezocht mag worden
-        /// </param>
-        /// <param name="naam">
-        /// Te zoeken naam (ongeveer)
-        /// </param>
-        /// <param name="voornaam">
-        /// Te zoeken voornaam (ongeveer)
-        /// </param>
-        /// <returns>
-        /// Lijst met gevonden matches
-        /// </returns>
-        public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam)
-        {
-            if (_autorisatieMgr.IsGavGroep(groepID))
-            {
-                return _gelieerdePersonenDao.ZoekenOpNaamOngeveer(groepID, naam, voornaam);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-        /// <summary>
-        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
-        /// en voornaam gelijk aan <paramref name="naam"/> en <paramref name="voornaam"/>.
-        /// (enkel persoonsinfo)
-        /// </summary>
-        /// <param name="groepID">
-        /// GroepID dat bepaalt in welke gelieerde personen gezocht mag worden
-        /// </param>
-        /// <param name="naam">
-        /// Te zoeken naam
-        /// </param>
-        /// <param name="voornaam">
-        /// Te zoeken voornaam
-        /// </param>
-        /// <returns>
-        /// Rij gevonden matches
-        /// </returns>
-        public IEnumerable<GelieerdePersoon> ZoekenOpNaam(int groepID, string naam, string voornaam)
-        {
-            if (_autorisatieMgr.IsGavGroep(groepID))
-            {
-                return _gelieerdePersonenDao.ZoekenOpNaam(groepID, naam, voornaam);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-        /// <summary>
-        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarbij
-        /// naam of voornaam ongeveer begint met <paramref name="teZoeken"/>
-        /// </summary>
-        /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
-        /// <param name="teZoeken">Te zoeken voor- of achternaam (ongeveer)</param>
-        /// <returns>Lijst met gevonden matches</returns>
-        public IList<GelieerdePersoon> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
-        {
-            if (_autorisatieMgr.IsGavGroep(groepID))
-            {
-                return _gelieerdePersonenDao.ZoekenOpNaamVoornaamBegin(groepID, teZoeken);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-        #endregion
-
         /// <summary>
         /// Maak een GelieerdePersoon voor gegeven persoon en groep
         /// </summary>
@@ -542,7 +58,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public GelieerdePersoon Koppelen(Persoon persoon, Groep groep, int chiroLeeftijd)
         {
-            if (_autorisatieMgr.IsGavGroep(groep.ID))
+            if (_autorisatieMgr.IsGav(groep))
             {
                 var resultaat = new GelieerdePersoon();
 
@@ -561,62 +77,6 @@ namespace Chiro.Gap.Workers
             }
         }
 
-        /// <summary>
-        /// Maakt GelieerdePersoon, gekoppelde Persoon, Adressen en Communicatie allemaal
-        /// te verwijderen.  Persisteert!
-        /// </summary>
-        /// <param name="gp">
-        /// Te verwijderen gelieerde persoon
-        /// </param>
-        public void VolledigVerwijderen(GelieerdePersoon gp)
-        {
-            if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-            {
-                gp.TeVerwijderen = true;
-                gp.Persoon.TeVerwijderen = true;
-
-                foreach (PersoonsAdres pa in gp.Persoon.PersoonsAdres)
-                {
-                    pa.TeVerwijderen = true;
-                }
-
-                foreach (CommunicatieVorm cv in gp.Communicatie)
-                {
-                    cv.TeVerwijderen = true;
-                }
-
-                _gelieerdePersonenDao.Bewaren(gp, gpers => gpers.Persoon.PersoonsAdres, gpers => gpers.Communicatie);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-        /// <summary>
-        /// TODO (#190): Documenteren
-        /// </summary>
-        /// <param name="personenLijst">
-        /// </param>
-        public void Bewaren(IList<GelieerdePersoon> personenLijst)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Gaat na of een gelieerde persoon dit werkJaar ingeschreven is als lid
-        /// </summary>
-        /// <param name="gelieerdePersoonID">
-        /// De ID van de gelieerde persoon in kwestie
-        /// </param>
-        /// <returns>
-        /// <c>True</c> als de gelieerde persoon dit werkJaar ingeschreven is als lid,
-        /// <c>false</c> in het andere geval
-        /// </returns>
-        public bool IsLid(int gelieerdePersoonID)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Koppelt een gelieerde persoon aan een categorie, en persisteert dan de aanpassingen
@@ -639,12 +99,12 @@ namespace Chiro.Gap.Workers
             }
 
             // Heeft de gebruiker rechten voor de groep en de categorie?
-            if (gelieerdePersonen.Any(x => !_autorisatieMgr.IsGavGelieerdePersoon(x.ID)))
+            if (gelieerdePersonen.Any(x => !_autorisatieMgr.IsGav(x)))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            if (!_autorisatieMgr.IsGavCategorie(categorie.ID))
+            if (!_autorisatieMgr.IsGav(categorie))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
@@ -663,47 +123,6 @@ namespace Chiro.Gap.Workers
             }
         }
 
-        /// <summary>
-        /// Verwijdert de gelieerde personen uit de categorie, en persisteert
-        /// </summary>
-        /// <remarks>
-        /// De methode is reentrant, als er bepaalde personen niet gelinkt zijn aan de categorie, 
-        /// gebeurt er niets met die personen, ook geen error.
-        /// </remarks>
-        /// <param name="gelieerdePersonenIDs">
-        /// Gelieerde persoon IDs
-        /// </param>
-        /// <param name="categorie">
-        /// Te verwijderen categorie MET gelinkte gelieerdepersonen 
-        /// </param>
-        /// <returns>
-        /// Een kloon van de categorie, waaruit de gevraagde personen verwijderd zijn
-        /// </returns>
-        public Categorie CategorieLoskoppelen(IList<int> gelieerdePersonenIDs, Categorie categorie)
-        {
-            // Heeft de gebruiker rechten voor de groep en de categorie?
-            if (gelieerdePersonenIDs.Any(x => !_autorisatieMgr.IsGavGelieerdePersoon(x)))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            if (!_autorisatieMgr.IsGavCategorie(categorie.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            IList<GelieerdePersoon> gel =
-                (from gp in categorie.GelieerdePersoon
-                 where gelieerdePersonenIDs.Contains(gp.ID)
-                 select gp).ToList();
-
-            foreach (GelieerdePersoon gp in gel)
-            {
-                gp.TeVerwijderen = true;
-            }
-
-            return _categorieenDao.Bewaren(categorie, cat => cat.GelieerdePersoon);
-        }
 
         /// <summary>
         /// Zoekt naar gelieerde personen die gelijkaardig zijn aan een gegeven
@@ -720,40 +139,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public IList<GelieerdePersoon> ZoekGelijkaardig(Persoon persoon, int groepID)
         {
-            if (_autorisatieMgr.IsGavGroep(groepID))
-            {
-                // Momenteel wordt er enkel op 'naam ongeveer' gezocht, maar
-                // ik kan me voorstellen dat deze functie in de toekomst wat
-                // gesofisticeerder wordt.
-                return _gelieerdePersonenDao.ZoekenOpNaamOngeveer(groepID, persoon.Naam, persoon.VoorNaam);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-        /// <summary>
-        /// Haalt een rij gelieerde personen op, eventueel met extra info
-        /// </summary>
-        /// <param name="gelieerdePersoonIDs">
-        /// ID's op te halen gelieerde personen
-        /// </param>
-        /// <param name="extras">
-        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-        /// </param>
-        /// <returns>
-        /// De gevraagde rij gelieerde personen.  De personen komen sowieso mee.
-        /// </returns>
-        public IEnumerable<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersoonIDs, PersoonsExtras extras)
-        {
-            // Als de gebruiker geen super-GAV is, moet nagekeken worden dat enkel informatie wordt opgehaald
-            // van gelieerde personen waarvoor je de rechten hebt
-            var gpids = _autorisatieMgr.IsSuperGav()
-                            ? gelieerdePersoonIDs
-                            : _autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs);
-
-            return _gelieerdePersonenDao.Ophalen(gpids, extras);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -797,8 +183,7 @@ namespace Chiro.Gap.Workers
             Debug.Assert(gp.Persoon != null);
             Debug.Assert(voorkeur.Persoon != null);
 
-            if (checkGav && !_autorisatieMgr.IsGavGelieerdePersoon(gp.ID) ||
-                !_autorisatieMgr.IsGavPersoonsAdres(voorkeur.ID))
+            if (checkGav && !_autorisatieMgr.IsGav(gp) || !voorkeur.GelieerdePersoon.Any(e => _autorisatieMgr.IsGav(e.Groep)))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
@@ -905,37 +290,6 @@ namespace Chiro.Gap.Workers
             }
         }
 
-        /// <summary>
-        /// Haalt gelieerde personen op die een adres gemeen hebben met de 
-        /// GelieerdePersoon met gegeven ID
-        /// </summary>
-        /// <param name="gelieerdePersoonID">
-        /// ID van GelieerdePersoon waarvan huisgenoten
-        /// gevraagd zijn
-        /// </param>
-        /// <returns>
-        /// Lijstje met gelieerde personen
-        /// </returns>
-        /// <remarks>
-        /// Enkel de huisgenoten die gelieerd zijn aan de groep van de originele gelieerde persoon worden
-        /// mee opgehaald, ongeacht of er misschien nog huisgenoten zijn in een andere groep waar de gebruiker ook
-        /// GAV-rechten op heeft.
-        /// </remarks>
-        public IList<GelieerdePersoon> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
-        {
-            if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
-            {
-                // Haal alle huisgenoten op
-                IList<GelieerdePersoon> resultaat =
-                    _gelieerdePersonenDao.HuisGenotenOphalenZelfdeGroep(gelieerdePersoonID);
-
-                return resultaat.ToList();
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
 
         /// <summary>
         /// Verwijder persoonsadressen, en persisteer.  Als ergens een voorkeuradres wegvalt, dan wordt een willekeurig
@@ -950,103 +304,115 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public void AdressenVerwijderen(IEnumerable<PersoonsAdres> persoonsAdressen)
         {
-            if (!_autorisatieMgr.IsGavPersoonsAdressen(from pa in persoonsAdressen select pa.ID))
-            {
-                throw new GeenGavException();
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+//            if (!_autorisatieMgr.IsGavPersoonsAdressen(from pa in persoonsAdressen select pa.ID))
+//            {
+//                throw new GeenGavException();
+//            }
 
-            var personen = from pa in persoonsAdressen select pa.Persoon;
-            var gelieerdePersonen = personen.SelectMany(p => p.GelieerdePersoon);
+//            var personen = from pa in persoonsAdressen select pa.Persoon;
+//            var gelieerdePersonen = personen.SelectMany(p => p.GelieerdePersoon);
 
-            foreach (var pa in gelieerdePersonen.SelectMany(gp => gp.Persoon.PersoonsAdres))
-            {
-                Debug.Assert(!(pa.Adres is BelgischAdres) || ((BelgischAdres)pa.Adres).StraatNaam != null);
-            }
+//            foreach (var pa in gelieerdePersonen.SelectMany(gp => gp.Persoon.PersoonsAdres))
+//            {
+//                Debug.Assert(!(pa.Adres is BelgischAdres) || ((BelgischAdres)pa.Adres).StraatNaam != null);
+//            }
 
-            // overloop te verwijderen persoonsadressen
+//            // overloop te verwijderen persoonsadressen
 
-            foreach (PersoonsAdres pa in persoonsAdressen)
-            {
-                if (pa.GelieerdePersoon.FirstOrDefault() != null)
-                {
-                    // persoonsadres is voorkeuradres van sommige gelieerde personen.
-                    // Voor die gelieerde personen moet
-                    // een nieuw voorkeursadres gekozen worden.  Dit gebeurt willekeurig uit de overige
-                    // adressen.  Als er geen andere adressen zijn, is er ook geen voorkeuradres meer.
-                    PersoonsAdres nieuwVoorkeursAdres;
+//            foreach (PersoonsAdres pa in persoonsAdressen)
+//            {
+//                if (pa.GelieerdePersoon.FirstOrDefault() != null)
+//                {
+//                    // persoonsadres is voorkeuradres van sommige gelieerde personen.
+//                    // Voor die gelieerde personen moet
+//                    // een nieuw voorkeursadres gekozen worden.  Dit gebeurt willekeurig uit de overige
+//                    // adressen.  Als er geen andere adressen zijn, is er ook geen voorkeuradres meer.
+//                    PersoonsAdres nieuwVoorkeursAdres;
 
-                    var alleAdressen = pa.GelieerdePersoon.First().Persoon.PersoonsAdres;
+//                    var alleAdressen = pa.GelieerdePersoon.First().Persoon.PersoonsAdres;
 
-                    // Probeer eerste en laatste adres...
+//                    // Probeer eerste en laatste adres...
 
-                    if (alleAdressen.First().ID != pa.ID)
-                    {
-                        nieuwVoorkeursAdres = alleAdressen.First();
-                    }
-                    else if (alleAdressen.Last().ID != pa.ID)
-                    {
-                        nieuwVoorkeursAdres = alleAdressen.Last();
-                    }
-                    else
-                    {
-                        // Als zowel eerste als laatste PersoonsAdres het te verwijderen adres is,
-                        // dan had de persoon maar 1 adres.  Aangezien dat wordt verwijderd, komt er
-                        // geen voorkeursadres.
-                        nieuwVoorkeursAdres = null;
-                    }
+//                    if (alleAdressen.First().ID != pa.ID)
+//                    {
+//                        nieuwVoorkeursAdres = alleAdressen.First();
+//                    }
+//                    else if (alleAdressen.Last().ID != pa.ID)
+//                    {
+//                        nieuwVoorkeursAdres = alleAdressen.Last();
+//                    }
+//                    else
+//                    {
+//                        // Als zowel eerste als laatste PersoonsAdres het te verwijderen adres is,
+//                        // dan had de persoon maar 1 adres.  Aangezien dat wordt verwijderd, komt er
+//                        // geen voorkeursadres.
+//                        nieuwVoorkeursAdres = null;
+//                    }
 
-                    foreach (var pineut in pa.GelieerdePersoon.ToArray())
-                    {
-                        if (nieuwVoorkeursAdres == null)
-                        {
-                            pineut.PersoonsAdres = null;
+//                    foreach (var pineut in pa.GelieerdePersoon.ToArray())
+//                    {
+//                        if (nieuwVoorkeursAdres == null)
+//                        {
+//                            pineut.PersoonsAdres = null;
 
-                            // 'Vergeet' even het voorkeursadres, zodat we geen conflicten krijgen
-                            // bij het bewaren.
-                        }
-                        else
-                        {
-                            VoorkeurInstellen(pineut, nieuwVoorkeursAdres, false);
-                        }
-                    }
-                }
+//                            // 'Vergeet' even het voorkeursadres, zodat we geen conflicten krijgen
+//                            // bij het bewaren.
+//                        }
+//                        else
+//                        {
+//                            VoorkeurInstellen(pineut, nieuwVoorkeursAdres, false);
+//                        }
+//                    }
+//                }
 
-                pa.TeVerwijderen = true;
-            }
+//                pa.TeVerwijderen = true;
+//            }
 
-#if KIPDORP
-			using (var tx = new TransactionScope())
-			{
-#endif
+//#if KIPDORP
+//            using (var tx = new TransactionScope())
+//            {
+//#endif
 
-            foreach (var gp in gelieerdePersonen)
-            {
-                Debug.Assert(gp.PersoonsAdres == null || !(gp.PersoonsAdres.Adres is BelgischAdres) ||
-                             ((BelgischAdres)gp.PersoonsAdres.Adres).StraatNaam != null);
-            }
+//            foreach (var gp in gelieerdePersonen)
+//            {
+//                Debug.Assert(gp.PersoonsAdres == null || !(gp.PersoonsAdres.Adres is BelgischAdres) ||
+//                             ((BelgischAdres)gp.PersoonsAdres.Adres).StraatNaam != null);
+//            }
 
-            // eerst syncen naar kipadmin (gewoon om debugtechnische redenen; we zitten toch in
-            // een transactie.)
-            // geef nieuwe voorkeursadressen van personen met ad-nummer door aan kipadmin
-            var voorKeursAdressen = from gp in gelieerdePersonen
-                                    where
-                                        (gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag) &&
-                                        gp.PersoonsAdres != null
-                                    select gp.PersoonsAdres;
+//            // eerst syncen naar kipadmin (gewoon om debugtechnische redenen; we zitten toch in
+//            // een transactie.)
+//            // geef nieuwe voorkeursadressen van personen met ad-nummer door aan kipadmin
+//            var voorKeursAdressen = from gp in gelieerdePersonen
+//                                    where
+//                                        (gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag) &&
+//                                        gp.PersoonsAdres != null
+//                                    select gp.PersoonsAdres;
 
-            _adressenSync.StandaardAdressenBewaren(voorKeursAdressen);
+//            _adressenSync.StandaardAdressenBewaren(voorKeursAdressen);
 
-            // dan bewaren in GAP
-            // bewaar al dan niet aangepaste voorkeursadres
-            _gelieerdePersonenDao.Bewaren(gelieerdePersonen, gp => gp.PersoonsAdres);
+//            // dan bewaren in GAP
+//            // bewaar al dan niet aangepaste voorkeursadres
+//            _gelieerdePersonenDao.Bewaren(gelieerdePersonen, gp => gp.PersoonsAdres);
 
-            // verwijder te verwijderen persoonsadres
-            _personenDao.Bewaren(personen, p => p.PersoonsAdres.First().GelieerdePersoon);
+//            // verwijder te verwijderen persoonsadres
+//            _personenDao.Bewaren(personen, p => p.PersoonsAdres.First().GelieerdePersoon);
 
-#if KIPDORP
-				tx.Complete();
-			}
-#endif
+//#if KIPDORP
+//                tx.Complete();
+//            }
+//#endif
+        }
+
+        /// <summary>
+        /// Koppelt de gelieerde personen met gegeven <paramref name="gelieerdePersoonIDs"/> los
+        /// van de gegeven <paramref name="categorie"/>
+        /// </summary>
+        /// <param name="gelieerdePersoonIDs">ID's van de los te koppelen gelieerde personen</param>
+        /// <param name="categorie">Categorie waar de gelieerde personen losgekoppeld van moeten worden</param>
+        public void CategorieLoskoppelen(int[] gelieerdePersoonIDs, Categorie categorie)
+        {
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
     }
 }

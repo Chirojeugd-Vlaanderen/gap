@@ -1,16 +1,10 @@
-﻿using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Workers.Exceptions;
-
+﻿using System;
+using Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Orm;
-
 using Moq;
-using Chiro.Gap.Workers;
-using System;
-using Chiro.Gap.Orm.SyncInterfaces;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -82,32 +76,33 @@ namespace Chiro.Gap.Workers.Test
         [ExpectedException(typeof(GeenGavException))]
         public void BewarenTest()
         {
-            // arrabge
+            //// arrabge
 
-            const int GROEP_ID = 1;
+            //const int GROEP_ID = 1;
 
 
-            var veelGebruiktMock = new Mock<IVeelGebruikt>();
-            veelGebruiktMock.Setup(che => che.GroepsWerkJaarOphalen(GROEP_ID)).Returns(new GroepsWerkJaar
-                {Groep = new ChiroGroep {ID = GROEP_ID, Code = "TST/0001"}});
-            Factory.InstantieRegistreren(veelGebruiktMock.Object);
+            //var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            //veelGebruiktMock.Setup(che => che.GroepsWerkJaarOphalen(GROEP_ID)).Returns(new GroepsWerkJaar
+            //    {Groep = new ChiroGroep {ID = GROEP_ID, Code = "TST/0001"}});
+            //Factory.InstantieRegistreren(veelGebruiktMock.Object);
 
-            var groepenDaoMock = new Mock<IGroepenDao>();
-            groepenDaoMock.Setup(dao => dao.Ophalen(GROEP_ID)).Returns(new ChiroGroep {ID = GROEP_ID, Code = "TST/0001"});
-            Factory.InstantieRegistreren(groepenDaoMock.Object);
+            //var groepenDaoMock = new Mock<IGroepenDao>();
+            //groepenDaoMock.Setup(dao => dao.Ophalen(GROEP_ID)).Returns(new ChiroGroep {ID = GROEP_ID, Code = "TST/0001"});
+            //Factory.InstantieRegistreren(groepenDaoMock.Object);
 
-            var target = Factory.Maak<GroepenManager>();
+            //var target = Factory.Maak<GroepenManager>();
 
-            Groep g = target.Ophalen(GROEP_ID);
+            //Groep g = target.Ophalen(GROEP_ID);
 
-            // act
+            //// act
 
-            g.Code = "TST/0002";
-            target.Bewaren(g);
+            //g.Code = "TST/0002";
+            //target.Bewaren(g);
 
-            // assert
+            //// assert
 
-            Assert.Fail();  // we verwachtten een exception; komen we hier, dan is het niet gelukt
+            //Assert.Fail();  // we verwachtten een exception; komen we hier, dan is het niet gelukt
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -118,19 +113,20 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod()]
         public void BewarenTest1()
         {
-            var oorspronkelijkeGroep = new ChiroGroep {Naam = "TRALALA", ID = 1};
-            var aangepasteGroep = new ChiroGroep { Naam = "CHIROKEE", ID = 1 };
+            //var oorspronkelijkeGroep = new ChiroGroep {Naam = "TRALALA", ID = 1};
+            //var aangepasteGroep = new ChiroGroep { Naam = "CHIROKEE", ID = 1 };
 
-            var groepenDaoMock = new Mock<IGroepenDao>();
-            groepenDaoMock.Setup(src => src.Ophalen(1)).Returns(oorspronkelijkeGroep);
+            //var groepenDaoMock = new Mock<IGroepenDao>();
+            //groepenDaoMock.Setup(src => src.Ophalen(1)).Returns(oorspronkelijkeGroep);
 
-            Factory.InstantieRegistreren(groepenDaoMock.Object);
+            //Factory.InstantieRegistreren(groepenDaoMock.Object);
                     
-            var target = Factory.Maak<GroepenManager>();
+            //var target = Factory.Maak<GroepenManager>();
 
-            target.Bewaren(aangepasteGroep);
+            //target.Bewaren(aangepasteGroep);
 
-            Assert.AreEqual(aangepasteGroep.Naam, "CHIROKEE");
+            //Assert.AreEqual(aangepasteGroep.Naam, "CHIROKEE");
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
     }
 }

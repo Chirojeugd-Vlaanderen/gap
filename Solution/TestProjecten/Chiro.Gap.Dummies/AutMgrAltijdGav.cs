@@ -6,10 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Dummies
 {
@@ -32,69 +30,9 @@ namespace Chiro.Gap.Dummies
 			return personenIDs.ToList();
 		}
 
-		public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs)
-		{
-			return lidIDs;
-		}
-
-	    public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs)
-	    {
-	        return afdelingIDs;
-	    }
-
-	    public IEnumerable<Groep> MijnGroepenOphalen()
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
-		{
-			return true;
-		}
-
-		public bool IsGavGroep(int groepID)
-		{
-			return true;
-		}
-
-		public bool IsGavGroepsWerkJaar(int groepsWerkJaarID)
-		{
-			return true;
-		}
-
-		public bool IsGavPersoon(int persoonID)
-		{
-			return true;
-		}
-
 		public string GebruikersNaamGet()
 		{
 			throw new NotImplementedException();
-		}
-
-		public bool IsGavAfdeling(int afdelingsID)
-		{
-			return true;
-		}
-
-		public bool IsGavLid(int lidID)
-		{
-			return true;
-		}
-
-		public bool IsGavCategorie(int categorieID)
-		{
-			return true;
-		}
-
-		public bool IsGavCommVorm(int commvormID)
-		{
-			return true;
-		}
-
-		public bool IsGavUitstap(int uitstapID)
-		{
-			return true;
 		}
 
 		public bool IsSuperGav()
@@ -102,72 +40,71 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
-		public bool IsGavFunctie(int functieID)
-		{
-			return true;
-		}
-
-		public bool IsGavAfdelingsJaar(int afdelingsJaarID)
-		{
-			return true;
-		}
-
-		public bool IsGavPersoonsAdres(int persoonsAdresID)
-		{
-			return true;
-		}
-
-
-		public bool IsGavGroepen(IEnumerable<int> groepIDs)
-		{
-			return true;
-		}
-
-		public IEnumerable<int> MijnGroepIDsOphalen()
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool IsGavPlaats(int plaatsID)
-		{
-			return true;
-		}
-
-	    public bool IsGavDeelnemer(int deelnemerID)
+	    public bool IsGav(Groep groep)
 	    {
 	        return true;
 	    }
 
-	    public bool IsGavGebruikersRecht(int gebruikersRechtID)
+	    public bool IsGav(CommunicatieVorm communicatieVorm)
 	    {
-	        throw new NotImplementedException();
+	        return true;
 	    }
 
-	    public GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
+	    public bool IsGav(GroepsWerkJaar groepsWerkJaar)
 	    {
-	        throw new NotImplementedException();
+	        return true;
 	    }
 
-	    public GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum)
+	    public bool IsGav(GelieerdePersoon gelieerdePersoon)
 	    {
-	        throw new NotImplementedException();
+	        return true;
 	    }
 
-	    public bool IsGavAccount(int accountID)
+	    public bool IsGav(Deelnemer gelieerdePersoon)
 	    {
-	        throw new NotImplementedException();
+	        return true;
 	    }
 
-	    public bool IsGavGebruikersRechten(int[] gebruikersRechtIDs)
+	    public bool IsGav(Plaats gelieerdePersoon)
 	    {
-	        throw new NotImplementedException();
+            return true;
 	    }
 
-	    public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
-		{
-			return true;
-		}
+	    public bool IsGav(Uitstap gelieerdePersoon)
+	    {
+            return true;
+	    }
 
-		#endregion
+	    public bool IsGav(GebruikersRecht gelieerdePersoon)
+	    {
+            return true;
+	    }
+
+        public bool IsGav(Lid gelieerdePersoon)
+        {
+            return true;
+        }
+
+        public bool IsGav(Afdeling gelieerdePersoon)
+        {
+            return true;
+        }
+
+        public bool IsGav(Categorie gelieerdePersoon)
+        {
+            return true;
+        }
+
+	    public bool IsGav(IList<GelieerdePersoon> gelieerdePersonen)
+	    {
+	        return true;
+	    }
+
+	    public List<GelieerdePersoon> MijnGelieerdePersonen(IList<Persoon> personen)
+	    {
+            return personen.SelectMany(p => p.GelieerdePersoon).ToList();
+	    }
+
+	    #endregion
 	}
 }

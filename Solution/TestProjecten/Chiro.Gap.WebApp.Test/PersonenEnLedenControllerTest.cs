@@ -27,7 +27,7 @@ namespace Chiro.Gap.WebApp.Test
 
         #region irrelevante methods voor deze test
 
-        public IEnumerable<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
+        public List<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IList<int> gelieerdePersoonIDs, out string foutBerichten)
         {
             throw new NotImplementedException();
         }
@@ -39,7 +39,7 @@ namespace Chiro.Gap.WebApp.Test
             return null;
         }
 
-        public void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
+        public void Uitschrijven(IList<int> gelieerdePersoonIDs, out string foutBerichten)
         {
             throw new NotImplementedException();
         }

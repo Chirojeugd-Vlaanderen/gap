@@ -3,8 +3,17 @@
 use gap;
 
 
-declare @AdFoutePersoon as int; set @AdFoutePersoon= 272317;		-- AD-nummer van dubbele persoon
-declare @AdJuistePersoon as int; set @AdJuistePersoon= 199996;	-- AD-nummer van de persoon met de juiste persoonsgegevens (adressen, contactinfo)
+---- concentreren, Johan, want anders gaat het mis. Zoals meestal.
+
+---- In de niet doorgekomen leden, zijn de kolommen: GAPAD blabla KIPAD
+---- KIPAD is AdFoutePersoon. GAPAD is AdJuistePersoon
+---- JuisteAd is AdFoutePersoon
+
+
+-- TYPISCH LAAGSTE AD-NUMMER:
+declare @AdFoutePersoon as int; set @AdFoutePersoon= 296356;		-- AD-nummer van dubbele persoon
+-- TYPISCH HOOGSTE AD-NUMMER:
+declare @AdJuistePersoon as int; set @AdJuistePersoon= 273766;	-- AD-nummer van de persoon met de juiste persoonsgegevens (adressen, contactinfo)
 --declare @JuisteAd as int; set @JuisteAd=@AdJuistePersoon;		-- Het zou kunnen dat het ad-nr van de juiste persoon ook het juiste ad-nr is...
 declare @JuisteAd as int; set @JuisteAd=@AdFoutePersoon;		-- ... maar typisch heeft de persoon met de juiste gegevens het verkeerde AD-nummer :-)
 

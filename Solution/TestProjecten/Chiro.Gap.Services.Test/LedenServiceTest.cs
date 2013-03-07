@@ -1,7 +1,9 @@
-﻿using Chiro.Gap.Orm;
+﻿using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System;
@@ -14,8 +16,11 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.TestDbInfo;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.WorkerInterfaces;
+using Chiro.Cdf.Poco;
 using Moq;
+using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
+using Chiro.Gap.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -45,12 +50,10 @@ namespace Chiro.Gap.Services.Test
         #region Additional test attributes
 
         // Use ClassInitialize to run static code before running the first test in the class
-        [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            Factory.ContainerInit();
-            MappingHelper.MappingsDefinieren();
-        }
+        //[ClassInitialize]
+        //public static void MyClassInitialize(TestContext testContext)
+        //{
+        //}
 
         //Use ClassCleanup to run code after all tests in a class have run
         //[ClassCleanup()]
@@ -62,8 +65,9 @@ namespace Chiro.Gap.Services.Test
         [TestInitialize]
         public void MyTestInitialize()
         {
-            _ledenService = Factory.Maak<LedenService>();
-            _personenSvc = Factory.Maak<GelieerdePersonenService>();
+            // Reset de IOC-container voor iedere test.
+            Factory.ContainerInit();
+            MappingHelper.MappingsDefinieren();
         }
 
         //Use TestCleanup to run code after each test has run
@@ -99,38 +103,118 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void FunctiesVervangenTest()
         {
-            using (new TransactionScope())
-            {
-                #region act
+            #region arrange
 
-                // Lid3 heeft functies contactpersoon en redactie (eigen functie)
-                // Vervang door financieel verantwoordelijke, vb en redactie
+            // testdata genereren
 
-                int lidID = TestInfo.LID3_ID;
-                IEnumerable<int> functieIDs = new int[]
-                                                  {
-                                                      (int) NationaleFunctie.FinancieelVerantwoordelijke,
-                                                      (int) NationaleFunctie.Vb,
-                                                      TestInfo.FUNCTIE_ID
-                                                  };
-                _ledenService.FunctiesVervangen(lidID, functieIDs);
+            var gwj = new GroepsWerkJaar();
+            var groep = new ChiroGroep
+                            {
+                                GroepsWerkJaar = new List<GroepsWerkJaar> {gwj}
+                            };
+            gwj.Groep = groep;
 
-                #endregion
+            var contactPersoon = new Functie
+                                     {
+                                         ID = 1,
+                                         IsNationaal = true,
+                                         Niveau = Niveau.Alles,
+                                         Naam = "Contactpersoon",
+                                         Type = LidType.Leiding
+                                     };
+            var finVer = new Functie
+                             {
+                                 ID = 2,
+                                 IsNationaal = true,
+                                 Niveau = Niveau.Alles,
+                                 Naam = "FinancieelVerantwoordelijke",
+                                 Type = LidType.Leiding
+                             };
+            var vb = new Functie
+                         {
+                             ID = 3,
+                             IsNationaal = true,
+                             Niveau = Niveau.Alles,
+                             Naam = "VB",
+                             Type = LidType.Leiding
+                         };
+            var redactie = new Functie
+                               {
+                                   ID = 4,
+                                   IsNationaal = false,
+                                   Niveau = Niveau.Groep,
+                                   Naam = "RED",
+                                   Type = LidType.Leiding,
+                                   Groep = groep
+                               };
+            var leiding = new Leiding
+                              {
+                                  ID = 100,
+                                  GroepsWerkJaar = gwj,
+                                  Functie = new List<Functie> {contactPersoon, redactie},
+                                  GelieerdePersoon = new GelieerdePersoon {Groep = groep}
+                              };
 
-                #region Assert
+            // repositories maken die de testdata opleveren
 
-                var l = _ledenService.DetailsOphalen(lidID);
-                var funIDs = (from f in l.LidInfo.Functies select f.ID);
+            var ledenRepo = new DummyRepo<Lid>(new[] {leiding});
+            var functieRepo = new DummyRepo<Functie>(new[] {contactPersoon, finVer, vb, redactie});
 
-                Assert.AreEqual(funIDs.Count(), 3);
-                Assert.IsTrue(funIDs.Contains((int) NationaleFunctie.FinancieelVerantwoordelijke));
-                Assert.IsTrue(funIDs.Contains((int) NationaleFunctie.Vb));
-                Assert.IsTrue(funIDs.Contains(TestInfo.FUNCTIE_ID));
+            // repositoryprovider opzetten
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(ledenRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(functieRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
 
-                #endregion
+            // om #1413 te detecteren, moeten we de echte authorisatiemanager
+            // gebruiken. Dat wil dan weer zeggen dat we met de authenticatiemanager
+            // moeten foefelen, en gebruikersrechten moeten simuleren.
 
-            } // Rollback
+            var authenticatieMgrMock = new Mock<IAuthenticatieManager>();
+            authenticatieMgrMock.Setup(src => src.GebruikersNaamGet()).Returns("testGebruiker");
+            groep.GebruikersRecht.Add(new GebruikersRecht
+                                          {
+                                              Groep = groep,
+                                              Gav = new Gav
+                                                        {
+                                                            Login = "testGebruiker"
+                                                        }
+                                          });
 
+            Factory.InstantieRegistreren<IAutorisatieManager>(new AutorisatieManager(authenticatieMgrMock.Object));
+
+            // Hier maken we uiteindelijk de ledenservice
+
+            var ledenService = Factory.Maak<LedenService>();
+            #endregion
+
+            #region act
+
+            var leidingsFuncties = leiding.Functie;
+
+            IEnumerable<int> functieIDs = new int[]
+                                              {
+                                                  finVer.ID,
+                                                  vb.ID,
+                                                  redactie.ID
+                                              };
+
+            ledenService.FunctiesVervangen(leiding.ID, functieIDs);
+
+            #endregion
+
+            #region Assert
+
+            Assert.AreEqual(leiding.Functie.Count(), 3);
+            Assert.IsTrue(leiding.Functie.Contains(finVer));
+            Assert.IsTrue(leiding.Functie.Contains(vb));
+            Assert.IsTrue(leiding.Functie.Contains(redactie));
+
+            // om problemen te vermijden met entity framework, mag je bestaande collecties niet zomaar vervangen;
+            // je moet entiteiten toevoegen aan/verwijderen uit bestaande collecties.
+            Assert.AreEqual(leiding.Functie, leidingsFuncties);
+
+            #endregion
 
 
         }
@@ -201,66 +285,285 @@ namespace Chiro.Gap.Services.Test
         [TestMethod()]
         public void VoorstelTotInschrijvenGenererenTest()
         {
-            // Ik ga hier toch niet met data uit de database werken.
-            // Om problemen te vermijden escape ik hier dan maar de IOC-container.
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            //// Ik ga hier toch niet met data uit de database werken.
+            //// Om problemen te vermijden escape ik hier dan maar de IOC-container.
 
-            // Gauw wat handgemaakte dummydata:
+            //// Gauw wat handgemaakte dummydata:
 
-            var g = new ChiroGroep
-                          {
-                              ID = 1,
-                              GroepsWerkJaar = {new GroepsWerkJaar()},
-                              GelieerdePersoon =
-                                  {
-                                      new GelieerdePersoon
-                                          {ID = 1, Persoon = new Persoon {GeboorteDatum = new DateTime(1987, 3, 8)}},
-                                      new GelieerdePersoon
-                                          {ID = 2, Persoon = new Persoon {GeboorteDatum = new DateTime(1989, 3, 2)}}
-                                  }
-                          };
+            //var g = new ChiroGroep
+            //              {
+            //                  ID = 1,
+            //                  GroepsWerkJaar = {new GroepsWerkJaar()},
+            //                  GelieerdePersoon =
+            //                      {
+            //                          new GelieerdePersoon
+            //                              {ID = 1, Persoon = new Persoon {GeboorteDatum = new DateTime(1987, 3, 8)}},
+            //                          new GelieerdePersoon
+            //                              {ID = 2, Persoon = new Persoon {GeboorteDatum = new DateTime(1989, 3, 2)}}
+            //                      }
+            //              };
 
-            var gwj = g.GroepsWerkJaar.FirstOrDefault();
+            //var gwj = g.GroepsWerkJaar.FirstOrDefault();
 
-            // We mocken een en ander:
+            //// We mocken een en ander:
 
-            var gpmMock = new Mock<IGelieerdePersonenManager>();
-            gpmMock.Setup(
-                src =>
-                src.Ophalen(It.IsAny<int[]>(), It.IsAny<PersoonsExtras>())).Returns(g.GelieerdePersoon);
+            //var gpmMock = new Mock<IGelieerdePersonenManager>();
 
-            var gwjmMock = new Mock<IGroepsWerkJaarManager>();
-            gwjmMock.Setup(src => src.RecentsteOphalen(It.IsAny<int>(),It.IsAny<GroepsWerkJaarExtras>())).Returns(gwj);
+            //var gwjmMock = new Mock<IGroepsWerkJaarManager>();
 
-            var lmMock = new Mock<ILedenManager>();
-            // Simulatie: 'het lid bestaat nog niet'
-            lmMock.Setup(src => src.OphalenViaPersoon(It.IsAny<int>(), It.IsAny<int>())).Returns((Lid)null);
-            // Simulatie: 'we maken de persoon leid(st)er'
-            lmMock.Setup(
-                src => src.InschrijvingVoorstellen(It.IsAny<GelieerdePersoon>(), It.IsAny<GroepsWerkJaar>(), true)).
-                Returns(
-                    new LidVoorstel {AfdelingsJaarIDs = null, AfdelingsJarenIrrelevant = true, LeidingMaken = true});
+            //var lmMock = new Mock<ILedenManager>();
 
-            IGelieerdePersonenManager gpm = gpmMock.Object;
-            IGroepsWerkJaarManager gwjm = gwjmMock.Object;
-            ILedenManager lm = lmMock.Object;
+            //// Simulatie: 'het lid bestaat nog niet'
+            //lmMock.Setup(src => src.OphalenViaPersoon(It.IsAny<int>(), It.IsAny<int>())).Returns((Lid)null);
+            //// Simulatie: 'we maken de persoon leid(st)er'
+            //lmMock.Setup(
+            //    src => src.InschrijvingVoorstellen(It.IsAny<GelieerdePersoon>(), It.IsAny<GroepsWerkJaar>(), true)).
+            //    Returns(
+            //        new LidVoorstel {AfdelingsJaarIDs = null, AfdelingsJarenIrrelevant = true, LeidingMaken = true});
 
-            // Dingen die we niet gebruiken, mogen null blijven.
+            //IGelieerdePersonenManager gpm = gpmMock.Object;
+            //IGroepsWerkJaarManager gwjm = gwjmMock.Object;
+            //ILedenManager lm = lmMock.Object;
 
-            FunctiesManager fm = null;
-            AfdelingsJaarManager ajm = null; 
-            VerzekeringenManager vrzm = null;
-            LedenService target = new LedenService(gpm, lm, fm, ajm, gwjm, vrzm);
+            //// Dingen die we niet gebruiken, mogen null blijven.
 
-            IEnumerable<int> gelieerdePersoonIDs = new[] {1, 2};
-            string foutBerichten = string.Empty;
-            IEnumerable<InTeSchrijvenLid> actual;
-            actual = target.VoorstelTotInschrijvenGenereren(gelieerdePersoonIDs, out foutBerichten);
+            //FunctiesManager fm = null;
+            //AfdelingsJaarManager ajm = null; 
+            //VerzekeringenManager vrzm = null;
+            //LedenService target = new LedenService(gpm, lm, fm, ajm, gwjm, vrzm);
 
-            // We verwachten nu dat de personen opgeleverd worden van jong naar oud.  Dus
-            // eerst persoon 2, dan persoon 1.
+            //IEnumerable<int> gelieerdePersoonIDs = new[] {1, 2};
+            //string foutBerichten = string.Empty;
+            //IEnumerable<InTeSchrijvenLid> actual;
+            //actual = target.VoorstelTotInschrijvenGenereren(gelieerdePersoonIDs, out foutBerichten);
 
-            Assert.IsTrue(actual.First().GelieerdePersoonID == 2);
-            Assert.IsTrue(actual.Last().GelieerdePersoonID == 1);
+            //// We verwachten nu dat de personen opgeleverd worden van jong naar oud.  Dus
+            //// eerst persoon 2, dan persoon 1.
+
+            //Assert.IsTrue(actual.First().GelieerdePersoonID == 2);
+            //Assert.IsTrue(actual.Last().GelieerdePersoonID == 1);
+        }
+
+
+        ///<summary>
+        ///Controleert of het vervangen van functies gesynct wordt naar Kipadmin.
+        ///</summary>
+        [TestMethod()]
+        public void FunctiesVervangenSyncTest()
+        {
+            #region arrange
+
+            // testdata genereren
+
+            var gwj = new GroepsWerkJaar();
+            var groep = new ChiroGroep
+            {
+                GroepsWerkJaar = new List<GroepsWerkJaar> { gwj }
+            };
+            gwj.Groep = groep;
+
+            var contactPersoon = new Functie
+            {
+                ID = 1,
+                IsNationaal = true,
+                Niveau = Niveau.Alles,
+                Naam = "Contactpersoon",
+                Type = LidType.Leiding
+            };
+
+            var leiding = new Leiding
+            {
+                ID = 100,
+                GroepsWerkJaar = gwj,
+                Functie = new List<Functie>(),
+                GelieerdePersoon = new GelieerdePersoon { Groep = groep }
+            };
+
+            // repositories maken die de testdata opleveren
+            var ledenRepo = new DummyRepo<Lid>(new[] { leiding });
+            var functieRepo = new DummyRepo<Functie>(new[] { contactPersoon });
+
+            // repositoryprovider opzetten
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(ledenRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(functieRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            // sync mocken.
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(src => src.FunctiesUpdaten(leiding)).Verifiable();
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+
+            // Hier maken we uiteindelijk de ledenservice
+
+            var ledenService = Factory.Maak<LedenService>();
+            #endregion
+
+            #region act
+            ledenService.FunctiesVervangen(leiding.ID, new [] { contactPersoon.ID });
+            #endregion
+
+            #region Assert
+            ledenSyncMock.Verify();
+            #endregion
+        }
+
+        ///<summary>
+        /// Controleert of de uitschrijving van kadermedewerkers wordt gesynct naar kipadmin.
+        /// (Voor kadermedewerkers is er geen probeerperiode, want kaderinschrijvingen zijn gratis)
+        ///</summary>
+        [TestMethod()]
+        public void UitschrijvenKaderSyncTest()
+        {
+            // arrange
+
+            // testsituatie opbouwen
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = new KaderGroep {NiveauInt = (int) Niveau.Gewest}};
+            groepsWerkJaar.Groep.GroepsWerkJaar = new List<GroepsWerkJaar> { groepsWerkJaar };
+
+            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Groep = groepsWerkJaar.Groep};
+            groepsWerkJaar.Groep.GelieerdePersoon = new List<GelieerdePersoon> { gelieerdePersoon };          
+
+            var medewerker = new Leiding
+                                 {
+                                     EindeInstapPeriode = DateTime.Today,
+                                     // probeerperiode kadermedewerker is irrelevant
+                                     GroepsWerkJaar = groepsWerkJaar,
+                                     GelieerdePersoon = gelieerdePersoon
+                                 };
+            gelieerdePersoon.Lid = new List<Lid> {medewerker};
+            
+
+
+            // data access opzetten
+            var dummyLeidingRepo = new DummyRepo<Leiding>(new List<Leiding>{medewerker});
+            var dummyGpRepo = new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {medewerker.GelieerdePersoon});
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Leiding>()).Returns(dummyLeidingRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>()).Returns(dummyGpRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            // synchronisatie mocken
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>())).Verifiable();   // verwacht dat ledensync een lid moet bewaren
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+
+            var target = Factory.Maak<LedenService>();
+
+            // ACT
+
+            string foutbericht;
+            target.Uitschrijven(new[] {medewerker.GelieerdePersoon.ID}, out foutbericht);
+
+            // ASSERT: controleer of de ledensync is aangeroepen
+
+            ledenSyncMock.VerifyAll();
+        }
+
+        /// <summary>
+        ///A test for Uitschrijven
+        ///</summary>
+        [TestMethod()]
+        public void UitschrijvenTest()
+        {
+            // ARRANGE
+
+            // testsituatie opbouwen
+            var groepsWerkJaar = new GroepsWerkJaar { Groep = new KaderGroep { NiveauInt = (int)Niveau.Gewest } };
+            groepsWerkJaar.Groep.GroepsWerkJaar = new List<GroepsWerkJaar> { groepsWerkJaar };
+
+            var gelieerdePersoon1 = new GelieerdePersoon { ID = 1, Groep = groepsWerkJaar.Groep };
+            var gelieerdePersoon2 = new GelieerdePersoon { ID = 2, Groep = groepsWerkJaar.Groep };
+            groepsWerkJaar.Groep.GelieerdePersoon = new List<GelieerdePersoon> { gelieerdePersoon1, gelieerdePersoon2 };
+
+            var medewerker1 = new Leiding
+            {
+                EindeInstapPeriode = DateTime.Today,
+                // probeerperiode kadermedewerker is irrelevant
+                GroepsWerkJaar = groepsWerkJaar,
+                GelieerdePersoon = gelieerdePersoon1
+            };
+            var medewerker2 = new Leiding
+            {
+                EindeInstapPeriode = DateTime.Today,
+                // probeerperiode kadermedewerker is irrelevant
+                GroepsWerkJaar = groepsWerkJaar,
+                GelieerdePersoon = gelieerdePersoon2
+            };
+            gelieerdePersoon1.Lid = new List<Lid> { medewerker1 };
+            gelieerdePersoon2.Lid = new List<Lid> { medewerker2 };
+
+            // data access opzetten
+            var dummyLeidingRepo = new DummyRepo<Leiding>(new List<Leiding> { medewerker1, medewerker2 });
+            var dummyGpRepo = new DummyRepo<GelieerdePersoon>(groepsWerkJaar.Groep.GelieerdePersoon.ToList());
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Leiding>()).Returns(dummyLeidingRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>()).Returns(dummyGpRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            var target = Factory.Maak<LedenService>();
+
+            // ACT
+
+            string foutBerichten = string.Empty; 
+            target.Uitschrijven(new [] {gelieerdePersoon1.ID}, out foutBerichten);
+
+            // ASSERT
+
+            Assert.IsNotNull(medewerker1.UitschrijfDatum);  // medewerker 1 uitgeschreven
+            Assert.IsNull(medewerker2.UitschrijfDatum);     // medewerker 2 niet uitgeschreven
+        }
+
+        ///<summary>
+        /// Test of leiding waarvan de probeerperiode voor bij is, daadwerkelijk NIET gesynct
+        /// wordt met Kipadmin.
+        ///</summary>
+        [TestMethod()]
+        public void UitschrijvenLeidingSyncTest()
+        {
+            // arrange
+
+            // testsituatie opbouwen
+            var groepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep () };
+            groepsWerkJaar.Groep.GroepsWerkJaar = new List<GroepsWerkJaar> { groepsWerkJaar };
+
+            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Groep = groepsWerkJaar.Groep };
+            groepsWerkJaar.Groep.GelieerdePersoon = new List<GelieerdePersoon> { gelieerdePersoon };
+
+            var leiding = new Leiding
+            {
+                EindeInstapPeriode = DateTime.Today, // (defaults naar 0:00 uur; instapperiode voorbij)
+                GroepsWerkJaar = groepsWerkJaar,
+                GelieerdePersoon = gelieerdePersoon
+            };
+            gelieerdePersoon.Lid = new List<Lid> { leiding };
+
+
+
+            // data access opzetten
+            var dummyLeidingRepo = new DummyRepo<Leiding>(new List<Leiding> { leiding });
+            var dummyGpRepo = new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { leiding.GelieerdePersoon });
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Leiding>()).Returns(dummyLeidingRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>()).Returns(dummyGpRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            // synchronisatie mocken
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>())).Verifiable();   // verwacht dat ledensync een lid moet bewaren
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+
+            var target = Factory.Maak<LedenService>();
+
+            // ACT
+
+            string foutbericht;
+            target.Uitschrijven(new[] { leiding.GelieerdePersoon.ID }, out foutbericht);
+
+            // ASSERT: controleer dat de ledensync NIET werd aangeroepen
+
+            ledenSyncMock.Verify(src=>src.Verwijderen(leiding), Times.Never());
         }
     }
 }

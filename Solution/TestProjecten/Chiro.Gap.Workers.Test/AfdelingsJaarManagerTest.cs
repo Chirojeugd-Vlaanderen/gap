@@ -1,12 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Domain;
-using Chiro.Gap.Workers;
-using Chiro.Gap.Workers.Exceptions;
+﻿using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Workers.Test
 {

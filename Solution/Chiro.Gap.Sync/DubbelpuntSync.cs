@@ -2,15 +2,13 @@
 //   Copyright (c) 2007-2012 Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Diagnostics;
-using System.Linq;
-
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -21,26 +19,6 @@ namespace Chiro.Gap.Sync
 	/// </summary>
 	public class DubbelpuntSync : IDubbelpuntSync
 	{
-		private readonly IGroepsWerkJaarDao _groepsWerkJaarDao;
-		private readonly IPersonenDao _personenDao;
-		private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
-
-		/// <summary>
-		/// Creëert een nieuwe DubbelpuntSync
-		/// </summary>
-		/// <param name="groepsWerkJaarDao">Data access object voor groepsgerelateerde zaken</param>
-		/// <param name="personenDao">Data access object voor persoonsgerelateerde zaken</param>
-		/// <param name="gelieerdePersonenDao">Data access object voor gelieerde personen</param>
-		public DubbelpuntSync(
-			IGroepsWerkJaarDao groepsWerkJaarDao,
-			IPersonenDao personenDao,
-			IGelieerdePersonenDao gelieerdePersonenDao)
-		{
-			_groepsWerkJaarDao = groepsWerkJaarDao;
-			_personenDao = personenDao;
-			_gelieerdePersonenDao = gelieerdePersonenDao;
-		}
-
 	    /// <summary>
 	    /// Synct een Dubbelpuntabonnement naar Kipadmin
 	    /// </summary>
@@ -66,26 +44,7 @@ namespace Chiro.Gap.Sync
 			}
 			else
 			{
-				// Geen AD-Nummer; dan moet er met het abonnementsverzoek meteen alle info meegestuurd
-				// worden om dat AD-nummer te maken.  Markeer persoon als persoon met ad-nummer in aanvraag.
-
-				gp.Persoon.AdInAanvraag = true;
-				_personenDao.Bewaren(gp.Persoon);
-
-				// Haal gelieerde persoon opnieuw op, met zo veel mogelijk info voor identificatie aan
-				// Kipadminkant.
-
-				var gpMetDetails = _gelieerdePersonenDao.Ophalen(
-					gp.Persoon.ID,
-					huidigWj.Groep.ID,
-					true,
-					gelp => gelp.Persoon,
-					gelp => gelp.Communicatie.First().CommunicatieType);
-
-				ServiceHelper.CallService<ISyncPersoonService>(svc => svc.DubbelpuntBestellenNieuwePersoon(
-					Mapper.Map<GelieerdePersoon, PersoonDetails>(gpMetDetails),
-					huidigWj.Groep.Code,
-					huidigWj.WerkJaar));
+                throw new NotImplementedException();
 			}
 		}
 	}

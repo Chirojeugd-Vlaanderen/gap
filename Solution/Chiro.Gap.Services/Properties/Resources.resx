@@ -133,6 +133,9 @@
   <data name="OngeldigLidType" xml:space="preserve">
     <value>Ongeldig lidtype.</value>
   </data>
+  <data name="OngeldigeCategorieNaam" xml:space="preserve">
+    <value>De naam van een categorie mag niet leeg zijn.</value>
+  </data>
   <data name="IsNogNietIngeschreven" xml:space="preserve">
     <value>{0} is nog niet ingeschreven in je groep.</value>
     <comment>Param 0: naam van de gelieerde persoon</comment>
@@ -162,5 +165,26 @@
   </data>
   <data name="RolNietOndersteund" xml:space="preserve">
     <value>De rol {0} wordt nog niet ondersteund.</value>
+  </data>
+  <data name="GeenGav" xml:space="preserve">
+    <value>Geen toegang.</value>
+  </data>
+  <data name="GeenWerkJaar" xml:space="preserve">
+    <value>Er is nog geen werkjaar gemaakt voor deze groep.</value>
+  </data>
+  <data name="KindInEenAfdelingsJaar" xml:space="preserve">
+    <value>Een kind moet in exact 1 afdeling zitten.</value>
+  </data>
+  <data name="EntiteitBestondAl" xml:space="preserve">
+    <value>Je probeerde een entiteit toe te voegen die al bestond.</value>
+  </data>
+  <data name="Belgie" xml:space="preserve">
+    <value>België</value>
+  </data>
+  <data name="FoutieveGroepUitstap" xml:space="preserve">
+    <value>De groep van de uitstap verschilt van de groep van de deelnemer.</value>
+  </data>
+  <data name="AdNummerNietWijzigen" xml:space="preserve">
+    <value>Enkel het nationaal secretariaat mag AD-nummers wijzigen.</value>
   </data>
 </root>

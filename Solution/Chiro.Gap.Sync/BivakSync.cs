@@ -3,16 +3,16 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
-using Adres = Chiro.Gap.Orm.Adres;
+using Adres = Chiro.Gap.Poco.Model.Adres;
 
 namespace Chiro.Gap.Sync
 {
@@ -21,26 +21,6 @@ namespace Chiro.Gap.Sync
     /// </summary>
     public class BivakSync : IBivakSync
     {
-        private readonly IAdressenDao _adressenDao;
-        private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
-        private readonly IDeelnemersDao _deelnemersDao;
-
-        /// <summary>
-        /// Standaardconstructor.  De parameters worden gebruikt voor dependency injection.
-        /// </summary>
-        /// <param name="adressenDao">Data access voor adressen</param>
-        /// <param name="gelieerdePersonenDao">Data access voor gelieerde personen</param>
-        /// <param name="deelnemersDao">Data access voor deelnemers</param>
-        public BivakSync(
-            IAdressenDao adressenDao,
-            IGelieerdePersonenDao gelieerdePersonenDao,
-            IDeelnemersDao deelnemersDao)
-        {
-            _adressenDao = adressenDao;
-            _gelieerdePersonenDao = gelieerdePersonenDao;
-            _deelnemersDao = deelnemersDao;
-        }
-
         /// <summary>
         /// Bewaart de uitstap <paramref name="uitstap"/> in Kipadmin als bivak.  Zonder contactpersoon
         /// of plaats.
@@ -61,15 +41,9 @@ namespace Chiro.Gap.Sync
 
                 if (uitstap.ContactDeelnemer.GelieerdePersoon == null || uitstap.ContactDeelnemer.GelieerdePersoon.Persoon == null)
                 {
-                    // nee, haal deelnemer opnieuw op, met contactpersoon
-
-                    var deelnemer = _deelnemersDao.Ophalen(uitstap.ContactDeelnemer.ID, d => d.GelieerdePersoon.Persoon);
-                    contactPersoon = deelnemer.GelieerdePersoon;
+                    throw new NotImplementedException();
                 }
-                else
-                {
-                    contactPersoon = uitstap.ContactDeelnemer.GelieerdePersoon;
-                }
+                contactPersoon = uitstap.ContactDeelnemer.GelieerdePersoon;
             }
             else
             {
@@ -78,10 +52,7 @@ namespace Chiro.Gap.Sync
 
             if (uitstap.Plaats != null && uitstap.Plaats.Adres != null)
             {
-                // Haal adres opnieuw op, zodat we zeker gemeente of land mee hebben.
-
-                var adres = _adressenDao.Ophalen(uitstap.Plaats.Adres.ID);
-                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakPlaatsBewaren(uitstap.ID, uitstap.Plaats.Naam, Mapper.Map<Adres, Kip.ServiceContracts.DataContracts.Adres>(adres)));
+                throw new NotImplementedException();
             }
 
             if (contactPersoon != null)
@@ -91,24 +62,11 @@ namespace Chiro.Gap.Sync
                     // AD-nummer gekend: gewoon koppelen via AD-nummer
                     ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakContactBewaren(
                         uitstap.ID,
-                        contactPersoon.Persoon.AdNummer ?? 0));
+                        (int) contactPersoon.Persoon.AdNummer));
                 }
                 else
                 {
-                    // Als we geen AD-nummer hebben, haal dan ook de communicatie en het
-                    // voorkeursadres op, want die zullen we nodig hebben om te identificeren.
-
-                    var gelPersoon = _gelieerdePersonenDao.Ophalen(
-                        contactPersoon.ID, PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres);
-
-                    // Geef door met gegevens ipv ad-nummer.  Registreer dat ad-nummer
-                    // in aanvraag is.
-                    gelPersoon.Persoon.AdInAanvraag = true;
-                    _gelieerdePersonenDao.Bewaren(gelPersoon, gp => gp.Persoon);
-
-                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakContactBewarenAdOnbekend(
-                        uitstap.ID,
-                        Mapper.Map<GelieerdePersoon, PersoonDetails>(gelPersoon)));
+                    throw new NotImplementedException();
                 }
             }
         }

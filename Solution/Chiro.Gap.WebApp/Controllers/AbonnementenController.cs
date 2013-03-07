@@ -54,7 +54,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             var info =
                 ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(
-                    svc => svc.PersoonInfoOphalen(new List<int> {id})).FirstOrDefault();
+                    svc => svc.InfoOphalen(new List<int> {id})).FirstOrDefault();
 
 
             Debug.Assert(info != null);

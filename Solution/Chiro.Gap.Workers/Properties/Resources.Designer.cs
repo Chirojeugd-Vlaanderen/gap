@@ -124,7 +124,7 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkJaar, moet je eerst de jaarovergang uitvoeren..
+        ///   Looks up a localized string similar to Je kunt geen Dubbelpunt meer bestellen voor het werkJaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkJaar, moet je eerst de jaarovergang uitvoeren..
         /// </summary>
         internal static string BestelPeriodeDubbelpuntVoorbij {
             get {

@@ -9,13 +9,11 @@ using System.Transactions;  // NIET VERWIJDEREN! Nodig voor live (als 'KIPDORP' 
 
 using Chiro.Ad.ServiceContracts;
 using Chiro.Adf.ServiceModel;
-using Chiro.Cdf.Data;
 using Chiro.Cdf.Mailer;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
@@ -26,63 +24,15 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class GebruikersRechtenManager : IGebruikersRechtenManager
     {
-        private readonly IAutorisatieDao _autorisatieDao;
-        private readonly IGavDao _gavDao;
-        private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
         private readonly IAutorisatieManager _autorisatieManager;
         private readonly IMailer _mailer;
 
-        /// <summary>
-        /// Constructor.  De parameters moeten 'ingevuld' worden via dependency injection.
-        /// </summary>
-        /// <param name="autorisatieDao">
-        /// DAO die gebruikt zal worden om gegevens ivm gebruikersrechten op te zoeken
-        /// </param>
-        /// <param name="gelieerdePersonenDao">
-        /// Data access voor gelieerdepersonen
-        /// </param>
-        /// <param name="gavDao">
-        /// Voorziet data access voor GAV's
-        /// </param>
-        /// <param name="autorisatieManager">
-        /// Data access ivm gebruikersrechten
-        /// </param>
-        /// <param name="mailer">
-        /// Klasse die mails zal sturen
-        /// </param>
         public GebruikersRechtenManager(
-            IAutorisatieDao autorisatieDao,
-            IGelieerdePersonenDao gelieerdePersonenDao,
-            IGavDao gavDao,
             IAutorisatieManager autorisatieManager,
             IMailer mailer)
         {
-            _autorisatieDao = autorisatieDao;
-            _gelieerdePersonenDao = gelieerdePersonenDao;
-            _gavDao = gavDao;
             _autorisatieManager = autorisatieManager;
             _mailer = mailer;
-        }
-
-        /// <summary>
-        /// Als een gelieerde persoon een gebruikersrecht heeft/had voor zijn eigen groep, dan
-        /// levert deze call dat gebruikersrecht op, inclusief GAV-object.
-        /// </summary>
-        /// <param name="gelieerdePersoonID">
-        /// ID van een gelieerde persoon
-        /// </param>
-        /// <returns>
-        /// Gebruikersrecht van de gelieerde persoon met ID <paramref name="gelieerdePersoonID"/>
-        /// op zijn eigen groep (if any, anders null)
-        /// </returns>
-        public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
-        {
-            if (!_autorisatieManager.IsGavGelieerdePersoon(gelieerdePersoonID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return _autorisatieDao.GebruikersRechtGelieerdePersoon(gelieerdePersoonID);
         }
 
         /// <summary>
@@ -93,7 +43,7 @@ namespace Chiro.Gap.Workers
         /// </param>
         public void Verlengen(GebruikersRecht gebruikersRecht)
         {
-            if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersRecht.ID))
+            if (!_autorisatieManager.IsGav(gebruikersRecht))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
@@ -163,80 +113,63 @@ namespace Chiro.Gap.Workers
         /// <remarks>De gemaakte account heeft geen rechten.</remarks>
         public Gav AccountZoekenOfMaken(GelieerdePersoon gelieerdePersoon, bool makenAlsNietGevonden)
         {
-            var p = gelieerdePersoon.Persoon;
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+//            var p = gelieerdePersoon.Persoon;
 
-            if (!_autorisatieManager.IsGavGelieerdePersoon(gelieerdePersoon.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
+//            if (!_autorisatieManager.IsGavGelieerdePersoon(gelieerdePersoon.ID))
+//            {
+//                throw new GeenGavException(Properties.Resources.GeenGav);
+//            }
 
-            var account = p.Gav.FirstOrDefault();
+//            var account = p.Gav.FirstOrDefault();
 
-            if (account != null || !makenAlsNietGevonden)
-            {
-                // Als we al een account gevonden hebben, of als we er geen nieuwe moeten maken, dan zijn we
-                // hier al klaar.
-                return account;
-            }
+//            if (account != null || !makenAlsNietGevonden)
+//            {
+//                // Als we al een account gevonden hebben, of als we er geen nieuwe moeten maken, dan zijn we
+//                // hier al klaar.
+//                return account;
+//            }
 
 
-            // Check op ad-nummer en e-mailadres
+//            // Check op ad-nummer en e-mailadres
 
-            if (p.AdNummer == null)
-            {
-                throw new FoutNummerException(FoutNummer.AdNummerVerplicht, Resources.AdNummerVerplicht);
-            }
+//            if (p.AdNummer == null)
+//            {
+//                throw new FoutNummerException(FoutNummer.AdNummerVerplicht, Properties.Resources.AdNummerVerplicht);
+//            }
 
-            if (string.IsNullOrEmpty(gelieerdePersoon.ContactEmail))
-            {
-                throw new FoutNummerException(FoutNummer.EMailVerplicht, Resources.EMailVerplicht);
-            }
+//            if (string.IsNullOrEmpty(gelieerdePersoon.ContactEmail))
+//            {
+//                throw new FoutNummerException(FoutNummer.EMailVerplicht, Properties.Resources.EMailVerplicht);
+//            }
 
-            account = new Gav();
-            account.Persoon.Add(p);
-            p.Gav.Add(account);
+//            account = new Gav();
+//            account.Persoon.Add(p);
+//            p.Gav.Add(account);
 
-#if KIPDORP
-            using (var tx = new TransactionScope())
-            {
-#endif
-                string username =
-                    ServiceHelper.CallService<IAdService, string>(
-                        svc => svc.GapLoginAanvragen(p.AdNummer.Value, p.VoorNaam, p.Naam, gelieerdePersoon.ContactEmail));
+//#if KIPDORP
+//            using (var tx = new TransactionScope())
+//            {
+//#endif
+//                string username =
+//                    ServiceHelper.CallService<IAdService, string>(
+//                        svc => svc.GapLoginAanvragen(p.AdNummer.Value, p.VoorNaam, p.Naam, gelieerdePersoon.ContactEmail));
 
-                account.Login = string.Format(@"CHIROPUBLIC\{0}", username);
+//                account.Login = string.Format(@"CHIROPUBLIC\{0}", username);
 
-                // Het zou kunnen dat de nieuwe login toch al ergens gekend was. Om key violations te vermijden, halen
-                // we lelijke-hackgewijze het account-ID op.
+//                // Het zou kunnen dat de nieuwe login toch al ergens gekend was. Om key violations te vermijden, halen
+//                // we lelijke-hackgewijze het account-ID op.
 
-                account.ID = _gavDao.IdOphalen(account.Login);
+//                account.ID = _gavDao.IdOphalen(account.Login);
 
-                account = _gavDao.Bewaren(account, act => act.Persoon);
+//                account = _gavDao.Bewaren(account, act => act.Persoon);
 
-#if KIPDORP
-                tx.Complete();
-            }
-#endif
-            return account;
+//#if KIPDORP
+//                tx.Complete();
+//            }
+//#endif
+//            return account;
 
-        }
-
-        /// <summary>
-        /// Haalt de account op met gegeven <paramref name="gebruikersNaam"/>, met daaraan gekoppeld alle
-        /// groepen waar de account gebruikersrechten op heeft.
-        /// </summary>
-        /// <param name="gebruikersNaam">Gebruikersnaam op te halen account</param>
-        /// <returns>Account voor de gelieerde persoon (klasse Gav zou beter hernoemd worden als account, 
-        /// zie #1357)</returns>
-        public Gav AccountOphalen(string gebruikersNaam)
-        {
-            // Omdat een account niet echt aan een specifieke groep gebonden is, is het niet te definieren
-            // of een gebruiker rechten heeft op die account. Iedereen mag dus elke account ophalen. Met
-            // gekoppelde groepen. We gaan er dus maar vanuit dat dat 'publieke' informatie is. Maar koppel
-            // dus zeker niet te veel extra informatie aan wat je hier teruggeeft.
-            // Het lijkt erop dat hier iets niet klopt. Maar ik zou niet goed weten hoe het te fixen.
-
-            return (_gavDao.Ophalen(gebruikersNaam));
         }
 
         /// <summary>
@@ -261,7 +194,7 @@ namespace Chiro.Gap.Workers
         /// <remarks>Gebruikersrechten die al vervallen zijn, blijven onaangeroerd</remarks>
         public void Intrekken(GebruikersRecht[] gebruikersRechten)
         {
-            if (!_autorisatieManager.IsGavGebruikersRechten(gebruikersRechten.Select(gr => gr.ID).ToArray()))
+            if (gebruikersRechten.Any(e => !_autorisatieManager.IsGav(e)))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
@@ -271,182 +204,7 @@ namespace Chiro.Gap.Workers
                 gr.VervalDatum = DateTime.Now.AddDays(-1);
             }
         }
-
-        /// <summary>
-        /// Persisteert het gegeven <paramref name="gebruikersRecht"/>, zonder enige koppelingen
-        /// </summary>
-        /// <param name="gebruikersRecht">
-        /// Te bewaren gebruikersrecht
-        /// </param>
-        public void Bewaren(GebruikersRecht gebruikersRecht)
-        {
-            Bewaren(new[] { gebruikersRecht });
-        }
-
-        /// <summary>
-        /// Persisteert de gegeven <paramref name="gebruikersRechten"/>, met koppelingen naar account en groep.
-        /// </summary>
-        /// <param name="gebruikersRechten">Te persisteren gebruikersrechten</param>
-        public void Bewaren(GebruikersRecht[] gebruikersRechten)
-        {
-            var groepIDs = gebruikersRechten.Select(gr => gr.Groep.ID);
-            if (!_autorisatieManager.IsGavGroepen(groepIDs))
-            {
-                throw new GeenGavException(Properties.Resources.GeenGav);
-            }
-
-            _autorisatieDao.Bewaren(gebruikersRechten, gr => gr.Gav.WithoutUpdate(), gr => gr.Groep.WithoutUpdate());
-        }
-
-        /// <summary>
-        /// Haalt alle gebruikersrechten op uit de groep met ID <paramref name="groepID"/>, inclusief
-        /// persoon.
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van de groep waarvan we de gebruikersrechten willen ophalen
-        /// </param>
-        /// <returns>
-        /// Alle gebruikersrechten uit de groep met ID <paramref name="groepID"/>, inclusief
-        /// persoon.
-        /// </returns>
-        public IEnumerable<GebruikersRecht> AllesOphalen(int groepID)
-        {
-            if (!_autorisatieManager.IsGavGroep(groepID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            var resultaat = _autorisatieDao.AllesOphalen(groepID);
-
-            return resultaat;
-        }
-
-        /// <summary>
-        /// Haalt een gebruikersrecht op, gegeven zijn <paramref name="gebruikersRechtID"/>,
-        /// zonder koppelingen.
-        /// </summary>
-        /// <param name="gebruikersRechtID">
-        /// ID op te halen gebruikersrecht
-        /// </param>
-        /// <returns>
-        /// Het gevraagde gebruikersrecht, zonder koppelingen
-        /// </returns>
-        public GebruikersRecht Ophalen(int gebruikersRechtID)
-        {
-            if (!_autorisatieManager.IsGavGebruikersRecht(gebruikersRechtID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return _autorisatieDao.Ophalen(gebruikersRechtID);
-        }
-
-        /// <summary>
-        /// Gegeven een <paramref name="groepID"/>, haal van de GAV's waarvan 
-        /// de personen gekend zijn, de gelieerde personen op (die dus de
-        /// koppeling bepalen tussen de persoon en de groep met gegeven
-        /// <paramref name="groepID"/>).
-        /// Voorlopig worden ook de communicatiemiddelen mee opgeleverd.
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van een groep
-        /// </param>
-        /// <returns>
-        /// Beschikbare gelieerde personen waarvan we weten dat ze GAV zijn
-        /// voor die groep
-        /// </returns>
-        /// <remarks>
-        /// Vervallen GAV's worden niet opgeleverd
-        /// </remarks>
-        public IEnumerable<GelieerdePersoon> GavGelieerdePersonenOphalen(int groepID)
-        {
-            if (!(_autorisatieManager.IsSuperGav() || _autorisatieManager.IsGavGroep(groepID)))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            var gavGps = _gelieerdePersonenDao.OphalenOpBasisVanGavs(groepID);
-
-            return (from gp in gavGps
-                    where
-                        gp.Persoon.Gav.Any(
-                            gav =>
-                            gav.GebruikersRecht.Any(
-                                gr =>
-                                gr.Groep.ID == groepID && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)))
-                    select gp).ToArray();
-        }
-
-        /// <summary>
-        /// Geeft de gegeven <paramref name="gav"/> gebruikersrechten op de groep van <paramref name="notificatieOntvanger"/>,
-        /// en stuurt <paramref name="notificatieOntvanger"/> een mailtje dat jij dat gebruikersrecht hebt gekregen.
-        /// (Dit is uiteraard enkel zinvol wanneer je supergav-rechten hebt, en ook gewone gebruikersrechten wil krijgen).
-        /// PERSISTEERT, want GAV-maken en mailtje sturen moet in 1 transactie
-        /// </summary>
-        /// <param name="gav">
-        /// GAV die gebruikersrecht moet krijgen, met daaraan gekoppeld de groepen waarop hij/zij
-        /// al gebruikersrecht heeft.
-        /// </param>
-        /// <param name="notificatieOntvanger">
-        /// De gelieerde persoon die de groep bepaalt de <paramref name="gav"/> 
-        /// rechten voor moet krijgen, en die een mailtje zal krijgen waarin staat dat hij/zij rechten hebt gekregen.  
-        /// </param>
-        /// <param name="vervalDatum">
-        /// Vervaldatum van het nieuwe gebruikersrecht.
-        /// </param>
-        /// <param name="reden">
-        /// Reden waarom het gebruikersrecht aangevraagd werd.  Wordt mee gemaild naar de
-        /// <paramref name="notificatieOntvanger"/>
-        /// </param>
-        /// <returns>
-        /// Het gecreëerde gebruikersrecht
-        /// </returns>
-        /// <remarks>
-        /// Als de gebruiker al een gebruikersrecht heeft, wordt enkel de vervaldatum aangepast
-        /// </remarks>
-        public GebruikersRecht ToekennenOfVerlengen(Gav gav,
-                                                    GelieerdePersoon notificatieOntvanger,
-                                                    DateTime vervalDatum,
-                                                    string reden)
-        {
-            if (!_autorisatieManager.IsSuperGav())
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            string mailAdres = notificatieOntvanger.ContactEmail;
-
-            if (string.IsNullOrEmpty(mailAdres))
-            {
-                throw new FoutNummerException(FoutNummer.EMailVerplicht, Resources.EMailVerplicht);
-            }
-
-            var gebruikersRecht = ToekennenOfVerlengen(gav, notificatieOntvanger.Groep, vervalDatum);
-
-#if KIPDORP
-            using (var tx = new TransactionScope())
-            {
-#endif
-                gebruikersRecht = _autorisatieDao.Bewaren(gebruikersRecht,
-                                                          gr => gr.Gav.Persoon.First().WithoutUpdate(),
-                                                          gr => gr.Groep.WithoutUpdate());
-                _mailer.Verzenden(mailAdres,
-                                  Resources.TijdelijkeRechtenMailOnderwerp,
-                                  string.Format(
-                                      Resources.TijdelijkeRechtenMailBody,
-                                      notificatieOntvanger.Persoon.VolledigeNaam,
-                                      gav.Login,
-                                      vervalDatum,
-                                      reden,
-                                      notificatieOntvanger.Groep.ID));
-
-#if KIPDORP
-                tx.Complete();
-            }
-#endif
-            return gebruikersRecht;
-        }
-
+        
         /// <summary>
         /// Koppelt de <paramref name="gav"/> aan de <paramref name="groep"/> met gegeven 
         /// <paramref name="vervalDatum"/>.  PERSISTEERT NIET.
@@ -490,21 +248,6 @@ namespace Chiro.Gap.Workers
             return gebruikersrecht;
         }
 
-        /// <summary>
-        /// Haalt de GAV op voor de gebruiker die momenteel is aangemeld.  Als er zo nog geen bestaat, wordt
-        /// die aangemaakt.
-        /// </summary>
-        /// <returns>
-        /// GAV, met eventueel gekoppelde groepen
-        /// </returns>
-        public Gav MijnGavOphalen()
-        {
-            string login = _autorisatieManager.GebruikersNaamGet();
-
-            var gav = _gavDao.Ophalen(login) ?? new Gav { ID = 0, Login = login };
-
-            return gav;
-        }
 
         /// <summary>
         /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="account"/>.
@@ -519,7 +262,7 @@ namespace Chiro.Gap.Workers
             // Omdat een account niet per se aan een gelieerde persoon gekoppeld is, controleren we enkel of
             // we gebruikersrechten hebben op de groep. Een koppeling account-groep hebben we vooralsnog niet.
 
-            if (!_autorisatieManager.IsGavGroep(groep.ID))
+            if (!_autorisatieManager.IsGav(groep))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
@@ -527,6 +270,24 @@ namespace Chiro.Gap.Workers
             DateTime vervaldatum = NieuweVervalDatum();
 
             return ToekennenOfVerlengen(account, groep, vervaldatum);
+        }
+
+        /// <summary>
+        /// Levert het gebruikersrecht op dat een <paramref name="gelieerdePersoon"/> heeft op zijn eigen groep. 
+        /// If any.  Als <paramref name="gelieerdePersoon"/> geen gebruikersrechten heeft op zijn groep, wordt 
+        /// <c>null</c> opgeleverd.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// Het gebruikersrecht op dat een <paramref name="gelieerdePersoon"/> heeft op zijn eigen groep. If any. 
+        /// Als <paramref name="gelieerdePersoon"/> geen gebruikersrechten heeft op zijn groep, wordt <c>null</c> 
+        /// opgeleverd.
+        /// </returns>
+        public GebruikersRecht GebruikersRechtGet(GelieerdePersoon gelieerdePersoon)
+        {
+            return
+                gelieerdePersoon.Groep.GebruikersRecht.FirstOrDefault(
+                    gr => gr.Gav.Persoon.Any(p => p.ID == gelieerdePersoon.Persoon.ID));
         }
     }
 }

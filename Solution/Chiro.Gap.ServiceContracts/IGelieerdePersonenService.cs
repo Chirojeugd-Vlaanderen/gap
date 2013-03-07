@@ -43,44 +43,27 @@ namespace Chiro.Gap.ServiceContracts
         /// </summary>
         /// <param name="groepID">ID van de betreffende groep</param>
         /// <param name="letter">Beginletter van de achternaam</param>
-        /// <param name="sortering">Geeft aan hoe de personen gesorteerd moeten worden</param>
         /// <param name="aantalTotaal">Outputparameter; levert het totaal aantal personen in de groep op</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
-        IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal);
-        
+        IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, out int aantalTotaal);
 
-		/// <summary>
-		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep,
-		/// inclusief eventueel lidobject voor het recentste werkJaar.
-		/// </summary>
-		/// <param name="groepID">ID van de betreffende groep</param>
-		/// <param name="pagina">Paginanummer (1 of hoger)</param>
-		/// <param name="paginaGrootte">Aantal records per pagina (1 of meer)</param>
-		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
-		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
-		[OperationContract]
+	    /// <summary>
+	    /// Haalt persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
+	    /// waarvan de naam begint met de gegeven <paramref name="letter"/>
+	    /// inclusief eventueel lidobject voor het recentste werkJaar.
+	    /// </summary>
+	    /// <param name="categorieID">ID van de gevraagde categorie</param>
+	    /// <param name="letter">letter waarmee de naam moet beginnen</param>
+	    /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
+	    /// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
+	    /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
+	    [OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal);
-
-		/// <summary>
-		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
-		/// inclusief eventueel lidobject voor het recentste werkJaar.
-		/// </summary>
-		/// <param name="categorieID">ID van de gevraagde categorie</param>
-		/// <param name="pagina">Paginanummer (1 of hoger)</param>
-		/// <param name="paginaGrootte">Aantal records per pagina (1 of meer)</param>
-		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
-		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal);
+		IList<PersoonDetail> OphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal);
 
 		/// <summary>
 		/// Haalt persoonsgegevens op voor alle gegeven gelieerde personen.
@@ -90,7 +73,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonInfo> PersoonInfoOphalen(IList<int> gelieerdePersoonIDs);
+		IList<PersoonInfo> InfoOphalen(IList<int> gelieerdePersoonIDs);
 
 	    /// <summary>
 	    /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
@@ -143,23 +126,21 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="categorieID">Indien verschillend van 0, worden alle personen uit de categore met
 		/// gegeven CategoreID opgehaald.  Anders alle personen tout court.</param>
-		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID, PersoonSorteringsEnum sortering);
+		IList<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID);
 
 		/// <summary>
 		/// Haalt gegevens op van alle personen uit groep met ID <paramref name="groepID"/>.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waaruit de personen gehaald moeten worden</param>
-		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering);
+		IList<PersoonOverzicht> AllenOphalenUitGroep(int groepID);
 
 		/// <summary>
 		/// Haalt gegevens op van alle gelieerdepersonen met IDs in <paramref name="gelieerdePersoonIDs"/>.
@@ -169,7 +150,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<PersoonOverzicht> AllenOphalenUitLijst(IList<int> gelieerdePersoonIDs);
+		IEnumerable<PersoonOverzicht> OverzichtOphalen(IList<int> gelieerdePersoonIDs);
 
 		#endregion ophalen
 
@@ -179,7 +160,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// Updatet een persoon op basis van <paramref name="persoonInfo"/>
 		/// </summary>
 		/// <param name="persoonInfo">Info over te bewaren persoon</param>
-		/// <returns>ID van de bewaarde persoon</returns>
+		/// <returns>GelieerderPersoonID van de bewaarde gelieerde persoon</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]

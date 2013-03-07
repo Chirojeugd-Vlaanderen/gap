@@ -9,14 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
-using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
@@ -49,29 +46,12 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class LedenManager : ILedenManager
     {
-        private readonly LedenDaoCollectie _daos;
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly ILedenSync _sync;
 
-        /// <summary>
-        /// Maakt een nieuwe ledenmanager aan
-        /// </summary>
-        /// <param name="daos">
-        /// Een hele reeks van IDao-objecten, nodig
-        /// voor data access.
-        /// </param>
-        /// <param name="autorisatie">
-        /// Een IAuthorisatieManager, die
-        /// de GAV-permissies van de huidige user controleert.
-        /// </param>
-        /// <param name="sync">
-        /// Zorgt voor synchronisate van adressen naar KipAdmin
-        /// </param>
-        public LedenManager(LedenDaoCollectie daos,
-                            IAutorisatieManager autorisatie,
+        public LedenManager(IAutorisatieManager autorisatie,
                             ILedenSync sync)
         {
-            _daos = daos;
             _autorisatieMgr = autorisatie;
             _sync = sync;
         }
@@ -124,7 +104,7 @@ namespace Chiro.Gap.Workers
                     break;
             }
 
-            if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID) || !_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
+            if (!_autorisatieMgr.IsGav(gp) || !_autorisatieMgr.IsGav(gwj))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
@@ -367,7 +347,10 @@ namespace Chiro.Gap.Workers
         /// groepswerkjaar <paramref name="gwj"/></returns>
         private static bool KanLeidingWorden(GelieerdePersoon gp, GroepsWerkJaar gwj)
         {
-            // private, want we doen hier geen check op GAV-schap.
+            if (gp.Persoon.GeboorteDatum == null)
+            {
+                return false;
+            }
 
             Debug.Assert(gp.GebDatumMetChiroLeefTijd != null, "gp.GebDatumMetChiroLeefTijd != null");
             return gwj.WerkJaar - gp.GebDatumMetChiroLeefTijd.Value.Year >= Settings.Default.MinLeidingLeefTijd;
@@ -396,7 +379,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public LidVoorstel InschrijvingVoorstellen(GelieerdePersoon gp, GroepsWerkJaar gwj, bool leidingIndienMogelijk)
         {
-            if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID) || !_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
+            if (!_autorisatieMgr.IsGav(gp) || !_autorisatieMgr.IsGav(gwj))
             {
                 throw new GeenGavException(Properties.Resources.GeenGav);
             }
@@ -411,6 +394,9 @@ namespace Chiro.Gap.Workers
             }
 
             var resultaat = new LidVoorstel();
+
+            // TODO: Bekijken of we 'AfdelingsJaarVoorstellen' niet kunnen hergebruiken.
+
             var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
             if (gwj.WerkJaar - geboortejaar < Properties.Settings.Default.MinLidLeefTijd)
@@ -489,80 +475,81 @@ namespace Chiro.Gap.Workers
         /// </exception>
         public Lid Wijzigen(Lid lid, LidVoorstel voorstellid)
         {
-            var gelieerdePersoon = lid.GelieerdePersoon;
-            var groepsWerkJaar = lid.GroepsWerkJaar;
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+//            var gelieerdePersoon = lid.GelieerdePersoon;
+//            var groepsWerkJaar = lid.GroepsWerkJaar;
 
-            if (!_autorisatieMgr.IsGavLid(lid.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
+//            if (!_autorisatieMgr.IsGavLid(lid.ID))
+//            {
+//                throw new GeenGavException(Resources.GeenGav);
+//            }
 
-            Lid nieuwLid;  // Deze declaratie moet buiten de TransactionScope staan,
-                           // anders compileert de solution niet met transactions enabled! (Zie #1336)
+//            Lid nieuwLid;  // Deze declaratie moet buiten de TransactionScope staan,
+//                           // anders compileert de solution niet met transactions enabled! (Zie #1336)
 
-#if KIPDORP
-            using (var tx = new TransactionScope())
-            {
-#endif
+//#if KIPDORP
+//            using (var tx = new TransactionScope())
+//            {
+//#endif
 
-            // Voor 't gemak eerst verwijderen, en dan terug aanmaken.
+//            // Voor 't gemak eerst verwijderen, en dan terug aanmaken.
 
-            // als type wisselt, dan functies deleten die het andere type niet mag hebben
-            if (lid is Kind && voorstellid.LeidingMaken)
-            {
-                foreach (var fn in lid.Functie)
-                {
-                    // TODO check whether it is a function which the new type does not have
-                    // {
-                    fn.TeVerwijderen = true;
+//            // als type wisselt, dan functies deleten die het andere type niet mag hebben
+//            if (lid is Kind && voorstellid.LeidingMaken)
+//            {
+//                foreach (var fn in lid.Functie)
+//                {
+//                    // TODO check whether it is a function which the new type does not have
+//                    // {
+//                    fn.TeVerwijderen = true;
 
-                    // }
-                    // TODO reassign functies to nieuw lid
-                }
-            }
+//                    // }
+//                    // TODO reassign functies to nieuw lid
+//                }
+//            }
 
-            if (lid is Kind)
-            {
-                var kind = lid as Kind;
-                kind.TeVerwijderen = true;
-                _daos.KindDao.Bewaren(kind, knd => knd.AfdelingsJaar, knd => knd.Functie);
-            }
-            else
-            {
-                var leiding = lid as Leiding;
-                Debug.Assert(leiding != null);
-                foreach (var aj in leiding.AfdelingsJaar)
-                {
-                    aj.TeVerwijderen = true;
-                }
+//            if (lid is Kind)
+//            {
+//                var kind = lid as Kind;
+//                kind.TeVerwijderen = true;
+//                _daos.KindDao.Bewaren(kind, knd => knd.AfdelingsJaar, knd => knd.Functie);
+//            }
+//            else
+//            {
+//                var leiding = lid as Leiding;
+//                Debug.Assert(leiding != null);
+//                foreach (var aj in leiding.AfdelingsJaar)
+//                {
+//                    aj.TeVerwijderen = true;
+//                }
 
-                leiding.TeVerwijderen = true;
-                _daos.LeidingDao.Bewaren(leiding, ld => ld.AfdelingsJaar, ld => ld.Functie);
-            }
+//                leiding.TeVerwijderen = true;
+//                _daos.LeidingDao.Bewaren(leiding, ld => ld.AfdelingsJaar, ld => ld.Functie);
+//            }
 
-            // Met heel dat 'TeVerwijderen'-gedoe, is het domein typisch
-            // niet meer consistent na iets te verwijderen.
-            gelieerdePersoon.Lid.Clear();
-            groepsWerkJaar.Lid.Clear();
-            foreach (var aj in groepsWerkJaar.AfdelingsJaar)
-            {
-                aj.TeVerwijderen = false;
-            }
+//            // Met heel dat 'TeVerwijderen'-gedoe, is het domein typisch
+//            // niet meer consistent na iets te verwijderen.
+//            gelieerdePersoon.Lid.Clear();
+//            groepsWerkJaar.Lid.Clear();
+//            foreach (var aj in groepsWerkJaar.AfdelingsJaar)
+//            {
+//                aj.TeVerwijderen = false;
+//            }
 
-            // Maak opnieuw lid
-            nieuwLid = NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstellid);
-            // de 'false' hierboven geeft aan dat het niet om een jaarovergang gaat.  Bij een jaarovergang worden
-            // dan ook geen bestaande leden gewijzigd, enkel nieuwe gemaakt.
+//            // Maak opnieuw lid
+//            nieuwLid = NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstellid);
+//            // de 'false' hierboven geeft aan dat het niet om een jaarovergang gaat.  Bij een jaarovergang worden
+//            // dan ook geen bestaande leden gewijzigd, enkel nieuwe gemaakt.
 
-            nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
-            nieuwLid = Bewaren(nieuwLid, LidExtras.Afdelingen | LidExtras.Persoon, true);
-            // bewaren gaat voor ons de sync oproepen
+//            nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
+//            nieuwLid = Bewaren(nieuwLid, LidExtras.Afdelingen | LidExtras.Persoon, true);
+//            // bewaren gaat voor ons de sync oproepen
 
-#if KIPDORP
-                tx.Complete();
-            }
-#endif
-            return nieuwLid;
+//#if KIPDORP
+//                tx.Complete();
+//            }
+//#endif
+//            return nieuwLid;
         }
 
         /// <summary>
@@ -657,281 +644,160 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Persisteert een lid met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.
         /// </summary>
-        /// <param name="lid">
-        /// Het <paramref name="lid"/> dat bewaard moet worden
-        /// </param>
-        /// <param name="extras">
-        /// De gekoppelde entiteiten
-        /// </param>
-        /// <param name="syncen">
-        /// Als <c>true</c>, dan wordt het lid gesynct met Kipadmin.
-        /// </param>
-        /// <returns>
-        /// Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld
-        /// </returns>
-        /// <remarks>
-        /// De parameter <paramref name="syncen"/> heeft als doel een sync te vermijden als een
-        /// irrelevante wijziging zoals 'lidgeld betaald' wordt bewaard.
-        /// </remarks>
-        public Lid Bewaren(Lid lid, LidExtras extras, bool syncen)
+        /// <param name="gelieerdePersoon">een gelieerde persoon</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.</returns>
+        public bool KanInschrijvenAlsKind(GelieerdePersoon gelieerdePersoon)
         {
-            if (!_autorisatieMgr.IsGavLid(lid.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            Lid bewaardLid;
-
-            if (lid is Kind)
-            {
-                try
-                {
-#if KIPDORP
-                    using (var tx = new TransactionScope())
-                    {
-#endif
-                    if (syncen)
-                    {
-                        if (lid.UitschrijfDatum == null)
-                        {
-                            // Actieve leden altijd syncen
-                            _sync.Bewaren(lid);
-                        }
-                        else if (lid.EindeInstapPeriode > DateTime.Now)
-                        {
-                            // Verwijderen tijdens probeerperiode mag natuurlijk nog wel
-                            _sync.Verwijderen(lid);
-                        }
-                    }
-
-                    bewaardLid = _daos.KindDao.Bewaren((Kind)lid, extras);
-#if KIPDORP
-                        tx.Complete();
-                    }
-#endif
-                }
-                catch (DubbeleEntiteitException<Kind>)
-                {
-                    throw new BestaatAlException<Kind>(lid as Kind);
-                }
-            }
-            else if (lid is Leiding)
-            {
-                try
-                {
-#if KIPDORP
-                    using (var tx = new TransactionScope())
-                    {
-#endif
-                    if (syncen)
-                    {
-                        if (lid.UitschrijfDatum == null)
-                        {
-                            // Actieve leden altijd syncen
-                            _sync.Bewaren(lid);
-                        }
-                        else if (lid.EindeInstapPeriode > DateTime.Now || lid.Niveau > Niveau.Groep)
-                        {
-                            // verwijderen uit Kipadmin enkel in een van deze gevallen:
-                            // * instapperiode is nog niet voorbij (voor gewone groepen)
-                            // * kaderleden.  Deze hebben namelijk geen instapperiode, en het lidgeld is onafhankelijk
-                            // van het aantal ingeschreven personen.
-                            _sync.Verwijderen(lid);
-                        }
-                    }
-
-                    bewaardLid = _daos.LeidingDao.Bewaren((Leiding)lid, extras);
-#if KIPDORP
-                        tx.Complete();
-                    }
-#endif
-                }
-                catch (Exception)
-                {
-                    throw new BestaatAlException<Leiding>(lid as Leiding);
-                }
-            }
-            else
-            {
-                throw new NotSupportedException(Resources.OngeldigLidType);
-            }
-
-            return bewaardLid;
+            return AfdelingsJaarVoorstellen(gelieerdePersoon) != null;
         }
 
         /// <summary>
-        /// Haalt leden op, op basis van de <paramref name="lidIDs"/>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// leiding kan worden. Dit hangt eigenlijk enkel van de leeftijd af.
         /// </summary>
-        /// <param name="lidIDs">
-        /// ID gevraagde leden
-        /// </param>
-        /// <param name="lidExtras">
-        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-        /// </param>
-        /// <returns>
-        /// Kinderen of leiding met gevraagde <paramref name="lidExtras"/>.
-        /// </returns>
-        /// <remarks>
-        /// ID's van leden waarvoor de user geen GAV is, worden genegeerd
-        /// </remarks>
-        public IEnumerable<Lid> Ophalen(IEnumerable<int> lidIDs, LidExtras lidExtras)
+        /// <param name="gelieerdePersoon">een gelieerde persoon</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// leiding kan worden.</returns>
+        public bool KanInschrijvenAlsLeiding(GelieerdePersoon gelieerdePersoon)
         {
-            var eigenLidIDs = _autorisatieMgr.IsSuperGav() ? lidIDs : _autorisatieMgr.EnkelMijnLeden(lidIDs);
-            return _daos.LedenDao.Ophalen(eigenLidIDs, lidExtras);
+            return KanLeidingWorden(gelieerdePersoon,
+                                    gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
+                                                    .FirstOrDefault());
         }
 
         /// <summary>
-        /// Haalt lid op, op basis van zijn <paramref name="lidID"/>
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn groep, dan
+        /// levert deze method het overeenkomstige lidobject op. In het andere geval <c>null</c>.
         /// </summary>
-        /// <param name="lidID">
-        /// ID gevraagde lid
-        /// </param>
-        /// <param name="extras">
-        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-        /// </param>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
         /// <returns>
-        /// Kind of Leiding met gevraagde <paramref name="extras"/>.
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn groep, dan
+        /// levert deze method het overeenkomstige lidobject op. In het andere geval <c>null</c>.
         /// </returns>
-        public Lid Ophalen(int lidID, LidExtras extras)
+        public Lid HuidigLidGet(GelieerdePersoon gelieerdePersoon)
         {
-            if (!_autorisatieMgr.IsGavLid(lidID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            return Ophalen(new[] { lidID }, extras).FirstOrDefault();
+            return
+                gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
+                                .First()
+                                .Lid.Where(ld => !ld.NonActief)
+                                .FirstOrDefault(ld => ld.GelieerdePersoon.ID == gelieerdePersoon.ID);
         }
 
         /// <summary>
-        /// Haalt lid en gekoppelde persoon op, op basis van <paramref name="lidID"/>
+        /// Zoekt een afdelingsjaar van het recentste groepswerkjaar, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> (kind)lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.
         /// </summary>
-        /// <param name="lidID">
-        /// ID op te halen lid
-        /// </param>
-        /// <returns>
-        /// Lid, met daaraan gekoppeld gelieerde persoon en persoon.
-        /// </returns>
-        public Lid Ophalen(int lidID)
+        /// <param name="gelieerdePersoon">gelieerde persoon waarvoor we een afdeling zoeken</param>
+        /// <returns>een afdelingsjaar van het recentste groepswerkjaar, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.</returns>
+        public AfdelingsJaar AfdelingsJaarVoorstellen(GelieerdePersoon gelieerdePersoon)
         {
-            return Ophalen(lidID, LidExtras.Geen);
+            return AfdelingsJaarVoorstellen(gelieerdePersoon,
+                                            gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
+                                                            .First());
+        }
+
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// kind of leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als kind
+        /// of leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </returns>
+        public bool IsActiefLid(GelieerdePersoon gelieerdePersoon)
+        {
+            return HuidigLidGet(gelieerdePersoon) != null;
         }
 
         /// <summary>
-        /// Haalt het lid op bepaald door <paramref name="gelieerdePersoonID"/> en
-        /// <paramref name="groepsWerkJaarID"/>, inclusief de relevante details om het lid naar Kipadmin te krijgen:
-        /// persoon, afdelingen, officiële afdelingen, functies, groepswerkjaar, groep
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// (kind)lid in het huidige werkjaar van zijn groep. Anders <c>false</c>.
         /// </summary>
-        /// <param name="gelieerdePersoonID">
-        /// ID van de gelieerde persoon waarvoor het lidobject gevraagd is.
-        /// </param>
-        /// <param name="groepsWerkJaarID">
-        /// ID van groepswerkjaar in hetwelke het lidobject gevraagd is
-        /// </param>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
         /// <returns>
-        /// Het lid bepaald door <paramref name="gelieerdePersoonID"/> en
-        /// <paramref name="groepsWerkJaarID"/>, inclusief de relevante details om het lid naar Kipadmin te krijgen
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// (kind)lid in het huidige werkjaar van zijn groep. Anders <c>false</c>.
         /// </returns>
-        public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
+        public bool IsActiefKind(GelieerdePersoon gelieerdePersoon)
         {
-            if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID) ||
-                !_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            var lid = _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID, groepsWerkJaarID);
-
-            if (lid != null)
-            {
-                // We weten dat lid.GroepsWerkJaar.Groep steeds gelijk is aan lid.GelieerdePersoon.Groep.
-                // Die laatste is echter niet opgehaald, maar het is erg gemakkelijk om die extra informatie
-                // hier mee te geven:
-
-                lid.GelieerdePersoon.Groep = lid.GroepsWerkJaar.Groep;
-            }
-
-            return lid;
+            var lid = HuidigLidGet(gelieerdePersoon);
+            return lid != null && lid is Kind;
         }
 
         /// <summary>
-        /// Haalt leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens,
-        /// voorkeursadressen, functies en afdelingen.  (Geen communicatiemiddelen)
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
         /// </summary>
-        /// <param name="gwjID">
-        /// ID van het gevraagde groepswerkjaar
-        /// </param>
-        /// <param name="ookInactief">
-        /// Geef hier <c>true</c> als ook de niet-actieve leden opgehaald
-        /// moeten worden.
-        /// </param>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
         /// <returns>
-        /// De lijst van leden
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
         /// </returns>
-        public IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID, bool ookInactief)
+        public bool IsActieveLeiding(GelieerdePersoon gelieerdePersoon)
         {
-            if (_autorisatieMgr.IsSuperGav() || _autorisatieMgr.IsGavGroepsWerkJaar(gwjID))
-            {
-                return _daos.LedenDao.OphalenUitGroepsWerkJaar(gwjID, ookInactief);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
+            var lid = HuidigLidGet(gelieerdePersoon);
+            return lid != null && lid is Leiding;
         }
 
         /// <summary>
-        /// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>.
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn
+        /// groep, wordt het lidID opgeleverd, zo niet <c>null</c>.
         /// </summary>
-        /// <param name="filter">
-        /// De niet-nulle properties van de filter
-        /// bepalen waarop gezocht moet worden
-        /// </param>
-        /// <param name="extras">
-        /// Bepaalt de mee op te halen gekoppelde entiteiten. 
-        /// (Adressen ophalen vertraagt aanzienlijk.)
-        /// </param>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
         /// <returns>
-        /// Lijst met info over gevonden leden
+        /// Het lidID als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar
+        /// van zijn groep, anders <c>null</c>.
         /// </returns>
-        /// <remarks>
-        /// Er worden enkel actieve leden opgehaald
-        /// </remarks>
-        public IEnumerable<Lid> Zoeken(LidFilter filter, LidExtras extras)
+        public int? LidIDGet(GelieerdePersoon gelieerdePersoon)
         {
-            // Hieronder een hele hoop voorwaarden voor de GeenGavException.
-            // Ik denk dat het duidelijker zou zijn moest deze if geinverteerd worden,
-            // en dat er dus zou staan wanneer er wél gezocht mag worden.
-            if (!_autorisatieMgr.IsSuperGav() &&
-                (filter.GroepID != null && !_autorisatieMgr.IsGavGroep(filter.GroepID.Value) ||
-                 filter.GroepsWerkJaarID != null && !_autorisatieMgr.IsGavGroepsWerkJaar(filter.GroepsWerkJaarID.Value) ||
-                 filter.AfdelingID != null && !_autorisatieMgr.IsGavAfdeling(filter.AfdelingID.Value) ||
-                 filter.FunctieID != null && !_autorisatieMgr.IsGavFunctie(filter.FunctieID.Value)))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            var kinderen = _daos.KindDao.Zoeken(filter, extras);
-            IEnumerable<Lid> leiding = _daos.LeidingDao.Zoeken(filter, extras);
-
-            // Sorteren doen we hier niet; dat is presentatie :)
-            // Voeg kinderen en leiding samen, en haal de inactieve er uit
-            var alles = kinderen.Union(leiding);
-            return alles.Where(ld => ld.NonActief == false).ToArray();
+            var lid = HuidigLidGet(gelieerdePersoon);
+            return lid == null ? null : (int?)lid.ID;
         }
 
         /// <summary>
-        /// Haalt alle leden op uit groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/> en gegeven
-        /// <paramref name="nationaleFunctie"/>, met daaraan gekoppeld de gelieerde personen.
+        /// Zoekt een afdelingsjaar van gegeven <paramref name="groepsWerkJaar"/>, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> (kind)lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.
         /// </summary>
-        /// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
-        /// <param name="nationaleFunctie">een nationale functie</param>
-        /// <returns>alle leden op uit groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/> en gegeven
-        /// <paramref name="nationaleFunctie"/>, met daaraan gekoppeld de gelieerde personen.</returns>
-        public List<Lid> Ophalen(int groepsWerkJaarID, NationaleFunctie nationaleFunctie)
+        /// <param name="gelieerdePersoon">gelieerde persoon waarvoor we een afdeling zoeken</param>
+        /// <param name="groepsWerkJaar">groepswerkjaar waarin we zoeken naar een afdeling</param>
+        /// <returns>een afdelingsjaar van het recentste groepswerkjaar, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.</returns>
+        private AfdelingsJaar AfdelingsJaarVoorstellen(GelieerdePersoon gelieerdePersoon, GroepsWerkJaar groepsWerkJaar)
         {
-            return _daos.LedenDao.OphalenUitFunctie((int) nationaleFunctie, groepsWerkJaarID, ld => ld.GelieerdePersoon);
+            if (gelieerdePersoon.Persoon.GeboorteDatum == null)
+            {
+                return null;
+            }
+
+            var geboortejaar = gelieerdePersoon.GebDatumMetChiroLeefTijd.Value.Year;
+
+            if (groepsWerkJaar.WerkJaar - geboortejaar < Settings.Default.MinLidLeefTijd)
+            {
+                throw new FoutNummerException(FoutNummer.LidTeJong, Resources.MinimumLeeftijd);
+            }
+
+            // Bestaat er een afdeling waar de gelieerde persoon als kind in zou passen?
+            // (Als er meerdere mogelijkheden zijn zullen we gewoon de eerste kiezen, maar we sorteren op
+            // overenkomst geslacht)
+
+            var mogelijkeAfdelingsJaren =
+                groepsWerkJaar.AfdelingsJaar.Where(a => a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal &&
+                                             geboortejaar <= a.GeboorteJaarTot &&
+                                             a.GeboorteJaarVan <= geboortejaar).OrderByDescending(
+                                                 a => (gelieerdePersoon.Persoon.Geslacht & a.Geslacht)).ToArray();
+
+            return mogelijkeAfdelingsJaren.FirstOrDefault();
         }
     }
 }

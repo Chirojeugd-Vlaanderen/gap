@@ -3,409 +3,380 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.ServiceModel;
-
 using AutoMapper;
-
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Services.Properties;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
-using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Services
 {
     /// <summary>
-    /// TODO (#190): documenteren
+    /// Service methods m.b.t. uitstappen
     /// </summary>
-    public class UitstappenService : IUitstappenService
+    public class UitstappenService : IUitstappenService, IDisposable
     {
-        private readonly UitstappenManager _uitstappenMgr;
-        private readonly IGroepsWerkJaarManager _groepsWerkJaarMgr;
-        private readonly PlaatsenManager _plaatsenMgr;
-        private readonly AdressenManager _adressenMgr;
-        private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
-        private readonly DeelnemersManager _deelnemersMgr;
+        // Repositories, verantwoordelijk voor data access
+        private readonly IRepository<GroepsWerkJaar> _groepsWerkJaarRepo;
+        private readonly IRepository<Groep> _groepenRepo;
+        private readonly IRepository<Adres> _adressenRepo;
+        private readonly IRepository<Uitstap> _uitstappenRepo;
+        private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
+        private readonly IRepository<Deelnemer> _deelnemersRepo;
+
+        // Managers voor niet-triviale businesslogica
+
+        private readonly IAutorisatieManager _autorisatieMgr;
+        private readonly IUitstappenManager _uitstappenMgr;
+        private readonly IAdressenManager _adressenMgr;
+
+                private readonly GavChecker _gav;
 
         /// <summary>
-        /// Constructor.  De managers moeten m.b.v. dependency injection gecreeerd worden.
+        /// Constructor, verantwoordelijk voor dependency injection
         /// </summary>
-        /// <param name="uMgr">De worker voor Uitstappen</param>
-        /// <param name="gwjMgr">De worker voor Groepswerkjaren</param>
-        /// <param name="plMgr">De worker voor Plaatsen</param>
-        /// <param name="adMgr">De worker voor Adressen</param>
-        /// <param name="gpMgr">De worker voor GelieerdePersonen</param>
-        /// <param name="dMgr">De worker voor Deelnemers</param>
-        public UitstappenService(
-            UitstappenManager uMgr,
-            IGroepsWerkJaarManager gwjMgr,
-            PlaatsenManager plMgr,
-            AdressenManager adMgr,
-            IGelieerdePersonenManager gpMgr,
-            DeelnemersManager dMgr)
+        /// <param name="repositoryProvider">De repositoryprovider zal de nodige repositories opleveren</param>
+        /// <param name="autorisatieManager">Businesslogica m.b.t. autorisatie</param>
+        /// <param name="uitstappenManager">Businesslogica m.b.t. uitstappen</param>
+        /// <param name="adressenManager">Businesslogica m.b.t. adressen</param>
+        public UitstappenService(IRepositoryProvider repositoryProvider,
+                                 IAutorisatieManager autorisatieManager,
+                                 IUitstappenManager uitstappenManager,
+                                 IAdressenManager adressenManager)
         {
-            _uitstappenMgr = uMgr;
-            _groepsWerkJaarMgr = gwjMgr;
-            _plaatsenMgr = plMgr;
-            _adressenMgr = adMgr;
-            _gelieerdePersonenMgr = gpMgr;
-            _deelnemersMgr = dMgr;
+            _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
+            _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
+            _adressenRepo = repositoryProvider.RepositoryGet<Adres>();
+            _uitstappenRepo = repositoryProvider.RepositoryGet<Uitstap>();
+            _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
+            _deelnemersRepo = repositoryProvider.RepositoryGet<Deelnemer>();
+
+            _autorisatieMgr = autorisatieManager;
+            _uitstappenMgr = uitstappenManager;
+            _adressenMgr = adressenManager;
+
+            _gav = new GavChecker(_autorisatieMgr);
         }
 
+        public GavChecker Gav
+        {
+            get { return _gav; }
+        }
+
+        #region Disposable etc
+
+        private bool disposed = false;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    _groepsWerkJaarRepo.Dispose();
+
+                }
+                disposed = true;
+            }
+        }
+
+        ~UitstappenService()
+        {
+            Dispose(false);
+        }
+
+        #endregion
+
         /// <summary>
-        /// Bewaart een uitstap aan voor de groep met gegeven <paramref name="groepID"/>
+        /// Bewaart een uitstap voor de groep met gegeven <paramref name="groepId"/>
         /// </summary>
-        /// <param name="groepID">ID van de groep horende bij de uitstap.
+        /// <param name="groepId">ID van de groep horende bij de uitstap.
         ///  Is eigenlijk enkel relevant als het om een nieuwe uitstap gaat.</param>
         /// <param name="info">Details over de uitstap.  Als <c>uitstap.ID</c> <c>0</c> is,
         ///  dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
         /// <returns>ID van de uitstap</returns>
-        public int Bewaren(int groepID, UitstapInfo info)
+        public int Bewaren(int groepId, UitstapInfo info)
         {
-            // Als de uitstap een ID heeft, moet een bestaande uitstap worden opgehaald.
+            // Als de uitstap een ID heeft, moet een bestaande uitstap opgehaald worden.
             // Anders maken we een nieuwe.
 
             Uitstap uitstap;
 
+            var groepsWerkJaar = _groepsWerkJaarRepo.Select()
+                                                    .Where(gwj => gwj.Groep.ID == groepId)
+                                                    .OrderByDescending(gwj => gwj.WerkJaar)
+                                                    .First();
+
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar.Groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
             if (info.ID == 0)
             {
-                var gwj = _groepsWerkJaarMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Groep);
+                // Nieuwe uitstap
                 uitstap = Mapper.Map<UitstapInfo, Uitstap>(info);
-                _uitstappenMgr.Koppelen(uitstap, gwj);
+                uitstap.GroepsWerkJaar = groepsWerkJaar;
             }
             else
             {
-                // haal origineel op, gekoppeld aan groepswerkjaar
-                // (en ook aan groep, want die is nodig voor sync met kipadmin)
-                uitstap = _uitstappenMgr.Ophalen(info.ID, UitstapExtras.Groep);
+                // Haal origineel op, gekoppeld aan groepswerkjaar
+                uitstap = (from u in groepsWerkJaar.Uitstap
+                           where u.ID == info.ID
+                           select u).First();
+
                 // overschrijf met gegevens uit 'info'
                 Mapper.Map(info, uitstap);
             }
 
-            try
-            {
-                return _uitstappenMgr.Bewaren(uitstap, UitstapExtras.GroepsWerkJaar, true).ID;
-            }
-            // Afhandelen van verwachte exceptions
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-
-                throw;
-                // Enkel pro forma, want FoutAfhandelen throwt normaal gesproken
-                // een fault.
-            }
-            catch (FoutNummerException ex)
-            {
-                if (ex.FoutNummer == FoutNummer.GroepsWerkJaarNietBeschikbaar)
-                {
-                    FoutAfhandelaar.FoutAfhandelen(ex);
-                }
-
-                // Onverwachte exceptions gewoon terug throwen, zodat we ze tegenkomen
-                // bij het debuggen.
-
-                throw;
-            }
+            _groepsWerkJaarRepo.SaveChanges();
+            return uitstap.ID;
         }
 
         /// <summary>
         /// Haalt alle uitstappen van een gegeven groep op.
         /// </summary>
-        /// <param name="groepID">ID van de groep</param>
+        /// <param name="groepId">ID van de groep</param>
         /// <param name="inschrijvenMogelijk">Als deze <c>true</c> is, worden enkel de uitstappen opgehaald
-        /// waarvoor je nog kunt inschrijven.  In praktijk zijn dit de uitstappen van het huidige werkJaar.
+        /// waarvoor je nog kunt inschrijven.  In praktijk zijn dit de uitstappen van het huidige werkjaar.
         /// </param>
         /// <returns>Details van uitstappen</returns>
         /// <remarks>We laten toe om inschrijvingen te doen voor uitstappen uit het verleden, om als dat
         /// nodig is achteraf fouten in de administratie recht te zetten.</remarks>
-        public IEnumerable<UitstapInfo> OphalenVanGroep(int groepID, bool inschrijvenMogelijk)
+        public IEnumerable<UitstapInfo> OphalenVanGroep(int groepId, bool inschrijvenMogelijk)
         {
-            try
+            IEnumerable<Uitstap> resultaat;
+
+            var groep = (from g in _groepenRepo.Select()
+                         where g.ID == groepId
+                         select g).FirstOrDefault();
+
+            if (!_autorisatieMgr.IsGav(groep))
             {
-                return Mapper.Map<IEnumerable<Uitstap>, IEnumerable<UitstapInfo>>(_uitstappenMgr.OphalenVanGroep(groepID, inschrijvenMogelijk));
+                throw FaultExceptionHelper.GeenGav();
             }
-            catch (GeenGavException ex)
+
+
+            if (inschrijvenMogelijk)
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
+                // Enkel uitstappen van recentste groepswerkjaar
+                var groepsWerkJaar = _groepsWerkJaarRepo.Select()
+                                                        .Where(gwj => gwj.Groep.ID == groepId)
+                                                        .OrderByDescending(gwj => gwj.WerkJaar)
+                                                        .First();
+
+                resultaat = groepsWerkJaar.Uitstap.ToArray();
             }
+            else
+            {
+                // Alle uitstappen ophalen
+                resultaat = _uitstappenRepo.Select().Where(u => u.GroepsWerkJaar.Groep.ID == groepId).ToList();
+            }
+
+            return Mapper.Map<IEnumerable<Uitstap>, IEnumerable<UitstapInfo>>(resultaat);
         }
 
         /// <summary>
-        /// Haalt details over uitstap met gegeven <paramref name="uitstapID"/> op.
+        /// Haalt details over uitstap met gegeven <paramref name="uitstapId"/> op.
         /// </summary>
-        /// <param name="uitstapID">ID van de uitstap</param>
+        /// <param name="uitstapId">ID van de uitstap</param>
         /// <returns>Details over de uitstap</returns>
-        public UitstapOverzicht DetailsOphalen(int uitstapID)
+        public UitstapOverzicht DetailsOphalen(int uitstapId)
         {
-            try
-            {
-                var uitstap = _uitstappenMgr.Ophalen(uitstapID, UitstapExtras.GroepsWerkJaar | UitstapExtras.Plaats);
-                var uitstapDetail = Mapper.Map<Uitstap, UitstapOverzicht>(uitstap);
-                return uitstapDetail;
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
+            var uitstap = _uitstappenRepo.ByID(uitstapId);
+            Gav.Check(uitstap);
+            return Mapper.Map<Uitstap, UitstapOverzicht>(uitstap);
         }
 
         /// <summary>
-        /// Updatet de plaats voor de uitstap met gegeven <paramref name="uitstapID"/>
+        /// Bewaart de plaats voor een uitstap
         /// </summary>
-        /// <param name="uitstapID">ID van uitstap waarvan plaats geüpdatet moet worden</param>
+        /// <param name="uitstapId">ID van de uitstap</param>
         /// <param name="plaatsNaam">Naam van de plaats</param>
         /// <param name="adresInfo">Adres van de plaats</param>
-        public void PlaatsBewaren(int uitstapID, string plaatsNaam, AdresInfo adresInfo)
+        public void PlaatsBewaren(int uitstapId, string plaatsNaam, AdresInfo adresInfo)
         {
-            Uitstap uitstap;
-            Plaats plaats;
-            Adres adres;
+            var uitstap = _uitstappenRepo.ByID(uitstapId);
+            Gav.Check(uitstap);
 
-            try
-            {
-                uitstap = _uitstappenMgr.Ophalen(uitstapID, UitstapExtras.Groep | UitstapExtras.Plaats);
-                if (uitstap == null)
-                {
-                    // Als er geen uitstap is gevonden, dan is de gebruiker waarschijnlijk iets
-                    // aan het doen dat niet mag.  Bij deze een algemene exception.
-                    throw new GeenGavException();
-                }
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
+            uitstap.Plaats.Naam = plaatsNaam;
+            uitstap.Plaats.Adres = _adressenMgr.ZoekenOfMaken(adresInfo, _adressenRepo.Select());
 
-            Debug.Assert(uitstap != null);
-
-            try
-            {
-                adres = _adressenMgr.ZoekenOfMaken(adresInfo);
-            }
-            catch (OngeldigObjectException ex)
-            {
-                // Verkeerde straatnaam of zo
-                var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-                throw new FaultException<OngeldigObjectFault>(fault);
-            }
-
-            try
-            {
-                plaats = _plaatsenMgr.ZoekenOfMaken(uitstap.GroepsWerkJaar.Groep.ID, plaatsNaam, adres.ID);
-            }
-            catch (OngeldigObjectException ex)
-            {
-                // Verkeerde straatnaam of zo      
-                // OPM van Bart: hier kan geen fout optreden ivm straatnaam, maar zijn er andere mogelijkheden?
-                var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-                throw new FaultException<OngeldigObjectFault>(fault);
-            }
-
-            Debug.Assert(plaats != null);
-
-            try
-            {
-                uitstap = _uitstappenMgr.Koppelen(uitstap, plaats);
-            }
-            catch (BlokkerendeObjectenException<Plaats> ex)
-            {
-                // Was al gekoppeld
-
-                var fault = Mapper.Map<BlokkerendeObjectenException<Plaats>, BlokkerendeObjectenFault<PlaatsInfo>>(ex);
-                throw new FaultException<BlokkerendeObjectenFault<PlaatsInfo>>(fault);
-            }
-
-            _uitstappenMgr.Bewaren(uitstap, UitstapExtras.Plaats, true);
+            _uitstappenRepo.SaveChanges();
         }
 
         /// <summary>
         /// Schrijft de gelieerde personen met ID's <paramref name="gelieerdePersoonIDs"/> in voor de
-        /// uitstap met ID <paramref name="geselecteerdeUitstapID" />.  Als
+        /// uitstap met ID <paramref name="geselecteerdeUitstapId" />.  Als
         /// <paramref name="logistiekDeelnemer" /> <c>true</c> is, wordt er ingeschreven als
         /// logistiek deelnemer.
         /// </summary>
         /// <param name="gelieerdePersoonIDs">ID's van in te schrijven gelieerde personen</param>
-        /// <param name="geselecteerdeUitstapID">ID van uitstap waarvoor in te schrijven</param>
+        /// <param name="geselecteerdeUitstapId">ID van uitstap waarvoor in te schrijven</param>
         /// <param name="logistiekDeelnemer">Bepaalt of al dan niet ingeschreven wordt als 
         /// logistieker</param>
-        /// <returns>Het uitstap-object met de bijgewerkte deelnemerslijst</returns>
-        public UitstapInfo Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapID, bool logistiekDeelnemer)
+        /// <returns>De basisgegevens van de uitstap, zodat die in de feedback gebruikt kan worden</returns>
+        public UitstapInfo Inschrijven(IList<int> gelieerdePersoonIDs, int geselecteerdeUitstapId,
+                                       bool logistiekDeelnemer)
         {
-            IEnumerable<GelieerdePersoon> gelieerdePersonen;
-            Uitstap uitstap;
+            var uitstap = _uitstappenRepo.ByID(geselecteerdeUitstapId);
+            Gav.Check(uitstap);
 
-            // Ik haal de personen op, samen met de uitstappen waarvoor ze ooit waren ingeschreven.
-            // Dat is overkill, maar op die manier kunnen de workers wel controleren wie er al wel/nog niet
-            // ingeschreven is voor de gevraagde uitstap. (-> proper :))
+            var alleGpIDs = gelieerdePersoonIDs.Distinct().ToList();
+            var mijnGpIDs = _autorisatieMgr.EnkelMijnGelieerdePersonen(alleGpIDs);
 
-            try
+            if (alleGpIDs.Count() != mijnGpIDs.Count())
             {
-                gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Uitstappen | PersoonsExtras.Groep);
-            }
-            catch (GeenGavException ex)
-            {
-                var fault = Mapper.Map<GeenGavException, GapFault>(ex);
-                throw new FaultException<GapFault>(fault);
+                throw FaultExceptionHelper.GeenGav();
             }
 
-            try
-            {
-                // Als de uitstap al gekoppeld was aan een gelieerde persoon, dan hebben we die al opgehaald.  Zo niet
-                // halen we de uitstap op via de uitstappenMgr.
+            var gelieerdePersonen = _gelieerdePersonenRepo.Select().Where(gp => gelieerdePersoonIDs.Contains(gp.ID)).ToList();
 
-                uitstap = gelieerdePersonen.SelectMany(gp => gp.Deelnemer)
-                                           .Select(d => d.Uitstap)
-                                           .Where(u => u.ID == geselecteerdeUitstapID)
-                                           .FirstOrDefault() ?? _uitstappenMgr.Ophalen(geselecteerdeUitstapID, UitstapExtras.Groep);
-            }
-            catch (GeenGavException ex)
-            {
-                var fault = Mapper.Map<GeenGavException, GapFault>(ex);
-                throw new FaultException<GapFault>(fault);
-            }
+            var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct().ToList();
 
-            try
-            {
-                _uitstappenMgr.Inschrijven(uitstap, gelieerdePersonen, logistiekDeelnemer);
-            }
-            catch (FoutNummerException ex)
-            {
-                if (ex.FoutNummer == FoutNummer.UitstapNietVanGroep || ex.FoutNummer == FoutNummer.GroepsWerkJaarNietBeschikbaar)
-                {
-                    var fault = Mapper.Map<FoutNummerException, FoutNummerFault>(ex);
-                    throw new FaultException<FoutNummerFault>(fault);
-                }
+            Debug.Assert(groepen.Any()); // De gelieerde personen moeten aan een groep gekoppeld zijn.
+            Debug.Assert(uitstap.GroepsWerkJaar != null);
+            Debug.Assert(uitstap.GroepsWerkJaar.Groep != null);
 
-                // Als het foutnummer iets anders is, dan is er iets
-                // onverwachts gebeurd.  Gewoon throwen.
-                throw;
+            // Als er meer dan 1 groep is, dan is er minstens een groep verschillend van de groep
+            // van de uitstap (duivenkotenprincipe));););
+            if (groepen.Count() > 1 || groepen.First().ID != uitstap.GroepsWerkJaar.Groep.ID)
+            {
+                throw new FoutNummerException(
+                    FoutNummer.UitstapNietVanGroep,
+                    Resources.FoutieveGroepUitstap);
             }
 
-            _uitstappenMgr.Bewaren(uitstap, UitstapExtras.Deelnemers, false);
+            // Koppel enkel de gelieerde personen die nog niet aan de uitstap gekoppeld zijn
+            foreach (var gp in gelieerdePersonen.Where(gp => gp.Deelnemer.All(d => d.Uitstap.ID != uitstap.ID)))
+            {
+                var deelnemer = new Deelnemer
+                    {
+                        GelieerdePersoon = gp,
+                        Uitstap = uitstap,
+                        HeeftBetaald = false,
+                        IsLogistieker = logistiekDeelnemer,
+                        MedischeFicheOk = false
+                    };
 
+                // Moet dat nu nog alle twee gebeuren?
+                gp.Deelnemer.Add(deelnemer);
+                uitstap.Deelnemer.Add(deelnemer);
+            }
+
+            _gelieerdePersonenRepo.SaveChanges();
             return Mapper.Map<Uitstap, UitstapInfo>(uitstap);
         }
 
         /// <summary>
-        /// Haalt informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/> op.
+        /// Haalt informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapId"/> op.
         /// </summary>
-        /// <param name="uitstapID">ID van de relevante uitstap</param>
-        /// <returns>Informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapID"/></returns>
-        public IEnumerable<DeelnemerDetail> DeelnemersOphalen(int uitstapID)
+        /// <param name="uitstapId">ID van de relevante uitstap</param>
+        /// <returns>Informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapId"/></returns>
+        public IEnumerable<DeelnemerDetail> DeelnemersOphalen(int uitstapId)
         {
-            IEnumerable<Deelnemer> deelnemers;
-            try
-            {
-                deelnemers = _uitstappenMgr.DeelnemersOphalen(uitstapID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
+            var uitstap = _uitstappenRepo.ByID(uitstapId);
+            Gav.Check(uitstap);
 
-            var resultaat = Mapper.Map<IEnumerable<Deelnemer>, IEnumerable<DeelnemerDetail>>(deelnemers);
-
-            return resultaat;
+            return Mapper.Map<IEnumerable<Deelnemer>, IEnumerable<DeelnemerDetail>>(uitstap.Deelnemer);
         }
 
         /// <summary>
-        /// Verwijdert een uitstap
+        /// Verwijdert een uitstap met als ID <paramref name="uitstapId"/>
         /// </summary>
-        /// <param name="uitstapID">ID van de uitstap die verwijderd moet worden</param>
-        public void UitstapVerwijderen(int uitstapID)
+        /// <param name="uitstapId">ID van de te verwijderen uitstap</param>
+        /// <returns>Verwijderd de uitstap en toont daarna het overzicht scherm</returns>
+        public void UitstapVerwijderen(int uitstapId)
         {
-            try
+            var uitstap = _uitstappenRepo.ByID(uitstapId);
+            Gav.Check(uitstap);
+
+            if (uitstap != null)
             {
-                _uitstappenMgr.UitstapVerwijderen(uitstapID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
+                _uitstappenRepo.Delete(uitstap);
+                _uitstappenRepo.SaveChanges();
             }
         }
 
         /// <summary>
-        /// Stelt de deelnemer met gegeven <paramref name="deelnemerID" /> in als contactpersoon voor de uitstap
+        /// Stelt de deelnemer met gegeven <paramref name="deelnemerId" /> in als contactpersoon voor de uitstap
         /// waaraan hij deelneemt
         /// </summary>
-        /// <param name="deelnemerID">ID van de als contact in te stellen deelnemer</param>
+        /// <param name="deelnemerId">ID van de als contact in te stellen deelnemer</param>
         /// <returns>De ID van de uitstap, ter controle, en misschien handig voor feedback</returns>
-        public int ContactInstellen(int deelnemerID)
+        public int ContactInstellen(int deelnemerId)
         {
-            Deelnemer deelnemer;
-            try
-            {
-                deelnemer = _deelnemersMgr.Ophalen(deelnemerID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
+            var deelnemer = _deelnemersRepo.ByID(deelnemerId);
+            Gav.Check(deelnemer);
 
-            _deelnemersMgr.InstellenAlsContact(deelnemer);
+            Debug.Assert(deelnemer.Uitstap != null);
 
-            _uitstappenMgr.Bewaren(deelnemer.Uitstap, UitstapExtras.Contact, true);
+            if (deelnemer.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() == null)
+            {
+                // Een deelnemer kan alleen contact zijn voor zijn eigen uitstap.  Is de deelnemer
+                // al contact voor een uitstap, dan volgt daaruit dat hij al contact is voor zijn
+                // eigen uitstap.
+                var vorigeVerantwoordelijke = deelnemer.Uitstap.ContactDeelnemer;
+
+                if (vorigeVerantwoordelijke != null)
+                {
+                    vorigeVerantwoordelijke.UitstapWaarvoorVerantwoordelijk = null;
+                }
+
+                deelnemer.Uitstap.ContactDeelnemer = deelnemer;
+                deelnemer.UitstapWaarvoorVerantwoordelijk.Add(deelnemer.Uitstap);
+            }
 
             return deelnemer.Uitstap.ID;
         }
 
         /// <summary>
-        /// Schrijft de deelnemer met gegeven <paramref name="deelnemerID"/> uit voor zijn uitstap.
+        /// Schrijft de deelnemer met gegeven <paramref name="deelnemerId"/> uit voor zijn uitstap.
         /// </summary>
-        /// <param name="deelnemerID">ID uit te schrijven deelnemer</param>
+        /// <param name="deelnemerId">ID uit te schrijven deelnemer</param>
         /// <returns>ID van de uitstap, ter controle, en handig voor feedback</returns>
-        public int Uitschrijven(int deelnemerID)
+        public int Uitschrijven(int deelnemerId)
         {
-            Deelnemer deelnemer;
-            try
+            var deelnemer = _deelnemersRepo.ByID(deelnemerId);
+            Gav.Check(deelnemer);
+            var uitstap= deelnemer.Uitstap;
+
+            // Als die deelnemer contactpersoon is, moet eerst de contactpersoon van de uitstap verwijderd worden.
+            if (Equals(uitstap.ContactDeelnemer, deelnemer))
             {
-                deelnemer = _deelnemersMgr.Ophalen(deelnemerID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
+                uitstap.ContactDeelnemer = null;
             }
 
-            _deelnemersMgr.Verwijderen(deelnemer);
+            uitstap.Deelnemer.Remove(deelnemer);
+            _deelnemersRepo.SaveChanges();
 
-            return deelnemer.Uitstap.ID;
+            return uitstap.ID;
         }
 
         /// <summary>
-        /// Haalt informatie over de deelnemer met ID <paramref name="deelnemerID"/> op.
+        /// Haalt informatie over de deelnemer met ID <paramref name="deelnemerId"/> op.
         /// </summary>
-        /// <param name="deelnemerID">ID van de relevante deelnemer</param>
-        /// <returns>Informatie over de deelnemer met ID <paramref name="deelnemerID"/></returns>
-        public DeelnemerDetail DeelnemerOphalen(int deelnemerID)
+        /// <param name="deelnemerId">ID van de relevante deelnemer</param>
+        /// <returns>Informatie over de deelnemer met ID <paramref name="deelnemerId"/></returns>
+        public DeelnemerDetail DeelnemerOphalen(int deelnemerId)
         {
-            Deelnemer d;
-            try
-            {
-                d = _deelnemersMgr.Ophalen(deelnemerID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
-
-            var resultaat = Mapper.Map<Deelnemer, DeelnemerDetail>(d);
-
-            return resultaat;
+            var resultaat = _deelnemersRepo.Select().FirstOrDefault(dln => dln.ID == deelnemerId);
+            return Mapper.Map<Deelnemer, DeelnemerDetail>(resultaat);
         }
 
         /// <summary>
@@ -414,48 +385,73 @@ namespace Chiro.Gap.Services
         /// <param name="info">Info nodig voor de update</param>
         public void DeelnemerBewaren(DeelnemerInfo info)
         {
-            Deelnemer d;
-            try
-            {
-                d = _deelnemersMgr.Ophalen(info.DeelnemerID);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
-            }
+            var deelnemer = _deelnemersRepo.ByID(info.DeelnemerID);
+            Gav.Check(deelnemer);
 
-            d.IsLogistieker = info.IsLogistieker;
-            d.HeeftBetaald = info.HeeftBetaald;
-            d.MedischeFicheOk = info.MedischeFicheOk;
-            d.Opmerkingen = info.Opmerkingen;
+            // Oorspronkelijke deelnemer ophalen
+            deelnemer = _deelnemersRepo.Select().First(dln => dln.ID == info.DeelnemerID);
 
-            _deelnemersMgr.Bewaren(d);
+            // Nieuwe waarden invullen en opslaan
+            Mapper.Map(info, deelnemer);
+            _deelnemersRepo.SaveChanges();
         }
 
         /// <summary>
-        /// Haalt informatie over de bivakaangifte op van de groep <paramref name="groepID"/> voor diens recentste 
+        /// Haalt informatie over de bivakaangifte op van de groep <paramref name="groepId"/> voor diens recentste 
         /// werkJaar.
         /// </summary>
-        /// <param name="groepID">
+        /// <param name="groepId">
         /// De groep waarvan info wordt gevraagd
         /// </param>
         /// <returns>
-        /// Een lijstje met opmerkingen over wat er nog moet gebeuren voor de groep in orde is met de
-        /// administratie voor de bivakaangifte
+        /// Een lijstje met de geregistreerde bivakken en feedback over wat er op dit moment moet gebeuren 
+        /// voor de bivakaangifte
         /// </returns>
-        public BivakAangifteLijstInfo BivakStatusOphalen(int groepID)
+        public BivakAangifteLijstInfo BivakStatusOphalen(int groepId)
         {
-            var gwj = _groepsWerkJaarMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Groep);
-            try
+            var resultaat = new BivakAangifteLijstInfo();
+
+            var gwjQuery = _groepsWerkJaarRepo.Select();
+
+            var groepsWerkJaar =
+                gwjQuery.Where(gwj => gwj.Groep.ID == groepId).OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
+
+            if (groepsWerkJaar == null || !_autorisatieMgr.IsGav(groepsWerkJaar))
             {
-                return _uitstappenMgr.BivakStatusOphalen(groepID, gwj);
+                throw FaultExceptionHelper.GeenGav();
             }
-            catch (GeenGavException ex)
+
+            if (!_uitstappenMgr.BivakAangifteVanBelang(groepsWerkJaar))
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                throw;
+                resultaat.AlgemeneStatus = BivakAangifteStatus.NogNietVanBelang;
             }
+            else
+            {
+                resultaat.Bivakinfos = (from u in groepsWerkJaar.Uitstap
+                                        where u.IsBivak
+                                        select
+                                            new BivakAangifteInfo
+                                                {
+                                                    ID = u.ID,
+                                                    Omschrijving = u.Naam,
+                                                    Status = _uitstappenMgr.StatusBepalen(u)
+                                                }).ToList();
+
+                if (resultaat.Bivakinfos.FirstOrDefault() == null)
+                {
+                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ontbrekend;
+                }
+                else if (resultaat.Bivakinfos.Any(bi => bi.Status != BivakAangifteStatus.Ok))
+                {
+                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ontbrekend;
+                }
+                else
+                {
+                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ok;
+                }
+            }
+
+            return resultaat;
         }
     }
 }

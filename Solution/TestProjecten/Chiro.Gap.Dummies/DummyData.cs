@@ -2,7 +2,7 @@
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 
@@ -124,37 +124,38 @@ namespace Chiro.Gap.Dummies
 		/// wordt door vorige tests die met de IOC-container hebben 'gemoost'.</remarks>
 		public DummyData()
 		{
-            // Oeps: Onderstaande leest de IOC-configuratie uit de configuratiefile van het
-            // testproject. Dat is een probleem als dat testproject geconfigureerd is om met
-            // de echte database te werken (bijv. Chiro.Gap.Services.Test)
-            // TODO: IOC-container in code configureren om dummy-dao's te gebruiken.
-			Factory.ContainerInit();
+		    // Oeps: Onderstaande leest de IOC-configuratie uit de configuratiefile van het
+		    // testproject. Dat is een probleem als dat testproject geconfigureerd is om met
+		    // de echte database te werken (bijv. Chiro.Gap.Services.Test)
+		    // TODO: IOC-container in code configureren om dummy-dao's te gebruiken.
+		    Factory.ContainerInit();
 
-            // TODO: is het niet beter om de workers over te slaan bij het maken van dummydata?
-            // Op die manier zijn we zekerder dat er getest wordt wat er echt getest moet worden.
+		    // TODO: is het niet beter om de workers over te slaan bij het maken van dummydata?
+		    // Op die manier zijn we zekerder dat er getest wordt wat er echt getest moet worden.
 
-			// TODO: Door de objecten te bewaren krijgen ze ID's, waardoor de tests betrouwbaarder
-			// worden.  Op het einden zou er dus ergens 
-			// GroepenDao.Bewaren(_dummyGroep, lambda-expressie-die-alles-meeneemt)
-			// aangeroepen moeten worden.
-            // (UPDATE: Ik weet niet zeker of dat wel een goed idee is. Als we de ID's 
-            // zelf bepalen, hebben we meer controle op de tests.)
+		    // TODO: Door de objecten te bewaren krijgen ze ID's, waardoor de tests betrouwbaarder
+		    // worden.  Op het einden zou er dus ergens 
+		    // GroepenDao.Bewaren(_dummyGroep, lambda-expressie-die-alles-meeneemt)
+		    // aangeroepen moeten worden.
+		    // (UPDATE: Ik weet niet zeker of dat wel een goed idee is. Als we de ID's 
+		    // zelf bepalen, hebben we meer controle op de tests.)
 
-			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
-			var gMgr = Factory.Maak<GroepenManager>();
-			var cgMgr = Factory.Maak<IChiroGroepenManager>();
-			var lMgr = Factory.Maak<LedenManager>();
-			var afdMgr = Factory.Maak<IAfdelingsJaarManager>();
-			var fMgr = Factory.Maak<FunctiesManager>();
+		    var gpMgr = Factory.Maak<GelieerdePersonenManager>();
+		    var gMgr = Factory.Maak<GroepenManager>();
+		    var cgMgr = Factory.Maak<IChiroGroepenManager>();
+		    var lMgr = Factory.Maak<LedenManager>();
+		    var afdMgr = Factory.Maak<IAfdelingsJaarManager>();
+		    var fMgr = Factory.Maak<FunctiesManager>();
 
-			// Groep en groepswerkjaar
+		    // Groep en groepswerkjaar
 
-			_dummyGewest = new KaderGroep { Naam = "Gewest Test", Code = "tst/0000", NiveauInt = 8};
+		    _dummyGewest = new KaderGroep {Naam = "Gewest Test", Code = "tst/0000", NiveauInt = 8};
 
-			_dummyGroep = new ChiroGroep { Naam = "St.-Unittestius", Code = "tst/0001", KaderGroep = _dummyGewest};
-			_huidigGwj = gMgr.GroepsWerkJaarMaken(_dummyGroep, 2009);
-			_gwjGewest = gMgr.GroepsWerkJaarMaken(_dummyGewest, 2009);
-			_vorigGwj = gMgr.GroepsWerkJaarMaken(_dummyGroep, 2008);
+		    _dummyGroep = new ChiroGroep {Naam = "St.-Unittestius", Code = "tst/0001", KaderGroep = _dummyGewest};
+
+		    _huidigGwj = new GroepsWerkJaar {Groep = _dummyGroep, WerkJaar = 2009};
+		    _gwjGewest = new GroepsWerkJaar {Groep = _dummyGewest, WerkJaar = 2009};
+            _vorigGwj = new GroepsWerkJaar { Groep = _dummyGroep, WerkJaar = 2008 };
 
 			// Categorie
 
@@ -162,9 +163,36 @@ namespace Chiro.Gap.Dummies
 
 			// Functie (nationaal bepaald, maar dit ter zijde)
 
-			_redactie = gMgr.FunctieToevoegen(_dummyGroep, "Hoofdredacteur boekje", "HRE", 1, 0, LidType.Alles);
-			_feestcomite = gMgr.FunctieToevoegen(_dummyGroep, "Feestcomite", "ZUIP", null, 0, LidType.Alles);
-			_wcmadam = gMgr.FunctieToevoegen(_dummyGroep, "WC-madam", "SHT", null, 0, LidType.Alles);
+		    _redactie = new Functie
+		                    {
+		                        Groep = _dummyGroep,
+		                        Naam = "Hoofdredacteur boekje",
+		                        Code = "HRE",
+		                        MaxAantal = 1,
+		                        MinAantal = 0,
+		                        Type = LidType.Alles
+		                    };
+
+		    _feestcomite = new Functie
+		                       {
+		                           Groep = _dummyGroep,
+		                           Naam = "Feestcomite",
+		                           Code = "ZUIP",
+		                           MaxAantal = null,
+		                           MinAantal = 0,
+		                           Type = LidType.Alles
+		                       };
+
+		    _wcmadam = new Functie
+		                   {
+		                       Groep = _dummyGroep,
+		                       Naam = "WC-Madam",
+		                       Code = "SHT",
+		                       MaxAantal = null,
+		                       MinAantal = 0,
+		                       Type = LidType.Alles
+		                   };
+
 
 			_contactPersoonFunctie = new Functie
 			                   	{

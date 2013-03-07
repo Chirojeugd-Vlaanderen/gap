@@ -1,22 +1,12 @@
 ﻿using System.Collections.Generic;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 
 namespace Chiro.Gap.WorkerInterfaces
 {
     public interface IAbonnementenManager
     {
-        /// <summary>
-        /// Haalt een publicatie op, gegeven zijn <paramref name="publicatieID"/>
-        /// </summary>
-        /// <param name="publicatieID">
-        /// Bepaalt op te halen publicatie
-        /// </param>
-        /// <returns>
-        /// De gevraagde publicatie
-        /// </returns>
-        Publicatie PublicatieOphalen(PublicatieID publicatieID);
-
         /// <summary>
         /// Creëert een abonnement voor de gelieerde persoon <paramref name="gp"/> op publicatie
         /// <paramref name="publicatie"/> in het groepswerkjaar <paramref name="groepsWerkJaar"/>.
@@ -48,25 +38,6 @@ namespace Chiro.Gap.WorkerInterfaces
         /// </exception>
         Abonnement Abonneren(Publicatie publicatie, GelieerdePersoon gp, GroepsWerkJaar groepsWerkJaar);
 
-        /// <summary>
-        /// Persisteert een abonnement
-        /// </summary>
-        /// <param name="abonnement">
-        /// Te persisteren abonnement
-        /// </param>
-        void Bewaren(Abonnement abonnement);
-
-        /// <summary>
-        /// Haalt alle abonnementen op uit een gegeven groepswerkjaar, inclusief personen, voorkeursadressen, 
-        /// groepswerkjaar en groep.
-        /// </summary>
-        /// <param name="gwjID">
-        /// ID van het gegeven groepswerkjaar
-        /// </param>
-        /// <returns>
-        /// Alle abonnementen op uit een gegeven groepswerkjaar, inclusief personen, voorkeursadressen, 
-        /// groepswerkjaar en groep.
-        /// </returns>
-        IEnumerable<Abonnement> OphalenUitGroepsWerkJaar(int gwjID);
+        bool KrijgtDubbelpunt(GelieerdePersoon gelieerdePersoon);
     }
 }

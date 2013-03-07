@@ -380,8 +380,10 @@ namespace Chiro.Gap.WebApp
                 // in Web.config van Chiro.Gap.Services. Controleer of alle type mappings er staan,
                 // of er geen typfouten in assembly's of klasses staan, en of 'mapTo' met een
                 // hoofdletter T is.
+                // Als dat allemaal OK is, stop dan alle cassini-instances (de dev webserver van
+                // Visual Studio)
                 var mijnGroepen = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
-                    (g => g.MijnGroepenOphalen());
+                    (g => g.MijnGroepenOphalen()).ToList();
 
                 id = mijnGroepen.Count() == 1 ? mijnGroepen.First().ID : 0;
 

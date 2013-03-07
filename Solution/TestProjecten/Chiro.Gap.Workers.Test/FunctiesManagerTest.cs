@@ -1,4 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.WorkerInterfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,12 +11,7 @@ using System.Linq;
 using Moq;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Dummies;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Domain;
-using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -60,31 +59,32 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void TweeKeerUniekeFunctieToekennenTestVerschillendLid()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            var fm = Factory.Maak<FunctiesManager>();
-            var gm = Factory.Maak<GroepenManager>();
+            //var fm = Factory.Maak<FunctiesManager>();
+            //var gm = Factory.Maak<GroepenManager>();
 
-            var f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                LidType.Alles);
+            //var f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 0,
+            //    LidType.Alles);
 
-            IEnumerable<Functie> functies = new Functie[] { f };
+            //IEnumerable<Functie> functies = new Functie[] { f };
 
-            // Act
+            //// Act
 
-            fm.Toekennen(testData.LeiderJos, functies);
-            fm.Toekennen(testData.LidYvonne, functies);
+            //fm.Toekennen(testData.LeiderJos, functies);
+            //fm.Toekennen(testData.LidYvonne, functies);
 
-            // Assert
+            //// Assert
 
-            var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
-            Assert.AreNotEqual(problemen.Count(), 0);
+            //var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
+            //Assert.AreNotEqual(problemen.Count(), 0);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -96,28 +96,32 @@ namespace Chiro.Gap.Workers.Test
         {
             // Arrange
 
-            var testData = new DummyData();
+            // Genereer de situatie
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            GroepenManager gm = Factory.Maak<GroepenManager>();
+            var groep = new ChiroGroep();
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = groep};
+            groep.GroepsWerkJaar = new List<GroepsWerkJaar> {groepsWerkJaar};
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                LidType.Alles);
+            var leider = new Leiding {GroepsWerkJaar = groepsWerkJaar};
+            var functie = new Functie
+                              {
+                                  MaxAantal = 1,
+                                  Type = LidType.Alles,
+                                  IsNationaal = true,
+                                  Niveau = Niveau.Alles
+                              };
 
-            IEnumerable<Functie> functies = new Functie[] { f };
+
+            var fm = Factory.Maak<FunctiesManager>();
 
             // Act
 
-            fm.Toekennen(testData.LeiderJos, functies);
-            fm.Toekennen(testData.LeiderJos, functies);
+            fm.Toekennen(leider, new[]{functie});
+            fm.Toekennen(leider, new[]{functie});
 
             // Assert
 
-            var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
+            var problemen = fm.AantallenControleren(groepsWerkJaar, new[]{functie});
             Assert.AreEqual(problemen.Count(), 0);
         }
 
@@ -129,30 +133,31 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void ToekennenFunctieOngeldigWerkJaar()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            GroepenManager gm = Factory.Maak<GroepenManager>();
+            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
+            //GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                LidType.Alles);
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 0,
+            //    LidType.Alles);
 
-            f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
+            //f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
 
-            IEnumerable<Functie> functies = new Functie[] { f };
+            //IEnumerable<Functie> functies = new Functie[] { f };
 
-            // Act
+            //// Act
 
-            fm.Toekennen(testData.LeiderJos, functies);
+            //fm.Toekennen(testData.LeiderJos, functies);
 
-            // Assert
-            Assert.IsTrue(false);
+            //// Assert
+            //Assert.IsTrue(false);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -162,27 +167,28 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void ToekennenLidFunctieAanLeiding()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            GroepenManager gm = Factory.Maak<GroepenManager>();
+            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
+            //GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                LidType.Kind);
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 0,
+            //    LidType.Kind);
 
-            IEnumerable<Functie> functies = new Functie[] { f };
+            //IEnumerable<Functie> functies = new Functie[] { f };
 
-            // Act
-            fm.Toekennen(testData.LeiderJos, functies);
+            //// Act
+            //fm.Toekennen(testData.LeiderJos, functies);
 
-            // Assert
-            Assert.IsTrue(false);
+            //// Assert
+            //Assert.IsTrue(false);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -191,35 +197,37 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void NietToegekendeVerplichteFunctie()
         {
-            // Arrange
+            // ARRANGE
 
-            var testData = new DummyData();
+            var g = new ChiroGroep();
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            GroepenManager gm = Factory.Maak<GroepenManager>();
+            // een (eigen) functie waarvan er precies 1 moet zijn
+            var f = new Functie
+                        {
+                            MinAantal = 1,
+                            Type = LidType.Alles,
+                            ID = 1,
+                            IsNationaal = false,
+                            Niveau = Niveau.Alles,
+                            Groep = g,
+                        };
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 1,
-                LidType.Alles);
+            // groepswerkjaar zonder leden
+            var gwj = new GroepsWerkJaar
+                          {
+                              Lid = new List<Lid>(),
+                              Groep = g
+                          };
 
-            // Functie bewaren, zodat dummydao een ID toekent.
+            // Maak een functiesmanager
+            var fm = Factory.Maak<FunctiesManager>();
 
-            f = fm.Bewaren(f);
 
-            IEnumerable<Functie> functies = new Functie[] { f };
+            // ACT
+            var problemen = fm.AantallenControleren(gwj, new[] {f});
 
-            // Act
-
-            fm.Toekennen(testData.LeiderJos, functies);
-            fm.Toekennen(testData.LidYvonne, functies);
-
-            // Assert
-
-            var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
-            Assert.AreNotEqual(problemen.Count(), 0);
+            // ASSERT
+            Assert.IsTrue(problemen.Any(prb => prb.ID == f.ID));
         }
 
         /// <summary>
@@ -229,38 +237,39 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void IrrelevanteVerplichteFunctie()
         {
-            // Arrange
+            //// Arrange
 
-            Factory.ContainerInit();	// Container resetten alvorens dummydata te maken.
-            var testData = new DummyData();
+            //Factory.ContainerInit();	// Container resetten alvorens dummydata te maken.
+            //var testData = new DummyData();
 
-            var fm = Factory.Maak<FunctiesManager>();
-            var gm = Factory.Maak<GroepenManager>();
+            //var fm = Factory.Maak<FunctiesManager>();
+            //var gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 1,
-                LidType.Alles);	// pas volgend jaar geldig
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 1,
+            //    LidType.Alles);	// pas volgend jaar geldig
 
-            f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
+            //f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
 
-            f.ID = testData.NieuweFunctieID;
+            //f.ID = testData.NieuweFunctieID;
 
-            // Jos krijgt alle nationaal bepaalde functies, zodat eventuele verplichte
-            // nationaal bepaalde functies OK zijn.
-            fm.Toekennen(testData.LeiderJos, fm.NationaalBepaaldeFunctiesOphalen());
+            //// Jos krijgt alle nationaal bepaalde functies, zodat eventuele verplichte
+            //// nationaal bepaalde functies OK zijn.
+            //fm.Toekennen(testData.LeiderJos, fm.NationaalBepaaldeFunctiesOphalen());
 
-            // Act
+            //// Act
 
-            var problemen = from p in fm.AantallenControleren(testData.HuidigGwj)
-                            where p.ID == testData.NieuweFunctieID
-                            select p;
+            //var problemen = from p in fm.AantallenControleren(testData.HuidigGwj)
+            //                where p.ID == testData.NieuweFunctieID
+            //                select p;
 
-            // Assert
+            //// Assert
 
-            Assert.AreEqual(problemen.Count(), 0);
+            //Assert.AreEqual(problemen.Count(), 0);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -270,20 +279,33 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void OntbrekendeNationaalBepaaldeFuncties()
         {
-            // Arrange
+            // ARRANGE
 
-            var testData = new DummyData();
+            // een nationale functie waarvan er precies 1 moet zijn
+            var f = new Functie
+            {
+                MinAantal = 1,
+                Type = LidType.Alles,
+                ID = 1,
+                IsNationaal = true,
+                Niveau = Niveau.Alles
+            };
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
+            // groepswerkjaar zonder leden
+            var gwj = new GroepsWerkJaar
+            {
+                Lid = new List<Lid>()
+            };
 
-            // Act
+            // Maak een functiesmanager
+            var fm = Factory.Maak<FunctiesManager>();
 
-            var problemen = fm.AantallenControleren(testData.HuidigGwj);
-            // Het DummyFunctieDao voorziet nationaal bepaalde verplichte functies.
 
-            // Assert
+            // ACT
+            var problemen = fm.AantallenControleren(gwj, new[] { f });
 
-            Assert.AreNotEqual(problemen.Count(), 0);
+            // ASSERT
+            Assert.IsTrue(problemen.Any(prb => prb.ID == f.ID));
         }
 
 
@@ -294,52 +316,28 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void FunctieBewarenTest()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            GroepenManager gm = Factory.Maak<GroepenManager>();
+            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
+            //GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                0);
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 0,
+            //    0);
 
-            // Act
+            //// Act
 
-            f = fm.Bewaren(f);
+            //f = fm.Bewaren(f);
 
-            // Assert
+            //// Assert
 
-            Assert.AreNotEqual(f.ID, 0);
-        }
-
-        /// <summary>
-        /// Test op exception bij poging tot bewaren van nationaal bepaalde functie.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(GeenGavException))]
-        public void NationaalBepaaldeFunctieBewarenTest()
-        {
-            // Arrange
-
-            var testData = new DummyData();
-
-            var fm = Factory.Maak<FunctiesManager>();
-
-            var f = fm.NationaalBepaaldeFunctiesOphalen().First();
-
-            // Act
-
-            f = fm.Bewaren(f);
-
-            // Assert
-
-            // Dit mogen we niet halen.
-            Assert.IsTrue(false);
+            //Assert.AreNotEqual(f.ID, 0);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -348,40 +346,41 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void FunctiesVervangen()
         {
-            // Arrange
+            //// Arrange
 
-            var testData = new DummyData();
+            //var testData = new DummyData();
 
-            var fm = Factory.Maak<FunctiesManager>();
-            var gm = Factory.Maak<GroepenManager>();
+            //var fm = Factory.Maak<FunctiesManager>();
+            //var gm = Factory.Maak<GroepenManager>();
 
-            Functie f = gm.FunctieToevoegen(
-                testData.DummyGroep,
-                testData.NieuweFunctieNaam,
-                testData.NieuweFunctieCode,
-                1, 0,
-                LidType.Alles);
+            //Functie f = gm.FunctieToevoegen(
+            //    testData.DummyGroep,
+            //    testData.NieuweFunctieNaam,
+            //    testData.NieuweFunctieCode,
+            //    1, 0,
+            //    LidType.Alles);
 
-            // Het DummyDao kent een ID toe aan f.  (Voor DummyDao is dat OK, maar in echte situaties
-            // niet, omdat de nieuwe f niet gekoppeld zou zijn aan de groep.  Eigenlijk moeten we
-            // de groep bewaren, samen met zijn functies.)
+            //// Het DummyDao kent een ID toe aan f.  (Voor DummyDao is dat OK, maar in echte situaties
+            //// niet, omdat de nieuwe f niet gekoppeld zou zijn aan de groep.  Eigenlijk moeten we
+            //// de groep bewaren, samen met zijn functies.)
 
-            f = fm.Bewaren(f);
+            //f = fm.Bewaren(f);
 
-            var natBepFuncties = fm.NationaalBepaaldeFunctiesOphalen();
-            // we weten dat er minstens 2 nat. bepaalde functies zijn.
-            IEnumerable<Functie> functies = new Functie[] { f, natBepFuncties.First() };
-            fm.Toekennen(testData.LeiderJos, functies);
+            //var natBepFuncties = fm.NationaalBepaaldeFunctiesOphalen();
+            //// we weten dat er minstens 2 nat. bepaalde functies zijn.
+            //IEnumerable<Functie> functies = new Functie[] { f, natBepFuncties.First() };
+            //fm.Toekennen(testData.LeiderJos, functies);
 
-            // Act
+            //// Act
 
-            fm.Vervangen(testData.LeiderJos, natBepFuncties);
+            //fm.Vervangen(testData.LeiderJos, natBepFuncties);
 
-            // Assert
+            //// Assert
 
-            Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.First()));
-            Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.Last()));
-            Assert.IsFalse(testData.LeiderJos.Functie.Contains(f));
+            //Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.First()));
+            //Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.Last()));
+            //Assert.IsFalse(testData.LeiderJos.Functie.Contains(f));
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
 
@@ -392,35 +391,36 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void NationaalBepaaldeFunctiesOphalenTest()
 		{
-			#region Arrange
+            //#region Arrange
 
-			// Deze DAO's nog eens expliciet registreren, om te vermijden dat wijzigingen in
-			// andere tests een vertekend beeld opleveren.
+            //// Deze DAO's nog eens expliciet registreren, om te vermijden dat wijzigingen in
+            //// andere tests een vertekend beeld opleveren.
 
-			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
-			Factory.InstantieRegistreren<ILedenDao>(new DummyLedenDao());
+            //Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+            //Factory.InstantieRegistreren<ILedenDao>(new DummyLedenDao());
 
-			// Mock voor IFunctieDao, die een lege lijst geeft als de nationaal bepaalde functies
-			// opgevraagd worden.  We willen gewoon tellen hoe dikwijls deze opgevraagd wordt.
-			var funDaoMock = new Mock<IFunctiesDao>();
-			funDaoMock.Setup(dao => dao.NationaalBepaaldeFunctiesOphalen()).Returns(new List<Functie>());
-			Factory.InstantieRegistreren(funDaoMock.Object);
+            //// Mock voor IFunctieDao, die een lege lijst geeft als de nationaal bepaalde functies
+            //// opgevraagd worden.  We willen gewoon tellen hoe dikwijls deze opgevraagd wordt.
+            //var funDaoMock = new Mock<IFunctiesDao>();
+            //funDaoMock.Setup(dao => dao.NationaalBepaaldeFunctiesOphalen()).Returns(new List<Functie>());
+            //Factory.InstantieRegistreren(funDaoMock.Object);
 
-			var target = Factory.Maak<FunctiesManager>();
+            //var target = Factory.Maak<FunctiesManager>();
 
-			#endregion
+            //#endregion
 
-			#region Act
-			// tweemaal opvragen
-			var resultaat = target.NationaalBepaaldeFunctiesOphalen();
-			resultaat = target.NationaalBepaaldeFunctiesOphalen();
-			#endregion
+            //#region Act
+            //// tweemaal opvragen
+            //var resultaat = target.NationaalBepaaldeFunctiesOphalen();
+            //resultaat = target.NationaalBepaaldeFunctiesOphalen();
+            //#endregion
 
-			#region Assert
+            //#region Assert
 
-			funDaoMock.Verify(dao => dao.NationaalBepaaldeFunctiesOphalen(), Times.AtMost(1), "Nationale functies waren niet gecachet.");
+            //funDaoMock.Verify(dao => dao.NationaalBepaaldeFunctiesOphalen(), Times.AtMost(1), "Nationale functies waren niet gecachet.");
 
-			#endregion
+            //#endregion
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
 		}
 
 		/// <summary>
@@ -429,31 +429,32 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void FunctieOphalenTest()
 		{
-			// Arrange
+            //// Arrange
 
-			var auMgrMock = new Mock<IAutorisatieManager>();
-			var funDaoMock = new Mock<IFunctiesDao>();
+            //var auMgrMock = new Mock<IAutorisatieManager>();
+            //var funDaoMock = new Mock<IFunctiesDao>();
 
-			auMgrMock.Setup(mgr => mgr.IsGavCategorie(It.IsAny<int>())).Returns(false);
-			auMgrMock.Setup(mgr => mgr.IsGavFunctie(It.IsAny<int>())).Returns(true);
+            //auMgrMock.Setup(mgr => mgr.IsGavCategorie(It.IsAny<int>())).Returns(false);
+            //auMgrMock.Setup(mgr => mgr.IsGavFunctie(It.IsAny<int>())).Returns(true);
 
-			funDaoMock.Setup(mgr => mgr.Ophalen(It.IsAny<int>())).Returns(new Functie());
+            //funDaoMock.Setup(mgr => mgr.Ophalen(It.IsAny<int>())).Returns(new Functie());
 
-			Factory.InstantieRegistreren<IAutorisatieManager>(auMgrMock.Object);
-			Factory.InstantieRegistreren<IFunctiesDao>(funDaoMock.Object);
+            //Factory.InstantieRegistreren<IAutorisatieManager>(auMgrMock.Object);
+            //Factory.InstantieRegistreren<IFunctiesDao>(funDaoMock.Object);
 
-			var funMgr = Factory.Maak<FunctiesManager>();
+            //var funMgr = Factory.Maak<FunctiesManager>();
 
-			// act
+            //// act
 
-			var resultaat = funMgr.Ophalen(100, false); // haal functie op zonder iets extra
+            //var resultaat = funMgr.Ophalen(100, false); // haal functie op zonder iets extra
 
-			// assert
+            //// assert
 
-			// Aangezien ik de autorisatiemanager gemockt heb, zodat je rechten krijgt op iedere
-			// functie, moet er een functie opgehaald zijn.
+            //// Aangezien ik de autorisatiemanager gemockt heb, zodat je rechten krijgt op iedere
+            //// functie, moet er een functie opgehaald zijn.
 
-			Assert.IsNotNull(resultaat);
+            //Assert.IsNotNull(resultaat);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
 		}
 
 		/// <summary>

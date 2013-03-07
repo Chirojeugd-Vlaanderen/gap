@@ -9,12 +9,12 @@ using System.Linq;
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
-using Persoon = Chiro.Gap.Orm.Persoon;
+using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync
 {
@@ -41,7 +41,7 @@ namespace Chiro.Gap.Sync
                                    AdresType = (AdresTypeEnum)pa.AdresType
                                };
 
-                var adres = Mapper.Map<Orm.Adres, Kip.ServiceContracts.DataContracts.Adres>(adr);
+                var adres = Mapper.Map<Poco.Model.Adres, Kip.ServiceContracts.DataContracts.Adres>(adr);
 
                 ServiceHelper.CallService<ISyncPersoonService>(svc => svc.StandaardAdresBewaren(adres, bewoners.ToList()));
             }

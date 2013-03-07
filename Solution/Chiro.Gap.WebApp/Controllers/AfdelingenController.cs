@@ -230,7 +230,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.OfficieleAfdelingen =
 				ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>
-				(groep => groep.OfficieleAfdelingenOphalen(groepID));
+				(groep => groep.OfficieleAfdelingenOphalen());
 
 			model.Afdeling = ServiceHelper.CallService<IGroepenService, AfdelingInfo>
 				(groep => groep.AfdelingOphalen(id));
@@ -265,7 +265,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			};
 
 			model.AfdelingsJaar = detail; // inheritance :)
-			model.OfficieleAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(groep => groep.OfficieleAfdelingenOphalen(groepID));
+			model.OfficieleAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(groep => groep.OfficieleAfdelingenOphalen());
 
 			model.Titel = "Afdeling bewerken";
 			return View("AfdelingsJaar", model);
@@ -307,7 +307,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				// Vul model aan, en toon de view AfdelingsJaar opnieuw
 				model.Afdeling = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(model.AfdelingsJaar.AfdelingID));
-				model.OfficieleAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(svc => svc.OfficieleAfdelingenOphalen(groepID));
+				model.OfficieleAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(svc => svc.OfficieleAfdelingenOphalen());
 
 				model.Titel = "Afdeling bewerken";
 				return View("AfdelingsJaar", model);

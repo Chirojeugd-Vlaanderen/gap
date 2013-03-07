@@ -16,6 +16,13 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class GroepDetail : GroepInfo
 	{
+        public GroepDetail()
+        {
+            Afdelingen = new List<AfdelingDetail>();
+            Categorieen = new List<CategorieInfo>();
+            Functies = new List<FunctieDetail>();
+        }
+
 		/// <summary>
 		/// Afdelingen waarvoor er in het recentste groepswerkjaar een afdelingsjaar bestaat.
 		/// </summary>

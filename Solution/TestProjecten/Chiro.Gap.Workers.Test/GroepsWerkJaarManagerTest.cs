@@ -11,12 +11,9 @@ using System.Linq.Expressions;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm;
-
 using Moq;
 
 namespace Chiro.Gap.Workers.Test
@@ -60,28 +57,29 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void BewarenTest()
 		{
-			// Arrange
+            //// Arrange
 
-			var testData = new DummyData();
+            //var testData = new DummyData();
 
-			var veelGebruiktMock = new Mock<IVeelGebruikt>();
-			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarResetten(testData.DummyGroep.ID)).Verifiable();
-			Factory.InstantieRegistreren(veelGebruiktMock.Object);
+            //var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            //veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarResetten(testData.DummyGroep.ID)).Verifiable();
+            //Factory.InstantieRegistreren(veelGebruiktMock.Object);
 
-			var groepsWerkJaarDaoMock = new Mock<IGroepsWerkJaarDao>();
-			groepsWerkJaarDaoMock.Setup(
-				dao => dao.Bewaren(testData.HuidigGwj, It.IsAny<Expression<Func<GroepsWerkJaar, object>>[]>())).Returns(
-					testData.HuidigGwj);
-			Factory.InstantieRegistreren(groepsWerkJaarDaoMock.Object);
+            //var groepsWerkJaarDaoMock = new Mock<IGroepsWerkJaarDao>();
+            //groepsWerkJaarDaoMock.Setup(
+            //    dao => dao.Bewaren(testData.HuidigGwj, It.IsAny<Expression<Func<GroepsWerkJaar, object>>[]>())).Returns(
+            //        testData.HuidigGwj);
+            //Factory.InstantieRegistreren(groepsWerkJaarDaoMock.Object);
 
-			var target = Factory.Maak<GroepsWerkJaarManager>();
+            //var target = Factory.Maak<GroepsWerkJaarManager>();
 
-			// Act
+            //// Act
 
-			target.Bewaren(testData.HuidigGwj, GroepsWerkJaarExtras.Geen);
+            //target.Bewaren(testData.HuidigGwj, GroepsWerkJaarExtras.Geen);
 
-			// Assert
-			veelGebruiktMock.Verify(vgb => vgb.GroepsWerkJaarResetten(testData.DummyGroep.ID), Times.Once());
+            //// Assert
+            //veelGebruiktMock.Verify(vgb => vgb.GroepsWerkJaarResetten(testData.DummyGroep.ID), Times.Once());
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
 		}
 
         /// <summary>
@@ -91,7 +89,7 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod()]
         public void AfdelingsJarenVoorstellenTest()
         {
-            var target = Factory.Maak<GroepsWerkJaarManager>();
+            var target = Factory.Maak<GroepsWerkJarenManager>();
 
             var groep = new ChiroGroep();
             var groepsWerkJaar = new GroepsWerkJaar {WerkJaar = 2010, ID = 2971, Groep = groep};
@@ -117,32 +115,33 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod()]
         public void AfdelingsJarenVoorstellenTest1()
         {
-            // -- Arrange --
+            //// -- Arrange --
 
-            var afdelingenDaoMock = new Mock<IAfdelingenDao>();
-            afdelingenDaoMock.Setup(dao => dao.OfficieleAfdelingOphalen((int)NationaleAfdeling.Ribbels)).Returns(
-                new OfficieleAfdeling {ID = (int) NationaleAfdeling.Ribbels, LeefTijdVan = 6, LeefTijdTot = 7});
-            Factory.InstantieRegistreren(afdelingenDaoMock.Object);
+            //var afdelingenDaoMock = new Mock<IAfdelingenDao>();
+            //afdelingenDaoMock.Setup(dao => dao.OfficieleAfdelingOphalen((int)NationaleAfdeling.Ribbels)).Returns(
+            //    new OfficieleAfdeling {ID = (int) NationaleAfdeling.Ribbels, LeefTijdVan = 6, LeefTijdTot = 7});
+            //Factory.InstantieRegistreren(afdelingenDaoMock.Object);
 
-            var target = Factory.Maak<GroepsWerkJaarManager>();
+            //var target = Factory.Maak<GroepsWerkJaarManager>();
 
-            // Een Chirogroep met een oud groepswerkjaar. Zonder afdelingen, why not.
-            var groep = new ChiroGroep
-                {GroepsWerkJaar = new EntityCollection<GroepsWerkJaar> {new GroepsWerkJaar()}};
+            //// Een Chirogroep met een oud groepswerkjaar. Zonder afdelingen, why not.
+            //var groep = new ChiroGroep
+            //    {GroepsWerkJaar = new EntityCollection<GroepsWerkJaar> {new GroepsWerkJaar()}};
 
-            // Dit jaar willen we een groep met 1 afdeling.
-            var afdelingen = new[] {new Afdeling {ID = 1, ChiroGroep = groep}};
+            //// Dit jaar willen we een groep met 1 afdeling.
+            //var afdelingen = new[] {new Afdeling {ID = 1, ChiroGroep = groep}};
 
-            const int NIEUW_WERKJAAR = 2012; // Jaartal is eigenlijk irrelevant voor deze test.
+            //const int NIEUW_WERKJAAR = 2012; // Jaartal is eigenlijk irrelevant voor deze test.
 
-            // -- Act -- 
-            var actual = target.AfdelingsJarenVoorstellen(groep, afdelingen, NIEUW_WERKJAAR);
-            var afdelingsJaar = actual.FirstOrDefault();
+            //// -- Act -- 
+            //var actual = target.AfdelingsJarenVoorstellen(groep, afdelingen, NIEUW_WERKJAAR);
+            //var afdelingsJaar = actual.FirstOrDefault();
 
-            // -- Assert --
+            //// -- Assert --
 
-            Assert.IsNotNull(afdelingsJaar);
-            Assert.IsNotNull(afdelingsJaar.OfficieleAfdeling);
+            //Assert.IsNotNull(afdelingsJaar);
+            //Assert.IsNotNull(afdelingsJaar.OfficieleAfdeling);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
     }
 }

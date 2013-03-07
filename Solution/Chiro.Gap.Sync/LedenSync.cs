@@ -3,21 +3,20 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
-using Persoon = Chiro.Gap.Orm.Persoon;
+using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync
 {
@@ -26,12 +25,6 @@ namespace Chiro.Gap.Sync
     /// </summary>
     public class LedenSync : ILedenSync
     {
-        private readonly ILedenDao _ledenDao;
-        private readonly IKindDao _kindDao;
-        private readonly ILeidingDao _leidingDao;
-        private readonly ICommunicatieVormDao _cVormDao;
-        private readonly IPersonenDao _personenDao;
-
         // TODO (#1058): Dit gaat waarschijnlijk ook met AutoMapper
         private readonly Dictionary<NationaleFunctie, FunctieEnum> _functieVertaling =
             new Dictionary<NationaleFunctie, FunctieEnum>
@@ -78,38 +71,6 @@ namespace Chiro.Gap.Sync
 					{ LidType.Kind, LidTypeEnum.Kind },
 					{ LidType.Leiding, LidTypeEnum.Leiding }
 				};
-
-        /// <summary>
-        /// Creëert nieuwe klasse voor ledensynchronisatie
-        /// </summary>
-        /// <param name="cVormDao">
-        /// Data access object voor communicatievormen
-        /// </param>
-        /// <param name="ledenDao">
-        /// Data access object voor leden
-        /// </param>
-        /// <param name="kindDao">
-        /// Data access object voor kinderen
-        /// </param>
-        /// <param name="leidingDao">
-        /// Data access object voor leiding
-        /// </param>
-        /// <param name="personenDao">
-        /// Data access object voor personen
-        /// </param>
-        public LedenSync(
-            ICommunicatieVormDao cVormDao,
-            ILedenDao ledenDao,
-            IKindDao kindDao,
-            ILeidingDao leidingDao,
-            IPersonenDao personenDao)
-        {
-            _cVormDao = cVormDao;
-            _ledenDao = ledenDao;
-            _kindDao = kindDao;
-            _leidingDao = leidingDao;
-            _personenDao = personenDao;
-        }
 
         /// <summary>
         /// Stuurt een lid naar Kipadmin
@@ -171,16 +132,7 @@ namespace Chiro.Gap.Sync
                 }
                 else
                 {
-                    // Markeer AD-nummer als zijnde 'in aanvraag'
-
-                    l.GelieerdePersoon.Persoon.AdInAanvraag = true;
-                    _personenDao.Bewaren(l.GelieerdePersoon.Persoon);
-
-                    // Ook persoonsgegevens meesturen
-
-                    var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon);
-
-                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidBewaren(details, lidGedoe));
+                    throw new NotImplementedException();
                 }
             }
         }
@@ -196,8 +148,7 @@ namespace Chiro.Gap.Sync
 
             if (lid.GelieerdePersoon == null || lid.GelieerdePersoon.Persoon == null)
             {
-                // Als we geen persoonsgegevens hebben, halen we die op.  (AD-nummer nodig)
-                l = _ledenDao.Ophalen(lid.ID, ld => ld.GelieerdePersoon.Persoon, ld => ld.Functie, ld => ld.GroepsWerkJaar.Groep);
+                throw new NotImplementedException();
             }
             else
             {
@@ -229,52 +180,7 @@ namespace Chiro.Gap.Sync
         /// te veel een gedoe.</remarks>
         public void AfdelingenUpdaten(Lid lid)
         {
-            Lid l;
-
-            if (lid is Kind)
-            {
-                l = _kindDao.Ophalen(
-                    lid.ID,
-                    ld => ld.GelieerdePersoon.Persoon,
-                    ld => ld.GroepsWerkJaar.Groep,
-                    ld => ld.AfdelingsJaar.OfficieleAfdeling);
-            }
-            else
-            {
-                l = _leidingDao.Ophalen(
-                    lid.ID,
-                    ld => ld.GelieerdePersoon.Persoon,
-                    ld => ld.GroepsWerkJaar.Groep,
-                    ld => ld.AfdelingsJaar.First().OfficieleAfdeling);
-            }
-
-            var chiroGroep = (l.GroepsWerkJaar.Groep as ChiroGroep);
-            // TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
-
-            Debug.Assert(chiroGroep != null);
-
-            List<AfdelingEnum> kipAfdelingen;
-
-            if (l is Kind)
-            {
-                kipAfdelingen = new List<AfdelingEnum>
-				                	{ 
-				                		_afdelingVertaling[(NationaleAfdeling)((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
-				                	};
-            }
-            else
-            {
-                var leiding = l as Leiding;
-                Debug.Assert(leiding != null);
-
-                kipAfdelingen = (from aj in leiding.AfdelingsJaar
-                                 select _afdelingVertaling[(NationaleAfdeling)(aj.OfficieleAfdeling.ID)]).ToList();
-            }
-
-            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AfdelingenUpdaten(Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(l.GelieerdePersoon.Persoon),
-                         chiroGroep.Code,
-                         l.GroepsWerkJaar.WerkJaar,
-                         kipAfdelingen));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -287,7 +193,7 @@ namespace Chiro.Gap.Sync
 
             if (lid.GelieerdePersoon == null || lid.GelieerdePersoon.Persoon == null || lid.GroepsWerkJaar == null || lid.GroepsWerkJaar.Groep == null)
             {
-                l = _ledenDao.Ophalen(lid.ID, ld => ld.GelieerdePersoon.Persoon, ld => ld.GroepsWerkJaar.Groep);
+                throw new NotImplementedException();
             }
             else
             {

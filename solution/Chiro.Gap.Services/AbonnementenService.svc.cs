@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Services
 {
@@ -46,54 +41,55 @@ namespace Chiro.Gap.Services
         /// <param name="gelieerdePersoonID">ID van gelieerde persoon van persoon die Dubbelpunt wil</param>
         public void DubbelPuntBestellen(int gelieerdePersoonID)
         {
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
             // TODO (#1048): exceptions op databaseniveau catchen
 
-            GelieerdePersoon gp = null;
-            Abonnement abonnement = null;
+            //GelieerdePersoon gp = null;
+            //Abonnement abonnement = null;
 
-            try
-            {
-                // Het ophalen van alle groepswerkjaren is overkill.  Maar ik doe het toch.
-                gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen | PersoonsExtras.AbonnementenDitWerkjaar | PersoonsExtras.GroepsWerkJaren);
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
-            catch (FoutNummerException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
+            //try
+            //{
+            //    // Het ophalen van alle groepswerkjaren is overkill.  Maar ik doe het toch.
+            //    gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen | PersoonsExtras.AbonnementenDitWerkjaar | PersoonsExtras.GroepsWerkJaren);
+            //}
+            //catch (GeenGavException ex)
+            //{
+            //    FoutAfhandelaar.FoutAfhandelen(ex);
+            //}
+            //catch (FoutNummerException ex)
+            //{
+            //    FoutAfhandelaar.FoutAfhandelen(ex);
+            //}
 
-            Debug.Assert(gp != null);
+            //Debug.Assert(gp != null);
 
-            var groepsWerkJaar = gp.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();   // recentste groepswerkjaar
-            var dubbelpunt = _abMgr.PublicatieOphalen(PublicatieID.Dubbelpunt);
+            //var groepsWerkJaar = gp.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();   // recentste groepswerkjaar
+            //var dubbelpunt = _abMgr.PublicatieOphalen(PublicatieTypeEnum.Dubbelpunt);
 
-            try
-            {
-                abonnement = _abMgr.Abonneren(dubbelpunt, gp, groepsWerkJaar);
-            }
-            catch (BlokkerendeObjectenException<Abonnement> ex)
-            {
-                // heeft al een abonnement
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
-            catch (FoutNummerException ex)
-            {
-                if (ex.FoutNummer == FoutNummer.AdresOntbreekt || ex.FoutNummer == FoutNummer.BestelPeriodeDubbelpuntVoorbij)
-                {
-                    // Verwachte exception afhandelen
-                    FoutAfhandelaar.FoutAfhandelen(ex);
-                }
-                else
-                {
-                    // Onverwachte exception opnieuw throwen
-                    throw;
-                }
-            }
+            //try
+            //{
+            //    abonnement = _abMgr.Abonneren(dubbelpunt, gp, groepsWerkJaar);
+            //}
+            //catch (BlokkerendeObjectenException<Abonnement> ex)
+            //{
+            //    // heeft al een abonnement
+            //    FoutAfhandelaar.FoutAfhandelen(ex);
+            //}
+            //catch (FoutNummerException ex)
+            //{
+            //    if (ex.FoutNummer == FoutNummer.AdresOntbreekt || ex.FoutNummer == FoutNummer.BestelPeriodeDubbelpuntVoorbij)
+            //    {
+            //        // Verwachte exception afhandelen
+            //        FoutAfhandelaar.FoutAfhandelen(ex);
+            //    }
+            //    else
+            //    {
+            //        // Onverwachte exception opnieuw throwen
+            //        throw;
+            //    }
+            //}
 
-            _abMgr.Bewaren(abonnement);
+            //_abMgr.Bewaren(abonnement);
         }
 
         /// <summary>
@@ -106,23 +102,24 @@ namespace Chiro.Gap.Services
         /// </returns>
         public bool? HeeftGratisDubbelpunt(int id)
         {
-            var groep = _gpMgr.Ophalen(id, PersoonsExtras.Groep).Groep;
-            var groepsWerkJaar = _veelGebruikt.GroepsWerkJaarOphalen(groep.ID);
-            var contactPersonen = _ledenMgr.Ophalen(groepsWerkJaar.ID, NationaleFunctie.ContactPersoon);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            //var groep = _gpMgr.Ophalen(id, PersoonsExtras.Groep).Groep;
+            //var groepsWerkJaar = _veelGebruikt.GroepsWerkJaarOphalen(groep.ID);
+            //var contactPersonen = _ledenMgr.Ophalen(groepsWerkJaar.ID, NationaleFunctie.ContactPersoon);
 
-            if (contactPersonen.Any(ld => ld.GelieerdePersoon.ID == id))
-            {
-                if (contactPersonen.First() == contactPersonen.Last())
-                {
-                    // Er is maar 1 contactpersoon, en dat is de gelieerde persoon die we zoeken
-                    return true;    // gratis dubbelpunt
-                }
-                // Meerdere contactpersonen. Mogelijk gratis dubbelpunt.
-                return null;
-            }
+            //if (contactPersonen.Any(ld => ld.GelieerdePersoon.ID == id))
+            //{
+            //    if (contactPersonen.First() == contactPersonen.Last())
+            //    {
+            //        // Er is maar 1 contactpersoon, en dat is de gelieerde persoon die we zoeken
+            //        return true;    // gratis dubbelpunt
+            //    }
+            //    // Meerdere contactpersonen. Mogelijk gratis dubbelpunt.
+            //    return null;
+            //}
 
-            // Persoon is geen contactpersoon van zijn groep. Geen gratis dubbelpunt.
-            return false;
+            //// Persoon is geen contactpersoon van zijn groep. Geen gratis dubbelpunt.
+            //return false;
         }
     }
 }

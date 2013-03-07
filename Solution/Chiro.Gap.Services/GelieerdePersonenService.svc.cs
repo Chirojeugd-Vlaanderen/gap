@@ -8,18 +8,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
-
+using System.Transactions;      // laten staan voor live!
 using AutoMapper;
-
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Services.Properties;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
-using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Services
 {
@@ -31,264 +29,108 @@ namespace Chiro.Gap.Services
     /// <summary>
     /// Service voor operaties op gelieerde personen
     /// </summary>
-    public class GelieerdePersonenService : IGelieerdePersonenService
+    public class GelieerdePersonenService : IGelieerdePersonenService, IDisposable
     {
-        #region Manager Injection
+        // Repositories, verantwoordelijk voor data access.
 
-        private readonly IGelieerdePersonenManager _gpMgr;
-        private readonly PersonenManager _pMgr;
-        private readonly AdressenManager _adrMgr;
-        private readonly IGroepenManager _groepenMgr;
-        private readonly IGroepsWerkJaarManager _gwjMgr;
-        private readonly CommVormManager _cvMgr;
-        private readonly CategorieenManager _catMgr;
+        private readonly IRepository<CommunicatieVorm> _communicatieVormRepo;
+        private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
+        private readonly IRepository<GroepsWerkJaar> _groepsWerkJarenRepo;
+        private readonly IRepository<Groep> _groepenRepo;
+        private readonly IRepository<Categorie> _categorieenRepo;
+        private readonly IRepository<CommunicatieType> _communicatieTypesRepo;
+
+        // Managers voor niet-triviale businesslogica
+
+        private readonly IAutorisatieManager _autorisatieMgr;
+        private readonly ICommunicatieVormenManager _communicatieVormenMgr;
         private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
-        private readonly IAutorisatieManager _auMgr;
+
+        // Sync-interfaces
+
+        private readonly ICommunicatieSync _communicatieSync;
+        private readonly IPersonenSync _personenSync;
 
         /// <summary>
-        /// Constructor met via IoC toegekende workers
+        /// Constructor
         /// </summary>
-        /// <param name="gpm">
-        /// De worker voor GelieerdePersonen
-        /// </param>
-        /// <param name="pm">
-        /// De worker voor Personen
-        /// </param>
-        /// <param name="adm">
-        /// De worker voor Adressen
-        /// </param>
-        /// <param name="groepenMgr">
-        /// De worker voor Groepen
-        /// </param>
-        /// <param name="gwjm">
-        /// De worker voor GroepsWerkJaren
-        /// </param>
-        /// <param name="cvm">
-        /// De worker voor CommunicatieVormen
-        /// </param>
-        /// <param name="cm">
-        /// De worker voor Categorieën
-        /// </param>
-        /// <param name="gebruikersRechtenMgr">
-        /// De worker voor Gebruikersrechten
-        /// </param>
-        /// <param name="aum">
-        /// De worker voor Autorisatie
-        /// </param>
-        public GelieerdePersonenService(
-            IGelieerdePersonenManager gpm,
-            PersonenManager pm,
-            AdressenManager adm,
-            IGroepenManager groepenMgr,
-            IGroepsWerkJaarManager gwjm,
-            CommVormManager cvm,
-            CategorieenManager cm,
-            IGebruikersRechtenManager gebruikersRechtenMgr,
-            IAutorisatieManager aum)
+        /// <param name="repositoryProvider">De repositoryprovider levert de te
+        /// gebruiken context en repository op.</param>
+        /// <param name="autorisatieMgr">Logica m.b.t. autorisatie</param>
+        /// <param name="communicatieVormenMgr">Logica m.b.t. communicatievormen</param>
+        /// <param name="gebruikersRechtenMgr">Logica m.b.t. gebruikersrechten</param>
+        /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
+        /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
+        public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
+                                        ICommunicatieVormenManager communicatieVormenMgr,
+                                        IGebruikersRechtenManager gebruikersRechtenMgr,
+                                        ICommunicatieSync communicatieSync,
+                                        IPersonenSync personenSync)
         {
-            _gpMgr = gpm;
-            _pMgr = pm;
-            _auMgr = aum;
-            _adrMgr = adm;
-            _groepenMgr = groepenMgr;
-            _gwjMgr = gwjm;
-            _cvMgr = cvm;
-            _catMgr = cm;
+            _communicatieVormRepo = repositoryProvider.RepositoryGet<CommunicatieVorm>();
+            _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
+            _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
+            _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
+            _categorieenRepo = repositoryProvider.RepositoryGet<Categorie>();
+            _communicatieTypesRepo = repositoryProvider.RepositoryGet<CommunicatieType>();
+
+            _autorisatieMgr = autorisatieMgr;
+            _communicatieVormenMgr = communicatieVormenMgr;
             _gebruikersRechtenMgr = gebruikersRechtenMgr;
+
+            _communicatieSync = communicatieSync;
+            _personenSync = personenSync;
         }
 
-        #endregion
+        #region Disposable etc
 
-        #region IGelieerdePersonenService Members
+        private bool disposed = false;
 
-        #region Bewaren
-
-        /// <summary>
-        /// Updatet een persoon op basis van <paramref name="persoonInfo"/>
-        /// </summary>
-        /// <param name="persoonInfo">Info over te bewaren persoon</param>
-        /// <returns>ID van de bewaarde persoon</returns>
-        public int Bewaren(PersoonInfo persoonInfo)
+        public void Dispose()
         {
-            try
-            {
-                // Haal eerst gelieerde persoon op.
-                var gp = _gpMgr.Ophalen(persoonInfo.GelieerdePersoonID);
-                gp.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;
-
-                Mapper.Map(persoonInfo, gp.Persoon);
-                // In de hoop dat de members die geen 'Ignore hebben' overschreven worden,
-                // en de andere niet.
-                // Zo moet bijv. 'AdInAanvraag' bewaard blijven.
-
-                _gpMgr.Bewaren(gp, PersoonsExtras.Geen);
-
-                return persoonInfo.GelieerdePersoonID;
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return 0;
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
-        /// <paramref>groepID</paramref>
-        /// </summary>
-        /// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en
-        /// de velden van <c>info.Persoon</c></param>
-        /// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
-        /// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
-        /// <remarks>Adressen, Communicatievormen,... worden niet mee gepersisteerd; enkel de persoonsinfo
-        /// en de Chiroleeftijd.</remarks>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IDPersEnGP Aanmaken(PersoonInfo info, int groepID)
+        protected virtual void Dispose(bool disposing)
         {
-            return this.AanmakenForceer(info, groepID, false);
-        }
-
-        /// <summary>
-        /// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven <paramref>groepID</paramref>
-        /// </summary>
-        /// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en de velden van <c>info.Persoon</c></param>
-        /// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
-        /// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
-        /// <param name="forceer">Als deze <c>true</c> is, wordt de nieuwe persoon sowieso gemaakt, ook
-        /// al lijkt hij op een bestaande gelieerde persoon.  Is <paramref>force</paramref>
-        /// <c>false</c>, dan wordt er een exceptie opgegooid als de persoon te hard lijkt op een
-        /// bestaande.</param>
-        /// <remarks>Adressen, Communicatievormen,... worden niet mee gepersisteerd; enkel de persoonsinfo
-        /// en de Chiroleeftijd.</remarks>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IDPersEnGP AanmakenForceer(PersoonInfo info, int groepID, bool forceer)
-        {
-            // Indien 'forceer' niet gezet is, moet een FaultException opgeworpen worden
-            // als de  nieuwe persoon te hard lijkt op een bestaande Gelieerde Persoon.
-
-            // FIXME: Deze businesslogica moet in de workers gebeuren, waar dan een exception opgeworpen
-            // kan worden, die we hier mappen op een faultcontract.
-
-            var nieuwePersoon = new Persoon
+            if (!this.disposed)
             {
-                AdNummer = info.AdNummer,
-                VoorNaam = info.VoorNaam,
-                Naam = info.Naam,
-                GeboorteDatum = info.GeboorteDatum,
-                Geslacht = info.Geslacht
-            };
-
-            if (!forceer)
-            {
-                IList<GelieerdePersoon> bestaandePersonen =
-                    _gpMgr.ZoekGelijkaardig(nieuwePersoon, groepID);
-
-                if (bestaandePersonen.Count > 0)
+                if (disposing)
                 {
-                    var fault = new BlokkerendeObjectenFault<PersoonDetail>
-                    {
-                        Objecten = Mapper.Map<IList<GelieerdePersoon>, IList<PersoonDetail>>(bestaandePersonen)
-                    };
-
-                    throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault);
-
-                    // ********************************************************************************
-                    // * BELANGRIJK: Als je debugger breakt op deze throw, dan is dat geen probleem.  *
-                    // * Dat wil gewoon zeggen dat er een gelieerde persoon gevonden is die lijkt op  *
-                    // * de nieuw toe te voegen persoon.  Er gaat een faultexception over de lijn,    *
-                    // * die door de UI gecatcht moet worden.                                         *
-                    // ********************************************************************************
+                    // Dispose managed resources.
+                    _communicatieVormRepo.Dispose();
+                    _gelieerdePersonenRepo.Dispose();
                 }
+                disposed = true;
             }
-
-            // De parameter 'info' wordt hier eigenlijk niet gebruikt als GelieerdePersoon,
-            // maar als datacontract dat de persoonsinfo en de Chiroleeftijd bevat.
-
-            Groep g = _groepenMgr.Ophalen(groepID);
-
-            // Gebruik de businesslaag om info.Persoon te koppelen aan de opgehaalde groep.
-
-            GelieerdePersoon gelieerd = _gpMgr.Koppelen(nieuwePersoon, g, info.ChiroLeefTijd);
-            gelieerd = _gpMgr.Bewaren(gelieerd, PersoonsExtras.Groep);
-            return new IDPersEnGP { GelieerdePersoonID = gelieerd.ID, PersoonID = gelieerd.Persoon.ID };
         }
-        #endregion
 
-        #region Ophalen
-
-        /// <summary>
-        /// Haalt gelieerde personen op die in een bepaalde categorie zitten, met lidinfo, 
-        /// volgens de pagineringsparameters,
-        /// en telt over hoeveel personen het gaat
-        /// </summary>
-        /// <param name="categorieID">De ID van de categorie waartoe de gelieerde personen moeten behoren</param>
-        /// <param name="pagina">Het volgnummer van de 'pagina' die we willen bekijken</param>
-        /// <param name="paginaGrootte">Het aantal personen dat er per pagina weergegeven moet worden</param>
-        /// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
-        /// <param name="aantalTotaal">Het totaal aantal personen in de opgegeven categorie</param>
-        /// <returns>Een lijst van persoonsgegevens</returns>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
+        ~GelieerdePersonenService()
         {
-            try
-            {
-                var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
-                    categorieID,
-                    letter,
-                    sortering,
-                    PersoonsExtras.Categorieen | PersoonsExtras.LedenDitWerkJaar,
-                    out aantalTotaal);
-                return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                aantalTotaal = 0;
-                return null;
-            }
+            Dispose(false);
         }
+
+        #endregion
 
         /// <summary>
         /// Haalt een persoonsgegevens op van gelieerde personen van een groep,
         /// inclusief eventueel lidobject voor het recentste werkJaar.
         /// </summary>
-        /// <param name="gelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
+        /// <param name="selectieGelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
-        /// <remarks>KanLidWorden en KanLeidingWorden worden door deze method gewoon genegeerd.</remarks>
-        public IList<PersoonDetail> OphalenMetLidInfo(IEnumerable<int> gelieerdePersoonIDs)
+        public IList<PersoonDetail> OphalenMetLidInfo(IEnumerable<int> selectieGelieerdePersoonIDs)
         {
-            var gelieerdePersonen = _gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.LedenDitWerkJaar);
-            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(selectieGelieerdePersoonIDs);
+
+            if (gelieerdePersonen.Any(gp => !_autorisatieMgr.IsGav(gp)))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
 
             return result;
-        }
-
-        /// <summary>
-        /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
-        /// </summary>
-        /// <param name="groepID">De ID van de groep waaruit we de gelieerde persoonsnamen gaan halen</param>
-        /// <returns>Lijst met de eerste letter van de namen</returns>
-        public IList<String> EersteLetterNamenOphalen(int groepID)
-        {
-            return _gpMgr.EersteLetterNamenOphalen(groepID);
-        }
-
-        /// <summary>
-        /// Haal een lijst op van de eerste letters van de achternamen van gelieerde personen van
-        /// de categorie met ID <paramref name="categorieID"/>
-        /// </summary>
-        /// <param name="categorieID">
-        ///   ID van de Categorie waaruit we de letters willen halen
-        /// </param>
-        /// <returns>
-        /// Lijst met de eerste letter gegroepeerd van de achternamen
-        /// </returns>
-        public IList<string> EersteLetterNamenOphalenCategorie(int categorieID)
-        {
-            return _gpMgr.EersteLetterNamenOphalenCategorie(categorieID);
         }
 
         /// <summary>
@@ -298,135 +140,58 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="groepID">ID van de betreffende groep</param>
         /// <param name="letter">Beginletter van de achternaam</param>
-        /// <param name="sortering">Geeft aan hoe de personen gesorteerd moeten worden</param>
         /// <param name="aantalTotaal">Outputparameter; levert het totaal aantal personen in de groep op</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
+        public IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, out int aantalTotaal)
         {
-            try
-            {
-                var gelieerdePersonen = _gpMgr.Ophalen(
-                    groepID,
-                    letter,
-                    sortering,
-                    PersoonsExtras.Categorieen | PersoonsExtras.LedenDitWerkJaar,
-                    out aantalTotaal);
-                var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+            var groep = _groepenRepo.ByID(groepID);
 
-                /*
-                 * TODO dit staat mss niet op de beste plek
-                 * Ophalen afdelingsjaren in het huidige werkJaar (TODO niet als een vorig werkJaar bekeken wordt)
-                 * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
-                 * als dit het geval is, kanlidworden op true zetten.
-                 * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
-                 * 
-                 * TODO dubbele code in detailsophalen
-                 */
-                GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
-                foreach (var p in result)
-                {
-                    if (p.GeboorteDatum == null)
-                    {
-                        continue;
-                    }
-                    if (p.SterfDatum.HasValue)
-                    {
-                        continue;
-                    }
-
-                    int geboortejaar = p.GeboorteDatum.Value.Year - p.ChiroLeefTijd;
-                    var afd = (from a in gwj.AfdelingsJaar
-                               where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
-                               select a).FirstOrDefault();
-                    if (afd != null)
-                    {
-                        p.KanLidWorden = true;
-                    }
-                    if (p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Settings.Default.LeidingVanafLeeftijd.ToString()) + p.ChiroLeefTijd)
-                    {
-                        p.KanLeidingWorden = true;
-                    }
-                }
-                return result;
-            }
-            catch (Exception ex)
+            if (!_autorisatieMgr.IsGav(groep))
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                aantalTotaal = 0;
-                return null;
+                throw FaultExceptionHelper.GeenGav();
             }
+
+            var gelieerdePersonen = from gp in groep.GelieerdePersoon
+                                    where
+                                        String.Compare((gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1), letter,
+                                                       StringComparison.InvariantCultureIgnoreCase) == 0
+                                    select gp;
+            
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
+            aantalTotaal = groep.GelieerdePersoon.Count;
+
+            return result;
         }
 
         /// <summary>
-        /// Haalt gelieerde personen op, met lidinfo, 
-        /// volgens de pagineringsparameters,
-        /// en telt over hoeveel personen het gaat
+        /// Haalt persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
+        /// waarvan de naam begint met de gegeven <paramref name="letter"/>
+        /// inclusief eventueel lidobject voor het recentste werkJaar.
         /// </summary>
-        /// <param name="groepID">De ID van de groep waartoe de gelieerde personen moeten behoren</param>
-        /// <param name="pagina">Het volgnummer van de 'pagina' die we willen bekijken</param>
-        /// <param name="paginaGrootte">Het aantal personen dat er per pagina weergegeven moet worden</param>
-        /// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
-        /// <param name="aantalTotaal">Het totaal aantal personen in de opgegeven categorie</param>
-        /// <returns>Een lijst van persoonsgegevens</returns>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
+        /// <param name="categorieID">ID van de gevraagde categorie</param>
+        /// <param name="letter">letter waarmee de naam moet beginnen</param>
+        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
+        /// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
+        /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
+        public IList<PersoonDetail> OphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
         {
-            try
-            {
-                var gelieerdePersonen = _gpMgr.PaginaOphalen(
-                    groepID,
-                    pagina,
-                    paginaGrootte,
-                    sortering,
-                    PersoonsExtras.Categorieen | PersoonsExtras.LedenDitWerkJaar,
-                    out aantalTotaal);
-                var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+            var categorie = _categorieenRepo.ByID(categorieID);
 
-                /*
-                 * TODO dit staat mss niet op de beste plek
-                 * Ophalen afdelingsjaren in het huidige werkJaar (TODO niet als een vorig werkJaar bekeken wordt)
-                 * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
-                 * als dit het geval is, kanlidworden op true zetten.
-                 * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
-                 * 
-                 * TODO dubbele code in detailsophalen
-                 */
-                GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
-                foreach (var p in result)
-                {
-                    if (p.GeboorteDatum == null)
-                    {
-                        continue;
-                    }
-                    if (p.SterfDatum.HasValue)
-                    {
-                        continue;
-                    }
-
-                    int geboortejaar = p.GeboorteDatum.Value.Year - p.ChiroLeefTijd;
-                    var afd = (from a in gwj.AfdelingsJaar
-                               where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
-                               select a).FirstOrDefault();
-                    if (afd != null)
-                    {
-                        p.KanLidWorden = true;
-                    }
-                    if (p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Settings.Default.LeidingVanafLeeftijd.ToString()) + p.ChiroLeefTijd)
-                    {
-                        p.KanLeidingWorden = true;
-                    }
-                }
-                return result;
-            }
-            catch (Exception ex)
+            if (!_autorisatieMgr.IsGav(categorie))
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                aantalTotaal = 0;
-                return null;
+                throw FaultExceptionHelper.GeenGav();
             }
+
+            var gelieerdePersonen = from gp in categorie.GelieerdePersoon
+                                    where
+                                        String.Compare((gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1), letter,
+                                                       StringComparison.InvariantCultureIgnoreCase) == 0
+                                    select gp;
+
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
+            aantalTotaal = categorie.GelieerdePersoon.Count;
+
+            return result;
         }
 
         /// <summary>
@@ -434,36 +199,77 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
         /// <returns>List van PersoonInfo overeenkomend met die IDs</returns>
-        public IList<PersoonInfo> PersoonInfoOphalen(IList<int> gelieerdePersoonIDs)
+        public IList<PersoonInfo> InfoOphalen(IList<int> gelieerdePersoonIDs)
         {
-            try
+            var p = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIDs);
+
+            if (!_autorisatieMgr.IsGav(p))
             {
-                return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonInfo>>(
-                    _gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Geen));
+                throw FaultExceptionHelper.GeenGav();
             }
-            catch (Exception ex)
+
+            return Mapper.Map<IList<GelieerdePersoon>, List<PersoonInfo>>(p);
+        }
+
+        /// <summary>
+        /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
+        /// </summary>
+        /// <param name="groepID">De ID van de groep waaruit we de gelieerde persoonsnamen gaan halen</param>
+        /// <returns>Lijst met de eerste letter van de namen</returns>
+        public IList<string> EersteLetterNamenOphalen(int groepID)
+        {
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
+                throw FaultExceptionHelper.GeenGav();
             }
+
+            // ik concatenate hieronder naam en voornaam, om personen op te vangen 
+            // zonder familienaam. Blijkbaar zijn er zo. (Als dat maar goed komt...)
+
+            return (from gp in groep.GelieerdePersoon
+                          orderby gp.Persoon.Naam + gp.Persoon.VoorNaam
+                          select (gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1).ToUpper()).Distinct().ToList();
+        }
+
+        /// <summary>
+        /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een categorie
+        /// </summary>
+        /// <param name="categorieID">ID van de categorie waaruit we de letters willen halen</param>
+        /// <returns>Lijst met de eerste letter van de namen</returns>
+        public IList<string> EersteLetterNamenOphalenCategorie(int categorieID)
+        {
+            var categorie = _categorieenRepo.ByID(categorieID);
+
+            if (!_autorisatieMgr.IsGav(categorie))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            // ik concatenate hieronder naam en voornaam, om personen op te vangen 
+            // zonder familienaam. Blijkbaar zijn er zo. (Als dat maar goed komt...)
+
+            return (from gp in categorie.GelieerdePersoon
+                    orderby gp.Persoon.Naam + gp.Persoon.VoorNaam
+                    select (gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1).ToUpper()).Distinct().ToList();
         }
 
         /// <summary>
         /// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
         /// </summary>
         /// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
-        /// <returns>GelieerdePersoon met persoonsgegevens</returns>
+        /// <returns>GelieerdePersoon met persoonsgegevens, communicatievorm en adressen</returns>
         public PersoonDetail DetailOphalen(int gelieerdePersoonID)
         {
-            try
+            var p = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
+
+            if (!_autorisatieMgr.IsGav(p))
             {
-                return Mapper.Map<GelieerdePersoon, PersoonDetail>(_gpMgr.DetailsOphalen(gelieerdePersoonID));
+                throw FaultExceptionHelper.GeenGav();
             }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
-            }
+
+            return Mapper.Map<GelieerdePersoon, PersoonDetail>(p);
         }
 
         /// <summary>
@@ -477,59 +283,38 @@ namespace Chiro.Gap.Services
         /// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
         /// functies
         /// </returns>
-        /// <remarks>Ook vervallen gebruikersrechten worden mee opgeleverd</remarks>
         public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID)
         {
-            try
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
+
+            if (gelieerdePersoon == null || !_autorisatieMgr.IsGav(gelieerdePersoon))
             {
-                // TODO (#656): Dit moet properder!
-
-                var gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
-                var gwj = _gwjMgr.RecentsteOphalen(gp.Groep.ID, GroepsWerkJaarExtras.GroepsFuncties | GroepsWerkJaarExtras.Afdelingen);
-
-                var result = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
-
-                // selecteer gebruikersrecht voor eigen groep.
-
-                var gebruikersrecht = gp.Persoon.Gav.SelectMany(gav => gav.GebruikersRecht).FirstOrDefault(gr => gr.Groep.ID == gp.Groep.ID);
-
-                if (gebruikersrecht != null)
-                {
-                    // Als er gebruikersrecht is, map dat dan naar GebruikersInfo
-                    result.GebruikersInfo = Mapper.Map<Orm.GebruikersRecht, GebruikersInfo>(gebruikersrecht);
-                }
-                else if (gp.Persoon.Gav.Any())
-                {
-                    // Als er een gebruiker zonder rechten is, map dan ook naar GebruikersInfo
-                    result.GebruikersInfo = Mapper.Map<Gav, GebruikersInfo>(gp.Persoon.Gav.FirstOrDefault());
-                }
-
-                // Dit lijkt me meer business
-
-                var p = result.PersoonDetail;
-                if (p.GeboorteDatum != null)
-                {
-                    var geboortejaar = p.GeboorteDatum.Value.Year - p.ChiroLeefTijd;
-                    var afd = (from a in gwj.AfdelingsJaar
-                               where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
-                               select a).FirstOrDefault();
-                    if (afd != null)
-                    {
-                        p.KanLidWorden = true;
-                    }
-                    if (geboortejaar < DateTime.Today.Year - Int32.Parse(Settings.Default.LeidingVanafLeeftijd.ToString()) + p.ChiroLeefTijd)
-                    {
-                        p.KanLeidingWorden = true;
-                    }
-                }
-
-                return result;
+                throw FaultExceptionHelper.GeenGav();
             }
-            catch (Exception ex)
+
+            var result = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gelieerdePersoon);
+
+            // Gebruikersrechten kunnen nog niet automatisch gemapt worden.
+
+            // Als er gebruikersrechten zijn op de eigen groep, dan mappen we die gebruikersrechten naar 
+            // GebruikersInfo
+
+            var gebruikersRecht = _gebruikersRechtenMgr.GebruikersRechtGet(gelieerdePersoon);
+
+            if (gebruikersRecht != null)
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
+                result.GebruikersInfo = Mapper.Map<Poco.Model.GebruikersRecht, GebruikersInfo>(gebruikersRecht);
             }
+
+            // Als er geen gebruikersrecht is op eigen groep, maar wel een gebruiker, dan mappen we de gebruiker
+            // naar GebruikersInfo
+
+            if (gelieerdePersoon.Persoon.Gav.Any())
+            {
+                result.GebruikersInfo = Mapper.Map<Gav, GebruikersInfo>(gelieerdePersoon.Persoon.Gav.FirstOrDefault());
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -537,48 +322,44 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="categorieID">Indien verschillend van 0, worden alle personen uit de categore met
         /// gegeven CategoreID opgehaald.  Anders alle personen tout court.</param>
-        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
         /// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
-        public IEnumerable<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID, PersoonSorteringsEnum sortering)
+        public IList<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID)
         {
-            try
-            {
-                int totaal;
+            var categorie = _categorieenRepo.ByID(categorieID);
 
-                var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
-                    categorieID,
-                    "A-Z",
-                    sortering,
-                    PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres,
-                    out totaal);
-
-                return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
-            }
-            catch (Exception ex)
+            if (!_autorisatieMgr.IsGav(categorie))
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
+                throw FaultExceptionHelper.GeenGav();
             }
+
+            var gelieerdePersonen = from gp in categorie.GelieerdePersoon
+                                    select gp;
+
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonOverzicht>>(gelieerdePersonen);
+
+            return result;
         }
 
         /// <summary>
         /// Haalt gegevens op van alle personen uit groep met ID <paramref name="groepID"/>.
         /// </summary>
         /// <param name="groepID">ID van de groep waaruit de personen gehaald moeten worden</param>
-        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
         /// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
-        public IEnumerable<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering)
+        public IList<PersoonOverzicht> AllenOphalenUitGroep(int groepID)
         {
-            try
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
             {
-                var gelieerdePersonen = _gpMgr.AllenOphalen(groepID, PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres, sortering);
-                return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
+                throw FaultExceptionHelper.GeenGav();
             }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
-            }
+
+            var gelieerdePersonen = from gp in groep.GelieerdePersoon
+                                    select gp;
+
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonOverzicht>>(gelieerdePersonen);
+
+            return result;
         }
 
         /// <summary>
@@ -586,18 +367,95 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdePersoonIDs">IDs van de gelieerdepersonen waarover informatie opgehaald moet worden</param>
         /// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
-        public IEnumerable<PersoonOverzicht> AllenOphalenUitLijst(IList<int> gelieerdePersoonIDs)
+        public IEnumerable<PersoonOverzicht> OverzichtOphalen(IList<int> gelieerdePersoonIDs)
         {
-            try
+            var p = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIDs);
+
+            if (!_autorisatieMgr.IsGav(p))
             {
-                var gelieerdePersonen = _gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Adressen | PersoonsExtras.Communicatie | PersoonsExtras.VoorkeurAdres);
-                return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
+                throw FaultExceptionHelper.GeenGav();
             }
-            catch (Exception ex)
+
+            return Mapper.Map<IList<GelieerdePersoon>, List<PersoonOverzicht>>(p);
+        }
+
+        /// <summary>
+        /// Updatet een bestaand persoon op basis van <paramref name="persoonInfo"/>
+        /// </summary>
+        /// <param name="persoonInfo">Info over te bewaren persoon</param>
+        /// <returns>GelieerdePersoonID van de bewaarde persoon</returns>
+        public int Bewaren(PersoonInfo persoonInfo)
+        {
+            var gp = _gelieerdePersonenRepo.ByID(persoonInfo.GelieerdePersoonID);
+
+            if (gp == null || !_autorisatieMgr.IsGav(gp))
             {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
+                throw FaultExceptionHelper.GeenGav();
             }
+
+            if (gp.Persoon.AdNummer != null && gp.Persoon.AdNummer != persoonInfo.AdNummer)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout, Resources.AdNummerNietWijzigen);
+            }
+
+            gp.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;   // Chiroleeftijd vullen we gauw zo in
+            Mapper.Map(persoonInfo, gp.Persoon);    // overschrijf persoonsgegevens met info uit persoonInfo
+
+
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+            _gelieerdePersonenRepo.SaveChanges();
+            if (gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag)
+            {
+                _personenSync.Bewaren(gp, false, false);
+            }
+#if KIPDORP    
+            }
+#endif
+            return gp.ID;
+        }
+
+        /// <summary>
+        /// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
+        /// <paramref>groepID</paramref>
+        /// </summary>
+        /// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren</param>
+        /// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
+        /// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
+        public IDPersEnGP Aanmaken(PersoonInfo info, int groepID)
+        {
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+        }
+
+        /// <summary>
+        /// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven <paramref>groepID</paramref>
+        /// </summary>
+        /// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren</param>
+        /// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
+        /// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
+        /// <param name="forceer">Als deze <c>true</c> is, wordt de nieuwe persoon sowieso gemaakt, ook
+        /// al lijkt hij op een bestaande gelieerde persoon.  Is <paramref>force</paramref>
+        /// <c>false</c>, dan wordt er een exceptie opgegooid als de persoon te hard lijkt op een
+        /// bestaande.</param>
+        /// <remarks>Adressen, Communicatievormen,... worden niet mee gepersisteerd; enkel de persoonsinfo
+        /// en de Chiroleeftijd.  Ik had deze functie ook graag 'aanmaken' genoemd (zie coding guideline
+        /// 190), maar dat mag blijkbaar niet bij services.</remarks>
+        public IDPersEnGP AanmakenForceer(PersoonInfo info, int groepID, bool forceer)
+        {
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+        }
+
+        /// <summary>
+        /// Haalt PersoonID op van een gelieerde persoon
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
+        /// <returns>PersoonID van de persoon gekoppeld aan de gelieerde persoon bepaald door <paramref name="gelieerdePersoonID"/></returns>
+        /// <remarks>Eigenlijk is dit een domme method, maar ze wordt gemakshalve nog gebruikt.</remarks>
+        public int PersoonIDGet(int gelieerdePersoonID)
+        {
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -611,18 +469,7 @@ namespace Chiro.Gap.Services
         /// <remarks>Dit is nogal een domme method, maar ze is nodig om ticket #710 te fixen.</remarks>
         public IDPersEnGP[] Opzoeken(int groepID, string naam, string voornaam)
         {
-            try
-            {
-                var gevonden = _gpMgr.ZoekenOpNaam(groepID, naam, voornaam);
-
-                return (from g in gevonden
-                        select new IDPersEnGP { GelieerdePersoonID = g.ID, PersoonID = g.Persoon.ID }).ToArray();
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -635,26 +482,11 @@ namespace Chiro.Gap.Services
         /// <remarks>Deze method levert enkel naam, voornaam en gelieerdePersoonID op!</remarks>
         public IEnumerable<PersoonInfo> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
         {
-            try
-            {
-                var gevonden = _gpMgr.ZoekenOpNaamVoornaamBegin(groepID, teZoeken);
-
-                return (from g in gevonden
-                        select new PersoonInfo { GelieerdePersoonID = g.ID, Naam = g.Persoon.Naam, VoorNaam = g.Persoon.VoorNaam }).ToArray();
-            }
-            catch (GeenGavException ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
-        #endregion
-
-        #region Gezinnen en adressen
-
         /// <summary>
-        /// Haalt adres op, met daaraan gekoppeld de bewoners (gelieerde personen) uit de groep met ID <paramref name="groepID"/>.
+        /// Haalt adres op, met daaraan gekoppeld de bewoners uit de groep met ID <paramref name="groepID"/>.
         /// </summary>
         /// <param name="adresID">ID op te halen adres</param>
         /// <param name="groepID">ID van de groep</param>
@@ -662,18 +494,7 @@ namespace Chiro.Gap.Services
         /// <remarks>GelieerdePersoonID's van bewoners worden niet mee opgehaald</remarks>
         public GezinInfo GezinOphalen(int adresID, int groepID)
         {
-            try
-            {
-                var adres = _adrMgr.AdresMetBewonersOphalen(adresID, groepID);
-                var resultaat = Mapper.Map<Adres, GezinInfo>(adres);
-
-                return resultaat;
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -682,85 +503,27 @@ namespace Chiro.Gap.Services
         /// naar Persoon-NieuwAdres.)
         /// </summary>
         /// <param name="gelieerdePersoonIDs">ID's van te verhuizen *GELIEERDE* Personen </param>
-        /// <param name="naarAdres">AdresInfo-object met nieuwe adresgegevens</param>
+        /// <param name="nieuwAdres">AdresInfo-object met nieuwe adresgegevens</param>
         /// <param name="oudAdresID">ID van het oude adres</param>
-        /// <remarks>De ID van nieuwAdres wordt genegeerd.  Het adresID wordt altijd
+        /// <remarks>De ID van <paramref name="nieuwAdres"/> wordt genegeerd.  Het adresID wordt altijd
         /// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
         /// dan krijgt het adres een nieuw ID.</remarks>
-        public void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs,
-            PersoonsAdresInfo naarAdres,
-            int oudAdresID)
+        public void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs, PersoonsAdresInfo nieuwAdres, int oudAdresID)
         {
-            try
-            {
-                // Zoek adres op in database, of maak een nieuw.
-                // (als straat en gemeente gekend)
-                Adres nieuwAdres;
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+        }
 
-                try
-                {
-                    nieuwAdres = _adrMgr.ZoekenOfMaken(naarAdres);
-                }
-                catch (OngeldigObjectException ex)
-                {
-                    var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-
-                    throw new FaultException<OngeldigObjectFault>(fault);
-                }
-
-                // Haal te verhuizen personen op, samen met hun adressen.
-                // Ik neem ook alle gelieerde personen mee.  Op die manier weten we welke
-                // adressen er ergens een voorkeuradres zijn; straks nodig voor syncen.
-                // (Dit is nogal een lelijke manier van werken)
-
-                IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalenViaGelieerdePersoon(
-                    gelieerdePersoonIDs,
-                    PersoonsExtras.Adressen | PersoonsExtras.AlleGelieerdePersonen);
-
-                // Kijk na of het naar-adres toevallig mee opgehaald is.  Zo ja, werken we daarmee verder
-                // (iet of wat consistenter)
-
-                // Loop-variabele kopiëren naar lokale variabele om "Access to modified closure" te vermijden 
-                // - zie [wiki:VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure]
-                Adres adres = nieuwAdres;
-                PersoonsAdres a = personenLijst.SelectMany(prs => prs.PersoonsAdres)
-                                    .Where(pa => pa.Adres.ID == adres.ID).FirstOrDefault();
-
-                if (a != null)
-                {
-                    nieuwAdres = a.Adres;
-                }
-
-                // Het oud adres is normaal gezien gekoppeld aan een van de te verhuizen personen.
-
-                Adres oudAdres = personenLijst.SelectMany(prs => prs.PersoonsAdres)
-                                    .Where(pa => pa.Adres.ID == oudAdresID).Select(pa => pa.Adres).FirstOrDefault();
-
-                try
-                {
-                    _pMgr.Verhuizen(personenLijst, oudAdres, nieuwAdres, naarAdres.AdresType);
-                }
-                catch (BlokkerendeObjectenException<PersoonsAdres> ex)
-                {
-                    var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>,
-                        BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
-
-                    throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
-                }
-
-                // Persisteren
-                _adrMgr.Bewaren(nieuwAdres);
-
-                // Bij een verhuis blijven de PersoonsAdresobjecten dezelfde,
-                // maar worden ze aan een ander adres gekoppeld.  Een post
-                // van het nieuwe adres (met persoonsadressen) koppelt bijgevolg
-                // de persoonsobjecten los van het oude adres.
-                // Bijgevolg moet het oudeAdres niet gepersisteerd worden.
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
+        /// <summary>
+        /// Haalt alle personen op die een adres gemeen hebben met de
+        /// Persoon bepaald door gelieerdePersoonID
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van GelieerdePersoon</param>
+        /// <returns>Lijst met Personen die huisgenoot zijn van gegeven
+        /// persoon</returns>
+        /// <remarks>Parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
+        public IList<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
+        {
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -772,79 +535,17 @@ namespace Chiro.Gap.Services
         /// <param name="voorkeur"><c>True</c> als het nieuwe adres het voorkeursadres moet worden.</param>
         public void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersonenIDs, PersoonsAdresInfo adr, bool voorkeur)
         {
-            try
-            {
-                // Adres opzoeken in database
-                Adres adres;
-                try
-                {
-                    adres = _adrMgr.ZoekenOfMaken(adr);
-                }
-                catch (OngeldigObjectException ex)
-                {
-                    var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-
-                    throw new FaultException<OngeldigObjectFault>(fault);
-                }
-
-                // Personen ophalen.  Haal ook gelieerde personen uit andere groepen op, omdat daarvan
-                // mogelijk ook het voorkeursadres verandert (indien er bijv. geen voorkeursadres is)
-
-                IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalenViaGelieerdePersoon(
-                    gelieerdePersonenIDs, PersoonsExtras.Adressen | PersoonsExtras.AlleGelieerdePersonen);
-
-                // Voor het adres te koppelen, gebruiken we enkel de gelieerde personen met ID's uit gelieerdePersonenIDs.  
-                //   - het nieuwe adres wordt aan persoon gekoppeld, en niet aan gelieerde persoon
-                //   - de parameter 'voorkeur' is van toepassing op de gp's met ID's uit gelieerdePersonenIDs
-
-                var gpLijst = from gp in personenLijst.SelectMany(p => p.GelieerdePersoon)
-                              where gelieerdePersonenIDs.Contains(gp.ID)
-                              select gp;
-
-                try
-                {
-                    _gpMgr.AdresToevoegen(gpLijst, adres, adr.AdresType, voorkeur);
-                }
-                catch (BlokkerendeObjectenException<PersoonsAdres> ex)
-                {
-                    var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>, BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
-
-                    throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
-                }
-
-                // persisteren
-                _adrMgr.Bewaren(adres);
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
-        /// Verwijdert voor de personen met de opgegeven ID's de link met het adres met de opgegeven ID
+        /// Verwijdert een adres van een verzameling personen
         /// </summary>
-        /// <param name="personenIDs">De ID's van de personen over wie het gaat</param>
-        /// <param name="adresID">De ID van het adres in kwestie</param>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        /// <param name="personenIDs">ID's van de personen over wie het gaat</param>
+        /// <param name="adresID">ID van het adres dat losgekoppeld moet worden</param>
         public void AdresVerwijderenVanPersonen(IList<int> personenIDs, int adresID)
         {
-            try
-            {
-                // Adres ophalen, met bewoners voor GAV
-                Adres adr = _adrMgr.AdresMetBewonersOphalen(adresID, _auMgr.MijnGroepIDsOphalen(), true);
-
-                IList<PersoonsAdres> teVerwijderen = (from pa in adr.PersoonsAdres
-                                                      where personenIDs.Contains(pa.Persoon.ID)
-                                                      select pa).ToList();
-
-                _gpMgr.AdressenVerwijderen(teVerwijderen);
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -858,218 +559,108 @@ namespace Chiro.Gap.Services
         /// aan een *gelieerde* persoon.</remarks>
         public void VoorkeursAdresMaken(int persoonsAdresID, int gelieerdePersoonID)
         {
-            try
-            {
-                GelieerdePersoon gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen);
-
-                var voorkeur = (from pa in gp.Persoon.PersoonsAdres
-                                where pa.ID == persoonsAdresID
-                                select pa).FirstOrDefault();
-
-                _gpMgr.VoorkeurInstellen(gp, voorkeur);
-                _gpMgr.Bewaren(gp, PersoonsExtras.Adressen);
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
-
-        /// <summary>
-        /// Haalt de relevante info op van personen die op hetzelfde adres wonen als de gelieerde persoon
-        /// met de opgegeven ID
-        /// </summary>
-        /// <param name="gelieerdePersoonID">De ID van de gelieerde persoon in kwestie</param>
-        /// <returns>Een lijst met identificatiegegevens van de huisgenoten van de gelieerde persoon</returns>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
-        {
-            try
-            {
-                IList<GelieerdePersoon> lijst = _gpMgr.HuisGenotenOphalenZelfdeGroep(gelieerdePersoonID);
-
-                // Opgelet: als de return een exception throwt, dan is er waarschijnljk een ongeldig adrestype
-                // mee gemoeid. Eventueel moet hier nog een specifiek catch-block toegevoegd worden.
-
-                return Mapper.Map<IList<GelieerdePersoon>, IList<BewonersInfo>>(lijst);
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
-            }
-        }
-
-        #endregion
-
-        #region Communicatie
 
         /// <summary>
         /// Voegt een commvorm toe aan een gelieerde persoon
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
-        /// <param name="commDetail">De communicatievorm die aan die persoon gekoppeld moet worden</param>
-        public void CommunicatieVormToevoegen(int gelieerdePersoonID, CommunicatieInfo commDetail)
+        /// <param name="commInfo">De communicatievorm die aan die persoon gekoppeld moet worden</param>
+        public void CommunicatieVormToevoegen(int gelieerdePersoonID, CommunicatieInfo commInfo)
         {
-            GelieerdePersoon gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Communicatie);
-
-            var bestaandeMetVoorkeur = (from cv in gp.Communicatie
-                                        where cv.CommunicatieType.ID == commDetail.CommunicatieTypeID && cv.Voorkeur
-                                        select cv).ToList();
-            // in theorie kan er maar 1 met voorkeur zijn, in praktijk zullen er hier en daar 
-            // personen zijn met meer dan 1 voorkeur per communicatievorm, t.g.v. ticket #385.
-
-            var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(commDetail);
-            communicatieVorm.ID = 0; // zodat de communicatievorm zeker als nieuw wordt beschouwd.
-            communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(commDetail.CommunicatieTypeID);
-
-            try
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
+            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
             {
-                _cvMgr.Koppelen(gp, communicatieVorm);
-                _cvMgr.Bewaren(communicatieVorm);
-            }
-            catch (ValidatieException ex)
-            {
-                // TODO (#497): specifiekere info bij in de exceptie.
-                // OPM: ex.Message als bericht opgenomen in de FoutNummerFault. Is dat voldoende?
-                throw new FaultException<FoutNummerFault>(new FoutNummerFault
-                                                              {
-                                                                  FoutNummer = FoutNummer.ValidatieFout,
-                                                                  Bericht = ex.Message
-                                                              });
+                throw FaultExceptionHelper.GeenGav();
             }
 
-            // Wanneer de nieuwe communicatievorm niet de voorkeurscommunicatievorm is, dan volstaat het
-            // enkel de nieuwe communicatievorm te bewaren (en te syncen naar Kipadmin).
+            var communicatieVorm = new CommunicatieVorm();
 
-            if (communicatieVorm.Voorkeur)
+            Mapper.Map(commInfo, communicatieVorm);
+            communicatieVorm.ID = 0;    // zodat die zeker als nieuw wordt beschouwd
+            communicatieVorm.CommunicatieType = _communicatieTypesRepo.ByID(commInfo.CommunicatieTypeID);
+
+            // Communicatievormen koppelen is een beetje een gedoe, omdat je die voorkeuren hebt,
+            // en het concept 'gezinsgebonden' (wat eigenlijk niet helemaal klopt)
+            // Al die brol handelen we af in de manager.
+
+            var gekoppeld = _communicatieVormenMgr.Koppelen(gelieerdePersoon, communicatieVorm);
+            var tesyncen = (from cv in gekoppeld
+                            where
+                                cv.GelieerdePersoon.Persoon.AdNummer != null || cv.GelieerdePersoon.Persoon.AdInAanvraag
+                            select cv).ToList();
+
+#if KIPDORP
+            using (var tx = new TransactionScope())
             {
-                // Is de nieuwe communicatievorm wél de voorkeurscommunicatie, dan moet ook de communicatievorm
-                // die zijn voorkeur verloren heeft opnieuw worden bewaard.
-
-                foreach (var cv in bestaandeMetVoorkeur)
-                {
-                    // ik verwacht dat de CommunicatieVormManager.Koppelen de 'Voorkeur' van deze ondertussen
-                    // op 'false' heeft gezet.
-                    _cvMgr.Bewaren(cv);
-                }
+#endif
+                    _communicatieVormRepo.SaveChanges();
+                    // TODO (#1409): welke communicatievorm de voorkeur heeft, gaat verloren bij de sync
+                    // naar Kipadmin. 
+                    foreach (var cv in tesyncen)
+                    {
+                        _communicatieSync.Toevoegen(cv);
+                    }
+#if KIPDORP    
             }
+#endif
+
         }
 
         /// <summary>
-        /// Verwijdert de link tussen een persoon en de communicatievorm met de opgegeven ID
+        /// Verwijdert een communicatievorm van een gelieerde persoon
         /// </summary>
-        /// <param name="commvormID">
-        /// De ID van de communicatievorm die niet langer aan de persoon in kwestie gelinkt moet zijn
-        /// </param>
-        /// <returns>
-        /// De ID van de gelieerde persoon bij wie de verwijdering uitgevoerd is
-        /// </returns>
+        /// <param name="commvormID">ID van de communicatievorm</param>
+        /// <returns>De ID van de gelieerdepersoon die bij de commvorm hoort</returns>
         public int CommunicatieVormVerwijderenVanPersoon(int commvormID)
         {
-            int gelieerdePersoonID = -1;
-            try
-            {
-                var cv = _cvMgr.OphalenMetGelieerdePersoon(commvormID);
-                if (cv == null)
-                {
-                    throw new ArgumentException(Resources.FouteCommunicatieVormVoorPersoonString);
-                }
-                gelieerdePersoonID = cv.GelieerdePersoon.ID;
-                _cvMgr.CommunicatieVormVerwijderen(cv);	// persisteert
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
-            return gelieerdePersoonID;
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
-
-        // TODO dit moet gecontroleerd worden!  => *Wat* moet er gecontroleerd worden?
 
         /// <summary>
         /// Persisteert de wijzigingen aan een bestaande communicatievorm
         /// </summary>
-        /// <param name="info">Info mbt de aan te passen communicatievorm</param>
-        public void CommunicatieVormAanpassen(CommunicatieInfo info)
+        /// <param name="c">De aan te passen communicatievorm</param>
+        public void CommunicatieVormAanpassen(CommunicatieInfo c)
         {
-            // Haal originele communicatievorm op, inclusief gelieerde persoon en diens
-            // andere communicatievormen.
+            var communicatieVorm = (from cv in _communicatieVormRepo.Select()
+                                    where cv.ID == c.ID
+                                    select cv).FirstOrDefault();
 
-            var cv = _cvMgr.OphalenMetGelieerdePersoon(info.ID);
-            int origCommunicatieTypeID = cv.CommunicatieType.ID;
+            // TODO: Ik weet eigenlijk nog niet of lazy loading werkt.
+            // Mag ik er vanuitgaan dat eender wat ik achteraf nodig heb, bijgeladen
+            // wordt?
 
-            // Kijk of er al communicatievormen van hetzelfde type bestaan die de voorkeur
-            // hebben.  Dat is relevant voor als de aangepaste de voorkeur heeft, en we diegene
-            // die hun voorkeur verliezen moeten persisteren.
-            // (In theorie kan er maar 1 de voorkeur zijn.  In praktijk is er ticket #385, waardoor
-            // er sommigen meer dan 1 voorkeurs-e-mailadres, -telefoonnr.,... hebben.  Vandaar dat
-            // we een lijst opzoeken)
+            // Autorisatie:
 
-            var bestaandeMetVoorkeur = (from cov in cv.GelieerdePersoon.Communicatie
-                                        where cov.CommunicatieType.ID == info.CommunicatieTypeID && cov.Voorkeur
-                                        select cov).ToList();
-
-            // Map nieuwe gegevens op originele communicatievorm
-
-            Mapper.Map(info, cv);
-
-            // Als het type veranderde, dan moeten we wat foefelare
-
-            if (info.CommunicatieTypeID != origCommunicatieTypeID)
+            if (communicatieVorm == null || !_autorisatieMgr.IsGav(communicatieVorm))
             {
-                cv.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(info.CommunicatieTypeID);
+                throw FaultExceptionHelper.GeenGav();
             }
 
-            try
-            {
-                if (info.Voorkeur)
-                {
-                    _cvMgr.VoorkeurZetten(cv);
+            // Het origineel nummer gaan we nodig hebben, opdat KipSync zou weten
+            // welke communicatievorm te vervangen.
 
-                    // Als de aan te passen communicatievorm de voorkeur heeft,
-                    // dan zijn er misschien bestaande die hun voorkeur verliezen.  
-                    // Persisteer dus ook die andere.  (De check op ID's vermijdt
-                    // dat we de gewijzigde ook bewaren; dat doen we zodadelijk 
-                    // sowieso)
+            string origineelNummer = communicatieVorm.Nummer;
 
-                    foreach (var cov in bestaandeMetVoorkeur.Where(bv => bv.ID != info.ID))
-                    {
-                        _cvMgr.Bewaren(cov);
-                    }
-                }
+            // Worker gebruiken voor bijwerken, owv de IsVoorkeur
+            _communicatieVormenMgr.Bijwerken(communicatieVorm, c);
 
-                // Bewaar uiteindelijk de aan te passen communicatievorm
-                _cvMgr.Bewaren(cv);
-            }
-            catch (ValidatieException ex)
+            // Niet vergeten te bewaren en te syncen
+#if KIPDORP
+            using (var tx = new TransactionScope())
             {
-                // TODO (#497): specifiekere info bij in de exceptie
-                throw new FaultException<FoutNummerFault>(new FoutNummerFault
-                                                              {
-                                                                  FoutNummer = FoutNummer.ValidatieFout,
-                                                                  Bericht = ex.Message
-                                                              });
-            }
-        }
-
-        /// <summary>
-        /// Haalt detail van een communicatievorm op
-        /// </summary>
-        /// <param name="commvormID">ID van de communicatievorm waarover het gaat</param>
-        /// <returns>De communicatievorm met de opgegeven ID</returns>
-        public CommunicatieDetail CommunicatieVormOphalen(int commvormID)
-        {
-            try
+#endif
+            _communicatieVormRepo.SaveChanges();
+            if (communicatieVorm.GelieerdePersoon.Persoon.AdNummer != null ||
+                communicatieVorm.GelieerdePersoon.Persoon.AdInAanvraag)
             {
-                return Mapper.Map<CommunicatieVorm, CommunicatieDetail>(_cvMgr.Ophalen(commvormID));
+                _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
             }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
+#if KIPDORP
             }
+#endif
         }
 
         /// <summary>
@@ -1079,159 +670,61 @@ namespace Chiro.Gap.Services
         /// <returns>Info over het gevraagde communicatietype</returns>
         public CommunicatieTypeInfo CommunicatieTypeOphalen(int commTypeID)
         {
-            try
-            {
-                return Mapper.Map<CommunicatieType, CommunicatieTypeInfo>(
-                    _cvMgr.CommunicatieTypeOphalen(commTypeID));
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
-            }
+            // Communicatietypes zijn voor iedereen leesbaar
+            // (het gaat hier om 'e-mail','telefoonnr',...
+            var communicatietype = _communicatieTypesRepo.ByID(commTypeID);
+            return Mapper.Map<CommunicatieType, CommunicatieTypeInfo>(communicatietype);
+
         }
 
         /// <summary>
-        /// Een lijst ophalen van beschikbare communicatietypes
+        /// Haalt een lijst op met alle communicatietypes
         /// </summary>
-        /// <returns>Een lijst van beschikbare communicatietypes</returns>
+        /// <returns>Een lijst op met alle communicatietypes</returns>
         public IEnumerable<CommunicatieTypeInfo> CommunicatieTypesOphalen()
         {
-            try
-            {
-                return Mapper.Map<IEnumerable<CommunicatieType>, IEnumerable<CommunicatieTypeInfo>>(
-                    _cvMgr.CommunicatieTypesOphalen());
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return null;
-            }
+            var communicatietypes = _communicatieTypesRepo.GetAll();
+            return Mapper.Map<IEnumerable<CommunicatieType>, List<CommunicatieTypeInfo>>(communicatietypes);
         }
 
-        #endregion
-
-        #region Categorieën
+        /// <summary>
+        /// Haalt detail van een communicatievorm op
+        /// </summary>
+        /// <param name="commvormID">ID van de communicatievorm waarover het gaat</param>
+        /// <returns>De communicatievorm met de opgegeven ID</returns>
+        public CommunicatieDetail CommunicatieVormOphalen(int commvormID)
+        {
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
+        }
 
         /// <summary>
-        /// Koppelt een lijst gebruikers aan een categorie
+        /// Voegt een collectie gelieerde personen op basis van hun ID toe aan een collectie categorieën
         /// </summary>
-        /// <param name="gelieerdepersonenIDs">ID's van de te koppelen gebruikers</param>
-        /// <param name="categorieIDs">ID's van de te koppelen categorieën</param>
-        /* zie #273 */
-        // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        /// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen</param>
+        /// <param name="categorieIDs">ID's van de categorieën waaraan ze toegevoegd moeten worden</param>
         public void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs)
         {
-            try
-            {
-                IList<GelieerdePersoon> gelpersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
-
-                Debug.Assert(gelpersonen != null);
-                // Als er geen personen gevonden zijn, dan krijg je een lege lijst.  
-                // Als gelpersonen null is, dan heeft de manager waarschijnlijk een mock opgeroepen van de DAO.
-
-                foreach (int catID in categorieIDs)
-                {
-                    Categorie categorie = _catMgr.Ophalen(catID);
-
-                    // Koppelen
-                    _gpMgr.CategorieKoppelen(gelpersonen, categorie);
-
-                    // Bewaren
-                    _catMgr.BewarenMetPersonen(categorie);
-                }
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
-        /// Koppelt een lijst gebruikers los van een categorie
+        /// Haalt een collectie gelieerde personen uit de opgegeven categorie
         /// </summary>
-        /// <param name="gelieerdepersonenIDs">ID's van los te koppelen gebruikers</param>
-        /// <param name="categorieID">ID van de categorie</param>
+        /// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen over wie het gaat</param>
+        /// <param name="categorieID">ID van de categorie waaruit ze verwijderd moeten worden</param>
         public void CategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID)
         {
-            try
-            {
-                // Haal categorie op met groep
-                Categorie categorie = _catMgr.Ophalen(categorieID);
-
-                // Ontkoppelen en persisteren (verwijderen persisteert altijd meteen)
-                _gpMgr.CategorieLoskoppelen(gelieerdepersonenIDs, categorie);
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-            }
-        }
-
-        #endregion categorieën
-
-        /// <summary>
-        /// Verlengt het gebruikersrecht van de GAV met login <paramref name="gebruikersRechtID"/> tot 14 maanden na vandaag.
-        /// </summary>
-        /// <param name="gebruikersRechtID">ID te verlengen gebruikersrecht</param>
-        public void GebruikersRechtVerlengen(int gebruikersRechtID)
-        {
-            var gebruikersRecht = _gebruikersRechtenMgr.Ophalen(gebruikersRechtID);
-            _gebruikersRechtenMgr.Verlengen(gebruikersRecht);
-            _gebruikersRechtenMgr.Bewaren(gebruikersRecht);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
-        /// Neemt alle gebruikersrechten af van de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>
-        /// voor zijn eigen groep.  (Concreet wordt de vervaldatum op gisteren gezet.)
+        /// Bestelt Dubbelpunt voor de persoon met GelieerdePersoonID <paramref name="gelieerdePersoonID"/>.
         /// </summary>
-        /// <param name="id">ID van de gelieerde persoon</param>
-        public void GelieerdePersoonRechtenAfnemen(int id)
+        /// <param name="gelieerdePersoonID">ID van gelieerde persoon van persoon die Dubbelpunt wil</param>
+        public void DubbelPuntBestellen(int gelieerdePersoonID)
         {
-            // Haal gelieerde persoon op met eventuele bestaande gebruikersrechten en communicatie
-
-            var gp = _gpMgr.Ophalen(id, PersoonsExtras.GebruikersRechten | PersoonsExtras.Groep);
-
-            var gebruikersRecht = (from gr in gp.Persoon.Gav.FirstOrDefault().GebruikersRecht
-                                   where gr.Groep.ID == gp.Groep.ID
-                                   select gr).FirstOrDefault();
-
-            _gebruikersRechtenMgr.Intrekken(gebruikersRecht);
-
-            _gebruikersRechtenMgr.Bewaren(gebruikersRecht);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
-
-        /// <summary>
-        /// Trekt het gebruikersrecht met gegeven <paramref name="gebruikersRechtID"/> in.  (I.e. zet vervaldatum
-        /// op gisteren)
-        /// </summary>
-        /// <param name="gebruikersRechtID">ID in te trekken gebruikersrecht</param>
-        public void GebruikersRechtIntrekken(int gebruikersRechtID)
-        {
-            var gebruikersRecht = _gebruikersRechtenMgr.Ophalen(gebruikersRechtID);
-            _gebruikersRechtenMgr.Intrekken(gebruikersRecht);
-            _gebruikersRechtenMgr.Bewaren(gebruikersRecht);
-        }
-
-        /// <summary>
-        /// Haalt de PersoonID op van de gelieerde persoon met de opgegeven ID
-        /// </summary>
-        /// <param name="gelieerdePersoonID">De ID van de gelieerde persoon in kwestie</param>
-        /// <returns>De persoonID van de gelieerde persoon in kwestie</returns>
-        public int PersoonIDGet(int gelieerdePersoonID)
-        {
-            try
-            {
-                // TODO (#154): Heel de gelieerde persoon + persoon ophalen voor enkel 1 ID is nog altijd overkill
-                return _gpMgr.Ophalen(gelieerdePersoonID).Persoon.ID;
-            }
-            catch (Exception ex)
-            {
-                FoutAfhandelaar.FoutAfhandelen(ex);
-                return 0;
-            }
-        }
-
-        #endregion
+        
     }
 }

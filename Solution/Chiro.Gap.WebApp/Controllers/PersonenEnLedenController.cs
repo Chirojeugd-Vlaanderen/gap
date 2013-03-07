@@ -41,7 +41,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="gelieerdePersoonIDs">ID's uit te schrijven gelieerde personen</param>
         /// <param name="groepID">ID van groep waarvoor uit te schrijven</param>
         /// <param name="succesboodschap">Feedback die gegeven zal worden bij succes</param>
-		protected void GelieerdePersonenUitschrijven(IEnumerable<int> gelieerdePersoonIDs, int groepID, string succesboodschap)
+		protected void GelieerdePersonenUitschrijven(IList<int> gelieerdePersoonIDs, int groepID, string succesboodschap)
 		{
             // Ik vind het een beetje vreemd dat het succesbericht hier een parameter is.
             

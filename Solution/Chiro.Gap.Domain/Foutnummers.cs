@@ -34,6 +34,7 @@ namespace Chiro.Gap.Domain
 		AlgemeneLeidingFout,
 		OnbekendGeslachtFout,
         LidTeJong,
+        LidTypeVerkeerd,
 		#endregion
 
 		#region verkeerde groep

@@ -1,19 +1,24 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.ServiceModel;
+using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm.DataInterfaces;
-using Moq;
-using Chiro.Gap.Dummies;
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.TestDbInfo;
 using System.Security.Principal;
 using System.Threading;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using System;
+using Chiro.Cdf.Poco;
+using Chiro.Gap.Domain;
+using Moq;
+using Chiro.Gap.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using Chiro.Gap.WorkerInterfaces;
+using System.Collections.Generic;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -129,5 +134,113 @@ namespace Chiro.Gap.Services.Test
 			Assert.IsTrue(afdeling != null);
 			#endregion
 		}
+
+        ///<summary>
+        /// Kijkt na of er een foutmelding komt als een gebruiker probeert een functie bij te maken met een code
+        /// die al bestaat voor een nationale functie (in dit geval 'CP')
+        ///</summary>
+        [TestMethod()]
+        [ExpectedException(typeof(FaultException<BestaatAlFault<FunctieInfo>>))]
+        public void FunctieToevoegenNationaleCode()
+        {
+            // Arrange.
+
+            // De groep:
+            int groepID = 123;          // arbitraire groepID
+            var groep = new ChiroGroep {ID = groepID};
+
+            // De bestaande nationale functie:
+
+            var bestaandeFunctie = new Functie
+                                       {
+                                           Code = "CP",
+                                           IsNationaal = true
+                                       };
+
+
+            // Mocking opzetten. Maak een groepenrepository en een functiesrepository die enkel
+            // opleveren wat we hierboven creeerden.
+
+            var groepenRepositoryMock = new Mock<IRepository<Groep>>();
+            groepenRepositoryMock.Setup(src => src.ByID(It.IsAny<int>())).Returns(groep);
+            var functieRepositoryMock = new Mock<IRepository<Functie>>();
+            functieRepositoryMock.Setup(src => src.Select()).Returns((new[] {bestaandeFunctie}).AsQueryable());
+
+            // Vervolgens configureren we een repositoryprovider, die de gemockte repository oplevert.
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>()).Returns(groepenRepositoryMock.Object);
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(functieRepositoryMock.Object);
+
+            // Tenslotte configureren we de IOC-container om de gemockte repository provider 
+            // te gebruiken.
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // Nu kunnen we de service die we willen testen creeren:
+
+            var target = Factory.Maak<GroepenService>();
+
+            // Act.
+
+            // gegevens van de nieuwe functie. Op de code na arbitrair
+            string naam = "Championplukker";    // naam van nieuwe functie
+            string code = bestaandeFunctie.Code;    // code die toevallig gelijk is aan die van de bestaande functie
+            Nullable<int> maxAantal = null;     // geen max. aantal voor de functie
+            int minAantal = 0;                  // ook geen min. aantal
+            LidType lidType = LidType.Alles;    // lidtype irrelevant voor deze functie
+            Nullable<int> werkJaarVan = 2012;   // in gebruik vanaf 2012-2013
+            
+            target.FunctieToevoegen(groepID, naam, code, maxAantal, minAantal, lidType, werkJaarVan);
+
+            // Assert
+
+            Assert.Fail();  // De bedoeling is dat we hier niet komen, maar dat een exception werd gethrowd.
+        }
+
+
+        /// <summary>
+        ///Kijkt na of 'functiesOphalen' al minstens de nationale functies ophaalt.
+        ///</summary>
+        [TestMethod]
+        public void FunctiesOphalenTest()
+        {
+            // groepswerkjaar
+            var groepsWerkJaar = new GroepsWerkJaar
+                                     {
+                                         ID = 1,
+                                         Groep = new ChiroGroep(),
+                                         WerkJaar = 2012
+                                     };
+
+            // nationale functie
+            var nationaleFunctie = new Functie
+                                       {
+                                           ID = 2,
+                                           IsNationaal = true,
+                                           Type = LidType.Alles,
+                                           Niveau = Niveau.Alles
+                                       };
+
+            // zet repositoryprovider zodanig op dat ons testgroepswerkjaar wordt opgeleverd
+            // door de GroepsWerkJarenRepository, en onze testnationalefunctie door de FunctiesRepository
+
+            var gwjRepo = new DummyRepo<GroepsWerkJaar>(new[] {groepsWerkJaar});
+            var funRepo = new DummyRepo<Functie>(new[] {nationaleFunctie});
+
+
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>()).Returns(gwjRepo);
+            repoProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(funRepo);
+
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            var target = Factory.Maak<GroepenService>();
+
+            // Haal alle functies op relevant voor het groepswerkjaar met ID 1.
+            var actual = target.FunctiesOphalen(1, LidType.Alles);
+
+            Assert.AreEqual(actual.First().ID, 2);
+        }
 	}
 }

@@ -41,6 +41,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -81,10 +82,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FaultExceptionHelper.cs" />
+    <Compile Include="GavChecker.cs" />
     <Compile Include="AbonnementenService.svc.cs">
       <DependentUpon>AbonnementenService.svc</DependentUpon>
     </Compile>
-    <Compile Include="FoutAfhandelaar.cs" />
     <Compile Include="GebruikersService.svc.cs">
       <DependentUpon>GebruikersService.svc</DependentUpon>
     </Compile>
@@ -111,24 +113,18 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SecurityGroepen.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="UitstappenService.svc.cs">
       <DependentUpon>UitstappenService.svc</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
+      <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
+      <Name>Chiro.Ad.ServiceContracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Adf\Chiro.Adf.csproj">
       <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
       <Name>Chiro.Adf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
-      <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
-      <Name>Chiro.Cdf.Data.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
-      <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
-      <Name>Chiro.Cdf.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
@@ -138,21 +134,37 @@
       <Project>{18FF2008-106F-48A6-BEFB-5F8B301354D0}</Project>
       <Name>Chiro.Cdf.Mailer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Data\Chiro.Gap.Data.csproj">
-      <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
-      <Name>Chiro.Gap.Data</Name>
+    <ProjectReference Include="..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
+      <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
+      <Name>Chiro.Cdf.Poco</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj">
+      <Project>{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}</Project>
+      <Name>Chiro.Cdf.UnityWcfExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
       <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
       <Name>Chiro.Gap.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
-      <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
-      <Name>Chiro.Gap.Orm</Name>
+    <ProjectReference Include="..\Chiro.Gap.Poco.Context\Chiro.Gap.Poco.Context.csproj">
+      <Project>{C83B2DF6-4352-4FAD-A09E-9C59DC335B05}</Project>
+      <Name>Chiro.Gap.Poco.Context</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Poco\Chiro.Gap.Poco.Model.csproj">
+      <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
+      <Name>Chiro.Gap.Poco.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj">
+      <Project>{08F94344-8414-4136-8314-4B7380B10CD7}</Project>
+      <Name>Chiro.Gap.ServiceContracts.Mappers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
       <Name>Chiro.Gap.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
+      <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
+      <Name>Chiro.Gap.SyncInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Sync\Chiro.Gap.Sync.csproj">
       <Project>{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}</Project>
@@ -162,21 +174,13 @@
       <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
       <Name>Chiro.Gap.WorkerInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
-      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
-      <Name>Chiro.Gap.Workers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj">
-      <Project>{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}</Project>
-      <Name>Chiro.Cdf.DependencyInjectionBehavior</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj">
-      <Project>{08F94344-8414-4136-8314-4B7380B10CD7}</Project>
-      <Name>Chiro.Gap.ServiceContracts.Mappers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\tools\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
+      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
+      <Name>Chiro.Gap.Workers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

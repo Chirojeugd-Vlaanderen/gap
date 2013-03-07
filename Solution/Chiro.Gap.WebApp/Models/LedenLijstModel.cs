@@ -18,7 +18,7 @@ namespace Chiro.Gap.WebApp.Models
         /// <summary>
         /// Een lijst met ID's van gelieerde personen, gebruikt voor selecties
         /// </summary>
-        public IEnumerable<int> SelectieGelieerdePersoonIDs { get; set; }
+        public IList<int> SelectieGelieerdePersoonIDs { get; set; }
 
         /// <summary>
         /// Kunnen de gegevens van de leden gewijzigd worden?

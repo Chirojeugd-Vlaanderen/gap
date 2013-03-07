@@ -248,12 +248,12 @@ namespace Chiro.Gap.WebApp.Controllers
                 return;
             }
             
-            if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.NogNietVanBelang || aangiftestatus.AlgemeneStatus == BivakAangifteStatus.Ingevuld)
+            if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.NogNietVanBelang || aangiftestatus.AlgemeneStatus == BivakAangifteStatus.Ok)
             {
                 return;
             }
             
-            if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.DringendInTeVullen && aangiftestatus.Bivakinfos.Count == 0)
+            if (aangiftestatus.AlgemeneStatus == BivakAangifteStatus.Ontbrekend && aangiftestatus.Bivakinfos.Count == 0)
             {
                 var url = Url.Action("Nieuw", "Uitstappen");
                 mededelingen.Add(new Mededeling
@@ -266,7 +266,7 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 foreach (var bivakstatus in aangiftestatus.Bivakinfos)
                 {
-                    if (bivakstatus.Status == BivakAangifteStatus.PlaatsEnPersoonInTeVullen)
+                    if (bivakstatus.Status == BivakAangifteStatus.PlaatsEnContactOntbreekt)
                     {
                         var url = Url.Action("Bekijken", "Uitstappen", new { id = bivakstatus.ID });
                         mededelingen.Add(new Mededeling
@@ -275,7 +275,7 @@ namespace Chiro.Gap.WebApp.Controllers
                             Info = String.Format(Properties.Resources.BeideNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
                         });
                     }
-                    if (bivakstatus.Status == BivakAangifteStatus.PlaatsInTeVullen)
+                    if (bivakstatus.Status == BivakAangifteStatus.PlaatsOntbreekt)
                     {
                         var url = Url.Action("PlaatsBewerken", "Uitstappen", new { id = bivakstatus.ID });
                         mededelingen.Add(new Mededeling
@@ -284,7 +284,7 @@ namespace Chiro.Gap.WebApp.Controllers
                             Info = String.Format(Properties.Resources.AdresNogInvullenOpBivakAangifte, bivakstatus.Omschrijving, url)
                         });
                     }
-                    else if (bivakstatus.Status == BivakAangifteStatus.PersoonInTeVullen)
+                    else if (bivakstatus.Status == BivakAangifteStatus.ContactOntbreekt)
                     {
                         var url = Url.Action("Bekijken", "Uitstappen", new { id = bivakstatus.ID });
                         mededelingen.Add(new Mededeling

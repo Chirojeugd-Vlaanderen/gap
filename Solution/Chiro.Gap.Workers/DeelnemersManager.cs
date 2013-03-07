@@ -4,11 +4,9 @@
 
 using System.Diagnostics;
 using System.Linq;
-
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
 {
@@ -17,46 +15,11 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class DeelnemersManager
     {
-        private readonly IDeelnemersDao _deelnemersDao;
         private readonly IAutorisatieManager _autorisatieMgr;
 
-        /// <summary>
-        /// Dependency injection via deze constructor
-        /// </summary>
-        /// <param name="deelnemersDao">
-        /// De deelnemersdao
-        /// </param>
-        /// <param name="autorisatieManager">
-        /// De autorisatiemanager
-        /// </param>
-        public DeelnemersManager(IDeelnemersDao deelnemersDao, IAutorisatieManager autorisatieManager)
+        public DeelnemersManager(IAutorisatieManager autorisatieManager)
         {
-            _deelnemersDao = deelnemersDao;
             _autorisatieMgr = autorisatieManager;
-        }
-
-        /// <summary>
-        /// Haalt een deelnemer op, inclusief persoon en uitstap.
-        /// </summary>
-        /// <param name="deelnemerID">
-        /// ID op te halen deelnemer
-        /// </param>
-        /// <returns>
-        /// Deelnemer, inclusief persoon, uitstap, groepswerkjaar, groep
-        /// </returns>
-        public Deelnemer Ophalen(int deelnemerID)
-        {
-            if (!_autorisatieMgr.IsGavDeelnemer(deelnemerID))
-            {
-                throw new GeenGavException();
-            }
-            else
-            {
-                return _deelnemersDao.Ophalen(
-                    deelnemerID, 
-                    d => d.GelieerdePersoon.Persoon, 
-                    d => d.Uitstap.GroepsWerkJaar.Groep);
-            }
         }
 
         /// <summary>
@@ -74,7 +37,7 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public Deelnemer InstellenAlsContact(Deelnemer deelnemer)
         {
-            if (!_autorisatieMgr.IsGavDeelnemer(deelnemer.ID))
+            if (!_autorisatieMgr.IsGav(deelnemer))
             {
                 throw new GeenGavException();
             }
@@ -100,42 +63,6 @@ namespace Chiro.Gap.Workers
             }
 
             return deelnemer;
-        }
-
-        /// <summary>
-        /// Verwijdert de gegeven <paramref name="deelnemer"/> van zijn uitstap.  Persisteert
-        /// </summary>
-        /// <param name="deelnemer">
-        /// Te verwijderen deelnemer.
-        /// </param>
-        public void Verwijderen(Deelnemer deelnemer)
-        {
-            if (!_autorisatieMgr.IsGavDeelnemer(deelnemer.ID))
-            {
-                throw new GeenGavException();
-            }
-
-            // Ik ga die deelnemer verwijderen via een stored procedure, omdat ik het anders
-            // niet goed krijg als de deelnemer ook contact is (denk ik).
-            _deelnemersDao.Verwijderen(deelnemer);
-        }
-
-        /// <summary>
-        /// Bewaart de deelnemer, en enkel de deelnemer.  Koppelingen met andere entiteiten worden
-        /// momenteel genegeerd.
-        /// </summary>
-        /// <param name="deelnemer">
-        /// Te bewaren deelnemer
-        /// </param>
-        public void Bewaren(Deelnemer deelnemer)
-        {
-            if (!_autorisatieMgr.IsGavDeelnemer(deelnemer.ID))
-            {
-                throw new GeenGavException();
-            }
-
-            // Bewaren
-            _deelnemersDao.Bewaren(deelnemer);
         }
     }
 }

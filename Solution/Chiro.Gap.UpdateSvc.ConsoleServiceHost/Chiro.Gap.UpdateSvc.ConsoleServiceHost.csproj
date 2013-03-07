@@ -80,10 +80,6 @@
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj">
-      <Project>{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}</Project>
-      <Name>Chiro.Cdf.DependencyInjectionBehavior</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
@@ -91,10 +87,6 @@
     <ProjectReference Include="..\Chiro.Cdf.ServiceModel\Chiro.Cdf.ServiceModel.csproj">
       <Project>{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}</Project>
       <Name>Chiro.Cdf.ServiceModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Data\Chiro.Gap.Data.csproj">
-      <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
-      <Name>Chiro.Gap.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>

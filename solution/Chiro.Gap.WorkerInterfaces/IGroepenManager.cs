@@ -1,71 +1,11 @@
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WorkerInterfaces
 {
     public interface IGroepenManager
     {
-        /// <summary>
-        /// Verwijdert alle gelieerde personen van de groep met ID <paramref name="groepID"/>.  Probeert ook
-        /// de gekoppelde personen te verwijderen, indien <paramref name="verwijderPersonen"/> <c>true</c> is.
-        /// Verwijdert ook mogelijke lidobjecten.
-        /// PERSISTEERT!
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van de groep waarvan je de gelieerde personen wilt verwijderen
-        /// </param>
-        /// <param name="verwijderPersonen">
-        /// Indien <c>true</c>, worden ook de personen vewijderd waarvoor
-        /// een GelieerdePersoon met de groep bestond.
-        /// </param>
-        /// <remarks>
-        /// Deze functie vereist super-GAV-rechten
-        /// </remarks>
-        void GelieerdePersonenVerwijderen(int groepID, bool verwijderPersonen);
-
-        /// <summary>
-        /// Persisteert groep in de database
-        /// </summary>
-        /// <param name="g">
-        /// Te persisteren groep
-        /// </param>
-        /// <returns>
-        /// De bewaarde groep
-        /// </returns>
-        Groep Bewaren(Groep g);
-
-        /// <summary>
-        /// Haalt een groepsobject op zonder gerelateerde entiteiten
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van de op te halen groep
-        /// </param>
-        /// <returns>
-        /// De groep met de opgegeven ID <paramref name="groepID"/>
-        /// </returns>
-        Groep Ophalen(int groepID);
-
-        /// <summary>
-        /// Haalt de groepen met gegeven <paramref name="groepIDs"/> op, zonder gekoppelde entiteiten.
-        /// </summary>
-        /// <param name="groepIDs">ID's van op te halen groepen</param>
-        /// <returns>De opgehaalde groepen</returns>
-        Groep[] Ophalen(int[] groepIDs);
-
-        /// <summary>
-        /// Haalt een groepsobject op
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van de op te halen groep
-        /// </param>
-        /// <param name="extras">
-        /// Geeft aan of er gekoppelde entiteiten mee opgehaald moeten worden.
-        /// </param>
-        /// <returns>
-        /// De groep met de opgegeven ID <paramref name="groepID"/>
-        /// </returns>
-        Groep Ophalen(int groepID, GroepsExtras extras);
-
         /// <summary>
         /// Maakt een nieuwe categorie, en koppelt die aan een bestaande groep (met daaraan
         /// gekoppeld zijn categorieën)
@@ -86,63 +26,34 @@ namespace Chiro.Gap.WorkerInterfaces
         Categorie CategorieToevoegen(Groep g, string categorieNaam, string categorieCode);
 
         /// <summary>
-        /// Maakt een nieuwe (groepseigen) functie voor groep <paramref name="g"/>.  Persisteert niet.
+        /// Zoekt in de eigen functies de gegeven <paramref name="groep"/> en in de nationale functies een
+        /// functie met gegeven <paramref name="code"/>.
         /// </summary>
-        /// <param name="g">
-        /// Groep waarvoor de functie gemaakt wordt, inclusief minstens het recentste werkJaar
-        /// </param>
-        /// <param name="naam">
-        /// Naam van de functie
-        /// </param>
-        /// <param name="code">
-        /// Code van de functie
-        /// </param>
-        /// <param name="maxAantal">
-        /// Maximumaantal leden in de categorie.  Onbeperkt indien null.
-        /// </param>
-        /// <param name="minAantal">
-        /// Minimumaantal leden in de categorie.
-        /// </param>
-        /// <param name="lidType">
-        /// LidType waarvoor de functie van toepassing is
-        /// </param>
-        /// <returns>
-        /// De nieuwe (gekoppelde) functie
-        /// </returns>
-        Functie FunctieToevoegen(
-            Groep g, 
-            string naam, 
-            string code, 
-            int? maxAantal, 
-            int minAantal, 
-            LidType lidType);
+        /// <param name="groep">Groep waarvoor functie gezocht moet worden</param>
+        /// <param name="code">Code van de te zoeken functie</param>
+        /// <param name="functieRepo"></param>
+        Functie FunctieZoeken(Groep groep, string code, IRepository<Functie> functieRepo);
 
         /// <summary>
-        /// Maakt een nieuw groepswerkjaar voor een gegeven <paramref name="groep"/>
+        /// Converteert een <paramref name="lidType"/> naar een niveau, gegeven het niveau van de
+        /// groep (<paramref name="groepsNiveau"/>)
         /// </summary>
-        /// <param name="groep">
-        /// Groep waarvoor een groepswerkjaar gemaakt moet worden
-        /// </param>
-        /// <param name="werkJaar">
-        /// Int die het werkJaar identificeert (bv. 2009 voor 2009-2010)
-        /// </param>
-        /// <returns>
-        /// Het gemaakte groepswerkjaar.
-        /// </returns>
-        /// <remarks>
-        /// Persisteert niet.
-        /// </remarks>
-        GroepsWerkJaar GroepsWerkJaarMaken(Groep groep, int werkJaar);
+        /// <param name="lidType">Leden, Leiding of allebei</param>
+        /// <param name="groepsNiveau">Plaatselijke groep, gewestploeg, verbondsploeg, satelliet</param>
+        /// <returns>Niveau van het <paramref name="lidType"/> voor een groep met gegeven <paramref name="groepsNiveau"/></returns>
+        Niveau LidTypeNaarMiveau(LidType lidType, Niveau groepsNiveau);
+        
+        /// <summary>
+        /// Bepaalt het huidige groepswerkjaar van de gegeven <paramref name="groep"/>
+        /// </summary>
+        /// <param name="groep">De groep waarvoor het huidige werkjaar gevraagd is</param>
+        /// <returns>Huidige groepswerkjaar van de groep</returns>
+        GroepsWerkJaar HuidigWerkJaar(Groep groep);
 
         /// <summary>
-        /// Haalt groep op met gegeven stamnummer, incl recentse groepswerkjaar
+        /// Geeft <c>true</c> als we in de live-omgeving werken
         /// </summary>
-        /// <param name="code">
-        /// Stamnummer op te halen groep
-        /// </param>
-        /// <returns>
-        /// Groep met <paramref name="code"/> als stamnummer
-        /// </returns>
-        Groep Ophalen(string code);
+        /// <returns><c>true</c> als we in de live-omgeving werken</returns>
+        bool IsLive();
     }
 }

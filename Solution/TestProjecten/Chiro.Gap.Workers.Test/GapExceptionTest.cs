@@ -1,10 +1,9 @@
+using System.Linq;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-
-using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Workers.Test

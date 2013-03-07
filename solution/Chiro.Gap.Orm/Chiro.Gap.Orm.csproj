@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Chiro.Gap.Orm</RootNamespace>
+    <AssemblyName>Chiro.Gap.Orm</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Entity">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abonnement.cs" />
+    <Compile Include="Adres.cs" />
+    <Compile Include="DataInterfaces\IAbonnementenDao.cs" />
+    <Compile Include="DataInterfaces\IChiroGroepenDao.cs" />
+    <Compile Include="DataInterfaces\IDeelnemersDao.cs" />
+    <Compile Include="DataInterfaces\IPlaatsenDao.cs" />
+    <Compile Include="DataInterfaces\IUitstappenDao.cs" />
+    <Compile Include="Deelnemer.cs" />
+    <Compile Include="Plaats.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Publicatie.cs" />
+    <Compile Include="SyncInterfaces\IBivakSync.cs" />
+    <Compile Include="SyncInterfaces\IGroepenSync.cs" />
+    <Compile Include="Uitstap.cs" />
+    <Compile Include="Categorie.cs" />
+    <Compile Include="ChiroGroep.cs" />
+    <Compile Include="ChiroGroepModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChiroGroepModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicatieType.cs" />
+    <Compile Include="DataInterfaces\IAdressenDao.cs" />
+    <Compile Include="DataInterfaces\IAfdelingenDao.cs" />
+    <Compile Include="DataInterfaces\IAfdelingsJarenDao.cs" />
+    <Compile Include="DataInterfaces\ICategorieenDao.cs" />
+    <Compile Include="DataInterfaces\ICommunicatieTypeDao.cs" />
+    <Compile Include="DataInterfaces\ICommunicatieVormDao.cs" />
+    <Compile Include="DataInterfaces\IFunctiesDao.cs" />
+    <Compile Include="DataInterfaces\IGavDao.cs" />
+    <Compile Include="DataInterfaces\IGroepsWerkJaarDao.cs" />
+    <Compile Include="DataInterfaces\IKindDao.cs" />
+    <Compile Include="DataInterfaces\ILandenDao.cs" />
+    <Compile Include="DataInterfaces\ILeidingDao.cs" />
+    <Compile Include="DataInterfaces\IPersonenDao.cs" />
+    <Compile Include="AfdelingsJaar.cs" />
+    <Compile Include="Afdeling.cs" />
+    <Compile Include="DataInterfaces\LedenDaoCollectie.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Functie.cs" />
+    <Compile Include="Gav.cs" />
+    <Compile Include="GroepsWerkJaar.cs" />
+    <Compile Include="KaderGroep.cs" />
+    <Compile Include="Land.cs" />
+    <Compile Include="OfficieleAfdeling.cs" />
+    <Compile Include="DataInterfaces\IAutorisatieDao.cs" />
+    <Compile Include="DataInterfaces\IGelieerdePersonenDao.cs" />
+    <Compile Include="DataInterfaces\IGroepenDao.cs" />
+    <Compile Include="DataInterfaces\ILedenDao.cs" />
+    <Compile Include="DataInterfaces\IStratenDao.cs" />
+    <Compile Include="DataInterfaces\ISubgemeenteDao.cs" />
+    <Compile Include="GebruikersRecht.cs" />
+    <Compile Include="GelieerdePersoon.cs" />
+    <Compile Include="Groep.cs" />
+    <Compile Include="CommunicatieVorm.cs" />
+    <Compile Include="Lid.cs" />
+    <Compile Include="Persoon.cs" />
+    <Compile Include="PersoonsAdres.cs" />
+    <Compile Include="PersoonsVerzekering.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="StraatNaam.cs" />
+    <Compile Include="SyncInterfaces\IAdressenSync.cs" />
+    <Compile Include="SyncInterfaces\ICommunicatieSync.cs" />
+    <Compile Include="SyncInterfaces\IDubbelpuntSync.cs" />
+    <Compile Include="SyncInterfaces\ILedenSync.cs" />
+    <Compile Include="SyncInterfaces\IPersonenSync.cs" />
+    <Compile Include="SyncInterfaces\IVerzekeringenSync.cs" />
+    <Compile Include="VerzekeringsType.cs" />
+    <Compile Include="WoonPlaats.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="ClassDiagram1.cd" />
+    <EntityDeploy Include="ChiroGroepModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ChiroGroepModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
+      <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
+      <Name>Chiro.Cdf.Data.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
+      <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
+      <Name>Chiro.Cdf.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
+      <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
+      <Name>Chiro.Cdf.Validation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
+      <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
+      <Name>Chiro.Gap.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
+      <Link>CustomDictionary.xml</Link>
+    </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

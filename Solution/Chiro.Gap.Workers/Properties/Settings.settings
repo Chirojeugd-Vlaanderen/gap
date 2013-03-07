@@ -41,5 +41,8 @@
     <Setting Name="EindeGebruikersRecht" Type="System.DateTime" Scope="Application">
       <Value Profile="(Default)">1990-11-01</Value>
     </Setting>
+    <Setting Name="LiveConnSubstring" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">gaplive</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -53,54 +53,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutDaoAltijdGav.cs" />
     <Compile Include="AutMgrAltijdGav.cs" />
     <Compile Include="AutMgrNooitGav.cs" />
-    <Compile Include="DummyAbonnementenDao.cs" />
-    <Compile Include="DummyAdressenDao.cs" />
-    <Compile Include="DummyChiroGroepenDao.cs" />
-    <Compile Include="DummyGavDao.cs" />
-    <Compile Include="DummyLandenDao.cs" />
-    <Compile Include="DummyStratenDao.cs" />
-    <Compile Include="DummySubgemeenteDao.cs" />
-    <Compile Include="DummyUitstappenDao.cs" />
-    <Compile Include="DummyAfdelingenDao.cs" />
-    <Compile Include="DummyAfdelingsJarenDao.cs" />
-    <Compile Include="DummyCategorieenDao.cs" />
-    <Compile Include="DummyCommunicatieVormDao.cs" />
-    <Compile Include="DummyDao.cs" />
     <Compile Include="DummyData.cs" />
-    <Compile Include="DummyFunctiesDao.cs" />
-    <Compile Include="DummyGelieerdePersonenDao.cs" />
-    <Compile Include="DummyGroepenDao.cs" />
-    <Compile Include="DummyGroepsWerkJaarDao.cs" />
-    <Compile Include="DummyKindDao.cs" />
-    <Compile Include="DummyLedenDao.cs" />
-    <Compile Include="DummyLeidingDao.cs" />
-    <Compile Include="DummyPersonenDao.cs" />
+    <Compile Include="DummyRepo.cs" />
     <Compile Include="DummySync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
-      <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
-      <Name>Chiro.Cdf.Data.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
-      <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
-      <Name>Chiro.Cdf.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
+      <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
+      <Name>Chiro.Cdf.Poco</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
       <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
       <Name>Chiro.Gap.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
-      <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
-      <Name>Chiro.Gap.Orm</Name>
+    <ProjectReference Include="..\..\Chiro.Gap.Poco\Chiro.Gap.Poco.Model.csproj">
+      <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
+      <Name>Chiro.Gap.Poco.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
+      <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
+      <Name>Chiro.Gap.SyncInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
       <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>

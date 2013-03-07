@@ -4,15 +4,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;      // NIET VERWIJDEREN, nodig voor live deploy!
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
@@ -22,238 +22,17 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class GroepenManager : IGroepenManager
     {
-        private readonly IGroepenDao _groepenDao;
-        private readonly IGelieerdePersonenDao _gelPersDao;
         private readonly IVeelGebruikt _veelGebruikt;
         private readonly IAutorisatieManager _autorisatieMgr;
-        private readonly IGroepenSync _groepenSync;
 
-        /// <summary>
-        /// De standaardconstructor voor GroepenManagers
-        /// </summary>
-        /// <param name="grpDao">
-        /// Repository voor groepen
-        /// </param>
-        /// <param name="gelPersDao">
-        /// Repository voor gelieerde personen
-        /// </param>
-        /// <param name="veelGebruikt">
-        /// Object dat veel gebruikte items cachet
-        /// </param>
-        /// <param name="autorisatieMgr">
-        /// Worker die autorisatie regelt
-        /// </param>
-        /// <param name="groepenSync">verzorgt de synchronisatie van groepsgegevens naar Kipadmin</param>
         public GroepenManager(
-            IGroepenDao grpDao, 
-            IGelieerdePersonenDao gelPersDao, 
             IVeelGebruikt veelGebruikt, 
-            IAutorisatieManager autorisatieMgr,
-            IGroepenSync groepenSync)
+            IAutorisatieManager autorisatieMgr)
         {
-            _groepenDao = grpDao;
             _autorisatieMgr = autorisatieMgr;
-            _gelPersDao = gelPersDao;
             _veelGebruikt = veelGebruikt;
-            _groepenSync = groepenSync;
         }
 
-        /// <summary>
-        /// Verwijdert alle gelieerde personen van de groep met ID <paramref name="groepID"/>.  Probeert ook
-        /// de gekoppelde personen te verwijderen, indien <paramref name="verwijderPersonen"/> <c>true</c> is.
-        /// Verwijdert ook mogelijke lidobjecten.
-        /// PERSISTEERT!
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van de groep waarvan je de gelieerde personen wilt verwijderen
-        /// </param>
-        /// <param name="verwijderPersonen">
-        /// Indien <c>true</c>, worden ook de personen vewijderd waarvoor
-        /// een GelieerdePersoon met de groep bestond.
-        /// </param>
-        /// <remarks>
-        /// Deze functie vereist super-GAV-rechten
-        /// </remarks>
-        public void GelieerdePersonenVerwijderen(int groepID, bool verwijderPersonen)
-        {
-            if (_autorisatieMgr.IsSuperGav())
-            {
-                // Alle gelieerde personen van de groep ophalen
-                IList<GelieerdePersoon> allePersonen = _gelPersDao.AllenOphalen(
-                    groepID, 
-                    PersoonSorteringsEnum.Naam, 
-                    PersoonsExtras.AlleLeden);
-
-                // Alle gelieerde personen als 'te verwijderen' markeren
-                foreach (GelieerdePersoon gp in allePersonen)
-                {
-                    gp.TeVerwijderen = true;
-
-                    // Alle leden als 'te verwijderen' markeren
-                    foreach (Lid ld in gp.Lid)
-                    {
-                        ld.TeVerwijderen = true;
-                    }
-
-                    // Markeer zo nodig ook de persoon
-                    if (verwijderPersonen)
-                    {
-                        gp.Persoon.TeVerwijderen = true;
-                    }
-                }
-
-                // Persisteer
-                _gelPersDao.Bewaren(allePersonen, gp => gp.Lid, gp => gp.Persoon);
-            }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-        }
-
-        /// <summary>
-        /// Persisteert groep in de database
-        /// </summary>
-        /// <param name="g">
-        /// Te persisteren groep
-        /// </param>
-        /// <returns>
-        /// De bewaarde groep
-        /// </returns>
-        public Groep Bewaren(Groep g)
-        {
-			// Verwijder eventuele chiro-prefix uit de naam
-			if(g.Naam != null && g.Naam.StartsWith("chiro ", StringComparison.CurrentCultureIgnoreCase)){
-				g.Naam = g.Naam.Substring(6);
-			}
-		
-            if (!_autorisatieMgr.IsSuperGav() && !_autorisatieMgr.IsGavGroep(g.ID))
-            {
-                // Groepen wijzigen enkel als GAV of super-GAV
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            // We halen het oorspronkelijke stamnummer nog eens op uit de database,
-            // om na te kijken of de user daar niet mee gefoefeld heeft.
-
-            var oorspronkelijkeGroep = _groepenDao.Ophalen(g.ID);
-
-            if (System.String.Compare(oorspronkelijkeGroep.Code, g.Code, System.StringComparison.OrdinalIgnoreCase) != 0)
-            {
-                // Ja dus.
-                throw new GeenGavException();
-            }
-
-#if KIPDORP
-            using (var tx = new TransactionScope())
-            {
-#endif
-                _groepenDao.Bewaren(g);
-                _groepenSync.Bewaren(g);
-                
-#if KIPDORP
-                tx.Complete();
-            }
-#endif
-            return g;
-        }
-
-        /// <summary>
-        /// Haalt een groepsobject op zonder gerelateerde entiteiten
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van de op te halen groep
-        /// </param>
-        /// <returns>
-        /// De groep met de opgegeven ID <paramref name="groepID"/>
-        /// </returns>
-        public Groep Ophalen(int groepID)
-        {
-            return Ophalen(groepID, GroepsExtras.Geen);
-        }
-
-        /// <summary>
-        /// Haalt de groepen met gegeven <paramref name="groepIDs"/> op, zonder gekoppelde entiteiten.
-        /// </summary>
-        /// <param name="groepIDs">ID's van op te halen groepen</param>
-        /// <returns>De opgehaalde groepen</returns>
-        public Groep[] Ophalen(int[] groepIDs)
-        {
-            if (!_autorisatieMgr.IsGavGroepen(groepIDs))
-            {
-                throw new GeenGavException(Properties.Resources.GeenGav);
-            }
-            return _groepenDao.Ophalen(groepIDs).ToArray();
-        }
-
-        /// <summary>
-        /// Converteert GroepsExtras <paramref name="extras"/> naar lambda-expresses voor een
-        /// GroepenDao
-        /// </summary>
-        /// <param name="extras">
-        /// Te converteren GroepsExtras
-        /// </param>
-        /// <returns>
-        /// Lambda-expresses voor een GroepenDao
-        /// </returns>
-        private static IEnumerable<Expression<Func<Groep, object>>> ExtrasNaarLambdas(GroepsExtras extras)
-        {
-            var paths = new List<Expression<Func<Groep, object>>>();
-
-            if (extras.HasFlag(GroepsExtras.HuidigWerkJaar) & !extras.HasFlag(GroepsExtras.GroepsWerkJaren))
-            {
-                throw new NotSupportedException();
-            }
-
-            if (extras.HasFlag(GroepsExtras.GroepsWerkJaren))
-            {
-                paths.Add(gr => gr.GroepsWerkJaar);
-            }
-
-            if (extras.HasFlag(GroepsExtras.Categorieen))
-            {
-                paths.Add(gr => gr.Categorie);
-            }
-
-            if (extras.HasFlag(GroepsExtras.Functies))
-            {
-                paths.Add(gr => gr.Functie);
-            }
-
-            return paths;
-        }
-
-        /// <summary>
-        /// Haalt een groepsobject op
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van de op te halen groep
-        /// </param>
-        /// <param name="extras">
-        /// Geeft aan of er gekoppelde entiteiten mee opgehaald moeten worden.
-        /// </param>
-        /// <returns>
-        /// De groep met de opgegeven ID <paramref name="groepID"/>
-        /// </returns>
-        public Groep Ophalen(int groepID, GroepsExtras extras)
-        {
-            if (!_autorisatieMgr.IsGavGroep(groepID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            if (extras == GroepsExtras.Geen)
-            {
-                // Als enkel de groep nodig is, kunnen we dat uit de cache
-                // halen.
-                return _veelGebruikt.GroepsWerkJaarOphalen(groepID).Groep;
-            }
-            else
-            {
-                var paths = ExtrasNaarLambdas(extras);
-                return _groepenDao.Ophalen(groepID, paths.ToArray());
-            }
-        }
 
         #region categorieën
 
@@ -276,7 +55,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public Categorie CategorieToevoegen(Groep g, string categorieNaam, string categorieCode)
         {
-            if (!_autorisatieMgr.IsGavGroep(g.ID))
+            if (!_autorisatieMgr.IsGav(g))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }
@@ -307,143 +86,89 @@ namespace Chiro.Gap.Workers
             }
         }
 
+        /// <summary>
+        /// Zoekt in de eigen functies de gegeven <paramref name="groep"/> en in de nationale functies een
+        /// functie met gegeven <paramref name="code"/>.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor functie gezocht moet worden</param>
+        /// <param name="code">Code van de te zoeken functie</param>
+        /// <param name="functieRepo">Repository die gebruikt kan worden om functies in op te zoeken</param>
+        /// <remarks>De repository wordt bewust niet via de constructor meegeleverd, om te vermijden dat de
+        /// IOC-container een nieuwe context zou aanmaken.</remarks>
+        public Functie FunctieZoeken(Groep groep, string code, IRepository<Functie> functieRepo)
+        {
+            // Zoek eerst naar een nationale functie met gegeven code, want dat is
+            // gecachet, en bijgevolg snel.
+
+            var bestaandeNationaleFunctie = (from f in _veelGebruikt.NationaleFunctiesOphalen(functieRepo)
+                                             where String.Compare(f.Code, code, StringComparison.OrdinalIgnoreCase) == 0
+                                             select f).FirstOrDefault();
+
+            if (bestaandeNationaleFunctie != null)
+            {
+                return bestaandeNationaleFunctie;
+            }
+
+            // Niet gevonden: zoek nog eens in eigen functies
+
+            return (from f in groep.Functie
+                    where String.Compare(f.Code, code, StringComparison.OrdinalIgnoreCase) == 0
+                    select f).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Converteert een <paramref name="lidType"/> naar een niveau, gegeven het niveau van de
+        /// groep (<paramref name="groepsNiveau"/>)
+        /// </summary>
+        /// <param name="lidType">Leden, Leiding of allebei</param>
+        /// <param name="groepsNiveau">Plaatselijke groep, gewestploeg, verbondsploeg, satelliet</param>
+        /// <returns>Niveau van het <paramref name="lidType"/> voor een groep met gegeven <paramref name="groepsNiveau"/></returns>
+        public Niveau LidTypeNaarMiveau(LidType lidType, Niveau groepsNiveau)
+        {
+            if ((groepsNiveau & Niveau.Groep) == 0)
+            {
+                // Geen plaatselijke groep? groepsNiveau is wat we zoeken.
+                return groepsNiveau;
+            }
+
+            // Voor een plaastelijke groep is er een onderscheid lid/leiding.
+
+            switch (lidType)
+            {
+                case LidType.Kind:
+                    return Niveau.LidInGroep;
+                case LidType.Leiding:
+                    return Niveau.LeidingInGroep;
+                default:
+                    return Niveau.Groep;
+            }
+        }
+
+        /// <summary>
+        /// Bepaalt het huidige groepswerkjaar van de gegeven <paramref name="groep"/>
+        /// </summary>
+        /// <param name="groep">De groep waarvoor het huidige werkjaar gevraagd is</param>
+        /// <returns>Huidige groepswerkjaar van de groep</returns>
+        public GroepsWerkJaar HuidigWerkJaar(Groep groep)
+        {
+            return (from wj in groep.GroepsWerkJaar
+                    orderby wj.WerkJaar
+                    select wj).LastOrDefault();
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als we in de live-omgeving werken
+        /// </summary>
+        /// <returns><c>true</c> als we in de live-omgeving werken</returns>
+        public bool IsLive()
+        {
+            // TODO: Dit staat hier waarschijnlijk niet op zijn plaats
+            // We zoeken dit uit op basis van de connectionstring.
+
+            string connectionString = ConfigurationManager.ConnectionStrings["ChiroGroepEntities"].ConnectionString.ToUpper();
+            return connectionString.Contains(Settings.Default.LiveConnSubstring.ToUpper());
+        }
+
         #endregion categorieën
-
-        /// <summary>
-        /// Maakt een nieuwe (groepseigen) functie voor groep <paramref name="g"/>.  Persisteert niet.
-        /// </summary>
-        /// <param name="g">
-        /// Groep waarvoor de functie gemaakt wordt, inclusief minstens het recentste werkJaar
-        /// </param>
-        /// <param name="naam">
-        /// Naam van de functie
-        /// </param>
-        /// <param name="code">
-        /// Code van de functie
-        /// </param>
-        /// <param name="maxAantal">
-        /// Maximumaantal leden in de categorie.  Onbeperkt indien null.
-        /// </param>
-        /// <param name="minAantal">
-        /// Minimumaantal leden in de categorie.
-        /// </param>
-        /// <param name="lidType">
-        /// LidType waarvoor de functie van toepassing is
-        /// </param>
-        /// <returns>
-        /// De nieuwe (gekoppelde) functie
-        /// </returns>
-        public Functie FunctieToevoegen(
-            Groep g, 
-            string naam, 
-            string code, 
-            int? maxAantal, 
-            int minAantal, 
-            LidType lidType)
-        {
-            if (!_autorisatieMgr.IsGavGroep(g.ID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            // Controleer op dubbele code
-            var bestaande = (from fun in g.Functie
-                             where string.Compare(fun.Code, code, true) == 0
-                                   || string.Compare(fun.Naam, naam, true) == 0
-                             select fun).FirstOrDefault();
-
-            if (bestaande != null && bestaande.TeVerwijderen)
-            {
-                throw new InvalidOperationException(
-                    "Er bestaat al een functie met die code, gemarkeerd als TeVerwijderen");
-            }
-
-            if (bestaande != null)
-            {
-                // TODO (#507): Check op bestaande afdeling door DB
-                // OPM: we krijgen pas een DubbeleEntiteitException op het moment dat we bewaren,
-                // maar hier doen we alleen een .Add
-                throw new BestaatAlException<Functie>(bestaande);
-            }
-
-            // Zonder problemen hier geraakt.  Dan kunnen we verder.
-            Niveau niveau = g.Niveau;
-            if ((g.Niveau & Niveau.Groep) != 0)
-            {
-                if ((lidType & LidType.Leiding) == 0)
-                {
-                    niveau &= ~Niveau.LeidingInGroep;
-                }
-
-                if ((lidType & LidType.Kind) == 0)
-                {
-                    niveau &= ~Niveau.LidInGroep;
-                }
-            }
-
-            var f = new Functie
-                        {
-                            Code = code, 
-                            Groep = g, 
-                            MaxAantal = maxAantal, 
-                            MinAantal = minAantal, 
-                            Niveau = niveau, 
-                            Naam = naam, 
-                            WerkJaarTot = null, 
-                            WerkJaarVan = g.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First().WerkJaar, 
-                            IsNationaal = false
-                        };
-
-            g.Functie.Add(f);
-
-            return f;
-        }
-
-        /// <summary>
-        /// Maakt een nieuw groepswerkjaar voor een gegeven <paramref name="groep"/>
-        /// </summary>
-        /// <param name="groep">
-        /// Groep waarvoor een groepswerkjaar gemaakt moet worden
-        /// </param>
-        /// <param name="werkJaar">
-        /// Int die het werkJaar identificeert (bv. 2009 voor 2009-2010)
-        /// </param>
-        /// <returns>
-        /// Het gemaakte groepswerkjaar.
-        /// </returns>
-        /// <remarks>
-        /// Persisteert niet.
-        /// </remarks>
-        public GroepsWerkJaar GroepsWerkJaarMaken(Groep groep, int werkJaar)
-        {
-            var resultaat = new GroepsWerkJaar
-                                {
-                                    Groep = groep, 
-                                    WerkJaar = werkJaar
-                                };
-            groep.GroepsWerkJaar.Add(resultaat);
-            return resultaat;
-        }
-
-        /// <summary>
-        /// Haalt groep op met gegeven stamnummer, incl recentse groepswerkjaar
-        /// </summary>
-        /// <param name="code">
-        /// Stamnummer op te halen groep
-        /// </param>
-        /// <returns>
-        /// Groep met <paramref name="code"/> als stamnummer
-        /// </returns>
-        public Groep Ophalen(string code)
-        {
-            var resultaat = _groepenDao.Ophalen(code);
-
-            if (_autorisatieMgr.IsSuperGav() || _autorisatieMgr.IsGavGroep(resultaat.ID))
-            {
-                return resultaat;
-            }
-
-            throw new GeenGavException(Resources.GeenGav);
-        }
     }
 }

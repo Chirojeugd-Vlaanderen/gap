@@ -167,7 +167,7 @@ namespace Chiro.Gap.Domain
     /// Enum voor verschillende publicaties.
     /// Momenteel ondersteunen we enkel Dubbelpunt.
     /// </summary>
-    public enum PublicatieID
+    public enum PublicatieTypeEnum
     {
         Onbekend = 0,
         Dubbelpunt = 1
@@ -204,22 +204,23 @@ namespace Chiro.Gap.Domain
 	/// Geeft aan of de bivakaangifte al is ingevuld
 	/// </summary>
 	[DataContract]
+    [Flags]
 	public enum BivakAangifteStatus
 	{
 		[EnumMember]
-		Onbekend,
+		Ok = 0x00,
 		[EnumMember]
-		Ingevuld,
+		NogNietVanBelang = 0x01,
 		[EnumMember]
-		NogNietVanBelang,
+		Ontbrekend = 0x02,
 		[EnumMember]
-		DringendInTeVullen,
+		ContactOntbreekt = 0x04,
 		[EnumMember]
-		PersoonInTeVullen,
+		PlaatsOntbreekt = 0x08,
 		[EnumMember]
-		PlaatsInTeVullen,
-		[EnumMember]
-		PlaatsEnPersoonInTeVullen
+		PlaatsEnContactOntbreekt = ContactOntbreekt|PlaatsOntbreekt,
+        [EnumMember]
+        Onbekend = 0x10
 	}
 
     /// <summary>
@@ -292,5 +293,13 @@ namespace Chiro.Gap.Domain
     {
         [EnumMember] Geen = 0x00,        // Geen rechten
         [EnumMember] Gav = 0x80          // GAV (voorlopig zijn de mogelijkheden beperkt)
+    }
+
+    public static class NIEUWEBACKEND
+    {
+        public static string Info
+        {
+            get { return "Gewoon een marker om bij te houden wat ik weggooide voor de nieuwe backend"; }
+        }
     }
 }

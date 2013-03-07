@@ -3,12 +3,9 @@
 // </copyright>
 
 using System.Diagnostics;
-
-using Chiro.Cdf.Data;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
@@ -19,86 +16,10 @@ namespace Chiro.Gap.Workers
     public class PlaatsenManager
     {
         private readonly IAutorisatieManager _autorisatieManager;
-        private readonly IPlaatsenDao _plaatsenDao;
-        private readonly IAdressenDao _adressenDao;
-        private readonly IGroepenDao _groepenDao;
 
-        /// <summary>
-        /// Standaardconstructor.  De parameters worden gebruikt voor dependency injection.
-        /// </summary>
-        /// <param name="plDao">
-        /// Repository voor plaatsen
-        /// </param>
-        /// <param name="adDao">
-        /// Repository voor adressen
-        /// </param>
-        /// <param name="grDao">
-        /// Repository voor groepen
-        /// </param>
-        /// <param name="auMgr">
-        /// Regelt de autorisatie
-        /// </param>
-        public PlaatsenManager(IPlaatsenDao plDao, IAdressenDao adDao, IGroepenDao grDao, IAutorisatieManager auMgr)
+        public PlaatsenManager(IAutorisatieManager auMgr)
         {
-            _plaatsenDao = plDao;
             _autorisatieManager = auMgr;
-            _adressenDao = adDao;
-            _groepenDao = grDao;
-        }
-
-        /// <summary>
-        /// Zoekt of maakt een bivakplaats
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van ingevende groep
-        /// </param>
-        /// <param name="plaatsNaam">
-        /// Naam van de plaats
-        /// </param>
-        /// <param name="adresID">
-        /// ID van het adres van de plaats
-        /// </param>
-        /// <returns>
-        /// De gezochte of gemaakte plaats, met daaraan gekoppeld alle uitstappen én adres. Persisteert
-        /// </returns>
-        public Plaats ZoekenOfMaken(int groepID, string plaatsNaam, int adresID)
-        {
-            if (!_autorisatieManager.IsGavGroep(groepID))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-            else
-            {
-                Debug.Assert(groepID != 0);
-                Debug.Assert(adresID != 0);
-
-                var plaats = _plaatsenDao.Zoeken(groepID, plaatsNaam, adresID, pl => pl.Uitstap, pl => pl.Adres);
-
-                if (plaats == null)
-                {
-                    var adres = _adressenDao.Ophalen(adresID, adr => adr.BivakPlaats);
-                    var groep = _groepenDao.Ophalen(groepID, grp => grp.BivakPlaats);
-
-                    plaats = Maken(plaatsNaam, adres, groep);
-                    plaats = Bewaren(plaats);
-                }
-
-                return plaats;
-            }
-        }
-
-        /// <summary>
-        /// Bewaart een plaats, en zijn koppeling met groep en adres.
-        /// </summary>
-        /// <param name="plaats">
-        /// Te bewaren plaats
-        /// </param>
-        /// <returns>
-        /// De bewaarde plaats, eventueel met nieuw ID
-        /// </returns>
-        private Plaats Bewaren(Plaats plaats)
-        {
-            return _plaatsenDao.Bewaren(plaats, pl => pl.Groep.WithoutUpdate(), pl => pl.Adres.WithoutUpdate());
         }
 
         /// <summary>

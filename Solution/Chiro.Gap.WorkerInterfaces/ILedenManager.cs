@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
+using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WorkerInterfaces
 {
@@ -76,128 +76,87 @@ namespace Chiro.Gap.WorkerInterfaces
         Lid NieuwInschrijven(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang, LidVoorstel voorstellid);
 
         /// <summary>
-        /// Persisteert een lid met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// (kind)lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.
         /// </summary>
-        /// <param name="lid">
-        /// Het <paramref name="lid"/> dat bewaard moet worden
-        /// </param>
-        /// <param name="extras">
-        /// De gekoppelde entiteiten
-        /// </param>
-        /// <param name="syncen">
-        /// Als <c>true</c>, dan wordt het lid gesynct met Kipadmin.
-        /// </param>
-        /// <returns>
-        /// Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld
-        /// </returns>
-        /// <remarks>
-        /// De parameter <paramref name="syncen"/> heeft als doel een sync te vermijden als een
-        /// irrelevante wijziging zoals 'lidgeld betaald' wordt bewaard.
-        /// </remarks>
-        Lid Bewaren(Lid lid, LidExtras extras, bool syncen);
+        /// <param name="gelieerdePersoon">een gelieerde persoon</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.</returns>
+        bool KanInschrijvenAlsKind(GelieerdePersoon gelieerdePersoon);
 
         /// <summary>
-        /// Haalt leden op, op basis van de <paramref name="lidIDs"/>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// leiding kan worden. Dit hangt eigenlijk enkel van de leeftijd af.
         /// </summary>
-        /// <param name="lidIDs">
-        /// ID gevraagde leden
-        /// </param>
-        /// <param name="lidExtras">
-        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-        /// </param>
-        /// <returns>
-        /// Kinderen of leiding met gevraagde <paramref name="lidExtras"/>.
-        /// </returns>
-        /// <remarks>
-        /// ID's van leden waarvoor de user geen GAV is, worden genegeerd
-        /// </remarks>
-        IEnumerable<Lid> Ophalen(IEnumerable<int> lidIDs, LidExtras lidExtras);
+        /// <param name="gelieerdePersoon">een gelieerde persoon</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
+        /// leiding kan worden.</returns>
+        bool KanInschrijvenAlsLeiding(GelieerdePersoon gelieerdePersoon);
 
         /// <summary>
-        /// Haalt lid op, op basis van zijn <paramref name="lidID"/>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// (kind)lid in het huidige werkjaar van zijn groep. Anders <c>false</c>.
         /// </summary>
-        /// <param name="lidID">
-        /// ID gevraagde lid
-        /// </param>
-        /// <param name="extras">
-        /// Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-        /// </param>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
         /// <returns>
-        /// Kind of Leiding met gevraagde <paramref name="extras"/>.
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// (kind)lid in het huidige werkjaar van zijn groep. Anders <c>false</c>.
         /// </returns>
-        Lid Ophalen(int lidID, LidExtras extras);
+        bool IsActiefKind(GelieerdePersoon gelieerdePersoon);
 
         /// <summary>
-        /// Haalt lid en gekoppelde persoon op, op basis van <paramref name="lidID"/>
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
         /// </summary>
-        /// <param name="lidID">
-        /// ID op te halen lid
-        /// </param>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
         /// <returns>
-        /// Lid, met daaraan gekoppeld gelieerde persoon en persoon.
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
         /// </returns>
-        Lid Ophalen(int lidID);
+        bool IsActieveLeiding(GelieerdePersoon gelieerdePersoon);
 
         /// <summary>
-        /// Haalt het lid op bepaald door <paramref name="gelieerdePersoonID"/> en
-        /// <paramref name="groepsWerkJaarID"/>, inclusief de relevante details om het lid naar Kipadmin te krijgen:
-        /// persoon, afdelingen, officiële afdelingen, functies, groepswerkjaar, groep
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn
+        /// groep, wordt het lidID opgeleverd, zo niet <c>null</c>.
         /// </summary>
-        /// <param name="gelieerdePersoonID">
-        /// ID van de gelieerde persoon waarvoor het lidobject gevraagd is.
-        /// </param>
-        /// <param name="groepsWerkJaarID">
-        /// ID van groepswerkjaar in hetwelke het lidobject gevraagd is
-        /// </param>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
         /// <returns>
-        /// Het lid bepaald door <paramref name="gelieerdePersoonID"/> en
-        /// <paramref name="groepsWerkJaarID"/>, inclusief de relevante details om het lid naar Kipadmin te krijgen
+        /// Het lidID als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar
+        /// van zijn groep, anders <c>null</c>.
         /// </returns>
-        Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID);
+        int? LidIDGet(GelieerdePersoon gelieerdePersoon);
 
         /// <summary>
-        /// Haalt leden op uit het groepswerkjaar met gegeven ID, inclusief persoonsgegevens,
-        /// voorkeursadressen, functies en afdelingen.  (Geen communicatiemiddelen)
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn groep, dan
+        /// levert deze method het overeenkomstige lidobject op. In het andere geval <c>null</c>.
         /// </summary>
-        /// <param name="gwjID">
-        /// ID van het gevraagde groepswerkjaar
-        /// </param>
-        /// <param name="ookInactief">
-        /// Geef hier <c>true</c> als ook de niet-actieve leden opgehaald
-        /// moeten worden.
-        /// </param>
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
         /// <returns>
-        /// De lijst van leden
+        /// Als de gegeven <paramref name="gelieerdePersoon"/> lid is in het huidige werkjaar van zijn groep, dan
+        /// levert deze method het overeenkomstige lidobject op. In het andere geval <c>null</c>.
         /// </returns>
-        IEnumerable<Lid> OphalenUitGroepsWerkJaar(int gwjID, bool ookInactief);
+        Lid HuidigLidGet(GelieerdePersoon gelieerdePersoon);
 
         /// <summary>
-        /// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>.
+        /// Zoekt een afdelingsjaar van het recentste groepswerkjaar, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> (kind)lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.
         /// </summary>
-        /// <param name="filter">
-        /// De niet-nulle properties van de filter
-        /// bepalen waarop gezocht moet worden
-        /// </param>
-        /// <param name="extras">
-        /// Bepaalt de mee op te halen gekoppelde entiteiten. 
-        /// (Adressen ophalen vertraagt aanzienlijk.)
-        /// </param>
-        /// <returns>
-        /// Lijst met info over gevonden leden
-        /// </returns>
-        /// <remarks>
-        /// Er worden enkel actieve leden opgehaald
-        /// </remarks>
-        IEnumerable<Lid> Zoeken(LidFilter filter, LidExtras extras);
+        /// <param name="gelieerdePersoon">gelieerde persoon waarvoor we een afdeling zoeken</param>
+        /// <returns>een afdelingsjaar van het recentste groepswerkjaar, waarin de gegeven 
+        /// <paramref name="gelieerdePersoon"/> lid zou kunnen worden. <c>null</c> als er zo geen
+        /// bestaat.</returns>
+        AfdelingsJaar AfdelingsJaarVoorstellen(GelieerdePersoon gelieerdePersoon);
 
         /// <summary>
-        /// Haalt alle leden op uit groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/> en gegeven
-        /// <paramref name="nationaleFunctie"/>, met daaraan gekoppeld de gelieerde personen.
+        /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als
+        /// kind of leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
         /// </summary>
-        /// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
-        /// <param name="nationaleFunctie">een nationale functie</param>
-        /// <returns>alle leden op uit groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/> en gegeven
-        /// <paramref name="nationaleFunctie"/>, met daaraan gekoppeld de gelieerde personen.</returns>
-        List<Lid> Ophalen(int groepsWerkJaarID, NationaleFunctie nationaleFunctie);
+        /// <param name="gelieerdePersoon">Een gelieerde persoon</param>
+        /// <returns>
+        /// <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> ingeschreven is als kind
+        /// of leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
+        /// </returns>
+        bool IsActiefLid(GelieerdePersoon gelieerdePersoon);
     }
 }

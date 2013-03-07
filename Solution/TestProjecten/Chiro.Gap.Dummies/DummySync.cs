@@ -5,9 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.SyncInterfaces;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.SyncInterfaces;
 
 namespace Chiro.Gap.Dummies
 {
@@ -25,6 +24,10 @@ namespace Chiro.Gap.Dummies
         }
 
         public void Toevoegen(CommunicatieVorm commvorm)
+        {
+        }
+
+        public void Bijwerken(CommunicatieVorm communicatieVorm, string origineelNummer)
         {
         }
 

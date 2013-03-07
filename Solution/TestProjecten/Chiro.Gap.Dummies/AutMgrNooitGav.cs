@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
-using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.Dummies
 {
@@ -26,69 +23,9 @@ namespace Chiro.Gap.Dummies
 			return new List<int>();
 		}
 
-		public IEnumerable<int> EnkelMijnLeden(IEnumerable<int> lidIDs)
-		{
-			return new List<int>();
-		}
-
-	    public IEnumerable<int> EnkelMijnAfdelingen(IEnumerable<int> afdelingIDs)
-	    {
-	        throw new NotImplementedException();
-	    }
-
-	    public IEnumerable<Groep> GekoppeldeGroepenGet()
-		{
-			return new List<Groep>();
-		}
-
-		public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
-		{
-			return false;
-		}
-
-		public bool IsGavGroep(int groepID)
-		{
-			return false;
-		}
-
-		public bool IsGavGroepsWerkJaar(int groepsWerkJaarID)
-		{
-			return false;
-		}
-
-		public bool IsGavPersoon(int persoonID)
-		{
-			return false;
-		}
-
 		public string GebruikersNaamGet()
 		{
 			return "Paria";
-		}
-
-		public bool IsGavAfdeling(int afdelingsID)
-		{
-			return false;
-		}
-
-		public bool IsGavLid(int lidID)
-		{
-			return false;
-		}
-
-		public bool IsGavCategorie(int categorieID)
-		{
-			return false;
-		}
-
-		public bool IsGavCommVorm(int commvormID)
-		{
-			return false;
-		}
-
-		public bool IsGavUitstap(int uitstapID)
-		{
-			return false;
 		}
 
 		public bool IsSuperGav()
@@ -96,77 +33,76 @@ namespace Chiro.Gap.Dummies
 			return false;
 		}
 
-		public bool IsGavFunctie(int functieID)
-		{
-			return false;
-		}
-
-		public bool IsGavAfdelingsJaar(int afdelingsJaarID)
-		{
-			return false;
-		}
-
-		public bool IsGavPersoonsAdres(int persoonsAdresID)
-		{
-			return false;
-		}
-
-
 		public IEnumerable<Groep> MijnGroepenOphalen()
 		{
 			return new List<Groep>();
 		}
 
-		public bool IsGavGroepen(IEnumerable<int> groepIDs)
-		{
-			return false;
-		}
-
-		public IEnumerable<int> MijnGroepIDsOphalen()
-		{
-			return new List<int>();
-		}
-
-		public bool IsGavPlaats(int plaatsID)
-		{
-			return false;
-		}
-
-	    public bool IsGavDeelnemer(int deelnemerID)
+	    public bool IsGav(Groep groep)
 	    {
 	        return false;
 	    }
 
-	    public bool IsGavGebruikersRecht(int gebruikersRechtID)
+	    public bool IsGav(CommunicatieVorm communicatieVorm)
 	    {
-	        throw new NotImplementedException();
+	        return false;
 	    }
 
-	    public GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
+	    public bool IsGav(GroepsWerkJaar groepsWerkJaar)
 	    {
-	        throw new NotImplementedException();
+	        return false;
 	    }
 
-	    public GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum)
+	    public bool IsGav(GelieerdePersoon gelieerdePersoon)
 	    {
-	        throw new NotImplementedException();
+	        return false;
 	    }
 
-	    public bool IsGavAccount(int accountID)
+	    public bool IsGav(Deelnemer gelieerdePersoon)
 	    {
-	        throw new NotImplementedException();
+            return false;
 	    }
 
-	    public bool IsGavGebruikersRechten(int[] gebruikersRechtIDs)
+	    public bool IsGav(Plaats gelieerdePersoon)
 	    {
-	        throw new NotImplementedException();
+            return false;
 	    }
 
-	    public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
-		{
-			return false;
-		}
+	    public bool IsGav(Uitstap gelieerdePersoon)
+	    {
+            return false;
+	    }
 
-		#endregion
+	    public bool IsGav(GebruikersRecht gelieerdePersoon)
+	    {
+            return false;
+	    }
+
+        public bool IsGav(Lid gelieerdePersoon)
+        {
+            return false;
+        }
+
+        public bool IsGav(Afdeling gelieerdePersoon)
+        {
+            return false;
+        }
+
+        public bool IsGav(Categorie gelieerdePersoon)
+        {
+            return false;
+        }
+
+	    public bool IsGav(IList<GelieerdePersoon> gelieerdePersonen)
+	    {
+	        return false;
+	    }
+
+	    public List<GelieerdePersoon> MijnGelieerdePersonen(IList<Persoon> personen)
+	    {
+	        return new List<GelieerdePersoon>();
+	    }
+
+	    #endregion
 	}
 }

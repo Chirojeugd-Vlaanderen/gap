@@ -139,5 +139,14 @@ namespace Chiro.Gap.Workers.Properties {
                 return ((global::System.DateTime)(this["EindeGebruikersRecht"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("gaplive")]
+        public string LiveConnSubstring {
+            get {
+                return ((string)(this["LiveConnSubstring"]));
+            }
+        }
     }
 }

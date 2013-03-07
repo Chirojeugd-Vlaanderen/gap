@@ -4,11 +4,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Caching;
-
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Cdf.Poco;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Workers
@@ -23,31 +23,7 @@ namespace Chiro.Gap.Workers
         private const string NATIONALEFUNCTIESCACHEKEY = "natfun";
         private const string GROEPIDCACHEKEY = "gid_{0}";
 
-        private readonly IGroepsWerkJaarDao _groepsWerkJaarDao;
-        private readonly IFunctiesDao _functiesDao;
-        private readonly IGroepenDao _groepenDao;
-
         private readonly Cache _cache = HttpRuntime.Cache;
-
-        /// <summary>
-        /// Standaardconstructor.  Data access objects worden typisch geregeld via
-        /// inversion of control.
-        /// </summary>
-        /// <param name="groepsWerkJaarDao">
-        /// Zorgt voor data access ivm groepswerkjaren
-        /// </param>
-        /// <param name="functiesDao">
-        /// Data access voor functies
-        /// </param>
-        /// <param name="groepenDao">
-        /// Data access voor groepen
-        /// </param>
-        public VeelGebruikt(IGroepsWerkJaarDao groepsWerkJaarDao, IFunctiesDao functiesDao, IGroepenDao groepenDao)
-        {
-            _groepsWerkJaarDao = groepsWerkJaarDao;
-            _functiesDao = functiesDao;
-            _groepenDao = groepenDao;
-        }
 
         /// <summary>
         /// Verwijdert het recentste groepswerkjaar van groep met ID <paramref name="groepID"/>
@@ -77,16 +53,17 @@ namespace Chiro.Gap.Workers
 
             if (gwj == null)
             {
-                gwj = _groepsWerkJaarDao.RecentsteOphalen(groepID, gwjr => gwjr.Groep);
+                throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+                // gwj = _groepsWerkJaarDao.RecentsteOphalen(groepID, gwjr => gwjr.Groep);
 
-                _cache.Add(
-                    string.Format(GROEPSWERKJAARCACHEKEY, groepID),
-                    gwj,
-                    null,
-                    Cache.NoAbsoluteExpiration,
-                    new TimeSpan(2, 0, 0),
-                    CacheItemPriority.Normal,
-                    null);
+                //_cache.Add(
+                //    string.Format(GROEPSWERKJAARCACHEKEY, groepID),
+                //    gwj,
+                //    null,
+                //    Cache.NoAbsoluteExpiration,
+                //    new TimeSpan(2, 0, 0),
+                //    CacheItemPriority.Normal,
+                //    null);
             }
 
             return gwj;
@@ -95,16 +72,26 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Haalt alle nationale functies op
         /// </summary>
+        /// <param name="functieRepo">Repository die deze worker kan gebruiken om functies
+        ///     op te vragen.</param>
         /// <returns>
         /// Lijstje nationale functies
         /// </returns>
-        public IEnumerable<Functie> NationaleFunctiesOphalen()
+        /// <remarks>
+        /// De repository wordt bewust niet geregeld door de constructor van deze klasse,
+        /// omdat we moeten vermijden dat de IOC-container hiervoor een nieuwe context aanmaakt.
+        /// </remarks>
+        public List<Functie> NationaleFunctiesOphalen(IRepository<Functie> functieRepo)
         {
             if (_cache[NATIONALEFUNCTIESCACHEKEY] == null)
             {
+                var nationaleFuncties = from fn in functieRepo.Select()
+                                        where fn.IsNationaal
+                                        select fn;
+
                 _cache.Add(
                     NATIONALEFUNCTIESCACHEKEY,
-                    _functiesDao.NationaalBepaaldeFunctiesOphalen(),
+                    nationaleFuncties.ToList(),
                     null,
                     Cache.NoAbsoluteExpiration,
                     new TimeSpan(1, 0, 0, 0) /* bewaar 1 dag */,
@@ -112,7 +99,7 @@ namespace Chiro.Gap.Workers
                     null);
             }
 
-            return _cache[NATIONALEFUNCTIESCACHEKEY] as IEnumerable<Functie>;
+            return _cache[NATIONALEFUNCTIESCACHEKEY] as List<Functie>;
         }
 
         /// <summary>
@@ -130,16 +117,17 @@ namespace Chiro.Gap.Workers
 
             if (groepID == null || groepID == 0)
             {
-                groepID = _groepenDao.Ophalen(code).ID;
+                throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+                //groepID = _groepenDao.Ophalen(code).ID;
 
-                _cache.Add(
-                    string.Format(GROEPIDCACHEKEY, code),
-                    groepID,
-                    null,
-                    Cache.NoAbsoluteExpiration,
-                    new TimeSpan(2, 0, 0),
-                    CacheItemPriority.Normal,
-                    null);
+                //_cache.Add(
+                //    string.Format(GROEPIDCACHEKEY, code),
+                //    groepID,
+                //    null,
+                //    Cache.NoAbsoluteExpiration,
+                //    new TimeSpan(2, 0, 0),
+                //    CacheItemPriority.Normal,
+                //    null);
             }
 
             return groepID ?? 0;
