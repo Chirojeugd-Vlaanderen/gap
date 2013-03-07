@@ -6,6 +6,7 @@ _ReSharper.*
 *.ReSharper
 [Bb]in
 obj
+*.orig
 
 # /
 /*.ncb
