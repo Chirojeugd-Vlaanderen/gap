@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel;
 using Chiro.Gap.Dummies;
@@ -360,6 +359,48 @@ namespace Chiro.Gap.Services.Test
 
             Assert.AreEqual(groep.Functie.Count, 1);
             Assert.AreEqual(groep.Functie.First().Code, "mfn", true);
+        }
+
+        /// <summary>
+        ///Verwacht faultexception bij verwijderen van functie dit jaar in gebruik.
+        ///</summary>
+        [TestMethod()]
+        [ExpectedException(typeof(FaultException<BlokkerendeObjectenFault<PersoonLidInfo>>))]
+        public void FunctieVerwijderenTest()
+        {
+            // ARRANGE
+
+            // testsituatie creeren
+            var functie = new Functie {ID = 21};
+            var groepswerkjaar = new GroepsWerkJaar
+            {
+                ID = 11,
+                Groep =
+                    new ChiroGroep
+                    {
+                        ID = 1,
+                        GroepsWerkJaar = new List<GroepsWerkJaar>()
+                    }
+            };
+            groepswerkjaar.Groep.GroepsWerkJaar.Add(groepswerkjaar);
+            functie.Groep = groepswerkjaar.Groep;
+            var lid = new Leiding { Functie = new List<Functie>() { functie }, GroepsWerkJaar = groepswerkjaar };
+            functie.Lid.Add(lid);
+
+            // repository opzetten
+            var dummyFunctiesRepo = new DummyRepo<Functie>(new List<Functie> {functie});
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(dummyFunctiesRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            var target = Factory.Maak<GroepenService>();
+
+            // ACT
+
+            target.FunctieVerwijderen(functie.ID, false);
+
+            // ASSERT
+            Assert.Fail();  // we moeten een faultexception gekregen hebben.
         }
 	}
 }

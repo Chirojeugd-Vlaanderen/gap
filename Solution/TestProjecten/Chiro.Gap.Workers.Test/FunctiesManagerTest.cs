@@ -506,7 +506,6 @@ namespace Chiro.Gap.Workers.Test
 		                             };
             groepswerkjaar.Groep.GroepsWerkJaar.Add(groepswerkjaar);
 		    functie.Groep = groepswerkjaar.Groep;
-
 		    var lid = new Leiding {Functie = new List<Functie>() {functie}, GroepsWerkJaar = groepswerkjaar};
             functie.Lid.Add(lid);
 
