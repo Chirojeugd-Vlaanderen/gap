@@ -81,7 +81,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="voorkeur">
         /// Indien true, wordt het nieuwe adres voorkeursadres van de gegeven gelieerde personen
         /// </param>
-        void AdresToevoegen(IEnumerable<GelieerdePersoon> gelieerdePersonen,
+        void AdresToevoegen(IList<GelieerdePersoon> gelieerdePersonen,
                                             Adres adres,
                                             AdresTypeEnum adrestype,
                                             bool voorkeur);

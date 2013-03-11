@@ -18,14 +18,14 @@ namespace Chiro.Gap.Poco.Model.Exceptions
     [Serializable]
     public class BlokkerendeObjectenException<TEntiteit> : GapException where TEntiteit : BasisEntiteit
     {
-        private IEnumerable<TEntiteit> _objecten;
+        private IList<TEntiteit> _objecten;
         private int _aantal;
 
         /// <summary>
         /// Property die toegang geeft tot een aantal blokkerende objecten.  Deze lijst bevat niet
         /// noodzakelijk alle blokkerende objecten (want het moet allemaal over de lijn).
         /// </summary>
-        public IEnumerable<TEntiteit> Objecten
+        public IList<TEntiteit> Objecten
         {
             get { return _objecten; }
             set { _objecten = value; }
@@ -97,9 +97,9 @@ namespace Chiro.Gap.Poco.Model.Exceptions
             }
 
             _aantal = info.GetInt32("aantal");
-            _objecten = (IEnumerable<TEntiteit>)info.GetValue(
+            _objecten = (IList<TEntiteit>)info.GetValue(
                 "objecten",
-                typeof(IEnumerable<TEntiteit>));
+                typeof(IList<TEntiteit>));
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Chiro.Gap.Poco.Model.Exceptions
         /// Technische info over de exception; nuttig voor developer
         /// </param>
         public BlokkerendeObjectenException(
-            IEnumerable<TEntiteit> objecten,
+            IList<TEntiteit> objecten,
             int aantalTotaal,
             string message)
             : base(message)

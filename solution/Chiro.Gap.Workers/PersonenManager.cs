@@ -70,7 +70,7 @@ namespace Chiro.Gap.Workers
         /// Als de persoon niet gekoppeld is aan het oude adres,
         /// zal hij of zij ook niet verhuizen
         /// </remarks>
-        public void Verhuizen(IEnumerable<Persoon> verhuizers, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType)
+        public void Verhuizen(IList<Persoon> verhuizers, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType)
         {
             var persIDs = (from p in verhuizers
                            select p.ID).ToArray();
@@ -79,7 +79,7 @@ namespace Chiro.Gap.Workers
             if (persIDs.Count() == mijnPersIDs.Count())
             {
                 // Vind personen waarvan het adres al gekoppeld is.
-                var bestaand = verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == nieuwAdres.ID));
+                var bestaand = verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == nieuwAdres.ID)).ToList();
 
                 if (bestaand.FirstOrDefault() != null)
                 {

@@ -229,7 +229,7 @@ namespace Chiro.Gap.Workers
         /// <param name="voorkeur">
         /// Indien true, wordt het nieuwe adres voorkeursadres van de gegeven gelieerde personen
         /// </param>
-        public void AdresToevoegen(IEnumerable<GelieerdePersoon> gelieerdePersonen,
+        public void AdresToevoegen(IList<GelieerdePersoon> gelieerdePersonen,
                                    Adres adres,
                                    AdresTypeEnum adrestype,
                                    bool voorkeur)
@@ -251,7 +251,7 @@ namespace Chiro.Gap.Workers
             // zou onderstaande problemen geven.)
             var bestaand =
                 gelieerdePersonen.Select(gp => gp.Persoon).SelectMany(
-                    p => p.PersoonsAdres.Where(pa => pa.Adres.ID == adres.ID));
+                    p => p.PersoonsAdres.Where(pa => pa.Adres.ID == adres.ID)).ToList();
 
             if (bestaand.FirstOrDefault() != null)
             {
