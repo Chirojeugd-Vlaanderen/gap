@@ -109,13 +109,12 @@ namespace Chiro.Gap.Workers
             }
 
         }
-        
+
         /// <summary>
         /// Verwijdert een functie
         /// </summary>
         /// <param name="functie">
-        /// Te verwijderen functie, 
-        ///  inclusief groep, leden en groepswerkjaar leden
+        /// Te verwijderen functie
         /// </param>
         /// <param name="forceren">
         /// Indien <c>true</c> wordt de functie ook verwijderd als er
@@ -140,10 +139,10 @@ namespace Chiro.Gap.Workers
                 throw new FoutNummerException(FoutNummer.FunctieNietBeschikbaar, Properties.Resources.NationaleFunctieVerwijderen);
             }
 
-            int huidigGwjID = _veelGebruikt.GroepsWerkJaarIDOphalen(functie.Groep.ID);
+            var huidigGwj = functie.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
 
             var metFunctieDitJaar = (from ld in functie.Lid
-                                     where ld.GroepsWerkJaar.ID == huidigGwjID
+                                     where ld.GroepsWerkJaar.ID == huidigGwj.ID
                                      select ld).ToList();
 
             if (!forceren && metFunctieDitJaar.FirstOrDefault() != null)
@@ -160,7 +159,7 @@ namespace Chiro.Gap.Workers
             }
 
             var metFunctieVroeger = from ld in functie.Lid
-                                    where ld.GroepsWerkJaar.ID != huidigGwjID
+                                    where ld.GroepsWerkJaar.ID != huidigGwj.ID
                                     select ld;
 
             if (metFunctieVroeger.FirstOrDefault() == null)

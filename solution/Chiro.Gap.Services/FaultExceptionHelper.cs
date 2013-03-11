@@ -1,5 +1,7 @@
-﻿using System.ServiceModel;
+﻿using System.Collections.Generic;
+using System.ServiceModel;
 using Chiro.Gap.Domain;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.Services
@@ -36,6 +38,24 @@ namespace Chiro.Gap.Services
         public static FaultException<FoutNummerFault> FoutNummer(FoutNummer nummer, string reason)
         {
             return new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = nummer }, new FaultReason(reason));
+        }
+
+        /// <summary>
+        /// Levert een 'BlokkerendeObjecten'-faultexception op, die de service kan throwen
+        /// </summary>
+        /// <typeparam name="TInfo">Een datacontract om de blokkerende objecten meet te beschrijven</typeparam>
+        /// <param name="infoBlokkerendeObjecten">De blokkerende objecten, als <typeparamref name="TInfo"/></param>
+        /// <param name="reden">Wat meer uitleg over de fout</param>
+        /// <returns>een 'BlokkerendeObjecten'-faultexception, die de service kan throwen</returns>
+        public static FaultException<BlokkerendeObjectenFault<TInfo>>  Blokkerend<TInfo>(List<TInfo> infoBlokkerendeObjecten, string reden)
+        {
+            return
+                new FaultException<BlokkerendeObjectenFault<TInfo>>(
+                    new BlokkerendeObjectenFault<TInfo>
+                        {
+                            Aantal = infoBlokkerendeObjecten.Count,
+                            Objecten = infoBlokkerendeObjecten
+                        }, new FaultReason(reden));
         }
     }
 }

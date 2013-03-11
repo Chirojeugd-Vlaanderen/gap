@@ -43,29 +43,30 @@ namespace Chiro.Gap.Workers
         /// <param name="groepID">
         ///     ID van de groep waarvan groepswerkjaarID gevraagd
         /// </param>
+        /// <param name="groepenRepo">groepenrepository, via dewelke het groepswerkjaar indien nodig opgehaald
+        /// kan worden.</param>
         /// <returns>
         /// Het ID van het recentste groespwerkjaar van de groep
         /// </returns>
-        public int GroepsWerkJaarIDOphalen(int groepID)
+        public int GroepsWerkJaarIDOphalen(int groepID, IRepository<Groep> groepenRepo)
         {
-            var gwj = (GroepsWerkJaar)_cache.Get(string.Format(GROEPSWERKJAARCACHEKEY, groepID));
+            int? gwjID = (int?)_cache.Get(string.Format(GROEPSWERKJAARCACHEKEY, groepID));
 
-            if (gwj == null)
+            if (gwjID == null)
             {
-                throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
-                // gwj = _groepsWerkJaarDao.RecentsteOphalen(groepID, gwjr => gwjr.Groep);
+                gwjID = groepenRepo.ByID(groepID).GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First().ID;
 
-                //_cache.Add(
-                //    string.Format(GROEPSWERKJAARCACHEKEY, groepID),
-                //    gwj,
-                //    null,
-                //    Cache.NoAbsoluteExpiration,
-                //    new TimeSpan(2, 0, 0),
-                //    CacheItemPriority.Normal,
-                //    null);
+                _cache.Add(
+                    string.Format(GROEPSWERKJAARCACHEKEY, groepID),
+                    gwjID,
+                    null,
+                    Cache.NoAbsoluteExpiration,
+                    new TimeSpan(2, 0, 0),
+                    CacheItemPriority.Normal,
+                    null);
             }
 
-            return gwj.ID;
+            return gwjID.Value;
         }
 
         /// <summary>

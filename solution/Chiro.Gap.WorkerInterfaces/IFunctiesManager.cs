@@ -27,11 +27,10 @@ namespace Chiro.Gap.WorkerInterfaces
         void Toekennen(Lid lid, IList<Functie> functies);
 
         /// <summary>
-        /// Verwijdert een functie (PERSISTEERT!)
+        /// Verwijdert een functie
         /// </summary>
         /// <param name="functie">
-        /// Te verwijderen functie, 
-        ///  inclusief groep, leden en groepswerkjaar leden
+        /// Te verwijderen functie
         /// </param>
         /// <param name="forceren">
         /// Indien <c>true</c> wordt de functie ook verwijderd als er

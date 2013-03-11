@@ -757,11 +757,16 @@ namespace Chiro.Gap.Services
             Gav.Check(functie);
             Debug.Assert(functie != null, "functie != null");
 
-            if (forceren)
+            try
             {
-                functie.Lid.Clear();
+                _functiesMgr.Verwijderen(functie, forceren);
             }
-            _functiesRepo.Delete(functie);
+            catch (BlokkerendeObjectenException<Lid> ex)
+            {
+                // Er waren leden dit werkjaar met de gegeven functie:
+                // stuur faultexception
+                throw FaultExceptionHelper.Blokkerend(Mapper.Map<IList<Lid>, List<PersoonLidInfo>>(ex.Objecten), ex.Message);
+            }
             _functiesRepo.SaveChanges();
         }
 

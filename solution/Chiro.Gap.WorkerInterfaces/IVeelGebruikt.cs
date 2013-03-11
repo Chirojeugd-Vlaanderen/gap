@@ -27,10 +27,12 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="groepID">
         ///     ID van de groep waarvan groepswerkjaarID gevraagd
         /// </param>
+        /// <param name="groepenRepo">groepenrepository, via dewelke het groepswerkjaar indien nodig opgehaald
+        /// kan worden.</param>
         /// <returns>
         /// Het ID van het recentste groespwerkjaar van de groep
         /// </returns>
-        int GroepsWerkJaarIDOphalen(int groepID);
+        int GroepsWerkJaarIDOphalen(int groepID, IRepository<Groep> groepenRepo);
 
         /// <summary>
         /// Haalt alle nationale functies op
