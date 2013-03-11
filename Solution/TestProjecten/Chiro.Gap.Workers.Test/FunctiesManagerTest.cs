@@ -470,7 +470,7 @@ namespace Chiro.Gap.Workers.Test
 
 			var veelGebruiktMock = new Mock<IVeelGebruikt>();
 			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
-			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
+			Factory.InstantieRegistreren(veelGebruiktMock.Object);
 
 			var mgr = Factory.Maak<FunctiesManager>();
 
@@ -490,19 +490,37 @@ namespace Chiro.Gap.Workers.Test
 		[ExpectedException(typeof(BlokkerendeObjectenException<Lid>))]
 		public void FunctieDitJaarInGebruikVerwijderenTest()
 		{
-			// arrange
+            // arrange
 
-			var testData = new DummyData();
+            // testsituatie creeren
+		    var functie = new Functie();
+		    var groepswerkjaar = new GroepsWerkJaar
+		                             {
+                                         ID = 11,
+		                                 Groep =
+		                                     new ChiroGroep
+		                                         {
+		                                             ID = 1,
+		                                             GroepsWerkJaar = new List<GroepsWerkJaar>()
+		                                         }
+		                             };
+            groepswerkjaar.Groep.GroepsWerkJaar.Add(groepswerkjaar);
+		    functie.Groep = groepswerkjaar.Groep;
 
-			var veelGebruiktMock = new Mock<IVeelGebruikt>();
-			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
-			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
+		    var lid = new Leiding {Functie = new List<Functie>() {functie}, GroepsWerkJaar = groepswerkjaar};
+            functie.Lid.Add(lid);
+
+            // cache emuleren
+            var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(groepswerkjaar.Groep.ID)).Returns(groepswerkjaar.ID);
+            Factory.InstantieRegistreren(veelGebruiktMock.Object);
+
 
 			var mgr = Factory.Maak<FunctiesManager>();
 
 			// act
 
-			var result = mgr.Verwijderen(testData.UniekeFunctie, false);
+			var result = mgr.Verwijderen(functie, false);
 
 			// assert
 

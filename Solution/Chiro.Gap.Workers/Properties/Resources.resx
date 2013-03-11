@@ -322,4 +322,7 @@ de helpdesk</value>
   <data name="FoutieveGroepUitstap" xml:space="preserve">
     <value>De groep van de uitstap verschilt van de groep van de deelnemer.</value>
   </data>
+  <data name="NationaleFunctieVerwijderen" xml:space="preserve">
+    <value>Je kunt geen nationale functies verwijderen.</value>
+  </data>
 </root>

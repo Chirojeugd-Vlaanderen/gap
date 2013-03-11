@@ -21,6 +21,17 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class FunctiesManager : IFunctiesManager
     {
+        private readonly IVeelGebruikt _veelGebruikt;
+
+        /// <summary>
+        /// Cache injecteren via dependency injection
+        /// </summary>
+        /// <param name="veelGebruikt">cache-dink</param>
+        public FunctiesManager(IVeelGebruikt veelGebruikt)
+        {
+            _veelGebruikt = veelGebruikt;
+        }
+
         /// <summary>
         /// Kent de meegegeven <paramref name="functies"/> toe aan het gegeven <paramref name="lid"/>.
         /// Als het lid al andere functies had, blijven die behouden.
@@ -100,7 +111,7 @@ namespace Chiro.Gap.Workers
         }
         
         /// <summary>
-        /// Verwijdert een functie (PERSISTEERT!)
+        /// Verwijdert een functie
         /// </summary>
         /// <param name="functie">
         /// Te verwijderen functie, 
@@ -120,49 +131,45 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public Functie Verwijderen(Functie functie, bool forceren)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-            //if (!_autorisatieMgr.IsGavFunctie(functie.ID))
-            //{
-            //    throw new GeenGavException(Resources.GeenGav);
-            //}
+            // Leden moeten gekoppeld zijn
+            // (null verschilt hier expliciet van een lege lijst)
+            Debug.Assert(functie.Lid != null);
 
-            //// Leden moeten gekoppeld zijn
-            //// (null verschilt hier expliciet van een lege lijst)
-            //Debug.Assert(functie.Lid != null);
+            if (functie.Groep == null)
+            {
+                throw new FoutNummerException(FoutNummer.FunctieNietBeschikbaar, Properties.Resources.NationaleFunctieVerwijderen);
+            }
 
-            //int huidigGwjID = _veelGebruikt.GroepsWerkJaarIDOphalen(functie.Groep.ID).ID;
+            int huidigGwjID = _veelGebruikt.GroepsWerkJaarIDOphalen(functie.Groep.ID);
 
-            //var metFunctieDitJaar = from ld in functie.Lid
-            //                        where ld.GroepsWerkJaar.ID == huidigGwjID
-            //                        select ld;
+            var metFunctieDitJaar = (from ld in functie.Lid
+                                     where ld.GroepsWerkJaar.ID == huidigGwjID
+                                     select ld).ToList();
 
-            //if (!forceren && metFunctieDitJaar.FirstOrDefault() != null)
-            //{
-            //    throw new BlokkerendeObjectenException<Lid>(
-            //        metFunctieDitJaar,
-            //        metFunctieDitJaar.Count(),
-            //        Resources.FunctieNietLeeg);
-            //}
+            if (!forceren && metFunctieDitJaar.FirstOrDefault() != null)
+            {
+                throw new BlokkerendeObjectenException<Lid>(
+                    metFunctieDitJaar,
+                    metFunctieDitJaar.Count(),
+                    Resources.FunctieNietLeeg);
+            }
 
-            //foreach (var ld in metFunctieDitJaar)
-            //{
-            //    ld.TeVerwijderen = true; // markeer link lid->functie als te verwdrn
-            //}
+            foreach (var ld in metFunctieDitJaar)
+            {
+                functie.Lid.Remove(ld);
+            }
 
-            //var metFunctieVroeger = from ld in functie.Lid
-            //                        where ld.GroepsWerkJaar.ID != huidigGwjID
-            //                        select ld;
+            var metFunctieVroeger = from ld in functie.Lid
+                                    where ld.GroepsWerkJaar.ID != huidigGwjID
+                                    select ld;
 
-            //if (metFunctieVroeger.FirstOrDefault() == null)
-            //{
-            //    functie.TeVerwijderen = true;
-            //}
-            //else
-            //{
-            //    functie.WerkJaarTot = _veelGebruikt.GroepsWerkJaarIDOphalen(functie.Groep.ID).WerkJaar - 1;
-            //}
-
-            //return _funDao.Bewaren(functie, fn => fn.Lid);
+            if (metFunctieVroeger.FirstOrDefault() == null)
+            {
+                functie.Groep.Functie.Remove(functie);
+                return null;
+            }
+            functie.WerkJaarTot = _veelGebruikt.WerkJaarOphalen(functie.Groep.ID) - 1;
+            return functie;
         }
 
         /// <summary>

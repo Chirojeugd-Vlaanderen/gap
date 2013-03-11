@@ -131,5 +131,19 @@ namespace Chiro.Gap.Workers
 
             return groepID ?? 0;
         }
+
+        /// <summary>
+        /// Haalt het beginjaar van het huidig werkjaar van de groep met gegeven <paramref name="groepID"/> op.
+        /// (Bijv. 2012 voor 2012-2013)
+        /// </summary>
+        /// <param name="groepID">ID van de groep, waarvan het werkjaar opgezocht moet worden</param>
+        /// <returns>
+        /// het beginjaar van het huidig werkjaar van de groep met gegeven <paramref name="groepID"/>.
+        /// (Bijv. 2012 voor 2012-2013)
+        /// </returns>
+        public int WerkJaarOphalen(int groepID)
+        {
+            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+        }
     }
 }
