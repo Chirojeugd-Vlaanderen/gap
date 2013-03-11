@@ -756,6 +756,7 @@ namespace Chiro.Gap.Services
             var functie = _functiesRepo.ByID(functieId);
             Gav.Check(functie);
             Debug.Assert(functie != null, "functie != null");
+
             if (forceren)
             {
                 functie.Lid.Clear();

@@ -18,151 +18,165 @@ using Chiro.Gap.Domain;
 using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.Services;
 
 namespace Chiro.Gap.Services.Test
 {
-	/// <summary>
-	/// Test op groepenservice
-	/// </summary>
-	/// <remarks>Blijkbaar heeft iemand mijn mocks voor de DAO weggehaald.  Dan testen we maar
-	/// heel de flow.</remarks>
-	[TestClass]
-	public class GroepenServiceTest
-	{
-		public GroepenServiceTest()
-		{
-		}
+    /// <summary>
+    /// Test op groepenservice
+    /// </summary>
+    /// <remarks>Blijkbaar heeft iemand mijn mocks voor de DAO weggehaald.  Dan testen we maar
+    /// heel de flow.</remarks>
+    [TestClass]
+    public class GroepenServiceTest
+    {
+        public GroepenServiceTest()
+        {
+        }
 
 
-		#region Additional test attributes
-		//
-		// You can use the following additional attributes as you write your tests:
-		//
-		// Use ClassInitialize to run code before running the first test in the class
-		// [ClassInitialize]
-		// public static void MyClassInitialize(TestContext testContext) { }
-		//
-		// Use ClassCleanup to run code after all tests in a class have run
-		// [ClassCleanup()]
-		// public static void MyClassCleanup() { }
-		//
-		// Use TestInitialize to run code before running each test 
-		// [TestInitialize]
-		// public void MyTestInitialize() { }
-		//
-		// Use TestCleanup to run code after each test has run
-		// [TestCleanup()]
-		// public void MyTestCleanup() { }
-		//
-		#endregion
+        #region Additional test attributes
+
+        //
+        // You can use the following additional attributes as you write your tests:
+        //
+        // Use ClassInitialize to run code before running the first test in the class
+        // [ClassInitialize]
+        // public static void MyClassInitialize(TestContext testContext) { }
+        //
+        // Use ClassCleanup to run code after all tests in a class have run
+        // [ClassCleanup()]
+        // public static void MyClassCleanup() { }
+        //
+        // Use TestInitialize to run code before running each test 
+        // [TestInitialize]
+        // public void MyTestInitialize() { }
+        //
+        // Use TestCleanup to run code after each test has run
+        // [TestCleanup()]
+        // public void MyTestCleanup() { }
+        //
+
+        #endregion
 
 
 
-		[ClassInitialize]
-		static public void InitialiseerTests(TestContext tc)
-		{
-			Factory.ContainerInit();
-			MappingHelper.MappingsDefinieren();
-		}
+        [ClassInitialize]
+        public static void InitialiseerTests(TestContext tc)
+        {
+            Factory.ContainerInit();
+            MappingHelper.MappingsDefinieren();
+        }
 
-		[ClassCleanup]
-		static public void AfsluitenTests()
-		{
-		}
-
-
-		/// <summary>
-		/// Deze functie zorgt ervoor dat de PrincipalPermissionAttributes op de service methods
-		/// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
-		/// security
-		/// </summary>
-		[TestInitialize]
-		public void VoorElkeTest()
-		{
-			var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
-			var roles = new[] { Properties.Settings.Default.TestSecurityGroep };
-			var principal = new GenericPrincipal(identity, roles);
-			Thread.CurrentPrincipal = principal;
-		}
+        [ClassCleanup]
+        public static void AfsluitenTests()
+        {
+        }
 
 
-		/// <summary>
-		/// Ophalen groepsinfo (zonder categorieën of afdelingen)
-		/// </summary>
-		[TestMethod]
-		public void GroepOphalen()
-		{
-			#region Arrange
-			IGroepenService svc = Factory.Maak<GroepenService>();
-			#endregion
+        /// <summary>
+        /// Deze functie zorgt ervoor dat de PrincipalPermissionAttributes op de service methods
+        /// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
+        /// security
+        /// </summary>
+        [TestInitialize]
+        public void VoorElkeTest()
+        {
+            var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
+            var roles = new[] {Properties.Settings.Default.TestSecurityGroep};
+            var principal = new GenericPrincipal(identity, roles);
+            Thread.CurrentPrincipal = principal;
+        }
 
-			#region Act
-			GroepInfo g = svc.InfoOphalen(TestInfo.GROEP_ID);
-			#endregion
 
-			#region Assert
-			Assert.IsTrue(g.ID == TestInfo.GROEP_ID);
-			#endregion
-		}
+        /// <summary>
+        /// Ophalen groepsinfo (zonder categorieën of afdelingen)
+        /// </summary>
+        [TestMethod]
+        public void GroepOphalen()
+        {
+            #region Arrange
 
-		/// <summary>
-		/// Ophalen groepsinfo; controleert of categorieën en afdelingen meekomen.
-		/// </summary>
-		[TestMethod]
-		public void GroepDetailOphalen()
-		{
-			#region Arrange
+            IGroepenService svc = Factory.Maak<GroepenService>();
 
-		    var afdeling = new Afdeling {ID = 11};
-		    var categorie = new Categorie {ID = 21};
-            var groepsWerkJaar = new GroepsWerkJaar { AfdelingsJaar = new[] { new AfdelingsJaar { Afdeling = afdeling } } };
-		    var groep = new ChiroGroep
-		                    {
-		                        ID = 1,
-		                        Categorie = new[] {categorie},
-		                        GroepsWerkJaar = new[] {groepsWerkJaar}
-		                    };
-		    groepsWerkJaar.Groep = groep;
-            
-		    var dummyGroepenRepo = new DummyRepo<Groep>(new[] {groep});
-		    var repoProviderMock = new Mock<IRepositoryProvider>();
-		    repoProviderMock.Setup(src => src.RepositoryGet<Groep>()).Returns(dummyGroepenRepo);
+            #endregion
+
+            #region Act
+
+            GroepInfo g = svc.InfoOphalen(TestInfo.GROEP_ID);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsTrue(g.ID == TestInfo.GROEP_ID);
+
+            #endregion
+        }
+
+        /// <summary>
+        /// Ophalen groepsinfo; controleert of categorieën en afdelingen meekomen.
+        /// </summary>
+        [TestMethod]
+        public void GroepDetailOphalen()
+        {
+            #region Arrange
+
+            var afdeling = new Afdeling {ID = 11};
+            var categorie = new Categorie {ID = 21};
+            var groepsWerkJaar = new GroepsWerkJaar {AfdelingsJaar = new[] {new AfdelingsJaar {Afdeling = afdeling}}};
+            var groep = new ChiroGroep
+                            {
+                                ID = 1,
+                                Categorie = new[] {categorie},
+                                GroepsWerkJaar = new[] {groepsWerkJaar}
+                            };
+            groepsWerkJaar.Groep = groep;
+
+            var dummyGroepenRepo = new DummyRepo<Groep>(new[] {groep});
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Groep>()).Returns(dummyGroepenRepo);
             Factory.InstantieRegistreren(repoProviderMock.Object);
 
-			IGroepenService svc = Factory.Maak<GroepenService>();
-			#endregion
+            IGroepenService svc = Factory.Maak<GroepenService>();
 
-			#region Act
-			GroepDetail g = svc.DetailOphalen(groep.ID);
+            #endregion
 
-		    CategorieInfo catInfo = (from cat in g.Categorieen
-		                             where cat.ID == categorie.ID
-		                             select cat).FirstOrDefault();
+            #region Act
 
-		    AfdelingsJaarDetail afdInfo = (from afd in g.Afdelingen
-		                                   where afd.AfdelingID == afdeling.ID
-		                                   select afd).FirstOrDefault();
-			#endregion
+            GroepDetail g = svc.DetailOphalen(groep.ID);
 
-			#region Assert
-			Assert.IsTrue(g.ID == groep.ID);
-			Assert.IsTrue(categorie != null);
-			Assert.IsTrue(afdeling != null);
-			#endregion
-		}
+            CategorieInfo catInfo = (from cat in g.Categorieen
+                                     where cat.ID == categorie.ID
+                                     select cat).FirstOrDefault();
+
+            AfdelingsJaarDetail afdInfo = (from afd in g.Afdelingen
+                                           where afd.AfdelingID == afdeling.ID
+                                           select afd).FirstOrDefault();
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsTrue(g.ID == groep.ID);
+            Assert.IsTrue(categorie != null);
+            Assert.IsTrue(afdeling != null);
+
+            #endregion
+        }
 
         ///<summary>
         /// Kijkt na of er een foutmelding komt als een gebruiker probeert een functie bij te maken met een code
         /// die al bestaat voor een nationale functie (in dit geval 'CP')
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(FaultException<BestaatAlFault<FunctieInfo>>))]
+        [ExpectedException(typeof (FaultException<BestaatAlFault<FunctieInfo>>))]
         public void FunctieToevoegenNationaleCode()
         {
             // Arrange.
 
             // De groep:
-            int groepID = 123;          // arbitraire groepID
+            int groepID = 123; // arbitraire groepID
             var groep = new ChiroGroep {ID = groepID};
 
             // De bestaande nationale functie:
@@ -200,18 +214,18 @@ namespace Chiro.Gap.Services.Test
             // Act.
 
             // gegevens van de nieuwe functie. Op de code na arbitrair
-            string naam = "Championplukker";    // naam van nieuwe functie
-            string code = bestaandeFunctie.Code;    // code die toevallig gelijk is aan die van de bestaande functie
-            Nullable<int> maxAantal = null;     // geen max. aantal voor de functie
-            int minAantal = 0;                  // ook geen min. aantal
-            LidType lidType = LidType.Alles;    // lidtype irrelevant voor deze functie
-            Nullable<int> werkJaarVan = 2012;   // in gebruik vanaf 2012-2013
-            
+            string naam = "Championplukker"; // naam van nieuwe functie
+            string code = bestaandeFunctie.Code; // code die toevallig gelijk is aan die van de bestaande functie
+            Nullable<int> maxAantal = null; // geen max. aantal voor de functie
+            int minAantal = 0; // ook geen min. aantal
+            LidType lidType = LidType.Alles; // lidtype irrelevant voor deze functie
+            Nullable<int> werkJaarVan = 2012; // in gebruik vanaf 2012-2013
+
             target.FunctieToevoegen(groepID, naam, code, maxAantal, minAantal, lidType, werkJaarVan);
 
             // Assert
 
-            Assert.Fail();  // De bedoeling is dat we hier niet komen, maar dat een exception werd gethrowd.
+            Assert.Fail(); // De bedoeling is dat we hier niet komen, maar dat een exception werd gethrowd.
         }
 
 
@@ -270,7 +284,7 @@ namespace Chiro.Gap.Services.Test
             // ARRANGE
 
             // eenvoudig modelleke
-            var groep = new ChiroGroep { ID = 1, Naam = "Blabla" };
+            var groep = new ChiroGroep {ID = 1, Naam = "Blabla"};
 
             // repositoryprovider opzetten met dummy-groepenrepo
             var dummyGroepenRepo = new DummyRepo<Groep>(new[] {groep});
@@ -302,10 +316,10 @@ namespace Chiro.Gap.Services.Test
             // ARRANGE
 
             // eenvoudig modelleke
-            var groep = new ChiroGroep { ID = 1, Naam = "Blabla" };
+            var groep = new ChiroGroep {ID = 1, Naam = "Blabla"};
 
             // repositoryprovider opzetten met dummy-groepenrepo
-            var dummyGroepenRepo = new DummyRepo<Groep>(new[] { groep });
+            var dummyGroepenRepo = new DummyRepo<Groep>(new[] {groep});
             var repoProviderMock = new Mock<IRepositoryProvider>();
             repoProviderMock.Setup(src => src.RepositoryGet<Groep>()).Returns(dummyGroepenRepo);
             Factory.InstantieRegistreren(repoProviderMock.Object);
@@ -315,7 +329,7 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
 
-            target.Bewaren(new GroepInfo { ID = 1, Naam = "Chirokidoki" });
+            target.Bewaren(new GroepInfo {ID = 1, Naam = "Chirokidoki"});
 
             // ASSERT
 
@@ -365,7 +379,7 @@ namespace Chiro.Gap.Services.Test
         ///Verwacht faultexception bij verwijderen van functie dit jaar in gebruik.
         ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(FaultException<BlokkerendeObjectenFault<PersoonLidInfo>>))]
+        [ExpectedException(typeof (FaultException<BlokkerendeObjectenFault<PersoonLidInfo>>))]
         public void FunctieVerwijderenTest()
         {
             // ARRANGE
@@ -373,18 +387,18 @@ namespace Chiro.Gap.Services.Test
             // testsituatie creeren
             var functie = new Functie {ID = 21};
             var groepswerkjaar = new GroepsWerkJaar
-            {
-                ID = 11,
-                Groep =
-                    new ChiroGroep
-                    {
-                        ID = 1,
-                        GroepsWerkJaar = new List<GroepsWerkJaar>()
-                    }
-            };
+                                     {
+                                         ID = 11,
+                                         Groep =
+                                             new ChiroGroep
+                                                 {
+                                                     ID = 1,
+                                                     GroepsWerkJaar = new List<GroepsWerkJaar>()
+                                                 }
+                                     };
             groepswerkjaar.Groep.GroepsWerkJaar.Add(groepswerkjaar);
             functie.Groep = groepswerkjaar.Groep;
-            var lid = new Leiding { Functie = new List<Functie>() { functie }, GroepsWerkJaar = groepswerkjaar };
+            var lid = new Leiding {Functie = new List<Functie>() {functie}, GroepsWerkJaar = groepswerkjaar};
             functie.Lid.Add(lid);
 
             // repository opzetten
@@ -400,7 +414,58 @@ namespace Chiro.Gap.Services.Test
             target.FunctieVerwijderen(functie.ID, false);
 
             // ASSERT
-            Assert.Fail();  // we moeten een faultexception gekregen hebben.
+            Assert.Fail(); // we moeten een faultexception gekregen hebben.
         }
-	}
+
+        /// <summary>
+        ///Als een functie vroeger gebruikt werd, moet verwijderen enkel het 'werkjaar-tot' zetten.
+        ///</summary>
+        [TestMethod()]
+        public void FunctieVerwijderenOoitGebruiktTest()
+        {
+            // ARRANGE
+
+            // testsituatie creeren
+            // een lid uit vorig werkjaar heeft de te verwijderen functie
+            var functie = new Functie {ID = 21};
+            var groep = new ChiroGroep
+                            {
+                                ID = 1,
+                                GroepsWerkJaar = new List<GroepsWerkJaar>()
+                            };
+
+            var groepswerkjaar = new GroepsWerkJaar
+                                     {
+                                         WerkJaar = 2012,
+                                         ID = 12,
+                                         Groep = groep
+                                     };
+            var oudGroepswerkjaar = new GroepsWerkJaar
+                                        {
+                                            WerkJaar = 2011,
+                                            ID = 11,
+                                            Groep = groep
+                                        };
+
+            groep.GroepsWerkJaar.Add(oudGroepswerkjaar);
+            groep.GroepsWerkJaar.Add(groepswerkjaar);
+            functie.Groep = groep;
+            var lid = new Leiding {Functie = new List<Functie>() {functie}, GroepsWerkJaar = oudGroepswerkjaar};
+            functie.Lid.Add(lid);
+
+            // repository opzetten
+            var dummyFunctiesRepo = new DummyRepo<Functie>(new List<Functie> {functie});
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Functie>()).Returns(dummyFunctiesRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            var target = Factory.Maak<GroepenService>();
+
+            // ACT
+            target.FunctieVerwijderen(functie.ID, false);
+
+            // ASSERT
+            Assert.AreEqual(functie.WerkJaarTot, oudGroepswerkjaar.WerkJaar);
+        }
+    }
 }
