@@ -510,12 +510,6 @@ namespace Chiro.Gap.Workers.Test
 		    var lid = new Leiding {Functie = new List<Functie>() {functie}, GroepsWerkJaar = groepswerkjaar};
             functie.Lid.Add(lid);
 
-            // cache emuleren
-            var veelGebruiktMock = new Mock<IVeelGebruikt>();
-            veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(groepswerkjaar.Groep.ID)).Returns(groepswerkjaar.ID);
-            Factory.InstantieRegistreren(veelGebruiktMock.Object);
-
-
 			var mgr = Factory.Maak<FunctiesManager>();
 
 			// act
