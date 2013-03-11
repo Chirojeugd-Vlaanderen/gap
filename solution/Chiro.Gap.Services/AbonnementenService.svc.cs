@@ -104,7 +104,7 @@ namespace Chiro.Gap.Services
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
             //var groep = _gpMgr.Ophalen(id, PersoonsExtras.Groep).Groep;
-            //var groepsWerkJaar = _veelGebruikt.GroepsWerkJaarOphalen(groep.ID);
+            //var groepsWerkJaar = _veelGebruikt.GroepsWerkJaarIDOphalen(groep.ID);
             //var contactPersonen = _ledenMgr.Ophalen(groepsWerkJaar.ID, NationaleFunctie.ContactPersoon);
 
             //if (contactPersonen.Any(ld => ld.GelieerdePersoon.ID == id))

@@ -22,15 +22,15 @@ namespace Chiro.Gap.WorkerInterfaces
         void GroepsWerkJaarResetten(int groepID);
 
         /// <summary>
-        /// Haalt van de groep met gegeven <paramref name="groepID"/> het recentste groepswerkjaar op, inclusief de groep zelf.
+        /// Haalt van de groep met gegeven <paramref name="groepID"/> het ID van het recentste groepswerkjaar op.
         /// </summary>
         /// <param name="groepID">
-        /// ID van de groep waarvan groepswerkjaar gevraagd
+        ///     ID van de groep waarvan groepswerkjaarID gevraagd
         /// </param>
         /// <returns>
-        /// Het groepswerkjaar, met daaraan gekoppeld de groep
+        /// Het ID van het recentste groespwerkjaar van de groep
         /// </returns>
-        GroepsWerkJaar GroepsWerkJaarOphalen(int groepID);
+        int GroepsWerkJaarIDOphalen(int groepID);
 
         /// <summary>
         /// Haalt alle nationale functies op

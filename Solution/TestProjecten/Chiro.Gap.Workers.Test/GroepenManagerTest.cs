@@ -82,7 +82,7 @@ namespace Chiro.Gap.Workers.Test
 
 
             //var veelGebruiktMock = new Mock<IVeelGebruikt>();
-            //veelGebruiktMock.Setup(che => che.GroepsWerkJaarOphalen(GROEP_ID)).Returns(new GroepsWerkJaar
+            //veelGebruiktMock.Setup(che => che.GroepsWerkJaarIDOphalen(GROEP_ID)).Returns(new GroepsWerkJaar
             //    {Groep = new ChiroGroep {ID = GROEP_ID, Code = "TST/0001"}});
             //Factory.InstantieRegistreren(veelGebruiktMock.Object);
 

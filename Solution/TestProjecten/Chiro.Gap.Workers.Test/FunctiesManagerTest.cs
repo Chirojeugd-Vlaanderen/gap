@@ -469,7 +469,7 @@ namespace Chiro.Gap.Workers.Test
 			var testData = new DummyData();
 
 			var veelGebruiktMock = new Mock<IVeelGebruikt>();
-			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj);
+			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
 			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
 
 			var mgr = Factory.Maak<FunctiesManager>();
@@ -495,7 +495,7 @@ namespace Chiro.Gap.Workers.Test
 			var testData = new DummyData();
 
 			var veelGebruiktMock = new Mock<IVeelGebruikt>();
-			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj);
+			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
 			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
 
 			var mgr = Factory.Maak<FunctiesManager>();
@@ -522,7 +522,7 @@ namespace Chiro.Gap.Workers.Test
 			var testData = new DummyData();
 
 			var veelGebruiktMock = new Mock<IVeelGebruikt>();
-			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj);
+			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
 			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
 
 			var mgr = Factory.Maak<FunctiesManager>();
@@ -551,7 +551,7 @@ namespace Chiro.Gap.Workers.Test
 			Debug.Assert(testData.HuidigGwj != null);
 
 			var veelGebruiktMock = new Mock<IVeelGebruikt>();
-			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj);
+			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
 			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
 
 			var mgr = Factory.Maak<FunctiesManager>();

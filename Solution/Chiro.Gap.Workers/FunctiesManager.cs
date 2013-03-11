@@ -130,7 +130,7 @@ namespace Chiro.Gap.Workers
             //// (null verschilt hier expliciet van een lege lijst)
             //Debug.Assert(functie.Lid != null);
 
-            //int huidigGwjID = _veelGebruikt.GroepsWerkJaarOphalen(functie.Groep.ID).ID;
+            //int huidigGwjID = _veelGebruikt.GroepsWerkJaarIDOphalen(functie.Groep.ID).ID;
 
             //var metFunctieDitJaar = from ld in functie.Lid
             //                        where ld.GroepsWerkJaar.ID == huidigGwjID
@@ -159,7 +159,7 @@ namespace Chiro.Gap.Workers
             //}
             //else
             //{
-            //    functie.WerkJaarTot = _veelGebruikt.GroepsWerkJaarOphalen(functie.Groep.ID).WerkJaar - 1;
+            //    functie.WerkJaarTot = _veelGebruikt.GroepsWerkJaarIDOphalen(functie.Groep.ID).WerkJaar - 1;
             //}
 
             //return _funDao.Bewaren(functie, fn => fn.Lid);

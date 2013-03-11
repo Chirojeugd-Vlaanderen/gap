@@ -86,7 +86,7 @@ namespace Chiro.Gap.Workers.Test
             //var geldao = new Mock<IGelieerdePersonenDao>(MockBehavior.Strict);
 
             //var vgdao = new Mock<IVeelGebruikt>(MockBehavior.Strict);
-            //vgdao.Setup(vg => vg.GroepsWerkJaarOphalen(It.IsAny<int>())).Returns(gwj);
+            //vgdao.Setup(vg => vg.GroepsWerkJaarIDOphalen(It.IsAny<int>())).Returns(gwj);
 
             //var autmanag = new Mock<IAutorisatieManager>(MockBehavior.Strict);
             //autmanag.Setup(vg => vg.IsSuperGav()).Returns(false);

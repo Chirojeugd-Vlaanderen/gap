@@ -38,16 +38,15 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Haalt van de groep met gegeven <paramref name="groepID"/> het recentste
-        /// groepswerkjaar op, inclusief de groep zelf.
+        /// Haalt van de groep met gegeven <paramref name="groepID"/> het ID van het recentste groepswerkjaar op.
         /// </summary>
         /// <param name="groepID">
-        /// ID van de groep waarvan groepswerkjaar gevraagd
+        ///     ID van de groep waarvan groepswerkjaarID gevraagd
         /// </param>
         /// <returns>
-        /// Het groepswerkjaar, met daaraan gekoppeld de groep
+        /// Het ID van het recentste groespwerkjaar van de groep
         /// </returns>
-        public GroepsWerkJaar GroepsWerkJaarOphalen(int groepID)
+        public int GroepsWerkJaarIDOphalen(int groepID)
         {
             var gwj = (GroepsWerkJaar)_cache.Get(string.Format(GROEPSWERKJAARCACHEKEY, groepID));
 
@@ -66,7 +65,7 @@ namespace Chiro.Gap.Workers
                 //    null);
             }
 
-            return gwj;
+            return gwj.ID;
         }
 
         /// <summary>
