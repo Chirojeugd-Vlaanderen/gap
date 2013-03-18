@@ -545,16 +545,37 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt alle personen op die een adres gemeen hebben met de
-        /// Persoon bepaald door gelieerdePersoonID
+        /// Gegeven een gelieerde persoon met gegeven <paramref name="gelieerdePersoonID"/>, haal al diens
+        /// huisgenoten uit zijn eigen groep op.
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van GelieerdePersoon</param>
-        /// <returns>Lijst met Personen die huisgenoot zijn van gegeven
+        /// <returns>Lijst met Personen uit dezelfde groep die huisgenoot zijn van gegeven
         /// persoon</returns>
         /// <remarks>Parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
-        public IList<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
+        public List<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
+
+            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var huisGenoten =
+                (from gp in
+                     gelieerdePersoon.Persoon.PersoonsAdres.Select(pa => pa.Persoon).SelectMany(p => p.GelieerdePersoon)
+                 where Equals(gp.Groep, gelieerdePersoon.Groep)
+                 select gp).ToList();
+
+            if (!huisGenoten.Any())
+            {
+                // Als er nog geen adressen zijn, dan zijn er ook geen huisgenoten.
+                // In dat geval leveren we gewoon de originele gelieerde persoon op.
+
+                huisGenoten = new List<GelieerdePersoon>{gelieerdePersoon};
+            }
+
+            return Mapper.Map<IList<GelieerdePersoon>, List<BewonersInfo>>(huisGenoten);
         }
 
         /// <summary>

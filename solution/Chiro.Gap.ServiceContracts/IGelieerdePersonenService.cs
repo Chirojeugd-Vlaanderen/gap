@@ -270,18 +270,18 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs, PersoonsAdresInfo nieuwAdres, int oudAdresID);
 
-		/// <summary>
-		/// Haalt alle personen op die een adres gemeen hebben met de
-		/// Persoon bepaald door gelieerdePersoonID
-		/// </summary>
-		/// <param name="gelieerdePersoonID">ID van GelieerdePersoon</param>
-		/// <returns>Lijst met Personen die huisgenoot zijn van gegeven
-		/// persoon</returns>
-		/// <remarks>Parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
+        /// <summary>
+        /// Gegeven een gelieerde persoon met gegeven <paramref name="gelieerdePersoonID"/>, haal al diens
+        /// huisgenoten uit zijn eigen groep op.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van GelieerdePersoon</param>
+        /// <returns>Lijst met Personen uit dezelfde groep die huisgenoot zijn van gegeven
+        /// persoon</returns>
+        /// <remarks>Parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID);
+		List<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID);
 
 		/// <summary>
 		/// Voegt een adres toe aan een verzameling *GELIEERDE* personen
