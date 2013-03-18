@@ -35,18 +35,6 @@ namespace Chiro.Gap.WorkerInterfaces
         List<GelieerdePersoon> ZoekGelijkaardig(Persoon persoon, Groep groep);
 
         /// <summary>
-        /// Maakt het persoonsAdres <paramref name="voorkeur"/> het voorkeursadres van de gelieerde persoon
-        /// <paramref name="gp"/>
-        /// </summary>
-        /// <param name="gp">
-        /// Gelieerde persoon die een nieuw voorkeursadres moet krijgen
-        /// </param>
-        /// <param name="voorkeur">
-        /// Persoonsadres dat voorkeursadres moet worden van <paramref name="gp"/>.
-        /// </param>
-        void VoorkeurInstellen(GelieerdePersoon gp, PersoonsAdres voorkeur);
-
-        /// <summary>
         /// Koppelt het gegeven Adres via nieuwe PersoonsAdresObjecten
         /// aan de Personen gekoppeld aan de gelieerde personen <paramref name="gelieerdePersonen"/>.  
         /// Persisteert niet.

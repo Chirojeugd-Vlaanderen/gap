@@ -147,74 +147,6 @@ namespace Chiro.Gap.Workers
             return result.ToList();
         }
 
-        /// <summary>
-        /// Maakt het persoonsAdres <paramref name="voorkeur"/> het voorkeursadres van de gelieerde persoon
-        /// <paramref name="gp"/>
-        /// </summary>
-        /// <param name="gp">
-        /// Gelieerde persoon die een nieuw voorkeursadres moet krijgen
-        /// </param>
-        /// <param name="voorkeur">
-        /// Persoonsadres dat voorkeursadres moet worden van <paramref name="gp"/>.
-        /// </param>
-        public void VoorkeurInstellen(GelieerdePersoon gp, PersoonsAdres voorkeur)
-        {
-            VoorkeurInstellen(gp, voorkeur, true);
-        }
-
-        /// <summary>
-        /// Maakt het persoonsAdres <paramref name="voorkeur"/> het voorkeursadres van de gelieerde persoon
-        /// <paramref name="gp"/>
-        /// </summary>
-        /// <param name="gp">
-        /// Gelieerde persoon die een nieuw voorkeursadres moet krijgen
-        /// </param>
-        /// <param name="voorkeur">
-        /// Persoonsadres dat voorkeursadres moet worden van <paramref name="gp"/>.
-        /// </param>
-        /// <param name="checkGav">
-        /// Indien <paramref name="checkGav"/> <c>false</c> is, mag je het voorkeursadres
-        /// van een gelieerde persoon ook wijzigen als je geen GAV bent van die gelieerde persoon.  (Je moet altijd
-        /// sowieso GAV zijn van het persoonsadres.)  Dat is nodig in uitzonderlijke gevallen,
-        /// bijv. als je iemand een eerste adres geeft, moet dat ook het voorkeursadres worden van de gelieerde personen
-        /// in andere groepen, ook al ben je geen GAV van deze groepen.
-        /// </param>
-        /// <remarks>
-        /// Deze method is private, en dat moet zo blijven.  Het is niet de bedoeling dat het gemakkelijk is
-        /// om zonder GAV-rechten een adresvoorkeur te veranderen.
-        /// </remarks>
-        private void VoorkeurInstellen(GelieerdePersoon gp, PersoonsAdres voorkeur, bool checkGav)
-        {
-            Debug.Assert(gp.Persoon != null);
-            Debug.Assert(voorkeur.Persoon != null);
-
-            if (checkGav && !_autorisatieMgr.IsGav(gp) || !voorkeur.GelieerdePersoon.Any(e => _autorisatieMgr.IsGav(e.Groep)))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            // Kijk na of gp en voorkeur wel betrekking hebben op dezelfde persoon.
-            if (gp.Persoon.ID != voorkeur.Persoon.ID)
-            {
-                throw new InvalidOperationException(Resources.PersonenKomenNietOvereen);
-            }
-
-            if (gp.PersoonsAdres != null)
-            {
-                // Als het huidige voorkeursadres van de gelieerde persoon gegeven is
-                // verwijder dan de gelieerde persoon
-                // uit de collectie gelieerde personen die dat voorkeursadres hebben.
-                gp.PersoonsAdres.GelieerdePersoon.Remove(gp);
-
-                // noot: Aangezien we identity en equality niet goed geimplementeerd hebben,
-                // kunnen we de check of het voorkeursadres mogelijk het bestaande adres is,
-                // hier niet betrouwbaar uitvoeren.  Nogal dikwijls werken we met de ID's, 
-                // maar dat kan hier niet, omdat in pratkijk een nieuw adres ook het voorkeuradres
-                // kan zijn.  (Nieuwe adressen hebben geen geldig ID.)
-            }
-
-            gp.PersoonsAdres = voorkeur;
-        }
 
         /// <summary>
         /// Koppelt het gegeven Adres via nieuwe PersoonsAdresObjecten
@@ -240,20 +172,9 @@ namespace Chiro.Gap.Workers
                                    bool voorkeur)
         {
             // TODO (#1042): Dit lijkt nog te hard op AdresToevoegen in PersonenManager
-            var gpersIDs = (from p in gelieerdePersonen
-                            select p.ID).ToList();
-            var mijngPersIDs = _autorisatieMgr.EnkelMijnGelieerdePersonen(gpersIDs);
-
-            if (gpersIDs.Count() != mijngPersIDs.Count())
-            {
-                // stiekem personen niet gelieerd aan eigen groep bij in lijst opgenomen.  Geen
-                // tijd aan verspillen; gewoon een GeenGavException.
-                throw new GeenGavException(Resources.GeenGav);
-            }
 
             // Vind personen waaraan het adres al gekoppeld is.
-            // (We hebben chance dat we hier in praktijk nooit komen met een nieuw adres, anders
-            // zou onderstaande problemen geven.)
+
             var bestaand =
                 gelieerdePersonen.Select(gp => gp.Persoon).SelectMany(
                     p => p.PersoonsAdres.Where(pa => pa.Adres.ID == adres.ID)).ToList();
@@ -276,21 +197,20 @@ namespace Chiro.Gap.Workers
                 gelieerdePersoon.Persoon.PersoonsAdres.Add(pa);
                 adres.PersoonsAdres.Add(pa);
 
+                // Maak zo nodig voorkeursadres
                 if (gelieerdePersoon.Persoon.PersoonsAdres.Count() == 1)
                 {
-                    // Eerste adres van de gelieerde persoon.  Dit moet bij elke gelieerde persoon het voorkeursadres
+                    // Eerste adres van de persoon.  Dit moet bij elke gelieerde persoon het voorkeursadres
                     // worden.
 
                     foreach (var gp2 in gelieerdePersoon.Persoon.GelieerdePersoon)
                     {
-                        VoorkeurInstellen(gp2, pa, false);
-                        // De extra parameter 'false' laat toe het voorkeursadres te wijzigen van
-                        // een gelieerde persoon waarvoor je geen GAV bent.
+                        gp2.PersoonsAdres = pa;
                     }
                 }
                 else if (voorkeur)
                 {
-                    VoorkeurInstellen(gelieerdePersoon, pa);
+                    gelieerdePersoon.PersoonsAdres = pa;
                 }
             }
         }
