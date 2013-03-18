@@ -500,7 +500,14 @@ namespace Chiro.Gap.Services
         /// <remarks>Eigenlijk is dit een domme method, maar ze wordt gemakshalve nog gebruikt.</remarks>
         public int PersoonIDGet(int gelieerdePersoonID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
+
+            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            return gelieerdePersoon.Persoon.ID;
         }
 
         /// <summary>
