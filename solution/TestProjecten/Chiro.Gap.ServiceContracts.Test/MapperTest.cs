@@ -32,8 +32,8 @@ namespace Chiro.Gap.ServiceContracts.Test
 		[TestMethod]
 		public void MapLijstLeden()
 		{
-			var testData = new DummyData();
-			var lidInfoLijst = Mapper.Map<IEnumerable<Lid>, IList<LidInfo>>(testData.HuidigGwj.Lid);
+		    var huidigGwj = new GroepsWerkJaar {Lid = new List<Lid> {new Kind(), new Kind()}};
+			var lidInfoLijst = Mapper.Map<IEnumerable<Lid>, IList<LidInfo>>(huidigGwj.Lid);
 
 			Assert.IsTrue(lidInfoLijst.Count > 0);
 		}
@@ -44,8 +44,8 @@ namespace Chiro.Gap.ServiceContracts.Test
 		[TestMethod]
 		public void MapGroepGroepInfo()
 		{
-			var testData = new DummyData();
-			GroepInfo gi = Mapper.Map<Groep, GroepInfo>(testData.DummyGroep);
+		    var groep = new ChiroGroep {Code = "tst/0001"};
+			GroepInfo gi = Mapper.Map<Groep, GroepInfo>(groep);
 
 			Assert.IsTrue(gi.StamNummer != string.Empty);
 		}
@@ -56,9 +56,10 @@ namespace Chiro.Gap.ServiceContracts.Test
 		[TestMethod]
 		public void MapFunctieInfo()
 		{
-			var testData = new DummyData();
-			FunctieDetail fi = Mapper.Map<Functie, FunctieDetail>(testData.UniekeFunctie);
-			Assert.AreEqual(fi.Code, testData.UniekeFunctie.Code);
+		    var functie = new Functie {Code = "BLA"};
+
+			FunctieDetail fi = Mapper.Map<Functie, FunctieDetail>(functie);
+			Assert.AreEqual(fi.Code, functie.Code);
 		}
 
 		/// <summary>
@@ -67,8 +68,8 @@ namespace Chiro.Gap.ServiceContracts.Test
 		[TestMethod]
 		public void MapLidInfoFuncties()
 		{
-			var testData = new DummyData();
-			LidInfo li = Mapper.Map<Lid, LidInfo>(testData.LeiderJos);
+		    var leiderJos = new Leiding {Functie = new List<Functie> {new Functie()}};
+			LidInfo li = Mapper.Map<Lid, LidInfo>(leiderJos);
 			Assert.IsTrue(li.Functies.Any());
 		}
 	}
