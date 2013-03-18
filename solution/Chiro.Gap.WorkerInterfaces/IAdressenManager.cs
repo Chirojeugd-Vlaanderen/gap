@@ -24,12 +24,16 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="adressen">
         /// Lijst met bestaande adressen om na te kijken of het nieuwe adres al bestaat
         /// </param>
+        /// <param name="straatNamen">queryable voor alle beschikbare straatnamen</param>
+        /// <param name="woonPlaatsen">queryable voor alle beschikbare woonplaatsen</param>
+        /// <param name="landen">queryable voor alle beschikbare landen</param>
         /// <returns>
         /// Gevonden adres
         /// </returns>
         /// <remarks>
         /// Ieder heeft het recht adressen op te zoeken
         /// </remarks>
-        Adres ZoekenOfMaken(AdresInfo adresInfo, IQueryable<Adres> adressen);
+        Adres ZoekenOfMaken(AdresInfo adresInfo, IQueryable<Adres> adressen, IQueryable<StraatNaam> straatNamen,
+                            IQueryable<WoonPlaats> woonPlaatsen, IQueryable<Land> landen);
     }
 }

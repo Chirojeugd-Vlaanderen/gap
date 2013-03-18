@@ -38,7 +38,10 @@ namespace Chiro.Gap.Services
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Categorie> _categorieenRepo;
         private readonly IRepository<CommunicatieType> _communicatieTypesRepo;
-        private readonly IRepository<Adres> _adressenRepo; 
+        private readonly IRepository<Adres> _adressenRepo;
+        private readonly IRepository<StraatNaam> _straatNamenRepo;
+        private readonly IRepository<WoonPlaats> _woonPlaatsenRepo;
+        private readonly IRepository<Land> _landenRepo;
 
         // Managers voor niet-triviale businesslogica
 
@@ -79,7 +82,11 @@ namespace Chiro.Gap.Services
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _categorieenRepo = repositoryProvider.RepositoryGet<Categorie>();
             _communicatieTypesRepo = repositoryProvider.RepositoryGet<CommunicatieType>();
+
             _adressenRepo = repositoryProvider.RepositoryGet<Adres>();
+            _straatNamenRepo = repositoryProvider.RepositoryGet<StraatNaam>();
+            _woonPlaatsenRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
+            _landenRepo = repositoryProvider.RepositoryGet<Land>();
 
             _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
@@ -605,12 +612,14 @@ namespace Chiro.Gap.Services
 
             try
             {
-                adres = _adressenMgr.ZoekenOfMaken(adr, _adressenRepo.Select());
+                adres = _adressenMgr.ZoekenOfMaken(adr, _adressenRepo.Select(), _straatNamenRepo.Select(),
+                                                   _woonPlaatsenRepo.Select(),
+                                                   _landenRepo.Select());
             }
             catch (OngeldigObjectException ex)
             {
                 // fout in straatnaam, postnr of gemeente
-                throw FaultExceptionHelper.Ongeldig(ex.Message);
+                throw FaultExceptionHelper.Ongeldig(ex.Berichten);
             }
 
             try

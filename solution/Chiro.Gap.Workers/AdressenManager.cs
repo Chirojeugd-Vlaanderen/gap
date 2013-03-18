@@ -38,103 +38,174 @@ namespace Chiro.Gap.Workers
         /// <param name="adresInfo">
         /// Gegevens voor het nieuwe adres
         /// </param>
+        /// <param name="straatNamen">beschikbare straatnamen als queryable</param>
+        /// <param name="woonPlaatsen">beschikbare woonplaatsen als queryable</param>
+        /// <param name="landen">beschikbare landen als queryable</param>
         /// <returns>
         /// Het nieuw gemaakte adres
         /// </returns>
-        private Adres Maken(AdresInfo adresInfo)
+        private Adres Maken(AdresInfo adresInfo, IQueryable<StraatNaam> straatNamen,
+                            IQueryable<WoonPlaats> woonPlaatsen, IQueryable<Land> landen)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-            //var problemen = new Dictionary<string, FoutBericht>();
-            //Adres adr;
+            var problemen = new Dictionary<string, FoutBericht>();
 
-            //if (string.IsNullOrEmpty(adresInfo.LandNaam) ||
-            //    string.Compare(adresInfo.LandNaam, Resources.Belgie, true) == 0)
-            //{
-            //    // Belgisch adres.  Zoek en koppel straat en gemeente
-            //    adr = new BelgischAdres();
+            // Al maar preventief een collectie fouten verzamelen.  Als daar uiteindelijk
+            // geen foutberichten in zitten, dan is er geen probleem.  Anders
+            // creëer ik een exception.
+            // FIXME: de manier waarop de problemen worden doorgegeven, is niet erg proper.
+            // Kan dat niet eleganter?
 
-            //    var s = _stratenDao.Ophalen(adresInfo.StraatNaamNaam, adresInfo.PostNr);
-            //    if (s != null)
-            //    {
-            //        // Straat gevonden: aan adres koppelen
-            //        ((BelgischAdres)adr).StraatNaam = s;
-            //        s.BelgischAdres.Add((BelgischAdres)adr);
-            //    }
-            //    else
-            //    {
-            //        // Straat niet gevonden: foutbericht toevoegen
-            //        problemen.Add("StraatNaamNaam",
-            //                      new FoutBericht
-            //                          {
-            //                              FoutNummer = FoutNummer.StraatNietGevonden,
-            //                              Bericht = string.Format(
-            //                                  Resources.StraatNietGevonden,
-            //                                  adresInfo.StraatNaamNaam,
-            //                                  adresInfo.PostNr)
-            //                          });
-            //    }
+            if (adresInfo.StraatNaamNaam == string.Empty)
+            {
+                problemen.Add("StraatNaamNaam",
+                              new FoutBericht
+                              {
+                                  FoutNummer = FoutNummer.StraatOntbreekt,
+                                  Bericht = string.Format(
+                                      Resources.StraatOntbreekt,
+                                      adresInfo.StraatNaamNaam,
+                                      adresInfo.PostNr)
+                              });
+            }
 
-            //    var sg = _subgemeenteDao.Ophalen(adresInfo.WoonPlaatsNaam, adresInfo.PostNr);
-            //    if (sg != null)
-            //    {
-            //        // Gemeente gevonden: aan adres koppelen
-            //        ((BelgischAdres)adr).WoonPlaats = sg;
-            //        sg.BelgischAdres.Add((BelgischAdres)adr);
-            //    }
-            //    else
-            //    {
-            //        // Gemeente niet gevonden: foutbericht toevoegen
-            //        problemen.Add("WoonPlaatsNaam",
-            //                      new FoutBericht
-            //                          {
-            //                              FoutNummer = FoutNummer.WoonPlaatsNietGevonden,
-            //                              Bericht = Resources.GemeenteNietGevonden
-            //                          });
-            //    }
-            //}
-            //else
-            //{
-            //    // Buitenlands adres.  Straat en gemeente zijn gewone strings.
-            //    // Zoek en koppel land.
-            //    adr = new BuitenLandsAdres();
+            // Controle formaat postnummer enkel voor Belgische adressen.
+            if ((string.IsNullOrEmpty(adresInfo.LandNaam) ||
+                 String.Compare(adresInfo.LandNaam, Resources.Belgie, StringComparison.OrdinalIgnoreCase) == 0) &&
+                (adresInfo.PostNr < 1000 || adresInfo.PostNr > 9999))
+            {
+                problemen.Add("PostNr",
+                              new FoutBericht
+                              {
+                                  FoutNummer = FoutNummer.OngeldigPostNummer,
+                                  Bericht = string.Format(
+                                      Resources.OngeldigPostNummer,
+                                      adresInfo.StraatNaamNaam,
+                                      adresInfo.PostNr)
+                              });
+            }
 
-            //    ((BuitenLandsAdres)adr).Straat = adresInfo.StraatNaamNaam;
-            //    ((BuitenLandsAdres)adr).WoonPlaats = adresInfo.WoonPlaatsNaam;
-            //    ((BuitenLandsAdres)adr).PostCode = adresInfo.PostCode;
-            //    ((BuitenLandsAdres)adr).PostNummer = adresInfo.PostNr;
+            if (adresInfo.WoonPlaatsNaam == string.Empty)
+            {
+                problemen.Add("WoonPlaatsNaam",
+                              new FoutBericht
+                              {
+                                  FoutNummer = FoutNummer.WoonPlaatsOntbreekt,
+                                  Bericht = string.Format(
+                                      Resources.WoonPlaatsOntbreekt,
+                                      adresInfo.StraatNaamNaam,
+                                      adresInfo.PostNr)
+                              });
+            }
 
-            //    Land l = _landenDao.Ophalen(adresInfo.LandNaam);
+            // Als er hier al fouten zijn: gewoon throwen.  Me hiel 't stad, mor ni me maa!
+            if (problemen.Count != 0)
+            {
+                throw new OngeldigObjectException(problemen);
+            }
 
-            //    if (l != null)
-            //    {
-            //        // Gemeente gevonden: aan adres koppelen
-            //        ((BuitenLandsAdres)adr).Land = l;
-            //        l.BuitenLandsAdres.Add((BuitenLandsAdres)adr);
-            //    }
-            //    else
-            //    {
-            //        // Gemeente niet gevonden: foutbericht toevoegen
-            //        problemen.Add("LandNaam",
-            //                      new FoutBericht
-            //                          {
-            //                              FoutNummer = FoutNummer.LandNietGevonden,
-            //                              Bericht = Resources.LandNietGevonden
-            //                          });
-            //    }
-            //}
 
-            //if (problemen.Count != 0)
-            //{
-            //    throw new OngeldigObjectException(problemen);
-            //}
+            Adres adr;
 
-            //adr.HuisNr = adresInfo.HuisNr;
-            //adr.Bus = adresInfo.Bus;
+            if (string.IsNullOrEmpty(adresInfo.LandNaam) ||
+                System.String.Compare(adresInfo.LandNaam, Resources.Belgie, System.StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                // Belgisch adres.  Zoek en koppel straat en gemeente
+                adr = new BelgischAdres();
 
-            //adr = _adressenDao.Bewaren(adr);
+                var s = (from strt in straatNamen
+                         where
+                             String.Compare(adresInfo.StraatNaamNaam, strt.Naam,
+                                            StringComparison.OrdinalIgnoreCase) == 0 &&
+                             adresInfo.PostNr == strt.PostNummer
+                         select strt).FirstOrDefault();
 
-            //// bewaren brengt Versie en ID automatisch in orde.
-            //return adr;
+                if (s != null)
+                {
+                    // Straat gevonden: aan adres koppelen
+                    ((BelgischAdres)adr).StraatNaam = s;
+                    s.BelgischAdres.Add((BelgischAdres)adr);
+                }
+                else
+                {
+                    // Straat niet gevonden: foutbericht toevoegen
+                    problemen.Add("StraatNaamNaam",
+                                  new FoutBericht
+                                      {
+                                          FoutNummer = FoutNummer.StraatNietGevonden,
+                                          Bericht = string.Format(
+                                              Resources.StraatNietGevonden,
+                                              adresInfo.StraatNaamNaam,
+                                              adresInfo.PostNr)
+                                      });
+                }
+
+                var sg = (from wpl in woonPlaatsen
+                          where
+                              String.Compare(adresInfo.WoonPlaatsNaam, wpl.Naam,
+                                             StringComparison.OrdinalIgnoreCase) == 0 &&
+                              adresInfo.PostNr == wpl.PostNummer
+                          select wpl).FirstOrDefault();
+
+                if (sg != null)
+                {
+                    // Gemeente gevonden: aan adres koppelen
+                    ((BelgischAdres)adr).WoonPlaats = sg;
+                    sg.BelgischAdres.Add((BelgischAdres)adr);
+                }
+                else
+                {
+                    // Gemeente niet gevonden: foutbericht toevoegen
+                    problemen.Add("WoonPlaatsNaam",
+                                  new FoutBericht
+                                      {
+                                          FoutNummer = FoutNummer.WoonPlaatsNietGevonden,
+                                          Bericht = Resources.GemeenteNietGevonden
+                                      });
+                }
+            }
+            else
+            {
+                // Buitenlands adres.  Straat en gemeente zijn gewone strings.
+                // Zoek en koppel land.
+                adr = new BuitenLandsAdres();
+
+                ((BuitenLandsAdres)adr).Straat = adresInfo.StraatNaamNaam;
+                ((BuitenLandsAdres)adr).WoonPlaats = adresInfo.WoonPlaatsNaam;
+                ((BuitenLandsAdres)adr).PostCode = adresInfo.PostCode;
+                ((BuitenLandsAdres)adr).PostNummer = adresInfo.PostNr;
+
+                Land l = (from lnd in landen
+                          where String.Compare(lnd.Naam, adresInfo.LandNaam, StringComparison.OrdinalIgnoreCase) == 0
+                          select lnd).FirstOrDefault();
+
+                if (l != null)
+                {
+                    // Gemeente gevonden: aan adres koppelen
+                    ((BuitenLandsAdres)adr).Land = l;
+                    l.BuitenLandsAdres.Add((BuitenLandsAdres)adr);
+                }
+                else
+                {
+                    // Gemeente niet gevonden: foutbericht toevoegen
+                    problemen.Add("LandNaam",
+                                  new FoutBericht
+                                      {
+                                          FoutNummer = FoutNummer.LandNietGevonden,
+                                          Bericht = Resources.LandNietGevonden
+                                      });
+                }
+            }
+
+            if (problemen.Count != 0)
+            {
+                throw new OngeldigObjectException(problemen);
+            }
+
+            adr.HuisNr = adresInfo.HuisNr;
+            adr.Bus = adresInfo.Bus;
+
+            // bewaren brengt Versie en ID automatisch in orde.
+            return adr;
         }
 
         /// <summary>
@@ -150,81 +221,34 @@ namespace Chiro.Gap.Workers
         /// <param name="adressen">
         /// Lijst met bestaande adressen om na te kijken of het nieuwe adres al bestaat
         /// </param>
+        /// <param name="straatNamen">queryable voor alle beschikbare straatnamen</param>
+        /// <param name="woonPlaatsen">queryable voor alle beschikbare woonplaatsen</param>
+        /// <param name="landen">queryable voor alle beschikbare landen</param>
         /// <returns>
         /// Gevonden adres
         /// </returns>
         /// <remarks>
         /// Ieder heeft het recht adressen op te zoeken
         /// </remarks>
-        public Adres ZoekenOfMaken(AdresInfo adresInfo, IQueryable<Adres> adressen)
+        public Adres ZoekenOfMaken(AdresInfo adresInfo, IQueryable<Adres> adressen, IQueryable<StraatNaam> straatNamen,
+                            IQueryable<WoonPlaats> woonPlaatsen, IQueryable<Land> landen)
         {
-            var problemen = new Dictionary<string, FoutBericht>();
+            // In volgorde: Belgisch adres, buitenlands adres, nieuw adres
 
-            // Al maar preventief een collectie fouten verzamelen.  Als daar uiteindelijk
-            // geen foutberichten in zitten, dan is er geen probleem.  Anders
-            // creëer ik een exception.
-            if (adresInfo.StraatNaamNaam == string.Empty)
-            {
-                problemen.Add("StraatNaamNaam",
-                              new FoutBericht
-                                  {
-                                      FoutNummer = FoutNummer.StraatOntbreekt,
-                                      Bericht = string.Format(
-                                          Resources.StraatOntbreekt,
-                                          adresInfo.StraatNaamNaam,
-                                          adresInfo.PostNr)
-                                  });
-            }
+            return (from adr in adressen.OfType<BelgischAdres>()
+                    where adr.StraatNaam.Naam == adresInfo.StraatNaamNaam
+                          && adr.StraatNaam.PostNummer == adresInfo.PostNr
+                          && adr.HuisNr == adresInfo.HuisNr
+                    select adr).FirstOrDefault() ?? ((from adr in adressen.OfType<BuitenLandsAdres>()
+                                                      where adr.Straat == adresInfo.StraatNaamNaam
+                                                            && adr.PostNummer == adresInfo.PostNr
+                                                            && adr.HuisNr == adresInfo.HuisNr
+                                                            && adr.Land.Naam == adresInfo.LandNaam
+                                                            && adr.PostCode == adresInfo.PostCode
+                                                      select adr).FirstOrDefault() ??
+                                                     Maken(adresInfo, straatNamen, woonPlaatsen, landen));
 
-            // Controle formaat postnummer enkel voor Belgische adressen.
-            if ((string.IsNullOrEmpty(adresInfo.LandNaam) ||
-                 String.Compare(adresInfo.LandNaam, Resources.Belgie, StringComparison.OrdinalIgnoreCase) == 0) &&
-                (adresInfo.PostNr < 1000 || adresInfo.PostNr > 9999))
-            {
-                problemen.Add("PostNr",
-                              new FoutBericht
-                                  {
-                                      FoutNummer = FoutNummer.OngeldigPostNummer,
-                                      Bericht = string.Format(
-                                          Resources.OngeldigPostNummer,
-                                          adresInfo.StraatNaamNaam,
-                                          adresInfo.PostNr)
-                                  });
-            }
 
-            if (adresInfo.WoonPlaatsNaam == string.Empty)
-            {
-                problemen.Add("WoonPlaatsNaam",
-                              new FoutBericht
-                                  {
-                                      FoutNummer = FoutNummer.WoonPlaatsOntbreekt,
-                                      Bericht = string.Format(
-                                          Resources.WoonPlaatsOntbreekt,
-                                          adresInfo.StraatNaamNaam,
-                                          adresInfo.PostNr)
-                                  });
-            }
-
-            // Als er hier al fouten zijn: gewoon throwen.  Me hiel 't stad, mor ni me maa!
-            if (problemen.Count != 0)
-            {
-                throw new OngeldigObjectException(problemen);
-            }
-
-            // Nagaan of het adres al bestaat
-            var resultaat = (from adr in adressen.OfType<BelgischAdres>()
-                               where adr.StraatNaam.Naam == adresInfo.StraatNaamNaam
-                                     && adr.StraatNaam.PostNummer == adresInfo.PostNr
-                                     && adr.HuisNr == adresInfo.HuisNr
-                               select adr).FirstOrDefault() ?? ((from adr in adressen.OfType<BuitenLandsAdres>()
-                                                                 where adr.Straat == adresInfo.StraatNaamNaam
-                                                                       && adr.PostNummer == adresInfo.PostNr
-                                                                       && adr.HuisNr == adresInfo.HuisNr
-                                                                       && adr.Land.Naam == adresInfo.LandNaam
-                                                                       && adr.PostCode == adresInfo.PostCode
-                                                                 select adr).FirstOrDefault() ?? Maken(adresInfo));
-
-            return resultaat;
         }
     }
 }

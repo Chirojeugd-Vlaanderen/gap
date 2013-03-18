@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -56,6 +58,18 @@ namespace Chiro.Gap.Services
                             Aantal = infoBlokkerendeObjecten.Count,
                             Objecten = infoBlokkerendeObjecten
                         }, new FaultReason(reden));
+        }
+
+        /// <summary>
+        /// Levert een faultexception i.v.m. 'ongeldige objecten'. Louche.
+        /// </summary>
+        /// <param name="berichten">Lijstje met foutberichten</param>
+        /// <returns>faultexception i.v.m. 'ongeldige objecten'. Louche.</returns>
+        public static FaultException<OngeldigObjectFault> Ongeldig(Dictionary<string, FoutBericht> berichten)
+        {
+            // TODO: Dit is een rare constructie. Waarschijnlijk kan ze vervangen worden door iets beters.
+            // (AdresException iemand?)
+            throw new FaultException<OngeldigObjectFault>(new OngeldigObjectFault { Berichten = berichten });
         }
     }
 }

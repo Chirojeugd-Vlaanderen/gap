@@ -17,13 +17,13 @@ namespace Chiro.Gap.Poco.Model.Exceptions
     {
         // TODO (#1041): Dit wordt blijkbaar enkel gebruikt voor adressen.  Is heel die constructie dan wel nodig?
         // Misschien is een AdresException wel even goed.
-        private IDictionary<string, FoutBericht> _berichten = new Dictionary<string, FoutBericht>();
+        private Dictionary<string, FoutBericht> _berichten = new Dictionary<string, FoutBericht>();
 
         /// <summary>
         /// Berichten bij de exception.  De key is de component van het adres waar de fout betrekking
         /// op heeft, de value is het foutbericht zelf.
         /// </summary>
-        public IDictionary<string, FoutBericht> Berichten
+        public Dictionary<string, FoutBericht> Berichten
         {
             get { return _berichten; }
             set { _berichten = value; }
@@ -81,7 +81,7 @@ namespace Chiro.Gap.Poco.Model.Exceptions
             if (info != null)
             {
                 _berichten =
-                    (IDictionary<string, FoutBericht>)
+                    (Dictionary<string, FoutBericht>)
                     info.GetValue("berichten", typeof(IDictionary<string, FoutBericht>));
             }
         }
@@ -114,7 +114,7 @@ namespace Chiro.Gap.Poco.Model.Exceptions
         /// <param name="berichten">
         /// Lijstje met berichten voor de exception
         /// </param>
-        public OngeldigObjectException(IDictionary<string, FoutBericht> berichten)
+        public OngeldigObjectException(Dictionary<string, FoutBericht> berichten)
             : this()
         {
             _berichten = berichten;

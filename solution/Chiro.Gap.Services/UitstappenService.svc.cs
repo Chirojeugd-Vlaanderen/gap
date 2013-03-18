@@ -31,6 +31,9 @@ namespace Chiro.Gap.Services
         private readonly IRepository<Uitstap> _uitstappenRepo;
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
         private readonly IRepository<Deelnemer> _deelnemersRepo;
+        private readonly IRepository<StraatNaam> _straatNamenRepo;
+        private readonly IRepository<WoonPlaats> _woonPlaatsenRepo;
+        private readonly IRepository<Land> _landenRepo;
 
         // Managers voor niet-triviale businesslogica
 
@@ -58,6 +61,9 @@ namespace Chiro.Gap.Services
             _uitstappenRepo = repositoryProvider.RepositoryGet<Uitstap>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
             _deelnemersRepo = repositoryProvider.RepositoryGet<Deelnemer>();
+            _straatNamenRepo = repositoryProvider.RepositoryGet<StraatNaam>();
+            _woonPlaatsenRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
+            _landenRepo = repositoryProvider.RepositoryGet<Land>();
 
             _autorisatieMgr = autorisatieManager;
             _uitstappenMgr = uitstappenManager;
@@ -215,7 +221,7 @@ namespace Chiro.Gap.Services
             Gav.Check(uitstap);
 
             uitstap.Plaats.Naam = plaatsNaam;
-            uitstap.Plaats.Adres = _adressenMgr.ZoekenOfMaken(adresInfo, _adressenRepo.Select());
+            uitstap.Plaats.Adres = _adressenMgr.ZoekenOfMaken(adresInfo, _adressenRepo.Select(), _straatNamenRepo.Select(), _woonPlaatsenRepo.Select(), _landenRepo.Select());
 
             _uitstappenRepo.SaveChanges();
         }
