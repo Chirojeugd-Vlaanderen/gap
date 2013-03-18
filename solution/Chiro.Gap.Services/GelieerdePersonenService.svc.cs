@@ -426,7 +426,7 @@ namespace Chiro.Gap.Services
         /// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
         public IDPersEnGP Aanmaken(PersoonInfo info, int groepID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            return AanmakenForceer(info, groepID, false);
         }
 
         /// <summary>
