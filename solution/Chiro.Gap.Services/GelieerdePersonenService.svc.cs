@@ -539,7 +539,25 @@ namespace Chiro.Gap.Services
         /// <remarks>GelieerdePersoonID's van bewoners worden niet mee opgehaald</remarks>
         public GezinInfo GezinOphalen(int adresID, int groepID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var adres = _adressenRepo.ByID(adresID);
+
+            var persoonsAdressen = (from pa in adres.PersoonsAdres
+                                    where pa.Persoon.GelieerdePersoon.Any(gp => Equals(gp.Groep, groep))
+                                    select pa).ToList();
+
+            var resultaat = new GezinInfo();
+
+            Mapper.Map(adres, resultaat);
+            resultaat.Bewoners = Mapper.Map<IList<PersoonsAdres>, IList<BewonersInfo>>(persoonsAdressen);
+
+            return resultaat;
         }
 
         /// <summary>

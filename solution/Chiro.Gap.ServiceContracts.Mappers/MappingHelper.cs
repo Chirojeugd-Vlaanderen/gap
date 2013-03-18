@@ -427,8 +427,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.PostNr,
                     opt => opt.MapFrom(src => src.PostNummerGet()))
                 .ForMember(
-                    dst => dst.Bewoners,
-                    opt => opt.MapFrom(src => src.PersoonsAdres.ToList()))
+                    dst => dst.Bewoners,        // bewoners moeten manueel gemapt worden (via persoonsadres)
+                    opt => opt.Ignore())        // om problemen met gebruikersrechten te vermijden
                 .ForMember(dst => dst.StraatNaamNaam, opt => opt.MapFrom(src => src.StraatGet()))
                 .ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()))
                 .ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.LandGet()))
