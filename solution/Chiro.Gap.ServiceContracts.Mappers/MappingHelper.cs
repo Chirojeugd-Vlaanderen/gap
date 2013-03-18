@@ -626,15 +626,17 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             // PersoonInfo.
 
             Mapper.CreateMap<PersoonInfo, Persoon>()
-                .ForMember(dst => dst.ID, opt => opt.Ignore())
-                .ForMember(dst => dst.VolledigeNaam, opt => opt.Ignore())
-                .ForMember(dst => dst.SterfDatum, opt => opt.Ignore())
-                .ForMember(dst => dst.Versie, opt => opt.Ignore())
-                .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
-                .ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
-                .ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
-                .ForMember(dst => dst.AdInAanvraag, opt => opt.Ignore())
-                .ForMember(dst => dst.Gav, opt => opt.Ignore());
+                  .ForMember(dst => dst.ID, opt => opt.Ignore())
+                  .ForMember(dst => dst.VolledigeNaam, opt => opt.Ignore())
+                  .ForMember(dst => dst.SterfDatum, opt => opt.Ignore())
+                  .ForMember(dst => dst.Versie, opt => opt.Ignore())
+                  .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
+                  .ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
+                  .ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
+                  .ForMember(dst => dst.AdInAanvraag, opt => opt.Ignore())
+                  .ForMember(dst => dst.Gav, opt => opt.Ignore())
+                  .ForMember(dst => dst.SeNaam, opt => opt.Ignore())
+                  .ForMember(dst => dst.SeVoornaam, opt => opt.Ignore());
 
             Mapper.CreateMap<UitstapInfo, Uitstap>()
                 .ForMember(dst => dst.GroepsWerkJaar, opt => opt.Ignore())

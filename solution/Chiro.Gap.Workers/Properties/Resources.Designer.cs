@@ -349,6 +349,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Er bestaat al een gelijkaardige persoon..
+        /// </summary>
+        internal static string GelijkaardigePersoon {
+            get {
+                return ResourceManager.GetString("GelijkaardigePersoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ongeldige WoonPlaatsID..
         /// </summary>
         internal static string GemeenteNietGevonden {

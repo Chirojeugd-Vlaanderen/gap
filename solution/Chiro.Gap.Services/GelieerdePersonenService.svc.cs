@@ -5,14 +5,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.ServiceModel;
 using System.Transactions;      // laten staan voor live!
 using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Services.Properties;
@@ -45,6 +44,7 @@ namespace Chiro.Gap.Services
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly ICommunicatieVormenManager _communicatieVormenMgr;
         private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
+        private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
 
         // Sync-interfaces
 
@@ -59,11 +59,12 @@ namespace Chiro.Gap.Services
         /// <param name="autorisatieMgr">Logica m.b.t. autorisatie</param>
         /// <param name="communicatieVormenMgr">Logica m.b.t. communicatievormen</param>
         /// <param name="gebruikersRechtenMgr">Logica m.b.t. gebruikersrechten</param>
+        /// <param name="gelieerdePersonenMgr">Logica m.b.t. gelieerde personen</param>
         /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
         /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
                                         ICommunicatieVormenManager communicatieVormenMgr,
-                                        IGebruikersRechtenManager gebruikersRechtenMgr,
+                                        IGebruikersRechtenManager gebruikersRechtenMgr, IGelieerdePersonenManager gelieerdePersonenMgr,
                                         ICommunicatieSync communicatieSync,
                                         IPersonenSync personenSync)
         {
@@ -77,6 +78,7 @@ namespace Chiro.Gap.Services
             _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
             _gebruikersRechtenMgr = gebruikersRechtenMgr;
+            _gelieerdePersonenMgr = gelieerdePersonenMgr;
 
             _communicatieSync = communicatieSync;
             _personenSync = personenSync;
@@ -444,7 +446,36 @@ namespace Chiro.Gap.Services
         /// 190), maar dat mag blijkbaar niet bij services.</remarks>
         public IDPersEnGP AanmakenForceer(PersoonInfo info, int groepID, bool forceer)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var nieuwePersoon = new Persoon
+                                    {
+                                        AdNummer = null, // nieuwe persoon kan geen ad-nummer hebben
+                                        VoorNaam = info.VoorNaam,
+                                        Naam = info.Naam,
+                                        GeboorteDatum = info.GeboorteDatum,
+                                        Geslacht = info.Geslacht
+                                    };
+            GelieerdePersoon resultaat;
+
+            try
+            {
+                resultaat = _gelieerdePersonenMgr.Toevoegen(nieuwePersoon, groep, 0, forceer);
+            }
+            catch (BlokkerendeObjectenException<GelieerdePersoon> ex)
+            {
+                throw FaultExceptionHelper.Blokkerend(
+                    Mapper.Map<IList<GelieerdePersoon>, List<PersoonDetail>>(ex.Objecten), ex.Message);
+            }
+
+            _groepenRepo.SaveChanges();
+
+            return new IDPersEnGP {GelieerdePersoonID = resultaat.ID, PersoonID = resultaat.Persoon.ID};
         }
 
         /// <summary>

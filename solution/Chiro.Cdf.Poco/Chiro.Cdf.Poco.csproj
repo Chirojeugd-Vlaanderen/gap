@@ -49,6 +49,7 @@
     <Compile Include="IRepositoryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryProvider.cs" />
+    <Compile Include="ZoekHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">

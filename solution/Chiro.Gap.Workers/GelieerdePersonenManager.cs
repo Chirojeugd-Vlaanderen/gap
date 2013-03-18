@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -41,40 +41,36 @@ namespace Chiro.Gap.Workers
             _personenSync = personenSync;
             _adressenSync = adressenSync;
         }
+
         /// <summary>
-        /// Maak een GelieerdePersoon voor gegeven persoon en groep
+        /// Voegt een <paramref name="nieuwePersoon"/> toe aan de gegegeven <paramref name="groep"/>. Als
+        /// <paramref name="forceer"/> niet is gezet, wordt een exception opgegooid als er al een gelijkaardige
+        /// persoon aan de groep gekoppeld is.
         /// </summary>
-        /// <param name="persoon">
-        /// Te liëren persoon
-        /// </param>
-        /// <param name="groep">
-        /// Groep waaraan te liëren
-        /// </param>
-        /// <param name="chiroLeeftijd">
-        /// Chiroleeftijd gelieerde persoon
-        /// </param>
-        /// <returns>
-        /// Een nieuwe GelieerdePersoon
-        /// </returns>
-        public GelieerdePersoon Koppelen(Persoon persoon, Groep groep, int chiroLeeftijd)
+        /// <param name="nieuwePersoon">Nieuwe toe te voegen persoon</param>
+        /// <param name="groep">Groep waaraan de persoon gelieerd/gekoppeld moet worden</param>
+        /// <param name="chiroLeeftijd">Chiroleeftijd van de persoon</param>
+        /// <param name="forceer">Als <c>false</c>, dan wordt een exception opgegooid als er al een gelijkaardige
+        /// persoon aan de groep gekoppeld is.</param>
+        /// <returns>De gelieerde persoon na het koppelen van <paramref name="nieuwePersoon"/> aan <paramref name="groep"/>.</returns>
+        public GelieerdePersoon Toevoegen(Persoon nieuwePersoon, Groep groep, int chiroLeeftijd, bool forceer)
         {
-            if (_autorisatieMgr.IsGav(groep))
+            if (!forceer)
             {
-                var resultaat = new GelieerdePersoon();
-
-                resultaat.Persoon = persoon;
-                resultaat.Groep = groep;
-                resultaat.ChiroLeefTijd = chiroLeeftijd;
-
-                persoon.GelieerdePersoon.Add(resultaat);
-                groep.GelieerdePersoon.Add(resultaat);
-
-                return resultaat;
+                var bestaande = ZoekGelijkaardig(nieuwePersoon, groep);
+                if (bestaande != null && bestaande.Any())
+                {
+                    throw new BlokkerendeObjectenException<GelieerdePersoon>(bestaande, bestaande.Count,
+                                                                             Resources.GelijkaardigePersoon);
+                }
             }
-            else
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
+
+            var resultaat = new GelieerdePersoon {Persoon = nieuwePersoon, Groep = groep, ChiroLeefTijd = chiroLeeftijd};
+
+            nieuwePersoon.GelieerdePersoon.Add(resultaat);
+            groep.GelieerdePersoon.Add(resultaat);
+
+            return resultaat;
         }
 
 
@@ -131,15 +127,24 @@ namespace Chiro.Gap.Workers
         /// <param name="persoon">
         /// Persoon waarmee vergeleken moet worden
         /// </param>
-        /// <param name="groepID">
-        /// ID van groep waarin te zoeken
+        /// <param name="groep">
+        /// groep waarin te zoeken
         /// </param>
         /// <returns>
         /// Lijstje met gelijkaardige personen
         /// </returns>
-        public IList<GelieerdePersoon> ZoekGelijkaardig(Persoon persoon, int groepID)
+        public List<GelieerdePersoon> ZoekGelijkaardig(Persoon persoon, Groep groep)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var seNaam = ZoekHelper.Soundex(persoon.Naam);
+            var seVoornaam = ZoekHelper.Soundex(persoon.VoorNaam);
+
+            var result = from gp in groep.GelieerdePersoon
+                         where
+                             (seNaam == gp.Persoon.SeNaam && seVoornaam == gp.Persoon.SeVoornaam) ||
+                             (seNaam == gp.Persoon.SeVoornaam && seVoornaam == gp.Persoon.SeNaam)
+                         select gp;
+
+            return result.ToList();
         }
 
         /// <summary>

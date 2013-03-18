@@ -16,3 +16,11 @@ USE gap_dev
 GO
 
 ALTER TABLE grp.Groep ADD StopDatum DateTime NULL;
+
+-- Wijzigingen voor 1.9
+
+ALTER TABLE pers.Persoon ADD SeNaam AS SOUNDEX(Naam);
+ALTER TABLE pers.Persoon ADD SeVoornaam AS SOUNDEX(VoorNaam);
+
+CREATE INDEX IX_Persoon_SoundEx ON pers.Persoon(Naam,Voornaam);
+CREATE INDEX IX_Persoon_SoundEx2 ON pers.Persoon(Voornaam,Naam);
