@@ -38,6 +38,7 @@ namespace Chiro.Gap.Services
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Categorie> _categorieenRepo;
         private readonly IRepository<CommunicatieType> _communicatieTypesRepo;
+        private readonly IRepository<Adres> _adressenRepo; 
 
         // Managers voor niet-triviale businesslogica
 
@@ -45,6 +46,7 @@ namespace Chiro.Gap.Services
         private readonly ICommunicatieVormenManager _communicatieVormenMgr;
         private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
         private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
+        private readonly IAdressenManager _adressenMgr;
 
         // Sync-interfaces
 
@@ -60,11 +62,14 @@ namespace Chiro.Gap.Services
         /// <param name="communicatieVormenMgr">Logica m.b.t. communicatievormen</param>
         /// <param name="gebruikersRechtenMgr">Logica m.b.t. gebruikersrechten</param>
         /// <param name="gelieerdePersonenMgr">Logica m.b.t. gelieerde personen</param>
+        /// <param name="adressenManager">Logica m.b.t. adressen</param>
         /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
         /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
                                         ICommunicatieVormenManager communicatieVormenMgr,
-                                        IGebruikersRechtenManager gebruikersRechtenMgr, IGelieerdePersonenManager gelieerdePersonenMgr,
+                                        IGebruikersRechtenManager gebruikersRechtenMgr,
+                                        IGelieerdePersonenManager gelieerdePersonenMgr,
+                                        IAdressenManager adressenManager,
                                         ICommunicatieSync communicatieSync,
                                         IPersonenSync personenSync)
         {
@@ -74,11 +79,13 @@ namespace Chiro.Gap.Services
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _categorieenRepo = repositoryProvider.RepositoryGet<Categorie>();
             _communicatieTypesRepo = repositoryProvider.RepositoryGet<CommunicatieType>();
+            _adressenRepo = repositoryProvider.RepositoryGet<Adres>();
 
             _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
             _gebruikersRechtenMgr = gebruikersRechtenMgr;
             _gelieerdePersonenMgr = gelieerdePersonenMgr;
+            _adressenMgr = adressenManager;
 
             _communicatieSync = communicatieSync;
             _personenSync = personenSync;
@@ -587,7 +594,38 @@ namespace Chiro.Gap.Services
         /// <param name="voorkeur"><c>True</c> als het nieuwe adres het voorkeursadres moet worden.</param>
         public void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersonenIDs, PersoonsAdresInfo adr, bool voorkeur)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            Adres adres;
+
+            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdePersonenIDs);
+
+            if (!_autorisatieMgr.IsGav(gelieerdePersonen))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            try
+            {
+                adres = _adressenMgr.ZoekenOfMaken(adr, _adressenRepo.Select());
+            }
+            catch (OngeldigObjectException ex)
+            {
+                // fout in straatnaam, postnr of gemeente
+                throw FaultExceptionHelper.Ongeldig(ex.Message);
+            }
+
+            try
+            {
+                _gelieerdePersonenMgr.AdresToevoegen(gelieerdePersonen, adres, adr.AdresType, voorkeur);
+            }
+            catch (BlokkerendeObjectenException<PersoonsAdres> ex)
+            {
+                // persoon blabla woont al op dat adres
+                throw FaultExceptionHelper.Blokkerend(
+                    Mapper.Map<IList<PersoonsAdres>, List<PersoonsAdresInfo2>>(ex.Objecten), ex.Message);
+            }
+
+            _gelieerdePersonenRepo.SaveChanges();
+            
         }
 
         /// <summary>

@@ -158,7 +158,6 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public Adres ZoekenOfMaken(AdresInfo adresInfo, IQueryable<Adres> adressen)
         {
-            Adres resultaat;
             var problemen = new Dictionary<string, FoutBericht>();
 
             // Al maar preventief een collectie fouten verzamelen.  Als daar uiteindelijk
@@ -179,7 +178,7 @@ namespace Chiro.Gap.Workers
 
             // Controle formaat postnummer enkel voor Belgische adressen.
             if ((string.IsNullOrEmpty(adresInfo.LandNaam) ||
-                 string.Compare(adresInfo.LandNaam, Resources.Belgie, true) == 0) &&
+                 String.Compare(adresInfo.LandNaam, Resources.Belgie, StringComparison.OrdinalIgnoreCase) == 0) &&
                 (adresInfo.PostNr < 1000 || adresInfo.PostNr > 9999))
             {
                 problemen.Add("PostNr",
@@ -213,29 +212,17 @@ namespace Chiro.Gap.Workers
             }
 
             // Nagaan of het adres al bestaat
-            resultaat = (from adr in adressen.OfType<BelgischAdres>()
-                         where adr.StraatNaam.Naam == adresInfo.StraatNaamNaam
-                               && adr.StraatNaam.PostNummer == adresInfo.PostNr
-                               && adr.HuisNr == adresInfo.HuisNr
-                         select adr).FirstOrDefault();
-
-            if (resultaat == null)
-            {
-                // Niet gevonden als Belgisch adres. Tweede controle: bestaat het als buitenlands adres?
-                resultaat = (from adr in adressen.OfType<BuitenLandsAdres>()
-                             where adr.Straat == adresInfo.StraatNaamNaam
-                                   && adr.PostNummer == adresInfo.PostNr
-                                   && adr.HuisNr == adresInfo.HuisNr
-                                   && adr.Land.Naam == adresInfo.LandNaam
-                                   && adr.PostCode == adresInfo.PostCode
-                             select adr).FirstOrDefault();
-
-                if (resultaat == null)
-                {
-                    // Adres is niet gevonden en bestaat dus nog niet in de databank
-                    resultaat = Maken(adresInfo);
-                }
-            }
+            var resultaat = (from adr in adressen.OfType<BelgischAdres>()
+                               where adr.StraatNaam.Naam == adresInfo.StraatNaamNaam
+                                     && adr.StraatNaam.PostNummer == adresInfo.PostNr
+                                     && adr.HuisNr == adresInfo.HuisNr
+                               select adr).FirstOrDefault() ?? ((from adr in adressen.OfType<BuitenLandsAdres>()
+                                                                 where adr.Straat == adresInfo.StraatNaamNaam
+                                                                       && adr.PostNummer == adresInfo.PostNr
+                                                                       && adr.HuisNr == adresInfo.HuisNr
+                                                                       && adr.Land.Naam == adresInfo.LandNaam
+                                                                       && adr.PostCode == adresInfo.PostCode
+                                                                 select adr).FirstOrDefault() ?? Maken(adresInfo));
 
             return resultaat;
         }
