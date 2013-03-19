@@ -236,5 +236,17 @@ namespace Chiro.Gap.Sync
                     lid.GroepsWerkJaar.WerkJaar, lid.UitschrijfDatum.Value));
             }
         }
+
+        /// <summary>
+        /// Stuurt een aantal leden naar Kipadmin
+        /// </summary>
+        /// <param name="leden">Te bewaren leden</param>
+        public void Bewaren(IList<Lid> leden)
+        {
+            foreach (var l in leden)
+            {
+                Bewaren(l);
+            }
+        }
     }
 }

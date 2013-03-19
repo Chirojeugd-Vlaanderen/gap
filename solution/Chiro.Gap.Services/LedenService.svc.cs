@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 using AutoMapper;
 using Chiro.Cdf.Poco;
 
@@ -216,6 +217,8 @@ namespace Chiro.Gap.Services
         {
             foutBerichten = String.Empty;
 
+            var teSyncen = new List<Lid>();
+
             var lidIDs = new List<int>();
             var foutBerichtenBuilder = new StringBuilder();
 
@@ -264,10 +267,9 @@ namespace Chiro.Gap.Services
                         }
                         else
                         {
-                            throw new NotImplementedException(NIEUWEBACKEND.Info);
-                            //_ledenMgr.Wijzigen(l,
-                            //                   Mapper.Map<InTeSchrijvenLid, LidVoorstel>(
-                            //                       lidInformatie.First(e => e.GelieerdePersoonID == gp.ID)));
+                            l.UitschrijfDatum = null;
+                            l.NonActief = false;
+                            teSyncen.Add(l);
                         }
                     }
                     else // nieuw lid
@@ -277,6 +279,7 @@ namespace Chiro.Gap.Services
                             l = _ledenMgr.NieuwInschrijven(gp, gwj, false,
                                                            Mapper.Map<InTeSchrijvenLid, LidVoorstel>(
                                                                lidInformatie.First(e => e.GelieerdePersoonID == gp.ID)));
+                            teSyncen.Add(l);
                         }
                         catch (BestaatAlException<Kind>)
                         {
@@ -299,7 +302,17 @@ namespace Chiro.Gap.Services
 
             foutBerichten = foutBerichtenBuilder.ToString();
 
-            _gelieerdePersonenRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _ledenSync.Bewaren(teSyncen);
+                _gelieerdePersonenRepo.SaveChanges();
+#if KIPDORP
+                tx.Commit();
+            }
+#endif
+            
 
             return lidIDs;
         }

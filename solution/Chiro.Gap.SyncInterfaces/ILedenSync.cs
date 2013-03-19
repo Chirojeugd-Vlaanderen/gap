@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System.Collections.Generic;
 using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.SyncInterfaces
@@ -44,5 +45,11 @@ namespace Chiro.Gap.SyncInterfaces
         /// </summary>
         /// <param name="lid">Te verwijderen lid</param>
 	    void Verwijderen(Lid lid);
+
+        /// <summary>
+        /// Stuurt een aantal leden naar Kipadmin
+        /// </summary>
+        /// <param name="leden">Te bewaren leden</param>
+	    void Bewaren(IList<Lid> leden);
 	}
 }

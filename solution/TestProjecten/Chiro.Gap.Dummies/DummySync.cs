@@ -63,6 +63,10 @@ namespace Chiro.Gap.Dummies
         {
         }
 
+        public void Bewaren(IList<Lid> leden)
+        {
+        }
+
         public void Abonneren(GelieerdePersoon gp)
         {
         }
