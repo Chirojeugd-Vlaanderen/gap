@@ -41,7 +41,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// Afdelingen van lid
 		/// </summary>
 		[DataMember]
-		public List<AfdelingInfo> Afdelingen { get; set; }
+		public List<AfdelingsJaarInfo> Afdelingen { get; set; }
 		
 		/// <summary>
 		/// Functies van lid

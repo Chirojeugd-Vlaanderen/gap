@@ -372,6 +372,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.ID,
                     opt => opt.MapFrom(src => src.ID));
 
+            Mapper.CreateMap<AfdelingsJaar, AfdelingsJaarInfo>()
+                  .ForMember(dst => dst.Afkorting, opt => opt.MapFrom(src => src.Afdeling.Afkorting))
+                  .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Afdeling.Naam))
+                  .ForMember(dst => dst.ID, opt => opt.MapFrom(src => src.Afdeling.ID));
+
             Mapper.CreateMap<Functie, FunctieInfo>();
             Mapper.CreateMap<Functie, FunctieDetail>();
 
@@ -740,21 +745,21 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// </summary>
         /// <param name="l">Lid van wie we afdelingen moeten ophalen</param>
         /// <returns>Rij afdelingen van het lid <paramref name="l"/></returns>
-        private static IEnumerable<AfdelingInfo> Afdelingen(Lid l)
+        private static IEnumerable<AfdelingsJaarInfo> Afdelingen(Lid l)
         {
             if (l == null)
             {
-                return new AfdelingInfo[0];
+                return new AfdelingsJaarInfo[0];
             }
 
             if (l is Kind)
             {
-                return new[] { Mapper.Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling) };
+                return new[] { Mapper.Map<AfdelingsJaar, AfdelingsJaarInfo>((l as Kind).AfdelingsJaar) };
             }
             else if (l is Leiding)
             {
                 return
-                    Mapper.Map<IEnumerable<Afdeling>, IEnumerable<AfdelingInfo>>((l as Leiding).AfdelingsJaar.Select(aj => aj.Afdeling));
+                    Mapper.Map<IEnumerable<AfdelingsJaar>, IEnumerable<AfdelingsJaarInfo>>((l as Leiding).AfdelingsJaar);
             }
             else
             {

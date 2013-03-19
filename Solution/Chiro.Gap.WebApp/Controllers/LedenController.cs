@@ -79,7 +79,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 case LidEigenschap.Afdeling:
                     gesorteerd = rij
                         .OrderByDescending(src => src.Type)
-                        .ThenBy(src => src.Afdelingen.Count() > 0 ? src.Afdelingen.First().Afkorting : String.Empty)
+                        .ThenByDescending(src => src.Afdelingen.Any() ? src.Afdelingen.First().GeboorteJaarVan : DateTime.Now.Year)
                         .ThenBy(src => src.Naam)
                         .ThenBy(src => src.VoorNaam);
                     break;
