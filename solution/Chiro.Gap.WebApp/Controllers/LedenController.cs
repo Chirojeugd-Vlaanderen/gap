@@ -341,6 +341,7 @@ namespace Chiro.Gap.WebApp.Controllers
             [QueryStringValue]LidEigenschap sortering,
             [RouteValue]int groepID)
         {
+            Debug.Assert(Request.Url != null);
             // Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
             ClientState.VorigeLijst = Request.Url.ToString();
             var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, false);

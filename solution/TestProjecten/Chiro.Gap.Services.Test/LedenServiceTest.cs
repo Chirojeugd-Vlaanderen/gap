@@ -565,5 +565,44 @@ namespace Chiro.Gap.Services.Test
 
             ledenSyncMock.Verify(src=>src.Verwijderen(leiding), Times.Never());
         }
+
+        ///<summary>
+        ///Controleert of zoeken op leden geen uitgeschreven leden oplevert.
+        ///</summary>
+        [TestMethod()]
+        public void ZoekenTest()
+        {
+            // ARRANGE
+
+            // testdata: een werkjaar met 1 lid, dat vandaag werd uitgeschreven.
+            var kind = new Kind
+                           {
+                               UitschrijfDatum = DateTime.Today,
+                               GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()},
+                               AfdelingsJaar = new AfdelingsJaar {Afdeling = new Afdeling()}
+                           };
+            var gwj = new GroepsWerkJaar {ID = 1, Lid = new[] {kind}};
+            kind.GroepsWerkJaar = gwj;
+
+            // dependency injection opzetten
+            var ledenReopMock = new Mock<IRepository<Lid>>();
+            ledenReopMock.Setup(src => src.Select()).Returns(gwj.Lid.AsQueryable);
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(ledenReopMock.Object);
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // service construeren
+            var target = Factory.Maak<LedenService>();
+
+            // ACT
+
+            var filter = new LidFilter { GroepsWerkJaarID = gwj.ID };
+            var actual = target.Zoeken(filter, false);
+
+            // ASSERT
+
+            Assert.IsNull(actual.FirstOrDefault());
+        }
     }
 }
