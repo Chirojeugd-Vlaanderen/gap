@@ -569,15 +569,24 @@ namespace Chiro.Gap.Services
         /// </remarks>
         public IList<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
         {
-            var leden = (from g in _ledenRepo.Select()
-                         where (filter.GroepID == null || g.GroepsWerkJaar.Groep.ID == filter.GroepID) &&
-                             (filter.GroepsWerkJaarID == null || g.GroepsWerkJaar.ID == filter.GroepsWerkJaarID) &&
-                             (filter.FunctieID == null || g.Functie.Select(e => e.ID == filter.FunctieID).Any()) &&
-                             (filter.ProbeerPeriodeNa == null || !g.EindeInstapPeriode.HasValue || filter.ProbeerPeriodeNa < g.EindeInstapPeriode.Value) &&
-                             (filter.HeeftVoorkeurAdres == null || g.GelieerdePersoon.PersoonsAdres != null) &&
-                             (filter.HeeftTelefoonNummer == null || g.GelieerdePersoon.Communicatie.Select(e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.TelefoonNummer).Any() == filter.HeeftTelefoonNummer) &&
-                             (filter.HeeftEmailAdres == null || g.GelieerdePersoon.Communicatie.Select(e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email).Any() == filter.HeeftEmailAdres)
-                         select g).ToList();
+            var leden = (from ld in _ledenRepo.Select()
+                         where
+                             ld.UitschrijfDatum == null &&
+                             (filter.GroepID == null || ld.GroepsWerkJaar.Groep.ID == filter.GroepID) &&
+                             (filter.GroepsWerkJaarID == null || ld.GroepsWerkJaar.ID == filter.GroepsWerkJaarID) &&
+                             (filter.FunctieID == null || ld.Functie.Select(e => e.ID == filter.FunctieID).Any()) &&
+                             (filter.ProbeerPeriodeNa == null || !ld.EindeInstapPeriode.HasValue ||
+                              filter.ProbeerPeriodeNa < ld.EindeInstapPeriode.Value) &&
+                             (filter.HeeftVoorkeurAdres == null || ld.GelieerdePersoon.PersoonsAdres != null) &&
+                             (filter.HeeftTelefoonNummer == null ||
+                              ld.GelieerdePersoon.Communicatie.Select(
+                                  e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer).Any() ==
+                              filter.HeeftTelefoonNummer) &&
+                             (filter.HeeftEmailAdres == null ||
+                              ld.GelieerdePersoon.Communicatie.Select(
+                                  e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email).Any() ==
+                              filter.HeeftEmailAdres)
+                         select ld).ToList();
 
             if (filter.AfdelingID != null)
             {
