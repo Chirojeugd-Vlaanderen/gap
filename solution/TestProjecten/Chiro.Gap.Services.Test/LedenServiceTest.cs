@@ -585,11 +585,8 @@ namespace Chiro.Gap.Services.Test
             kind.GroepsWerkJaar = gwj;
 
             // dependency injection opzetten
-            var ledenReopMock = new Mock<IRepository<Lid>>();
-            ledenReopMock.Setup(src => src.Select()).Returns(gwj.Lid.AsQueryable);
-
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
-            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(ledenReopMock.Object);
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(new DummyRepo<Lid>(gwj.Lid.ToList()));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // service construeren
@@ -603,6 +600,53 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.IsNull(actual.FirstOrDefault());
+        }
+
+        /// <summary>
+        ///Controleert of een uitgeschreven lid opnieuw ingeschreven kan worden.
+        ///</summary>
+        [TestMethod()]
+        public void InschrijvenTest()
+        {
+            // ARRANGE
+
+            // testdata
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()};
+            groepsWerkJaar.Groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            var leider = new Leiding {UitschrijfDatum = DateTime.Today, GroepsWerkJaar = groepsWerkJaar};
+            var gp = new GelieerdePersoon  // gelieerde persoon, uitgeschreven als leiding
+                         {
+                             ID = 1,
+                             Persoon = new Persoon {Naam = "Bosmans", VoorNaam = "Jos"},
+                             Lid = new List<Lid> {leider},
+                             Groep = groepsWerkJaar.Groep
+                         };
+
+            // dependency injection
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gp}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var target = Factory.Maak<LedenService>();
+
+            // ACT
+            var lidInformatie = new[]
+                                    {
+                                        new InTeSchrijvenLid
+                                            {
+                                                AfdelingsJaarIrrelevant = true,
+                                                GelieerdePersoonID = gp.ID,
+                                                LeidingMaken = true,
+                                                VolledigeNaam = gp.Persoon.VolledigeNaam
+                                            }
+                                    };
+            string foutBerichten;
+            target.Inschrijven(lidInformatie, out foutBerichten);
+
+            // ASSERT
+            Assert.IsNull(leider.UitschrijfDatum);
         }
     }
 }

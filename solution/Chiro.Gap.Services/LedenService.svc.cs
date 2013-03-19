@@ -254,7 +254,7 @@ namespace Chiro.Gap.Services
 
                     if (l != null) // al ingeschreven
                     {
-                        if (!l.NonActief)
+                        if (l.UitschrijfDatum == null)
                         {
                             // Al ingeschreven als actief lid; we doen er verder niets mee.
                             // (Behalve een foutbericht meegeven, wat ook niet echt correct is, zie #1053)
