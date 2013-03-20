@@ -74,7 +74,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 Titel = "Groepsnaam wijzigen",
                 Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(svc => svc.DetailOphalen(groepID))
             };
-
+           
             // Ook hier nakijken of we live zijn.
             model.IsLive = VeelGebruikt.IsLive();
 
@@ -94,10 +94,10 @@ namespace Chiro.Gap.WebApp.Controllers
             BaseModelInit(model, groepID);
 
             try
-            {
+            {    
                 ServiceHelper.CallService<IGroepenService>(e => e.Bewaren(model.Info));
-
                 TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+                VeelGebruikt.GroepsNaamResetten(groepID);
 
                 return RedirectToAction("Index");
             }

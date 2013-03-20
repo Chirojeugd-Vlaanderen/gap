@@ -36,7 +36,7 @@ namespace Chiro.Gap.WebApp.Models
 		int GroepID { get; }
 
 		/// <summary>
-		/// ID van de Chirogroep
+		/// Naam van de Chirogroep
 		/// </summary>
 		string GroepsNaam { get; }
 
