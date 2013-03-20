@@ -176,8 +176,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
 			}
-
-			return TerugNaarVorigeLijst();
+            return RedirectToAction("Lijst", "Leden");
+            //return TerugNaarVorigeLijst(); Dit is de vorige redirect, die bij succes op de pagina terecht kwam van het oude werkjaar.
 		}
 	}
 }
