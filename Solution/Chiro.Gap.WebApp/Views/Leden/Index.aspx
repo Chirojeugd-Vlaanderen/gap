@@ -79,9 +79,6 @@
 	                </select>
 	                <input id="kiesActie" type="submit" value="Uitvoeren" />
 
-                   
-					
-
                     <h1>Filteren</h1>                    	
 
                         <%
