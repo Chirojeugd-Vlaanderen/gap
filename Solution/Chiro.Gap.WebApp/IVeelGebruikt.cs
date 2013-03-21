@@ -119,11 +119,5 @@ namespace Chiro.Gap.WebApp
 		/// </summary>
 		/// <param name="groepID">ID van groep met te verwijderen problemen</param>
 		void JaarOvergangReset(int groepID);
-
-        /// <summary>
-        /// Reset ge groepsnaam van de groep met ID <paramref name="groepID"/>
-        /// </summary>
-        /// <param name="groepID">ID van de groep waarvan de naam gereset wordt</param>
-        void GroepsNaamResetten(int groepID);
     }
 }

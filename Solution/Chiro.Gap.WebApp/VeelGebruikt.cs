@@ -27,6 +27,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
+
 namespace Chiro.Gap.WebApp
 {
     /// <summary>
@@ -48,24 +49,13 @@ namespace Chiro.Gap.WebApp
         private const string LEDENPROBLEMENAANTALCACHEKEY = "aantallidprob{0}";
         private const string BIVAKSTATUSCACHEKEY = "bivstat{0}";
         private const string BIVAKSTATUSAANTALCACHEKEY = "aantalbivstat{0}";
-        private const string GROEPSNAAMCACHEKEY = "groepsnaam";
 
         #endregion
 
         private readonly Cache _cache = HttpRuntime.Cache;	// misschien hier ook DI voor gebruiken?
 
         // TODO (#1038): deze klasse kan gemakkelijk opgesplitst worden in partial classes per 'thema' 
-
-
-        /// <summary>
-        /// Verwijdert de naam van de groep met ID <paramref name="groepID"/> uit de cache.
-        /// </summary>
-        /// <param name="groepID">ID van de groep waarvan de naam geresset wordt</param>
-        public void GroepsNaamResetten(int groepID)
-        {   
-            _cache.Remove(String.Format(GROEPSNAAMCACHEKEY, groepID));
-        }
-
+            
         #region Groepswerkjaar
 
         /// <summary>

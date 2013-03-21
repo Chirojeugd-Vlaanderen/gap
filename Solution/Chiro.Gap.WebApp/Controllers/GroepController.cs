@@ -97,8 +97,9 @@ namespace Chiro.Gap.WebApp.Controllers
             {    
                 ServiceHelper.CallService<IGroepenService>(e => e.Bewaren(model.Info));
                 TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-                VeelGebruikt.GroepsNaamResetten(groepID);
-
+                // Aangemaakt om de gecachte naam te kunnen leegmaken. Zie bug #1270
+                VeelGebruikt.GroepsWerkJaarResetten(groepID);
+                
                 return RedirectToAction("Index");
             }
             catch (FaultException<FoutNummerFault> ex)
