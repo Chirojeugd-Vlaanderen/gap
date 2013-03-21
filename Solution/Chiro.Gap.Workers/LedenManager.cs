@@ -583,7 +583,15 @@ namespace Chiro.Gap.Workers
         /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.</returns>
         public bool KanInschrijvenAlsKind(GelieerdePersoon gelieerdePersoon)
         {
-            return AfdelingsJaarVoorstellen(gelieerdePersoon) != null;
+            try
+            {
+                return AfdelingsJaarVoorstellen(gelieerdePersoon) != null;
+            }
+            catch (FoutNummerException exception)
+            {
+                return false;
+            }
+            
         }
 
         /// <summary>
