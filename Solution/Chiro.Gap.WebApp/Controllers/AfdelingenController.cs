@@ -135,10 +135,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				}
 				catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
 				{
-					if (string.Compare(
-						ex.Detail.Bestaande.Afkorting,
-						model.Info.Afkorting,
-						true) == 0)
+					if (string.Compare(ex.Detail.Bestaande.Afkorting, model.Info.Afkorting, true) == 0)
 					{
 						ModelState.AddModelError(
 							"Info.Afkorting",
@@ -371,10 +368,7 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
             {
-                if (string.Compare(
-                    ex.Detail.Bestaande.Afkorting,
-                    model.Info.Afkorting,
-                    true) == 0)
+                if (System.String.Compare(ex.Detail.Bestaande.Afkorting, model.Info.Afkorting, System.StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     ModelState.AddModelError(
                         "Info.Afkorting",
@@ -383,10 +377,7 @@ namespace Chiro.Gap.WebApp.Controllers
                             ex.Detail.Bestaande.Afkorting,
                             ex.Detail.Bestaande.Naam));
                 }
-                else if (string.Compare(
-                    ex.Detail.Bestaande.Naam,
-                    model.Info.Naam,
-                    true) == 0)
+                else if (System.String.Compare(ex.Detail.Bestaande.Naam, model.Info.Naam, System.StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     ModelState.AddModelError(
                         "Info.Naam",

@@ -147,6 +147,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
+        [FaultContract(typeof(BestaatAlFault<AfdelingInfo>))]
 		void AfdelingBewaren(AfdelingInfo info);
 
 		/// <summary>

@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
@@ -358,18 +359,36 @@ namespace Chiro.Gap.Services
         /// <param name="info">De afdelingsinfo die opgeslagen moet worden</param>
         public void AfdelingBewaren(AfdelingInfo info)
         {
-            var ai = _afdelingenRepo.ByID(info.ID);
-            Gav.Check(ai);
-            Debug.Assert(ai != null, "ai != null");
-            if (!Equal(info.Naam, ai.Naam))
+            var afdeling = _afdelingenRepo.ByID(info.ID);
+            Gav.Check(afdeling);
+            Debug.Assert(afdeling != null, "ai != null");
+            afdeling.Naam = info.Naam;
+            afdeling.Afkorting = info.Afkorting;
+            try
             {
-                ai.Naam = info.Naam;
+                _afdelingenRepo.SaveChanges(); 
             }
-            if (!Equal(info.Afkorting, ai.Afkorting))
+            catch (DbUpdateException)
             {
-                ai.Afkorting = info.Afkorting;
+                // Naam of code is niet uniek. Zoek op.
+
+                var query = from afd in afdeling.ChiroGroep.Afdeling
+                            where !Equals(afd, afdeling)
+                                  && (afd.Afkorting == afdeling.Afkorting || afd.Naam == afdeling.Naam)
+                            select afd;
+
+                var dubbel = query.FirstOrDefault();
+
+                if (dubbel == null)
+                {
+                    throw;
+                }
+
+                var result = Mapper.Map<Afdeling, AfdelingInfo>(dubbel);
+
+                throw FaultExceptionHelper.BestaatAl(result);
             }
-            _afdelingenRepo.SaveChanges();
+             
         }
 
         /// <summary>
