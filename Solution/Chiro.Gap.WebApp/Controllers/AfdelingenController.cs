@@ -302,26 +302,62 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.AfdelingsJaar.GeboorteJaarTot = model.AfdelingsJaar.GeboorteJaarVan;
 			}
 
-			try
-			{
-				ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarBewaren(model.AfdelingsJaar));
-                ServiceHelper.CallService<IGroepenService>(e => e.AfdelingBewaren(model.Afdeling));
+		    try
+		    {
+		        ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarBewaren(model.AfdelingsJaar));
+		        ServiceHelper.CallService<IGroepenService>(e => e.AfdelingBewaren(model.Afdeling));
 
-				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+		        TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
-				return RedirectToAction("Index");
-			}
-			catch (FaultException<FoutNummerFault> ex)
-			{
-				ModelState.AddModelError("fout", ex.Detail.Bericht);
+		        return RedirectToAction("Index");
+		    }
+		    catch (FaultException<FoutNummerFault> ex)
+		    {
+		        ModelState.AddModelError("fout", ex.Detail.Bericht);
 
-				// Vul model aan, en toon de view AfdelingsJaar opnieuw
-				model.Afdeling = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(model.AfdelingsJaar.AfdelingID));
-				model.OfficieleAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(svc => svc.OfficieleAfdelingenOphalen());
+		        // Vul model aan, en toon de view AfdelingsJaar opnieuw
+		        model.Afdeling =
+		            ServiceHelper.CallService<IGroepenService, AfdelingInfo>(
+		                svc => svc.AfdelingOphalen(model.AfdelingsJaar.AfdelingID));
+		        model.OfficieleAfdelingen =
+		            ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
+		                svc => svc.OfficieleAfdelingenOphalen());
 
-				model.Titel = "Afdeling bewerken";
-				return View("AfdelingsJaar", model);
-			}
+		        model.Titel = "Afdeling bewerken";
+		        return View("AfdelingsJaar", model);
+		    }
+		    catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
+		    {
+		        if (
+		            System.String.Compare(ex.Detail.Bestaande.Afkorting, model.Afdeling.Afkorting,
+		                                  System.StringComparison.OrdinalIgnoreCase) == 0)
+		        {
+		            ModelState.AddModelError(
+		                "Info.Afkorting",
+		                string.Format(
+		                    Properties.Resources.AfdelingsCodeBestaatAl,
+		                    ex.Detail.Bestaande.Afkorting,
+		                    ex.Detail.Bestaande.Naam));
+		        }
+		        else if (
+		            System.String.Compare(ex.Detail.Bestaande.Naam, model.Afdeling.Naam,
+		                                  System.StringComparison.OrdinalIgnoreCase) == 0)
+		        {
+		            ModelState.AddModelError(
+		                "Info.Naam",
+		                string.Format(
+		                    Properties.Resources.AfdelingsNaamBestaatAl,
+		                    ex.Detail.Bestaande.Afkorting,
+		                    ex.Detail.Bestaande.Naam));
+		        }
+		        else
+		        {
+		            // Dit kan niet.
+		            Debug.Assert(false);
+		        }
+                model.OfficieleAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(groep => groep.OfficieleAfdelingenOphalen());
+                return View("AfdelingsJaar", model);
+		    }
 		}
 
         /// <summary>

@@ -40,7 +40,7 @@
 			foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Code))
 			{
 %>
-				<li>[<%=Html.ActionLink("verwijderen", "Verwijderen", new {id = fie.ID }) %>]
+				<li>
 		
 				<%=Html.Encode(String.Format(
 					"{0} ({1})", 
@@ -55,7 +55,7 @@
 					fie.Type == LidType.Kind ? "leden" : fie.Type == LidType.Leiding ? "leiding" : "leden en leiding"))%>                
 <%
 				}
-%>
+%>      [<%=Html.ActionLink("verwijderen", "Verwijderen", new {id = fie.ID }) %>]
 		</li>
 		<%
 			}

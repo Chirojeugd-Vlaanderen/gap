@@ -153,10 +153,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 }
                 catch (FaultException<BestaatAlFault<FunctieDetail>> ex)
                 {
-                    if (String.Compare(
-                        model.NieuweFunctie.Code,
-                        ex.Detail.Bestaande.Code,
-                        true) == 0)
+                    if (System.String.Compare(model.NieuweFunctie.Code, ex.Detail.Bestaande.Code, System.StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         // Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
                         ModelState.AddModelError(
@@ -166,10 +163,7 @@ namespace Chiro.Gap.WebApp.Controllers
                                 ex.Detail.Bestaande.Code,
                                 ex.Detail.Bestaande.Naam));
                     }
-                    else if (String.Compare(
-                        model.NieuweFunctie.Naam,
-                        ex.Detail.Bestaande.Naam,
-                        true) == 0)
+                    else if (System.String.Compare(model.NieuweFunctie.Naam, ex.Detail.Bestaande.Naam, System.StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         // Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
                         ModelState.AddModelError(
