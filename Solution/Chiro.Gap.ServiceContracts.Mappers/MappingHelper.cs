@@ -380,6 +380,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             Mapper.CreateMap<Functie, FunctieInfo>();
             Mapper.CreateMap<Functie, FunctieDetail>();
 
+            Mapper.CreateMap<FunctieDetail, Functie>();
+
             Mapper.CreateMap<Lid, LidInfo>()
                 .ForMember(
                     dst => dst.LidID,

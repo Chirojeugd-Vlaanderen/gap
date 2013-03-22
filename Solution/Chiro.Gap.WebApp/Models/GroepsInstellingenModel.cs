@@ -46,7 +46,7 @@ namespace Chiro.Gap.WebApp.Models
         public GroepInfo Info { get { return Detail; } }
         public CategorieInfo NieuweCategorie { get; set; }
         public FunctieDetail NieuweFunctie { get; set; }
-
+        
         public IEnumerable<LidType> Types { get; set; }
 
         #region IMasterViewModel Members

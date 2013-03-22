@@ -184,6 +184,7 @@ namespace Chiro.Gap.Workers
             return functie;
         }
 
+      
         /// <summary>
         /// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of de maximum- en
         /// minimumaantallen van de functies <paramref name="functies"/> niet overschreden zijn.

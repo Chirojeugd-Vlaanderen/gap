@@ -98,6 +98,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="lid">Lid waarvan de functies vervangen moeten worden</param>
         /// <param name="functies">Nieuwe functies voor <paramref name="lid"/></param>
         void Vervangen(Lid lid, List<Functie> functies);
+       
     }
 
     /// <summary>

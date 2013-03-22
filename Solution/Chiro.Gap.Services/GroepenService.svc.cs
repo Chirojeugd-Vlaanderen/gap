@@ -806,6 +806,36 @@ namespace Chiro.Gap.Services
             _functiesRepo.SaveChanges();
         }
 
+        public void FunctieBewerken(FunctieDetail detail)
+        {
+            var functie = _functiesRepo.ByID(detail.ID);
+            Gav.Check(functie);
+
+            if (functie.IsNationaal)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout,
+                                                      Properties.Resources.NationaleFunctieNietBewerken);
+
+            }
+
+            Mapper.Map<FunctieDetail, Functie>(detail, functie);
+            
+            _functiesRepo.SaveChanges();
+
+        }
+
+        /// <summary>
+        /// Haalt functie met gegeven <paramref name="functieId"/> op
+        /// </summary>
+        /// <param name="functieId"></param>
+        /// <returns></returns>
+        public FunctieDetail FunctieOphalen(int functieId)
+        {
+            var functie = _functiesRepo.ByID(functieId);
+            Gav.Check(functie);
+            return Mapper.Map<Functie, FunctieDetail>(functie);
+        }
+
         /// <summary>
         /// Voegt een categorie toe aan de groep
         /// </summary>

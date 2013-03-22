@@ -120,6 +120,30 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
+        /// Toont de view om een functie te bewerken
+        /// </summary>
+        /// <param name="groepID">ID van de actieve groep</param>
+        /// <param name="id">ID van de te bewerken functie</param>
+        /// <returns></returns>
+        public ActionResult Bewerken(int groepID, int id)
+        {
+            var model = new FunctieModel();
+
+            BaseModelInit(model, groepID);
+            model.HuidigeFunctie =
+                ServiceHelper.CallService<IGroepenService, FunctieDetail>(svc => svc.FunctieOphalen(id));
+
+            return View(model);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Bewerken(FunctieModel model, int groepID)
+        {
+            ServiceHelper.CallService<IGroepenService>(svc => svc.FunctieBewerken(model.HuidigeFunctie));
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
         /// Actie voor als de gebruiker gegevens heeft ingevuld voor een nieuwe functie
         /// </summary>
         /// <param name="model">Model voor Groepsinstellingen</param>

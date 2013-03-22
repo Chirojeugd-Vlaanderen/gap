@@ -142,6 +142,7 @@
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingsJaarModel.cs" />
     <Compile Include="Models\DeelnemerBewerkenModel.cs" />
+    <Compile Include="Models\FunctieModel.cs" />
     <Compile Include="Models\GavOverzichtModel.cs" />
     <Compile Include="Models\GroepInfoModel.cs" />
     <Compile Include="Models\IAdresBewerkenModel.cs" />
@@ -202,12 +203,13 @@
     <Content Include="Global.asax" />
     <Compile Include="Models\InschrijfbaarLid.cs" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
-    <Content Include="Scripts\jquery-ui-1.8.18.custom.min.js" />
+    <Content Include="Scripts\jquery-ui-1.10.2.custom.min.js" />
     <Content Include="Views\Afdelingen\Afdeling.aspx" />
     <Content Include="Views\Afdelingen\AfdelingsJaar.aspx" />
     <Content Include="Views\Afdelingen\Index.aspx" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Views\Functies\Bewerken.aspx" />
     <Content Include="Views\Gav\Index.aspx" />
     <Content Include="Views\GebruikersRecht\Index.aspx" />
     <Content Include="Views\Groep\NaamWijzigen.aspx" />

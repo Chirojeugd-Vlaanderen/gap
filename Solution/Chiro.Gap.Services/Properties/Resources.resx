@@ -211,4 +211,7 @@
   <data name="OvergangTeVroeg" xml:space="preserve">
     <value>Het is nog te vroeg op het werkjaar om een nieuw werkjaar te beginnen.</value>
   </data>
+  <data name="NationaleFunctieNietBewerken" xml:space="preserve">
+    <value>Je mag geen nationale functies bewerken</value>
+  </data>
 </root>

@@ -521,5 +521,16 @@ namespace Chiro.Gap.ServiceContracts
         /// <returns>Een voorstel voor de afdelingsjaren, in de vorm van een lijstje AfdelingDetails.</returns>
         [OperationContract]
         IList<AfdelingDetail> NieuweAfdelingsJarenVoorstellen(int[] afdelingsIDs, int groepID);
-    }
+
+        [OperationContract]
+	    void FunctieBewerken(FunctieDetail detail);
+
+	    /// <summary>
+	    /// Haalt functie met gegeven <paramref name="functieId"/> op
+	    /// </summary>
+	    /// <param name="functieId"></param>
+	    /// <returns></returns>
+	    [OperationContract]
+	    FunctieDetail FunctieOphalen(int functieId);
+	}
 }
