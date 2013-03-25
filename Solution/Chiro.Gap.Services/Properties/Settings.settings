@@ -11,5 +11,14 @@
     <Setting Name="LeidingVanafLeeftijd" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">15</Value>
     </Setting>
+    <Setting Name="EncryptieSleutel" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">bSzTnlw7aalstnLytquah4jAMbVrMK3lgViEqXT2WB0=</Value>
+    </Setting>
+    <Setting Name="HashSleutel" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">FA/NSFrNPj3IPOsqsDLJgc2wVeeTHaktE0wkXtN5n3Q=</Value>
+    </Setting>
+    <Setting Name="UrlVerzekeraar" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://test.ic-verzekeringen.be/chiro/logon.asp?user={0}&amp;hash={1}</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

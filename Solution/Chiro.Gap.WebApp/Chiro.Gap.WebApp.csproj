@@ -112,6 +112,7 @@
     </Compile>
     <Compile Include="Controllers\PersonenEnLedenController.cs" />
     <Compile Include="Controllers\UitstappenController.cs" />
+    <Compile Include="Controllers\VerzekeringController.cs" />
     <Compile Include="HtmlHelpers\AfdelingsLinksHelper.cs" />
     <Compile Include="HtmlHelpers\CheckBoxListHelper.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -249,6 +250,7 @@
     <Content Include="Views\Uitstappen\Index.aspx" />
     <Content Include="Views\Uitstappen\Bewerken.aspx" />
     <Content Include="Views\Uitstappen\PlaatsBewerken.aspx" />
+    <Content Include="Views\Verzekering\EmailOntbreekt.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

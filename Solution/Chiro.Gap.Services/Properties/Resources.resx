@@ -163,4 +163,7 @@
   <data name="RolNietOndersteund" xml:space="preserve">
     <value>De rol {0} wordt nog niet ondersteund.</value>
   </data>
+  <data name="EmailOntbreekt" xml:space="preserve">
+    <value>Een e-mailadres is verplicht</value>
+  </data>
 </root>

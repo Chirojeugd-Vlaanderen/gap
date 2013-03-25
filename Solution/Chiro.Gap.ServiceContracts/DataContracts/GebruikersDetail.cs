@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
     /// <summary>
-    /// TODO (#190): documenteren
+    /// Details van een gebruiker.
     /// </summary>
     [DataContract]
     public class GebruikersDetail : GebruikersInfo

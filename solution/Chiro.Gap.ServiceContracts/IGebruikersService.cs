@@ -70,5 +70,14 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
         void RechtenAfnemenGebruiker(string gebruikersNaam, int[] groepIDs);
+
+        /// <summary>
+        /// Levert een redirection-url op naar de site van de verzekeraar
+        /// </summary>
+        /// <returns>Redirection-url naar de site van de verzekeraar</returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        string VerzekeringsUrlGet(int groepID);
     }
 }
