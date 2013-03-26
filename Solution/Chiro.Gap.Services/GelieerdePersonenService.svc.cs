@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Transactions;      // laten staan voor live!
 using AutoMapper;
@@ -540,6 +541,11 @@ namespace Chiro.Gap.Services
         /// <remarks>Deze method levert enkel naam, voornaam en gelieerdePersoonID op!</remarks>
         public IEnumerable<PersoonInfo> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
         {
+            if (String.IsNullOrEmpty(teZoeken))
+            {
+                return new List<PersoonInfo>();
+            }
+
             var groep = _groepenRepo.ByID(groepID);
 
             if (!_autorisatieMgr.IsGav(groep))
@@ -547,12 +553,12 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            var personen = (from gp in groep.GelieerdePersoon
-                            where String.Format("{0} {1}", gp.Persoon.Naam, gp.Persoon.VoorNaam).StartsWith(teZoeken, StringComparison.InvariantCultureIgnoreCase)
-                            || String.Format("{1} {0}", gp.Persoon.Naam, gp.Persoon.VoorNaam).StartsWith(teZoeken, StringComparison.InvariantCultureIgnoreCase)
-                            select gp).ToList();
+            var lijst =  (from gpnm in groep.GelieerdePersoon
+                        where (gpnm.Persoon.Naam + " " + gpnm.Persoon.VoorNaam + " " + gpnm.Persoon.Naam).Contains(teZoeken)
+                        select gpnm).ToList();
 
-            return Mapper.Map<IList<GelieerdePersoon>, List<PersoonInfo>>(personen);
+
+            return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonInfo>>(lijst);
         }
 
         /// <summary>

@@ -73,7 +73,7 @@
 					fie.Type == LidType.Kind ? "leden" : fie.Type == LidType.Leiding ? "leiding" : "leden en leiding"))%>                
 <%
 				}
-%>      [<%=Html.ActionLink("Verwijderen", "Verwijderen", new {id = fie.ID }) %>]
+%>      [<%=Html.ActionLink("Verwijderen", "Verwijderen", new {id = fie.ID}) %>]
         [<%=Html.ActionLink("Bewerken","Bewerken", new {id = fie.ID}) %>]
 		</li>
 		<%
@@ -82,7 +82,7 @@
 	</ul>
 	<ul id="acties">
 		<li>
-			<input type="submit" value="Bewaren" /></li>
+			<input type="submit" value="Bewaren" class="ui-buttonset" /></li>
 	</ul>
     <% //Default tonen, verdwijnt wanneer op 'bewerken' geklikt werd %>
    <fieldset id="toevoegen">

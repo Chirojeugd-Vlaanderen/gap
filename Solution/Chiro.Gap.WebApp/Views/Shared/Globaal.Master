@@ -32,6 +32,7 @@
 		// En dit staat in servercomments ipv html-comments omdat gebruikers daar geen zaken mee hebben. :)		%>
 	<link href="/Content/Site.css" rel="stylesheet" type="text/css" />
 	<link href="<%=ResolveUrl("~/Content/Site.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%=ResolveUrl("~/Content/jquery-ui-1.10.2.custom.css")%>" rel="stylesheet" type="text/css" />
 	<link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="<%=ResolveUrl("~/Content/favicon.ico")%>" type="image/x-icon" />
 	

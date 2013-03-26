@@ -19,16 +19,12 @@
  */
 %>
 	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #669) %>
-	<script src="<%= ResolveUrl("~/Scripts/jquery-1.7.1.min.js")%>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/jquery-ui-1.8.18.custom.min.js")%>" type="text/javascript"></script>
 
-	<!--<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>-->
+    <script src="<%=ResolveUrl("~/Scripts/jquery-1.9.1.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jquery-ui-1.10.2.custom.js")%>" type="text/javascript"></script>
+    <link href="<%=ResolveUrl("~/Content/jquery-ui-1.10.2.custom.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%=ResolveUrl("~/Content/jquery.autocomplete.css")%>" rel="stylesheet" type="text/css" />
 
-    <link href="<%= ResolveUrl("~/Content/jquery-ui-1.8.18.custom.css")%>" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
 	    $(function () {
 
@@ -45,16 +41,19 @@
 	                    return;
 	                }
 	                
-	                lastXhr = $.getJSON('<%= Url.Action("PersoonZoeken", "Personen") %>', { naamOngeveer: term, groepID: <%=Model.GroepID %> }, function (data, status, xhr)
-	                {
-	                    personenCache[term] = data;
-
-	                    if (xhr === lastXhr)
+	                lastXhr = $.getJSON(
+	                    '<%= Url.Action("PersoonZoeken", "Personen") %>', 
+	                    { naamOngeveer: term, groepID: <%=Model.GroepID %> }, 
+	                    function (data, status, xhr)
 	                    {
-	                        response($.map(data, function(item) {
-	                            return {
-	                                label: item.Naam + ' ' + item.VoorNaam,
-	                                value: item.GelieerdePersoonID
+	                        personenCache[term] = data;
+
+	                        if (xhr === lastXhr)
+	                        {
+	                            response($.map(data, function(item) {
+	                                return {
+	                                    label: item.Naam + ' ' + item.VoorNaam,
+	                                    value: item.GelieerdePersoonID
 	                            };
 	                        }));
 	                    }
