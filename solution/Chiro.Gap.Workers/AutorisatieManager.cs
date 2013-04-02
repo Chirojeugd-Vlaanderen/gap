@@ -27,21 +27,6 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Verwijdert uit een lijst van GelieerdePersoonID's de ID's
-        /// van GelieerdePersonen voor wie de aangemelde gebruiker geen GAV is.
-        /// </summary>
-        /// <param name="gelieerdePersonenIDs">
-        /// Lijst met ID's van gelieerde personen
-        /// </param>
-        /// <returns>
-        /// Enkel de ID's van die personen voor wie de gebruiker GAV is
-        /// </returns>
-        public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs)
-        {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
-        }
-
-        /// <summary>
         /// Verwijdert uit een lijst van PersoonID's de ID's
         /// van personen voor wie de aangemelde gebruiker geen GAV is.
         /// </summary>

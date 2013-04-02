@@ -243,15 +243,12 @@ namespace Chiro.Gap.Services
             var uitstap = _uitstappenRepo.ByID(geselecteerdeUitstapId);
             Gav.Check(uitstap);
 
-            var alleGpIDs = gelieerdePersoonIDs.Distinct().ToList();
-            var mijnGpIDs = _autorisatieMgr.EnkelMijnGelieerdePersonen(alleGpIDs);
+            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIDs);
 
-            if (alleGpIDs.Count() != mijnGpIDs.Count())
+            if (!_autorisatieMgr.IsGav(gelieerdePersonen))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
-
-            var gelieerdePersonen = _gelieerdePersonenRepo.Select().Where(gp => gelieerdePersoonIDs.Contains(gp.ID)).ToList();
 
             var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct().ToList();
 

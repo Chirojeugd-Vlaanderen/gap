@@ -13,18 +13,6 @@ namespace Chiro.Gap.WorkerInterfaces
     public interface IAutorisatieManager
     {
         /// <summary>
-        /// Verwijdert uit een lijst van GelieerdePersoonID's de ID's
-        /// van GelieerdePersonen voor wie de aangemelde gebruiker geen GAV is.
-        /// </summary>
-        /// <param name="gelieerdePersonenIDs">
-        /// Lijst met ID's van gelieerde personen
-        /// </param>
-        /// <returns>
-        /// Enkel de ID's van die personen voor wie de gebruiker GAV is
-        /// </returns>
-        IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs);
-
-        /// <summary>
         /// Verwijdert uit een lijst van PersoonID's de ID's
         /// van personen voor wie de aangemelde gebruiker geen GAV is.
         /// </summary>
