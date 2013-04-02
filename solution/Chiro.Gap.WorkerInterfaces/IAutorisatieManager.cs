@@ -13,18 +13,6 @@ namespace Chiro.Gap.WorkerInterfaces
     public interface IAutorisatieManager
     {
         /// <summary>
-        /// Verwijdert uit een lijst van PersoonID's de ID's
-        /// van personen voor wie de aangemelde gebruiker geen GAV is.
-        /// </summary>
-        /// <param name="personenIDs">
-        /// Lijst met ID's van personen
-        /// </param>
-        /// <returns>
-        /// Enkel de ID's van die personen voor wie de gebruiker GAV is
-        /// </returns>
-        IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs);
-        
-        /// <summary>
         /// Geeft true als de aangelogde user
         /// 'superrechten' heeft
         /// (zoals het verwijderen van leden uit vorig werkjaar, het 

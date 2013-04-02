@@ -20,13 +20,6 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class PersonenManager
     {
-        private readonly IAutorisatieManager _autorisatieMgr;
-
-        public PersonenManager(IAutorisatieManager autorisatieMgr)
-        {
-            _autorisatieMgr = autorisatieMgr;
-        }
-
         /// <summary>
         /// Verhuist een persoon van oudAdres naar nieuwAdres.  Persisteert niet.
         /// </summary>
@@ -72,46 +65,34 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public void Verhuizen(IList<Persoon> verhuizers, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType)
         {
-            var persIDs = (from p in verhuizers
-                           select p.ID).ToArray();
-            var mijnPersIDs = _autorisatieMgr.EnkelMijnPersonen(persIDs);
+            // Vind personen waarvan het adres al gekoppeld is.
+            var bestaand =
+                verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == nieuwAdres.ID)).ToList();
 
-            if (persIDs.Count() == mijnPersIDs.Count())
+            if (bestaand.FirstOrDefault() != null)
             {
-                // Vind personen waarvan het adres al gekoppeld is.
-                var bestaand = verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == nieuwAdres.ID)).ToList();
-
-                if (bestaand.FirstOrDefault() != null)
-                {
-                    // Geef een exception met daarin de persoonsadresobjecten die al bestaan
-                    throw new BlokkerendeObjectenException<PersoonsAdres>(
-                        bestaand,
-                        bestaand.Count(),
-                        Resources.WonenDaarAl);
-                }
-
-                var oudePersoonsAdressen =
-                    verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == oudAdres.ID));
-
-                foreach (var pa in oudePersoonsAdressen)
-                {
-                    // verwijder koppeling oud adres->persoonsadres
-                    pa.Adres.PersoonsAdres.Remove(pa);
-
-                    // adrestype
-                    pa.AdresType = adresType;
-
-                    // koppel persoonsadres aan nieuw adres
-                    pa.Adres = nieuwAdres;
-
-                    nieuwAdres.PersoonsAdres.Add(pa);
-                }
+                // Geef een exception met daarin de persoonsadresobjecten die al bestaan
+                throw new BlokkerendeObjectenException<PersoonsAdres>(
+                    bestaand,
+                    bestaand.Count(),
+                    Resources.WonenDaarAl);
             }
-            else
+
+            var oudePersoonsAdressen =
+                verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == oudAdres.ID));
+
+            foreach (var pa in oudePersoonsAdressen)
             {
-                // Minstens een persoon waarvoor de user geen GAV is.  Zo'n gepruts verdient
-                // een onverbiddellijke geen-gav-exception.
-                throw new GeenGavException(Resources.GeenGav);
+                // verwijder koppeling oud adres->persoonsadres
+                pa.Adres.PersoonsAdres.Remove(pa);
+
+                // adrestype
+                pa.AdresType = adresType;
+
+                // koppel persoonsadres aan nieuw adres
+                pa.Adres = nieuwAdres;
+
+                nieuwAdres.PersoonsAdres.Add(pa);
             }
         }
 
