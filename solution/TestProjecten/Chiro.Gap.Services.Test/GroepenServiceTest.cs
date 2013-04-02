@@ -19,6 +19,7 @@ using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Services;
+using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -466,6 +467,50 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
             Assert.AreEqual(functie.WerkJaarTot, oudGroepswerkjaar.WerkJaar);
+        }
+
+        /// <summary>
+        ///Controleert of 'MijnGroepenOphalen' rekening houdt met vervallen gebruikresrecht.
+        ///</summary>
+        [TestMethod()]
+        public void MijnGroepenOphalenTest()
+        {
+            // ARRANGE
+
+            // testgroep; toegang met mijnLogin net vervallen.
+            const string mijnLogin = "MijnLogin";
+
+            Groep groep = new ChiroGroep
+            {
+                GebruikersRecht = new[]
+                                                        {
+                                                            new GebruikersRecht
+                                                                {
+                                                                    Gav = new Gav {Login = "MijnLogin"},
+                                                                    VervalDatum = DateTime.Today // net vervallen
+                                                                }
+                                                        }
+            };
+
+            // Zet mock op voor het opleveren van gebruikersnaam, en voor data-access groepen
+            var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
+            authenticatieManagerMock.Setup(src => src.GebruikersNaamGet()).Returns(mijnLogin);
+            Factory.InstantieRegistreren(authenticatieManagerMock.Object);
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                                  .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+
+            // ACT
+
+            var target = Factory.Maak<GroepenService>();
+            var actual = target.MijnGroepenOphalen();
+
+            // ASSERT
+
+            Assert.IsNull(actual.FirstOrDefault());
         }
     }
 }
