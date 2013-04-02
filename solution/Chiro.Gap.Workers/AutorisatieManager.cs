@@ -41,18 +41,6 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Bepaalt de gebruikersnaam van de huidig aangemelde gebruiker.
-        /// (lege string indien niet van toepassing)
-        /// </summary>
-        /// <returns>
-        /// Username aangemelde gebruiker
-        /// </returns>
-        public string GebruikersNaamGet()
-        {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
-        }
-
-        /// <summary>
         /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van het gegeven <paramref name="object"/>.
         /// </summary>
         /// <param name="groep">Groep waarvoor gebruikersrecht nagekeken moet worden</param>

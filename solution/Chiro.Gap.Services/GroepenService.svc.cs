@@ -949,7 +949,7 @@ namespace Chiro.Gap.Services
         /// <returns>Gebruikersnaam waarmee aangemeld</returns>
         public string WieBenIk()
         {
-            return _autorisatieMgr.GebruikersNaamGet();
+            return _authenticatieMgr.GebruikersNaamGet();
         }
 
         /// <summary>

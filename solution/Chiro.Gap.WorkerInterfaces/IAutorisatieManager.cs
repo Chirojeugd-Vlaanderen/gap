@@ -24,15 +24,6 @@ namespace Chiro.Gap.WorkerInterfaces
         bool IsSuperGav();
 
         /// <summary>
-        /// Bepaalt de gebruikersnaam van de huidig aangemelde gebruiker.
-        /// (lege string indien niet van toepassing)
-        /// </summary>
-        /// <returns>
-        /// Username aangemelde gebruiker
-        /// </returns>
-        string GebruikersNaamGet();
-
-        /// <summary>
         /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van gegeven
         /// <paramref name="groep"/>.
         /// </summary>
