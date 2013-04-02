@@ -510,31 +510,30 @@ namespace Chiro.Gap.Services
             return gelieerdePersoon.Persoon.ID;
         }
 
-        /// <summary>
-        /// Zoekt naar (gelieerde)persoonID's op basis van naam, voornaam en groepid
-        /// </summary>
-        /// <param name="groepID">ID van de groep met de te vinden persoon</param>
-        /// <param name="naam">Familienaam van de te vinden persoon</param>
-        /// <param name="voornaam">Voornaam van de te vinden persoon</param>
-        /// <returns>GelieerdePersoonID en PersoonID van de gevonden personen, of <c>null</c> als
-        /// niet gevonden.</returns>
-        /// <remarks>Dit is nogal een domme method, maar ze is nodig om ticket #710 te fixen.</remarks>
-        public IDPersEnGP[] Opzoeken(int groepID, string naam, string voornaam)
-        {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-        }
 
         /// <summary>
         /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarbij
-        /// naam of voornaam ongeveer begint met <paramref name="teZoeken"/>
+        /// naam of voornaam begint met <paramref name="teZoeken"/>
         /// </summary>
         /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
-        /// <param name="teZoeken">Te zoeken voor- of achternaam (ongeveer)</param>
+        /// <param name="teZoeken">Te zoeken voor- of achternaam</param>
         /// <returns>Lijst met gevonden matches</returns>
         /// <remarks>Deze method levert enkel naam, voornaam en gelieerdePersoonID op!</remarks>
         public IEnumerable<PersoonInfo> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var personen = (from gp in groep.GelieerdePersoon
+                            where String.Format("{0} {1}", gp.Persoon.Naam, gp.Persoon.VoorNaam).StartsWith(teZoeken, StringComparison.InvariantCultureIgnoreCase)
+                            || String.Format("{1} {0}", gp.Persoon.Naam, gp.Persoon.VoorNaam).StartsWith(teZoeken, StringComparison.InvariantCultureIgnoreCase)
+                            select gp).ToList();
+
+            return Mapper.Map<IList<GelieerdePersoon>, List<PersoonInfo>>(personen);
         }
 
         /// <summary>

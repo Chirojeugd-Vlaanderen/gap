@@ -209,20 +209,6 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		int PersoonIDGet(int gelieerdePersoonID);
 
-		/// <summary>
-		/// Zoekt naar (gelieerde)persoonID's op basis van naam, voornaam en groepid
-		/// </summary>
-		/// <param name="groepID">ID van de groep met de te vinden persoon</param>
-		/// <param name="naam">Familienaam van de te vinden persoon</param>
-		/// <param name="voornaam">Voornaam van de te vinden persoon</param>
-		/// <returns>GelieerdePersoonID en PersoonID van de gevonden personen, of <c>null</c> als
-		/// niet gevonden.</returns>
-		/// <remarks>Dit is nogal een domme method, maar ze is nodig om ticket #710 te fixen.</remarks>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		IDPersEnGP[] Opzoeken(int groepID, string naam, string voornaam);
-
 	    /// <summary>
 	    /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarbij
 	    /// naam of voornaam ongeveer begint met <paramref name="teZoeken"/>
