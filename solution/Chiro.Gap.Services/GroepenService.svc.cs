@@ -197,7 +197,11 @@ namespace Chiro.Gap.Services
         {
             var mijnLogin = _authenticatieMgr.GebruikersNaamGet();
             var groepen = from g in _groepenRepo.Select()
-                          where g.GebruikersRecht.Any(gr => gr.Gav.Login == mijnLogin)
+                          where
+                              g.GebruikersRecht.Any(
+                                  gr =>
+                                  String.Compare(gr.Gav.Login, mijnLogin, StringComparison.InvariantCultureIgnoreCase) ==
+                                  0 && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
                           select g;
 
             // Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
