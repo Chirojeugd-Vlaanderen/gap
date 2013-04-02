@@ -464,23 +464,24 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void OngebruikteFunctieVerwijderenTest()
 		{
-			// arrange
+            //// arrange
 
-			var testData = new DummyData();
+            //var testData = new DummyData();
 
-			var veelGebruiktMock = new Mock<IVeelGebruikt>();
-			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
-			Factory.InstantieRegistreren(veelGebruiktMock.Object);
+            //var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            //veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
+            //Factory.InstantieRegistreren(veelGebruiktMock.Object);
 
-			var mgr = Factory.Maak<FunctiesManager>();
+            //var mgr = Factory.Maak<FunctiesManager>();
 
-			// act
+            //// act
 
-			var result = mgr.Verwijderen(testData.OngebruikteFunctie, false);
+            //var result = mgr.Verwijderen(testData.OngebruikteFunctie, false);
 
-			// assert
+            //// assert
 
-			Assert.IsNull(result);
+            //Assert.IsNull(result);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
 		}
 
 		/// <summary>
@@ -528,23 +529,24 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void FunctieEnkelDitJaarInGebruikGeforceerdVerwijderenTest()
 		{
-			// arrange
+            //// arrange
 
-			var testData = new DummyData();
+            //var testData = new DummyData();
 
-			var veelGebruiktMock = new Mock<IVeelGebruikt>();
-			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
-			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
+            //var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            //veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
+            //Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
 
-			var mgr = Factory.Maak<FunctiesManager>();
+            //var mgr = Factory.Maak<FunctiesManager>();
 
-			// act
+            //// act
 
-			var result = mgr.Verwijderen(testData.UniekeFunctie, true);
+            //var result = mgr.Verwijderen(testData.UniekeFunctie, true);
 
-			// assert
+            //// assert
 
-			Assert.IsNull(result);
+            //Assert.IsNull(result);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
 		}
 
 		/// <summary>
@@ -555,30 +557,31 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void FunctieLangerInGebruikGeforceerdVerwijderenTest()
 		{
-			// arrange
+            //// arrange
 
-			var testData = new DummyData();
+            //var testData = new DummyData();
 
-			Debug.Assert(testData.HuidigGwj != null);
+            //Debug.Assert(testData.HuidigGwj != null);
 
-			var veelGebruiktMock = new Mock<IVeelGebruikt>();
-			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
-			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
+            //var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            //veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
+            //Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
 
-			var mgr = Factory.Maak<FunctiesManager>();
+            //var mgr = Factory.Maak<FunctiesManager>();
 
-			// act
+            //// act
 
-			var result = mgr.Verwijderen(testData.TraditieFunctie, true);
+            //var result = mgr.Verwijderen(testData.TraditieFunctie, true);
 
-			// assert
+            //// assert
 
-			// functie niet meer geldig
-			Assert.IsNotNull(result);
-			Assert.AreEqual(result.WerkJaarTot, testData.HuidigGwj.WerkJaar - 1);
+            //// functie niet meer geldig
+            //Assert.IsNotNull(result);
+            //Assert.AreEqual(result.WerkJaarTot, testData.HuidigGwj.WerkJaar - 1);
 
-			// enkel het lid van dit werkJaar blijft over
-			Assert.AreEqual(result.Lid.Count, 1);
+            //// enkel het lid van dit werkJaar blijft over
+            //Assert.AreEqual(result.Lid.Count, 1);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
 		}
 	}
 }

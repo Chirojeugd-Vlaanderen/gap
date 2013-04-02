@@ -1,4 +1,5 @@
 ﻿using System;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -71,29 +72,30 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void DubbeleKoppelingCategorie()
 		{
-			// Arrange
+            //// Arrange
 
-			var testData = new DummyData();
+            //var testData = new DummyData();
 
-			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
+            //var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 
-			if (!testData.GelieerdeJos.Categorie.Contains(testData.Vervelend))
-			{
-				// Zeker zijn dat Jos al een keer in de categorie zit.
-				gpMgr.CategorieKoppelen(
-					new GelieerdePersoon[] { testData.GelieerdeJos }, 
-					testData.Vervelend);
-			}
+            //if (!testData.GelieerdeJos.Categorie.Contains(testData.Vervelend))
+            //{
+            //    // Zeker zijn dat Jos al een keer in de categorie zit.
+            //    gpMgr.CategorieKoppelen(
+            //        new GelieerdePersoon[] { testData.GelieerdeJos }, 
+            //        testData.Vervelend);
+            //}
 
-			int aantalCategorieen = testData.GelieerdeJos.Categorie.Count;
+            //int aantalCategorieen = testData.GelieerdeJos.Categorie.Count;
 		
-			// Act
+            //// Act
 
-			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { testData.GelieerdeJos }, testData.Vervelend);
+            //gpMgr.CategorieKoppelen(new GelieerdePersoon[] { testData.GelieerdeJos }, testData.Vervelend);
 			
-			// Assert		
+            //// Assert		
 
-			Assert.IsTrue(testData.GelieerdeJos.Categorie.Count == aantalCategorieen);
+            //Assert.IsTrue(testData.GelieerdeJos.Categorie.Count == aantalCategorieen);
+            throw new NotImplementedException(NIEUWEBACKEND.Info);
 		}
 
 	}

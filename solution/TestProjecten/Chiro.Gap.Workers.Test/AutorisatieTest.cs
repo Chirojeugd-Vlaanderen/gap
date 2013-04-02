@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
 using Chiro.Gap.Domain;
-using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
@@ -22,8 +17,6 @@ namespace Chiro.Gap.Workers.Test
 	[TestClass]
 	public class AutorisatieTest
 	{
-		private static DummyData _testData;
-
 		#region Additional test attributes
 		//
 		// You can use the following additional attributes as you write your tests:
@@ -49,9 +42,6 @@ namespace Chiro.Gap.Workers.Test
 		[ClassInitialize]
 		static public void InitialiseerTests(TestContext tc)
 		{
-			Factory.ContainerInit();
-			_testData = new DummyData();
-
 		}
 
 		[ClassCleanup]
