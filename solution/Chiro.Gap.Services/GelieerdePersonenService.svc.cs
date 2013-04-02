@@ -572,14 +572,31 @@ namespace Chiro.Gap.Services
         /// naar Persoon-NieuwAdres.)
         /// </summary>
         /// <param name="gelieerdePersoonIDs">ID's van te verhuizen *GELIEERDE* Personen </param>
-        /// <param name="nieuwAdres">AdresInfo-object met nieuwe adresgegevens</param>
+        /// <param name="nieuwAdresInfo">AdresInfo-object met nieuwe adresgegevens</param>
         /// <param name="oudAdresID">ID van het oude adres</param>
-        /// <remarks>De ID van <paramref name="nieuwAdres"/> wordt genegeerd.  Het adresID wordt altijd
+        /// <remarks>De ID van <paramref name="nieuwAdresInfo"/> wordt genegeerd.  Het adresID wordt altijd
         /// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
         /// dan krijgt het adres een nieuw ID.</remarks>
-        public void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs, PersoonsAdresInfo nieuwAdres, int oudAdresID)
+        public void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs, PersoonsAdresInfo nieuwAdresInfo, int oudAdresID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var oudAdres = _adressenRepo.ByID(oudAdresID);
+            var nieuwAdres = _adressenMgr.ZoekenOfMaken(nieuwAdresInfo, _adressenRepo.Select(), _straatNamenRepo.Select(), _woonPlaatsenRepo.Select(), _landenRepo.Select());
+
+            var verhuizers = (from pa in oudAdres.PersoonsAdres
+                              where pa.Persoon.GelieerdePersoon.Any(gp => gelieerdePersoonIDs.Contains(gp.ID))
+                              select pa).ToList();
+
+            if (!_autorisatieMgr.IsGav(verhuizers))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            foreach (var pa in verhuizers)
+            {
+                pa.Adres = nieuwAdres;
+            }
+
+            _adressenRepo.SaveChanges();
         }
 
         /// <summary>

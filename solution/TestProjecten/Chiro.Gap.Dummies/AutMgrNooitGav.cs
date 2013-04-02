@@ -103,6 +103,11 @@ namespace Chiro.Gap.Dummies
 	        return new List<GelieerdePersoon>();
 	    }
 
+	    public bool IsGav(IList<PersoonsAdres> persoonsAdressen)
+	    {
+	        throw new System.NotImplementedException();
+	    }
+
 	    #endregion
 	}
 }

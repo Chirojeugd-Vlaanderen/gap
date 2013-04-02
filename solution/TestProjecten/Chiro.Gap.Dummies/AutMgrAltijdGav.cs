@@ -105,6 +105,11 @@ namespace Chiro.Gap.Dummies
             return personen.SelectMany(p => p.GelieerdePersoon).ToList();
 	    }
 
+	    public bool IsGav(IList<PersoonsAdres> persoonsAdressen)
+	    {
+	        throw new NotImplementedException();
+	    }
+
 	    #endregion
 	}
 }

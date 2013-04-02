@@ -74,5 +74,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Mogelijk zijn er meerdere gelieerde personen per persoon.
         /// </remarks>
         List<GelieerdePersoon> MijnGelieerdePersonen(IList<Persoon> personen);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de aangemelde gebruiker GAV is van alle gegeven 
+        /// <paramref name="persoonsAdressen"/>. Zo niet <c>false</c>
+        /// </summary>
+        /// <param name="persoonsAdressen">Een aantal persoonsadrsesen</param>
+        /// <returns><c>true</c> als de aangemelde gebruiker GAV is van alle gegeven 
+        /// <paramref name="persoonsAdressen"/>, <c>false</c> in het andere geval</returns>
+        bool IsGav(IList<PersoonsAdres> persoonsAdressen);
     }
 }

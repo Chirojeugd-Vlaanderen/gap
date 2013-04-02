@@ -244,9 +244,9 @@ namespace Chiro.Gap.ServiceContracts
 		/// naar Persoon-NieuwAdres.)
 		/// </summary>
 		/// <param name="gelieerdePersoonIDs">ID's van te verhuizen *GELIEERDE* Personen </param>
-		/// <param name="nieuwAdres">AdresInfo-object met nieuwe adresgegevens</param>
+		/// <param name="nieuwAdresInfo">AdresInfo-object met nieuwe adresgegevens</param>
 		/// <param name="oudAdresID">ID van het oude adres</param>
-        /// <remarks>De ID van <paramref name="nieuwAdres"/> wordt genegeerd.  Het adresID wordt altijd
+        /// <remarks>De ID van <paramref name="nieuwAdresInfo"/> wordt genegeerd.  Het adresID wordt altijd
 		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
 		/// dan krijgt het adres een nieuw ID.</remarks>
 		[OperationContract]
@@ -254,7 +254,7 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs, PersoonsAdresInfo nieuwAdres, int oudAdresID);
+		void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs, PersoonsAdresInfo nieuwAdresInfo, int oudAdresID);
 
         /// <summary>
         /// Gegeven een gelieerde persoon met gegeven <paramref name="gelieerdePersoonID"/>, haal al diens
