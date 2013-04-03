@@ -199,4 +199,7 @@
   <data name="CategorieNietGekoppeld" xml:space="preserve">
     <value>Een los te koppelen persoon zat niet in de gevraagde categorie.</value>
   </data>
+  <data name="EmailOntbreekt" xml:space="preserve">
+    <value>Een e-mailadres is verplicht</value>
+  </data>
 </root>

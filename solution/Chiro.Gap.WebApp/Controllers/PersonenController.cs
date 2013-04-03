@@ -1321,5 +1321,28 @@ namespace Chiro.Gap.WebApp.Controllers
             return TerugNaarVorigeLijst();
         }
         #endregion
+
+        /// <summary>
+        /// Redirect naar het wijzigen van eigen e-mailadres.
+        /// </summary>
+        /// <returns>Een redirect naar het wijzigen van eigen e-mailadres</returns>
+        public ActionResult MijnEmailInstellen(int groepID)
+        {
+            // Dit is tamelijk omslachtig, maar ik wil op dit moment niet veel meer
+            // wijzigen aan de oude backend.
+
+            var gavs =
+                ServiceHelper.CallService<IGroepenService, IEnumerable<GebruikersDetail>>(
+                    svc => svc.GebruikersOphalen(groepID));
+
+
+            string mijnUser = System.Web.HttpContext.Current.User.Identity.Name;
+
+            var mijnGav = (from gav in gavs
+                           where String.Compare(gav.GavLogin, mijnUser, StringComparison.OrdinalIgnoreCase) == 0
+                           select gav).First();
+
+            return RedirectToAction("NieuweCommVorm", new {groepID, gelieerdePersoonID = mijnGav.GelieerdePersoonID});
+        }
     }
 }

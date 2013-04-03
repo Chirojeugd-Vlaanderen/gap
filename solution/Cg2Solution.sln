@@ -90,6 +90,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Workers", "Chiro.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.UnityWcfExtensions", "Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj", "{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Sso", "Chiro.Cdf.Sso\Chiro.Cdf.Sso.csproj", "{89FE1EDE-4B44-406A-9CF8-0E8697582838}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution8.vsmdi
@@ -437,6 +439,18 @@ Global
 		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Release|Win32.ActiveCfg = Release|x86
 		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Release|x86.ActiveCfg = Release|x86
 		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Release|x86.Build.0 = Release|x86
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Release|Win32.ActiveCfg = Release|Any CPU
+		{89FE1EDE-4B44-406A-9CF8-0E8697582838}.Release|x86.ActiveCfg = Release|Any CPU
 		{61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

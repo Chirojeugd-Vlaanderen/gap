@@ -124,6 +124,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Een e-mailadres is verplicht.
+        /// </summary>
+        internal static string EmailOntbreekt {
+            get {
+                return ResourceManager.GetString("EmailOntbreekt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je probeerde een entiteit toe te voegen die al bestond..
         /// </summary>
         internal static string EntiteitBestondAl {

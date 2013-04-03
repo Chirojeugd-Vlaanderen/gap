@@ -138,6 +138,10 @@
       <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
       <Name>Chiro.Cdf.Poco</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Sso\Chiro.Cdf.Sso.csproj">
+      <Project>{89FE1EDE-4B44-406A-9CF8-0E8697582838}</Project>
+      <Name>Chiro.Cdf.Sso</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj">
       <Project>{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}</Project>
       <Name>Chiro.Cdf.UnityWcfExtensions</Name>

@@ -2,6 +2,8 @@
 	<ul>
 		<li>
 			<%= Html.ActionLink("Handleiding", "ViewTonen", "Handleiding")%></li>
+        <li>
+            <%= Html.ActionLink("Verzekering", "Index", "Verzekering") %></li>
 		<li>
 			<%= Html.ActionLink("Uitstappen/bivak", "Index", "Uitstappen") %></li>
 		<li>

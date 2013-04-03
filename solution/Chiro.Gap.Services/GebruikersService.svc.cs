@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
+using System.Web;
 
 using Chiro.Cdf.Poco;
+using Chiro.Cdf.Sso;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WorkerInterfaces;
 
 using GebruikersRecht = Chiro.Gap.ServiceContracts.DataContracts.GebruikersRecht;
@@ -36,7 +40,7 @@ namespace Chiro.Gap.Services
                     // Dispose managed resources.
                     // TODO, release repositories
                     //_someRepo.Dispose();
-                    
+
                 }
                 disposed = true;
             }
@@ -64,11 +68,14 @@ namespace Chiro.Gap.Services
         private readonly IRepository<Gav> _rechtenRepo;
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
+        private readonly IRepository<Gav> _gavRepo; 
 
         // Managers voor niet-triviale businesslogica
 
         private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
         private readonly IAutorisatieManager _autorisatieMgr;
+        private readonly IAuthenticatieManager _authenticatieMgr;
+
         private readonly GavChecker _gav;
 
         /// <summary>
@@ -76,19 +83,24 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="autorisatieMgr">Verantwoordelijke voor autorisatie</param>
         /// <param name="gebruikersRechtenMgr">Businesslogica aangaande gebruikersrechten</param>
+        /// <param name="authenticatieManager">Levert de gebruikersnaam op</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         public GebruikersService(IAutorisatieManager autorisatieMgr,
-                              IGebruikersRechtenManager gebruikersRechtenMgr,
-                              IRepositoryProvider repositoryProvider)
+                                 IGebruikersRechtenManager gebruikersRechtenMgr,
+                                 IAuthenticatieManager authenticatieManager,
+                                 IRepositoryProvider repositoryProvider)
         {
             _context = repositoryProvider.ContextGet();
             _rechtenRepo = repositoryProvider.RepositoryGet<Gav>();
 
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
+            _gavRepo = repositoryProvider.RepositoryGet<Gav>();
 
             _gebruikersRechtenMgr = gebruikersRechtenMgr;
             _autorisatieMgr = autorisatieMgr;
+            _authenticatieMgr = authenticatieManager;
+
             _gav = new GavChecker(_autorisatieMgr);
         }
 
@@ -112,11 +124,11 @@ namespace Chiro.Gap.Services
         {
             var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonId);
             Gav.Check(gelieerdePersoon);
-            
+
             var account = _gebruikersRechtenMgr.AccountZoekenOfMaken(gelieerdePersoon);
 
             RechtenToekennen(account, gebruikersRechten);
-       }
+        }
 
         /// <summary>
         /// Geeft de account met gegeven <paramref name="gebruikersNaam"/> de gegeven
@@ -132,7 +144,8 @@ namespace Chiro.Gap.Services
         /// </param>
         public void RechtenToekennenGebruiker(string gebruikersNaam, GebruikersRecht[] gebruikersRechten)
         {
-            var account = (from g in _rechtenRepo.Select() where Equals(g.Login, gebruikersNaam) select g).FirstOrDefault();
+            var account =
+                (from g in _rechtenRepo.Select() where Equals(g.Login, gebruikersNaam) select g).FirstOrDefault();
 
             RechtenToekennen(account, gebruikersRechten);
         }
@@ -145,7 +158,8 @@ namespace Chiro.Gap.Services
                                    select gr).FirstOrDefault();
             if (nietOndersteund != null)
             {
-                throw new NotSupportedException(String.Format(Properties.Resources.RolNietOndersteund, nietOndersteund.Rol));
+                throw new NotSupportedException(String.Format(Properties.Resources.RolNietOndersteund,
+                                                              nietOndersteund.Rol));
             }
 
             foreach (var groep in gebruikersRechten.Select(recht => _groepenRepo.ByID(recht.GroepID)))
@@ -168,7 +182,9 @@ namespace Chiro.Gap.Services
         {
             var persoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonId);
             Gav.Check(persoon);
-            var account = (from g in _rechtenRepo.Select() where g.Persoon.Any(e => e.GelieerdePersoon.Contains(persoon)) select g).FirstOrDefault();
+            var account =
+                (from g in _rechtenRepo.Select() where g.Persoon.Any(e => e.GelieerdePersoon.Contains(persoon)) select g)
+                    .FirstOrDefault();
             RechtenAfnemen(account, groepIds);
         }
 
@@ -181,7 +197,8 @@ namespace Chiro.Gap.Services
         /// <remarks>In praktijk gebeurt dit door de vervaldatum in het verleden te leggen.</remarks>
         public void RechtenAfnemenGebruiker(string gebruikersNaam, int[] groepIds)
         {
-            var account = (from g in _rechtenRepo.Select() where Equals(g.Login, gebruikersNaam) select g).FirstOrDefault();
+            var account =
+                (from g in _rechtenRepo.Select() where Equals(g.Login, gebruikersNaam) select g).FirstOrDefault();
             RechtenAfnemen(account, groepIds);
         }
 
@@ -193,7 +210,8 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            var vervallenrechten = (from g in account.GebruikersRecht where groepIds.Contains(g.Groep.ID) select g).ToList();
+            var vervallenrechten =
+                (from g in account.GebruikersRecht where groepIds.Contains(g.Groep.ID) select g).ToList();
 
             foreach (var vervallenrecht in vervallenrechten)
             {
@@ -203,6 +221,53 @@ namespace Chiro.Gap.Services
             _context.SaveChanges();
         }
 
-       
+        /// <summary>
+        /// Levert een redirection-url op naar de site van de verzekeraar
+        /// </summary>
+        /// <returns>Redirection-url naar de site van de verzekeraar</returns>
+        public string VerzekeringsUrlGet(int groepID)
+        {
+            string userName = _authenticatieMgr.GebruikersNaamGet();
+
+            var mijnGav = (from g in _gavRepo.Select()
+                           where
+                               String.Compare(g.Login, userName,
+                                              StringComparison.InvariantCultureIgnoreCase) == 0
+                           select g).First();
+
+            var mijnGp = (from gp in mijnGav.Persoon.First().GelieerdePersoon
+                          where gp.Groep.ID == groepID
+                          select gp).First();
+
+            // haal puntkomma's uit onderdelen, want die zijn straks veldseparatiedingen
+            var naam = String.Format("{0} {1}", mijnGp.Persoon.VoorNaam, mijnGp.Persoon.Naam).Replace(';', ',');
+            var stamnr = (from gr in mijnGav.GebruikersRecht
+                          where gr.Groep.ID == groepID
+                          select gr.Groep.Code).First().Replace(';', ',');
+            string email =
+                mijnGp.Communicatie.Where(comm => comm.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email)
+                      .OrderByDescending(comm => comm.Voorkeur)
+                      .Select(comm => comm.Nummer).FirstOrDefault();
+
+            if (email == null)
+            {
+                throw new FaultException<FoutNummerFault>(new FoutNummerFault
+                                                              {
+                                                                  Bericht = Properties.Resources.EmailOntbreekt,
+                                                                  FoutNummer = FoutNummer.EMailVerplicht
+                                                              });
+            }
+
+            email = email.Replace(';', ',');
+
+            var cp = new CredentialsProvider(Properties.Settings.Default.EncryptieSleutel,
+                                             Properties.Settings.Default.HashSleutel);
+
+            var credentials = cp.Genereren(String.Format("{0};{1};{2};{3}", naam, stamnr, email, DateTime.Now));
+
+            return String.Format(Properties.Settings.Default.UrlVerzekeraar,
+                                 HttpUtility.UrlEncode(credentials.GeencrypteerdeUserInfo),
+                                 HttpUtility.UrlEncode(credentials.Hash));
+        }
     }
 }
