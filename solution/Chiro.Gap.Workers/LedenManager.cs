@@ -345,15 +345,33 @@ namespace Chiro.Gap.Workers
         /// <param name="gwj">Groepswerkjaar waarvoor gecontroleerd moet worden</param>
         /// <returns><c>true</c> als de gelieerde persoon <paramref name="gp"/> leiding kan worden in 
         /// groepswerkjaar <paramref name="gwj"/></returns>
-        private static bool KanLeidingWorden(GelieerdePersoon gp, GroepsWerkJaar gwj)
+        public bool KanLeidingWorden(GelieerdePersoon gp, GroepsWerkJaar gwj)
         {
             if (gp.Persoon.GeboorteDatum == null)
             {
                 return false;
             }
+            // Gooi exception als groepswerkjaar van andere groep als gelieerde persoon.
+            if (!gp.Groep.Equals(gwj.Groep))
+            {
+                throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietVanGroep, Properties.Resources.GroepsWerkJaarNietVanGroep);
+            }
 
             Debug.Assert(gp.GebDatumMetChiroLeefTijd != null, "gp.GebDatumMetChiroLeefTijd != null");
-            return gwj.WerkJaar - gp.GebDatumMetChiroLeefTijd.Value.Year >= Settings.Default.MinLeidingLeefTijd;
+            return KanLeidingWorden(gp.GebDatumMetChiroLeefTijd.Value, gwj);
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als een persoon met gegeven geboortedatum (met Chiroleeftijd) leiding mag worden in
+        /// groepswerkjaar <paramref name="gwj"/>
+        /// </summary>
+        /// <param name="geboorteDatum">Geboortedatum van persoon (Chiroleeftijd ingerekend)</param>
+        /// <param name="gwj">Groepswerkjaar waarvoor gecontroleerd moet worden</param>
+        /// <returns><c>true</c> als een persoon met gegeven geboortedatum (met Chiroleeftijd) leiding mag worden in
+        /// groepswerkjaar <paramref name="gwj"/></returns>
+        public bool KanLeidingWorden(DateTime geboorteDatum, GroepsWerkJaar gwj)
+        {
+            return gwj.WerkJaar - geboorteDatum.Year >= Settings.Default.MinLeidingLeefTijd;
         }
 
         /// <summary>
@@ -773,19 +791,40 @@ namespace Chiro.Gap.Workers
         /// <returns>een afdelingsjaar van het recentste groepswerkjaar, waarin de gegeven 
         /// <paramref name="gelieerdePersoon"/> lid zou kunnen worden. <c>null</c> als er zo geen
         /// bestaat.</returns>
-        private AfdelingsJaar AfdelingsJaarVoorstellen(GelieerdePersoon gelieerdePersoon, GroepsWerkJaar groepsWerkJaar)
+        public AfdelingsJaar AfdelingsJaarVoorstellen(GelieerdePersoon gelieerdePersoon, GroepsWerkJaar groepsWerkJaar)
         {
-            if (gelieerdePersoon.Persoon.GeboorteDatum == null)
+            // Gooi exception als groepswerkjaar van andere groep als gelieerde persoon.
+            if (!gelieerdePersoon.Groep.Equals(groepsWerkJaar.Groep))
+            {
+                throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietVanGroep, Properties.Resources.GroepsWerkJaarNietVanGroep);
+            }
+
+            if (gelieerdePersoon.Persoon.GeboorteDatum == null || gelieerdePersoon.Persoon.SterfDatum != null)
             {
                 return null;
             }
 
-            var geboortejaar = gelieerdePersoon.GebDatumMetChiroLeefTijd.Value.Year;
+            Debug.Assert(gelieerdePersoon.GebDatumMetChiroLeefTijd != null);
+            // Als er een geboortedatum is, dan moet er ook een geboortedatum met Chiroleeftijd zijn.
 
-            if (groepsWerkJaar.WerkJaar - geboortejaar < Settings.Default.MinLidLeefTijd)
-            {
-                throw new FoutNummerException(FoutNummer.LidTeJong, Resources.MinimumLeeftijd);
-            }
+            return AfdelingsJaarVoorstellen(gelieerdePersoon.GebDatumMetChiroLeefTijd.Value, gelieerdePersoon.Persoon.Geslacht,
+                                            groepsWerkJaar);
+        }
+
+        /// <summary>
+        /// Zoekt een afdelingsjaar uit het gegeven <paramref name="groepsWerkJaar"/>, waarin een persoon
+        /// met gegeven <paramref name="geslacht"/> en <paramref name="geboorteDatum"/> lid zou kunnen worden,
+        /// of <c>null</c> als er zo geen bestaat.
+        /// </summary>
+        /// <param name="geboorteDatum">een geboortedatum</param>
+        /// <param name="geslacht">een geslacht</param>
+        /// <param name="groepsWerkJaar">een groepswerkjaar waarin we naar een afdeling zoeken</param>
+        /// <returns>Afdelingsjaar uit het gegeven <paramref name="groepsWerkJaar"/>, waarin een persoon
+        /// met gegeven <paramref name="geslacht"/> en <paramref name="geboorteDatum"/> lid zou kunnen worden,
+        /// of <c>null</c> als er zo geen bestaat.</returns>
+        public AfdelingsJaar AfdelingsJaarVoorstellen(DateTime geboorteDatum, GeslachtsType geslacht, GroepsWerkJaar groepsWerkJaar)
+        {
+            var geboortejaar = geboorteDatum.Year;
 
             // Bestaat er een afdeling waar de gelieerde persoon als kind in zou passen?
             // (Als er meerdere mogelijkheden zijn zullen we gewoon de eerste kiezen, maar we sorteren op
@@ -795,7 +834,7 @@ namespace Chiro.Gap.Workers
                 groepsWerkJaar.AfdelingsJaar.Where(a => a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal &&
                                              geboortejaar <= a.GeboorteJaarTot &&
                                              a.GeboorteJaarVan <= geboortejaar).OrderByDescending(
-                                                 a => (gelieerdePersoon.Persoon.Geslacht & a.Geslacht)).ToArray();
+                                                 a => (geslacht & a.Geslacht)).ToArray();
 
             return mogelijkeAfdelingsJaren.FirstOrDefault();
         }
