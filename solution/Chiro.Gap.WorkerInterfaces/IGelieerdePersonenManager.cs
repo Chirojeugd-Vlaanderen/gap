@@ -58,19 +58,6 @@ namespace Chiro.Gap.WorkerInterfaces
                                             bool voorkeur);
 
         /// <summary>
-        /// Verwijder persoonsadressen, en persisteer.  Als ergens een voorkeuradres wegvalt, dan wordt een willekeurig
-        /// ander adres voorkeuradres van de gelieerde persoon.
-        /// </summary>
-        /// <param name="persoonsAdressen">
-        /// Te verwijderen persoonsadressen
-        /// </param>
-        /// <remarks>
-        /// Deze method staat wat vreemd onder GelieerdePersonenManager, maar past wel voorkeursadressen
-        /// van gelieerde personen aan.
-        /// </remarks>
-        void AdressenVerwijderen(IEnumerable<PersoonsAdres> persoonsAdressen);
-
-        /// <summary>
         /// Koppelt de gelieerde personen met gegeven <paramref name="gelieerdePersoonIDs"/> los
         /// van de gegeven <paramref name="categorie"/>
         /// </summary>

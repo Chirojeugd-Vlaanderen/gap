@@ -30,7 +30,19 @@ namespace Chiro.Cdf.Poco
         List<TEntity> ByIDs(IEnumerable<int> IDs);
 
         void Add(TEntity entity);
+
+        /// <summary>
+        /// Verwijdert de gegeven <paramref name="entity"/>
+        /// </summary>
+        /// <param name="entity">Te verwijderen entity</param>
         void Delete(TEntity entity);
+
+        /// <summary>
+        /// Verwijdert de gegeven <paramref name="entities"/>
+        /// </summary>
+        /// <param name="entities">Te verwijderen entititeiten</param>
+        void Delete(IList<TEntity> entities);
+
         void Attach(TEntity entity);
 
         /// <summary>

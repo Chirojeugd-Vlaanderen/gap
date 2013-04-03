@@ -18,7 +18,7 @@ namespace Chiro.Gap.Workers
     /// <summary>
     /// Worker die alle businesslogica i.v.m. personen bevat
     /// </summary>
-    public class PersonenManager
+    public class PersonenManager : IPersonenManager
     {
         /// <summary>
         /// Verhuist een persoon van oudAdres naar nieuwAdres.  Persisteert niet.

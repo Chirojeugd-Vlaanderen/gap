@@ -78,6 +78,14 @@ namespace Chiro.Cdf.Poco
             _context.Set<TEntity>().Remove(entity);
         }
 
+        public void Delete(IList<TEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                _context.Set<TEntity>().Remove(entity);
+            }
+        }
+
         public void Attach(TEntity entity)
         {
             if (entity == null)

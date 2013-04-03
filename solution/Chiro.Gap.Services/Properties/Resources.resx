@@ -190,4 +190,7 @@
   <data name="OngeldigeGroepsNaam" xml:space="preserve">
     <value>Ongeldige groepsnaam.</value>
   </data>
+  <data name="WoontDaarAl" xml:space="preserve">
+    <value>Je probeerde iemand te verhuizen naar een adres waar hij/zij al woont</value>
+  </data>
 </root>

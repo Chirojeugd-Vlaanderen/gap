@@ -71,6 +71,14 @@ namespace Chiro.Gap.Dummies
             _entiteiten.Remove(entity);
         }
 
+        public void Delete(IList<T> entities)
+        {
+            foreach (var entity in entities)
+            {
+                _entiteiten.Remove(entity);
+            }
+        }
+
         public void Attach(T entity)
         {
             throw new NotImplementedException();

@@ -107,7 +107,12 @@ namespace Chiro.Gap.Dummies
 
 	    public bool IsGav(IList<PersoonsAdres> persoonsAdressen)
 	    {
-	        throw new NotImplementedException();
+	        return true;
+	    }
+
+	    public bool IsGav(IList<Persoon> personen)
+	    {
+	        return true;
 	    }
 
 	    #endregion

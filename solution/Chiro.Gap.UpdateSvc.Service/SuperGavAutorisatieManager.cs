@@ -147,6 +147,11 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public bool IsGav(IList<Persoon> personen)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gebruikerses the recht gelieerde persoon.
         /// </summary>

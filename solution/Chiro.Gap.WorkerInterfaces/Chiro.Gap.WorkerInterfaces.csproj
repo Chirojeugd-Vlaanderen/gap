@@ -55,6 +55,7 @@
     <Compile Include="IGroepsWerkJarenManager.cs" />
     <Compile Include="IJaarOvergangManager.cs" />
     <Compile Include="ILedenManager.cs" />
+    <Compile Include="IPersonenManager.cs" />
     <Compile Include="IUitstappenManager.cs" />
     <Compile Include="IVeelGebruikt.cs" />
     <Compile Include="IVerzekeringenManager.cs" />

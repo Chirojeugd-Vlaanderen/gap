@@ -39,6 +39,7 @@ namespace Chiro.Gap.Services
         private readonly IRepository<Categorie> _categorieenRepo;
         private readonly IRepository<CommunicatieType> _communicatieTypesRepo;
         private readonly IRepository<Adres> _adressenRepo;
+        private readonly IRepository<PersoonsAdres> _persoonsAdressenRepo;
         private readonly IRepository<StraatNaam> _straatNamenRepo;
         private readonly IRepository<WoonPlaats> _woonPlaatsenRepo;
         private readonly IRepository<Land> _landenRepo;
@@ -50,6 +51,7 @@ namespace Chiro.Gap.Services
         private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
         private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
         private readonly IAdressenManager _adressenMgr;
+        private readonly IPersonenManager _personenMgr;
 
         // Sync-interfaces
 
@@ -66,6 +68,7 @@ namespace Chiro.Gap.Services
         /// <param name="gebruikersRechtenMgr">Logica m.b.t. gebruikersrechten</param>
         /// <param name="gelieerdePersonenMgr">Logica m.b.t. gelieerde personen</param>
         /// <param name="adressenManager">Logica m.b.t. adressen</param>
+        /// <param name="personenManager">Logica m.b.t. personen (geeuw)</param>
         /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
         /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
@@ -73,6 +76,7 @@ namespace Chiro.Gap.Services
                                         IGebruikersRechtenManager gebruikersRechtenMgr,
                                         IGelieerdePersonenManager gelieerdePersonenMgr,
                                         IAdressenManager adressenManager,
+                                        IPersonenManager personenManager,
                                         ICommunicatieSync communicatieSync,
                                         IPersonenSync personenSync)
         {
@@ -84,6 +88,7 @@ namespace Chiro.Gap.Services
             _communicatieTypesRepo = repositoryProvider.RepositoryGet<CommunicatieType>();
 
             _adressenRepo = repositoryProvider.RepositoryGet<Adres>();
+            _persoonsAdressenRepo = repositoryProvider.RepositoryGet<PersoonsAdres>();
             _straatNamenRepo = repositoryProvider.RepositoryGet<StraatNaam>();
             _woonPlaatsenRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
             _landenRepo = repositoryProvider.RepositoryGet<Land>();
@@ -93,6 +98,7 @@ namespace Chiro.Gap.Services
             _gebruikersRechtenMgr = gebruikersRechtenMgr;
             _gelieerdePersonenMgr = gelieerdePersonenMgr;
             _adressenMgr = adressenManager;
+            _personenMgr = personenManager;
 
             _communicatieSync = communicatieSync;
             _personenSync = personenSync;
@@ -580,20 +586,42 @@ namespace Chiro.Gap.Services
         public void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs, PersoonsAdresInfo nieuwAdresInfo, int oudAdresID)
         {
             var oudAdres = _adressenRepo.ByID(oudAdresID);
-            var nieuwAdres = _adressenMgr.ZoekenOfMaken(nieuwAdresInfo, _adressenRepo.Select(), _straatNamenRepo.Select(), _woonPlaatsenRepo.Select(), _landenRepo.Select());
+            Adres nieuwAdres;
+
+            try
+            {
+                nieuwAdres = _adressenMgr.ZoekenOfMaken(nieuwAdresInfo, _adressenRepo.Select(),
+                                                        _straatNamenRepo.Select(), _woonPlaatsenRepo.Select(),
+                                                        _landenRepo.Select());
+            }
+            catch (OngeldigObjectException ex)
+            {
+                throw FaultExceptionHelper.Ongeldig(ex.Berichten);
+            }
 
             var verhuizers = (from pa in oudAdres.PersoonsAdres
                               where pa.Persoon.GelieerdePersoon.Any(gp => gelieerdePersoonIDs.Contains(gp.ID))
-                              select pa).ToList();
+                              select pa.Persoon).ToList();
+
+            // een beetje dom. Ik selecteer nu de personen via de persoonsadressen, en straks in
+            // personenMgr.Verhuizen worden van die personen opnieuw de persoonsadressen
+            // opgezocht. Misschien nog wel eens te herwerken.
 
             if (!_autorisatieMgr.IsGav(verhuizers))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
-
-            foreach (var pa in verhuizers)
+            try
             {
-                pa.Adres = nieuwAdres;
+                _personenMgr.Verhuizen(verhuizers, oudAdres, nieuwAdres, nieuwAdresInfo.AdresType);
+            }
+            catch (BlokkerendeObjectenException<PersoonsAdres> ex)
+            {
+                throw FaultExceptionHelper.Blokkerend(
+                    Mapper.Map<IList<PersoonsAdres>, List<PersoonsAdresInfo2>>(ex.Objecten),
+                    Properties.Resources.WoontDaarAl);
+
+                // Dit kan nog wel wat verfijnd worden.
             }
 
             _adressenRepo.SaveChanges();
@@ -685,7 +713,36 @@ namespace Chiro.Gap.Services
         /// <param name="adresID">ID van het adres dat losgekoppeld moet worden</param>
         public void AdresVerwijderenVanPersonen(IList<int> personenIDs, int adresID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var adres = _adressenRepo.ByID(adresID);
+
+            var teVerwijderen = (from pa in adres.PersoonsAdres
+                                 where personenIDs.Contains(pa.Persoon.ID)
+                                 select pa).ToList();
+
+            if (!_autorisatieMgr.IsGav(teVerwijderen))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            // Van welke gelieerde personen is het te verwijderen adres het voorkeursadres?
+            var thuisLozen = teVerwijderen.SelectMany(pa => pa.GelieerdePersoon).ToList();
+
+            foreach (var gp in thuisLozen)
+            {
+                // kies een willekeurig nieuw adres. (null als er geen meer is)
+
+                var oudVoorkeurAdres = gp.PersoonsAdres;
+                var nieuwVoorkeurAdres = (from pa in gp.Persoon.PersoonsAdres
+                                          where !Equals(pa, oudVoorkeurAdres)
+                                          select pa).FirstOrDefault();
+
+                gp.PersoonsAdres = nieuwVoorkeurAdres;
+            }
+
+            _persoonsAdressenRepo.Delete(teVerwijderen);
+            _persoonsAdressenRepo.SaveChanges();
+
+            // TODO: sync nieuwe voorkeursadressen naar Kipadmin
         }
 
         /// <summary>
