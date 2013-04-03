@@ -1184,7 +1184,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult VerwijderenCategorie(int categorieID, int gelieerdePersoonID, int groepID)
         {
             IList<int> list = new List<int> { gelieerdePersoonID };
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieVerwijderen(list, categorieID));
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.UitCategorieVerwijderen(list, categorieID));
             return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
 

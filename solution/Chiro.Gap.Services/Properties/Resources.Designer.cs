@@ -106,6 +106,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Een los te koppelen persoon zat niet in de gevraagde categorie..
+        /// </summary>
+        internal static string CategorieNietGekoppeld {
+            get {
+                return ResourceManager.GetString("CategorieNietGekoppeld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De categorie is niet leeg..
         /// </summary>
         internal static string CategorieNietLeeg {

@@ -998,9 +998,31 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen over wie het gaat</param>
         /// <param name="categorieID">ID van de categorie waaruit ze verwijderd moeten worden</param>
-        public void CategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID)
+        public void UitCategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var categorie = _categorieenRepo.ByID(categorieID);
+
+            if (!_autorisatieMgr.IsGav(categorie))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var gelieerdePersonen = (from gp in categorie.GelieerdePersoon
+                                     where gelieerdepersonenIDs.Contains(gp.ID)
+                                     select gp).ToList();
+
+            if (gelieerdePersonen.Count != gelieerdepersonenIDs.Count)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietGekoppeld,
+                                                      Properties.Resources.CategorieNietGekoppeld);
+            }
+
+            foreach (var gp in gelieerdePersonen)
+            {
+                categorie.GelieerdePersoon.Remove(gp);
+            }
+
+            _categorieenRepo.SaveChanges();
         }
 
         /// <summary>

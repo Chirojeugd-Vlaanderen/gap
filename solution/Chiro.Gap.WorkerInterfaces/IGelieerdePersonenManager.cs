@@ -47,14 +47,6 @@ namespace Chiro.Gap.WorkerInterfaces
                                             bool voorkeur);
 
         /// <summary>
-        /// Koppelt de gelieerde personen met gegeven <paramref name="gelieerdePersoonIDs"/> los
-        /// van de gegeven <paramref name="categorie"/>
-        /// </summary>
-        /// <param name="gelieerdePersoonIDs">ID's van de los te koppelen gelieerde personen</param>
-        /// <param name="categorie">Categorie waar de gelieerde personen losgekoppeld van moeten worden</param>
-        void CategorieLoskoppelen(int[] gelieerdePersoonIDs, Categorie categorie);
-
-        /// <summary>
         /// Voegt een <paramref name="nieuwePersoon"/> toe aan de gegegeven <paramref name="groep"/>. Als
         /// <paramref name="forceer"/> niet is gezet, wordt een exception opgegooid als er al een gelijkaardige
         /// persoon aan de groep gekoppeld is.

@@ -196,4 +196,7 @@
   <data name="AdresNietGekoppeld" xml:space="preserve">
     <value>Het gevraagde adres is niet gekoppeld aan de gevraagde persoon.</value>
   </data>
+  <data name="CategorieNietGekoppeld" xml:space="preserve">
+    <value>Een los te koppelen persoon zat niet in de gevraagde categorie.</value>
+  </data>
 </root>
