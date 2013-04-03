@@ -552,11 +552,11 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.GeenGav();
             }
+            teZoeken = teZoeken.ToLower();
 
             var lijst =  (from gpnm in groep.GelieerdePersoon
-                        where (gpnm.Persoon.Naam + " " + gpnm.Persoon.VoorNaam + " " + gpnm.Persoon.Naam).Contains(teZoeken)
+                          where (gpnm.Persoon.Naam.ToLower() + " " + gpnm.Persoon.VoorNaam.ToLower() + " " + gpnm.Persoon.Naam.ToLower()).Contains(teZoeken)
                         select gpnm).ToList();
-
 
             return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonInfo>>(lijst);
         }

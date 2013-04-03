@@ -22,11 +22,12 @@
 
     <script src="<%=ResolveUrl("~/Scripts/jquery-1.9.1.js")%>" type="text/javascript"></script>
     <script src="<%=ResolveUrl("~/Scripts/jquery-ui-1.10.2.custom.js")%>" type="text/javascript"></script>
-    <link href="<%=ResolveUrl("~/Content/jquery-ui-1.10.2.custom.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%=ResolveUrl("~/Content/jquery-ui-1.10.2.custom.css") %>"rel="stylesheet" type="text/css" />
     <link href="<%=ResolveUrl("~/Content/jquery.autocomplete.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%=ResolveUrl("~/Content/Site.css")%>" rel="stylesheet" type="text/css" /> 
 
 	<script type="text/javascript">
-	    $(function () {
+    	    $(function () {
 
 	        var personenCache = {};
 	        var lastXhr;
@@ -49,14 +50,16 @@
 	                        personenCache[term] = data;
 
 	                        if (xhr === lastXhr)
-	                        {
+	                        { 
 	                            response($.map(data, function(item) {
-	                                return {
-	                                    label: item.Naam + ' ' + item.VoorNaam,
-	                                    value: item.GelieerdePersoonID
-	                            };
-	                        }));
-	                    }
+	                            
+	                                    return {
+	                                        label: item.Naam + ' ' + item.VoorNaam,
+	                                        value: item.GelieerdePersoonID
+	                                    }; 
+	                                        
+	                            }));
+	                        }
 	                });
 	            },
 	            select: function(event, ui)

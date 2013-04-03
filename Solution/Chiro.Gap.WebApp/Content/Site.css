@@ -625,3 +625,12 @@ img.screenshot
     width: 25ex;
     display:inline-block;
 }
+
+button {
+    margin: 3px;
+}
+
+fieldset p label {
+    width: 150px;
+    display: inline-block;
+}

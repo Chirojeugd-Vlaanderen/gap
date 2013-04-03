@@ -24,7 +24,11 @@
  */
 %>
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="<%=ResolveUrl("~/Scripts/jquery-persoons-fiche.js") %>" type="text/javascript"></script>
+    <div id="extraInfoDialog"></div>
+
     <div class="opzij">
         <h3>
             Contact</h3>
@@ -127,54 +131,79 @@
             %>
         </ul>
     </div>
-    <h3>
-        Persoonlijke gegevens</h3>
+
+    <h3>Persoonlijke gegevens</h3>
     <p>
         <%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VolledigeNaam) %>
         (<%=Html.Geslacht(Model.PersoonLidInfo.PersoonDetail.Geslacht) %>)
         <br />
-        <%if (Model.PersoonLidInfo.PersoonDetail.AdNummer != null)
-          {%>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %>
-       &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "AD-nummer", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een AD-nummer?" } ) %>:
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><br />
-        <%
-    }%>
+        <% if (Model.PersoonLidInfo.PersoonDetail.AdNummer != null)
+           { %>
+            <%= Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %>
+            <%= Html.InfoLink("Ad-info") %>:
+            <%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %>
+            <br />
+        <% } %>
+
         <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>:
         <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
         <br />
-        <%
-            if ((Model.GroepsNiveau & Niveau.Groep) != 0)
-            {
-                // Chiroleeftijd is enkel relevant voor plaatselijke groepen
-        %>
-        Chiroleeftijd
-       &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is je Chiroleeftijd?" } ) %>:
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%><br />
-        <%
-         }
-        %>
+        <br />
+        <% if ((Model.GroepsNiveau & Niveau.Groep) != 0)
+            { // Chiroleeftijd is enkel relevant voor plaatselijke groepen %>
+                Chiroleeftijd
+                <%=Html.InfoLink("clInfo") %>:
+                <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%><br />
+        <% } %>
+
+        <%if ((Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding) &&
+       !Model.PersoonLidInfo.LidInfo.NonActief) { %>
+            <% if ((Model.GroepsNiveau & Niveau.Groep) != 0) {
+                   // Lid/Leiding en afdelingen zijn enkel relevant voor plaatselijke groepen.%>
+                    Ingeschreven als
+                    <b><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "lid" : "leiding" %>.</b>
+                    <%= Html.ActionLink("[wissel lid/leiding]", "TypeToggle", new {Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
+            
+                    Functies:
+                    <% foreach (var f in Model.PersoonLidInfo.LidInfo.Functies)
+                       { %>
+                    <%= Html.ActionLink(f.Code, "Functie", "Leden",
+                                        new
+                                            {
+                                                groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
+                                                id = f.ID,
+                                                groepID = Model.GroepID,
+                                            },
+                                        new {title = f.Naam}) %>
+                    <% } %>
+                    <%= Html.ActionLink("[functies aanpassen]", "FunctiesToekennen", new {Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
+            <% } %>
+
+        <% } else { %>
+
+            Niet ingeschreven in het huidige werkjaar. 
+            <%=Html.ActionLink(String.Format("inschrijven als {0}", Model.PersoonLidInfo.PersoonDetail.KanLidWorden ? "lid": "leiding"), "Inschrijven", 
+			new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID
+            })%>
+
+        <% } %>
+
+        <br />
         <%=Html.ActionLink("[persoonlijke gegevens aanpassen]", "EditGegevens", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %><br />
     </p>
     <p>
-        <%if (Model.PersoonLidInfo.PersoonDetail.DubbelPuntAbonnement)
-          {
-        %>
-        <%=Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %>
-        is geabonneerd op <a href='http://www.chiro.be/dubbelpunt'>Dubbelpunt</a>.
-        <%
-    }
-          else
-          {
-        %>
-        Geen <a href="http://www.chiro.be/dubbelpunt">Dubbelpuntabonnement</a>.
-        <%=Html.ActionLink("[abonneren]", "DubbelPuntAanvragen", new {Controller="Abonnementen", id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
-        (Kostprijs: &euro;
-        <%=Model.PrijsDubbelPunt.ToString() %>)
-        <%
-    }
-        %>
+        <%if (Model.PersoonLidInfo.PersoonDetail.DubbelPuntAbonnement) { %>
+            <%=Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %>
+            is geabonneerd op <a href='http://www.chiro.be/dubbelpunt'>Dubbelpunt</a>.
+        <% } else { %>
+            Geen <a href="http://www.chiro.be/dubbelpunt">Dubbelpuntabonnement</a>.
+            <%=Html.ActionLink("[abonneren]", "DubbelPuntAanvragen", new {Controller="Abonnementen", id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
+            (Kostprijs: &euro;
+            <%=Model.PrijsDubbelPunt.ToString() %>)
+      <% } %>
     </p>
+       
+
     <h3>
         Adressen</h3>
     <ul>
@@ -201,6 +230,7 @@
         <li>
             <%=Html.ActionLink("[adres toevoegen]", "NieuwAdres", new { id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
     </ul>
+
     <%if ((Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding) &&
        !Model.PersoonLidInfo.LidInfo.NonActief)
       {
@@ -227,17 +257,7 @@
             <% }%>
             <%= Html.ActionLink("[functies aanpassen]", "FunctiesToekennen", new { Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID })%>
         </li>
-        <%
-       if ((Model.GroepsNiveau & Niveau.Groep) != 0)
-       {
-           // Lid/Leiding en afdelingen zijn enkel relevant voor plaatselijke groepen.
-        %>
-        <li>Ingeschreven als
-            <%=Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "lid" : "leiding"%>.
-            <%=Html.ActionLink("[wissel lid/leiding]",
-			                                  "TypeToggle",
-			                                  new {Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID})%>
-        </li>
+     
         <li>
             <%
             if (Model.PersoonLidInfo.LidInfo.Type == LidType.Leiding)
@@ -270,7 +290,6 @@
 	                                  			})%>
         </li>
         <%
-        }
         if ((Model.GroepsNiveau & (Niveau.Gewest | Niveau.Verbond | Niveau.Nationaal)) == 0)
         {
             // Lidgeld en instapperiode zijn niet van toepassing op kadergroepen.
@@ -312,10 +331,8 @@
             %>
         </li>
     </ul>
-    <%}
-      else
-      {
-          if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden || Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
+    <% } else {
+           if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden || Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
           {
     %>
     <h3>

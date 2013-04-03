@@ -22,7 +22,6 @@
  */
 %>
 	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>
-	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.7.1.min.js")%>"></script>
 	
     <% Html.RenderPartial("PersoonZoekenScriptsControl", Model); %>
     

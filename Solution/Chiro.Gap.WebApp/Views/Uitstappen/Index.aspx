@@ -1,6 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.UitstapOverzichtModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <script type="text/javascript">
+        $(function () {
+            $('#bivakInfo').click(function () {
+                toonInfo("#BAINFO", "Bivakaangifte","#extraInfoDialog" );
+            });
+        });
+    </script>
+
 <%
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
@@ -22,11 +30,16 @@
 %>
     <div class="kaderke">
         <div class="kadertitel">
-            Overzicht uitstappen</div>
+            Overzicht uitstappen
+            </div>
+        <div id="extraInfoDialog" hidden>
+            
+        </div>
         <p>
             Informatie over uitstappen wordt niet doorgegeven aan Chirojeugd Vlaanderen. Van
             een kamp wordt alleen de informatie voor de bivakaangifte
-           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
+           &nbsp;<a  style="cursor : pointer" id="bivakInfo" class="ui-icon ui-icon-help"></a>
+           <%//= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
             doorgestuurd. De deelnemerslijst is alleen voor je groep toegankelijk.</p>
         <p>
             [<%=Html.ActionLink("Uitstap/bivak toevoegen", "Nieuw", "Uitstappen") %>]

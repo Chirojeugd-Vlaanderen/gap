@@ -574,7 +574,9 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             IEnumerable<PersoonInfo> mogelijkePersonen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(x => x.ZoekenOpNaamVoornaamBegin(groepID, naamOngeveer));
             var personen = mogelijkePersonen.OrderBy(prs => prs.Naam).ThenBy(prs => prs.VoorNaam).Distinct();
+    
             return Json(personen, JsonRequestBehavior.AllowGet);
+            
         }
 
         #endregion personen
