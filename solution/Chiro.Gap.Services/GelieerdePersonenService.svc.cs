@@ -938,7 +938,12 @@ namespace Chiro.Gap.Services
         /// <returns>De communicatievorm met de opgegeven ID</returns>
         public CommunicatieDetail CommunicatieVormOphalen(int commvormID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var communicatieVorm = _communicatieVormRepo.ByID(commvormID);
+            if (!_autorisatieMgr.IsGav(communicatieVorm))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+            return Mapper.Map<CommunicatieVorm, CommunicatieDetail>(communicatieVorm);
         }
 
         /// <summary>

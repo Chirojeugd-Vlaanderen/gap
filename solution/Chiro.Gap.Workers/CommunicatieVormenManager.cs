@@ -180,12 +180,6 @@ namespace Chiro.Gap.Workers
                 throw new NotSupportedException();
             }
 
-            if (communicatieVorm.CommunicatieType.IsOptIn != communicatieInfo.CommunicatieTypeIsOptIn)
-            {
-                // Communicatievorm wijzigen is evil
-                throw new InvalidOperationException();
-            }
-
             if (!IsGeldig(communicatieInfo.Nummer, communicatieVorm.CommunicatieType))
             {
                 throw new FoutNummerException(FoutNummer.ValidatieFout, string.Format(Resources.CommunicatieVormValidatieFeedback,
