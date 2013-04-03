@@ -832,7 +832,34 @@ namespace Chiro.Gap.Services
         /// <returns>De ID van de gelieerdepersoon die bij de commvorm hoort</returns>
         public int CommunicatieVormVerwijderenVanPersoon(int commvormID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var communicatieVorm = _communicatieVormRepo.ByID(commvormID);
+            int gelieerdePersoonID = communicatieVorm.GelieerdePersoon.ID;
+
+            if (!_autorisatieMgr.IsGav(communicatieVorm))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            if (communicatieVorm.Voorkeur)
+            {
+                // We verwijderen de voorkeurscommunicatie. Zoek een andere om voorkeur te maken.
+                var nieuweVoorkeur = (from cv in communicatieVorm.GelieerdePersoon.Communicatie
+                                      where
+                                          !Equals(cv, communicatieVorm) &&
+                                          Equals(cv.CommunicatieType, communicatieVorm.CommunicatieType)
+                                      select cv).FirstOrDefault();
+                if (nieuweVoorkeur != null)
+                {
+                    nieuweVoorkeur.Voorkeur = true;
+                    // TODO: syncen naar Kipadmin
+                }
+
+            }
+
+            _communicatieVormRepo.Delete(communicatieVorm);
+            _communicatieVormRepo.SaveChanges();
+
+            return gelieerdePersoonID;
         }
 
         /// <summary>
