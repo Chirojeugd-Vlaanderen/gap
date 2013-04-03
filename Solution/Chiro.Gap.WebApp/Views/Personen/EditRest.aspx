@@ -27,11 +27,13 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script src="<%=ResolveUrl("~/Scripts/jquery-persoons-fiche.js") %>" type="text/javascript"></script>
+    
+    <%// dialog voor het weergeven van het info-kadertje %>
     <div id="extraInfoDialog"></div>
 
+    <%//CONTACT INFORMATIE (RECHTERKANT) %>
     <div class="opzij">
-        <h3>
-            Contact</h3>
+        <h3>Contact</h3>
         <ul>
             <% 
                 var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(
@@ -45,8 +47,7 @@
                 foreach (var commType in gegroepeerdeComm)
                 {
             %>
-            <li>
-                <%=commType.Key.Omschrijving %>
+            <li><%=commType.Key.Omschrijving %>
                 <ul>
                     <%foreach (var cv in commType)
                       {
@@ -87,8 +88,7 @@
             <li>
                 <%=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
         </ul>
-        <h3>
-            Gebruiker</h3>
+        <h3>Gebruiker</h3>
         <ul>
             <%
                 if (Model.PersoonLidInfo.GebruikersInfo == null)
@@ -132,9 +132,10 @@
         </ul>
     </div>
 
+    <% // PERSOONLIJKE GEGEVENS (LINKERKANT) %>
     <h3>Persoonlijke gegevens</h3>
     <p>
-        <%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VolledigeNaam) %>
+        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VolledigeNaam) %>
         (<%=Html.Geslacht(Model.PersoonLidInfo.PersoonDetail.Geslacht) %>)
         <br />
         <% if (Model.PersoonLidInfo.PersoonDetail.AdNummer != null)
@@ -158,32 +159,37 @@
 
         <%if ((Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding) &&
        !Model.PersoonLidInfo.LidInfo.NonActief) { %>
+
             <% if ((Model.GroepsNiveau & Niveau.Groep) != 0) {
                    // Lid/Leiding en afdelingen zijn enkel relevant voor plaatselijke groepen.%>
                     Ingeschreven als
                     <b><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "lid" : "leiding" %>.</b>
                     <%= Html.ActionLink("[wissel lid/leiding]", "TypeToggle", new {Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
-            
-                    Functies:
-                    <% foreach (var f in Model.PersoonLidInfo.LidInfo.Functies)
-                       { %>
-                    <%= Html.ActionLink(f.Code, "Functie", "Leden",
-                                        new
-                                            {
-                                                groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
-                                                id = f.ID,
-                                                groepID = Model.GroepID,
-                                            },
-                                        new {title = f.Naam}) %>
-                    <% } %>
-                    <%= Html.ActionLink("[functies aanpassen]", "FunctiesToekennen", new {Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
             <% } %>
+            <br/>
+            Functies:
+            <% if ((Model.PersoonLidInfo.LidInfo.Functies).Count == 0) { %>
+                   <b>Geen</b>
+            <% } else { %>
 
+                <% foreach (var f in Model.PersoonLidInfo.LidInfo.Functies) { %>
+                        <%= Html.ActionLink(f.Code, "Functie", "Leden",
+                                            new
+                                                {
+                                                    groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
+                                                    id = f.ID,
+                                                    groepID = Model.GroepID,
+                                                },
+                                            new {title = f.Naam}) %>
+                <% } %>
+
+            <% }%>
+
+            <%= Html.ActionLink("[functies aanpassen]", "FunctiesToekennen", new {Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
         <% } else { %>
 
             Niet ingeschreven in het huidige werkjaar. 
-            <%=Html.ActionLink(String.Format("inschrijven als {0}", Model.PersoonLidInfo.PersoonDetail.KanLidWorden ? "lid": "leiding"), "Inschrijven", 
-			new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID
+            <%=Html.ActionLink(String.Format("Inschrijven"), "Inschrijven", new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID
             })%>
 
         <% } %>
