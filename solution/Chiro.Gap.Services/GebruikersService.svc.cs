@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.ServiceModel;
+using System.Web;
+using Chiro.Cdf.Sso;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WorkerInterfaces;
 using GebruikersRecht = Chiro.Gap.ServiceContracts.DataContracts.GebruikersRecht;
 
@@ -195,6 +199,55 @@ namespace Chiro.Gap.Services
             _gebruikersRechtenManager.Intrekken(teVerwijderen);
 
             _gebruikersRechtenManager.Bewaren(teVerwijderen);
+        }
+
+        /// <summary>
+        /// Levert een redirection-url op naar de site van de verzekeraar
+        /// </summary>
+        /// <returns>Redirection-url naar de site van de verzekeraar</returns>
+        public string VerzekeringsUrlGet(int groepID)
+        {
+            // Opmerking: ik probeer zo weinig mogelijk aan de backend te veranderen, omdat
+            // de backend herschreven wordt. Vandaar dat deze method tamelijk omslachtig wordt.
+
+            var mijnGav = _gebruikersRechtenManager.MijnGavOphalen();   // mijn GAV (maar zonder e-mail)
+            var gekendeGavs = _gebruikersRechtenManager.GavGelieerdePersonenOphalen(groepID);   // alle GAV's (met e-mail)
+
+            var mijnGp = (from gp in gekendeGavs
+                           where
+                               gp.Persoon.Gav.Any(
+                                   gav => String.Compare(gav.Login, mijnGav.Login, StringComparison.OrdinalIgnoreCase) == 0)
+                           select gp).First();
+
+            // haal puntkomma's uit onderdelen, want die zijn straks veldseparatiedingen
+            var naam = String.Format("{0} {1}", mijnGp.Persoon.VoorNaam, mijnGp.Persoon.Naam).Replace(';',',');
+            var stamnr = (from gr in mijnGav.GebruikersRecht
+                          where gr.Groep.ID == groepID
+                          select gr.Groep.Code).First().Replace(';', ',');
+            var email =
+                mijnGp.Communicatie.Where(comm => comm.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email)
+                      .OrderByDescending(comm => comm.Voorkeur)
+                      .Select(comm => comm.Nummer).FirstOrDefault();
+
+            if (email == null)
+            {
+                throw new FaultException<FoutNummerFault>(new FoutNummerFault
+                                                              {
+                                                                  Bericht = Properties.Resources.EmailOntbreekt,
+                                                                  FoutNummer = FoutNummer.EMailVerplicht
+                                                              });
+            }
+
+            email = email.Replace(';', ',');
+
+            var cp = new CredentialsProvider(Properties.Settings.Default.EncryptieSleutel,
+                                             Properties.Settings.Default.HashSleutel);
+
+            var credentials = cp.Genereren(String.Format("{0};{1};{2};{3}", naam, stamnr, email, DateTime.Now));
+
+            return String.Format(Properties.Settings.Default.UrlVerzekeraar,
+                                 HttpUtility.UrlEncode(credentials.GeencrypteerdeUserInfo),
+                                 HttpUtility.UrlEncode(credentials.Hash));
         }
     }
 }
