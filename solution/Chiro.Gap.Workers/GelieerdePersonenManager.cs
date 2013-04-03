@@ -73,53 +73,6 @@ namespace Chiro.Gap.Workers
             return resultaat;
         }
 
-
-        /// <summary>
-        /// Koppelt een gelieerde persoon aan een categorie, en persisteert dan de aanpassingen
-        /// </summary>
-        /// <param name="gelieerdePersonen">
-        /// Te koppelen gelieerde persoon
-        /// </param>
-        /// <param name="categorie">
-        /// Te koppelen categorie
-        /// </param>
-        public void CategorieKoppelen(IList<GelieerdePersoon> gelieerdePersonen, Categorie categorie)
-        {
-            if (gelieerdePersonen == null)
-            {
-                throw new ArgumentNullException("gelieerdePersonen");
-            }
-            if (categorie == null)
-            {
-                throw new ArgumentNullException("categorie");
-            }
-
-            // Heeft de gebruiker rechten voor de groep en de categorie?
-            if (gelieerdePersonen.Any(x => !_autorisatieMgr.IsGav(x)))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            if (!_autorisatieMgr.IsGav(categorie))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            foreach (GelieerdePersoon x in gelieerdePersonen)
-            {
-                if (!x.Groep.Equals(categorie.Groep))
-                {
-                    throw new FoutNummerException(
-                        FoutNummer.CategorieNietVanGroep,
-                        Resources.FoutieveGroepCategorie);
-                }
-
-                x.Categorie.Add(categorie);
-                categorie.GelieerdePersoon.Add(x);
-            }
-        }
-
-
         /// <summary>
         /// Zoekt naar gelieerde personen die gelijkaardig zijn aan een gegeven
         /// <paramref name="persoon"/>.

@@ -191,5 +191,22 @@ namespace Chiro.Gap.Workers
                         0 && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))));
 
         }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de aangemelde gebruiker GAV is van alle gegeven 
+        /// <paramref name="groepen"/>. Zo niet <c>false</c>
+        /// </summary>
+        /// <param name="groepen">Een aantal personen</param>
+        /// <returns><c>true</c> als de aangemelde gebruiker GAV is van alle gegeven 
+        /// <paramref name="groepen"/>, <c>false</c> in het andere geval</returns>
+        public bool IsGav(List<Groep> groepen)
+        {
+            var gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
+
+            return groepen.All(g => g.GebruikersRecht.Any(
+                gr =>
+                String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.InvariantCultureIgnoreCase) ==
+                0 && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)));
+        }
     }
 }

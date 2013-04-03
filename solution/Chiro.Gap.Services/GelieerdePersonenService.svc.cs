@@ -953,7 +953,44 @@ namespace Chiro.Gap.Services
         /// <param name="categorieIDs">ID's van de categorieën waaraan ze toegevoegd moeten worden</param>
         public void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdepersonenIDs);
+
+            var groepen = gelieerdePersonen.Select(gp => gp.Groep).Distinct().ToList();
+
+            if (!_autorisatieMgr.IsGav(groepen))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            if (groepen.Count > 1)
+            {
+                // Een categorie is gekoppeld aan 1 groep. Als de personen uit meerdere groepen komen,
+                // dan is er zeker een persoon waaraan de categorie niet gekoppeld kan worden.
+                // (pigeon hole princplie)
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietVanGroep,
+                                                      Properties.Resources.FouteCategorieVoorGroep);
+            }
+
+            var categorieen = (from c in groepen.First().Categorie
+                               where categorieIDs.Contains(c.ID)
+                               select c).ToList();
+
+            if (categorieen.Count != categorieIDs.Count)
+            {
+                // Categorie niet gevonden -> vermoedelijk niet gekoppeld aan groep
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietVanGroep,
+                                                      Properties.Resources.FouteCategorieVoorGroep);
+            }
+
+            foreach (var c in categorieen)
+            {
+                foreach (var gp in gelieerdePersonen)
+                {
+                    c.GelieerdePersoon.Add(gp);
+                }
+            }
+
+            _gelieerdePersonenRepo.SaveChanges();
         }
 
         /// <summary>

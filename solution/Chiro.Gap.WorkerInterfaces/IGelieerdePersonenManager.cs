@@ -9,17 +9,6 @@ namespace Chiro.Gap.WorkerInterfaces
     public interface IGelieerdePersonenManager
     {
         /// <summary>
-        /// Koppelt een gelieerde persoon aan een categorie, en persisteert dan de aanpassingen
-        /// </summary>
-        /// <param name="gelieerdePersonen">
-        /// Te koppelen gelieerde persoon
-        /// </param>
-        /// <param name="categorie">
-        /// Te koppelen categorie
-        /// </param>
-        void CategorieKoppelen(IList<GelieerdePersoon> gelieerdePersonen, Categorie categorie);
-
-        /// <summary>
         /// Zoekt naar gelieerde personen die gelijkaardig zijn aan een gegeven
         /// <paramref name="persoon"/>.
         /// </summary>

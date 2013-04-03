@@ -152,6 +152,11 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public bool IsGav(List<Groep> groepen)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gebruikerses the recht gelieerde persoon.
         /// </summary>

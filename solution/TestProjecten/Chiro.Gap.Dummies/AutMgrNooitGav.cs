@@ -113,6 +113,11 @@ namespace Chiro.Gap.Dummies
 	        return false;
 	    }
 
+	    public bool IsGav(List<Groep> groepen)
+	    {
+	        return false;
+	    }
+
 	    #endregion
 	}
 }

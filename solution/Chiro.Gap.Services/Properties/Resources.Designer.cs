@@ -135,9 +135,9 @@ namespace Chiro.Gap.Services.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Er is zo geen categorie in de gegeven groep..
         /// </summary>
-        internal static string FouteCategorieVoorGroepString {
+        internal static string FouteCategorieVoorGroep {
             get {
-                return ResourceManager.GetString("FouteCategorieVoorGroepString", resourceCulture);
+                return ResourceManager.GetString("FouteCategorieVoorGroep", resourceCulture);
             }
         }
         
