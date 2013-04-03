@@ -26,6 +26,7 @@ namespace Chiro.Gap.Domain
 		WoonPlaatsOntbreekt,
 		WonenDaarAl,
 		AdresOntbreekt,
+        AdresNietGekoppeld,
 		#endregion
 
 		#region leden

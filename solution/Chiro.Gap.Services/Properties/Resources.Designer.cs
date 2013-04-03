@@ -79,6 +79,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Het gevraagde adres is niet gekoppeld aan de gevraagde persoon..
+        /// </summary>
+        internal static string AdresNietGekoppeld {
+            get {
+                return ResourceManager.GetString("AdresNietGekoppeld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} was al als {1} ingeschreven..
         /// </summary>
         internal static string AlAndersIngeschreven {

@@ -756,7 +756,27 @@ namespace Chiro.Gap.Services
         /// aan een *gelieerde* persoon.</remarks>
         public void VoorkeursAdresMaken(int persoonsAdresID, int gelieerdePersoonID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
+
+            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var persoonsAdres = (from pa in gelieerdePersoon.Persoon.PersoonsAdres
+                                 where pa.ID == persoonsAdresID
+                                 select pa).FirstOrDefault();
+
+            if (persoonsAdres == null)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AdresNietGekoppeld, Properties.Resources.AdresNietGekoppeld);
+            }
+
+            gelieerdePersoon.PersoonsAdres = persoonsAdres;
+
+            _gelieerdePersonenRepo.SaveChanges();
+
+            // TODO: Syncen naar kipadmin
         }
 
         /// <summary>
