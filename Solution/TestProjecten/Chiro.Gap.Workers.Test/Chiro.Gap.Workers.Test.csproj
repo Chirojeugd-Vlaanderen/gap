@@ -92,7 +92,6 @@
     <Compile Include="GroepsWerkJaarManagerTest.cs" />
     <Compile Include="JaarOvergangManagerTest.cs" />
     <Compile Include="LedenManagerTest.cs" />
-    <Compile Include="UitstapAanmaken.cs" />
     <Compile Include="FunctiesManagerTest.cs" />
     <Compile Include="GapExceptionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
