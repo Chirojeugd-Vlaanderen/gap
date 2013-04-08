@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -91,107 +92,101 @@ namespace Chiro.Gap.Workers
         /// het huidige groepswerkjaar, de huidige afdelingsjaren, en alle beschikbare afdelingen.</param>
         /// <param name="afdelingen">Afdelingen waarvoor afdelingsjaren moeten worden voorgesteld</param>
         /// <param name="nieuwWerkJaar">Bepaalt het werkjaar waarvoor de afdelingsjaren voorgesteld moeten worden.</param>
+        /// <param name="standaardOfficieleAfdeling">Officiele afdeling die standaard voorgesteld moet worden als de
+        /// afdeling het laatste afdelingsjaar niet in gebruik was.</param>
         /// <returns>Lijstje afdelingsjaren</returns>
-        public IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, IList<Afdeling> afdelingen, int nieuwWerkJaar)
+        public IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, IList<Afdeling> afdelingen,
+                                                              int nieuwWerkJaar,
+                                                              OfficieleAfdeling standaardOfficieleAfdeling)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-            //if (!_autorisatieMgr.IsGavGroep(groep.ID))
-            //{
-            //    throw new GeenGavException(Properties.Resources.GeenGav);
-            //}
+            // TODO: als een afdeling vorig jaar niet bestond, dan maken we een afdelingsjaar op basis van de meegegeven
+            // standaardOfficieleAfdeling. Dat kan beter. We zouden in eerste instantie kunnen nakijken of de afdeling
+            // in een vroeger afdelingsjaar gebruikt was. En in tweede instantie zouden we kunnen gokken op basis van 
+            // de naam.
 
-            //if (_autorisatieMgr.EnkelMijnAfdelingen(afdelingen.Select(afd => afd.ID)).Count() < afdelingen.Count())
-            //{
-            //    throw new GeenGavException(Properties.Resources.GeenGav);
-            //}
+            if (afdelingen.FirstOrDefault(afd => afd.ChiroGroep.ID != groep.ID) != null)
+            {
+                throw new FoutNummerException(FoutNummer.AfdelingNietVanGroep, Resources.AfdelingNietVanGroep);
+            }
 
-            //if (afdelingen.FirstOrDefault(afd => afd.ChiroGroep.ID != groep.ID) != null)
-            //{
-            //    throw new FoutNummerException(FoutNummer.AfdelingNietVanGroep, Properties.Resources.AfdelingNietVanGroep);
-            //}
+            var recentsteWerkjaar = groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
 
-            //var huidigWerkJaar = groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
+            if (recentsteWerkjaar == null)
+            {
+                // Eigenlijk gaan we ervan uit dat elke groep al wel een afdelingsjaar heeft.  Maar
+                // moest het toch niet zo zijn, dan geven we gauw een domme suggestie terug
 
-            //if (huidigWerkJaar == null)
-            //{
-            //    throw new NotImplementedException(NIEUWEBACKEND.Info);
-            //    //// Eigenlijk gaan we ervan uit dat elke groep al wel een afdelingsjaar heeft.  Maar
-            //    //// moest het toch niet zo zijn, dan geven we gauw een domme suggestie terug
+                return (from afd in afdelingen
+                        select
+                            new AfdelingsJaar
+                                {
+                                    Afdeling = afd,
+                                    OfficieleAfdeling = standaardOfficieleAfdeling,
+                                    Geslacht = GeslachtsType.Gemengd
+                                }).ToList();
+            }
 
-            //    //// Als officiële afdeling, geven we ribbels, om te vermijden dat de groepen te snel
-            //    //// 'speciaal' zouden kiezen.
-            //    //var ribbels = _afdelingenDao.OfficieleAfdelingOphalen((int) NationaleAfdeling.Ribbels);
+            var werkJarenVerschil = nieuwWerkJaar - recentsteWerkjaar.WerkJaar;
 
-            //    //return (from afd in afdelingen
-            //    //        select
-            //    //            new AfdelingsJaar
-            //    //                {
-            //    //                    Afdeling = afd,
-            //    //                    OfficieleAfdeling = ribbels,
-            //    //                    Geslacht = GeslachtsType.Gemengd
-            //    //                }).ToList();
-            //}
+            // We halen de afdelingsjaren van het huidige (oude) werkjaar op, zodat we op basis daarvan geboortejaren
+            // en geslacht voor de nieuwe afdelingsjaren in het nieuwe werkjaar kunnen voorstellen.
 
-            //var werkJarenVerschil = nieuwWerkJaar - huidigWerkJaar.WerkJaar;
+            var huidigeAfdelingsJaren = recentsteWerkjaar.AfdelingsJaar;
 
-            //// We halen de afdelingsjaren van het huidige (oude) werkjaar op, zodat we op basis daarvan geboortejaren
-            //// en geslacht voor de nieuwe afdelingsjaren in het nieuwe werkjaar kunnen voorstellen.
+            // Creeer een voorstel voor de nieuwe afdelingsjaren
 
-            //var huidigeAfdelingsJaren = huidigWerkJaar.AfdelingsJaar;
+            var nieuweAfdelingsJaren = new List<AfdelingsJaar>();
 
-            //// Creeer een voorstel voor de nieuwe afdelingsjaren
+            foreach (var afdeling in afdelingen)
+            {
+                // geboortejaren en geslacht gewoon default values, passen we zo nodig
+                // straks nog aan.
 
-            //var nieuweAfdelingsJaren = new List<AfdelingsJaar>();
-
-            //foreach (var afdeling in afdelingen)
-            //{
-            //    // geboortejaren en geslacht gewoon default values, passen we zo nodig
-            //    // straks nog aan.
-
-            //    var afdelingsJaar = new Poco.Model.AfdelingsJaar
-            //        {Afdeling = afdeling, GeboorteJaarVan = 0, GeboorteJaarTot = 0, Geslacht = GeslachtsType.Gemengd};
+                var afdelingsJaar = new Poco.Model.AfdelingsJaar
+                                        {
+                                            Afdeling = afdeling,
+                                            GeboorteJaarVan = 0,
+                                            GeboorteJaarTot = 0,
+                                            Geslacht = GeslachtsType.Gemengd
+                                        };
 
 
-            //    nieuweAfdelingsJaren.Add(afdelingsJaar);
+                nieuweAfdelingsJaren.Add(afdelingsJaar);
 
-            //    // Als de afdeling dit jaar al actief was, kunnen we de details automatisch bepalen
+                // Als de afdeling dit jaar al actief was, kunnen we de details automatisch bepalen
 
-            //    var bestaandAfdelingsJaar = (from aj in huidigeAfdelingsJaren
-            //                                 where aj.Afdeling.ID == afdeling.ID
-            //                                 select aj).FirstOrDefault();
+                var bestaandAfdelingsJaar = (from aj in huidigeAfdelingsJaren
+                                             where aj.Afdeling.ID == afdeling.ID
+                                             select aj).FirstOrDefault();
 
-            //    if (bestaandAfdelingsJaar != null)
-            //    {
-            //        afdelingsJaar.OfficieleAfdeling = bestaandAfdelingsJaar.OfficieleAfdeling;
-            //        afdelingsJaar.Geslacht = bestaandAfdelingsJaar.Geslacht;
-            //        afdelingsJaar.GeboorteJaarTot = bestaandAfdelingsJaar.GeboorteJaarTot + werkJarenVerschil;
-            //        afdelingsJaar.GeboorteJaarVan = bestaandAfdelingsJaar.GeboorteJaarVan + werkJarenVerschil;
-            //    }
-            //    else
-            //    {
-            //        // Als officiële afdeling, geven we ribbels, om te vermijden dat de groepen te snel
-            //        // 'speciaal' zouden kiezen.
-            //        var ribbels = _afdelingenDao.OfficieleAfdelingOphalen((int)NationaleAfdeling.Ribbels);
-            //        afdelingsJaar.OfficieleAfdeling = ribbels;
-            //        afdelingsJaar.Geslacht = GeslachtsType.Gemengd;
-            //        afdelingsJaar.GeboorteJaarTot = nieuwWerkJaar - ribbels.LeefTijdVan;
-            //        afdelingsJaar.GeboorteJaarVan = nieuwWerkJaar - ribbels.LeefTijdTot;
-            //    }
-            //}
+                if (bestaandAfdelingsJaar != null)
+                {
+                    afdelingsJaar.OfficieleAfdeling = bestaandAfdelingsJaar.OfficieleAfdeling;
+                    afdelingsJaar.Geslacht = bestaandAfdelingsJaar.Geslacht;
+                    afdelingsJaar.GeboorteJaarTot = bestaandAfdelingsJaar.GeboorteJaarTot + werkJarenVerschil;
+                    afdelingsJaar.GeboorteJaarVan = bestaandAfdelingsJaar.GeboorteJaarVan + werkJarenVerschil;
+                }
+                else
+                {
+                    // Als officiële afdeling, geven we ribbels, om te vermijden dat de groepen te snel
+                    // 'speciaal' zouden kiezen.
+                    // TODO: Als een afdeling vorig jaar niet gebruikt werd, zou het niet slecht zijn moesten
+                    // we opgezocht hebben of ze in een erder verleden wel gebruikt is geweest.
 
-            //// Sorteer de afdelingsjaren: eerst die zonder geboortejaren, dan van jong naar oud
-            //var resultaat = (from a in nieuweAfdelingsJaren
-            //                    orderby a.GeboorteJaarTot descending
-            //                    orderby a.GeboorteJaarTot == 0 descending
-            //                    select a).ToArray();
-            //return resultaat;
+                    afdelingsJaar.OfficieleAfdeling = standaardOfficieleAfdeling;
+                    afdelingsJaar.Geslacht = GeslachtsType.Gemengd;
+                    afdelingsJaar.GeboorteJaarTot = nieuwWerkJaar - standaardOfficieleAfdeling.LeefTijdVan;
+                    afdelingsJaar.GeboorteJaarVan = nieuwWerkJaar - standaardOfficieleAfdeling.LeefTijdTot;
+                }
+            }
+
+            // Sorteer de afdelingsjaren: eerst die zonder geboortejaren, dan van jong naar oud
+            var resultaat = (from a in nieuweAfdelingsJaren
+                             orderby a.GeboorteJaarTot descending
+                             orderby a.GeboorteJaarTot == 0 descending
+                             select a).ToArray();
+            return resultaat;
         }
-
-        public GroepsWerkJaar RecentsteOphalen(int groepID)
-        {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-        }
-
 
         /// <summary>
         /// Bepaalt of in het gegeven <paramref name='werkJaar' /> op

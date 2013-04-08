@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Linq.Expressions;
@@ -102,18 +103,27 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod()]
         public void AfdelingsJarenVoorstellenTest()
         {
-            var target = Factory.Maak<GroepsWerkJarenManager>();
-
-            var groep = new ChiroGroep();
-            var groepsWerkJaar = new GroepsWerkJaar {WerkJaar = 2010, ID = 2971, Groep = groep};
-            var afdeling = new Afdeling {ID = 2337, ChiroGroep = groep};
+            // ARRANGE: dom modelleke opbouwen
+            var groep = new ChiroGroep{Afdeling = new List<Afdeling>(), GroepsWerkJaar = new List<GroepsWerkJaar>()};
+            var groepsWerkJaar = new GroepsWerkJaar
+                                     {
+                                         WerkJaar = 2010,
+                                         ID = 2971,
+                                         Groep = groep,
+                                         AfdelingsJaar = new List<AfdelingsJaar>()
+                                     };
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+            var afdeling = new Afdeling { ID = 2337, ChiroGroep = groep };
+            groep.Afdeling.Add(afdeling);
             var afdelingsJaar = new AfdelingsJaar
                 {GroepsWerkJaar = groepsWerkJaar, Afdeling = afdeling, GeboorteJaarVan = 2003, GeboorteJaarTot = 2004};
+            groepsWerkJaar.AfdelingsJaar.Add(afdelingsJaar);
 
-            const int NIEUW_WERKJAAR = 2011;
+            // ACT: stel nieuwe afdelingsjaren voor
+            var target = Factory.Maak<GroepsWerkJarenManager>();
+            var actual = target.AfdelingsJarenVoorstellen(groep, groep.Afdeling.ToList(), 2011, new OfficieleAfdeling());
 
-            var actual = target.AfdelingsJarenVoorstellen(groep, groep.Afdeling.ToArray(), NIEUW_WERKJAAR);
-
+            // ASSERT
             Assert.IsNotNull(actual);
             Assert.IsNotNull(actual[0]);
             Assert.AreEqual(actual[0].GeboorteJaarVan, afdelingsJaar.GeboorteJaarVan + 1);

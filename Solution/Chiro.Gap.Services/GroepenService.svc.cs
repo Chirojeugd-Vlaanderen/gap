@@ -1021,13 +1021,14 @@ namespace Chiro.Gap.Services
 
             var nieuwWerkJaar = NieuwWerkJaarOphalen(groepId);
             var groep = groepsWerkJaar.Groep as ChiroGroep;
+            var ribbels = _officieleAfdelingenRepo.ByID((int) NationaleAfdeling.Ribbels);
 
             Debug.Assert(groep != null, "groep != null");
             var afdelingen = (from a in groep.Afdeling
                               where afdelingsIDs.Contains(a.ID)
                               select a).ToList();
 
-            var afdelingsJaren = _groepsWerkJarenMgr.AfdelingsJarenVoorstellen(groep,afdelingen,nieuwWerkJaar);
+            var afdelingsJaren = _groepsWerkJarenMgr.AfdelingsJarenVoorstellen(groep,afdelingen,nieuwWerkJaar, ribbels);
 
             return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(afdelingsJaren);
         }
