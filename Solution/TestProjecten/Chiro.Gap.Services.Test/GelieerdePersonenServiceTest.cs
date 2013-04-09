@@ -20,11 +20,13 @@
 // </summary>
 
 using System;
+using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
 using System.Linq;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
@@ -174,7 +176,9 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void CommunicatieVormAanpassenTest()
         {
-            // Arrange
+            // ARRANGE
+
+            // testmodelletje
 
             const int TESTGPID = 1234;      // arbitrair ID van een gelieerde persoon
             const int TESTCVID = 2345;      // en van een communicatievorm
@@ -202,9 +206,18 @@ namespace Chiro.Gap.Services.Test
                                            };
             testCommunicatieVorm.GelieerdePersoon = testGelieerdePersoon;
 
-            var communicatieSyncMock = new Mock<ICommunicatieSync>();
+            // mocking opzetten
 
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieVorm>())
+                                  .Returns(
+                                      new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> {testCommunicatieVorm}));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var communicatieSyncMock = new Mock<ICommunicatieSync>();
             Factory.InstantieRegistreren(communicatieSyncMock.Object);
+
 
             var target = Factory.Maak<GelieerdePersonenService>();
 
