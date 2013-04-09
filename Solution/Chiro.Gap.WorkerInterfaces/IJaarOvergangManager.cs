@@ -16,8 +16,9 @@
  * limitations under the License.
  */
 ﻿using System.Collections.Generic;
-
-using Chiro.Gap.Poco.Model.Exceptions;
+﻿using Chiro.Cdf.Poco;
+﻿using Chiro.Gap.Poco.Model;
+﻿using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WorkerInterfaces
@@ -42,6 +43,6 @@ namespace Chiro.Gap.WorkerInterfaces
         /// aan een onbestaande nationale afdeling. Ook validatiefouten worden op deze manier doorgegeven.
         /// </exception>
         /// <remarks>Er worden geen leden gemaakt door deze method.</remarks>
-        void JaarOvergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID);
+        void JaarOvergangUitvoeren(IList<AfdelingsJaarDetail> teActiveren, Groep groep, IRepository<OfficieleAfdeling> officieleAfdelingenRepo);
     }
 }

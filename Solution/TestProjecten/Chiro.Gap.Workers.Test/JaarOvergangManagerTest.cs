@@ -19,6 +19,7 @@
 ﻿using System.Linq;
 ﻿using Chiro.Cdf.Ioc;
 ﻿using Chiro.Gap.Domain;
+﻿using Chiro.Gap.Dummies;
 ﻿using Chiro.Gap.Poco.Model;
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -82,18 +83,20 @@ namespace Chiro.Gap.Workers.Test
             var gwj = new GroepsWerkJaar { WerkJaar = 2010, Groep = groep };
             groep.GroepsWerkJaar.Add(gwj);
             var afdjaar1 = new AfdelingsJaar { ID = 1, GeboorteJaarVan = 2003, GeboorteJaarTot = 2004, OfficieleAfdeling = ribbeloff };
-            var afd1 = new Afdeling { ID = 2, AfdelingsJaar = new List<AfdelingsJaar> { afdjaar1 } };
+            var afd1 = new Afdeling { ID = 2, AfdelingsJaar = new List<AfdelingsJaar> { afdjaar1 }, ChiroGroep = groep};
             afdjaar1.Afdeling = afd1;
             groep.Afdeling.Add(afd1);
             gwj.AfdelingsJaar.Add(afdjaar1);
 
-            var newafdjaar = new AfdelingDetail { AfdelingID = afd1.ID, AfdelingsJaarID = afdjaar1.ID, GeboorteJaarVan = DateTime.Today.Year - 8, GeboorteJaarTot = DateTime.Today.Year - 10, OfficieleAfdelingID = ribbeloff.ID, Geslacht = GeslachtsType.Gemengd };
+            var newafdjaar = new AfdelingDetail { AfdelingID = afd1.ID, AfdelingsJaarID = afdjaar1.ID, GeboorteJaarVan = DateTime.Today.Year - 10, GeboorteJaarTot = DateTime.Today.Year - 8, OfficieleAfdelingID = ribbeloff.ID, Geslacht = GeslachtsType.Gemengd };
+
+		    var officieleAfdelingenRepo = new DummyRepo<OfficieleAfdeling>(new[] {ribbeloff});
 
             // ACT
 
 		    var target = Factory.Maak<JaarOvergangManager>();
-            var teActiveren = new List<AfdelingDetail> { newafdjaar };
-            target.JaarOvergangUitvoeren(teActiveren, groep.ID);
+            var teActiveren = new List<AfdelingsJaarDetail> { newafdjaar };
+            target.JaarOvergangUitvoeren(teActiveren, groep, officieleAfdelingenRepo);
 
             // ASSERT
 

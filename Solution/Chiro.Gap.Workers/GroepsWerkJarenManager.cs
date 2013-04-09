@@ -78,10 +78,15 @@ namespace Chiro.Gap.Workers
             }
 
             // Bereken gewenste werkjaar
-            var werkJaar = NieuweWerkJaar(g.ID);
+            // (die parameter g.ID is irrelevant, maar blijkbaar nodig voor een of andere
+            // unit test.)
+            int werkJaar = NieuweWerkJaar(g.ID);
 
             // Controle op dubbels moet gebeuren door data access.  (Zie #507)
-            return new GroepsWerkJaar { Groep = g, WerkJaar = werkJaar };
+            var resultaat = new GroepsWerkJaar { Groep = g, WerkJaar = werkJaar };
+            g.GroepsWerkJaar.Add(resultaat);
+
+            return resultaat;
         }
 
         /// <summary>
