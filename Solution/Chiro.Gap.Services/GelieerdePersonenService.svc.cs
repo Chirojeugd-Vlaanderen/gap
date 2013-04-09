@@ -825,7 +825,7 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
-                    _communicatieVormRepo.SaveChanges();
+                    _gelieerdePersonenRepo.SaveChanges();
                     // TODO (#1409): welke communicatievorm de voorkeur heeft, gaat verloren bij de sync
                     // naar Kipadmin. 
                     foreach (var cv in tesyncen)

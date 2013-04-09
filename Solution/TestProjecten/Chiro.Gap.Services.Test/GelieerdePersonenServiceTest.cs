@@ -116,18 +116,45 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void CommunicatieVormToevoegenTestGeldig()
         {
-            var target = Factory.Maak<GelieerdePersonenService>();
+            // ARRANGE
 
-            var gelieerdePersoonID = TestInfo.GELIEERDE_PERSOON_ID;
+            // modelletje
+
+            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Persoon = new Persoon()};
+            var telefoonNr = new CommunicatieType
+                                 {
+                                     ID = 1,
+                                     IsOptIn = false,
+                                     Omschrijving = "Telefoonnummer",
+                                     Validatie =
+                                         @"(^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$)|^\+[0-9]*$"
+                                 };
+
+            // mocking opzetten
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> {telefoonNr}));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
 
             var commInfo = new CommunicatieDetail()
             {
-                CommunicatieTypeID = 1,
+                CommunicatieTypeID = telefoonNr.ID,
                 Voorkeur = true,
-                Nummer = TestInfo.GELDIG_TELEFOON_NR
+                Nummer = "03-484 53 32" // geldig nummer
             };
 
-            target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);
+            target.CommunicatieVormToevoegen(gelieerdePersoon.ID, commInfo);
+
+            // ASSERT
+
             Assert.IsTrue(true);	// al blij als er geen exception optreedt
         }
 
