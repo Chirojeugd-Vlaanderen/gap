@@ -180,32 +180,40 @@ namespace Chiro.Gap.Workers.Test
         /// <summary>
         /// Functies voor leiding mogen niet aan een kind toegewezen worden.
         /// </summary>
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(FoutNummerException))]
         [TestMethod]
         public void ToekennenLidFunctieAanLeiding()
         {
-            //// Arrange
+            // Arrange
 
-            //var testData = new DummyData();
+            var fm = Factory.Maak<FunctiesManager>();
 
-            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            //GroepenManager gm = Factory.Maak<GroepenManager>();
+            Groep groep = new ChiroGroep
+                          {
+                              Functie = new List<Functie>()
+                          };
 
-            //Functie f = gm.FunctieToevoegen(
-            //    testData.DummyGroep,
-            //    testData.NieuweFunctieNaam,
-            //    testData.NieuweFunctieCode,
-            //    1, 0,
-            //    LidType.Kind);
+            var functie = new Functie
+                            {
+                                Groep = groep,
+                                MaxAantal = 1,
+                                MinAantal = 0,
+                                Niveau = Niveau.LidInGroep
+                            };
+            groep.Functie.Add(functie);
 
-            //IEnumerable<Functie> functies = new Functie[] { f };
+            var leider = new Leiding
+                             {
+                                 GroepsWerkJaar = new GroepsWerkJaar {Groep = groep}
+                             };
+            groep.GroepsWerkJaar.Add(leider.GroepsWerkJaar);
 
-            //// Act
-            //fm.Toekennen(testData.LeiderJos, functies);
+            // Act
 
-            //// Assert
-            //Assert.IsTrue(false);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            fm.Toekennen(leider, new List<Functie>{functie});
+
+            // Assert
+            // We hebben geen assertions, want we verwachten dat er een exception optrad.
         }
 
         /// <summary>
