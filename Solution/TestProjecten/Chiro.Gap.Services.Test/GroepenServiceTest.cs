@@ -113,7 +113,17 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void GroepOphalen()
         {
+            // Flauwe test die groep met gegeven ID opvraagt, en dan gewoon
+            // het ID checkt.
+
             #region Arrange
+
+            var groep = new ChiroGroep{ID = 1};
+
+            var dummyRepositoryProvider = new Mock<IRepositoryProvider>();
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Groep>())
+                                   .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
+            Factory.InstantieRegistreren(dummyRepositoryProvider.Object);
 
             IGroepenService svc = Factory.Maak<GroepenService>();
 
@@ -121,13 +131,13 @@ namespace Chiro.Gap.Services.Test
 
             #region Act
 
-            GroepInfo g = svc.InfoOphalen(TestInfo.GROEP_ID);
+            GroepInfo g = svc.InfoOphalen(groep.ID);
 
             #endregion
 
             #region Assert
 
-            Assert.IsTrue(g.ID == TestInfo.GROEP_ID);
+            Assert.IsTrue(g.ID == groep.ID);
 
             #endregion
         }
