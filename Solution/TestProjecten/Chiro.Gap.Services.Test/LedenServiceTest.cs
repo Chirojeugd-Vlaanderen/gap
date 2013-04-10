@@ -49,7 +49,6 @@ namespace Chiro.Gap.Services.Test
     [TestClass]
     public class LedenServiceTest
     {
-        private ILedenService _ledenService = null;
         private IGelieerdePersonenService _personenSvc = null;
 
         private TestContext testContextInstance;
@@ -98,20 +97,44 @@ namespace Chiro.Gap.Services.Test
 
 
         /// <summary>
-        ///Kijkt na of opgehaalde functies goed gemapt worden.
+        /// Kijkt na of opgehaalde functies goed gemapt worden.
         /// </summary>
         [TestMethod]
         public void OphalenTest()
         {
-            // Act
-            const int lidID = TestInfo.LID3_ID;
+            // Dit is eigenlijk niet zo'n interessante unit test.
+            // Zou wel nuttig zijn als 'testscenario', met database, webinterface, en alles erin
 
-            var actual = _ledenService.DetailsOphalen(lidID);
+            // Arrange 
+
+            // model
+            var contactPersoon = new Functie {ID = (int) NationaleFunctie.ContactPersoon};
+            var mijnFunctie = new Functie {ID = 1234};
+
+            var lid = new Leiding
+                          {
+                              ID = 1,
+                              GelieerdePersoon = new GelieerdePersoon(),
+                              Functie =
+                                  new List<Functie> {contactPersoon, mijnFunctie}
+                          };
+
+            // (mocking opzetten)
+            var dummyRepositoryProvider = new Mock<IRepositoryProvider>();
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Lid>())
+                                   .Returns(new DummyRepo<Lid>(new List<Lid> {lid}));
+            Factory.InstantieRegistreren(dummyRepositoryProvider.Object);
+
+
+            // Act
+
+            var ledenService = Factory.Maak<LedenService>();
+            var actual = ledenService.DetailsOphalen(lid.ID);
 
             // Assert
-            var ids = (from f in actual.LidInfo.Functies select f.ID);
+            var ids = (from f in actual.LidInfo.Functies select f.ID).ToList();
             Assert.IsTrue(ids.Contains((int) NationaleFunctie.ContactPersoon));
-            Assert.IsTrue(ids.Contains(TestInfo.FUNCTIE_ID));
+            Assert.IsTrue(ids.Contains(mijnFunctie.ID));
         }
 
         ///<summary>
@@ -263,9 +286,11 @@ namespace Chiro.Gap.Services.Test
                 // GP2 zit niet in een afdeling, we vragen zijn voorgestelde afdeling en steken hem/haar dan in de andere
                 var gelieerdePersoonIDs = new List<int> {gp.GelieerdePersoonID};
 
+                var ledenService = Factory.Maak<LedenService>();
+
                 #endregion
 
-                var voorstel = _ledenService.VoorstelTotInschrijvenGenereren(gelieerdePersoonIDs, out fouten).First();
+                var voorstel = ledenService.VoorstelTotInschrijvenGenereren(gelieerdePersoonIDs, out fouten).First();
                 int gekozenafdelingsjaarID = voorstel.AfdelingsJaarIDs.Contains(TestInfo.AFDELINGS_JAAR2_ID)
                                                  ? TestInfo.AFDELINGS_JAAR1_ID
                                                  : TestInfo.AFDELINGS_JAAR2_ID;
@@ -275,13 +300,13 @@ namespace Chiro.Gap.Services.Test
 
                 #region Act
 
-                int lidID = _ledenService.Inschrijven(defvoorstel, out fouten).First();
+                int lidID = ledenService.Inschrijven(defvoorstel, out fouten).First();
 
                 #endregion
 
                 #region Assert
 
-                var l = _ledenService.DetailsOphalen(lidID);
+                var l = ledenService.DetailsOphalen(lidID);
                 Assert.IsTrue(l.LidInfo.AfdelingIdLijst.Contains(TestInfo.AFDELING2_ID));
 
                 #endregion
