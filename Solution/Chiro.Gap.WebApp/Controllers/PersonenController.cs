@@ -466,7 +466,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns>De view 'EditGegevens'</returns>
         //[AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
-        public String EditGegevens(int id, int groepID)
+        public ActionResult EditGegevens(int id, int groepID)
         { 
             var model = new GelieerdePersonenModel();
             BaseModelInit(model, groepID);
@@ -474,8 +474,8 @@ namespace Chiro.Gap.WebApp.Controllers
             model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(id));
             model.Titel = model.HuidigePersoon.VolledigeNaam;
             //return View("EditGegevens", model);
-            EditGegevens(model, groepID);
-            return "gelukt";
+            return View ("EditGegevens",model);
+           
         }
 
 

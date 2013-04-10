@@ -2,6 +2,7 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
 /*
@@ -33,11 +34,10 @@
     <div id="PersoonsInformatie">
     <%// dialog voor het weergeven van het info-kadertje %>
     <div id="extraInfoDialog" hidden>Wordt geladen...</div>
-    Groep ID:<input id="groepID" value="<%=Model.GroepID %>"/>
-    Lid ID<input id="lidIdH" value="<%=Model.PersoonLidInfo.LidInfo.LidID %>" />
-    GP ID:<input id="GPid" value="<%=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID  %>"/>
-    
-    
+    <input id="groepID" value="<%=Model.GroepID %>" hidden/>
+   <input id="lidIdH" value="<%=Model.PersoonLidInfo.LidInfo.LidID %>" hidden/>
+   <input id="GPid" value="<%=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID  %>" hidden/>
+    <input id="versieString" value="<%=Model.PersoonLidInfo.PersoonDetail.VersieString %>" hidden/> 
     <div id="adresDialog" hidden>
         <form>
             <fieldset>
@@ -64,23 +64,32 @@
     <hr />
     <table class="persoonlijkeGegevens">
            <tr>
-               <td id="naamInfo">
-                   <b><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VolledigeNaam) %></b>
+               <td>Voornaam</td>
+               <td id="voornaamInfo">
+                   <b><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VoorNaam) %></b>
                </td> 
-               <td></td>
-               <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkNaam" style="cursor: pointer"></div></td>
-               <td id="naamIconen">
+               <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkVoorNaam" style="cursor: pointer"></div></td>
+               <td id="voornaamIconen">
+               </td>
+           </tr>
+           <tr>
+               <td>Naam</td>
+               <td id="achternaamInfo">
+                   <b><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.Naam) %></b>
+               </td> 
+               <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkAchterNaam" style="cursor: pointer"></div></td>
+               <td id="achternaamIconen">
                </td>
            </tr>
            <tr>
                <td>Geslacht</td> 
-               <td id="geslachtsInfo"><a ><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.Geslacht) %></a></td>
+               <td id="geslachtsInfo"><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.Geslacht) %></td>
                <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkGeslacht" style="cursor: pointer"></div></td>
                <td id="geslachtIconen"></td>
            </tr>
            <tr>
                <td><%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%></td>
-               <td>
+               <td id="gdInfo">
                    <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
                </td>
                <td>
@@ -92,7 +101,7 @@
           <% int counter = 0; %>
            <% foreach (PersoonsAdresInfo pa in ViewData.Model.PersoonLidInfo.PersoonsAdresInfo) { %>
                <tr id="adressen">      
-                    <%//Hidden fields om gegevens in jQeury uiy te kunnen lezen %>
+                    <%//Hidden fields om gegevens in jQeury uit te kunnen lezen %>
                    <input id="strH" value="<%=pa.StraatNaamNaam %>" hidden />
                    <input id="hsnrH" value="<%=pa.HuisNr%>" hidden />
                    <input id="pstcdH" value="<%=pa.PostNr %>" hidden />
@@ -171,8 +180,8 @@
         <% if (Model.PersoonLidInfo.PersoonDetail.AdNummer != null)
            { %>
            <tr>
-                <td><%= Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><%= Html.InfoLink("Ad-info") %></td>
-                <td><%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %></td>
+                <td ><%= Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><%= Html.InfoLink("Ad-info") %></td>
+                <td id="adNummerInfo"><%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %></td>
                 <td id="ad"></td>
                 <td></td>
            </tr>
@@ -358,6 +367,7 @@
              { %>
             <td><b>Niet</b> geabonneerd</td>
             <td>
+                <a id="abboneer" style="cursor: pointer">[Abboneer]</a>
                 <% //=Html.ActionLink("[abonneren]", "DubbelPuntAanvragen", new {Controller="Abonnementen", id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
             </td>
             <td></td>

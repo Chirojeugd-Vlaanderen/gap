@@ -53,38 +53,62 @@ $(function () {
     var id = $('#lidIdH').val();
     var GPid = $('#GPid').val();
 
-    //naam veranderen
-    $('#naamInfo').editable({
-        validate: function (value) {
-            if ($.trim(value) == '') return 'Dit veld moet ingevuld worden!';
-        }
-    })
-    .on('save', function (e) {
-        e.preventDefault();
-        var url = "/" + GID + "/Personen/EditGegevens/" + GPid;
-        $.get(url, function () {
-            success:
-            {
-                location.reload();
-            }
-        });
-    });
+    var adnummer = $('#adNummerInfo').text().trim();
+    var voornaam = $('#voornaamInfo').text().trim();
+    var achternaam = $('#achternaamInfo').text().trim();
+    var geboortedatum = $('#gdInfo').text().trim();
+    var geslacht = $('#geslachtsInfo').text().trim();
+    var chiroleeftijd = $('#chiroleeftijdInfo').text().trim();
+    var versiestring = $('#versieString').val().trim();
 
-    $('#bewerkNaam')
+    //Voornaam bewerken
+    $('#bewerkVoorNaam')
         .click(function (e) {
             e.stopPropagation();
             e.preventDefault();
-            $('#naamInfo').editable('toggle');
+            $('#voornaamInfo').editable('toggle');
         });
 
+    $('#voornaamInfo').editable({
+        validate: function(value) {
+            if ($.trim(value) == '') return 'Dit veld moet ingevuld worden!';
+        }
+    })
+        .on('save', function(e, params) {
+            e.preventDefault();
+            bewaarVerandering('voornaam', params.newValue);
+        });
+    
+    //Achternaam bewerken
+     $('#bewerkAchterNaam')
+        .click(function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            $('#achternaamInfo').editable('toggle');
+        });
+
+    $('#achternaamInfo').editable({
+        validate: function(value) {
+            if ($.trim(value) == '') return 'Dit veld moet ingevuld worden!';
+        }
+    })
+        .on('save', function(e, params) {
+            e.preventDefault();
+            bewaarVerandering('achternaam', params.newValue);
+        });
+
+    //geslacht bewerken
     $('#bewerkGeslacht').click(function (e) {
         e.preventDefault();
-        var g = $('#geslachtsInfo').text();
+        var g = $('#geslachtsInfo').text().trim();
         if (g == 'Man') {
             $('#geslachtsInfo').text('Vrouw');
         } else {
             $('#geslachtsInfo').text('Man');
         }
+        g = $('#geslachtsInfo').text().trim();
+        alert(g);
+        bewaarVerandering('geslacht', g);
     });
 
     //contact gegevens (tel/email)
@@ -244,11 +268,9 @@ $(function () {
             width: 500,
             buttons: {
                 "Bevestigen": function () {
-                    var url = "/" + GID + "/Leden/LoonVerliesVerzekeren/" + id;
+                    url = "/" + GID + "/Leden/LoonVerliesVerzekeren/" + id;
 
-                    $.post(url, function (data) {
-                        $(this).html(data);
-                    });
+                    $.post(url, { id: id, groepID: GID });
                 },
                 "Annuleren": function () {
                     $(this).dialog('close');
@@ -256,6 +278,11 @@ $(function () {
             }
 
         });
+    });
+    //abboneren op dubbelpunt
+    $('#abboneer').click(function () {
+        var url = "/" + GID + "/Abonnementen/DubbelPuntAanvragen";
+        $.post(url, { id: id, groepID: GID });
     });
 
 
@@ -381,6 +408,58 @@ $(function () {
                 options += '<option value="' + data[i].Naam + '">' + data[i].Naam + '</option>';
             }
             $("#gemeente").html(options);
+        });
+    }
+    //-------------------------------------------------------------------------
+    //functie die de veranderde gegevens post
+    //parameters: 
+    //      teVeranderen:   waarde veranderd moet worden 
+    //                      ('voornaam', 'achternaam', 'geboortedatum', 'geslacht' of 'chiroleeftijd')
+    //      nieuweWaarde:   ingegeven waarde die op de plaats van de oude komt
+    //-------------------------------------------------------------------------
+    function bewaarVerandering(teVeranderen, nieuweWaarde) {
+        var url = "/" + GID + "/Personen/EditGegevens/" + GPid;
+        var n = achternaam;
+        var vn = voornaam;
+        var gb = geboortedatum;
+        var g = geslacht;
+        var cl = chiroleeftijd;
+        
+        switch (teVeranderen) {
+        case 'voornaam':
+            vn = nieuweWaarde;
+            break;
+        case 'achternaam':
+            n = nieuweWaarde;
+            break;
+        case 'geboortedatum':
+            gb = nieuweWaarde;
+            break;
+        case 'geslacht':
+            g = nieuweWaarde;
+            break;
+        case 'chiroleeftijd':
+            cl = nieuweWaarde;
+            break;
+        default:
+        } 
+
+       $.post(url, 
+            {
+                "HuidigePersoon.AdNummer":adnummer, 
+                "HuidigePersoon.Voornaam":vn, 
+                "HuidigePersoon.Naam":n,
+                "HuidigePersoon.GeboorteDatum" :gb,
+                "HuidigePersoon.Geslacht":g, 
+                "HuidigePersoon.ChiroLeefTijd":cl,   
+                "HuidigePersoon.GelieerdePersoonID":GPid,
+                "BroerZusID":0,
+                "HuidigePersoon.VersieString":versiestring,
+            }, function () {
+            success:
+            {
+                location.reload();
+            }
         });
     }
     //-------------------------------------------------------------------------

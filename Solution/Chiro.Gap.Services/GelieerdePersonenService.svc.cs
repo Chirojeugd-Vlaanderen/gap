@@ -445,7 +445,8 @@ namespace Chiro.Gap.Services
             _gelieerdePersonenRepo.SaveChanges();
             if (gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag)
             {
-                _personenSync.Bewaren(gp, false, false);
+                //TODO: regel hieronder staat in commentaar om te kunnen testen, terug uithalen voor sync met kipadmin
+                //_personenSync.Bewaren(gp, false, false);
             }
 #if KIPDORP    
             }
