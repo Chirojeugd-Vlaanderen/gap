@@ -641,7 +641,16 @@ namespace Chiro.Gap.Services
         {
             var lid = _ledenRepo.ByID(lidId);
             Gav.Check(lid);
-            lid.LidgeldBetaald = !lid.LidgeldBetaald;
+            if (lid.LidgeldBetaald == null)
+                //Arno: de toggle werkte niet als de status 'null' was, daarom set ik hem hier eerst 
+            {
+                lid.LidgeldBetaald = true;
+            }
+            else
+            {
+                lid.LidgeldBetaald = !lid.LidgeldBetaald;
+            }
+            ;
             _ledenRepo.SaveChanges();
             return lid.GelieerdePersoon.ID;
         }

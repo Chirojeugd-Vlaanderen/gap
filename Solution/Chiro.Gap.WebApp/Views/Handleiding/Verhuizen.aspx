@@ -25,6 +25,7 @@
 	Handleiding: Verhuizen
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
+    <div id="verhuizen">
 	<h2>
 		Verhuizen</h2>
 	<p>
@@ -71,4 +72,5 @@
 		straatnaam die je echt niet terugvindt, dan kun je
 		<%= Html.ActionLink("vragen aan het nationaal secretariaat dat ze de straatnamenlijst aanvullen", 
 			"ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweStraatnaam" })%>.</p>
+            </div>
 </asp:Content>

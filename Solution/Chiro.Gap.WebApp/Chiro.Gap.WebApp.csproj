@@ -184,6 +184,8 @@
       <Link>Views\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
     <Content Include="Content\images\animated-overlay.gif" />
+    <Content Include="Content\images\clear.png" />
+    <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -200,6 +202,7 @@
     <Content Include="Content\indicator.gif" />
     <Content Include="Content\jquery-ui-1.10.2.custom.css" />
     <Content Include="Content\jquery.autocomplete.css" />
+    <Content Include="Content\jqueryui-editable.css" />
     <Content Include="Content\Screenshots\Deelnemersinfo_bewerken.png" />
     <Content Include="Content\Screenshots\Deelnemers_inschrijven.png" />
     <Content Include="Content\Screenshots\Fiche_bivakdetails_met_leden.png" />
@@ -222,6 +225,8 @@
     <Content Include="Scripts\jquery-nieuwe-persoon.js" />
     <Content Include="Scripts\jquery-persoons-fiche.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.custom.js" />
+    <Content Include="Scripts\jqueryui-editable.js" />
+    <Content Include="Scripts\moment.js" />
     <Content Include="Views\Afdelingen\Afdeling.aspx" />
     <Content Include="Views\Afdelingen\AfdelingsJaar.aspx" />
     <Content Include="Views\Afdelingen\Index.aspx" />
@@ -245,6 +250,7 @@
     <Content Include="Views\JaarOvergang\Afdeling.aspx" />
     <Content Include="Views\Leden\AfdelingenBewerken.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
+    <Content Include="Views\Personen\CategorieToevoegenPartialView.ascx" />
     <Content Include="Views\Personen\OverledenPersoon.aspx" />
     <Content Include="Views\Shared\NavigatieBeperktControl.ascx" />
     <Content Include="Views\Shared\PersoonZoekenScriptsControl.ascx" />

@@ -527,12 +527,12 @@ textarea
 
 .opzij
 {
-	float: right;
-	background: #ddd;
+    /*float: right;
+	background: #ddd; 
+    display: inline;*/
+    margin-top: 30px;
 	width: 36%;
-	padding: 0 1%;
-	margin: 0;
-	display: inline;
+	margin-left:57% ;
 }
 
 .kaderke
@@ -606,14 +606,6 @@ dl.Woordenlijst dd
 	margin-bottom: 15px;
 }
 
-li.nietgoed
-{
-}
-
-li.goed
-{
-}
-
 img.screenshot
 {
 	border: Solid 2px Gray;
@@ -633,4 +625,31 @@ button {
 fieldset p label {
     width: 150px;
     display: inline-block;
+}
+
+#PersoonsInformatie {
+    width: 55%;
+    float: left;
+}
+
+#PersoonsInformatie table tr td:nth-child(2) {
+    width: 300px;
+}
+
+#PersoonsInformatie table tr td:nth-child(3) {
+    width: 50px;
+    text-align: center;
+}
+
+#PersoonsInformatie table tr td:last-child {
+    width: 50px;
+    text-align: center;
+}
+
+@media screen and (max-width: 360px) {
+  .opzij{
+      display: inline-block;
+      width: 100%;
+      margin-left: 0px; 
+  }
 }

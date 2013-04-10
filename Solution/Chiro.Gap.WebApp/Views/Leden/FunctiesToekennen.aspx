@@ -29,6 +29,7 @@
 		<li>
 			<input type="submit" value="Gegevens wijzigen" /></li>
 	</ul>
+    <div id="functies">
 	<fieldset>
 		<legend>Functies</legend>
 		<%
@@ -50,6 +51,7 @@
 		<%= Html.HiddenFor(mdl=>mdl.HuidigLid.PersoonDetail.GelieerdePersoonID) %>
 	</fieldset>
 	<br />
-	<%} %>
+	<%} %></div>
 	<%= Html.ActionLink("Terug naar de persoonsfiche", "EditRest", new { Controller = "Personen", id = Model.HuidigLid.PersoonDetail.GelieerdePersoonID}) %>
+    
 </asp:Content>

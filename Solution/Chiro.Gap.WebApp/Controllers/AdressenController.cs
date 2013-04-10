@@ -84,7 +84,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <paramref name="postNummer"/>.
 		/// </returns>
 		[HandleError]
-		public ActionResult WoonPlaatsenOphalen(int postNummer)
+        //Actionresult
+		public JsonResult WoonPlaatsenOphalen(int postNummer)
 		{
 			var resultaat = (from g in VeelGebruikt.WoonPlaatsenOphalen()
 							 where g.PostNummer == postNummer

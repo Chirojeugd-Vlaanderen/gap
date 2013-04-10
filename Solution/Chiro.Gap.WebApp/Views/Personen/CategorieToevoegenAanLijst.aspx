@@ -22,7 +22,7 @@
  */
 %>
 <%// Opgelet! Scripts MOETEN een expliciete closing tag (</script>) hebben!  Ze oa #722 %>
-	<script src="<%= ResolveUrl("~/Scripts/jquery-1.7.1.min.js")%>" type="text/javascript"></script>
+	<script src="<%= ResolveUrl("~/Scripts/jquery-1.9.1.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
@@ -35,10 +35,12 @@
 		using (Html.BeginForm())
 		{
 	%>
+    <div class="test">
 	<ul id="acties">
 		<li>
 			<input type="submit" value="Bewaren" /></li>
 	</ul>
+    
 	<fieldset>
 		<legend>Aan welke categorieën wil je
 			<%= Model.GelieerdePersoonIDs.Count == 1 ? "hem/haar" : "hen" %>
@@ -69,6 +71,7 @@
 			}
 		%>
 	</fieldset>
+    </div>
 	<%
 		} %>
 </asp:Content>

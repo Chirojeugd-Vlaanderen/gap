@@ -740,6 +740,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="id">LidID van lid met te toggelen vlagje</param>
         /// <param name="groepID">ID van de groep waarin wordt gewerkt</param>
         /// <returns>Daarna wordt terugverwezen naar de persoonsfiche</returns>
+        [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
         public ActionResult LidGeldToggle(int id, int groepID)
         {

@@ -464,16 +464,20 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="id">GelieerdePersoonID van te wijzigen persoon</param>
         /// <param name="groepID">GroepID van de huidig geselecteerde groep</param>
         /// <returns>De view 'EditGegevens'</returns>
+        //[AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
-        public ActionResult EditGegevens(int id, int groepID)
-        {
+        public String EditGegevens(int id, int groepID)
+        { 
             var model = new GelieerdePersonenModel();
             BaseModelInit(model, groepID);
             // model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.AlleDetailsOphalen(id, groepID));
             model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(id));
             model.Titel = model.HuidigePersoon.VolledigeNaam;
-            return View("EditGegevens", model);
+            //return View("EditGegevens", model);
+            EditGegevens(model, groepID);
+            return "gelukt";
         }
+
 
         /// <summary>
         /// Probeert de gewijzigde persoonsgegevens te persisteren via de webservice
@@ -491,7 +495,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 return View("EditGegevens", model);
             }
 
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Bewaren(model.HuidigePersoon));
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Bewaren(model.HuidigePersoon)); //TODO: Loopt vast in sync met kipadmin
 
             // Voorlopig opnieuw redirecten naar EditRest;
             // er zou wel gemeld moeten worden dat het wijzigen

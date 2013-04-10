@@ -91,8 +91,7 @@
 <asp:Content ContentPlaceHolderID="BodyContent" runat="server">
     <% if (Model.Titel != string.Empty)
        { %>
-    <h2>
-        <%=Html.Encode(ViewData.Model.Titel) %></h2>
+    <h2><%=Html.Encode(ViewData.Model.Titel) %></h2>
     <% }
 
        if (Model.Mededelingen != null && Model.Mededelingen.Any())

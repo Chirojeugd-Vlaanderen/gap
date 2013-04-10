@@ -25,8 +25,9 @@
 	Handleiding: Verzekering loonverlies
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
-	<h2>
-		Verzekering loonverlies</h2>
+	
+    <h2>Verzekering loonverlies</h2>
+    <span id="kort">
 	<p>
 		Aangesloten leden en leiding zijn verzekerd voor burgelijke aansprakelijkheid,
 		dood en invaliditeit. Meer uitleg over de Chiroverzekering vind je op <a href="http://www.chiro.be/verzekeringen"
@@ -34,9 +35,11 @@
 	<p>
 		Leiding die al gaat werken, kun je bijkomend verzekeren voor loonverlies. Die
 		optie vult voor één jaar het bedrag aan dat de ziekteverzekering uitbetaalt
-		als je door een ongeval niet meer kunt gaan werken.</p>
+		als je door een ongeval niet meer kunt gaan werken.</p> </span>
 	<p>
-		Stappen in het proces:</p>
+	   
+		Stappen in het proces:
+	</p>
 	<ul>
 		<li>Klik op het tabblad 'Ingeschreven' op de naam van de leider of leidster die
 			je bijkomend wilt verzekeren.</li>
