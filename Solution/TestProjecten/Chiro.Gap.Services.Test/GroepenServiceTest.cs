@@ -20,13 +20,12 @@ using System.Linq;
 using System.ServiceModel;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.ServiceContracts.FaultContracts;
+﻿using Chiro.Gap.ServiceContracts.FaultContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.ServiceContracts.Mappers;
-using Chiro.Gap.TestDbInfo;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 using System.Threading;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using System;
@@ -35,8 +34,7 @@ using Chiro.Gap.Domain;
 using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Services;
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
+﻿using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -538,6 +536,49 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.IsNull(actual.FirstOrDefault());
+        }
+
+        ///<summary>
+        ///Controleert of de service verhindert dat een stamnummer wordt gewijzigd.
+        ///</summary>
+        [TestMethod()]
+        public void BewarenStamNrTest()
+        {
+            // ARRANGE
+
+            // testmodel
+            bool gevangen = false;
+            var groep = new ChiroGroep {Code = "BLA/0000", ID = 2};
+
+            // mocking van data access
+            var repositoryProvider = new Mock<IRepositoryProvider>();
+            repositoryProvider.Setup(src => src.RepositoryGet<Groep>())
+                              .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
+            Factory.InstantieRegistreren(repositoryProvider.Object);
+
+
+            // ACT
+            var target = Factory.Maak<GroepenService>();
+
+            var groepInfo = new GroepInfo
+                                      {
+                                          ID = groep.ID,
+                                          StamNummer = "BLI/0001" // we proberen dit te wijzigen
+                                      };
+
+            try
+            {
+                target.Bewaren(groepInfo);
+            }
+            catch (FaultException<FoutNummerFault> ex)
+            {
+                // ASSERT
+
+                Assert.AreEqual(ex.Detail.FoutNummer, FoutNummer.GeenGav);
+                gevangen = true;
+            }
+            
+            Assert.IsTrue(gevangen);
         }
     }
 }

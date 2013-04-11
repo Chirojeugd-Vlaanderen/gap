@@ -25,7 +25,8 @@ using Chiro.Gap.WorkerInterfaces;
 namespace Chiro.Gap.Dummies
 {
 	/// <summary>
-	/// Autorisatiemanager die altijd alle rechten toekent
+	/// Autorisatiemanager die altijd alle rechten toekent,
+	/// BEHALVE supergav.
 	/// (nuttig voor testen van niet-autorisatiegebonden 
 	/// business logica.)
 	/// </summary>
@@ -50,7 +51,7 @@ namespace Chiro.Gap.Dummies
 
 		public bool IsSuperGav()
 		{
-			return true;
+			return false;
 		}
 
 	    public bool IsGav(Groep groep)
