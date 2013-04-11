@@ -340,62 +340,6 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
-		/// Verwacht een exception wanneer geprobeerd wordt het AD-nummer aan te passen.
-		/// </summary>
-		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void AdNummerWijzigen()
-		{
-            //#region Arrange
-
-            //var testData = new DummyData();
-
-            //// GelieerdePersonenDao mocken.  Van een Dao verwachten
-            //// we dat die gewoon doet wat we vragen; er is daar geen
-            //// businesslogica geimplementeerd
-
-            //var gpDaoMock = new Mock<IGelieerdePersonenDao>();
-
-            //gpDaoMock.Setup(
-            //    foo => foo.Ophalen(testData.GelieerdeJos.ID,
-            //    It.IsAny<Expression<Func<GelieerdePersoon, Object>>>())).Returns(testData.KloonJos);
-
-            //// Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
-            //// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
-            ////
-            //// De constructie in 'Returns' zorgt ervoor dat MaakTestGelieerdePersoon iedere
-            //// keer uitgevoerd wordt bij aanroep van 'Ophalen'.  (En niet eenmalig bij het
-            //// opzetten van de mock.)
-
-            //// Maak nu de GelieerdePersoonenManager aan die we willen testen.
-
-            //Factory.InstantieRegistreren(gpDaoMock.Object);
-            //Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
-
-            //var gpm = Factory.Maak<GelieerdePersonenManager>();
-
-            //#endregion
-
-            //#region Act
-            //// Haal gelieerde persoon met TestGelieerdePersoonID op
-            //GelieerdePersoon gp = gpm.Ophalen(testData.GelieerdeJos.ID);
-
-            //// Pruts met AD-nummer
-            //++gp.Persoon.AdNummer;
-
-            //// Probeer te bewaren
-            //gpm.Bewaren(gp, PersoonsExtras.Geen);
-            //#endregion
-
-            //#region Assert
-            //// Als we hier geraken, is het zeker niet gelukt.
-            //Assert.IsTrue(false);
-            //#endregion
-
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-		}
-
-		/// <summary>
 		/// Test die nakijkt of ik een persoon kan bewaren
 		/// als ik het ad-nummer niet wijzig.  (Verwacht = ja)
 		/// </summary>

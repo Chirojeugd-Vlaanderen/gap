@@ -38,6 +38,8 @@ using System.ServiceModel;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.TestDbInfo;
 using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -431,6 +433,57 @@ namespace Chiro.Gap.Services.Test
             // assert
 
             Assert.AreEqual(someUsername, actual.GebruikersInfo.GavLogin);
+        }
+
+        ///<summary>
+        /// Controleert of de service verhindert dat een AD-nummer wordt overschreven
+        ///</summary>
+        [TestMethod()]
+        public void BewarenAdNrTest()
+        {
+            bool gevangen = false;
+
+            // ARRANGE
+
+            // model
+            var gelieerdePersoon = new GelieerdePersoon
+                                       {
+                                           ID = 1,
+                                           Persoon = new Persoon
+                                                         {
+                                                             AdNummer = 2
+                                                         }
+                                       };
+
+            // mocks
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            try
+            {
+                target.Bewaren(new PersoonInfo
+                                   {
+                                       GelieerdePersoonID = gelieerdePersoon.ID,
+                                       AdNummer = 39198
+                                   }
+                    );
+
+            }
+            catch (FaultException<FoutNummerFault> ex)
+            {
+                // ASSERT
+
+                Assert.AreEqual(ex.Detail.FoutNummer, FoutNummer.AlgemeneFout);
+                gevangen = true;
+            }
+
+            Assert.IsTrue(gevangen);
         }
     }
 }
