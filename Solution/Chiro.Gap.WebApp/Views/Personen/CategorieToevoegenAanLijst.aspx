@@ -35,10 +35,9 @@
 		using (Html.BeginForm())
 		{
 	%>
-    <div class="test">
 	<ul id="acties">
 		<li>
-			<input type="submit" value="Bewaren" /></li>
+			<input id="bewaarCat" type="submit" value="Bewaren" /></li>
 	</ul>
     
 	<fieldset>
@@ -71,7 +70,6 @@
 			}
 		%>
 	</fieldset>
-    </div>
 	<%
 		} %>
 </asp:Content>

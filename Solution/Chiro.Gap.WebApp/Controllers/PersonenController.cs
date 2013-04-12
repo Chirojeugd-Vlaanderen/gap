@@ -1114,7 +1114,18 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns></returns>
         /// <!-- GET: /Personen/CommVormBewerken/gelieerdePersoonID -->
         [HandleError]
-        public ActionResult CommVormBewerken(int commvormID, int gelieerdePersoonID, int groepID)
+        public JsonResult CommVormBewerken(int commvormID, int gelieerdePersoonID, int groepID)
+        {
+            // TODO (#1026): dit is niet juist broes, want hij haalt 2 keer de persoon op?
+            var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonID));
+            var commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieDetail>(l => l.CommunicatieVormOphalen(commvormID));
+            var model = new CommVormModel(persoonDetail, commv);
+            BaseModelInit(model, groepID);
+            model.Titel = "Communicatievorm bewerken";
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        /*
+         * public ActionResult CommVormBewerken(int commvormID, int gelieerdePersoonID, int groepID)
         {
             // TODO (#1026): dit is niet juist broes, want hij haalt 2 keer de persoon op?
             var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonID));
@@ -1124,6 +1135,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Titel = "Communicatievorm bewerken";
             return View("CommVormBewerken", model);
         }
+         */
 
         // TODO (#1027): meerdere commvormen tegelijk
 
@@ -1137,9 +1149,11 @@ namespace Chiro.Gap.WebApp.Controllers
         /// om de gegevens mee aan te passen</returns>
         /// <!-- POST: /Personen/CommVormBewerken/gelieerdePersoonID -->
         [AcceptVerbs(HttpVerbs.Post)]
+        [ValidateInput(false)]
         [HandleError]
         public ActionResult CommVormBewerken(CommVormModel model, int gelieerdePersoonID, int groepID)
         {
+           
             var validator = new CommunicatieVormValidator();
             var commVorm = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieDetail>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
 

@@ -26,16 +26,24 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <script src="<%=ResolveUrl("~/Scripts/jquery-persoons-fiche.js") %>" type="text/javascript"></script>
-    <script src="<%=ResolveUrl("~/Scripts/jqueryui-editable.js") %>" type="text/javascript"></script>
-    <script src="<%=ResolveUrl("~/Scripts/moment.js")%>" type="text/javascript"></script>
-    <link href="<%=ResolveUrl("~/Content/jqueryui-editable.css") %>" rel="stylesheet" type="text/css" />
+    <script src="<%= ResolveUrl("~/Scripts/jquery-persoons-fiche.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/jqueryui-editable.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/moment.js") %>" type="text/javascript"></script>
+    <link href="<%= ResolveUrl("~/Content/jqueryui-editable.css") %>" rel="stylesheet" type="text/css" />
     
     <div id="PersoonsInformatie">
-    <%// dialog voor het weergeven van het info-kadertje %>
-    <div id="extraInfoDialog" hidden>Wordt geladen...</div>
-    <input id="groepID" value="<%=Model.GroepID %>" hidden/>
-   <input id="lidIdH" value="<%=Model.PersoonLidInfo.LidInfo.LidID %>" hidden/>
+    <% // dialog voor het weergeven van het info-kadertje %>
+    <div id="extraInfoDialog" hidden>Bezig met verwerking...</div>
+    <input id="groepID" value="<%= Model.GroepID %>" hidden/>
+    <% if (Model.PersoonLidInfo.LidInfo != null)
+       { %>
+           <input id="lidIdH" value="<%= Model.PersoonLidInfo.LidInfo.LidID %>" hidden/>
+      <% }
+       else
+       { %>
+           <input id="lidIdH" value="geen lidID" hidden />
+      <% }%>
+   
    <input id="GPid" value="<%=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID  %>" hidden/>
     <input id="versieString" value="<%=Model.PersoonLidInfo.PersoonDetail.VersieString %>" hidden/> 
     <div id="adresDialog" hidden>
@@ -152,15 +160,15 @@
             %>
              <tr <%=cv.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email ? "id='email'" : "id='tel'" %>>
                  
-                <td><%=commType.Key.Omschrijving + " " + teller %></td>
-                <td class="contact">
-                    <%=cv.Voorkeur ? "<strong>" + ctTekst + "</strong>" : ctTekst%>
-                    <em><%=Html.Encode(cv.Nota)%></em> 
+                <td><%=commType.Key.Omschrijving + " " + teller %> <input id="cvID" value="<%=cv.ID%>"/></td>
+                <td class="contact" title="<%=Html.Encode(cv.Nota)%>">
+                    <%=cv.Voorkeur ? "<strong>" + ctTekst + "</strong>" : ctTekst%>  
+                    
                 </td>
                 <td >
                     <div class="contactBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>
                     <% //=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormID = cv.ID })%>
-                    <% //=Html.ActionLink("[bewerken]", "CommVormBewerken", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+                    <% =Html.ActionLink("[bewerken]", "CommVormBewerken", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                     <%//=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                 </td>
                 <td></td>
@@ -396,15 +404,14 @@
         <h3>Overige gegevens</h3>
         <hr/>
         <h3>GAP account</h3>
-        <ul>
             <%
                 if (Model.PersoonLidInfo.GebruikersInfo == null)
                 {
                     // Geen account
                     %>
-                    <li><%: Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> heeft geen Chirologin.</li>
-                    <button id="loginMaken">Chirologin maken</button>
-                    <button id="gbrToekennen">Gebruikersrecht toekennen</button>
+                    <%: Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> heeft geen Chirologin.
+                    <p><button id="loginMaken">Chirologin maken</button>
+                    <button id="gbrToekennen">Gebruikersrecht toekennen</button></p>
                     <%//: Html.ActionLink("[gebruikersrecht toekennen]", "AanGpToekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %>
                     <%
                 }
@@ -437,7 +444,6 @@
                     <%                              
                 }
             %>
-        </ul>
         
         <h3>Toegevoegd aan volgende categorie&euml;n:</h3>
         <table>
@@ -455,15 +461,17 @@
                 <td>
                    
                  <div class="ui-icon ui-icon-circle-minus" title="Verwijderen" id="catVerw" style="cursor: pointer"></div>
-                <%=Html.ActionLink("[verwijderen]", "VerwijderenCategorie", new { categorieID = info.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+                <%//=Html.ActionLink("[verwijderen]", "VerwijderenCategorie", new { categorieID = info.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                 </td>
             </tr> 
             <%} %>
             <tr>
-                <div class="ui-icon ui-icon-circle-plus" title="Toevoegen" id="catToev" style="cursor: pointer"></div>
-                <%=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+                
             </tr>     
         </table>
+        <br />
+        <button id="toevoegenAanCat">Voeg <% =Model.PersoonLidInfo.PersoonDetail.VoorNaam %> toe aan een categorie</button>
+                <%//=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
         <br />
         
         <h3>Opties</h3>
