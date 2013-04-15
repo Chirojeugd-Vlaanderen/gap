@@ -35,6 +35,7 @@ using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using Chiro.Gap.WorkerInterfaces;
 ﻿using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
+using Chiro.Gap.Services;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -579,6 +580,78 @@ namespace Chiro.Gap.Services.Test
             }
             
             Assert.IsTrue(gevangen);
+        }
+
+        /// <summary>
+        ///A test for JaarOvergangUitvoeren
+        ///</summary>
+        [TestMethod()]
+        public void JaarovergangUitvoerenTest()
+        {
+            // ARRANGE
+
+            // model
+
+            var groep = new ChiroGroep();
+
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2011};
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            groep.Afdeling = new List<Afdeling>
+                                 {
+                                     new Afdeling {ID = 4},
+                                     new Afdeling {ID = 5},
+                                     new Afdeling {ID = 6}
+                                 };
+
+            var officieleAfdelingen = new List<OfficieleAfdeling>
+                                          {
+                                              new OfficieleAfdeling {ID = 1},
+                                              new OfficieleAfdeling {ID = 2},
+                                              new OfficieleAfdeling {ID = 3}
+                                          };
+
+            var teActiveren = new List<AfdelingsJaarDetail>
+                                  {
+                                      new AfdelingsJaarDetail
+                                          {
+                                              AfdelingID = 4,
+                                              GeboorteJaarVan = 1993,
+                                              GeboorteJaarTot = 1994,
+                                              OfficieleAfdelingID = 3
+                                          },
+                                      new AfdelingsJaarDetail
+                                          {
+                                              AfdelingID = 5,
+                                              GeboorteJaarVan = 1994,
+                                              GeboorteJaarTot = 1995,
+                                              OfficieleAfdelingID = 2
+                                          },
+                                  };
+
+            // dependency injection
+
+            var dummyRepositoryProvider = new Mock<IRepositoryProvider>();
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Groep>())
+                                   .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<OfficieleAfdeling>())
+                                   .Returns(new DummyRepo<OfficieleAfdeling>(officieleAfdelingen));
+
+            Factory.InstantieRegistreren(dummyRepositoryProvider.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GroepenService>();
+            target.JaarOvergangUitvoeren(teActiveren, groep.ID);
+
+            // ASSERT
+
+            var nieuwGwj = (from gwj in groep.GroepsWerkJaar
+                            orderby groep.ID descending
+                            select gwj).First();
+
+            Assert.AreEqual(nieuwGwj.WerkJaar, 2012);
+            Assert.AreEqual(nieuwGwj.AfdelingsJaar.Count, 2);
         }
     }
 }

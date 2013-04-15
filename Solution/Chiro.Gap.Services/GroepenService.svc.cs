@@ -994,11 +994,11 @@ namespace Chiro.Gap.Services
         /// <para />
         /// Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
         ///		AFDELINGID van de afdelingen die geactiveerd zullen worden
-        ///		Geboortejaren voor elk van die afdelingen
+        ///		Geboortejaren, geslacht en officiele afdeling voor elk van die afdelingen
         /// </summary>
         /// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkJaar</param>
         /// <param name="groepId">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
-        public void JaarovergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepId)
+        public void JaarOvergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepId)
         {
             throw new NotImplementedException(NIEUWEBACKEND.Info);
             // _jaarOvergangManager.JaarOvergangUitvoeren(teActiveren, groepId);

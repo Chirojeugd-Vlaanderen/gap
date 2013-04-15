@@ -155,7 +155,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             try
             {
-                ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(model.Afdelingen, groepID));
+                ServiceHelper.CallService<IGroepenService>(s => s.JaarOvergangUitvoeren(model.Afdelingen, groepID));
             }
             catch (FaultException<FoutNummerFault> ex)
             {
