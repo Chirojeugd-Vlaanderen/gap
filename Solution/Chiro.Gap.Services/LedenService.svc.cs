@@ -709,6 +709,11 @@ namespace Chiro.Gap.Services
 
             nieuwLid.EindeInstapPeriode = eindeInstap;
 
+            foreach (var f in teBewarenFuncties)
+            {
+                nieuwLid.Functie.Add(f);
+            }
+
             // TODO: syncen met kipadmin
             _ledenRepo.SaveChanges();
 

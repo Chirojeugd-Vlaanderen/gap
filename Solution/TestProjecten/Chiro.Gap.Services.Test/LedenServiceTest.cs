@@ -766,5 +766,92 @@ namespace Chiro.Gap.Services.Test
             Assert.AreEqual(gevondenLeden.Count, 1);
             Assert.IsInstanceOfType(gevondenLeden.First(), typeof(Leiding));
         }
+
+        /// <summary>
+        /// Als een functie van toepassing is op leden en leiding,
+        /// mag 'typetoggle' die behouden. Anders niet.
+        ///</summary>
+        [TestMethod()]
+        public void TypeToggleTestFunctieBewaren()
+        {
+            // ARRANGE
+            // We maken een eenvoudig model.
+
+            var groep = new ChiroGroep
+            {
+                GroepsWerkJaar = new List<GroepsWerkJaar>(),
+                Afdeling = new List<Afdeling>(),
+                GelieerdePersoon = new List<GelieerdePersoon>(),
+            };
+
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = groep,
+                Lid = new List<Lid>(),
+                AfdelingsJaar = new List<AfdelingsJaar>(),
+                WerkJaar = 2012
+            };
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            var afdeling = new Afdeling { Naam = "Dingskes", ChiroGroep = groep };
+            groep.Afdeling.Add(afdeling);
+
+            var afdelingsJaar = new AfdelingsJaar
+            {
+                Afdeling = afdeling,
+                GeboorteJaarVan = 1995,
+                GeboorteJaarTot = 1996
+            };
+            groepsWerkJaar.AfdelingsJaar.Add(afdelingsJaar);
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Groep = groep,
+                ID = 2,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1996, 7, 3)
+                    },
+                ChiroLeefTijd = 0
+            };
+            groep.GelieerdePersoon.Add(gelieerdePersoon);
+
+            var lid = new Kind { ID = 1, AfdelingsJaar = afdelingsJaar, GelieerdePersoon = gelieerdePersoon, GroepsWerkJaar = groepsWerkJaar };
+            groepsWerkJaar.Lid.Add(lid);
+
+            var algemeneFunctie = new Functie {Niveau = Niveau.Groep, ID = 3};    // functie voor leden EN leiding
+            var kindFunctie = new Functie {Niveau = Niveau.LidInGroep, ID = 4};      // functie enkel voor (kind)leden
+
+            lid.Functie.Add(algemeneFunctie);
+            lid.Functie.Add(kindFunctie);
+
+            // inversion of control
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(groepsWerkJaar.Lid.ToList()));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            target.TypeToggle(lid.ID);
+
+            // ASSERT
+
+            var gevondenLeden = (from l in groepsWerkJaar.Lid
+                                 where l.GelieerdePersoon.ID == gelieerdePersoon.ID
+                                 select l).ToList();
+
+            Assert.AreEqual(gevondenLeden.Count, 1);
+
+            var nieuwLid = gevondenLeden.First();
+
+            Assert.AreEqual(nieuwLid.Functie.Count,1);
+            Assert.AreEqual(nieuwLid.Functie.First().ID, algemeneFunctie.ID);
+        }
     }
 }
