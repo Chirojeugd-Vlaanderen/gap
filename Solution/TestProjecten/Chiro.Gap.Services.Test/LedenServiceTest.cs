@@ -704,14 +704,15 @@ namespace Chiro.Gap.Services.Test
             {
                 GroepsWerkJaar = new List<GroepsWerkJaar>(),
                 Afdeling = new List<Afdeling>(),
-                GelieerdePersoon = new List<GelieerdePersoon>()
+                GelieerdePersoon = new List<GelieerdePersoon>(),
             };
 
             var groepsWerkJaar = new GroepsWerkJaar
             {
                 Groep = groep,
                 Lid = new List<Lid>(),
-                AfdelingsJaar = new List<AfdelingsJaar>()
+                AfdelingsJaar = new List<AfdelingsJaar>(),
+                WerkJaar = 2012
             };
             groep.GroepsWerkJaar.Add(groepsWerkJaar);
 
@@ -721,15 +722,26 @@ namespace Chiro.Gap.Services.Test
             var afdelingsJaar = new AfdelingsJaar
             {
                 Afdeling = afdeling,
-                GeboorteJaarVan = 2003,
-                GeboorteJaarTot = 2004
+                GeboorteJaarVan = 1995,
+                GeboorteJaarTot = 1996
             };
             groepsWerkJaar.AfdelingsJaar.Add(afdelingsJaar);
 
-            var gelieerdePersoon = new GelieerdePersoon { Groep = groep, ID = 2 };
+            var gelieerdePersoon = new GelieerdePersoon
+                                       {
+                                           Groep = groep,
+                                           ID = 2,
+                                           Persoon =
+                                               new Persoon
+                                                   {
+                                                       Geslacht = GeslachtsType.Vrouw,
+                                                       GeboorteDatum = new DateTime(1996, 7, 3)
+                                                   },
+                                           ChiroLeefTijd = 0
+                                       };
             groep.GelieerdePersoon.Add(gelieerdePersoon);
 
-            var lid = new Kind { ID = 1, AfdelingsJaar = afdelingsJaar, GelieerdePersoon = gelieerdePersoon };
+            var lid = new Kind { ID = 1, AfdelingsJaar = afdelingsJaar, GelieerdePersoon = gelieerdePersoon, GroepsWerkJaar = groepsWerkJaar };
             groepsWerkJaar.Lid.Add(lid);
 
             // inversion of control

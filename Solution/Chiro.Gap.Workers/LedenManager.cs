@@ -539,7 +539,7 @@ namespace Chiro.Gap.Workers
 
                 if (!voorstellid.LeidingMaken && voorstellid.AfdelingsJaarIDs.Count() != 1)
                 {
-                    throw new GapException("Een kind moet exact 1 afdeling krijgen bij het inschrijven.");
+                    throw new FoutNummerException(FoutNummer.AfdelingKindVerplicht, Properties.Resources.AfdelingKindVerplicht);
                 }
 
                 if (voorstellid.AfdelingsJaarIDs != null)

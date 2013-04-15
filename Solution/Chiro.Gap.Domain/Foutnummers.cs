@@ -49,6 +49,7 @@ namespace Chiro.Gap.Domain
 		OnbekendGeslachtFout,
         LidTeJong,
         LidTypeVerkeerd,
+        AfdelingKindVerplicht,
 		#endregion
 
 		#region verkeerde groep
@@ -86,6 +87,5 @@ namespace Chiro.Gap.Domain
         GebruikersRechtWasAlVervallen,
         CategorieNietGekoppeld
         #endregion
-
 	}
 }

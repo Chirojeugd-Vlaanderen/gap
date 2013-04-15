@@ -232,6 +232,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dit is niet mogelijk voor kaderploegen..
+        /// </summary>
+        internal static string NietVoorKader {
+            get {
+                return ResourceManager.GetString("NietVoorKader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De naam van een categorie mag niet leeg zijn..
         /// </summary>
         internal static string OngeldigeCategorieNaam {

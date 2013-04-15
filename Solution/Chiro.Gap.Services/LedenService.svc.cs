@@ -654,32 +654,65 @@ namespace Chiro.Gap.Services
         public int TypeToggle(int lidId)
         {
             var lid = _ledenRepo.ByID(lidId);
+            Lid nieuwLid;
             Gav.Check(lid);
 
-            var voorstel = new LidVoorstel
-                         {
-                             AfdelingsJaarIDs = null,
-                             AfdelingsJarenIrrelevant = true,
-                             LeidingMaken = lid is Kind
-                         };
+            DateTime? eindeInstap = lid.EindeInstapPeriode;
+            var nieuwNiveau = (lid is Kind) ? Niveau.LeidingInGroep : Niveau.LidInGroep;
+
+            var gelieerdePersoon = lid.GelieerdePersoon;
+            var groepsWerkJaar = lid.GroepsWerkJaar;
+
+            // Een bestaand object van type wisselen, is niet mogelijk (denk ik)
+            // dus we verwijderen het bestaande lid, en maken een nieuw aan.
+
+            if (!groepsWerkJaar.Groep.Niveau.HasFlag(Niveau.Groep))
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.LidTypeVerkeerd, Properties.Resources.NietVoorKader);
+            }
+
+            // Behoud bestaande functies die straks nog van 
+            // toepassing zijn, om opnieuw te kunnen toekennen.
+
+            var teBewarenFuncties = (from f in lid.Functie
+                                    where f.Niveau.HasFlag(nieuwNiveau)
+                                    select f).ToList();
+
+
+            // Koppel de bestaande functies en afdelingen los van het lid, en verwijder het bestaande lid.
+
+            lid.Functie.Clear();
+            if (lid is Leiding)
+            {
+                (lid as Leiding).AfdelingsJaar.Clear();
+            }
+
+            gelieerdePersoon.Lid.Remove(lid);
+            groepsWerkJaar.Lid.Remove(lid);
+            _ledenRepo.Delete(lid);
+
+            var voorstelLid = new LidVoorstel
+                                  {
+                                      AfdelingsJaarIDs = null,
+                                      AfdelingsJarenIrrelevant = true,
+                                      LeidingMaken = (nieuwNiveau == Niveau.LeidingInGroep)
+                                  };
+
             try
             {
-                throw new NotImplementedException(NIEUWEBACKEND.Info);
+                nieuwLid = _ledenMgr.NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstelLid);
             }
-            catch (FoutNummerException e)
+            catch (FoutNummerException ex)
             {
-                if (e.FoutNummer == FoutNummer.AfdelingNietBeschikbaar)
-                {
-                    // Deze exception treedt normaal gezien enkel op als er geen afdelingen zijn,
-                    // of als het lid te jong is (maar dat moeten we nog wel implementeren,
-                    // zie #1326).
-                    //
-                    // Omdat we weten dat de exception mogelijk optreedt, handelen we ze af.
-                    throw;
-                }
-
-                throw;
+                throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
             }
+
+            nieuwLid.EindeInstapPeriode = eindeInstap;
+
+            // TODO: syncen met kipadmin
+            _ledenRepo.SaveChanges();
+
+            return gelieerdePersoon.ID;
         }
     }
 }

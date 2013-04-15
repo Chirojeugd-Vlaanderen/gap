@@ -202,4 +202,7 @@
   <data name="EmailOntbreekt" xml:space="preserve">
     <value>Een e-mailadres is verplicht</value>
   </data>
+  <data name="NietVoorKader" xml:space="preserve">
+    <value>Dit is niet mogelijk voor kaderploegen.</value>
+  </data>
 </root>
