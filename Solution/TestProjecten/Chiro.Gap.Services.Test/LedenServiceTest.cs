@@ -690,5 +690,69 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
             Assert.IsNull(leider.UitschrijfDatum);
         }
+
+        /// <summary>
+        ///A test for TypeToggle
+        ///</summary>
+        [TestMethod()]
+        public void TypeToggleTest()
+        {
+            // ARRANGE
+            // We maken een eenvoudig model.
+
+            var groep = new ChiroGroep
+            {
+                GroepsWerkJaar = new List<GroepsWerkJaar>(),
+                Afdeling = new List<Afdeling>(),
+                GelieerdePersoon = new List<GelieerdePersoon>()
+            };
+
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = groep,
+                Lid = new List<Lid>(),
+                AfdelingsJaar = new List<AfdelingsJaar>()
+            };
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            var afdeling = new Afdeling { Naam = "Dingskes", ChiroGroep = groep };
+            groep.Afdeling.Add(afdeling);
+
+            var afdelingsJaar = new AfdelingsJaar
+            {
+                Afdeling = afdeling,
+                GeboorteJaarVan = 2003,
+                GeboorteJaarTot = 2004
+            };
+            groepsWerkJaar.AfdelingsJaar.Add(afdelingsJaar);
+
+            var gelieerdePersoon = new GelieerdePersoon { Groep = groep, ID = 2 };
+            groep.GelieerdePersoon.Add(gelieerdePersoon);
+
+            var lid = new Kind { ID = 1, AfdelingsJaar = afdelingsJaar, GelieerdePersoon = gelieerdePersoon };
+            groepsWerkJaar.Lid.Add(lid);
+
+            // inversion of control
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(groepsWerkJaar.Lid.ToList()));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            target.TypeToggle(lid.ID);
+
+            // ASSERT
+
+            var gevondenLeden = (from l in groepsWerkJaar.Lid
+                                 where l.GelieerdePersoon.ID == gelieerdePersoon.ID
+                                 select l).ToList();
+
+            Assert.AreEqual(gevondenLeden.Count, 1);
+            Assert.IsInstanceOfType(gevondenLeden.First(), typeof(Leiding));
+        }
     }
 }

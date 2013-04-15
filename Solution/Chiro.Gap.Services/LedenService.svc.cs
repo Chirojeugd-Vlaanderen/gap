@@ -664,7 +664,7 @@ namespace Chiro.Gap.Services
                          };
             try
             {
-                return _ledenMgr.Wijzigen(lid, voorstel).GelieerdePersoon.ID;
+                throw new NotImplementedException(NIEUWEBACKEND.Info);
             }
             catch (FoutNummerException e)
             {

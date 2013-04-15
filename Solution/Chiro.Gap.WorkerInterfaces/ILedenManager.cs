@@ -49,29 +49,6 @@ namespace Chiro.Gap.WorkerInterfaces
         LidVoorstel InschrijvingVoorstellen(GelieerdePersoon gp, GroepsWerkJaar gwj, bool leidingIndienMogelijk);
 
         /// <summary>
-        /// Wijzigt een bestaand lid, op basis van de gegevens in <paramref name="voorstellid"/>.
-        /// (in praktijk wordt het lid verwijderd en terug aangemaakt.  Wat op zich zo geen ramp is,
-        /// maar wel tot problemen kan leiden, omdat het ID daardoor verandert.)
-        /// 
-        /// Deze method persisteert.  Dat is belangrijk, want het kan zijn dat er entities
-        /// verdwijnen.  (Bijv. als er nieuwe afdelingen gegeven zijn.)
-        /// </summary>
-        /// <param name="lid">
-        /// Het lidobject van de inschrijving, met gekoppeld gelieerderpersoon, groepswerkjaar, afdelingsjaren
-        /// </param>
-        /// <param name="voorstellid">
-        /// Bevat de afdelingen waar het nieuwe lidobject aan gekoppeld moet worden
-        /// en heeft aan of de gelieerde persoon leiding is.
-        /// </param>
-        /// <returns>
-        /// Het lidobject met de gegevens van de nieuwe inschrijving
-        /// </returns>
-        /// <exception cref="GeenGavException">
-        /// Komt voor als de gebruiker geen GAV-rechten heeft op het <paramref name="lid" />.
-        /// </exception>
-        Lid Wijzigen(Lid lid, LidVoorstel voorstellid);
-
-        /// <summary>
         /// Schrijft een gelieerde persoon in, persisteert niet.  Er mag nog geen lidobject (ook geen inactief) voor de
         /// gelieerde persoon bestaan.
         /// </summary>

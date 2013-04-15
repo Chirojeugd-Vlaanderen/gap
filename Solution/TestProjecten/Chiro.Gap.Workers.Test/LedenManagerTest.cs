@@ -15,6 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+using System.Collections.Generic;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -23,8 +25,10 @@ using Chiro.Gap.SyncInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Moq;
+using Chiro.Gap.Workers;
+using Chiro.Gap.WorkerInterfaces;
 
-namespace Chiro.Gap.Workers.Test.CustomIoc
+namespace Chiro.Gap.Workers.Test
 {
     /// <summary>
     /// Dit is een testclass voor LedenManagerTest,
