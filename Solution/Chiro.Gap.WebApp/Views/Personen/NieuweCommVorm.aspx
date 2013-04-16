@@ -36,22 +36,18 @@
 	%>
 	<ul id="acties">
 		<li>
-			<input type="submit" value="Bewaren" /></li>
+			<input type="submit" value="Bewaren" id="bewaarComm" /></li>
 	</ul>
 	<fieldset>
 		<legend>Communicatievorm toevoegen voor
 			<%=Model.Aanvrager.VolledigeNaam %></legend>
-		<p>
-			Bij het type communicatievorm in het selectievakje zie je telkens een voorbeeldje,
-			zodat je ziet aan welke vormvereisten je gegevens moeten voldoen. Vooral bij
-			telefoonnummers is dat van belang!</p>
 		<%=Html.ValidationSummary() %>
 		<table>
 			<tr>
 				<td>
 					<%=Html.DropDownListFor(
 						mdl=>mdl.NieuweCommVorm.CommunicatieTypeID, 
-						new SelectList(Model.Types.Select(x => new { value = x.ID, text = string.Format("{0}", x.Omschrijving)}), "value", "text"))%>:
+						new SelectList(Model.Types.Select(x => new { value = x.ID, text = string.Format("{0}", x.Omschrijving)}), "value", "text"))%>
 				</td>
 				<td>
 					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
@@ -87,10 +83,12 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					Extra informatie
 				</td>
-				<td>
+            </tr>
+            <tr>
+				<td colspan="2">
 					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nota) %><br />
 					<%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nota) %>
 				</td>

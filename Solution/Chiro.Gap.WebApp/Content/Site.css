@@ -379,6 +379,7 @@ div#title
 	border: 1px solid black;
 	padding: 1ex 1ex 1ex 2ex;
 	margin: 0 10px 10px 0;
+	z-index: 1000;
 }
 
 #livetest

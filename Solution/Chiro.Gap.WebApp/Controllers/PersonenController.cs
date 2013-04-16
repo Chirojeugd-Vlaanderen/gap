@@ -1149,7 +1149,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// om de gegevens mee aan te passen</returns>
         /// <!-- POST: /Personen/CommVormBewerken/gelieerdePersoonID -->
         [AcceptVerbs(HttpVerbs.Post)]
-        [ValidateInput(false)]
+       // [ValidateInput(false)]
         [HandleError]
         public ActionResult CommVormBewerken(CommVormModel model, int gelieerdePersoonID, int groepID)
         {

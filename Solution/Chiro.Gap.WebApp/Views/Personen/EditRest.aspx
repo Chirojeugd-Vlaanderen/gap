@@ -34,19 +34,19 @@
     <div id="PersoonsInformatie">
     <% // dialog voor het weergeven van het info-kadertje %>
     <div id="extraInfoDialog" hidden>Bezig met verwerking...</div>
-    <input id="groepID" value="<%= Model.GroepID %>" hidden/>
+    <input id="groepID" value="<%= Model.GroepID %>" hidden readonly/>
     <% if (Model.PersoonLidInfo.LidInfo != null)
        { %>
-           <input id="lidIdH" value="<%= Model.PersoonLidInfo.LidInfo.LidID %>" hidden/>
+           <input id="lidIdH" value="<%= Model.PersoonLidInfo.LidInfo.LidID %>" hidden readonly/>
       <% }
        else
        { %>
-           <input id="lidIdH" value="geen lidID" hidden />
+           <input id="lidIdH" value="geen lidID" hidden readonly />
       <% }%>
    
-   <input id="GPid" value="<%=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID  %>" hidden/>
-    <input id="versieString" value="<%=Model.PersoonLidInfo.PersoonDetail.VersieString %>" hidden/> 
-    <div id="adresDialog" hidden>
+   <input id="GPid" value="<%=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID  %>" hidden readonly/>
+    <input id="versieString" value="<%=Model.PersoonLidInfo.PersoonDetail.VersieString %>" hidden readonly/> 
+    <div id="adresDialog" hidden >
         <form>
             <fieldset>
                 <label for="straatnaam"><b>Straatnaam</b></label>
@@ -63,6 +63,45 @@
                 <select name="gemeente" id="gemeente" class="ui-widget-content ui-corner-all" >
                     <option></option>
                 </select>
+            </fieldset>
+        </form>
+    </div>
+    
+    <div id="nieuweCommVorm" hidden>
+        <form>
+            <fieldset>
+                <table>
+                    <tr>
+                        <td>
+                            <select id="soort" name="select">
+                                <option>E-mailadres</option>
+                                <option>Telefoonnummer</option>
+                            </select>
+                        </td>
+                        <td><input id="nummer"/></td>
+                    </tr>
+                    <tr>
+                        <td>Als voorkeursadres gebruiken:</td> 
+                        <td><input type="checkbox" id="voorkeurCheck"></td>
+                    </tr>
+                    <tr>
+                        <td>Voor het hele gezin gebruiken: </td>
+                        <td><input type="checkbox" id="gezinCheck"></td>
+                    </tr>
+                    <tr id="snelber">
+                        <td>Voor snelleberichtenlijsten gebruiken:</td>
+                        <td><input type="checkbox" id="sblCheck"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">(wordt gekoppeld aan iedereen op hetzelfde adres)</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Extra info:</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><textarea id="opmerkingen" class="ui-widget-content ui-corner-all" ></textarea></td>
+                    </tr>
+                </table>
             </fieldset>
         </form>
     </div>
@@ -96,9 +135,9 @@
                <td id="geslachtIconen"></td>
            </tr>
            <tr>
-               <td><%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%></td>
-               <td id="gdInfo">
-                   <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
+               <td>GeboorteDatum</td>
+               <td>
+                   <input id="gdInfo" value="<%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>"/>
                </td>
                <td>
                    <div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkGd" style="cursor: pointer"></div>
@@ -107,34 +146,47 @@
            </tr>
 
           <% int counter = 0; %>
-           <% foreach (PersoonsAdresInfo pa in ViewData.Model.PersoonLidInfo.PersoonsAdresInfo) { %>
+          <% if (!Model.PersoonLidInfo.PersoonsAdresInfo.Any())
+             { %>
+               <tr id="adressenLeeg">
+                   <td>Adres</td>
+                   <td></td>
+                   <td></td>
+                   <td></td>
+               </tr>
+               <% }
+             else
+             { %>
+           <% foreach (PersoonsAdresInfo pa in ViewData.Model.PersoonLidInfo.PersoonsAdresInfo)
+              { %>
                <tr id="adressen">      
-                    <%//Hidden fields om gegevens in jQeury uit te kunnen lezen %>
-                   <input id="strH" value="<%=pa.StraatNaamNaam %>" hidden />
-                   <input id="hsnrH" value="<%=pa.HuisNr%>" hidden />
-                   <input id="pstcdH" value="<%=pa.PostNr %>" hidden />
-                   <input id="busH" value="<%=pa.Bus %>" hidden />
-
+                    <% //Hidden fields om gegevens in jQeury uit te kunnen lezen %>
+                   <input id="strH" value="<%= pa.StraatNaamNaam %>" hidden readonly/>
+                   <input id="hsnrH" value="<%= pa.HuisNr %>" hidden readonly/>
+                   <input id="pstcdH" value="<%= pa.PostNr %>" hidden readonly/>
+                   <input id="busH" value="<%= pa.Bus %>" hidden readonly/>
+                   <input id="persoonsAdresID" value="<%= pa.ID %>" hidden readonly/> <% // beter in de tags %>
                     <% counter += 1; %>
-                    <td>Adres <%=counter %></td>
+                    <td>Adres <%= counter %></td>
                     <td id="adres">
-                        <%=Html.Encode(String.Format("{0} {1} {2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus))%>,
-                        <%=Html.Encode(String.Format("{0} {3} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode))%>
-                        <%if (Model.PersoonLidInfo.PersoonDetail.VoorkeursAdresID == pa.PersoonsAdresID){ %>
+                        <%= Html.Encode(String.Format("{0} {1} {2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus)) %>,
+                        <%= Html.Encode(String.Format("{0} {3} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode)) %>
+                        <% if (Model.PersoonLidInfo.PersoonDetail.VoorkeursAdresID == pa.PersoonsAdresID)
+                           { %>
                              <div class="ui-icon ui-icon-mail-closed" id="vkAdres"title="Voorkeurs adres. Klik voor meer info"  style="cursor: pointer"></div>
-                              <%//=Html.ActionLink("[Voorkeursadres maken]", "VoorkeurAdresMaken", new { persoonsAdresID = pa.PersoonsAdresID, gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-                        <%} %>
+                              <% //=Html.ActionLink("[Voorkeursadres maken]", "VoorkeurAdresMaken", new { persoonsAdresID = pa.PersoonsAdresID, gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+                        <% } %>
                     </td>
                     <td>
                         <div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkAdres" style="cursor: pointer"></div>
-                        <%//=Html.ActionLink("[verhuizen]", "Verhuizen", new { id = pa.ID, aanvragerID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-                        <%//=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-                        <%//=Html.ActionLink("[adres toevoegen]", "NieuwAdres", new { id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-                    <%} %>
+                        <% //=Html.ActionLink("[verhuizen]", "Verhuizen", new { id = pa.ID, aanvragerID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+                        <% //=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+                        <% //=Html.ActionLink("[adres toevoegen]", "NieuwAdres", new { id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+                    <% } %>
                     </td>
                     <td></td>
-                 </tr>
-            
+                 </tr>            
+                 <% } %>
             
             <% //EMAIL EN TELEFOONNUMMER 
                 var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(
@@ -144,36 +196,45 @@
                             Validatie = cv.CommunicatieTypeValidatie,
                             Voorbeeld = cv.CommunicatieTypeVoorbeeld
                         });
-
-                foreach (var commType in gegroepeerdeComm)
-                {
-            %>
+                if (!gegroepeerdeComm.Any())
+                { %>
+               <tr id="commLeeg">
+                   <td>Communicatie vorm</td>
+                   <td></td>
+                   <td></td>
+                   <td><%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></td>
+               </tr>
             
-            <%
-                int teller = 0;
+              <% } else {
+
+                    foreach (var commType in gegroepeerdeComm)
+                    {
+              %>
+            
+            <%  int teller = 0;
                 foreach (var cv in commType)
                 {
                     string ctTekst = String.Format(
-                        cv.CommunicatieTypeID == (int)CommunicatieTypeEnum.Email ? "<a href='mailto:{0}'>{0}</a>" : "{0}",
+                        cv.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email ? "<a href='mailto:{0}'>{0}</a>" : "{0}",
                         Html.Encode(cv.Nummer));
                     teller++;
             %>
-             <tr <%=cv.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email ? "id='email'" : "id='tel'" %>>
+             <tr <%= cv.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email ? "id='email'" : "id='tel'" %>>
                  
-                <td><%=commType.Key.Omschrijving + " " + teller %> <input id="cvID" value="<%=cv.ID%>"/></td>
-                <td class="contact" title="<%=Html.Encode(cv.Nota)%>">
-                    <%=cv.Voorkeur ? "<strong>" + ctTekst + "</strong>" : ctTekst%>  
+                <td><%= commType.Key.Omschrijving + " " + teller %> <input id="cvID" value="<%= cv.ID %>" hidden readonly /></td>
+                <td class="contact" title="<%= Html.Encode(cv.Nota) %>">
+                    <%= cv.Voorkeur ? "<strong>" + ctTekst + "</strong>" : ctTekst %>  
                     
                 </td>
                 <td >
                     <div class="contactBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>
                     <% //=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormID = cv.ID })%>
-                    <% =Html.ActionLink("[bewerken]", "CommVormBewerken", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-                    <%//=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+                    <% //=Html.ActionLink("[bewerken]", "CommVormBewerken", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                 </td>
                 <td></td>
-                <% }%>
+                <% } %>
             </tr>
+            <% } %>
             <% } %>
         </table>
 
@@ -310,7 +371,6 @@
             </td>
             <td>
                 <div class="ui-icon ui-icon-pencil" id="bewerkLidgeld" title="Bewerken" style="cursor: pointer"></div>
-                <%//= Html.ActionLink("[aanpassen]", "LidGeldToggle", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
             </td>
             <td></td>
         </tr> 
@@ -447,7 +507,11 @@
         
         <h3>Toegevoegd aan volgende categorie&euml;n:</h3>
         <table>
-            <% foreach (var info in Model.PersoonLidInfo.PersoonDetail.CategorieLijst)
+           <% if (!Model.PersoonLidInfo.PersoonDetail.CategorieLijst.Any())
+              { %>
+                 <p>Geen</p>
+                 <% } 
+              foreach (var info in Model.PersoonLidInfo.PersoonDetail.CategorieLijst)
                { %>
             <tr>
                 <td>
@@ -464,12 +528,9 @@
                 <%//=Html.ActionLink("[verwijderen]", "VerwijderenCategorie", new { categorieID = info.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                 </td>
             </tr> 
-            <%} %>
-            <tr>
-                
-            </tr>     
+            <%} %>     
         </table>
-        <br />
+         <br />
         <button id="toevoegenAanCat">Voeg <% =Model.PersoonLidInfo.PersoonDetail.VoorNaam %> toe aan een categorie</button>
                 <%//=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
         <br />
