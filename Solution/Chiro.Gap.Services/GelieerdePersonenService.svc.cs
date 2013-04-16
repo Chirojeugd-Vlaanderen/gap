@@ -194,6 +194,7 @@ namespace Chiro.Gap.Services
 
             var gelieerdePersonen = from gp in groep.GelieerdePersoon
                                     select gp;
+            // Als we hier crashen, controleer dan of Persoon de kolommen SeNaam en SeVoornaam heeft.
             
             var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
 

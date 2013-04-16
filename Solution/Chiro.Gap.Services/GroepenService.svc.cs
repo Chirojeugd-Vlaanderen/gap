@@ -244,10 +244,17 @@ namespace Chiro.Gap.Services
                                   0 && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
                           select g;
 
-            // Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
-            // Check je netwerkconfiguratie, of (als je thuis werkt) je VPN.
 
+
+            // ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH
             return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
+            // ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH
+            // Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
+            // Werk je op de algemene dev-db, check dan de connectie met devsrv1.
+            // Werk je op een eigen database, dan moeten je connectionstrings aangepast zijn.
+            // en uiteraard moet je database service gestart zijn :-P
+
+
         }
 
         /// <summary>

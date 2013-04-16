@@ -41,8 +41,8 @@ namespace Chiro.Gap.Poco.Model
         public override int ID { get; set; }
         public override byte[] Versie { get; set; }
         public bool AdInAanvraag { get; set; }
-        public string SeNaam { get; set; }
-        public string SeVoornaam { get; set; }
+        public string SeNaam { get; set; }          // Resultaat SOUNDEX op naam (computed)
+        public string SeVoornaam { get; set; }      // Resultaat SOUNDEX op naam (computed)
     
         public virtual ICollection<GelieerdePersoon> GelieerdePersoon { get; set; }
         public virtual ICollection<PersoonsAdres> PersoonsAdres { get; set; }
