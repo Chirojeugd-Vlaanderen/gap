@@ -818,7 +818,14 @@ namespace Chiro.Gap.Services
 
             }
 
-            Mapper.Map<FunctieDetail, Functie>(detail, functie);
+            // Ik gebruik hier geen mappers, om te vermijden dat
+            // er zaken overschreven worden die eigenlijk niet mogen overschreven worden.
+
+            functie.Naam = detail.Naam;
+            functie.Code = detail.Code;
+            functie.LidTypeInt = (int) detail.Type;
+            functie.MaxAantal = detail.MaxAantal;
+            functie.MinAantal = detail.MinAantal;
             
             _functiesRepo.SaveChanges();
 
