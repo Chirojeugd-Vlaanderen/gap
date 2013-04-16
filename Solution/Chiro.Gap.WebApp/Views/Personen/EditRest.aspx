@@ -66,45 +66,6 @@
             </fieldset>
         </form>
     </div>
-    
-    <div id="nieuweCommVorm" hidden>
-        <form>
-            <fieldset>
-                <table>
-                    <tr>
-                        <td>
-                            <select id="soort" name="select">
-                                <option>E-mailadres</option>
-                                <option>Telefoonnummer</option>
-                            </select>
-                        </td>
-                        <td><input id="nummer"/></td>
-                    </tr>
-                    <tr>
-                        <td>Als voorkeursadres gebruiken:</td> 
-                        <td><input type="checkbox" id="voorkeurCheck"></td>
-                    </tr>
-                    <tr>
-                        <td>Voor het hele gezin gebruiken: </td>
-                        <td><input type="checkbox" id="gezinCheck"></td>
-                    </tr>
-                    <tr id="snelber">
-                        <td>Voor snelleberichtenlijsten gebruiken:</td>
-                        <td><input type="checkbox" id="sblCheck"/></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">(wordt gekoppeld aan iedereen op hetzelfde adres)</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Extra info:</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><textarea id="opmerkingen" class="ui-widget-content ui-corner-all" ></textarea></td>
-                    </tr>
-                </table>
-            </fieldset>
-        </form>
-    </div>
 
     <% // PERSOONLIJKE GEGEVENS (LINKERKANT) %>
     <h3>Persoonlijke gegevens</h3>
@@ -224,11 +185,9 @@
                 <td><%= commType.Key.Omschrijving + " " + teller %> <input id="cvID" value="<%= cv.ID %>" hidden readonly /></td>
                 <td class="contact" title="<%= Html.Encode(cv.Nota) %>">
                     <%= cv.Voorkeur ? "<strong>" + ctTekst + "</strong>" : ctTekst %>  
-                    
                 </td>
                 <td >
                     <div class="contactBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>
-                    <% //=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormID = cv.ID })%>
                     <% //=Html.ActionLink("[bewerken]", "CommVormBewerken", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                 </td>
                 <td></td>

@@ -3,6 +3,7 @@ The base color for this template is #fff. If you'd like
 to use a different color start by replacing all instances of
 #fff with your new color.
 ----------------------------------------------------------*/
+[hidden] { display: none; }
 
 body
 {

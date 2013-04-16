@@ -1,4 +1,12 @@
-﻿//--------------------------------------------------------------------------------
+﻿$(function() {
+//defaults
+$.fn.editable.defaults.mode = 'inline';
+$.fn.editable.defaults.clear = true;
+$.fn.editable.defaults.toggle = 'manual';
+});
+
+    
+//--------------------------------------------------------------------------------
 // functie om extra informatie te tonen in een dialog
 // Maak een <div id="eenID"></div> aan in de pagina waar je de dialog wil
 // doen verschijnen en geef het id mee in de functie.

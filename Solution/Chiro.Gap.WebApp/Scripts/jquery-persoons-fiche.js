@@ -97,7 +97,7 @@ $(function () {
 
     $('#voornaamInfo').editable({
         validate: function (value) {
-            if ($.trim(value) == '') return 'Dit veld moet ingevuld worden!';
+            if ($.trim(value) == '') return 'Dit veld mag niet leeg zijn!';
         }
     })
         .on('save', function (e, params) {
@@ -117,7 +117,7 @@ $(function () {
 
     $('#achternaamInfo').editable({
         validate: function (value) {
-            if ($.trim(value) == '') return 'Dit veld moet ingevuld worden!';
+            if ($.trim(value) == '') return 'Dit veld mag niet leeg zijn!';
         }
     })
         .on('save', function (e, params) {
@@ -157,7 +157,18 @@ $(function () {
     //------------------------------------------------------------------------------------------
     // Algemeen
     $('.contact')
-        .editable()
+        .editable({
+            // reg ex die zorgt voor de validatie van het e-mail adres
+            validate: function (value) {
+                if ($.trim(value) == '') return "Dit veld mag niet leeg zijn! gebruik '-' om te verwijderen";
+
+                var emailReg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                var telReg = /^[0 - 9]{2,4}\s?-?([0-9]{2}){3}$/;
+                if (!emailReg.test(value) || !telReg.test(value)) {
+                    return "De ingegeven waarde is ongeldig";
+                };
+            }
+        })
         .on('save', function (e, params) {
             e.preventDefault();
             var cvID = $(this).parent().find('td:first input').val();
@@ -169,7 +180,6 @@ $(function () {
         e.stopPropagation();
         e.preventDefault();
 
-        //TODO: validatie (email adres - tel) 
         $(this).parent().parent().find('td:eq(1)').editable('toggle');
     });
     //------------------------------------------------------------------------------------------
@@ -225,34 +235,52 @@ $(function () {
     });
     //------------------------------------------------------------------------------------------
     //Nieuwe communicatievorm toevoegen
-   
 
     $('.comToev').click(function () {
         var url = "/" + GID + "/Personen/NieuweCommVorm?gelieerdePersoonID=" + GPid;
         $('#extraInfoDialog').load(url, function () {
             gedeeltelijkTonen();
+            var attri = '000-00 00 00';
+            $('#NieuweCommVorm_Nummer').attr('placeholder', attri);
+            $('#NieuweCommVorm_Nummer').attr('required', true);
+
             $('#NieuweCommVorm_CommunicatieTypeID').on('change', function () {
                 var waarde = $(this).val();
-                alert(waarde);
                 switch (waarde) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                case 8:
-                    break;
-                default:
+                    case '1':
+                        attri = '000-00 00 00';
+                        $('#NieuweCommVorm_Nummer').attr('type', 'tel');
+                        break;
+                    case '2':
+                        attri = '000-00 00 00';
+                        $('#NieuweCommVorm_Nummer').attr('type', 'tel');
+                        break;
+                    case '3':
+                        attri = 'iemand@voorbeeld.be';
+                        $('#NieuweCommVorm_Nummer').attr('type', 'email');
+                        break;
+                    case '4':
+                        $('#NieuweCommVorm_Nummer').attr('type', 'url');
+                        attri = 'http://www.voorbeeld.be';
+                        break;
+                    case '5':
+                        $('#NieuweCommVorm_Nummer').attr('type', 'email');
+                        attri = 'iemand@voorbeeld.be';
+                        break;
+                    case '6':
+                        attri = 'XMPP';
+                        break;
+                    case '7':
+                        attri = 'Twitteraccount';
+                        break;
+                    case '8':
+                        attri = 'Statusnet';
+                        break;
+                    default:
+                        $('#NieuweCommVorm_Nummer').attr('type', 'tel');
+                        attri = '000-00 00 00';
                 }
+                $('#NieuweCommVorm_Nummer').attr('placeholder', attri);
             });
             success:
             {
@@ -263,7 +291,6 @@ $(function () {
                     buttons: {
                         "Bewaren": function () {
                             $('#bewaarComm').click();
-
                         },
                         "Annuleren": function () {
                             $(this).dialog('close');
@@ -275,10 +302,6 @@ $(function () {
     });
 
     //------------------------------------------------------------------------------------------
-    //geboortedatum
-    // NOG TE MAKEN
-    //------------------------------------------------------------------------------------------
-
     //Adres
     //verster wordt getoond bij het wijzigen van een adres, gegevens worden automatisch ingevuld
     // (uitgelezen uit de hiddenfields op de pagina)
