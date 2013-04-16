@@ -647,7 +647,7 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             var nieuwGwj = (from gwj in groep.GroepsWerkJaar
-                            orderby groep.ID descending
+                            orderby gwj.WerkJaar descending
                             select gwj).First();
 
             Assert.AreEqual(nieuwGwj.WerkJaar, 2012);

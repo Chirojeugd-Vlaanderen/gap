@@ -463,15 +463,15 @@ namespace Chiro.Gap.ServiceContracts
 
 		#region jaarovergang
 
-		/// <summary>
-		/// Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.
-		/// <para />
-		/// Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
-		///		AFDELINGID van de afdelingen die geactiveerd zullen worden
-		///		Geboortejaren voor elk van die afdelingen
-		/// </summary>
-		/// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkJaar</param>
-		/// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
+        ///  <summary>
+        ///  Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.
+        ///  <para />
+        ///  Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
+        /// 		AFDELINGID van de afdelingen die geactiveerd zullen worden
+        /// 		Geboortejaren, geslacht en officiele afdeling voor elk van die afdelingen
+        ///  </summary>
+        /// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkJaar</param>
+        /// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]

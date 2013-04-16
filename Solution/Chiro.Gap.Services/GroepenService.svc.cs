@@ -163,7 +163,7 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Ophalen van Groepsinformatie
         /// </summary>
-        /// <param name="groepId">groepId van groep waarvan we de informatie willen opvragen</param>
+        /// <param name="groepId">groepID van groep waarvan we de informatie willen opvragen</param>
         /// <returns>
         /// De gevraagde informatie over de groep met id <paramref name="groepId"/>
         /// </returns>
@@ -291,7 +291,7 @@ namespace Chiro.Gap.Services
         /// Haalt groepswerkjaarId van het recentst gemaakte groepswerkjaar
         /// voor een gegeven groep op.
         /// </summary>
-        /// <param name="groepId">groepId van groep</param>
+        /// <param name="groepId">groepID van groep</param>
         /// <returns>ID van het recentste GroepsWerkJaar</returns>
         public int RecentsteGroepsWerkJaarIDGet(int groepId)
         {
@@ -307,7 +307,7 @@ namespace Chiro.Gap.Services
         /// Haalt gedetailleerde gegevens op van het recentst gemaakte groepswerkjaar
         /// voor een gegeven groep op.
         /// </summary>
-        /// <param name="groepId">groepId van groep</param>
+        /// <param name="groepId">groepID van groep</param>
         /// <returns>
         /// De details van het recentste groepswerkjaar
         /// </returns>
@@ -989,19 +989,69 @@ namespace Chiro.Gap.Services
             return Mapper.Map<IEnumerable<GebruikersRecht>, IEnumerable<GebruikersDetail>>(groep.GebruikersRecht);
         }
 
-        /// <summary>
-        /// Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.
-        /// <para />
-        /// Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
-        ///		AFDELINGID van de afdelingen die geactiveerd zullen worden
-        ///		Geboortejaren, geslacht en officiele afdeling voor elk van die afdelingen
-        /// </summary>
+        ///  <summary>
+        ///  Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.
+        ///  <para />
+        ///  Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
+        /// 		AFDELINGID van de afdelingen die geactiveerd zullen worden
+        /// 		Geboortejaren, geslacht en officiele afdeling voor elk van die afdelingen
+        ///  </summary>
         /// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkJaar</param>
-        /// <param name="groepId">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
-        public void JaarOvergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepId)
+        /// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
+        public void JaarOvergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-            // _jaarOvergangManager.JaarOvergangUitvoeren(teActiveren, groepId);
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var vorigGwj = _groepenMgr.HuidigWerkJaar(groep);
+
+            if (!_groepsWerkJarenMgr.OvergangMogelijk(DateTime.Today, vorigGwj.WerkJaar))
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.OvergangTeVroeg, Properties.Resources.OvergangTeVroeg);
+            }
+
+            var nieuwGwj = new GroepsWerkJaar {WerkJaar = _groepsWerkJarenMgr.NieuweWerkJaar(groepID), Groep = groep};
+            groep.GroepsWerkJaar.Add(nieuwGwj);
+
+            foreach (var afdelingsJaarDetail in teActiveren)
+            {
+                Debug.Assert(groep is ChiroGroep);
+
+                var afd = (from a in ((ChiroGroep) groep).Afdeling
+                           where a.ID == afdelingsJaarDetail.AfdelingID
+                           select a).FirstOrDefault();
+
+                var offAfd = _officieleAfdelingenRepo.ByID(afdelingsJaarDetail.OfficieleAfdelingID);
+
+                if (afd == null || offAfd == null)
+                {
+                    // gepruts => geen GAV
+                    throw FaultExceptionHelper.GeenGav();
+                }
+
+                // TODO: validatie opkuisen
+                if (afdelingsJaarDetail.GeboorteJaarTot < afdelingsJaarDetail.GeboorteJaarVan)
+                {
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.ChronologieFout,
+                                                          String.Format(
+                                                              Properties.Resources.FouteGeboorteJarenAfdeling, afd.Naam));
+                }
+
+                nieuwGwj.AfdelingsJaar.Add(new AfdelingsJaar
+                                               {
+                                                   Afdeling = afd,
+                                                   GeboorteJaarVan = afdelingsJaarDetail.GeboorteJaarVan,
+                                                   GeboorteJaarTot = afdelingsJaarDetail.GeboorteJaarTot,
+                                                   Geslacht = afdelingsJaarDetail.Geslacht,
+                                                   OfficieleAfdeling = offAfd
+                                               });
+            }
+
+            _groepenRepo.SaveChanges();
         }
 
         /// <summary>

@@ -205,4 +205,10 @@
   <data name="NietVoorKader" xml:space="preserve">
     <value>Dit is niet mogelijk voor kaderploegen.</value>
   </data>
+  <data name="FouteGeboorteJarenAfdeling" xml:space="preserve">
+    <value>'Geboortejaar van' mag niet groter zijn dan 'geboortejaar tot'.</value>
+  </data>
+  <data name="OvergangTeVroeg" xml:space="preserve">
+    <value>Het is nog te vroeg op het werkjaar om een nieuw werkjaar te beginnen.</value>
+  </data>
 </root>

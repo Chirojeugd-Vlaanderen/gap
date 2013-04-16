@@ -21,56 +21,56 @@ namespace Chiro.Gap.Domain
 	/// <summary>
 	/// Identificatie van de fout
 	/// </summary>
-	public enum FoutNummer
-	{
-		AlgemeneFout,
-		GeenGav,
-		BestaatAl,
-		ValidatieFout,
-		FouteGeboortejarenVoorAfdeling,
-		ChronologieFout,		// fout ivm volgorde datums
+    public enum FoutNummer
+    {
+        AlgemeneFout,
+        GeenGav,
+        BestaatAl,
+        ValidatieFout,
+        FouteGeboortejarenVoorAfdeling,
+        ChronologieFout,		// fout ivm volgorde datums
 
         #region adressen
         LandNietGevonden,
-		WoonPlaatsNietGevonden,
-		StraatNietGevonden,
-		StraatOntbreekt,
-		OngeldigPostNummer,
-		WoonPlaatsOntbreekt,
-		WonenDaarAl,
-		AdresOntbreekt,
+        WoonPlaatsNietGevonden,
+        StraatNietGevonden,
+        StraatOntbreekt,
+        OngeldigPostNummer,
+        WoonPlaatsOntbreekt,
+        WonenDaarAl,
+        AdresOntbreekt,
         AdresNietGekoppeld,
-		#endregion
+        #endregion
 
-		#region leden
-		AlgemeneLidFout,
-		AlgemeneKindFout,
-		AlgemeneLeidingFout,
-		OnbekendGeslachtFout,
+        #region leden
+        AlgemeneLidFout,
+        AlgemeneKindFout,
+        AlgemeneLeidingFout,
+        OnbekendGeslachtFout,
         LidTeJong,
         LidTypeVerkeerd,
         AfdelingKindVerplicht,
-		#endregion
+        #endregion
 
-		#region verkeerde groep
-		CategorieNietVanGroep,
-		FunctieNietVanGroep,
-		AfdelingNietVanGroep,
-		GroepsWerkJaarNietVanGroep,
-		UitstapNietVanGroep,
-		#endregion
+        #region verkeerde groep
+        CategorieNietVanGroep,
+        FunctieNietVanGroep,
+        AfdelingNietVanGroep,
+        GroepsWerkJaarNietVanGroep,
+        UitstapNietVanGroep,
+        #endregion
 
-		#region niet beschikbaar in werkJaar
-		GroepsWerkJaarNietBeschikbaar,
-		FunctieNietBeschikbaar,
-		AfdelingNietBeschikbaar,
-		#endregion
+        #region niet beschikbaar in werkJaar
+        GroepsWerkJaarNietBeschikbaar,
+        FunctieNietBeschikbaar,
+        AfdelingNietBeschikbaar,
+        #endregion
 
-		#region container niet leeg
-		CategorieNietLeeg,
-		FunctieNietLeeg,
-		AfdelingNietLeeg,
-		#endregion
+        #region container niet leeg
+        CategorieNietLeeg,
+        FunctieNietLeeg,
+        AfdelingNietLeeg,
+        #endregion
 
         #region verplichte gegevens
         AdNummerVerplicht,
@@ -79,13 +79,14 @@ namespace Chiro.Gap.Domain
 
         #region nog te groeperen
         GeenDatabaseVerbinding,
-		Concurrency,
-		DeelnemerNietVanUitstap,
+        Concurrency,
+        DeelnemerNietVanUitstap,
         PublicatieInactief,
         BestelPeriodeDubbelpuntVoorbij,
         GebruikersRechtNietVerlengbaar,
         GebruikersRechtWasAlVervallen,
-        CategorieNietGekoppeld
+        CategorieNietGekoppeld,
+        OvergangTeVroeg,
         #endregion
-	}
+    }
 }
