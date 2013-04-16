@@ -620,10 +620,14 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
+            var nationaleFuncties = (from f in _functiesRepo.Select()
+                                             where f.IsNationaal select f).ToList();
+            var eigenFuncties = groepsWerkJaar.Groep.Functie.ToList();
+            var relevanteFuncties = eigenFuncties.Union(nationaleFuncties).ToList();
+
+
             var problemen = _functiesMgr.AantallenControleren(groepsWerkJaar,
-                                                              groepsWerkJaar.Groep.Functie.Union(
-                                                                  _veelGebruikt.NationaleFunctiesOphalen(_functiesRepo))
-                                                                            .ToList());
+                                                              relevanteFuncties);
             var resultaat = (from f in groepsWerkJaar.Groep.Functie
                              join p in problemen on f.ID equals p.ID
                              select new FunctieProbleemInfo

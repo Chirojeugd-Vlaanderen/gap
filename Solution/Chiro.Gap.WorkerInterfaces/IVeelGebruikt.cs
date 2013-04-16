@@ -27,41 +27,6 @@ namespace Chiro.Gap.WorkerInterfaces
     public interface IVeelGebruikt
     {
         /// <summary>
-        /// Verwijdert het recentste groepswerkjaar van groep met ID <paramref name="groepID"/> uit de cache.
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van de groep waarvan groepswerkjaarcache te resetten
-        /// </param>
-        void GroepsWerkJaarResetten(int groepID);
-
-        /// <summary>
-        /// Haalt van de groep met gegeven <paramref name="groepID"/> het ID van het recentste groepswerkjaar op.
-        /// </summary>
-        /// <param name="groepID">
-        ///     ID van de groep waarvan groepswerkjaarID gevraagd
-        /// </param>
-        /// <param name="groepenRepo">groepenrepository, via dewelke het groepswerkjaar indien nodig opgehaald
-        /// kan worden.</param>
-        /// <returns>
-        /// Het ID van het recentste groespwerkjaar van de groep
-        /// </returns>
-        int GroepsWerkJaarIDOphalen(int groepID, IRepository<Groep> groepenRepo);
-
-        /// <summary>
-        /// Haalt alle nationale functies op
-        /// </summary>
-        /// <param name="functieRepo">Repository die deze worker kan gebruiken om functies
-        ///     op te vragen.</param>
-        /// <returns>
-        /// Lijstje nationale functies
-        /// </returns>
-        /// <remarks>
-        /// De repository wordt bewust niet geregeld door de constructor van deze klasse,
-        /// omdat we moeten vermijden dat de IOC-container hiervoor een nieuwe context aanmaakt.
-        /// </remarks>
-        List<Functie> NationaleFunctiesOphalen(IRepository<Functie> functieRepo);
-
-        /// <summary>
         /// Haalt het groepID van de groep met gegeven stamnummer op uit de cache.
         /// </summary>
         /// <param name="code">
