@@ -654,6 +654,87 @@ namespace Chiro.Gap.Services.Test
             Assert.AreEqual(nieuwGwj.AfdelingsJaar.Count, 2);
         }
 
+        /// <summary>
+        ///Controleert of JaarOvergangUitvoeren rekening houdt met de minimumleeftijd
+        /// bij de afdelingsindeling.
+        ///</summary>
+        [TestMethod()]
+        public void JaarovergangUitvoerenMinimumLeeftijdTest()
+        {
+            // ARRANGE
+
+            // model
+
+            bool gedetecteerd = false;
+            var groep = new ChiroGroep();
+
+            var groepsWerkJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2011 };
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            groep.Afdeling = new List<Afdeling>
+                                 {
+                                     new Afdeling {ID = 4},
+                                     new Afdeling {ID = 5},
+                                     new Afdeling {ID = 6}
+                                 };
+
+            var officieleAfdelingen = new List<OfficieleAfdeling>
+                                          {
+                                              new OfficieleAfdeling {ID = 1},
+                                              new OfficieleAfdeling {ID = 2},
+                                              new OfficieleAfdeling {ID = 3}
+                                          };
+
+            var teActiveren = new List<AfdelingsJaarDetail>
+                                  {
+                                      new AfdelingsJaarDetail
+                                          {
+                                              AfdelingID = 4,
+                                              GeboorteJaarVan = 1993,
+                                              GeboorteJaarTot = 1994,
+                                              OfficieleAfdelingID = 3
+                                          },
+                                      new AfdelingsJaarDetail
+                                          {
+                                              AfdelingID = 5,
+                                              GeboorteJaarVan = 1994,
+                                              GeboorteJaarTot = 2007,   // kleuter in 2012
+                                              OfficieleAfdelingID = 2
+                                          },
+                                  };
+
+            // dependency injection
+
+            var dummyRepositoryProvider = new Mock<IRepositoryProvider>();
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Groep>())
+                                   .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<OfficieleAfdeling>())
+                                   .Returns(new DummyRepo<OfficieleAfdeling>(officieleAfdelingen));
+
+            Factory.InstantieRegistreren(dummyRepositoryProvider.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GroepenService>();
+            try
+            {
+                target.JaarOvergangUitvoeren(teActiveren, groep.ID);
+            }
+            catch (FaultException<FoutNummerFault> ex)
+            {
+                gedetecteerd = ex.Detail.FoutNummer == FoutNummer.OngeldigeGeboorteJarenVoorAfdeling;
+            }
+            
+
+            // ASSERT
+
+            var nieuwGwj = (from gwj in groep.GroepsWerkJaar
+                            orderby gwj.WerkJaar descending
+                            select gwj).First();
+
+            Assert.IsTrue(gedetecteerd);
+        }
+
         ///<summary>
         /// Controleert of AfdelingsJaarBewaren rekening houdt met de minimumleeftijd.
         ///</summary>
