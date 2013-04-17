@@ -51,13 +51,13 @@ namespace Chiro.Gap.Poco.Model.Exceptions
         /// <summary>
         /// Instantieert een ValidatieException met een opgegeven foutboodschap en een foutnummer
         /// </summary>
-        /// <param name="message">
-        /// De foutboodschap die doorgegeven moet worden
-        /// </param>
         /// <param name="foutNummer">
-        /// Het foutnummer
+        ///     Het foutnummer
         /// </param>
-        public ValidatieException(string message, FoutNummer foutNummer) : base(message)
+        /// <param name="message">
+        ///     De foutboodschap die doorgegeven moet worden
+        /// </param>
+        public ValidatieException(FoutNummer foutNummer, string message) : base(message)
         {
             FoutNummer = foutNummer;
         }

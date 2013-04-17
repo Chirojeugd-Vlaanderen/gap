@@ -26,6 +26,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Properties;
 
@@ -96,16 +97,6 @@ namespace Chiro.Gap.Workers
                     Resources.AfdelingNietVanGroep);
             }
 
-            // Leden moeten minstens in het 1ste leerjaar zitten voor we ze inschrijven.
-            // De maximumleeftijd is arbitrair nattevingerwerk. :-)
-            if (!(gwj.WerkJaar - geboorteJaarEind >= Settings.Default.MinLidLeefTijd)
-                || !(gwj.WerkJaar - geboorteJaarBegin <= Settings.Default.MaxLidLeefTijd)
-                || !(geboorteJaarBegin <= geboorteJaarEind))
-            {
-                throw new ValidatieException(Resources.OngeldigeGeboortejarenVoorAfdeling,
-                                             FoutNummer.FouteGeboortejarenVoorAfdeling);
-            }
-
             var afdelingsJaar = new AfdelingsJaar
                                     {
                                         OfficieleAfdeling = oa,
@@ -120,6 +111,17 @@ namespace Chiro.Gap.Workers
             a.AfdelingsJaar.Add(afdelingsJaar);
             oa.AfdelingsJaar.Add(afdelingsJaar);
             gwj.AfdelingsJaar.Add(afdelingsJaar);
+
+            FoutNummer? afdelingsJaarFout = new AfdelingsJaarValidator().FoutNummer(afdelingsJaar);
+
+            if (afdelingsJaarFout == FoutNummer.OngeldigeGeboorteJarenVoorAfdeling)
+            {
+                throw new ValidatieException(afdelingsJaarFout.Value, Resources.OngeldigeGeboorteJarenVoorAfdeling);
+            }
+            if (afdelingsJaarFout != null)
+            {
+                throw new ValidatieException(afdelingsJaarFout.Value, Resources.AfdelingsJaarOngeldig);
+            }
 
             return afdelingsJaar;
         }

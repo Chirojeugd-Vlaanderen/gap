@@ -206,7 +206,7 @@
   <data name="PersonenKomenNietOvereen" xml:space="preserve">
     <value>Personen komen niet overeen.</value>
   </data>
-  <data name="OngeldigeGeboortejarenVoorAfdeling" xml:space="preserve">
+  <data name="OngeldigeGeboorteJarenVoorAfdeling" xml:space="preserve">
     <value>Ongeldige geboortejaren voor het afdelingsjaar</value>
   </data>
   <data name="AfdelingsJaarBevatLeden" xml:space="preserve">
@@ -330,5 +330,8 @@ de helpdesk</value>
   </data>
   <data name="AfdelingKindVerplicht" xml:space="preserve">
     <value>Een kind moet exact 1 afdeling krijgen bij het inschrijven.</value>
+  </data>
+  <data name="AfdelingsJaarOngeldig" xml:space="preserve">
+    <value>Ongeldige koppeling afdeling-werkjaar</value>
   </data>
 </root>

@@ -15,13 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+using System;
 using System.Collections.Generic;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class AfdelingsJaar: BasisEntiteit
+    public partial class AfdelingsJaar: BasisEntiteit, IPeriode
     {
         public AfdelingsJaar()
         {
@@ -50,6 +52,19 @@ namespace Chiro.Gap.Poco.Model
             set { GeslachtsInt = (int)value; }
         }
 
+        #region Implementeer IPeriode, om de PeriodeValidator te kunnen gebruiken
+
+        DateTime? IPeriode.DatumVan
+        {
+            get { return new DateTime(GeboorteJaarVan, 1, 1); }
+        }
+
+        DateTime? IPeriode.DatumTot
+        {
+            get { return new DateTime(GeboorteJaarTot, 12, 31); }
+        }
+
+        #endregion
     }
     
 }

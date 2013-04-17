@@ -26,6 +26,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Properties;
 
@@ -122,30 +123,6 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            if (gp.Groep.ID != gwj.Groep.ID)
-            {
-                throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietVanGroep,
-                                              Resources.GroepsWerkJaarNietVanGroep);
-            }
-
-            // Geboortedatum is verplicht als je lid wilt worden
-            if (!gp.GebDatumMetChiroLeefTijd.HasValue)
-            {
-                throw new InvalidOperationException(Resources.GeboorteDatumOntbreekt);
-            }
-
-            // Je moet oud genoeg zijn
-            if (gwj.WerkJaar - gp.GebDatumMetChiroLeefTijd.Value.Year < Properties.Settings.Default.MinLidLeefTijd)
-            {
-                throw new FoutNummerException(FoutNummer.LidTeJong, Properties.Resources.MinimumLeeftijd);
-            }
-
-            // en nog leven ook
-            if (gp.Persoon.SterfDatum.HasValue)
-            {
-                throw new InvalidOperationException(Resources.PersoonIsOverleden);
-            }
-
             // GroepsWerkJaar en GelieerdePersoon invullen
             lid.GroepsWerkJaar = gwj;
             lid.GelieerdePersoon = gp;
@@ -175,6 +152,33 @@ namespace Chiro.Gap.Workers
                                              ? gwj.GetEindeJaarovergang()
                                              : stdProbeerPeriode;
             }
+
+            FoutNummer? fout = new LidValidator().FoutNummer(lid);
+
+            if (fout == FoutNummer.GroepsWerkJaarNietVanGroep)
+            {
+                throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietVanGroep,
+                                              Resources.GroepsWerkJaarNietVanGroep);
+            }
+
+            // Geboortedatum is verplicht als je lid wilt worden
+            if (fout == FoutNummer.GeboorteDatumOntbreekt)
+            {
+                throw new  ValidatieException(FoutNummer.GeboorteDatumOntbreekt, Resources.GeboorteDatumOntbreekt);
+            }
+
+            // Je moet oud genoeg zijn
+            if (fout == FoutNummer.LidTeJong)
+            {
+                throw new ValidatieException(FoutNummer.LidTeJong, Properties.Resources.MinimumLeeftijd);
+            }
+
+            // en nog leven ook
+            if (fout == FoutNummer.PersoonOverleden)
+            {
+                throw new ValidatieException(FoutNummer.PersoonOverleden, Resources.PersoonIsOverleden);
+            }
+
 
             return lid;
         }
@@ -420,8 +424,7 @@ namespace Chiro.Gap.Workers
 
             if (!gp.GebDatumMetChiroLeefTijd.HasValue)
             {
-                // TODO: FoutnummerException van maken
-                throw new GapException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
+                throw new FoutNummerException(FoutNummer.GeboorteDatumOntbreekt, Properties.Resources.GeboorteDatumOntbreekt);
             }
 
             var resultaat = new LidVoorstel();
@@ -430,7 +433,7 @@ namespace Chiro.Gap.Workers
 
             var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
-            if (gwj.WerkJaar - geboortejaar < Properties.Settings.Default.MinLidLeefTijd)
+            if (gwj.WerkJaar - geboortejaar < new LidValidator().MinimumLeeftijd)
             {
                 throw new FoutNummerException(FoutNummer.LidTeJong, Properties.Resources.MinimumLeeftijd);
             }
