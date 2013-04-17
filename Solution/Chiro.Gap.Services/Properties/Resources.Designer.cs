@@ -169,15 +169,6 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;Geboortejaar van&apos; mag niet groter zijn dan &apos;geboortejaar tot&apos;..
-        /// </summary>
-        internal static string FouteGeboorteJarenAfdeling {
-            get {
-                return ResourceManager.GetString("FouteGeboorteJarenAfdeling", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to De groep van de uitstap verschilt van de groep van de deelnemer..
         /// </summary>
         internal static string FoutieveGroepUitstap {
@@ -264,6 +255,15 @@ namespace Chiro.Gap.Services.Properties {
         internal static string OngeldigeCategorieNaam {
             get {
                 return ResourceManager.GetString("OngeldigeCategorieNaam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;Geboortejaar van&apos; mag niet groter zijn dan &apos;geboortejaar tot&apos;..
+        /// </summary>
+        internal static string OngeldigeGeborteJarenAfdelingsJaar {
+            get {
+                return ResourceManager.GetString("OngeldigeGeborteJarenAfdelingsJaar", resourceCulture);
             }
         }
         

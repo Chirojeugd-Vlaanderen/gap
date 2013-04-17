@@ -1042,22 +1042,31 @@ namespace Chiro.Gap.Services
                     throw FaultExceptionHelper.GeenGav();
                 }
 
-                // TODO: validatie opkuisen
-                if (afdelingsJaarDetail.GeboorteJaarTot < afdelingsJaarDetail.GeboorteJaarVan)
+                var nieuwAfdelingsJaar = new AfdelingsJaar
+                                             {
+                                                 Afdeling = afd,
+                                                 GeboorteJaarVan = afdelingsJaarDetail.GeboorteJaarVan,
+                                                 GeboorteJaarTot = afdelingsJaarDetail.GeboorteJaarTot,
+                                                 Geslacht = afdelingsJaarDetail.Geslacht,
+                                                 OfficieleAfdeling = offAfd,
+                                                 GroepsWerkJaar = nieuwGwj
+                                             };
+
+                FoutNummer? foutNummer = new AfdelingsJaarValidator().FoutNummer(nieuwAfdelingsJaar);
+
+                if (foutNummer == FoutNummer.OngeldigeGeboorteJarenVoorAfdeling || foutNummer == FoutNummer.ChronologieFout)
                 {
-                    throw FaultExceptionHelper.FoutNummer(FoutNummer.ChronologieFout,
-                                                          String.Format(
-                                                              Properties.Resources.FouteGeboorteJarenAfdeling, afd.Naam));
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.OngeldigeGeboorteJarenVoorAfdeling,
+                                      String.Format(
+                                          Properties.Resources.OngeldigeGeborteJarenAfdelingsJaar, afd.Naam));
+                }
+                if (foutNummer != null)
+                {
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.ValidatieFout,
+                                                          Properties.Resources.OngeldigAfdelingsJaar);
                 }
 
-                nieuwGwj.AfdelingsJaar.Add(new AfdelingsJaar
-                                               {
-                                                   Afdeling = afd,
-                                                   GeboorteJaarVan = afdelingsJaarDetail.GeboorteJaarVan,
-                                                   GeboorteJaarTot = afdelingsJaarDetail.GeboorteJaarTot,
-                                                   Geslacht = afdelingsJaarDetail.Geslacht,
-                                                   OfficieleAfdeling = offAfd
-                                               });
+                nieuwGwj.AfdelingsJaar.Add(nieuwAfdelingsJaar);
             }
 
             _groepenRepo.SaveChanges();

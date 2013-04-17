@@ -599,9 +599,9 @@ namespace Chiro.Gap.Services.Test
 
             groep.Afdeling = new List<Afdeling>
                                  {
-                                     new Afdeling {ID = 4},
-                                     new Afdeling {ID = 5},
-                                     new Afdeling {ID = 6}
+                                     new Afdeling {ID = 4, ChiroGroep = groep},
+                                     new Afdeling {ID = 5, ChiroGroep = groep},
+                                     new Afdeling {ID = 6, ChiroGroep = groep}
                                  };
 
             var officieleAfdelingen = new List<OfficieleAfdeling>
@@ -618,14 +618,16 @@ namespace Chiro.Gap.Services.Test
                                               AfdelingID = 4,
                                               GeboorteJaarVan = 1993,
                                               GeboorteJaarTot = 1994,
-                                              OfficieleAfdelingID = 3
+                                              OfficieleAfdelingID = 3,
+                                              Geslacht = GeslachtsType.Gemengd
                                           },
                                       new AfdelingsJaarDetail
                                           {
                                               AfdelingID = 5,
                                               GeboorteJaarVan = 1994,
                                               GeboorteJaarTot = 1995,
-                                              OfficieleAfdelingID = 2
+                                              OfficieleAfdelingID = 2,
+                                              Geslacht = GeslachtsType.Gemengd
                                           },
                                   };
 
@@ -673,9 +675,9 @@ namespace Chiro.Gap.Services.Test
 
             groep.Afdeling = new List<Afdeling>
                                  {
-                                     new Afdeling {ID = 4},
-                                     new Afdeling {ID = 5},
-                                     new Afdeling {ID = 6}
+                                     new Afdeling {ID = 4, ChiroGroep = groep},
+                                     new Afdeling {ID = 5, ChiroGroep = groep},
+                                     new Afdeling {ID = 6, ChiroGroep = groep}
                                  };
 
             var officieleAfdelingen = new List<OfficieleAfdeling>
@@ -692,14 +694,16 @@ namespace Chiro.Gap.Services.Test
                                               AfdelingID = 4,
                                               GeboorteJaarVan = 1993,
                                               GeboorteJaarTot = 1994,
-                                              OfficieleAfdelingID = 3
+                                              OfficieleAfdelingID = 3,
+                                              Geslacht = GeslachtsType.Gemengd
                                           },
                                       new AfdelingsJaarDetail
                                           {
                                               AfdelingID = 5,
                                               GeboorteJaarVan = 1994,
                                               GeboorteJaarTot = 2007,   // kleuter in 2012
-                                              OfficieleAfdelingID = 2
+                                              OfficieleAfdelingID = 2,
+                                              Geslacht = GeslachtsType.Gemengd
                                           },
                                   };
 
