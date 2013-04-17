@@ -22,6 +22,7 @@ using System.ServiceModel;
 using System.Web.Mvc;
 
 using Chiro.Adf.ServiceModel;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -320,7 +321,16 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			catch (FaultException<FoutNummerFault> ex)
 			{
-				ModelState.AddModelError("fout", ex.Detail.Bericht);
+                switch (ex.Detail.FoutNummer)
+                {
+                    case FoutNummer.OngeldigeGeboorteJarenVoorAfdeling:
+                        ModelState.AddModelError("AfdelingsJaar.GeboorteJaarTot", Properties.Resources.MinimumLeeftijd);
+                        break;
+                    default:
+                        ModelState.AddModelError("Afdeling.Naam", ex.Detail.Bericht);
+                        break;
+                }
+                
 
 				// Vul model aan, en toon de view AfdelingsJaar opnieuw
 				model.Afdeling = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(model.AfdelingsJaar.AfdelingID));

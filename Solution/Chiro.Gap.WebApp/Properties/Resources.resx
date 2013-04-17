@@ -374,4 +374,7 @@
   <data name="MisschienGratisDubbelpunt" xml:space="preserve">
     <value>Opgelet! De contactpersoon van je groep krijgt sowieso een gratis Dubbelpuntabonnement. Als {0} jullie contactpersoon is, hoef je voor hem/haar dus geen abonnement te bestellen. Maar er mag slechts één persoon contactpersoon zijn; dat is iets dat je blijkbaar nog in orde moet brengen.</value>
   </data>
+  <data name="MinimumLeeftijd" xml:space="preserve">
+    <value>Je mag geen kleuters aansluiten bij de Chiro.</value>
+  </data>
 </root>
