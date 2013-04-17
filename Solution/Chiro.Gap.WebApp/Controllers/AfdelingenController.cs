@@ -307,6 +307,10 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			try
 			{
+                // de view 'AfdJaarBewerken' laat zowel toe de naam en afkorting
+                // van de afdeling aan te passen, als de geboortejaren, geslacht en
+                // officiele afdeling.
+                // Vandaar dat we zowel afdeling als afdelingsjaar moeten aanpassen.
 				ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarBewaren(model.AfdelingsJaar));
                 ServiceHelper.CallService<IGroepenService>(e => e.AfdelingBewaren(model.Afdeling));
 
