@@ -213,8 +213,8 @@
   <data name="FouteGeboortejarenVoorAfdelingFout" xml:space="preserve">
     <value />
   </data>
-  <data name="OngeldigeGeboortejarenVoorAfdeling" xml:space="preserve">
-    <value>Ongeldige geboortejaren voor het afdelingsjaar</value>
+  <data name="OngeldigeGeboorteJarenVoorAfdeling" xml:space="preserve">
+    <value>Er is iets mis met de geboortejaren. Staan ze overal in de juiste volgorde? Let er ook op dat je geen kleuters mag aansluiten bij de Chiro.</value>
   </data>
   <data name="FunctiesBewerkenTitel" xml:space="preserve">
     <value>Functies bewerken</value>

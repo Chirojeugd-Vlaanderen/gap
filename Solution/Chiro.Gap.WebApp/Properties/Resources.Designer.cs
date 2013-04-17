@@ -691,11 +691,11 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ongeldige geboortejaren voor het afdelingsjaar.
+        ///   Looks up a localized string similar to Er is iets mis met de geboortejaren. Staan ze overal in de juiste volgorde? Let er ook op dat je geen kleuters mag aansluiten bij de Chiro..
         /// </summary>
-        public static string OngeldigeGeboortejarenVoorAfdeling {
+        public static string OngeldigeGeboorteJarenVoorAfdeling {
             get {
-                return ResourceManager.GetString("OngeldigeGeboortejarenVoorAfdeling", resourceCulture);
+                return ResourceManager.GetString("OngeldigeGeboorteJarenVoorAfdeling", resourceCulture);
             }
         }
         
