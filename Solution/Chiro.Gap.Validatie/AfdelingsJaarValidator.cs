@@ -26,7 +26,12 @@ namespace Chiro.Gap.Validatie
                 return resultaat;
             }
 
-            if (teValideren.GroepsWerkJaar.WerkJaar - teValideren.GeboorteJaarTot >= Properties.Settings.Default.MinimumLeeftijd)
+            if (teValideren.GroepsWerkJaar.Groep.ID != teValideren.Afdeling.ChiroGroep.ID)
+            {
+                return Domain.FoutNummer.AfdelingNietVanGroep;
+            }
+
+            if (teValideren.GroepsWerkJaar.WerkJaar - teValideren.GeboorteJaarTot < Properties.Settings.Default.MinimumLeeftijd)
             {
                 return Domain.FoutNummer.OngeldigeGeboorteJarenVoorAfdeling;
             }

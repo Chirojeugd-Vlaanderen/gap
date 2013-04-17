@@ -27,6 +27,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
 
 using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
@@ -394,55 +395,59 @@ namespace Chiro.Gap.Services
         public void AfdelingsJaarBewaren(AfdelingsJaarDetail detail)
         {
             var afdeling = _afdelingenRepo.ByID(detail.AfdelingID);
-            Gav.Check(afdeling);  // throws als geen GAV van afdeling
+            Gav.Check(afdeling); // throws als geen GAV van afdeling
 
             var officieleAfdeling = _officieleAfdelingenRepo.ByID(detail.OfficieleAfdelingID);
 
             Debug.Assert(afdeling != null, "afdeling != null");
             var huidigGwj = _groepenMgr.HuidigWerkJaar(afdeling.ChiroGroep);
 
-            try
+            if (detail.AfdelingsJaarID == 0)
             {
-                if (detail.AfdelingsJaarID == 0)
+                var afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
+                    afdeling,
+                    officieleAfdeling,
+                    huidigGwj,
+                    detail.GeboorteJaarVan,
+                    detail.GeboorteJaarTot,
+                    detail.Geslacht);
+                try
                 {
-                    // nieuw maken.
-                    // OPM: als dit foutloopt, moet de juiste foutmelding doorgegeven worden (zie #553)
-                    var afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
-                                        afdeling,
-                                        officieleAfdeling,
-                                        huidigGwj,
-                                        detail.GeboorteJaarVan,
-                                        detail.GeboorteJaarTot,
-                                        detail.Geslacht);
                     huidigGwj.AfdelingsJaar.Add(afdelingsJaar);
                 }
-                else
+                catch (FoutNummerException ex)
                 {
-                    // wijzigen
-                    var afdelingsJaar = _afdelingsJaarRepo.ByID(detail.AfdelingsJaarID);
-                    Gav.Check(afdelingsJaar);
-
-                    Debug.Assert(afdelingsJaar != null, "afdelingsJaar != null");
-                    if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID || afdelingsJaar.Afdeling.ID != detail.AfdelingID)
-                    {
-                        throw new NotSupportedException("Afdeling en Groepswerkjaar mogen niet gewijzigd worden.");
-                    }
-
-                    afdelingsJaar.OfficieleAfdeling = officieleAfdeling;
-                    afdelingsJaar.GeboorteJaarVan = detail.GeboorteJaarVan;
-                    afdelingsJaar.GeboorteJaarTot = detail.GeboorteJaarTot;
-                    afdelingsJaar.Geslacht = detail.Geslacht;
-                    afdelingsJaar.VersieString = detail.VersieString;
+                    throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
                 }
-                
-                _afdelingenRepo.SaveChanges();
+            }
+            else
+            {
+                // wijzigen
+                var afdelingsJaar = _afdelingsJaarRepo.ByID(detail.AfdelingsJaarID);
+                Gav.Check(afdelingsJaar);
+
+                Debug.Assert(afdelingsJaar != null, "afdelingsJaar != null");
+                if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID || afdelingsJaar.Afdeling.ID != detail.AfdelingID)
+                {
+                    throw new NotSupportedException("Afdeling en Groepswerkjaar mogen niet gewijzigd worden.");
+                }
+
+                afdelingsJaar.OfficieleAfdeling = officieleAfdeling;
+                afdelingsJaar.GeboorteJaarVan = detail.GeboorteJaarVan;
+                afdelingsJaar.GeboorteJaarTot = detail.GeboorteJaarTot;
+                afdelingsJaar.Geslacht = detail.Geslacht;
+                afdelingsJaar.VersieString = detail.VersieString;
+
+                FoutNummer? foutNummer = new AfdelingsJaarValidator().FoutNummer(afdelingsJaar);
+
+                if (foutNummer != null)
+                {
+                    throw FaultExceptionHelper.FoutNummer(foutNummer.Value, Properties.Resources.OngeldigAfdelingsJaar);
+                }
 
             }
-            catch (FoutNummerException ex)
-            {
-                throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
-            }
-           
+
+            _afdelingenRepo.SaveChanges();
         }
 
         /// <summary>

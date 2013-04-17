@@ -706,12 +706,13 @@ namespace Chiro.Gap.Services.Test
                     AfdelingsJaarID = afdelingsJaar.ID,
                     GeboorteJaarTot = 2007,
                     GeboorteJaarVan = 2004,
-                    AfdelingID = afdelingsJaar.Afdeling.ID
+                    AfdelingID = afdelingsJaar.Afdeling.ID,
+                    Geslacht = GeslachtsType.Gemengd
                 });
             }
             catch (FaultException<FoutNummerFault> ex)
             {
-                gedetecteerd = ex.Detail.FoutNummer == FoutNummer.LidTeJong;
+                gedetecteerd = ex.Detail.FoutNummer == FoutNummer.OngeldigeGeboorteJarenVoorAfdeling;
             }
             
             // ASSERT

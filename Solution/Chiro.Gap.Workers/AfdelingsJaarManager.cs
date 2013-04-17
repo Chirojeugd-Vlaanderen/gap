@@ -90,13 +90,6 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGav);
             }
 
-            if (gwj.Groep.ID != a.ChiroGroep.ID)
-            {
-                throw new FoutNummerException(
-                    FoutNummer.AfdelingNietVanGroep,
-                    Resources.AfdelingNietVanGroep);
-            }
-
             var afdelingsJaar = new AfdelingsJaar
                                     {
                                         OfficieleAfdeling = oa,

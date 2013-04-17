@@ -250,6 +250,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Afdeling niet goed gedefinieerd in zijn werkjaar.
+        /// </summary>
+        internal static string OngeldigAfdelingsJaar {
+            get {
+                return ResourceManager.GetString("OngeldigAfdelingsJaar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De naam van een categorie mag niet leeg zijn..
         /// </summary>
         internal static string OngeldigeCategorieNaam {
