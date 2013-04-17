@@ -438,7 +438,7 @@ namespace Chiro.Gap.Services
                 _afdelingenRepo.SaveChanges();
 
             }
-            catch (ValidatieException ex)
+            catch (FoutNummerException ex)
             {
                 throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
             }

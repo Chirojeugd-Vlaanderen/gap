@@ -116,11 +116,11 @@ namespace Chiro.Gap.Workers
 
             if (afdelingsJaarFout == FoutNummer.OngeldigeGeboorteJarenVoorAfdeling)
             {
-                throw new ValidatieException(afdelingsJaarFout.Value, Resources.OngeldigeGeboorteJarenVoorAfdeling);
+                throw new FoutNummerException(afdelingsJaarFout.Value, Resources.OngeldigeGeboorteJarenVoorAfdeling);
             }
             if (afdelingsJaarFout != null)
             {
-                throw new ValidatieException(afdelingsJaarFout.Value, Resources.AfdelingsJaarOngeldig);
+                throw new FoutNummerException(afdelingsJaarFout.Value, Resources.AfdelingsJaarOngeldig);
             }
 
             return afdelingsJaar;

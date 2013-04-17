@@ -85,7 +85,7 @@ namespace Chiro.Gap.Workers
 
             if (!cvValid.Valideer(nieuweCommunicatieVorm))
             {
-                throw new ValidatieException(string.Format(Resources.CommunicatieVormValidatieFeedback, 
+                throw new FoutNummerException(FoutNummer.ValidatieFout, string.Format(Resources.CommunicatieVormValidatieFeedback, 
                                                            nieuweCommunicatieVorm.Nummer, 
                                                            nieuweCommunicatieVorm.CommunicatieType.Omschrijving));
             }

@@ -164,19 +164,19 @@ namespace Chiro.Gap.Workers
             // Geboortedatum is verplicht als je lid wilt worden
             if (fout == FoutNummer.GeboorteDatumOntbreekt)
             {
-                throw new  ValidatieException(FoutNummer.GeboorteDatumOntbreekt, Resources.GeboorteDatumOntbreekt);
+                throw new  FoutNummerException(FoutNummer.GeboorteDatumOntbreekt, Resources.GeboorteDatumOntbreekt);
             }
 
             // Je moet oud genoeg zijn
             if (fout == FoutNummer.LidTeJong)
             {
-                throw new ValidatieException(FoutNummer.LidTeJong, Properties.Resources.MinimumLeeftijd);
+                throw new FoutNummerException(FoutNummer.LidTeJong, Properties.Resources.MinimumLeeftijd);
             }
 
             // en nog leven ook
             if (fout == FoutNummer.PersoonOverleden)
             {
-                throw new ValidatieException(FoutNummer.PersoonOverleden, Resources.PersoonIsOverleden);
+                throw new FoutNummerException(FoutNummer.PersoonOverleden, Resources.PersoonIsOverleden);
             }
 
 
