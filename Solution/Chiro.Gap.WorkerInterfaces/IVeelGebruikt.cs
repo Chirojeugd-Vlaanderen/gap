@@ -38,14 +38,14 @@ namespace Chiro.Gap.WorkerInterfaces
         int CodeNaarGroepID(string code);
 
         /// <summary>
-        /// Haalt het beginjaar van het huidig werkjaar van de groep met gegeven <paramref name="groepID"/> op.
+        /// Haalt het beginjaar van het huidig werkjaar van de gegeven <paramref name="groep"/> op.
         /// (Bijv. 2012 voor 2012-2013)
         /// </summary>
-        /// <param name="groepID">ID van de groep, waarvan het werkjaar opgezocht moet worden</param>
+        /// <param name="groep">groep waarvan het werkjaar opgezocht moet worden</param>
         /// <returns>
-        /// het beginjaar van het huidig werkjaar van de groep met gegeven <paramref name="groepID"/>.
+        /// het beginjaar van het huidig werkjaar van de <paramref name="groep"/>.
         /// (Bijv. 2012 voor 2012-2013)
         /// </returns>
-        int WerkJaarOphalen(int groepID);
+        int WerkJaarOphalen(Groep groep);
     }
 }

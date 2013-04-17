@@ -32,7 +32,8 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class VeelGebruikt : IVeelGebruikt
     {
-        private const string GROEPIDCACHEKEY = "gid_{0}";
+        private const string GroepIdCacheKey = "gid_{0}";
+        private const string WerkJaarCacheKey = "wj_{0}";
 
         private readonly Cache _cache = HttpRuntime.Cache;
 
@@ -47,7 +48,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public int CodeNaarGroepID(string code)
         {
-            var groepID = (int?)_cache.Get(string.Format(GROEPIDCACHEKEY, code));
+            var groepID = (int?)_cache.Get(string.Format(GroepIdCacheKey, code));
 
             if (groepID == null || groepID == 0)
             {
@@ -55,7 +56,7 @@ namespace Chiro.Gap.Workers
                 //groepID = _groepenDao.Ophalen(code).ID;
 
                 //_cache.Add(
-                //    string.Format(GROEPIDCACHEKEY, code),
+                //    string.Format(GroepIdCacheKey, code),
                 //    groepID,
                 //    null,
                 //    Cache.NoAbsoluteExpiration,
@@ -68,17 +69,35 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Haalt het beginjaar van het huidig werkjaar van de groep met gegeven <paramref name="groepID"/> op.
+        /// Haalt het beginjaar van het huidig werkjaar van de gegeven <paramref name="groep"/> op.
         /// (Bijv. 2012 voor 2012-2013)
         /// </summary>
-        /// <param name="groepID">ID van de groep, waarvan het werkjaar opgezocht moet worden</param>
+        /// <param name="groep">groep waarvan het werkjaar opgezocht moet worden</param>
         /// <returns>
-        /// het beginjaar van het huidig werkjaar van de groep met gegeven <paramref name="groepID"/>.
+        /// het beginjaar van het huidig werkjaar van de <paramref name="groep"/>.
         /// (Bijv. 2012 voor 2012-2013)
         /// </returns>
-        public int WerkJaarOphalen(int groepID)
+        public int WerkJaarOphalen(Groep groep)
         {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+            int? werkJaar = (int?)_cache.Get(string.Format(WerkJaarCacheKey, groep.ID));
+
+            if (werkJaar == null)
+            {
+                werkJaar = (from gwj in groep.GroepsWerkJaar
+                            orderby gwj.WerkJaar descending
+                            select gwj.WerkJaar).First();
+
+                _cache.Add(
+                    string.Format(WerkJaarCacheKey, groep.ID),
+                    werkJaar,
+                    null,
+                    Cache.NoAbsoluteExpiration,
+                    new TimeSpan(2, 0, 0),
+                    CacheItemPriority.Normal,
+                    null);
+            }
+
+            return werkJaar.Value;
         }
     }
 }
