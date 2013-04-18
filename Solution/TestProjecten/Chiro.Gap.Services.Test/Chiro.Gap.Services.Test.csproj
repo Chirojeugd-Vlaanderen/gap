@@ -151,6 +151,10 @@
       <Project>{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}</Project>
       <Name>Chiro.Gap.Sync</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj">
+      <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
+      <Name>Chiro.Gap.Validatie</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
       <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
       <Name>Chiro.Gap.WorkerInterfaces</Name>

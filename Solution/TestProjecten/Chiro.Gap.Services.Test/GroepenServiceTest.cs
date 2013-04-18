@@ -804,5 +804,46 @@ namespace Chiro.Gap.Services.Test
 
             Assert.IsTrue(gedetecteerd);
         }
+
+        ///<summary>
+        ///OngebruikteAfdelingenOphalen mag enkel de afdelingen ophalen die in het
+        /// gevraagde werkjaar ongebruikt zijn.
+        ///</summary>
+        [TestMethod()]
+        public void OngebruikteAfdelingenOphalenTest()
+        {
+            // ARRANGE
+
+            // het model
+
+            var groep = new ChiroGroep();
+            var vorigWerkJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2011, ID = 1};
+            var ditWerkJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2012, ID = 2};
+
+            var afdeling = new Afdeling {ChiroGroep = groep};
+            var vorigAfdelingsJaar = new AfdelingsJaar {GroepsWerkJaar = vorigWerkJaar, Afdeling = afdeling};
+            afdeling.AfdelingsJaar.Add(vorigAfdelingsJaar);
+
+            // dependency injection voor data acces
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
+                                  .Returns(
+                                      new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar>
+                                                                        {
+                                                                            vorigWerkJaar,
+                                                                            ditWerkJaar
+                                                                        }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Afdeling>())
+                                  .Returns(new DummyRepo<Afdeling>(new List<Afdeling> {afdeling}));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var target = Factory.Maak<GroepenService>();
+
+            var actual = target.OngebruikteAfdelingenOphalen(ditWerkJaar.ID);
+            Assert.AreEqual(actual.Count, 1);
+            Assert.AreEqual(actual.First(), afdeling);
+        }
     }
 }
