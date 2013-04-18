@@ -846,5 +846,37 @@ namespace Chiro.Gap.Services.Test
             Assert.AreEqual(actual.Count, 1);
             Assert.AreEqual(actual.First().ID, afdeling.ID);
         }
+
+        /// <summary>
+        ///Controleer of AlleAfdelingenOphalen ook inactieve afdelingen ophaalt.
+        ///</summary>
+        [TestMethod()]
+        public void AlleAfdelingenOphalenTest()
+        {
+            // ARRANGE
+
+            // het model
+
+            var groep = new ChiroGroep();
+            var ditWerkJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2012, ID = 2 }; // we hebben een werkjaar
+            groep.GroepsWerkJaar.Add(ditWerkJaar);
+
+            var afdeling = new Afdeling { ChiroGroep = groep, ID = 3 };
+            groep.Afdeling.Add(afdeling); // en een afdeling, die inactief is
+
+            // dependency injection voor data acces
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                                  .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var target = Factory.Maak<GroepenService>();
+
+            var actual = target.AlleAfdelingenOphalen(groep.ID);
+            Assert.AreEqual(actual.Count, 1);
+            Assert.AreEqual(actual.First().ID, afdeling.ID);
+        }
     }
 }

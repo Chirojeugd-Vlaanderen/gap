@@ -234,12 +234,12 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepsWerkJaarId);
 
-		/// <summary>
-		/// Haalt beperkte informatie op over de beschikbare afdelingen van een groep in het huidige
-		/// groepswerkjaar.
-		/// </summary>
-		/// <param name="groepId">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
-		/// <returns>Lijst van ActieveAfdelingInfo</returns>
+        /// <summary>
+        /// Haalt beperkte informatie op over alle afdelingen van een groep
+        /// (zowel actief als inactief)
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
+        /// <returns>Lijst met AfdelingInfo</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
