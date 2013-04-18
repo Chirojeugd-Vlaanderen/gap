@@ -256,17 +256,17 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		IList<ActieveAfdelingInfo> HuidigeAfdelingsJarenOphalen(int groepID);
 
-		/// <summary>
-		/// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
-		/// groepswerkjaar, op basis van een <paramref name="groepswerkjaarID"/>
-		/// </summary>
-		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
-		/// opgezocht moeten worden.</param>
-		/// <returns>Info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
-		[OperationContract]
+	    /// <summary>
+	    /// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
+	    /// groepswerkjaar, op basis van een <paramref name="groepswerkjaarID"/>
+	    /// </summary>
+	    /// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
+	    ///     opgezocht moeten worden.</param>
+	    /// <returns>Info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
+	    [OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID);
+		List<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID);
 
 		#endregion
 

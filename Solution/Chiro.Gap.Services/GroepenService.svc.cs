@@ -572,15 +572,15 @@ namespace Chiro.Gap.Services
         /// <param name="groepswerkjaarId">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
         /// opgezocht moeten worden.</param>
         /// <returns>Info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
-        public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarId)
+        public List<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarId)
         {
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
             Gav.Check(gwj);
             Debug.Assert(gwj != null, "gwj != null");
-            var ongebruikteAfdelingen = (from g in _afdelingenRepo.Select()
-                                         where g.ChiroGroep.ID == gwj.Groep.ID && g.AfdelingsJaar.Count == 0
-                                         select g);
-            return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(ongebruikteAfdelingen);
+            var ongebruikteAfdelingen = (from afd in ((ChiroGroep)gwj.Groep).Afdeling
+                                         where !afd.AfdelingsJaar.Any(aj => Equals(aj.GroepsWerkJaar, gwj))
+                                         select afd).ToList();
+            return Mapper.Map<List<Afdeling>, List<AfdelingInfo>>(ongebruikteAfdelingen);
         }
 
         /// <summary>

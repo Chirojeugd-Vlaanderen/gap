@@ -820,7 +820,8 @@ namespace Chiro.Gap.Services.Test
             var vorigWerkJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2011, ID = 1};
             var ditWerkJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2012, ID = 2};
 
-            var afdeling = new Afdeling {ChiroGroep = groep};
+            var afdeling = new Afdeling {ChiroGroep = groep, ID = 3};
+            groep.Afdeling.Add(afdeling);
             var vorigAfdelingsJaar = new AfdelingsJaar {GroepsWerkJaar = vorigWerkJaar, Afdeling = afdeling};
             afdeling.AfdelingsJaar.Add(vorigAfdelingsJaar);
 
@@ -843,7 +844,7 @@ namespace Chiro.Gap.Services.Test
 
             var actual = target.OngebruikteAfdelingenOphalen(ditWerkJaar.ID);
             Assert.AreEqual(actual.Count, 1);
-            Assert.AreEqual(actual.First(), afdeling);
+            Assert.AreEqual(actual.First().ID, afdeling.ID);
         }
     }
 }
