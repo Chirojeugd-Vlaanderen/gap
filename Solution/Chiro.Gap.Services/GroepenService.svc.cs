@@ -534,17 +534,22 @@ namespace Chiro.Gap.Services
         /// (zowel actief als inactief)
         /// </summary>
         /// <param name="groepId">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
-        /// <returns>Lijst van ActieveAfdelingInfo</returns>
+        /// <returns>Lijst met AfdelingInfo</returns>
         public IList<AfdelingInfo> AlleAfdelingenOphalen(int groepId)
         {
-            var gwj = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
-            if (!_autorisatieMgr.IsGav(gwj))
+            var groep = _groepenRepo.ByID(groepId);
+            if (!_autorisatieMgr.IsGav(groep))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            Debug.Assert(gwj != null, "gwj != null");
-            return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(gwj.AfdelingsJaar.Select(e => e.Afdeling));
+            if (!(groep is ChiroGroep))
+            {
+                // een kadergroep heeft geen afdelingen.
+                return new List<AfdelingInfo>();
+            }
+
+            return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(((ChiroGroep)groep).Afdeling);
         }
 
         /// <summary>
