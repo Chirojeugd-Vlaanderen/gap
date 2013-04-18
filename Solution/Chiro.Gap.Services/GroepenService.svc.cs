@@ -28,6 +28,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
 
 using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
@@ -413,55 +414,59 @@ namespace Chiro.Gap.Services
         public void AfdelingsJaarBewaren(AfdelingsJaarDetail detail)
         {
             var afdeling = _afdelingenRepo.ByID(detail.AfdelingID);
-            Gav.Check(afdeling);  // throws als geen GAV van afdeling
+            Gav.Check(afdeling); // throws als geen GAV van afdeling
 
             var officieleAfdeling = _officieleAfdelingenRepo.ByID(detail.OfficieleAfdelingID);
 
             Debug.Assert(afdeling != null, "afdeling != null");
             var huidigGwj = _groepenMgr.HuidigWerkJaar(afdeling.ChiroGroep);
 
-            try
+            if (detail.AfdelingsJaarID == 0)
             {
-                if (detail.AfdelingsJaarID == 0)
+                var afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
+                    afdeling,
+                    officieleAfdeling,
+                    huidigGwj,
+                    detail.GeboorteJaarVan,
+                    detail.GeboorteJaarTot,
+                    detail.Geslacht);
+                try
                 {
-                    // nieuw maken.
-                    // OPM: als dit foutloopt, moet de juiste foutmelding doorgegeven worden (zie #553)
-                    var afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
-                                        afdeling,
-                                        officieleAfdeling,
-                                        huidigGwj,
-                                        detail.GeboorteJaarVan,
-                                        detail.GeboorteJaarTot,
-                                        detail.Geslacht);
                     huidigGwj.AfdelingsJaar.Add(afdelingsJaar);
                 }
-                else
+                catch (FoutNummerException ex)
                 {
-                    // wijzigen
-                    var afdelingsJaar = _afdelingsJaarRepo.ByID(detail.AfdelingsJaarID);
-                    Gav.Check(afdelingsJaar);
-
-                    Debug.Assert(afdelingsJaar != null, "afdelingsJaar != null");
-                    if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID || afdelingsJaar.Afdeling.ID != detail.AfdelingID)
-                    {
-                        throw new NotSupportedException("Afdeling en Groepswerkjaar mogen niet gewijzigd worden.");
-                    }
-
-                    afdelingsJaar.OfficieleAfdeling = officieleAfdeling;
-                    afdelingsJaar.GeboorteJaarVan = detail.GeboorteJaarVan;
-                    afdelingsJaar.GeboorteJaarTot = detail.GeboorteJaarTot;
-                    afdelingsJaar.Geslacht = detail.Geslacht;
-                    afdelingsJaar.VersieString = detail.VersieString;
+                    throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
                 }
-                
-                _afdelingenRepo.SaveChanges();
+            }
+            else
+            {
+                // wijzigen
+                var afdelingsJaar = _afdelingsJaarRepo.ByID(detail.AfdelingsJaarID);
+                Gav.Check(afdelingsJaar);
+
+                Debug.Assert(afdelingsJaar != null, "afdelingsJaar != null");
+                if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID || afdelingsJaar.Afdeling.ID != detail.AfdelingID)
+                {
+                    throw new NotSupportedException("Afdeling en Groepswerkjaar mogen niet gewijzigd worden.");
+                }
+
+                afdelingsJaar.OfficieleAfdeling = officieleAfdeling;
+                afdelingsJaar.GeboorteJaarVan = detail.GeboorteJaarVan;
+                afdelingsJaar.GeboorteJaarTot = detail.GeboorteJaarTot;
+                afdelingsJaar.Geslacht = detail.Geslacht;
+                afdelingsJaar.VersieString = detail.VersieString;
+
+                FoutNummer? foutNummer = new AfdelingsJaarValidator().FoutNummer(afdelingsJaar);
+
+                if (foutNummer != null)
+                {
+                    throw FaultExceptionHelper.FoutNummer(foutNummer.Value, Properties.Resources.OngeldigAfdelingsJaar);
+                }
 
             }
-            catch (ValidatieException ex)
-            {
-                throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
-            }
-           
+
+            _afdelingenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -544,21 +549,26 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt beperkte informatie op over de beschikbare afdelingen van een groep in het huidige
-        /// groepswerkjaar.
+        /// Haalt beperkte informatie op over alle afdelingen van een groep
+        /// (zowel actief als inactief)
         /// </summary>
         /// <param name="groepId">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
-        /// <returns>Lijst van ActieveAfdelingInfo</returns>
+        /// <returns>Lijst met AfdelingInfo</returns>
         public IList<AfdelingInfo> AlleAfdelingenOphalen(int groepId)
         {
-            var gwj = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
-            if (!_autorisatieMgr.IsGav(gwj))
+            var groep = _groepenRepo.ByID(groepId);
+            if (!_autorisatieMgr.IsGav(groep))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            Debug.Assert(gwj != null, "gwj != null");
-            return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(gwj.AfdelingsJaar.Select(e => e.Afdeling));
+            if (!(groep is ChiroGroep))
+            {
+                // een kadergroep heeft geen afdelingen.
+                return new List<AfdelingInfo>();
+            }
+
+            return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(((ChiroGroep)groep).Afdeling);
         }
 
         /// <summary>
@@ -586,15 +596,15 @@ namespace Chiro.Gap.Services
         /// <param name="groepswerkjaarId">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
         /// opgezocht moeten worden.</param>
         /// <returns>Info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
-        public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarId)
+        public List<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarId)
         {
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
             Gav.Check(gwj);
             Debug.Assert(gwj != null, "gwj != null");
-            var ongebruikteAfdelingen = (from g in _afdelingenRepo.Select()
-                                         where g.ChiroGroep.ID == gwj.Groep.ID && g.AfdelingsJaar.Count == 0
-                                         select g);
-            return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(ongebruikteAfdelingen);
+            var ongebruikteAfdelingen = (from afd in ((ChiroGroep)gwj.Groep).Afdeling
+                                         where !afd.AfdelingsJaar.Any(aj => Equals(aj.GroepsWerkJaar, gwj))
+                                         select afd).ToList();
+            return Mapper.Map<List<Afdeling>, List<AfdelingInfo>>(ongebruikteAfdelingen);
         }
 
         /// <summary>
@@ -639,10 +649,14 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
+            var nationaleFuncties = (from f in _functiesRepo.Select()
+                                             where f.IsNationaal select f).ToList();
+            var eigenFuncties = groepsWerkJaar.Groep.Functie.ToList();
+            var relevanteFuncties = eigenFuncties.Union(nationaleFuncties).ToList();
+
+
             var problemen = _functiesMgr.AantallenControleren(groepsWerkJaar,
-                                                              groepsWerkJaar.Groep.Functie.Union(
-                                                                  _veelGebruikt.NationaleFunctiesOphalen(_functiesRepo))
-                                                                            .ToList());
+                                                              relevanteFuncties);
             var resultaat = (from f in groepsWerkJaar.Groep.Functie
                              join p in problemen on f.ID equals p.ID
                              select new FunctieProbleemInfo
@@ -1089,22 +1103,31 @@ namespace Chiro.Gap.Services
                     throw FaultExceptionHelper.GeenGav();
                 }
 
-                // TODO: validatie opkuisen
-                if (afdelingsJaarDetail.GeboorteJaarTot < afdelingsJaarDetail.GeboorteJaarVan)
+                var nieuwAfdelingsJaar = new AfdelingsJaar
+                                             {
+                                                 Afdeling = afd,
+                                                 GeboorteJaarVan = afdelingsJaarDetail.GeboorteJaarVan,
+                                                 GeboorteJaarTot = afdelingsJaarDetail.GeboorteJaarTot,
+                                                 Geslacht = afdelingsJaarDetail.Geslacht,
+                                                 OfficieleAfdeling = offAfd,
+                                                 GroepsWerkJaar = nieuwGwj
+                                             };
+
+                FoutNummer? foutNummer = new AfdelingsJaarValidator().FoutNummer(nieuwAfdelingsJaar);
+
+                if (foutNummer == FoutNummer.OngeldigeGeboorteJarenVoorAfdeling || foutNummer == FoutNummer.ChronologieFout)
                 {
-                    throw FaultExceptionHelper.FoutNummer(FoutNummer.ChronologieFout,
-                                                          String.Format(
-                                                              Properties.Resources.FouteGeboorteJarenAfdeling, afd.Naam));
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.OngeldigeGeboorteJarenVoorAfdeling,
+                                      String.Format(
+                                          Properties.Resources.OngeldigeGeborteJarenAfdelingsJaar, afd.Naam));
+                }
+                if (foutNummer != null)
+                {
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.ValidatieFout,
+                                                          Properties.Resources.OngeldigAfdelingsJaar);
                 }
 
-                nieuwGwj.AfdelingsJaar.Add(new AfdelingsJaar
-                                               {
-                                                   Afdeling = afd,
-                                                   GeboorteJaarVan = afdelingsJaarDetail.GeboorteJaarVan,
-                                                   GeboorteJaarTot = afdelingsJaarDetail.GeboorteJaarTot,
-                                                   Geslacht = afdelingsJaarDetail.Geslacht,
-                                                   OfficieleAfdeling = offAfd
-                                               });
+                nieuwGwj.AfdelingsJaar.Add(nieuwAfdelingsJaar);
             }
 
             _groepenRepo.SaveChanges();

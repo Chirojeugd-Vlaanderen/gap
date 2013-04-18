@@ -115,6 +115,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ongeldige koppeling afdeling-werkjaar.
+        /// </summary>
+        internal static string AfdelingsJaarOngeldig {
+            get {
+                return ResourceManager.GetString("AfdelingsJaarOngeldig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to België.
         /// </summary>
         internal static string Belgie {
@@ -486,9 +495,9 @@ namespace Chiro.Gap.Workers.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ongeldige geboortejaren voor het afdelingsjaar.
         /// </summary>
-        internal static string OngeldigeGeboortejarenVoorAfdeling {
+        internal static string OngeldigeGeboorteJarenVoorAfdeling {
             get {
-                return ResourceManager.GetString("OngeldigeGeboortejarenVoorAfdeling", resourceCulture);
+                return ResourceManager.GetString("OngeldigeGeboorteJarenVoorAfdeling", resourceCulture);
             }
         }
         

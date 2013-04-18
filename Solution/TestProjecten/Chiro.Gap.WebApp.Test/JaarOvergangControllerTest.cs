@@ -136,7 +136,7 @@ namespace Chiro.Gap.WebApp.Test
                 };
 
             // zorg ervoor dat de controller actie zodadelijk weet dat er iets mis is
-            target.ViewData.ModelState.AddModelError("Afdelingen[0].GeboorteJaarVan", Properties.Resources.OngeldigeGeboortejarenVoorAfdeling);
+            target.ViewData.ModelState.AddModelError("Afdelingen[0].GeboorteJaarVan", Properties.Resources.OngeldigeGeboorteJarenVoorAfdeling);
 
             var actual = target.Stap2AfdelingsJarenVerdelen(model, GROEP_ID);
 

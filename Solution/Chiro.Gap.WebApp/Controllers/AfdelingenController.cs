@@ -22,6 +22,7 @@ using System.ServiceModel;
 using System.Web.Mvc;
 
 using Chiro.Adf.ServiceModel;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -304,6 +305,10 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		    try
 		    {
+                // de view 'AfdJaarBewerken' laat zowel toe de naam en afkorting
+                // van de afdeling aan te passen, als de geboortejaren, geslacht en
+                // officiele afdeling.
+                // Vandaar dat we zowel afdeling als afdelingsjaar moeten aanpassen.
 		        ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarBewaren(model.AfdelingsJaar));
 		        ServiceHelper.CallService<IGroepenService>(e => e.AfdelingBewaren(model.Afdeling));
 
@@ -313,7 +318,16 @@ namespace Chiro.Gap.WebApp.Controllers
 		    }
 		    catch (FaultException<FoutNummerFault> ex)
 		    {
-		        ModelState.AddModelError("fout", ex.Detail.Bericht);
+                switch (ex.Detail.FoutNummer)
+                {
+                    case FoutNummer.OngeldigeGeboorteJarenVoorAfdeling:
+                        ModelState.AddModelError("AfdelingsJaar.GeboorteJaarTot", Properties.Resources.MinimumLeeftijd);
+                        break;
+                    default:
+                        ModelState.AddModelError("Afdeling.Naam", ex.Detail.Bericht);
+                        break;
+                }
+                
 
 		        // Vul model aan, en toon de view AfdelingsJaar opnieuw
 		        model.Afdeling =

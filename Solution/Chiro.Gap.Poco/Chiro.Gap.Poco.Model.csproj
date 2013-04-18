@@ -57,7 +57,6 @@
     <Compile Include="Exceptions\GapException.cs" />
     <Compile Include="Exceptions\GeenGavException.cs" />
     <Compile Include="Exceptions\OngeldigObjectException.cs" />
-    <Compile Include="Exceptions\ValidatieException.cs" />
     <Compile Include="Functie.cs" />
     <Compile Include="Gav.cs" />
     <Compile Include="GebruikersRecht.cs" />

@@ -32,88 +32,10 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class VeelGebruikt : IVeelGebruikt
     {
-        private const string GROEPSWERKJAARCACHEKEY = "gwj{0}";
-        private const string NATIONALEFUNCTIESCACHEKEY = "natfun";
-        private const string GROEPIDCACHEKEY = "gid_{0}";
+        private const string GroepIdCacheKey = "gid_{0}";
+        private const string WerkJaarCacheKey = "wj_{0}";
 
         private readonly Cache _cache = HttpRuntime.Cache;
-
-        /// <summary>
-        /// Verwijdert het recentste groepswerkjaar van groep met ID <paramref name="groepID"/>
-        /// uit de cache.
-        /// </summary>
-        /// <param name="groepID">
-        /// ID van de groep waarvan groepswerkjaarcache te resetten
-        /// </param>
-        public void GroepsWerkJaarResetten(int groepID)
-        {
-            _cache.Remove(string.Format(GROEPSWERKJAARCACHEKEY, groepID));
-        }
-
-        /// <summary>
-        /// Haalt van de groep met gegeven <paramref name="groepID"/> het ID van het recentste groepswerkjaar op.
-        /// </summary>
-        /// <param name="groepID">
-        ///     ID van de groep waarvan groepswerkjaarID gevraagd
-        /// </param>
-        /// <param name="groepenRepo">groepenrepository, via dewelke het groepswerkjaar indien nodig opgehaald
-        /// kan worden.</param>
-        /// <returns>
-        /// Het ID van het recentste groespwerkjaar van de groep
-        /// </returns>
-        public int GroepsWerkJaarIDOphalen(int groepID, IRepository<Groep> groepenRepo)
-        {
-            int? gwjID = (int?)_cache.Get(string.Format(GROEPSWERKJAARCACHEKEY, groepID));
-
-            if (gwjID == null)
-            {
-                gwjID = groepenRepo.ByID(groepID).GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First().ID;
-
-                _cache.Add(
-                    string.Format(GROEPSWERKJAARCACHEKEY, groepID),
-                    gwjID,
-                    null,
-                    Cache.NoAbsoluteExpiration,
-                    new TimeSpan(2, 0, 0),
-                    CacheItemPriority.Normal,
-                    null);
-            }
-
-            return gwjID.Value;
-        }
-
-        /// <summary>
-        /// Haalt alle nationale functies op
-        /// </summary>
-        /// <param name="functieRepo">Repository die deze worker kan gebruiken om functies
-        ///     op te vragen.</param>
-        /// <returns>
-        /// Lijstje nationale functies
-        /// </returns>
-        /// <remarks>
-        /// De repository wordt bewust niet geregeld door de constructor van deze klasse,
-        /// omdat we moeten vermijden dat de IOC-container hiervoor een nieuwe context aanmaakt.
-        /// </remarks>
-        public List<Functie> NationaleFunctiesOphalen(IRepository<Functie> functieRepo)
-        {
-            if (_cache[NATIONALEFUNCTIESCACHEKEY] == null)
-            {
-                var nationaleFuncties = from fn in functieRepo.Select()
-                                        where fn.IsNationaal
-                                        select fn;
-
-                _cache.Add(
-                    NATIONALEFUNCTIESCACHEKEY,
-                    nationaleFuncties.ToList(),
-                    null,
-                    Cache.NoAbsoluteExpiration,
-                    new TimeSpan(1, 0, 0, 0) /* bewaar 1 dag */,
-                    CacheItemPriority.Low,
-                    null);
-            }
-
-            return _cache[NATIONALEFUNCTIESCACHEKEY] as List<Functie>;
-        }
 
         /// <summary>
         /// Haalt het groepID van de groep met gegeven stamnummer op uit de cache.
@@ -126,7 +48,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public int CodeNaarGroepID(string code)
         {
-            var groepID = (int?)_cache.Get(string.Format(GROEPIDCACHEKEY, code));
+            var groepID = (int?)_cache.Get(string.Format(GroepIdCacheKey, code));
 
             if (groepID == null || groepID == 0)
             {
@@ -134,7 +56,7 @@ namespace Chiro.Gap.Workers
                 //groepID = _groepenDao.Ophalen(code).ID;
 
                 //_cache.Add(
-                //    string.Format(GROEPIDCACHEKEY, code),
+                //    string.Format(GroepIdCacheKey, code),
                 //    groepID,
                 //    null,
                 //    Cache.NoAbsoluteExpiration,
@@ -147,17 +69,35 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Haalt het beginjaar van het huidig werkjaar van de groep met gegeven <paramref name="groepID"/> op.
+        /// Haalt het beginjaar van het huidig werkjaar van de gegeven <paramref name="groep"/> op.
         /// (Bijv. 2012 voor 2012-2013)
         /// </summary>
-        /// <param name="groepID">ID van de groep, waarvan het werkjaar opgezocht moet worden</param>
+        /// <param name="groep">groep waarvan het werkjaar opgezocht moet worden</param>
         /// <returns>
-        /// het beginjaar van het huidig werkjaar van de groep met gegeven <paramref name="groepID"/>.
+        /// het beginjaar van het huidig werkjaar van de <paramref name="groep"/>.
         /// (Bijv. 2012 voor 2012-2013)
         /// </returns>
-        public int WerkJaarOphalen(int groepID)
+        public int WerkJaarOphalen(Groep groep)
         {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+            int? werkJaar = (int?)_cache.Get(string.Format(WerkJaarCacheKey, groep.ID));
+
+            if (werkJaar == null)
+            {
+                werkJaar = (from gwj in groep.GroepsWerkJaar
+                            orderby gwj.WerkJaar descending
+                            select gwj.WerkJaar).First();
+
+                _cache.Add(
+                    string.Format(WerkJaarCacheKey, groep.ID),
+                    werkJaar,
+                    null,
+                    Cache.NoAbsoluteExpiration,
+                    new TimeSpan(2, 0, 0),
+                    CacheItemPriority.Normal,
+                    null);
+            }
+
+            return werkJaar.Value;
         }
     }
 }

@@ -213,8 +213,8 @@
   <data name="FouteGeboortejarenVoorAfdelingFout" xml:space="preserve">
     <value />
   </data>
-  <data name="OngeldigeGeboortejarenVoorAfdeling" xml:space="preserve">
-    <value>Ongeldige geboortejaren voor het afdelingsjaar</value>
+  <data name="OngeldigeGeboorteJarenVoorAfdeling" xml:space="preserve">
+    <value>Er is iets mis met de geboortejaren. Staan ze overal in de juiste volgorde? Let er ook op dat je geen kleuters mag aansluiten bij de Chiro.</value>
   </data>
   <data name="FunctiesBewerkenTitel" xml:space="preserve">
     <value>Functies bewerken</value>
@@ -373,5 +373,8 @@
   </data>
   <data name="MisschienGratisDubbelpunt" xml:space="preserve">
     <value>Opgelet! De contactpersoon van je groep krijgt sowieso een gratis Dubbelpuntabonnement. Als {0} jullie contactpersoon is, hoef je voor hem/haar dus geen abonnement te bestellen. Maar er mag slechts één persoon contactpersoon zijn; dat is iets dat je blijkbaar nog in orde moet brengen.</value>
+  </data>
+  <data name="MinimumLeeftijd" xml:space="preserve">
+    <value>Je mag geen kleuters aansluiten bij de Chiro.</value>
   </data>
 </root>

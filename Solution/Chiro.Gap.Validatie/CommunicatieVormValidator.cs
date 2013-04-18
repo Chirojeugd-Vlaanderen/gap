@@ -28,19 +28,24 @@ namespace Chiro.Gap.Validatie
 	/// </summary>
 	public class CommunicatieVormValidator : Validator<ICommunicatie>
 	{
-		/// <summary>
-		/// Vergelijkt de opgegeven waarde met de regex die in de databank opgegeven is
-		/// voor dat communicatieType
-		/// </summary>
-		/// <param name="cv">De communicatievorm (bv. telefoonnummer, mailadres, ...</param>
-		/// <returns>
-		/// <c>True</c> als de waarde ('Nummer') voldoet aan de opgegeven Regex voor dat communicatietype,
-		/// en anders <c>false</c>
-		/// </returns>
-		public override bool Valideer(ICommunicatie cv)
-		{
-			Debug.Assert(cv != null);
-			return cv.Nummer != null && Regex.IsMatch(cv.Nummer, cv.CommunicatieTypeValidatie);
-		}
+        /// <summary>
+        /// Vergelijkt de opgegeven waarde met de regex die in de databank opgegeven is
+        /// voor dat communicatieType
+        /// </summary>
+        /// <param name="teValideren">De communicatievorm (bv. telefoonnummer, mailadres, ...</param>
+        /// <returns>
+        /// <c>null</c> als de waarde ('Nummer') voldoet aan de opgegeven Regex voor dat communicatietype,
+        /// en anders een foutnummer.
+        /// </returns>
+	    public override FoutNummer? FoutNummer(ICommunicatie teValideren)
+	    {
+            if (teValideren != null && teValideren.Nummer != null &&
+                Regex.IsMatch(teValideren.Nummer, teValideren.CommunicatieTypeValidatie))
+            {
+                return null;
+            }
+            // domme algemene validatiefout.
+            return Domain.FoutNummer.ValidatieFout;
+	    }
 	}
 }

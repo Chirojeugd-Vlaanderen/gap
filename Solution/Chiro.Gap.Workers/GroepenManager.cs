@@ -113,8 +113,8 @@ namespace Chiro.Gap.Workers
             // Zoek eerst naar een nationale functie met gegeven code, want dat is
             // gecachet, en bijgevolg snel.
 
-            var bestaandeNationaleFunctie = (from f in _veelGebruikt.NationaleFunctiesOphalen(functieRepo)
-                                             where String.Compare(f.Code, code, StringComparison.OrdinalIgnoreCase) == 0
+            var bestaandeNationaleFunctie = (from f in functieRepo.Select()
+                                             where f.IsNationaal &&  String.Compare(f.Code, code, StringComparison.OrdinalIgnoreCase) == 0
                                              select f).FirstOrDefault();
 
             if (bestaandeNationaleFunctie != null)

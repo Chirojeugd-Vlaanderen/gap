@@ -205,11 +205,14 @@
   <data name="NietVoorKader" xml:space="preserve">
     <value>Dit is niet mogelijk voor kaderploegen.</value>
   </data>
-  <data name="FouteGeboorteJarenAfdeling" xml:space="preserve">
+  <data name="OngeldigeGeborteJarenAfdelingsJaar" xml:space="preserve">
     <value>'Geboortejaar van' mag niet groter zijn dan 'geboortejaar tot'.</value>
   </data>
   <data name="OvergangTeVroeg" xml:space="preserve">
     <value>Het is nog te vroeg op het werkjaar om een nieuw werkjaar te beginnen.</value>
+  </data>
+  <data name="OngeldigAfdelingsJaar" xml:space="preserve">
+    <value>Afdeling niet goed gedefinieerd in zijn werkjaar</value>
   </data>
   <data name="NationaleFunctieNietBewerken" xml:space="preserve">
     <value>Je mag geen nationale functies bewerken</value>

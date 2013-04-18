@@ -31,7 +31,6 @@
 	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<%= Html.ValidationSummary() %>
 	<% 
 		Html.EnableClientValidation();
 		using (Html.BeginForm("AfdJaarBewerken", "Afdelingen", new { groepID = Model.GroepID }))
