@@ -659,7 +659,8 @@ namespace Chiro.Gap.Services
                              (filter.FunctieID == null || ld.Functie.Select(e => e.ID == filter.FunctieID).Any()) &&
                              (filter.ProbeerPeriodeNa == null || !ld.EindeInstapPeriode.HasValue ||
                               filter.ProbeerPeriodeNa < ld.EindeInstapPeriode.Value) &&
-                             (filter.HeeftVoorkeurAdres == null || ld.GelieerdePersoon.PersoonsAdres != null) &&
+                             (filter.HeeftVoorkeurAdres == null || (ld.GelieerdePersoon.PersoonsAdres != null && filter.HeeftVoorkeurAdres == true) ||
+                             (ld.GelieerdePersoon.PersoonsAdres == null && filter.HeeftVoorkeurAdres == false)) &&
                              (filter.HeeftTelefoonNummer == null ||
                               ld.GelieerdePersoon.Communicatie.Select(
                                   e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer).Any() ==
