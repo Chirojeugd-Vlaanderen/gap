@@ -495,7 +495,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 return View("EditGegevens", model);
             }
 
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Bewaren(model.HuidigePersoon)); //TODO: Loopt vast in sync met kipadmin
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Bewaren(model.HuidigePersoon)); 
 
             // Voorlopig opnieuw redirecten naar EditRest;
             // er zou wel gemeld moeten worden dat het wijzigen
@@ -626,7 +626,8 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="groepID">Momenteel geselecteerde groep</param>
         /// <returns>De view 'AdresBewerken'</returns>
         [HandleError]
-        public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
+        //ActionResult
+        public JsonResult Verhuizen(int id, int aanvragerID, int groepID)
         {
             var model = new AdresModel();
             BaseModelInit(model, groepID);
@@ -681,7 +682,7 @@ namespace Chiro.Gap.WebApp.Controllers
                                 model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
             model.Titel = "Personen verhuizen";
-            return View("AdresBewerken", model);
+            return Json(model, JsonRequestBehavior.AllowGet); //View("AdresBewerken", model);
         }
 
         /// <summary>

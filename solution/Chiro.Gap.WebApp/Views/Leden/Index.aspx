@@ -4,26 +4,27 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>
-	<script type="text/javascript">
-	    $(document).ready(function () {
-	        $('#filter').hide();
-	        $('#kiesActie').hide();
-	        $("#AfdelingID").change(function () {
-	            $('#filter').click();
-	        });
-	        $("#FunctieID").change(function () {
-	            $('#filter').click();
-	        });
-	        $("#SpecialeLijst").change(function () {
-	            $('#filter').click();
-	        });
-	        $("#GekozenActie").change(function () {
-	            $('#kiesActie').click();
-	        });            
-	    });
-	</script>
+	
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <script type="text/javascript">
+        $(function () {
+            $('#filter').hide();
+            $('#kiesActie').hide();
+            $("#AfdelingID").change(function () {
+                $('#filter').click();
+            });
+            $("#FunctieID").change(function () {
+                $('#filter').click();
+            });
+            $("#SpecialeLijst").change(function () {
+                $('#filter').click();
+            });
+            $("#GekozenActie").change(function () {
+                $('#kiesActie').click();
+            });
+        });
+	</script>
 				<%
                     // Eén groot form, want voor elk lid staat een checkbox
                     

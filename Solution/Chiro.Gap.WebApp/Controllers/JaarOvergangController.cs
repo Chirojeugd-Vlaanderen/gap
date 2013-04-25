@@ -120,7 +120,28 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Stap2AfdelingsJarenVerdelen(JaarOvergangAfdelingsJaarModel model, int groepID)
         {
-            // Geldigheid van het model moet gecontroleerd worden met ModelState.
+            // Als alles goed loopt, hebben we deze straks nodig.
+            int vorigGwjID = ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID));
+
+            // We gebruiken de modelstate om te laten zien dat het model al dan niet geldig is. Die verificatie
+            // gebeurt op dit moment gedeeltelijk door de backend, dus moeten we eerst de backend aanroepen.
+
+            try
+            {
+                ServiceHelper.CallService<IGroepenService>(s => s.JaarOvergangUitvoeren(model.Afdelingen, groepID));
+            }
+            catch (FaultException<FoutNummerFault> ex)
+            {
+                switch (ex.Detail.FoutNummer)
+                {
+                    case FoutNummer.OngeldigeGeboorteJarenVoorAfdeling:
+                        ModelState.AddModelError("NieuwWerkjaar", Properties.Resources.OngeldigeGeboorteJarenVoorAfdeling );
+                        break;
+                    default:
+                        ModelState.AddModelError("NieuwWerkJaar", ex.Detail.Bericht);
+                        break;
+                }
+            }
 
             if (!ModelState.IsValid)
             {
@@ -147,19 +168,6 @@ namespace Chiro.Gap.WebApp.Controllers
                         (from afd in alleAfdelingen where afd.ID == aj.AfdelingID select afd.Naam).FirstOrDefault();
                 }
                 
-                return View("Stap2AfdelingsJarenVerdelen", model);
-            }
-
-            // Leden zoeken in het vorige actieve werkjaar, dus opvragen voor we de jaarovergang zelf doen
-            var vorigGwjID = ServiceHelper.CallService<IGroepenService, int>(g => g.RecentsteGroepsWerkJaarIDGet(groepID));
-
-            try
-            {
-                ServiceHelper.CallService<IGroepenService>(s => s.JaarOvergangUitvoeren(model.Afdelingen, groepID));
-            }
-            catch (FaultException<FoutNummerFault> ex)
-            {
-                TempData["fout"] = ex.Message;
                 return View("Stap2AfdelingsJarenVerdelen", model);
             }
 

@@ -23,7 +23,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
     {   
         public static String InfoLink(this HtmlHelper html, string id)
         {
-            return String.Format("<a id=\""+id +"\" class=\"ui-icon ui-icon-help\" style=\"cursor:pointer\"></a>");
+            return String.Format("<a id=\""+id +"\" class=\"ui-icon ui-icon-info\" style=\"cursor:pointer\"></a>");
         }
     }
 }

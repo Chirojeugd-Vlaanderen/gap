@@ -19,14 +19,18 @@
  */
 %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+
+<input id="MGID" value="<%=Model.GroepID %>" hidden/>
 <%	if (Model.Mededelingen != null && Model.Mededelingen.Any())
 	{
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 		if (Model.Mededelingen.Count() == 1)
 		{
 %>
-<div class="mededelingen">
-	<strong>Opgelet:</strong> er is nog
+
+<div class="mededelingen ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary">
+    <img src="<%=ResolveUrl("~/Content/images/Exclamation.png")%>" alt="Opgelet"/>
+	<strong>Opgelet:</strong> Er is nog
 	<%=Html.ActionLink("1 zaak", "Index", "GavTaken")%>
 	die je in orde moet brengen.
 </div>
@@ -35,8 +39,9 @@
 		else
 		{
 %>
-<div class="mededelingen">
-	<strong>Opgelet:</strong> er zijn nog
+<div class="mededelingen ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary">
+    <img src= "<%=ResolveUrl("~/Content/images/Exclamation.png")%>" alt="Opgelet"/>
+	<strong>Opgelet:</strong> Er zijn nog
 	<%=Html.ActionLink(Model.Mededelingen.Count + " zaken", "Index", "GavTaken")%>
 	die je in orde moet brengen.
 </div>

@@ -23,10 +23,19 @@
  */
 %>
 	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
+
 	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jquery-ui-1.10.2.custom.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/algemeneFuncties.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jqueryui-editable.js")%>" type="text/javascript"></script>
+
+    <% // CSS files %>
+	<link href="<%=ResolveUrl("~/Content/Site.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%=ResolveUrl("~/Content/jquery-ui-1.10.2.custom.css")%>" rel="stylesheet" type="text/css" />
+    <link href="<%=ResolveUrl("~/Content/jquery.autocomplete.css")%>" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<% 
@@ -34,6 +43,8 @@
 		using (Html.BeginForm())
 		{
 	%>
+    
+
 	<ul id="acties">
 		<li>
 			<input type="submit" value="Bewaren" id="bewaarComm" /></li>
@@ -49,11 +60,15 @@
 						mdl=>mdl.NieuweCommVorm.CommunicatieTypeID, 
 						new SelectList(Model.Types.Select(x => new { value = x.ID, text = string.Format("{0}", x.Omschrijving)}), "value", "text"))%>
 				</td>
+                
 				<td>
 					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
 					<%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nummer) %>
 				</td>
 			</tr>
+            <tr id="verbRij" hidden >
+                    <td colspan="2"  id="fouten"></td>
+                </tr>
 			<tr>
 				<td>
 					<%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn)%><br />

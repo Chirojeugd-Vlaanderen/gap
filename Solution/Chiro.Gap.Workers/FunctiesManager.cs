@@ -180,7 +180,7 @@ namespace Chiro.Gap.Workers
                 functie.Groep.Functie.Remove(functie);
                 return null;
             }
-            functie.WerkJaarTot = _veelGebruikt.WerkJaarOphalen(functie.Groep.ID) - 1;
+            functie.WerkJaarTot = _veelGebruikt.WerkJaarOphalen(functie.Groep) - 1;
             return functie;
         }
 

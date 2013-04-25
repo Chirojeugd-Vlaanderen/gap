@@ -134,7 +134,7 @@ namespace Chiro.Gap.Workers
                                                afdelingsJaarDetail.GeboorteJaarTot,
                                                afdelingsJaarDetail.Geslacht);
                 }
-                catch (ValidatieException ex)
+                catch (FoutNummerException ex)
                 {
                     throw new FoutNummerException(FoutNummer.ValidatieFout,
                                                   string.Format("Fout voor {0}: {1}", afd.Naam, ex.Message));

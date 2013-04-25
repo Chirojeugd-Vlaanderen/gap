@@ -599,9 +599,9 @@ namespace Chiro.Gap.Services.Test
 
             groep.Afdeling = new List<Afdeling>
                                  {
-                                     new Afdeling {ID = 4},
-                                     new Afdeling {ID = 5},
-                                     new Afdeling {ID = 6}
+                                     new Afdeling {ID = 4, ChiroGroep = groep},
+                                     new Afdeling {ID = 5, ChiroGroep = groep},
+                                     new Afdeling {ID = 6, ChiroGroep = groep}
                                  };
 
             var officieleAfdelingen = new List<OfficieleAfdeling>
@@ -618,14 +618,16 @@ namespace Chiro.Gap.Services.Test
                                               AfdelingID = 4,
                                               GeboorteJaarVan = 1993,
                                               GeboorteJaarTot = 1994,
-                                              OfficieleAfdelingID = 3
+                                              OfficieleAfdelingID = 3,
+                                              Geslacht = GeslachtsType.Gemengd
                                           },
                                       new AfdelingsJaarDetail
                                           {
                                               AfdelingID = 5,
                                               GeboorteJaarVan = 1994,
                                               GeboorteJaarTot = 1995,
-                                              OfficieleAfdelingID = 2
+                                              OfficieleAfdelingID = 2,
+                                              Geslacht = GeslachtsType.Gemengd
                                           },
                                   };
 
@@ -652,6 +654,229 @@ namespace Chiro.Gap.Services.Test
 
             Assert.AreEqual(nieuwGwj.WerkJaar, 2012);
             Assert.AreEqual(nieuwGwj.AfdelingsJaar.Count, 2);
+        }
+
+        /// <summary>
+        ///Controleert of JaarOvergangUitvoeren rekening houdt met de minimumleeftijd
+        /// bij de afdelingsindeling.
+        ///</summary>
+        [TestMethod()]
+        public void JaarovergangUitvoerenMinimumLeeftijdTest()
+        {
+            // ARRANGE
+
+            // model
+
+            bool gedetecteerd = false;
+            var groep = new ChiroGroep();
+
+            var groepsWerkJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2011 };
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            groep.Afdeling = new List<Afdeling>
+                                 {
+                                     new Afdeling {ID = 4, ChiroGroep = groep},
+                                     new Afdeling {ID = 5, ChiroGroep = groep},
+                                     new Afdeling {ID = 6, ChiroGroep = groep}
+                                 };
+
+            var officieleAfdelingen = new List<OfficieleAfdeling>
+                                          {
+                                              new OfficieleAfdeling {ID = 1},
+                                              new OfficieleAfdeling {ID = 2},
+                                              new OfficieleAfdeling {ID = 3}
+                                          };
+
+            var teActiveren = new List<AfdelingsJaarDetail>
+                                  {
+                                      new AfdelingsJaarDetail
+                                          {
+                                              AfdelingID = 4,
+                                              GeboorteJaarVan = 1993,
+                                              GeboorteJaarTot = 1994,
+                                              OfficieleAfdelingID = 3,
+                                              Geslacht = GeslachtsType.Gemengd
+                                          },
+                                      new AfdelingsJaarDetail
+                                          {
+                                              AfdelingID = 5,
+                                              GeboorteJaarVan = 1994,
+                                              GeboorteJaarTot = 2007,   // kleuter in 2012
+                                              OfficieleAfdelingID = 2,
+                                              Geslacht = GeslachtsType.Gemengd
+                                          },
+                                  };
+
+            // dependency injection
+
+            var dummyRepositoryProvider = new Mock<IRepositoryProvider>();
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Groep>())
+                                   .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<OfficieleAfdeling>())
+                                   .Returns(new DummyRepo<OfficieleAfdeling>(officieleAfdelingen));
+
+            Factory.InstantieRegistreren(dummyRepositoryProvider.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GroepenService>();
+            try
+            {
+                target.JaarOvergangUitvoeren(teActiveren, groep.ID);
+            }
+            catch (FaultException<FoutNummerFault> ex)
+            {
+                gedetecteerd = ex.Detail.FoutNummer == FoutNummer.OngeldigeGeboorteJarenVoorAfdeling;
+            }
+            
+
+            // ASSERT
+
+            var nieuwGwj = (from gwj in groep.GroepsWerkJaar
+                            orderby gwj.WerkJaar descending
+                            select gwj).First();
+
+            Assert.IsTrue(gedetecteerd);
+        }
+
+        ///<summary>
+        /// Controleert of AfdelingsJaarBewaren rekening houdt met de minimumleeftijd.
+        ///</summary>
+        [TestMethod()]
+        public void AfdelingsJaarBewarenMinimumLeeftijdTest()
+        {
+            // ARRANGE
+            
+            // model om op te testen.
+            
+            var groep = new ChiroGroep();
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2012};
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+            var afdelingsJaar = new AfdelingsJaar
+                                    {
+                                        Afdeling = new Afdeling {ID = 2, ChiroGroep = groep},
+                                        OfficieleAfdeling = new OfficieleAfdeling {ID = 3},
+                                        GroepsWerkJaar = groepsWerkJaar,
+                                        GeboorteJaarTot = 2006,
+                                        GeboorteJaarVan = 2004,
+                                        ID = 1
+                                    };
+
+            // dependency injection opzetten voor data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<AfdelingsJaar>())
+                                  .Returns(new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar> {afdelingsJaar}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Afdeling>())
+                                  .Returns(new DummyRepo<Afdeling>(new List<Afdeling> {afdelingsJaar.Afdeling}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<OfficieleAfdeling>())
+                                  .Returns(
+                                      new DummyRepo<OfficieleAfdeling>(new List<OfficieleAfdeling>
+                                                                           {
+                                                                               afdelingsJaar
+                                                                                   .OfficieleAfdeling
+                                                                           }));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            bool gedetecteerd = false;
+
+            var target = Factory.Maak<GroepenService>();
+            try
+            {
+                target.AfdelingsJaarBewaren(new AfdelingsJaarDetail
+                {
+                    AfdelingsJaarID = afdelingsJaar.ID,
+                    GeboorteJaarTot = 2007,
+                    GeboorteJaarVan = 2004,
+                    AfdelingID = afdelingsJaar.Afdeling.ID,
+                    Geslacht = GeslachtsType.Gemengd
+                });
+            }
+            catch (FaultException<FoutNummerFault> ex)
+            {
+                gedetecteerd = ex.Detail.FoutNummer == FoutNummer.OngeldigeGeboorteJarenVoorAfdeling;
+            }
+            
+            // ASSERT
+
+            Assert.IsTrue(gedetecteerd);
+        }
+
+        ///<summary>
+        ///OngebruikteAfdelingenOphalen mag enkel de afdelingen ophalen die in het
+        /// gevraagde werkjaar ongebruikt zijn.
+        ///</summary>
+        [TestMethod()]
+        public void OngebruikteAfdelingenOphalenTest()
+        {
+            // ARRANGE
+
+            // het model
+
+            var groep = new ChiroGroep();
+            var vorigWerkJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2011, ID = 1};
+            var ditWerkJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2012, ID = 2};
+
+            var afdeling = new Afdeling {ChiroGroep = groep, ID = 3};
+            groep.Afdeling.Add(afdeling);
+            var vorigAfdelingsJaar = new AfdelingsJaar {GroepsWerkJaar = vorigWerkJaar, Afdeling = afdeling};
+            afdeling.AfdelingsJaar.Add(vorigAfdelingsJaar);
+
+            // dependency injection voor data acces
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
+                                  .Returns(
+                                      new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar>
+                                                                        {
+                                                                            vorigWerkJaar,
+                                                                            ditWerkJaar
+                                                                        }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Afdeling>())
+                                  .Returns(new DummyRepo<Afdeling>(new List<Afdeling> {afdeling}));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var target = Factory.Maak<GroepenService>();
+
+            var actual = target.OngebruikteAfdelingenOphalen(ditWerkJaar.ID);
+            Assert.AreEqual(actual.Count, 1);
+            Assert.AreEqual(actual.First().ID, afdeling.ID);
+        }
+
+        /// <summary>
+        ///Controleer of AlleAfdelingenOphalen ook inactieve afdelingen ophaalt.
+        ///</summary>
+        [TestMethod()]
+        public void AlleAfdelingenOphalenTest()
+        {
+            // ARRANGE
+
+            // het model
+
+            var groep = new ChiroGroep();
+            var ditWerkJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2012, ID = 2 }; // we hebben een werkjaar
+            groep.GroepsWerkJaar.Add(ditWerkJaar);
+
+            var afdeling = new Afdeling { ChiroGroep = groep, ID = 3 };
+            groep.Afdeling.Add(afdeling); // en een afdeling, die inactief is
+
+            // dependency injection voor data acces
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                                  .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var target = Factory.Maak<GroepenService>();
+
+            var actual = target.AlleAfdelingenOphalen(groep.ID);
+            Assert.AreEqual(actual.Count, 1);
+            Assert.AreEqual(actual.First().ID, afdeling.ID);
         }
     }
 }

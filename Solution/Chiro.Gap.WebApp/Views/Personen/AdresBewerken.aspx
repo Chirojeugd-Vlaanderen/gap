@@ -34,30 +34,44 @@
 		{ %>
 	<ul id="acties">
 		<li>
-			<input type="submit" name="action" value="Bewaren" /></li>
+			<input type="submit" name="action" value="Bewaren" id="bewaarAdres" />
+        </li>
 	</ul>
 	<fieldset>
 		<legend>Toepassen op:</legend>
 		<%=Html.CheckBoxList("GelieerdePersoonIDs", Model.Bewoners)%>
 	</fieldset>
-    <%
-		   =Html.ValidationSummary()
-         %>
+    <% =Html.ValidationSummary()  %>
+    <% var values = from AdresTypeEnum e in Enum.GetValues(typeof(AdresTypeEnum))
+				  select new { value = e, text = e.ToString() }; 
+		%>
+
 	<fieldset>
 		<legend>Adresgegevens</legend>
-		<p>
+    <table>
+        <tr>
+			<td><%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.AdresType) %></td>
+			<td><%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.AdresType, new SelectList(values, "value", "text"))%></td>
+		</tr>
+        <tr>
+            <td><%=Html.LabelFor(mdl => mdl.Land) %></td>
+            <td><%=Html.DropDownListFor(mdl => mdl.Land, new SelectList(Model.AlleLanden, "Naam", "Naam")) %></td>  
+        </tr>
+    </table>
+
+    <p id="uitlegBinnenland" hidden>
 			<strong>Opgelet:</strong> voor binnenlandse adressen wordt alleen de officiële spelling van de straatnaam geaccepteerd.<br />
 			Ben je zeker van de straatnaam maar wordt ze geweigerd? Lees in
 			<%=Html.ActionLink("de handleiding", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweStraatnaam"})%>
-			hoe we daar een mouw aan kunnen passen.</p>
-		<% var values = from AdresTypeEnum e in Enum.GetValues(typeof(AdresTypeEnum))
-				  select new { value = e, text = e.ToString() }; 
-		%>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.AdresType) %>
-			<%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.AdresType, new SelectList(values, "value", "text"))%>
-		</p>
+			hoe we daar een mouw aan kunnen passen.
+    </p>
+		
+        <p id="uitlegBuitenland" hidden>
+    Voor een buitenlands adres kun je behalve een postnummer ook een postcode invullen:
+    dat is bijvoorbeeld de lettercode die in Nederlandse adressen na het postnummer
+    komt (bv. 1216 RA Hilversum).</p>
 
+        <table id="tabel" hidden>
         <%
 			Html.RenderPartial("AdresBewerkenControl", Model);
          %>
@@ -70,15 +84,16 @@
 				// De mogelijkheid om aan te kruisen of het nieuwe adres het voorkeursadres wordt, krijg je alleen bij een nieuw
 				// adres, en niet bij een verhuis.  I.e. als OudAdresID == 0.
 		%>
-		<p>
-			<%=Html.LabelFor(mdl=>mdl.Voorkeur) %>
-			<%=Html.EditorFor(mdl => mdl.Voorkeur)%>
-		</p>
+		<tr>
+			<td><%=Html.LabelFor(mdl=>mdl.Voorkeur) %></td>
+			<td><%=Html.EditorFor(mdl => mdl.Voorkeur)%></td>
+		</tr>
 		<%
 			}
 		%>
 		<%=Html.HiddenFor(mdl=>mdl.AanvragerID) %>
 		<%=Html.HiddenFor(mdl=>mdl.OudAdresID) %>
+        </table>
 	</fieldset>
 	<%} %>
 </asp:Content>

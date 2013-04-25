@@ -16,13 +16,15 @@
  * limitations under the License.
  */
 
+using Chiro.Gap.Domain;
+
 namespace Chiro.Gap.Validatie
 {
 	/// <summary>
 	/// Klasse die gebruikt wordt om validatieregels te controleren
 	/// </summary>
 	/// <typeparam name="T">Object waarop de validator van toepassing is</typeparam>
-	public class Validator<T> : IValidator<T>
+	public abstract class Validator<T> : IValidator<T>
 	{
 		/// <summary>
 		/// Valideert een object.  De bedoeling is dat er hier een aantal
@@ -36,7 +38,20 @@ namespace Chiro.Gap.Validatie
 		/// <returns><c>True</c> indien validatie oké</returns>
 		public virtual bool Valideer(T teValideren)
 		{
-			return true;
+            //return FoutNummer(teValideren) != null;
+            //Arno: De regel hierboven heb ik vervangen door de code die er nu staat omdat de andere steeds een fout terug gaf, het kan zijn dat dit terug
+            //      veranderd moet worden.
+		    return FoutNummer(teValideren) == null;
 		}
+
+        /// <summary>
+        /// Valideert een object.  De bedoeling is dat er hier een aantal
+        /// generieke zaken getest kunnen worden.  (Bijv. 'maxlengths'
+        /// die gegeven zijn via attributen.)
+        /// </summary>
+        /// <param name="teValideren">Object dat gevalideerd moet worden</param>
+        /// <returns><c>null</c> indien validatie oké, anders een foutnummer met meer
+        /// informatie over de opgetreden fout.</returns>
+	    public abstract FoutNummer? FoutNummer(T teValideren);
 	}
 }

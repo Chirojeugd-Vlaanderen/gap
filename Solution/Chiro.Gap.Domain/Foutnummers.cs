@@ -27,8 +27,13 @@ namespace Chiro.Gap.Domain
         GeenGav,
         BestaatAl,
         ValidatieFout,
-        FouteGeboortejarenVoorAfdeling,
         ChronologieFout,		// fout ivm volgorde datums
+
+        #region personen
+        OngeldigeGeboorteJarenVoorAfdeling,      
+	    GeboorteDatumOntbreekt,
+	    PersoonOverleden,
+        #endregion
 
         #region adressen
         LandNietGevonden,

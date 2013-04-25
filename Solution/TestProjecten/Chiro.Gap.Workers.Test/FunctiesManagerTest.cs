@@ -582,31 +582,45 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void FunctieLangerInGebruikGeforceerdVerwijderenTest()
 		{
-            //// arrange
+            // ARRANGE
 
-            //var testData = new DummyData();
+            // model
+		    var groep = new ChiroGroep();
 
-            //Debug.Assert(testData.HuidigGwj != null);
+		    var vorigWerkJaar = new GroepsWerkJaar {WerkJaar = 2011, Groep = groep, ID = 2};
+		    var ditWerkJaar = new GroepsWerkJaar {WerkJaar = 2012, Groep = groep, ID = 3};
+            groep.GroepsWerkJaar.Add(vorigWerkJaar);
+		    groep.GroepsWerkJaar.Add(ditWerkJaar);
 
-            //var veelGebruiktMock = new Mock<IVeelGebruikt>();
-            //veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
-            //Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
+		    var functie = new Functie {Groep = groep, ID = 1};
+            groep.Functie.Add(functie);
 
-            //var mgr = Factory.Maak<FunctiesManager>();
+		    var gelieerdePersoon = new GelieerdePersoon {Groep = groep};
+            groep.GelieerdePersoon.Add(gelieerdePersoon);
 
-            //// act
+		    var leidingToen = new Leiding {GelieerdePersoon = gelieerdePersoon, GroepsWerkJaar = vorigWerkJaar};
+		    var leidingNu = new Leiding {GelieerdePersoon = gelieerdePersoon, GroepsWerkJaar = ditWerkJaar};
+            vorigWerkJaar.Lid.Add(leidingToen);
+            ditWerkJaar.Lid.Add(leidingNu);
 
-            //var result = mgr.Verwijderen(testData.TraditieFunctie, true);
+            leidingToen.Functie.Add(functie);
+            leidingNu.Functie.Add(functie);
+            functie.Lid.Add(leidingToen);
+            functie.Lid.Add(leidingNu);
+            
+            // ACT
 
-            //// assert
+            var mgr = Factory.Maak<FunctiesManager>();
+            var result = mgr.Verwijderen(functie, true);
 
-            //// functie niet meer geldig
-            //Assert.IsNotNull(result);
-            //Assert.AreEqual(result.WerkJaarTot, testData.HuidigGwj.WerkJaar - 1);
+            // ASSERT
 
-            //// enkel het lid van dit werkJaar blijft over
-            //Assert.AreEqual(result.Lid.Count, 1);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            // functie niet meer geldig
+            Assert.IsTrue(groep.Functie.Contains(functie));
+            Assert.AreEqual(result.WerkJaarTot, ditWerkJaar.WerkJaar - 1);
+
+            // enkel het lid van dit werkJaar blijft over
+            Assert.AreEqual(result.Lid.Count, 1);
 		}
 	}
 }

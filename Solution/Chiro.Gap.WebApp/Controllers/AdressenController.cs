@@ -104,7 +104,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="postNummer">Postnummer waarin gezocht moet worden</param>
 		/// <returns>Voorgestelde straatnamen in plain text, nieuwe regel na elke straat</returns>
 		[HandleError]
-		public ActionResult StratenVoorstellen(String q, int postNummer)
+		public JsonResult StratenVoorstellen(String q, int postNummer)
 		{
 			IEnumerable<StraatInfo> mogelijkeStraten =
 				ServiceHelper.CallService<IGroepenService, IEnumerable<StraatInfo>>(

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+using Chiro.Gap.Domain;
+
 namespace Chiro.Gap.Validatie
 {
 	/// <summary>
@@ -28,12 +30,19 @@ namespace Chiro.Gap.Validatie
 		/// Valideert een object.  De bedoeling is dat er hier een aantal
 		/// generieke zaken getest kunnen worden.  (Bijv. 'maxlengths'
 		/// die gegeven zijn via attributen.)
-		/// <para />
-		/// Voorlopig zijn er zo nog geen attributen, dus retourneert
-		/// deze functie gewoonweg <c>true</c>.
 		/// </summary>
 		/// <param name="teValideren">Object dat gevalideerd moet worden</param>
 		/// <returns><c>True</c> indien validatie oké</returns>
 		bool Valideer(T teValideren);
+
+        /// <summary>
+        /// Valideert een object.  De bedoeling is dat er hier een aantal
+        /// generieke zaken getest kunnen worden.  (Bijv. 'maxlengths'
+        /// die gegeven zijn via attributen.)
+        /// </summary>
+        /// <param name="teValideren">Object dat gevalideerd moet worden</param>
+        /// <returns><c>null</c> indien validatie oké, anders een foutnummer met meer
+        /// informatie over de opgetreden fout.</returns>
+	    FoutNummer? FoutNummer(T teValideren);
 	}
 }
