@@ -853,5 +853,50 @@ namespace Chiro.Gap.Services.Test
             Assert.AreEqual(nieuwLid.Functie.Count,1);
             Assert.AreEqual(nieuwLid.Functie.First().ID, algemeneFunctie.ID);
         }
+
+        /// <summary>
+        ///A test for AfdelingenVervangenBulk
+        ///</summary>
+        [TestMethod()]
+        public void AfdelingenVervangenBulkTest()
+        {
+            // ARRANGE
+
+            // We stellen een model op:
+            // iemand die leiding is in afdelingsjaar1
+            var groep = new ChiroGroep();
+            var afdelingsJaar1 = new AfdelingsJaar {ID = 1, GroepsWerkJaar = new GroepsWerkJaar {Groep = groep}};
+            var afdelingsJaar2 = new AfdelingsJaar {ID = 2, GroepsWerkJaar = new GroepsWerkJaar {Groep = groep}};
+
+            var leiding = new Leiding
+                              {
+                                  ID = 3,
+                                  GelieerdePersoon = new GelieerdePersoon {Groep = groep},
+                                  AfdelingsJaar = new List<AfdelingsJaar> {afdelingsJaar1}
+                              };
+            afdelingsJaar1.Leiding.Add(leiding);
+
+            // Dependency injection voor data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<AfdelingsJaar>())
+                                  .Returns(
+                                      new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar>
+                                                                       {
+                                                                           afdelingsJaar1,
+                                                                           afdelingsJaar2
+                                                                       }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid> {leiding}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var target = Factory.Maak<LedenService>();
+            target.AfdelingenVervangenBulk(new [] {leiding.ID}, new [] {afdelingsJaar2.ID});
+
+            // ASSERT
+            Assert.IsFalse(afdelingsJaar1.Leiding.Contains(leiding));
+            Assert.IsTrue(afdelingsJaar2.Leiding.Contains(leiding));
+        }
     }
 }
