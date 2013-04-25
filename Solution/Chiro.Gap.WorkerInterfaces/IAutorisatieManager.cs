@@ -113,6 +113,15 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="groepen">Een aantal personen</param>
         /// <returns><c>true</c> als de aangemelde gebruiker GAV is van alle gegeven 
         /// <paramref name="groepen"/>, <c>false</c> in het andere geval</returns>
-        bool IsGav(List<Groep> groepen);
+        bool IsGav(IList<Groep> groepen);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de aangemelde gebruiker GAV is van alle gegeven 
+        /// <paramref name="leden"/>. Zo niet <c>false</c>
+        /// </summary>
+        /// <param name="leden">Een aantal leden</param>
+        /// <returns><c>true</c> als de aangemelde gebruiker GAV is van alle gegeven 
+        /// <paramref name="leden"/>, <c>false</c> in het andere geval</returns>
+        bool IsGav(IList<Lid> leden);
     }
 }

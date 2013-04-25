@@ -165,7 +165,12 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
-        public bool IsGav(List<Groep> groepen)
+        public bool IsGav(IList<Groep> groepen)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGav(IList<Lid> leden)
         {
             throw new NotImplementedException();
         }
