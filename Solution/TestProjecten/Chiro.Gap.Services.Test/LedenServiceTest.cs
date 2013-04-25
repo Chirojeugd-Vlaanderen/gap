@@ -904,5 +904,41 @@ namespace Chiro.Gap.Services.Test
             Assert.IsFalse(afdelingsJaar1.Leiding.Contains(leiding));
             Assert.IsTrue(afdelingsJaar2.Leiding.Contains(leiding));
         }
+
+        /// <summary>
+        ///Een test voor het zoeken naar leden zonder adressen
+        ///</summary>
+        [TestMethod]
+        public void ZoekenLedenZonderAdressenTest()
+        {
+            // ARRANGE
+
+            // testmodelletje
+            var lid = new Leiding
+                          {
+                              ID = 1,
+                              GelieerdePersoon = new GelieerdePersoon
+                                                     {
+                                                         PersoonsAdres = new PersoonsAdres {Adres = new BelgischAdres()},
+                                                         Persoon = new Persoon()
+                                                     }
+                          };
+
+            // dependency injection
+            
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid> {lid}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var target = Factory.Maak<LedenService>();
+            var actual = target.Zoeken(new LidFilter {HeeftVoorkeurAdres = false}, false);
+
+            // ASSERT
+            Assert.IsFalse(actual.Select(ld => ld.LidID == lid.ID).Any());
+            // alle leden hebben een voorkeursadres. Ik verwacht er dus geen te vinden zonder.
+
+        }
     }
 }
