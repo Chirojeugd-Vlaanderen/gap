@@ -37,13 +37,13 @@ namespace Chiro.Gap.WebApp.Models
         /// <summary>
         /// ID's van de leden, voor postback
         /// </summary>
-        public IEnumerable<int> LidIDs { get; set; }
+        public List<int> LidIDs { get; set; }
 
         // AfdelingsJaarID of AfdelingsJaarIDs wordt gebruikt, alnaargelang de gebruiker
         // 1 of meerdere afdelingen in kon geven.  (Dit laaste is het geval als er enkel
         // leiding geselecteerd was.)
 
         public int AfdelingsJaarID { get; set; }
-        public IEnumerable<int> AfdelingsJaarIDs { get; set; }
+        public List<int> AfdelingsJaarIDs { get; set; }
     }
 }
