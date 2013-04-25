@@ -38,7 +38,10 @@ namespace Chiro.Gap.Validatie
 		/// <returns><c>True</c> indien validatie oké</returns>
 		public virtual bool Valideer(T teValideren)
 		{
-		    return FoutNummer(teValideren) != null;
+            //return FoutNummer(teValideren) != null;
+            //Arno: De regel hierboven heb ik vervangen door de code die er nu staat omdat de andere steeds een fout terug gaf, het kan zijn dat dit terug
+            //      veranderd moet worden.
+		    return FoutNummer(teValideren) == null;
 		}
 
         /// <summary>

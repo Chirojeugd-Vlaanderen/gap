@@ -166,7 +166,7 @@
         <dt><strong><a class="anchor" id="Lidgeld">Lidgeld</a></strong>:</dt>
         <dd id="LGINFO">
             Op de persoonsfiche van ingeschreven leden kun je aanduiden of zij hun lidgeld al
-            betaald hebben. Dat is informatie voor je groep, niet voor het nationaal secretariaat.
+            betaald hebben. <b>Dat is informatie voor je groep, niet voor het nationaal secretariaat.</b>
             Lidgeld is wat je leden aan je groep betalen om aan de activiteiten te mogen deelnemen.
             Je groep betaalt aan Chirojeugd Vlaanderen voor de aansluiting en dus de verzekering.
             Iedereen die ingeschreven is, is verzekerd. Iedereen die ingeschreven is én voor

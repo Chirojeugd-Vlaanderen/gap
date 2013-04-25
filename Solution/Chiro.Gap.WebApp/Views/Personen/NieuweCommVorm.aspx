@@ -43,6 +43,8 @@
 		using (Html.BeginForm())
 		{
 	%>
+    
+
 	<ul id="acties">
 		<li>
 			<input type="submit" value="Bewaren" id="bewaarComm" /></li>
@@ -58,11 +60,15 @@
 						mdl=>mdl.NieuweCommVorm.CommunicatieTypeID, 
 						new SelectList(Model.Types.Select(x => new { value = x.ID, text = string.Format("{0}", x.Omschrijving)}), "value", "text"))%>
 				</td>
+                
 				<td>
 					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
 					<%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nummer) %>
 				</td>
 			</tr>
+            <tr id="verbRij" hidden >
+                    <td colspan="2"  id="fouten"></td>
+                </tr>
 			<tr>
 				<td>
 					<%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn)%><br />

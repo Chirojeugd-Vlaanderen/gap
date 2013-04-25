@@ -27,7 +27,7 @@
 	{ %>
 	<ul id="acties">
 		<li>
-			<input type="submit" value="Bewaren" /></li>
+			<input type="submit" value="Bewaren" id="verwijderAdres"/></li>
 	</ul>
 	<fieldset>
 		<legend>Adresgegevens</legend>

@@ -512,7 +512,8 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="lidID">LidID van het lid met de te wijzigen afdeling(en)</param>
         /// <param name="groepID">Groep waarin de user momenteel werkt</param>
         /// <returns>De view 'AfdelingBewerken'</returns>
-        public ActionResult AfdelingBewerken(int lidID, int groepID)
+        /// ActionResult
+        public JsonResult AfdelingBewerken(int lidID, int groepID)
         {
             var model = new LidAfdelingenModel();
             BaseModelInit(model, groepID);
@@ -534,12 +535,12 @@ namespace Chiro.Gap.WebApp.Controllers
                     Properties.Resources.GeenActieveAfdelingen,
                     Url.Action("Index", "Afdelingen", new { groepID }));
 
-                return TerugNaarVorigeLijst();
+                return Json("{data:geen afdelingen}"); //TerugNaarVorigeLijst();
             }
             else
             {
                 model.Titel = String.Format(Properties.Resources.AfdelingenAanpassen, model.Info.VolledigeNaam);
-                return View("AfdelingBewerken", model);
+                return Json(model,JsonRequestBehavior.AllowGet);
             }
         }
 

@@ -3,9 +3,15 @@
 $.fn.editable.defaults.mode = 'inline';
 $.fn.editable.defaults.clear = true;
 $.fn.editable.defaults.toggle = 'manual';
-});
 
-    
+    var GID = $('#MGID').val();
+
+    //mededelingen
+    $('.mededelingen').click(function () {
+        var url = "/" + GID + "/GavTaken";
+        window.location = url;
+    });
+});    
 //--------------------------------------------------------------------------------
 // functie om extra informatie te tonen in een dialog
 // Maak een <div id="eenID"></div> aan in de pagina waar je de dialog wil
@@ -14,18 +20,21 @@ $.fn.editable.defaults.toggle = 'manual';
 function toonInfo(id, titel, dialogId) {
 
     var url = "/Handleiding/Trefwoorden " + id;
-    $(dialogId).load(url);
-
-    $(dialogId).dialog({
-        modal: true,
-        width: 500,
-        show: {
-            effect: "drop"
-        },
-        hide: {
-            effect: "drop"
-        },
-        title: titel
+    $(dialogId).load(url, function () {
+        success: {
+            $(dialogId).dialog({
+                modal: true,
+                width: 500,
+                show: {
+                    effect: "drop"
+                },
+                hide: {
+                    effect: "drop"
+                },
+                title: titel,
+                buttons: {}
+            });
+        }
     });
 }
 
@@ -51,6 +60,9 @@ $.datepicker.regional['be'] = {
     showMonthAfterYear: false,
     yearSuffix: ''
 };
+//Straatnamen aanvullen
+
+
 //--------------------------------------------------------------------------------
 // MEER INFORMATIE TONEN ( via dialog)
 // Deze functies kunnen in dit algemene bestand opgenomen worden omdat ze in enkele paginas
@@ -59,10 +71,11 @@ $.datepicker.regional['be'] = {
 //--------------------------------------------------------------------------------
 // extra info over AD-nummer
 
-$('#Ad-info').click(function () {
+/*$('#Ad-info').click(function () {
     toonInfo('#ADINFO', "AD-nummer", "#extraInfoDialog");
 });
 
 $('#clInfo').click(function () {
     toonInfo('#CLINFO', "Chiroleeftijd", "#extraInfoDialog");
-});
+});*/
+

@@ -1002,7 +1002,7 @@ namespace Chiro.Gap.Services
         /// <returns>Gegevens van de gevonden straten</returns>
         public IEnumerable<StraatInfo> StratenOphalen(string straatBegin, int postNr)
         {
-            return Mapper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(_straatRepo.Where(e => e.PostNummer == postNr && e.Naam.StartsWith(straatBegin, StringComparison.OrdinalIgnoreCase)));
+            return Mapper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(_straatRepo.Where(e =>e.PostNummer == postNr && e.Naam.StartsWith(straatBegin, StringComparison.OrdinalIgnoreCase)));
         }
 
         /// <summary>

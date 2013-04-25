@@ -185,6 +185,7 @@
     </CodeAnalysisDictionary>
     <Content Include="Content\images\animated-overlay.gif" />
     <Content Include="Content\images\clear.png" />
+    <Content Include="Content\images\Exclamation.png" />
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -203,6 +204,7 @@
     <Content Include="Content\jquery-ui-1.10.2.custom.css" />
     <Content Include="Content\jquery.autocomplete.css" />
     <Content Include="Content\jqueryui-editable.css" />
+    <Content Include="Content\print.css" />
     <Content Include="Content\Screenshots\Deelnemersinfo_bewerken.png" />
     <Content Include="Content\Screenshots\Deelnemers_inschrijven.png" />
     <Content Include="Content\Screenshots\Fiche_bivakdetails_met_leden.png" />

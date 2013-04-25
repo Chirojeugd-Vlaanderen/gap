@@ -1,0 +1,21 @@
+﻿#header #settingsmenu, #topNavigatie, .mededelingen, .opzij, button, #footer, #commLeeg, td:nth-child(3), td:nth-child(4),td:nth-child(5),#livetest, #terug {
+    display: none;
+}
+
+table tr:nth-child(even) {
+    background: #D3D3D3;
+}
+
+table, h1, h3, #PersoonsInformatie {
+    width: 100%; 
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 10px; 
+    float: none;
+}
+
+a,a:link, a:hover, a:visited,span{
+    text-decoration: none;
+    color: #000000;
+}
