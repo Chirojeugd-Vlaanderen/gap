@@ -71,12 +71,12 @@ namespace Chiro.Gap.WebApp.Test
             throw new NotImplementedException();
         }
 
-        public int AfdelingenVervangen(int lidID, IEnumerable<int> afdelingsJaarIDs)
+        public int AfdelingenVervangen(int lidID, IList<int> afdelingsJaarIDs)
         {
             throw new NotImplementedException();
         }
 
-        public void AfdelingenVervangenBulk(IEnumerable<int> lidIDs, IEnumerable<int> afdelingsJaarIDs)
+        public void AfdelingenVervangenBulk(IList<int> lidIDs, IList<int> afdelingsJaarIDs)
         {
             throw new NotImplementedException();
         }

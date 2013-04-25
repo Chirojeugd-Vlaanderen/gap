@@ -142,15 +142,6 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to De opgegeven afdeling is geen afdeling van groep {0}..
-        /// </summary>
-        internal static string FouteAfdelingVoorGroepString {
-            get {
-                return ResourceManager.GetString("FouteAfdelingVoorGroepString", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Er is zo geen categorie in de gegeven groep..
         /// </summary>
         internal static string FouteCategorieVoorGroep {
@@ -282,6 +273,15 @@ namespace Chiro.Gap.Services.Properties {
         internal static string OngeldigLidType {
             get {
                 return ResourceManager.GetString("OngeldigLidType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Je probeert een lid te koppelen aan een ongeldige afdeling..
+        /// </summary>
+        internal static string OngelidgeAfdelingVoorLid {
+            get {
+                return ResourceManager.GetString("OngelidgeAfdelingVoorLid", resourceCulture);
             }
         }
         

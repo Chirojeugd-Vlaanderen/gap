@@ -130,7 +130,12 @@ namespace Chiro.Gap.Dummies
 	        return false;
 	    }
 
-	    public bool IsGav(List<Groep> groepen)
+	    public bool IsGav(IList<Lid> leden)
+	    {
+	        return false;
+	    }
+
+	    public bool IsGav(IList<Groep> groepen)
 	    {
 	        return false;
 	    }

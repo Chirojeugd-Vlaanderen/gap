@@ -480,7 +480,7 @@ namespace Chiro.Gap.Services
         /// <param name="lidId">Lid dat nieuwe afdelingen moest krijgen</param>
         /// <param name="afdelingsJaarIds">Id's van de te koppelen afdelingsjaren</param>
         /// <returns>De GelieerdePersoonId van het lid</returns>
-        public int AfdelingenVervangen(int lidId, IEnumerable<int> afdelingsJaarIds)
+        public int AfdelingenVervangen(int lidId, IList<int> afdelingsJaarIds)
         {
             var lid = _ledenRepo.ByID(lidId);
             Gav.Check(lid);
@@ -496,34 +496,90 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="lidIds">Id's van leden die nieuwe afdelingen moeten krijgen</param>
         /// <param name="afdelingsJaarIds">Id's van de te koppelen afdelingsjaren</param>
-        public void AfdelingenVervangenBulk(IEnumerable<int> lidIds, IEnumerable<int> afdelingsJaarIds)
+        public void AfdelingenVervangenBulk(IList<int> lidIds, IList<int> afdelingsJaarIds)
         {
-            var afdelingsJaren = (from g in afdelingsJaarIds select _afdelingsJaarRepo.ByID(g)).ToList();
-            foreach (var afdelingsJaar in afdelingsJaren)
+            // Dit is een beetje een rare functie. Als er meerdere leden zijn, en meerdere afdelingen, dan moeten
+            // die leden allemaal kindleden zijn van hetzelfde groepswerkjaar. Anders gaat het mis.
+
+            // TODO: een en ander verhuizen naar workers.
+
+            var leden = _ledenRepo.ByIDs(lidIds);
+            List<AfdelingsJaar> afdelingsJaren;
+
+            if (afdelingsJaarIds.Any())
             {
-                Gav.Check(afdelingsJaar);
+                var gwjs = (from l in leden select l.GroepsWerkJaar).Distinct().ToList();
+                if (gwjs.Count() != 1)
+                {
+                    // Er zijn groepswerkjaren meegegeven. Een afdelingsjaar is steeds gekoppeld
+                    // aan precies 1 groepswerkjaar.
+                    // De leden komen uit meer dan 1 groepswerkjaar. Het afdelingsjaar kan dus
+                    // nooit gekoppeld zijn aan het groepswerkjaar van elk lid. 
+                    // (pigeon hole principle)
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietVanGroep,
+                                                          Properties.Resources.OngelidgeAfdelingVoorLid);
+                }
+                afdelingsJaren = (from aj in gwjs.First().AfdelingsJaar
+                                  where afdelingsJaarIds.Contains(aj.ID)
+                                  select aj).ToList();
+
+                if (afdelingsJaarIds.Count != afdelingsJaren.Count)
+                {
+                    // Niet alle afdelingsjaren zijn gevonden in het groepswerkjaar van de leden.
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietVanGroep,
+                                      Properties.Resources.OngelidgeAfdelingVoorLid);
+
+                }
+            }
+            else
+            {
+                afdelingsJaren = new List<AfdelingsJaar>();
             }
 
-            foreach (var lidId in lidIds)
+            if (!_autorisatieMgr.IsGav(leden))
             {
-                var lid = _ledenRepo.ByID(lidId);
-                Gav.Check(lid);
+                throw FaultExceptionHelper.GeenGav();
+            }
 
+            foreach (var lid in leden)
+            {
                 var kind = lid as Kind;
                 if (kind != null)
                 {
+                    // lid is kind.
                     if (afdelingsJaren.Count != 1)
                     {
-                        FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneKindFout, Properties.Resources.KindInEenAfdelingsJaar);
+                        throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneKindFout, Properties.Resources.KindInEenAfdelingsJaar);
                     }
                     kind.AfdelingsJaar = afdelingsJaren.First();
                 }
                 else
                 {
-                    var leiding = lid as Leiding;
-                    if (leiding != null)
+                    // lid is leiding
+                    var leiding = (Leiding) lid;
+
+                    // hmmm. Dat zijn hier precies nogal veel loops.
+                    // Gelukkig zijn het kleine loopjes (loopen over afdelingsjaren)
+
+                    // te verwijderen afdelingsjaren verwijderen
+                    var teVerwijderen = (from aj in leiding.AfdelingsJaar
+                                         where !afdelingsJaren.Contains(aj)
+                                         select aj).ToList();
+                    foreach (var aj in teVerwijderen)
                     {
-                        leiding.AfdelingsJaar = afdelingsJaren;
+                        leiding.AfdelingsJaar.Remove(aj);
+                        aj.Leiding.Remove(leiding);
+                    }
+
+                    // toe te voegen afdelingsjaren toevoegen
+
+                    foreach (var aj in afdelingsJaren)
+                    {
+                        if (!leiding.AfdelingsJaar.Contains(aj))
+                        {
+                            leiding.AfdelingsJaar.Add(aj);
+                            aj.Leiding.Add(leiding);
+                        }
                     }
                 }
             }
