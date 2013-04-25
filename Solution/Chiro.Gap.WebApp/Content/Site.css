@@ -684,6 +684,13 @@ fieldset p label {
     height: 80px;
 }
 
+#extraInfoDialog img {
+    margin-left: 45%;
+    margin-top:50px;
+    margin-right: auto;
+    display: inline-block;
+}
+
 @media screen and (max-width: 360px) {
   .opzij{
       display: inline-block;

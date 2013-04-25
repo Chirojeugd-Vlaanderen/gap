@@ -5,19 +5,6 @@ GAP, Chirojeugd Vlaanderen
 */
 
 //--------------------------------------------------------------------------------
-//Javascript dat een script-tag genereert waarin het script 'algemeneFuncties.js'
-//wordt aangeroepen.
-//--------------------------------------------------------------------------------
-
-var script = document.createElement("script");
-script.type = "text/javascript";
-script.src = "/Scripts/algemeneFuncties.js";
-document.body.appendChild(script);
-
-
-//------------------------------------------------------------------------------------------
-
-//--------------------------------------------------------------------------------
 //Document ready functie
 //--------------------------------------------------------------------------------
 $(function () {
@@ -219,8 +206,8 @@ $(function () {
     //Telefoonnummer verwijderen
     $('.telverw').click(function (e) {
         e.preventDefault();
+        clearDialog();
         var comID = $(this).parent().parent().find('td input').val();
-
         $('#extraInfoDialog').html("Ben je zeker dat je deze communicatievorm wil verwijderen?")
             .dialog({
                 modal: true,
@@ -244,7 +231,6 @@ $(function () {
     $('.emailverw').click(function (e) {
         e.preventDefault();
         var comID = $(this).parent().parent().find('td input').val();
-
         $('#extraInfoDialog').html("Ben je zeker dat je deze communicatievorm wil verwijderen?")
             .dialog({
                 modal: true,
@@ -264,93 +250,97 @@ $(function () {
             });
     });
     //------------------------------------------------------------------------------------------
-        //Nieuwe communicatievorm toevoegen
+    //Nieuwe communicatievorm toevoegen
     //oude pagina die geladen wordt bij het aanmaken van een nieuwe communicatievorm (van uit: 'communicatie toevoegen')
-        $('#laadNieuweCom .comToev').click(function () {
-            var waarde;
-            var url = "/" + GID + "/Personen/NieuweCommVorm?gelieerdePersoonID=" + GPid;
-            $('#extraInfoDialog').load(url, function () {
-                gedeeltelijkTonen();
-                var attri = '000-00 00 00';
-                var antwoord;
-                $('#NieuweCommVorm_Nummer').attr('placeholder', attri);
-                $('#NieuweCommVorm_Nummer').attr('required', true);
-                $('#NieuweCommVorm_Nummer').attr('type', 'tel');
+    $('#laadNieuweCom .comToev').click(function () {
+        var waarde;
+        $('#extraInfoDialog').dialog();
+        var url = "/" + GID + "/Personen/NieuweCommVorm?gelieerdePersoonID=" + GPid + " #main";
+        $('#extraInfoDialog').load(url, function () {
+
+            //$("#extraInfoDialog").find('img').remove();
+            gedeeltelijkTonen();
+            var attri = '000-00 00 00';
+            var antwoord;
+            $('#NieuweCommVorm_Nummer').attr('placeholder', attri);
+            $('#NieuweCommVorm_Nummer').attr('required', true);
+            $('#NieuweCommVorm_Nummer').attr('type', 'tel');
 
 
-                $('#NieuweCommVorm_CommunicatieTypeID').on('change', function () {
-                    $('#verbRij').hide();
-                    waarde = $(this).val();
-                    switch (waarde) {
-                        case '1':
-                            attri = '000-00 00 00';
-                            $('#NieuweCommVorm_Nummer').attr('type', 'tel');
-                            break;
-                        case '2':
-                            attri = '000-00 00 00';
-                            $('#NieuweCommVorm_Nummer').attr('type', 'tel');
-                            break;
-                        case '3':
-                            attri = 'iemand@voorbeeld.be';
-                            $('#NieuweCommVorm_Nummer').attr('type', 'email');
-                            break;
-                        case '4':
-                            $('#NieuweCommVorm_Nummer').attr('type', 'url');
-                            attri = 'http://www.voorbeeld.be';
-                            break;
-                        case '5':
-                            $('#NieuweCommVorm_Nummer').attr('type', 'email');
-                            attri = 'iemand@voorbeeld.be';
-                            break;
-                        case '6':
-                            attri = 'XMPP';
-                            break;
-                        case '7':
-                            attri = 'Twitteraccount';
-                            break;
-                        case '8':
-                            attri = 'Statusnet';
-                            break;
-                        default:
-                            $('#NieuweCommVorm_Nummer').attr('type', 'tel');
-                            attri = '000-00 00 00';
-                    }
-                    $('#NieuweCommVorm_Nummer').attr('placeholder', attri);
-                });
-                success:
-                {
-                    waarde = $('#NieuweCommVorm_CommunicatieTypeID').val();
-                    $('#extraInfoDialog').dialog({
-                        title: "Nieuwe communicatievorm",
-                        modal: true,
-                        width: 550,
-                        buttons: {
-                            'Bewaren': function () {
-                                if (waarde == 1 || waarde == 2) {
-                                    antwoord = controleerTel($('#NieuweCommVorm_Nummer').val());
-
-                                    if (antwoord == "") {
-                                        $('#bewaarComm').click();
-                                    } else {
-                                        $('#fouten').css('background-color', 'red').html(antwoord);
-                                        $('#verbRij').show();
-                                    }
-                                } else {
-                                    $('#bewaarComm').click();
-                                }
-                            },
-                            'Annuleren': function () {
-                                $(this).dialog('close');
-                                return false;
-                            }
-                        }
-                    });
+            $('#NieuweCommVorm_CommunicatieTypeID').on('change', function () {
+                $('#verbRij').hide();
+                waarde = $(this).val();
+                switch (waarde) {
+                    case '1':
+                        attri = '000-00 00 00';
+                        $('#NieuweCommVorm_Nummer').attr('type', 'tel');
+                        break;
+                    case '2':
+                        attri = '000-00 00 00';
+                        $('#NieuweCommVorm_Nummer').attr('type', 'tel');
+                        break;
+                    case '3':
+                        attri = 'iemand@voorbeeld.be';
+                        $('#NieuweCommVorm_Nummer').attr('type', 'email');
+                        break;
+                    case '4':
+                        $('#NieuweCommVorm_Nummer').attr('type', 'url');
+                        attri = 'http://www.voorbeeld.be';
+                        break;
+                    case '5':
+                        $('#NieuweCommVorm_Nummer').attr('type', 'email');
+                        attri = 'iemand@voorbeeld.be';
+                        break;
+                    case '6':
+                        attri = 'XMPP';
+                        break;
+                    case '7':
+                        attri = 'Twitteraccount';
+                        break;
+                    case '8':
+                        attri = 'Statusnet';
+                        break;
+                    default:
+                        $('#NieuweCommVorm_Nummer').attr('type', 'tel');
+                        attri = '000-00 00 00';
                 }
+                $('#NieuweCommVorm_Nummer').attr('placeholder', attri);
             });
+            success:
+            {
+                waarde = $('#NieuweCommVorm_CommunicatieTypeID').val();
+                $('#extraInfoDialog').dialog({
+                    title: "Nieuwe communicatievorm",
+                    modal: true,
+                    width: 550,
+                    buttons: {
+                        'Bewaren': function () {
+                            if (waarde == 1 || waarde == 2) {
+                                antwoord = controleerTel($('#NieuweCommVorm_Nummer').val());
+
+                                if (antwoord == "") {
+                                    $('#bewaarComm').click();
+                                } else {
+                                    $('#fouten').css('background-color', 'red').html(antwoord);
+                                    $('#verbRij').show();
+                                }
+                            } else {
+                                $('#bewaarComm').click();
+                            }
+                        },
+                        'Annuleren': function () {
+                            $(this).dialog('close');
+                            return false;
+                        }
+                    }
+                });
+            }
         });
-    
+        clearDialog();
+    });
+
     //Eigen form + post voor email en tel
-        $('.comToev').not($('#laadNieuweCom .comToev')).click(function () {
+    $('.comToev').not($('#laadNieuweCom .comToev')).click(function () {
         var cId = $(this).parent().parent().attr('id');
         var nummer;
         var voorkeur;
@@ -442,7 +432,6 @@ $(function () {
         //TODO:(id's worden al ingelezen, dus enkel nog naam ophalen, in een checkbox zetten en enkel de gechekte in de lijst plaatsen)
         //TODO: automatisch aanvullen van straatnamen (zie code in comm. hierboven). Geeft in JSON de straatnamen terug maar nog niet als lijst in de inputbox
         //TODO: Fout (in antwoord op post) opvangen en weergeven.
-
         e.preventDefault();
         var gpidList = [];
         var straatnaam;
@@ -544,14 +533,14 @@ $(function () {
     $('.adresverw').click(function (e) {
         e.preventDefault();
         var adresID = $(this).parent().parent().find('td input').val();
-
-        var url = "/" + GID + "/Personen/Adresverwijderen/" + adresID + "?gelieerdePersoonId=" + GPid;
+        $('#extraInfoDialog').dialog();
+        var url = "/" + GID + "/Personen/Adresverwijderen/" + adresID + "?gelieerdePersoonId=" + GPid + ' #main';
         $('#extraInfoDialog').load(url, function () {
             gedeeltelijkTonen();
-
             success:
             {
                 $("#extraInfoDialog").dialog({
+                    modal: true,
                     title: "Adres verwijderen",
                     buttons: {
                         'Verwijderen': function () {
@@ -559,6 +548,7 @@ $(function () {
                             $(this).dialog('close');
                         },
                         'Annuleren': function () {
+                            $(this).dialog('destroy');
                             $(this).dialog('close');
                         }
                     },
@@ -566,11 +556,13 @@ $(function () {
                 });
             }
         });
+        clearDialog();
     });
 
     //Adres Toevoegen
     $('.adrToev').click(function () {
-        var url = "/" + GID + "/Personen/NieuwAdres/" + GPid;
+        $('#extraInfoDialog').dialog();
+        var url = "/" + GID + "/Personen/NieuwAdres/" + GPid + " #main";
         $('#extraInfoDialog').load(url, function () {
             gedeeltelijkTonen();
             $('#tabel').show();
@@ -578,7 +570,7 @@ $(function () {
             var land = 'België';
 
             // Door deze code kunnen users de form niet submitten met 'enter' (gaf een fout over de postcode)
-            $(window).keydown(function (event) {
+            $(this).keydown(function (event) {
                 if (event.keyCode == 13) {
                     event.preventDefault();
                     return false;
@@ -617,24 +609,27 @@ $(function () {
                 $('#extraInfoDialog fieldset').css('width', '600px');
                 $(this).dialog({
                     title: "Adres Toevoegen",
+                    modal:true,
                     width: 700,
                     buttons: {
                         'Bewaren': function () {
                             $('#extraInfoDialog #bewaarAdres').click();
-
-                            //$(this).dialog('close');
+                            $(this).dialog('close');
                         },
                         'Annuleren': function () {
+                            $(this).dialog('destroy');
                             $(this).dialog('close');
                         }
                     }
                 });
             }
         });
+        clearDialog();
     });
 
     //voorkeursadres maken
     $('.voorkeursAdresMaken').click(function () {
+        $('#extraInfoDialog').dialog();
         var voorkeursadresID = $(this).parent().parent().find('td input#voorkeursadresID').val();
         var url = "/" + GID + "/Personen/VoorkeurAdresMaken";
         bezig();
@@ -644,6 +639,7 @@ $(function () {
                 location.reload();
             }
         });
+        clearDialog();
     });
 
     //------------------------------------------------------------------------------------------
@@ -709,7 +705,7 @@ $(function () {
         var teller = 0;
         e.stopPropagation();
         e.preventDefault();
-
+        $('#extraInfoDialog').dialog();
         var url = "/" + GID + "/Leden/AfdelingBewerken";
 
         $.getJSON(url, { groepsWerkJaarID: groepswerkJaar, lidID: id }, function (data) {
@@ -762,6 +758,7 @@ $(function () {
                 });
             }
         });
+        clearDialog();
     });
 
     //------------------------------------------------------------------------------------------
@@ -783,11 +780,11 @@ $(function () {
     //functies bewerken
     $('#bewerkFuncties').click(function (e) {
         e.preventDefault();
-        //TODO: verander deze functie naar een eigen form die data post ipv het binnenhalen en tonen van een hele pagina (analoog met afdelingen bewerken, adres bewerken)
-        var url = "/" + GID + "/Leden/FunctiesToekennen/" + id;
+        $('#extraInfoDialog').dialog();
+        var url = "/" + GID + "/Leden/FunctiesToekennen/" + id + ' #main';
         $('#extraInfoDialog').load(url, function () {
-            $('#extraInfoDialog #acties').hide();
-            $('#extraInfoDialog #header, #extraInfoDialog #footer').hide();
+            gedeeltelijkTonen();
+            $(this).find('a').hide();
             success:
             {
                 $('#extraInfoDialog').dialog({
@@ -806,14 +803,14 @@ $(function () {
                 });
             }
         });
-
+        clearDialog();
     });
 
     //------------------------------------------------------------------------------------------
     // verzekering tegen loonverlies
     $('#bewerkVerzekering').click(function (e) {
         e.preventDefault();
-        var url = "/" + GID + "/Leden/LoonVerliesVerzekeren/" + id + " " + "#ver";
+        var url = "/" + GID + "/Leden/LoonVerliesVerzekeren/" + id + " #ver";
         $('#bewerkVerzekeringDialog').load(url);
 
         $('#bewerkVerzekeringDialog').dialog({
@@ -896,11 +893,12 @@ $(function () {
     });
 
     $('#toevoegenAanCat').click(function () {
-        var url = "/" + GID + "/Personen/ToevoegenAanCategorie?gelieerdePersoonID=" + GPid + "#test";
+        var url = "/" + GID + "/Personen/ToevoegenAanCategorie?gelieerdePersoonID=" + GPid + " #main";
+        $('#extraInfoDialog').dialog();
         $('#extraInfoDialog').load(url, function () {
+            gedeeltelijkTonen();
             success:
             {
-                gedeeltelijkTonen();
                 $('#extraInfoDialog').dialog({
                     modal: true,
                     title: "Toevoegen aan categorie",
@@ -910,19 +908,21 @@ $(function () {
                             $('#bewaarCat').click();
                         },
                         'Annuleren': function () {
+                            $(this).dialog('destroy');
                             $(this).dialog('close');
-                            return false;
                         }
                     }
                 });
             }
         });
+        clearDialog();
     });
     //------------------------------------------------------------------------------------------
     // EXTRA INFO
     //------------------------------------------------------------------------------------------
     //Info over verzekering tegen loonsverlies
     $('#loonVerlies').click(function () {
+        $('#extraInfoDialog').dialog();
         var url = "/Handleiding/VerzekeringLoonverlies #kort";
         $('#extraInfoDialog').load(url, function (response, status, xhr) {
             if (status == "success") {
@@ -944,7 +944,6 @@ $(function () {
             title: "Verzekering tegen loonverlies",
             buttons: {}
         });
-
     });
     //------------------------------------------------------------------------------------------
     // Extra info weergeven
@@ -953,6 +952,7 @@ $(function () {
     });
 
     $('#verhuizen').click(function () {
+        $('#extraInfoDialog').dialog();
         var url = "/Handleiding/Verhuizen #verhuizen";
         $('#extraInfoDialog').load(url, function (response, status, xhr) {
         });
@@ -969,18 +969,25 @@ $(function () {
             title: "Verhuizen",
             buttons: {}
         });
+        clearDialog();
     });
     //TODO: Volgens mij moet dit efficienter kunnen
     $('#Ad-info').click(function () {
+        $('#extraInfoDialog').dialog();
         toonInfo('#ADINFO', 'AD-nummer', '#extraInfoDialog');
+        clearDialog();
     });
 
     $('#instapperiodeInfo').click(function () {
+        $('#extraInfoDialog').dialog();
         toonInfo('#INSINFO', 'Instapperiode', '#extraInfoDialog');
+        clearDialog();
     });
 
     $('#clInfo').click(function () {
+        $('#extraInfoDialog').dialog();
         toonInfo('#CLINFO', 'Chiroleeftijd', '#extraInfoDialog');
+        clearDialog();
     });
 
     $('#print').click(function () {
@@ -988,7 +995,9 @@ $(function () {
     });
 
     $('#lidgeldInfo').click(function () {
+        $('#extraInfoDialog').dialog();
         toonInfo('#LGINFO', "Lidgeld", "#extraInfoDialog");
+        clearDialog();
     });
     //------------------------------------------------------------------------------------------
 
@@ -1014,11 +1023,8 @@ $(function () {
     }
     //------------------------------------------------------------------------------------------
     function gedeeltelijkTonen() {
-        $('#extraInfoDialog #header, #extraInfoDialog #footer').hide();
-        $('#extraInfoDialog .mededelingen').hide();
-        $('#extraInfoDialog h2,#extraInfoDialog legend').hide();
+        $('#extraInfoDialog').find('#header, #footer, .mededelingen, legend, h2, #acties').hide();
         $('#extraInfoDialog fieldset').css({ 'width': '350px' });
-        $('#extraInfoDialog #acties').hide();
     }
     //-------------------------------------------------------------------------
     //functie om de gemeente op te zoeken
@@ -1047,8 +1053,7 @@ $(function () {
             closeOnEscape: false,
             draggable: false,
             resizable: false,
-            buttons: {},
-            dialogClass: "noclose"
+            buttons: {}
         });
     }
 
@@ -1100,7 +1105,26 @@ $(function () {
 
     }
     //-------------------------------------------------------------------------
-
+    function clearDialog() {
+        $('#extraInfoDialog').html('<img src="/Content/images/loading.gif"/>')
+            .dialog({
+                title: "Laden...",
+                buttons: {},
+                modal: true,
+                width: 300,
+                show: {
+                    effect: "drop"
+                },
+                hide: {
+                    effect: "drop"
+                },
+                position: {
+                    my: "center",
+                    at: "center",
+                    of: window
+                }
+            });
+    }
     //-------------------------------------------------------------------------
     // Bewaar telefoonnummers en email adressen
     //-------------------------------------------------------------------------
