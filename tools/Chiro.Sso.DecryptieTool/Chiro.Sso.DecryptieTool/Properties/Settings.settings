@@ -9,7 +9,7 @@
       <Value Profile="(Default)">FA/NSFrNPj3IPOsqsDLJgc2wVeeTHaktE0wkXtN5n3Q=</Value>
     </Setting>
     <Setting Name="MinutenCredentialsGeldig" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">1000</Value>
     </Setting>
   </Settings>
 </SettingsFile>

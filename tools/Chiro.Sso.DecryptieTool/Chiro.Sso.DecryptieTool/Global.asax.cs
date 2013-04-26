@@ -22,6 +22,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
+using System.Xml.Serialization;
 
 namespace Chiro.Sso.DecryptieTool
 {
@@ -44,7 +45,7 @@ namespace Chiro.Sso.DecryptieTool
             string hash = HttpContext.Current.Request.Params["hash"];
 
             var response = base.Response;
-            response.ContentType = "text/plain";
+            response.ContentType = "application/xml";
 
             var decryptor = new CredentialsDecryptor(Properties.Settings.Default.EncryptieKey,
                                                      Properties.Settings.Default.HashKey);
@@ -52,7 +53,8 @@ namespace Chiro.Sso.DecryptieTool
             if (encryptedUserInfo != null)
             {
                 var result = decryptor.VerifierenEnDecrypteren(encryptedUserInfo, hash);
-                response.Write(result.Status == StatusCode.Ok ? result.UserInfo.Naam : result.Status.ToString());
+                var serializer = new XmlSerializer(result.GetType());
+                serializer.Serialize(response.OutputStream, result);
             }
 
 

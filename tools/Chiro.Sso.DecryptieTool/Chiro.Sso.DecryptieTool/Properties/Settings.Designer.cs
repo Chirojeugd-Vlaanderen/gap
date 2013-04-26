@@ -43,7 +43,7 @@ namespace Chiro.Sso.DecryptieTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public int MinutenCredentialsGeldig {
             get {
                 return ((int)(this["MinutenCredentialsGeldig"]));
