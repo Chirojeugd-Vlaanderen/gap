@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="\\gapsrv1.chiro.wereld\gapic$" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="Global.asax" publishTime="04/26/2013 13:17:54" />
+    <file relUrl="bin/Chiro.Sso.DecryptieTool.dll" publishTime="04/26/2013 13:35:06" />
+    <file relUrl="Web.config" publishTime="04/26/2013 13:28:45" />
+    <file relUrl="bin/Chiro.Sso.DecryptieTool.pdb" publishTime="04/26/2013 13:35:06" />
+  </publishProfile>
+</publishData>

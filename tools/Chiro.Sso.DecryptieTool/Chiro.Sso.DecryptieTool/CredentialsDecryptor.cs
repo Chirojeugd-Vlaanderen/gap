@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -123,7 +124,7 @@ namespace Chiro.Sso.DecryptieTool
                            Naam = componenten[0],
                            StamNr = componenten[1],
                            Email = componenten[2],
-                           Datum = DateTime.Parse(componenten[3])
+                           Datum = DateTime.Parse(componenten[3], new CultureInfo("nl-BE"))
                        };
 
         }
