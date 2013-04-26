@@ -479,6 +479,7 @@ namespace Chiro.Gap.Services
         /// <remarks>Adressen, Communicatievormen,... worden niet mee gepersisteerd; enkel de persoonsinfo
         /// en de Chiroleeftijd.  Ik had deze functie ook graag 'aanmaken' genoemd (zie coding guideline
         /// 190), maar dat mag blijkbaar niet bij services.</remarks>
+
         public IDPersEnGP AanmakenForceer(PersoonInfo info, int groepID, bool forceer)
         {
             var groep = _groepenRepo.ByID(groepID);

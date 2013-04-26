@@ -80,6 +80,33 @@ $(function () {
             primary: "ui-icon-circle-plus"
         }
     });
+    $('#btn_inschrijven').button({
+        icons: {
+            primary: "ui-icon-circle-plus"
+        }
+    });
+    $('#btn_inschrijven').click(function () {
+        var url = "/" + GID + "/Personen/Inschrijven?gelieerdePersoonID=" + GPid + " #main";
+        $('#extraInfoDialog').dialog();
+        $('#extraInfoDialog').load(url, function () {
+            gedeeltelijkTonen();
+            $(this).find('fieldset').css('width', '100%');
+            $('#extraInfoDialog').dialog({
+                title: "Inschrijven",
+                width: 600,
+                buttons: {
+                    'Schrijf in': function () {
+                        $('#bewaar').click();
+                    },
+                    'Annuleren': function () {
+                        $(this).dialog('destroy');
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        });
+        clearDialog();
+    });
 
     //defaults
     $.fn.editable.defaults.mode = 'inline';
@@ -561,70 +588,7 @@ $(function () {
 
     //Adres Toevoegen
     $('.adrToev').click(function () {
-        $('#extraInfoDialog').dialog();
-        var url = "/" + GID + "/Personen/NieuwAdres/" + GPid + " #main";
-        $('#extraInfoDialog').load(url, function () {
-            gedeeltelijkTonen();
-            $('#tabel').show();
-            $('#uitlegBinnenland').show();
-            var land = 'België';
-
-            // Door deze code kunnen users de form niet submitten met 'enter' (gaf een fout over de postcode)
-            $(this).keydown(function (event) {
-                if (event.keyCode == 13) {
-                    event.preventDefault();
-                    return false;
-                }
-            });
-
-            $('#Land').on('change', function () {
-                land = $(this).val();
-                if (land != 'België') {
-                    //show gegevens voor buitenland en gewone gegevens
-                    $('#uitlegBuitenland').show();
-                    $('#uitlegBinnenland').hide();
-                    $('#tabel').show();
-                    $('#postCode').show();
-                    $('#woonplaatsBuitenland').show();
-                    //hide gegevens voor binnenland
-                    $('#woonplaatsBinnenland').hide();
-                } else {
-                    $('#woonplaatsBinnenland').show();
-                    $('#uitlegBuitenland').hide();
-                    $('#uitlegBinnenland').show();
-                    $('#tabel').show();
-                    $('#postCode').hide();
-                    $('#woonplaatsBuitenland').hide();
-                }
-            });
-            $('#PostNr').on('change', function () {
-                var pc = $(this).val();
-                if (land == 'België') {
-                    toonGemeenten(pc, '#WoonPlaats');
-                }
-            });
-
-            success:
-            {
-                $('#extraInfoDialog fieldset').css('width', '600px');
-                $(this).dialog({
-                    title: "Adres Toevoegen",
-                    modal:true,
-                    width: 700,
-                    buttons: {
-                        'Bewaren': function () {
-                            $('#extraInfoDialog #bewaarAdres').click();
-                            $(this).dialog('close');
-                        },
-                        'Annuleren': function () {
-                            $(this).dialog('destroy');
-                            $(this).dialog('close');
-                        }
-                    }
-                });
-            }
-        });
-        clearDialog();
+        adresToevoegen(GID, GPid);
     });
 
     //voorkeursadres maken
@@ -705,7 +669,6 @@ $(function () {
         var teller = 0;
         e.stopPropagation();
         e.preventDefault();
-        $('#extraInfoDialog').dialog();
         var url = "/" + GID + "/Leden/AfdelingBewerken";
 
         $.getJSON(url, { groepsWerkJaarID: groepswerkJaar, lidID: id }, function (data) {
@@ -732,7 +695,6 @@ $(function () {
                                 waarde = $(this).val();
                                 tekst += $(this).attr('id') + " ";
                                 groep.push(waarde);
-                                alert("groep:" + tekst);
                             });
 
                             url = "/" + GID + "/Leden/AfdelingBewerken";
@@ -767,14 +729,15 @@ $(function () {
     $('#bewerkLidgeld').click(function (e) {
         e.preventDefault();
         var url = "/" + GID + "/Leden/LidGeldToggle/" + id;
-        bezig();
-        $.post(url, { id: id, groepID: GID }, function () {
+        var g = $('#lidgeldInfo b').text().trim();
+        if (g == 'Nog niet betaald') {
+            $('#lidgeldInfo b').text('Betaald');
+        } else {
+            $('#lidgeldInfo b').text('Nog niet betaald');
+        }
 
-            success:
-            {
-                location.reload();
-            }
-        });
+        $.post(url, { id: id, groepID: GID });
+
     });
     //------------------------------------------------------------------------------------------
     //functies bewerken
@@ -971,34 +934,8 @@ $(function () {
         });
         clearDialog();
     });
-    //TODO: Volgens mij moet dit efficienter kunnen
-    $('#Ad-info').click(function () {
-        $('#extraInfoDialog').dialog();
-        toonInfo('#ADINFO', 'AD-nummer', '#extraInfoDialog');
-        clearDialog();
-    });
 
-    $('#instapperiodeInfo').click(function () {
-        $('#extraInfoDialog').dialog();
-        toonInfo('#INSINFO', 'Instapperiode', '#extraInfoDialog');
-        clearDialog();
-    });
 
-    $('#clInfo').click(function () {
-        $('#extraInfoDialog').dialog();
-        toonInfo('#CLINFO', 'Chiroleeftijd', '#extraInfoDialog');
-        clearDialog();
-    });
-
-    $('#print').click(function () {
-        window.print();
-    });
-
-    $('#lidgeldInfo').click(function () {
-        $('#extraInfoDialog').dialog();
-        toonInfo('#LGINFO', "Lidgeld", "#extraInfoDialog");
-        clearDialog();
-    });
     //------------------------------------------------------------------------------------------
 
     //------------------------------------------------------------------------------------------
@@ -1021,41 +958,8 @@ $(function () {
         }
         return "";
     }
-    //------------------------------------------------------------------------------------------
-    function gedeeltelijkTonen() {
-        $('#extraInfoDialog').find('#header, #footer, .mededelingen, legend, h2, #acties').hide();
-        $('#extraInfoDialog fieldset').css({ 'width': '350px' });
-    }
-    //-------------------------------------------------------------------------
-    //functie om de gemeente op te zoeken
 
-    function toonGemeenten(postcode, veld) {
-        //Groep ID wordt uit een verborgen veld op de pagina gehaald
-        var url = "/" + GID + "/Adressen/WoonPlaatsenOphalen";
-        var options = '';
-        $.getJSON(url, { postNummer: postcode }, function (data) {
-            for (var i = 0; i < data.length; i++) {
-                options += '<option value="' + data[i].Naam + '">' + data[i].Naam + '</option>';
-            }
-            $(veld).html(options);
-        });
 
-    }
-
-    //-------------------------------------------------------------------------
-    //Functie 'bezig met verwerking'
-
-    function bezig() {
-        $('#extraInfoDialog').dialog({
-            title: 'Verwerking bezig',
-            modal: true,
-            height: 90,
-            closeOnEscape: false,
-            draggable: false,
-            resizable: false,
-            buttons: {}
-        });
-    }
 
     //------------------------------------------------------------------------------------------
     //functie die de veranderde gegevens post
@@ -1064,7 +968,7 @@ $(function () {
     //                      ('voornaam', 'achternaam', 'geboortedatum', 'geslacht' of 'chiroleeftijd')
     //      nieuweWaarde:   ingegeven waarde die op de plaats van de oude komt
 
-    function bewaarGegevens(teVeranderen, nieuweWaarde) {
+    function bewaarGegevens(teVeranderen, nieuweWaarde, GID, GPid) {
         var url = "/" + GID + "/Personen/EditGegevens/" + GPid;
         var n = achternaam;
         var vn = voornaam;
@@ -1104,27 +1008,7 @@ $(function () {
             });
 
     }
-    //-------------------------------------------------------------------------
-    function clearDialog() {
-        $('#extraInfoDialog').html('<img src="/Content/images/loading.gif"/>')
-            .dialog({
-                title: "Laden...",
-                buttons: {},
-                modal: true,
-                width: 300,
-                show: {
-                    effect: "drop"
-                },
-                hide: {
-                    effect: "drop"
-                },
-                position: {
-                    my: "center",
-                    at: "center",
-                    of: window
-                }
-            });
-    }
+
     //-------------------------------------------------------------------------
     // Bewaar telefoonnummers en email adressen
     //-------------------------------------------------------------------------

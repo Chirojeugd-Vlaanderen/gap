@@ -672,8 +672,7 @@ fieldset p label {
     text-align: center;
 }
 
-.noclose .ui-dialog-titlebar-close
-{
+.noclose .ui-dialog-titlebar-close {
     display:none;
 }
 #gdInput {
@@ -689,6 +688,17 @@ fieldset p label {
     margin-top:50px;
     margin-right: auto;
     display: inline-block;
+}
+
+#errorfield {
+    width: 85%;
+    padding: 5px;
+}
+#errorfield img {
+    float: left;
+    width: 10ex;
+    height: 10ex;
+    margin-right: 50px;
 }
 
 @media screen and (max-width: 360px) {
