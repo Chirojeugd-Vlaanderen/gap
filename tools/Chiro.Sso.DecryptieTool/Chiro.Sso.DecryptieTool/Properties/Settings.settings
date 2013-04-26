@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chiro.Sso.DecryptieTool.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="EncryptieKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">bSzTnlw7aalstnLytquah4jAMbVrMK3lgViEqXT2WB0=</Value>
+    </Setting>
+    <Setting Name="HashKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">FA/NSFrNPj3IPOsqsDLJgc2wVeeTHaktE0wkXtN5n3Q=</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
