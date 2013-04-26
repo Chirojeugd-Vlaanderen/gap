@@ -40,5 +40,14 @@ namespace Chiro.Sso.DecryptieTool.Properties {
                 return ((string)(this["HashKey"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int MinutenCredentialsGeldig {
+            get {
+                return ((int)(this["MinutenCredentialsGeldig"]));
+            }
+        }
     }
 }

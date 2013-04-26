@@ -24,11 +24,17 @@ using System.Web;
 namespace Chiro.Sso.DecryptieTool
 {
     [Serializable]
-    public class UserInfo
+    public enum StatusCode
     {
-        public string Naam { get; set; }
-        public string StamNr { get; set; }
-        public string Email { get; set; }
-        public DateTime Datum { get; set; }
+        Ok = 0,
+        HashError,
+        Expired
+    }
+
+    [Serializable]
+    public class Feedback
+    {
+        public UserInfo UserInfo { get; set; }
+        public StatusCode Status { get; set; }
     }
 }

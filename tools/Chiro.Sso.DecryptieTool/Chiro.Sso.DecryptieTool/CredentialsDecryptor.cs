@@ -41,11 +41,34 @@ namespace Chiro.Sso.DecryptieTool
         }
 
         /// <summary>
+        /// Verifieert de user info, en levert die op als alles in orde is.
+        /// </summary>
+        /// <param name="geencrypteerdeUserInfo">Geencrypteerde user informatie</param>
+        /// <param name="hash">Hash</param>
+        /// <returns>Feedback met statuscode en eventuele user info</returns>
+        public Feedback VerifierenEnDecrypteren(string geencrypteerdeUserInfo, string hash)
+        {
+            if (Hashen(geencrypteerdeUserInfo) != hash)
+            {
+                return new Feedback {Status = StatusCode.HashError};
+            }
+
+            var userInfo = Decrypteren(geencrypteerdeUserInfo);
+
+            if (userInfo.Datum < DateTime.Now.AddMinutes(-Properties.Settings.Default.MinutenCredentialsGeldig))
+            {
+                return new Feedback {Status = StatusCode.Expired};
+            }
+
+            return new Feedback {Status = StatusCode.Ok, UserInfo = userInfo};
+        }
+
+        /// <summary>
         /// Decrypteert de <paramref name="geencrypteerdeUserInfo"/>
         /// </summary>
         /// <param name="geencrypteerdeUserInfo">geencrypteerde user info</param>
         /// <returns>Gedecrypteerde userinformatie</returns>
-        public UserInfo Decrypteren(string geencrypteerdeUserInfo)
+        private UserInfo Decrypteren(string geencrypteerdeUserInfo)
         {
             byte[] bytes = Convert.FromBase64String(geencrypteerdeUserInfo);
 
@@ -103,6 +126,30 @@ namespace Chiro.Sso.DecryptieTool
                            Datum = DateTime.Parse(componenten[3])
                        };
 
+        }
+
+        /// <summary>
+        /// Berekent de hmac-sha1-hash van <paramref name="tekst"/>, base-64-geencodeerd
+        /// </summary>
+        /// <param name="tekst">tekst waarvan hash te berekenen</param>
+        /// <returns>hmac-sha1-hash van <paramref name="tekst"/>, base-64-geencodeerd</returns>
+        private string Hashen(string tekst)
+        {
+            string resultaat;
+
+            if (_hashSleutel == null)
+            {
+                throw new ArgumentException("Hashsleutel niet gezet.");
+            }
+
+            using (var hmacsha1 = new HMACSHA1(_hashSleutel))
+            {
+                var bytes = new UTF8Encoding().GetBytes(tekst);
+                var gehasht = hmacsha1.ComputeHash(bytes);
+                resultaat = Convert.ToBase64String(gehasht);
+            }
+
+            return resultaat;
         }
     }
 }
