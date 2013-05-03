@@ -89,7 +89,7 @@ $(function () {
         var url = "/" + GID + "/Personen/Inschrijven?gelieerdePersoonID=" + GPid + " #main";
         $('#extraInfoDialog').dialog();
         $('#extraInfoDialog').load(url, function () {
-            gedeeltelijkTonen();
+            gedeeltelijkTonen('#extraInfoDialog');
             $(this).find('fieldset').css('width', '100%');
             $('#extraInfoDialog').dialog({
                 title: "Inschrijven",
@@ -285,8 +285,7 @@ $(function () {
         var url = "/" + GID + "/Personen/NieuweCommVorm?gelieerdePersoonID=" + GPid + " #main";
         $('#extraInfoDialog').load(url, function () {
 
-            //$("#extraInfoDialog").find('img').remove();
-            gedeeltelijkTonen();
+            gedeeltelijkTonen('#extraInfoDialog');
             var attri = '000-00 00 00';
             var antwoord;
             $('#NieuweCommVorm_Nummer').attr('placeholder', attri);
@@ -420,8 +419,6 @@ $(function () {
                     $('#snelCheck').is(':checked') ? snelleber = true : snelleber = false;
                     $('#gezinCheck').is(':checked') ? gezincom = true : gezincom = false;
                     nota = $('#adresNota').val();
-                    alert(nummer + " " + voorkeur + " " + snelleber + " " + nota);
-                    alert("ga verder:" + gaVerder);
                     if (gaVerder) {
                         $.ajax({
                             url: url,
@@ -439,6 +436,7 @@ $(function () {
                             location.reload();
                             $(this).dialog('close');
                         });
+                        clearDialog();
                         bezig();
                     }
                 },
@@ -563,7 +561,7 @@ $(function () {
         $('#extraInfoDialog').dialog();
         var url = "/" + GID + "/Personen/Adresverwijderen/" + adresID + "?gelieerdePersoonId=" + GPid + ' #main';
         $('#extraInfoDialog').load(url, function () {
-            gedeeltelijkTonen();
+            gedeeltelijkTonen('#extraInfoDialog');
             success:
             {
                 $("#extraInfoDialog").dialog({
@@ -589,6 +587,7 @@ $(function () {
     //Adres Toevoegen
     $('.adrToev').click(function () {
         adresToevoegen(GID, GPid);
+        clearDialog();
     });
 
     //voorkeursadres maken
@@ -720,7 +719,6 @@ $(function () {
                 });
             }
         });
-        clearDialog();
     });
 
     //------------------------------------------------------------------------------------------
@@ -746,7 +744,7 @@ $(function () {
         $('#extraInfoDialog').dialog();
         var url = "/" + GID + "/Leden/FunctiesToekennen/" + id + ' #main';
         $('#extraInfoDialog').load(url, function () {
-            gedeeltelijkTonen();
+            gedeeltelijkTonen('#extraInfoDialog');
             $(this).find('a').hide();
             success:
             {
@@ -859,7 +857,7 @@ $(function () {
         var url = "/" + GID + "/Personen/ToevoegenAanCategorie?gelieerdePersoonID=" + GPid + " #main";
         $('#extraInfoDialog').dialog();
         $('#extraInfoDialog').load(url, function () {
-            gedeeltelijkTonen();
+            gedeeltelijkTonen('#extraInfoDialog');
             success:
             {
                 $('#extraInfoDialog').dialog({
@@ -940,27 +938,6 @@ $(function () {
 
     //------------------------------------------------------------------------------------------
     // EIGEN FUNCTIEs
-    //------------------------------------------------------------------------------------------
-    // email valideren
-    function controleerEmail(email) {
-        var emailReg = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        if (!emailReg.test(email)) {
-            return "Het ingegeven e-mail adres is ongeldig. Gebruik de vorm: 'voorbeeld@voorbeeld.xxx'";
-        }
-        return "";
-    }
-    //------------------------------------------------------------------------------------------
-    // telefoonnummer/ Fax /msn valideren
-    function controleerTel(tel) {
-        var telReg = /^(^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$)|^\+[0-9]*$/;
-        if (!telReg.test(tel)) {
-            return "Het ingegeven telefoonnummer is ongeldig. Gebruik de vorm: '000-00 00 00' of '0000-00 00 00'";
-        }
-        return "";
-    }
-
-
-
     //------------------------------------------------------------------------------------------
     //functie die de veranderde gegevens post
     //parameters: 

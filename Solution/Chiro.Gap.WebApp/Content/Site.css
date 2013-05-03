@@ -441,7 +441,7 @@ div#actiesmini
 #acties
 {
 	float: right;
-	margin: 25px 0 25px 25px;
+    margin: 25px 0 25px 25px;
 }
 
 #acties h1
@@ -648,6 +648,13 @@ fieldset p label {
     display: inline-block;
 }
 
+fieldset table tr td {
+    border: none;
+}
+fieldset table {
+    border: none;
+}
+
 #PersoonsInformatie {
     width: 55%;
     float: left;
@@ -696,9 +703,14 @@ fieldset p label {
 }
 #errorfield img {
     float: left;
-    width: 10ex;
-    height: 10ex;
+    width: 8ex;
+    height: 8ex;
     margin-right: 50px;
+    margin-left: 20px;
+}
+
+.np_adres td input {
+    width:auto;
 }
 
 @media screen and (max-width: 360px) {

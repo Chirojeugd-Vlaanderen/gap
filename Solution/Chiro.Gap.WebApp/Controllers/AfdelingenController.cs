@@ -60,6 +60,27 @@ namespace Chiro.Gap.WebApp.Controllers
 			return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), groepID);
 		}
 
+        [AcceptVerbs(HttpVerbs.Post)]
+        [HandleError]
+        public JsonResult AfdelingsInfo(int groepsWerkJaarID, int groepID)
+        {
+            var model = new AfdelingsOverzichtModel();
+            BaseModelInit(model, groepID);
+
+            // AfdelingDetails voor Afdelingen die in het opgegeven werkJaar voorkomen als AfdelingsJaar
+            model.Actief =
+                ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
+                (groep => groep.ActieveAfdelingenOphalen(groepsWerkJaarID));
+
+            // AfdelingDetails voor Afdelingen die in het opgegeven werkJaar voorkomen als AfdelingsJaar
+
+            model.NietActief
+                = ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>(svc => svc.OngebruikteAfdelingenOphalen(groepsWerkJaarID));
+
+            model.Titel = "Afdelingen";
+            return Json(model,JsonRequestBehavior.AllowGet);
+        }
+
         /// <summary>
         /// Toont het afdelingsoverzicht voor het groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/>:
         /// de actieve afdelingen,  met links om dien te bekijken/bewerken.  De inactieve afdelingen worden ook 

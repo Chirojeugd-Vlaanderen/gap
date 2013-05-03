@@ -64,7 +64,6 @@ function toonInfo(id, titel, dialogId) {
 
     var url = "/Handleiding/Trefwoorden " + id;
     $(dialogId).load(url, function () {
-        success: {
             $(dialogId).dialog({
                 modal: true,
                 width: 500,
@@ -77,7 +76,6 @@ function toonInfo(id, titel, dialogId) {
                 title: titel,
                 buttons: {}
             });
-        }
     });
 }
 
@@ -135,7 +133,8 @@ function clearDialog() {
                     my: "center",
                     at: "center",
                     of: window
-                }
+                },
+                dialogClass: {}
             });
 }
 
@@ -144,7 +143,7 @@ function adresToevoegen(GID, GPid) {
     $('#extraInfoDialog').dialog();
     var url = "/" + GID + "/Personen/NieuwAdres/" + GPid + " #main";
     $('#extraInfoDialog').load(url, function () {
-        gedeeltelijkTonen();
+        gedeeltelijkTonen('#extraInfoDialog');
         $('#tabel').show();
         $('#uitlegBinnenland').show();
         var land = 'België';
@@ -205,15 +204,13 @@ function adresToevoegen(GID, GPid) {
                 }
             });
         }
-        clearDialog();
     });
-    clearDialog();
 }
 
 //------------------------------------------------------------------------------------------
-function gedeeltelijkTonen() {
-    $('#extraInfoDialog').find('#header, #footer, .mededelingen, legend, h2, #acties').hide();
-    $('#extraInfoDialog fieldset').css({ 'width': '350px' });
+function gedeeltelijkTonen(container) {
+    $(container).find('#header, #footer, .mededelingen, legend, h2, #acties').hide();
+    $(container + ' fieldset').css({ 'width': '350px' });
 }
 //-------------------------------------------------------------------------
 //functie om de gemeente op te zoeken
@@ -230,6 +227,24 @@ function toonGemeenten(postcode, veld) {
     });
 
 }
+//-------------------------------------------------------------------------
+// email valideren
+function controleerEmail(email) {
+    var emailReg = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    if (!emailReg.test(email)) {
+        return "Het ingegeven e-mail adres is ongeldig. Gebruik de vorm: 'voorbeeld@voorbeeld.xxx'";
+    }
+    return "";
+}
+//------------------------------------------------------------------------------------------
+// telefoonnummer/ Fax /msn valideren
+function controleerTel(tel) {
+    var telReg = /^(^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$)|^\+[0-9]*$/;
+    if (!telReg.test(tel)) {
+        return "Het ingegeven telefoonnummer is ongeldig. Gebruik de vorm: '000-00 00 00' of '0000-00 00 00'";
+    }
+    return "";
+}
 
 
- 
+

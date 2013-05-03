@@ -59,5 +59,10 @@ namespace Chiro.Gap.WebApp.Models
 		/// Een eventuele ID als een broer zus waarvan de NIEUWE persoon gemaakt wordt gekend is.
 		/// </summary>
 		public int BroerzusID { get; set; }
+
+        /// <summary>
+        /// ID van het groepswerkjaar waarin we deze persoon mogelijk lid willen maken.
+        /// </summary>
+        public int GroepsWerkJaarID { get; set; }
 	}
 }

@@ -3,16 +3,85 @@ Frontend javascript (JQuery)
 GAP, Chirojeugd Vlaanderen
 2013
 */
+//variabelen voor het maken van een nieuw lid
+var volledigeNaam, voornaam, naam, geboortedatum, geslacht;
+var postcode, gemeente, straat, nummer, bus;
+var persoonID, lidID, werkjaar;
 
+var telefoonnummer;
+var emailadres;
+
+var chiroleeftijd, type;
+var afdelingsNamen = [];
+var afdelingsIDs = [];
+var afdelingsJaarIDs = [];
+var geselecteerdeAfdelingen = [];
+var beschikbareAfdelingen = [];
+var np_gpID = 0;
+var inschrijven=false;
+
+var tel =false;
+var email = false;
+
+var errors;
+var url;
+var fout = false;
 //--------------------------------------------------------------------------------
 //Document ready functie
 //--------------------------------------------------------------------------------
 $(function () {
-    var GID = $('#np_groepID').val();
-    var gpId = 0;
-    var url;
-    var doorgaan = false;
-    var chiroleeftijd;
+    //werkjaar invullen op groepen op te halen
+    werkjaar = $('#np_werkJaarID').val();
+    
+    //------------------------------------------------------------------------
+    // afdelingsinfo binnenhalen
+    //actieve afdelingen met hun (speciale) namen ophalen
+    url = "/" + GID + "/Afdelingen/AfdelingsInfo";
+    $.post(url, {groepsWerkJaarID: werkjaar},function(antw) {
+        $.each(antw.Actief, function(index, value) {
+            var naam = antw.Actief[index].AfdelingNaam;
+            var id = antw.Actief[index].AfdelingID;
+            var afdJrId = antw.Actief[index].AfdelingsJaarID;
+            afdelingsNamen.push(naam);
+            afdelingsIDs.push(id);
+            afdelingsJaarIDs.push(afdJrId);
+        });
+    }).done(function() {
+        $.each(afdelingsNamen, function(index, value) {
+            $('#afdelingSelectie')
+                .append(
+                    '<input ' +
+                        'type="radio" ' +
+                        'name="radioAfd" ' +
+                        'id="' + afdelingsNamen[index]+ 'Check" ' +
+                        'value="' + afdelingsJaarIDs[index] + 
+                     '"/>' +
+                     '<label ' +
+                        'for="'+afdelingsNamen[index]+'Check">'+ afdelingsNamen[index] +'</label>');
+        });
+        alert(afdelingsJaarIDs);
+        // deze knoppen krijgen hier het JQuery UI uitzicht, anders wordt de code uitgevoerd voordat alles geïmporteerd is, 
+        // en werkt die layout niet
+        $('#afdelingSelectie').buttonset();
+    });
+
+    //JQuery - UI: knoppen en buttonsets aanmaken (is vooral voor het uitzicht)
+    $('#ja').button({
+        icons: {
+            primary: 'ui-icon-check'   
+        }
+    });
+    
+    $('#nee').button({
+         icons: {
+            primary: 'ui-icon-closethick'   
+        }
+    });
+    $('#tochNiet').button({
+         icons: {
+            primary: 'ui-icon-closethick'   
+        }
+    });
 
     $('#knopBewaren').button({
         icons: {
@@ -24,15 +93,8 @@ $(function () {
             primary: 'ui-icon-arrowrefresh-1-s'
         }
     });
+    
 
-    // Door deze code kunnen users de form niet submitten met 'enter'
-    $(this).keydown(function (event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-            return false;
-        }
-    });
-    $('#andereGegevens').hide();
     $('#btn_verder').button();
     $('#btn_verder').attr('disabled', false);
 
@@ -42,26 +104,40 @@ $(function () {
         changeYear: true,
         changeMonth: true,
         maxDate: "-5y"
+
     });
     $.datepicker.setDefaults($.datepicker.regional['be']);
 
-    // Maak van de radiobuttons een JQuery UI buttonset en geeft een vaste breedte.
-    // De breedte staat op het label, zie structuur van de nieuwe JQuery UI radiobuttons.
     $('#geslacht').buttonset().find('label').width(99);
+    
     $('#type').buttonset().find('label').width(99);
 
     $('#andereGegevens input').attr('enabled', false);
 
+
+    //Disable perongeluk te vroeg submitten door 'enter' te drukken
+    $(this).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+    //------------------------------------------------------------------------------------------------------------
     //Form resetten
-    $('#knopReset').click(function () {
+    $('#knopReset').click(function (e) {
+        e.preventDefault();
         $('#confirmDialog').dialog({
             modal: true,
             buttons: {
                 "Ja, verwijder alles": function () {
-                    $('#form0')[0].reset();
+                    $('fieldset').find('input').val('');
+                    $('fieldset').find('select').val('');
+                    $('fieldset').find('label').removeClass('ui-state-active');
+                    $('fieldset').find('input').attr('checked', false);
                     $('.validation-summary-errors, .field-validation-error').hide();
+                    $('#errorfield').hide();
+                    location.reload();
                     $(this).dialog("close");
-
                 },
                 "Annuleren": function () {
                     $(this).dialog("close");
@@ -69,172 +145,260 @@ $(function () {
             }
         });
     });
+    /*------------------------------------------------------------------------------------------------------------
 
+    $('#np_adresToevoegen').click(function () {
+    adresTeller++;
+    $("<tr><td><strong>Adres " + (adresTeller + 1) + "</strong></td></tr>" +
+    "<tr class='np_adres' > " +
+    "<td>Adres:</td>" +
+    "<td>" +
+    'Postcode: <input type="text" class="np_postCode" size="6"/>' +
+    ' Gemeente: <select id="np_gemeente"></select>' +
+    '<br/>' +
+    '<br/>' +
+    'Straat: <input type="text" id="np_straat"/>' +
+    ' Nr: <input type="text" size="6" id="np_nummer"/> Bus: <input type="text" id="np_bus" size="5"/>' +
+    '</td>' +
+    '</tr>').insertAfter('.np_adres:last');
+    });*/
+    //------------------------------------------------------------------------------------------------------------
+    //Persoon inschrijven of niet?
+    $('#ja').click(function() {
+        $('#chiroGegevens p, #tochInschrijven').hide();
+        $('#chiroGegevens table, #tochNiet').show();
+        inschrijven = true;
+    });
+    
+    $('#nee').click(function() {
+        $('#chiroGegevens').hide();
+        $('#tochInschrijven').button();
+        $('#tochInschrijven').show();
+        inschrijven = false;
+    });
+
+    $('#tochInschrijven').click(function() {
+        $(this).hide();
+        $('#chiroGegevens, #chiroGegevens table, #tochNiet').show();
+        $('#chiroGegevens p, #tochInschrijven').hide();
+        inschrijven = true;
+    });
+
+    $('#tochNiet').click(function() {
+        $('#chiroGegevens').hide();
+        $('#tochInschrijven').button();
+        $('#tochInschrijven').show();
+        inschrijven = false;
+    });
+    
+    //------------------------------------------------------------------------------------------------------------
+    $('#np_telToevoegen').click(function () {
+        $('#eersteTel').show();
+        tel= true;
+        $(this).parent().parent().hide();
+    });
+    //------------------------------------------------------------------------------------------------------------
+
+    $('#np_emailToevoegen').click(function () {
+        $('#eersteEmail').show();
+        email = true;
+        $(this).parent().parent().hide();
+    });
+    //------------------------------------------------------------------------------------------------------------
     //Layout en attributen van de inputvelden
     $('#HuidigePersoon_VoorNaam').attr('required', true).attr('type', "text");
     $('#HuidigePersoon_Naam').attr('required', true).attr('type', "text");
     $('#HuidigePersoon_GeboorteDatum').attr('required', true).attr('type', 'date');
     $('#HuidigePersoon_GeboorteDatum').width(196);
 
-    //variabelen voor het maken van een nieuw lid
-    var voornaam, vnCheck;
-    var naam, nmCheck;
-    var geboortedatum, gdCheck;
-    var geslacht;
-    var errors;
-
     //------------------------------------------------------------------------------------------------------------
-    //klik op 'ga verder'
-    //------------------------------------------------------------------------------------------------------------
-    $('#btn_verder').click(function (e) {
-        e.preventDefault();
-        //'bezig met verwerking tonen
-        verwerkNieuwePersoon();
-
-        //Variabelen invullen
-        voornaam = $('#HuidigePersoon_VoorNaam').val();
-        voornaam.length >= 2 ? vnCheck = true : vnCheck = false;
-        naam = $('#HuidigePersoon_Naam').val();
-        naam.length >= 2 ? nmCheck = true : nmCheck = false;
-        geboortedatum = $('#HuidigePersoon_GeboorteDatum').val();
-        geboortedatum.length >= 8 ? gdCheck = true : gdCheck = false;
-        $('#vrouw').is(':checked') ? geslacht = "vrouw" : geslacht = "man";
-
-        //------------------------------------------------------------------------------------------------------------
-        //check of alle nodige velden ingevuld zijn (geslacht niet ingevuld = man)
-        if (vnCheck && nmCheck && gdCheck) {
-            url = "/" + GID + "/Personen/Nieuw";
-            $.post(url, {
-                "HuidigePersoon.VoorNaam": voornaam,
-                "HuidigePersoon.Naam": naam,
-                "HuidigePersoon.GeboorteDatum": geboortedatum,
-                "HuidigePersoon.Geslacht": geslacht
-            }, function (data) {
-                success:
-                {
-                    //------------------------------------------------------------------------------------------------------------
-                    //als 'data[0]' undefined is zit het niet in het JSON antwoord en is er dus geen dezelfde persoon
-                    if (typeof (data[0]) === "undefined") {
-                        gpId = data.GelieerdePersoonID;
-                        doorgaan = true;
-                        clearDialog();
-                        initialiseerAndereVelden(gpId);
-
-                    } else { //'data[0]' is gezet, dus er is al een persoon met dezelfde naam 
-                        errors =
-                            "Pas op! Je nieuwe persoon <b>(" + data[0].VolledigeNaam + ")</b> lijkt verdacht veel op iemand die al gekend is in " +
-                                "de Chiroadministratie. Als je zeker bent dat je niemand dubbel toevoegt, klik " +
-                                "dan opnieuw op 'Bewaren'";
-                        $('#extraInfoDialog').html(errors);
-                        //vraag of je deze persoon wil toevoegen
-                        $('#extraInfoDialog').dialog({
-                            modal: true,
-                            title: "Gelijkaardige persoon",
-                            height: 200,
-                            buttons: {
-                                //ja --> voeg toe (forceer = true)
-                                'Bewaren': function () {
-                                    $.post(url, {
-                                        "HuidigePersoon.VoorNaam": voornaam,
-                                        "HuidigePersoon.Naam": naam,
-                                        "HuidigePersoon.GeboorteDatum": geboortedatum,
-                                        "HuidigePersoon.Geslacht": geslacht,
-                                        Forceer: true
-                                    }, function (resultaat) {
-                                        if (resultaat.GelieerdePersoonID != "") {
-                                            $(this).dialog('close');
-                                            errors = "De wijzigingen zijn opgeslagen";
-                                            $('#errorfield').html(error).show();
-                                        }
-                                    });
-                                    gpId = data.GelieerdePersoonID;
-                                    doorgaan = true;
-                                    clearDialog();
-                                    initialiseerAndereVelden(gpId);
-
-                                },
-                                // nee --> velden leegmaken en pagina herladen
-                                'Nee': function () {
-                                    $('#HuidigePersoon_VoorNaam').val('');
-                                    $('#HuidigePersoon_Naam').val('');
-                                    $('#HuidigePersoon_GeboorteDatum').val('');
-                                    $('#HuidigePersoon_GeboorteDatum').val('');
-                                    location.reload();
-                                    $(this).dialog('destroy');
-                                    $(this).dialog('close');
-                                }
-                            }
-                        });
-                    }
-                    //------------------------------------------------------------------------------------------------------------
-                }
-            });
-            // een of meerdere van de nodige velden werden niet ingevuld --> errors weergeven
-        } else {
-            $(".ui-dialog-content").dialog("close");
-            errors = '<img src="/Content/images/Exclamation.png" />';
-            if (voornaam == "") {
-                errors += "<li>U probeert een persoon toe te voegen zonder voornaam.</li>";
-            }
-            if (naam == "") {
-                errors += "<li>U probeert een persoon toe te voegen zonder naam.</li>";
-            }
-            if (geboortedatum == "") {
-                errors += "<li>U probeert een persoon toe te voegen zonder geboortedatum.</li>";
-            }
-            if (geslacht == "") {
-                errors += "<li>U probeert een persoon toe te voegen zonder geslacht.</li>";
-            }
-            $('#errorfield').html('<b>Fouten:</b> <ul>' + errors + '</ul>');
-            $('#errorfield').show();
-        }
-    });
-
-    //------------------------------------------------------------------------------------------------------------
-
-    //Lid inschrijven en toekennen van type wanneer Lid/leiding wordt aangeklikt
-    $('#type').change(function () {
-        if (doorgaan) {
-            url = "/" + GID + "/Personen/Inschrijven?gelieerdePersoonID=" + gpId + " #main";
-            $('#extraInfoDialog').dialog();
-            $('#extraInfoDialog').load(url, function () {
-                gedeeltelijkTonen();
-                $(this).find('fieldset').css('width', '100%');
-                $('#extraInfoDialog').dialog({
-                    title: "Inschrijven",
-                    width: 600,
-                    height: 500,
-                    buttons: {
-                        'Schrijf in': function () {
-                            $('#bewaar').click(function (e) {
-                                e.preventDefault();
-                            });
-                        },
-                        'Annuleren': function () {
-                            $(this).dialog('destroy');
-                            $(this).dialog('close');
-                        }
-                    }
-                });
-            });
-            clearDialog();
-        }
-    });
-
     //chiroleeftijd veranderen
     $('#select_chiroleeftijd').change(function () {
+        chiroleeftijd = $(this).val(this);
+    });
+
+    //------------------------------------------------------------------------------------------------------------
+    //
+    $('#np_postCode').keyup(function () {
+        postcode = $(this).val();
+        toonGemeenten(postcode, '#np_gemeente');
+    });
+  
+    //------------------------------------------------------------------------
+    
+    //------------------------------------------------------------------------------------------------------------
+    //klik op knop 'BEWAREN'
+    //------------------------------------------------------------------------------------------------------------  
+    $('#knopBewaren').click(function (e) {
+        e.preventDefault();
+        var test;
+        var doorgaan;
+
+        vulVariabelenIn();
+        
+        //--------------------------------------------------------------------------------------------------------
+        //Controle van de ingevulde variabelen
+        //--------------------------------------------------------------------------------------------------------
+        test = controle();
+        alert(test);
+        if (test) {
+            $('#errorMessages').html(errors);
+            $('#errorfield').show();
+        } else {
+            $('#errorfield').hide();
+            doorgaan = true;
+        }
+        
+        //--------------------------------------------------------------------------------------------------------
+        //Maak de nieuwe persoon aan (als er geen fouten zijn)
+        //--------------------------------------------------------------------------------------------------------
         if (doorgaan) {
-            chiroleeftijd = $(this).val();
-            alert(chiroleeftijd);
+            var url = "/" + GID + "/Personen/Nieuw";
+
+            $.post(url, {
+                    "HuidigePersoon.VoorNaam": voornaam,
+                    "HuidigePersoon.Naam": naam,
+                    "HuidigePersoon.GeboorteDatum": geboortedatum,
+                    "HuidigePersoon.Geslacht": geslacht
+                }, function(data) {
+                    success:
+                    {
+                        //als 'data[0]' undefined is zit het niet in het JSON antwoord en is er dus geen dezelfde persoon
+                        if (typeof(data[0]) === "undefined") {
+                            np_gpID = data.GelieerdePersoonID;
+                            //----------------------------------------------------------------------------------------
+                            if (tel) {
+                                url = "/" + GID + "/Personen/NieuweCommVorm";
+                                $.post(url, {
+                                    gelieerdePersoonID: np_gpID,
+                                    "NieuweCommVorm.CommunicatieTypeID": 1,
+                                    "NieuweCommVorm.Nummer": telefoonnummer,
+                                    "NieuweCommVorm.Voorkeur": true
+                                });
+                            }
+                             //----------------------------------------------------------------------------------------
+                            if (email) {
+                                url = "/" + GID + "/Personen/NieuweCommVorm";
+                                $.post(url, {
+                                    gelieerdePersoonID: np_gpID,
+                                    "NieuweCommVorm.CommunicatieTypeID": 3,
+                                    "NieuweCommVorm.Nummer": emailadres ,
+                                    "NieuweCommVorm.Voorkeur": true
+                                });
+                            }
+                            //----------------------------------------------------------------------------------------
+                            //Persoon inschrijven
+                            if (inschrijven) {
+                                    url = "/" + GID + "/Leden/LedenMaken";
+                                    $.ajax({
+                                        url: url,
+                                        traditional: true,
+                                        type: 'POST',
+                                        data: {
+                                            "PersoonEnLidInfos[0].GelieerdePersoonID": np_gpID,
+                                            "PersoonEnLidInfos[0].InTeSchrijven": true,
+                                            "PersoonEnLidInfos[0].LeidingMaken": true,
+                                            "PersoonEnLidInfos[0].VolledigeNaam": volledigeNaam,
+                                            "PersoonEnLidInfos[0].AfdelingsJaarIDs": afdelingsJaarIDs,
+                                            "BeschikbareAfdelingen": beschikbareAfdelingen,
+                                            checkall: false,
+                                        }
+                                    }).done(function() {
+                                    //Alle gegevens van de net ingeschreven persoon ophalen
+                                    url = "/" + GID + "/Personen/PersoonsGegevensOphalenJson";
+                                    $.getJSON(url, { gelieerdePersoonId: np_gpID }, function(res) {
+                                        persoonID = res.HuidigePersoon.PersoonID;
+                                        werkjaar = res.HuidigWerkJaar;
+                                        lidID = res.HuidigePersoon.LidID;
+                                        volledigeNaam = res.HuidigePersoon.volledigeNaam;
+                                    }).done(function() {
+                                        $.each($('#afdelingSelectie input:checked'), function(index, value) {
+                                            var waarde = parseInt($(this).val());
+                                            geselecteerdeAfdelingen.push(waarde);
+                                        });
+                                        //'beschikbare afdelingen' uit het model halen
+                                        url = "/" + GID + "/Leden/AfdelingBewerken";
+                                        $.getJSON(url, { lidId: lidID }, function(antwoord) {
+                                            beschikbareAfdelingen.push(antwoord.BeschikbareAfdelingen);
+                                        }).done(function() {
+                                            url = "/" + GID + "/Leden/AfdelingBewerken";
+                                            $.ajax({
+                                                url: url,
+                                                type: 'POST',
+                                                traditional: true,
+                                                data: {
+                                                    "groepsWerkJaarID": werkjaar,
+                                                     lidID: lidID,
+                                                     "Info.AfdelingsJaarIDs": geselecteerdeAfdelingen
+                                                }
+                                            }).done(function() {
+                                                url = "/" + GID + "/Personen/EditRest/" + np_gpID;
+                                                window.location = url;
+                                            });
+                                        });
+                                    });
+
+                                  
+                                });
+                            }
+                        
+                    
+
+        //----------------------------------------------------------------------------------------
+                        //adres toekennen
+                        url = "/" + GID + "/Personen/NieuwAdres/" + np_gpID;
+                        $.post(url, {
+                            action:'Bewaren',
+                            GelieerdePersoonIDs:np_gpID,
+                            "PersoonsAdresInfo.AdresType":'Thuis',
+                            Land:'België',
+                            PostNr:postcode,
+                            Straat:straat,
+                            HuisNr:nummer,
+                            Bus:bus,
+                            WoonPlaats:gemeente,
+                            Voorkeur:true,
+                            AanvragerID:np_gpID
+                        });
+                        //----------------------------------------------------------------------------------------
+                        
+
+                    } else { //'data[0]' is gezet, dus er is al een persoon met dezelfde naam 
+                        alert("Er is al zo'n persoon");
+                    }
+                }
+            });
+        }
+        
+        //--------------------------------------------------------------------------------------------------------
+
+
+        //------------------------------------------------------------------------------------------------------------
+    }); //EINDE BEWAREN
+    //------------------------------------------------------------------------------------------------------------
+    
+
+    //------------------------------------------------------------------------------------------------------------
+    //switcht tussen een radiobutton of checkbox bij het veranderen van lid naar leiding &
+    //maakt alle eerder gecheckte boxen of radiobuttons leeg
+    $('#type').change(function () {
+        
+        $('#leiding').is(':checked') ? type = 'Leiding' : type = 'Lid';
+        if (type == 'Lid') {
+            $('#wrap_chiroleeftijd').show();
+            $('#afdelingSelectie input').attr('checked', false);
+            $('#afdelingSelectie label').attr('aria-pressed', false);
+            $('#afdelingSelectie label').removeClass('ui-state-active');
+            $('#afdelingSelectie input').attr('type', 'radio');
+        } else {
+            $('#wrap_chiroleeftijd').hide();
+            $('#afdelingSelectie input').attr('checked', false);
+            $('#afdelingSelectie label').attr('aria-pressed', false);
+            $('#afdelingSelectie label').removeClass('ui-state-active');
+            $('#afdelingSelectie input').attr('type', 'checkbox');
         }
     });
 
-    //toon de adres dialog bij het klikken in de input
-    $('#np_adres').focus(function () {
-        if (doorgaan) {
-            adresToevoegen(GID, gpId);
-        }
-    });
     //------------------------------------------------------------------------------------------------------------
     //functie om het dialoogvenster tijdens de verwerking te tonen en mededelingen te verbergen.
     function verwerkNieuwePersoon() {
@@ -279,26 +443,64 @@ $(function () {
 
 });
 //------------------------------------------------------------------------------------------------------------
-function initialiseerAndereVelden(gpId) {
-    $(".ui-dialog-content").dialog("close");
-    $('#btn_verder').attr('enabled', true).hide();
-    $('#andereGegevens').show();
-    $('#andereGegevens').find(':input').attr('disabled', false);
-    $('#knopReset').attr('disabled', true);
-    $('#knopReset').hide();
-    $('#knopBewaren').show();
-    $('#errorfield').hide();
-    haalGegevens(gpId);
+// functies die aangeroepen worden tijdens het bewaren van de nieuwe persoon
+//------------------------------------------------------------------------------------------------------------
+function vulVariabelenIn() {
+
+    //persoonlijke gegevens
+    voornaam = $('#HuidigePersoon_VoorNaam').val();
+    naam = $('#HuidigePersoon_Naam').val();
+    geboortedatum = $('#HuidigePersoon_GeboorteDatum').val();
+    $('#vrouw').is(':checked') ? geslacht = "vrouw" : geslacht = "man";
+
+    //adresgegevens
+    postcode = $('#np_postCode').val();
+    gemeente = $('#np_gemeente').val();
+    straat = $('#np_straat').val();
+    nummer = $('#np_nummer').val();
+    bus = $('#np_bus').val();
+    
+    //communicatie
+    telefoonnummer = $('#np_telefoonnummer').val();
+    emailadres = $('#np_emailadres').val();
+
+    //chirogegevens
+    $('#leiding').is(':checked') ? type = "Leiding" : type = "Lid";
+    
 }
 //------------------------------------------------------------------------------------------------------------
-function haalGegevens(gelieerdePersoon) {
-    //Alle gegevens van de net aangemaakte persoon ophalen
-    var url = "/" + GID + "/Personen/PersoonsGegevensOphalenJson";
-    var persoonId, werkjaar;
-    $.getJSON(url, { gelieerdePersoonId: gelieerdePersoon }, function (data) {
-        persoonId = data.HuidigePersoon.PersoonID;
-        werkjaar = data.HuidigWerkJaar;
-    });
-    return (persoonId, werkjaar);
+function controle() {
+    errors = "";
+    fout = false;
+    if(voornaam.length <= 2) {
+        errors += "<li>De ingegeven voornaam is te kort</li>";
+        fout = true;
+    }
+    if (naam.length <= 2) {
+        errors += "<li>De ingegeven naam is te kort</li>";
+        fout = true;
+    }
+    if (geboortedatum.length <= 8) {
+        errors += "<li>De ingegeven geboortedatum is te kort</li>";
+        fout = true;
+    }
+    var antwoord;
+    if (emailadres.length >= 1) {
+        antwoord = controleerEmail(emailadres);
+        if (antwoord != "") {
+            errors += "<li>" + antwoord + "</li>";
+            fout = true;
+        }
+    }
+    if (telefoonnummer.length >= 1) {
+        antwoord = controleerTel(telefoonnummer);
+        if (antwoord != "") {
+            errors += "<li>" + antwoord + "</li>";
+            fout = true;
+        }
+    }
+    return fout;
 }
+
 //------------------------------------------------------------------------------------------------------------
+

@@ -303,6 +303,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Nieuw(int groepID)
         {
             var model = new GelieerdePersonenModel();
+            model.GroepsWerkJaarID = VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID;
             BaseModelInit(model, groepID);
             model.HuidigePersoon = new PersoonDetail();
 
@@ -327,6 +328,9 @@ namespace Chiro.Gap.WebApp.Controllers
 
             BaseModelInit(model, groepID);
             model.Titel = Properties.Resources.NieuwePersoonTitel;
+
+            
+            
 
             if (!ModelState.IsValid)
             {
