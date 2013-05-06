@@ -662,8 +662,7 @@ namespace Chiro.Gap.Services
                              (filter.HeeftVoorkeurAdres == null || (ld.GelieerdePersoon.PersoonsAdres != null && filter.HeeftVoorkeurAdres == true) ||
                              (ld.GelieerdePersoon.PersoonsAdres == null && filter.HeeftVoorkeurAdres == false)) &&
                              (filter.HeeftTelefoonNummer == null ||
-                              ld.GelieerdePersoon.Communicatie.Select(
-                                  e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer).Any() ==
+                              ld.GelieerdePersoon.Communicatie.Any(e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer) ==
                               filter.HeeftTelefoonNummer) &&
                              (filter.HeeftEmailAdres == null ||
                               ld.GelieerdePersoon.Communicatie.Select(
