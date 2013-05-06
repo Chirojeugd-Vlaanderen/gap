@@ -15,7 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using Chiro.Gap.Dummies;
+
+using System.Collections.ObjectModel;
+using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.SyncInterfaces;
@@ -939,6 +941,60 @@ namespace Chiro.Gap.Services.Test
             Assert.IsFalse(actual.Select(ld => ld.LidID == lid.ID).Any());
             // alle leden hebben een voorkeursadres. Ik verwacht er dus geen te vinden zonder.
 
+        }
+
+        ///<summary>
+        /// Kijkt na of leden zonder telefoonnummer maar met e-mail toch gevonden worden als leden zonder
+        /// telefoonnummer
+        ///</summary>
+        [TestMethod()]
+        public void ZoekenZonderTelefoonNr()
+        {
+            // ARRANGE
+
+            // testmodelletje
+            var lid = new Leiding
+                          {
+                              ID = 1,
+                              GelieerdePersoon = new GelieerdePersoon
+                                                     {
+                                                         Persoon = new Persoon(),
+                                                         Communicatie =
+                                                             new List<CommunicatieVorm>
+                                                                 {
+                                                                     new CommunicatieVorm
+                                                                         {
+                                                                             CommunicatieType
+                                                                                 =
+                                                                                 new CommunicatieType
+                                                                                     {
+                                                                                         ID
+                                                                                             =
+                                                                                             (
+                                                                                             int
+                                                                                             )
+                                                                                             CommunicatieTypeEnum
+                                                                                                 .Email
+                                                                                     }
+                                                                         }
+                                                                 }
+                                                     }
+                          };
+
+            // dependency injection
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid> { lid }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var target = Factory.Maak<LedenService>();
+            var actual = target.Zoeken(new LidFilter { HeeftTelefoonNummer = false }, false);
+
+            // ASSERT
+            Assert.IsTrue(actual.Select(ld => ld.LidID == lid.ID).Any());
+            // het lid heeft geen telefoonnummer, dus we verwachten een fout te vinden.
         }
     }
 }
