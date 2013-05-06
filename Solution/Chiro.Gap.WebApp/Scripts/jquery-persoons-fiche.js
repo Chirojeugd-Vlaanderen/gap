@@ -375,7 +375,8 @@ $(function () {
         var nota;
         var gaVerder = true;
         var type;
-
+        var antwoord
+        
         $('#commDialog #voorkeur, #commDialog #snel').attr('checked', false);
         $('#commDialog #adresNota').val('');
         if (cId == 'email') {
@@ -399,7 +400,7 @@ $(function () {
                     gaVerder = true;
                     nummer = $('#nummer').val();
                     if (type == 1) {
-                        var antwoord = controleerTel(nummer);
+                        antwoord = controleerTel(nummer);
                         if (antwoord != "") {
                             $('#errorTekst').html(antwoord);
                             $('#error').show();
@@ -407,7 +408,7 @@ $(function () {
                         }
                     }
                     if (type == 3) {
-                        var antwoord = controleerEmail(nummer);
+                        antwoord = controleerEmail(nummer);
                         if (antwoord != "") {
                             $('#errorTekst').html(antwoord);
                             $('#error').show();

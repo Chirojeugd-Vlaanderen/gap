@@ -110,6 +110,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MyResources.nl.resx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\list.cs" />
     <Compile Include="Controllers\PersonenEnLedenController.cs" />
     <Compile Include="Controllers\UitstappenController.cs" />
     <Compile Include="GapSortering.cs" />

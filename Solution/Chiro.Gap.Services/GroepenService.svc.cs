@@ -988,9 +988,9 @@ namespace Chiro.Gap.Services
         /// Maakt een lijst met alle landen uit de database.
         /// </summary>
         /// <returns>Lijst met alle beschikbare landen</returns>
-        public IEnumerable<LandInfo> LandenOphalen()
+        public List<LandInfo> LandenOphalen()
         {
-            return Mapper.Map<IEnumerable<Land>, IEnumerable<LandInfo>>(_landRepo.GetAll());
+            return Mapper.Map<IEnumerable<Land>, List<LandInfo>>(_landRepo.GetAll());
         }
 
         /// <summary>

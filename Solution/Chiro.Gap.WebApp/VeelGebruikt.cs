@@ -353,15 +353,15 @@ namespace Chiro.Gap.WebApp
         /// Haalt alle landen op van de backend
         /// </summary>
         /// <returns>De landinfo van alle gekende landen</returns>
-        public IEnumerable<LandInfo> LandenOphalen()
+        public List<LandInfo> LandenOphalen()
         {
-            var result = (IEnumerable<LandInfo>)_cache.Get(LANDENCACHEKEY);
+            var result = (List<LandInfo>)_cache.Get(LANDENCACHEKEY);
 
             if (result == null)
             {
                 // Cache geëxpired; opnieuw ophalen en cachen.
 
-                result = ServiceHelper.CallService<IGroepenService, IEnumerable<LandInfo>>(g => g.LandenOphalen());
+                result = ServiceHelper.CallService<IGroepenService, List<LandInfo>>(g => g.LandenOphalen());
 
                 _cache.Add(
                     LANDENCACHEKEY,

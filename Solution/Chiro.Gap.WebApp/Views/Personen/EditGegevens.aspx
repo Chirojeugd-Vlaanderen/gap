@@ -105,6 +105,10 @@
         </div>
         <div style="clear: both"></div>
     </div>
+    
+    <div id="progress" hidden>
+        <div id="balk"><div class="progress-label">Verwerken...</div></div>
+    </div>
 
 	<fieldset>
 		<legend>Persoonlijke gegevens</legend>
@@ -164,8 +168,10 @@
         <tr class="np_adres" id="eersteAdres">
                 <td>Adres:</td>
                 <td>
+                    Land: <select id="landSelect"></select>
                     Postcode: <input type="text" id="np_postCode" size="6"/>
-                    Gemeente: <select id="np_gemeente"></select>
+                    <span id="postNr" hidden>PostNummer:<input type="text" size="6"/></span>
+                    Gemeente: <select id="np_gemeente"></select><input type="text" id="buitenlandseGemeente" hidden/>
                     <br/>
                     <br/>
                     Straat: <input type="text" id="np_straat"/> 
@@ -180,7 +186,6 @@
     </table>
     
     
-        
 
     <fieldset>
         <legend>Telefoonnummer</legend>

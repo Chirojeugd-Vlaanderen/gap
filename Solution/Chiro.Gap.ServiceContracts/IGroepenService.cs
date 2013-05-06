@@ -432,7 +432,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <returns>Lijst met alle beschikbare landen</returns>
 		[OperationContract]
-		IEnumerable<LandInfo> LandenOphalen();
+		List<LandInfo> LandenOphalen();
 
 		/// <summary>
 		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint

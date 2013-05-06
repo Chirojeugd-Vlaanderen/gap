@@ -220,9 +220,14 @@ function toonGemeenten(postcode, veld) {
     var url = "/" + GID + "/Adressen/WoonPlaatsenOphalen";
     var options = '';
     $.getJSON(url, { postNummer: postcode }, function (data) {
-        for (var i = 0; i < data.length; i++) {
-            options += '<option value="' + data[i].Naam + '">' + data[i].Naam + '</option>';
+        if (data == '') {
+            options = '<option>Geen resultaten gevonden</option>';
+        } else {
+            for (var i = 0; i < data.length; i++) {
+                options += '<option value="' + data[i].Naam + '">' + data[i].Naam + '</option>';
+            }
         }
+
         $(veld).html(options);
     });
 

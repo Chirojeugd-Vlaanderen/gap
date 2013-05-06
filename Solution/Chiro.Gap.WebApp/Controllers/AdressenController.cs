@@ -95,6 +95,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			return Json(resultaat, JsonRequestBehavior.AllowGet);
 		}
 
+	    ///
+	    /// 
+	    public JsonResult LandenVoorstellen()
+	    {
+	        List<LandInfo> landen =  VeelGebruikt.LandenOphalen();
+	        return Json(landen, JsonRequestBehavior.AllowGet);
+	    }
+
+
 		/// <summary>
 		/// Stelt op basis van een gedeeltelijke straatnaam en een 
 		/// gemeentenaam een lijst suggesties samen met straatnamen die de
