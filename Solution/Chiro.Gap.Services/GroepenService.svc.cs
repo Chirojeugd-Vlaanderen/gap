@@ -697,6 +697,7 @@ namespace Chiro.Gap.Services
             var aantalLeidingZonderEmail = (from ld in groepsWerkJaar.Lid
                                             where ld.Type == LidType.Leiding &&
                                                 ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.Email)
+                                                && ld.UitschrijfDatum == null
                                             select ld).Count();
 
             if (aantalLeidingZonderEmail > 0)
