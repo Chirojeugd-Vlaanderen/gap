@@ -665,8 +665,7 @@ namespace Chiro.Gap.Services
                               ld.GelieerdePersoon.Communicatie.Any(e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer) ==
                               filter.HeeftTelefoonNummer) &&
                              (filter.HeeftEmailAdres == null ||
-                              ld.GelieerdePersoon.Communicatie.Select(
-                                  e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email).Any() ==
+                              ld.GelieerdePersoon.Communicatie.Any(e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email) ==
                               filter.HeeftEmailAdres)
                          select ld).ToList();
 
