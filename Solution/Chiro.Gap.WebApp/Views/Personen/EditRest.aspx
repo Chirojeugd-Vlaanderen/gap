@@ -27,28 +27,30 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script src="<%= ResolveUrl("~/Scripts/jquery-persoons-fiche.js") %>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/jqueryui-editable.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/moment.js") %>" type="text/javascript"></script>
-    <link href="<%= ResolveUrl("~/Content/jqueryui-editable.css") %>" rel="stylesheet" type="text/css" />
     <link href="<%= ResolveUrl("~/Content/print.css") %>" media="print" rel="stylesheet" type="text/css" />
+
     <div id="printLogo"></div>
     <div id="PersoonsInformatie">
     <% // dialog voor het weergeven van het info-kadertje %>
-    <div id="extraInfoDialog" hidden>Bezig met verwerking...</div>
+    <div id="extraInfoDialog" hidden><img src="/Content/images/loading.gif"/></div>
     <input id="groepID" value="<%= Model.GroepID %>" hidden readonly/>
     <% if (Model.PersoonLidInfo.LidInfo != null)
        { %>
            <input id="lidIdH" value="<%= Model.PersoonLidInfo.LidInfo.LidID %>" hidden readonly/>
+           <input id="gwJaar" value="<%= Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID %>" hidden readonly/>
+           <input id="lidType" value="<%=Model.PersoonLidInfo.LidInfo.Type %>" hidden readonly/>
       <% }
        else
        { %>
-           <input id="lidIdH" value="geen lidID" hidden readonly />
+           <input id="lidIdH" value="geenLidID" hidden readonly />
+           <input id="gwJaar" value="geenGwJaar" hidden readonly/>
+           <input id="lidType" value="geenType" hidden readonly/>
       <% }%>
    
     <input id="GPid" value="<%=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID  %>" hidden readonly/>
-    <input id="gwJaar" value="<%=Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID%>" hidden readonly/>
     <input id="versieString" value="<%=Model.PersoonLidInfo.PersoonDetail.VersieString %>" hidden readonly/> 
-    <input id="lidType" value="<%=Model.PersoonLidInfo.LidInfo.Type %>" hidden readonly/> 
+     
     <div id="afdelingenDialog" hidden>
         <p>Selecteer de afdelingen:</p>
         <fieldset>
@@ -440,7 +442,9 @@
               // Dit wordt weergegeven wanneer de persoon niet ingeschreven is in het huidige werkjaar%>
             <p>
                 <span style="color: red"><%=Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> is niet ingeschreven in het huidige werkjaar.</span>
-                <%=Html.ActionLink(String.Format("[Inschrijven]"), "Inschrijven", new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID})%>
+                <br/>
+                <button id="btn_inschrijven">Inschrijven</button>
+                <%//=Html.ActionLink(String.Format("[Inschrijven]"), "Inschrijven", new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID})%>
             </p>
             
         <% } %>

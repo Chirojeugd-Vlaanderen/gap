@@ -54,7 +54,7 @@
 	{
 	%>
 	<ul id="acties">
-		<li><input type="submit" value="Bewaren" /></li>
+		<li><input id="bewaar" type="submit" value="Bewaren" /></li>
 	</ul>
 
 	<fieldset>

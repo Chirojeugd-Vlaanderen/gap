@@ -441,7 +441,7 @@ div#actiesmini
 #acties
 {
 	float: right;
-	margin: 25px 0 25px 25px;
+    margin: 25px 0 25px 25px;
 }
 
 #acties h1
@@ -648,6 +648,13 @@ fieldset p label {
     display: inline-block;
 }
 
+fieldset table tr td {
+    border: none;
+}
+fieldset table {
+    border: none;
+}
+
 #PersoonsInformatie {
     width: 55%;
     float: left;
@@ -672,8 +679,7 @@ fieldset p label {
     text-align: center;
 }
 
-.noclose .ui-dialog-titlebar-close
-{
+.noclose .ui-dialog-titlebar-close {
     display:none;
 }
 #gdInput {
@@ -682,6 +688,38 @@ fieldset p label {
 #adresNota {
     width: 300px;
     height: 80px;
+}
+
+#extraInfoDialog img {
+    margin-left: 45%;
+    margin-top:50px;
+    margin-right: auto;
+    display: inline-block;
+}
+
+#errorfield {
+    width: 85%;
+    padding: 5px;
+}
+#errorfield img {
+    float: left;
+    width: 8ex;
+    height: 8ex;
+    margin-right: 50px;
+    margin-left: 20px;
+}
+
+.np_adres td input {
+    width:auto;
+}
+
+.progress-label {
+    float: left;
+    margin-left: 40%;
+    text-align: center;
+    margin-top: 5px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
 }
 
 @media screen and (max-width: 360px) {

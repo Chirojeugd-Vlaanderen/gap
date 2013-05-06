@@ -303,6 +303,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Nieuw(int groepID)
         {
             var model = new GelieerdePersonenModel();
+            model.GroepsWerkJaarID = VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID;
             BaseModelInit(model, groepID);
             model.HuidigePersoon = new PersoonDetail();
 
@@ -320,16 +321,20 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [HandleError]
-        public ActionResult Nieuw(GelieerdePersonenModel model, int groepID)
+        //ActionResult
+        public JsonResult Nieuw(GelieerdePersonenModel model, int groepID)
         {
             IDPersEnGP ids;
 
             BaseModelInit(model, groepID);
             model.Titel = Properties.Resources.NieuwePersoonTitel;
 
+            
+            
+
             if (!ModelState.IsValid)
             {
-                return View("EditGegevens", model);
+                return Json(model, JsonRequestBehavior.AllowGet); //View("EditGegevens", model);
             }
 
             try
@@ -341,7 +346,7 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 model.GelijkaardigePersonen = fault.Detail.Objecten;
                 model.Forceer = true;
-                return View("EditGegevens", model);
+                return Json(model.GelijkaardigePersonen, JsonRequestBehavior.AllowGet); //View("EditGegevens", model);
             }
 
             // Voorlopig opnieuw redirecten naar EditRest;
@@ -353,7 +358,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // (er wordt hier geredirect ipv de view te tonen,
             // zodat je bij een 'refresh' niet de vraag krijgt
             // of je de gegevens opnieuw wil posten.)
-            return RedirectToAction("EditRest", new { id = ids.GelieerdePersoonID });
+            return Json(ids, JsonRequestBehavior.AllowGet); //RedirectToAction("EditRest", new { id = ids.GelieerdePersoonID });
         }
 
         /// <summary>
@@ -478,6 +483,16 @@ namespace Chiro.Gap.WebApp.Controllers
            
         }
 
+        public JsonResult PersoonsGegevensOphalenJson(int groepID, int gelieerdePersoonId)
+        {
+            var model = new GelieerdePersonenModel();
+            BaseModelInit(model, groepID);
+            // model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.AlleDetailsOphalen(id, groepID));
+            model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonId));
+            model.Titel = model.HuidigePersoon.VolledigeNaam;
+            //return View("EditGegevens", model);
+            return Json(model,JsonRequestBehavior.AllowGet);
+        }
 
         /// <summary>
         /// Probeert de gewijzigde persoonsgegevens te persisteren via de webservice

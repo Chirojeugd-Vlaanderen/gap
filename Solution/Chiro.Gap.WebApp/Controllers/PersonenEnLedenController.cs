@@ -85,7 +85,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">Groep waar de leden ingeschreven moeten worden</param>
 		/// <returns>De view met de voorgestelde afdelingen</returns>
 		[HandleError]
-		public ActionResult LedenMaken(int groepID)
+        public ActionResult LedenMaken(int groepID)
 		{
 			// TODO exceptions
 			var model = new GeselecteerdePersonenEnLedenModel();
@@ -106,7 +106,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (!String.IsNullOrEmpty(foutBerichten))
 			{
 				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
-				return TerugNaarVorigeLijst();
+			    return TerugNaarVorigeLijst();
 			}
 
 		    model.PersoonEnLidInfos = (from p in personenOverzicht
@@ -122,8 +122,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			// TODO "Geen" ook toevoegen en met ajax verwijderen uit de lijst als je lid selecteert
 			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<ActieveAfdelingInfo>>(svc => svc.HuidigeAfdelingsJarenOphalen(groepID));
-
-			return View("LedenMaken", model);
+		    return View("LedenMaken", model);
 		}
 
         /// <summary>

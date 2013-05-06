@@ -106,7 +106,7 @@ namespace Chiro.Gap.WebApp
 		/// Haalt alle landen op van de backend
 		/// </summary>
 		/// <returns>De landinfo van alle gekende landen</returns>
-		IEnumerable<LandInfo> LandenOphalen();
+		List<LandInfo> LandenOphalen();
 
 	    /// <summary>
 	    /// Verwijdert de bivakproblemen voor groep met id <paramref name="groepID"/> uit de cache.

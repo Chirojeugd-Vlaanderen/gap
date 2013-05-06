@@ -1,17 +1,60 @@
-﻿$(function() {
+﻿
+var GID;
+$(function() {
 //defaults
 $.fn.editable.defaults.mode = 'inline';
 $.fn.editable.defaults.clear = true;
 $.fn.editable.defaults.toggle = 'manual';
 
-    var GID = $('#MGID').val();
+    GID = $('#MGID').val();
 
     //mededelingen
     $('.mededelingen').click(function () {
         var url = "/" + GID + "/GavTaken";
         window.location = url;
     });
-});    
+    //--------------------------------------------------------------------------------
+    // MEER INFORMATIE TONEN ( via dialog)
+    // Deze functies kunnen in dit algemene bestand opgenomen worden omdat ze in enkele paginas
+    // op exact dezelfde manier voorkomen. De ID's op de links en de <div> tag 
+    // waarin de info geladen wordt moeten dan wel op alle pagina's dezelfde naam hebben.
+    //--------------------------------------------------------------------------------
+    // extra info over AD-nummer
+    //TODO: Volgens mij moet dit efficienter kunnen
+    $('#clInfo').click(function () {
+        $('#extraInfoDialog').dialog();
+        toonInfo('#CLINFO', "Chiroleeftijd", "#extraInfoDialog");
+        clearDialog();
+    });
+
+    $('#Ad-info').click(function () {
+        $('#extraInfoDialog').dialog();
+        toonInfo('#ADINFO', 'AD-nummer', '#extraInfoDialog');
+        clearDialog();
+    });
+
+    $('#instapperiodeInfo').click(function () {
+        $('#extraInfoDialog').dialog();
+        toonInfo('#INSINFO', 'Instapperiode', '#extraInfoDialog');
+        clearDialog();
+    });
+
+    $('#clInfo').click(function () {
+        $('#extraInfoDialog').dialog();
+        toonInfo('#CLINFO', 'Chiroleeftijd', '#extraInfoDialog');
+        clearDialog();
+    });
+
+    $('#print').click(function () {
+        window.print();
+    });
+
+    $('#lidgeldInfo').click(function () {
+        $('#extraInfoDialog').dialog();
+        toonInfo('#LGINFO', "Lidgeld", "#extraInfoDialog");
+        clearDialog();
+    });
+}); 
 //--------------------------------------------------------------------------------
 // functie om extra informatie te tonen in een dialog
 // Maak een <div id="eenID"></div> aan in de pagina waar je de dialog wil
@@ -21,7 +64,6 @@ function toonInfo(id, titel, dialogId) {
 
     var url = "/Handleiding/Trefwoorden " + id;
     $(dialogId).load(url, function () {
-        success: {
             $(dialogId).dialog({
                 modal: true,
                 width: 500,
@@ -34,7 +76,6 @@ function toonInfo(id, titel, dialogId) {
                 title: titel,
                 buttons: {}
             });
-        }
     });
 }
 
@@ -60,22 +101,155 @@ $.datepicker.regional['be'] = {
     showMonthAfterYear: false,
     yearSuffix: ''
 };
-//Straatnamen aanvullen
+//-------------------------------------------------------------------------
+//Functie 'bezig met verwerking'
+
+function bezig() {
+    $('#extraInfoDialog').dialog({
+        title: 'Verwerking bezig',
+        modal: true,
+        height: 150,
+        closeOnEscape: false,
+        draggable: false,
+        resizable: false,
+        buttons: {}
+    });
+}
+//-------------------------------------------------------------------------
+function clearDialog() {
+    $('#extraInfoDialog').html('<img src="/Content/images/loading.gif"/>')
+            .dialog({
+                title: "Laden...",
+                buttons: {},
+                modal: true,
+                width: 300,
+                show: {
+                    effect: "drop"
+                },
+                hide: {
+                    effect: "drop"
+                },
+                position: {
+                    my: "center",
+                    at: "center",
+                    of: window
+                },
+                dialogClass: {}
+            });
+}
 
 
-//--------------------------------------------------------------------------------
-// MEER INFORMATIE TONEN ( via dialog)
-// Deze functies kunnen in dit algemene bestand opgenomen worden omdat ze in enkele paginas
-// op exact dezelfde manier voorkomen. De ID's op de links en de <div> tag 
-// waarin de info geladen wordt moeten dan wel op alle pagina's dezelfde naam hebben.
-//--------------------------------------------------------------------------------
-// extra info over AD-nummer
+function adresToevoegen(GID, GPid) {
+    $('#extraInfoDialog').dialog();
+    var url = "/" + GID + "/Personen/NieuwAdres/" + GPid + " #main";
+    $('#extraInfoDialog').load(url, function () {
+        gedeeltelijkTonen('#extraInfoDialog');
+        $('#tabel').show();
+        $('#uitlegBinnenland').show();
+        var land = 'België';
 
-/*$('#Ad-info').click(function () {
-    toonInfo('#ADINFO', "AD-nummer", "#extraInfoDialog");
-});
+        // Door deze code kunnen users de form niet submitten met 'enter' (gaf een fout over de postcode)
+        $(this).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
 
-$('#clInfo').click(function () {
-    toonInfo('#CLINFO', "Chiroleeftijd", "#extraInfoDialog");
-});*/
+        $('#Land').on('change', function () {
+            land = $(this).val();
+            if (land != 'België') {
+                //show gegevens voor buitenland en gewone gegevens
+                $('#uitlegBuitenland').show();
+                $('#uitlegBinnenland').hide();
+                $('#tabel').show();
+                $('#postCode').show();
+                $('#woonplaatsBuitenland').show();
+                //hide gegevens voor binnenland
+                $('#woonplaatsBinnenland').hide();
+            } else {
+                $('#woonplaatsBinnenland').show();
+                $('#uitlegBuitenland').hide();
+                $('#uitlegBinnenland').show();
+                $('#tabel').show();
+                $('#postCode').hide();
+                $('#woonplaatsBuitenland').hide();
+            }
+        });
+        $('#PostNr').on('change', function () {
+            var pc = $(this).val();
+            if (land == 'België') {
+                toonGemeenten(pc, '#WoonPlaats');
+            }
+        });
+
+        success:
+        {
+            $('#extraInfoDialog fieldset').css('width', '600px');
+            $(this).dialog({
+                title: "Adres Toevoegen",
+                modal: true,
+                width: 700,
+                height: 700,
+                resizable: true,
+                buttons: {
+                    'Bewaren': function () {
+                        $('#extraInfoDialog #bewaarAdres').click();
+                        $(this).dialog('close');
+                    },
+                    'Annuleren': function () {
+                        $(this).dialog('destroy');
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+    });
+}
+
+//------------------------------------------------------------------------------------------
+function gedeeltelijkTonen(container) {
+    $(container).find('#header, #footer, .mededelingen, legend, h2, #acties').hide();
+    $(container + ' fieldset').css({ 'width': '350px' });
+}
+//-------------------------------------------------------------------------
+//functie om de gemeente op te zoeken
+
+function toonGemeenten(postcode, veld) {
+    //Groep ID wordt uit een verborgen veld op de pagina gehaald
+    var url = "/" + GID + "/Adressen/WoonPlaatsenOphalen";
+    var options = '';
+    $.getJSON(url, { postNummer: postcode }, function (data) {
+        if (data == '') {
+            options = '<option>Geen resultaten gevonden</option>';
+        } else {
+            for (var i = 0; i < data.length; i++) {
+                options += '<option value="' + data[i].Naam + '">' + data[i].Naam + '</option>';
+            }
+        }
+
+        $(veld).html(options);
+    });
+
+}
+//-------------------------------------------------------------------------
+// email valideren
+function controleerEmail(email) {
+    var emailReg = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    if (!emailReg.test(email)) {
+        return "Het ingegeven e-mail adres is ongeldig. Gebruik de vorm: 'voorbeeld@voorbeeld.xxx'";
+    }
+    return "";
+}
+//------------------------------------------------------------------------------------------
+// telefoonnummer/ Fax /msn valideren
+function controleerTel(tel) {
+    var telReg = /^(^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$)|^\+[0-9]*$/;
+    if (!telReg.test(tel)) {
+        return "Het ingegeven telefoonnummer is ongeldig. Gebruik de vorm: '000-00 00 00' of '0000-00 00 00'";
+    }
+    return "";
+}
+
+
 
