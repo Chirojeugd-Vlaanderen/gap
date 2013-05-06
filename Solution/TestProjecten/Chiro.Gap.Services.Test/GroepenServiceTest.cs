@@ -960,5 +960,47 @@ namespace Chiro.Gap.Services.Test
                                           select probleem);
             Assert.IsFalse(aantalLedenZonderTelNr.Any());
         }
+
+        /// <summary>
+        ///Kijkt na of uitgeschreven leden zonder e-mailadres niet als fout worden aangegeven
+        ///</summary>
+        [TestMethod()]
+        public void LeidingControlerenZonderEmailEnUitgeschrevenTest()
+        {
+            // ARRANGE
+
+            // model: uitgeschreven lid zonder adres
+
+            var groep = new ChiroGroep { ID = 1 };
+            var groepsWerkJaar = new GroepsWerkJaar { Groep = groep };
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            var lid = new Lid
+            {
+                GelieerdePersoon =
+                    new GelieerdePersoon { Groep = groep, PersoonsAdres = null },
+                UitschrijfDatum = DateTime.Today.AddDays(-1),
+                GroepsWerkJaar = groepsWerkJaar
+            };
+            groepsWerkJaar.Lid.Add(lid);
+
+            // dependency injection voor data access
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                                  .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var target = Factory.Maak<GroepenService>();
+            var actual = target.LedenControleren(groep.ID);
+
+            // ASSERT
+            var aantalLedenZonderTelNr = (from probleem in actual
+                                          where probleem.Probleem == LidProbleem.EmailOntbreekt
+                                          select probleem);
+            Assert.IsFalse(aantalLedenZonderTelNr.Any());
+        }
+
     }
 }
