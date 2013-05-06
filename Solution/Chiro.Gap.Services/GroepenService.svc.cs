@@ -668,6 +668,7 @@ namespace Chiro.Gap.Services
 
             var aantalLedenZonderAdres = (from ld in groepsWerkJaar.Lid
                                           where ld.GelieerdePersoon.PersoonsAdres == null // geen voorkeursadres
+                                          && ld.UitschrijfDatum == null                   // enkel actieve leden
                                           select ld).Count();
 
             if (aantalLedenZonderAdres > 0)
