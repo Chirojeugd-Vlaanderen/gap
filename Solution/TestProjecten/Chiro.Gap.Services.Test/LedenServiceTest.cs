@@ -996,5 +996,59 @@ namespace Chiro.Gap.Services.Test
             Assert.IsTrue(actual.Select(ld => ld.LidID == lid.ID).Any());
             // het lid heeft geen telefoonnummer, dus we verwachten een fout te vinden.
         }
+
+        ///<summary>
+        /// Kijkt na of leden zonder e-mail maar mettelefoonnummer toch gevonden worden als leden zonder
+        /// telefoonnummer
+        ///</summary>
+        [TestMethod()]
+        public void ZoekenZonderEmail()
+        {
+            // ARRANGE
+
+            // testmodelletje
+            var lid = new Leiding
+            {
+                ID = 1,
+                GelieerdePersoon = new GelieerdePersoon
+                {
+                    Persoon = new Persoon(),
+                    Communicatie =
+                        new List<CommunicatieVorm>
+                                                                 {
+                                                                     new CommunicatieVorm
+                                                                         {
+                                                                             CommunicatieType
+                                                                                 =
+                                                                                 new CommunicatieType
+                                                                                     {
+                                                                                         ID
+                                                                                             =
+                                                                                             (
+                                                                                             int
+                                                                                             )
+                                                                                             CommunicatieTypeEnum
+                                                                                                 .TelefoonNummer
+                                                                                     }
+                                                                         }
+                                                                 }
+                }
+            };
+
+            // dependency injection
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid> { lid }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var target = Factory.Maak<LedenService>();
+            var actual = target.Zoeken(new LidFilter { HeeftEmailAdres = false }, false);
+
+            // ASSERT
+            Assert.IsTrue(actual.Select(ld => ld.LidID == lid.ID).Any());
+            // het lid heeft geen telefoonnummer, dus we verwachten een fout te vinden.
+        }
     }
 }
