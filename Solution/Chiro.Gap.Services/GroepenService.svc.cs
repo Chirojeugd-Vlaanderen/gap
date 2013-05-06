@@ -682,6 +682,7 @@ namespace Chiro.Gap.Services
 
             var aantalLedenZonderTelefoonNr = (from ld in groepsWerkJaar.Lid
                                                where ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.TelefoonNummer)
+                                               && ld.UitschrijfDatum == null
                                                select ld).Count();
 
             if (aantalLedenZonderTelefoonNr > 0)
