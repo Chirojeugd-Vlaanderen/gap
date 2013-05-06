@@ -687,6 +687,7 @@ namespace Chiro.Gap.Services
 
             var aantalLedenZonderAdres = (from ld in groepsWerkJaar.Lid
                                           where ld.GelieerdePersoon.PersoonsAdres == null // geen voorkeursadres
+                                          && ld.UitschrijfDatum == null                   // enkel actieve leden
                                           select ld).Count();
 
             if (aantalLedenZonderAdres > 0)
@@ -700,6 +701,7 @@ namespace Chiro.Gap.Services
 
             var aantalLedenZonderTelefoonNr = (from ld in groepsWerkJaar.Lid
                                                where ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.TelefoonNummer)
+                                               && ld.UitschrijfDatum == null
                                                select ld).Count();
 
             if (aantalLedenZonderTelefoonNr > 0)
@@ -714,6 +716,7 @@ namespace Chiro.Gap.Services
             var aantalLeidingZonderEmail = (from ld in groepsWerkJaar.Lid
                                             where ld.Type == LidType.Leiding &&
                                                 ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.Email)
+                                                && ld.UitschrijfDatum == null
                                             select ld).Count();
 
             if (aantalLeidingZonderEmail > 0)
