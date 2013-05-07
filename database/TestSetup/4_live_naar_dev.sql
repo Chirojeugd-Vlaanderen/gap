@@ -24,3 +24,9 @@ ALTER TABLE pers.Persoon ADD SeVoornaam AS SOUNDEX(VoorNaam);
 
 CREATE INDEX IX_Persoon_SoundEx ON pers.Persoon(Naam,Voornaam);
 CREATE INDEX IX_Persoon_SoundEx2 ON pers.Persoon(Voornaam,Naam);
+
+DROP INDEX [IX_Lid_AfdelingsJaarID] ON [lid].[Kind]
+ALTER TABLE lid.Kind ALTER COLUMN afdelingsJaarID integer not null;
+CREATE NONCLUSTERED INDEX [IX_Lid_AfdelingsJaarID] ON [lid].[Kind]([afdelingsJaarID] ASC);
+
+
