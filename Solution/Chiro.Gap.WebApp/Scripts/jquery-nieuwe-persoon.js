@@ -38,7 +38,7 @@ $(function () {
     //werkjaar invullen op groepen op te halen
     werkjaar = $('#np_werkJaarID').val();
 
-    url = "/" + GID + "/Adressen/LandenVoorstellen";
+    url = "Adressen/LandenVoorstellen";
     $.getJSON(url, function(data) {
         $.each(data, function(index, value) {
             $('#landSelect').append('<option id="' + data[index].ID +'" value="' +data[index].Naam +'">' + data[index].Naam +'</option>');
@@ -48,7 +48,7 @@ $(function () {
     //------------------------------------------------------------------------
     // afdelingsinfo binnenhalen
     //actieve afdelingen met hun (speciale) namen ophalen
-    url = "/" + GID + "/Afdelingen/AfdelingsInfo";
+    url = "Afdelingen/AfdelingsInfo";
     $.post(url, {groepsWerkJaarID: werkjaar},function(antw) {
         $.each(antw.Actief, function(index, value) {
             var naam = antw.Actief[index].AfdelingNaam;
@@ -250,7 +250,7 @@ $(function () {
     });
   
     //------------------------------------------------------------------------
-    url = "/" + GID + "/Adressen/StratenVoorstellen";
+    url = "Adressen/StratenVoorstellen";
     $('#np_straat').keyup(function() {
         var straten = [];
         zoekterm = $(this).val();
@@ -372,7 +372,7 @@ $(function () {
                 dialogClass: 'noclose'
             });
             
-            var url = "/" + GID + "/Personen/Nieuw";
+            var url = "Personen/Nieuw";
 
             $.post(url, {
                     "HuidigePersoon.VoorNaam": voornaam,
@@ -388,7 +388,7 @@ $(function () {
                             np_gpID = data.GelieerdePersoonID;
                             //----------------------------------------------------------------------------------------
                             if (tel) {
-                                url = "/" + GID + "/Personen/NieuweCommVorm";
+                                url = "Personen/NieuweCommVorm";
                                 $.post(url, {
                                     gelieerdePersoonID: np_gpID,
                                     "NieuweCommVorm.CommunicatieTypeID": 1,
@@ -399,7 +399,7 @@ $(function () {
                             }
                              //----------------------------------------------------------------------------------------
                             if (email) {
-                                url = "/" + GID + "/Personen/NieuweCommVorm";
+                                url = "Personen/NieuweCommVorm";
                                 $.post(url, {
                                     gelieerdePersoonID: np_gpID,
                                     "NieuweCommVorm.CommunicatieTypeID": 3,
@@ -411,7 +411,7 @@ $(function () {
                             //----------------------------------------------------------------------------------------
                             //Persoon inschrijven
                             if (inschrijven) {
-                                    url = "/" + GID + "/Leden/LedenMaken";
+                                    url = "Leden/LedenMaken";
                                     $.ajax({
                                         url: url,
                                         traditional: true,
@@ -428,7 +428,7 @@ $(function () {
                                     }).done(function() {
                                     voortgang.progressbar('value', val += 20);
                                     //Alle gegevens van de net ingeschreven persoon ophalen
-                                    url = "/" + GID + "/Personen/PersoonsGegevensOphalenJson";
+                                    url = "Personen/PersoonsGegevensOphalenJson";
                                     $.getJSON(url, { gelieerdePersoonId: np_gpID }, function(res) {
                                         persoonID = res.HuidigePersoon.PersoonID;
                                         werkjaar = res.HuidigWerkJaar;
@@ -441,12 +441,12 @@ $(function () {
                                             geselecteerdeAfdelingen.push(waarde);
                                         });
                                         //'beschikbare afdelingen' uit het model halen
-                                        url = "/" + GID + "/Leden/AfdelingBewerken";
+                                        url = "Leden/AfdelingBewerken";
                                         $.getJSON(url, { lidId: lidID }, function(antwoord) {
                                             beschikbareAfdelingen.push(antwoord.BeschikbareAfdelingen);
                                         }).done(function() {
                                             voortgang.progressbar('value', val += 20);
-                                            url = "/" + GID + "/Leden/AfdelingBewerken";
+                                            url = "Leden/AfdelingBewerken";
                                             $.ajax({
                                                 url: url,
                                                 type: 'POST',
@@ -458,7 +458,7 @@ $(function () {
                                                 }
                                             }).done(function() {
                                                 voortgang.progressbar('value', 100);
-                                                url = "/" + GID + "/Personen/EditRest/" + np_gpID;
+                                                url = "Personen/EditRest/" + np_gpID;
                                                 window.location = url;
                                             });
                                         });
@@ -472,7 +472,7 @@ $(function () {
 
         //----------------------------------------------------------------------------------------
                         //adres toekennen
-                        url = "/" + GID + "/Personen/NieuwAdres/" + np_gpID;
+                        url = "Personen/NieuwAdres/" + np_gpID;
                         $.post(url, {
                             action:'Bewaren',
                             GelieerdePersoonIDs:np_gpID,
@@ -487,7 +487,7 @@ $(function () {
                             AanvragerID:np_gpID
                         }).done(function() {
                             if (!inschrijven) {      
-                                url = "/" + GID + "/Personen/EditRest/" + np_gpID;
+                                url = "Personen/EditRest/" + np_gpID;
                                 window.location = url;
                             }
                             voortgang.progressbar('value', val += 20);
@@ -557,7 +557,7 @@ $(function () {
 
     //extra info over broer/zus maken
     $('#zusBroer').click(function () {
-        var url = "/Handleiding/ZusBroer #help";
+        var url = "Handleiding/ZusBroer #help";
         $('#extraInfoDialog').load(url);
 
         $('#extraInfoDialog').dialog({

@@ -85,8 +85,13 @@ $(function () {
             primary: "ui-icon-circle-plus"
         }
     });
+    $.dialog.on('close', function () {
+        clearDialog();
+    });
+
     $('#btn_inschrijven').click(function () {
-        var url = "/" + GID + "/Personen/Inschrijven?gelieerdePersoonID=" + GPid + " #main";
+
+        var url = "Personen/Inschrijven?gelieerdePersoonID=" + GPid + " #main";
         $('#extraInfoDialog').dialog();
         $('#extraInfoDialog').load(url, function () {
             gedeeltelijkTonen('#extraInfoDialog');
@@ -241,7 +246,7 @@ $(function () {
                 title: "Bevestiging",
                 buttons: {
                     'Ja': function () {
-                        var url = "/" + GID + "/Personen/VerwijderenCommVorm?commvormID=" + comID;
+                        var url = "Personen/VerwijderenCommVorm?commvormID=" + comID;
                         $.get(url);
                         $('input[value=' + comID + ']').parent().parent().hide();
                         $(this).dialog('close');
@@ -264,7 +269,7 @@ $(function () {
                 title: "Bevestiging",
                 buttons: {
                     'Ja': function () {
-                        var url = "/" + GID + "/Personen/VerwijderenCommVorm?commvormID=" + comID;
+                        var url = "Personen/VerwijderenCommVorm?commvormID=" + comID;
                         $.get(url);
                         //verbergt de rij in de tabel zodat de pagina niet herladen hoeft te worden.
                         $('input[value=' + comID + ']').parent().parent().hide();
@@ -282,7 +287,7 @@ $(function () {
     $('#laadNieuweCom .comToev').click(function () {
         var waarde;
         $('#extraInfoDialog').dialog();
-        var url = "/" + GID + "/Personen/NieuweCommVorm?gelieerdePersoonID=" + GPid + " #main";
+        var url = "Personen/NieuweCommVorm?gelieerdePersoonID=" + GPid + " #main";
         $('#extraInfoDialog').load(url, function () {
 
             gedeeltelijkTonen('#extraInfoDialog');
@@ -376,7 +381,7 @@ $(function () {
         var gaVerder = true;
         var type;
         var antwoord
-        
+
         $('#commDialog #voorkeur, #commDialog #snel').attr('checked', false);
         $('#commDialog #adresNota').val('');
         if (cId == 'email') {
@@ -390,7 +395,7 @@ $(function () {
             type = 1;
         }
 
-        var url = "/" + GID + "/Personen/NieuweCommVorm?gelieerdePersoonID=" + GPid;
+        var url = "Personen/NieuweCommVorm?gelieerdePersoonID=" + GPid;
         $('#commDialog').dialog({
             modal: true,
             width: 510,
@@ -474,7 +479,7 @@ $(function () {
         var adresID = $(this).parent().parent().find('td input#persoonsAdresID').val();
 
         //Haal het model op
-        url = "/" + GID + "/Personen/Verhuizen/" + adresID;
+        url = "Personen/Verhuizen/" + adresID;
 
         $.getJSON(url, { aanvragerID: GPid }, function (data) {
             //info uit model invullen in variablen
@@ -524,7 +529,7 @@ $(function () {
                     bus = $('#bus').val();
                     gemeente = $('#gemeente').val();
 
-                    url = "/" + GID + "/Personen/verhuizen/" + adresID;
+                    url = "Personen/verhuizen/" + adresID;
 
                     $.ajax({
                         url: url,
@@ -560,7 +565,7 @@ $(function () {
         e.preventDefault();
         var adresID = $(this).parent().parent().find('td input').val();
         $('#extraInfoDialog').dialog();
-        var url = "/" + GID + "/Personen/Adresverwijderen/" + adresID + "?gelieerdePersoonId=" + GPid + ' #main';
+        var url = "Personen/Adresverwijderen/" + adresID + "?gelieerdePersoonId=" + GPid + ' #main';
         $('#extraInfoDialog').load(url, function () {
             gedeeltelijkTonen('#extraInfoDialog');
             success:
@@ -595,7 +600,7 @@ $(function () {
     $('.voorkeursAdresMaken').click(function () {
         $('#extraInfoDialog').dialog();
         var voorkeursadresID = $(this).parent().parent().find('td input#voorkeursadresID').val();
-        var url = "/" + GID + "/Personen/VoorkeurAdresMaken";
+        var url = "Personen/VoorkeurAdresMaken";
         bezig();
         $.get(url, { persoonsAdresID: voorkeursadresID, gelieerdePersoonID: GPid }, function () {
             success:
@@ -646,7 +651,7 @@ $(function () {
         .on('save', function (e, params) {
             e.preventDefault();
             bezig();
-            var url = "/" + GID + "/Leden/TypeToggle/" + id;
+            var url = "Leden/TypeToggle/" + id;
             $.post(url, { id: id, groepID: GID }, function () {
                 success:
                 {
@@ -669,7 +674,7 @@ $(function () {
         var teller = 0;
         e.stopPropagation();
         e.preventDefault();
-        var url = "/" + GID + "/Leden/AfdelingBewerken";
+        var url = "Leden/AfdelingBewerken";
 
         $.getJSON(url, { groepsWerkJaarID: groepswerkJaar, lidID: id }, function (data) {
 
@@ -697,7 +702,7 @@ $(function () {
                                 groep.push(waarde);
                             });
 
-                            url = "/" + GID + "/Leden/AfdelingBewerken";
+                            url = "Leden/AfdelingBewerken";
                             $.ajax({
                                 url: url,
                                 type: 'POST',
@@ -727,7 +732,7 @@ $(function () {
 
     $('#bewerkLidgeld').click(function (e) {
         e.preventDefault();
-        var url = "/" + GID + "/Leden/LidGeldToggle/" + id;
+        var url = "Leden/LidGeldToggle/" + id;
         var g = $('#lidgeldInfo b').text().trim();
         if (g == 'Nog niet betaald') {
             $('#lidgeldInfo b').text('Betaald');
@@ -743,7 +748,7 @@ $(function () {
     $('#bewerkFuncties').click(function (e) {
         e.preventDefault();
         $('#extraInfoDialog').dialog();
-        var url = "/" + GID + "/Leden/FunctiesToekennen/" + id + ' #main';
+        var url = "Leden/FunctiesToekennen/" + id + ' #main';
         $('#extraInfoDialog').load(url, function () {
             gedeeltelijkTonen('#extraInfoDialog');
             $(this).find('a').hide();
@@ -772,7 +777,7 @@ $(function () {
     // verzekering tegen loonverlies
     $('#bewerkVerzekering').click(function (e) {
         e.preventDefault();
-        var url = "/" + GID + "/Leden/LoonVerliesVerzekeren/" + id + " #ver";
+        var url = "Leden/LoonVerliesVerzekeren/" + id + " #ver";
         $('#bewerkVerzekeringDialog').load(url);
 
         $('#bewerkVerzekeringDialog').dialog({
@@ -781,7 +786,7 @@ $(function () {
             width: 500,
             buttons: {
                 "Bevestigen": function () {
-                    url = "/" + GID + "/Leden/LoonVerliesVerzekeren/" + id;
+                    url = "Leden/LoonVerliesVerzekeren/" + id;
                     $(this).dialog('close');
                     bezig();
                     $.post(url, { id: id, groepID: GID }, function () {
@@ -803,7 +808,7 @@ $(function () {
     //------------------------------------------------------------------------------------------
     //abboneren op dubbelpunt
     $('#abboneer').click(function () {
-        var url = "/" + GID + "/Abonnementen/DubbelPuntAanvragen";
+        var url = "Abonnementen/DubbelPuntAanvragen";
         $.post(url, { id: id, groepID: GID });
     });
 
@@ -820,7 +825,7 @@ $(function () {
     //gebruikersrechten
     $('#loginMaken').click(function () {
         bezig();
-        var url = "/" + GID + "/GebruikersRecht/LoginMaken/" + GPid;
+        var url = "GebruikersRecht/LoginMaken/" + GPid;
         $.post(url).fail(function () {
             alert("Fout! Er is iets misgelopen");
             location.reload();
@@ -829,7 +834,7 @@ $(function () {
 
     $('#gbrToekennen').click(function () {
         bezig();
-        var url = "/" + GID + "/GebruikersRecht/AanGpToekennen/" + GPid;
+        var url = "GebruikersRecht/AanGpToekennen/" + GPid;
         $.post(url).fail(function () {
             alert("Fout! Er is iets misgelopen");
             location.reload();
@@ -843,7 +848,7 @@ $(function () {
         bezig();
         e.preventDefault();
         var catID = $('#catID').val();
-        var url = "/" + GID + "/Personen/VerwijderenCategorie";
+        var url = "Personen/VerwijderenCategorie";
 
         $.post(url, { categorieID: catID, gelieerdePersoonID: GPid, groepID: GID }, function () {
             success:
@@ -855,7 +860,7 @@ $(function () {
     });
 
     $('#toevoegenAanCat').click(function () {
-        var url = "/" + GID + "/Personen/ToevoegenAanCategorie?gelieerdePersoonID=" + GPid + " #main";
+        var url = "Personen/ToevoegenAanCategorie?gelieerdePersoonID=" + GPid + " #main";
         $('#extraInfoDialog').dialog();
         $('#extraInfoDialog').load(url, function () {
             gedeeltelijkTonen('#extraInfoDialog');
@@ -885,7 +890,7 @@ $(function () {
     //Info over verzekering tegen loonsverlies
     $('#loonVerlies').click(function () {
         $('#extraInfoDialog').dialog();
-        var url = "/Handleiding/VerzekeringLoonverlies #kort";
+        var url = "Handleiding/VerzekeringLoonverlies #kort";
         $('#extraInfoDialog').load(url, function (response, status, xhr) {
             if (status == "success") {
                 $('#extraInfoDialog').append(
@@ -915,7 +920,7 @@ $(function () {
 
     $('#verhuizen').click(function () {
         $('#extraInfoDialog').dialog();
-        var url = "/Handleiding/Verhuizen #verhuizen";
+        var url = "Handleiding/Verhuizen #verhuizen";
         $('#extraInfoDialog').load(url, function (response, status, xhr) {
         });
 
@@ -947,7 +952,7 @@ $(function () {
     //      nieuweWaarde:   ingegeven waarde die op de plaats van de oude komt
 
     function bewaarGegevens(teVeranderen, nieuweWaarde, GID, GPid) {
-        var url = "/" + GID + "/Personen/EditGegevens/" + GPid;
+        var url = "Personen/EditGegevens/" + GPid;
         var n = achternaam;
         var vn = voornaam;
         var gb = geboortedatum;
@@ -998,7 +1003,7 @@ $(function () {
         var voorkeur2 = false;
         var GG = false;
         var nota = "";
-        var url = "/" + GID + "/Personen/CommVormBewerken";
+        var url = "Personen/CommVormBewerken";
         $.getJSON(url, { commvormID: cvid, gelieerdePersoonID: GPid }, function (data) {
             nummer = data.NieuweCommVorm.Nummer;
             snelleBerichten = data.NieuweCommVorm.IsVoorOptIn;
@@ -1028,7 +1033,7 @@ $(function () {
                     default:
                 }
 
-                url = "/" + GID + "/Personen/CommVormBewerken?commvormID=" + cvid + "&gelieerdePersoonID=" + GPid;
+                url = "Personen/CommVormBewerken?commvormID=" + cvid + "&gelieerdePersoonID=" + GPid;
 
                 $.post(url,
                             {

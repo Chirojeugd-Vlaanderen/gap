@@ -10,7 +10,7 @@ $.fn.editable.defaults.toggle = 'manual';
 
     //mededelingen
     $('.mededelingen').click(function () {
-        var url = "/" + GID + "/GavTaken";
+        var url = "GavTaken";
         window.location = url;
     });
     //--------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ $.fn.editable.defaults.toggle = 'manual';
 //--------------------------------------------------------------------------------
 function toonInfo(id, titel, dialogId) {
 
-    var url = "/Handleiding/Trefwoorden " + id;
+    var url = "Handleiding/Trefwoorden " + id;
     $(dialogId).load(url, function () {
             $(dialogId).dialog({
                 modal: true,
@@ -141,7 +141,7 @@ function clearDialog() {
 
 function adresToevoegen(GID, GPid) {
     $('#extraInfoDialog').dialog();
-    var url = "/" + GID + "/Personen/NieuwAdres/" + GPid + " #main";
+    var url = "Personen/NieuwAdres/" + GPid + " #main";
     $('#extraInfoDialog').load(url, function () {
         gedeeltelijkTonen('#extraInfoDialog');
         $('#tabel').show();
@@ -217,7 +217,7 @@ function gedeeltelijkTonen(container) {
 
 function toonGemeenten(postcode, veld) {
     //Groep ID wordt uit een verborgen veld op de pagina gehaald
-    var url = "/" + GID + "/Adressen/WoonPlaatsenOphalen";
+    var url = "Adressen/WoonPlaatsenOphalen";
     var options = '';
     $.getJSON(url, { postNummer: postcode }, function (data) {
         if (data == '') {

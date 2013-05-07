@@ -256,12 +256,7 @@
                 </span>
             </td>
         </tr>
-        <tr>
-           <td colspan="2"><button id="tochNiet" type="button" hidden>Oeps, toch niet inschrijven!</button></td> 
-        </tr>
-        <%//<button id="btn_verder">Ga Verder</button> %>
-
-    <%
+         <%
 		if ((Model.GroepsNiveau & Niveau.Groep) != 0)
 		{
 			// Chiroleeftijd is enkel relevant voor plaatselijke groepen
@@ -282,6 +277,12 @@
 	<%
 		}
 	%>
+        <tr>
+           <td colspan="2"><button id="tochNiet" type="button" hidden>Oeps, toch niet inschrijven!</button></td> 
+        </tr>
+        <%//<button id="btn_verder">Ga Verder</button> %>
+
+   
           </table>
       </fieldset>
 	</fieldset>
