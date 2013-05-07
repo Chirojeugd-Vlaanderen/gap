@@ -319,8 +319,7 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
-                // (sync met Kipadmin werkt toch nog niet)
-                //_ledenSync.Bewaren(teSyncen);
+                //_ledenSync.Bewaren(teSyncen);     // TODO: (#1436) Sync naar Kipadmin
                 _gelieerdePersonenRepo.SaveChanges();
 #if KIPDORP
                 tx.Commit();
