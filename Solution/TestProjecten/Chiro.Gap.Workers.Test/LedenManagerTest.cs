@@ -151,45 +151,6 @@ namespace Chiro.Gap.Workers.Test
             throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
-        ///<summary>
-        /// Test herinschrijven van lid als leiding met 2 afdelingen
-        ///</summary>
-        [TestMethod()]
-        public void HerInschrijvenAlsLeidingTest()
-        {
-            //var leidingDaoMock = new Mock<ILeidingDao>();
-            //leidingDaoMock.Setup(src => src.Bewaren(It.IsAny<Leiding>(), It.IsAny<LidExtras>())).Returns<Leiding, LidExtras>((ld, extra) => ld);
-
-            //// we verwachten dat de leid(st)er bewaard zal worden
-
-            //Factory.InstantieRegistreren(leidingDaoMock.Object);
-
-            //var target = Factory.Maak<LedenManager>();
-            //Setup();
-
-            //// act
-            //_voorstel.LeidingMaken = false;
-            //_voorstel.AfdelingsJaarIDs = new[] {0};
-            //var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Kind;
-            //actual.UitschrijfDatum = DateTime.Today;
-
-            //var voorstel2 = new LidVoorstel
-            //{
-            //    AfdelingsJaarIDs = new[] { 1, 2 },
-            //    AfdelingsJarenIrrelevant = false,
-            //    LeidingMaken = true
-            //};
-
-            //var newlid = target.Wijzigen(actual, voorstel2) as Leiding;
-
-            //// assert
-            //Assert.IsNotNull(newlid);
-            //Assert.IsTrue(newlid.AfdelingsJaar.Contains(_afd1));
-            //Assert.IsTrue(newlid.AfdelingsJaar.Contains(_afd2));
-            //Assert.IsNull(newlid.UitschrijfDatum);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-        }
-
         /// <summary>
         /// Test of 'LedenManager.InschrijvingVoorstellen' rekening houdt met het geslacht van een persoon.
         ///</summary>

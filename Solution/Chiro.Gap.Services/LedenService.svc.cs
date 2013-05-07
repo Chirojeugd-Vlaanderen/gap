@@ -721,6 +721,9 @@ namespace Chiro.Gap.Services
             // Een bestaand object van type wisselen, is niet mogelijk (denk ik)
             // dus we verwijderen het bestaande lid, en maken een nieuw aan.
 
+            // Zaken uit de repository verwijderen, kan moeilijk tot niet in de workers,
+            // dus doen we het hier.
+
             if (!groepsWerkJaar.Groep.Niveau.HasFlag(Niveau.Groep))
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.LidTypeVerkeerd, Properties.Resources.NietVoorKader);
