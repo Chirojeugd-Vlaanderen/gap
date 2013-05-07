@@ -38,7 +38,8 @@ $(function () {
     //werkjaar invullen op groepen op te halen
     werkjaar = $('#np_werkJaarID').val();
 
-    url = "Adressen/LandenVoorstellen";
+    //url = root + "Adressen/LandenVoorstellen";
+    url = link("Adressen", "LandenVoorstellen");
     $.getJSON(url, function(data) {
         $.each(data, function(index, value) {
             $('#landSelect').append('<option id="' + data[index].ID +'" value="' +data[index].Naam +'">' + data[index].Naam +'</option>');
@@ -48,7 +49,8 @@ $(function () {
     //------------------------------------------------------------------------
     // afdelingsinfo binnenhalen
     //actieve afdelingen met hun (speciale) namen ophalen
-    url = "Afdelingen/AfdelingsInfo";
+    //url = root + "Afdelingen/AfdelingsInfo";
+    url = link("Afdelingen", "AfdelingsInfo");
     $.post(url, {groepsWerkJaarID: werkjaar},function(antw) {
         $.each(antw.Actief, function(index, value) {
             var naam = antw.Actief[index].AfdelingNaam;
@@ -250,7 +252,8 @@ $(function () {
     });
   
     //------------------------------------------------------------------------
-    url = "Adressen/StratenVoorstellen";
+    //url = root +"Adressen/StratenVoorstellen";
+    url = link("Adressen", "StratenVoorstellen");
     $('#np_straat').keyup(function() {
         var straten = [];
         zoekterm = $(this).val();
@@ -259,7 +262,6 @@ $(function () {
                 $.each(data, function(index, value) {
                     var waarde = data[index].toString();
                     straten.push(waarde);
-                    alert(waarde);
                 });
                 $('#np_straat').autocomplete({
                         source: straten
@@ -340,7 +342,6 @@ $(function () {
         //Controle van de ingevulde variabelen
         //--------------------------------------------------------------------------------------------------------
         test = controle();
-        alert(test);
         if (test) {
             $('#errorMessages').html(errors);
             $('#errorfield').show();
@@ -372,8 +373,8 @@ $(function () {
                 dialogClass: 'noclose'
             });
             
-            var url = "Personen/Nieuw";
-
+            //url = root + "Personen/Nieuw";
+            url = link("Personen", "Nieuw");
             $.post(url, {
                     "HuidigePersoon.VoorNaam": voornaam,
                     "HuidigePersoon.Naam": naam,
@@ -385,10 +386,10 @@ $(function () {
                         voortgang.progressbar('value', val += 10);
                         //als 'data[0]' undefined is zit het niet in het JSON antwoord en is er dus geen dezelfde persoon
                         if (typeof(data[0]) === "undefined") {
-                            np_gpID = data.GelieerdePersoonID;
+                            np_gpID = data.GelieerdePersoonID; 
+                            url = link("Personen", "NieuweCommVorm");
                             //----------------------------------------------------------------------------------------
                             if (tel) {
-                                url = "Personen/NieuweCommVorm";
                                 $.post(url, {
                                     gelieerdePersoonID: np_gpID,
                                     "NieuweCommVorm.CommunicatieTypeID": 1,
@@ -399,7 +400,6 @@ $(function () {
                             }
                              //----------------------------------------------------------------------------------------
                             if (email) {
-                                url = "Personen/NieuweCommVorm";
                                 $.post(url, {
                                     gelieerdePersoonID: np_gpID,
                                     "NieuweCommVorm.CommunicatieTypeID": 3,
@@ -411,7 +411,8 @@ $(function () {
                             //----------------------------------------------------------------------------------------
                             //Persoon inschrijven
                             if (inschrijven) {
-                                    url = "Leden/LedenMaken";
+                                    //url = root +"Leden/LedenMaken";
+                                    url = link("Leden", "LedenMaken");
                                     $.ajax({
                                         url: url,
                                         traditional: true,
@@ -421,48 +422,51 @@ $(function () {
                                             "PersoonEnLidInfos[0].InTeSchrijven": true,
                                             "PersoonEnLidInfos[0].LeidingMaken": leiding,
                                             "PersoonEnLidInfos[0].VolledigeNaam": volledigeNaam,
-                                            "PersoonEnLidInfos[0].AfdelingsJaarIDs": afdelingsJaarIDs,
+                                            "PersoonEnLidInfos[0].AfdelingsJaarIDs": afdelingsJaarIDs[0],
                                             "BeschikbareAfdelingen": beschikbareAfdelingen,
                                             checkall: false,
                                         }
                                     }).done(function() {
-                                    voortgang.progressbar('value', val += 20);
-                                    //Alle gegevens van de net ingeschreven persoon ophalen
-                                    url = "Personen/PersoonsGegevensOphalenJson";
-                                    $.getJSON(url, { gelieerdePersoonId: np_gpID }, function(res) {
-                                        persoonID = res.HuidigePersoon.PersoonID;
-                                        werkjaar = res.HuidigWerkJaar;
-                                        lidID = res.HuidigePersoon.LidID;
-                                        volledigeNaam = res.HuidigePersoon.volledigeNaam;
-                                        voortgang.progressbar('value', val += 5);
-                                    }).done(function() {
-                                        $.each($('#afdelingSelectie input:checked'), function(index, value) {
-                                            var waarde = parseInt($(this).val());
-                                            geselecteerdeAfdelingen.push(waarde);
-                                        });
-                                        //'beschikbare afdelingen' uit het model halen
-                                        url = "Leden/AfdelingBewerken";
-                                        $.getJSON(url, { lidId: lidID }, function(antwoord) {
-                                            beschikbareAfdelingen.push(antwoord.BeschikbareAfdelingen);
+                                        voortgang.progressbar('value', val += 20);
+                                        //Alle gegevens van de net ingeschreven persoon ophalen
+                                        //url = root +"Personen/PersoonsGegevensOphalenJson";
+                                            url = link("Personen", "PersoonsGegevensOphalenJson");
+                                        $.getJSON(url, { gelieerdePersoonId: np_gpID }, function(res) {
+                                            persoonID = res.HuidigePersoon.PersoonID;
+                                            werkjaar = res.HuidigWerkJaar;
+                                            lidID = res.HuidigePersoon.LidID;
+                                            volledigeNaam = res.HuidigePersoon.volledigeNaam;
+                                            voortgang.progressbar('value', val += 5);
                                         }).done(function() {
-                                            voortgang.progressbar('value', val += 20);
-                                            url = "Leden/AfdelingBewerken";
-                                            $.ajax({
-                                                url: url,
-                                                type: 'POST',
-                                                traditional: true,
-                                                data: {
-                                                    "groepsWerkJaarID": werkjaar,
-                                                     lidID: lidID,
-                                                     "Info.AfdelingsJaarIDs": geselecteerdeAfdelingen
-                                                }
+                                            $.each($('#afdelingSelectie input:checked'), function(index, value) {
+                                                var waarde = parseInt($(this).val());
+                                                geselecteerdeAfdelingen.push(waarde);
+                                            });
+                                            //'beschikbare afdelingen' uit het model halen
+                                            //url = root +"Leden/AfdelingBewerken";
+                                            url = link("Leden", "AfdelingBewerken");
+                                            $.getJSON(url, { lidID: lidID }, function(antwoord) {
+                                                beschikbareAfdelingen.push(antwoord.BeschikbareAfdelingen);
                                             }).done(function() {
-                                                voortgang.progressbar('value', 100);
-                                                url = "Personen/EditRest/" + np_gpID;
-                                                window.location = url;
+                                                voortgang.progressbar('value', val += 20);
+                                                $.ajax({
+                                                    url: url,
+                                                    type: 'POST',
+                                                    traditional: true,
+                                                    data: {
+                                                        "groepsWerkJaarID": werkjaar,
+                                                         lidID: lidID,
+                                                         "Info.AfdelingsJaarIDs": geselecteerdeAfdelingen
+                                                    }
+                                                }).done(function() {
+                                                    voortgang.progressbar('value', 100);
+                                                    //url = root + "Personen/EditRest/" + np_gpID;
+                                                    url = link("Personen", "EditRest");
+                                                    url += "/" + np_gpID;
+                                                    window.location = url;
+                                                });
                                             });
                                         });
-                                    });
 
                                   
                                 });
@@ -472,7 +476,9 @@ $(function () {
 
         //----------------------------------------------------------------------------------------
                         //adres toekennen
-                        url = "Personen/NieuwAdres/" + np_gpID;
+                        //url = root + "Personen/NieuwAdres/" + np_gpID;
+                            url = link("Personen", "NieuwAdres");
+                            url += "/" + np_gpID;
                         $.post(url, {
                             action:'Bewaren',
                             GelieerdePersoonIDs:np_gpID,
@@ -487,7 +493,9 @@ $(function () {
                             AanvragerID:np_gpID
                         }).done(function() {
                             if (!inschrijven) {      
-                                url = "Personen/EditRest/" + np_gpID;
+                                //url = root + "Personen/EditRest/" + np_gpID;
+                                url = link("Personen", "EditRest");
+                                url += "/" + np_gpID;
                                 window.location = url;
                             }
                             voortgang.progressbar('value', val += 20);
@@ -557,7 +565,10 @@ $(function () {
 
     //extra info over broer/zus maken
     $('#zusBroer').click(function () {
-        var url = "Handleiding/ZusBroer #help";
+        
+        //url = root + "Handleiding/ZusBroer #help";
+        url = link("Handleiding", "ZusBroer");
+        url += " #help";
         $('#extraInfoDialog').load(url);
 
         $('#extraInfoDialog').dialog({

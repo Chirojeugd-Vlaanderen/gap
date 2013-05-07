@@ -1,16 +1,17 @@
 ﻿
 var GID;
-$(function() {
-//defaults
-$.fn.editable.defaults.mode = 'inline';
-$.fn.editable.defaults.clear = true;
-$.fn.editable.defaults.toggle = 'manual';
+$(function () {
+    //defaults
+    $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.clear = true;
+    $.fn.editable.defaults.toggle = 'manual';
 
     GID = $('#MGID').val();
-
+    var url;
+    
     //mededelingen
     $('.mededelingen').click(function () {
-        var url = "GavTaken";
+        url = link("", 'GavTaken');
         window.location = url;
     });
     //--------------------------------------------------------------------------------
@@ -62,7 +63,8 @@ $.fn.editable.defaults.toggle = 'manual';
 //--------------------------------------------------------------------------------
 function toonInfo(id, titel, dialogId) {
 
-    var url = "Handleiding/Trefwoorden " + id;
+    url = link("Handleiding", "Trefwoorden");
+    url = url + ' ' + id; 
     $(dialogId).load(url, function () {
             $(dialogId).dialog({
                 modal: true,
@@ -141,7 +143,10 @@ function clearDialog() {
 
 function adresToevoegen(GID, GPid) {
     $('#extraInfoDialog').dialog();
-    var url = "Personen/NieuwAdres/" + GPid + " #main";
+
+    url = link("Personen", "NieuwAdres");
+    url = url + "/" + GPid + " #main";
+    
     $('#extraInfoDialog').load(url, function () {
         gedeeltelijkTonen('#extraInfoDialog');
         $('#tabel').show();
@@ -217,7 +222,7 @@ function gedeeltelijkTonen(container) {
 
 function toonGemeenten(postcode, veld) {
     //Groep ID wordt uit een verborgen veld op de pagina gehaald
-    var url = "Adressen/WoonPlaatsenOphalen";
+    url = link("Adressen", "WoonPlaatsenOphalen");
     var options = '';
     $.getJSON(url, { postNummer: postcode }, function (data) {
         if (data == '') {
@@ -251,5 +256,12 @@ function controleerTel(tel) {
     return "";
 }
 
-
-
+function link(controller, functie) {
+    var link;
+    if (controller != "") {
+        link = root + GID + "/" + controller + "/" + functie;
+    } else {
+        link = root + GID + "/" + functie;
+    }
+    return link;
+}
