@@ -401,7 +401,6 @@ $(function () {
             type = 1;
         }
 
-        //url = root + "Personen/NieuweCommVorm?gelieerdePersoonID=" + GPid;
         url = link("Personen", "NieuweCommVorm");
         url += "?gelieerdePersoonID=" + GPid;
         $('#commDialog').dialog({
@@ -691,8 +690,8 @@ $(function () {
         var teller = 0;
         e.stopPropagation();
         e.preventDefault();
-        //url = root + "Leden/AfdelingBewerken";
-        url = link("Leden", "AfdelingenBewerken");
+        
+        url = link("Leden", "AfdelingBewerken");
         $.getJSON(url, { groepsWerkJaarID: groepswerkJaar, lidID: id }, function (data) {
 
             $.each(data.BeschikbareAfdelingen, function (index, value) {
@@ -719,7 +718,6 @@ $(function () {
                                 groep.push(waarde);
                             });
 
-                            //url = root + "Leden/AfdelingBewerken";
                             url = link("Leden", "AfdelingBewerken");
                             $.ajax({
                                 url: url,
@@ -750,7 +748,6 @@ $(function () {
 
     $('#bewerkLidgeld').click(function (e) {
         e.preventDefault();
-        //url = root + "Leden/LidGeldToggle/" + id;
         url = link("Leden", "LidGeldToggle");
         var g = $('#lidgeldInfo b').text().trim();
         if (g == 'Nog niet betaald') {
@@ -768,7 +765,7 @@ $(function () {
         e.preventDefault();
         $('#extraInfoDialog').dialog();
         //url = root + "Leden/FunctiesToekennen/" + id + ' #main';
-        url = link("Leden", "FuctiesToekennen");
+        url = link("Leden", "FunctiesToekennen");
         url += "/" + id + ' #main';
         $('#extraInfoDialog').load(url, function () {
             gedeeltelijkTonen('#extraInfoDialog');
