@@ -22,7 +22,6 @@
  * limitations under the License.
  */
 %>
-<% Html.RenderPartial("AdresBewerkenScriptsControl", Model); %>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<% 
