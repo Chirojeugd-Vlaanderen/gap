@@ -23,11 +23,6 @@
     <script src="<%= ResolveUrl("~/Scripts/jquery-ui-1.10.2.custom.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
-
-    <link href="<%= ResolveUrl("~/Content/jquery-ui-1.10.2.custom.css")%>" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
 	    $(function() {
 	        // Automatisch invullen gemeentes na keuze postnummer
