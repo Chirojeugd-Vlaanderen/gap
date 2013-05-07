@@ -73,66 +73,46 @@ namespace Chiro.Gap.Workers.Test
         //
         #endregion
 
-        private ChiroGroep _groep;
-        private GelieerdePersoon _gp;
-        private GroepsWerkJaar _gwj;
-        private LidVoorstel _voorstel;
-        private AfdelingsJaar _afd1;
-        private AfdelingsJaar _afd2;
-
-        // FIXME: Een aantal van onderstaande tests gaan _gp in- en uitschrijven als lid en leiding.
-        // Het is echter niet gezegd dat de tests in volgorde uitgevoerd worden; het kan goed zijn
-        // dat sommige tests tegelijkertijd lopen.  In die gevallen gaan ze elkaar in de weg lopen,
-        // en failen.
-
-        private void Setup()
-        {
-            // Creeer een aantal dummygegevens om op te testen.
-            _groep = new ChiroGroep { ID = 493 };
-            _gp = new GelieerdePersoon
-            {
-                Persoon = new Persoon
-                {
-                    Geslacht = GeslachtsType.Man,
-                    GeboorteDatum = new DateTime(1992, 3, 7)
-                },
-                Groep = _groep
-            };
-            _gwj = new GroepsWerkJaar
-            {
-                Groep = _groep,
-                WerkJaar = 2011
-            };
-            _voorstel = new LidVoorstel
-            {
-                AfdelingsJaarIDs = new int[0],
-                AfdelingsJarenIrrelevant = false,
-                LeidingMaken = true
-            };
-            _afd1 = new AfdelingsJaar { ID = 1 };
-            _afd2 = new AfdelingsJaar { ID = 2 };
-            _gwj.AfdelingsJaar.Add(new AfdelingsJaar { ID = 0 });
-            _gwj.AfdelingsJaar.Add(_afd1);
-            _gwj.AfdelingsJaar.Add(_afd2);
-        }
 
         ///<summary>
         ///Kijkt na of we een leid(st)er kunnen inschrijven zonder afdelingen
         ///</summary>
         [TestMethod()]
-        public void InschrijvenTest()
+        public void InschrijvenLeidingZonderAfdelingTest()
         {
-            //// LedenManager_Accessor, zodat we ook private members kunnen testen.
-            //var target = Factory.Maak<LedenManager>();
-            //Setup();
+            // ARRANGE
 
-            //// act
-            //var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Leiding;
+            var groep = new ChiroGroep();
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2012};
+            var gelieerdePersoon = new GelieerdePersoon
+                                       {
+                                           Groep = groep,
+                                           ChiroLeefTijd = 0,
+                                           Persoon =
+                                               new Persoon
+                                                   {
+                                                       Geslacht = GeslachtsType.Vrouw,
+                                                       GeboorteDatum = new DateTime(1990, 04, 23)
+                                                   }
+                                       };
 
-            //// assert
-            //Assert.IsNotNull(actual);
-            //Assert.AreEqual(0, actual.AfdelingsJaar.Count);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var target = Factory.Maak<LedenManager>();
+
+            // ACT
+
+            var actual =
+                target.NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false,
+                                        new LidVoorstel
+                                            {
+                                                AfdelingsJaarIDs = null,
+                                                AfdelingsJarenIrrelevant = false,
+                                                LeidingMaken = true
+                                            }) as Leiding;
+
+            // ASSERT
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(0, actual.AfdelingsJaar.Count);
         }
 
         ///<summary>
