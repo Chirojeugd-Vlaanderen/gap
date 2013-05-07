@@ -37,7 +37,6 @@
  
     <% // CSS files %>
     <link href="<%=ResolveUrl("~/Content/jquery-ui-1.10.2.custom.css")%>" rel="stylesheet" type="text/css" />
-    <link href="<%=ResolveUrl("~/Content/jquery.autocomplete.css")%>" rel="stylesheet" type="text/css" />
     <link href="<%=ResolveUrl("~/Content/Site.css")%>" rel="stylesheet" type="text/css" />
     <link href="<%= ResolveUrl("~/Content/jqueryui-editable.css") %>" rel="stylesheet" type="text/css" />
     

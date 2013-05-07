@@ -205,7 +205,6 @@
     <Content Include="Content\images\vrouw.png" />
     <Content Include="Content\indicator.gif" />
     <Content Include="Content\jquery-ui-1.10.2.custom.css" />
-    <Content Include="Content\jquery.autocomplete.css" />
     <Content Include="Content\jqueryui-editable.css" />
     <Content Include="Content\print.css" />
     <Content Include="Content\Screenshots\Deelnemersinfo_bewerken.png" />
@@ -286,10 +285,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\MicrosoftAjax.js" />
-    <Content Include="Scripts\MicrosoftAjax.debug.js" />
-    <Content Include="Scripts\MicrosoftMvcAjax.js" />
-    <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
     <Content Include="Views\Shared\Site.Master" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
@@ -451,7 +446,6 @@
     <Content Include="Content\Screenshots\word2003_etiketten13.png" />
     <Content Include="Content\Screenshots\writer_Samenvoegen.png" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
-    <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Abonnementen\DubbelpuntAanvragen.aspx" />
     <Content Include="Views\Categorieen\Index.aspx" />
     <Content Include="Views\Handleiding\AfdelingActiveren.aspx" />

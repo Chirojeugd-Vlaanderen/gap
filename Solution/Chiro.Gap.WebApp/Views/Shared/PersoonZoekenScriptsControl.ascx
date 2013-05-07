@@ -23,7 +23,6 @@
     <script src="<%=ResolveUrl("~/Scripts/jquery-1.9.1.js")%>" type="text/javascript"></script>
     <script src="<%=ResolveUrl("~/Scripts/jquery-ui-1.10.2.custom.js")%>" type="text/javascript"></script>
     <link href="<%=ResolveUrl("~/Content/jquery-ui-1.10.2.custom.css") %>"rel="stylesheet" type="text/css" />
-    <link href="<%=ResolveUrl("~/Content/jquery.autocomplete.css")%>" rel="stylesheet" type="text/css" />
     <link href="<%=ResolveUrl("~/Content/Site.css")%>" rel="stylesheet" type="text/css" /> 
 
 	<script type="text/javascript">

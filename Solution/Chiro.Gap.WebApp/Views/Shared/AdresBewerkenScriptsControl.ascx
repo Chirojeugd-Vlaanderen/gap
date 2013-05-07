@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.IAdresBewerkenModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<dynamic>" %>
 <%
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
@@ -63,7 +63,7 @@
 					    return;
 				    }
 
-			        lastXhr = $.getJSON("<%= Url.Action("StratenVoorstellen", "Adressen") %>", { q: term, postNummer: $("input#PostNr").val() }, function(data, status, xhr)
+			        lastXhr = $.getJSON("<%=Url.Action("StratenVoorstellen", "Adressen") %>", { q: term, postNummer: $("input#PostNr").val() }, function(data, status, xhr)
 				    {
 			            stratenCache[ term ] = data;
 

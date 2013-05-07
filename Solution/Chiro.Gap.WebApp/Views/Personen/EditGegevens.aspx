@@ -35,7 +35,6 @@
 	<% using (Html.BeginForm())
 	{ %>
         <script src="<%=ResolveUrl("~/Scripts/jquery-nieuwe-persoon.js")%>" type="text/javascript"></script>
-        <script src="<%=ResolveUrl("~/Scripts/algemeneFuncties.js")%>" type="text/javascript"></script>
 	<%
 		if (Model.GelijkaardigePersonen != null && Model.GelijkaardigePersonen.Any())
 		{
