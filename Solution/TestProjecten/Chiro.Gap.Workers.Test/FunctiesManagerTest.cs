@@ -554,25 +554,26 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void FunctieEnkelDitJaarInGebruikGeforceerdVerwijderenTest()
 		{
-            //// arrange
+            // ARRANGE
 
-            //var testData = new DummyData();
+            var groep = new ChiroGroep();
+		    var groepsWerkJaar = new GroepsWerkJaar {Groep = groep};
+		    var functie = new Functie {Groep = groep};
+		    var leider = new Leiding {GroepsWerkJaar = groepsWerkJaar};
+            leider.Functie.Add(functie);
 
-            //var veelGebruiktMock = new Mock<IVeelGebruikt>();
-            //veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
-            //Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
+		    var target = Factory.Maak<FunctiesManager>();
 
-            //var mgr = Factory.Maak<FunctiesManager>();
+            // ACT
 
-            //// act
+            var result = target.Verwijderen(functie, true);
 
-            //var result = mgr.Verwijderen(testData.UniekeFunctie, true);
+            // ASSERT
 
-            //// assert
+            Assert.IsNull(result);
 
-            //Assert.IsNull(result);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-		}
+            Assert.Inconclusive(); // DAT KAN NOOIT ECHT VERWIJDERD ZIJN.
+        }
 
 		/// <summary>
 		/// probeert een functie die zowel dit jaar als vorig jaar gebruikt is, 
