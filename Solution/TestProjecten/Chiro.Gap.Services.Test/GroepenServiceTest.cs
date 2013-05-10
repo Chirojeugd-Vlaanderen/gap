@@ -1023,10 +1023,12 @@ namespace Chiro.Gap.Services.Test
             leider.Functie.Add(functie);
             functie.Lid.Add(leider);
 
+            var alleFuncties = new List<Functie> {functie};
+
             // ioc
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<Functie>())
-                                  .Returns(new DummyRepo<Functie>(groep.Functie.ToList()));
+                                  .Returns(new DummyRepo<Functie>(alleFuncties));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
@@ -1036,7 +1038,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            Assert.IsFalse(groep.Functie.Contains(functie));
+            Assert.IsFalse(alleFuncties.Contains(functie));
         }
     }
 }
