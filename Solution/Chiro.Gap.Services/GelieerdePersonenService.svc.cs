@@ -170,15 +170,11 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt de persoonsgegevens op van gelieerde personen van een groep
-        /// wiens familienaam begint met de letter <paramref name="letter"/>.
-        /// inclusief eventueel lidobject voor het recentste werkJaar.
+        /// Haalt de persoonsgegevens op van alle personen van een groep
         /// </summary>
         /// <param name="groepID">ID van de betreffende groep</param>
-        /// <param name="letter">Beginletter van de achternaam</param>
-        /// <param name="aantalTotaal">Outputparameter; levert het totaal aantal personen in de groep op</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
-        public IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, out int aantalTotaal)
+        public IList<PersoonDetail> DetailsOphalen(int groepID)
         {
             var groep = _groepenRepo.ByID(groepID);
 
@@ -188,13 +184,9 @@ namespace Chiro.Gap.Services
             }
 
             var gelieerdePersonen = from gp in groep.GelieerdePersoon
-                                    where
-                                        String.Compare((gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1), letter,
-                                                       StringComparison.InvariantCultureIgnoreCase) == 0
                                     select gp;
             
             var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
-            aantalTotaal = groep.GelieerdePersoon.Count;
 
             return result;
         }
