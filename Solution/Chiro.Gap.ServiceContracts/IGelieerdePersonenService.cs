@@ -161,6 +161,8 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<PersoonOverzicht> OverzichtOphalen(IList<int> gelieerdePersoonIDs);
 
+        IList<PersoonDetail> PaginaOphalen(int groepID, int pageSize, int page);
+
 		#endregion ophalen
 
 		#region bewaren
@@ -402,6 +404,7 @@ namespace Chiro.Gap.ServiceContracts
 		void UitCategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
 
 		#endregion categorieën
+
 
 	}
 }

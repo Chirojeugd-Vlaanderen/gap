@@ -69,6 +69,12 @@ namespace Chiro.Gap.WebApp.Controllers
             });
         }
 
+        public JsonResult PersonenJson(int groepID, int pageSize, int page)
+        {
+            var resultaat = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.PaginaOphalen(groepID, pageSize, page));
+            return Json(resultaat);
+        }
+
         /// <summary>
         /// Toont de persoonsinformatie (inclusief lidinfo) voor personen van wie de familienaam begint met
         /// de letter <paramref name="page"/> uit een bepaalde categorie, en toont deze via de view 'Index'.

@@ -407,6 +407,23 @@ namespace Chiro.Gap.Services
             return Mapper.Map<IList<GelieerdePersoon>, List<PersoonOverzicht>>(p);
         }
 
+        public IList<PersoonDetail> PaginaOphalen(int groepID, int pageSize, int page)
+        {
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var gelieerdePersonen = (from gp in groep.GelieerdePersoon
+                                     select gp).Skip((page - 1)*pageSize).Take(pageSize);
+
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);
+
+            return result;
+        }
+
         /// <summary>
         /// Updatet een bestaand persoon op basis van <paramref name="persoonInfo"/>
         /// </summary>
