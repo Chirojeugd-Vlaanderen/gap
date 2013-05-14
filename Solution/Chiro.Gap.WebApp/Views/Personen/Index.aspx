@@ -21,28 +21,37 @@
  * limitations under the License.
  */
 %>
+    
 	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>
 	
-    <% Html.RenderPartial("PersoonZoekenScriptsControl", Model); %>
+    <% //Html.RenderPartial("PersoonZoekenScriptsControl", Model); %>
     
+   
+
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+     <%//jQuery scripts (algemeen en Datatables) %>
+    <script src="<%= ResolveUrl("~/Scripts/jquery.dataTables.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/jquery-overzicht-iedereen.js")%>" type="text/javascript"></script>
+    <%//CSS bestanden voor opmaak DataTables %>
+    <link href="<%= ResolveUrl("~/Content/jquery.dataTables_themeroller.css")%>" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
-		$(document).ready(function() {
-			$('#kiesCategorie').hide();
-			$("#GekozenCategorieID").change(function() {
-				$('#kiesCategorie').click();
+        $(document).ready(function () {
+            $('#kiesCategorie').hide();
+            $("#GekozenCategorieID").change(function () {
+                $('#kiesCategorie').click();
             });
 
             $('#kiesActie').hide();
             $("#GekozenActie").change(function () {
                 $('#kiesActie').click();
             });
-		});
+        });
 	</script>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <p><em>Hou je muispijl boven een link in de tabel - zonder te klikken - voor iets meer uitleg over wat de link doet.</em></p>
 	<%using (Html.BeginForm("List", "Personen"))
    { %>
+   <% Html.RenderPartial("PersonenLijstControl", Model); %>
 	<div id="acties">
 		<h1>
 			Acties</h1>
@@ -62,18 +71,7 @@
 	    </select>
 	    <input id="kiesActie" type="submit" value="Uitvoeren" />
 
-		<h1>
-			Filteren</h1>
-				<select id="GekozenCategorieID" name="GekozenCategorieID">
-					<option value="">Op categorie</option>
-					<% foreach (var s in Model.GroepsCategorieen)
-		{%>
-					<option value="<%=s.ID%>">
-						<%=s.Naam%></option>
-					<%}%>
-				</select>
-				<input id="kiesCategorie" type="submit" value="Uitvoeren" />
-				<%=Html.HiddenFor(e => e.Sortering) %>
+		
 		<h1>
 			Uitleg</h1>
 		<ul>
@@ -83,12 +81,8 @@
 			<li>
 				<%= Html.ActionLink("Wat betekent 'inschrijven'?", "ViewTonen", "Handleiding", null, null, "Inschrijven", new { helpBestand = "Trefwoorden" }, new { title = "Lees in de handleiding wat de gevolgen zijn wanneer je iemand inschrijft" })%></li>
 		</ul>
-
+        
 	</div>
-    
-    <% Html.RenderPartial("PersoonZoekenControl", Model); %>
-	
-	<% Html.RenderPartial("PersonenLijstControl", Model); %>
 
     <%} %>
 </asp:Content>

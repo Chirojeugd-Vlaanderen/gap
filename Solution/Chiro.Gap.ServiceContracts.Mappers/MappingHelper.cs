@@ -176,61 +176,58 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam));
 
             Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
-                .ForMember(
-                    dst => dst.GelieerdePersoonID,
-                    opt => opt.MapFrom(src => src.ID))
+                  .ForMember(
+                      dst => dst.GelieerdePersoonID,
+                      opt => opt.MapFrom(src => src.ID))
                 // TODO (#968): opkuis
-                .ForMember(
-                    dst => dst.IsLid,
-                    opt => opt.MapFrom(src => _ledenMgr.IsActiefKind(src)))
-                .ForMember(
-                    dst => dst.IsLeiding,
-                    opt => opt.MapFrom(src => _ledenMgr.IsActieveLeiding(src)))
-                .ForMember(
-                    dst => dst.LidID,
-                    opt => opt.MapFrom(src => _ledenMgr.LidIDGet(src)))
-                .ForMember(
-                    dst => dst.KanLidWorden,
-                    opt => opt.MapFrom(src => _ledenMgr.KanInschrijvenAlsKind(src)))
-                .ForMember(
-                    dst => dst.KanLeidingWorden,
-                    opt => opt.MapFrom(src => _ledenMgr.KanInschrijvenAlsLeiding(src)))
-                .ForMember(
-                    dst => dst.AdNummer,
-                    opt => opt.MapFrom(src => src.Persoon.AdNummer))
-                .ForMember(
-                    dst => dst.GeboorteDatum,
-                    opt => opt.MapFrom(src => src.Persoon.GeboorteDatum))
-                .ForMember(
-                    dst => dst.SterfDatum,
-                    opt => opt.MapFrom(src => src.Persoon.SterfDatum))
-                .ForMember(
-                    dst => dst.Naam,
-                    opt => opt.MapFrom(src => src.Persoon.Naam))
-                .ForMember(
-                    dst => dst.VoorNaam,
-                    opt => opt.MapFrom(src => src.Persoon.VoorNaam))
-                .ForMember(
-                    dst => dst.CategorieLijst,
-                    opt => opt.MapFrom(src => src.Categorie.ToList()))
-                .ForMember(
-                    dst => dst.Geslacht,
-                    opt => opt.MapFrom(src => src.Persoon.Geslacht))
-                .ForMember(
-                    dst => dst.ChiroLeefTijd,
-                    opt => opt.MapFrom(src => src.ChiroLeefTijd))
-                .ForMember(
-                    dst => dst.PersoonID,
-                    opt => opt.MapFrom(src => src.Persoon.ID))
-                .ForMember(
-                    dst => dst.VoorkeursAdresID,
-                    opt => opt.MapFrom(src => src.PersoonsAdres == null ? 0 : src.PersoonsAdres.ID))
-                .ForMember(
-                    dst => dst.VolledigeNaam,
-                    opt => opt.Ignore())
-                .ForMember(
-                    dst => dst.DubbelPuntAbonnement,
-                    opt => opt.MapFrom(src => _abonnementenMgr.KrijgtDubbelpunt(src)));
+                  .ForMember(
+                      dst => dst.IsLid,
+                      opt => opt.MapFrom(src => _ledenMgr.IsActiefKind(src)))
+                  .ForMember(
+                      dst => dst.IsLeiding,
+                      opt => opt.MapFrom(src => _ledenMgr.IsActieveLeiding(src)))
+                  .ForMember(
+                      dst => dst.LidID,
+                      opt => opt.MapFrom(src => _ledenMgr.LidIDGet(src)))
+                  .ForMember(
+                      dst => dst.KanLidWorden,
+                      opt => opt.MapFrom(src => _ledenMgr.KanInschrijvenAlsKind(src)))
+                  .ForMember(
+                      dst => dst.KanLeidingWorden,
+                      opt => opt.MapFrom(src => _ledenMgr.KanInschrijvenAlsLeiding(src)))
+                  .ForMember(
+                      dst => dst.AdNummer,
+                      opt => opt.MapFrom(src => src.Persoon.AdNummer))
+                  .ForMember(
+                      dst => dst.GeboorteDatum,
+                      opt => opt.MapFrom(src => src.Persoon.GeboorteDatum))
+                  .ForMember(
+                      dst => dst.SterfDatum,
+                      opt => opt.MapFrom(src => src.Persoon.SterfDatum))
+                  .ForMember(
+                      dst => dst.Naam,
+                      opt => opt.MapFrom(src => src.Persoon.Naam))
+                  .ForMember(
+                      dst => dst.VoorNaam,
+                      opt => opt.MapFrom(src => src.Persoon.VoorNaam))
+                  .ForMember(
+                      dst => dst.CategorieLijst,
+                      opt => opt.MapFrom(src => src.Categorie.ToList()))
+                  .ForMember(
+                      dst => dst.Geslacht,
+                      opt => opt.MapFrom(src => src.Persoon.Geslacht))
+                  .ForMember(
+                      dst => dst.ChiroLeefTijd,
+                      opt => opt.MapFrom(src => src.ChiroLeefTijd))
+                  .ForMember(
+                      dst => dst.PersoonID,
+                      opt => opt.MapFrom(src => src.Persoon.ID))
+                  .ForMember(
+                      dst => dst.VoorkeursAdresID,
+                      opt => opt.MapFrom(src => src.PersoonsAdres == null ? 0 : src.PersoonsAdres.ID))
+                  .ForMember(
+                      dst => dst.VolledigeNaam,
+                      opt => opt.Ignore());
 
             Mapper.CreateMap<GelieerdePersoon, PersoonOverzicht>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))

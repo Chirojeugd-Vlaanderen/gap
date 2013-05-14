@@ -21,14 +21,6 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
-<% // TODO: onderstaand script moet naar 'head'. %>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#checkall").click(function () {
-            $("INPUT[@name=GekozenGelieerdePersoonIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
-        });
-    });
-</script>
 <%
     List<CheckBoxListInfo> info
        = (from pa in Model.PersoonInfos
@@ -41,33 +33,36 @@
 %>
 
 
-<div class="pager">
-    Pagina's:
-    <%= Html.PagerLinksLetters(ViewData.Model.HuidigePagina, ViewData.Model.Paginas, letter => Url.Action("List", new { Controller = "Personen", page = letter, sortering = Model.Sortering }), ViewData.Model.GekozenCategorieID > 0)%>
-    (Totaal:
-    <%= Model.Totaal %>
-    personen)
-</div>
-<table class="overzicht">
-    <tr>
-        <th>
-            <%=Html.CheckBox("checkall") %></th>
-        <th>Ad-nr.</th>
-        <th>
-            <%= Html.ActionLink("Naam", "List", new { Controller = "Personen", page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = PersoonSorteringsEnum.Naam }, new { title = "Sorteren op naam" })%>
-        </th>
-        <th>
-            <%= Html.ActionLink("Geboortedatum", "List", new { Controller = "Personen", page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = PersoonSorteringsEnum.Leeftijd }, new { title = "Sorteren op geboortedatum" })%>
-        </th>
-        <th>
-            <%=Html.Geslacht(GeslachtsType.Man) %>
-            <%=Html.Geslacht(GeslachtsType.Vrouw) %></th>
-        <th>
-            <%= Html.ActionLink("Cat.", "List", new { Controller = "Personen", page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = PersoonSorteringsEnum.Categorie }, new { title = "Sorteren op categorie" })%>
-        </th>
-        <th>Ingeschr.</th>
-        <th>Acties</th>
-    </tr>
+<!--<div class="pager">
+    Pagina's:-->
+    <%//= Html.PagerLinksLetters(ViewData.Model.HuidigePagina, ViewData.Model.Paginas, letter => Url.Action("List", new { Controller = "Personen", page = letter, sortering = Model.Sortering }), ViewData.Model.GekozenCategorieID > 0)%>
+    <!--(Totaal:-->
+    <%//= Model.Totaal %>
+    <!--personen))
+</div>-->
+<table id="overzichtsTabel" class="overzicht">
+    <thead>
+        <tr>
+            <th>
+                <%=Html.CheckBox("checkall") %></th>
+            <th>Ad-nr.</th>
+            <th>
+                <%= Html.ActionLink("Naam", "List", new { Controller = "Personen", page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = PersoonSorteringsEnum.Naam }, new { title = "Sorteren op naam" })%>
+            </th>
+            <th>
+                <%= Html.ActionLink("Geboortedatum", "List", new { Controller = "Personen", page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = PersoonSorteringsEnum.Leeftijd }, new { title = "Sorteren op geboortedatum" })%>
+            </th>
+            <th>
+                <%=Html.Geslacht(GeslachtsType.Man) %>
+                <%=Html.Geslacht(GeslachtsType.Vrouw) %></th>
+            <th>
+                <%= Html.ActionLink("Cat.", "List", new { Controller = "Personen", page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = PersoonSorteringsEnum.Categorie }, new { title = "Sorteren op categorie" })%>
+            </th>
+            <th>Ingeschr.</th>
+            <th>Acties</th>
+        </tr>
+    </thead>
+    <tbody>
     <% foreach (PersoonDetail p in ViewData.Model.PersoonInfos)
        {  %>
     <tr>
@@ -108,4 +103,6 @@
         </td>
     </tr>
     <% } %>
+    </tbody>
+    
 </table>

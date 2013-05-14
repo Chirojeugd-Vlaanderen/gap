@@ -513,8 +513,9 @@ table.overzicht th
 
 table.overzicht tr:hover td
 {
-	background-color: #A0A0A0;
+	background-color: #cccccc;
 }
+
 
 tr.even td
 {
@@ -551,6 +552,7 @@ textarea
     margin-top: 30px;
 	width: 36%;
 	margin-left:57% ;
+	display: 
 }
 
 .kaderke
@@ -721,6 +723,16 @@ fieldset table {
     font-weight: bold;
     text-shadow: 1px 1px 0 #fff;
 }
+#overzichtsTabel_wrapper {
+    width: 80%;
+    margin-right: 15px;
+    clear: both;
+}
+#overzichtsTabel_paginate a, 
+#overzichtsTabel_paginate span a{
+    display: inline;
+}
+
 
 @media screen and (max-width: 360px) {
   .opzij{
