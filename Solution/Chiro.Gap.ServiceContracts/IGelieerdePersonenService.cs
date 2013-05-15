@@ -72,7 +72,7 @@ namespace Chiro.Gap.ServiceContracts
 	    [OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonDetail> OphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal);
+		IList<PersoonDetail> OphalenUitCategorieMetLidInfo(int categorieID, out int aantalTotaal);
 
 		/// <summary>
 		/// Haalt persoonsgegevens op voor alle gegeven gelieerde personen.
@@ -161,6 +161,7 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<PersoonOverzicht> OverzichtOphalen(IList<int> gelieerdePersoonIDs);
 
+        [OperationContract]
         IList<PersoonDetail> PaginaOphalen(int groepID, int pageSize, int page);
 
 		#endregion ophalen

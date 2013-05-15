@@ -44,8 +44,10 @@ $(function () {
         $.each(data, function(index, value) {
             $('#landSelect').append('<option id="' + data[index].ID +'" value="' +data[index].Naam +'">' + data[index].Naam +'</option>');
         });
+    }).done(function() {
+        $('#landSelect').val('België');
     });
-    $('#landSelect').selectedIndex = 2;
+    
     //------------------------------------------------------------------------
     // afdelingsinfo binnenhalen
     //actieve afdelingen met hun (speciale) namen ophalen
@@ -226,6 +228,7 @@ $(function () {
             toonGemeenten(postcode, '#np_gemeente');
         }
     });
+
     //------------------------------------------------------------------------------------------------------------
     //
     $('#np_postCode').keyup(function () {

@@ -47,16 +47,16 @@
                 <%=Html.CheckBox("checkall") %></th>
             <th>Ad-nr.</th>
             <th>
-                <%= Html.ActionLink("Naam", "List", new { Controller = "Personen", page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = PersoonSorteringsEnum.Naam }, new { title = "Sorteren op naam" })%>
+                Naam
             </th>
             <th>
-                <%= Html.ActionLink("Geboortedatum", "List", new { Controller = "Personen", page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = PersoonSorteringsEnum.Leeftijd }, new { title = "Sorteren op geboortedatum" })%>
+                Geboortedatum
             </th>
             <th>
                 <%=Html.Geslacht(GeslachtsType.Man) %>
                 <%=Html.Geslacht(GeslachtsType.Vrouw) %></th>
             <th>
-                <%= Html.ActionLink("Cat.", "List", new { Controller = "Personen", page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = PersoonSorteringsEnum.Categorie }, new { title = "Sorteren op categorie" })%>
+                Categorie
             </th>
             <th>Ingeschr.</th>
             <th>Acties</th>

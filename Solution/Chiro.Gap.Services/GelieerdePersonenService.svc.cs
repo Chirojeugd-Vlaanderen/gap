@@ -201,7 +201,7 @@ namespace Chiro.Gap.Services
         /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
         /// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
-        public IList<PersoonDetail> OphalenUitCategorieMetLidInfo(int categorieID, string letter, PersoonSorteringsEnum sortering, out int aantalTotaal)
+        public IList<PersoonDetail> OphalenUitCategorieMetLidInfo(int categorieID, out int aantalTotaal)
         {
             var categorie = _categorieenRepo.ByID(categorieID);
 
@@ -211,9 +211,6 @@ namespace Chiro.Gap.Services
             }
 
             var gelieerdePersonen = from gp in categorie.GelieerdePersoon
-                                    where
-                                        String.Compare((gp.Persoon.Naam + gp.Persoon.VoorNaam).Substring(0, 1), letter,
-                                                       StringComparison.InvariantCultureIgnoreCase) == 0
                                     select gp;
 
             var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(gelieerdePersonen);

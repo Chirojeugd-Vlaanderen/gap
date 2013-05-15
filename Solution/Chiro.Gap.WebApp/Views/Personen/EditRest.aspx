@@ -418,26 +418,7 @@
    <% } %>
 
         </tr>
-        <% if (Model.PersoonLidInfo.PersoonDetail.IsLeiding){ %>
-         <tr>
-            <td><a href='http://www.chiro.be/dubbelpunt' target="_new">Dubbelpunt?</a></td>
-         <% // controleert of de persoon geabboneerd is op Dubbelpunt
 
-             if (Model.PersoonLidInfo.PersoonDetail.DubbelPuntAbonnement)
-             { %>
-                <td><b>Geabonneerd</b></td>
-                <td></td>
-        <% }
-             else
-             { %>
-            <td><b>Niet</b> geabonneerd</td>
-            <td>
-                <a id="abboneer" style="cursor: pointer">[Abboneer]</a>
-                <% //=Html.ActionLink("[abonneren]", "DubbelPuntAanvragen", new {Controller="Abonnementen", id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
-            </td>
-        <% } %>
-        </tr>
-       <% } %>
        
         <% } else { 
               // Dit wordt weergegeven wanneer de persoon niet ingeschreven is in het huidige werkjaar%>

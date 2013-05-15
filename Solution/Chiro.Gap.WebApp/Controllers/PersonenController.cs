@@ -63,16 +63,14 @@ namespace Chiro.Gap.WebApp.Controllers
             // redirect naar alle personen van de groep, pagina 1.
             return RedirectToAction("List", new
             {
-                page = "A",
                 id = 0,
-                sortering = PersoonSorteringsEnum.Naam
             });
         }
 
         public JsonResult PersonenJson(int groepID, int pageSize, int page)
         {
             var resultaat = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.PaginaOphalen(groepID, pageSize, page));
-            return Json(resultaat);
+            return Json(resultaat,JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -89,7 +87,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>
         [HandleError]
         [ParametersMatch]
-        public ActionResult List([QueryStringValue]string page, [RouteValue]int groepID, [RouteValue]int id, [QueryStringValue]PersoonSorteringsEnum sortering)
+        public ActionResult List([RouteValue]int groepID, [RouteValue]int id)
         {
             // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
             ClientState.VorigeLijst = Request.Url.ToString();
@@ -99,7 +97,6 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new PersoonInfoModel();
             BaseModelInit(model, groepID);
             model.GekozenCategorieID = id;
-            model.Sortering = sortering;
 
             model.GroepsCategorieen = ServiceHelper.CallService<IGroepenService, IList<CategorieInfo>>(svc => svc.CategorieenOphalen(groepID)).ToList();
             model.GroepsCategorieen.Add(new CategorieInfo
@@ -112,33 +109,16 @@ namespace Chiro.Gap.WebApp.Controllers
 
             if (categorieID == 0)  // Alle personen bekijken
             {
-                model.PersoonInfos = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.DetailsOphalen(groepID)).Sorteren(sortering);
-                model.HuidigePagina = page;
+                model.PersoonInfos = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.DetailsOphalen(groepID));
                 model.Titel = "Personenoverzicht";
                 model.Totaal = totaal;
-                model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalen(groepID));
-
-                // Als er niemand met een naam is die met een A begint
-                // is het nogal nutteloos dat we eerst op die pagina belanden.
-                // Maar als de hele lijst leeg is, is het natuurlijk ook onnozel
-                // dat we naar een andere pagina proberen te gaan.
-                if (page == "A" && !model.PersoonInfos.Any() && model.Paginas.Count > 0)
-                {
-                    return RedirectToAction("List", new
-                    {
-                        page = model.Paginas.First().ToUpper(),
-                        id = 0,
-                        sortering = PersoonSorteringsEnum.Naam
-                    });
-                }
             }
             else	// Alleen personen uit de gekozen categorie bekijken
             {
                 // TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt te veel op PaginaOphalenLidInfo(groepid, ...))
                 model.PersoonInfos =
                     ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-                    (g => g.OphalenUitCategorieMetLidInfo(categorieID, page, sortering, out totaal));
-                model.HuidigePagina = page;
+                    (g => g.OphalenUitCategorieMetLidInfo(categorieID, out totaal));
 
                 // Ga in het lijstje met categorieën na welke er geselecteerd werd, zodat we de naam in de paginatitel kunnen zetten
                 String naam = (from c in model.GroepsCategorieen
@@ -147,23 +127,8 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 model.Titel = "Overzicht " + naam;
                 model.Totaal = totaal;
-                model.Paginas = ServiceHelper.CallService<IGelieerdePersonenService, IList<String>>(g => g.EersteLetterNamenOphalenCategorie(id));
-
-                // Als er niemand met een naam is die met een A begint
-                // is het nogal nutteloos dat we eerst op die pagina belanden.
-                // Maar als de hele lijst leeg is, is het natuurlijk ook onnozel
-                // dat we naar een andere pagina proberen te gaan.
-                if (page == "A" && !model.PersoonInfos.Any() && model.Paginas.Count > 0)
-                {
-                    return RedirectToAction("List", new
-                    {
-                        page = model.Paginas.First().ToUpper(),
-                        id = categorieID,
-                        sortering = PersoonSorteringsEnum.Naam
-                    });
-                }
             }
-
+            
             return View("Index", model);
         }
 
