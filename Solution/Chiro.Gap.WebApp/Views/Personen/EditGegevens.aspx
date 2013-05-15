@@ -98,7 +98,7 @@
 } %>
     <div id="errorfield" class="ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" hidden>
         <h3>Fouten</h3>
-        <img src="/Content/images/Exclamation.png" />
+        <img src="<%=ResolveUrl("~/Content/images/Exclamation.png")%>" />
         <div id="errorMessages">
             errors
         </div>

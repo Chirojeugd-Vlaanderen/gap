@@ -3,13 +3,16 @@
 
 //DocumentReady function
 $(function () {
-    
+    //instellingen voor datatable
     $('#overzichtsTabel').dataTable({
         "bJQueryUI": true,
         "sPaginationType": "full_numbers",
         "iDisplayLength": 25,
         "aaSorting": [[2,"asc"]],
-        "aLengthMenu": [[20, 50, 100, 150, -1], [20, 50, 100, 150, "Iedereen"]],
+        "aoColumnDefs": [
+             { "bSortable": false, "aTargets": [ 0 ] }
+        ],
+        "aLengthMenu": [[25, 50, 100, 150, -1], [25, 50, 100, 150, "Alle"]],
         "oLanguage": {
             "sLengthMenu": "Toon _MENU_ personen per pagina",
             "sZeroRecords": "Er werden geen overeenkomsten gevonden",
@@ -38,17 +41,8 @@ $(function () {
     //check of uncheck alle checkboxen in de lijst
     $("#checkall").change(function () {
         var bool = $("#checkall").is(':checked');
-        $('.sorting_1 input[type="checkbox"]').prop('checked', bool);
+        $('input[type="checkbox"]').prop('checked', bool);
     });
   
-    clippy.load('Clippy', function(agent) {
-        agent.moveTo(1150, 180);
-        // Do anything with the loaded agent
-        agent.show();
-        agent.speak("Welkom! Ik ben Clippy en ben hier om je te helpen met het nieuwe GAP! Vind je me niet leuk? Dubbelklik dan om me te doen verdwijnen...");
-        agent._onDoubleClick(function() {
-            clippy.hide();
-        });
-    });
-
+//-----------------------------------------------------------------------------------
 });     //Einde DocumentReady

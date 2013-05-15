@@ -21,80 +21,39 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <% // TODO: onderstaand script moet naar 'head'. %>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#checkall").click(function () {
-            $("INPUT[@name=SelectieGelieerdePersoonIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
-        });
-    });
-</script>
-<table class="overzicht">
-    <tr>
-        <th>
-            <%=Html.CheckBox("checkall") %>
-        </th>
-        <th class="center">&#35;</th>
-        <th class="center">Type</th>
-        <th>
-            <%= Html.ActionLink(
-				"Naam", 
-				"Lijst", 
-				new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Naam, afdelingID = Model.AfdelingID, ledenLijst = Model.SpecialeLijst, functieID = Model.FunctieID }, 
-				new { title = "Sorteren op naam" })%>
-        </th>
-        <th>
-            <%= Html.ActionLink(
-				"Geboortedatum", 
-				"Lijst", 
-				new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Leeftijd, afdelingID = Model.AfdelingID, ledenLijst = Model.SpecialeLijst, functieID = Model.FunctieID }, 
-				new { title = "Sorteren op geboortedatum" })%>
-        </th>
-        <th>
-            <%=Html.Geslacht(GeslachtsType.Man) %>
-            <%=Html.Geslacht(GeslachtsType.Vrouw) %>
-        </th>
-        <th>Betaald </th>
-        <% 
-            // Afdelingen enkel relevant voor plaatselijke groepen		
-            if ((Model.GroepsNiveau & Niveau.Groep) != 0)
-            {
-        %>
-        <th>
-            <%=Html.ActionLink(
-							"Afd.",
-							"Lijst",
- 							new{
- 								Controller = "Leden",
-								id = Model.IDGetoondGroepsWerkJaar,
-								groepID = Model.GroepID,
-								afdelingID = Model.AfdelingID,
-								ledenLijst = Model.SpecialeLijst,
-								functieID = Model.FunctieID,
-								sortering = LidEigenschap.Afdeling
- 								},
-							new {title = "Sorteren op afdeling"})%>
-        </th>
-        <%
-            }
-        %>
-        <th>Func. </th>
-        <th>
-            <%= Html.ActionLink(
-				"Instap tot",
-				"Lijst",
-				new{
-					Controller = "Leden", 
-					id = Model.IDGetoondGroepsWerkJaar, 
-					sortering = LidEigenschap.InstapPeriode, 
-					afdelingID = Model.AfdelingID, 
-					ledenLijst = Model.SpecialeLijst, 
-					functieID = Model.FunctieID
-				},
-				new { title = "Sorteren op einde instapperiode" })%>
-        </th>
-        <th>Telefoon</th>
-        <th>E-mail</th>
-    </tr>
+<script src="<%= ResolveUrl("~/Scripts/TableTools.js")%>" type="text/javascript"></script>
+<script src="<%= ResolveUrl("~/Scripts/ZeroClipboard.js")%>" type="text/javascript"></script>
+<link href="<%= ResolveUrl("~/Content/TableTools.css")%>" rel="stylesheet" type="text/css" />
+
+<table style="width: 100%" id="ledenOverzichtsTabel" class="overzicht">
+    <thead>
+            <tr>
+                <th><%=Html.CheckBox("checkall") %></th>
+                <th class="center">&#35;</th>
+                <th class="center">Type</th>
+                <th>Naam</th>
+                <th>Geboortedatum</th>
+                <th>
+                    <%=Html.Geslacht(GeslachtsType.Man) %>
+                    <%=Html.Geslacht(GeslachtsType.Vrouw) %>
+                </th>
+                <th>Betaald</th>
+                <% 
+                    // Afdelingen enkel relevant voor plaatselijke groepen		
+                    if ((Model.GroepsNiveau & Niveau.Groep) != 0)
+                    {
+                %>
+                <th>Afd.</th>
+                <%
+                    }
+                %>
+                <th>Func.</th>
+                <th>Instap tot</th>
+                <th>Telefoon</th>
+                <th>E-mail</th>
+        </tr>
+    </thead>
+    <tbody>
     <%
         var volgnr = 0;
         foreach (LidOverzicht lidOverzicht in ViewData.Model.LidInfoLijst)
@@ -170,4 +129,5 @@
             </td>
         </tr>
         <% } %>
+        </tbody>
 </table>

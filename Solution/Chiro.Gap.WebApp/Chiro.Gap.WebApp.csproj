@@ -217,6 +217,7 @@
     <Content Include="Content\indicator.gif" />
     <Content Include="Content\jquery-ui-1.10.2.custom.css" />
     <Content Include="Content\jqueryui-editable.css" />
+    <Content Include="Content\media\copy_csv_xls_pdf.swf" />
     <Content Include="Content\oLanguage.txt" />
     <Content Include="Content\print.css" />
     <Content Include="Content\Screenshots\Deelnemersinfo_bewerken.png" />
@@ -233,12 +234,14 @@
     <Content Include="Content\Screenshots\Overzicht_gebruikersrechten.png" />
     <Content Include="Content\Screenshots\Tabblad_bivak.png" />
     <Content Include="Content\Screenshots\Toegekend_gebruikersrecht.png" />
+    <Content Include="Content\TableTools.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Compile Include="Models\InschrijfbaarLid.cs" />
     <Content Include="Scripts\algemeneFuncties.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-nieuwe-persoon.js" />
+    <Content Include="Scripts\jquery-overzicht-leden.js" />
     <Content Include="Scripts\jquery-persoons-fiche.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.custom.js" />
     <Content Include="Content\jquery.dataTables_themeroller.css" />
@@ -246,6 +249,8 @@
     <Content Include="Scripts\jqueryui-editable.js" />
     <Content Include="Scripts\jquery-overzicht-iedereen.js" />
     <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\TableTools.js" />
+    <Content Include="Scripts\ZeroClipboard.js" />
     <Content Include="Views\Afdelingen\Afdeling.aspx" />
     <Content Include="Views\Afdelingen\AfdelingsJaar.aspx" />
     <Content Include="Views\Afdelingen\Index.aspx" />

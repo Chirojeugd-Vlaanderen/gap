@@ -4,7 +4,7 @@
  * Table
  */
 table.dataTable {
-	margin: 0 auto;
+	margin: 0;
 	clear: both;
 	width: 100%;
 	border-collapse: collapse;
@@ -46,14 +46,14 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 .dataTables_wrapper {
 	position: relative;
     float: left;
-	/*clear: both;*/
+	clear: both;
 	*zoom: 1;
 }
 .dataTables_wrapper .ui-widget-header {
 	font-weight: normal;
 }
 .dataTables_wrapper .ui-toolbar {
-	padding: 5px;
+	padding: 10px;
 }
 
 

@@ -202,7 +202,7 @@ first child of the left and right table columns */
 fieldset
 {
 	margin: 1em 0;
-	padding: 1em;
+	padding-left: 1em;
 	border: 1px solid #CCC;
 }
 
@@ -215,7 +215,7 @@ legend
 {
 	font-size: 1.1em;
 	font-weight: 600;
-	padding: 2px 4px 8px 4px;
+	padding: 2px 4px 4px 4px;
 }
 
 input[type="text"]
@@ -733,11 +733,18 @@ fieldset table {
     display: inline;
 }
 
+#ledenOverzichtsTabel {
+    min-width: 100%;
+}
+#ledenOverzichtsTabel_length, #ledenOverzichtsTabel_filter {
+    margin-left: 15px;
+    padding-top: 7px;
+}
 
 @media screen and (max-width: 360px) {
   .opzij{
       display: inline-block;
       width: 100%;
-      margin-left: 0px; 
+      margin-left: 0px;
   }
 }
