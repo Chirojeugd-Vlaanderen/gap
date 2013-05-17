@@ -446,7 +446,8 @@ namespace Chiro.Gap.Services
             {
                 _personenSync.Bewaren(gp, false, false);
             }
-#if KIPDORP    
+#if KIPDORP   
+            tx.Complete();
             }
 #endif
             return gp.ID;
