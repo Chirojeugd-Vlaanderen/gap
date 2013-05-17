@@ -1002,5 +1002,43 @@ namespace Chiro.Gap.Services.Test
             Assert.IsFalse(aantalLedenZonderTelNr.Any());
         }
 
+
+        /// <summary>
+        /// Als een functie die enkel dit jaar wordt gebruikt (geforceerd) wordt verwijderd,
+        /// moet die helemaal verdwijnen (i.e. niet enkel een stopdatum krijgen)
+        /// (test ter vervanging van Workers.Test.FunctieEnkelDitJaarInGebruikGeforceerdVerwijderenTest
+        /// </summary>
+        [TestMethod()]
+        public void FunctieEnkelDitJaarInGebruikGeforceerdVerwijderenTest()
+        {
+            // ARRANGE
+
+            // datamodel
+            var groep = new ChiroGroep();
+            var groepsWerkJaar = new GroepsWerkJaar { Groep = groep };
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+            var functie = new Functie { Groep = groep, ID = 1 };
+            groep.Functie.Add(functie);
+            var leider = new Leiding { GroepsWerkJaar = groepsWerkJaar };
+            leider.Functie.Add(functie);
+            functie.Lid.Add(leider);
+
+            var alleFuncties = new List<Functie> {functie};
+
+            // ioc
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Functie>())
+                                  .Returns(new DummyRepo<Functie>(alleFuncties));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GroepenService>();
+            target.FunctieVerwijderen(functie.ID, true);
+
+            // ASSERT
+
+            Assert.IsFalse(alleFuncties.Contains(functie));
+        }
     }
 }

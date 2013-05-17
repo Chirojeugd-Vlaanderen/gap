@@ -454,7 +454,8 @@ namespace Chiro.Gap.Services
                 //TODO: regel hieronder staat in commentaar om te kunnen testen, terug uithalen voor sync met kipadmin
                 //_personenSync.Bewaren(gp, false, false);
             }
-#if KIPDORP    
+#if KIPDORP   
+            tx.Complete();
             }
 #endif
             return gp.ID;

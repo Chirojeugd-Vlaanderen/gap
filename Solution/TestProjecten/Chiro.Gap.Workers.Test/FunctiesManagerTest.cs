@@ -548,33 +548,6 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
-		/// probeert een functie die enkel dit jaar in gebruik is, geforceerd te verwijderen. 
-		/// We verwachten dat ze definitief weg is.
-		/// </summary>
-		[TestMethod]
-		public void FunctieEnkelDitJaarInGebruikGeforceerdVerwijderenTest()
-		{
-            //// arrange
-
-            //var testData = new DummyData();
-
-            //var veelGebruiktMock = new Mock<IVeelGebruikt>();
-            //veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
-            //Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
-
-            //var mgr = Factory.Maak<FunctiesManager>();
-
-            //// act
-
-            //var result = mgr.Verwijderen(testData.UniekeFunctie, true);
-
-            //// assert
-
-            //Assert.IsNull(result);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-		}
-
-		/// <summary>
 		/// probeert een functie die zowel dit jaar als vorig jaar gebruikt is, 
 		/// geforceerd te verwijderen.  We verwachten dat het 'werkJaar tot'  wordt
 		/// ingevuld.
