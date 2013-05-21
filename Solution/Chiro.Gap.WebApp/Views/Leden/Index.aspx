@@ -3,8 +3,7 @@
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>
-	
+	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>	
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
      <%//jQuery scripts (algemeen en Datatables) %>
@@ -13,8 +12,6 @@
 
     <%//CSS bestanden voor opmaak DataTables %>
     <link href="<%= ResolveUrl("~/Content/jquery.dataTables_themeroller.css")%>" rel="stylesheet" type="text/css" />
-
-
 				<%
                     // Eén groot form, want voor elk lid staat een checkbox
                     
@@ -27,14 +24,7 @@
                      
                     <fieldset >
                         <legend>Acties</legend> 
-                      <!-- dit stuk is de link naar de vroegere excel export, moet terug in de onderstaande fieldset indien terug gebruikt
-                     <ul>
-                        <li>--><%/*= Html.ActionLink(
-		      	                    "Lijst downloaden", 
-		      	                    "Download", 
-		      	                    new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.AfdelingID, functieID = Model.FunctieID, sortering = Model.GekozenSortering, ledenLijst = Model.SpecialeLijst }, 
-		      	                    new { title = "Download de geselecteerde gegevens in een Excel-bestand" })*/%><!--</li>
-                        </ul>-->
+                   
                         <strong>Toepassen op selectie</strong><br/>
     	                <select id="GekozenActie" name="GekozenActie">
 		                    <option value="0">kies een actie</option>

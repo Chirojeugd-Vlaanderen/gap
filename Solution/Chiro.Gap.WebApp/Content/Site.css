@@ -371,7 +371,6 @@ div#title
 	float: left;
 }
 
-
 .mededelingen
 {
 	right: 1ex;
@@ -517,7 +516,7 @@ table.overzicht tr:hover td
 }
 
 
-tr.even td
+/*tr.even td
 {
 	background-color: #e8eef4;
 }
@@ -525,7 +524,7 @@ tr.even td
 tr.oneven td
 {
 	background-color: #FFFFFF;
-}
+}*/
 
 .highlight
 {
@@ -738,7 +737,7 @@ fieldset table {
 }
 #ledenOverzichtsTabel_length, #ledenOverzichtsTabel_filter {
     margin-left: 15px;
-    padding-top: 7px;
+    padding-top: 2px;
 }
 
 @media screen and (max-width: 360px) {

@@ -29,7 +29,6 @@
     <thead>
             <tr>
                 <th><%=Html.CheckBox("checkall") %></th>
-                <th class="center">&#35;</th>
                 <th class="center">Type</th>
                 <th>Naam</th>
                 <th>Geboortedatum</th>
@@ -51,28 +50,19 @@
                 <th>Instap tot</th>
                 <th>Telefoon</th>
                 <th>E-mail</th>
+                <th style="overflow: hidden" hidden >Adres</th>
         </tr>
     </thead>
     <tbody>
     <%
         var volgnr = 0;
         foreach (LidOverzicht lidOverzicht in ViewData.Model.LidInfoLijst)
-        {
-            volgnr++;
-            if (volgnr % 2 == 0)
-            {%>
-    <tr class="even">
-        <%}
-            else
-            {%>
-        <tr class="oneven">
-            <%}%>
+        { %>
+           
+        <tr >
             <td>
                 <input type="checkbox" name="SelectieGelieerdePersoonIDs" value="<%=lidOverzicht.GelieerdePersoonID %>"
                     <%=Model.SelectieGelieerdePersoonIDs != null && Model.SelectieGelieerdePersoonIDs.Contains(lidOverzicht.GelieerdePersoonID) ? "checked=\"checked\"" : String.Empty%> />
-            </td>
-            <td>
-                <%=volgnr.ToString() %>
             </td>
             <td>
                 <%= lidOverzicht.Type == LidType.Kind ? "Lid" : "Leiding" %>
@@ -126,6 +116,11 @@
                     <%=lidOverzicht.Email %></a>
                 <%
                     }%>
+            </td>
+            <td style="overflow: hidden" hidden>
+                <%if (lidOverzicht.PostNummer.HasValue) { %>
+                    <%= lidOverzicht.StraatNaam + " " + lidOverzicht.HuisNummer + ", " + lidOverzicht.PostNummer + " " + lidOverzicht.WoonPlaats %>
+                <% } %>
             </td>
         </tr>
         <% } %>
