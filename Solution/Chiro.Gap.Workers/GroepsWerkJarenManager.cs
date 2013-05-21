@@ -32,14 +32,10 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class GroepsWerkJarenManager : IGroepsWerkJarenManager
     {
-        private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IVeelGebruikt _veelGebruikt;
 
-        public GroepsWerkJarenManager(
-            IVeelGebruikt veelGebruikt,
-            IAutorisatieManager autorisatieMgr)
+        public GroepsWerkJarenManager(IVeelGebruikt veelGebruikt)
         {
-            _autorisatieMgr = autorisatieMgr;
             _veelGebruikt = veelGebruikt;
         }
 
@@ -72,11 +68,6 @@ namespace Chiro.Gap.Workers
         /// <throws>OngeldigObjectException</throws>
         public GroepsWerkJaar VolgendGroepsWerkJaarMaken(Groep g)
         {
-            if (!_autorisatieMgr.IsGav(g))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
             // Bereken gewenste werkjaar
             // (die parameter g.ID is irrelevant, maar blijkbaar nodig voor een of andere
             // unit test.)
