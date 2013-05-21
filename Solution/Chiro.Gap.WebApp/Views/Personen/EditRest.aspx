@@ -34,7 +34,7 @@
     <div id="printLogo"></div>
     <div id="PersoonsInformatie">
     <% // dialog voor het weergeven van het info-kadertje %>
-    <div id="extraInfoDialog" hidden><img src="/Content/images/loading.gif"/></div>
+    <div id="extraInfoDialog" hidden><img src="<%= ResolveUrl("~/Content/images/loading.gif") %>"/></div>
     <input id="groepID" value="<%= Model.GroepID %>" hidden readonly/>
     <% if (Model.PersoonLidInfo.LidInfo != null)
        { %>
@@ -188,16 +188,10 @@
                     </td>
                     <td>
                         <div class="bewerkAdres ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>
-                        
-                        <%//=Html.ActionLink("[verhuizen]", "Verhuizen", new { id = pa.ID, aanvragerID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-                        <% //=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-                        <% //=Html.ActionLink("[adres toevoegen]", "NieuwAdres", new { id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-                    
                     </td>
                     <td>
                          <% if (Model.PersoonLidInfo.PersoonDetail.VoorkeursAdresID != pa.PersoonsAdresID) { %>
                             <div class="voorkeursAdresMaken ui-icon ui-icon-home" title="Voorkeursadres maken" style="cursor: pointer"></div>
-                            <%//=Html.ActionLink("[Voorkeursadres maken]", "VoorkeurAdresMaken", new { persoonsAdresID = pa.PersoonsAdresID, gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                          <% } %>
                     </td>
                     <% } %>
@@ -238,7 +232,6 @@
                 </td>
                 <td >
                     <div class="contactBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>
-                    <% //=Html.ActionLink("[bewerken]", "CommVormBewerken", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                 </td>
                 <td></td>
               </tr>
@@ -305,14 +298,8 @@
                         <%=Model.AlleAfdelingen.First(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam %>
                         </a>
                    </td>
-                   <td><div class="ui-icon ui-icon-pencil" id="bewerkAfdeling" title="Bewerken" style="cursor: pointer"></div>
-                <% /*=Html.ActionLink("[aanpassen]", "AfdelingBewerken",
-							                    new
-	                                  			    {
-	                                  				    Controller = "Leden",
-	                                  				    groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
-	                                  				    lidID = Model.PersoonLidInfo.LidInfo.LidID
-	                                  			    }) */%>
+                   <td>
+                       <div class="ui-icon ui-icon-pencil" id="bewerkAfdeling" title="Bewerken" style="cursor: pointer"></div>
                    </td>
 
                    <%  }
@@ -401,8 +388,6 @@
             </td>
             <td>
                 <a id="bewerkVerzekering" style="cursor: pointer">[Verzeker]</a>
-                <% //=Html.ActionLink("[verzekeren tegen loonverlies]", "LoonVerliesVerzekeren", new {Controller="Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
-            
             <% if (Model.GroepsNiveau.HasFlag(Niveau.KaderGroep))
                { %>
               (dit is gratis voor kaderleden)
@@ -426,7 +411,6 @@
                 <span style="color: red"><%=Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> is niet ingeschreven in het huidige werkjaar.</span>
                 <br/>
                 <button id="btn_inschrijven">Inschrijven</button>
-                <%//=Html.ActionLink(String.Format("[Inschrijven]"), "Inschrijven", new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID})%>
             </p>
             
         <% } %>
@@ -449,7 +433,6 @@
                     %>
                     <%: Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> heeft geen Chirologin.
                     <p><button id="loginMaken">Chirologin maken</button></p>
-                    <%//: Html.ActionLink("[gebruikersrecht toekennen]", "AanGpToekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %>
                     <%
                 }
                 else if (Model.PersoonLidInfo.GebruikersInfo.VervalDatum < DateTime.Now)
@@ -459,7 +442,6 @@
                     <p><b>Chirologin: </b><%: Model.PersoonLidInfo.GebruikersInfo.GavLogin %></p>
                     <%:Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> heeft geen toegang tot de gegevens van jouw groep
                     <p><button id="gbrToekennen">Gebruikersrecht toekennen</button></p>
-                    <%//=Html.ActionLink("[gebruikersrecht toekennen]", "AanGpToekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %>
                     <%                
                 }
                 else
@@ -467,7 +449,7 @@
                     // Account met gebruikersrecht
                     // DisplayFor formatteert datums correct.
                     %>
-                    Chirologin: <%: Model.PersoonLidInfo.GebruikersInfo.GavLogin %></Chirologin:>
+                    <li>Chirologin: <%: Model.PersoonLidInfo.GebruikersInfo.GavLogin %></li>
                     <li>Vervaldatum gebruikersrecht: <%: Html.DisplayFor(src => src.PersoonLidInfo.GebruikersInfo.VervalDatum)%></li>
                     <% 
                         if (Model.PersoonLidInfo.GebruikersInfo.IsVerlengbaar)
@@ -510,7 +492,6 @@
         </table>
          <br />
         <button id="toevoegenAanCat">Voeg <% =Model.PersoonLidInfo.PersoonDetail.VoorNaam %> toe aan een categorie</button>
-                <%//=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
         <br />
         
         <h3>Opties</h3>

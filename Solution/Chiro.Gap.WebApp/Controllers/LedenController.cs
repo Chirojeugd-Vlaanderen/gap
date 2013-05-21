@@ -269,7 +269,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="groepsWerkJaarID">ID van het gevraagde groepswerkjaar</param>
         /// <param name="groepID">ID van de groep waar het over gaat</param>
-        /// <param name="sortering">Enumwaarde die aangeeft op welke parameter de lijst gesorteerd moet worden</param>
+        /// <param name="sortering">Enumwaarde die aangeeft op welke parameter de lijst gesorteerd moet worden (enkel nog relevant voor de verjaardagslijst</param>
         /// <returns>NULL als het groep en groepswerkjaar ID niet bij dezelfde groep horen</returns>
         [HandleError]
         private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID, LidEigenschap sortering)
@@ -357,7 +357,7 @@ namespace Chiro.Gap.WebApp.Controllers
             Debug.Assert(Request.Url != null);
             // Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
             ClientState.VorigeLijst = Request.Url.ToString();
-            var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, false);
+            var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, true);
             return model == null ? TerugNaarVorigeLijst() : View("Index", model);
         }
 

@@ -6,13 +6,16 @@ table tr:nth-child(even) {
     background: #D3D3D3;
 }
 
-table, h1, h3, #PersoonsInformatie {
-    width: 100%; 
+table, h1, h3, #PersoonsInformatie{
     margin-top: 0;
     margin-left: 0;
     margin-right: 0;
-    margin-bottom: 10px; 
-    float: none;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.page {
+    width: 100%;    
 }
 
 a,a:link, a:hover, a:visited,span{

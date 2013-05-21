@@ -35,6 +35,7 @@
     <script src="<%= ResolveUrl("~/Scripts/jquery-overzicht-iedereen.js")%>" type="text/javascript"></script>
     <%//CSS bestanden voor opmaak DataTables %>
     <link href="<%= ResolveUrl("~/Content/jquery.dataTables_themeroller.css")%>" rel="stylesheet" type="text/css" />
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('#kiesCategorie').hide();

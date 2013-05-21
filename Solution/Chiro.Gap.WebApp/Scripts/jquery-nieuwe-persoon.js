@@ -1,8 +1,19 @@
 ﻿/*
-Frontend javascript (JQuery)
-GAP, Chirojeugd Vlaanderen
-2013
-*/
+ * Copyright 2013, Arno Soontjens
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 //variabelen voor het maken van een nieuw lid
 var volledigeNaam, voornaam, naam, geboortedatum, geslacht;
 var postcode, gemeente, straat, nummer, bus;
@@ -22,7 +33,7 @@ var beschikbareAfdelingen = [];
 var np_gpID = 0;
 var inschrijven=false;
 
-var tel =false;
+var tel = false;
 var email = false;
 
 var zoekterm;
@@ -34,11 +45,9 @@ var fout = false;
 //--------------------------------------------------------------------------------
 $(function () {
 
-   
     //werkjaar invullen op groepen op te halen
     werkjaar = $('#np_werkJaarID').val();
 
-    //url = root + "Adressen/LandenVoorstellen";
     url = link("Adressen", "LandenVoorstellen");
     $.getJSON(url, function(data) {
         $.each(data, function(index, value) {
@@ -49,9 +58,8 @@ $(function () {
     });
     
     //------------------------------------------------------------------------
-    // afdelingsinfo binnenhalen
+    //afdelingsinfo binnenhalen
     //actieve afdelingen met hun (speciale) namen ophalen
-    //url = root + "Afdelingen/AfdelingsInfo";
     url = link("Afdelingen", "AfdelingsInfo");
     $.post(url, {groepsWerkJaarID: werkjaar},function(antw) {
         $.each(antw.Actief, function(index, value) {
@@ -193,7 +201,7 @@ $(function () {
     //------------------------------------------------------------------------------------------------------------
     $('#np_telToevoegen').click(function () {
         $('#eersteTel').show();
-        tel= true;
+        tel = true;
         $(this).parent().parent().hide();
     });
     //------------------------------------------------------------------------------------------------------------
@@ -239,7 +247,6 @@ $(function () {
     });
   
     //------------------------------------------------------------------------
-    //url = root +"Adressen/StratenVoorstellen";
     url = link("Adressen", "StratenVoorstellen");
     $('#np_straat').keyup(function() {
         var straten = [];
@@ -391,8 +398,6 @@ $(function () {
                                                 });
                                             });
                                         });
-
-                                  
                                 });
                             }
                         
@@ -416,7 +421,7 @@ $(function () {
                             AanvragerID:np_gpID
                         }).done(function() {
                             if (!inschrijven) {      
-                                //url = root + "Personen/EditRest/" + np_gpID;
+
                                 url = link("Personen", "EditRest");
                                 url += "/" + np_gpID;
                                 window.location = url;

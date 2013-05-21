@@ -1,4 +1,19 @@
-﻿
+﻿/*
+* Copyright 2013, Arno Soontjens
+* 
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+* 
+*     http://www.apache.org/licenses/LICENSE-2.0
+* 
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
 var GID;
 $(function () {
     //defaults
@@ -8,7 +23,11 @@ $(function () {
 
     GID = $('#MGID').val();
     var url;
-    
+
+    $('.ui-dialog').on('dialogbeforeclose', function () {
+        $('#extraInfoDialog').html('<img src="' + root + 'Content/images/loading.gif"/>');
+    });
+
     //mededelingen
     $('.mededelingen').click(function () {
         url = link("", 'GavTaken');
@@ -25,25 +44,21 @@ $(function () {
     $('#clInfo').click(function () {
         $('#extraInfoDialog').dialog();
         toonInfo('#CLINFO', "Chiroleeftijd", "#extraInfoDialog");
-        clearDialog();
     });
 
     $('#Ad-info').click(function () {
         $('#extraInfoDialog').dialog();
         toonInfo('#ADINFO', 'AD-nummer', '#extraInfoDialog');
-        clearDialog();
     });
 
     $('#instapperiodeInfo').click(function () {
         $('#extraInfoDialog').dialog();
         toonInfo('#INSINFO', 'Instapperiode', '#extraInfoDialog');
-        clearDialog();
     });
 
     $('#clInfo').click(function () {
         $('#extraInfoDialog').dialog();
         toonInfo('#CLINFO', 'Chiroleeftijd', '#extraInfoDialog');
-        clearDialog();
     });
 
     $('#print').click(function () {
@@ -53,7 +68,6 @@ $(function () {
     $('#lidgeldInfo').click(function () {
         $('#extraInfoDialog').dialog();
         toonInfo('#LGINFO', "Lidgeld", "#extraInfoDialog");
-        clearDialog();
     });
 }); 
 //--------------------------------------------------------------------------------
@@ -62,7 +76,7 @@ $(function () {
 // doen verschijnen en geef het id mee in de functie.
 //--------------------------------------------------------------------------------
 function toonInfo(id, titel, dialogId) {
-
+    clearDialog();
     url = link("Handleiding", "Trefwoorden");
     url = url + ' ' + id; 
     $(dialogId).load(url, function () {
@@ -78,7 +92,7 @@ function toonInfo(id, titel, dialogId) {
                 title: titel,
                 buttons: {}
             });
-    });
+        });
 }
 
 //--------------------------------------------------------------------------------
@@ -119,12 +133,12 @@ function bezig() {
 }
 //-------------------------------------------------------------------------
 function clearDialog() {
-    $('#extraInfoDialog').html('<img src="/Content/images/loading.gif"/>')
+    $('#extraInfoDialog').html('<img src="' + root +'Content/images/loading.gif"/>')
             .dialog({
                 title: "Laden...",
                 buttons: {},
                 modal: true,
-                width: 300,
+                height: 200,
                 show: {
                     effect: "drop"
                 },
@@ -216,7 +230,7 @@ function adresToevoegen(GID, GPid) {
                 title: "Adres Toevoegen",
                 modal: true,
                 width: 700,
-                height: 700,
+                height: 600,
                 resizable: true,
                 buttons: {
                     'Bewaren': function () {
@@ -231,6 +245,7 @@ function adresToevoegen(GID, GPid) {
             });
         }
     });
+    clearDialog();
 }
 
 //------------------------------------------------------------------------------------------

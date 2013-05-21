@@ -1,4 +1,20 @@
-﻿$(function () {
+﻿/*
+ * Copyright 2013, Arno Soontjens
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+$(function () {
     $('#filter').hide();
     $('#kiesActie').hide();
     $("#AfdelingID").change(function () {
@@ -22,8 +38,8 @@
     });
     
     //hier maak ik de juiste url naar de .swf file om de pdf te maken
-    var url ="http://" + document.location.host;
-    url += "/Content/media/copy_csv_xls_pdf.swf";
+    var url ="http://" + document.location.host + root;
+    url += "Content/media/copy_csv_xls_pdf.swf";
     
     //instellingen voor datatable
     $('#ledenOverzichtsTabel').dataTable({
@@ -34,9 +50,10 @@
         "aLengthMenu": [[25, 50, 100, 150, -1], [25, 50, 100, 150, "Alle"]],
         "aoColumnDefs": [
              { "bSortable": false, "aTargets": [ 0 ] },
-             { "sWidth": "15px", "aTargets": [ 0,1,6,7,8 ] },
-             { "sWidth": "150px", "aTargets": [ 3 ] },
-             { "sWidth": "80px", "aTargets": [ 4 ] }
+             { "sWidth": "15px", "aTargets": [ 0,1,4,5,6,7 ] },
+             { "sWidth": "150px", "aTargets": [ 2 ] },
+             { "sWidth": "50px", "aTargets": [ 3 ] }
+
         ],
         "oLanguage": {
             "sLengthMenu": "Toon _MENU_ personen per pagina",
@@ -49,7 +66,7 @@
             "sInfoThousands": ".",
             "sLoadingRecords": "De gegevens worden geladen...",
             "sProcessing": "De gegevens worden verwerkt...",
-            "sSearch": "Filter gegevens:",
+            "sSearch": "<strong>Zoeken in tabel:</strong>",
             "oPaginate": {
                 "sFirst": "Eerste",
                 "sLast": "Laatste",
@@ -64,12 +81,11 @@
                     {
                         "sExtends": "pdf",
                         "sFileName": '*.pdf',
-                        "mColumns": [ 1,2,3,4,6,7,8,10,11 ],
+                        "mColumns": [ 1,2,3,6,9,10 ],
                         "sButtonText": "<strong>Opslaan als pdf</strong>",
                         "sPdfOrientation": "landscape",
                         "sPdfMessage": "Geïmporteerd uit het GroepsAdministratieProgramma (GAP).",
                         "sPdfSize": "A4",
-                       
                     },
 				    {
 				        "sExtends": "xls",
@@ -92,8 +108,8 @@
     $('#acties').css({ 'float': 'none', 'display': 'inline'});
     $('#ToolTables_ledenOverzichtsTabel_0, #ToolTables_ledenOverzichtsTabel_1').css({
         'border-radius': '5px',
-        'padding': '9px', 
+        'padding': '5px', 
         'margin-right' : '3px'
     });
-    $('.fg-toolbar').css('padding-top', '20px');
+    $('.fg-toolbar').css('padding-bottom', '0px');
 });
