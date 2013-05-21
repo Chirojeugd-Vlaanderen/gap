@@ -1040,5 +1040,39 @@ namespace Chiro.Gap.Services.Test
 
             Assert.IsFalse(alleFuncties.Contains(functie));
         }
+
+        ///<summary>
+        /// Controleer of de groepswerkjaarcache wordt gecleard na een jaarovergang.
+        ///</summary>
+        [TestMethod()]
+        public void JaarOvergangUitvoerenCacheClearTest()
+        {
+            // ARRANGE
+
+            // testdata
+
+            var groep = new KaderGroep {ID = 1};   // geen gedoe met afdelingen
+            groep.GroepsWerkJaar.Add(new GroepsWerkJaar {WerkJaar = 2011});
+
+            // invesion of control
+
+            var repositoryProvider = new Mock<IRepositoryProvider>();
+            repositoryProvider.Setup(src => src.RepositoryGet<Groep>())
+                              .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
+            Factory.InstantieRegistreren(repositoryProvider.Object);
+
+            var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            veelGebruiktMock.Setup(vgb => vgb.WerkJaarInvalideren(groep)).Verifiable();
+            Factory.InstantieRegistreren(veelGebruiktMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GroepenService>();
+            target.JaarOvergangUitvoeren(new List<AfdelingsJaarDetail>(), groep.ID);
+
+            // ASSERT
+            
+            veelGebruiktMock.Verify(vgb => vgb.WerkJaarInvalideren(groep), Times.Once());
+        }
     }
 }

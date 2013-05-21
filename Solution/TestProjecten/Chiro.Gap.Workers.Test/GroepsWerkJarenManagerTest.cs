@@ -58,38 +58,6 @@ namespace Chiro.Gap.Workers.Test
 			Factory.ContainerInit();
 		}
 
-
-		///<summary>
-		///Controleert of groepswerkjaarcache gecleard wordt bij bewaren groepswerkjaar
-		/// </summary>
-		[TestMethod]
-		public void BewarenTest()
-		{
-            //// Arrange
-
-            //var testData = new DummyData();
-
-            //var veelGebruiktMock = new Mock<IVeelGebruikt>();
-            //veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarResetten(testData.DummyGroep.ID)).Verifiable();
-            //Factory.InstantieRegistreren(veelGebruiktMock.Object);
-
-            //var groepsWerkJaarDaoMock = new Mock<IGroepsWerkJaarDao>();
-            //groepsWerkJaarDaoMock.Setup(
-            //    dao => dao.Bewaren(testData.HuidigGwj, It.IsAny<Expression<Func<GroepsWerkJaar, object>>[]>())).Returns(
-            //        testData.HuidigGwj);
-            //Factory.InstantieRegistreren(groepsWerkJaarDaoMock.Object);
-
-            //var target = Factory.Maak<GroepsWerkJaarManager>();
-
-            //// Act
-
-            //target.Bewaren(testData.HuidigGwj, GroepsWerkJaarExtras.Geen);
-
-            //// Assert
-            //veelGebruiktMock.Verify(vgb => vgb.GroepsWerkJaarResetten(testData.DummyGroep.ID), Times.Once());
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-		}
-
         /// <summary>
         /// Snelle test die nakijkt of GroepsWerkJaarManager.AfdelingsJarenVoorstellen daadwerkelijk de geboortedata
         /// voor de nieuwe afdelingsjaren bijwerkt.

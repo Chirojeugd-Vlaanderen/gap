@@ -1017,6 +1017,10 @@ namespace Chiro.Gap.Services
         /// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
         public void JaarOvergangUitvoeren(IEnumerable<AfdelingsJaarDetail> teActiveren, int groepID)
         {
+            // LET OP: De IEnumerable hierboven kan niet zomaar vervangen worden door IList.
+            // Een IEnumerable<AfdelingsDetail> kan toegekend worden aan een 
+            // IEnumerable<AfdelingsJaarDetail>. Maar omgekeerd werkt het niet.
+
             var groep = _groepenRepo.ByID(groepID);
 
             if (!_autorisatieMgr.IsGav(groep))
