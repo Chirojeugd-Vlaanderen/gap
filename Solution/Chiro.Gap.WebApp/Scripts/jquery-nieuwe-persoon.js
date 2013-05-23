@@ -35,6 +35,7 @@ var inschrijven=false;
 
 var tel = false;
 var email = false;
+var forceer = false;
 
 var zoekterm;
 var errors;
@@ -316,13 +317,14 @@ $(function () {
                     "HuidigePersoon.VoorNaam": voornaam,
                     "HuidigePersoon.Naam": naam,
                     "HuidigePersoon.GeboorteDatum": geboortedatum,
-                    "HuidigePersoon.Geslacht": geslacht
+                    "HuidigePersoon.Geslacht": geslacht,
+                    "Forceer": forceer
                 }, function(data) {
                     success:
                     {
                         voortgang.progressbar('value', val += 10);
                         //als 'data[0]' undefined is zit het niet in het JSON antwoord en is er dus geen dezelfde persoon
-                        if (typeof(data[0]) === "undefined") {
+                        if (typeof(data[0]) === "undefined" || forceer == true ) {
                             np_gpID = data.GelieerdePersoonID; 
                             url = link("Personen", "NieuweCommVorm");
                             //----------------------------------------------------------------------------------------
@@ -432,11 +434,32 @@ $(function () {
                         
 
                     } else { //'data[0]' is gezet, dus er is al een persoon met dezelfde naam 
-                        alert("Er is al zo'n persoon");
-                        $(".ui-dialog-content").dialog("close");
-                            url = link("Personen", "Nieuw");
-                            window.location = url;
-                        }
+
+                            $('#extraInfoDialog').html('');
+                            $('#extraInfoDialog').append('<p>Er is in het GAP een persoon aangetroffen die sterk lijkt op de persoon die je probeert toe te voegen,namelijk:</p><ul>');  
+                            $.each(data, function(i, value) {
+                                 $('#extraInfoDialog').append('<li><strong>' + data[i].VolledigeNaam + '</strong></li>');
+                            });     
+                            $('#extraInfoDialog').append('</ul><p>Ben je zeker dat je de nieuwe persoon wilt toevoegen?</p>');
+                
+                         $('#extraInfoDialog').dialog({
+                            title: 'Opgelet!',
+                            modal: true,
+                            buttons: {
+                                "Toevoegen": function () {
+                                    forceer = true;
+                                    $('#knopBewaren').click();
+                                    $(this).dialog("close");
+                                },
+                                "Annuleren": function () {
+                                    $(this).dialog("close");
+                                    $(".ui-dialog-content").dialog("close");
+                                    url = link("Personen", "Nieuw");
+                                    window.location = url;
+                                }
+                            }
+                        });
+                    }
                 }
             });
         }

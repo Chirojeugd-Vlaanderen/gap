@@ -516,7 +516,7 @@ table.overzicht tr:hover td
 }
 
 
-/*tr.even td
+tr.even td
 {
 	background-color: #e8eef4;
 }
@@ -524,7 +524,7 @@ table.overzicht tr:hover td
 tr.oneven td
 {
 	background-color: #FFFFFF;
-}*/
+}
 
 .highlight
 {
