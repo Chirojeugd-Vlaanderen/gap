@@ -848,7 +848,8 @@ namespace Chiro.Gap.Services
                     {
                         _communicatieSync.Toevoegen(cv);
                     }
-#if KIPDORP    
+#if KIPDORP   
+                    tx.Complete();
             }
 #endif
 
