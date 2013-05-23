@@ -280,7 +280,7 @@ namespace Chiro.Gap.Services
             var cp = new CredentialsProvider(Properties.Settings.Default.EncryptieSleutel,
                                              Properties.Settings.Default.HashSleutel);
 
-            var credentials = cp.Genereren(String.Format("{0};{1};{2};{3}", naam, stamnr, email, DateTime.Now));
+            var credentials = cp.Genereren(String.Format("{0};{1};{2};{3:dd/MM/yyyy H:mm:ss zzz}", naam, stamnr, email, DateTime.Now));
 
             return String.Format(Properties.Settings.Default.UrlVerzekeraar,
                                  HttpUtility.UrlEncode(credentials.GeencrypteerdeUserInfo),
