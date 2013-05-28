@@ -671,10 +671,11 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.GeenGav();
             }
-
+            //Hieronder stond eerst (tussen 'PersoonsAdres.' en 'SelectMany...') ".Select(pa => pa.Persoon)" nog tussen,
+            //waardoor twee keer dezelfde persoon weergegegeven werd.
             var huisGenoten =
                 (from gp in
-                     gelieerdePersoon.Persoon.PersoonsAdres.Select(pa => pa.Persoon).SelectMany(p => p.GelieerdePersoon)
+                     gelieerdePersoon.Persoon.PersoonsAdres.SelectMany(p => p.GelieerdePersoon)
                  where Equals(gp.Groep, gelieerdePersoon.Groep)
                  select gp).ToList();
 
