@@ -47,5 +47,11 @@ namespace Chiro.Gap.WorkerInterfaces
         /// (Bijv. 2012 voor 2012-2013)
         /// </returns>
         int WerkJaarOphalen(Groep groep);
+
+        /// <summary>
+        /// Invalideert het gecachete huidige werkjaar van de gegeven <paramref name="groep"/>
+        /// </summary>
+        /// <param name="groep">Groep waarvan gecachete werkjaar moet worden geinvalideerd.</param>
+        void WerkJaarInvalideren(Groep groep);
     }
 }
