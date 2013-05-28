@@ -264,7 +264,7 @@ $(function () {
                     }
                 }
             });
-            clearDialog();
+        clearDialog();
     });
     //------------------------------------------------------------------------------------------
     //email verwijderen
@@ -289,7 +289,7 @@ $(function () {
                     }
                 }
             });
-            clearDialog();
+        clearDialog();
     });
     //------------------------------------------------------------------------------------------
     //Nieuwe communicatievorm toevoegen
@@ -464,7 +464,6 @@ $(function () {
                 }
             }
         });
-        clearDialog();
     });
 
     //------------------------------------------------------------------------------------------
@@ -492,11 +491,10 @@ $(function () {
 
         var adresID = $(this).parent().parent().find('td input#persoonsAdresID').val();
         adresID = parseInt(adresID);
-        //Haal het model op
 
         url = link("Personen", "Verhuizen");
         url += "/" + adresID;
-
+        //model ophalen
         $.getJSON(url, { aanvragerID: GPid }, function (data) {
             //info uit model invullen in variablen
             straatnaam = data.Straat;
@@ -544,7 +542,7 @@ $(function () {
                     postnr = $('#postcode').val();
                     bus = $('#bus').val();
                     gemeente = $('#gemeente').val();
-                    
+
                     url = link("Personen", "Verhuizen");
                     url += "/" + adresID;
                     $.ajax({
@@ -566,8 +564,10 @@ $(function () {
                             OudAdresID: oudAdresId,
                             GelieerdePersoonIDs: gpidList
                         }
+                    }).done(function () {
+                        location.reload();
                     });
-                    $('#adres').text(straatnaam + " " + huisnummer + ", " + postnr + " " + gemeente);
+                    bezig();
                     $(this).dialog("close");
                 },
                 "Annuleren": function () {
@@ -575,7 +575,6 @@ $(function () {
                 }
             }
         });
-        clearDialog();
     });
 
     //Adres verwijderen
@@ -671,7 +670,6 @@ $(function () {
         .on('save', function (e, params) {
             e.preventDefault();
             bezig();
-            //url = root + "Leden/TypeToggle/" + id;
             url = link("Leden", "TypeToggle");
 
             $.post(url, { id: id, groepID: GID }, function () {
@@ -793,7 +791,7 @@ $(function () {
                         }
                     }
                 });
-                
+
             }
         });
         clearDialog();
