@@ -480,13 +480,13 @@ $(function () {
         var gpidList = [];
         var straatnaam;
         var huisnummer;
-        var postcode;
+        var postnummer;
         var bus;
         var gemeente;
         var oudAdresId;
         var type;
         var land;
-        var postnr;
+        var postcode;
         var woonplaatsbuitenland;
 
         var adresID = $(this).parent().parent().find('td input#persoonsAdresID').val();
@@ -498,7 +498,7 @@ $(function () {
         $.getJSON(url, { aanvragerID: GPid }, function (data) {
             //info uit model invullen in variablen
             straatnaam = data.Straat;
-            postnr = data.PostNr;
+            postnummer = data.PostNr;
             huisnummer = data.HuisNr;
             bus = data.Bus;
 
@@ -510,25 +510,24 @@ $(function () {
             //invullen in de velden
             $('#straatnaam').val(straatnaam);
             $('#huisnr').val(huisnummer);
-            $('#postcode').val(postnr);
+            $('#postnummer').val(postnummer);
             $('#bus').val(bus);
 
             oudAdresId = data.OudAdresID;
             type = data.PersoonsAdresInfo.AdresType;
             land = data.PersoonsAdresInfo.LandNaam;
-            postcode = data.PersoonsAdresInfo.PostCode;
+            postnummer = data.PersoonsAdresInfo.PostNr;
             woonplaatsbuitenland = data.WoonPlaatsBuitenLand;
 
             success:
             {
-                toonGemeenten(postnr, '#gemeente');
+                toonGemeenten(postnummer, '#gemeente');
             }
         });
 
-
-        $('#postcode').change(function () {
-            var pc = $(this).val();
-            toonGemeenten(pc, '#gemeente');
+        $('#postnummer').change(function () {
+            var pn = $(this).val();
+            toonGemeenten(pn, '#gemeente');
         });
 
         $('#adresDialog').dialog({
@@ -539,7 +538,7 @@ $(function () {
 
                     straatnaam = $('#straatnaam').val();
                     huisnummer = $('#huisnr').val();
-                    postnr = $('#postcode').val();
+                    postnummer = $('#postcode').val();
                     bus = $('#bus').val();
                     gemeente = $('#gemeente').val();
 
@@ -554,7 +553,7 @@ $(function () {
                             "PersoonsAdresInfo.AdresType": type,
                             Land: land,
                             PostCode: postcode,
-                            PostNr: postnr,
+                            PostNr: postnummer,
                             Straat: straatnaam,
                             HuisNr: huisnummer,
                             Bus: bus,

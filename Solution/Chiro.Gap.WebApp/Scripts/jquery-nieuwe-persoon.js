@@ -16,7 +16,7 @@
 
 //variabelen voor het maken van een nieuw lid
 var volledigeNaam, voornaam, naam, geboortedatum, geslacht;
-var postcode, gemeente, straat, nummer, bus;
+var postnummer, gemeente, straat, nummer, bus, postcode;
 var land = 'België';
 var persoonID, lidID, werkjaar,leiding;
 
@@ -229,21 +229,21 @@ $(function () {
         land = $(this).val();
         if (land != 'België') {
             $('#np_gemeente').hide();
-            $('#buitenlandseGemeente, #postNr').show();
+            $('#buitenlandseGemeente, #postCode').show();
         } else {
             $('#np_gemeente').show();
-            $('#buitenlandseGemeente, #postNr').hide();
-            postcode = $('#np_postCode').val();
-            toonGemeenten(postcode, '#np_gemeente');
+            $('#buitenlandseGemeente, #postCode').hide();
+            postnummer = $('#np_postNr').val();
+            toonGemeenten(postnummer, '#np_gemeente');
         }
     });
 
     //------------------------------------------------------------------------------------------------------------
     //
-    $('#np_postCode').keyup(function () {
-        postcode = $(this).val();
+    $('#np_postNr').keyup(function () {
+        postnummer = $(this).val();
         if (land == 'België') {
-            toonGemeenten(postcode, '#np_gemeente');
+            toonGemeenten(postnummer, '#np_gemeente');
         }
     });
   
@@ -254,7 +254,7 @@ $(function () {
         var straten = [];
         zoekterm = $(this).val();
         if (zoekterm.length > 2) {
-            $.getJSON(url, { q: zoekterm, postNummer: postcode }, function(data) {
+            $.getJSON(url, { q: zoekterm, postNummer: postnummer }, function(data) {
                 $.each(data, function(index, value) {
                     var waarde = data[index].toString();
                     straten.push(waarde);
@@ -415,7 +415,8 @@ $(function () {
                             GelieerdePersoonIDs:np_gpID,
                             "PersoonsAdresInfo.AdresType":'Thuis',
                             Land:land,
-                            PostNr:postcode,
+                            PostNr:postnummer,
+                            PostCode: postcode,
                             Straat:straat,
                             HuisNr:nummer,
                             Bus:bus,
@@ -553,11 +554,13 @@ function vulVariabelenIn() {
     $('#vrouw').is(':checked') ? geslacht = "vrouw" : geslacht = "man";
 
     //adresgegevens
-    postcode = $('#np_postCode').val();
+    postnummer = $('#np_postNr').val();
+    
     if (land == 'België') {
         gemeente = $('#np_gemeente').val();
     } else {
         gemeente = $('#buitenlandseGemeente').val();
+        postcode = $('#postCode').val();
     }
     
     straat = $('#np_straat').val();

@@ -69,8 +69,8 @@
                 <br/>
                 <label for="bus"><b>Bus</b></label><br/>
                 <input type="text" size="5"name="bus" id="bus" class="ui-widget-content ui-corner-all" />
-                <label for="postcode"><b>Postcode</b></label>
-                <input type="text" size="6" name="postcode" id="postcode" class="ui-widget-content ui-corner-all" />
+                <label for="postnummer"><b>Postnummer</b></label>
+                <input type="text" size="6" name="postnummer" id="postnummer" class="ui-widget-content ui-corner-all" />
                 <label><b>Gemeente</b></label>
                 <br/>
                 <select name="gemeente" id="gemeente" class="ui-widget-content ui-corner-all" >

@@ -168,8 +168,8 @@
                 <td>Adres:</td>
                 <td>
                     Land: <select id="landSelect"></select>
-                    Postcode: <input type="text" id="np_postCode" size="6"/>
-                    <span id="postNr" hidden>PostNummer:<input type="text" size="6"/></span>
+                    Postnummer: <input type="text" id="np_postNr" size="6"/>
+                    <span id="postCode" hidden>Postcode: <input type="text" size="6"/></span>
                     Gemeente: <select id="np_gemeente"></select><input type="text" id="buitenlandseGemeente" hidden/>
                     <br/>
                     <br/>
