@@ -826,11 +826,26 @@ namespace Chiro.Gap.Services
             communicatieVorm.ID = 0;    // zodat die zeker als nieuw wordt beschouwd
             communicatieVorm.CommunicatieType = _communicatieTypesRepo.ByID(commInfo.CommunicatieTypeID);
 
-            // Communicatievormen koppelen is een beetje een gedoe, omdat je die voorkeuren hebt,
-            // en het concept 'gezinsgebonden' (wat eigenlijk niet helemaal klopt)
-            // Al die brol handelen we af in de manager.
+            List<CommunicatieVorm> gekoppeld;
 
-            var gekoppeld = _communicatieVormenMgr.Koppelen(gelieerdePersoon, communicatieVorm);
+            try
+            {
+                // Communicatievormen koppelen is een beetje een gedoe, omdat je die voorkeuren hebt,
+                // en het concept 'gezinsgebonden' (wat eigenlijk niet helemaal klopt)
+                // Al die brol handelen we af in de manager.
+
+                gekoppeld = _communicatieVormenMgr.Koppelen(gelieerdePersoon, communicatieVorm);
+            }
+            catch (FoutNummerException ex)
+            {
+                if (ex.FoutNummer == FoutNummer.ValidatieFout)
+                {
+                    throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
+                }
+                // Van validatieexcpetion maken we een faultexception.
+                // Eender welke andere exception throwen we opnieuw.
+                throw;
+            }
             var tesyncen = (from cv in gekoppeld
                             where
                                 cv.GelieerdePersoon.Persoon.AdNummer != null || cv.GelieerdePersoon.Persoon.AdInAanvraag
@@ -847,7 +862,8 @@ namespace Chiro.Gap.Services
                     {
                         _communicatieSync.Toevoegen(cv);
                     }
-#if KIPDORP    
+#if KIPDORP   
+                    tx.Complete();
             }
 #endif
 

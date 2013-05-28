@@ -92,23 +92,39 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
-        ///A test for CommunicatieVormToevoegen
+        /// Probeer een communicatievorm toe te voegen die niet valideert.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FaultException<FoutNummerFault>))]
         public void CommunicatieVormToevoegenTestOngeldig()
         {
-            var target = Factory.Maak<GelieerdePersonenService>();
+            // ARRANGE
 
-            var gelieerdePersoonID = TestInfo.GELIEERDE_PERSOON_ID;
+            // testdata
+            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Persoon = new Persoon()};
+            var communicatieType = new CommunicatieType {ID = 2, Validatie = "^[0-9]*$"};
+
+            // dependency injection
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> {communicatieType}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
 
             var commInfo = new CommunicatieDetail()
             {
-                CommunicatieTypeID = 1,
-                Nummer = TestInfo.ONGELDIG_TELEFOON_NR
+                CommunicatieTypeID = communicatieType.ID,
+                Nummer = "BLA"
             };
 
-            target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);
+            // ASSERT
+
+            target.CommunicatieVormToevoegen(gelieerdePersoon.ID, commInfo);
             Assert.IsTrue(false);
         }
 

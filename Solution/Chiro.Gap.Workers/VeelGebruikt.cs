@@ -99,5 +99,14 @@ namespace Chiro.Gap.Workers
 
             return werkJaar.Value;
         }
+
+        /// <summary>
+        /// Invalideert het gecachete huidige werkjaar van de gegeven <paramref name="groep"/>
+        /// </summary>
+        /// <param name="groep">Groep waarvan gecachete werkjaar moet worden geinvalideerd.</param>
+        public void WerkJaarInvalideren(Groep groep)
+        {
+            _cache.Remove(string.Format(WerkJaarCacheKey, groep.ID));
+        }
     }
 }
