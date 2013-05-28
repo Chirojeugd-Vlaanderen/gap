@@ -62,8 +62,8 @@
     <div id="adresDialog" hidden >
         <form>
             <fieldset>
-                <label for="straatnaam"><b>Straatnaam</b></label>
-                <input type="text" name="straatnaam" id="straatnaam" class="ui-widget-content ui-corner-all" />
+                <label for="straatnaam"><b>Straatnaam</b> (Hoofdletter gevoelig!)</label>
+                <input type="text" name="straatnaam" id="straatnaam" /> 
                 <label for="huisnr"><b>Huisnummer</b></label>
                 <input type="text" size="5"name="huisnr" id="huisnr" class="ui-widget-content ui-corner-all" />
                 <br/>

@@ -25,18 +25,18 @@
     </tr>
     <tr>
         <td><%=Html.LabelFor(mdl => mdl.PostNr) %></td>
-        <td><%=Html.EditorFor(mdl => mdl.PostNr)%> <!--<input id="PostNr" class="text-box single-line" type="text" required></input> -->
+        <td><%=Html.EditorFor(mdl => mdl.PostNr)%>
         <%=Html.ValidationMessageFor(mdl => mdl.PostNr)%></td>
     </tr>
     <tr>
         <td><%=Html.LabelFor(mdl => mdl.Straat)%></td>
-        <td><%=Html.EditorFor(mdl => mdl.Straat)%><!--<input id="Straat" class="text-box single-line" type="text" required></input>-->
+        <td><%=Html.EditorFor(mdl => mdl.Straat)%> <br />(Hoofdletter gevoelig!)
         <%=Html.ValidationMessageFor(mdl => mdl.Straat)%></td>
     </tr>   
     
     <tr>
         <td><%=Html.LabelFor(mdl => mdl.HuisNr)%></td>
-        <td><%=Html.EditorFor(mdl => mdl.HuisNr)%><!--<input id="HuisNr" class="text-box single-line" type="text" required></input>-->
+        <td><%=Html.EditorFor(mdl => mdl.HuisNr)%>
         <%=Html.ValidationMessageFor(mdl => mdl.HuisNr)%></td>
     </tr>
     <tr>

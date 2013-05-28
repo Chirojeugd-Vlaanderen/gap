@@ -489,6 +489,27 @@ $(function () {
         var postcode;
         var woonplaatsbuitenland;
 
+        var stratenCache = {};
+        var lastXhr;
+
+        $("input#straatnaam").autocomplete({
+            minLength: 3,
+            source: function (request, response) {
+                var term = request.term;
+                if (term in stratenCache) {
+                    response(stratenCache[term]);
+                    return;
+                }
+                var url2 = link('Adressen', 'StratenVoorstellen');
+                lastXhr = $.getJSON(url2, { q: term, postNummer: postnummer }, function (data, status, xhr) {
+                    stratenCache[term] = data;
+                    if (xhr === lastXhr) {
+                        response(data);
+                    }
+                });
+            }
+        });
+
         var adresID = $(this).parent().parent().find('td input#persoonsAdresID').val();
         adresID = parseInt(adresID);
 

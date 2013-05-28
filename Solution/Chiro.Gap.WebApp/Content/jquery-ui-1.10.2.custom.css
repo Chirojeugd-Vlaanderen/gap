@@ -193,7 +193,9 @@
 	top: 0;
 	left: 0;
 	cursor: default;
+	z-index: 1100; /* toegevoegd om de autocomplete ook in de dialog te doen werken */
 }
+
 .ui-button {
 	display: inline-block;
 	position: relative;

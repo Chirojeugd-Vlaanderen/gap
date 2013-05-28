@@ -56,27 +56,27 @@
                 if (land == 'België') {
                     toonGemeenten(pc, '#WoonPlaats');
                 }
+            });
+            
+            var stratenCache = {};
+            var lastXhr;
 
-                var stratenCache = {};
-                var lastXhr;
-
-                $("input#Straat").autocomplete({
-                    minLength: 3,
-                    source: function (request, response) {
-                        var term = request.term;
-                        if (term in stratenCache) {
-                            response(stratenCache[term]);
-                            return;
-                        }
-                        var url2 = link('Adressen', 'StratenVoorstellen');
-                        lastXhr = $.getJSON(url2, { q: term, postNummer: pc }, function (data, status, xhr) {
-                            stratenCache[term] = data;
-                            if (xhr === lastXhr) {
-                                response(data);
-                            }
-                        });
+            $("input#Straat").autocomplete({
+                minLength: 3,
+                source: function (request, response) {
+                    var term = request.term;
+                    if (term in stratenCache) {
+                        response(stratenCache[term]);
+                        return;
                     }
-                });
+                    var url2 = link('Adressen', 'StratenVoorstellen');
+                    lastXhr = $.getJSON(url2, { q: term, postNummer: pc }, function (data, status, xhr) {
+                        stratenCache[term] = data;
+                        if (xhr === lastXhr) {
+                            response(data);
+                        }
+                    });
+                }
             });
 
         });

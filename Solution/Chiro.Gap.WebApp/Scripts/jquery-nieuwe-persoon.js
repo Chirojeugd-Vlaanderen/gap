@@ -248,23 +248,27 @@ $(function () {
     });
   
     //------------------------------------------------------------------------
-    url = link("Adressen", "StratenVoorstellen");
     if (land == 'België') {
-    $('#np_straat').keyup(function() {
-        var straten = [];
-        zoekterm = $(this).val();
-        if (zoekterm.length > 2) {
-            $.getJSON(url, { q: zoekterm, postNummer: postnummer }, function(data) {
-                $.each(data, function(index, value) {
-                    var waarde = data[index].toString();
-                    straten.push(waarde);
-                });
-                $('#np_straat').autocomplete({
-                        source: straten
-                });
+        var stratenCache = {};
+        var lastXhr;
+
+            $("input#np_straat").autocomplete({
+                minLength: 3,
+                source: function (request, response) {
+                    var term = request.term;
+                    if (term in stratenCache) {
+                        response(stratenCache[term]);
+                        return;
+                    }
+                    var url2 = link('Adressen', 'StratenVoorstellen');
+                    lastXhr = $.getJSON(url2, { q: term, postNummer: postnummer }, function (data, status, xhr) {
+                        stratenCache[term] = data;
+                        if (xhr === lastXhr) {
+                            response(data);
+                        }
+                    });
+                }
             });
-        }
-    });
     }
     
     //------------------------------------------------------------------------------------------------------------
