@@ -249,6 +249,7 @@ $(function () {
   
     //------------------------------------------------------------------------
     url = link("Adressen", "StratenVoorstellen");
+    if (land == 'België') {
     $('#np_straat').keyup(function() {
         var straten = [];
         zoekterm = $(this).val();
@@ -264,7 +265,7 @@ $(function () {
             });
         }
     });
-    
+    }
     
     //------------------------------------------------------------------------------------------------------------
     //klik op knop 'BEWAREN'
@@ -413,7 +414,7 @@ $(function () {
                             action:'Bewaren',
                             GelieerdePersoonIDs:np_gpID,
                             "PersoonsAdresInfo.AdresType":'Thuis',
-                            Land:'België',
+                            Land:land,
                             PostNr:postcode,
                             Straat:straat,
                             HuisNr:nummer,
@@ -423,7 +424,6 @@ $(function () {
                             AanvragerID:np_gpID
                         }).done(function() {
                             if (!inschrijven) {      
-
                                 url = link("Personen", "EditRest");
                                 url += "/" + np_gpID;
                                 window.location = url;
@@ -554,7 +554,12 @@ function vulVariabelenIn() {
 
     //adresgegevens
     postcode = $('#np_postCode').val();
-    gemeente = $('#np_gemeente').val();
+    if (land == 'België') {
+        gemeente = $('#np_gemeente').val();
+    } else {
+        gemeente = $('#buitenlandseGemeente').val();
+    }
+    
     straat = $('#np_straat').val();
     nummer = $('#np_nummer').val();
     bus = $('#np_bus').val();

@@ -671,7 +671,7 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.GeenGav();
             }
-            //Hieronder stond eerst (tussen 'PersoonsAdres.' en 'SelectMany...') ".Select(pa => pa.Persoon)" nog tussen,
+            //Hieronder stond eerst tussen 'PersoonsAdres.' en 'SelectMany...' nog ".Select(pa => pa.Persoon)" nog tussen,
             //waardoor twee keer dezelfde persoon weergegegeven werd.
             var huisGenoten =
                 (from gp in
