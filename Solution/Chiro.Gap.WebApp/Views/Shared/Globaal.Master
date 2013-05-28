@@ -82,6 +82,7 @@
                     <asp:ContentPlaceHolder ID="settingsitems" runat="server" />
                 </ul>
 			</div>
+            <div style="clear: both"></div>
 			<div id="topNavigatie">
 				<asp:ContentPlaceHolder ID="NavigatieContent" runat="server" />
 			</div>
