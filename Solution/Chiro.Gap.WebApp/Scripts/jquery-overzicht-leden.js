@@ -52,8 +52,9 @@ $(function () {
              { "bSortable": false, "aTargets": [ 0 ] },
              { "sWidth": "15px", "aTargets": [ 0,1,4,5,6,7 ] },
              { "sWidth": "150px", "aTargets": [ 2 ] },
-             { "sWidth": "50px", "aTargets": [ 3 ] }
-
+             { "sWidth": "50px", "aTargets": [ 3 ] },
+             { "bSearchable": false, "aTargets": [0,1,4,5,6,7,8,10,11]},
+             { "sType": "html", "aTargets": [2,6,7,10,11]}
         ],
         "oLanguage": {
             "sLengthMenu": "Toon _MENU_ personen per pagina",
