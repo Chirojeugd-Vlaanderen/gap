@@ -230,10 +230,10 @@ $(function () {
         land = $(this).val();
         if (land != 'België') {
             $('#np_gemeente').hide();
-            $('#buitenlandseGemeente, #postCode').show();
+            $('#buitenlandseGemeente, #postCodeVeld').show();
         } else {
             $('#np_gemeente').show();
-            $('#buitenlandseGemeente, #postCode').hide();
+            $('#buitenlandseGemeente, #postCodeVeld').hide();
             postnummer = $('#np_postNr').val();
             toonGemeenten(postnummer, '#np_gemeente');
         }
@@ -256,7 +256,6 @@ $(function () {
     if (land == 'België') {
         var stratenCache = {};
         var lastXhr;
-
             $("input#np_straat").autocomplete({
                 minLength: 3,
                 source: function (request, response) {

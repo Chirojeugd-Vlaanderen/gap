@@ -169,7 +169,7 @@
                 <td>
                     Land: <select id="landSelect"></select>
                     Postnummer: <input type="text" id="np_postNr" size="6"/>
-                    <span id="postCode" hidden>Postcode: <input type="text" size="6"/></span>
+                    <span id="postCodeVeld" hidden>Postcode: <input  id="postCode"type="text" size="6"/></span>
                     Gemeente: <select id="np_gemeente"></select><input type="text" id="buitenlandseGemeente" hidden/>
                     <br/>
                     <br/>

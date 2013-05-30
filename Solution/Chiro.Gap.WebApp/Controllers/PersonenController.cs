@@ -900,12 +900,6 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             // Als het adres buitenlands is, neem dan de woonplaats over uit het
             // vrij in te vullen veld.
-
-            if (String.Compare(model.PersoonsAdresInfo.LandNaam, Properties.Resources.Belgie, true) != 0)
-            {
-                model.PersoonsAdresInfo.WoonPlaatsNaam = model.WoonPlaatsBuitenLand;
-            }
-
             try
             {
                 // De service zal model.NieuwAdres.ID negeren; dit wordt
