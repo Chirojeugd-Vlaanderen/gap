@@ -34,25 +34,19 @@
         iets aan de hand is met je bivakplaats of als iemand je daar nodig heeft. De
         volgende drie stappen zijn daarbij noodzakelijk.</p>
     <ul>
-        <li>
-            <%=Html.ActionLink("Registreer je bivak", "ViewTonen", new { controller = "Handleiding", helpBestand = "UitstapToevoegen" })%></li>
-        <li>
-            <%=Html.ActionLink("Schrijf minstens de bivakverantwoordelijke in", "ViewTonen", new { controller = "Handleiding", helpBestand = "DeelnemersInschrijven" })%></li>
-        <li>
-            <%= Html.ActionLink("Duid aan dat hij of zij de contactpersoon is", "ViewTonen", "Handleiding", null, null, "Contactpersoon", new { helpBestand = "DeelnemersInschrijven" }, null)%></li>
+        <li><%=Html.ActionLink("Registreer je bivak", "ViewTonen", new { controller = "Handleiding", helpBestand = "UitstapToevoegen" })%></li>
+        <li><%=Html.ActionLink("Schrijf minstens de bivakverantwoordelijke in", "ViewTonen", new { controller = "Handleiding", helpBestand = "DeelnemersInschrijven" })%></li>
+        <li><%= Html.ActionLink("Duid aan dat hij of zij de contactpersoon is", "ViewTonen", "Handleiding", null, null, "Contactpersoon", new { helpBestand = "DeelnemersInschrijven" }, null)%></li>
     </ul>
     <p>
         Wat kun je verder nog doen? Deze gegevens worden niet doorgestuurd naar het
         nationaal secretariaat, dit is alleen voor jullie groep zichtbaar.</p>
     <ul>
-        <li>
-            <%=Html.ActionLink("Bijhouden wie ingeschreven is", "ViewTonen", new { controller = "Handleiding", helpBestand = "Deelnemersadministratie" })%>
+        <li><%=Html.ActionLink("Bijhouden wie ingeschreven is", "ViewTonen", new { controller = "Handleiding", helpBestand = "Deelnemersadministratie" })%>
         </li>
-        <li>
-            <%=Html.ActionLink("Registreren wie al betaald heeft", "ViewTonen", new { controller = "Handleiding", helpBestand = "Deelnemersadministratie" })%>
+        <li><%=Html.ActionLink("Registreren wie al betaald heeft", "ViewTonen", new { controller = "Handleiding", helpBestand = "Deelnemersadministratie" })%>
         </li>
-        <li>
-            <%=Html.ActionLink("Registreren van wie je de medische fiche al hebt", "ViewTonen", new { controller = "Handleiding", helpBestand = "Deelnemersadministratie" })%>
+        <li><%=Html.ActionLink("Registreren van wie je de medische fiche al hebt", "ViewTonen", new { controller = "Handleiding", helpBestand = "Deelnemersadministratie" })%>
         </li>
     </ul>
     <%
