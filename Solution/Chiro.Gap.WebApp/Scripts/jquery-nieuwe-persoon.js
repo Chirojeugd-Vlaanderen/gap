@@ -17,6 +17,7 @@
 //variabelen voor het maken van een nieuw lid
 var volledigeNaam, voornaam, naam, geboortedatum, geslacht;
 var postnummer, gemeente, straat, nummer, bus, postcode;
+var adresType = "Thuis";
 var land = 'België';
 var persoonID, lidID, werkjaar,leiding;
 
@@ -237,6 +238,10 @@ $(function () {
             toonGemeenten(postnummer, '#np_gemeente');
         }
     });
+    //Adrestype veranderen
+    $('#adresType').change(function() {
+        adresType = $(this).val();
+    });
 
     //------------------------------------------------------------------------------------------------------------
     //
@@ -417,7 +422,7 @@ $(function () {
                         $.post(url, {
                             action:'Bewaren',
                             GelieerdePersoonIDs:np_gpID,
-                            "PersoonsAdresInfo.AdresType":'Thuis',
+                            "PersoonsAdresInfo.AdresType": adresType,
                             Land:land,
                             PostNr:postnummer,
                             PostCode: postcode,

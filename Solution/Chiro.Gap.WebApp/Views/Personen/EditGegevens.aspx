@@ -175,6 +175,12 @@
                     <br/>
                     Straat: <input type="text" id="np_straat"/> 
                     Nr: <input type="text" size="6" id="np_nummer"/> Bus: <input type="text" id="np_bus" size="5"/>
+                    Type: <select id="adresType">
+                              <option>Thuis</option>
+                              <option>Kot</option>
+                              <option>Werk</option>
+                              <option>Overig</option>
+                          </select>
                 </td>
         </tr>
         <tr hidden>

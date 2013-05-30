@@ -484,9 +484,8 @@ $(function () {
         var bus;
         var gemeente;
         var oudAdresId;
-        var type;
+        var adresType;
         var land;
-        var postcode;
         var woonplaatsbuitenland;
 
         var stratenCache = {};
@@ -522,7 +521,24 @@ $(function () {
             postnummer = data.PostNr;
             huisnummer = data.HuisNr;
             bus = data.Bus;
-
+            adresType = data.PersoonsAdresInfo.AdresType;
+            var adresTekst;
+            switch (adresType) {
+                case 1:
+                    adresTekst = 'Thuis';
+                    break;
+                case 2:
+                    adresTekst = 'Kot';
+                    break;
+                case 3:
+                    adresTekst = 'Werk';
+                    break;
+                case 4:
+                    adresTekst = 'Overig';
+                    break;
+                default:
+                    adresTekst = 'Thuis';
+            }
             //lijst met gelieerde personen aanmaken (hier ook best de checkboxes aanmaken)
             $.each(data.GelieerdePersoonIDs, function (index, value) {
                 var waarde = parseInt(value);
@@ -533,7 +549,8 @@ $(function () {
             $('#huisnr').val(huisnummer);
             $('#postnummer').val(postnummer);
             $('#bus').val(bus);
-
+            $('#adresType').val(adresTekst);
+            
             oudAdresId = data.OudAdresID;
             type = data.PersoonsAdresInfo.AdresType;
             land = data.PersoonsAdresInfo.LandNaam;
@@ -551,6 +568,26 @@ $(function () {
             toonGemeenten(pn, '#gemeente');
         });
 
+        $('#adresType').change(function () {
+            var geselecteerd = $(this).val();
+            switch (geselecteerd) {
+                case 'Thuis':
+                    adresType = 1;
+                    break;
+                case 'Kot':
+                    adresType = 2;
+                    break;
+                case 'Werk':
+                    adresType = 3;
+                    break;
+                case 'Overig':
+                    adresType = 4;
+                    break;
+                default:
+                    adresType = 1;
+            }
+        });
+
         $('#adresDialog').dialog({
             modal: true,
             title: "Adres wijzigen",
@@ -559,7 +596,7 @@ $(function () {
 
                     straatnaam = $('#straatnaam').val();
                     huisnummer = $('#huisnr').val();
-                    postnummer = $('#postcode').val();
+                    postnummer = $('#postnummer').val();
                     bus = $('#bus').val();
                     gemeente = $('#gemeente').val();
 
@@ -571,9 +608,8 @@ $(function () {
                         traditional: true,
                         data: {
                             action: "Bewaren",
-                            "PersoonsAdresInfo.AdresType": type,
+                            "PersoonsAdresInfo.AdresType": adresType,
                             Land: land,
-                            PostCode: postcode,
                             PostNr: postnummer,
                             Straat: straatnaam,
                             HuisNr: huisnummer,
