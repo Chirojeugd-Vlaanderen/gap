@@ -187,8 +187,12 @@
                        <input id="voorkeursadresID" value="<%=pa.PersoonsAdresID %>" hidden readonly/>
                     </td>
                     <td id="adres">
-                        <%= Html.Encode(String.Format("{0} {1} {2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus)) %>,
-                        <%= Html.Encode(String.Format("{0} {3} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode)) %>
+                        <%= Html.Encode(String.Format("{0} {1} {2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus))%>,
+                         <%if (pa.LandNaam != "België") { %>
+                            <%= Html.Encode(String.Format("{0} {3} {1}, {4} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode, pa.LandNaam)) %>
+                        <% } else { %> 
+                            <%= Html.Encode(String.Format("{0} {3} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode)) %>
+                        <% }%>
                         <% if (Model.PersoonLidInfo.PersoonDetail.VoorkeursAdresID == pa.PersoonsAdresID)
                            { %>
                              <div class="ui-icon ui-icon-mail-closed" id="vkAdres"title="Voorkeurs adres. Klik voor meer info"  style="cursor: pointer"></div>  
