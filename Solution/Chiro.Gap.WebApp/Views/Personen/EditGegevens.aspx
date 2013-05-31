@@ -35,55 +35,13 @@
 	<% using (Html.BeginForm())
 	{ %>
         <script src="<%=ResolveUrl("~/Scripts/jquery-nieuwe-persoon.js")%>" type="text/javascript"></script>
-	<%
-		if (Model.GelijkaardigePersonen != null && Model.GelijkaardigePersonen.Any())
-		{
-			if (Model.GelijkaardigePersonen.Count() == 1)
-			{
-	%>
-	<p class="validation-summary-errors">
-		Pas op! Je nieuwe persoon lijkt verdacht veel op iemand die al gekend is in
-		de Chiroadministratie. Als je zeker bent dat je niemand dubbel toevoegt, klik
-		dan opnieuw op &lsquo;Bewaren&rsquo;.
-	</p>
-	<%
-		}
-			else
-			{
-	%>
-	<p class="validation-summary-errors">
-		Pas op! Je nieuwe persoon lijkt verdacht veel op personen die al gekend zijn
-		in de Chiroadministratie. Als je zeker bent dat je niemand dubbel toevoegt,
-		klik dan opnieuw op &lsquo;Bewaren&rsquo;.
-	</p>
-	<%
-		}
-	%>
-	<ul>
-		<% 
-			// Toon gelijkaardige personen
-			foreach (PersoonDetail pi in Model.GelijkaardigePersonen)
-			{
-		%>
-		<li>
-			<%=Html.PersoonsLink(pi.GelieerdePersoonID, pi.VoorNaam, pi.Naam)%>
-			-
-			<%=String.Format("{0:d}", pi.GeboorteDatum) %></li>
-		<%
-			}
-		%>
-	</ul>
-	<%      
-		}
-	%>
+
     <input id="np_groepID" value="<%=Model.GroepID %>" hidden/>
     <input id="np_werkJaarID" value="<%=Model.GroepsWerkJaarID %>" hidden/>
 
 	<ul id="acties">
-		<li>
-			<button type="button" class="ui-button-text-only" id="knopBewaren">Bewaren</button></li>
-		<li>
-			<button type="button" class="ui-button-text-only" id="knopReset"/>Reset</li>
+		<li><button type="button" class="ui-button-text-only" id="knopBewaren">Bewaren</button></li>
+		<li><button type="button" class="ui-button-text-only" id="knopReset"/>Reset</li>
 	</ul>
 	<% if(Model.BroerzusID != 0)
 {
@@ -145,7 +103,7 @@
 			<%=Html.ValidationMessageFor(s => s.HuidigePersoon.Naam) %>
 		</tr>
         
-		<tr>
+		<tr >
 			<td><%=Html.LabelFor(s => s.HuidigePersoon.GeboorteDatum) %></td>
 			<td><%=Html.EditorFor(s => s.HuidigePersoon.GeboorteDatum)%></td>
 			<%=Html.ValidationMessageFor(s => s.HuidigePersoon.GeboorteDatum) %>
