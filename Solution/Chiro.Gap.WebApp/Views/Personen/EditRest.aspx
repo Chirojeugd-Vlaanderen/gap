@@ -280,12 +280,11 @@
             <% //Lid of leiding
                 if ((Model.GroepsNiveau & Niveau.Groep) != 0) {
                    // Lid/Leiding en afdelingen zijn enkel relevant voor plaatselijke groepen.%>
-                   <tr>
+                <tr>
                     <td>Ingeschreven als</td>
                     <td><a  id="lidInfoInfo" data-type="select"><b><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></b></a></td> 
                     <td><div class="ui-icon ui-icon-pencil" id="bewerkLidInfo" title="Bewerken" style="cursor: pointer"></div></td>
-                    </tr>
-            <% } %>
+                </tr>
             
             <tr>
             <% //Geeft de afdeling(en) weer 
@@ -300,6 +299,7 @@
                     Model.AlleAfdelingen.FirstOrDefault(
                         s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)) != null)
                 { %>
+               <% if ((Model.GroepsNiveau & Niveau.Groep) != 0) {%> 
                     <td>Afdeling</td>
                     <td>
                         <a  id="afdelingInfo" data-type="select">
@@ -309,11 +309,13 @@
                    <td>
                        <div class="ui-icon ui-icon-pencil" id="bewerkAfdeling" title="Bewerken" style="cursor: pointer"></div>
                    </td>
+                <%} %>
 
                    <%  }
             }
             %>
         </tr>   
+        <% } %>
         <% if (Model.PersoonLidInfo.PersoonDetail.IsLeiding)
            { %>
              <% // Geeft alle functies van een persoon weer %>
