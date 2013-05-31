@@ -322,7 +322,7 @@ namespace Chiro.Gap.Services
                 //_ledenSync.Bewaren(teSyncen);     // TODO: (#1436) Sync naar Kipadmin
                 _gelieerdePersonenRepo.SaveChanges();
 #if KIPDORP
-                tx.Commit();
+                tx.Complete();
             }
 #endif
             
