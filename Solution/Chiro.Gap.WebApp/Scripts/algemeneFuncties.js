@@ -16,6 +16,7 @@
 
 var GID;
 $(function () {
+
     //defaults
     $.fn.editable.defaults.mode = 'inline';
     $.fn.editable.defaults.clear = true;

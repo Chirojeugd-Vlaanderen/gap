@@ -42,10 +42,11 @@
                     if ((Model.GroepsNiveau & Niveau.Groep) != 0)
                     {
                 %>
-                <th>Afd.</th>
-                <%
-                    }
-                %>
+                        <th>Afd.</th>
+                <% } else { %>
+                        <th style="overflow: hidden" hidden>Afd.</th>
+                <% } %> 
+                
                 <th>Func.</th>
                 <th>Instap tot</th>
                 <th>Telefoon</th>

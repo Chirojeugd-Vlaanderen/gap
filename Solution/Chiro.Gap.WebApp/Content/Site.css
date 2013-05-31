@@ -724,6 +724,7 @@ fieldset table {
     padding-top: 2px;
 }
 
+
 @media screen and (max-width: 360px) {
   .opzij{
       display: inline-block;
