@@ -62,6 +62,8 @@
     <div id="adresDialog" hidden >
         <form>
             <fieldset>
+                <label for="landNaam"><b>Land</b></label><br/>
+                <select id="landNaam"></select>
                 <label for="straatnaam"><b>Straatnaam</b> (Hoofdletter gevoelig!)</label>
                 <input type="text" name="straatnaam" id="straatnaam" /> 
                 <label for="huisnr"><b>Huisnummer</b></label>
@@ -84,6 +86,9 @@
                 <select name="gemeente" id="gemeente" class="ui-widget-content ui-corner-all" >
                     <option></option>
                 </select>
+                <input id="gemeenteBuitenland" hidden/><br/>
+                <label id="pcbLabel" for="postCodeBuitenland" hidden><b>Postcode</b></label><br/>
+                <input id="postCodeBuitenland" hidden/>
             </fieldset>
         </form>
     </div>
@@ -175,7 +180,7 @@
            <% foreach (PersoonsAdresInfo pa in ViewData.Model.PersoonLidInfo.PersoonsAdresInfo)
               { %>
                <tr id="adressen">      
-                    <% //Hidden fields om gegevens in jQeury uit te kunnen lezen %>
+                    <% //Hidden fields om gegevens in jQuery uit te kunnen lezen %>
                    
                     <% counter += 1; %>
                     <td>Adres <%= counter %>

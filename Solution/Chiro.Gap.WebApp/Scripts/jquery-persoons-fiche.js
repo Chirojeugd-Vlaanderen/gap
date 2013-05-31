@@ -268,7 +268,6 @@ $(function () {
     });
     //------------------------------------------------------------------------------------------
     //email verwijderen
-
     $('.emailverw').click(function (e) {
         e.preventDefault();
         var comID = $(this).parent().parent().find('td input').val();
@@ -278,7 +277,7 @@ $(function () {
                 title: "Bevestiging",
                 buttons: {
                     'Ja': function () {
-                        url = link("Personen", "Verwijderen");
+                        url = link("Personen", "VerwijderenCommVorm");
                         $.get(url, { commvormID: comID });
                         //verbergt de rij in de tabel zodat de pagina niet herladen hoeft te worden.
                         $('input[value=' + comID + ']').parent().parent().hide();
@@ -289,7 +288,6 @@ $(function () {
                     }
                 }
             });
-        clearDialog();
     });
     //------------------------------------------------------------------------------------------
     //Nieuwe communicatievorm toevoegen
@@ -481,11 +479,12 @@ $(function () {
         var straatnaam;
         var huisnummer;
         var postnummer;
+        var postcode;
         var bus;
         var gemeente;
         var oudAdresId;
         var adresType;
-        var land;
+        var land = 'België';
         var woonplaatsbuitenland;
 
         var stratenCache = {};
@@ -519,7 +518,21 @@ $(function () {
             //info uit model invullen in variablen
             straatnaam = data.Straat;
             postnummer = data.PostNr;
+            postcode = data.PostCode;
             huisnummer = data.HuisNr;
+
+            land = data.PersoonsAdresInfo.LandNaam;
+            alert(land);
+            if (land != 'België') {
+                $('#gemeenteBuitenland, #postCodeBuitenland, #pcbLabel').show();
+                $('#gemeente').hide();
+                gemeente = data.WoonPlaats;
+            } else {
+                $('#gemeenteBuitenland, #postCodeBuitenland, #pcbLabel').hide();
+                $('#gemeente').show();
+                $('#postCodeBuitenland').val(postcode);
+            }
+
             bus = data.Bus;
             adresType = data.PersoonsAdresInfo.AdresType;
             var adresTekst;
@@ -550,7 +563,33 @@ $(function () {
             $('#postnummer').val(postnummer);
             $('#bus').val(bus);
             $('#adresType').val(adresTekst);
-            
+
+            if (land != 'België') {
+                $('#postCodeBuitenland').val(postcode);
+                $('#gemeenteBuitenland').val(gemeente);
+            }
+
+            url = link("Adressen", "LandenVoorstellen");
+            $.getJSON(url, function (data2) {
+                $.each(data2, function (index, value) {
+                    $('#landNaam').append('<option id="' + data2[index].ID + '" value="' + data2[index].Naam + '">' + data2[index].Naam + '</option>');
+                });
+            }).done(function () {
+                $('#landNaam').val(land);
+            });
+
+            $('#landNaam').change(function () {
+                land = $(this).val();
+                alert(land);
+                if (land != 'België') {
+                    $('#gemeenteBuitenland, #postCodeBuitenland, #pcbLabel').show();
+                    $('#gemeente').hide();
+                } else {
+                    $('#gemeenteBuitenland, #postCodeBuitenland, #pcbLabel').hide();
+                    $('#gemeente').show();
+                }
+            });
+
             oudAdresId = data.OudAdresID;
             type = data.PersoonsAdresInfo.AdresType;
             land = data.PersoonsAdresInfo.LandNaam;
@@ -564,8 +603,10 @@ $(function () {
         });
 
         $('#postnummer').change(function () {
-            var pn = $(this).val();
-            toonGemeenten(pn, '#gemeente');
+            if (land == 'België') {
+                postnummer = $(this).val();
+                toonGemeenten(postnummer, '#gemeente');
+            }
         });
 
         $('#adresType').change(function () {
@@ -598,7 +639,14 @@ $(function () {
                     huisnummer = $('#huisnr').val();
                     postnummer = $('#postnummer').val();
                     bus = $('#bus').val();
-                    gemeente = $('#gemeente').val();
+
+                    if (land == 'België') {
+                        gemeente = $('#gemeente').val();
+                    } else {
+                        gemeente = $('#buitenlandseGemeente').val();
+                        postcode = $('#postCodeBuitenland').val();
+                    }
+
 
                     url = link("Personen", "Verhuizen");
                     url += "/" + adresID;
@@ -611,6 +659,7 @@ $(function () {
                             "PersoonsAdresInfo.AdresType": adresType,
                             Land: land,
                             PostNr: postnummer,
+                            PostCode: postcode,
                             Straat: straatnaam,
                             HuisNr: huisnummer,
                             Bus: bus,
@@ -648,6 +697,7 @@ $(function () {
                 $("#extraInfoDialog").dialog({
                     modal: true,
                     title: "Adres verwijderen",
+                    height: 250,
                     buttons: {
                         'Verwijderen': function () {
                             $('#extraInfoDialog #verwijderAdres').click();
