@@ -96,6 +96,22 @@ namespace Chiro.Gap.Diagnostics.Orm
             }
         }
         private ObjectSet<FunctieProbleem> _FunctieProbleems;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<VerlorenBivakken> VerlorenBivakkens
+        {
+            get
+            {
+                if ((_VerlorenBivakkens == null))
+                {
+                    _VerlorenBivakkens = base.CreateObjectSet<VerlorenBivakken>("VerlorenBivakkens");
+                }
+                return _VerlorenBivakkens;
+            }
+        }
+        private ObjectSet<VerlorenBivakken> _VerlorenBivakkens;
 
         #endregion
         #region AddTo Methods
@@ -114,6 +130,14 @@ namespace Chiro.Gap.Diagnostics.Orm
         public void AddToFunctieProbleems(FunctieProbleem functieProbleem)
         {
             base.AddObject("FunctieProbleems", functieProbleem);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the VerlorenBivakkens EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToVerlorenBivakkens(VerlorenBivakken verlorenBivakken)
+        {
+            base.AddObject("VerlorenBivakkens", verlorenBivakken);
         }
 
         #endregion
@@ -556,6 +580,172 @@ namespace Chiro.Gap.Diagnostics.Orm
         private Nullable<global::System.Int32> _PersoonsAdresID;
         partial void OnPersoonsAdresIDChanging(Nullable<global::System.Int32> value);
         partial void OnPersoonsAdresIDChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="diagnosticModel", Name="VerlorenBivakken")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class VerlorenBivakken : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new VerlorenBivakken object.
+        /// </summary>
+        /// <param name="stamNr">Initial value of the StamNr property.</param>
+        /// <param name="groepsNaam">Initial value of the GroepsNaam property.</param>
+        /// <param name="bivakNaam">Initial value of the BivakNaam property.</param>
+        /// <param name="uitstapID">Initial value of the UitstapID property.</param>
+        public static VerlorenBivakken CreateVerlorenBivakken(global::System.String stamNr, global::System.String groepsNaam, global::System.String bivakNaam, global::System.Int32 uitstapID)
+        {
+            VerlorenBivakken verlorenBivakken = new VerlorenBivakken();
+            verlorenBivakken.StamNr = stamNr;
+            verlorenBivakken.GroepsNaam = groepsNaam;
+            verlorenBivakken.BivakNaam = bivakNaam;
+            verlorenBivakken.UitstapID = uitstapID;
+            return verlorenBivakken;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String StamNr
+        {
+            get
+            {
+                return _StamNr;
+            }
+            set
+            {
+                if (_StamNr != value)
+                {
+                    OnStamNrChanging(value);
+                    ReportPropertyChanging("StamNr");
+                    _StamNr = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("StamNr");
+                    OnStamNrChanged();
+                }
+            }
+        }
+        private global::System.String _StamNr;
+        partial void OnStamNrChanging(global::System.String value);
+        partial void OnStamNrChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String GroepsNaam
+        {
+            get
+            {
+                return _GroepsNaam;
+            }
+            set
+            {
+                if (_GroepsNaam != value)
+                {
+                    OnGroepsNaamChanging(value);
+                    ReportPropertyChanging("GroepsNaam");
+                    _GroepsNaam = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("GroepsNaam");
+                    OnGroepsNaamChanged();
+                }
+            }
+        }
+        private global::System.String _GroepsNaam;
+        partial void OnGroepsNaamChanging(global::System.String value);
+        partial void OnGroepsNaamChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Gemeente
+        {
+            get
+            {
+                return _Gemeente;
+            }
+            set
+            {
+                OnGemeenteChanging(value);
+                ReportPropertyChanging("Gemeente");
+                _Gemeente = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Gemeente");
+                OnGemeenteChanged();
+            }
+        }
+        private global::System.String _Gemeente;
+        partial void OnGemeenteChanging(global::System.String value);
+        partial void OnGemeenteChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String BivakNaam
+        {
+            get
+            {
+                return _BivakNaam;
+            }
+            set
+            {
+                if (_BivakNaam != value)
+                {
+                    OnBivakNaamChanging(value);
+                    ReportPropertyChanging("BivakNaam");
+                    _BivakNaam = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("BivakNaam");
+                    OnBivakNaamChanged();
+                }
+            }
+        }
+        private global::System.String _BivakNaam;
+        partial void OnBivakNaamChanging(global::System.String value);
+        partial void OnBivakNaamChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 UitstapID
+        {
+            get
+            {
+                return _UitstapID;
+            }
+            set
+            {
+                if (_UitstapID != value)
+                {
+                    OnUitstapIDChanging(value);
+                    ReportPropertyChanging("UitstapID");
+                    _UitstapID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("UitstapID");
+                    OnUitstapIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _UitstapID;
+        partial void OnUitstapIDChanging(global::System.Int32 value);
+        partial void OnUitstapIDChanged();
 
         #endregion
     
