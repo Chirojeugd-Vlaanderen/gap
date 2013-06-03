@@ -43,15 +43,17 @@
         Stappen in het proces:</p>
     <ul>
         <li>Klik op het tabblad 'Iedereen'.</li>
+        <img src="<%=ResolveUrl("~/Content/Screenshots/Werkbalk_Iedereen.png") %>" alt="Werkbalk'Iedereen'" />
         <li>Zoek de persoon voor wie je een broer of zus wilt toevoegen. Ga eventueel nog na
             of het thuisadres en bijvoorbeeld het telefoonnummer van de ouders ingevuld is.</li>
+            <img src="<%=ResolveUrl("~/Content/Screenshots/ZusBroer.png") %>" alt="Gegevens voor een zus of broer toevoegen" />
     </ul>
-    <img src="<%=ResolveUrl("~/Content/Screenshots/Link_Broer_of_zus.png") %>" alt="Gegevens voor een zus of broer toevoegen" />
+    
     <ul>
         <li>Klik op de link 'zus/broer maken'. Je gaat dan naar het scherm waar je een nieuwe
             persoon aanmaakt, en de familienaam is al ingevuld.</li>
     </ul>
-    <img src="<%=ResolveUrl("~/Content/Screenshots/Formulier_Broer_zus.png") %>" alt="Gegevens voor een zus of broer toevoegen" />
+    
     <ul>
         <li>Vul de ontbrekende gegevens in (en pas eventueel de familienaam aan als het over
             een nieuwsamengesteld gezin gaat). Klik op de knop 'Bewaren'.</li>

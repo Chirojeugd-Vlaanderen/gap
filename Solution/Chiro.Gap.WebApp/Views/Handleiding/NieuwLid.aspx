@@ -25,17 +25,14 @@
 	Handleiding: Nieuw lid
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
-	<h2>
-		Een nieuw lid of een nieuwe leid(st)er toevoegen</h2>
-	<p>
-		Voeg wanneer nodig eerst nog een nieuwe persoon toe</p>
-	<p>
-		Stappen in het proces:</p>
+	<h2>Een nieuw lid of een nieuwe leid(st)er toevoegen</h2>
+	<p>Voeg wanneer nodig eerst nog een nieuwe persoon toe</p>
+	<p>Stappen in het proces:</p>
 	<ul>
 		<li>Klik op het tabblad 'Iedereen'.</li>
 		<li>Klik op de naam van degene die je wilt inschrijven om de persoonsfiche te bekijken.</li>
 		</ul>
-		<img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_inschrijvenlink.png") %>" alt="Iemand inschrijven van op de persoonsfiche" />
+		<img src="<%=ResolveUrl("~/Content/Screenshots/NieuwLid_PersoonsFiche.png") %>" alt="Iemand inschrijven van op de persoonsfiche" />
 		<ul>
 		<li>Klik onderaan op de link waarmee je de persoon kunt inschrijven.
 			<ul>
@@ -52,11 +49,13 @@
 	<ul>
 		<li>Klik op het tabblad 'Iedereen'.</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Link_Inschrijven_op_overzicht.png") %>"
-		alt="Iemand inschrijven op het tabblad 'Iedereen'" />
+    <img src="<%=ResolveUrl("~/Content/Screenshots/Werkbalk_Iedereen.png") %>" alt="Werkbalk'Iedereen'" />
+	
 	<ul>
 		<li>Klik achter de naam van degene die je wilt inschrijven op de link 'inschrijven
 			als lid' of 'inschrijven als leiding'
+            <img src="<%=ResolveUrl("~/Content/Screenshots/NieuwLid_Iedereen.png") %>"
+		alt="Iemand inschrijven op het tabblad 'Iedereen'" />
 			<ul>
 				<li class="nietgoed">Als er iets foutliep, krijg je daar een foutmelding voor zodat
 					je de nodige aanpassingen nog kunt doen. Normaal gezien moet je daarvoor op
@@ -72,10 +71,11 @@
 		inschrijven:</p>
 	<ul>
 		<li>Klik op het tabblad 'Iedereen'</li>
+        <img src="<%=ResolveUrl("~/Content/Screenshots/Werkbalk_Iedereen.png") %>" alt="Werkbalk'Iedereen'" />
 		</ul>
-		<img src="<%=ResolveUrl("~/Content/Screenshots/Inschrijven_MeerdereMensen.png") %>" alt="Meerdere mensen ineens inschrijven" />
+		<img src="<%=ResolveUrl("~/Content/Screenshots/NieuwLid_MeerdereLedenInschrijven.png") %>" alt="Meerdere mensen ineens inschrijven" />
 		<ul>
-		<li>Vink de personen aan die je wilt inschrijven en selecteer boven de tabel de
+		<li>Vink de personen aan die je wilt inschrijven en naast de tabel de
 			actie 'inschrijven als lid'.
 			<ul>
 				<li class="nietgoed">Als er iets foutliep, krijg je daar een foutmelding voor. Heb

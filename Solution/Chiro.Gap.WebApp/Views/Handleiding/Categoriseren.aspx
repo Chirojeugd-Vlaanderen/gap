@@ -35,15 +35,13 @@
 		natuurlijk wel al
 		<%=Html.ActionLink("toegevoegd hebben", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweCategorie" })%>.</p>
 	<a class="anchor" id="MeerdereMensen" />
-	<h3>
-		Op het tabblad 'Iedereen'</h3>
-	<p>
-		Stappen in het proces:</p>
+	<h3>Op het tabblad 'Iedereen'</h3>
+	<p>Stappen in het proces:</p>
 	<ul>
 		<li>Vink het hokje aan voor al de personen die tot de categorie moeten behoren.</li>
-		<li>Selecteer boven de tabel de actie 'In dezelfde categorie stoppen'.</li>
+		<li>Selecteer naast de tabel de actie 'In dezelfde categorie stoppen'.</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Categoriseren_MeerdereMensen.png") %>"
+	<img src="<%=ResolveUrl("~/Content/Screenshots/CategorieWijzigen_MeerderePersonen.png") %>"
 		alt="Meerdere mensen tegelijk in een categorie stoppen" />
 	<ul>
 		<li>Vink aan in welke categorie die mensen moeten terechtkomen en klik op de knop Bewaren.</li>
@@ -60,12 +58,12 @@
 		<li>Klik op de naam van degene die je in een categorie wilt stoppen. Zo ga je naar
 			de persoonsfiche.</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_categorielink.png") %>"
+	<img src="<%=ResolveUrl("~/Content/Screenshots/CategorieWijzigen_Persoonsfiche.png") %>"
 		alt="Iemands categorieën aanpassen" />
 	<ul>
 		<li>Klik op de link 'toevoegen aan categorie'</li>
 		<li>Vink aan in welke categorie die persoon moet terechtkomen en klik op de knop Bewaren.</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Categorielijst_voor_categoriseren.png") %>"
+	<img src="<%=ResolveUrl("~/Content/Screenshots/CategorieWijzigen_Popup.png") %>"
 		alt="De categorieën aanvinken waar de persoon in terecht moet komen" />
 </asp:Content>

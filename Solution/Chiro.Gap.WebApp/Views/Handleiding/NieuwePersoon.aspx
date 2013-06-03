@@ -39,27 +39,30 @@
 		Stappen in het proces:</p>
 	<ul>
 		<li>Klik op het tabblad 'Persoon toevoegen'.</li>
+        <img src="<%=ResolveUrl("~/Content/Screenshots/Werkbalk_PersoonToevoegen.png") %>" alt="Tabblad nieuwe persoon" />
 		<li>Je komt nu op een formuliertje om een nieuwe persoon toe te voegen.</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Nieuwe_persoon.png") %>" alt="Formuliertje voor een nieuwe persoon" />
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Tabblad_NieuwePersoon.png") %>" alt="Formuliertje voor een nieuwe persoon" />
 	<ul>
 		<li>Vul de gevraagde gegevens in en klik op de knop 'Bewaren'
 			<ul>
+			    <li>Je moet minstens een voornaam, naam, geboortedatum, het geslacht en een adres invullen, je kan de persoon ook meteen inschrijven
+                door onder 'Chirogegevens' op 'Ja' te klikken. Je krijgt dan het volgende scherm te zien, waar je de afdeling kan kiezen.</li>
+                <img src="<%=ResolveUrl("~/Content/Screenshots/Tabblad_NieuwePersoon_Inschrijven.png") %>" alt="Persoon inschrijven" />
 				<li>Als er iets foutliep, krijg je daar een foutmelding voor zodat je nog zaken
 					kunt aanpassen. Het kan bv. zijn dat je iemand dubbel probeert toe te voegen
 					of dat je te weinig invulde.</li>
-				<li>Als er geen problemen meer zijn, kom je op een ander scherm, waar je bijkomende
-					informatie kunt toevoegen.</li>
+				<li>Als er geen problemen meer zijn, kom je terecht op de persoonsfiche van de persoon die je net toevoegde.</li>
 			</ul>
 		</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_nieuwe_persoon.png") %>"
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Tabblad_NieuwePersoon_PersoonsFiche.png") %>" 
 		alt="Bijkomende gegevens voor een nieuwe persoon" />
 	<ul>
 		<li>Bijkomende gegevens die je kunt toevoegen:
 			<ul>
-				<li>Adres(sen)</li>
-				<li>Communicatievormen: telefoonnummer(s), mailadres(sen), enz.</li>
+				<li>Extra adres(sen)</li>
+				<li>Extra communicatievormen: telefoonnummer(s), mailadres(sen), enz.</li>
 				<li>Categorieën</li>
 			</ul>
 		</li>

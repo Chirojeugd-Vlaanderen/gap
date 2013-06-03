@@ -51,13 +51,15 @@
 	<ul>
 		<li>Klik op het tabblad 'Ingeschreven'. Vink aan wie je wilt uitschrijven, en kies
 			in het selectievakje onder 'Selectie' voor 'Uitschrijven.</li>
+        <img src="<%=ResolveUrl("~/Content/Screenshots/Werkbalk_Ingeschreven.png") %>" alt="Werkbalk Ingeschreven" />
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Link_Uitschrijven.png") %>" alt="Iemand uitschrijven" />
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Uitschrijven.png") %>" alt="Iemand uitschrijven" />
 	<ul>
 		<li>Je krijgt nog een melding of de leden in kwestie uitgeschreven zijn.</li>
 	</ul>
+    <h3>Foutje gemaakt?</h3>
 	<p>
-		Foutje gemaakt? De verkeerde persoon uitgeschreven? Geen probleem: zoek hem
+		De verkeerde persoon uitgeschreven? Geen probleem: zoek hem
 		of haar op het tabblad 'Iedereen' en klik weer op 'Inschrijven'. Je zult niet
 		opnieuw een factuur krijgen voor de aansluiting.</p>
 </asp:Content>

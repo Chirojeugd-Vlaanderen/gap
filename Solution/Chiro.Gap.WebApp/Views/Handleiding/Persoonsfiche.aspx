@@ -28,12 +28,7 @@
 	<h2>
 		Persoonsfiche</h2>
 	<!-- EditRest -->
-	<h3>
-		Hoe kom je hier?</h3>
-	<p>
-		Je komt hier terecht wanneer je in het personenoverzicht (tabblad 'Iedereen')
-		of in het ledenoverzicht (tabblad 'Ingeschreven') op een naam klikt.</p>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_basis.png") %>" alt="Een persoonsfiche" />
+	
 	<h3>
 		Wat kun je hier zien?</h3>
 	<p>

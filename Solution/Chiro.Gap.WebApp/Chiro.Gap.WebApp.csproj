@@ -259,6 +259,7 @@
     <Content Include="Views\Gav\Index.aspx" />
     <Content Include="Views\GebruikersRecht\Index.aspx" />
     <Content Include="Views\Groep\NaamWijzigen.aspx" />
+    <Content Include="Views\Handleiding\Zoeken.aspx" />
     <Content Include="Views\Handleiding\Deadlines.aspx" />
     <Content Include="Views\Handleiding\Deelnemersadministratie.aspx" />
     <Content Include="Views\Handleiding\DeelnemersInschrijven.aspx" />
@@ -505,7 +506,7 @@
     <Content Include="Views\Handleiding\Uitschrijven.aspx" />
     <Content Include="Views\Handleiding\VeelgesteldeVragen.aspx" />
     <Content Include="Views\Handleiding\VeranderenVanAfdeling.aspx" />
-    <Content Include="Views\Handleiding\Verhuizen.aspx" />
+    <Content Include="Views\Handleiding\AdresWijzigen.aspx" />
     <Content Include="Views\Handleiding\VerzekeringLoonverlies.aspx" />
     <Content Include="Views\Handleiding\ZusBroer.aspx" />
     <Content Include="Views\Shared\LedenLinksControl.ascx" />

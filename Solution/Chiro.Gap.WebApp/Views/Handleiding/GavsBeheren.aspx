@@ -25,20 +25,15 @@
     Handleiding: GAV's beheren
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
-    <h2>
-        GAV's beheren</h2>
-    <p>
-        Rechts bovenaan, onder je loginnaam, zie je onder andere een link 'GAV's beheren'.
-    </p>
+    <h2>GAV's beheren</h2>
+    <p>Rechts bovenaan, onder je loginnaam, zie je onder andere een link 'GAV's <%=Html.InfoLink("GAVbeheer") %> beheren'.</p>
     <img src="<%=ResolveUrl("~/Content/Screenshots/Links_rechts_bovenaan.png") %>"
         alt="De GAV-info rechts bovenaan" />
-    <p>
-        Daarmee ga je naar een overzichtje van wie er op dit moment allemaal toegang
+    <p>Daarmee ga je naar een overzichtje van wie er op dit moment allemaal toegang
         heeft tot je gegevens.</p>
     <img src="<%=ResolveUrl("~/Content/Screenshots/Overzicht_gebruikersrechten.png") %>"
         alt="Overzicht GAV's" />
-    <p>
-        Hier kun je toegangsrechten verlengen of afnemen.</p>
+    <p>Hier kun je toegangsrechten verlengen of afnemen.</p>
     <p>
         Om iemand toegang te geven, moet je naar zijn of haar persoonlijkegegevensfiche
         gaan: klik op de naam op het tabblad Iedereen of Ingeschreven. Op die fiche

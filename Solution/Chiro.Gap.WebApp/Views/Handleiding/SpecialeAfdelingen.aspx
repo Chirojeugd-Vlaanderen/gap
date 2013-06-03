@@ -31,12 +31,11 @@
 		Elke afdeling in je groep moet gekoppeld zijn aan een officiële. Dat is nodig
 		voor de website, omdat GAP iedereen die je inschrijft automatisch in de juiste
 		afdeling stopt. En het is nodig voor het nationaal secretariaat: zo weten wij
-		welke ledenuitgave
-		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Ledenuitgave", new { helpBestand = "Trefwoorden" }, new{ title="Wat is een ledenuitgave?"}) %>
+		welke ledenuitgave<%=Html.InfoLink("SA_ledenuitgave") %>
 		we moeten opsturen voor die leden.</p>
 	<p>
 		Sommige groepen hebben een aparte afdeling voor mensen met een (mentale) handicap.
-		Dat is één mogelijke uitwerking van het <a href="http://http://www.chiro.be/info-voor-leiding/diversiteit/chirovisie">
+		Dat is één mogelijke uitwerking van het <a href="http://www.chiro.be/info-voor-leiding/diversiteit/chirovisie" target="new">
 			streven naar inclusie</a> van de Chiro:
 	</p>
 	<blockquote>

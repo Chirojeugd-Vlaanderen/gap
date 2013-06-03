@@ -25,10 +25,8 @@
 	Handleiding: Nieuwe afdeling
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
-	<h2>
-		Een nieuwe afdeling toevoegen</h2>
-	<p>
-		Stappen in het proces:</p>
+	<h2>Een nieuwe afdeling toevoegen</h2>
+	<p>Stappen in het proces:</p>
 	<ul>
 		<li>Klik op het tabblad 'Groep'</li>
 		<li>Klik op de link 'afdelingsverdeling aanpassen'</li>
@@ -59,8 +57,7 @@
 		<li>Onderaan vind je de 'offici&euml;le' afdelingen en de geboortejaren die daarmee
 			overeenkomen. Je hoeft je daar niet aan te houden, ze staan er gewoon als hulp.
 			Eén van de keuzes die je moet maken, is wel met welke offici&euml;le afdeling
-			de jouwe overeenkomt. Zo weet het nationaal secretariaat welke ledenuitgave
-			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Ledenuitgave", new { helpBestand = "Trefwoorden" }, new{ title="Wat is een ledenuitgave?"}) %>
+			de jouwe overeenkomt. Zo weet het nationaal secretariaat welke ledenuitgave<%=Html.InfoLink("LedenUitgave") %>
 			we moeten opsturen voor die leden. Er is ook een optie 'Speciaal'. Dat is niet
 			voor bv. een speelclubafdeling met andere leeftijdsgrenzen dan de officiële!
 			Met speciale afdelingen wordt geen rekening gehouden bij de automatische indeling

@@ -43,12 +43,15 @@
 	<ul>
 		<li>Klik op het tabblad 'Ingeschreven' op de naam van de leider of leidster die
 			je bijkomend wilt verzekeren.</li>
+            <img src="<%=ResolveUrl("~/Content/Screenshots/Werkbalk_Ingeschreven.png") %>" alt="Werlkbalk Ingeschreven" />
 		<li>Je komt nu op de persoonsfiche. Klik links onderaan, bij de lidgegevens, op
-			de link ''.</li></ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Link_Loonverlies.png") %>" alt="Iemand verzekeren voor loonverlies vanop de persoonsfiche" />
+			de link 'Verzeker'.</li>
+            <img src="<%=ResolveUrl("~/Content/Screenshots/Verzekeren_loonverlies.png") %>" alt="Iemand verzekeren voor loonverlies vanop de persoonsfiche" />
+    </ul>
+	
 	<ul>
 		<li>Dan krijg je eerst nog een vraag om bevestiging. Klik op de knop 'Bevestigen'
-			om af te ronden.</li></ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Bevestiging_Loonverlies.png") %>"
-		alt="Bevestiging verzekering voor loonverlies" />
+			om af te ronden.</li>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Verzekeren_loonverlies_bevestiging.png") %>" alt="Iemand verzekeren voor loonverlies vanop de persoonsfiche" />
+    </ul>
 </asp:Content>

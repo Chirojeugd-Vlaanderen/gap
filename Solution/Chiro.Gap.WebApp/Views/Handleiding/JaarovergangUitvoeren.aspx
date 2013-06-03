@@ -51,7 +51,7 @@
             van 15 oktober. Schrijf dan wel zo snel mogelijk je leiding en leden in. Ofwel
             gebruik je de standaardoptie: dan krijg je ineens de kans om iedereen in te
             schrijven. Maak je keuze en klik op de knop 'Verdeling bewerken en verdergaan'.
-            Aangezien iedereen sowieso een instapperiode&nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is die instapperiode?" } ) %>
+            Aangezien iedereen sowieso een instapperiode&nbsp;<%=Html.InfoLink("INSTAP_JO") %>
             krijgt, waarin je hen nog kunt uitschrijven, is dat de makkeljkste optie.</li>
     </ul>
     <img src="<%= ResolveUrl("~/Content/Screenshots/Jaarovergang03_leden_inschrijven.png") %>"

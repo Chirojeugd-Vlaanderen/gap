@@ -3,6 +3,7 @@
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ContentPlaceHolderID="HeaderTitleContent" runat="server">
+    
 <%
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
@@ -27,7 +28,44 @@
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
     <% // css? scripts? %>
 </asp:Content>
+
 <asp:Content ContentPlaceHolderID="BodyContent" runat="server">
+    <script type="text/javascript">        //info tonen
+        $(function () {
+            $('#GAV, #GAVbeheer').click(function () {
+                // Info over GAV
+                toonInfo("#GAVINFO", "Wat is een GAV?", "#infoDiv");
+            });
+            $('#FACTUUR').click(function () {
+                // Info over FACTURATIE
+                toonInfo("#FACINFO", "Info over facturatie", "#infoDiv");
+            });
+            $('#AANINFO, #AANSLUITING').click(function () {
+                // Info over AANSLUITING
+                toonInfo("#AANINFO", "Aansluiting", "#infoDiv");
+            });
+            $('#INSTAP, #INSTAP_JO').click(function () {
+                // Info over INSTAPPERIODE
+                toonInfo("#INSINFO", "Instapperiode", "#infoDiv");
+            });
+            $('#CATINFO').click(function () {
+                // Info over INSTAPPERIODE
+                toonInfo("#CATINFO", "Categorieën", "#infoDiv");
+            });
+
+            $('#LedenUitgave, #SA_ledenuitgave').click(function () {
+                // Info over LEDENUITGAVEN
+                toonInfo("#LUINFO", "Wat is een ledenuitgave?", "#infoDiv");
+            });
+            $('#VoorkeursAdres').click(function () {
+                // Info over VOORKEURSADRES
+                toonInfo("#VK-ADRINFO", "Wat is een voorkeursadres?", "#infoDiv");
+            });
+        });
+    </script>
+    <div id="infoDiv" hidden>
+        <img src="<%=ResolveUrl("~/Content/images/loading.gif")%>" />
+    </div>
     <% Html.RenderPartial("AlleHelpLinksControl"); %>
     <div id="help">
         <asp:ContentPlaceHolder ID="helpContent" runat="server" />

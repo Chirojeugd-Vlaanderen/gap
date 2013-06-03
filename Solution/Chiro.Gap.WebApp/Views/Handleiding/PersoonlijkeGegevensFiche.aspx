@@ -22,31 +22,25 @@
  * limitations under the License.
  */
 %>
-	Handleiding: Persoonlijkegegevensfiche
+	Handleiding: Gegevens aanpassen
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
-	<h2>
-		Persoonlijkegegevensfiche</h2>
-	<!-- EditGegevens -->
-	<h3>
-		Hoe kom je hier?</h3>
+	<h2>Persoonlijke gegevens</h2>
+    <h3>Hoe kom je hier?</h3>
+	<p>Je komt hier terecht wanneer je in het personenoverzicht (tabblad 'Iedereen')
+		of in het ledenoverzicht (tabblad 'Ingeschreven') op een naam klikt.</p>
+    <h3>Wat zie je hier?</h3>
+	<p>Op deze pagina krijg je een overzicht van alle gegevens van een persoon. Zowel zijn of haar persoonlijke- en contactgegevens als gegevens
+    specifiek over Chiro.</p>
+    <h3>Wat kan je hier doen?</h3>
 	<p>
-		Je komt hier als je op de tab 'Iedereen' klikt op de link 'Nieuwe persoon',
-		of als je een naam aanklikt en dan op de persoonsfiche klikt op de link 'persoonlijke
-		gegevens aanpassen'.</p>
-		
-<img src="<%=ResolveUrl("~/Content/Screenshots/Persoonlijkegegevensfiche.png") %>" alt="De persoonlijkegegevensfiche" />
-	<h3>
-		Wat zie je hier?</h3>
-	<p>
-		Hier vind je alle 'identificerende' gegevens van een persoon: eventueel een
-		AD-nummer
-		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "AD-nummer", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een AD-nummer?" })%>,
-		voornaam en naam, geboortedatum en Chiroleeftijd
-		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is je Chiroleeftijd?"})%>.</p>
-	<h3>
-		Wat kun je hier doen?</h3>
-	<p>
-		Het AD-nummer kun je niet veranderen, dat wordt toegekend door het nationaal
-		secretariaat. Alle andere gegevens kun je wél aanpassen.</p>
+	    Alle persoonlijke- en Chirogegevens van een persoon kunnen via zijn of haar persoonsfiche aangepast worden. 
+        Klik op het <strong>'pen'-icoon</strong> achter het gegeven in de tabel dat je wil aanpassen. Je krijgt nu ofwel een tekstveld om het geven in te vullen, ofwel een
+        pop-up waarin de juiste gegevens ingegeven kunnen worden. Gegevens waarachter geen 'pen'-icoon staat (bv. AD-nummer) kunnen niet aangepast worden.
+    </p>
+    <p>Je kan van hieruit ook iemand leiding maken, een functie toekennen of zijn of haar Chiroleeftijd aanpassen en,
+     als dat nog niet gebeurd is, de persoon inschrijven.</p>
+    <img src="<%=ResolveUrl("~/Content/Screenshots/GegevensAanpassen_Persoonsfiche.png") %>" alt="De persoonlijkegegevensfiche" />
+
+	
 </asp:Content>

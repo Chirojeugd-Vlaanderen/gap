@@ -25,26 +25,24 @@
 	Handleiding: Nieuw adres
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
-	<h2>
-		Een nieuw adres toevoegen</h2>
+	<h2>Een nieuw adres toevoegen</h2>
 	<p>
 		Een persoon kan meerdere adressen hebben. Eén daarvan is het voorkeursadres.
 		Op de persoonsfiche kun je dat zien: het is vetgedrukt. Dat is ook het adres
 		dat in de lijst staat die je downloadt, en dat doorgestuurd wordt naar het nationaal
 		secretariaat wanneer je iemand aansluit.</p>
-	<p>
-		Stappen in de procedure:</p>
+	<p>Stappen in de procedure:</p>
 	<ul>
 		<li>Klik op het tabblad 'Ingeschreven' of 'Iedereen'.</li>
 		<li>Klik daar op de naam van degene voor wie je een adres wilt toevoegen. Je komt
 			dan op de persoonsfiche.</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_nieuwadreslink.png") %>"
+	<img src="<%=ResolveUrl("~/Content/Screenshots/NieuwAdres.png") %>"
 		alt="Link 'nieuw adres' op Persoonsfiche" />
 	<ul>
-		<li>Klik op de link 'adres toevoegen'. Je komt dan op een formuliertje.</li>
+		<li>Klik op de link 'adres toevoegen' (het 'plus'-teken aan de rechterkant van de tabel). Er verschijnt dan een Pop-up waarin je het nieuwe adres kan toevoegen.</li>
 	</ul>
-	<img src="<%= ResolveUrl("~/Content/Screenshots/Formulier_Nieuw_adres.png") %>"
+	<img src="<%= ResolveUrl("~/Content/Screenshots/NieuwAdres_PopUp.png") %>"
 		alt="Staatnaamsuggestie" />
 	<ul>
 		<li>Vul de nodige gegevens in.

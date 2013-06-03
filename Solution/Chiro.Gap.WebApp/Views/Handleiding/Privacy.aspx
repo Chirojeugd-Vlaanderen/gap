@@ -38,8 +38,7 @@
         <li>Naam en voornaam</li>
         <li>Geboortedatum</li>
         <li>Geslacht</li>
-        <li>Het voorkeursadres
-           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Voorkeursadres", new { helpBestand = "Trefwoorden" }, new { title = "Wat is het voorkeursadres, en waarvoor dient dat?"})%></li>
+        <li>Het voorkeursadres<%=Html.InfoLink("VoorkeursAdres") %></li>
         <li>Mailadressen en telefoonnummers</li>
     </ul>
     <p>

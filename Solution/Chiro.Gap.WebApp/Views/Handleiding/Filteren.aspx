@@ -25,13 +25,12 @@
     Handleiding: Gegevens filteren
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
-    <h2>
-        Gegevens in lijsten filteren</h2>
-    <p>
-        Er zijn twee plaatsen waar je lijsten te zien krijgt: op het tabblad 'Ingeschreven'
-        en op het tabblad 'Iedereen'. Je kunt die gegevens filteren met het selectielijstje
-        rechts ervan.</p>
-    <img src="<%=ResolveUrl("~/Content/Screenshots/Filteren_op_categorie.png") %>" alt="Filteren op categorie" />
+    <h2>Gegevens in lijsten filteren</h2>
+    <p>Er zijn twee plaatsen waar je lijsten te zien krijgt: op het tabblad 'Ingeschreven'
+        en op het tabblad 'Iedereen'. Op het Tabblad 'Iedereen' staat de filter rechts naast de tabel.</p> 
+    <img src="<%=ResolveUrl("~/Content/Screenshots/Filteren_Iedereen.png") %>" alt="Filteren op categorie" />
+    <p>Op het overzicht 'Ingeschreven' staat die boven de tabel.</p>
+    <img src="<%=ResolveUrl("~/Content/Screenshots/Filteren_Ingeschreven.png") %>" alt="Filteren op categorie" />
     <p>
         Op die pagina's staat ook een link waarmee je de gegevens kunt downloaden als Excel-bestand.
         Als je een filter gebruikte, staan alleen de mensen uit je selectie in dat bestand.
@@ -41,8 +40,7 @@
         is.</p>
     <p>
         Afdelingen en functies kun je alleen toekennen aan ingeschreven leden en leiding,
-        en alleen voor het huidige werkjaar. Categorieën
-       &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Categorie", new { helpBestand = "Trefwoorden" }, null)%>
+        en alleen voor het huidige werkjaar. Categorieën<%=Html.InfoLink("CATINFO") %>
         kun je voor iedereen gebruiken, dus zowel voor leden en leiding als voor 'buitenstaanders'.
         Categorieën zijn niet werkjaargebonden, dus eens iemand erin zit, blijft dat zo
         tot iemand dat ongedaan maakt.</p>

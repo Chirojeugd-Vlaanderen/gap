@@ -40,6 +40,7 @@
        { %>
            <input id="lidIdH" value="<%= Model.PersoonLidInfo.LidInfo.LidID %>" hidden readonly/>
            <input id="gwJaar" value="<%= Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID %>" hidden readonly/>
+           
            <input id="lidType" value="<%=Model.PersoonLidInfo.LidInfo.Type %>" hidden readonly/>
       <% }
        else
@@ -48,7 +49,7 @@
            <input id="gwJaar" value="geenGwJaar" hidden readonly/>
            <input id="lidType" value="geenType" hidden readonly/>
       <% }%>
-   
+   <input id="werkjaar" value="<%= Model.HuidigWerkJaar %>"hidden readonly/>
     <input id="GPid" value="<%=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID  %>" hidden readonly/>
     <input id="versieString" value="<%=Model.PersoonLidInfo.PersoonDetail.VersieString %>" hidden readonly/> 
      
