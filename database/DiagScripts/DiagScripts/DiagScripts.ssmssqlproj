@@ -3,6 +3,18 @@
   <Items>
     <LogicalFolder Name="Connections" Type="2" Sorted="true">
       <Items>
+        <ConnectionNode Name="devsrv1.chiro.wereld\sql2k8:CgDevelop">
+          <Created>2012-10-23T12:27:49.5531292+02:00</Created>
+          <Type>SQL</Type>
+          <Server>devsrv1.chiro.wereld\sql2k8</Server>
+          <UserName>CgDevelop</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
         <ConnectionNode Name="devsrv1.chiro.wereld\sql2k8:sa">
           <Created>2012-08-31T13:28:02.488035+02:00</Created>
           <Type>SQL</Type>
@@ -31,6 +43,12 @@
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
+        <FileNode Name="AantalLeden.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>AantalLeden.sql</FullPath>
+        </FileNode>
         <FileNode Name="AdWijzigen.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
@@ -55,6 +73,18 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>DubbelVerwijderen.sql</FullPath>
         </FileNode>
+        <FileNode Name="FixContactType.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>FixContactType.sql</FullPath>
+        </FileNode>
+        <FileNode Name="GpsOpAd.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>GpsOpAd.sql</FullPath>
+        </FileNode>
         <FileNode Name="ix_persoon_AdNummer.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
@@ -66,6 +96,12 @@
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>KipSyncLog.sql</FullPath>
+        </FileNode>
+        <FileNode Name="LedenOpFactuur.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>LedenOpFactuur.sql</FullPath>
         </FileNode>
         <FileNode Name="LidInKip.sql">
           <AssociatedConnectionMoniker />
@@ -121,6 +157,12 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>VerkeerdeAdressen.sql</FullPath>
         </FileNode>
+        <FileNode Name="VerkeerdeContactInfo.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>VerkeerdeContactInfo.sql</FullPath>
+        </FileNode>
         <FileNode Name="VerzVerwijderen.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
@@ -128,10 +170,16 @@
           <FullPath>VerzVerwijderen.sql</FullPath>
         </FileNode>
         <FileNode Name="vVerlorenAdressen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:devsrv1.chiro.wereld\sql2k8:False:CgDevelop</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>devsrv1.chiro.wereld\sql2k8</AssociatedConnSrvName>
-          <AssociatedConnUserName>CgDevelop</AssociatedConnUserName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>vVerlorenAdressen.sql</FullPath>
+        </FileNode>
+        <FileNode Name="vVerlorenBivakken.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>vVerlorenBivakken.sql</FullPath>
         </FileNode>
         <FileNode Name="ZoekLogs.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
