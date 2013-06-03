@@ -99,27 +99,47 @@ $(function () {
 
 
     $('#btn_inschrijven').click(function () {
-        url = link("Personen", "Inschrijven");
-        url += "?gelieerdePersoonID=" + GPid + " #main";
-        $('#extraInfoDialog').dialog();
-        $('#extraInfoDialog').load(url, function () {
-            gedeeltelijkTonen('#extraInfoDialog');
-            $(this).find('fieldset').css('width', '100%');
+        var nu = new Date();
+        var jaar = nu.getFullYear();
+        jaar = parseInt(jaar);
+        var geboortejaar = geboortedatum.substr(-4);
+        geboortejaar = parseInt(geboortejaar);
+        var leeftijd = jaar - geboortejaar;
+        if (leeftijd < 7) {
+            $('#extraInfoDialog').html("Deze persoon is te jong om als leiding ingeschreven te worden!");
             $('#extraInfoDialog').dialog({
-                title: "Inschrijven",
-                width: 600,
+                title: "Onmogelijk",
+                modal: true,
                 buttons: {
-                    'Schrijf in': function () {
-                        $('#bewaar').click();
-                    },
-                    'Annuleren': function () {
-                        $(this).dialog('destroy');
+                    'Ok': function () {
                         $(this).dialog('close');
                     }
                 }
             });
-        });
-        clearDialog();
+        } else {
+            url = link("Personen", "Inschrijven");
+            url += "?gelieerdePersoonID=" + GPid + " #main";
+            $('#extraInfoDialog').dialog();
+            $('#extraInfoDialog').load(url, function () {
+                gedeeltelijkTonen('#extraInfoDialog');
+                $(this).find('fieldset').css('width', '100%');
+                $('#extraInfoDialog').dialog({
+                    title: "Inschrijven",
+                    width: 600,
+                    modal: true,
+                    buttons: {
+                        'Schrijf in': function () {
+                            $('#bewaar').click();
+                        },
+                        'Annuleren': function () {
+                            $(this).dialog('destroy');
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            });
+            clearDialog();
+        }
     });
 
     //defaults
