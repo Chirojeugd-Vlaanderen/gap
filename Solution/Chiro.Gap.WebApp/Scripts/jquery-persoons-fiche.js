@@ -56,6 +56,7 @@ $(function () {
     if (chiroleeftijd == "") {
         chiroleeftijd = 0;
     }
+    var werkjaar = $('#werkjaar').val();
     var versiestring = $('#versieString').val().trim();
     var groepswerkJaar = $('#gwJaar').val().trim();
     var lidType = $('#lidType').val().trim();
@@ -99,14 +100,11 @@ $(function () {
 
 
     $('#btn_inschrijven').click(function () {
-        var nu = new Date();
-        var jaar = nu.getFullYear();
-        jaar = parseInt(jaar);
         var geboortejaar = geboortedatum.substr(-4);
         geboortejaar = parseInt(geboortejaar);
-        var leeftijd = jaar - geboortejaar;
+        var leeftijd = werkjaar - geboortejaar;
         if (leeftijd < 7) {
-            $('#extraInfoDialog').html("Deze persoon is te jong om als leiding ingeschreven te worden!");
+            $('#extraInfoDialog').html("Het is niet mogelijk om kleuters in te schrijven!");
             $('#extraInfoDialog').dialog({
                 title: "Onmogelijk",
                 modal: true,
@@ -126,6 +124,7 @@ $(function () {
                 $('#extraInfoDialog').dialog({
                     title: "Inschrijven",
                     width: 600,
+                    height: 350,
                     modal: true,
                     buttons: {
                         'Schrijf in': function () {
@@ -542,7 +541,6 @@ $(function () {
             huisnummer = data.HuisNr;
 
             land = data.PersoonsAdresInfo.LandNaam;
-            alert(land);
             if (land != 'België') {
                 $('#gemeenteBuitenland, #postCodeBuitenland, #pcbLabel').show();
                 $('#gemeente').hide();
