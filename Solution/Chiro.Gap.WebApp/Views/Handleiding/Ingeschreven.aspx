@@ -37,8 +37,8 @@
     </p>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/Tabblad_Ingeschreven.png") %>"
 		alt="Het tabblad 'Ingeschreven'" />
-    <p>Je ledenlijst wordt doorgegeven aan Chirojeugd Vlaanderen, voor de aansluiting&nbsp;<%= Html.InfoLink("AANINFO") %>
-    en de verzekering. Dat gebeurt per lid, na het einde van hun instapperiode&nbsp;<%= Html.InfoLink("INSTAP") %>
+    <p>Je ledenlijst wordt doorgegeven aan Chirojeugd Vlaanderen, voor de aansluiting&nbsp;<%= Html.InfoLink("ING_AANSLUITING") %>
+    en de verzekering. Dat gebeurt per lid, na het einde van hun instapperiode&nbsp;<%= Html.InfoLink("ING_INSTAP")%>
     <h3>Wat kun je hier doen?</h3>
 	<ul>
 		<li><%= Html.ActionLink("Leiding verzekeren tegen loonverlies", "ViewTonen", new { controller = "Handleiding", helpBestand = "VerzekeringLoonverlies" }, new { title = "Werkende leiding extra verzekeren"})%></li>

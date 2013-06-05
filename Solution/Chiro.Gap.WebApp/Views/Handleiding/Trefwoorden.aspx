@@ -31,8 +31,7 @@
         <dt><strong><a class="anchor" id="Aansluiting">Aansluiting</a></strong>:</dt>
         <dd id="AANINFO">
             Je bent aangesloten bij Chirojeugd Vlaanderen wanneer een groep, gewest, verbond
-            of nationale vrijwilligersploeg je inschrijft en je instapperiode <a href="#Instapperiode">
-                [?]</a> is verstreken. Een inschrijving kan ongedaan gemaakt worden in de loop
+            of nationale vrijwilligersploeg je inschrijft en je instapperiode<%=Html.InfoLink("TW_Instap1") %> is verstreken. Een inschrijving kan ongedaan gemaakt worden in de loop
             van het werkjaar, een aansluiting niet.<br />
             Je groep is aangesloten bij Chirojeugd Vlaanderen als je de jaarovergang uitgevoerd
             hebt en minstens één leider of leidster ingeschreven hebt.
@@ -49,7 +48,7 @@
             wel eens bivak. Typisch voor de Chiro is dat we met heel de groep samen ergens naartoe
             trekken - al zijn er wel uitzonderingen. Sommige groepen gaan bijvoorbeeld apart
             op kamp met hun jongste afdeling. Ook dat geldt als een bivak, en dus moet je er
-            een bivakaangifte <a href="#Bivakaangifte">[?]</a> voor doen. Alle info over verzekeringen,
+            een bivakaangifte<%=Html.InfoLink("TW_BivakAangifte1") %> voor doen. Alle info over verzekeringen,
             administratie en praktische regelingen vind je op <a href="http://www.chiro.be/bivak">
                 www.chiro.be/bivak</a> en in <a href="http://www.chiro.be/info-voor-leiding/uitgaven/boeken/bivakboek">
                     het Bivakboek</a>.
@@ -111,9 +110,9 @@
         <dd id="INSCHRINFO">
             Mensen die je inschrijft, maak je lid van je groep. Je vindt hen op het tabblad
             'Ingeschreven', en ze zijn verzekerd bij Chiroactiviteiten.<br />
-            Iedereen krijgt bij de inschrijving een instapperiode <a href="#Instapperiode">[?]</a>.
+            Iedereen krijgt bij de inschrijving een instapperiode<%=Html.InfoLink("TW_Instap3") %>.
             Pas nadat die verlopen is, word je effectief aangesloten bij Chirojeugd Vlaanderen,
-            en kan het nationaal secretariaat daarvoor een factuur <a href="#Factuur">[?]</a>
+            en kan het nationaal secretariaat daarvoor een factuur<%=Html.InfoLink("TW_Factuur") %>.
             opmaken.</dd>
         <dt><strong><a class="anchor" id="Inschrijvingsvoorwaarden">Inschrijvingsvoorwaarden</a></strong>:</dt>
         <dd id="INSCHR-VWINFO">
@@ -139,10 +138,8 @@
         <dd id="JOINFO">
             Tijdens de jaarovergang geef je aan welke afdelingen je groep heeft. De leden van
             vorig jaar worden automatisch in de juiste afdeling gezet en ingeschreven. Voor
-            die juiste afdeling kijkt het programma naar de leeftijd en de Chiroleeftijd
-           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is je Chiroleeftijd?"})%>.
-            Bij die inschrijving krijgen al die leden een instapperiode
-           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een instapperiode?"})%>.
+            die juiste afdeling kijkt het programma naar de leeftijd en de Chiroleeftijd<%=Html.InfoLink("TW_ChiroLeeftijd") %>.
+            Bij die inschrijving krijgen al die leden een instapperiode<%=Html.InfoLink("TW_Instap2") %>.
             Als ze niet meer naar de Chiro willen komen, moet je ze uitschrijven voor het einde
             van die instapperiode, anders krijg je toch een factuur voor hun lidgeld. Werk je
             met een inschrijvingsdag die nogal laat valt? Voer de jaarovergang dan kort voor
@@ -161,8 +158,8 @@
             publicatie.</dd>
         <dt><strong><a class="anchor" id="Lid">Lid</a></strong>:</dt>
         <dd id="LIDINFO">
-            Een persoon die ingeschreven is in de groep en (na de instapperiode <a href="#Instapperiode">
-                [?]</a>) dus aangesloten <a href="#Aansluiting">[?]</a> bij Chirojeugd Vlaanderen</dd>
+            Een persoon die ingeschreven is in de groep en (na de instapperiode<%=Html.InfoLink("TW_Instap4") %>) 
+            dus aangesloten<%=Html.InfoLink("TW_Aansluiting") %> bij Chirojeugd Vlaanderen</dd>
         <dt><strong><a class="anchor" id="Lidgeld">Lidgeld</a></strong>:</dt>
         <dd id="LGINFO">
             Op de persoonsfiche van ingeschreven leden kun je aanduiden of zij hun lidgeld al
@@ -173,7 +170,7 @@
             wie de instapperiode verstreken is, is aangesloten.</dd>
         <dt><strong><a class="anchor" id="LogistiekMedewerkers">Logistiek medewerk(st)ers</a></strong>:</dt>
         <dd id="LMINFO">
-            Je kunt op uitstappen <a href="#Uitstap">[?]</a> en bivakken <a href="#Bivak">[?]</a>
+            Je kunt op uitstappen<%=Html.InfoLink("TW_Uitstap1") %> en bivakken<%=Html.InfoLink("TW_Bivak") %>
             ook mensen meenemen die geen lid zijn van je groep en die geen afdeling begeleiden.
             De kookploeg, bijvoorbeeld. Als je hen inschrijft, komen ze ook op de deelnemerslijst.
             Let wel: iemand die niet aangesloten is, is niet automatisch verzekerd op zo'n uitstap!
@@ -210,7 +207,7 @@
         <dd id="UITINFO">
             Ga je op weekend met je afdeling, naar het zwembad met heel de groep, of op bivak?
             Dat kun je op deze website registreren, zodat je een deelnemerslijst kunt opmaken.
-            Een bivak <em>moet</em> je registreren (zie Bivakaangifte <a href="#Bivakaangifte">[?]</a>),
+            Een bivak <em>moet</em> je registreren (zie Bivakaangifte<%=Html.InfoLink("TW_BivakAangifte2") %>),
             voor andere uitstappen mag je zelf kiezen of je ze registreert.
             <%=Html.ActionLink("Hoe doe je dat?", "ViewTonen", new { controller = "Handleiding", helpBestand = "UitstapToevoegen" })%>
         </dd>

@@ -390,18 +390,14 @@
     <Content Include="Content\Screenshots\Bevestiging_Dubbelpuntabonnement.png" />
     <Content Include="Content\Screenshots\Bevestiging_Loonverlies.png" />
     <Content Include="Content\Screenshots\Categorielijst_voor_categoriseren.png" />
-    <Content Include="Content\Screenshots\Categoriseren_MeerdereMensen.png" />
     <Content Include="Content\Screenshots\vjd_celeigenschappen_oproepen.png" />
     <Content Include="Content\Screenshots\vjd_dagformule.png" />
-    <Content Include="Content\Screenshots\EditRest_aanpassenlink.png" />
     <Content Include="Content\Screenshots\EditRest_abonnerenlink.png" />
     <Content Include="Content\Screenshots\EditRest_basis.png" />
-    <Content Include="Content\Screenshots\EditRest_categorielink.png" />
     <Content Include="Content\Screenshots\EditRest_communicatievormenlink.png" />
     <Content Include="Content\Screenshots\EditRest_inschrijvenlink.png" />
     <Content Include="Content\Screenshots\EditRest_nieuwadreslink.png" />
     <Content Include="Content\Screenshots\Adresformulier_met_autosuggestie.png" />
-    <Content Include="Content\Screenshots\EditRest_nieuwe_persoon.png" />
     <Content Include="Content\Screenshots\excel2003_Opslaan_als.png" />
     <Content Include="Content\Screenshots\vjd_maandformule.png" />
     <Content Include="Content\Screenshots\vjd_sorteren.png" />
@@ -426,8 +422,6 @@
     <Content Include="Content\Screenshots\writer_Bestand_Nieuw.png" />
     <Content Include="Content\Screenshots\writer_Etikettenblad_met_codes.png" />
     <Content Include="Content\Screenshots\writer_Etikettenwizard.png" />
-    <Content Include="Content\Screenshots\Filteren_op_categorie.png" />
-    <Content Include="Content\Screenshots\Formulier_Broer_zus.png" />
     <Content Include="Content\Screenshots\Formulier_Nieuwe_communicatievorm.png" />
     <Content Include="Content\Screenshots\Formulier_Nieuw_adres.png" />
     <Content Include="Content\Screenshots\Formulier_Verhuizen.png" />
@@ -450,7 +444,6 @@
     <Content Include="Content\Screenshots\Link_Verhuizen.png" />
     <Content Include="Content\Screenshots\Nieuwe_afdeling.png" />
     <Content Include="Content\Screenshots\Jaarovergang02_afdelingen_verdelen.png" />
-    <Content Include="Content\Screenshots\Nieuwe_persoon.png" />
     <Content Include="Content\Screenshots\Overzicht_afdelingen.png" />
     <Content Include="Content\Screenshots\Persoonlijkegegevensfiche.png" />
     <Content Include="Content\Screenshots\Tabblad_Iedereen.png" />

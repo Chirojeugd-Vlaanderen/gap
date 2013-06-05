@@ -35,17 +35,14 @@
         <li>Vul op de nieuwe pagina de nodige gegevens in. Gaat het over je groepsbivak, het
             'klein kamp' voor je jongste afdeling of een buitenlands bivak, vink dan aan dat
             het om een jaarlijks bivak gaat <em>(ook als je het niet elk jaar organiseert!)</em>.
-            Voor een bivak moet je namelijk een bivakaangifte
-           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
-            doen. Dat vinkje zorgt ervoor dat de gegevens automatisch doorgegeven worden aan
+            Voor een bivak moet je namelijk een bivakaangifte<%=Html.InfoLink("BivakAangifte1") %> +doen. Dat vinkje zorgt ervoor dat de gegevens automatisch doorgegeven worden aan
             het nationaal secretariaat. (<%=Html.ActionLink("Waarom is een bivakaangifte nodig?", "ViewTonen", new { controller = "Handleiding", helpBestand = "WaaromBivakaangifte" })%>)</li>
     </ul>
     <img src="<%=ResolveUrl("~/Content/Screenshots/Nieuwe_uitstap.png") %>" alt="Nieuwe uitstap registreren" />
     <ul>
         <li>Klik op de knop Bewaren.</li>
         <li>Nu zie je een detailfiche van je nieuwe uitstap. Daar staan nog niet veel details
-            in, maar voor een bivakaangifte
-           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
+            in, maar voor een bivakaangifte<%=Html.InfoLink("BivakAangifte2") %>
             is dat wel noodzakelijk. Klik dus op de link 'Bivakplaats ingeven'.</li>
     </ul>
     <img src="<%=ResolveUrl("~/Content/Screenshots/Formulier_bivakdetails.png") %>" alt="Details van de uitstap aanvullen" />

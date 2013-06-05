@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         $(function () {
-            $('#bivakInfo').click(function () {
+            $('#BivakAangifte').click(function () {
                 toonInfo("#BAINFO", "Bivakaangifte","#extraInfoDialog" );
             });
         });
@@ -37,10 +37,8 @@
         </div>
         <p>
             Informatie over uitstappen wordt niet doorgegeven aan Chirojeugd Vlaanderen. Van
-            een kamp wordt alleen de informatie voor de bivakaangifte
-           &nbsp;<a  style="cursor : pointer" id="bivakInfo" class="ui-icon ui-icon-help"></a>
-           <%//= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
-            doorgestuurd. De deelnemerslijst is alleen voor je groep toegankelijk.</p>
+            een kamp wordt alleen de informatie voor de bivakaangifte<%=Html.InfoLink("BivakAangifte") %>
+           doorgestuurd. De deelnemerslijst is alleen voor je groep toegankelijk.</p>
         <p>
             [<%=Html.ActionLink("Uitstap/bivak toevoegen", "Nieuw", "Uitstappen") %>]
         </p>

@@ -40,7 +40,7 @@
         is.</p>
     <p>
         Afdelingen en functies kun je alleen toekennen aan ingeschreven leden en leiding,
-        en alleen voor het huidige werkjaar. Categorieën<%=Html.InfoLink("CATINFO") %>
+        en alleen voor het huidige werkjaar. Categorieën<%=Html.InfoLink("FILTEREN_CATEGORIE") %>
         kun je voor iedereen gebruiken, dus zowel voor leden en leiding als voor 'buitenstaanders'.
         Categorieën zijn niet werkjaargebonden, dus eens iemand erin zit, blijft dat zo
         tot iemand dat ongedaan maakt.</p>

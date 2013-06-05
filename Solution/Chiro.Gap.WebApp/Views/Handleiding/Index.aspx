@@ -85,8 +85,8 @@
     <p>
         Als je in de handleiding een link ziet staan die uit één of meerdere woorden
         bestaat, dan verwijst die naar een ander onderdeel van de handleiding of naar
-        een externe website. Als er [?] staat, dan verwijst die link naar een trefwoord
-        dat uitgelegd wordt in de handleiding.</p>
+        een externe website. Als er <%=Html.InfoLink("Voorbeeld") %> staat, dan krijg je meer informatie 
+        over dat trefwoord door op het icoontje te klikken.</p>
     <p>
         Vragen of feedback? <a href="http://www.chiro.be/eloket/feedback-gap">Laat maar
             komen!</a></p>
