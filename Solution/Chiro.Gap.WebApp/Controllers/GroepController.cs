@@ -67,7 +67,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="groepID">ID van de geselecteerde groep</param>
         /// <returns>De view 'afdelingsinstellingen'</returns>
         [HandleError]
-        public ActionResult NaamWijzigen(int groepID)
+        public JsonResult NaamWijzigen(int groepID)
         {
             var model = new GroepsInstellingenModel
             {
@@ -78,7 +78,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // Ook hier nakijken of we live zijn.
             model.IsLive = VeelGebruikt.IsLive();
 
-            return View("NaamWijzigen", model);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>

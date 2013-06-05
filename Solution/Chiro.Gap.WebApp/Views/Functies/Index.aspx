@@ -23,29 +23,8 @@
  */
 %>
 <%// Opgelet! Scripts MOETEN een expliciete closing tag (</script>) hebben!  Ze oa #722 %>
-	<script src="<%= ResolveUrl("~/Scripts/jquery-1.7.1.min.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/jquery-ui-1.10.2.custom.min.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
-
-    <script>
-        $(function () {
-            $('#bewerken').hide();
-
-            $('.bewerken').click(function () {
-                $('#toevoegen').hide();
-                $('#bewerken')
-                    .show("blind", {}, 500)
-                    .css('background-color', 'lightgray');
-                    
-            });
-
-        });
-      
-	</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<% 
@@ -80,12 +59,14 @@
 			}
 		%>
 	</ul>
+    <div id="toevoegen">
 	<ul id="acties">
 		<li>
-			<input type="submit" value="Bewaren" class="ui-buttonset" /></li>
+			<input type="submit" value="Bewaren" id="functieToevoegen" />
+        </li>
 	</ul>
     <% //Default tonen, verdwijnt wanneer op 'bewerken' geklikt werd %>
-   <fieldset id="toevoegen">
+   <fieldset >
 		<legend>Functie toevoegen</legend>
 		<p>
 			<%=Html.LabelFor(mdl => mdl.NieuweFunctie.Naam) %>
@@ -131,7 +112,7 @@
 		}
 %>
 	</fieldset>
-    
+    </div>
     <%//alleen tonen wanneer op 'bewerken' geklikt werd %>
     <fieldset id="bewerken">
 		<legend>Functie bewerken</legend>

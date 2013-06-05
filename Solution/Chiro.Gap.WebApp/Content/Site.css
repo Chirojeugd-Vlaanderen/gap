@@ -629,9 +629,6 @@ fieldset p label {
     display: inline-block;
 }
 
-fieldset table tr td {
-    border: none;
-}
 fieldset table {
     border: none;
 }
@@ -720,6 +717,27 @@ fieldset table {
     padding-top: 2px;
 }
 
+/* Pagina GROEP */
+#groep_algemeen {
+    width: 45%;
+    float: left;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-top: 0;
+    margin-right: 3%;
+}
+
+#groep_categorieën {
+    width: 45%;
+    float: left;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-top: 0;
+    margin-right: 3%;
+}
+#groep_functies {
+    
+}
 
 @media screen and (max-width: 360px) {
   .opzij{

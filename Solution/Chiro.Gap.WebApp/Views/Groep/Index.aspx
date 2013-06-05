@@ -24,100 +24,108 @@
 %>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<div class="kaderke">
-		<div class="kadertitel">
-			Algemene groepsinfo</div>
-		<table>
-			<tr>
-				<td>
-					<%=Html.LabelFor(mdl => mdl.Detail.Naam)%>
-				</td>
-				<td>
-					<%=Html.DisplayFor(mdl => mdl.Detail.Naam)%> [<%=Html.ActionLink("Wijzigen", "NaamWijzigen", "Groep")%>]
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<%=Html.LabelFor(mdl => mdl.Detail.Plaats)%>
-				</td>
-				<td>
-					<%=Html.DisplayFor(mdl => mdl.Detail.Plaats)%>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<%=Html.LabelFor(mdl => mdl.Detail.StamNummer)%>
-				</td>
-				<td>
-					<%=Html.DisplayFor(mdl => mdl.Detail.StamNummer)%>
-				</td>
-			</tr>
-		</table>
-	</div>
+<script src="<%= ResolveUrl("~/Scripts/jquery-groep.js") %>" type="text/javascript"></script>
+    <input id='MGID' value="<%=Model.Info.ID %>" hidden readonly/>
+    <div id="DialogDiv" hidden>
+        <img src="<%= ResolveUrl("~/Content/images/loading.gif")%>" />
+    </div>
+        <fieldset id="groep_algemeen">
+            <legend>Algemene groepsinfo</legend>
+		    <table>
+		        <tbody>
+			        <tr>
+				        <td><%=Html.LabelFor(mdl => mdl.Detail.Naam)%></td>
+				        <td id="groepsNaam"><%=Html.DisplayFor(mdl => mdl.Detail.Naam)%></td>
+                        <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkGroepsNaam" style="cursor:pointer"></div></td>
+			        </tr>
+			        <tr>
+				        <td><%=Html.LabelFor(mdl => mdl.Detail.Plaats)%></td>
+				        <td><%=Html.DisplayFor(mdl => mdl.Detail.Plaats)%></td>
+                        <td></td>
+			        </tr>
+			        <tr>
+				        <td><%=Html.LabelFor(mdl => mdl.Detail.StamNummer)%></td>
+				        <td><%=Html.DisplayFor(mdl => mdl.Detail.StamNummer)%></td>
+                        <td></td>
+			        </tr>
+                </tbody>
+		    </table>
+        </fieldset>
 <% 
 		if ((Model.Detail.Niveau & Niveau.Groep) != 0)
 		{
   			// Afdelingen enkel tonen voor Chirogroepen
   			// (niet voor kadergroepen of satellieten)  	
 %>
-			<div class="kaderke">
-				<div class="kadertitel">
-					Actieve afdelingen dit werkjaar</div>
-				<ul>
-<%
-  				foreach (var afd in Model.Detail.Afdelingen.OrderByDescending(afd => afd.GeboorteJaarVan))
-  				{
-%>
-						<li>
-							<%=
-  						Html.Encode(String.Format("{0} ({1}) -- officiële variant: {2}",
-  									  afd.AfdelingNaam,
-  									  afd.AfdelingAfkorting,
-  									  afd.OfficieleAfdelingNaam.ToLower()))%></li>
-<%
- 				}
-%>
-				</ul>
+			<fieldset id="groep_actieveAfdelingen">
+				<legend>Actieve afdelingen dit werkjaar</legend>
+                <table>
+                    <thead>
+                        <th><strong>Afdeling</strong></th>
+                        <th><strong>Afk.</strong></th>
+                        <th><strong>Officiële benaming</strong></th>
+                    </thead>
+                    <tbody>
+  				    <% foreach (var afd in Model.Detail.Afdelingen.OrderByDescending(afd => afd.GeboorteJaarVan))
+  				    { %>
+						    <tr>
+							    <td><%=afd.AfdelingNaam%></td>
+                                <td><%=afd.AfdelingAfkorting %></td>
+                                <td><%=afd.OfficieleAfdelingNaam.ToLower() %></td>
+                            </tr>
+                    <% } %>   
+                    </tbody>           
+                </table>
+
 				[<%=Html.ActionLink("Afdelingsverdeling aanpassen", "Index", "Afdelingen")%>]
-			</div>
-<%
-		}
-%>
-	<div class="kaderke">
-		<div class="kadertitel">
-			Categorieën voor ingeschreven en niet-ingeschreven personen</div>
-		<ul>
-			<%
-				foreach (var cat in Model.Detail.Categorieen.OrderBy(cat => cat.Code))
-				{
-			%>
-			<li>
-				<%=Html.Encode(String.Format("{0} ({1})", cat.Naam, cat.Code))%>
-			</li>
-			<%
-				}
-			%>
-		</ul>
+			</fieldset>
+    <% } %>
+	<fieldset id="groep_categorieën">
+		<legend>Categorieën voor ingeschreven en niet-ingeschreven personen</legend>
+		<table>
+		    <thead>
+		        <th>Categorie</th>
+                <th>Code</th>
+                <th></th>
+		    </thead>
+		    <tbody>
+			<% foreach (var cat in Model.Detail.Categorieen.OrderBy(cat => cat.Code)) { %>
+			<tr>
+				<td><%=cat.Naam%><input value="<%=cat.ID %>" hidden/></td>
+                <td><%=cat.Code %></td>
+                <td><div class="categorieVerwijderen ui-icon ui-icon-circle-minus" title="Verwijderen" style="cursor: pointer"></div></td>
+			</tr>
+			<% } %>
+            </tbody>
+		</table>
+        <button id="groep_categorieën_Toevoegen">Categorie toevoegen</button>
 		[<%=Html.ActionLink("Categorieën toevoegen/verwijderen", "Index", "Categorieen") %>]
-	</div>
-	<div class="kaderke">
-		<div class="kadertitel">
-			Eigen functies voor ingeschreven leden en leiding</div>
-		<ul>
-			<%
-				foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Type))
-				{
-			%>
-			<li>
-				<%=Html.Encode(String.Format(
-			    "{0} ({1}) -- kan toegekend worden aan ingeschreven {2}", 
-			    fie.Naam, 
-                fie.Code, 
-                fie.Type == LidType.Kind ? "leden" : fie.Type == LidType.Leiding ? "leiding" : "leden en leiding"))%>
-			</li>
-			<%
-				}%>
-		</ul>
-		[<%=Html.ActionLink("Functies toevoegen/verwijderen", "Index", "Functies") %>]
-	</div>
+	</fieldset>
+
+	<fieldset id="groep_functies">
+		<legend>Eigen functies voor ingeschreven leden en leiding</legend>
+		<table>
+		    <thead>
+		        <th>Naam</th>
+                <th>Code</th>
+                <th>Type</th>
+                <th></th>
+                <th></th>
+		    </thead>
+		    <tbody>
+			    <% foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Type)) { %>
+			    <tr>
+			        <td hidden><input value="<%=fie.ID %>"/></td>
+			        <td><%=fie.Naam %></td>
+                    <td><%=fie.Code %></td>
+                    <td><%=fie.Type == LidType.Kind ? "leden" : fie.Type == LidType.Leiding ? "leiding" : "leden en leiding"%></td>
+                    <td><div class="functieBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor:pointer"></div></td>
+                    <td><div class="functieVerwijderen ui-icon ui-icon-circle-minus" title="Verwijderen" style="cursor: pointer"></div></td>
+			    </tr>
+			    <% } %>
+            </tbody>
+		</table>
+        <button id="groep_functies_toev_verw">Functie toevoegen</button>
+		[<%=Html.ActionLink("Functie toevoegen", "Index", "Functies") %>]
+	</fieldset>
 </asp:Content>

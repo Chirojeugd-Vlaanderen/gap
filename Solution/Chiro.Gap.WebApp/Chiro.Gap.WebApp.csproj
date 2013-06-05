@@ -239,6 +239,7 @@
     <Compile Include="Models\InschrijfbaarLid.cs" />
     <Content Include="Scripts\algemeneFuncties.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-groep.js" />
     <Content Include="Scripts\jquery-nieuwe-persoon.js" />
     <Content Include="Scripts\jquery-overzicht-leden.js" />
     <Content Include="Scripts\jquery-persoons-fiche.js" />
