@@ -26,5 +26,14 @@ namespace Chiro.Gap.Diagnostics.WebApp.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Vraagt de backend om alle ontbrekende bivakken opnieuw te syncen.
+        /// </summary>
+        /// <returns>Redirect naar index</returns>
+        public ActionResult OpnieuwSyncen()
+        {
+            ServiceHelper.CallService<IAdminService>(svc => svc.OntbrekendeBivakkenSyncen());
+            return RedirectToAction("Index"); ;
+        }
     }
 }
