@@ -71,5 +71,12 @@ namespace Chiro.Gap.Diagnostics.ServiceContracts
         /// </summary>
         [OperationContract]
         void FunctieProbleemLedenOpnieuwSyncen();
+
+        /// <summary>
+        /// Haalt het aantal verdwenen bivakken voor dit werkjaar op
+        /// </summary>
+        /// <returns>Het aantal verdwenen bivakken.</returns>
+        [OperationContract]
+        int AantalVerdwenenBivakkenOphalen();
     }
 }

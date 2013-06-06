@@ -59,12 +59,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AdressenController.cs" />
+    <Compile Include="Controllers\BivakkenController.cs" />
     <Compile Include="Controllers\FunctiesController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AddressenIndexModel.cs" />
+    <Compile Include="Models\BivakkenIndexModel.cs" />
     <Compile Include="Models\FunctiesIndexModel.cs" />
     <Compile Include="Models\NotificatieModel.cs" />
     <Compile Include="Models\LoginsModel.cs" />
@@ -126,6 +128,7 @@
     <Content Include="Views\Logins\RechtenToekennen.cshtml" />
     <Content Include="Views\Adressen\Index.cshtml" />
     <Content Include="Views\Functies\Index.cshtml" />
+    <Content Include="Views\Bivakken\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Solution\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">

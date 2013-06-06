@@ -100,18 +100,18 @@ namespace Chiro.Gap.Diagnostics.Orm
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<VerlorenBivakken> VerlorenBivakkens
+        public ObjectSet<VerlorenBivak> VerlorenBivaks
         {
             get
             {
-                if ((_VerlorenBivakkens == null))
+                if ((_VerlorenBivaks == null))
                 {
-                    _VerlorenBivakkens = base.CreateObjectSet<VerlorenBivakken>("VerlorenBivakkens");
+                    _VerlorenBivaks = base.CreateObjectSet<VerlorenBivak>("VerlorenBivaks");
                 }
-                return _VerlorenBivakkens;
+                return _VerlorenBivaks;
             }
         }
-        private ObjectSet<VerlorenBivakken> _VerlorenBivakkens;
+        private ObjectSet<VerlorenBivak> _VerlorenBivaks;
 
         #endregion
         #region AddTo Methods
@@ -133,11 +133,11 @@ namespace Chiro.Gap.Diagnostics.Orm
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the VerlorenBivakkens EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the VerlorenBivaks EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToVerlorenBivakkens(VerlorenBivakken verlorenBivakken)
+        public void AddToVerlorenBivaks(VerlorenBivak verlorenBivak)
         {
-            base.AddObject("VerlorenBivakkens", verlorenBivakken);
+            base.AddObject("VerlorenBivaks", verlorenBivak);
         }
 
         #endregion
@@ -588,28 +588,28 @@ namespace Chiro.Gap.Diagnostics.Orm
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="diagnosticModel", Name="VerlorenBivakken")]
+    [EdmEntityTypeAttribute(NamespaceName="diagnosticModel", Name="VerlorenBivak")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class VerlorenBivakken : EntityObject
+    public partial class VerlorenBivak : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new VerlorenBivakken object.
+        /// Create a new VerlorenBivak object.
         /// </summary>
         /// <param name="stamNr">Initial value of the StamNr property.</param>
         /// <param name="groepsNaam">Initial value of the GroepsNaam property.</param>
         /// <param name="bivakNaam">Initial value of the BivakNaam property.</param>
         /// <param name="uitstapID">Initial value of the UitstapID property.</param>
-        public static VerlorenBivakken CreateVerlorenBivakken(global::System.String stamNr, global::System.String groepsNaam, global::System.String bivakNaam, global::System.Int32 uitstapID)
+        public static VerlorenBivak CreateVerlorenBivak(global::System.String stamNr, global::System.String groepsNaam, global::System.String bivakNaam, global::System.Int32 uitstapID)
         {
-            VerlorenBivakken verlorenBivakken = new VerlorenBivakken();
-            verlorenBivakken.StamNr = stamNr;
-            verlorenBivakken.GroepsNaam = groepsNaam;
-            verlorenBivakken.BivakNaam = bivakNaam;
-            verlorenBivakken.UitstapID = uitstapID;
-            return verlorenBivakken;
+            VerlorenBivak verlorenBivak = new VerlorenBivak();
+            verlorenBivak.StamNr = stamNr;
+            verlorenBivak.GroepsNaam = groepsNaam;
+            verlorenBivak.BivakNaam = bivakNaam;
+            verlorenBivak.UitstapID = uitstapID;
+            return verlorenBivak;
         }
 
         #endregion

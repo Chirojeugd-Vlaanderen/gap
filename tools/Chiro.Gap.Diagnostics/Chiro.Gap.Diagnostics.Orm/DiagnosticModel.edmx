@@ -96,7 +96,7 @@
         <EntityContainer Name="diagnosticEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="vVerlorenAdressen" EntityType="diagnosticModel.VerlorenAdres" />
           <EntitySet Name="FunctieProbleems" EntityType="diagnosticModel.FunctieProbleem" />
-          <EntitySet Name="VerlorenBivakkens" EntityType="diagnosticModel.VerlorenBivakken" />
+          <EntitySet Name="VerlorenBivaks" EntityType="diagnosticModel.VerlorenBivak" />
         </EntityContainer>
         <EntityType Name="VerlorenAdres">
           <Key>
@@ -126,7 +126,7 @@
           <Property Type="String" Name="KipFunctieCode" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="KipFunctieOmschrijving" MaxLength="40" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="VerlorenBivakken">
+        <EntityType Name="VerlorenBivak">
           <Key>
             <PropertyRef Name="StamNr" />
             <PropertyRef Name="GroepsNaam" />
@@ -168,8 +168,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="VerlorenBivakkens">
-            <EntityTypeMapping TypeName="diagnosticModel.VerlorenBivakken">
+          <EntitySetMapping Name="VerlorenBivaks">
+            <EntityTypeMapping TypeName="diagnosticModel.VerlorenBivak">
               <MappingFragment StoreEntitySet="vVerlorenBivakken">
                 <ScalarProperty Name="UitstapID" ColumnName="UitstapID" />
                 <ScalarProperty Name="BivakNaam" ColumnName="BivakNaam" />
@@ -202,7 +202,7 @@
       <Diagram Name="DiagnosticModel">
         <EntityTypeShape EntityType="diagnosticModel.VerlorenAdres" Width="1.5" PointX="0.75" PointY="0.75" Height="2.172587890625" IsExpanded="true" />
         <EntityTypeShape EntityType="diagnosticModel.FunctieProbleem" Width="1.5" PointX="3.375" PointY="0.75" Height="2.7494921874999996" />
-        <EntityTypeShape EntityType="diagnosticModel.VerlorenBivakken" Width="1.5" PointX="0.75" PointY="3.75" Height="1.9802864583333322" />
+        <EntityTypeShape EntityType="diagnosticModel.VerlorenBivak" Width="1.5" PointX="0.75" PointY="3.75" Height="1.9802864583333322" />
       </Diagram>
     </Diagrams>
   </Designer>

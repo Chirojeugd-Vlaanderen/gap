@@ -220,5 +220,16 @@ namespace Chiro.Gap.Diagnostics.Service
                 _ledenSync.FunctiesUpdaten(lid);
             }
         }
+
+        /// <summary>
+        /// Haalt het aantal niet-doorgekomen bivakken op voor huidig werkjaar
+        /// </summary>
+        /// <returns>Het aantal functies in GAP dat niet in Kipadmin gevonden wordt, plus
+        /// het aantal functies in Kipadmin dat niet in GAP gevonden wordt.</returns>
+        [PrincipalPermission(SecurityAction.Demand, Role = SECURITYGROEP)]
+        public int AantalVerdwenenBivakkenOphalen()
+        {
+            return _problemenManager.BivakProblemenOphalen().Count();
+        }
     }
 }
