@@ -4,9 +4,20 @@
     <script type="text/javascript">
         $(function () {
             $('#BivakAangifte').click(function () {
-                toonInfo("#BAINFO", "Bivakaangifte","#extraInfoDialog" );
+                toonInfo("#BAINFO", "Bivakaangifte", "#extraInfoDialog");
+            });
+            $('#uitstap_toevoegen').button({
+                icons: {
+                    primary: "ui-icon-circle-plus"
+                }
+            });
+            $('#uitstap_toevoegen').click(function () {
+                url = link("Uitstappen", "Nieuw");
+                location.href = url;
             });
         });
+
+        
     </script>
 
 <%
@@ -28,56 +39,33 @@
  * limitations under the License.
  */
 %>
-    <div class="kaderke">
-        <div class="kadertitel">
-            Overzicht uitstappen
-            </div>
-        <div id="extraInfoDialog" hidden>
-            
-        </div>
+    <div id="extraInfoDialog"></div>
+    <fieldset>
+        <legend>Overzicht uitstappen</legend> 
         <p>
             Informatie over uitstappen wordt niet doorgegeven aan Chirojeugd Vlaanderen. Van
             een kamp wordt alleen de informatie voor de bivakaangifte<%=Html.InfoLink("BivakAangifte") %>
-           doorgestuurd. De deelnemerslijst is alleen voor je groep toegankelijk.</p>
-        <p>
-            [<%=Html.ActionLink("Uitstap/bivak toevoegen", "Nieuw", "Uitstappen") %>]
-        </p>
+            doorgestuurd. De deelnemerslijst is alleen voor je groep toegankelijk.</p>
+        <button id="uitstap_toevoegen">Uitstap/bivak toevoegen</button><%//=Html.ActionLink("Uitstap/bivak toevoegen", "Nieuw", "Uitstappen") %>
+        <br/>
+        <br/>
         <table>
             <tr>
-                <th>
-                    Periode
-                </th>
-                <th>
-                    Omschrijving
-                </th>
-                <th>
-                    Bivak
-                </th>
-                <th>
-                    Opmerking
-                </th>
+                <th>Periode</th>
+                <th>Omschrijving</th>
+                <th>Bivak</th>
+                <th>Opmerking</th>
             </tr>
-            <% foreach (var uitstap in Model.Uitstappen)
-               {%>
+            <% foreach (var uitstap in Model.Uitstappen) { %>
             <tr>
-                <td>
-                    <%=String.Format("{0:d}", uitstap.DatumVan) %>
-                    -
-                    <%=String.Format("{0:d}", uitstap.DatumTot)%>
-                </td>
-                <td>
-                    <%=Html.ActionLink(uitstap.Naam, "Bekijken", new {id = uitstap.ID})%>
-                </td>
-                <td>
-                    <%=uitstap.IsBivak ? "&#10003;" : String.Empty %>
-                </td>
-                <td>
-                    <%=uitstap.Opmerkingen %>
-                </td>
+                <td><%=String.Format("{0:d}", uitstap.DatumVan) %> - <%=String.Format("{0:d}", uitstap.DatumTot)%></td>
+                <td><%=Html.ActionLink(uitstap.Naam, "Bekijken", new {id = uitstap.ID})%></td>
+                <td><%=uitstap.IsBivak ? "&#10003;" : String.Empty %></td>
+                <td><%=uitstap.Opmerkingen %></td>
             </tr>
             <%} %>
         </table>
-    </div>
+    </fieldset>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
