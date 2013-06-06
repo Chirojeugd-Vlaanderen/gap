@@ -111,7 +111,7 @@ namespace Chiro.Gap.Workers
         {
             var paths = new List<Expression<Func<Uitstap, object>>>();
 
-            if (!_autorisatieManager.IsGavUitstap(uitstapID))
+            if (!_autorisatieManager.IsSuperGav() && !_autorisatieManager.IsGavUitstap(uitstapID))
             {
                 throw new GeenGavException(Resources.GeenGav);
             }

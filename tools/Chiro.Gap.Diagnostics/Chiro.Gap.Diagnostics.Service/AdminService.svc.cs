@@ -248,7 +248,7 @@ namespace Chiro.Gap.Diagnostics.Service
             {
                 var uitstap = _uitstappenManager.Ophalen(id,
                                                          UitstapExtras.Plaats | UitstapExtras.Contact |
-                                                         UitstapExtras.GroepsWerkJaar);
+                                                         UitstapExtras.Groep | UitstapExtras.GroepsWerkJaar);
                 _bivakSync.Bewaren(uitstap);
             }
         }
