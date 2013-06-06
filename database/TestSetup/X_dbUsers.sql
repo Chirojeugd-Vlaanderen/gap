@@ -30,3 +30,12 @@ CREATE USER [CgDevelop] FOR LOGIN [CgDevelop];
 
 EXEC sp_addrolemember N'db_owner', N'CgDevelop';
 GO
+
+CREATE USER [gapsuper] FOR LOGIN [gapsuper]
+GO
+
+
+EXEC sp_addrolemember N'GapSuperRole', N'gapsuper'
+GO
+
+GRANT SELECT ON diag.vVerlorenBivakken TO GapSuperRole;

@@ -16,3 +16,9 @@ USE gap_dev
 GO
 
 ALTER TABLE grp.Groep ADD StopDatum DateTime NULL;
+
+USE [kipadmin_dev]
+
+GRANT SELECT ON biv.BivakOverzicht TO GapSuperRole
+GRANT SELECT ON grp.ChiroGroep TO GapSuperRole
+GRANT SELECT ON dbo.HuidigWerkJaar TO GapSuperRole
