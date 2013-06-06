@@ -140,6 +140,7 @@ function clearDialog() {
                 buttons: {},
                 modal: true,
                 height: 200,
+                width: 250,
                 show: {
                     effect: "drop"
                 },

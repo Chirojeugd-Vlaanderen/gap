@@ -742,7 +742,6 @@ $(function () {
     $('.voorkeursAdresMaken').click(function () {
         $('#extraInfoDialog').dialog();
         var voorkeursadresID = $(this).parent().parent().find('td input#voorkeursadresID').val();
-        //url = root + "Personen/VoorkeurAdresMaken";
         url = link("Personen", "VoorkeurAdresMaken");
         bezig();
         $.get(url, { persoonsAdresID: voorkeursadresID, gelieerdePersoonID: GPid }, function () {

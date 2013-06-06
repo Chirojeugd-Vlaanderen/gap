@@ -335,7 +335,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		        TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
-		        return RedirectToAction("Index");
+                return RedirectToAction("Index", "Groep");
 		    }
 		    catch (FaultException<FoutNummerFault> ex)
 		    {
@@ -359,7 +359,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		                svc => svc.OfficieleAfdelingenOphalen());
 
 		        model.Titel = "Afdeling bewerken";
-		        return View("AfdelingsJaar", model);
+		        return RedirectToAction("Index","Groep");
 		    }
 		    catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
 		    {

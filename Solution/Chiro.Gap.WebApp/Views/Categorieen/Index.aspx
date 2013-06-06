@@ -22,11 +22,9 @@
  */
 %>
 	<%// Opgelet! Scripts MOETEN een expliciete closing tag (</script>) hebben!  Ze oa #722 %>
-	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
 </asp:Content>
 <asp:Content runat="server" ID="Content2" ContentPlaceHolderID="MainContent">
-	<fieldset>
+	<fieldset id="categorieen_bestaand">
 		<legend>Persoonscategorie&euml;n</legend>
 		<ul>
 			<%

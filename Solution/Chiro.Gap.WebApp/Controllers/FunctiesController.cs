@@ -173,7 +173,8 @@ namespace Chiro.Gap.WebApp.Controllers
                         model.NieuweFunctie.Type,
                         model.NieuweFunctie.WerkJaarVan));
 
-                    return RedirectToAction("Index", new { groepID });
+                    //return RedirectToAction("Index", new { groepID });
+                    return RedirectToAction("Index", "Groep");
                 }
                 catch (FaultException<BestaatAlFault<FunctieDetail>> ex)
                 {

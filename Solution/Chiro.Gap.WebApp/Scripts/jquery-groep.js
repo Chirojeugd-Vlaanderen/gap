@@ -18,6 +18,8 @@ $(function () {
     //Variabelen
     var functieId;
     var categorieId;
+    var afdelingId;
+    var doorgaan = false;
     var url;
     //tabel opmaak
     $('table tr:even').css("background-color", "lightGray");
@@ -34,6 +36,13 @@ $(function () {
             primary: "ui-icon-circle-plus"
         }
     });
+
+    $('#groep_afdelingen_aanpassen_knop').button({
+        icons:
+        {
+            primary: "ui-icon-wrench"
+        }
+    });
     //---------------------------------------------------------------------------
 
     //inline editing
@@ -48,15 +57,17 @@ $(function () {
     //      Categorie toevoegen
     $('#groep_categorieën_Toevoegen').click(function () {
         url = link("Categorieen", "Index");
-        url += ' #form0';
-        $('#DialogDiv').load(url, function () {
+        url += ' #main';
+        $('#extraInfoDialog').load(url, function () {
             success:
             {
-                gedeeltelijkTonen('#form0');
+                gedeeltelijkTonen('#extraInfoDialog');
+                $('#categorieen_bestaand').hide();
                 $('input[type="submit"]').hide();
                 $(this).dialog({
                     modal: true,
-                    width: 400,
+                    width: 450,
+                    height: 280,
                     title: "Categorie toevoegen",
                     buttons: {
                         'Bewaren': function () {
@@ -70,6 +81,7 @@ $(function () {
                 });
             }
         });
+        clearDialog();
     });
 
     $('.categorieVerwijderen').click(function () {
@@ -77,26 +89,88 @@ $(function () {
         alert(categorieId);
         url = link("Categorieen", "CategorieVerwijderen");
         url += "/" + categorieId;
-        $.post(url).done(function () {
-            location.reload();
+        $('#extraInfoDialog').html('Ben je zeker dat je deze categorie wil verwijderen?');
+        $('#extraInfoDialog').dialog({
+            modal: true,
+            title: "Categorie verwijderen",
+            buttons: {
+                'Ja': function () {
+                    doorgaan = true;
+                    $(this).dialog('close');
+                },
+                'Nee': function () {
+                    $(this).dialog('close');
+                }
+            }
         });
+        if (doorgaan) {
+            $.post(url).done(function () {
+                doorgaan = false;
+                location.reload();
+            });
+            
+        }
+    });
+
+    //      Afdelingsverdeling aanpassen
+    $('#groep_afdelingen_aanpassen_knop').click(function () {
+        url = link("Afdelingen", "Index");
+        window.location.href = url;
+    });
+    $('.groep_bewerkAfdeling').click(function () {
+        $('#extraInfoDialog').dialog();
+        afdelingId = $(this).parent().parent().find('td input').val();
+        url = link("Afdelingen", "AfdJaarBewerken");
+        url += "/" + afdelingId + " #main";
+        $('#extraInfoDialog').load(url, function () {
+            success:
+            {
+                gedeeltelijkTonen('#extraInfoDialog');
+                $(this).dialog({
+                    modal: true,
+                    width: 450,
+                    height: 400,
+                    title: "Een afdeling bewerken",
+                    buttons: {
+                        'Bewaren': function () {
+                            $('#afdelingBewerken_bewaar').click();
+                        },
+                        'Reset': function () {
+                            $('#afdelingbewerken_reset').click();
+                        },
+                        'Annuleren': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            }
+        });
+        clearDialog();
     });
 
     //      knop functies toevoegen
     $('#groep_functies_toev_verw').click(function () {
         url = link("Functies", "Index");
-        url += " #toevoegen";
-        $('#DialogDiv').load(url, function () {
+        url += " #main";
+        $('#extraInfoDialog').dialog({
+            modal: true,
+            width: 420,
+            heigth: 450
+        });
+        $('#extraInfoDialog').load(url, function () {
             success:
             {
-                gedeeltelijkTonen('#toevoegen');
-                $('#DialogDiv').dialog({
+                gedeeltelijkTonen('#extraInfoDialog');
+                $('#bewerken').hide();
+                $('#functies_bestaand').hide();
+                $('#extraInfoDialog').dialog({
                     modal: true,
-                    width: 400,
+                    width: 450,
+                    height: 550,
                     title: 'Functie toevoegen', //Macheert nog nie, bekijken!
                     buttons: {
                         'Bevestigen': function () {
-                            $('#toevoegen').submit();
+                            $('#functieToevoegen').click();
                             $(this).dialog('close');
                         },
                         'Annuleren': function () {
@@ -106,21 +180,23 @@ $(function () {
                 });
             }
         });
-
+        clearDialog();
     });
     //      een functie bewerken
     $('.functieBewerken').click(function () {
         functieId = $(this).parent().parent().find('td input').val();
         url = link("Functies", "Bewerken");
-        url += "/" + functieId + " #bewerken";
-        $('#DialogDiv').load(url, function () {
+        url += "/" + functieId + " #main";
+        $('#extraInfoDialog').load(url, function () {
             $(this).dialog();
             success:
             {
-                gedeeltelijkTonen("#bewerken");
+                gedeeltelijkTonen("#extraInfoDialog");
                 $('#bewaarFunctie').hide();
-                $('#DialogDiv').dialog({
+                $('#extraInfoDialog').dialog({
                     modal: true,
+                    width: 300,
+                    height: 200,
                     title: "Functie bewerken",
                     buttons: {
                         'Bevestigen': function () {
@@ -135,6 +211,7 @@ $(function () {
                 });
             }
         });
+        clearDialog();
     });
 
     //      een functie VERWIJDEREN
@@ -142,9 +219,26 @@ $(function () {
         functieId = $(this).parent().parent().find('td input').val();
         alert(functieId);
         url = link("Functies", "Verwijderen");
-        $.post(url, { FunctieID: functieId }).done(function () {
-            location.reload();
+        $('#extraInfoDialog').html('Ben je zeker dat je deze functie wil verwijderen?');
+        $('#extraInfoDialog').dialog({
+            modal: true,
+            title: "Functie verwijderen",
+            buttons: {
+                'Ja': function () {
+                    doorgaan = true;
+                    $(this).dialog('close');
+                },
+                'Nee': function () {
+                    $(this).dialog('close');
+                }
+            }
         });
+        if (doorgaan) {
+            $.post(url, { FunctieID: functieId }).done(function () {
+                location.reload();
+            });
+            doorgaan = false;
+        }
     });
 
     //---------------------------------------------------------------------------

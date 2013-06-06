@@ -69,14 +69,18 @@
                 // Info over CHIROLEEFTIJD
                 toonInfo("#CLINFO", "Chiroleeftijd", "#infoDiv");
             });
-            $('#TW_Uitstap1, #TW_Uitstap2').click(function () {
+            $('#TW_Uitstap1, #TW_Uitstap2, #DI_Uitstap').click(function () {
                 // Info over UITSTAPPEN
                 toonInfo("#UITINFO", "Uitstappen", "#infoDiv");
             });
-            $('#TW_Bivak').click(function () {
+            $('#TW_Bivak, #DI_Bivak').click(function () {
                 // Info over BIVAK
                 toonInfo("#BIVINFO", "Bivak info", "#infoDiv");
             });
+            $('#DI_LogisiekMedewerkers1, #DI_LogisiekMedewerkers2').click(function () {
+                // Info over LOGISTIEK MEDEWERKERS
+                toonInfo("#LMINFO", "Logistiek Medewerkers", "#infoDiv");
+            }); 
         });
     </script>
     <div id="infoDiv" hidden>

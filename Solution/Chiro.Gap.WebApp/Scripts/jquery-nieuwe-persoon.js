@@ -101,7 +101,7 @@ $(function () {
     $('#nee').button({
          icons: {
             primary: 'ui-icon-closethick'   
-        }
+         }
     });
     $('#tochNiet').button({
          icons: {

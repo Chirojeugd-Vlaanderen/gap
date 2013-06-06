@@ -37,16 +37,13 @@
                     <%=Html.Geslacht(GeslachtsType.Vrouw) %>
                 </th>
                 <th>Betaald</th>
-                <% 
-                    // Afdelingen enkel relevant voor plaatselijke groepen		
-                    if ((Model.GroepsNiveau & Niveau.Groep) != 0)
-                    {
+                <% // Afdelingen enkel relevant voor plaatselijke groepen		
+                  if ((Model.GroepsNiveau & Niveau.Groep) != 0) {
                 %>
-                        <th>Afd.</th>
+                    <th>Afd.</th>
                 <% } else { %>
-                        <th style="overflow: hidden" hidden>Afd.</th>
+                        <th style="overflow: hidden" hidden></th>
                 <% } %> 
-                
                 <th>Func.</th>
                 <th>Instap tot</th>
                 <th>Telefoon</th>
@@ -55,11 +52,7 @@
         </tr>
     </thead>
     <tbody>
-    <%
-        var volgnr = 0;
-        foreach (LidOverzicht lidOverzicht in ViewData.Model.LidInfoLijst)
-        { %>
-           
+    <% foreach (LidOverzicht lidOverzicht in ViewData.Model.LidInfoLijst) { %>
         <tr >
             <td>
                 <input type="checkbox" name="SelectieGelieerdePersoonIDs" value="<%=lidOverzicht.GelieerdePersoonID %>"
@@ -81,14 +74,15 @@
             <td>
                 <%= lidOverzicht.LidgeldBetaald?"Ja":"Nee"%>
             </td>
-            <% 
-                if ((Model.GroepsNiveau & Niveau.Groep) != 0)
-                {
-                    // Afdelingen enkel relevant voor plaatselijke groepen
-            %>
-            <td>
-                <%:Html.AfdelingsLinks(lidOverzicht.Afdelingen, Model.IDGetoondGroepsWerkJaar, Model.GroepID)%>
-            </td>
+            
+            <%  // Afdelingen enkel relevant voor plaatselijke groepen
+                if ((Model.GroepsNiveau & Niveau.Groep) != 0){     %>
+                <td>
+                <%=Html.AfdelingsLinks(lidOverzicht.Afdelingen, Model.IDGetoondGroepsWerkJaar, Model.GroepID)%>
+                </td>
+            <%}else { %> 
+                <td style="overflow: hidden" hidden>
+                </td>
             <%}%>
             <td>
                 <% foreach (var functieInfo in lidOverzicht.Functies)

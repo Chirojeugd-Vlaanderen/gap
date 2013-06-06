@@ -26,7 +26,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <script src="<%= ResolveUrl("~/Scripts/jquery-groep.js") %>" type="text/javascript"></script>
     <input id='MGID' value="<%=Model.Info.ID %>" hidden readonly/>
-    <div id="DialogDiv" hidden>
+    <div id="extraInfoDialog" hidden>
         <img src="<%= ResolveUrl("~/Content/images/loading.gif")%>" />
     </div>
         <fieldset id="groep_algemeen">
@@ -64,20 +64,22 @@
                         <th><strong>Afdeling</strong></th>
                         <th><strong>Afk.</strong></th>
                         <th><strong>Officiële benaming</strong></th>
+                        <th></th>
                     </thead>
                     <tbody>
   				    <% foreach (var afd in Model.Detail.Afdelingen.OrderByDescending(afd => afd.GeboorteJaarVan))
   				    { %>
 						    <tr>
-							    <td><%=afd.AfdelingNaam%></td>
+							    <td><%=afd.AfdelingNaam%><input value="<%=afd.AfdelingsJaarID %>" readonly hidden/></td>
                                 <td><%=afd.AfdelingAfkorting %></td>
                                 <td><%=afd.OfficieleAfdelingNaam.ToLower() %></td>
+                                <td><div class="groep_bewerkAfdeling ui-icon ui-icon-pencil" title="Bewerken" style="cursor:pointer"></div></td>
                             </tr>
                     <% } %>   
                     </tbody>           
                 </table>
-
-				[<%=Html.ActionLink("Afdelingsverdeling aanpassen", "Index", "Afdelingen")%>]
+                <button id="groep_afdelingen_aanpassen_knop">Afdelingsverdeling aanpassen</button>
+				<%//=Html.ActionLink("Afdelingsverdeling aanpassen", "Index", "Afdelingen")%>
 			</fieldset>
     <% } %>
 	<fieldset id="groep_categorieën">
@@ -99,7 +101,7 @@
             </tbody>
 		</table>
         <button id="groep_categorieën_Toevoegen">Categorie toevoegen</button>
-		[<%=Html.ActionLink("Categorieën toevoegen/verwijderen", "Index", "Categorieen") %>]
+		<%//=Html.ActionLink("Categorieën toevoegen/verwijderen", "Index", "Categorieen") %>
 	</fieldset>
 
 	<fieldset id="groep_functies">
@@ -126,6 +128,6 @@
             </tbody>
 		</table>
         <button id="groep_functies_toev_verw">Functie toevoegen</button>
-		[<%=Html.ActionLink("Functie toevoegen", "Index", "Functies") %>]
+		<%//=Html.ActionLink("Functie toevoegen", "Index", "Functies") %>
 	</fieldset>
 </asp:Content>

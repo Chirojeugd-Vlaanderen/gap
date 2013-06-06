@@ -23,8 +23,7 @@
  */
 %>
 <%// Opgelet! Scripts MOETEN een expliciete closing tag (</script>) hebben!  Ze oa #722 %>
-	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<% 
@@ -32,7 +31,7 @@
 		using (Html.BeginForm())
 		{%>
     
-	<ul>
+	<ul id="functies_bestaand">
 <%
 			foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Code))
 			{
@@ -59,7 +58,7 @@
 			}
 		%>
 	</ul>
-    <div id="toevoegen">
+
 	<ul id="acties">
 		<li>
 			<input type="submit" value="Bewaren" id="functieToevoegen" />
@@ -112,57 +111,7 @@
 		}
 %>
 	</fieldset>
-    </div>
-    <%//alleen tonen wanneer op 'bewerken' geklikt werd %>
-    <fieldset id="bewerken">
-		<legend>Functie bewerken</legend>
-		<p>
-			Nieuwe<%=Html.LabelFor(mdl => mdl.Detail.Functies[0].Naam) %>
-			<%=Html.EditorFor(mdl => mdl.NieuweFunctie.Naam) %><br />
-			<%=Html.ValidationMessageFor(mdl => mdl.NieuweFunctie.Naam) %>
-		</p>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.NieuweFunctie.Code) %>
-			<%=Html.EditorFor(mdl => mdl.NieuweFunctie.Code) %><br />
-			<%=Html.ValidationMessageFor(mdl => mdl.NieuweFunctie.Code) %>
-		</p>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.NieuweFunctie.MaxAantal) %>
-			<%=Html.EditorFor(mdl => mdl.NieuweFunctie.MaxAantal) %><br />
-			(Mag leeg blijven als er geen maximumaantal is)
-		</p>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.NieuweFunctie.MinAantal) %>
-			<%=Html.EditorFor(mdl => mdl.NieuweFunctie.MinAantal) %><br />
-			(Moet 0 zijn als er geen minimumaantal is)<%=Html.ValidationMessageFor(mdl => mdl.NieuweFunctie.MinAantal) %>
-		</p>
-<% 
-		if ((Model.Detail.Niveau & Niveau.Groep) != 0)
-		{
-%>							                
-			
-			<p>
-			<%=Html.LabelFor(mdl => mdl.NieuweFunctie.Type)%>
-<%
-			var values = from LidType lt in Enum.GetValues(typeof (LidType))
-			     select new
-	                    		{
-	                    			value = lt,
-	                    			text = String.Format(
-	                    				"Ingeschreven {0}",
-	                    				lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding")
-	                    		};
-%>
-			<%=Html.DropDownListFor(mdl => mdl.NieuweFunctie.Type,
-						       new SelectList(values.Reverse(), "value", "text"))%>
-			</p>
-<%
-		}
-%>
-	</fieldset>
 
-    
-	
 	<%}
 	%>
 </asp:Content>
