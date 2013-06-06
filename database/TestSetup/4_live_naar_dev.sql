@@ -15,5 +15,27 @@ GO
 USE gap_dev
 GO
 
+
+-- versie 1.6?
+
 ALTER TABLE grp.Groep ADD StopDatum DateTime NULL;
 
+-- versie 1.5
+
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN b_naam VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN b_straat VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN b_gemeente VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN b_land VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN b_tel VARCHAR(160);
+
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN s_naam VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN s_straat VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN s_gemeente VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN s_land VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN s_tel VARCHAR(160);
+
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN u_naam VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN u_straat VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN u_gemeente VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN u_land VARCHAR(80);
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN u_tel VARCHAR(160);

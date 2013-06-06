@@ -1513,13 +1513,13 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Type="String" Name="B_NAAM" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="B_STRAAT" Nullable="true" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="B_NAAM" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="B_STRAAT" Nullable="true" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="B_POSTNR" Nullable="true" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="B_GEMEENTE" Nullable="true" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="B_GEMEENTE" Nullable="true" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="B_PROVINCI" MaxLength="3" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="B_LAND" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="B_TEL" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="B_LAND" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="B_TEL" MaxLength="160" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="OOSTKANTO" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="B_BEGIN" Nullable="false" />
           <Property Type="DateTime" Name="B_EIND" Nullable="false" />
@@ -1533,13 +1533,13 @@
           <Property Type="String" Name="BIVAK_VB" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="BIVAK_PRO" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="S_APART" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="S_NAAM" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="S_STRAAT" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="S_NAAM" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="S_STRAAT" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="S_POSTNR" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="S_GEMEENTE" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="S_GEMEENTE" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="S_PROVINCI" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="S_LAND" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="S_TEL" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="S_LAND" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="S_TEL" MaxLength="160" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="S_BEGIN" />
           <Property Type="DateTime" Name="S_EIND" />
           <Property Type="String" Name="S_OOSTKAN" MaxLength="1" FixedLength="false" Unicode="false" />
@@ -1581,18 +1581,18 @@
           <Property Type="Int16" Name="ASPI_M" />
           <Property Type="DateTime" Name="STEMPEL" />
           <Property Type="String" Name="U_BUITEN" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="U_NAAM" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="U_STRAAT" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="U_NAAM" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="U_STRAAT" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="U_POSTNR" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="U_REISOR" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="U_LAND" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="U_LAND" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="U_GROEPSB" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="U_AFD" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="U_REISON" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="U_TEL" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="U_TEL" MaxLength="160" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="U_BEGIN" />
           <Property Type="DateTime" Name="U_EIND" />
-          <Property Type="String" Name="U_GEMEENTE" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="U_GEMEENTE" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="KNIS_KAART" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="Int16" Name="B_CAPACI" />
           <Property Type="String" Name="B_TENTENK" MaxLength="1" FixedLength="false" Unicode="false" />
