@@ -176,8 +176,8 @@
           <FullPath>vVerlorenAdressen.sql</FullPath>
         </FileNode>
         <FileNode Name="vVerlorenBivakken.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:devsrv1.chiro.wereld\sql2k8:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>devsrv1.chiro.wereld\sql2k8</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>vVerlorenBivakken.sql</FullPath>
         </FileNode>
