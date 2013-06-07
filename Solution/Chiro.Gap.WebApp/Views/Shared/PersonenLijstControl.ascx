@@ -24,22 +24,10 @@
 <%
     List<CheckBoxListInfo> info
        = (from pa in Model.PersoonInfos
-          select new CheckBoxListInfo(
-             pa.GelieerdePersoonID.ToString()
-             , ""
-             , false)).ToList();
-
+          select new CheckBoxListInfo(pa.GelieerdePersoonID.ToString(), "", false)).ToList();
     int j = 0;
 %>
 
-
-<!--<div class="pager">
-    Pagina's:-->
-    <%//= Html.PagerLinksLetters(ViewData.Model.HuidigePagina, ViewData.Model.Paginas, letter => Url.Action("List", new { Controller = "Personen", page = letter, sortering = Model.Sortering }), ViewData.Model.GekozenCategorieID > 0)%>
-    <!--(Totaal:-->
-    <%//= Model.Totaal %>
-    <!--personen))
-</div>-->
 <table id="overzichtsTabel" class="overzicht">
     <thead>
         <tr>
