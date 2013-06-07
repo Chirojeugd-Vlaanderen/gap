@@ -2316,7 +2316,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="KipAdmin" ZoomLevel="60">
+      <Diagram Name="KipAdmin" ZoomLevel="78">
         <EntityTypeShape EntityType="kipadminModel.Adres" Width="1.5" PointX="15.75" PointY="49.625" Height="2.3648893229166674" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.AdresType" Width="1.5" PointX="15.75" PointY="8.125" Height="1.7879850260416674" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.ContactInfo" Width="1.5" PointX="15" PointY="35.25" Height="2.172587890624996" IsExpanded="true" />

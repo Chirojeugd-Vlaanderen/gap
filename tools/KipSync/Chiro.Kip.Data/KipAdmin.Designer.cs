@@ -41,7 +41,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_BivakAangifte_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "BivakAangifte", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.BivakAangifte))]
 
 // Original file name:
-// Generation date: 6/6/2013 4:08:02 PM
+// Generation date: 6/7/2013 11:03:33 AM
 namespace Chiro.Kip.Data
 {
     

@@ -39,3 +39,16 @@ ALTER TABLE biv.BivakOverzicht ALTER COLUMN u_straat VARCHAR(80);
 ALTER TABLE biv.BivakOverzicht ALTER COLUMN u_gemeente VARCHAR(80);
 ALTER TABLE biv.BivakOverzicht ALTER COLUMN u_land VARCHAR(80);
 ALTER TABLE biv.BivakOverzicht ALTER COLUMN u_tel VARCHAR(160);
+
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN b_begin DATETIME;
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN b_eind DATETIME;
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN s_begin DATETIME;
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN s_eind DATETIME;
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN u_begin DATETIME;
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN u_eind DATETIME;
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN stempel DATETIME;
+
+ALTER TABLE [biv].[BivakOverzicht] DROP CONSTRAINT [DF_kipBivak_datum]
+ALTER TABLE biv.BivakOverzicht ALTER COLUMN datum DATETIME;
+ALTER TABLE [biv].[BivakOverzicht] ADD  CONSTRAINT [DF_kipBivak_datum]  DEFAULT (getdate()) FOR [datum]
+
