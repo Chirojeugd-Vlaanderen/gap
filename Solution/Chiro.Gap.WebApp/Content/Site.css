@@ -735,6 +735,7 @@ fieldset table {
     height: 100%;
     margin-top: 10px;
     margin-right: 25px;
+    margin-bottom: 25px;
 }
 #groep_Menu a{
     text-decoration: none;

@@ -303,3 +303,9 @@ function link(controller, functie) {
     }
     return link;
 }
+
+//check het procotol ('http:' of 'https:')
+function checkProtocol() {
+    return window.location.protocol;
+}
+    

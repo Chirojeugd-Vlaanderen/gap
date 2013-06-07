@@ -38,8 +38,11 @@ $(function () {
     });
     
     //hier maak ik de juiste url naar de .swf file om de pdf te maken
-    var url ="https://" + document.location.host + root;
+    var protocol = checkProtocol();
+    var url =protocol + "//" + document.location.host + root;
     url += "Content/media/copy_csv_xls_pdf.swf";
+    
+    
     
     //instellingen voor datatable
     $('#ledenOverzichtsTabel').dataTable({
