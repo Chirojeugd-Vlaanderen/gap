@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="diagnosticModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="diagnosticModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="diagnosticModelStoreContainer">
           <EntitySet Name="vFunctieProblemen" EntityType="diagnosticModel.Store.vFunctieProblemen" store:Type="Views" store:Schema="diag" store:Name="vFunctieProblemen">
             <DefiningQuery>SELECT 
@@ -29,9 +29,18 @@
       [vVerlorenAdressen].[VoorkeursAdresID] AS [VoorkeursAdresID]
       FROM [diag].[vVerlorenAdressen] AS [vVerlorenAdressen]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="vVerlorenBivakken" EntityType="diagnosticModel.Store.vVerlorenBivakken" store:Type="Views" store:Schema="diag" store:Name="vVerlorenBivakken">
+            <DefiningQuery>SELECT 
+      [vVerlorenBivakken].[StamNr] AS [StamNr], 
+      [vVerlorenBivakken].[GroepsNaam] AS [GroepsNaam], 
+      [vVerlorenBivakken].[Gemeente] AS [Gemeente], 
+      [vVerlorenBivakken].[BivakNaam] AS [BivakNaam], 
+      [vVerlorenBivakken].[UitstapID] AS [UitstapID]
+      FROM [diag].[vVerlorenBivakken] AS [vVerlorenBivakken]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'gap.diag.vFunctieProblemen' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'gap_dev.diag.vFunctieProblemen' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="vFunctieProblemen">
           <Key>
@@ -50,7 +59,7 @@
           <Property Name="KipFunctieOmschrijving" Type="varchar" MaxLength="40" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'gap.diag.vVerlorenAdressen' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'gap_dev.diag.vVerlorenAdressen' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="vVerlorenAdressen">
           <Key>
@@ -64,6 +73,22 @@
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
           <Property Name="VoorkeursAdresID" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'gap_dev.diag.vVerlorenBivakken' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="vVerlorenBivakken">
+          <Key>
+            <PropertyRef Name="StamNr" />
+            <PropertyRef Name="GroepsNaam" />
+            <PropertyRef Name="BivakNaam" />
+            <PropertyRef Name="UitstapID" />
+          </Key>
+          <Property Name="StamNr" Type="varchar" Nullable="false" MaxLength="8" />
+          <Property Name="GroepsNaam" Type="varchar" Nullable="false" MaxLength="160" />
+          <Property Name="Gemeente" Type="varchar" MaxLength="40" />
+          <Property Name="BivakNaam" Type="varchar" Nullable="false" MaxLength="120" />
+          <Property Name="UitstapID" Type="int" Nullable="false" />
+        </EntityType>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -71,6 +96,7 @@
         <EntityContainer Name="diagnosticEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="vVerlorenAdressen" EntityType="diagnosticModel.VerlorenAdres" />
           <EntitySet Name="FunctieProbleems" EntityType="diagnosticModel.FunctieProbleem" />
+          <EntitySet Name="VerlorenBivaks" EntityType="diagnosticModel.VerlorenBivak" />
         </EntityContainer>
         <EntityType Name="VerlorenAdres">
           <Key>
@@ -99,6 +125,19 @@
           <Property Type="String" Name="GapFunctieOmschrijving" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="KipFunctieCode" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="KipFunctieOmschrijving" MaxLength="40" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VerlorenBivak">
+          <Key>
+            <PropertyRef Name="StamNr" />
+            <PropertyRef Name="GroepsNaam" />
+            <PropertyRef Name="BivakNaam" />
+            <PropertyRef Name="UitstapID" />
+          </Key>
+          <Property Type="String" Name="StamNr" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="GroepsNaam" Nullable="false" MaxLength="160" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Gemeente" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BivakNaam" Nullable="false" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="UitstapID" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -129,6 +168,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="VerlorenBivaks">
+            <EntityTypeMapping TypeName="diagnosticModel.VerlorenBivak">
+              <MappingFragment StoreEntitySet="vVerlorenBivakken">
+                <ScalarProperty Name="UitstapID" ColumnName="UitstapID" />
+                <ScalarProperty Name="BivakNaam" ColumnName="BivakNaam" />
+                <ScalarProperty Name="Gemeente" ColumnName="Gemeente" />
+                <ScalarProperty Name="GroepsNaam" ColumnName="GroepsNaam" />
+                <ScalarProperty Name="StamNr" ColumnName="StamNr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -152,6 +202,7 @@
       <Diagram Name="DiagnosticModel">
         <EntityTypeShape EntityType="diagnosticModel.VerlorenAdres" Width="1.5" PointX="0.75" PointY="0.75" Height="2.172587890625" IsExpanded="true" />
         <EntityTypeShape EntityType="diagnosticModel.FunctieProbleem" Width="1.5" PointX="3.375" PointY="0.75" Height="2.7494921874999996" />
+        <EntityTypeShape EntityType="diagnosticModel.VerlorenBivak" Width="1.5" PointX="0.75" PointY="3.75" Height="1.9802864583333322" />
       </Diagram>
     </Diagrams>
   </Designer>

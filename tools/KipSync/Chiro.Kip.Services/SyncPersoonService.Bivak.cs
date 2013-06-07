@@ -69,12 +69,16 @@ namespace Chiro.Kip.Services
 					// Vermoedelijk omdat de groepscode een CHAR(10) is, en geen VARCHAR(10)?
 					// Ik kan mij niet voorstellen dat enkel hier problemen geeft...
 
+                    // Het zou kunnen dat een groep eerst een fout jaar ingeeft voor de bivakaangifte, en dat jaartal
+                    // daarna rechtzet. In dat geval moeten we hier het werkjaar overschrijven.
+
+
                     if (aangifte.WerkJaar != wjm.DatumNaarWerkJaar(bivak.DatumVan))
                     {
-                        _log.FoutLoggen(groep.GroepID, String.Format("Poging tot wijzigen werkjaar bestaande bivakaangifte {0}", groep.STAMNR));
-                        return;
+                        _log.BerichtLoggen(groep.GroepID, String.Format("Werkjaar wijzigen van bestaande bivakaangifte {0}", groep.STAMNR));
                     }
-                    Debug.Assert(aangifte.WerkJaar == wjm.DatumNaarWerkJaar(bivak.DatumVan));
+
+                    aangifte.WerkJaar = wjm.DatumNaarWerkJaar(bivak.DatumVan);
 					aangifte.BivakNaam = bivak.Naam;
 					aangifte.Opmerkingen = bivak.Opmerkingen;
 					aangifte.DatumVan = bivak.DatumVan;
@@ -83,8 +87,10 @@ namespace Chiro.Kip.Services
 				}
 
 				db.SaveChanges();
-				feedback.AppendLine(String.Format("BivakAangifteID:", aangifte.ID));
+                Debug.Assert(aangifte != null);
+				feedback.AppendLine(String.Format("BivakAangifteID: {0}", aangifte.ID));
 			}
+            Debug.Assert(groep != null);
 			_log.BerichtLoggen(groep.GroepID, feedback.ToString());
             FixOudeBivakTabel(groep.GroepID, wjm.DatumNaarWerkJaar(bivak.DatumVan));
 		}

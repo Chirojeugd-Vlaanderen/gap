@@ -15,16 +15,20 @@ namespace Chiro.Gap.Diagnostics.Workers
     {
         private readonly IVerlorenAdressenDao _verlorenAdressenDao;
         private readonly IFunctieProblemenDao _functieProblemenDao;
+        private readonly IBivakProblemenDao _bivakProblemenDao;
 
         /// <summary>
         /// Standaardconstructor.  Data access wordt geinjecteerd.
         /// </summary>
         /// <param name="verlorenAdressenDao">Data access voor verloren adressen</param>
         /// <param name="functieProblemenDao">Data access voor functieproblemen</param>
-        public ProblemenManager(IVerlorenAdressenDao verlorenAdressenDao, IFunctieProblemenDao functieProblemenDao)
+        /// <param name="bivakProblemenDao">Data access voor bivakproblemen</param>
+        public ProblemenManager(IVerlorenAdressenDao verlorenAdressenDao, IFunctieProblemenDao functieProblemenDao,
+                                IBivakProblemenDao bivakProblemenDao)
         {
             _verlorenAdressenDao = verlorenAdressenDao;
             _functieProblemenDao = functieProblemenDao;
+            _bivakProblemenDao = bivakProblemenDao;
         }
 
         /// <summary>
@@ -45,6 +49,16 @@ namespace Chiro.Gap.Diagnostics.Workers
         public IEnumerable<FunctieProbleem> FunctieProblemenOphalen()
         {
             return _functieProblemenDao.AllesOphalen();
+        }
+
+        /// <summary>
+        /// Haalt de groepen op die wel een bivak hebben in GAP, maar waarvoor de delphi-client
+        /// geen bivakaangifte toont in Kipadmin.
+        /// </summary>
+        /// <returns>Informatie over de problematische bivakaangiften.</returns>
+        public IEnumerable<VerlorenBivak> BivakProblemenOphalen()
+        {
+            return _bivakProblemenDao.AllesOphalen();
         }
     }
 }
