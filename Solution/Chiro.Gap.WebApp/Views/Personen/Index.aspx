@@ -31,7 +31,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
      <%//jQuery scripts (algemeen en Datatables) %>
-    <script src="<%= ResolveUrl("~/Scripts/jquery.dataTables.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/jquery.dataTables.min.js")%>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/jquery-overzicht-iedereen.js")%>" type="text/javascript"></script>
     <%//CSS bestanden voor opmaak DataTables %>
     <link href="<%= ResolveUrl("~/Content/jquery.dataTables_themeroller.css")%>" rel="stylesheet" type="text/css" />

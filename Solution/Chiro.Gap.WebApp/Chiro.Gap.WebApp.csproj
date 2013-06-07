@@ -243,9 +243,9 @@
     <Content Include="Scripts\jquery-nieuwe-persoon.js" />
     <Content Include="Scripts\jquery-overzicht-leden.js" />
     <Content Include="Scripts\jquery-persoons-fiche.js" />
-    <Content Include="Scripts\jquery-ui-1.10.2.custom.js" />
     <Content Include="Content\jquery.dataTables_themeroller.css" />
-    <Content Include="Scripts\jquery.dataTables.js" />
+    <Content Include="Scripts\jquery-ui-1.10.2.custom.min.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jqueryui-editable.js" />
     <Content Include="Scripts\jquery-overzicht-iedereen.js" />
     <Content Include="Scripts\moment.js" />
