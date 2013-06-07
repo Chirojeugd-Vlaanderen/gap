@@ -732,9 +732,13 @@ fieldset table {
 #groep_Menu {
     width: 250px;
     float: left;
+    height: 100%;
     margin-top: 10px;
     margin-right: 25px;
-    margin-bottom: 150px;
+}
+#groep_Menu a{
+    text-decoration: none;
+    color: black;
 }
 
 @media screen and (max-width: 360px) {

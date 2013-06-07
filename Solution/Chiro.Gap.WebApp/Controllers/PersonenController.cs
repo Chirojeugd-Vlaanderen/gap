@@ -155,7 +155,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     "List",
                     new
                     {
-                        page = "A",
+                        //page = "A",
                         id = model.GekozenCategorieID,
                         sortering = model.Sortering
                     });
