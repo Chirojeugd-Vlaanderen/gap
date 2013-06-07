@@ -262,31 +262,8 @@ $(function () {
         $(this).parent().parent().find('td:eq(1)').editable('toggle');
     });
     //------------------------------------------------------------------------------------------
-    //Telefoonnummer verwijderen
-    $('.telverw').click(function (e) {
-        e.preventDefault();
-        var comID = $(this).parent().parent().find('td input').val();
-        $('#extraInfoDialog').html("Ben je zeker dat je deze communicatievorm wil verwijderen?")
-            .dialog({
-                modal: true,
-                title: "Bevestiging",
-                buttons: {
-                    'Ja': function () {
-                        url = link("Personen", "Verwijderen");
-                        url += "?commvormID=" + comID;
-                        $.get(url);
-                        $('input[value=' + comID + ']').parent().parent().hide();
-                        $(this).dialog('close');
-                    },
-                    'Nee': function () {
-                        $(this).dialog('close');
-                    }
-                }
-            });
-    });
-    //------------------------------------------------------------------------------------------
-    //email verwijderen
-    $('.emailverw').click(function (e) {
+    //email & Telefoonnummer verwijderen
+    $('.emailverw, .telverw').click(function (e) {
         e.preventDefault();
         var comID = $(this).parent().parent().find('td input').val();
         $('#extraInfoDialog').html("Ben je zeker dat je deze communicatievorm wil verwijderen?")
