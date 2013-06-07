@@ -156,25 +156,7 @@
         %>
         <%=Html.ActionLink("[persoonlijke gegevens aanpassen]", "EditGegevens", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %><br />
     </p>
-    <p>
-        <%if (Model.PersoonLidInfo.PersoonDetail.DubbelPuntAbonnement)
-          {
-        %>
-        <%=Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %>
-        is geabonneerd op <a href='http://www.chiro.be/dubbelpunt'>Dubbelpunt</a>.
-        <%
-    }
-          else
-          {
-        %>
-        Geen <a href="http://www.chiro.be/dubbelpunt">Dubbelpuntabonnement</a>.
-        <%=Html.ActionLink("[abonneren]", "DubbelPuntAanvragen", new {Controller="Abonnementen", id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
-        (Kostprijs: &euro;
-        <%=Model.PrijsDubbelPunt.ToString() %>)
-        <%
-    }
-        %>
-    </p>
+
     <h3>
         Adressen</h3>
     <ul>

@@ -23,9 +23,6 @@
     <Setting Name="LogBestandPad" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\Errors\GAP-Foutlog.txt</Value>
     </Setting>
-    <Setting Name="PrijsDubbelPunt" Type="System.Decimal" Scope="Application">
-      <Value Profile="(Default)">10.50</Value>
-    </Setting>
     <Setting Name="PrijsAansluiting" Type="System.Decimal" Scope="Application">
       <Value Profile="(Default)">9</Value>
     </Setting>

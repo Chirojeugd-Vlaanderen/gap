@@ -312,7 +312,6 @@
     <Content Include="Content\Chirologo.png" />
     <Content Include="Content\favicon.ico" />
     <Compile Include="ActionFilters\ParametersMatchAttribute.cs" />
-    <Compile Include="Controllers\AbonnementenController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GavTakenController.cs" />
     <Compile Include="Controllers\HandleidingController.cs" />
@@ -422,7 +421,6 @@
     <Content Include="Content\Screenshots\writer_Samenvoegen.png" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
-    <Content Include="Views\Abonnementen\DubbelpuntAanvragen.aspx" />
     <Content Include="Views\Categorieen\Index.aspx" />
     <Content Include="Views\Handleiding\AfdelingActiveren.aspx" />
     <Content Include="Views\Handleiding\AfdelingsverdelingAanpassen.aspx" />

@@ -231,9 +231,6 @@
   <data name="GroepNietBijGroepsWerKjaar" xml:space="preserve">
     <value>Het gegeven groepswerkjaar hoort niet bij de gegeven groeps.</value>
   </data>
-  <data name="DubbelPuntBestellen" xml:space="preserve">
-    <value>Dubbelpunt bestellen voor {0}.</value>
-  </data>
   <data name="GroepPlaatsDefault" xml:space="preserve">
     <value />
   </data>
@@ -260,9 +257,6 @@
   </data>
   <data name="FunctiesVan" xml:space="preserve">
     <value>Functies van {0}</value>
-  </data>
-  <data name="DubbelPuntZonderAdres" xml:space="preserve">
-    <value>Je kunt geen Dubbelpunt bestellen voor een persoon zonder voorkeursadres.</value>
   </data>
   <data name="FoutToggleNaarKind" xml:space="preserve">
     <value>Je kon van deze persoon geen lid maken.  Misschien is er geen geschikte afdeling? Controleer eventueel de geboortedatum en/of Chiroleeftijd.</value>
@@ -350,9 +344,6 @@
   <data name="GeenBivak" xml:space="preserve">
     <value>Je hebt nog geen bivak geregistreerd voor dit werkjaar</value>
   </data>
-  <data name="BestelPeriodeDubbelpuntVoorbij" xml:space="preserve">
-    <value>Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkJaar, moet je eerst de jaarovergang uitvoeren.</value>
-  </data>
   <data name="LedenUitgeschreven" xml:space="preserve">
     <value>De geselecteerde leden werden uitgeschreven.</value>
   </data>
@@ -367,12 +358,6 @@
   </data>
   <data name="UitstapVerwijderenFout" xml:space="preserve">
     <value>De uitstap kon niet verwijderd worden</value>
-  </data>
-  <data name="KrijgtAlDubbelpunt" xml:space="preserve">
-    <value>Opgelet! {0} is de contactpersoon van je groep, en krijgt sowieso  een gratis Dubbelpuntabonnement. Ben je zeker dat je een extra abonnement wilt bestellen?</value>
-  </data>
-  <data name="MisschienGratisDubbelpunt" xml:space="preserve">
-    <value>Opgelet! De contactpersoon van je groep krijgt sowieso een gratis Dubbelpuntabonnement. Als {0} jullie contactpersoon is, hoef je voor hem/haar dus geen abonnement te bestellen. Maar er mag slechts één persoon contactpersoon zijn; dat is iets dat je blijkbaar nog in orde moet brengen.</value>
   </data>
   <data name="MinimumLeeftijd" xml:space="preserve">
     <value>Je mag geen kleuters aansluiten bij de Chiro.</value>

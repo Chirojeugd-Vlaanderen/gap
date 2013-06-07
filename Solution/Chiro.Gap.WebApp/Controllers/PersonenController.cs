@@ -533,7 +533,6 @@ namespace Chiro.Gap.WebApp.Controllers
                                                  ((DateTime)model.PersoonLidInfo.PersoonDetail.GeboorteDatum).Year >=
                                                  Properties.Settings.Default.LoonVerliesVanafLeeftijd;
                 model.PrijsVerzekeringLoonVerlies = Properties.Settings.Default.PrijsVerzekeringLoonVerlies;
-                model.PrijsDubbelPunt = Properties.Settings.Default.PrijsDubbelPunt;
                 model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam;
 
                 return View("EditRest", model);

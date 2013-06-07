@@ -171,40 +171,6 @@ namespace Chiro.Kip.ServiceContracts
             Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, _ikke + "LidTypeUpdaten {0} SN{1} WJ{2} LT{3}", persoon, stamNummer, werkJaar, lidType));
         }
 
-        /// <summary>
-        /// Doet alsof het een nieuw Dubbelpuntabonnement aanvraagt
-        /// </summary>
-        /// <param name="adNummer">
-        /// Het AD-nummer van de persoon die een abonnement wil
-        /// </param>
-        /// <param name="stamNummer">
-        /// Het stamnummer van de groep die het abonnement aanvraagt
-        /// </param>
-        /// <param name="werkJaar">
-        /// Het werkJaar waarin de persoon zich wil abonneren
-        /// </param>
-        public void DubbelpuntBestellen(int adNummer, string stamNummer, int werkJaar)
-        {
-            Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, _ikke + "DubbelpuntBestellen AD{0} SN{1} WJ{2}", adNummer, stamNummer, werkJaar));
-        }
-
-        /// <summary>
-        /// Doet alsof het een nieuw Dubbelpuntabonnement aanvraagt voor een nieuw
-        /// toegevoegde persoon
-        /// </summary>
-        /// <param name="details">
-        /// De persoonsgegevens die 'opgeslagen' moeten worden
-        /// </param>
-        /// <param name="stamNummer">
-        /// Het stamnummer van de groep die het abonnement aanvraagt
-        /// </param>
-        /// <param name="werkJaar">
-        /// Het werkJaar waarin de persoon zich wil abonneren
-        /// </param>
-        public void DubbelpuntBestellenNieuwePersoon(PersoonDetails details, string stamNummer, int werkJaar)
-        {
-            Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, _ikke + "DubbelpuntBestellenNieuwePersoon {0} SN{1} WJ{2}", details, stamNummer, werkJaar));
-        }
 
         /// <summary>
         /// Doet alsof het een verzekering tegen loonverlies aanvraagt

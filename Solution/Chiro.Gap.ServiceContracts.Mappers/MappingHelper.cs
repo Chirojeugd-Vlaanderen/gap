@@ -55,7 +55,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         // injection via de constructor.
 
         private static ILedenManager _ledenMgr { get { return Factory.Maak<ILedenManager>(); } }
-        private static IAbonnementenManager _abonnementenMgr { get { return Factory.Maak<IAbonnementenManager>(); } }
 
         #endregion
 
@@ -227,10 +226,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src.PersoonsAdres == null ? 0 : src.PersoonsAdres.ID))
                 .ForMember(
                     dst => dst.VolledigeNaam,
-                    opt => opt.Ignore())
-                .ForMember(
-                    dst => dst.DubbelPuntAbonnement,
-                    opt => opt.MapFrom(src => _abonnementenMgr.KrijgtDubbelpunt(src)));
+                    opt => opt.Ignore());
 
             Mapper.CreateMap<GelieerdePersoon, PersoonOverzicht>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))

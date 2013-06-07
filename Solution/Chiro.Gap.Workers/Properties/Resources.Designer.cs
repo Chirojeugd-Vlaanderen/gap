@@ -133,24 +133,6 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} had al een abonnement voor {1}..
-        /// </summary>
-        internal static string BestaandAbonnement {
-            get {
-                return ResourceManager.GetString("BestaandAbonnement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkJaar, moet je eerst de jaarovergang uitvoeren..
-        /// </summary>
-        internal static string BestelPeriodeDubbelpuntVoorbij {
-            get {
-                return ResourceManager.GetString("BestelPeriodeDubbelpuntVoorbij", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Er bestaat al een categorie met code &apos;{0}&apos;..
         /// </summary>
         internal static string CategorieBestaatAl {
@@ -192,15 +174,6 @@ namespace Chiro.Gap.Workers.Properties {
         internal static string DubbelGroepswerkjaar {
             get {
                 return ResourceManager.GetString("DubbelGroepswerkjaar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Je hebt nog geen voorkeursadres ingegeven voor {0}; je kunt er dus ook geen Dubbelpuntabonnement voor bestellen..
-        /// </summary>
-        internal static string DubbelPuntZonderAdres {
-            get {
-                return ResourceManager.GetString("DubbelPuntZonderAdres", resourceCulture);
             }
         }
         

@@ -234,9 +234,6 @@
   <data name="InschrijvenZonderAfdelingen" xml:space="preserve">
     <value>Je kan geen kinderen inschrijven als je groep geen afdelingen heeft in het huidige werkjaar!</value>
   </data>
-  <data name="DubbelPuntZonderAdres" xml:space="preserve">
-    <value>Je hebt nog geen voorkeursadres ingegeven voor {0}; je kunt er dus ook geen Dubbelpuntabonnement voor bestellen.</value>
-  </data>
   <data name="TeJongVoorLeiding" xml:space="preserve">
     <value>Deze persoon is nog te jong om leiding te worden.  Check eventueel geboortedatum en/of Chiroleeftijd.</value>
   </data>
@@ -258,14 +255,8 @@
   <data name="DeelnemerNietVanUitstap" xml:space="preserve">
     <value>Dit is een deelnemer van een andere uitstap.</value>
   </data>
-  <data name="BestaandAbonnement" xml:space="preserve">
-    <value>{0} had al een abonnement voor {1}.</value>
-  </data>
   <data name="PublicatieInactief" xml:space="preserve">
     <value>De publicatie '{0}' bestaat niet meer; je kunt geen abonnement meer nemen.</value>
-  </data>
-  <data name="BestelPeriodeDubbelpuntVoorbij" xml:space="preserve">
-    <value>Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkJaar, moet je eerst de jaarovergang uitvoeren.</value>
   </data>
   <data name="AdNummerVerplicht" xml:space="preserve">
     <value>Enkel personen met een AD-nummer komen in aanmerking voor een login.</value>

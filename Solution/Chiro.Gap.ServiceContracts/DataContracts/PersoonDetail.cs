@@ -92,11 +92,5 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 				return VoorNaam + " " + Naam;
 			}
 		}
-
-		/// <summary>
-		/// Geeft weer of de persoon geabonneerd is op Dubbelpunt
-		/// </summary>
-		[DataMember]
-		public bool DubbelPuntAbonnement { get; set; }
 	}
 }

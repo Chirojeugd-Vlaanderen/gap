@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="Chiro.Gap.Services.AbonnementenService" CodeBehind="AbonnementenService.svc.cs" %>

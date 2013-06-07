@@ -63,12 +63,7 @@ namespace Chiro.Adf.ServiceModel.Test
             var gelieerdePersonenServiceMock = new Mock<IGelieerdePersonenService>();
             gelieerdePersonenServiceMock.Setup(mock => mock.PersoonIDGet(It.IsAny<int>())).Returns(-1);
 
-            var abonnementenServiceMock = new Mock<IAbonnementenService>();
-            abonnementenServiceMock.Setup(mock => mock.DubbelPuntBestellen(It.IsAny<int>())).Throws(
-                new FaultException());
-
             Factory.InstantieRegistreren(gelieerdePersonenServiceMock.Object);
-            Factory.InstantieRegistreren(abonnementenServiceMock.Object);
         }
 
         #region Additional test attributes

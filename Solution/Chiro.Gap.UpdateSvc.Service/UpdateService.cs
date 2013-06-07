@@ -45,20 +45,18 @@ namespace Chiro.Gap.UpdateSvc.Service
         private readonly IContext _context;
 
         private readonly ILedenSync _ledenSync;
-        private readonly IDubbelpuntSync _dubbelpuntSync;
 
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Persoon> _personenRepo;
         
         private readonly GavChecker _gav;
 
-        public UpdateService(IAutorisatieManager autorisatieMgr, ILedenSync ledenSync, IDubbelpuntSync dubbelpuntSync, IRepositoryProvider repositoryProvider)
+        public UpdateService(IAutorisatieManager autorisatieMgr, ILedenSync ledenSync, IRepositoryProvider repositoryProvider)
         {
             _context = repositoryProvider.ContextGet();
             _personenRepo = repositoryProvider.RepositoryGet<Persoon>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _ledenSync = ledenSync;
-            _dubbelpuntSync = dubbelpuntSync;
             _gav = new GavChecker(autorisatieMgr);
         }
 
@@ -175,38 +173,6 @@ namespace Chiro.Gap.UpdateSvc.Service
             }
 
                 Console.WriteLine("Leden van {0} voor werkjaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
-        }
-
-        /// <summary>
-        /// Synct alle abonnementen van het recentste werkJaar van een groep opnieuw naar Kipadmin
-        /// </summary>
-        /// <param name="stamNummer">Stamnummer van groep met te syncen abonnementen</param>
-        /// <remarks>Dit is eigenlijk geen sync van Kipadmin naar GAP, maar een vraag van Kipadmin
-        /// aan GAP om bepaalde zaken opnieuw te syncen.  Eigenlijk staat dit dus niet op zijn
-        /// plaats in deze service.  Maar voorlopig staat het hier, omdat UpdateService de
-        /// enige manier is om communicatie van KIP naar GAP te arrangeren.</remarks>
-        public void AbonnementenOpnieuwSyncen(string stamNummer)
-        {
-            var groep = (from g in _groepenRepo where Equals(g.Code, stamNummer) select g).FirstOrDefault();
-            if (groep == null)
-            {
-                Console.WriteLine("Geen groep gevonden voor {0}", stamNummer);
-                return;
-            }
-
-            var gwj = groep.GroepsWerkJaar.OrderByDescending(e => e.WerkJaar).FirstOrDefault();
-            if (gwj == null)
-            {
-                Console.WriteLine("Geen groepswerkjaar gevonden voor {0}", stamNummer);
-                return;
-            }
-
-            foreach (var ab in gwj.Abonnement)
-            {
-                _dubbelpuntSync.Abonneren(ab);
-            }
-
-                Console.WriteLine("Abonnementen van {0} voor werkjaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
         }
     }
 }

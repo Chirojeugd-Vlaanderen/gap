@@ -160,15 +160,6 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Je kunt geen Dubbelpunt meer bestellen voor het werkjaar {0}-{1}.  Om Dubbelpunt te bestellen voor het nieuwe werkJaar, moet je eerst de jaarovergang uitvoeren..
-        /// </summary>
-        public static string BestelPeriodeDubbelpuntVoorbij {
-            get {
-                return ResourceManager.GetString("BestelPeriodeDubbelpuntVoorbij", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Je moet je bivakaangifte nog &lt;a href=&apos;{0}&apos;&gt; invullen &lt;/a&gt;..
         /// </summary>
         public static string BivakAangifteNogInTeVullen {
@@ -219,24 +210,6 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string DeelnemerUitgeschreven {
             get {
                 return ResourceManager.GetString("DeelnemerUitgeschreven", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dubbelpunt bestellen voor {0}..
-        /// </summary>
-        public static string DubbelPuntBestellen {
-            get {
-                return ResourceManager.GetString("DubbelPuntBestellen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Je kunt geen Dubbelpunt bestellen voor een persoon zonder voorkeursadres..
-        /// </summary>
-        public static string DubbelPuntZonderAdres {
-            get {
-                return ResourceManager.GetString("DubbelPuntZonderAdres", resourceCulture);
             }
         }
         
@@ -475,15 +448,6 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opgelet! {0} is de contactpersoon van je groep, en krijgt sowieso  een gratis Dubbelpuntabonnement. Ben je zeker dat je een extra abonnement wilt bestellen?.
-        /// </summary>
-        public static string KrijgtAlDubbelpunt {
-            get {
-                return ResourceManager.GetString("KrijgtAlDubbelpunt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Ingeschreven personen {0}-{1}.
         /// </summary>
         public static string LedenOverzicht {
@@ -615,15 +579,6 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string MinimumLeeftijd {
             get {
                 return ResourceManager.GetString("MinimumLeeftijd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Opgelet! De contactpersoon van je groep krijgt sowieso een gratis Dubbelpuntabonnement. Als {0} jullie contactpersoon is, hoef je voor hem/haar dus geen abonnement te bestellen. Maar er mag slechts één persoon contactpersoon zijn; dat is iets dat je blijkbaar nog in orde moet brengen..
-        /// </summary>
-        public static string MisschienGratisDubbelpunt {
-            get {
-                return ResourceManager.GetString("MisschienGratisDubbelpunt", resourceCulture);
             }
         }
         
