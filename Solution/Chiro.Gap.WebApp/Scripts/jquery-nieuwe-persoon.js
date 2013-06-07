@@ -47,7 +47,19 @@ var fout = false;
 //Document ready functie
 //--------------------------------------------------------------------------------
 $(function () {
-
+    var elem = document.createElement('input');  
+    elem.setAttribute('type', 'date');  
+  
+    if ( elem.type === 'text' ) {  
+         $('#HuidigePersoon_GeboorteDatum').datepicker({
+             showAnim: "slide",
+             changeYear: true,
+             changeMonth: true,
+             maxDate: "-6y"
+         });   
+    }  
+        $.datepicker.setDefaults($.datepicker.regional['be']);
+    
     //werkjaar invullen op groepen op te halen
     werkjaar = $('#np_werkJaarID').val();
 
@@ -123,16 +135,6 @@ $(function () {
 
     $('#btn_verder').button();
     $('#btn_verder').attr('disabled', false);
-
-    //Datepicker op het veld met geboortedatum
-    $('#HuidigePersoon_GeboorteDatum').datepicker({
-        showAnim: "slide",
-        changeYear: true,
-        changeMonth: true,
-        maxDate: "-6y"
-
-    });
-    $.datepicker.setDefaults($.datepicker.regional['be']);
 
     $('#geslacht').buttonset().find('label').width(99);
     
