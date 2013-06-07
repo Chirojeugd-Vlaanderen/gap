@@ -351,6 +351,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             model.BroerzusID = broerzus.GelieerdePersoonID;
             model.HuidigePersoon.Naam = broerzus.Naam;
+            model.GroepsWerkJaarID = VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID;
 
             model.Titel = Properties.Resources.NieuwePersoonTitel;
             return View("EditGegevens", model);
