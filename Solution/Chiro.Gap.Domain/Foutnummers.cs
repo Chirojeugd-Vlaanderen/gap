@@ -87,7 +87,6 @@ namespace Chiro.Gap.Domain
         Concurrency,
         DeelnemerNietVanUitstap,
         PublicatieInactief,
-        BestelPeriodeDubbelpuntVoorbij,
         GebruikersRechtNietVerlengbaar,
         GebruikersRechtWasAlVervallen,
         CategorieNietGekoppeld,

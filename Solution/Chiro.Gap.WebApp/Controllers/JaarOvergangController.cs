@@ -204,7 +204,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(svc => svc.Zoeken(filter, false)).Select(
                     e => e.GelieerdePersoonID).ToList();
             }
-            catch (FaultException<FoutNummerFault> ex)
+            catch (FaultException<FoutNummerFault>)
             {
                 var error = "Er is iets foutgegaan bij het laden van de volledige ledenlijst.\n" +
                             "Je bent nu in het nieuwe werkjaar, maar er zijn nog geen leden overgezet.\n" +

@@ -482,6 +482,7 @@
                         }
                     %>
                     <li><%: Html.ActionLink("[Gebruikersrecht afnemen]", "VanGpAfnemen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
+
                     <%                              
                 }
             %>

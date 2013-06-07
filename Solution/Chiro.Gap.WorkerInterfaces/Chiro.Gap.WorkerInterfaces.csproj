@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IAbonnementenManager.cs" />
     <Compile Include="IAdressenManager.cs" />
     <Compile Include="IAfdelingsJaarManager.cs" />
     <Compile Include="IAuthenticatieManager.cs" />

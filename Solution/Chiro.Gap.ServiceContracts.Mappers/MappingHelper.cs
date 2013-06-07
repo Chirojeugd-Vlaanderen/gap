@@ -55,7 +55,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         // injection via de constructor.
 
         private static ILedenManager _ledenMgr { get { return Factory.Maak<ILedenManager>(); } }
-        private static IAbonnementenManager _abonnementenMgr { get { return Factory.Maak<IAbonnementenManager>(); } }
 
         #endregion
 

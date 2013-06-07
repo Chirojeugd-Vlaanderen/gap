@@ -43,7 +43,6 @@
     <Compile Include="IAdressenSync.cs" />
     <Compile Include="IBivakSync.cs" />
     <Compile Include="ICommunicatieSync.cs" />
-    <Compile Include="IDubbelpuntSync.cs" />
     <Compile Include="IGroepenSync.cs" />
     <Compile Include="ILedenSync.cs" />
     <Compile Include="IPersonenSync.cs" />

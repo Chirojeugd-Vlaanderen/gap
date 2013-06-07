@@ -252,41 +252,6 @@ namespace Chiro.Kip.ServiceContracts
 
         #endregion
 
-        #region publicaties
-
-        /// <summary>
-        /// Bestelt dubbelpunt voor de gegeven persoon in het gegeven groepswerkjaar, gegeven dat de persoon
-        /// een AD-nummer heeft
-        /// </summary>
-        /// <param name="adNummer">
-        /// AD-nummer van persoon die Dubbelpunt wil
-        /// </param>
-        /// <param name="stamNummer">
-        /// Groep die Dubbelpunt betaalt
-        /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarvoor Dubbelpuntabonnement
-        /// </param>
-        [OperationContract(IsOneWay = true)]
-        void DubbelpuntBestellen(int adNummer, string stamNummer, int werkJaar);
-
-        /// <summary>
-        /// Bestelt dubbelpunt voor een 'onbekende' persoon in het gegeven groepswerkjaar
-        /// </summary>
-        /// <param name="details">
-        /// Details voor de persoon die Dubbelpunt wil bestellen
-        /// </param>
-        /// <param name="stamNummer">
-        /// Groep die Dubbelpunt betaalt
-        /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar waarvoor Dubbelpuntabonnement
-        /// </param>
-        [OperationContract(IsOneWay = true)]
-        void DubbelpuntBestellenNieuwePersoon(PersoonDetails details, string stamNummer, int werkJaar);
-
-        #endregion
-
         #region verzekeringen
 
         /// <summary>

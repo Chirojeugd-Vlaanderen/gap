@@ -177,16 +177,6 @@ namespace Chiro.Gap.Domain
     }
 
     /// <summary>
-    /// Enum voor verschillende publicaties.
-    /// Momenteel ondersteunen we enkel Dubbelpunt.
-    /// </summary>
-    public enum PublicatieTypeEnum
-    {
-        Onbekend = 0,
-        Dubbelpunt = 1
-    }
-
-    /// <summary>
     /// Types verzekering; moet overeenkomen met database!
     /// </summary>
     [DataContract]

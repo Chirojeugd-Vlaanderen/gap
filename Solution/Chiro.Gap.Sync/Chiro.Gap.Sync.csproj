@@ -65,7 +65,6 @@
     <Compile Include="AdressenSync.cs" />
     <Compile Include="BivakSync.cs" />
     <Compile Include="CommunicatieSync.cs" />
-    <Compile Include="DubbelpuntSync.cs" />
     <Compile Include="GroepenSync.cs" />
     <Compile Include="LedenSync.cs" />
     <Compile Include="MappingHelper.cs" />

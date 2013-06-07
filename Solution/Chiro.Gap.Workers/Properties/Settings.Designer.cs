@@ -106,15 +106,6 @@ namespace Chiro.Gap.Workers.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2011-06-01")]
-        public global::System.DateTime EindeDubbelPuntBestelling {
-            get {
-                return ((global::System.DateTime)(this["EindeDubbelPuntBestelling"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2011")]
         public int MinWerkJaarLidOverzetten {
             get {
