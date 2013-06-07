@@ -718,22 +718,23 @@ fieldset table {
 }
 
 /* Pagina GROEP */
-#groep_algemeen {
+#groep_algemeen, 
+#groep_categorieën, 
+#groep_actieveAfdelingen,
+#groep_functies {
     width: 45%;
-    float: left;
     margin-bottom: 0;
     margin-left: 0;
     margin-top: 0;
     margin-right: 3%;
 }
 
-#groep_categorieën {
-    width: 45%;
+#groep_Menu {
+    width: 250px;
     float: left;
-    margin-bottom: 0;
-    margin-left: 0;
-    margin-top: 0;
-    margin-right: 3%;
+    margin-top: 10px;
+    margin-right: 25px;
+    margin-bottom: 150px;
 }
 
 @media screen and (max-width: 360px) {

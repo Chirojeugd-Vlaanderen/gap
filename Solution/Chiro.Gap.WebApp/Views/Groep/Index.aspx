@@ -29,6 +29,39 @@
     <div id="extraInfoDialog" hidden>
         <img src="<%= ResolveUrl("~/Content/images/loading.gif")%>" />
     </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#groep_Menu').menu();
+            $('#algInfo').click(function () {
+                verberg();
+                $('#groep_algemeen').show();
+            });
+            $('#actAfd').click(function () {
+                verberg();
+                $('#groep_actieveAfdelingen').show();
+            });
+            $('#cat').click(function () {
+                verberg();
+                $('#groep_categorieën').show();
+            });
+            $('#funct').click(function () {
+                verberg();
+                $('#groep_functies').show();
+            });
+
+            function verberg() {
+                $('#groep_algemeen,#groep_actieveAfdelingen,#groep_functies, #groep_categorieën').hide();
+            }
+        });
+    </script>
+
+    <ul id="groep_Menu">
+        <li><a href="#" id="algInfo">Algemene groepsinfo</a></li>
+        <li><a href="#" id="actAfd">Actieve afdelingen dit werkjaar</a></li>
+        <li><a href="#" id="cat">Categorieën</a></li>
+        <li><a href="#" id="funct">Functies</a></li>
+    </ul>
+    
         <fieldset id="groep_algemeen">
             <legend>Algemene groepsinfo</legend>
 		    <table>
@@ -57,7 +90,7 @@
   			// Afdelingen enkel tonen voor Chirogroepen
   			// (niet voor kadergroepen of satellieten)  	
 %>
-			<fieldset id="groep_actieveAfdelingen">
+			<fieldset id="groep_actieveAfdelingen" hidden>
 				<legend>Actieve afdelingen dit werkjaar</legend>
                 <table>
                     <thead>
@@ -82,7 +115,7 @@
 				<%//=Html.ActionLink("Afdelingsverdeling aanpassen", "Index", "Afdelingen")%>
 			</fieldset>
     <% } %>
-	<fieldset id="groep_categorieën">
+	<fieldset id="groep_categorieën" hidden>
 		<legend>Categorieën voor ingeschreven en niet-ingeschreven personen</legend>
 		<table>
 		    <thead>
@@ -104,7 +137,7 @@
 		<%//=Html.ActionLink("Categorieën toevoegen/verwijderen", "Index", "Categorieen") %>
 	</fieldset>
 
-	<fieldset id="groep_functies">
+	<fieldset id="groep_functies" hidden>
 		<legend>Eigen functies voor ingeschreven leden en leiding</legend>
 		<table>
 		    <thead>
