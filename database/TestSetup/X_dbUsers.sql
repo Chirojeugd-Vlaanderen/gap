@@ -30,3 +30,46 @@ CREATE USER [CgDevelop] FOR LOGIN [CgDevelop];
 
 EXEC sp_addrolemember N'db_owner', N'CgDevelop';
 GO
+
+CREATE USER [gapsuper] FOR LOGIN [gapsuper]
+GO
+
+
+EXEC sp_addrolemember N'GapSuperRole', N'gapsuper'
+GO
+
+GRANT SELECT ON diag.vVerlorenBivakken TO GapSuperRole;
+
+USE KIPADMIN_dev
+GO
+
+CREATE USER [gapsuper] FOR LOGIN [gapsuper]
+GO
+
+EXEC sp_addrolemember N'GapSuperRole', N'gapsuper'
+GO
+
+USE [kipadmin_dev]
+
+GRANT SELECT ON biv.BivakOverzicht TO GapSuperRole
+GRANT SELECT ON grp.ChiroGroep TO GapSuperRole
+GRANT SELECT ON dbo.HuidigWerkJaar TO GapSuperRole
+
+USE [gap_dev]
+
+GRANT SELECT ON adr.Adres TO GapSuperRole
+GRANT SELECT ON adr.BelgischAdres TO GapSuperRole
+GRANT SELECT ON adr.BuitenlandsAdres TO GapSuperRole
+GRANT SELECT ON biv.Plaats TO GapSuperRole
+GRANT SELECT ON biv.Deelnemer TO GapSuperRole
+GRANT SELECT ON grp.GroepsWerkJaar TO GapSuperRole
+GRANT SELECT ON biv.Uitstap TO GapSuperRole
+GRANT SELECT ON adr.StraatNaam TO GapSuperRole
+GRANT SELECT ON adr.WoonPlaats TO GapSuperRole
+GRANT SELECT ON grp.Groep TO GapSuperRole
+GRANT SELECT ON grp.KaderGroep TO GapSuperRole
+GRANT SELECT ON grp.ChiroGroep TO GapSuperRole
+GRANT SELECT ON pers.Persoon TO GapSuperRole
+GRANT SELECT ON pers.GelieerdePersoon TO GapSuperRole
+GRANT SELECT ON pers.CommunicatieType TO GapSuperRole
+GRANT SELECT ON pers.CommunicatieVorm TO GapSuperRole

@@ -36,12 +36,12 @@ namespace Chiro.Gap.Diagnostics.Service
     /// </summary>
     public class AdminService : IAdminService
     {
-        private readonly GroepenManager _groepenManager;
         private readonly GebruikersRechtenManager _gebruikersRechtenManager;
         private readonly LedenManager _ledenManager;
         private readonly GelieerdePersonenManager _gelieerdePersonenManager;
         private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
         private readonly ProblemenManager _problemenManager;
+        private readonly UitstappenManager _uitstappenManager;
 
         // De sync-opdrachten worden rechtstreeks vanuit deze service gegeven.
         // Anderzijds bevat iedere worker ook een sync-object.  Moet de sync
@@ -51,6 +51,7 @@ namespace Chiro.Gap.Diagnostics.Service
 
         private readonly IAdressenSync _adressenSync;
         private readonly ILedenSync _ledenSync;
+        private readonly IBivakSync _bivakSync;
 
         // LIVE
         //private const string SECURITYGROEP = @"KIPDORP\g-GapSuper";
@@ -62,32 +63,35 @@ namespace Chiro.Gap.Diagnostics.Service
         /// Constructor voor de AdminService.  De workers uit de backend (en ihb
         /// diens dependency's) worden geinjecteerd via de DependencyInjectionBehavior.
         /// </summary>
-        /// <param name="groepenManager">Bevat groepsgerelateerde methods van de backend</param>
         /// <param name="gebruikersRechtenManager">Bevat gebruikersrechtgerelateerde methods van de backend</param>
         /// <param name="ledenManager">Bevat ledengerelateerde methods van de backend</param>
         /// <param name="gelieerdePersonenManager">Methods van backend m.b.t. gelieerde personen</param>
         /// <param name="groepsWerkJaarManager">Methods van backend m.b.t. groepswerkjaar</param>
         /// <param name="problemenManager">Methods van backend m.b.t. diagnostics</param>
+        /// <param name="uitstappenManager">Methods van backend m.b.t. uitstappen</param>
         /// <param name="adressenSync">zorgt voor de synchronisatie van de adressen naar Kipadmin</param>
         /// <param name="ledenSync">zorgt voor de synchronisatie van de leden naar Kipadmin</param>
-        public AdminService(
-            GroepenManager groepenManager, 
-            GebruikersRechtenManager gebruikersRechtenManager,
+        /// <param name="bivakSync">zorgt voor de synchronisatie van bivakken naar Kipadmin</param>
+        public AdminService(GebruikersRechtenManager gebruikersRechtenManager,
             GelieerdePersonenManager gelieerdePersonenManager,
             GroepsWerkJaarManager groepsWerkJaarManager,
             LedenManager ledenManager,
             ProblemenManager problemenManager,
+            UitstappenManager uitstappenManager,
             IAdressenSync adressenSync,
-            ILedenSync ledenSync)
+            ILedenSync ledenSync,
+            IBivakSync bivakSync)
         {
-            _groepenManager = groepenManager;
             _gebruikersRechtenManager = gebruikersRechtenManager;
             _ledenManager = ledenManager;
             _gelieerdePersonenManager = gelieerdePersonenManager;
             _groepsWerkJaarManager = groepsWerkJaarManager;
             _problemenManager = problemenManager;
+            _uitstappenManager = uitstappenManager;
+
             _adressenSync = adressenSync;
             _ledenSync = ledenSync;
+            _bivakSync = bivakSync;
         }
 
         /// <summary>
@@ -235,6 +239,34 @@ namespace Chiro.Gap.Diagnostics.Service
             foreach (var lid in leden)
             {
                 _ledenSync.FunctiesUpdaten(lid);
+            }
+        }
+
+        /// <summary>
+        /// Haalt het aantal niet-doorgekomen bivakken op voor huidig werkjaar
+        /// </summary>
+        /// <returns>Het aantal functies in GAP dat niet in Kipadmin gevonden wordt, plus
+        /// het aantal functies in Kipadmin dat niet in GAP gevonden wordt.</returns>
+        [PrincipalPermission(SecurityAction.Demand, Role = SECURITYGROEP)]
+        public int AantalVerdwenenBivakkenOphalen()
+        {
+            return _problemenManager.BivakProblemenOphalen().Count();
+        }
+
+        /// <summary>
+        /// Synct de bivakken van de groepen waarvoor er in GAP wel bivakken zijn, maar in
+        /// Kipadmin (Delphi) geen bivakaangifte opnieuw.
+        /// </summary>
+        public void OntbrekendeBivakkenSyncen()
+        {
+            var uitstapIDs = _problemenManager.BivakProblemenOphalen().Select(row => row.UitstapID).ToArray();
+
+            foreach (int id in uitstapIDs)
+            {
+                var uitstap = _uitstappenManager.Ophalen(id,
+                                                         UitstapExtras.Plaats | UitstapExtras.Contact |
+                                                         UitstapExtras.Groep | UitstapExtras.GroepsWerkJaar);
+                _bivakSync.Bewaren(uitstap);
             }
         }
     }

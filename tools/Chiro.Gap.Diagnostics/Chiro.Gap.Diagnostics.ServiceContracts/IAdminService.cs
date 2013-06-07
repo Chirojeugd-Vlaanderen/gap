@@ -88,5 +88,19 @@ namespace Chiro.Gap.Diagnostics.ServiceContracts
         /// </summary>
         [OperationContract]
         void FunctieProbleemLedenOpnieuwSyncen();
+
+        /// <summary>
+        /// Haalt het aantal verdwenen bivakken voor dit werkjaar op
+        /// </summary>
+        /// <returns>Het aantal verdwenen bivakken.</returns>
+        [OperationContract]
+        int AantalVerdwenenBivakkenOphalen();
+
+        /// <summary>
+        /// Synct de bivakken van de groepen waarvoor er in GAP wel bivakken zijn, maar in
+        /// Kipadmin (Delphi) geen bivakaangifte opnieuw.
+        /// </summary>
+        [OperationContract]
+        void OntbrekendeBivakkenSyncen();
     }
 }
