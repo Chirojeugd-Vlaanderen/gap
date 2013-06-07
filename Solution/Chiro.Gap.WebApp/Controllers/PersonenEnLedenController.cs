@@ -105,7 +105,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			if (!String.IsNullOrEmpty(foutBerichten))
 			{
-				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
+				TempData["fout"] = string.Concat(Properties.Resources.MultiInschrijvenMisluktFout, Environment.NewLine, foutBerichten);
 			    return TerugNaarVorigeLijst();
 			}
 
@@ -173,7 +173,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
+				TempData["fout"] = string.Concat(Properties.Resources.MultiInschrijvenMisluktFout, Environment.NewLine, foutBerichten);
                 // Ledenproblemen resetten ook wanneer er fouten zijn, want het kan zijn dat sommige leden wel ingeschreven werden
                 VeelGebruikt.LedenProblemenResetten(groepID);
 			}
