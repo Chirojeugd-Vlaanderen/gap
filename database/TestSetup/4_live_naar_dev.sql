@@ -22,6 +22,12 @@ ALTER TABLE grp.Groep ADD StopDatum DateTime NULL;
 
 -- versie 1.5
 
+use [KipAdmin]
+GO
+GRANT DELETE ON [lid].[Aansluiting] TO [KipSyncRole]
+GO
+
+
 ALTER TABLE biv.BivakOverzicht ALTER COLUMN b_naam VARCHAR(80);
 ALTER TABLE biv.BivakOverzicht ALTER COLUMN b_straat VARCHAR(80);
 ALTER TABLE biv.BivakOverzicht ALTER COLUMN b_gemeente VARCHAR(80);
