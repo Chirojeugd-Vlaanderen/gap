@@ -26,10 +26,6 @@
     <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.7.1.min.js")%>"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <%=Html.ActionLink("Terug naar stap 1", "Stap1AfdelingenSelecteren", new { Controller = "JaarOvergang" })%>
-
-    <br />
-
     <%:Html.ValidationSummary() %>
 
     <br />
