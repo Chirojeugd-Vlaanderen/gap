@@ -158,7 +158,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen);
+		List<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen);
 
 		#endregion
 

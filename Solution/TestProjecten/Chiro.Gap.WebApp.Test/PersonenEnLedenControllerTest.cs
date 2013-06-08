@@ -91,7 +91,7 @@ namespace Chiro.Gap.WebApp.Test
             throw new NotImplementedException();
         }
 
-        public IList<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
+        public List<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
         {
             throw new NotImplementedException();
         }

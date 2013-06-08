@@ -649,7 +649,7 @@ namespace Chiro.Gap.Services
         /// Let er ook op dat je in de filter iets opgeeft als LidType
         /// (Kind, Leiding of Alles), want anders krijg je niets terug.
         /// </remarks>
-        public IList<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
+        public List<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
         {
             var leden = (from ld in _ledenRepo.Select()
                          where
@@ -680,10 +680,10 @@ namespace Chiro.Gap.Services
 
             if (metAdressen)
             {
-                return Mapper.Map<IList<Lid>, IList<LidOverzicht>>(leden);
+                return Mapper.Map<IList<Lid>, List<LidOverzicht>>(leden);
             }
-            var list = Mapper.Map<IList<Lid>, IList<KleinLidOverzicht>>(leden);
-            return Mapper.Map<IList<KleinLidOverzicht>, IList<LidOverzicht>>(list);
+            var list = Mapper.Map<IList<Lid>, List<KleinLidOverzicht>>(leden);
+            return Mapper.Map<IList<KleinLidOverzicht>, List<LidOverzicht>>(list);
         }
 
         /// <summary>
