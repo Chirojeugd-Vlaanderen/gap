@@ -223,10 +223,10 @@ namespace Chiro.Gap.Services
         /// <summary>
         /// Probeert de opgegeven personen in te schrijven met de meegegeven informatie. Als dit niet mogelijk blijkt te zijn, wordt er niemand ingeschreven.
         /// </summary>
-        /// <param name="lidInformatie">Lijst van informatie over wie lid moet worden</param>
+        /// <param name="inschrijfInfo">Lijst van informatie over wie lid moet worden</param>
         /// <param name="foutBerichten">Als er sommige personen geen lid konden worden gemaakt, bevat foutBerichten een string waarin wat uitleg staat. </param>
         /// <returns>De LidIds van de personen die lid zijn gemaakt</returns>
-        public IEnumerable<int> Inschrijven(InTeSchrijvenLid[] lidInformatie, out string foutBerichten)
+        public IEnumerable<int> Inschrijven(InTeSchrijvenLid[] inschrijfInfo, out string foutBerichten)
         {
             foutBerichten = String.Empty;
 
@@ -238,9 +238,9 @@ namespace Chiro.Gap.Services
             // Haal meteen alle gelieerde personen op, samen met alle info die nodig is om het lid
             // over te zetten naar Kipadmin: groep, persoon, voorkeursadres
 
-            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(lidInformatie.Select(e => e.GelieerdePersoonID));
+            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(inschrijfInfo.Select(e => e.GelieerdePersoonID));
 
-            if (!_autorisatieMgr.IsGav(gelieerdePersonen) || lidInformatie.Count() != gelieerdePersonen.Count)
+            if (!_autorisatieMgr.IsGav(gelieerdePersonen) || inschrijfInfo.Count() != gelieerdePersonen.Count)
             {
                 throw FaultExceptionHelper.GeenGav();
             }
@@ -282,7 +282,7 @@ namespace Chiro.Gap.Services
                         {
                             l.UitschrijfDatum = null;
                             l.NonActief = false;
-                            teSyncen.Add(l);
+                            teSyncen.Add(l); 
                         }
                     }
                     else // nieuw lid
@@ -291,7 +291,7 @@ namespace Chiro.Gap.Services
                         {
                             l = _ledenMgr.NieuwInschrijven(gp, gwj, false,
                                                            Mapper.Map<InTeSchrijvenLid, LidVoorstel>(
-                                                               lidInformatie.First(e => e.GelieerdePersoonID == gp.ID)));
+                                                               inschrijfInfo.First(e => e.GelieerdePersoonID == gp.ID)));
                             teSyncen.Add(l);
                         }
                         catch (BestaatAlException<Kind>)

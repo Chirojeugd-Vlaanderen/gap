@@ -49,9 +49,9 @@ namespace Chiro.Gap.WebApp.Test
             throw new NotImplementedException();
         }
 
-        public IEnumerable<int> Inschrijven(InTeSchrijvenLid[] lidInformatie, out string foutBerichten)
+        public IEnumerable<int> Inschrijven(InTeSchrijvenLid[] inschrijfInfo, out string foutBerichten)
         {
-            DoorgekregenInschrijving = lidInformatie;
+            DoorgekregenInschrijving = inschrijfInfo;
             foutBerichten = String.Empty;
             return null;
         }
