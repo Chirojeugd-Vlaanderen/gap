@@ -69,7 +69,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	    /// TODO (#190): documenteren
 	    /// </summary>
 	    [DataMember]
-		public IList<AfdelingInfo> Afdelingen { get; set; }
+		public IEnumerable<AfdelingInfo> Afdelingen { get; set; }
 
 	    /// <summary>
 	    /// Is de deelnemer contactpersoon voor de uitstap in kwestie?

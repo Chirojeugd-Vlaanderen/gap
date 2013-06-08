@@ -264,7 +264,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                                  src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.TelefoonNummer)))
                   .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
                   .ForMember(dst => dst.Functies, opt => opt.MapFrom(src => src.Functie))
-                  .ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(Afdelingen))
+                  .ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(AfdelingsJaren))
                   .ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd))
                   .ForMember(dst => dst.LidID, opt => opt.MapFrom(src => src.ID))
                   .ForMember(dst => dst.EindeInstapPeriode,
@@ -330,7 +330,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                                 ? null
                                 : src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaatsGet()))
                 .ForMember(dst => dst.Functies, opt => opt.MapFrom(src => src.Functie))
-                .ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(Afdelingen))
+                .ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(AfdelingsJaren))
                 .ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd))
                 .ForMember(dst => dst.LidID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.EindeInstapPeriode,
@@ -736,12 +736,12 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         }
 
         /// <summary>
-        /// Geeft de rij afdelingen weer waaraan een lid gekoppeld is.  Voor een kind bevat de lijst precies
-        /// 1 afdeling, voor leiding kunnen het er ook geen of veel zijn.
+        /// Geeft de rij afdelingsjaren weer waaraan een lid gekoppeld is.  Voor een kind bevat de lijst precies
+        /// 1 afdelingsjaar, voor leiding kunnen het er ook geen of veel zijn.
         /// </summary>
-        /// <param name="l">Lid van wie we afdelingen moeten ophalen</param>
-        /// <returns>Rij afdelingen van het lid <paramref name="l"/></returns>
-        private static IEnumerable<AfdelingsJaarInfo> Afdelingen(Lid l)
+        /// <param name="l">Lid van wie we afdelingsjaren moeten ophalen</param>
+        /// <returns>Rij afdelingsjaren van het lid <paramref name="l"/></returns>
+        private static IEnumerable<AfdelingsJaarInfo> AfdelingsJaren(Lid l)
         {
             if (l == null)
             {
@@ -757,6 +757,31 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             {
                 return
                     Mapper.Map<IEnumerable<AfdelingsJaar>, IEnumerable<AfdelingsJaarInfo>>((l as Leiding).AfdelingsJaar);
+            }
+            // Enkel kinderen en leiding
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Geeft de rij afdelingen weer waaraan een lid gekoppeld is.  Voor een kind bevat de lijst precies
+        /// 1 afdeling, voor leiding kunnen het er ook geen of veel zijn.
+        /// </summary>
+        /// <param name="l">Lid van wie we afdelingen moeten ophalen</param>
+        /// <returns>Rij afdelingen van het lid <paramref name="l"/></returns>
+        private static IEnumerable<AfdelingInfo> Afdelingen(Lid l)
+        {
+            if (l == null)
+            {
+                return new AfdelingInfo[0];
+            }
+
+            if (l is Kind)
+            {
+                return new[] { Mapper.Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling) };
+            }
+            else if (l is Leiding)
+            {
+                return Mapper.Map<IEnumerable<Afdeling>, IEnumerable<AfdelingInfo>>((l as Leiding).AfdelingsJaar.Select(e => e.Afdeling));
             }
             // Enkel kinderen en leiding
             throw new NotSupportedException();
