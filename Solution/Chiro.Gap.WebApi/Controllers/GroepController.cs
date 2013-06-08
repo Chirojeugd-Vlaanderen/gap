@@ -1,13 +1,17 @@
 ﻿using System.Linq;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.OData;
+using System.Web.Mvc;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WebApi.Models;
+using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.WebApi.Controllers
 {
+    [System.Web.Http.Authorize]
     public class GroepController : EntitySetController<GroepModel, int>
 
     {
@@ -28,12 +32,31 @@ namespace Chiro.Gap.WebApi.Controllers
         [Queryable(PageSize = 10)]
         public override IQueryable<GroepModel> Get()
         {
-            return groepen.AsQueryable();
+            var user = HttpContext.Current.User;
+            var gav = _context.Gav.FirstOrDefault(g => g.Login == user.Identity.Name);
+            if (gav == null)
+            {
+                return null;
+            }
+
+            return
+                gav.GebruikersRecht.Select(
+                    gr => new GroepModel {
+                            Id = gr.Groep.ID, 
+                            Naam = gr.Groep.Naam, 
+                            StamNummer = gr.Groep.Code
+                    })
+                   .AsQueryable();
+
+
         }
 
         protected override GroepModel GetEntityByKey(int key)
         {
-            return groepen.FirstOrDefault(g => g.Id == key);
+            var groep = groepen.FirstOrDefault(g => g.Id == key);
+            
+            return groep;
+
         }
 
         [Queryable(PageSize = 50)]
