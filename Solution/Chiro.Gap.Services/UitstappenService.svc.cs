@@ -304,6 +304,7 @@ namespace Chiro.Gap.Services
                 // Nieuwe uitstap
                 uitstap = Mapper.Map<UitstapInfo, Uitstap>(info);
                 uitstap.GroepsWerkJaar = groepsWerkJaar;
+                groepsWerkJaar.Uitstap.Add(uitstap);
             }
             else
             {
