@@ -3,21 +3,21 @@
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.PersoonDetail">
     <Position X="5.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgQAAAAAAAEAAAAAAAgBAAAAAAAAAAAAAAAUAAAAA=</HashCode>
+      <HashCode>AAAgQAAAAAAAEAAAAAAAgBAAAAEAAAAAAAAAAUAAAAA=</HashCode>
       <FileName>DataContracts\PersoonDetail.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.PersoonInfo">
     <Position X="8" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAACEAAAAAAAAAABAAAAAAAAAAAAIgAAgAAQAA=</HashCode>
+      <HashCode>AAAAAAAACEAAAAAAAAAABAAAAAAAAAAAAIiAAgAAQAA=</HashCode>
       <FileName>DataContracts\PersoonInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.PersoonLidInfo">
     <Position X="5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAQAIAAAIAAgAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAIAABIAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>DataContracts\PersoonLidInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -63,13 +63,6 @@
       <FileName>DataContracts\WoonPlaatsInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Chiro.Gap.ServiceContracts.DataContracts.AdresInfo" Collapsed="true">
-    <Position X="7.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAIAAAAAAAAAiBAAAAAAAAAAAAAAAAAAgAAAAACAAAA=</HashCode>
-      <FileName>DataContracts\AdresInfo.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.AfdelingDetail" Collapsed="true">
     <Position X="0.5" Y="8.25" Width="1.75" />
     <TypeIdentifier>
@@ -80,7 +73,7 @@
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.AfdelingInfo" Collapsed="true">
     <Position X="3.5" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAAAAAIBAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAgAAAAAAABAAAAAAAAAAACAAAAAAAAAA=</HashCode>
       <FileName>DataContracts\AfdelingInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -108,10 +101,9 @@
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.CommunicatieInfo" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="18.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAgAAAAAAAgAAAAAACAAABAAAAQAAAAAQAEgAiAAE=</HashCode>
+      <HashCode>AQAAgAAAAAAAgAAAAAACAAABAAAAAAAAAAAAEgAgAAE=</HashCode>
       <FileName>DataContracts\CommunicatieInfo.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.CommunicatieTypeInfo" Collapsed="true">
     <Position X="20.25" Y="0.5" Width="1.5" />
@@ -151,7 +143,7 @@
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.GroepDetail" Collapsed="true">
     <Position X="0.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAEAAAAAAAAAAAABAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAEAAAAAAAAAAACBAAA=</HashCode>
       <FileName>DataContracts\GroepDetail.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -172,21 +164,21 @@
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.LidOverzicht" Collapsed="true">
     <Position X="7.5" Y="9.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAEAAAAAAQAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAEAIAAAAQAAAAAAAAE=</HashCode>
       <FileName>DataContracts\LidOverzicht.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.OfficieleAfdelingDetail" Collapsed="true">
     <Position X="18.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAEAAAEBAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAEAAgAAEAAAEBEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DataContracts\OfficieleAfdelingDetail.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.PersoonOverzicht" Collapsed="true">
     <Position X="7.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAQAAAACAACAAAAQCAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <HashCode>AAIAQAAAACAACAAAAQCAAAAAAAAAAAAAAggAgAAAAAA=</HashCode>
       <FileName>DataContracts\PersoonOverzicht.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -195,13 +187,6 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAACAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DataContracts\StraatInfo.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Chiro.Gap.ServiceContracts.DataContracts.TeActiverenAfdeling" Collapsed="true">
-    <Position X="15" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAgAAAAIAAAAAAAAAAAAAAAAAAAAYAAAAEAAAA=</HashCode>
-      <FileName>DataContracts\TeActiverenAfdeling.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chiro.Gap.ServiceContracts.DataContracts.WerkJaarInfo" Collapsed="true">

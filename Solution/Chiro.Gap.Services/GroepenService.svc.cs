@@ -1007,11 +1007,10 @@ namespace Chiro.Gap.Services
         /// <returns>Gegevens van de gevonden straten</returns>
         public IEnumerable<StraatInfo> StratenOphalen(string straatStukje, int postNr)
         {
-            var likeString = @"%" + straatStukje + @"%";
             var straatNaams =
                 _straatRepo.Select().Where(e =>
                     e.PostNummer == postNr
-                    && SqlFunctions.PatIndex(likeString, e.Naam) > 0) // We gebruiken hier expliciet een van de SqlFuncties, om de query op SQL te laten uitvoeren
+                    && SqlFunctions.CharIndex(straatStukje, e.Naam) > 0) // We gebruiken hier expliciet een van de SqlFuncties, om de query op de database te laten uitvoeren
                            .Take(Properties.Settings.Default.AantalStraatSuggesties)
                            .ToList();
 
