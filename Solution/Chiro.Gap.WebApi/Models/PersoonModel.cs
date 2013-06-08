@@ -5,12 +5,14 @@ using System.Web;
 
 namespace Chiro.Gap.WebApi.Models
 {
-    public class GroepModel
+    public class PersoonModel
     {
         public int Id { get; set; }
         public string Naam { get; set; }
-        public string StamNummer { get; set; }
+        public string Voornaam { get; set; }
+        public DateTime? GeboorteDatum { get; set; }
 
-        public virtual IQueryable<PersoonModel> Personen { get; set; }
+        public int GroepId { get; set; }
+
     }
 }
