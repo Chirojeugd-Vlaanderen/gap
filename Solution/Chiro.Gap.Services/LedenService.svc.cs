@@ -292,6 +292,9 @@ namespace Chiro.Gap.Services
                             l = _ledenMgr.NieuwInschrijven(gp, gwj, false,
                                                            Mapper.Map<InTeSchrijvenLid, LidVoorstel>(
                                                                inschrijfInfo.First(e => e.GelieerdePersoonID == gp.ID)));
+
+                            // Als er nog geen AD-nummer is, markeren we 'AdInAanvraag'.
+                            l.GelieerdePersoon.Persoon.AdInAanvraag = (l.GelieerdePersoon.Persoon.AdNummer == null);
                             teSyncen.Add(l);
                         }
                         catch (BestaatAlException<Kind>)
