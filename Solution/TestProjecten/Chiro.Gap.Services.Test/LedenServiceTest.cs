@@ -1115,5 +1115,70 @@ namespace Chiro.Gap.Services.Test
 
             ledenSyncMock.Verify();
         }
+
+        /// <summary>
+        /// Kijkt na of na het inschrijven van een persoon, het AD-nummer gemarkeerd wordt
+        /// als zijnde 'in aanvraag'.
+        /// </summary>
+        [TestMethod()]
+        public void InschrijvenAdNrAanvraagTest()
+        {
+            // ARRANGE
+
+            // model
+
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                WerkJaar = 2013
+            };
+            var groep = new KaderGroep()
+            {
+                GroepsWerkJaar =
+                    new List<GroepsWerkJaar>
+                                        {
+                                            groepsWerkJaar
+                                        }
+            };
+            groepsWerkJaar.Groep = groep;
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Groep = groep,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1980, 8, 8)
+                    }
+            };
+
+            var lidVoorsel = new InTeSchrijvenLid
+            {
+                AfdelingsJaarIrrelevant = true,
+                GelieerdePersoonID = gelieerdePersoon.ID,
+                LeidingMaken = true,
+                VolledigeNaam = "Ham Burger" // moet weg; zie #1544
+            };
+
+            // dependency injection
+            var ledenSyncMock = new Mock<ILedenSync>();
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var ledenService = Factory.Maak<LedenService>();
+            string feedback;
+            ledenService.Inschrijven(new[] { lidVoorsel }, out feedback);
+
+            // ASSERT
+
+            Assert.IsTrue(gelieerdePersoon.Persoon.AdInAanvraag);
+        }
+
     }
 }
