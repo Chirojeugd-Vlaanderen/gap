@@ -48,7 +48,7 @@ namespace Chiro.Gap.UpdateSvc.Service
 
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Persoon> _personenRepo;
-        
+
         private readonly GavChecker _gav;
 
         public UpdateService(IAutorisatieManager autorisatieMgr, ILedenSync ledenSync, IRepositoryProvider repositoryProvider)
@@ -140,6 +140,7 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <remarks>Als <paramref name="stopDatum"/> <c>null</c> is, wordt de groep opnieuw actief.</remarks>
         public void GroepDesactiveren(string stamNr, DateTime? stopDatum)
         {
+            // De Johan moet dit nog verder uitwerken, wordt opgeroepen voor KipAdmin als een groep gestopt is
             throw new NotImplementedException(NIEUWEBACKEND.Info);
             //var g = _groepenMgr.Ophalen(stamNr);
             //g.StopDatum = stopDatum;
@@ -147,32 +148,5 @@ namespace Chiro.Gap.UpdateSvc.Service
             //Console.WriteLine(stopDatum == null ? "Groep opnieuw geactiveerd: {0}" : "Groep gedesactiveerd: {0}", stamNr);
         }
 
-        /// <summary>
-        /// Synct alle leden van het recentste werkJaar van een groep opnieuw naar Kipadmin
-        /// </summary>
-        /// <param name="stamNummer">Stamnummer van groep met te syncen leden</param>
-        public void OpnieuwSyncen(string stamNummer)
-        {
-            var groep = (from g in _groepenRepo where Equals(g.Code, stamNummer) select g).FirstOrDefault();
-            if (groep == null)
-            {
-                Console.WriteLine("Geen groep gevonden voor {0}", stamNummer);
-                return;
-            }
-
-            var gwj = groep.GroepsWerkJaar.OrderByDescending(e => e.WerkJaar).FirstOrDefault();
-            if (gwj == null)
-            {
-                Console.WriteLine("Geen groepswerkjaar gevonden voor {0}", stamNummer);
-                return;
-            }
-
-            foreach (var lid in gwj.Lid)
-            {
-                _ledenSync.Bewaren(lid);
-            }
-
-                Console.WriteLine("Leden van {0} voor werkjaar {1} opnieuw gesynct naar Kipadmin", stamNummer, gwj.WerkJaar);                
-        }
     }
 }

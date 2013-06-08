@@ -435,15 +435,15 @@ namespace Chiro.Gap.ServiceContracts
 
 		/// <summary>
 		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint
-		/// met het gegeven <paramref name="straatBegin"/>.
+		/// met het gegeven <paramref name="straatStukje"/>.
 		/// </summary>
-		/// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
+		/// <param name="straatStukje">Eerste letters van de te zoeken straatnamen</param>
 		/// <param name="postNr">Postnummer waarin te zoeken</param>
 		/// <returns>Gegevens van de gevonden straten</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<StraatInfo> StratenOphalen(String straatBegin, int postNr);
+		IEnumerable<StraatInfo> StratenOphalen(String straatStukje, int postNr);
 
 		/// <summary>
 		/// Haalt alle straten op uit een gegeven rij <paramref name="postNrs"/>, waarvan de naam begint

@@ -75,16 +75,14 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Genereert een JSON-lijst met WoonPlaatsInfo corresponderend met het gegeven
-		/// <paramref name="postNummer"/>.
+		/// Genereert een JSON-lijst met WoonPlaatsInfo corresponderend met het gegeven <paramref name="postNummer"/>.
 		/// </summary>
 		/// <param name="postNummer">Postnummer waarvan woonplaatsen gevraagd</param>
 		/// <returns>
-		/// JSON-lijst met WoonPlaatsInfo corresponderend met het gegeven
-		/// <paramref name="postNummer"/>.
+		/// JSON-lijst met WoonPlaatsInfo corresponderend met het gegeven <paramref name="postNummer"/>.
 		/// </returns>
 		[HandleError]
-		public ActionResult WoonPlaatsenOphalen(int postNummer)
+		public JsonResult WoonPlaatsenOphalen(int postNummer)
 		{
 			var resultaat = (from g in VeelGebruikt.WoonPlaatsenOphalen()
 							 where g.PostNummer == postNummer
@@ -94,24 +92,35 @@ namespace Chiro.Gap.WebApp.Controllers
 			return Json(resultaat, JsonRequestBehavior.AllowGet);
 		}
 
+        /// <summary>
+        /// Alle landen in een json lijst.
+        /// </summary>
+        /// <returns>JsonResult.</returns>
+	    public JsonResult LandenVoorstellen()
+	    {
+	        List<LandInfo> landen =  VeelGebruikt.LandenOphalen();
+	        return Json(landen, JsonRequestBehavior.AllowGet);
+	    }
+
+
 		/// <summary>
 		/// Stelt op basis van een gedeeltelijke straatnaam en een 
 		/// gemeentenaam een lijst suggesties samen met straatnamen die de
-		/// gebruiker mogelijk zinnes is in te vullen.
+		/// gebruiker mogelijk zinnes is in te vullen, maximum 20 antwoorden
 		/// </summary>
-		/// <param name="q">Wat de gebruiker al intikte</param>
+		/// <param name="q">Wat de gebruiker al intikte, query</param> // Merkt op dat q een mottige naam is, maar niet veranderen, want dan is de JQuery query kapot.
 		/// <param name="postNummer">Postnummer waarin gezocht moet worden</param>
 		/// <returns>Voorgestelde straatnamen in plain text, nieuwe regel na elke straat</returns>
 		[HandleError]
-		public ActionResult StratenVoorstellen(String q, int postNummer)
+		public JsonResult StratenVoorstellen(string q, int postNummer)
 		{
-			IEnumerable<StraatInfo> mogelijkeStraten =
+			var mogelijkeStraten =
 				ServiceHelper.CallService<IGroepenService, IEnumerable<StraatInfo>>(
 					x => x.StratenOphalen(q, postNummer));
 
 			var namen = (from straat in mogelijkeStraten
 						 orderby straat.Naam
-						 select straat.Naam).Distinct();
+						 select straat.Naam);
 
 			//return Content(String.Join("\n", namen.ToArray()));
             return Json(namen, JsonRequestBehavior.AllowGet);
@@ -124,9 +133,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Een willekeurig postnummer dat hoort bij de deelgemeentenaam</returns>
 		/// <remarks>Dit is nogal een omslachtige search voor iets dat eigenlijk weinig zinvol is.</remarks>
 		[HandleError]
-		public ActionResult PostNrVoorstellen(String gemeente)
+		public ActionResult PostNrVoorstellen(string gemeente)
 		{
-			IEnumerable<WoonPlaatsInfo> tags = VeelGebruikt.WoonPlaatsenOphalen().Where(x => x.Naam.Equals(gemeente, StringComparison.CurrentCultureIgnoreCase));
+			var tags = VeelGebruikt.WoonPlaatsenOphalen().Where(x => x.Naam.Equals(gemeente, StringComparison.CurrentCultureIgnoreCase));
 
 			// Select the tags that match the query, and get the 
 			// number or tags specified by the limit.
@@ -141,7 +150,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// TODO (#190): documenteren
         /// </summary>
         /// <param name="groepID">ID van de groep die de pagina oproept, en van wie we dus gegevens moeten tonen</param>
-        /// <returns></returns>
+        /// <returns>ActionResult.</returns>
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{

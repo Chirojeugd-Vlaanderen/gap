@@ -56,12 +56,6 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 	    /// <remarks>Als <paramref name="stopDatum"/> <c>null</c> is, wordt de groep opnieuw actief.</remarks>
 	    [OperationContract(IsOneWay = true)]
 	    void GroepDesactiveren(string stamNr, DateTime? stopDatum);
-
-        /// <summary>
-        /// Synct alle leden van het recentste werkJaar van een groep opnieuw naar Kipadmin
-        /// </summary>
-        /// <param name="stamNummer">Stamnummer van groep met te syncen leden</param>
-	    [OperationContract(IsOneWay = true)]
-	    void OpnieuwSyncen(string stamNummer);
+        
 	}
 }
