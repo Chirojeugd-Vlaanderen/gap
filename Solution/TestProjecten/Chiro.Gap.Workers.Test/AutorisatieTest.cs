@@ -31,6 +31,12 @@ namespace Chiro.Gap.Workers.Test
 	/// <summary>
 	/// Tests op de security van de workers.
 	/// </summary>
+	/// <remarks>Autorisatie moet met de nieuwe backend in de services
+	/// gebeuren i.p.v. in de workers. Ik heb de tests hier allemaal
+	/// NotImplemented gemaakt; de bedoeling is dat ze vervangen worden
+	/// door gelijkaardige tests in Chiro.Gap.Services.Autorisatie.Test.
+	/// Dit zal stelselmatisch gebeuren.
+	/// </remarks>
 	[TestClass]
 	public class AutorisatieTest
 	{
@@ -106,6 +112,7 @@ namespace Chiro.Gap.Workers.Test
 		[ExpectedException(typeof(GeenGavException))]
 		public void LijstLedenGeenGavAantalGwj()
 		{
+            throw new NotImplementedException();
         //    // Arrange
 
         //    var testData = new DummyData();
@@ -132,17 +139,18 @@ namespace Chiro.Gap.Workers.Test
         //    lm.Zoeken(new LidFilter { GroepsWerkJaarID = testData.HuidigGwj.ID, LidType = LidType.Alles }, LidExtras.Geen);
 
         //    // Verwacht exception
-        //}
+        }
 
-        ///// <summary>
-        ///// Als een niet-GAV probeert een communicatievorm te verwijderen
-        ///// die niet aan een gelieerde persoon gekoppeld is, moet die een
-        ///// GeenGavException krijgen, en niks anders :)
-        ///// </summary>
-        //[TestMethod]
-        //[ExpectedException(typeof(GeenGavException))]
-        //public void FouteCommVormVerwijderenGeenGav()
-        //{
+        /// <summary>
+        /// Als een niet-GAV probeert een communicatievorm te verwijderen
+        /// die niet aan een gelieerde persoon gekoppeld is, moet die een
+        /// GeenGavException krijgen, en niks anders :)
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(GeenGavException))]
+        public void FouteCommVormVerwijderenGeenGav()
+        {
+            throw new NotImplementedException();
         //    #region arrange
 
         //    // fake gelieerde persoon zonder communicatiemiddelen.
@@ -189,15 +197,15 @@ namespace Chiro.Gap.Workers.Test
         //    // Als we dit tegenkomen, is het sowieso mislukt
         //    Assert.IsTrue(false);
         //    #endregion
-        //}
+        }
 
-        ///// <summary>
-        ///// Probeert lijst actieve leden op te halen als wel GAV
-        ///// Verwacht geen exception.
-        ///// </summary>
-        //[TestMethod]
-        //public void LijstActieveLedenGav()
-        //{
+        /// <summary>
+        /// Probeert lijst actieve leden op te halen als wel GAV
+        /// Verwacht geen exception.
+        /// </summary>
+        [TestMethod]
+        public void LijstActieveLedenGav()
+        {
         //    // Arrange
 
         //    // Gebruik static member variable _testData, zodat die gemaakt wordt vooraleer er ergens wordt
