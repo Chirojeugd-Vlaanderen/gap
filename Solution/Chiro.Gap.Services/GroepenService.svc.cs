@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using System.Data.Objects.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
@@ -123,8 +124,8 @@ namespace Chiro.Gap.Services
             get { return _gav; }
         }
 
-        
-#region Disposable etc
+
+        #region Disposable etc
 
         private bool disposed = false;
 
@@ -367,7 +368,7 @@ namespace Chiro.Gap.Services
             afdeling.Afkorting = info.Afkorting;
             try
             {
-                _afdelingenRepo.SaveChanges(); 
+                _afdelingenRepo.SaveChanges();
             }
             catch (DbUpdateException)
             {
@@ -389,7 +390,7 @@ namespace Chiro.Gap.Services
 
                 throw FaultExceptionHelper.BestaatAl(result);
             }
-             
+
         }
 
         /// <summary>
@@ -650,7 +651,8 @@ namespace Chiro.Gap.Services
             }
 
             var nationaleFuncties = (from f in _functiesRepo.Select()
-                                             where f.IsNationaal select f).ToList();
+                                     where f.IsNationaal
+                                     select f).ToList();
             var eigenFuncties = groepsWerkJaar.Groep.Functie.ToList();
             var relevanteFuncties = eigenFuncties.Union(nationaleFuncties).ToList();
 
@@ -840,10 +842,10 @@ namespace Chiro.Gap.Services
 
             functie.Naam = detail.Naam;
             functie.Code = detail.Code;
-            functie.LidTypeInt = (int) detail.Type;
+            functie.LidTypeInt = (int)detail.Type;
             functie.MaxAantal = detail.MaxAantal;
             functie.MinAantal = detail.MinAantal;
-            
+
             _functiesRepo.SaveChanges();
 
         }
@@ -998,16 +1000,28 @@ namespace Chiro.Gap.Services
 
         /// <summary>
         /// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint
-        /// met het gegeven <paramref name="straatBegin"/>.
+        /// met het gegeven <paramref name="straatStukje"/> en maximum 20 (dit is een setting) antwoorden
         /// </summary>
-        /// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
-        /// <param name="postNr">Postnummer waarin te zoeken</param>
+        /// <param name="straatStukje">Enkele letters van de te zoeken straatnamen</param>
+        /// <param name="postNr">Postnummer waarin we zoeken</param>
         /// <returns>Gegevens van de gevonden straten</returns>
-        public IEnumerable<StraatInfo> StratenOphalen(string straatBegin, int postNr)
+        public IEnumerable<StraatInfo> StratenOphalen(string straatStukje, int postNr)
         {
-            return Mapper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>
-                (_straatRepo.Where(e => e.PostNummer == postNr && e.Naam.Contains(straatBegin)));
+            var likeString = @"%" + straatStukje + @"%";
+            var straatNaams =
+                _straatRepo.Select().Where(e =>
+                    e.PostNummer == postNr
+                    && SqlFunctions.PatIndex(likeString, e.Naam) > 0) // We gebruiken hier expliciet een van de SqlFuncties, om de query op SQL te laten uitvoeren
+                           .Take(Properties.Settings.Default.AantalStraatSuggesties)
+                           .ToList();
+
+            var straatInfos = Mapper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(straatNaams);
+
+            return straatInfos;
         }
+
+        // IndexOf(string value,int startIndex,StringComparison comparisonType
+
 
         /// <summary>
         /// Haalt alle straten op uit een gegeven rij <paramref name="postNrs"/>, waarvan de naam begint
@@ -1020,7 +1034,12 @@ namespace Chiro.Gap.Services
         /// WCF-functies met dezelfde naam in 1 service hebben.  Spijtig.</remarks>
         public IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(string straatBegin, IEnumerable<int> postNrs)
         {
-            return Mapper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(_straatRepo.Where(e => postNrs.Contains(e.PostNummer) && e.Naam.StartsWith(straatBegin, StringComparison.OrdinalIgnoreCase)));
+            var straatNaams =
+                _straatRepo.Select().Where(
+                    e =>
+                    postNrs.Contains(e.PostNummer) && e.Naam.StartsWith(straatBegin, StringComparison.OrdinalIgnoreCase));
+            var straatInfos = Mapper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(straatNaams);
+            return straatInfos;
         }
 
         /// <summary>
@@ -1092,14 +1111,14 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.OvergangTeVroeg, Properties.Resources.OvergangTeVroeg);
             }
 
-            var nieuwGwj = new GroepsWerkJaar {WerkJaar = _groepsWerkJarenMgr.NieuweWerkJaar(groepID), Groep = groep};
+            var nieuwGwj = new GroepsWerkJaar { WerkJaar = _groepsWerkJarenMgr.NieuweWerkJaar(groepID), Groep = groep };
             groep.GroepsWerkJaar.Add(nieuwGwj);
 
             foreach (var afdelingsJaarDetail in teActiveren)
             {
                 Debug.Assert(groep is ChiroGroep);
 
-                var afd = (from a in ((ChiroGroep) groep).Afdeling
+                var afd = (from a in ((ChiroGroep)groep).Afdeling
                            where a.ID == afdelingsJaarDetail.AfdelingID
                            select a).FirstOrDefault();
 
@@ -1158,14 +1177,14 @@ namespace Chiro.Gap.Services
 
             var nieuwWerkJaar = NieuwWerkJaarOphalen(groepId);
             var groep = groepsWerkJaar.Groep as ChiroGroep;
-            var ribbels = _officieleAfdelingenRepo.ByID((int) NationaleAfdeling.Ribbels);
+            var ribbels = _officieleAfdelingenRepo.ByID((int)NationaleAfdeling.Ribbels);
 
             Debug.Assert(groep != null, "groep != null");
             var afdelingen = (from a in groep.Afdeling
                               where afdelingsIDs.Contains(a.ID)
                               select a).ToList();
 
-            var afdelingsJaren = _groepsWerkJarenMgr.AfdelingsJarenVoorstellen(groep,afdelingen,nieuwWerkJaar, ribbels);
+            var afdelingsJaren = _groepsWerkJarenMgr.AfdelingsJarenVoorstellen(groep, afdelingen, nieuwWerkJaar, ribbels);
 
             return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(afdelingsJaren);
         }

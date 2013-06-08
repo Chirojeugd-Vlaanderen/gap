@@ -25,7 +25,9 @@ namespace Chiro.Cdf.Poco
     {
         IQueryable<TEntity> Select();
         IEnumerable<TEntity> GetAll();
-        IEnumerable<TEntity> Where(Func<TEntity, bool> predicate);
+        // Dit is een gevaarlijke functie, want hiermee evalueren we op SQL en worden nadien alle selecties in RAM uitgevoerd
+        // terwijl dat dat helemaal niet zo duidelijk is. Voorlopig laten we dit weg dus.
+        // IEnumerable<TEntity> Where(Func<TEntity, bool> predicate);
         TEntity GetSingle(Func<TEntity, bool> predicate);
         TEntity GetFirst(Func<TEntity, bool> predicate);
 
