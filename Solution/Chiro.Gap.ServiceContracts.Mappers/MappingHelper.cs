@@ -752,16 +752,14 @@ namespace Chiro.Gap.ServiceContracts.Mappers
             {
                 return new[] { Mapper.Map<AfdelingsJaar, AfdelingsJaarInfo>((l as Kind).AfdelingsJaar) };
             }
-            else if (l is Leiding)
+
+            if (l is Leiding)
             {
                 return
                     Mapper.Map<IEnumerable<AfdelingsJaar>, IEnumerable<AfdelingsJaarInfo>>((l as Leiding).AfdelingsJaar);
             }
-            else
-            {
-                // Enkel kinderen en leiding
-                throw new NotSupportedException();
-            }
+            // Enkel kinderen en leiding
+            throw new NotSupportedException();
         }
 
         /// <summary>

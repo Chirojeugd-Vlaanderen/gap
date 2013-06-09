@@ -24,21 +24,21 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class Lid: BasisEntiteit
+    public class Lid: BasisEntiteit
     {
         public Lid()
         {
             this.Functie = new HashSet<Functie>();
         }
     
-        public Nullable<bool> LidgeldBetaald { get; set; }
+        public bool? LidgeldBetaald { get; set; }
         public bool NonActief { get; set; }
         public bool Verwijderd { get; set; }
         public short VolgendWerkjaarInt { get; set; }
         public override int ID { get; set; }
         public override byte[] Versie { get; set; }
-        public Nullable<System.DateTime> EindeInstapPeriode { get; set; }
-        public Nullable<System.DateTime> UitschrijfDatum { get; set; }
+        public DateTime? EindeInstapPeriode { get; set; }
+        public DateTime? UitschrijfDatum { get; set; }
     
         public virtual GroepsWerkJaar GroepsWerkJaar { get; set; }
         public virtual GelieerdePersoon GelieerdePersoon { get; set; }

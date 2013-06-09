@@ -17,6 +17,7 @@
  */
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+﻿using System.Diagnostics;
 
 namespace Chiro.Cdf.Poco
 {
@@ -74,6 +75,7 @@ namespace Chiro.Cdf.Poco
         /// Er moet gelden: a equals b => a.gethashcode == b.gethashcode
         /// </summary>
         /// <returns>De hashcode</returns>
+        [DebuggerStepThrough]
         public override int GetHashCode()
         {
             return ID;
