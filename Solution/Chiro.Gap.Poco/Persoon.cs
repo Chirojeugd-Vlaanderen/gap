@@ -22,7 +22,7 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class Persoon: BasisEntiteit
+    public class Persoon: BasisEntiteit
     {
         public Persoon()
         {
@@ -32,12 +32,12 @@ namespace Chiro.Gap.Poco.Model
             this.Gav = new HashSet<Gav>();
         }
     
-        public Nullable<int> AdNummer { get; set; }
+        public int? AdNummer { get; set; }
         public string Naam { get; set; }
         public string VoorNaam { get; set; }
-        public Nullable<System.DateTime> GeboorteDatum { get; set; }
+        public DateTime? GeboorteDatum { get; set; }
         internal int GeslachtsInt { get; set; }
-        public Nullable<System.DateTime> SterfDatum { get; set; }
+        public DateTime? SterfDatum { get; set; }
         public override int ID { get; set; }
         public override byte[] Versie { get; set; }
         public bool AdInAanvraag { get; set; }

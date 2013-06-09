@@ -329,7 +329,7 @@ namespace Chiro.Gap.Services.Test
         [TestMethod()]
         public void VoorstelTotInschrijvenGenererenTest()
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
             //// Ik ga hier toch niet met data uit de database werken.
             //// Om problemen te vermijden escape ik hier dan maar de IOC-container.
 

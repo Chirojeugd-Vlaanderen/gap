@@ -141,7 +141,7 @@ namespace Chiro.Gap.UpdateSvc.Service
         public void GroepDesactiveren(string stamNr, DateTime? stopDatum)
         {
             // De Johan moet dit nog verder uitwerken, wordt opgeroepen voor KipAdmin als een groep gestopt is
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
             //var g = _groepenMgr.Ophalen(stamNr);
             //g.StopDatum = stopDatum;
             //_groepenMgr.Bewaren(g);

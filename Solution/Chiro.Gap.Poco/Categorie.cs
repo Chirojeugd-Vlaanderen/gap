@@ -20,7 +20,7 @@ using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class Categorie: BasisEntiteit
+    public class Categorie: BasisEntiteit
     {
         public Categorie()
         {

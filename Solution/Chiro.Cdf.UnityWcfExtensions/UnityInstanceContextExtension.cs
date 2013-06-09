@@ -25,14 +25,6 @@ namespace Chiro.Cdf.UnityWcfExtensions
     public class UnityInstanceContextExtension : UnityWcfExtension<InstanceContext>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnityInstanceContextExtension"/> class.
-        /// </summary>
-        public UnityInstanceContextExtension()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Gets the <see cref="UnityInstanceContextExtension"/> for the current instance context.
         /// </summary>
         public static UnityInstanceContextExtension Current

@@ -79,7 +79,6 @@ namespace Chiro.Gap.Poco.Model.Exceptions
         {
             if (info == null)
             {
-                return;
             }
         }
 

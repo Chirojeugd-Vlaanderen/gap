@@ -92,7 +92,7 @@ namespace Chiro.Gap.Services
 
         #region Disposable etc
 
-        private bool disposed = false;
+        private bool disposed;
 
         public void Dispose()
         {

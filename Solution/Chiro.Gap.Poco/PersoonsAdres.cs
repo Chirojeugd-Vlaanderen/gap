@@ -21,7 +21,7 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class PersoonsAdres: BasisEntiteit
+    public class PersoonsAdres: BasisEntiteit
     {
         public PersoonsAdres()
         {

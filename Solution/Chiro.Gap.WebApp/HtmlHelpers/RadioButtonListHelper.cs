@@ -51,7 +51,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			{
 				throw new ArgumentNullException("listInfo");
 			}
-			if (listInfo.Count() < 1)
+			if (!listInfo.Any())
 			{
 				throw new ArgumentException(@"The list must contain at least one value", "listInfo");
 			}

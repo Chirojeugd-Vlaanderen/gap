@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
+
 using System.Collections.Generic;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class Functie: BasisEntiteit
+    public class Functie: BasisEntiteit
     {
         public Functie()
         {
@@ -33,10 +33,10 @@ namespace Chiro.Gap.Poco.Model
         public string Code { get; set; }
         public override int ID { get; set; }
         public override byte[] Versie { get; set; }
-        public Nullable<int> MaxAantal { get; set; }
+        public int? MaxAantal { get; set; }
         public int MinAantal { get; set; }
-        public Nullable<int> WerkJaarVan { get; set; }
-        public Nullable<int> WerkJaarTot { get; set; }
+        public int? WerkJaarVan { get; set; }
+        public int? WerkJaarTot { get; set; }
         public bool IsNationaal { get; set; }
         public int LidTypeInt { internal get; set; }
         public int NiveauInt { get; set; }

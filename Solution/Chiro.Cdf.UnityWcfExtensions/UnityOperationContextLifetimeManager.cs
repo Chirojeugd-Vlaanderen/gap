@@ -25,14 +25,6 @@ namespace Chiro.Cdf.UnityWcfExtensions
     public class UnityOperationContextLifetimeManager : UnityWcfLifetimeManager<OperationContext>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnityOperationContextLifetimeManager"/> class.
-        /// </summary>
-        public UnityOperationContextLifetimeManager()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Returns the appropriate extension for the current lifetime manager.
         /// </summary>
         /// <returns>The registered extension for the current lifetime manager, otherwise, null if the extension is not registered.</returns>

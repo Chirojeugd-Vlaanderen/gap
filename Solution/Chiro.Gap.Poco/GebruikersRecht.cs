@@ -21,10 +21,10 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class GebruikersRecht: BasisEntiteit
+    public class GebruikersRecht: BasisEntiteit
     {
         public override int ID { get; set; }
-        public Nullable<System.DateTime> VervalDatum { get; set; }
+        public DateTime? VervalDatum { get; set; }
         public override byte[] Versie { get; set; }
     
         public virtual Gav Gav { get; set; }

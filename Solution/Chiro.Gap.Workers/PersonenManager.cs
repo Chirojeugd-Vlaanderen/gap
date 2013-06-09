@@ -131,7 +131,7 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public void DubbelVerwijderen(int origineelID, int dubbelID)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Chiro.Gap.Workers
         /// </summary>
         public void FixGedeeldeAds()
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Chiro.Gap.Workers
         /// </param>
         public void AdNummerToekennen(Persoon persoon, int adNummer)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
             //if (_autorisatieMgr.IsSuperGav())
             //{
             //    // Wie heeft het gegeven AD-nummer al?

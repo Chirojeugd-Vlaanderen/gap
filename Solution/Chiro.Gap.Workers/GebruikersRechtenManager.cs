@@ -126,7 +126,7 @@ namespace Chiro.Gap.Workers
         /// <remarks>De gemaakte account heeft geen rechten.</remarks>
         public Gav AccountZoekenOfMaken(GelieerdePersoon gelieerdePersoon, bool makenAlsNietGevonden)
         {
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
 //            var p = gelieerdePersoon.Persoon;
 
 //            if (!_autorisatieManager.IsGavGelieerdePersoon(gelieerdePersoon.ID))

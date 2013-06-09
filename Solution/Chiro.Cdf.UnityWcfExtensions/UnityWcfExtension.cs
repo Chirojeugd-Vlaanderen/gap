@@ -55,11 +55,11 @@ namespace Chiro.Cdf.UnityWcfExtensions
         public void Detach(T owner)
         {
             // If we are being detached, let's go ahead and clean up, just in case.
-            List<Guid> keys = new List<Guid>(this.instances.Keys);
+            var keys = new List<Guid>(this.instances.Keys);
 
-            for (int i = 0; i < keys.Count; i++)
+            foreach (var t in keys)
             {
-                this.RemoveInstance(keys[i]);
+                this.RemoveInstance(t);
             }
         }
 
@@ -85,7 +85,7 @@ namespace Chiro.Cdf.UnityWcfExtensions
         /// <returns>The object instance associated with the supplied key.  If no instance is registered, null is returned.</returns>
         public object FindInstance(Guid key)
         {
-            object obj = null;
+            object obj;
 
             // We don't care whether or not this succeeds or fails.
             this.instances.TryGetValue(key, out obj);
@@ -99,15 +99,14 @@ namespace Chiro.Cdf.UnityWcfExtensions
         public void RemoveInstance(Guid key)
         {
             // We don't want to use FindInstance JUST IN CASE somehow a key gets in there with a null object.
-            object instance = null;
 
             if (this.instances.ContainsKey(key))
             {
                 // Get the instance.
-                instance = this.instances[key];
+                object instance = this.instances[key];
 
                 // See if it needs disposing.
-                IDisposable disposable = instance as IDisposable;
+                var disposable = instance as IDisposable;
                 if (disposable != null)
                 {
                     disposable.Dispose();

@@ -30,14 +30,6 @@ namespace Chiro.Cdf.UnityWcfExtensions
     public class UnityServiceBehavior : IServiceBehavior
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnityServiceBehavior"/> class. 
-        /// </summary>
-        public UnityServiceBehavior()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Gets or sets
         /// </summary>
         public string ContainerName
@@ -121,15 +113,15 @@ namespace Chiro.Cdf.UnityWcfExtensions
                 serviceHostBase.Extensions.Add(new UnityServiceHostBaseExtension());
 
                 // We need to subscribe to the Closing event so we can remove the extension.
-                serviceHostBase.Closing += new System.EventHandler(this.ServiceHostBaseClosing);
+                serviceHostBase.Closing += this.ServiceHostBaseClosing;
             }
 
-            foreach (ChannelDispatcherBase channelDispatcherBase in serviceHostBase.ChannelDispatchers)
+            foreach (var channelDispatcherBase in serviceHostBase.ChannelDispatchers)
             {
-                ChannelDispatcher channelDispatcher = channelDispatcherBase as ChannelDispatcher;
+                var channelDispatcher = channelDispatcherBase as ChannelDispatcher;
                 if (channelDispatcher != null)
                 {
-                    foreach (EndpointDispatcher endpointDispatcher in channelDispatcher.Endpoints)
+                    foreach (var endpointDispatcher in channelDispatcher.Endpoints)
                     {
                         endpointDispatcher.DispatchRuntime.InstanceProvider =
                             new UnityInstanceProvider(serviceDescription.ServiceType, this.ContainerName);
@@ -146,7 +138,7 @@ namespace Chiro.Cdf.UnityWcfExtensions
 
                         if (this.ContextChannelEnabled)
                         {
-                            foreach (DispatchOperation operation in endpointDispatcher.DispatchRuntime.Operations)
+                            foreach (var operation in endpointDispatcher.DispatchRuntime.Operations)
                             {
                                 operation.CallContextInitializers.Add(new UnityCallContextInitializer());
                             }
@@ -171,15 +163,15 @@ namespace Chiro.Cdf.UnityWcfExtensions
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">An <see cref="System.EventArgs" /> that contains no event data.</param>
-        private void ServiceHostBaseClosing(object sender, System.EventArgs e)
+        private void ServiceHostBaseClosing(object sender, EventArgs e)
         {
-            ServiceHostBase serviceHostBase = sender as ServiceHostBase;
+            var serviceHostBase = sender as ServiceHostBase;
             if (serviceHostBase != null)
             {
-                serviceHostBase.Closing -= new System.EventHandler(this.ServiceHostBaseClosing);
+                serviceHostBase.Closing -= this.ServiceHostBaseClosing;
 
                 // We have to get this manually, as the operation context has been disposed by now.
-                UnityServiceHostBaseExtension extension = serviceHostBase.Extensions.Find<UnityServiceHostBaseExtension>();
+                var extension = serviceHostBase.Extensions.Find<UnityServiceHostBaseExtension>();
                 if (extension != null)
                 {
                     serviceHostBase.Extensions.Remove(extension);

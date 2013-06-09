@@ -52,7 +52,7 @@ namespace Chiro.Gap.Workers
 
             if (groepID == null || groepID == 0)
             {
-                throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+                throw new NotImplementedException(Domain.Nieuwebackend.Info);
                 //groepID = _groepenDao.Ophalen(code).ID;
 
                 //_cache.Add(

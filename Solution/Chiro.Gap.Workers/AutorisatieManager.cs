@@ -50,7 +50,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public bool IsSuperGav()
         {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Domain.Nieuwebackend.Info);
         }
 
         /// <summary>

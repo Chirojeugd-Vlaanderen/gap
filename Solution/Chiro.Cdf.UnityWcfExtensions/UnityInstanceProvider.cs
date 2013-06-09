@@ -16,13 +16,10 @@
  * limitations under the License.
  */
 ﻿using System;
-using System.Configuration;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using Chiro.Cdf.Ioc;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
 
 namespace Chiro.Cdf.UnityWcfExtensions
 {
@@ -37,11 +34,6 @@ namespace Chiro.Cdf.UnityWcfExtensions
         private readonly Type type;
 
         /// <summary>
-        /// Unity container name.
-        /// </summary>
-        private readonly string containerName;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="UnityInstanceProvider"/> class with the <see cref="Type"/>
         /// to create and the name of the container to use.
         /// </summary>
@@ -54,7 +46,6 @@ namespace Chiro.Cdf.UnityWcfExtensions
         public UnityInstanceProvider(Type type, string containerName)
         {
             this.type = type;
-            this.containerName = containerName;
         }
 
         /// <summary>
@@ -96,7 +87,7 @@ namespace Chiro.Cdf.UnityWcfExtensions
         public void ReleaseInstance(InstanceContext instanceContext, object instance)
         {
             // Since we created the service instance, we need to dispose of it, if needed.
-            IDisposable disposable = instance as IDisposable;
+            var disposable = instance as IDisposable;
             if (disposable != null)
             {
                 disposable.Dispose();

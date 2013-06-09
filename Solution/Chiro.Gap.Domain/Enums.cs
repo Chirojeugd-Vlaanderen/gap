@@ -30,8 +30,10 @@ namespace Chiro.Gap.Domain
     {
         [EnumMember]
         Kind = 0x01,
+
         [EnumMember]
         Leiding = 0x02,
+
         [EnumMember]
         Alles = Kind | Leiding
     }
@@ -298,7 +300,7 @@ namespace Chiro.Gap.Domain
         [EnumMember] Gav = 0x80          // GAV (voorlopig zijn de mogelijkheden beperkt)
     }
 
-    public static class NIEUWEBACKEND
+    public static class Nieuwebackend
     {
         public static string Info
         {

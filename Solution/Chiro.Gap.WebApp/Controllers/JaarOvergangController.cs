@@ -206,11 +206,11 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             catch (FaultException<FoutNummerFault>)
             {
-                var error = "Er is iets foutgegaan bij het laden van de volledige ledenlijst.\n" +
-                            "Je bent nu in het nieuwe werkjaar, maar er zijn nog geen leden overgezet.\n" +
-                            "Je kan dit doen door onder Leden te klikken op het vorige werkjaar, daar de leden te \n" +
-                            "selecteren die je wilt lid maken voor het komende jaar en klikken op Lid maken.\n";
-                TempData["fout"] = error;
+                const string Error = "Er is iets foutgegaan bij het laden van de volledige ledenlijst.\n" +
+                                     "Je bent nu in het nieuwe werkjaar, maar er zijn nog geen leden overgezet.\n" +
+                                     "Je kan dit doen door onder Leden te klikken op het vorige werkjaar, daar de leden te \n" +
+                                     "selecteren die je wilt lid maken voor het komende jaar en klikken op Lid maken.\n";
+                TempData["fout"] = Error;
                 return RedirectToAction("Index", "Leden");
             }
 			

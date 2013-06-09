@@ -590,7 +590,7 @@ namespace Chiro.Gap.Workers
             {
                 return AfdelingsJaarVoorstellen(gelieerdePersoon) != null;
             }
-            catch (FoutNummerException exception)
+            catch (FoutNummerException)
             {
                 return false;
             }

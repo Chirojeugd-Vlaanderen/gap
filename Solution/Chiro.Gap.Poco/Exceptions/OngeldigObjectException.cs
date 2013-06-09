@@ -111,10 +111,7 @@ namespace Chiro.Gap.Poco.Model.Exceptions
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            if (info != null)
-            {
                 info.AddValue("berichten", _berichten);
-            }
         }
 
         #endregion

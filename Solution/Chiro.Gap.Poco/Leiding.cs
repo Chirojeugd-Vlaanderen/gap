@@ -19,7 +19,7 @@ using System.Collections.Generic;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class Leiding : Lid
+    public class Leiding : Lid
     {
         public Leiding()
         {

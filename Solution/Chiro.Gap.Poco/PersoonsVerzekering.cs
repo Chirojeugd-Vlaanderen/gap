@@ -19,7 +19,7 @@ using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class PersoonsVerzekering: BasisEntiteit
+    public class PersoonsVerzekering: BasisEntiteit
     {
         public System.DateTime Van { get; set; }
         public System.DateTime Tot { get; set; }

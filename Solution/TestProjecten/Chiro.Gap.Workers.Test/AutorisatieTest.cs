@@ -94,7 +94,7 @@ namespace Chiro.Gap.Workers.Test
             //lm.Zoeken(new LidFilter { GroepsWerkJaarID = testData.HuidigGwj.ID, LidType = LidType.Alles }, LidExtras.Geen);
 
             //// Verwacht exception
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
 		}
 
 		/// <summary>
@@ -244,7 +244,7 @@ namespace Chiro.Gap.Workers.Test
         //    // Assert
 
         //    Assert.IsTrue(lijst != null);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
 		}
 
 		/// <summary>
@@ -307,7 +307,7 @@ namespace Chiro.Gap.Workers.Test
             //auManMock.VerifyAll();
 
             //#endregion
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
 		}
 
 		/// <summary>
@@ -395,7 +395,7 @@ namespace Chiro.Gap.Workers.Test
             //gpDaoMock.VerifyAll();  // nakijken of de mock van GelieerdePersonenDao inderdaad aangeroepen werd.
             //#endregion
 
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
 		}
 	}
 }

@@ -101,7 +101,7 @@ namespace Chiro.Gap.Workers.Test
 
             //var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
             //Assert.AreNotEqual(problemen.Count(), 0);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Chiro.Gap.Workers.Test
 
             //// Assert
             //Assert.IsTrue(false);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
         }
 
         /// <summary>
@@ -294,7 +294,7 @@ namespace Chiro.Gap.Workers.Test
             //// Assert
 
             //Assert.AreEqual(problemen.Count(), 0);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
         }
 
         /// <summary>
@@ -446,7 +446,7 @@ namespace Chiro.Gap.Workers.Test
             //funDaoMock.Verify(dao => dao.NationaalBepaaldeFunctiesOphalen(), Times.AtMost(1), "Nationale functies waren niet gecachet.");
 
             //#endregion
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
 		}
 
 		/// <summary>
@@ -472,7 +472,7 @@ namespace Chiro.Gap.Workers.Test
             //// assert
 
             //Assert.IsNull(result);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
 		}
 
 		/// <summary>

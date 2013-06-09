@@ -68,9 +68,9 @@ namespace Chiro.Gap.Services
         private readonly IGroepenManager _groepenMgr;
         private readonly IChiroGroepenManager _chiroGroepenMgr;
         private readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
-        private readonly IJaarOvergangManager _jaarOvergangManager;
+
         private readonly IFunctiesManager _functiesMgr;
-        private readonly IVeelGebruikt _veelGebruikt;
+
         private readonly GavChecker _gav;
 
         /// <summary>
@@ -109,7 +109,6 @@ namespace Chiro.Gap.Services
             Debug.Assert(_straatRepo == null || _adresRepo == null || _straatRepo.ContextHash == _adresRepo.ContextHash);
             // (checks op null zijn van belang voor bij unit tests)
 
-            _jaarOvergangManager = jaarOvergangMgr;
             _groepenMgr = groepenMgr;
             _chiroGroepenMgr = chiroGroepenMgr;
             _groepsWerkJarenMgr = groepsWerkJarenMgr;
@@ -117,7 +116,6 @@ namespace Chiro.Gap.Services
             _afdelingsJaarMgr = afdelingsJaarMgr;
             _authenticatieMgr = authenticatieMgr;
             _autorisatieMgr = autorisatieMgr;
-            _veelGebruikt = veelGebruikt;
             _gav = new GavChecker(_autorisatieMgr);
         }
 
@@ -129,7 +127,7 @@ namespace Chiro.Gap.Services
 
         #region Disposable etc
 
-        private bool disposed = false;
+        private bool disposed;
 
         public void Dispose()
         {
@@ -689,11 +687,6 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            //var aantalLedenZonderAdres = (from ld in groepsWerkJaar.Lid
-            //                              where ld.GelieerdePersoon.PersoonsAdres == null // geen voorkeursadres
-            //                              && ld.UitschrijfDatum == null                   // enkel actieve leden
-            //                              select ld).Count();
-
             var aantalLedenZonderAdres = (from ld in _ledenRepo.Select("GelieerdePersoon.PersoonsAdres")
                                           where ld.GroepsWerkJaar.ID == groepsWerkJaar.ID
                                                 && ld.UitschrijfDatum == null &&
@@ -709,9 +702,10 @@ namespace Chiro.Gap.Services
                 });
             }
 
-            var aantalLedenZonderTelefoonNr = (from ld in groepsWerkJaar.Lid
-                                               where ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.TelefoonNummer)
-                                               && ld.UitschrijfDatum == null
+            var aantalLedenZonderTelefoonNr = (from ld in _ledenRepo.Select("GelieerdePersoon.Communicatie")
+                                               where ld.GroepsWerkJaar.ID == groepsWerkJaar.ID
+                                                && ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.TelefoonNummer)
+                                                && ld.UitschrijfDatum == null
                                                select ld).Count();
 
             if (aantalLedenZonderTelefoonNr > 0)
@@ -723,9 +717,10 @@ namespace Chiro.Gap.Services
                 });
             }
 
-            var aantalLeidingZonderEmail = (from ld in groepsWerkJaar.Lid
-                                            where ld.Type == LidType.Leiding &&
-                                                ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.Email)
+            var aantalLeidingZonderEmail = (from ld in _ledenRepo.Select("GelieerdePersoon.Communicatie")
+                                            where ld.GroepsWerkJaar.ID == groepsWerkJaar.ID
+                                                && ld is Leiding 
+                                                && ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.Email)
                                                 && ld.UitschrijfDatum == null
                                             select ld).Count();
 
@@ -741,6 +736,12 @@ namespace Chiro.Gap.Services
             return resultaat;
         }
 
+
+        /// <summary>
+        /// Gets the Groep by ID and checks gav.
+        /// </summary>
+        /// <param name="groepId">The groep id.</param>
+        /// <returns>Groep.</returns>
         Groep GetGroepEnCheckGav(int groepId)
         {
             var groep = _groepenRepo.ByID(groepId);
@@ -748,6 +749,11 @@ namespace Chiro.Gap.Services
             return groep;
         }
 
+        /// <summary>
+        /// Gets the Groep by code and checks gav.
+        /// </summary>
+        /// <param name="groepCode">The groep code.</param>
+        /// <returns>Groep.</returns>
         Groep GetGroepEnCheckGav(string groepCode)
         {
             var groep = (from g in _groepenRepo.Select()
@@ -1125,8 +1131,10 @@ namespace Chiro.Gap.Services
             {
                 Debug.Assert(groep is ChiroGroep);
 
+                var detail = afdelingsJaarDetail;
+
                 var afd = (from a in ((ChiroGroep)groep).Afdeling
-                           where a.ID == afdelingsJaarDetail.AfdelingID
+                           where a.ID == detail.AfdelingID
                            select a).FirstOrDefault();
 
                 var offAfd = _officieleAfdelingenRepo.ByID(afdelingsJaarDetail.OfficieleAfdelingID);

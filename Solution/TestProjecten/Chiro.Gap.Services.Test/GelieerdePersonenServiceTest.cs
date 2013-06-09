@@ -288,7 +288,7 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void VoorkeursCommunicatieVormToevoegenTest()
         {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Domain.Nieuwebackend.Info);
             //// Arrange
 
             //const int TESTGPID = 1234;      // arbitrair ID van een gelieerde persoon

@@ -27,14 +27,6 @@ namespace Chiro.Cdf.UnityWcfExtensions
     public class UnityOperationContextMessageInspector : IDispatchMessageInspector
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnityOperationContextMessageInspector"/> class.
-        /// </summary>
-        public UnityOperationContextMessageInspector()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Adds an instance of the <see cref="UnityOperationContextExtension"/> class to the current operation context after an inbound message has been received but before the message is dispatched to the intended operation.
         /// </summary>
         /// <param name="request">The request message.</param>

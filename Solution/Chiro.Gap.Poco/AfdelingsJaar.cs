@@ -23,7 +23,7 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class AfdelingsJaar: BasisEntiteit, IPeriode
+    public class AfdelingsJaar: BasisEntiteit, IPeriode
     {
         public AfdelingsJaar()
         {

@@ -20,7 +20,7 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class ChiroGroep : Groep
+    public class ChiroGroep : Groep
     {
         public ChiroGroep()
         {

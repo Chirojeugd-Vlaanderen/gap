@@ -28,14 +28,6 @@ namespace Chiro.Cdf.UnityWcfExtensions
     public class UnityInstanceContextInitializer : IInstanceContextInitializer
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnityInstanceContextInitializer"/> class.
-        /// </summary>
-        public UnityInstanceContextInitializer()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Modifies the newly created <see cref="System.ServiceModel.InstanceContext"/> by adding an instance of the <see cref="UnityInstanceContextExtension"/> class.
         /// </summary>
         /// <param name="instanceContext">The system-supplied instance context.</param>
@@ -50,7 +42,7 @@ namespace Chiro.Cdf.UnityWcfExtensions
             instanceContext.Extensions.Add(new UnityInstanceContextExtension());
 
             // We need to subscribe to the Closing event so we can remove the extension.
-            instanceContext.Closing += new System.EventHandler(this.InstanceContextClosing);
+            instanceContext.Closing += this.InstanceContextClosing;
         }
 
         /// <summary>
@@ -58,15 +50,15 @@ namespace Chiro.Cdf.UnityWcfExtensions
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">An <see cref="System.EventArgs" /> that contains no event data.</param>
-        private void InstanceContextClosing(object sender, System.EventArgs e)
+        private void InstanceContextClosing(object sender, EventArgs e)
         {
-            InstanceContext instanceContext = sender as InstanceContext;
+            var instanceContext = sender as InstanceContext;
             if (instanceContext != null)
             {
-                instanceContext.Closing -= new System.EventHandler(this.InstanceContextClosing);
+                instanceContext.Closing -= this.InstanceContextClosing;
 
                 // We have to get this manually, as the operation context has been disposed by now.
-                UnityInstanceContextExtension extension = instanceContext.Extensions.Find<UnityInstanceContextExtension>();
+                var extension = instanceContext.Extensions.Find<UnityInstanceContextExtension>();
                 if (extension != null)
                 {
                     instanceContext.Extensions.Remove(extension);

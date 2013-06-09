@@ -22,9 +22,9 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public abstract partial class Groep: BasisEntiteit
+    public abstract class Groep: BasisEntiteit
     {
-        public Groep()
+        protected Groep()
         {
             GelieerdePersoon = new HashSet<GelieerdePersoon>();
             GroepsWerkJaar = new HashSet<GroepsWerkJaar>();

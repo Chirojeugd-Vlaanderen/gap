@@ -28,15 +28,13 @@ namespace Chiro.Gap.Domain
     [DataContract]
     public class BivakAangifteLijstInfo
     {
-        private readonly IList<BivakAangifteInfo> _bivakInfos;
-
         /// <summary>
         /// Constructor. Instantieert een leeg lijstje van bivakken.
         /// </summary>
         public BivakAangifteLijstInfo()
         {
             AlgemeneStatus = BivakAangifteStatus.Onbekend;
-            _bivakInfos = new List<BivakAangifteInfo>();
+            Bivakinfos = new List<BivakAangifteInfo>();
         }
 
         /// <summary>

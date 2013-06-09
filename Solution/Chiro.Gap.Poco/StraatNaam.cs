@@ -21,7 +21,7 @@ using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class StraatNaam: BasisEntiteit
+    public class StraatNaam: BasisEntiteit
     {
         public StraatNaam()
         {

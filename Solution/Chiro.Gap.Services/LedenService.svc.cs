@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Transactions;
+
 using AutoMapper;
 using Chiro.Cdf.Poco;
 
@@ -113,7 +113,7 @@ namespace Chiro.Gap.Services
 
         #region Disposable etc
 
-        private bool disposed = false;
+        private bool disposed;
 
         public void Dispose()
         {
@@ -181,7 +181,8 @@ namespace Chiro.Gap.Services
             {
                 var gwj = _groepenMgr.HuidigWerkJaar(g);
 
-                foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g.ID).OrderByDescending(gp => gp.GebDatumMetChiroLeefTijd))
+                Groep g1 = g;
+                foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g1.ID).OrderByDescending(gp => gp.GebDatumMetChiroLeefTijd))
                 {
                     if (_ledenMgr.IsActiefLid(gp))
                     {
@@ -256,7 +257,8 @@ namespace Chiro.Gap.Services
                 // Zoek eerst recentste groepswerkjaar.
                 var gwj = _groepenMgr.HuidigWerkJaar(g);
 
-                foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g.ID))
+                Groep g1 = g;
+                foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g1.ID))
                 {
                     // TODO: Dit is te veel business. Bekijken of een lid al ingeschreven is, moet in de workers gebeuren.
 
@@ -361,7 +363,8 @@ namespace Chiro.Gap.Services
                 // Handel per groep de uitschrijvingen af, zodat we per groep kunnen
                 // controleren of de persoon wel ingeschreven is in het recentste groepswerkjaar.
 
-                foreach (var gp in gelieerdePersonen.Where(gp => Equals(gp.Groep, g)))
+                Groep g1 = g;
+                foreach (var gp in gelieerdePersonen.Where(gp => Equals(gp.Groep, g1)))
                 {
                     var lid = gp.Lid.FirstOrDefault(e => e.GroepsWerkJaar.ID == gwj.ID);
 
@@ -696,8 +699,9 @@ namespace Chiro.Gap.Services
         {
             var lid = _ledenRepo.ByID(lidId);
             Gav.Check(lid);
+
+            // Arno: de toggle werkte niet als de status 'null' was, daarom set ik hem hier eerst 
             if (lid.LidgeldBetaald == null)
-                //Arno: de toggle werkte niet als de status 'null' was, daarom set ik hem hier eerst 
             {
                 lid.LidgeldBetaald = true;
             }
@@ -705,7 +709,6 @@ namespace Chiro.Gap.Services
             {
                 lid.LidgeldBetaald = !lid.LidgeldBetaald;
             }
-            ;
             _ledenRepo.SaveChanges();
             return lid.GelieerdePersoon.ID;
         }

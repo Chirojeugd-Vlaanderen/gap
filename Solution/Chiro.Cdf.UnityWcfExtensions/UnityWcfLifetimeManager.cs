@@ -33,15 +33,7 @@ namespace Chiro.Cdf.UnityWcfExtensions
         /// <summary>
         /// Key for Unity to use for the associated object's instance.
         /// </summary>
-        private Guid key = Guid.NewGuid();
-
-        /// <summary>
-        /// Initializes a new instance of the UnityWcfLifetimeManager class.
-        /// </summary>
-        protected UnityWcfLifetimeManager()
-            : base()
-        {
-        }
+        private readonly Guid key = Guid.NewGuid();
 
         /// <summary>
         /// Gets the currently registered UnityWcfExtension for this lifetime manager.

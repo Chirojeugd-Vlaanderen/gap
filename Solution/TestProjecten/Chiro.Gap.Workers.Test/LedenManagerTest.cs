@@ -148,7 +148,7 @@ namespace Chiro.Gap.Workers.Test
             //Assert.IsNotNull(newlid);
             //Assert.AreEqual(_afd1, newlid.AfdelingsJaar);
             //Assert.IsNull(newlid.UitschrijfDatum);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
         }
 
         /// <summary>

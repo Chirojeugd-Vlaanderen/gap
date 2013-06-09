@@ -18,9 +18,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Transactions;      // laten staan voor live!
+    // laten staan voor live!
 using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
@@ -48,7 +47,7 @@ namespace Chiro.Gap.Services
 
         private readonly IRepository<CommunicatieVorm> _communicatieVormRepo;
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
-        private readonly IRepository<GroepsWerkJaar> _groepsWerkJarenRepo;
+
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Categorie> _categorieenRepo;
         private readonly IRepository<CommunicatieType> _communicatieTypesRepo;
@@ -70,7 +69,6 @@ namespace Chiro.Gap.Services
         // Sync-interfaces
 
         private readonly ICommunicatieSync _communicatieSync;
-        private readonly IPersonenSync _personenSync;
 
         /// <summary>
         /// Constructor
@@ -84,19 +82,17 @@ namespace Chiro.Gap.Services
         /// <param name="adressenManager">Logica m.b.t. adressen</param>
         /// <param name="personenManager">Logica m.b.t. personen (geeuw)</param>
         /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
-        /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
                                         ICommunicatieVormenManager communicatieVormenMgr,
                                         IGebruikersRechtenManager gebruikersRechtenMgr,
                                         IGelieerdePersonenManager gelieerdePersonenMgr,
                                         IAdressenManager adressenManager,
                                         IPersonenManager personenManager,
-                                        ICommunicatieSync communicatieSync,
-                                        IPersonenSync personenSync)
+                                        ICommunicatieSync communicatieSync)
         {
             _communicatieVormRepo = repositoryProvider.RepositoryGet<CommunicatieVorm>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
-            _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
+            repositoryProvider.RepositoryGet<GroepsWerkJaar>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _categorieenRepo = repositoryProvider.RepositoryGet<Categorie>();
             _communicatieTypesRepo = repositoryProvider.RepositoryGet<CommunicatieType>();
@@ -115,12 +111,11 @@ namespace Chiro.Gap.Services
             _personenMgr = personenManager;
 
             _communicatieSync = communicatieSync;
-            _personenSync = personenSync;
         }
 
         #region Disposable etc
 
-        private bool disposed = false;
+        private bool disposed;
 
         public void Dispose()
         {
@@ -193,12 +188,9 @@ namespace Chiro.Gap.Services
 
         /// <summary>
         /// Haalt persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
-        /// waarvan de naam begint met de gegeven <paramref name="letter"/>
         /// inclusief eventueel lidobject voor het recentste werkJaar.
         /// </summary>
         /// <param name="categorieID">ID van de gevraagde categorie</param>
-        /// <param name="letter">letter waarmee de naam moet beginnen</param>
-        /// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
         /// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
         public IList<PersoonDetail> OphalenUitCategorieMetLidInfo(int categorieID, out int aantalTotaal)
@@ -647,7 +639,7 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.Blokkerend(
                     Mapper.Map<IList<PersoonsAdres>, List<PersoonsAdresInfo2>>(ex.Objecten),
-                    Properties.Resources.WoontDaarAl);
+                    Resources.WoontDaarAl);
 
                 // Dit kan nog wel wat verfijnd worden.
             }
@@ -798,7 +790,7 @@ namespace Chiro.Gap.Services
 
             if (persoonsAdres == null)
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.AdresNietGekoppeld, Properties.Resources.AdresNietGekoppeld);
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AdresNietGekoppeld, Resources.AdresNietGekoppeld);
             }
 
             gelieerdePersoon.PersoonsAdres = persoonsAdres;
@@ -1013,7 +1005,7 @@ namespace Chiro.Gap.Services
                 // dan is er zeker een persoon waaraan de categorie niet gekoppeld kan worden.
                 // (pigeon hole princplie)
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietVanGroep,
-                                                      Properties.Resources.FouteCategorieVoorGroep);
+                                                      Resources.FouteCategorieVoorGroep);
             }
 
             var categorieen = (from c in groepen.First().Categorie
@@ -1024,7 +1016,7 @@ namespace Chiro.Gap.Services
             {
                 // Categorie niet gevonden -> vermoedelijk niet gekoppeld aan groep
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietVanGroep,
-                                                      Properties.Resources.FouteCategorieVoorGroep);
+                                                      Resources.FouteCategorieVoorGroep);
             }
 
             foreach (var c in categorieen)
@@ -1059,7 +1051,7 @@ namespace Chiro.Gap.Services
             if (gelieerdePersonen.Count != gelieerdepersonenIDs.Count)
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietGekoppeld,
-                                                      Properties.Resources.CategorieNietGekoppeld);
+                                                      Resources.CategorieNietGekoppeld);
             }
 
             foreach (var gp in gelieerdePersonen)

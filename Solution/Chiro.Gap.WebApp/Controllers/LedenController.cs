@@ -420,7 +420,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             // In eerste instantie is dit voornamelijk copy/paste uit de personencontroller.
 
-            if (model.SelectieGelieerdePersoonIDs == null || model.SelectieGelieerdePersoonIDs.Count() == 0)
+            if (model.SelectieGelieerdePersoonIDs == null || !model.SelectieGelieerdePersoonIDs.Any())
             {
                 TempData["fout"] = Properties.Resources.NiemandGeselecteerdFout;
                 return TerugNaarVorigeLijst();

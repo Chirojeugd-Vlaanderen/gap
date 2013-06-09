@@ -19,7 +19,7 @@ using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class Abonnement: BasisEntiteit
+    public class Abonnement: BasisEntiteit
     {
         public override int ID { get; set; }
         public System.DateTime AanvraagDatum { get; set; }

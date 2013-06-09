@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
+
 using System.Collections.Generic;
 using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class WoonPlaats: BasisEntiteit
+    public class WoonPlaats: BasisEntiteit
     {
         public WoonPlaats()
         {
@@ -32,7 +32,7 @@ namespace Chiro.Gap.Poco.Model
         public int PostNummer { get; set; }
         public string Naam { get; set; }
         public int TaalID { get; set; }
-        public Nullable<int> CrabPostKantonID { get; set; }
+        public int? CrabPostKantonID { get; set; }
         public override byte[] Versie { get; set; }
     
         public virtual ICollection<BelgischAdres> BelgischAdres { get; set; }

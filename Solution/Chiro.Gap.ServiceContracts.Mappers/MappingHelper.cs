@@ -54,7 +54,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         // Dat doen we alleen in deze klasse! In alle andere gevallen doen we dependency
         // injection via de constructor.
 
-        private static ILedenManager _ledenMgr { get { return Factory.Maak<ILedenManager>(); } }
+        private static ILedenManager LedenMgr { get { return Factory.Maak<ILedenManager>(); } }
 
         #endregion
 
@@ -181,19 +181,19 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 // TODO (#968): opkuis
                   .ForMember(
                       dst => dst.IsLid,
-                      opt => opt.MapFrom(src => _ledenMgr.IsActiefKind(src)))
+                      opt => opt.MapFrom(src => LedenMgr.IsActiefKind(src)))
                   .ForMember(
                       dst => dst.IsLeiding,
-                      opt => opt.MapFrom(src => _ledenMgr.IsActieveLeiding(src)))
+                      opt => opt.MapFrom(src => LedenMgr.IsActieveLeiding(src)))
                   .ForMember(
                       dst => dst.LidID,
-                      opt => opt.MapFrom(src => _ledenMgr.LidIDGet(src)))
+                      opt => opt.MapFrom(src => LedenMgr.LidIDGet(src)))
                   .ForMember(
                       dst => dst.KanLidWorden,
-                      opt => opt.MapFrom(src => _ledenMgr.KanInschrijvenAlsKind(src)))
+                      opt => opt.MapFrom(src => LedenMgr.KanInschrijvenAlsKind(src)))
                   .ForMember(
                       dst => dst.KanLeidingWorden,
-                      opt => opt.MapFrom(src => _ledenMgr.KanInschrijvenAlsLeiding(src)))
+                      opt => opt.MapFrom(src => LedenMgr.KanInschrijvenAlsLeiding(src)))
                   .ForMember(
                       dst => dst.AdNummer,
                       opt => opt.MapFrom(src => src.Persoon.AdNummer))
@@ -238,7 +238,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.Persoon.Geslacht))
                 .ForMember(dst => dst.HuisNummer, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.HuisNr))
                 .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Persoon.Naam))
-                .ForMember(dst => dst.PostNummer, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : (int?)src.PersoonsAdres.Adres.PostNummerGet()))
+                .ForMember(dst => dst.PostNummer, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.PostNummerGet()))
                 .ForMember(dst => dst.StraatNaam, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.StraatGet()))
                 .ForMember(dst => dst.TelefoonNummer,
                            opt => opt.MapFrom(src => VoorkeurCommunicatie(src, CommunicatieTypeEnum.TelefoonNummer)))
@@ -495,7 +495,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
                 .ForMember(dst => dst.Type,
                            opt => opt.MapFrom(src => src.IsLogistieker ? DeelnemerType.Logistiek :
-                                                      src.GelieerdePersoon.Lid.FirstOrDefault() != null && src.GelieerdePersoon.Lid.FirstOrDefault() is Leiding ? DeelnemerType.Begeleiding :
+                                                      src.GelieerdePersoon.Lid.FirstOrDefault() is Leiding ? DeelnemerType.Begeleiding :
                                                       src.GelieerdePersoon.Lid.FirstOrDefault() != null ? DeelnemerType.Deelnemer :
                                                       DeelnemerType.Onbekend))
                 .ForMember(dst => dst.IsContact,
@@ -584,7 +584,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src.Communicatie))
                 .ForMember(
                     dst => dst.LidInfo,
-                    opt => opt.MapFrom(src => _ledenMgr.HuidigLidGet(src)))
+                    opt => opt.MapFrom(src => LedenMgr.HuidigLidGet(src)))
                 .ForMember(
                     dst => dst.GebruikersInfo,
                     opt => opt.Ignore());
@@ -771,7 +771,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// <paramref name="gebruikersRecht"/>.  <c>null</c> indien onbekend.</returns>
         private static int? GelieerdePersoonIDGet(GebruikersRecht gebruikersRecht)
         {
-            if (gebruikersRecht.Gav.Persoon.Count() == 0)
+            if (!gebruikersRecht.Gav.Persoon.Any())
             {
                 return null;
             }

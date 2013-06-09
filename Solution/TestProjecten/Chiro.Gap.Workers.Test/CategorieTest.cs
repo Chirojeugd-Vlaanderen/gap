@@ -112,7 +112,7 @@ namespace Chiro.Gap.Workers.Test
             //// Assert		
 
             //Assert.IsTrue(testData.GelieerdeJos.Categorie.Count == aantalCategorieen);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            throw new NotImplementedException(Nieuwebackend.Info);
 		}
 
 	}

@@ -15,12 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
+
 using System.Collections.Generic;
 using System.ServiceModel;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.Services

@@ -21,7 +21,7 @@ using Chiro.Cdf.Poco;
 
 namespace Chiro.Gap.Poco.Model
 {
-    public partial class GelieerdePersoon: BasisEntiteit
+    public class GelieerdePersoon: BasisEntiteit
     {
         public GelieerdePersoon()
         {
