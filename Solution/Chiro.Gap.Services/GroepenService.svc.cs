@@ -57,6 +57,7 @@ namespace Chiro.Gap.Services
         private readonly IRepository<AfdelingsJaar> _afdelingsJaarRepo;
         private readonly IRepository<Functie> _functiesRepo;
         private readonly IRepository<GroepsWerkJaar> _groepsWerkJarenRepo;
+        private readonly IRepository<Lid> _ledenRepo;
 
         // Managers voor niet-triviale businesslogica
 
@@ -104,6 +105,7 @@ namespace Chiro.Gap.Services
             _officieleAfdelingenRepo = repositoryProvider.RepositoryGet<OfficieleAfdeling>();
             _functiesRepo = repositoryProvider.RepositoryGet<Functie>();
             _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
+            _ledenRepo = repositoryProvider.RepositoryGet<Lid>();
 
             // De bedoeling is dat alle repositories dezelfde hash code delen.
             // Ik test er twee. Als dat goed is, zal het overal wel goed zijn.
@@ -295,67 +297,6 @@ namespace Chiro.Gap.Services
                                 : WerkJaarStatus.Bezig;
 
             return result;
-        }
-
-        /// <summary>
-        /// Controleert de verplicht in te vullen lidgegevens.
-        /// </summary>
-        /// <param name="groepId">ID van de groep waarvan de leden te controleren zijn</param>
-        /// <returns>Een rij LedenProbleemInfo.  Leeg bij gebrek aan problemen.</returns>
-        public IEnumerable<LedenProbleemInfo> LedenControleren(int groepId)
-        {
-            var resultaat = new List<LedenProbleemInfo>();
-
-            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
-            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            var aantalLedenZonderAdres = (from ld in groepsWerkJaar.Lid
-                                          where ld.GelieerdePersoon.PersoonsAdres == null // geen voorkeursadres
-                                          && ld.UitschrijfDatum == null                   // enkel actieve leden
-                                          select ld).Count();
-
-            if (aantalLedenZonderAdres > 0)
-            {
-                resultaat.Add(new LedenProbleemInfo
-                {
-                    Probleem = LidProbleem.AdresOntbreekt,
-                    Aantal = aantalLedenZonderAdres
-                });
-            }
-
-            var aantalLedenZonderTelefoonNr = (from ld in groepsWerkJaar.Lid
-                                               where ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.TelefoonNummer)
-                                               && ld.UitschrijfDatum == null
-                                               select ld).Count();
-
-            if (aantalLedenZonderTelefoonNr > 0)
-            {
-                resultaat.Add(new LedenProbleemInfo
-                {
-                    Probleem = LidProbleem.TelefoonNummerOntbreekt,
-                    Aantal = aantalLedenZonderTelefoonNr
-                });
-            }
-
-            var aantalLeidingZonderEmail = (from ld in groepsWerkJaar.Lid
-                                            where ld.Type == LidType.Leiding &&
-                                                ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.Email)
-                                                && ld.UitschrijfDatum == null
-                                            select ld).Count();
-
-            if (aantalLeidingZonderEmail > 0)
-            {
-                resultaat.Add(new LedenProbleemInfo
-                {
-                    Probleem = LidProbleem.EmailOntbreekt,
-                    Aantal = aantalLeidingZonderEmail
-                });
-            }
-
-            return resultaat;
         }
 
         /// <summary>
@@ -761,6 +702,84 @@ namespace Chiro.Gap.Services
                                             MinAantal = p.Min
                                         }).ToList();
             return resultaat;
+        }
+
+        /// <summary>
+        /// Controleert de verplicht in te vullen lidgegevens.
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvan de leden te controleren zijn</param>
+        /// <returns>Een rij LedenProbleemInfo.  Leeg bij gebrek aan problemen.</returns>
+        public IEnumerable<LedenProbleemInfo> LedenControleren(int groepId)
+        {
+            var resultaat = new List<LedenProbleemInfo>();
+
+            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var aantalLedenZonderAdres = (from ld in _ledenRepo.Select("GelieerdePersoon.PersoonsAdres")
+                                          where ld.GroepsWerkJaar.ID == groepsWerkJaar.ID
+                                                && ld.UitschrijfDatum == null &&
+                                                ld.GelieerdePersoon.PersoonsAdres == null
+                                          select ld).Count();
+
+            if (aantalLedenZonderAdres > 0)
+            {
+                resultaat.Add(new LedenProbleemInfo
+                {
+                    Probleem = LidProbleem.AdresOntbreekt,
+                    Aantal = aantalLedenZonderAdres
+                });
+            }
+
+            var aantalLedenZonderTelefoonNr = (from ld in groepsWerkJaar.Lid
+                                               where ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.TelefoonNummer)
+                                               && ld.UitschrijfDatum == null
+                                               select ld).Count();
+
+            if (aantalLedenZonderTelefoonNr > 0)
+            {
+                resultaat.Add(new LedenProbleemInfo
+                {
+                    Probleem = LidProbleem.TelefoonNummerOntbreekt,
+                    Aantal = aantalLedenZonderTelefoonNr
+                });
+            }
+
+            var aantalLeidingZonderEmail = (from ld in groepsWerkJaar.Lid
+                                            where ld.Type == LidType.Leiding &&
+                                                ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.Email)
+                                                && ld.UitschrijfDatum == null
+                                            select ld).Count();
+
+            if (aantalLeidingZonderEmail > 0)
+            {
+                resultaat.Add(new LedenProbleemInfo
+                                  {
+                                      Probleem = LidProbleem.EmailOntbreekt,
+                                      Aantal = aantalLeidingZonderEmail
+                                  });
+            }
+
+            return resultaat;
+        }
+
+        Groep GetGroepEnCheckGav(int groepId)
+        {
+            var groep = _groepenRepo.ByID(groepId);
+            Gav.Check(groep);
+            return groep;
+        }
+
+        Groep GetGroepEnCheckGav(string groepCode)
+        {
+            var groep = (from g in _groepenRepo.Select()
+                         where Equal(g.Code, groepCode)
+                         select g).FirstOrDefault();
+            Gav.Check(groep);
+            return groep;
         }
 
         /// <summary>

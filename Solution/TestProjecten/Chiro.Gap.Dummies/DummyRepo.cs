@@ -51,6 +51,11 @@ namespace Chiro.Gap.Dummies
             return _entiteiten.AsQueryable();
         }
 
+        public IQueryable<T> Select(params string[] paths)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<T> GetAll()
         {
             return _entiteiten;

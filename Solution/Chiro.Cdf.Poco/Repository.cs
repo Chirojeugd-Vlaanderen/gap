@@ -17,7 +17,8 @@
  */
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Data.Entity.Infrastructure;
+﻿using System.Diagnostics;
 using System.Linq;
 
 namespace Chiro.Cdf.Poco
@@ -31,9 +32,16 @@ namespace Chiro.Cdf.Poco
             _context = context;
         }
 
-        public IQueryable<TEntity> Select()
+        public IQueryable<TEntity> Select(params string[] paths)
         {
-            return _context.Set<TEntity>().AsQueryable();
+            var set = _context.Set<TEntity>();
+
+            var x = (DbQuery<TEntity>) (set);
+
+            x = paths.Aggregate(x, (current, param) => current.Include(param));
+
+            var result = x.AsQueryable();
+            return result;
         }
 
         public IEnumerable<TEntity> GetAll()

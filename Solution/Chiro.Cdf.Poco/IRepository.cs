@@ -23,7 +23,8 @@ namespace Chiro.Cdf.Poco
 {
     public interface IRepository<TEntity> : IDisposable where TEntity: BasisEntiteit
     {
-        IQueryable<TEntity> Select();
+        //IQueryable<TEntity> Select();
+        IQueryable<TEntity> Select(params string[] paths);
         IEnumerable<TEntity> GetAll();
         IEnumerable<TEntity> Where(Func<TEntity, bool> predicate);
         TEntity GetSingle(Func<TEntity, bool> predicate);
