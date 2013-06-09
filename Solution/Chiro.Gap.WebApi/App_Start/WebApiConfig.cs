@@ -16,6 +16,7 @@ namespace Chiro.Gap.WebApi
             ODataModelBuilder modelBuilder = new ODataConventionModelBuilder();
             modelBuilder.EntitySet<GroepModel>("Groep");
             modelBuilder.EntitySet<PersoonModel>("Persoon");
+            modelBuilder.EntitySet<WerkjaarModel>("Werkjaar");
 
             Microsoft.Data.Edm.IEdmModel model = modelBuilder.GetEdmModel();
             config.Routes.MapODataRoute("ODataRoute", "api", model);
