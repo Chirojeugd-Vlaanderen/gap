@@ -145,7 +145,9 @@ namespace Chiro.Gap.Sync
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon);
+
+                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidBewaren(details, lidGedoe));
                 }
             }
         }

@@ -1096,24 +1096,26 @@ namespace Chiro.Gap.Services.Test
                                  };
 
             // dependency injection
-            var ledenSyncMock = new Mock<ILedenSync>();
-            ledenSyncMock.Setup(src => src.Bewaren(It.IsAny<Lid>())).Verifiable();
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
-
-            Factory.InstantieRegistreren(ledenSyncMock.Object);
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(snc => snc.Bewaren(It.IsAny<IList<Lid>>())).Verifiable();   // verwacht dat ledensync een lid moet bewaren
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
 
             // ACT
             var ledenService = Factory.Maak<LedenService>();
             string feedback;
             ledenService.Inschrijven(new[] {lidVoorsel}, out feedback);
 
+            var lid = groepsWerkJaar.Lid.First();
+
             // ASSERT
 
-            ledenSyncMock.Verify();
+            ledenSyncMock.Verify(src => src.Bewaren(It.IsAny<IList<Lid>>()), Times.AtLeastOnce());
         }
 
         /// <summary>
