@@ -13,6 +13,8 @@ namespace Chiro.Gap.WebApi.Models
         public string Voornaam { get; set; }
         public DateTime? GeboorteDatum { get; set; }
 
+        public virtual GroepModel Groep { get; set; }
+
         public PersoonModel(GelieerdePersoon gelieerdePersoon)
         {
             Id = gelieerdePersoon.ID;

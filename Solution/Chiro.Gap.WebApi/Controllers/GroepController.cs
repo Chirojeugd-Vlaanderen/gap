@@ -1,11 +1,8 @@
-﻿using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.OData;
-using System.Web.Mvc;
-using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WebApi.Models;
@@ -13,62 +10,57 @@ using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.WebApi.Controllers
 {
-    [System.Web.Http.Authorize]
+    [Authorize]
     public class GroepController : EntitySetController<GroepModel, int>
 
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
-        private readonly IQueryable<Groep> _groepen;
+        private readonly IQueryable<GebruikersRecht> _recht;
 
         public GroepController()
         {
-            _groepen = new Repository<Groep>(_context).Select();
+            _recht = _context.GebruikersRecht.Where(g =>
+                                                    g.Gav.Login == HttpContext.Current.User.Identity.Name &&
+                                                    (g.VervalDatum == null || g.VervalDatum > DateTime.Now)
+                ).Take(1);
         }
 
         [Queryable(PageSize = 10)]
         public override IQueryable<GroepModel> Get()
         {
-            var user = HttpContext.Current.User;
-            var gav = _context.Gav.FirstOrDefault(g => g.Login == user.Identity.Name);
-            if (gav == null)
+            return _recht.Select(r => new GroepModel(r.Groep)).AsQueryable();
+        }
+
+        protected override GroepModel GetEntityByKey([FromODataUri] int key)
+        {
+            Groep groep = _context.Groep.Find(key);
+            if (groep == null)
             {
                 return null;
             }
-
-            return gav.GebruikersRecht.Select(gr => new GroepModel (gr.Groep)).AsQueryable();
-        }
-
-        protected override GroepModel GetEntityByKey(int key)
-        {
-            var groep = _groepen.FirstOrDefault(g => g.ID == key);
-            if (! MagLezen(groep))
-            {
-                Request.CreateErrorResponse(HttpStatusCode.Forbidden, new HttpError());
-            }
-            return new GroepModel(groep);
-
+            return ! MagLezen(groep) ? null : new GroepModel(groep);
         }
 
         [Queryable(PageSize = 50)]
         public IQueryable<PersoonModel> GetPersonen(int key)
         {
-            var groep = _groepen.FirstOrDefault(g => g.ID == key);
-            if (! MagLezen(groep))
+            Groep groep = _context.Groep.Find(key);
+            if (groep == null)
             {
-                Request.CreateErrorResponse(HttpStatusCode.Forbidden, new HttpError());
+                return null;
             }
-            return groep.GelieerdePersoon.Select(p => new PersoonModel(p)).AsQueryable();
+            return ! MagLezen(groep) ? null : groep.GelieerdePersoon.Select(p => new PersoonModel(p)).AsQueryable();
         }
 
         [Queryable(PageSize = 10)]
-        public IQueryable<WerkjaarModel> GetWerkjaren(int key )
+        public IQueryable<WerkjaarModel> GetWerkjaren(int key)
         {
-            var groep = _groepen.FirstOrDefault(g => g.ID == key);
-            if (!MagLezen(groep))
+            Groep groep = _context.Groep.Find(key);
+            if (groep == null)
             {
-                Request.CreateErrorResponse(HttpStatusCode.Forbidden, new HttpError());
+                return null;
             }
-            return groep.GroepsWerkJaar.Select(gwj => new WerkjaarModel(gwj)).AsQueryable();
+            return !MagLezen(groep) ? null : groep.GroepsWerkJaar.Select(gwj => new WerkjaarModel(gwj)).AsQueryable();
         }
 
         protected override void Dispose(bool disposing)
@@ -79,14 +71,8 @@ namespace Chiro.Gap.WebApi.Controllers
 
         private bool MagLezen(Groep groep)
         {
-            if (groep == null)
-            {
-                return false;
-            }
             var autorisatieManager = new AutorisatieManager(new AuthenticatieManager());
             return autorisatieManager.IsGav(groep);
-
-
         }
     }
 }

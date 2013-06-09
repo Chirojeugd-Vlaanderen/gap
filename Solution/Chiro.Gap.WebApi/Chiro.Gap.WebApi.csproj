@@ -127,6 +127,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\WerkjaarController.cs" />
+    <Compile Include="Controllers\PersoonController.cs" />
     <Compile Include="Controllers\GroepController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
