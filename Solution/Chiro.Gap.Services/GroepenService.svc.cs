@@ -58,6 +58,7 @@ namespace Chiro.Gap.Services
         private readonly IRepository<AfdelingsJaar> _afdelingsJaarRepo;
         private readonly IRepository<Functie> _functiesRepo;
         private readonly IRepository<GroepsWerkJaar> _groepsWerkJarenRepo;
+        private readonly IRepository<Lid> _ledenRepo;
 
         // Managers voor niet-triviale businesslogica
 
@@ -101,6 +102,7 @@ namespace Chiro.Gap.Services
             _officieleAfdelingenRepo = repositoryProvider.RepositoryGet<OfficieleAfdeling>();
             _functiesRepo = repositoryProvider.RepositoryGet<Functie>();
             _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
+            _ledenRepo = repositoryProvider.RepositoryGet<Lid>();
 
             // De bedoeling is dat alle repositories dezelfde hash code delen.
             // Ik test er twee. Als dat goed is, zal het overal wel goed zijn.
@@ -687,9 +689,15 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            var aantalLedenZonderAdres = (from ld in groepsWerkJaar.Lid
-                                          where ld.GelieerdePersoon.PersoonsAdres == null // geen voorkeursadres
-                                          && ld.UitschrijfDatum == null                   // enkel actieve leden
+            //var aantalLedenZonderAdres = (from ld in groepsWerkJaar.Lid
+            //                              where ld.GelieerdePersoon.PersoonsAdres == null // geen voorkeursadres
+            //                              && ld.UitschrijfDatum == null                   // enkel actieve leden
+            //                              select ld).Count();
+
+            var aantalLedenZonderAdres = (from ld in _ledenRepo.Select("GelieerdePersoon.PersoonsAdres")
+                                          where ld.GroepsWerkJaar.ID == groepsWerkJaar.ID
+                                                && ld.UitschrijfDatum == null &&
+                                                ld.GelieerdePersoon.PersoonsAdres == null
                                           select ld).Count();
 
             if (aantalLedenZonderAdres > 0)

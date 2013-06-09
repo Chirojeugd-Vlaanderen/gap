@@ -23,7 +23,8 @@ namespace Chiro.Cdf.Poco
 {
     public interface IRepository<TEntity> : IDisposable where TEntity: BasisEntiteit
     {
-        IQueryable<TEntity> Select();
+        //IQueryable<TEntity> Select();
+        IQueryable<TEntity> Select(params string[] paths);
         IEnumerable<TEntity> GetAll();
         // Dit is een gevaarlijke functie, want hiermee evalueren we op SQL en worden nadien alle selecties in RAM uitgevoerd
         // terwijl dat dat helemaal niet zo duidelijk is. Voorlopig laten we dit weg dus.
