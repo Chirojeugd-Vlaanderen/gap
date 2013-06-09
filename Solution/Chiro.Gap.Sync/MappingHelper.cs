@@ -39,11 +39,8 @@ namespace Chiro.Gap.Sync
             {
                 return null;
             }
-            else
-            {
-                Debug.Assert(adres is BuitenLandsAdres);
-                return ((BuitenLandsAdres)adres).Land.Naam;
-            }
+            Debug.Assert(adres is BuitenLandsAdres);
+            return ((BuitenLandsAdres)adres).Land.Naam;
         }
 
         private static string PostCodeGet(this Adres adres)
@@ -52,11 +49,8 @@ namespace Chiro.Gap.Sync
             {
                 return null;
             }
-            else
-            {
-                Debug.Assert(adres is BuitenLandsAdres);
-                return ((BuitenLandsAdres)adres).PostCode;
-            }
+            Debug.Assert(adres is BuitenLandsAdres);
+            return ((BuitenLandsAdres)adres).PostCode;
         }
 
         /// <summary>

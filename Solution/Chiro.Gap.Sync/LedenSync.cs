@@ -157,16 +157,11 @@ namespace Chiro.Gap.Sync
         /// <remarks>Als geen persoonsgegevens meegeleverd zijn, dan zoeken we die wel even op in de database.</remarks>
         public void FunctiesUpdaten(Lid lid)
         {
-            Lid l;
-
             if (lid.GelieerdePersoon == null || lid.GelieerdePersoon.Persoon == null)
             {
                 throw new NotImplementedException();
             }
-            else
-            {
-                l = lid;
-            }
+            var l = lid;
 
             Debug.Assert(l.GroepsWerkJaar != null);
             Debug.Assert(l.GroepsWerkJaar.Groep != null);
@@ -202,16 +197,11 @@ namespace Chiro.Gap.Sync
         /// <param name="lid">Lid waarvan het lidtype geupdatet moet worden</param>
         public void TypeUpdaten(Lid lid)
         {
-            Lid l;
-
             if (lid.GelieerdePersoon == null || lid.GelieerdePersoon.Persoon == null || lid.GroepsWerkJaar == null || lid.GroepsWerkJaar.Groep == null)
             {
                 throw new NotImplementedException();
             }
-            else
-            {
-                l = lid;
-            }
+            var l = lid;
 
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidTypeUpdaten(
                 Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(l.GelieerdePersoon.Persoon),
@@ -237,9 +227,11 @@ namespace Chiro.Gap.Sync
 
             Debug.Assert(groep != null);
 
-            if (lid.GelieerdePersoon.Persoon.AdNummer != null)
+            if (lid.GelieerdePersoon.Persoon.AdNummer.HasValue)
             {
-                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidVerwijderen(lid.GelieerdePersoon.Persoon.AdNummer ?? 0, groep.Code, lid.GroepsWerkJaar.WerkJaar, lid.UitschrijfDatum.Value));
+                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidVerwijderen(
+                    lid.GelieerdePersoon.Persoon.AdNummer.Value, 
+                    groep.Code, lid.GroepsWerkJaar.WerkJaar, lid.UitschrijfDatum.Value));
             }
             else
             {

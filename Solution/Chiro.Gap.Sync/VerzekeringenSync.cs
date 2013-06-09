@@ -17,13 +17,11 @@
  */
 
 using System;
-using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
-using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.Sync
 {
@@ -39,11 +37,11 @@ namespace Chiro.Gap.Sync
         /// <param name="gwj">Bepaalt werkJaar en groep die factuur zal krijgen</param>
         public void Bewaren(PersoonsVerzekering persoonsVerzekering, GroepsWerkJaar gwj)
         {
-            if (persoonsVerzekering.Persoon.AdNummer != null)
+            if (persoonsVerzekering.Persoon.AdNummer.HasValue)
             {
                 // Verzekeren op basis van AD-nummer
                 ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LoonVerliesVerzekeren(
-                    persoonsVerzekering.Persoon.AdNummer ?? 0,
+                    persoonsVerzekering.Persoon.AdNummer.Value,
                     gwj.Groep.Code,
                     gwj.WerkJaar));
             }

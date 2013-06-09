@@ -25,8 +25,6 @@ using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
-using Adres = Chiro.Gap.Poco.Model.Adres;
-
 namespace Chiro.Gap.Sync
 {
     /// <summary>
