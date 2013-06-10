@@ -19,7 +19,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-    // laten staan voor live!
+
+using System.Transactions; // NIET VERWIJDEREN!!
+// als de define KIPDORP is gezet (voor publieke test/live), gebruiken we wel transacties
+
 using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;

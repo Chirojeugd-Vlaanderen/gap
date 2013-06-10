@@ -21,6 +21,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Transactions; // NIET VERWIJDEREN!!
+// als de define KIPDORP is gezet (voor publiek test/live), gebruiken we wel transacties
+
 using AutoMapper;
 using Chiro.Cdf.Poco;
 
