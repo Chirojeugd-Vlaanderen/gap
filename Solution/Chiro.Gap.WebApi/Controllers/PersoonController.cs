@@ -14,17 +14,19 @@ namespace Chiro.Gap.WebApi.Controllers
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
         private readonly GebruikersRecht _recht;
+        private readonly GroepsWerkJaar _groepsWerkJaar;
 
         public PersoonController()
         {
             _recht = _context.GebruikersRecht.First(g => g.Gav.Login == HttpContext.Current.User.Identity.Name &&
                                                          (g.VervalDatum == null || g.VervalDatum > DateTime.Now));
+            _groepsWerkJaar = _recht.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
         }
 
         [Queryable(PageSize = 10)]
         public override IQueryable<PersoonModel> Get()
         {
-            return _recht.Groep.GelieerdePersoon.Select(gp => new PersoonModel(gp)).AsQueryable();
+            return _recht.Groep.GelieerdePersoon.Select(gp => new PersoonModel(gp, _groepsWerkJaar)).AsQueryable();
         }
 
         protected override PersoonModel GetEntityByKey([FromODataUri] int key)
@@ -34,7 +36,7 @@ namespace Chiro.Gap.WebApi.Controllers
             {
                 return null;
             }
-            return !MagLezen(gelieerdePersoon) ? null : new PersoonModel(gelieerdePersoon);
+            return !MagLezen(gelieerdePersoon) ? null : new PersoonModel(gelieerdePersoon, _groepsWerkJaar);
         }
 
         public GroepModel GetGroep([FromODataUri] int key)
@@ -45,6 +47,19 @@ namespace Chiro.Gap.WebApi.Controllers
                 return null;
             }
             return !MagLezen(gelieerdePersoon) ? null : new GroepModel(gelieerdePersoon.Groep);
+        }
+
+        public IQueryable<ContactgegevenModel> GetContactgegevens([FromODataUri] int key)
+        {
+            GelieerdePersoon gelieerdePersoon = _context.GelieerdePersoon.Find(key);
+            if (gelieerdePersoon == null)
+            {
+                return null;
+            }
+            return !MagLezen(gelieerdePersoon)
+                       ? null
+                       : gelieerdePersoon.Communicatie.Select(c => new ContactgegevenModel(c)).AsQueryable();
+
         }
 
 

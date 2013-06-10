@@ -10,41 +10,44 @@ using Chiro.Gap.WebApi.Models;
 namespace Chiro.Gap.WebApi.Controllers
 {
     [Authorize]
-    public class WerkjaarController : EntitySetController<WerkjaarModel, int>
+    public class AfdelingController : EntitySetController<AfdelingModel, int>
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
         private readonly GebruikersRecht _recht;
+        private readonly GroepsWerkJaar _groepsWerkJaar;
 
-        public WerkjaarController()
+        public AfdelingController()
         {
             _recht = _context.GebruikersRecht.First(g => g.Gav.Login == HttpContext.Current.User.Identity.Name &&
                                                          (g.VervalDatum == null || g.VervalDatum > DateTime.Now));
+
+            _groepsWerkJaar = _recht.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
         }
 
         [Queryable(PageSize = 10)]
-        public override IQueryable<WerkjaarModel> Get()
+        public override IQueryable<AfdelingModel> Get()
         {
-            return _recht.Groep.GroepsWerkJaar.Select(gwj => new WerkjaarModel(gwj)).AsQueryable();
+            return _groepsWerkJaar.AfdelingsJaar.Select(aj => new AfdelingModel(aj)).AsQueryable();
         }
 
-        protected override WerkjaarModel GetEntityByKey(int key)
+        protected override AfdelingModel GetEntityByKey([FromODataUri] int key)
         {
-            GroepsWerkJaar groepsWerkJaar = _context.GroepsWerkJaar.Find(key);
-            if (groepsWerkJaar == null)
+            var afdelingsJaar = _context.AfdelingsJaar.Find(key);
+            if (afdelingsJaar == null)
             {
                 return null;
             }
-            return !MagLezen(groepsWerkJaar) ? null : new WerkjaarModel(groepsWerkJaar);
+            return !MagLezen(afdelingsJaar) ? null : new AfdelingModel(afdelingsJaar);
         }
 
         public GroepModel GetGroep([FromODataUri] int key)
         {
-            GroepsWerkJaar groepsWerkJaar = _context.GroepsWerkJaar.Find(key);
-            if (groepsWerkJaar == null)
+            var afdelingsJaar = _context.AfdelingsJaar.Find(key);
+            if (afdelingsJaar == null)
             {
                 return null;
             }
-            return !MagLezen(groepsWerkJaar) ? null : new GroepModel(groepsWerkJaar.Groep);
+            return !MagLezen(afdelingsJaar) ? null : new GroepModel(afdelingsJaar.GroepsWerkJaar.Groep);
         }
 
 
@@ -54,9 +57,9 @@ namespace Chiro.Gap.WebApi.Controllers
             base.Dispose(disposing);
         }
 
-        private bool MagLezen(GroepsWerkJaar groepsWerkJaar)
+        private bool MagLezen(AfdelingsJaar afdelingsJaar)
         {
-            return Equals(groepsWerkJaar.Groep, _recht.Groep);
+            return Equals(afdelingsJaar.GroepsWerkJaar.Groep, _recht.Groep);
         }
     }
 }

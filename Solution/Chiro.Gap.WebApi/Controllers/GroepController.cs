@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -6,7 +7,6 @@ using System.Web.Http.OData;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WebApi.Models;
-using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.WebApi.Controllers
 {
@@ -15,20 +15,21 @@ namespace Chiro.Gap.WebApi.Controllers
 
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
-        private readonly IQueryable<GebruikersRecht> _recht;
+        private readonly GebruikersRecht _recht;
+        private readonly GroepsWerkJaar _groepsWerkJaar;
 
         public GroepController()
         {
-            _recht = _context.GebruikersRecht.Where(g =>
-                                                    g.Gav.Login == HttpContext.Current.User.Identity.Name &&
-                                                    (g.VervalDatum == null || g.VervalDatum > DateTime.Now)
-                ).Take(1);
+            _recht = _context.GebruikersRecht.First(g => g.Gav.Login == HttpContext.Current.User.Identity.Name &&
+                                                         (g.VervalDatum == null || g.VervalDatum > DateTime.Now));
+            _groepsWerkJaar = _recht.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
         }
 
-        [Queryable(PageSize = 10)]
         public override IQueryable<GroepModel> Get()
         {
-            return _recht.Select(r => new GroepModel(r.Groep)).AsQueryable();
+            var lijst = new List<GroepModel>();
+            lijst.Add(new GroepModel(_recht.Groep));
+            return lijst.AsQueryable();
         }
 
         protected override GroepModel GetEntityByKey([FromODataUri] int key)
@@ -49,18 +50,26 @@ namespace Chiro.Gap.WebApi.Controllers
             {
                 return null;
             }
-            return ! MagLezen(groep) ? null : groep.GelieerdePersoon.Select(p => new PersoonModel(p)).AsQueryable();
+            
+            return ! MagLezen(groep)
+                       ? null
+                       : groep.GelieerdePersoon.Select(p => new PersoonModel(p, _groepsWerkJaar)).AsQueryable();
         }
 
         [Queryable(PageSize = 10)]
-        public IQueryable<WerkjaarModel> GetWerkjaren(int key)
+        public IQueryable<AfdelingModel> GetAfdelingen(int key)
         {
+            throw new NotImplementedException();
             Groep groep = _context.Groep.Find(key);
             if (groep == null)
             {
                 return null;
             }
-            return !MagLezen(groep) ? null : groep.GroepsWerkJaar.Select(gwj => new WerkjaarModel(gwj)).AsQueryable();
+            if (!MagLezen(groep))
+            {
+                return null;
+            }
+            
         }
 
         protected override void Dispose(bool disposing)
@@ -71,8 +80,7 @@ namespace Chiro.Gap.WebApi.Controllers
 
         private bool MagLezen(Groep groep)
         {
-            var autorisatieManager = new AutorisatieManager(new AuthenticatieManager());
-            return autorisatieManager.IsGav(groep);
+            return Equals(groep, _recht.Groep);
         }
     }
 }

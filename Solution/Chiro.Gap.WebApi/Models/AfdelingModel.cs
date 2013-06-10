@@ -6,20 +6,20 @@ using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WebApi.Models
 {
-    public class GroepModel
+    public class AfdelingModel
     {
         public int Id { get; set; }
         public string Naam { get; set; }
-        public string Stamnummer { get; set; }
 
+        public virtual GroepModel Groep { get; set; }
         public virtual IQueryable<PersoonModel> Personen { get; set; }
-        public virtual IQueryable<AfdelingModel> Afdelingen { get; set; }
 
-        public GroepModel(Groep groep)
+
+        public AfdelingModel(AfdelingsJaar afdelingsJaar)
         {
-            Id = groep.ID;
-            Naam = groep.Naam;
-            Stamnummer = groep.Code;
+            Id = afdelingsJaar.ID;
+            Naam = afdelingsJaar.Afdeling.Naam;
+
         }
     }
 }

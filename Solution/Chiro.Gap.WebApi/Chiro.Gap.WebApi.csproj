@@ -127,15 +127,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\WerkjaarController.cs" />
+    <Compile Include="Controllers\AfdelingController.cs" />
+    <Compile Include="Controllers\ContactgegevenController.cs" />
     <Compile Include="Controllers\PersoonController.cs" />
     <Compile Include="Controllers\GroepController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AfdelingModel.cs" />
+    <Compile Include="Models\ContactgegevenModel.cs" />
     <Compile Include="Models\GroepModel.cs" />
     <Compile Include="Models\PersoonModel.cs" />
-    <Compile Include="Models\WerkjaarModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
