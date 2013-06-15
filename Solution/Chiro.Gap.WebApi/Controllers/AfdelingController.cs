@@ -50,6 +50,23 @@ namespace Chiro.Gap.WebApi.Controllers
             return !MagLezen(afdelingsJaar) ? null : new GroepModel(afdelingsJaar.GroepsWerkJaar.Groep);
         }
 
+        [Queryable]
+        public IQueryable<PersoonModel> GetPersonen([FromODataUri] int key)
+        {
+            var afdelingsJaar = _context.AfdelingsJaar.Find(key);
+            if (afdelingsJaar == null)
+            {
+                return null;
+            }
+            if (! MagLezen(afdelingsJaar))
+            {
+                return null;
+            }
+            var leden = afdelingsJaar.Kind.Select(k => new PersoonModel(k));
+            var leiding = afdelingsJaar.Leiding.Select(l => new PersoonModel(l));
+            return leden.Union(leiding).AsQueryable();
+        }
+
 
         protected override void Dispose(bool disposing)
         {
