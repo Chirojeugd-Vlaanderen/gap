@@ -18,6 +18,7 @@ namespace Chiro.Gap.WebApi
             modelBuilder.EntitySet<AfdelingModel>("Afdeling");
             modelBuilder.EntitySet<PersoonModel>("Persoon");
             modelBuilder.EntitySet<ContactgegevenModel>("Contactgegeven");
+            modelBuilder.EntitySet<AdresModel>("Adres");
 
             Microsoft.Data.Edm.IEdmModel model = modelBuilder.GetEdmModel();
             config.Routes.MapODataRoute("ODataRoute", "api", model);

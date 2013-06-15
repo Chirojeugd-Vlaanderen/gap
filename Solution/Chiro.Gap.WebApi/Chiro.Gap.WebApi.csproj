@@ -129,11 +129,13 @@
   <ItemGroup>
     <Compile Include="Controllers\AfdelingController.cs" />
     <Compile Include="Controllers\ContactgegevenController.cs" />
+    <Compile Include="Controllers\AdresController.cs" />
     <Compile Include="Controllers\PersoonController.cs" />
     <Compile Include="Controllers\GroepController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdresModel.cs" />
     <Compile Include="Models\AfdelingModel.cs" />
     <Compile Include="Models\ContactgegevenModel.cs" />
     <Compile Include="Models\GroepModel.cs" />

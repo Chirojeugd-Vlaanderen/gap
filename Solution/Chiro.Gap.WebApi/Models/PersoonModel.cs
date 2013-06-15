@@ -17,6 +17,7 @@ namespace Chiro.Gap.WebApi.Models
         public virtual GroepModel Groep { get; set; }
         public virtual IQueryable<ContactgegevenModel> Contactgegevens { get; set; }
         public virtual IQueryable<AfdelingModel> Afdelingen { get; set; }
+        public virtual AdresModel Adressen { get; set; }
 
         private PersoonModel(GelieerdePersoon gelieerdePersoon)
         {

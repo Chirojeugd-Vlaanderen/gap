@@ -80,6 +80,21 @@ namespace Chiro.Gap.WebApi.Controllers
             return leidingVan.Union(lidVan).Select(aj => new AfdelingModel(aj)).AsQueryable();
         }
 
+        public IQueryable<AdresModel> GetAdressen([FromODataUri] int key)
+        {
+            var gelieerdePersoon = _context.GelieerdePersoon.Find(key);
+            if (gelieerdePersoon == null)
+            {
+                return null;
+            }
+            if (!MagLezen(gelieerdePersoon))
+            {
+                return null;
+            }
+
+            return gelieerdePersoon.Persoon.PersoonsAdres.Select(pa => new AdresModel(pa.Adres)).AsQueryable();
+        }
+
 
         protected override void Dispose(bool disposing)
         {
