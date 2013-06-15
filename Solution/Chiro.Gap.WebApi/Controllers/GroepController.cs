@@ -56,10 +56,9 @@ namespace Chiro.Gap.WebApi.Controllers
                        : groep.GelieerdePersoon.Select(p => new PersoonModel(p, _groepsWerkJaar)).AsQueryable();
         }
 
-        [Queryable(PageSize = 10)]
+        [Queryable(PageSize = 12)]
         public IQueryable<AfdelingModel> GetAfdelingen(int key)
         {
-            throw new NotImplementedException();
             Groep groep = _context.Groep.Find(key);
             if (groep == null)
             {
@@ -69,7 +68,7 @@ namespace Chiro.Gap.WebApi.Controllers
             {
                 return null;
             }
-            
+            return _groepsWerkJaar.AfdelingsJaar.Select(aj => new AfdelingModel(aj)).AsQueryable();
         }
 
         protected override void Dispose(bool disposing)
