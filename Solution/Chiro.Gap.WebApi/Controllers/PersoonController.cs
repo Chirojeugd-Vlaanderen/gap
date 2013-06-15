@@ -62,6 +62,24 @@ namespace Chiro.Gap.WebApi.Controllers
 
         }
 
+        public IQueryable<AfdelingModel> GetAfdelingen([FromODataUri] int key)
+        {
+            var gelieerdePersoon = _context.GelieerdePersoon.Find(key);
+            if (gelieerdePersoon == null)
+            {
+                return null;
+            }
+            if (! MagLezen(gelieerdePersoon))
+            {
+                return null;
+            }
+            var lid = gelieerdePersoon.Lid.FirstOrDefault(
+                l => l.GroepsWerkJaar.ID == _groepsWerkJaar.ID);
+            var lidVan = _groepsWerkJaar.AfdelingsJaar.Where(aj => aj.Kind.Contains(lid));
+            var leidingVan = _groepsWerkJaar.AfdelingsJaar.Where(aj => aj.Leiding.Contains(lid));
+            return leidingVan.Union(lidVan).Select(aj => new AfdelingModel(aj)).AsQueryable();
+        }
+
 
         protected override void Dispose(bool disposing)
         {
