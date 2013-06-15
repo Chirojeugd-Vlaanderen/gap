@@ -27,7 +27,11 @@ namespace Chiro.Gap.WebApi.Controllers
         [Queryable(PageSize = 10)]
         public override IQueryable<ContactgegevenModel> Get()
         {
-            return new List<ContactgegevenModel>().AsQueryable();
+            // In plaats van eerst alle personen op te halen en dan van elke persoon de
+            // communicatievorm, kunnen we dit met SelectMany in 1 expressie schrijven
+            return
+                _recht.Groep.GelieerdePersoon.SelectMany(gp => gp.Communicatie.Select(cv => new ContactgegevenModel(cv)))
+                      .AsQueryable();
         }
 
         protected override ContactgegevenModel GetEntityByKey([FromODataUri] int key)
