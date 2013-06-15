@@ -27,41 +27,43 @@ namespace Chiro.Gap.WebApi.Controllers
         [Queryable(PageSize = 10)]
         public override IQueryable<AfdelingModel> Get()
         {
-            return _groepsWerkJaar.AfdelingsJaar.Select(aj => new AfdelingModel(aj)).AsQueryable();
+            return _groepsWerkJaar.AfdelingsJaar.Select(aj => new AfdelingModel(aj.Afdeling)).AsQueryable();
         }
 
         protected override AfdelingModel GetEntityByKey([FromODataUri] int key)
         {
-            var afdelingsJaar = _context.AfdelingsJaar.Find(key);
-            if (afdelingsJaar == null)
+            var afdeling = _context.Afdeling.Find(key);
+            if (afdeling == null)
             {
                 return null;
             }
-            return !MagLezen(afdelingsJaar) ? null : new AfdelingModel(afdelingsJaar);
+            return !MagLezen(afdeling) ? null : new AfdelingModel(afdeling);
         }
 
         public GroepModel GetGroep([FromODataUri] int key)
         {
-            var afdelingsJaar = _context.AfdelingsJaar.Find(key);
-            if (afdelingsJaar == null)
+            var afdeling = _context.Afdeling.Find(key);
+            if (afdeling == null)
             {
                 return null;
             }
-            return !MagLezen(afdelingsJaar) ? null : new GroepModel(afdelingsJaar.GroepsWerkJaar.Groep);
+            return !MagLezen(afdeling) ? null : new GroepModel(afdeling.ChiroGroep);
         }
 
         [Queryable]
         public IQueryable<PersoonModel> GetPersonen([FromODataUri] int key)
         {
-            var afdelingsJaar = _context.AfdelingsJaar.Find(key);
-            if (afdelingsJaar == null)
+            var afdeling = _context.Afdeling.Find(key);
+            if (afdeling == null)
             {
                 return null;
             }
-            if (! MagLezen(afdelingsJaar))
+            var afdelingsJaar = _groepsWerkJaar.AfdelingsJaar.FirstOrDefault(aj => aj.Afdeling.ID == afdeling.ID);
+            if (afdelingsJaar == null || ! MagLezen(afdelingsJaar))
             {
                 return null;
             }
+            
             var leden = afdelingsJaar.Kind.Select(k => new PersoonModel(k));
             var leiding = afdelingsJaar.Leiding.Select(l => new PersoonModel(l));
             return leden.Union(leiding).AsQueryable();
@@ -77,6 +79,13 @@ namespace Chiro.Gap.WebApi.Controllers
         private bool MagLezen(AfdelingsJaar afdelingsJaar)
         {
             return Equals(afdelingsJaar.GroepsWerkJaar.Groep, _recht.Groep);
+        }
+
+        private bool MagLezen(Afdeling afdeling)
+        {
+            // juiste groep en de afdeling moet in dit groepswerkjaar zitten
+            return Equals(afdeling.ChiroGroep, _recht.Groep) &&
+                   _groepsWerkJaar.AfdelingsJaar.Any(aj => aj.Afdeling.ID == afdeling.ID);
         }
     }
 }
