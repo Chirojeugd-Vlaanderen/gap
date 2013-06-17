@@ -31,6 +31,20 @@ namespace Chiro.Cdf.Poco
             this.Context = context;
         }
 
+        /// <summary>
+        /// Geeft een queryable voor alle objecten van type <typeparamref name="TEntity"/>,
+        /// die gebruikt kan worden voor data access.
+        /// </summary>
+        /// <param name="paths">Je kunt aan Select een lijstje met entiteiten meegeven die
+        /// 'eager geload' moeten worden. Wat niet meegegeven wordt, wordt later on demand
+        /// 'lazy geload'.</param>
+        /// <returns>queryable voor alle objecten van type <typeparamref name="TEntity"/></returns>
+        /// <remarks>Voorbeeldje voor eager loading:
+        /// _ledenRepo.Select("GelieerdePersoon.PersoonsAdres") zorgt ervoor dat bij het evalueren
+        /// van de query sowieso bij elk lid de gelieerde persoon en diens voorkeuradres 
+        /// (GelieerdePersoon.PersoonsAdres) wordt opgehaald. Op die manier vermijden we dat
+        /// wanneer later de adressen van alle personen nodig zijn, ze een voor een een nog lazy
+        /// opgehaald moeten worden.</remarks>
         public IQueryable<TEntity> Select(params string[] paths)
         {
             var set = this.Context.Set<TEntity>();
@@ -46,11 +60,6 @@ namespace Chiro.Cdf.Poco
         public IEnumerable<TEntity> GetAll()
         {
             return this.Context.Set<TEntity>().AsEnumerable();
-        }
-
-        public IEnumerable<TEntity> Where(Func<TEntity, bool> predicate)
-        {
-            return this.Context.Set<TEntity>().Where(predicate);
         }
 
         public TEntity GetSingle(Func<TEntity, bool> predicate)
