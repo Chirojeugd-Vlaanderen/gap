@@ -37,7 +37,7 @@ namespace Chiro.Gap.WebApi.Controllers
 
         public AfdelingController()
         {
-            _recht = ApiHelper.getGebruikersRecht(_context);
+            _recht = ApiHelper.GetGebruikersRecht(_context);
             _groepsWerkJaarId = ApiHelper.GetGroepsWerkJaarId(_recht);
             _groepsWerkJaar = _context.GroepsWerkJaar.Find(_groepsWerkJaarId);
         }

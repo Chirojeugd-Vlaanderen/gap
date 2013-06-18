@@ -10,7 +10,7 @@ namespace Chiro.Gap.WebApi.Helpers
 {
     public static class ApiHelper
     {
-        public static GebruikersRecht getGebruikersRecht(ChiroGroepEntities context)
+        public static GebruikersRecht GetGebruikersRecht(ChiroGroepEntities context)
         {
             Func<GebruikersRecht, bool> selector =
                 g =>
