@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System.Web;
 using System.Web.Mvc;
 
 namespace Chiro.Gap.WebApi

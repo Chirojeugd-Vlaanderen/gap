@@ -31,8 +31,8 @@ namespace Chiro.Gap.WebApi.Controllers
 
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
-        private readonly GebruikersRecht _recht;
         private readonly GroepsWerkJaar _groepsWerkJaar;
+        private readonly GebruikersRecht _recht;
 
         public GroepController()
         {
@@ -66,7 +66,7 @@ namespace Chiro.Gap.WebApi.Controllers
             {
                 return null;
             }
-            
+
             return ! MagLezen(groep)
                        ? null
                        : groep.GelieerdePersoon.Select(p => new PersoonModel(p, _groepsWerkJaar)).AsQueryable();

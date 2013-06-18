@@ -20,7 +20,7 @@ using Chiro.Gap.Poco.Model;
 namespace Chiro.Gap.WebApi.Models
 {
     public class AdresModel
-    {      
+    {
         public int Id { get; set; }
         public string Straat { get; set; }
         public int? Nr { get; set; }
@@ -71,7 +71,6 @@ namespace Chiro.Gap.WebApi.Models
                 Postcode = buitenLandsAdres.PostCode + " " + buitenLandsAdres.PostNummer.ToString();
                 Gemeente = buitenLandsAdres.WoonPlaats;
                 Land = buitenLandsAdres.Land.Naam;
-                
             }
         }
     }

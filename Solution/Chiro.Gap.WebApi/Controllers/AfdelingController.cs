@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -29,8 +30,8 @@ namespace Chiro.Gap.WebApi.Controllers
     public class AfdelingController : EntitySetController<AfdelingModel, int>
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
-        private readonly GebruikersRecht _recht;
         private readonly GroepsWerkJaar _groepsWerkJaar;
+        private readonly GebruikersRecht _recht;
 
         public AfdelingController()
         {
@@ -48,7 +49,7 @@ namespace Chiro.Gap.WebApi.Controllers
 
         protected override AfdelingModel GetEntityByKey([FromODataUri] int key)
         {
-            var afdeling = _context.Afdeling.Find(key);
+            Afdeling afdeling = _context.Afdeling.Find(key);
             if (afdeling == null)
             {
                 return null;
@@ -58,7 +59,7 @@ namespace Chiro.Gap.WebApi.Controllers
 
         public GroepModel GetGroep([FromODataUri] int key)
         {
-            var afdeling = _context.Afdeling.Find(key);
+            Afdeling afdeling = _context.Afdeling.Find(key);
             if (afdeling == null)
             {
                 return null;
@@ -69,19 +70,20 @@ namespace Chiro.Gap.WebApi.Controllers
         [Queryable]
         public IQueryable<PersoonModel> GetPersonen([FromODataUri] int key)
         {
-            var afdeling = _context.Afdeling.Find(key);
+            Afdeling afdeling = _context.Afdeling.Find(key);
             if (afdeling == null)
             {
                 return null;
             }
-            var afdelingsJaar = _groepsWerkJaar.AfdelingsJaar.FirstOrDefault(aj => aj.Afdeling.ID == afdeling.ID);
+            AfdelingsJaar afdelingsJaar =
+                _groepsWerkJaar.AfdelingsJaar.FirstOrDefault(aj => aj.Afdeling.ID == afdeling.ID);
             if (afdelingsJaar == null || ! MagLezen(afdelingsJaar))
             {
                 return null;
             }
-            
-            var leden = afdelingsJaar.Kind.Select(k => new PersoonModel(k));
-            var leiding = afdelingsJaar.Leiding.Select(l => new PersoonModel(l));
+
+            IEnumerable<PersoonModel> leden = afdelingsJaar.Kind.Select(k => new PersoonModel(k));
+            IEnumerable<PersoonModel> leiding = afdelingsJaar.Leiding.Select(l => new PersoonModel(l));
             return leden.Union(leiding).AsQueryable();
         }
 

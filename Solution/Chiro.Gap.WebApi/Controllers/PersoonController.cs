@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -29,8 +30,8 @@ namespace Chiro.Gap.WebApi.Controllers
     public class PersoonController : EntitySetController<PersoonModel, int>
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
-        private readonly GebruikersRecht _recht;
         private readonly GroepsWerkJaar _groepsWerkJaar;
+        private readonly GebruikersRecht _recht;
 
         public PersoonController()
         {
@@ -75,12 +76,11 @@ namespace Chiro.Gap.WebApi.Controllers
             return !MagLezen(gelieerdePersoon)
                        ? null
                        : gelieerdePersoon.Communicatie.Select(c => new ContactgegevenModel(c)).AsQueryable();
-
         }
 
         public IQueryable<AfdelingModel> GetAfdelingen([FromODataUri] int key)
         {
-            var gelieerdePersoon = _context.GelieerdePersoon.Find(key);
+            GelieerdePersoon gelieerdePersoon = _context.GelieerdePersoon.Find(key);
             if (gelieerdePersoon == null)
             {
                 return null;
@@ -89,16 +89,16 @@ namespace Chiro.Gap.WebApi.Controllers
             {
                 return null;
             }
-            var lid = gelieerdePersoon.Lid.FirstOrDefault(
+            Lid lid = gelieerdePersoon.Lid.FirstOrDefault(
                 l => l.GroepsWerkJaar.ID == _groepsWerkJaar.ID);
-            var lidVan = _groepsWerkJaar.AfdelingsJaar.Where(aj => aj.Kind.Contains(lid));
-            var leidingVan = _groepsWerkJaar.AfdelingsJaar.Where(aj => aj.Leiding.Contains(lid));
+            IEnumerable<AfdelingsJaar> lidVan = _groepsWerkJaar.AfdelingsJaar.Where(aj => aj.Kind.Contains(lid));
+            IEnumerable<AfdelingsJaar> leidingVan = _groepsWerkJaar.AfdelingsJaar.Where(aj => aj.Leiding.Contains(lid));
             return leidingVan.Union(lidVan).Select(aj => new AfdelingModel(aj)).AsQueryable();
         }
 
         public IQueryable<AdresModel> GetAdressen([FromODataUri] int key)
         {
-            var gelieerdePersoon = _context.GelieerdePersoon.Find(key);
+            GelieerdePersoon gelieerdePersoon = _context.GelieerdePersoon.Find(key);
             if (gelieerdePersoon == null)
             {
                 return null;

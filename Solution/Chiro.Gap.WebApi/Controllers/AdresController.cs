@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -30,8 +29,8 @@ namespace Chiro.Gap.WebApi.Controllers
     public class AdresController : EntitySetController<AdresModel, int>
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
-        private readonly GebruikersRecht _recht;
         private readonly GroepsWerkJaar _groepsWerkJaar;
+        private readonly GebruikersRecht _recht;
 
         public AdresController()
         {
@@ -46,13 +45,14 @@ namespace Chiro.Gap.WebApi.Controllers
             // In plaats van eerst alle personen op te halen en dan van elke persoon de
             // communicatievorm, kunnen we dit met SelectMany in 1 expressie schrijven
             return
-                _recht.Groep.GelieerdePersoon.SelectMany(gp => gp.Persoon.PersoonsAdres.Select(pa => new AdresModel(pa.Adres)))
+                _recht.Groep.GelieerdePersoon.SelectMany(
+                    gp => gp.Persoon.PersoonsAdres.Select(pa => new AdresModel(pa.Adres)))
                       .AsQueryable();
         }
 
         protected override AdresModel GetEntityByKey([FromODataUri] int key)
         {
-            var Adres = _context.Adres.Find(key);
+            Adres Adres = _context.Adres.Find(key);
             if (Adres == null)
             {
                 return null;
@@ -62,7 +62,7 @@ namespace Chiro.Gap.WebApi.Controllers
 
         public IQueryable<PersoonModel> GetPersonen([FromODataUri] int key)
         {
-            var adres = _context.Adres.Find(key);
+            Adres adres = _context.Adres.Find(key);
             if (adres == null)
             {
                 return null;
@@ -73,7 +73,9 @@ namespace Chiro.Gap.WebApi.Controllers
             }
             return
                 adres.PersoonsAdres.SelectMany(
-                    pa => pa.GelieerdePersoon.Where(gp => gp.Groep.ID == _recht.Groep.ID).Select(gp => new PersoonModel(gp, _groepsWerkJaar))).AsQueryable();
+                    pa =>
+                    pa.GelieerdePersoon.Where(gp => gp.Groep.ID == _recht.Groep.ID)
+                      .Select(gp => new PersoonModel(gp, _groepsWerkJaar))).AsQueryable();
         }
 
 

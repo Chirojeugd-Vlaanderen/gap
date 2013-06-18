@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -30,8 +29,8 @@ namespace Chiro.Gap.WebApi.Controllers
     public class ContactgegevenController : EntitySetController<ContactgegevenModel, int>
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
-        private readonly GebruikersRecht _recht;
         private readonly GroepsWerkJaar _groepsWerkJaar;
+        private readonly GebruikersRecht _recht;
 
         public ContactgegevenController()
         {
@@ -52,7 +51,7 @@ namespace Chiro.Gap.WebApi.Controllers
 
         protected override ContactgegevenModel GetEntityByKey([FromODataUri] int key)
         {
-            var communicatieVorm = _context.CommunicatieVorm.Find(key);
+            CommunicatieVorm communicatieVorm = _context.CommunicatieVorm.Find(key);
             if (communicatieVorm == null)
             {
                 return null;
@@ -62,12 +61,14 @@ namespace Chiro.Gap.WebApi.Controllers
 
         public PersoonModel GetPersoon([FromODataUri] int key)
         {
-            var communicatieVorm = _context.CommunicatieVorm.Find(key);
+            CommunicatieVorm communicatieVorm = _context.CommunicatieVorm.Find(key);
             if (communicatieVorm == null)
             {
                 return null;
             }
-            return !MagLezen(communicatieVorm) ? null : new PersoonModel(communicatieVorm.GelieerdePersoon, _groepsWerkJaar);
+            return !MagLezen(communicatieVorm)
+                       ? null
+                       : new PersoonModel(communicatieVorm.GelieerdePersoon, _groepsWerkJaar);
         }
 
 

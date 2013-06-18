@@ -15,9 +15,7 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WebApi.Models
@@ -44,14 +42,14 @@ namespace Chiro.Gap.WebApi.Models
         }
 
         public PersoonModel(GelieerdePersoon gelieerdePersoon, GroepsWerkJaar groepsWerkJaar) : this(gelieerdePersoon)
-        { 
-            var lid = gelieerdePersoon.Lid.FirstOrDefault(l => Equals(l.GroepsWerkJaar, groepsWerkJaar));
+        {
+            Lid lid = gelieerdePersoon.Lid.FirstOrDefault(l => Equals(l.GroepsWerkJaar, groepsWerkJaar));
             if (lid == null)
             {
                 // dit jaar geen lid
                 Type = "Uitgeschreven";
             }
-            else if ( lid is Leiding)
+            else if (lid is Leiding)
             {
                 Type = "Leiding";
             }
@@ -80,6 +78,5 @@ namespace Chiro.Gap.WebApi.Models
         {
             Type = "Ingeschreven persoon";
         }
-
     }
 }
