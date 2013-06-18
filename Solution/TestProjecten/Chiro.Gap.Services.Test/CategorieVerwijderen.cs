@@ -15,36 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using Chiro.Gap.ServiceContracts.DataContracts;
+
+using Chiro.Cdf.Poco;
+using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Security.Principal;
 using System.ServiceModel;
-using System.Threading;
-
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
-using Chiro.Gap.TestDbInfo;
+using Moq;
 
 namespace Chiro.Gap.Services.Test
 {
-    using System.Transactions;
-
-    using Chiro.Gap.Domain;
-
     /// <summary>
     /// Summary description for CategorieToevoegen
     /// </summary>
     [TestClass]
     public class CategorieVerwijderen
     {
-        private IGroepenService _groepenSvc;
-        private IGelieerdePersonenService _personenSvc;
-
         #region initialisatie en afronding
 
         [ClassInitialize]
@@ -55,6 +48,7 @@ namespace Chiro.Gap.Services.Test
             // Vandaar op deze manier:
 
             MappingHelper.MappingsDefinieren();
+            Factory.ContainerInit();
         }
 
         [ClassCleanup]
@@ -65,23 +59,6 @@ namespace Chiro.Gap.Services.Test
         [TestInitialize]
         public void SetUp()
         {
-            // Zorg ervoor dat de PrincipalPermissionAttributes op de service methods
-            // geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
-
-            var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
-            var roles = new[] { Properties.Settings.Default.TestSecurityGroep };
-            var principal = new GenericPrincipal(identity, roles);
-            Thread.CurrentPrincipal = principal;
-
-            // Bij elke test de container opnieuw initialiseren, op basis van de configuratiefile.
-            // De container is namelijk globaal, en andere tests durven wel eens iets te veranderen.
-            // Dit is natuurlijk nog geen waterdichte oplossing.  Misschien moeten we voor de tests
-            // de dependency injection gewoon altijd zelf doen. (?)
-            Factory.ContainerInit();
-
-            _groepenSvc = Factory.Maak<GroepenService>(); // Geen interface hier, want dat werkt hij niet
-            _personenSvc = Factory.Maak<GelieerdePersonenService>(); // Geen interface hier, want dat werkt hij niet
-
         }
 
         /// <summary>
@@ -100,22 +77,23 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void CategorieVerwijderenNormaal()
         {
-            using (new TransactionScope())
-            {
-                var catID = _groepenSvc.CategorieToevoegen(TestInfo.GROEP_ID, "CategorieVerwijderenNormaal", "TempCat3");
+            throw new NotImplementedException();
+            //using (new TransactionScope())
+            //{
+            //    var catID = _groepenSvc.CategorieToevoegen(TestInfo.GROEP_ID, "CategorieVerwijderenNormaal", "TempCat3");
 
-                // Act: verwijder de categorie met gegeven ID, en probeer categorie opnieuw op te halen
+            //    // Act: verwijder de categorie met gegeven ID, en probeer categorie opnieuw op te halen
 
-                _groepenSvc.CategorieVerwijderen(catID, false);
+            //    _groepenSvc.CategorieVerwijderen(catID, false);
 
-                var catIDTest = _groepenSvc.CategorieIDOphalen(
-                    TestInfo.GROEP_ID,
-                    "TempCat3");
+            //    var catIDTest = _groepenSvc.CategorieIDOphalen(
+            //        TestInfo.GROEP_ID,
+            //        "TempCat3");
 
-                // Assert: categorie niet meer gevonden.
-                Assert.IsTrue(catIDTest == 0);
+            //    // Assert: categorie niet meer gevonden.
+            //    Assert.IsTrue(catIDTest == 0);
 
-            }
+            //}
 
         }
 
@@ -127,44 +105,34 @@ namespace Chiro.Gap.Services.Test
         [ExpectedException(typeof(FaultException<BlokkerendeObjectenFault<PersoonDetail>>))]
         public void CategorieVerwijderenMetPersoon()
         {
-            // Arrange: categorie opzoeken, en een nieuwe persoon toevoegen.
+            // ARRANGE
 
-            using (new TransactionScope())
-            {
-                // Maak een nieuwe persoon
-                var gp =
-                    _personenSvc.AanmakenForceer(
-                        new PersoonInfo
-                            {
-                                AdNummer = null,
-                                ChiroLeefTijd = 0,
-                                GeboorteDatum = new DateTime(2003, 5, 8),
-                                Geslacht = GeslachtsType.Vrouw,
-                                Naam = "CategorieVerwijderenMetPersoon",
-                                VoorNaam = "Anneke",
-                            },
-                        groepID: TestInfo.GROEP_ID,
-                        forceer: true);
+            #region testdata
+            var categorie = new Categorie
+                                {
+                                    ID = 1,
+                                    GelieerdePersoon = new List<GelieerdePersoon> {new GelieerdePersoon()}
+                                };
+            #endregion
 
-                var persoonID = gp.PersoonID;
-                var gelPersoonID = gp.GelieerdePersoonID;
+            #region dependency injection
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Categorie>())
+                                  .Returns(new DummyRepo<Categorie>(new List<Categorie> {categorie}));
 
-                var catID = _groepenSvc.CategorieToevoegen(TestInfo.GROEP_ID, "CategorieVerwijderenMetPersoon", "TempCat");
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+            #endregion
 
-                _personenSvc.CategorieKoppelen(
-                    new List<int> { gelPersoonID },
-                    new List<int> { catID });
+            // ACT
 
-                // Act
+            var groepenService = Factory.Maak<GroepenService>();
+            // Verwijder categorie zonder te forceren
+            groepenService.CategorieVerwijderen(categorie.ID, false);
 
-                // Verwijder categorie zonder te forceren
-                _groepenSvc.CategorieVerwijderen(catID, false);
+            // ASSERT
 
-                // Assert
-
-                // Als we hier geraken, liep er iets mis.
-                Assert.IsTrue(false);
-            }
+            // Als we hier geraken, liep er iets mis.
+            Assert.IsTrue(false);
 
         }
 
@@ -174,47 +142,48 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void CategorieVerwijderenMetPersoonForceer()
         {
+            throw new NotImplementedException();
 
-            using (new TransactionScope())
-            {
-                // Arrange: categorie maken, en persoon toevoegen.
-                var catIDDieVerwijderdZalWorden = _groepenSvc.CategorieToevoegen(TestInfo.GROEP_ID, "CategorieVerwijderenMetPersoonForceer", "TempCat2");
+            //using (new TransactionScope())
+            //{
+            //    // Arrange: categorie maken, en persoon toevoegen.
+            //    var catIDDieVerwijderdZalWorden = _groepenSvc.CategorieToevoegen(TestInfo.GROEP_ID, "CategorieVerwijderenMetPersoonForceer", "TempCat2");
 
-                // Maak een nieuwe persoon
-                var gp =
-                    _personenSvc.AanmakenForceer(
-                        new PersoonInfo
-                        {
-                            AdNummer = null,
-                            ChiroLeefTijd = 0,
-                            GeboorteDatum = new DateTime(2005, 5, 8),
-                            Geslacht = GeslachtsType.Man,
-                            Naam = "CategorieVerwijderenMetPersoonForceer",
-                            VoorNaam = "Pierre",
-                        },
-                        groepID: TestInfo.GROEP_ID,
-                        forceer: true);
+            //    // Maak een nieuwe persoon
+            //    var gp =
+            //        _personenSvc.AanmakenForceer(
+            //            new PersoonInfo
+            //            {
+            //                AdNummer = null,
+            //                ChiroLeefTijd = 0,
+            //                GeboorteDatum = new DateTime(2005, 5, 8),
+            //                Geslacht = GeslachtsType.Man,
+            //                Naam = "CategorieVerwijderenMetPersoonForceer",
+            //                VoorNaam = "Pierre",
+            //            },
+            //            groepID: TestInfo.GROEP_ID,
+            //            forceer: true);
 
 
-                _personenSvc.CategorieKoppelen(
-                    new List<int> { gp.GelieerdePersoonID },
-                    new List<int> { catIDDieVerwijderdZalWorden });
+            //    _personenSvc.CategorieKoppelen(
+            //        new List<int> { gp.GelieerdePersoonID },
+            //        new List<int> { catIDDieVerwijderdZalWorden });
 
-                // Act
-                _groepenSvc.CategorieVerwijderen(catIDDieVerwijderdZalWorden, true);
+            //    // Act
+            //    _groepenSvc.CategorieVerwijderen(catIDDieVerwijderdZalWorden, true);
 
-                // Assert
+            //    // Assert
 
-                // Probeer categorie terug op te halen.  Dat moet failen.
-                var newCatID = _groepenSvc.CategorieIDOphalen(
-                    TestInfo.GROEP_ID,
-                    "TempCat2");
-                Assert.IsTrue(newCatID == 0);
+            //    // Probeer categorie terug op te halen.  Dat moet failen.
+            //    var newCatID = _groepenSvc.CategorieIDOphalen(
+            //        TestInfo.GROEP_ID,
+            //        "TempCat2");
+            //    Assert.IsTrue(newCatID == 0);
 
-                // Controleer ook of de gelieerde persoon niet per ongeluk mee is verwijderd
-                var persoon = _personenSvc.DetailOphalen(gp.GelieerdePersoonID);
-                Assert.IsNotNull(persoon);
-            }
+            //    // Controleer ook of de gelieerde persoon niet per ongeluk mee is verwijderd
+            //    var persoon = _personenSvc.DetailOphalen(gp.GelieerdePersoonID);
+            //    Assert.IsNotNull(persoon);
+            //}
 
         }
     }
