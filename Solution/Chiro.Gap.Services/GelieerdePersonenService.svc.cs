@@ -86,6 +86,7 @@ namespace Chiro.Gap.Services
         /// <param name="adressenManager">Logica m.b.t. adressen</param>
         /// <param name="personenManager">Logica m.b.t. personen (geeuw)</param>
         /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
+        /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         /// <param name="adressenSync">Voor synchronisatie van adressen naar Kipadmin</param>
         public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
                                         ICommunicatieVormenManager communicatieVormenMgr,
@@ -93,7 +94,7 @@ namespace Chiro.Gap.Services
                                         IGelieerdePersonenManager gelieerdePersonenMgr,
                                         IAdressenManager adressenManager,
                                         IPersonenManager personenManager,
-                                        ICommunicatieSync communicatieSync)
+                                        ICommunicatieSync communicatieSync,
                                         IPersonenSync personenSync,
                                         IAdressenSync adressenSync)
         {
