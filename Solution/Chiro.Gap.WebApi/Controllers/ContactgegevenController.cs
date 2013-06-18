@@ -15,12 +15,13 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.OData;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.WebApi.Helpers;
 using Chiro.Gap.WebApi.Models;
 
 namespace Chiro.Gap.WebApi.Controllers
@@ -30,13 +31,14 @@ namespace Chiro.Gap.WebApi.Controllers
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
         private readonly GroepsWerkJaar _groepsWerkJaar;
+        private readonly int _groepsWerkJaarId;
         private readonly GebruikersRecht _recht;
 
         public ContactgegevenController()
         {
-            _recht = _context.GebruikersRecht.First(g => g.Gav.Login == HttpContext.Current.User.Identity.Name &&
-                                                         (g.VervalDatum == null || g.VervalDatum > DateTime.Now));
-            _groepsWerkJaar = _recht.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
+            _recht = ApiHelper.getGebruikersRecht(_context);
+            _groepsWerkJaarId = ApiHelper.GetGroepsWerkJaarId(_recht);
+            _groepsWerkJaar = _context.GroepsWerkJaar.Find(_groepsWerkJaarId);
         }
 
         [Queryable(PageSize = 10)]
@@ -44,31 +46,29 @@ namespace Chiro.Gap.WebApi.Controllers
         {
             // In plaats van eerst alle personen op te halen en dan van elke persoon de
             // communicatievorm, kunnen we dit met SelectMany in 1 expressie schrijven
-            return
-                _recht.Groep.GelieerdePersoon.SelectMany(gp => gp.Communicatie.Select(cv => new ContactgegevenModel(cv)))
-                      .AsQueryable();
+            Func<GelieerdePersoon, IEnumerable<ContactgegevenModel>> manySelector =
+                gp => gp.Communicatie.Select(cv => new ContactgegevenModel(cv));
+            return _recht.Groep.GelieerdePersoon.SelectMany(manySelector).AsQueryable();
         }
 
         protected override ContactgegevenModel GetEntityByKey([FromODataUri] int key)
         {
-            CommunicatieVorm communicatieVorm = _context.CommunicatieVorm.Find(key);
-            if (communicatieVorm == null)
+            var communicatieVorm = _context.CommunicatieVorm.Find(key);
+            if (communicatieVorm == null || !MagLezen(communicatieVorm))
             {
                 return null;
             }
-            return !MagLezen(communicatieVorm) ? null : new ContactgegevenModel(communicatieVorm);
+            return new ContactgegevenModel(communicatieVorm);
         }
 
         public PersoonModel GetPersoon([FromODataUri] int key)
         {
-            CommunicatieVorm communicatieVorm = _context.CommunicatieVorm.Find(key);
-            if (communicatieVorm == null)
+            var communicatieVorm = _context.CommunicatieVorm.Find(key);
+            if (communicatieVorm == null || !MagLezen(communicatieVorm))
             {
                 return null;
             }
-            return !MagLezen(communicatieVorm)
-                       ? null
-                       : new PersoonModel(communicatieVorm.GelieerdePersoon, _groepsWerkJaar);
+            return new PersoonModel(communicatieVorm.GelieerdePersoon, _groepsWerkJaar);
         }
 
 

@@ -22,6 +22,7 @@ using System.Web.Http;
 using System.Web.Http.OData;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.WebApi.Helpers;
 using Chiro.Gap.WebApi.Models;
 
 namespace Chiro.Gap.WebApi.Controllers
@@ -31,56 +32,50 @@ namespace Chiro.Gap.WebApi.Controllers
 
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
+        private readonly int _groepsWerkJaarId;
         private readonly GroepsWerkJaar _groepsWerkJaar;
         private readonly GebruikersRecht _recht;
 
         public GroepController()
         {
-            _recht = _context.GebruikersRecht.First(g => g.Gav.Login == HttpContext.Current.User.Identity.Name &&
-                                                         (g.VervalDatum == null || g.VervalDatum > DateTime.Now));
-            _groepsWerkJaar = _recht.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
+            _recht = ApiHelper.getGebruikersRecht(_context)
+            _groepsWerkJaarId = ApiHelper.GetGroepsWerkJaarId(_recht);
+            _groepsWerkJaar = _context.GroepsWerkJaar.Find(_groepsWerkJaarId);
         }
 
         public override IQueryable<GroepModel> Get()
         {
-            var lijst = new List<GroepModel>();
-            lijst.Add(new GroepModel(_recht.Groep));
+            var lijst = new List<GroepModel> {new GroepModel(_recht.Groep)};
             return lijst.AsQueryable();
         }
 
         protected override GroepModel GetEntityByKey([FromODataUri] int key)
         {
-            Groep groep = _context.Groep.Find(key);
-            if (groep == null)
+            var groep = _context.Groep.Find(key);
+            if (groep == null || !MagLezen(groep))
             {
                 return null;
             }
-            return ! MagLezen(groep) ? null : new GroepModel(groep);
+            return new GroepModel(groep);
         }
 
         [Queryable(PageSize = 50)]
         public IQueryable<PersoonModel> GetPersonen(int key)
         {
-            Groep groep = _context.Groep.Find(key);
-            if (groep == null)
+            var groep = _context.Groep.Find(key);
+            if (groep == null || ! MagLezen(groep))
             {
                 return null;
             }
 
-            return ! MagLezen(groep)
-                       ? null
-                       : groep.GelieerdePersoon.Select(p => new PersoonModel(p, _groepsWerkJaar)).AsQueryable();
+            return groep.GelieerdePersoon.Select(p => new PersoonModel(p, _groepsWerkJaar)).AsQueryable();
         }
 
         [Queryable(PageSize = 12)]
         public IQueryable<AfdelingModel> GetAfdelingen(int key)
         {
-            Groep groep = _context.Groep.Find(key);
-            if (groep == null)
-            {
-                return null;
-            }
-            if (!MagLezen(groep))
+            var groep = _context.Groep.Find(key);
+            if (groep == null || !MagLezen(groep))
             {
                 return null;
             }

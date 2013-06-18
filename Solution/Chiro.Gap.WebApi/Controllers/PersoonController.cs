@@ -22,6 +22,7 @@ using System.Web.Http;
 using System.Web.Http.OData;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.WebApi.Helpers;
 using Chiro.Gap.WebApi.Models;
 
 namespace Chiro.Gap.WebApi.Controllers
@@ -30,14 +31,15 @@ namespace Chiro.Gap.WebApi.Controllers
     public class PersoonController : EntitySetController<PersoonModel, int>
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
+        private readonly int _groepsWerkJaarId;
         private readonly GroepsWerkJaar _groepsWerkJaar;
         private readonly GebruikersRecht _recht;
 
         public PersoonController()
         {
-            _recht = _context.GebruikersRecht.First(g => g.Gav.Login == HttpContext.Current.User.Identity.Name &&
-                                                         (g.VervalDatum == null || g.VervalDatum > DateTime.Now));
-            _groepsWerkJaar = _recht.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
+            _recht = ApiHelper.getGebruikersRecht(_context);
+            _groepsWerkJaarId = ApiHelper.GetGroepsWerkJaarId(_recht);
+            _groepsWerkJaar = _context.GroepsWerkJaar.Find(_groepsWerkJaarId);
         }
 
         [Queryable(PageSize = 10)]
@@ -48,44 +50,40 @@ namespace Chiro.Gap.WebApi.Controllers
 
         protected override PersoonModel GetEntityByKey([FromODataUri] int key)
         {
-            GelieerdePersoon gelieerdePersoon = _context.GelieerdePersoon.Find(key);
-            if (gelieerdePersoon == null)
+            var gelieerdePersoon = _context.GelieerdePersoon.Find(key);
+            if (gelieerdePersoon == null || !MagLezen(gelieerdePersoon))
             {
                 return null;
             }
-            return !MagLezen(gelieerdePersoon) ? null : new PersoonModel(gelieerdePersoon, _groepsWerkJaar);
+            return new PersoonModel(gelieerdePersoon, _groepsWerkJaar);
         }
 
         public GroepModel GetGroep([FromODataUri] int key)
         {
-            GelieerdePersoon gelieerdePersoon = _context.GelieerdePersoon.Find(key);
-            if (gelieerdePersoon == null)
+            var gelieerdePersoon = _context.GelieerdePersoon.Find(key);
+            if (gelieerdePersoon == null || !MagLezen(gelieerdePersoon))
             {
                 return null;
             }
-            return !MagLezen(gelieerdePersoon) ? null : new GroepModel(gelieerdePersoon.Groep);
+            return new GroepModel(gelieerdePersoon.Groep);
         }
 
+        [Queryable(PageSize = 10)]
         public IQueryable<ContactgegevenModel> GetContactgegevens([FromODataUri] int key)
         {
-            GelieerdePersoon gelieerdePersoon = _context.GelieerdePersoon.Find(key);
-            if (gelieerdePersoon == null)
+            var gelieerdePersoon = _context.GelieerdePersoon.Find(key);
+            if (gelieerdePersoon == null || !MagLezen(gelieerdePersoon))
             {
                 return null;
             }
-            return !MagLezen(gelieerdePersoon)
-                       ? null
-                       : gelieerdePersoon.Communicatie.Select(c => new ContactgegevenModel(c)).AsQueryable();
+            return gelieerdePersoon.Communicatie.Select(c => new ContactgegevenModel(c)).AsQueryable();
         }
 
+        [Queryable(PageSize = 12)]
         public IQueryable<AfdelingModel> GetAfdelingen([FromODataUri] int key)
         {
-            GelieerdePersoon gelieerdePersoon = _context.GelieerdePersoon.Find(key);
-            if (gelieerdePersoon == null)
-            {
-                return null;
-            }
-            if (! MagLezen(gelieerdePersoon))
+            var gelieerdePersoon = _context.GelieerdePersoon.Find(key);
+            if (gelieerdePersoon == null || !MagLezen(gelieerdePersoon))
             {
                 return null;
             }
@@ -96,18 +94,14 @@ namespace Chiro.Gap.WebApi.Controllers
             return leidingVan.Union(lidVan).Select(aj => new AfdelingModel(aj)).AsQueryable();
         }
 
+        [Queryable(PageSize = 10)]
         public IQueryable<AdresModel> GetAdressen([FromODataUri] int key)
         {
-            GelieerdePersoon gelieerdePersoon = _context.GelieerdePersoon.Find(key);
-            if (gelieerdePersoon == null)
+            var gelieerdePersoon = _context.GelieerdePersoon.Find(key);
+            if (gelieerdePersoon == null || !MagLezen(gelieerdePersoon))
             {
                 return null;
             }
-            if (!MagLezen(gelieerdePersoon))
-            {
-                return null;
-            }
-
             return gelieerdePersoon.Persoon.PersoonsAdres.Select(pa => new AdresModel(pa.Adres)).AsQueryable();
         }
 

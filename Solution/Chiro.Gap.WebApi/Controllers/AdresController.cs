@@ -15,12 +15,13 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.OData;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.WebApi.Helpers;
 using Chiro.Gap.WebApi.Models;
 
 namespace Chiro.Gap.WebApi.Controllers
@@ -30,13 +31,14 @@ namespace Chiro.Gap.WebApi.Controllers
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
         private readonly GroepsWerkJaar _groepsWerkJaar;
+        private readonly int _groepsWerkJaarId;
         private readonly GebruikersRecht _recht;
 
         public AdresController()
         {
-            _recht = _context.GebruikersRecht.First(g => g.Gav.Login == HttpContext.Current.User.Identity.Name &&
-                                                         (g.VervalDatum == null || g.VervalDatum > DateTime.Now));
-            _groepsWerkJaar = _recht.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
+            _recht = ApiHelper.getGebruikersRecht(_context);
+            _groepsWerkJaarId = ApiHelper.GetGroepsWerkJaarId(_recht);
+            _groepsWerkJaar = _context.GroepsWerkJaar.Find(_groepsWerkJaarId);
         }
 
         [Queryable(PageSize = 10)]
@@ -44,38 +46,35 @@ namespace Chiro.Gap.WebApi.Controllers
         {
             // In plaats van eerst alle personen op te halen en dan van elke persoon de
             // communicatievorm, kunnen we dit met SelectMany in 1 expressie schrijven
-            return
-                _recht.Groep.GelieerdePersoon.SelectMany(
-                    gp => gp.Persoon.PersoonsAdres.Select(pa => new AdresModel(pa.Adres)))
-                      .AsQueryable();
+            Func<GelieerdePersoon, IEnumerable<AdresModel>> manySelector =
+                gp => gp.Persoon.PersoonsAdres.Select(pa => new AdresModel(pa.Adres));
+            return _recht.Groep.GelieerdePersoon.SelectMany(manySelector).AsQueryable();
         }
 
         protected override AdresModel GetEntityByKey([FromODataUri] int key)
         {
             Adres Adres = _context.Adres.Find(key);
-            if (Adres == null)
+            if (Adres == null || !MagLezen(Adres))
             {
                 return null;
             }
-            return !MagLezen(Adres) ? null : new AdresModel(Adres);
+            return AdresModel(Adres);
         }
 
+        [Queryable(PageSize = 10)]
         public IQueryable<PersoonModel> GetPersonen([FromODataUri] int key)
         {
             Adres adres = _context.Adres.Find(key);
-            if (adres == null)
+            if (adres == null || !MagLezen(adres))
             {
                 return null;
             }
-            if (!MagLezen(adres))
-            {
-                return null;
-            }
-            return
-                adres.PersoonsAdres.SelectMany(
-                    pa =>
-                    pa.GelieerdePersoon.Where(gp => gp.Groep.ID == _recht.Groep.ID)
-                      .Select(gp => new PersoonModel(gp, _groepsWerkJaar))).AsQueryable();
+            
+            Func<PersoonsAdres, IEnumerable<PersoonModel>> manySelector =
+                pa =>
+                pa.GelieerdePersoon.Where(gp => gp.Groep.ID == _recht.Groep.ID)
+                  .Select(gp => new PersoonModel(gp, _groepsWerkJaar));
+            return adres.PersoonsAdres.SelectMany(manySelector).AsQueryable();
         }
 
 

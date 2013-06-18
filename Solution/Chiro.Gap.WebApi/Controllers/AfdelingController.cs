@@ -22,6 +22,7 @@ using System.Web.Http;
 using System.Web.Http.OData;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.WebApi.Helpers;
 using Chiro.Gap.WebApi.Models;
 
 namespace Chiro.Gap.WebApi.Controllers
@@ -30,15 +31,15 @@ namespace Chiro.Gap.WebApi.Controllers
     public class AfdelingController : EntitySetController<AfdelingModel, int>
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
+        private readonly int _groepsWerkJaarId ;
         private readonly GroepsWerkJaar _groepsWerkJaar;
         private readonly GebruikersRecht _recht;
 
         public AfdelingController()
         {
-            _recht = _context.GebruikersRecht.First(g => g.Gav.Login == HttpContext.Current.User.Identity.Name &&
-                                                         (g.VervalDatum == null || g.VervalDatum > DateTime.Now));
-
-            _groepsWerkJaar = _recht.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
+            _recht = ApiHelper.getGebruikersRecht(_context);
+            _groepsWerkJaarId = ApiHelper.GetGroepsWerkJaarId(_recht);
+            _groepsWerkJaar = _context.GroepsWerkJaar.Find(_groepsWerkJaarId);
         }
 
         [Queryable(PageSize = 10)]
@@ -50,24 +51,24 @@ namespace Chiro.Gap.WebApi.Controllers
         protected override AfdelingModel GetEntityByKey([FromODataUri] int key)
         {
             Afdeling afdeling = _context.Afdeling.Find(key);
-            if (afdeling == null)
+            if (afdeling == null || !MagLezen(afdeling))
             {
                 return null;
             }
-            return !MagLezen(afdeling) ? null : new AfdelingModel(afdeling);
+            return new AfdelingModel(afdeling);
         }
 
         public GroepModel GetGroep([FromODataUri] int key)
         {
             Afdeling afdeling = _context.Afdeling.Find(key);
-            if (afdeling == null)
+            if (afdeling == null || !MagLezen(afdeling))
             {
                 return null;
             }
-            return !MagLezen(afdeling) ? null : new GroepModel(afdeling.ChiroGroep);
+            return new GroepModel(afdeling.ChiroGroep);
         }
 
-        [Queryable]
+        [Queryable(PageSize = 25)]
         public IQueryable<PersoonModel> GetPersonen([FromODataUri] int key)
         {
             Afdeling afdeling = _context.Afdeling.Find(key);
