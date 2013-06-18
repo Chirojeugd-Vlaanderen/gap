@@ -848,7 +848,13 @@ namespace Chiro.Gap.Services
             {
                 categorie.GelieerdePersoon.Clear();
             }
+            else if (categorie.GelieerdePersoon.Any())
+            {
+                throw FaultExceptionHelper.Blokkerend(Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(categorie.GelieerdePersoon),
+                                                      Properties.Resources.CategorieNietLeeg);
+            }
             _categorieenRepo.Delete(categorie);
+            _categorieenRepo.SaveChanges();
         }
 
         /// <summary>
