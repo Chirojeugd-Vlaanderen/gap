@@ -135,6 +135,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ApiHelper.cs" />
     <Compile Include="Models\AdresModel.cs" />
     <Compile Include="Models\AfdelingModel.cs" />
     <Compile Include="Models\ContactgegevenModel.cs" />
@@ -163,6 +164,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
+      <Project>{174890f3-1f4c-4cfc-83a1-aa88f5748a67}</Project>
+      <Name>Chiro.Adf.ServiceModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
       <Project>{cdea3723-7d66-44bf-93d0-913881918330}</Project>
       <Name>Chiro.Cdf.Poco</Name>
@@ -178,6 +183,10 @@
     <ProjectReference Include="..\Chiro.Gap.Poco\Chiro.Gap.Poco.Model.csproj">
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
+      <Project>{8faf739d-1058-4240-9466-bca5db8525d4}</Project>
+      <Name>Chiro.Gap.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
       <Project>{bdaf9a9d-49e3-48ac-869d-e17e8a3d9203}</Project>
