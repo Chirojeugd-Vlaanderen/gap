@@ -72,11 +72,14 @@ namespace Chiro.Gap.Workers
         /// <param name="adresType">
         /// Adrestype voor de nieuwe koppeling persoon-adres
         /// </param>
+        /// <returns>
+        /// De koppelingen tussen de <paramref name="verhuizers"/> en hun <paramref name="nieuwAdres"/>.
+        /// </returns>
         /// <remarks>
         /// Als de persoon niet gekoppeld is aan het oude adres,
         /// zal hij of zij ook niet verhuizen
         /// </remarks>
-        public void Verhuizen(IList<Persoon> verhuizers, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType)
+        public List<PersoonsAdres> Verhuizen(IList<Persoon> verhuizers, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType)
         {
             // Vind personen waarvan het adres al gekoppeld is.
             var bestaand =
@@ -91,10 +94,10 @@ namespace Chiro.Gap.Workers
                     Resources.WonenDaarAl);
             }
 
-            var oudePersoonsAdressen =
-                verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == oudAdres.ID));
+            var persoonsAdressen =
+                verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == oudAdres.ID)).ToList();
 
-            foreach (var pa in oudePersoonsAdressen)
+            foreach (var pa in persoonsAdressen)
             {
                 // verwijder koppeling oud adres->persoonsadres
                 pa.Adres.PersoonsAdres.Remove(pa);
@@ -107,6 +110,8 @@ namespace Chiro.Gap.Workers
 
                 nieuwAdres.PersoonsAdres.Add(pa);
             }
+
+            return persoonsAdressen;
         }
 
 

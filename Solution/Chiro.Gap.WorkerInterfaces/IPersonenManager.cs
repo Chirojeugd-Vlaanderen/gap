@@ -59,11 +59,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="adresType">
         /// Adrestype voor de nieuwe koppeling persoon-adres
         /// </param>
+        /// <returns>
+        /// De koppelingen tussen de <paramref name="verhuizers"/> en hun <paramref name="nieuwAdres"/>.
+        /// </returns>
         /// <remarks>
         /// Als de persoon niet gekoppeld is aan het oude adres,
         /// zal hij of zij ook niet verhuizen
         /// </remarks>
-        void Verhuizen(IList<Persoon> verhuizers, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType);
+        List<PersoonsAdres> Verhuizen(IList<Persoon> verhuizers, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType);
 
         /// <summary>
         /// Verlegt alle referenties van de persoon met ID <paramref name="dubbelID"/> naar de persoon met ID
