@@ -48,7 +48,7 @@ namespace Chiro.Gap.WebApi.Controllers
             // communicatievorm, kunnen we dit met SelectMany in 1 expressie schrijven
             Func<GelieerdePersoon, IEnumerable<ContactgegevenModel>> manySelector =
                 gp => gp.Communicatie.Select(cv => new ContactgegevenModel(cv));
-            return _recht.Groep.GelieerdePersoon.SelectMany(manySelector).AsQueryable();
+            return _groepsWerkJaar.Groep.GelieerdePersoon.SelectMany(manySelector).AsQueryable();
         }
 
         protected override ContactgegevenModel GetEntityByKey([FromODataUri] int key)

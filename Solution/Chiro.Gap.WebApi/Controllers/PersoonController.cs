@@ -45,7 +45,7 @@ namespace Chiro.Gap.WebApi.Controllers
         [Queryable(PageSize = 10)]
         public override IQueryable<PersoonModel> Get()
         {
-            return _recht.Groep.GelieerdePersoon.Select(gp => new PersoonModel(gp, _groepsWerkJaar)).AsQueryable();
+            return _groepsWerkJaar.Groep.GelieerdePersoon.Select(gp => new PersoonModel(gp, _groepsWerkJaar)).AsQueryable();
         }
 
         protected override PersoonModel GetEntityByKey([FromODataUri] int key)

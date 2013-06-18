@@ -48,7 +48,7 @@ namespace Chiro.Gap.WebApi.Controllers
             // communicatievorm, kunnen we dit met SelectMany in 1 expressie schrijven
             Func<GelieerdePersoon, IEnumerable<AdresModel>> manySelector =
                 gp => gp.Persoon.PersoonsAdres.Select(pa => new AdresModel(pa.Adres));
-            return _recht.Groep.GelieerdePersoon.SelectMany(manySelector).AsQueryable();
+            return _groepsWerkJaar.Groep.GelieerdePersoon.SelectMany(manySelector).AsQueryable();
         }
 
         protected override AdresModel GetEntityByKey([FromODataUri] int key)
@@ -72,7 +72,7 @@ namespace Chiro.Gap.WebApi.Controllers
             
             Func<PersoonsAdres, IEnumerable<PersoonModel>> manySelector =
                 pa =>
-                pa.GelieerdePersoon.Where(gp => gp.Groep.ID == _recht.Groep.ID)
+                pa.GelieerdePersoon.Where(gp => gp.Groep.ID == _groepsWerkJaar.Groep.ID)
                   .Select(gp => new PersoonModel(gp, _groepsWerkJaar));
             return adres.PersoonsAdres.SelectMany(manySelector).AsQueryable();
         }

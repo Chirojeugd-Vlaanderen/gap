@@ -45,7 +45,7 @@ namespace Chiro.Gap.WebApi.Controllers
 
         public override IQueryable<GroepModel> Get()
         {
-            var lijst = new List<GroepModel> {new GroepModel(_recht.Groep)};
+            var lijst = new List<GroepModel> {new GroepModel(_groepsWerkJaar.Groep)};
             return lijst.AsQueryable();
         }
 
