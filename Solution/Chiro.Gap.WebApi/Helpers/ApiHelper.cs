@@ -10,21 +10,24 @@ namespace Chiro.Gap.WebApi.Helpers
 {
     public static class ApiHelper
     {
-        public static GebruikersRecht GetGebruikersRecht(ChiroGroepEntities context)
+        public static GroepsWerkJaar GetGroepsWerkJaar(ChiroGroepEntities context)
         {
-            Func<GebruikersRecht, bool> selector =
+            // Selector voor de geldige gebruikersrechten
+            Func<GebruikersRecht, bool> geldigeRechten =
                 g =>
                 g.Gav.Login == HttpContext.Current.User.Identity.Name &&
                 (g.VervalDatum == null || g.VervalDatum > DateTime.Now);
-            return context.GebruikersRecht.First(selector);
-        }
 
-        public static int GetGroepsWerkJaarId(GebruikersRecht gebruikersRecht)
-        {
+            // Haal het eerste geldige recht op
+            var recht = context.GebruikersRecht.First(geldigeRechten);
+
             // Code gestolen uit JaarOvergangController. Kunnen we dit zonder de service?
-            return
-                ServiceHelper.CallService<IGroepenService, int>(
-                    svc => svc.RecentsteGroepsWerkJaarIDGet(gebruikersRecht.Groep.ID));
+            // Haal de ID van het huidige groepswerkjaar op
+            var id = ServiceHelper.CallService<IGroepenService, int>(
+                svc => svc.RecentsteGroepsWerkJaarIDGet(recht.Groep.ID));
+
+            // Haal het huidige groepswerkjaar uit de DB
+            return context.GroepsWerkJaar.Find(id);
         }
     }
 }

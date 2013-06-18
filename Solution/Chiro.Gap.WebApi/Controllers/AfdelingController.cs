@@ -31,15 +31,11 @@ namespace Chiro.Gap.WebApi.Controllers
     public class AfdelingController : EntitySetController<AfdelingModel, int>
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
-        private readonly int _groepsWerkJaarId ;
         private readonly GroepsWerkJaar _groepsWerkJaar;
-        private readonly GebruikersRecht _recht;
 
         public AfdelingController()
         {
-            _recht = ApiHelper.GetGebruikersRecht(_context);
-            _groepsWerkJaarId = ApiHelper.GetGroepsWerkJaarId(_recht);
-            _groepsWerkJaar = _context.GroepsWerkJaar.Find(_groepsWerkJaarId);
+            _groepsWerkJaar = ApiHelper.GetGroepsWerkJaar(_context);
         }
 
         [Queryable(PageSize = 10)]
@@ -97,13 +93,13 @@ namespace Chiro.Gap.WebApi.Controllers
 
         private bool MagLezen(AfdelingsJaar afdelingsJaar)
         {
-            return Equals(afdelingsJaar.GroepsWerkJaar.Groep, _recht.Groep);
+            return Equals(afdelingsJaar.GroepsWerkJaar, _groepsWerkJaar);
         }
 
         private bool MagLezen(Afdeling afdeling)
         {
             // juiste groep en de afdeling moet in dit groepswerkjaar zitten
-            return Equals(afdeling.ChiroGroep, _recht.Groep) &&
+            return Equals(afdeling.ChiroGroep, _groepsWerkJaar.Groep) &&
                    _groepsWerkJaar.AfdelingsJaar.Any(aj => aj.Afdeling.ID == afdeling.ID);
         }
     }

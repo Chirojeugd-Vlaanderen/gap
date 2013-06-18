@@ -31,14 +31,10 @@ namespace Chiro.Gap.WebApi.Controllers
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
         private readonly GroepsWerkJaar _groepsWerkJaar;
-        private readonly int _groepsWerkJaarId;
-        private readonly GebruikersRecht _recht;
 
         public AdresController()
         {
-            _recht = ApiHelper.GetGebruikersRecht(_context);
-            _groepsWerkJaarId = ApiHelper.GetGroepsWerkJaarId(_recht);
-            _groepsWerkJaar = _context.GroepsWerkJaar.Find(_groepsWerkJaarId);
+            _groepsWerkJaar = ApiHelper.GetGroepsWerkJaar(_context);
         }
 
         [Queryable(PageSize = 10)]
@@ -53,12 +49,12 @@ namespace Chiro.Gap.WebApi.Controllers
 
         protected override AdresModel GetEntityByKey([FromODataUri] int key)
         {
-            Adres Adres = _context.Adres.Find(key);
-            if (Adres == null || !MagLezen(Adres))
+            var adres = _context.Adres.Find(key);
+            if (adres == null || !MagLezen(adres))
             {
                 return null;
             }
-            return AdresModel(Adres);
+            return new AdresModel(adres);
         }
 
         [Queryable(PageSize = 10)]
@@ -86,7 +82,7 @@ namespace Chiro.Gap.WebApi.Controllers
 
         private bool MagLezen(Adres adres)
         {
-            return _recht.Groep.GelieerdePersoon.Any(gp => gp.PersoonsAdres.Adres.ID == adres.ID);
+            return _groepsWerkJaar.Groep.GelieerdePersoon.Any(gp => gp.PersoonsAdres.Adres.ID == adres.ID);
         }
     }
 }

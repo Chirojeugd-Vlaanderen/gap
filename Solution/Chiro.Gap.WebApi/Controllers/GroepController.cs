@@ -32,15 +32,11 @@ namespace Chiro.Gap.WebApi.Controllers
 
     {
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
-        private readonly int _groepsWerkJaarId;
         private readonly GroepsWerkJaar _groepsWerkJaar;
-        private readonly GebruikersRecht _recht;
 
         public GroepController()
         {
-            _recht = ApiHelper.GetGebruikersRecht(_context);
-            _groepsWerkJaarId = ApiHelper.GetGroepsWerkJaarId(_recht);
-            _groepsWerkJaar = _context.GroepsWerkJaar.Find(_groepsWerkJaarId);
+            _groepsWerkJaar = ApiHelper.GetGroepsWerkJaar(_context);
         }
 
         public override IQueryable<GroepModel> Get()
@@ -90,7 +86,7 @@ namespace Chiro.Gap.WebApi.Controllers
 
         private bool MagLezen(Groep groep)
         {
-            return Equals(groep, _recht.Groep);
+            return Equals(groep, _groepsWerkJaar.Groep);
         }
     }
 }
