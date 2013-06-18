@@ -501,5 +501,127 @@ namespace Chiro.Gap.Services.Test
 
             Assert.IsTrue(gevangen);
         }
+
+        /// <summary>
+        /// Controleert of een nieuw voorkeursadres van een gekende gelieerde persoon wordt gesynct
+        /// met Kipadmin
+        /// </summary>
+        [TestMethod()]
+        public void GelieerdePersonenVerhuizenSyncTest()
+        {
+            // ARRANGE.
+
+            #region testdata
+
+            var gelieerdePersoon = new GelieerdePersoon
+                                       {
+                                           ID = 1,
+                                           Persoon = new Persoon
+                                                         {
+                                                             AdInAanvraag = true,
+                                                             PersoonsAdres = new List<PersoonsAdres>
+                                                                                 {
+                                                                                     new PersoonsAdres
+                                                                                         {
+                                                                                             Adres = new BelgischAdres
+                                                                                                         {
+                                                                                                             ID = 2,
+                                                                                                             StraatNaam
+                                                                                                                 =
+                                                                                                                 new StraatNaam
+                                                                                                                     {
+                                                                                                                         ID
+                                                                                                                             =
+                                                                                                                             3,
+                                                                                                                         Naam
+                                                                                                                             =
+                                                                                                                             "Langstraat",
+                                                                                                                         PostNummer
+                                                                                                                             =
+                                                                                                                             2140
+                                                                                                                     }
+                                                                                                         }
+                                                                                         }
+                                                                                 }
+                                                         }
+                                       };
+
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+            gelieerdePersoon.PersoonsAdres = gelieerdePersoon.Persoon.PersoonsAdres.First();
+            gelieerdePersoon.PersoonsAdres.Adres.PersoonsAdres.Add(gelieerdePersoon.PersoonsAdres);
+            gelieerdePersoon.PersoonsAdres.Persoon = gelieerdePersoon.Persoon;
+            gelieerdePersoon.PersoonsAdres.GelieerdePersoon.Add(gelieerdePersoon);
+
+            var infoNieuwAdres = new PersoonsAdresInfo
+                                     {
+                                         StraatNaamNaam = "Kipdorp",
+                                         HuisNr = 30,
+                                         PostNr = 2000,
+                                         WoonPlaatsNaam = "Antwerpen",
+                                         AdresType = AdresTypeEnum.Thuis
+                                     };
+            #endregion
+
+            #region Dependency injection
+
+            // mocks voor data access
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
+                                  .Returns(new DummyRepo<Adres>(new List<Adres> {gelieerdePersoon.PersoonsAdres.Adres}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<StraatNaam>())
+                                  .Returns(
+                                      new DummyRepo<StraatNaam>(new List<StraatNaam>
+                                                                    {
+                                                                        ((BelgischAdres)
+                                                                         gelieerdePersoon.PersoonsAdres
+                                                                                         .Adres)
+                                                                            .StraatNaam,
+                                                                        new StraatNaam
+                                                                            {
+                                                                                PostNummer =
+                                                                                    infoNieuwAdres.PostNr,
+                                                                                Naam =
+                                                                                    infoNieuwAdres
+                                                                                    .StraatNaamNaam
+                                                                            }
+                                                                    }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<WoonPlaats>())
+                                  .Returns(
+                                      new DummyRepo<WoonPlaats>(new List<WoonPlaats>
+                                                                    {
+                                                                        new WoonPlaats
+                                                                            {
+                                                                                PostNummer =
+                                                                                    infoNieuwAdres
+                                                                                    .PostNr,
+                                                                                Naam =
+                                                                                    infoNieuwAdres
+                                                                                    .WoonPlaatsNaam
+                                                                            }
+                                                                    }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Land>())
+                                  .Returns(new DummyRepo<Land>(new List<Land>()));
+
+
+            // mock voor sync
+            var adressenSyncMock = new Mock<IAdressenSync>();
+            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>())).Verifiable();
+
+            // mocks registreren bij dependency-injectioncontainer
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+            Factory.InstantieRegistreren(adressenSyncMock.Object);
+
+            #endregion
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.GelieerdePersonenVerhuizen(new[] {gelieerdePersoon.ID}, infoNieuwAdres,
+                                              gelieerdePersoon.PersoonsAdres.Adres.ID);
+
+            // ASSERT
+
+            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()), Times.AtLeastOnce());
+        }
     }
 }

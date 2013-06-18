@@ -75,5 +75,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// persoon aan de groep gekoppeld is.</param>
         /// <returns>De gelieerde persoon na het koppelen van <paramref name="nieuwePersoon"/> aan <paramref name="groep"/>.</returns>
         GelieerdePersoon Toevoegen(Persoon nieuwePersoon, Groep groep, int chiroLeeftijd, bool forceer);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gelieerde persoon <paramref name="gp"/> naar alle waarschijnlijkheid is gekend
+        /// in Kipadmin. Anders <c>false</c>.
+        /// </summary>
+        /// <param name="gp">Een gelieerde persoon</param>
+        /// <returns><c>true</c> als de gelieerde persoon <paramref name="gp"/> naar alle waarschijnlijkheid is gekend
+        /// in Kipadmin, anders <c>false</c>.</returns>
+        bool IsGekendInKipadmin(GelieerdePersoon gp);
     }
 }

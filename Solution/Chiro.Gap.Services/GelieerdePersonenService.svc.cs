@@ -72,6 +72,7 @@ namespace Chiro.Gap.Services
         // Sync-interfaces
 
         private readonly ICommunicatieSync _communicatieSync;
+        private readonly IAdressenSync _adressenSync;
 
         /// <summary>
         /// Constructor
@@ -85,6 +86,7 @@ namespace Chiro.Gap.Services
         /// <param name="adressenManager">Logica m.b.t. adressen</param>
         /// <param name="personenManager">Logica m.b.t. personen (geeuw)</param>
         /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
+        /// <param name="adressenSync">Voor synchronisatie van adressen naar Kipadmin</param>
         public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
                                         ICommunicatieVormenManager communicatieVormenMgr,
                                         IGebruikersRechtenManager gebruikersRechtenMgr,
@@ -92,6 +94,8 @@ namespace Chiro.Gap.Services
                                         IAdressenManager adressenManager,
                                         IPersonenManager personenManager,
                                         ICommunicatieSync communicatieSync)
+                                        IPersonenSync personenSync,
+                                        IAdressenSync adressenSync)
         {
             _communicatieVormRepo = repositoryProvider.RepositoryGet<CommunicatieVorm>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
@@ -114,6 +118,7 @@ namespace Chiro.Gap.Services
             _personenMgr = personenManager;
 
             _communicatieSync = communicatieSync;
+            _adressenSync = adressenSync;
         }
 
         #region Disposable etc
@@ -610,6 +615,7 @@ namespace Chiro.Gap.Services
         {
             var oudAdres = _adressenRepo.ByID(oudAdresID);
             Adres nieuwAdres;
+            IList<PersoonsAdres> persoonsAdressen;
 
             try
             {
@@ -634,9 +640,10 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.GeenGav();
             }
+
             try
             {
-                _personenMgr.Verhuizen(verhuizers, oudAdres, nieuwAdres, nieuwAdresInfo.AdresType);
+                persoonsAdressen = _personenMgr.Verhuizen(verhuizers, oudAdres, nieuwAdres, nieuwAdresInfo.AdresType);
             }
             catch (BlokkerendeObjectenException<PersoonsAdres> ex)
             {
@@ -647,7 +654,24 @@ namespace Chiro.Gap.Services
                 // Dit kan nog wel wat verfijnd worden.
             }
 
+            // de persoonsadressen gekoppeld aan een gelieerde persoon, zijn de voorkeursadresen van die gelieerde persoon.
+            var teSyncen = (from pa in persoonsAdressen
+                            where pa.GelieerdePersoon.Any(gp => _gelieerdePersonenMgr.IsGekendInKipadmin(gp))
+                            select pa).ToList();
+
+
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+            _adressenSync.StandaardAdressenBewaren(teSyncen);
+
             _adressenRepo.SaveChanges();
+
+#if KIPDORP
+            tx.Complete();
+            }
+#endif
         }
 
         /// <summary>

@@ -1050,5 +1050,137 @@ namespace Chiro.Gap.Services.Test
             Assert.IsTrue(actual.Select(ld => ld.LidID == lid.ID).Any());
             // het lid heeft geen telefoonnummer, dus we verwachten een fout te vinden.
         }
+
+        /// <summary>
+        /// Kijkt na of ingeschreven personen gesynct worden naar kipadmin.
+        /// </summary>
+        [TestMethod()]
+        public void InschrijvenSyncTest()
+        {
+            // ARRANGE
+
+            // model
+
+            var groepsWerkJaar = new GroepsWerkJaar
+                                     {
+                                         WerkJaar = 2013
+                                     };
+            var groep = new KaderGroep()
+                            {
+                                GroepsWerkJaar =
+                                    new List<GroepsWerkJaar>
+                                        {
+                                            groepsWerkJaar
+                                        }
+                            };
+            groepsWerkJaar.Groep = groep;
+
+            var gelieerdePersoon = new GelieerdePersoon
+                                       {
+                                           ID = 1,
+                                           Groep = groep,                                              
+                                           Persoon =
+                                               new Persoon
+                                                   {
+                                                       Geslacht = GeslachtsType.Vrouw,
+                                                       GeboorteDatum = new DateTime(1980, 8, 8)
+                                                   }
+                                       };
+
+            var lidVoorsel = new InTeSchrijvenLid
+                                 {
+                                     AfdelingsJaarIrrelevant = true,
+                                     GelieerdePersoonID = gelieerdePersoon.ID,
+                                     LeidingMaken = true,
+                                     VolledigeNaam = "Ham Burger" // moet weg; zie #1544
+                                 };
+
+            // dependency injection
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(snc => snc.Bewaren(It.IsAny<IList<Lid>>())).Verifiable();   // verwacht dat ledensync een lid moet bewaren
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+
+            // ACT
+            var ledenService = Factory.Maak<LedenService>();
+            string feedback;
+            ledenService.Inschrijven(new[] {lidVoorsel}, out feedback);
+
+            var lid = groepsWerkJaar.Lid.First();
+
+            // ASSERT
+
+            ledenSyncMock.Verify(src => src.Bewaren(It.IsAny<IList<Lid>>()), Times.AtLeastOnce());
+        }
+
+        /// <summary>
+        /// Kijkt na of na het inschrijven van een persoon, het AD-nummer gemarkeerd wordt
+        /// als zijnde 'in aanvraag'.
+        /// </summary>
+        [TestMethod()]
+        public void InschrijvenAdNrAanvraagTest()
+        {
+            // ARRANGE
+
+            // model
+
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                WerkJaar = 2013
+            };
+            var groep = new KaderGroep()
+            {
+                GroepsWerkJaar =
+                    new List<GroepsWerkJaar>
+                                        {
+                                            groepsWerkJaar
+                                        }
+            };
+            groepsWerkJaar.Groep = groep;
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Groep = groep,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1980, 8, 8)
+                    }
+            };
+
+            var lidVoorsel = new InTeSchrijvenLid
+            {
+                AfdelingsJaarIrrelevant = true,
+                GelieerdePersoonID = gelieerdePersoon.ID,
+                LeidingMaken = true,
+                VolledigeNaam = "Ham Burger" // moet weg; zie #1544
+            };
+
+            // dependency injection
+            var ledenSyncMock = new Mock<ILedenSync>();
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var ledenService = Factory.Maak<LedenService>();
+            string feedback;
+            ledenService.Inschrijven(new[] { lidVoorsel }, out feedback);
+
+            // ASSERT
+
+            Assert.IsTrue(gelieerdePersoon.Persoon.AdInAanvraag);
+        }
+
     }
 }
