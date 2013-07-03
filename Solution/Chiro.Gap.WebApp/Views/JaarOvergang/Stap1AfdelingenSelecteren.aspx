@@ -32,6 +32,11 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <p>
+        <strong>Let op!</strong> Als je de jaarovergang uitvoert, dan sluit je werkjaar <%: Model.HuidigWerkJaar %>-<%: Model.HuidigWerkJaar + 1 %> af. 
+        Je mag de jaarovergang enkel uitvoeren als <strong>alle leden en leiding voor <%: Model.HuidigWerkJaar %>-<%: Model.HuidigWerkJaar + 1 %></strong>
+        ingeschreven zijn. Na de jaarovergang zul je enkel nog inschrijvingen kunnen doen voor het nieuwe werkjaar.
+    </p>
     <%
         var info = (from pa in Model.Afdelingen select new CheckBoxListInfo(pa.ID.ToString(), "", false)).ToList();
         var j = 0;
