@@ -77,6 +77,7 @@ namespace Chiro.Gap.Services
             var toegekendeRechten = (from id in groepIDs
                                      let bestaandRecht = (from gr in account.GebruikersRecht
                                                           where gr.Groep.ID == id
+                                                          && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)
                                                           select gr).FirstOrDefault()
                                      where bestaandRecht == null    // voor de groepID's waarvoor de account nog geen rechten heeft
                                      select                         // selecteren we de groepen
