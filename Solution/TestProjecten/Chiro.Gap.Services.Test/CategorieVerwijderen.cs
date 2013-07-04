@@ -78,24 +78,41 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void CategorieVerwijderenNormaal()
         {
-            throw new NotImplementedException();
-            //using (new TransactionScope())
-            //{
-            //    var catID = _groepenSvc.CategorieToevoegen(TestInfo.GROEP_ID, "CategorieVerwijderenNormaal", "TempCat3");
+            // ARRANGE
 
-            //    // Act: verwijder de categorie met gegeven ID, en probeer categorie opnieuw op te halen
+            #region testdata
 
-            //    _groepenSvc.CategorieVerwijderen(catID, false);
+            var groep = new ChiroGroep();
 
-            //    var catIDTest = _groepenSvc.CategorieIDOphalen(
-            //        TestInfo.GROEP_ID,
-            //        "TempCat3");
+            var categorie = new Categorie
+            {
+                ID = 1,
+                Groep = groep
+            };
+            groep.Categorie.Add(categorie);
 
-            //    // Assert: categorie niet meer gevonden.
-            //    Assert.IsTrue(catIDTest == 0);
+            #endregion
 
-            //}
+            #region dependency injection
 
+            var categorieenRepo = new DummyRepo<Categorie>(new List<Categorie> { categorie });
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Categorie>())
+                                  .Returns(categorieenRepo);
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+            #endregion
+
+            // ACT
+
+            var groepenService = Factory.Maak<GroepenService>();
+            // Verwijder categorie zonder te forceren
+            groepenService.CategorieVerwijderen(categorie.ID, false);
+
+            // ASSERT
+
+            Assert.IsNull(categorieenRepo.ByID(categorie.ID));  // categorie weg
         }
 
         /// <summary>
@@ -177,7 +194,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var groepenService = Factory.Maak<GroepenService>();
-            // Verwijder categorie zonder te forceren
+            // Verwijder categorie door te forceren
             groepenService.CategorieVerwijderen(categorie.ID, true);
 
             // ASSERT
