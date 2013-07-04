@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;      // laten staan voor live!
@@ -775,6 +776,7 @@ namespace Chiro.Gap.Services
         public void AdresVerwijderenVanPersonen(IList<int> personenIDs, int adresID)
         {
             var adres = _adressenRepo.ByID(adresID);
+            var teSyncen = new List<PersoonsAdres>();
 
             var teVerwijderen = (from pa in adres.PersoonsAdres
                                  where personenIDs.Contains(pa.Persoon.ID)
@@ -798,12 +800,26 @@ namespace Chiro.Gap.Services
                                           select pa).FirstOrDefault();
 
                 gp.PersoonsAdres = nieuwVoorkeurAdres;
+                if (_gelieerdePersonenMgr.IsGekendInKipadmin(gp))
+                {
+                    teSyncen.Add(nieuwVoorkeurAdres);
+                }
             }
 
-            _persoonsAdressenRepo.Delete(teVerwijderen);
-            _persoonsAdressenRepo.SaveChanges();
-
-            // TODO: sync nieuwe voorkeursadressen naar Kipadmin
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                if (teSyncen.Any())
+                {
+                    _adressenSync.StandaardAdressenBewaren(teSyncen);
+                }
+                _persoonsAdressenRepo.Delete(teVerwijderen);
+                _persoonsAdressenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
         }
 
         /// <summary>
