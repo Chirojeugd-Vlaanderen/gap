@@ -385,7 +385,7 @@ namespace Chiro.Gap.Services.Test
         /// ook opgeleverd worden door AlleDetailsOphalen.
         ///</summary>
         [TestMethod()]
-        public void AlleDetailsOphalenTest()
+        public void AlleDetailsOphalenAccountTest()
         {
             // arbitraire dingen
 
@@ -417,23 +417,21 @@ namespace Chiro.Gap.Services.Test
                                                    },
                                            Groep = new ChiroGroep
                                                        {
-                                                           ID = someGid,
-                                                           GroepsWerkJaar =
-                                                               new[] {new GroepsWerkJaar {WerkJaar = someWerkJaar}}
+                                                           ID = someGid
                                                        }
                                        };
+
+            var groepsWerkJaar = new GroepsWerkJaar {WerkJaar = someWerkJaar, Groep = gelieerdePersoon.Groep};
+            gelieerdePersoon.Groep.GroepsWerkJaar.Add(groepsWerkJaar);
 
 
             // IOC opzetten
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             var communicatieVormenManagerMock = new Mock<ICommunicatieVormenManager>();
-            var gelieerdePersonenRepoMock = new Mock<IRepository<GelieerdePersoon>>();
-
-            gelieerdePersonenRepoMock.Setup(mck => mck.Select()).Returns((new[] {gelieerdePersoon}).AsQueryable());
 
             repositoryProviderMock.Setup(mck => mck.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(gelieerdePersonenRepoMock.Object);
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>{gelieerdePersoon}));
 
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
             Factory.InstantieRegistreren(communicatieVormenManagerMock.Object);
