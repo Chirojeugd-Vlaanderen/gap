@@ -294,90 +294,50 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void VoorkeursCommunicatieVormToevoegenTest()
         {
-            throw new NotImplementedException(Domain.NIEUWEBACKEND.Info);
-            //// Arrange
+            // ARRANGE
 
-            //const int TESTGPID = 1234;      // arbitrair ID van een gelieerde persoon
-            //const int TESTCVID = 2345;      // en van een communicatievorm
-            //const int TESTCTID = 3;         // en diens communicatietype
+            var origineleCommunicatieVorm = new CommunicatieVorm
+                                       {
+                                           CommunicatieType = new CommunicatieType {ID = 1},
+                                           GelieerdePersoon =
+                                               new GelieerdePersoon {Persoon = new Persoon {AdInAanvraag = true}},
+                                           ID = 2,
+                                           Voorkeur = true
+                                       };
+            var communicatieInfo = new CommunicatieInfo
+                                       {
+                                           CommunicatieTypeID = origineleCommunicatieVorm.CommunicatieType.ID,
+                                           Voorkeur = true
+                                       };
 
-            //var testCommunicatieType = new Poco.Model.CommunicatieType { ID = TESTCTID, Validatie = ".*" };
-            //var testCommunicatieVorm = new CommunicatieVorm
-            //{
-            //    ID = TESTCVID,
-            //    CommunicatieType = testCommunicatieType,
-            //    Nummer = "jos@linux.be",
-            //    Voorkeur = true
-            //};
+            // dependency injection
 
-            //// Koppel gauw testCommunicatieVorm aan testGelieerdePersoon
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(
+                                      new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>
+                                                                          {
+                                                                              origineleCommunicatieVorm
+                                                                                  .GelieerdePersoon
+                                                                          }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(
+                                      new DummyRepo<CommunicatieType>(new List<CommunicatieType>
+                                                                          {
+                                                                              origineleCommunicatieVorm
+                                                                                  .CommunicatieType
+                                                                          }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
-            //var testGelieerdePersoon = new GelieerdePersoon
-            //{
-            //    ID = TESTGPID,
-            //    Persoon = new Poco.Model.Persoon(),
-            //    Communicatie =
-            //        new EntityCollection<CommunicatieVorm>
-            //                                           {
-            //                                               testCommunicatieVorm
-            //                                           }
-            //};
-            //testCommunicatieVorm.GelieerdePersoon = testGelieerdePersoon;
+            // ACT
 
-            //var communicatieTypeDaoMock = new Mock<IDao<CommunicatieType>>();
-            //var communicatieVormDaoMock = new Mock<ICommunicatieVormDao>();
-            //var gelieerdePersonenDaoMock = new Mock<IGelieerdePersonenDao>();
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.CommunicatieVormToevoegen(origineleCommunicatieVorm.GelieerdePersoon.ID, communicatieInfo);
 
-            //var communicatieSyncMock = new Mock<ICommunicatieSync>();
+            // ASSERT
 
-            //// het communicatietype zal worden opgevraagd, maar is irrelevant voor deze test.
-            //// zorg er wel voor dat alles valideert.
-            //communicatieTypeDaoMock.Setup(dao => dao.Ophalen(TESTCTID)).Returns(testCommunicatieType);
+            Assert.IsFalse(origineleCommunicatieVorm.Voorkeur);
 
-            //// zorg ervoor dat de gelieerde persoon opgehaald wordt
-            //gelieerdePersonenDaoMock.Setup(dao => dao.Ophalen(It.IsAny<IEnumerable<int>>(), It.IsAny<PersoonsExtras>()))
-            //    .Returns(new[] { testGelieerdePersoon });
-
-            //// in plaats van een communicatievorm te bewaren, zetten we iets in zijn opmerkingenveld.
-            //// Op die manier kunnen we achteraf zien welke communicatievormen bewaard zijn.
-
-            //// Dit gaat er nu vanuit dat de communicatievormen bewaard worden via CommunicatieVormDao.Bewaren;
-            //// kan even goed iets anders zijn.  Unit test enkel ter illustratie
-
-            //communicatieVormDaoMock.Setup(
-            //    dao =>
-            //    dao.Bewaren(It.IsAny<CommunicatieVorm>(), It.IsAny<Expression<Func<CommunicatieVorm, object>>[]>())).
-            //    Returns((CommunicatieVorm cv, Expression<Func<CommunicatieVorm, object>>[] paths) =>
-            //                {
-            //                    cv.Nota = "bewaard";
-            //                    return cv;
-            //                });
-
-            //Factory.InstantieRegistreren(communicatieTypeDaoMock.Object);
-            //Factory.InstantieRegistreren(communicatieVormDaoMock.Object);
-            //Factory.InstantieRegistreren(gelieerdePersonenDaoMock.Object);
-            //Factory.InstantieRegistreren(communicatieSyncMock.Object);
-
-            //var target = Factory.Maak<GelieerdePersonenService>();
-
-            //var commDetail = new CommunicatieInfo
-            //{
-            //    CommunicatieTypeID = 3,    // e-mail
-            //    ID = 0,                    // nieuwe communicatievorm
-            //    Nummer = "johan@linux.be", // arbitrair nieuw e-mailadres
-            //    Voorkeur = true
-            //};
-
-            //// Act
-            //target.CommunicatieVormToevoegen(TESTGPID, commDetail);
-
-            //// Assert
-
-            //// De nieuwe communicatievorm zal wel bewaard zijn.  Maar de
-            //// oorspronkelijke moet ook bewaard zijn, want die is zijn
-            //// voorkeur verloren.
-
-            //Assert.AreEqual("bewaard", testCommunicatieVorm.Nota);
         }
 
 
