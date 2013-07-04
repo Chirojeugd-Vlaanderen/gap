@@ -183,36 +183,42 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void CommunicatieVormToevoegenTest()
         {
-            // Arrange
+            // ARRANGE
 
-            const int TESTGPID = 1234;
+            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Persoon = new Persoon {AdInAanvraag = true}};
+            var email = new CommunicatieType {ID = 3, Validatie = ".*"};
+
+            var commDetail = new CommunicatieInfo
+            {
+                CommunicatieTypeID = email.ID,    // e-mail
+                ID = 4,    // verschillend van nul, in een poging de communicatiemanager te misleiden.
+                Nummer = "johan@linux.be"  // arbitrair
+            };
+
+            // dependency injection voor synchronisatie:
+            // verwacht dat CommunicatieSync.Toevoegen wordt aangeroepen.
 
             var communicatieSyncMock = new Mock<ICommunicatieSync>();
-
-
-            // verwacht dat CommunicatieSync.Toevoegen wordt aangeroepen.
             communicatieSyncMock.Setup(snc => snc.Toevoegen(It.IsAny<CommunicatieVorm>())).Verifiable();
 
             Factory.InstantieRegistreren(communicatieSyncMock.Object);
 
+            // dependency injection voor data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> {email}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
             var target = Factory.Maak<GelieerdePersonenService>();
+            target.CommunicatieVormToevoegen(gelieerdePersoon.ID, commDetail);
 
-            int gelieerdePersoonID = TESTGPID;     // arbitrair en irrelevant
-            var commDetail = new CommunicatieInfo
-                                 {
-                                     CommunicatieTypeID = 3,    // e-mail
-                                     ID = 4,    // verschillend van nul, in een poging de communicatiemanager te misleiden.
-                                     Nummer = "johan@linux.be"  // arbitrair
-                                 };
-
-            // Act
-            target.CommunicatieVormToevoegen(gelieerdePersoonID, commDetail);
-
-            // Assert
-            communicatieSyncMock.Verify(snc => snc.Toevoegen(It.IsAny<CommunicatieVorm>()));
-
-            // Als de verify geen exception opleverde, is het gelukt.
-            Assert.IsTrue(true);
+            // ASSERT
+            communicatieSyncMock.Verify(snc => snc.Toevoegen(It.IsAny<CommunicatieVorm>()), Times.Once());
         }
 
         /// <summary>

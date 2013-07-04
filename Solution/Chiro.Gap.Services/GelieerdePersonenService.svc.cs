@@ -542,6 +542,45 @@ namespace Chiro.Gap.Services
             return Mapper.Map<IList<GelieerdePersoon>, List<BewonersInfo>>(huisGenoten);
         }
 
+        /// <summary>
+        /// Haalt info over een bepaald communicatietype op, op basis van ID
+        /// </summary>
+        /// <param name="commTypeID">De ID van het communicatietype</param>
+        /// <returns>Info over het gevraagde communicatietype</returns>
+        public CommunicatieTypeInfo CommunicatieTypeOphalen(int commTypeID)
+        {
+            // Communicatietypes zijn voor iedereen leesbaar
+            // (het gaat hier om 'e-mail','telefoonnr',...
+            var communicatietype = _communicatieTypesRepo.ByID(commTypeID);
+            return Mapper.Map<CommunicatieType, CommunicatieTypeInfo>(communicatietype);
+
+        }
+
+        /// <summary>
+        /// Haalt een lijst op met alle communicatietypes
+        /// </summary>
+        /// <returns>Een lijst op met alle communicatietypes</returns>
+        public IEnumerable<CommunicatieTypeInfo> CommunicatieTypesOphalen()
+        {
+            var communicatietypes = _communicatieTypesRepo.GetAll();
+            return Mapper.Map<IEnumerable<CommunicatieType>, List<CommunicatieTypeInfo>>(communicatietypes);
+        }
+
+        /// <summary>
+        /// Haalt detail van een communicatievorm op
+        /// </summary>
+        /// <param name="commvormID">ID van de communicatievorm waarover het gaat</param>
+        /// <returns>De communicatievorm met de opgegeven ID</returns>
+        public CommunicatieDetail CommunicatieVormOphalen(int commvormID)
+        {
+            var communicatieVorm = _communicatieVormRepo.ByID(commvormID);
+            if (!_autorisatieMgr.IsGav(communicatieVorm))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+            return Mapper.Map<CommunicatieVorm, CommunicatieDetail>(communicatieVorm);
+        }
+
         #endregion
 
         #region aanmaken (wordt niet gesynct)
@@ -603,6 +642,89 @@ namespace Chiro.Gap.Services
             _groepenRepo.SaveChanges();
 
             return new IDPersEnGP { GelieerdePersoonID = resultaat.ID, PersoonID = resultaat.Persoon.ID };
+        }
+
+        #endregion
+
+        #region categorieen (worden niet gesynct)
+
+        /// <summary>
+        /// Voegt een collectie gelieerde personen op basis van hun ID toe aan een collectie categorieën
+        /// </summary>
+        /// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen</param>
+        /// <param name="categorieIDs">ID's van de categorieën waaraan ze toegevoegd moeten worden</param>
+        public void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs)
+        {
+            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdepersonenIDs);
+
+            var groepen = gelieerdePersonen.Select(gp => gp.Groep).Distinct().ToList();
+
+            if (!_autorisatieMgr.IsGav(groepen))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            if (groepen.Count > 1)
+            {
+                // Een categorie is gekoppeld aan 1 groep. Als de personen uit meerdere groepen komen,
+                // dan is er zeker een persoon waaraan de categorie niet gekoppeld kan worden.
+                // (pigeon hole princplie)
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietVanGroep,
+                                                      Properties.Resources.FouteCategorieVoorGroep);
+            }
+
+            var categorieen = (from c in groepen.First().Categorie
+                               where categorieIDs.Contains(c.ID)
+                               select c).ToList();
+
+            if (categorieen.Count != categorieIDs.Count)
+            {
+                // Categorie niet gevonden -> vermoedelijk niet gekoppeld aan groep
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietVanGroep,
+                                                      Properties.Resources.FouteCategorieVoorGroep);
+            }
+
+            foreach (var c in categorieen)
+            {
+                foreach (var gp in gelieerdePersonen)
+                {
+                    c.GelieerdePersoon.Add(gp);
+                }
+            }
+
+            _gelieerdePersonenRepo.SaveChanges();
+        }
+
+        /// <summary>
+        /// Haalt een collectie gelieerde personen uit de opgegeven categorie
+        /// </summary>
+        /// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen over wie het gaat</param>
+        /// <param name="categorieID">ID van de categorie waaruit ze verwijderd moeten worden</param>
+        public void UitCategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID)
+        {
+            var categorie = _categorieenRepo.ByID(categorieID);
+
+            if (!_autorisatieMgr.IsGav(categorie))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var gelieerdePersonen = (from gp in categorie.GelieerdePersoon
+                                     where gelieerdepersonenIDs.Contains(gp.ID)
+                                     select gp).ToList();
+
+            if (gelieerdePersonen.Count != gelieerdepersonenIDs.Count)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietGekoppeld,
+                                                      Properties.Resources.CategorieNietGekoppeld);
+            }
+
+            foreach (var gp in gelieerdePersonen)
+            {
+                categorie.GelieerdePersoon.Remove(gp);
+            }
+
+            _categorieenRepo.SaveChanges();
         }
 
         #endregion
@@ -1034,124 +1156,6 @@ namespace Chiro.Gap.Services
 #if KIPDORP
             }
 #endif
-        }
-
-        /// <summary>
-        /// Haalt info over een bepaald communicatietype op, op basis van ID
-        /// </summary>
-        /// <param name="commTypeID">De ID van het communicatietype</param>
-        /// <returns>Info over het gevraagde communicatietype</returns>
-        public CommunicatieTypeInfo CommunicatieTypeOphalen(int commTypeID)
-        {
-            // Communicatietypes zijn voor iedereen leesbaar
-            // (het gaat hier om 'e-mail','telefoonnr',...
-            var communicatietype = _communicatieTypesRepo.ByID(commTypeID);
-            return Mapper.Map<CommunicatieType, CommunicatieTypeInfo>(communicatietype);
-
-        }
-
-        /// <summary>
-        /// Haalt een lijst op met alle communicatietypes
-        /// </summary>
-        /// <returns>Een lijst op met alle communicatietypes</returns>
-        public IEnumerable<CommunicatieTypeInfo> CommunicatieTypesOphalen()
-        {
-            var communicatietypes = _communicatieTypesRepo.GetAll();
-            return Mapper.Map<IEnumerable<CommunicatieType>, List<CommunicatieTypeInfo>>(communicatietypes);
-        }
-
-        /// <summary>
-        /// Haalt detail van een communicatievorm op
-        /// </summary>
-        /// <param name="commvormID">ID van de communicatievorm waarover het gaat</param>
-        /// <returns>De communicatievorm met de opgegeven ID</returns>
-        public CommunicatieDetail CommunicatieVormOphalen(int commvormID)
-        {
-            var communicatieVorm = _communicatieVormRepo.ByID(commvormID);
-            if (!_autorisatieMgr.IsGav(communicatieVorm))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-            return Mapper.Map<CommunicatieVorm, CommunicatieDetail>(communicatieVorm);
-        }
-
-        /// <summary>
-        /// Voegt een collectie gelieerde personen op basis van hun ID toe aan een collectie categorieën
-        /// </summary>
-        /// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen</param>
-        /// <param name="categorieIDs">ID's van de categorieën waaraan ze toegevoegd moeten worden</param>
-        public void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs)
-        {
-            var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdepersonenIDs);
-
-            var groepen = gelieerdePersonen.Select(gp => gp.Groep).Distinct().ToList();
-
-            if (!_autorisatieMgr.IsGav(groepen))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            if (groepen.Count > 1)
-            {
-                // Een categorie is gekoppeld aan 1 groep. Als de personen uit meerdere groepen komen,
-                // dan is er zeker een persoon waaraan de categorie niet gekoppeld kan worden.
-                // (pigeon hole princplie)
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietVanGroep,
-                                                      Resources.FouteCategorieVoorGroep);
-            }
-
-            var categorieen = (from c in groepen.First().Categorie
-                               where categorieIDs.Contains(c.ID)
-                               select c).ToList();
-
-            if (categorieen.Count != categorieIDs.Count)
-            {
-                // Categorie niet gevonden -> vermoedelijk niet gekoppeld aan groep
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietVanGroep,
-                                                      Resources.FouteCategorieVoorGroep);
-            }
-
-            foreach (var c in categorieen)
-            {
-                foreach (var gp in gelieerdePersonen)
-                {
-                    c.GelieerdePersoon.Add(gp);
-                }
-            }
-
-            _gelieerdePersonenRepo.SaveChanges();
-        }
-
-        /// <summary>
-        /// Haalt een collectie gelieerde personen uit de opgegeven categorie
-        /// </summary>
-        /// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen over wie het gaat</param>
-        /// <param name="categorieID">ID van de categorie waaruit ze verwijderd moeten worden</param>
-        public void UitCategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID)
-        {
-            var categorie = _categorieenRepo.ByID(categorieID);
-
-            if (!_autorisatieMgr.IsGav(categorie))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            var gelieerdePersonen = (from gp in categorie.GelieerdePersoon
-                                     where gelieerdepersonenIDs.Contains(gp.ID)
-                                     select gp).ToList();
-
-            if (gelieerdePersonen.Count != gelieerdepersonenIDs.Count)
-            {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietGekoppeld,
-                                                      Resources.CategorieNietGekoppeld);
-            }
-
-            foreach (var gp in gelieerdePersonen)
-            {
-                categorie.GelieerdePersoon.Remove(gp);
-            }
-
-            _categorieenRepo.SaveChanges();
         }
 
         #endregion

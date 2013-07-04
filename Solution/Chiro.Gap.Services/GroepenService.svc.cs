@@ -29,6 +29,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
 
@@ -73,6 +74,10 @@ namespace Chiro.Gap.Services
 
         private readonly GavChecker _gav;
 
+        // Sync
+
+        private readonly IGroepenSync _groepenSync;
+
         /// <summary>
         /// Nieuwe groepenservice
         /// </summary>
@@ -90,7 +95,7 @@ namespace Chiro.Gap.Services
                               IGroepenManager groepenMgr, IJaarOvergangManager jaarOvergangMgr,
                                 IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                               IFunctiesManager functiesMgr, IVeelGebruikt veelGebruikt,
-                              IRepositoryProvider repositoryProvider)
+                              IRepositoryProvider repositoryProvider, IGroepenSync groepenSync)
         {
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
             _adresRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
@@ -116,6 +121,8 @@ namespace Chiro.Gap.Services
             _afdelingsJaarMgr = afdelingsJaarMgr;
             _authenticatieMgr = authenticatieMgr;
             _autorisatieMgr = autorisatieMgr;
+            _veelGebruikt = veelGebruikt;
+            _groepenSync = groepenSync;
             _gav = new GavChecker(_autorisatieMgr);
         }
 
@@ -163,6 +170,9 @@ namespace Chiro.Gap.Services
         }
 
         #endregion
+
+        #region ophalen
+
         /// <summary>
         /// Ophalen van Groepsinformatie
         /// </summary>
@@ -183,7 +193,12 @@ namespace Chiro.Gap.Services
         /// <returns>Groepsinformatie voor groep met code <paramref name="code"/></returns>
         public GroepInfo InfoOphalenCode(string code)
         {
-            var groep = GetGroepEnCheckGav(code);
+            var groep = (from g in _groepenRepo.Select()
+                         where String.Compare(g.Code, code, StringComparison.OrdinalIgnoreCase) == 0
+                         select g).FirstOrDefault();
+            
+            Gav.Check(groep);
+
             return Mapper.Map<Groep, GroepInfo>(groep);
         }
 
@@ -244,14 +259,9 @@ namespace Chiro.Gap.Services
             return Mapper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(groepsWerkJaren);
         }
 
-        static bool Equal(string links, string rechts)
-        {
-            if (links == null || rechts == null)
-            {
-                return links == null && rechts == null;
-            }
-            return String.Compare(links, rechts, StringComparison.OrdinalIgnoreCase) == 0;
-        }
+        #endregion
+
+        #region te syncen wijzigingen
 
         /// <summary>
         /// Persisteert een groep in de database
@@ -264,7 +274,7 @@ namespace Chiro.Gap.Services
         {
             var groep = GetGroepEnCheckGav(groepInfo.ID);
 
-            if (!Equal(groepInfo.StamNummer, groep.Code) && !_autorisatieMgr.IsSuperGav())
+            if (String.Compare(groepInfo.StamNummer, groep.Code, StringComparison.OrdinalIgnoreCase) != 0 && !_autorisatieMgr.IsSuperGav())
             {
                 throw FaultExceptionHelper.GeenGav();
             }
@@ -287,8 +297,19 @@ namespace Chiro.Gap.Services
 
             groep.Code = groepInfo.StamNummer;
 
-            _groepenRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _groepenSync.Bewaren(groep);
+                _groepenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
         }
+
+        #endregion
 
         /// <summary>
         /// Haalt groepswerkjaarId van het recentst gemaakte groepswerkjaar
@@ -390,7 +411,6 @@ namespace Chiro.Gap.Services
 
                 throw FaultExceptionHelper.BestaatAl(result);
             }
-
         }
 
         /// <summary>
@@ -750,20 +770,6 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Gets the Groep by code and checks gav.
-        /// </summary>
-        /// <param name="groepCode">The groep code.</param>
-        /// <returns>Groep.</returns>
-        Groep GetGroepEnCheckGav(string groepCode)
-        {
-            var groep = (from g in _groepenRepo.Select()
-                         where Equal(g.Code, groepCode)
-                         select g).FirstOrDefault();
-            Gav.Check(groep);
-            return groep;
-        }
-
-        /// <summary>
         /// Voegt een functie toe aan de groep
         /// </summary>
         /// <param name="groepId">De groep waaraan het wordt toegevoegd</param>
@@ -946,7 +952,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.ValidatieFout, Properties.Resources.OngeldigeCategorieNaam);
             }
             bool bestaatal = (from g in _categorieenRepo.Select()
-                              where Equal(g.Naam, nieuwenaam)
+                              where String.Compare(g.Naam, nieuwenaam, StringComparison.OrdinalIgnoreCase) == 0
                               select g).Any();
             if (bestaatal)
             {
@@ -968,7 +974,7 @@ namespace Chiro.Gap.Services
         public CategorieInfo CategorieOpzoeken(int groepId, string code)
         {
             var groep = GetGroepEnCheckGav(groepId);
-            var categorie = groep.Categorie.FirstOrDefault(e => Equal(e.Code, code));
+            var categorie = groep.Categorie.FirstOrDefault(e => String.Compare(e.Code, code, StringComparison.InvariantCultureIgnoreCase) == 0);
             if (categorie == null)
             {
                 throw FaultExceptionHelper.GeenGav();
