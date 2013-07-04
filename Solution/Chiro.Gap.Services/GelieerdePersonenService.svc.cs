@@ -865,9 +865,19 @@ namespace Chiro.Gap.Services
 
             gelieerdePersoon.PersoonsAdres = persoonsAdres;
 
-            _gelieerdePersonenRepo.SaveChanges();
-
-            // TODO: Syncen naar kipadmin
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                if (_gelieerdePersonenMgr.IsGekendInKipadmin(gelieerdePersoon))
+                {
+                    _adressenSync.StandaardAdressenBewaren(new List<PersoonsAdres>{persoonsAdres});
+                }
+                _gelieerdePersonenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
         }
 
         /// <summary>

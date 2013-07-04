@@ -738,5 +738,57 @@ namespace Chiro.Gap.Services.Test
             adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()),
                                     Times.AtLeastOnce());
         }
+
+        /// <summary>
+        //  Controleert of een nieuw ingesteld voorkeursadres wel wordt gesynct.
+        /// </summary>
+        [TestMethod()]
+        public void VoorkeursAdresMakenTest()
+        {
+            // ARRANGE
+
+            var voorkeursAdres = new BelgischAdres { ID = 2 };
+            var anderAdres = new BelgischAdres { ID = 3 };
+
+            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, AdInAanvraag = true } };
+
+            var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
+            var anderPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = anderAdres };
+
+            // wat gepruts om alle relaties goed te leggen
+
+            gelieerdePersoon.Persoon.PersoonsAdres.Add(voorkeursPa);
+            gelieerdePersoon.Persoon.PersoonsAdres.Add(anderPa);
+            gelieerdePersoon.PersoonsAdres = voorkeursPa;   // persoonsadres gelieere persoon bepaalt voorkeursadres
+            voorkeursAdres.PersoonsAdres.Add(voorkeursPa);
+            anderAdres.PersoonsAdres.Add(anderPa);
+            voorkeursPa.GelieerdePersoon.Add(gelieerdePersoon);
+            anderPa.GelieerdePersoon.Add(gelieerdePersoon);
+
+
+            // Dependency injection synchronisatie
+
+            var adressenSyncMock = new Mock<IAdressenSync>();
+            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()))
+                            .Verifiable();
+            Factory.InstantieRegistreren(adressenSyncMock.Object);
+
+            // Dependency injection data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.VoorkeursAdresMaken(anderPa.ID, gelieerdePersoon.ID);
+
+            // ASSERT
+
+            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()),
+                        Times.AtLeastOnce());
+        }
     }
 }
