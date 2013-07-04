@@ -973,8 +973,20 @@ namespace Chiro.Gap.Services
 
             }
 
-            _communicatieVormRepo.Delete(communicatieVorm);
-            _communicatieVormRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                if (_gelieerdePersonenMgr.IsGekendInKipadmin(communicatieVorm.GelieerdePersoon))
+                {
+                    _communicatieSync.Verwijderen(communicatieVorm);
+                }
+                _communicatieVormRepo.Delete(communicatieVorm);
+                _communicatieVormRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
 
             return gelieerdePersoonID;
         }
