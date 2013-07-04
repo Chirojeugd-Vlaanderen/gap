@@ -89,12 +89,11 @@ namespace Chiro.Gap.Services
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
         /// <param name="functiesMgr">Businesslogica aangaande functies</param>
         /// <param name="jaarOvergangMgr">Businesslogica aangaande de jaarovergang</param>
-        /// <param name="veelGebruikt">Cache voor veelgebruikte zaken</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         public GroepenService(IAfdelingsJaarManager afdelingsJaarMgr, IAuthenticatieManager authenticatieMgr, IAutorisatieManager autorisatieMgr,
                               IGroepenManager groepenMgr, IJaarOvergangManager jaarOvergangMgr,
                                 IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
-                              IFunctiesManager functiesMgr, IVeelGebruikt veelGebruikt,
+                              IFunctiesManager functiesMgr,
                               IRepositoryProvider repositoryProvider, IGroepenSync groepenSync)
         {
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
@@ -121,7 +120,6 @@ namespace Chiro.Gap.Services
             _afdelingsJaarMgr = afdelingsJaarMgr;
             _authenticatieMgr = authenticatieMgr;
             _autorisatieMgr = autorisatieMgr;
-            _veelGebruikt = veelGebruikt;
             _groepenSync = groepenSync;
             _gav = new GavChecker(_autorisatieMgr);
         }
@@ -1052,14 +1050,6 @@ namespace Chiro.Gap.Services
         }
 
         #endregion
-
-
-        Groep GetGroepEnCheckGav(int groepId)
-        {
-            var groep = _groepenRepo.ByID(groepId);
-            Gav.Check(groep);
-            return groep;
-        }
 
         #region adresgegevens ophalen
 
