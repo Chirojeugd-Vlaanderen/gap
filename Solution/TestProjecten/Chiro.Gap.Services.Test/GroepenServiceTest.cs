@@ -21,7 +21,8 @@ using System.ServiceModel;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 ﻿using Chiro.Gap.ServiceContracts.FaultContracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Chiro.Gap.SyncInterfaces;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.ServiceContracts.Mappers;
@@ -1073,6 +1074,40 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
             
             veelGebruiktMock.Verify(vgb => vgb.WerkJaarInvalideren(groep), Times.Once());
+        }
+
+        /// <summary>
+        /// Controleert of het bewaren van een groep die gegevens synct met kipadmin.
+        /// </summary>
+        [TestMethod()]
+        public void BewarenTest()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep {ID = 1, Naam = "Chiro Jos"};
+            var groepInfo = new GroepInfo {ID = 1, Naam = "Chiro Jim"};
+
+            // dependency injection voor synchronisatie
+
+            var groepenSyncMock = new Mock<IGroepenSync>();
+            groepenSyncMock.Setup(src => src.Bewaren(It.IsAny<Groep>())).Verifiable();
+            Factory.InstantieRegistreren(groepenSyncMock.Object);
+
+            // dependency injection voor data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                                  .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GroepenService>();
+            target.Bewaren(groepInfo);
+
+            // ASSERT
+
+            groepenSyncMock.Verify(src=>src.Bewaren(It.IsAny<Groep>()), Times.Once());
         }
     }
 }
