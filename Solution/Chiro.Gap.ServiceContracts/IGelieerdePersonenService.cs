@@ -294,7 +294,7 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersonenIDs, PersoonsAdresInfo adr, bool voorkeur);
+		void AdresToevoegenGelieerdePersonen(IList<int> gelieerdePersonenIDs, PersoonsAdresInfo adr, bool voorkeur);
 
 		/// <summary>
 		/// Verwijdert een adres van een verzameling personen
