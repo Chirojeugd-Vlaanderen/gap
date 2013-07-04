@@ -756,7 +756,10 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
-                _adressenSync.StandaardAdressenBewaren(teSyncen);
+                if (teSyncen.Any())
+                {
+                    _adressenSync.StandaardAdressenBewaren(teSyncen);
+                }
                 _gelieerdePersonenRepo.SaveChanges();
 #if KIPDORP
                 tx.Complete();
