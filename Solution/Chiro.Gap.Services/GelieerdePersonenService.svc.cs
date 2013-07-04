@@ -73,6 +73,7 @@ namespace Chiro.Gap.Services
 
         private readonly ICommunicatieSync _communicatieSync;
         private readonly IAdressenSync _adressenSync;
+        private readonly IPersonenSync _personenSync;
 
         /// <summary>
         /// Constructor
@@ -120,6 +121,7 @@ namespace Chiro.Gap.Services
 
             _communicatieSync = communicatieSync;
             _adressenSync = adressenSync;
+            _personenSync = personenSync;
         }
 
         #region Disposable etc
