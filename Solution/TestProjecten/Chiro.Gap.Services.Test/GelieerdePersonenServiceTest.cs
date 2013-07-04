@@ -788,5 +788,54 @@ namespace Chiro.Gap.Services.Test
             adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()),
                         Times.AtLeastOnce());
         }
+
+        /// <summary>
+        /// Test of CommunicatieVormVerwijderenVanPersoon synct met Kipadmin
+        ///</summary>
+        [TestMethod()]
+        public void CommunicatieVormVerwijderenVanPersoonTest()
+        {
+            // ARRANGE
+
+            var communicatieVorm = new CommunicatieVorm
+                                       {
+                                           ID = 1,
+                                           GelieerdePersoon =
+                                               new GelieerdePersoon
+                                                   {
+                                                       Persoon =
+                                                           new Persoon
+                                                               {
+                                                                   AdInAanvraag =
+                                                                       true
+                                                               }
+                                                   }
+                                       };
+
+            // Dependency injection: synchronisatie
+
+            var communicatieSyncMock = new Mock<ICommunicatieSync>();
+            communicatieSyncMock.Setup(src => src.Verwijderen(It.IsAny<CommunicatieVorm>()))
+                            .Verifiable();
+            Factory.InstantieRegistreren(communicatieSyncMock.Object);
+
+            // Dependency injection: data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieVorm>())
+                                  .Returns(new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> {communicatieVorm}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.CommunicatieVormVerwijderenVanPersoon(communicatieVorm.ID);
+
+            // ASSERT
+
+            communicatieSyncMock.Verify(src => src.Verwijderen(It.IsAny<CommunicatieVorm>()),
+                                        Times.AtLeastOnce());
+        }
     }
 }
