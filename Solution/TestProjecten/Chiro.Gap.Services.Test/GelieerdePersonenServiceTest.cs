@@ -297,17 +297,25 @@ namespace Chiro.Gap.Services.Test
             // ARRANGE
 
             var origineleCommunicatieVorm = new CommunicatieVorm
-                                       {
-                                           CommunicatieType = new CommunicatieType {ID = 1},
-                                           GelieerdePersoon =
-                                               new GelieerdePersoon {Persoon = new Persoon {AdInAanvraag = true}},
-                                           ID = 2,
-                                           Voorkeur = true
-                                       };
+                                                {
+                                                    CommunicatieType = new CommunicatieType {ID = 1, Validatie = ".*"},
+                                                    GelieerdePersoon =
+                                                        new GelieerdePersoon
+                                                            {
+                                                                Persoon =
+                                                                    new Persoon {AdInAanvraag = true}
+                                                            },
+                                                    ID = 2,
+                                                    Voorkeur = true,
+                                                    Nummer = "1234"
+                                                };
+            origineleCommunicatieVorm.GelieerdePersoon.Communicatie.Add(origineleCommunicatieVorm);
+
             var communicatieInfo = new CommunicatieInfo
                                        {
                                            CommunicatieTypeID = origineleCommunicatieVorm.CommunicatieType.ID,
-                                           Voorkeur = true
+                                           Voorkeur = true,
+                                           Nummer = "4321"
                                        };
 
             // dependency injection
