@@ -135,8 +135,6 @@ namespace Chiro.Gap.Workers
                                    AdresTypeEnum adrestype,
                                    bool voorkeur)
         {
-            // TODO (#1042): Dit lijkt nog te hard op AdresToevoegen in PersonenManager
-
             // Vind personen waaraan het adres al gekoppeld is.
 
             var bestaand =
@@ -170,11 +168,13 @@ namespace Chiro.Gap.Workers
                     foreach (var gp2 in gelieerdePersoon.Persoon.GelieerdePersoon)
                     {
                         gp2.PersoonsAdres = pa;
+                        pa.GelieerdePersoon.Add(gp2);
                     }
                 }
                 else if (voorkeur)
                 {
                     gelieerdePersoon.PersoonsAdres = pa;
+                    pa.GelieerdePersoon.Add(gelieerdePersoon);
                 }
             }
         }
