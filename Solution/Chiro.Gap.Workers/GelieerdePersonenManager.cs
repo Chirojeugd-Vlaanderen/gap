@@ -41,20 +41,6 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class GelieerdePersonenManager : IGelieerdePersonenManager
     {
-        private readonly IAutorisatieManager _autorisatieMgr;
-        private readonly IPersonenSync _personenSync;
-        private readonly IAdressenSync _adressenSync;
-
-        public GelieerdePersonenManager(
-            IAutorisatieManager autorisatieMgr,
-            IPersonenSync personenSync,
-            IAdressenSync adressenSync)
-        {
-            _autorisatieMgr = autorisatieMgr;
-            _personenSync = personenSync;
-            _adressenSync = adressenSync;
-        }
-
         /// <summary>
         /// Voegt een <paramref name="nieuwePersoon"/> toe aan de gegegeven <paramref name="groep"/>. Als
         /// <paramref name="forceer"/> niet is gezet, wordt een exception opgegooid als er al een gelijkaardige
