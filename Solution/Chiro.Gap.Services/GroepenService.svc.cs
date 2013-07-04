@@ -27,6 +27,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
 
@@ -70,6 +71,10 @@ namespace Chiro.Gap.Services
         private readonly IVeelGebruikt _veelGebruikt;
         private readonly GavChecker _gav;
 
+        // Sync
+
+        private readonly IGroepenSync _groepenSync;
+
         /// <summary>
         /// Nieuwe groepenservice
         /// </summary>
@@ -87,7 +92,7 @@ namespace Chiro.Gap.Services
                               IGroepenManager groepenMgr, IJaarOvergangManager jaarOvergangMgr,
                                 IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                               IFunctiesManager functiesMgr, IVeelGebruikt veelGebruikt,
-                              IRepositoryProvider repositoryProvider)
+                              IRepositoryProvider repositoryProvider, IGroepenSync groepenSync)
         {
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
             _adresRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
@@ -114,6 +119,8 @@ namespace Chiro.Gap.Services
             _authenticatieMgr = authenticatieMgr;
             _autorisatieMgr = autorisatieMgr;
             _veelGebruikt = veelGebruikt;
+            _groepenSync = groepenSync;
+
             _gav = new GavChecker(_autorisatieMgr);
         }
 
@@ -288,7 +295,16 @@ namespace Chiro.Gap.Services
 
             groep.Code = groepInfo.StamNummer;
 
-            _groepenRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _groepenSync.Bewaren(groep);
+                _groepenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
         }
 
         #endregion
