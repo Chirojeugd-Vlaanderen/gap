@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System.Linq;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
@@ -142,49 +143,46 @@ namespace Chiro.Gap.Services.Test
         [TestMethod]
         public void CategorieVerwijderenMetPersoonForceer()
         {
-            throw new NotImplementedException();
+            // ARRANGE
 
-            //using (new TransactionScope())
-            //{
-            //    // Arrange: categorie maken, en persoon toevoegen.
-            //    var catIDDieVerwijderdZalWorden = _groepenSvc.CategorieToevoegen(TestInfo.GROEP_ID, "CategorieVerwijderenMetPersoonForceer", "TempCat2");
+            #region testdata
 
-            //    // Maak een nieuwe persoon
-            //    var gp =
-            //        _personenSvc.AanmakenForceer(
-            //            new PersoonInfo
-            //            {
-            //                AdNummer = null,
-            //                ChiroLeefTijd = 0,
-            //                GeboorteDatum = new DateTime(2005, 5, 8),
-            //                Geslacht = GeslachtsType.Man,
-            //                Naam = "CategorieVerwijderenMetPersoonForceer",
-            //                VoorNaam = "Pierre",
-            //            },
-            //            groepID: TestInfo.GROEP_ID,
-            //            forceer: true);
+            var groep = new ChiroGroep();
 
+            var categorie = new Categorie
+            {
+                ID = 1,
+                Groep = groep
+            };
+            groep.Categorie.Add(categorie);
 
-            //    _personenSvc.CategorieKoppelen(
-            //        new List<int> { gp.GelieerdePersoonID },
-            //        new List<int> { catIDDieVerwijderdZalWorden });
+            var gelieerdePersoon = new GelieerdePersoon {Groep = groep};
+            groep.GelieerdePersoon.Add(gelieerdePersoon);
+            categorie.GelieerdePersoon.Add(gelieerdePersoon);
+            gelieerdePersoon.Categorie.Add(categorie);
 
-            //    // Act
-            //    _groepenSvc.CategorieVerwijderen(catIDDieVerwijderdZalWorden, true);
+            #endregion
 
-            //    // Assert
+            #region dependency injection
 
-            //    // Probeer categorie terug op te halen.  Dat moet failen.
-            //    var newCatID = _groepenSvc.CategorieIDOphalen(
-            //        TestInfo.GROEP_ID,
-            //        "TempCat2");
-            //    Assert.IsTrue(newCatID == 0);
+            var categorieenRepo = new DummyRepo<Categorie>(new List<Categorie> {categorie});
 
-            //    // Controleer ook of de gelieerde persoon niet per ongeluk mee is verwijderd
-            //    var persoon = _personenSvc.DetailOphalen(gp.GelieerdePersoonID);
-            //    Assert.IsNotNull(persoon);
-            //}
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Categorie>())
+                                  .Returns(categorieenRepo);
 
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+            #endregion
+
+            // ACT
+
+            var groepenService = Factory.Maak<GroepenService>();
+            // Verwijder categorie zonder te forceren
+            groepenService.CategorieVerwijderen(categorie.ID, true);
+
+            // ASSERT
+
+            Assert.IsNull(categorieenRepo.ByID(categorie.ID));  // categorie weg
         }
     }
 }
