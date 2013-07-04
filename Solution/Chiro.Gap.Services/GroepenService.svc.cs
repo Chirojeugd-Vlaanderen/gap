@@ -161,6 +161,9 @@ namespace Chiro.Gap.Services
         }
 
         #endregion
+
+        #region ophalen
+
         /// <summary>
         /// Ophalen van Groepsinformatie
         /// </summary>
@@ -247,6 +250,10 @@ namespace Chiro.Gap.Services
             return Mapper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(groepsWerkJaren);
         }
 
+        #endregion
+
+        #region te syncen wijzigingen
+
         /// <summary>
         /// Persisteert een groep in de database
         /// Momenteel ondersteunen we enkel het wijzigen van groepsnaam
@@ -283,6 +290,8 @@ namespace Chiro.Gap.Services
 
             _groepenRepo.SaveChanges();
         }
+
+        #endregion
 
         /// <summary>
         /// Haalt groepswerkjaarId van het recentst gemaakte groepswerkjaar
