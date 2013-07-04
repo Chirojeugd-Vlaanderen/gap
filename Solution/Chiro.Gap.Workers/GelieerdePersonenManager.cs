@@ -41,20 +41,6 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class GelieerdePersonenManager : IGelieerdePersonenManager
     {
-        private readonly IAutorisatieManager _autorisatieMgr;
-        private readonly IPersonenSync _personenSync;
-        private readonly IAdressenSync _adressenSync;
-
-        public GelieerdePersonenManager(
-            IAutorisatieManager autorisatieMgr,
-            IPersonenSync personenSync,
-            IAdressenSync adressenSync)
-        {
-            _autorisatieMgr = autorisatieMgr;
-            _personenSync = personenSync;
-            _adressenSync = adressenSync;
-        }
-
         /// <summary>
         /// Voegt een <paramref name="nieuwePersoon"/> toe aan de gegegeven <paramref name="groep"/>. Als
         /// <paramref name="forceer"/> niet is gezet, wordt een exception opgegooid als er al een gelijkaardige
@@ -132,25 +118,25 @@ namespace Chiro.Gap.Workers
         /// Persisteert niet.
         /// </summary>
         /// <param name="gelieerdePersonen">
-        /// Gelieerde  die er een adres bij krijgen, met daaraan gekoppeld hun huidige
-        /// adressen, en de gelieerde personen waarop de gebruiker GAV-rechten heeft.
+        ///     Gelieerde  die er een adres bij krijgen, met daaraan gekoppeld hun huidige
+        ///     adressen, en de gelieerde personen waarop de gebruiker GAV-rechten heeft.
         /// </param>
         /// <param name="adres">
-        /// Toe te voegen adres
+        ///     Toe te voegen adres
         /// </param>
         /// <param name="adrestype">
-        /// Het adrestype (thuis, kot, enz.)
+        ///     Het adrestype (thuis, kot, enz.)
         /// </param>
         /// <param name="voorkeur">
-        /// Indien true, wordt het nieuwe adres voorkeursadres van de gegeven gelieerde personen
+        ///     Indien true, wordt het nieuwe adres voorkeursadres van de gegeven gelieerde personen
         /// </param>
-        public void AdresToevoegen(IList<GelieerdePersoon> gelieerdePersonen,
-                                   Adres adres,
-                                   AdresTypeEnum adrestype,
-                                   bool voorkeur)
+        /// <returns>
+        /// De nieuwe koppelingen tussen de <paramref name="gelieerdePersonen"/> en 
+        /// <paramref name="adres"/>.
+        /// </returns>
+        public List<PersoonsAdres> AdresToevoegen(IList<GelieerdePersoon> gelieerdePersonen, Adres adres, AdresTypeEnum adrestype, bool voorkeur)
         {
-            // TODO (#1042): Dit lijkt nog te hard op AdresToevoegen in PersonenManager
-
+            var resultaat = new List<PersoonsAdres>();
             // Vind personen waaraan het adres al gekoppeld is.
 
             var bestaand =
@@ -184,13 +170,17 @@ namespace Chiro.Gap.Workers
                     foreach (var gp2 in gelieerdePersoon.Persoon.GelieerdePersoon)
                     {
                         gp2.PersoonsAdres = pa;
+                        pa.GelieerdePersoon.Add(gp2);
                     }
                 }
                 else if (voorkeur)
                 {
                     gelieerdePersoon.PersoonsAdres = pa;
+                    pa.GelieerdePersoon.Add(gelieerdePersoon);
                 }
+                resultaat.Add(pa);
             }
+            return resultaat;
         }
     }
 }

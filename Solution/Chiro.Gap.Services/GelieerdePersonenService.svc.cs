@@ -153,6 +153,8 @@ namespace Chiro.Gap.Services
 
         #endregion
 
+        #region Ophalen
+
         /// <summary>
         /// Haalt een persoonsgegevens op van gelieerde personen van een groep,
         /// inclusief eventueel lidobject voor het recentste werkJaar.
@@ -423,45 +425,123 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Updatet een bestaand persoon op basis van <paramref name="persoonInfo"/>
+        /// Haalt PersoonID op van een gelieerde persoon
         /// </summary>
-        /// <param name="persoonInfo">Info over te bewaren persoon</param>
-        /// <returns>GelieerdePersoonID van de bewaarde persoon</returns>
-        public int Bewaren(PersoonInfo persoonInfo)
+        /// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
+        /// <returns>PersoonID van de persoon gekoppeld aan de gelieerde persoon bepaald door <paramref name="gelieerdePersoonID"/></returns>
+        /// <remarks>Eigenlijk is dit een domme method, maar ze wordt gemakshalve nog gebruikt.</remarks>
+        public int PersoonIDGet(int gelieerdePersoonID)
         {
-            var gp = _gelieerdePersonenRepo.ByID(persoonInfo.GelieerdePersoonID);
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
 
-            if (gp == null || !_autorisatieMgr.IsGav(gp))
+            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            if (gp.Persoon.AdNummer != null && gp.Persoon.AdNummer != persoonInfo.AdNummer)
-            {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout, Resources.AdNummerNietWijzigen);
-            }
-
-            gp.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;   // Chiroleeftijd vullen we gauw zo in
-            Mapper.Map(persoonInfo, gp.Persoon);    // overschrijf persoonsgegevens met info uit persoonInfo
-
-
-#if KIPDORP
-            using (var tx = new TransactionScope())
-            {
-#endif
-            _gelieerdePersonenRepo.SaveChanges();
-            if (gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag)
-            {
-                //TODO: regel hieronder staat in commentaar om te kunnen testen, terug uithalen voor sync met kipadmin
-                //_personenSync.Bewaren(gp, false, false);
-            }
-#if KIPDORP   
-            tx.Complete();
-            }
-#endif
-            return gp.ID;
+            return gelieerdePersoon.Persoon.ID;
         }
 
+        /// <summary>
+        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarbij
+        /// naam of voornaam begint met <paramref name="teZoeken"/>
+        /// </summary>
+        /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
+        /// <param name="teZoeken">Te zoeken voor- of achternaam</param>
+        /// <returns>Lijst met gevonden matches</returns>
+        /// <remarks>Deze method levert enkel naam, voornaam en gelieerdePersoonID op!</remarks>
+        public IEnumerable<PersoonInfo> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
+        {
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+	    if (String.IsNullOrEmpty(teZoeken))
+	    {
+		    return new List<PersoonInfo>();
+	    }
+
+            var personen = (from gp in groep.GelieerdePersoon
+                            where String.Format("{0} {1}", gp.Persoon.Naam, gp.Persoon.VoorNaam).StartsWith(teZoeken, StringComparison.InvariantCultureIgnoreCase)
+                            || String.Format("{1} {0}", gp.Persoon.Naam, gp.Persoon.VoorNaam).StartsWith(teZoeken, StringComparison.InvariantCultureIgnoreCase)
+                            select gp).ToList();
+
+            return Mapper.Map<IList<GelieerdePersoon>, List<PersoonInfo>>(personen);
+        }
+
+        /// <summary>
+        /// Haalt adres op, met daaraan gekoppeld de bewoners uit de groep met ID <paramref name="groepID"/>.
+        /// </summary>
+        /// <param name="adresID">ID op te halen adres</param>
+        /// <param name="groepID">ID van de groep</param>
+        /// <returns>Adresobject met gekoppelde personen</returns>
+        /// <remarks>GelieerdePersoonID's van bewoners worden niet mee opgehaald</remarks>
+        public GezinInfo GezinOphalen(int adresID, int groepID)
+        {
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var adres = _adressenRepo.ByID(adresID);
+
+            var persoonsAdressen = (from pa in adres.PersoonsAdres
+                                    where pa.Persoon.GelieerdePersoon.Any(gp => Equals(gp.Groep, groep))
+                                    select pa).ToList();
+
+            var resultaat = new GezinInfo();
+
+            Mapper.Map(adres, resultaat);
+            resultaat.Bewoners = Mapper.Map<IList<PersoonsAdres>, IList<BewonersInfo>>(persoonsAdressen);
+
+            return resultaat;
+        }
+
+        /// <summary>
+        /// Gegeven een gelieerde persoon met gegeven <paramref name="gelieerdePersoonID"/>, haal al diens
+        /// huisgenoten uit zijn eigen groep op.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van GelieerdePersoon</param>
+        /// <returns>Lijst met Personen uit dezelfde groep die huisgenoot zijn van gegeven
+        /// persoon</returns>
+        /// <remarks>Parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
+        public List<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
+        {
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
+
+            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+            
+	    // Hieronder stond eerst tussen 'PersoonsAdres.' en 'SelectMany...' 
+	    // nog ".Select(pa => pa.Persoon)" nog tussen,
+            // waardoor twee keer dezelfde persoon weergegegeven werd.
+            var huisGenoten =
+                (from gp in
+                     gelieerdePersoon.Persoon.PersoonsAdres.SelectMany(p => p.GelieerdePersoon)
+                 where Equals(gp.Groep, gelieerdePersoon.Groep)
+                 select gp).ToList();
+
+            if (!huisGenoten.Any())
+            {
+                // Als er nog geen adressen zijn, dan zijn er ook geen huisgenoten.
+                // In dat geval leveren we gewoon de originele gelieerde persoon op.
+
+                huisGenoten = new List<GelieerdePersoon> { gelieerdePersoon };
+            }
+
+            return Mapper.Map<IList<GelieerdePersoon>, List<BewonersInfo>>(huisGenoten);
+        }
+
+        #endregion
+
+        #region aanmaken (wordt niet gesynct)
         /// <summary>
         /// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
         /// <paramref>groepID</paramref>
@@ -498,13 +578,13 @@ namespace Chiro.Gap.Services
             }
 
             var nieuwePersoon = new Persoon
-                                    {
-                                        AdNummer = null, // nieuwe persoon kan geen ad-nummer hebben
-                                        VoorNaam = info.VoorNaam,
-                                        Naam = info.Naam,
-                                        GeboorteDatum = info.GeboorteDatum,
-                                        Geslacht = info.Geslacht
-                                    };
+            {
+                AdNummer = null, // nieuwe persoon kan geen ad-nummer hebben
+                VoorNaam = info.VoorNaam,
+                Naam = info.Naam,
+                GeboorteDatum = info.GeboorteDatum,
+                Geslacht = info.Geslacht
+            };
             GelieerdePersoon resultaat;
 
             try
@@ -519,86 +599,49 @@ namespace Chiro.Gap.Services
 
             _groepenRepo.SaveChanges();
 
-            return new IDPersEnGP {GelieerdePersoonID = resultaat.ID, PersoonID = resultaat.Persoon.ID};
+            return new IDPersEnGP { GelieerdePersoonID = resultaat.ID, PersoonID = resultaat.Persoon.ID };
         }
 
-        /// <summary>
-        /// Haalt PersoonID op van een gelieerde persoon
-        /// </summary>
-        /// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
-        /// <returns>PersoonID van de persoon gekoppeld aan de gelieerde persoon bepaald door <paramref name="gelieerdePersoonID"/></returns>
-        /// <remarks>Eigenlijk is dit een domme method, maar ze wordt gemakshalve nog gebruikt.</remarks>
-        public int PersoonIDGet(int gelieerdePersoonID)
-        {
-            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
+        #endregion
 
-            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
+        #region te syncen updates
+
+        /// <summary>
+        /// Updatet een bestaand persoon op basis van <paramref name="persoonInfo"/>
+        /// </summary>
+        /// <param name="persoonInfo">Info over te bewaren persoon</param>
+        /// <returns>GelieerdePersoonID van de bewaarde persoon</returns>
+        public int Bewaren(PersoonInfo persoonInfo)
+        {
+            var gp = _gelieerdePersonenRepo.ByID(persoonInfo.GelieerdePersoonID);
+
+            if (gp == null || !_autorisatieMgr.IsGav(gp))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            return gelieerdePersoon.Persoon.ID;
-        }
-
-
-        /// <summary>
-        /// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> waarbij
-        /// naam of voornaam begint met <paramref name="teZoeken"/>
-        /// </summary>
-        /// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
-        /// <param name="teZoeken">Te zoeken voor- of achternaam</param>
-        /// <returns>Lijst met gevonden matches</returns>
-        /// <remarks>Deze method levert enkel naam, voornaam en gelieerdePersoonID op!</remarks>
-        public IEnumerable<PersoonInfo> ZoekenOpNaamVoornaamBegin(int groepID, string teZoeken)
-        {
-            if (String.IsNullOrEmpty(teZoeken))
+            if (gp.Persoon.AdNummer != null && gp.Persoon.AdNummer != persoonInfo.AdNummer)
             {
-                return new List<PersoonInfo>();
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout, Resources.AdNummerNietWijzigen);
             }
 
-            var groep = _groepenRepo.ByID(groepID);
+            gp.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;   // Chiroleeftijd vullen we gauw zo in
+            Mapper.Map(persoonInfo, gp.Persoon);    // overschrijf persoonsgegevens met info uit persoonInfo
 
-            if (!_autorisatieMgr.IsGav(groep))
+#if KIPDORP
+            using (var tx = new TransactionScope())
             {
-                throw FaultExceptionHelper.GeenGav();
-            }
-            teZoeken = teZoeken.ToLower();
-
-            var lijst =  (from gpnm in groep.GelieerdePersoon
-                          where (gpnm.Persoon.Naam.ToLower() + " " + gpnm.Persoon.VoorNaam.ToLower() + " " + gpnm.Persoon.Naam.ToLower()).Contains(teZoeken)
-                        select gpnm).ToList();
-
-            return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonInfo>>(lijst);
-        }
-
-        /// <summary>
-        /// Haalt adres op, met daaraan gekoppeld de bewoners uit de groep met ID <paramref name="groepID"/>.
-        /// </summary>
-        /// <param name="adresID">ID op te halen adres</param>
-        /// <param name="groepID">ID van de groep</param>
-        /// <returns>Adresobject met gekoppelde personen</returns>
-        /// <remarks>GelieerdePersoonID's van bewoners worden niet mee opgehaald</remarks>
-        public GezinInfo GezinOphalen(int adresID, int groepID)
-        {
-            var groep = _groepenRepo.ByID(groepID);
-
-            if (!_autorisatieMgr.IsGav(groep))
+#endif
+            _gelieerdePersonenRepo.SaveChanges();
+            if (gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag)
             {
-                throw FaultExceptionHelper.GeenGav();
+                _personenSync.Bewaren(gp, false, false);
             }
-
-            var adres = _adressenRepo.ByID(adresID);
-
-            var persoonsAdressen = (from pa in adres.PersoonsAdres
-                                    where pa.Persoon.GelieerdePersoon.Any(gp => Equals(gp.Groep, groep))
-                                    select pa).ToList();
-
-            var resultaat = new GezinInfo();
-
-            Mapper.Map(adres, resultaat);
-            resultaat.Bewoners = Mapper.Map<IList<PersoonsAdres>, IList<BewonersInfo>>(persoonsAdressen);
-
-            return resultaat;
+#if KIPDORP   
+            tx.Complete();
+            }
+#endif
+            return gp.ID;
         }
 
         /// <summary>
@@ -676,50 +719,16 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Gegeven een gelieerde persoon met gegeven <paramref name="gelieerdePersoonID"/>, haal al diens
-        /// huisgenoten uit zijn eigen groep op.
-        /// </summary>
-        /// <param name="gelieerdePersoonID">ID van GelieerdePersoon</param>
-        /// <returns>Lijst met Personen uit dezelfde groep die huisgenoot zijn van gegeven
-        /// persoon</returns>
-        /// <remarks>Parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
-        public List<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
-        {
-            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
-
-            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-            //Hieronder stond eerst tussen 'PersoonsAdres.' en 'SelectMany...' nog ".Select(pa => pa.Persoon)" nog tussen,
-            //waardoor twee keer dezelfde persoon weergegegeven werd.
-            var huisGenoten =
-                (from gp in
-                     gelieerdePersoon.Persoon.PersoonsAdres.SelectMany(p => p.GelieerdePersoon)
-                 where Equals(gp.Groep, gelieerdePersoon.Groep)
-                 select gp).ToList();
-
-            if (!huisGenoten.Any())
-            {
-                // Als er nog geen adressen zijn, dan zijn er ook geen huisgenoten.
-                // In dat geval leveren we gewoon de originele gelieerde persoon op.
-
-                huisGenoten = new List<GelieerdePersoon>{gelieerdePersoon};
-            }
-
-            return Mapper.Map<IList<GelieerdePersoon>, List<BewonersInfo>>(huisGenoten);
-        }
-
-        /// <summary>
         /// Voegt een adres toe aan een verzameling *GELIEERDE* personen
         /// </summary>
         /// <param name="gelieerdePersonenIDs">ID's van de gelieerde personen
         /// waaraan het nieuwe adres toegevoegd moet worden.</param>
         /// <param name="adr">Toe te voegen adres</param>
         /// <param name="voorkeur"><c>True</c> als het nieuwe adres het voorkeursadres moet worden.</param>
-        public void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersonenIDs, PersoonsAdresInfo adr, bool voorkeur)
+        public void AdresToevoegenGelieerdePersonen(IList<int> gelieerdePersonenIDs, PersoonsAdresInfo adr, bool voorkeur)
         {
             Adres adres;
+            IList<PersoonsAdres> nieuwePersoonsAdressen;
 
             var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdePersonenIDs);
 
@@ -742,7 +751,7 @@ namespace Chiro.Gap.Services
 
             try
             {
-                _gelieerdePersonenMgr.AdresToevoegen(gelieerdePersonen, adres, adr.AdresType, voorkeur);
+                nieuwePersoonsAdressen = _gelieerdePersonenMgr.AdresToevoegen(gelieerdePersonen, adres, adr.AdresType, voorkeur);
             }
             catch (BlokkerendeObjectenException<PersoonsAdres> ex)
             {
@@ -751,8 +760,23 @@ namespace Chiro.Gap.Services
                     Mapper.Map<IList<PersoonsAdres>, List<PersoonsAdresInfo2>>(ex.Objecten), ex.Message);
             }
 
-            _gelieerdePersonenRepo.SaveChanges();
-            
+            var teSyncen = (from pa in nieuwePersoonsAdressen
+                            where pa.GelieerdePersoon.Any(gp => _gelieerdePersonenMgr.IsGekendInKipadmin(gp))
+                            select pa).ToList();
+                            
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                if (teSyncen.Any())
+                {
+                    _adressenSync.StandaardAdressenBewaren(teSyncen);
+                }
+                _gelieerdePersonenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif          
         }
 
         /// <summary>
@@ -1089,5 +1113,8 @@ namespace Chiro.Gap.Services
 
             _categorieenRepo.SaveChanges();
         }
+
+        #endregion
     }
 }
+

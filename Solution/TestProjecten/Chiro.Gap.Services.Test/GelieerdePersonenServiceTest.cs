@@ -623,5 +623,62 @@ namespace Chiro.Gap.Services.Test
 
             adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()), Times.AtLeastOnce());
         }
+
+        /// <summary>
+        /// Controleert of een nieuw voorkeursadres van een gekende gelieerde persoon wordt gesynct.
+        ///</summary>
+        [TestMethod()]
+        public void AdresToevoegenGelieerdePersonenTest()
+        {
+            // ARRANGE
+
+            // testdata
+
+            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Persoon = new Persoon {AdInAanvraag = true}};
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+
+            var nederland = new Land {Naam = "Nederland"};
+
+            var persoonsAdresInfo = new PersoonsAdresInfo
+                                        {
+                                            StraatNaamNaam = "Evert van de Beekstraat",
+                                            HuisNr = 354,
+                                            PostNr = 1118,
+                                            PostCode = "CZ",
+                                            WoonPlaatsNaam = "Schiphol",
+                                            LandNaam = nederland.Naam
+                                        };
+            // mock voor sync
+
+            var adressenSyncMock = new Mock<IAdressenSync>();
+            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()))
+                            .Verifiable();
+            Factory.InstantieRegistreren(adressenSyncMock.Object);
+
+            // dependency injection voor data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
+                                  .Returns(new DummyRepo<Adres>(new List<Adres>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<StraatNaam>())
+                                  .Returns(new DummyRepo<StraatNaam>(new List<StraatNaam>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<WoonPlaats>())
+                                  .Returns(new DummyRepo<WoonPlaats>(new List<WoonPlaats>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Land>())
+                                  .Returns(new DummyRepo<Land>(new List<Land> {nederland}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.AdresToevoegenGelieerdePersonen(new [] {gelieerdePersoon.ID}, persoonsAdresInfo, true);
+
+            // ASSERT
+
+            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()),
+                                    Times.AtLeastOnce());
+        }
     }
 }
