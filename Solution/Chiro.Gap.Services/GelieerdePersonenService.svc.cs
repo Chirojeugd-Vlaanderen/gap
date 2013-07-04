@@ -716,6 +716,7 @@ namespace Chiro.Gap.Services
         public void AdresToevoegenGelieerdePersonen(IList<int> gelieerdePersonenIDs, PersoonsAdresInfo adr, bool voorkeur)
         {
             Adres adres;
+            IList<PersoonsAdres> nieuwePersoonsAdressen;
 
             var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdePersonenIDs);
 
@@ -738,7 +739,7 @@ namespace Chiro.Gap.Services
 
             try
             {
-                _gelieerdePersonenMgr.AdresToevoegen(gelieerdePersonen, adres, adr.AdresType, voorkeur);
+                nieuwePersoonsAdressen = _gelieerdePersonenMgr.AdresToevoegen(gelieerdePersonen, adres, adr.AdresType, voorkeur);
             }
             catch (BlokkerendeObjectenException<PersoonsAdres> ex)
             {
@@ -747,8 +748,20 @@ namespace Chiro.Gap.Services
                     Mapper.Map<IList<PersoonsAdres>, List<PersoonsAdresInfo2>>(ex.Objecten), ex.Message);
             }
 
-            _gelieerdePersonenRepo.SaveChanges();
-            
+            var teSyncen = (from pa in nieuwePersoonsAdressen
+                            where pa.GelieerdePersoon.Any(gp => _gelieerdePersonenMgr.IsGekendInKipadmin(gp))
+                            select pa).ToList();
+                            
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _adressenSync.StandaardAdressenBewaren(teSyncen);
+                _gelieerdePersonenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif          
         }
 
         /// <summary>

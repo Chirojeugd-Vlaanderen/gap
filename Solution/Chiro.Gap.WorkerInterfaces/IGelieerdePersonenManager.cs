@@ -46,19 +46,23 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Persisteert niet.
         /// </summary>
         /// <param name="gelieerdePersonen">
-        /// Gelieerde  die er een adres bij krijgen, met daaraan gekoppeld hun huidige
-        /// adressen, en de gelieerde personen waarop de gebruiker GAV-rechten heeft.
+        ///     Gelieerde  die er een adres bij krijgen, met daaraan gekoppeld hun huidige
+        ///     adressen, en de gelieerde personen waarop de gebruiker GAV-rechten heeft.
         /// </param>
         /// <param name="adres">
-        /// Toe te voegen adres
+        ///     Toe te voegen adres
         /// </param>
         /// <param name="adrestype">
-        /// Het adrestype (thuis, kot, enz.)
+        ///     Het adrestype (thuis, kot, enz.)
         /// </param>
         /// <param name="voorkeur">
-        /// Indien true, wordt het nieuwe adres voorkeursadres van de gegeven gelieerde personen
+        ///     Indien true, wordt het nieuwe adres voorkeursadres van de gegeven gelieerde personen
         /// </param>
-        void AdresToevoegen(IList<GelieerdePersoon> gelieerdePersonen,
+        /// <returns>
+        /// De nieuwe koppelingen tussen de <paramref name="gelieerdePersonen"/> en 
+        /// <paramref name="adres"/>.
+        /// </returns>
+        List<PersoonsAdres> AdresToevoegen(IList<GelieerdePersoon> gelieerdePersonen,
                                             Adres adres,
                                             AdresTypeEnum adrestype,
                                             bool voorkeur);
