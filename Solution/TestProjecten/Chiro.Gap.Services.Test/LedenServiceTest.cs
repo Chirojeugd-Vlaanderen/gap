@@ -857,7 +857,7 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
-        ///A test for AfdelingenVervangenBulk
+        ///Flauwe test voor AfdelingenVervangenBulk
         ///</summary>
         [TestMethod()]
         public void AfdelingenVervangenBulkTest()
@@ -1182,5 +1182,50 @@ namespace Chiro.Gap.Services.Test
             Assert.IsTrue(gelieerdePersoon.Persoon.AdInAanvraag);
         }
 
+
+        /// <summary>
+        /// Controleert of AfdelingenVervangenBulk wel synchroniseert met Kipadmin
+        /// </summary>
+        [TestMethod()]
+        public void AfdelingenVervangenBulkTestSync()
+        {
+            // ARRANGE
+
+            var oudAfdelingsJaar = new AfdelingsJaar {ID = 1};
+            var nieuwAfdelingsJaar = new AfdelingsJaar {ID = 2};
+            var groepsWerkJaar = new GroepsWerkJaar
+                                     {
+                                         AfdelingsJaar =
+                                             new List<AfdelingsJaar>
+                                                 {
+                                                     oudAfdelingsJaar,
+                                                     nieuwAfdelingsJaar
+                                                 }
+                                     };
+
+            var lid = new Kind {ID = 3, AfdelingsJaar = oudAfdelingsJaar, GroepsWerkJaar = groepsWerkJaar};
+
+            // Dependency injection sync
+
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Lid>())).Verifiable();
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+            
+            // Dependency injection data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid> {lid}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            target.AfdelingenVervangenBulk(new[] {lid.ID}, new[] {nieuwAfdelingsJaar.ID});
+
+            // ASSERT
+
+            ledenSyncMock.Verify(src=>src.AfdelingenUpdaten(It.IsAny<Lid>()), Times.AtLeastOnce());
+        }
     }
 }
