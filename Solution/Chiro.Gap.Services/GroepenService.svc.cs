@@ -869,7 +869,14 @@ namespace Chiro.Gap.Services
 
             try
             {
-                _functiesMgr.Verwijderen(functie, forceren);
+                var feedback = _functiesMgr.Verwijderen(functie, forceren);
+                // als feedback null is, kan de functie daadwerkelijk verwijderd worden.
+                // TODO: Dit is verwarrend!
+                // TODO: Als er echt een object verwijderd moet worden (ipv een link), dan kan/mag dat eigenlijk niet via de workers
+                if (feedback == null)
+                {
+                    _functiesRepo.Delete(functie);
+                }
             }
             catch (BlokkerendeObjectenException<Lid> ex)
             {
