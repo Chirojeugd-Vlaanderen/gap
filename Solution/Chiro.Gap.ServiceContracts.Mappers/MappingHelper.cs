@@ -247,7 +247,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.PostCodeGet()))
                 .ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.LandGet()));
 
-            Mapper.CreateMap<Lid, KleinLidOverzicht>()
+            Mapper.CreateMap<Lid, LidOverzichtZonderAdres>()
                   .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
                   .ForMember(dst => dst.Email,
                              opt =>
@@ -284,7 +284,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                   .ForMember(dst => dst.Type, opt => opt.MapFrom(src => src.Type))
                   .ForMember(dst => dst.AfdelingsJaarIDs, opt => opt.MapFrom(src => src.AfdelingsJaarIDs));
 
-            Mapper.CreateMap<KleinLidOverzicht, LidOverzicht>();
+            Mapper.CreateMap<LidOverzichtZonderAdres, LidOverzicht>();
 
             Mapper.CreateMap<Lid, LidOverzicht>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
