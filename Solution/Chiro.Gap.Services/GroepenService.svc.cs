@@ -1214,6 +1214,7 @@ namespace Chiro.Gap.Services
             }
 
             _groepenRepo.SaveChanges();
+            _veelGebruikt.WerkJaarInvalideren(groep);
         }
 
         /// <summary>

@@ -644,8 +644,93 @@ namespace Chiro.Gap.Services
             return lid.GelieerdePersoon.ID;
         }
 
+        /// <summary>
+        /// Verandert een kind in leiding of vice versa
+        /// </summary>
+        /// <param name="lidId">Id van lid met te togglen lidtype</param>
+        /// <returns>GelieerdePersoonId van lid</returns>
+        public int TypeToggle(int lidId)
+        {
+            var lid = _ledenRepo.ByID(lidId);
+            Lid nieuwLid;
+            Gav.Check(lid);
+
+            DateTime? eindeInstap = lid.EindeInstapPeriode;
+            var nieuwNiveau = (lid is Kind) ? Niveau.LeidingInGroep : Niveau.LidInGroep;
+
+            var gelieerdePersoon = lid.GelieerdePersoon;
+            var groepsWerkJaar = lid.GroepsWerkJaar;
+
+            // Een bestaand object van type wisselen, is niet mogelijk (denk ik)
+            // dus we verwijderen het bestaande lid, en maken een nieuw aan.
+
+            // Zaken uit de repository verwijderen, kan moeilijk tot niet in de workers,
+            // dus doen we het hier.
+
+            if (!groepsWerkJaar.Groep.Niveau.HasFlag(Niveau.Groep))
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.LidTypeVerkeerd, Properties.Resources.NietVoorKader);
+            }
+
+            // Behoud bestaande functies die straks nog van 
+            // toepassing zijn, om opnieuw te kunnen toekennen.
+
+            var teBewarenFuncties = (from f in lid.Functie
+                                     where f.Niveau.HasFlag(nieuwNiveau)
+                                     select f).ToList();
+
+
+            // Koppel de bestaande functies en afdelingen los van het lid, en verwijder het bestaande lid.
+
+            lid.Functie.Clear();
+            if (lid is Leiding)
+            {
+                (lid as Leiding).AfdelingsJaar.Clear();
+            }
+
+            gelieerdePersoon.Lid.Remove(lid);
+            groepsWerkJaar.Lid.Remove(lid);
+            _ledenRepo.Delete(lid);
+
+            var voorstelLid = new LidVoorstel
+            {
+                AfdelingsJaarIDs = null,
+                AfdelingsJarenIrrelevant = true,
+                LeidingMaken = (nieuwNiveau == Niveau.LeidingInGroep)
+            };
+
+            try
+            {
+                nieuwLid = _ledenMgr.NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstelLid);
+            }
+            catch (FoutNummerException ex)
+            {
+                throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
+            }
+
+            nieuwLid.EindeInstapPeriode = eindeInstap;
+
+            foreach (var f in teBewarenFuncties)
+            {
+                nieuwLid.Functie.Add(f);
+            }
+
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _ledenSync.TypeUpdaten(nieuwLid);
+                _ledenSync.AfdelingenUpdaten(nieuwLid);
+                _ledenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
+            return gelieerdePersoon.ID;
+        }
         #endregion
 
+        #region zoeken en ophalen
         /// <summary>
         /// Haalt summiere info van een lid met gegeven <paramref name="lidId"/> op.
         /// (naam van lid, afdeling, en lidtype)
@@ -724,6 +809,8 @@ namespace Chiro.Gap.Services
             var list = Mapper.Map<IList<Lid>, List<KleinLidOverzicht>>(leden);
             return Mapper.Map<IList<KleinLidOverzicht>, List<LidOverzicht>>(list);
         }
+        #endregion
+
 
         /// <summary>
         /// Togglet het vlagje 'lidgeld betaald' van het lid met LidId <paramref name="lidId"/>.  Geeft als resultaat
@@ -749,81 +836,6 @@ namespace Chiro.Gap.Services
             return lid.GelieerdePersoon.ID;
         }
 
-        /// <summary>
-        /// Verandert een kind in leiding of vice versa
-        /// </summary>
-        /// <param name="lidId">Id van lid met te togglen lidtype</param>
-        /// <returns>GelieerdePersoonId van lid</returns>
-        public int TypeToggle(int lidId)
-        {
-            var lid = _ledenRepo.ByID(lidId);
-            Lid nieuwLid;
-            Gav.Check(lid);
 
-            DateTime? eindeInstap = lid.EindeInstapPeriode;
-            var nieuwNiveau = (lid is Kind) ? Niveau.LeidingInGroep : Niveau.LidInGroep;
-
-            var gelieerdePersoon = lid.GelieerdePersoon;
-            var groepsWerkJaar = lid.GroepsWerkJaar;
-
-            // Een bestaand object van type wisselen, is niet mogelijk (denk ik)
-            // dus we verwijderen het bestaande lid, en maken een nieuw aan.
-
-            // Zaken uit de repository verwijderen, kan moeilijk tot niet in de workers,
-            // dus doen we het hier.
-
-            if (!groepsWerkJaar.Groep.Niveau.HasFlag(Niveau.Groep))
-            {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.LidTypeVerkeerd, Properties.Resources.NietVoorKader);
-            }
-
-            // Behoud bestaande functies die straks nog van 
-            // toepassing zijn, om opnieuw te kunnen toekennen.
-
-            var teBewarenFuncties = (from f in lid.Functie
-                                    where f.Niveau.HasFlag(nieuwNiveau)
-                                    select f).ToList();
-
-
-            // Koppel de bestaande functies en afdelingen los van het lid, en verwijder het bestaande lid.
-
-            lid.Functie.Clear();
-            if (lid is Leiding)
-            {
-                (lid as Leiding).AfdelingsJaar.Clear();
-            }
-
-            gelieerdePersoon.Lid.Remove(lid);
-            groepsWerkJaar.Lid.Remove(lid);
-            _ledenRepo.Delete(lid);
-
-            var voorstelLid = new LidVoorstel
-                                  {
-                                      AfdelingsJaarIDs = null,
-                                      AfdelingsJarenIrrelevant = true,
-                                      LeidingMaken = (nieuwNiveau == Niveau.LeidingInGroep)
-                                  };
-
-            try
-            {
-                nieuwLid = _ledenMgr.NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstelLid);
-            }
-            catch (FoutNummerException ex)
-            {
-                throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
-            }
-
-            nieuwLid.EindeInstapPeriode = eindeInstap;
-
-            foreach (var f in teBewarenFuncties)
-            {
-                nieuwLid.Functie.Add(f);
-            }
-
-            // TODO: syncen met kipadmin
-            _ledenRepo.SaveChanges();
-
-            return gelieerdePersoon.ID;
-        }
     }
 }
