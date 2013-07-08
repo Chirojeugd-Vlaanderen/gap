@@ -90,6 +90,7 @@ namespace Chiro.Gap.Workers
                                                            nieuweCommunicatieVorm.CommunicatieType.Omschrijving));
             }
 
+            // nieuweCommunicatieVorm kan hier nog geen ID hebben
             Debug.Assert(nieuweCommunicatieVorm.ID == 0);
 
             nieuweCommunicatieVorm.GelieerdePersoon = gelieerdePersoon;

@@ -224,6 +224,8 @@ namespace Chiro.Gap.Services
             return voorgesteldelijst;
         }
 
+        #region te syncen
+
         /// <summary>
         /// Probeert de opgegeven personen in te schrijven met de meegegeven informatie. Als dit niet mogelijk blijkt te zijn, wordt er niemand ingeschreven.
         /// </summary>
@@ -593,7 +595,19 @@ namespace Chiro.Gap.Services
                 }
             }
 
-            _ledenRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                foreach (var l in leden)
+                {
+                    _ledenSync.AfdelingenUpdaten(l);
+                }
+                _ledenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
         }
 
         /// <summary>
@@ -629,6 +643,8 @@ namespace Chiro.Gap.Services
             _ledenRepo.SaveChanges();
             return lid.GelieerdePersoon.ID;
         }
+
+        #endregion
 
         /// <summary>
         /// Haalt actief lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies

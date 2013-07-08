@@ -259,6 +259,154 @@ namespace Chiro.Gap.Services
             return Mapper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(groepsWerkJaren);
         }
 
+        /// <summary>
+        /// Haalt groepswerkjaarId van het recentst gemaakte groepswerkjaar
+        /// voor een gegeven groep op.
+        /// </summary>
+        /// <param name="groepId">groepID van groep</param>
+        /// <returns>ID van het recentste GroepsWerkJaar</returns>
+        public int RecentsteGroepsWerkJaarIDGet(int groepId)
+        {
+            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+            return groepsWerkJaar.ID;
+        }
+
+        /// <summary>
+        /// Haalt gedetailleerde gegevens op van het recentst gemaakte groepswerkjaar
+        /// voor een gegeven groep op.
+        /// </summary>
+        /// <param name="groepId">groepID van groep</param>
+        /// <returns>
+        /// De details van het recentste groepswerkjaar
+        /// </returns>
+        public GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepId)
+        {
+            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(groepsWerkJaar);
+            result.Status = _groepsWerkJarenMgr.OvergangMogelijk(DateTime.Now, result.WerkJaar)
+                                ? WerkJaarStatus.InOvergang
+                                : WerkJaarStatus.Bezig;
+
+            return result;
+        }
+
+	/// <summary>
+        /// Controleert de verplicht in te vullen lidgegevens.
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvan de leden te controleren zijn</param>
+        /// <returns>Een rij LedenProbleemInfo.  Leeg bij gebrek aan problemen.</returns>
+        public IEnumerable<LedenProbleemInfo> LedenControleren(int groepId)
+        {
+            var resultaat = new List<LedenProbleemInfo>();
+
+            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            var aantalLedenZonderAdres = (from ld in _ledenRepo.Select("GelieerdePersoon.PersoonsAdres")
+                                          where ld.GroepsWerkJaar.ID == groepsWerkJaar.ID
+                                                && ld.UitschrijfDatum == null &&
+                                                ld.GelieerdePersoon.PersoonsAdres == null
+                                          select ld).Count();
+
+            if (aantalLedenZonderAdres > 0)
+            {
+                resultaat.Add(new LedenProbleemInfo
+                {
+                    Probleem = LidProbleem.AdresOntbreekt,
+                    Aantal = aantalLedenZonderAdres
+                });
+            }
+
+            var aantalLedenZonderTelefoonNr = (from ld in _ledenRepo.Select("GelieerdePersoon.Communicatie")
+                                               where ld.GroepsWerkJaar.ID == groepsWerkJaar.ID
+                                                && ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.TelefoonNummer)
+                                                && ld.UitschrijfDatum == null
+                                               select ld).Count();
+
+            if (aantalLedenZonderTelefoonNr > 0)
+            {
+                resultaat.Add(new LedenProbleemInfo
+                {
+                    Probleem = LidProbleem.TelefoonNummerOntbreekt,
+                    Aantal = aantalLedenZonderTelefoonNr
+                });
+            }
+
+            var aantalLeidingZonderEmail = (from ld in _ledenRepo.Select("GelieerdePersoon.Communicatie")
+                                            where ld.GroepsWerkJaar.ID == groepsWerkJaar.ID
+                                                && ld is Leiding 
+                                                && ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.Email)
+                                                && ld.UitschrijfDatum == null
+                                            select ld).Count();
+
+            if (aantalLeidingZonderEmail > 0)
+            {
+                resultaat.Add(new LedenProbleemInfo
+                                  {
+                                      Probleem = LidProbleem.EmailOntbreekt,
+                                      Aantal = aantalLeidingZonderEmail
+                                  });
+            }
+
+            return resultaat;
+        }
+
+
+        /// <summary>
+        /// Gets the Groep by ID and checks gav.
+        /// </summary>
+        /// <param name="groepId">The groep id.</param>
+        /// <returns>Groep.</returns>
+        Groep GetGroepEnCheckGav(int groepId)
+        {
+            var groep = _groepenRepo.ByID(groepId);
+            Gav.Check(groep);
+            return groep;
+        }
+
+
+        /// <summary>
+        /// Deze method geeft gewoon de gebruikersnaam weer waaronder je de service aanroept.  Vooral om de
+        /// authenticate te testen.
+        /// </summary>
+        /// <returns>Gebruikersnaam waarmee aangemeld</returns>
+        public string WieBenIk()
+        {
+            return _authenticatieMgr.GebruikersNaamGet();
+        }
+
+        /// <summary>
+        /// Deze method geeft weer of we op een liveomgeving werken (<c>true</c>) of niet (<c>false</c>)
+        /// </summary>
+        /// <returns><c>True</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
+        public bool IsLive()
+        {
+            return _groepenMgr.IsLive();
+        }
+
+        /// <summary>
+        /// Haalt informatie over alle gebruikersrechten van de gegeven groep op.
+        /// </summary>
+        /// <param name="groepId">ID van de groep waarvan de gebruikersrechten op te vragen zijn</param>
+        /// <returns>Lijstje met details van de gebruikersrechten</returns>
+        public IEnumerable<GebruikersDetail> GebruikersOphalen(int groepId)
+        {
+            var groep = GetGroepEnCheckGav(groepId);
+            return Mapper.Map<IEnumerable<GebruikersRecht>, IEnumerable<GebruikersDetail>>(groep.GebruikersRecht);
+        }
+
         #endregion
 
         #region te syncen wijzigingen
@@ -311,45 +459,7 @@ namespace Chiro.Gap.Services
 
         #endregion
 
-        /// <summary>
-        /// Haalt groepswerkjaarId van het recentst gemaakte groepswerkjaar
-        /// voor een gegeven groep op.
-        /// </summary>
-        /// <param name="groepId">groepID van groep</param>
-        /// <returns>ID van het recentste GroepsWerkJaar</returns>
-        public int RecentsteGroepsWerkJaarIDGet(int groepId)
-        {
-            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
-            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-            return groepsWerkJaar.ID;
-        }
-
-        /// <summary>
-        /// Haalt gedetailleerde gegevens op van het recentst gemaakte groepswerkjaar
-        /// voor een gegeven groep op.
-        /// </summary>
-        /// <param name="groepId">groepID van groep</param>
-        /// <returns>
-        /// De details van het recentste groepswerkjaar
-        /// </returns>
-        public GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepId)
-        {
-            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
-            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(groepsWerkJaar);
-            result.Status = _groepsWerkJarenMgr.OvergangMogelijk(DateTime.Now, result.WerkJaar)
-                                ? WerkJaarStatus.InOvergang
-                                : WerkJaarStatus.Bezig;
-
-            return result;
-        }
+        #region beheer afdelingen (wordt niet gesynct)
 
         /// <summary>
         /// Maakt een nieuwe afdeling voor een gegeven ChiroGroep
@@ -628,6 +738,10 @@ namespace Chiro.Gap.Services
             return Mapper.Map<List<Afdeling>, List<AfdelingInfo>>(ongebruikteAfdelingen);
         }
 
+        #endregion
+
+        #region beheer functies (wordt niet gesynct)
+
         /// <summary>
         /// Haalt uit groepswerkjaar met ID <paramref name="groepswerkjaarId"/> alle beschikbare functies
         /// op voor een lid van type <paramref name="lidType"/>.
@@ -693,83 +807,6 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Controleert de verplicht in te vullen lidgegevens.
-        /// </summary>
-        /// <param name="groepId">ID van de groep waarvan de leden te controleren zijn</param>
-        /// <returns>Een rij LedenProbleemInfo.  Leeg bij gebrek aan problemen.</returns>
-        public IEnumerable<LedenProbleemInfo> LedenControleren(int groepId)
-        {
-            var resultaat = new List<LedenProbleemInfo>();
-
-            var groepsWerkJaar = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
-            if (!_autorisatieMgr.IsGav(groepsWerkJaar))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            var aantalLedenZonderAdres = (from ld in _ledenRepo.Select("GelieerdePersoon.PersoonsAdres")
-                                          where ld.GroepsWerkJaar.ID == groepsWerkJaar.ID
-                                                && ld.UitschrijfDatum == null &&
-                                                ld.GelieerdePersoon.PersoonsAdres == null
-                                          select ld).Count();
-
-            if (aantalLedenZonderAdres > 0)
-            {
-                resultaat.Add(new LedenProbleemInfo
-                {
-                    Probleem = LidProbleem.AdresOntbreekt,
-                    Aantal = aantalLedenZonderAdres
-                });
-            }
-
-            var aantalLedenZonderTelefoonNr = (from ld in _ledenRepo.Select("GelieerdePersoon.Communicatie")
-                                               where ld.GroepsWerkJaar.ID == groepsWerkJaar.ID
-                                                && ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.TelefoonNummer)
-                                                && ld.UitschrijfDatum == null
-                                               select ld).Count();
-
-            if (aantalLedenZonderTelefoonNr > 0)
-            {
-                resultaat.Add(new LedenProbleemInfo
-                {
-                    Probleem = LidProbleem.TelefoonNummerOntbreekt,
-                    Aantal = aantalLedenZonderTelefoonNr
-                });
-            }
-
-            var aantalLeidingZonderEmail = (from ld in _ledenRepo.Select("GelieerdePersoon.Communicatie")
-                                            where ld.GroepsWerkJaar.ID == groepsWerkJaar.ID
-                                                && ld is Leiding 
-                                                && ld.GelieerdePersoon.Communicatie.All(cmm => cmm.CommunicatieType.ID != (int)CommunicatieTypeEnum.Email)
-                                                && ld.UitschrijfDatum == null
-                                            select ld).Count();
-
-            if (aantalLeidingZonderEmail > 0)
-            {
-                resultaat.Add(new LedenProbleemInfo
-                                  {
-                                      Probleem = LidProbleem.EmailOntbreekt,
-                                      Aantal = aantalLeidingZonderEmail
-                                  });
-            }
-
-            return resultaat;
-        }
-
-
-        /// <summary>
-        /// Gets the Groep by ID and checks gav.
-        /// </summary>
-        /// <param name="groepId">The groep id.</param>
-        /// <returns>Groep.</returns>
-        Groep GetGroepEnCheckGav(int groepId)
-        {
-            var groep = _groepenRepo.ByID(groepId);
-            Gav.Check(groep);
-            return groep;
-        }
-
-        /// <summary>
         /// Voegt een functie toe aan de groep
         /// </summary>
         /// <param name="groepId">De groep waaraan het wordt toegevoegd</param>
@@ -800,17 +837,17 @@ namespace Chiro.Gap.Services
             }
 
             var f = new Functie
-                        {
-                            Code = code,
-                            Groep = groep,
-                            MaxAantal = maxAantal,
-                            MinAantal = minAantal,
-                            Niveau = _groepenMgr.LidTypeNaarMiveau(lidType, groep.Niveau),
-                            Naam = naam,
-                            WerkJaarTot = null,
-                            WerkJaarVan = recentsteWerkJaar.WerkJaar,
-                            IsNationaal = false
-                        };
+            {
+                Code = code,
+                Groep = groep,
+                MaxAantal = maxAantal,
+                MinAantal = minAantal,
+                Niveau = _groepenMgr.LidTypeNaarMiveau(lidType, groep.Niveau),
+                Naam = naam,
+                WerkJaarTot = null,
+                WerkJaarVan = recentsteWerkJaar.WerkJaar,
+                IsNationaal = false
+            };
 
             groep.Functie.Add(f);
 
@@ -845,6 +882,12 @@ namespace Chiro.Gap.Services
             _functiesRepo.SaveChanges();
         }
 
+	/// <summary>
+	/// Overschrijft een functie, op basis van de informatie uit <paramref name="detail" />
+	/// </summary>
+	/// <param name="detail">Te bewaren functie-informatie.</param>
+	/// <remarks>Het veld <c>ID</c> van <paramref name="detail" /> bepaalt welke functie
+	/// overschreven zal worden.</remarks>
         public void FunctieBewerken(FunctieDetail detail)
         {
             var functie = _functiesRepo.ByID(detail.ID);
@@ -881,6 +924,9 @@ namespace Chiro.Gap.Services
             Gav.Check(functie);
             return Mapper.Map<Functie, FunctieDetail>(functie);
         }
+        #endregion
+
+        #region beheer categorieen (wordt niet gesynct)
 
         /// <summary>
         /// Voegt een categorie toe aan de groep
@@ -1005,6 +1051,18 @@ namespace Chiro.Gap.Services
             return CategorieOpzoeken(groepId, code).ID;
         }
 
+        #endregion
+
+
+        Groep GetGroepEnCheckGav(int groepId)
+        {
+            var groep = _groepenRepo.ByID(groepId);
+            Gav.Check(groep);
+            return groep;
+        }
+
+        #region adresgegevens ophalen
+
         /// <summary>
         /// Maakt een lijst met alle deelgemeentes uit de database; nuttig voor autocompletion
         /// in de ui.
@@ -1067,6 +1125,10 @@ namespace Chiro.Gap.Services
             return straatInfos;
         }
 
+        #endregion
+
+        #region Jaarovergang (wordt niet gesynct; pas als leden worden ingeschreven)
+
         /// <summary>
         /// Berekent wat het nieuwe werkJaar zal zijn als op deze moment de jaarovergang zou gebeuren.
         /// </summary>
@@ -1075,36 +1137,6 @@ namespace Chiro.Gap.Services
         {
             GetGroepEnCheckGav(groepId);
             return _groepsWerkJarenMgr.NieuweWerkJaar(groepId);
-        }
-
-        /// <summary>
-        /// Deze method geeft gewoon de gebruikersnaam weer waaronder je de service aanroept.  Vooral om de
-        /// authenticate te testen.
-        /// </summary>
-        /// <returns>Gebruikersnaam waarmee aangemeld</returns>
-        public string WieBenIk()
-        {
-            return _authenticatieMgr.GebruikersNaamGet();
-        }
-
-        /// <summary>
-        /// Deze method geeft weer of we op een liveomgeving werken (<c>true</c>) of niet (<c>false</c>)
-        /// </summary>
-        /// <returns><c>True</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
-        public bool IsLive()
-        {
-            return _groepenMgr.IsLive();
-        }
-
-        /// <summary>
-        /// Haalt informatie over alle gebruikersrechten van de gegeven groep op.
-        /// </summary>
-        /// <param name="groepId">ID van de groep waarvan de gebruikersrechten op te vragen zijn</param>
-        /// <returns>Lijstje met details van de gebruikersrechten</returns>
-        public IEnumerable<GebruikersDetail> GebruikersOphalen(int groepId)
-        {
-            var groep = GetGroepEnCheckGav(groepId);
-            return Mapper.Map<IEnumerable<GebruikersRecht>, IEnumerable<GebruikersDetail>>(groep.GebruikersRecht);
         }
 
         ///  <summary>
@@ -1215,5 +1247,9 @@ namespace Chiro.Gap.Services
 
             return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(afdelingsJaren);
         }
+
+        #endregion
+
     }
 }
+
