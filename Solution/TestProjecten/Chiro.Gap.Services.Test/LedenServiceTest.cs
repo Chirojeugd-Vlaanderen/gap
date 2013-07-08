@@ -1227,5 +1227,47 @@ namespace Chiro.Gap.Services.Test
 
             ledenSyncMock.Verify(src=>src.AfdelingenUpdaten(It.IsAny<Lid>()), Times.AtLeastOnce());
         }
+
+        /// <summary>
+        /// Kijkt na of LoonVerliesVerzekeren synct met Kipadmin
+        /// </summary>
+        [TestMethod()]
+        public void LoonVerliesVerzekerenTest()
+        {
+            // ARRANGE
+
+            var lid = new Leiding
+                          {
+                              ID = 1,
+                              GroepsWerkJaar = new GroepsWerkJaar{WerkJaar = DateTime.Now.Year},
+                              GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
+                          };
+
+            var verzekering = new VerzekeringsType {ID = (int) Verzekering.LoonVerlies};
+
+            // mock voor synchronisatie registreren
+
+            var verzekeringenSyncMock = new Mock<IVerzekeringenSync>();
+            verzekeringenSyncMock.Setup(src => src.Bewaren(It.IsAny<PersoonsVerzekering>(), It.IsAny<GroepsWerkJaar>())).Verifiable();
+            Factory.InstantieRegistreren(verzekeringenSyncMock.Object);
+
+            // mock voor data-access registreren
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid> {lid}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<VerzekeringsType>())
+                                  .Returns(new DummyRepo<VerzekeringsType>(new List<VerzekeringsType> {verzekering}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            target.LoonVerliesVerzekeren(lid.ID);
+
+            // ASSERT
+
+            verzekeringenSyncMock.Verify(src => src.Bewaren(It.IsAny<PersoonsVerzekering>(), It.IsAny<GroepsWerkJaar>()), Times.Once());
+        }
     }
 }
