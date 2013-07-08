@@ -78,6 +78,10 @@ namespace Chiro.Gap.Services
 
         private readonly IGroepenSync _groepenSync;
 
+        // Cache
+
+        private readonly IVeelGebruikt _veelGebruikt;
+
         /// <summary>
         /// Nieuwe groepenservice
         /// </summary>
@@ -90,11 +94,13 @@ namespace Chiro.Gap.Services
         /// <param name="functiesMgr">Businesslogica aangaande functies</param>
         /// <param name="jaarOvergangMgr">Businesslogica aangaande de jaarovergang</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
+        /// <param name="groepenSync">Synchronisatie met Kipadmin</param>
+        /// <param name="veelGebruikt">Cache</param>
         public GroepenService(IAfdelingsJaarManager afdelingsJaarMgr, IAuthenticatieManager authenticatieMgr, IAutorisatieManager autorisatieMgr,
                               IGroepenManager groepenMgr, IJaarOvergangManager jaarOvergangMgr,
                                 IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                               IFunctiesManager functiesMgr,
-                              IRepositoryProvider repositoryProvider, IGroepenSync groepenSync)
+                              IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IVeelGebruikt veelGebruikt)
         {
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
             _adresRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
@@ -121,6 +127,9 @@ namespace Chiro.Gap.Services
             _authenticatieMgr = authenticatieMgr;
             _autorisatieMgr = autorisatieMgr;
             _groepenSync = groepenSync;
+
+            _veelGebruikt = veelGebruikt;
+
             _gav = new GavChecker(_autorisatieMgr);
         }
 
