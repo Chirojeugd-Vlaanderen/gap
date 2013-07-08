@@ -8,6 +8,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Moq;
+using Chiro.Gap.Services;
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -139,5 +144,228 @@ namespace Chiro.Gap.Services.Test
 
             bivakSyncMock.Verify(src => src.Verwijderen(bivak.ID), Times.AtLeastOnce());
         }
+
+        /// <summary>
+        /// Test: gekende bivakplaats toevoegen als eerste bivakplaats aan een uitstap
+        /// </summary>
+        [TestMethod()]
+        public void GekendePlaatsBewarenTest()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep {ID = 3};
+            var bivak = new Uitstap {ID = 1, GroepsWerkJaar = new GroepsWerkJaar{Groep = groep}};
+            var adres = new BuitenLandsAdres
+                            {
+                                Straat = "Vorststraat",
+                                HuisNr = 3,
+                                PostNummer = 1234,
+                                PostCode = "BR",
+                                WoonPlaats = "Killegem",
+                                Land = new Land{Naam = "Nederland"}
+                            };
+            var plaats = new Plaats { ID = 2, Naam = "Coole bivakplaats", Adres = adres, Groep = groep};
+            adres.BivakPlaats.Add(plaats);
+
+            // dependency injection voor data access
+
+            var dummyRepositoryProvider = new Mock<IRepositoryProvider>();
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Uitstap>())
+                                   .Returns(new DummyRepo<Uitstap>(new List<Uitstap> { bivak }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Plaats>())
+                                   .Returns(new DummyRepo<Plaats>(new List<Plaats> { plaats }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Adres>())
+                                   .Returns(new DummyRepo<Adres>(new List<Adres> { adres }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Land>())
+                                   .Returns(new DummyRepo<Land>(new List<Land> { adres.Land }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<WoonPlaats>())
+                                   .Returns(new DummyRepo<WoonPlaats>(new List<WoonPlaats>()));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<StraatNaam>())
+                                   .Returns(new DummyRepo<StraatNaam>(new List<StraatNaam>()));
+            Factory.InstantieRegistreren(dummyRepositoryProvider.Object);
+
+            // ACT
+
+            var target = Factory.Maak<UitstappenService>();
+            target.PlaatsBewaren(bivak.ID, plaats.Naam,
+                                 new AdresInfo
+                                     {
+                                         StraatNaamNaam = adres.Straat,
+                                         HuisNr = adres.HuisNr,
+                                         PostNr = adres.PostNummer ?? 0,
+                                         PostCode = adres.PostCode,
+                                         WoonPlaatsNaam = adres.WoonPlaats,
+                                         LandNaam = adres.Land.Naam
+                                     });
+
+            // ASSERT
+
+            Assert.AreEqual(bivak.Plaats.ID, plaats.ID);
+        }
+
+        /// <summary>
+        /// Test: onbekende bivakplaats met bekend adres toevoegen als eerste bivakplaats aan een uitstap
+        /// </summary>
+        [TestMethod()]
+        public void PlaatsOpGekendAdresBewarenTest()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep { ID = 3 };
+            var bivak = new Uitstap { ID = 1, GroepsWerkJaar = new GroepsWerkJaar { Groep = groep } };
+            var adres = new BuitenLandsAdres
+            {
+                Straat = "Vorststraat",
+                HuisNr = 3,
+                PostNummer = 1234,
+                PostCode = "BR",
+                WoonPlaats = "Killegem",
+                Land = new Land { Naam = "Nederland" }
+            };
+
+            // dependency injection voor data access
+
+            var dummyRepositoryProvider = new Mock<IRepositoryProvider>();
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Uitstap>())
+                                   .Returns(new DummyRepo<Uitstap>(new List<Uitstap> { bivak }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Plaats>())
+                                   .Returns(new DummyRepo<Plaats>(new List<Plaats>()));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Adres>())
+                                   .Returns(new DummyRepo<Adres>(new List<Adres> { adres }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Land>())
+                                   .Returns(new DummyRepo<Land>(new List<Land> { adres.Land }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<WoonPlaats>())
+                                   .Returns(new DummyRepo<WoonPlaats>(new List<WoonPlaats>()));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<StraatNaam>())
+                                   .Returns(new DummyRepo<StraatNaam>(new List<StraatNaam>()));
+            Factory.InstantieRegistreren(dummyRepositoryProvider.Object);
+
+            // ACT
+
+            var target = Factory.Maak<UitstappenService>();
+            target.PlaatsBewaren(bivak.ID, "Warme Bivakplaats",
+                                 new AdresInfo
+                                 {
+                                     StraatNaamNaam = adres.Straat,
+                                     HuisNr = adres.HuisNr,
+                                     PostNr = adres.PostNummer ?? 0,
+                                     PostCode = adres.PostCode,
+                                     WoonPlaatsNaam = adres.WoonPlaats,
+                                     LandNaam = adres.Land.Naam
+                                 });
+
+            // ASSERT
+
+            Assert.AreEqual(bivak.Plaats.Adres.ID, adres.ID);
+        }
+
+        /// <summary>
+        /// Test: onbekende bivakplaats op onbekend adres toevoegen als eerste bivakplaats aan een uitstap
+        /// </summary>
+        [TestMethod()]
+        public void PlaatsOpOnbekendAdresBewarenTest()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep { ID = 3 };
+            var bivak = new Uitstap { ID = 1, GroepsWerkJaar = new GroepsWerkJaar { Groep = groep } };
+            var land = new Land { Naam = "Nederland" };
+
+            // dependency injection voor data access
+
+            var dummyRepositoryProvider = new Mock<IRepositoryProvider>();
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Uitstap>())
+                                   .Returns(new DummyRepo<Uitstap>(new List<Uitstap> { bivak }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Plaats>())
+                                   .Returns(new DummyRepo<Plaats>(new List<Plaats>()));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Adres>())
+                                   .Returns(new DummyRepo<Adres>(new List<Adres>()));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Land>())
+                                   .Returns(new DummyRepo<Land>(new List<Land> { land }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<WoonPlaats>())
+                                   .Returns(new DummyRepo<WoonPlaats>(new List<WoonPlaats>()));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<StraatNaam>())
+                                   .Returns(new DummyRepo<StraatNaam>(new List<StraatNaam>()));
+            Factory.InstantieRegistreren(dummyRepositoryProvider.Object);
+
+            // ACT
+
+            var target = Factory.Maak<UitstappenService>();
+            target.PlaatsBewaren(bivak.ID, "Warme Bivakplaats",
+                                 new AdresInfo
+                                 {
+                                     StraatNaamNaam = "Zonnestraat",
+                                     HuisNr = 8,
+                                     PostNr = 9876,
+                                     PostCode = "PF",
+                                     WoonPlaatsNaam = "Warmegem",
+                                     LandNaam = "Nederland"
+                                 });
+
+            // ASSERT
+
+            Assert.IsInstanceOfType(bivak.Plaats.Adres, typeof(BuitenLandsAdres));
+        }
+
+        /// <summary>
+        /// De bivakplaats van een bivak vervangen
+        /// </summary>
+        [TestMethod()]
+        public void PlaatsVervangenTest()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep { ID = 3 };
+            var bivak = new Uitstap { ID = 1, GroepsWerkJaar = new GroepsWerkJaar { Groep = groep } };
+            var adres = new BuitenLandsAdres
+            {
+                Straat = "Vorststraat",
+                HuisNr = 3,
+                PostNummer = 1234,
+                PostCode = "BR",
+                WoonPlaats = "Killegem",
+                Land = new Land { Naam = "Nederland" }
+            };
+            var plaats = new Plaats { ID = 2, Naam = "Coole bivakplaats", Adres = adres, Groep = groep };
+            bivak.Plaats = plaats; // Bivak heeft al een plaats
+
+            // dependency injection voor data access
+
+            var dummyRepositoryProvider = new Mock<IRepositoryProvider>();
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Uitstap>())
+                                   .Returns(new DummyRepo<Uitstap>(new List<Uitstap> { bivak }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Plaats>())
+                                   .Returns(new DummyRepo<Plaats>(new List<Plaats> { plaats }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Adres>())
+                                   .Returns(new DummyRepo<Adres>(new List<Adres> { adres }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<Land>())
+                                   .Returns(new DummyRepo<Land>(new List<Land> { adres.Land }));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<WoonPlaats>())
+                                   .Returns(new DummyRepo<WoonPlaats>(new List<WoonPlaats>()));
+            dummyRepositoryProvider.Setup(src => src.RepositoryGet<StraatNaam>())
+                                   .Returns(new DummyRepo<StraatNaam>(new List<StraatNaam>()));
+
+            Factory.InstantieRegistreren(dummyRepositoryProvider.Object);
+
+            // ACT
+
+            var target = Factory.Maak<UitstappenService>();
+            target.PlaatsBewaren(bivak.ID, "Warme Bivakplaats",
+                                 new AdresInfo
+                                 {
+                                     StraatNaamNaam = "Zonnestraat",
+                                     HuisNr = 8,
+                                     PostNr = 9876,
+                                     PostCode = "PF",
+                                     WoonPlaatsNaam = "Warmegem",
+                                     LandNaam = "Nederland"
+                                 });
+
+            // ASSERT
+
+            Assert.AreNotEqual(bivak.Plaats.ID, plaats.ID); // is de plaats wel veranderd?
+        }
+
+
     }
 }
