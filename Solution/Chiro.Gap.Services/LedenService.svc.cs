@@ -70,6 +70,7 @@ namespace Chiro.Gap.Services
         // Sync
 
         private readonly ILedenSync _ledenSync;
+        private readonly IVerzekeringenSync _verzekeringenSync;
 
         private readonly GavChecker _gav;
 
@@ -84,11 +85,13 @@ namespace Chiro.Gap.Services
         /// <param name="functiesMgr">Businesslogica m.b.t. functies</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         /// <param name="ledenSync">Voor synchronisatie lidgegevens met Kipadmin</param>
+        /// <param name="verzekeringenSync">Voor synchronisatie verzekeringsgegevens naar Kipadmin</param>
         public LedenService(IAutorisatieManager autorisatieMgr,
                             IVerzekeringenManager verzekeringenMgr,
                             ILedenManager ledenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                             IGroepenManager groepenMgr, IFunctiesManager functiesMgr,
-                            IRepositoryProvider repositoryProvider, ILedenSync ledenSync)
+                            IRepositoryProvider repositoryProvider, ILedenSync ledenSync,
+                            IVerzekeringenSync verzekeringenSync)
         {
             _ledenRepo = repositoryProvider.RepositoryGet<Lid>();
             _afdelingsJaarRepo = repositoryProvider.RepositoryGet<AfdelingsJaar>();
@@ -105,6 +108,7 @@ namespace Chiro.Gap.Services
             _functiesMgr = functiesMgr;
 
             _ledenSync = ledenSync;
+            _verzekeringenSync = verzekeringenSync;
 
             _gav = new GavChecker(_autorisatieMgr);
         }
@@ -471,20 +475,6 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt summiere info van een lid met gegeven <paramref name="lidId"/> op.
-        /// (naam van lid, afdeling, en lidtype)
-        /// </summary>
-        /// <param name="lidId">Id van het lid waarin we geinteresseerd zijn</param>
-        /// <returns>naam, afdeling en lidtype van het gegeven lid</returns>
-        public LidAfdelingInfo AfdelingenOphalen(int lidId)
-        {
-            var lid = _ledenRepo.ByID(lidId);
-            Gav.Check(lid); // throwt als je geen rechten hebt.
-
-            return Mapper.Map<Lid, LidAfdelingInfo>(lid);
-        }
-
-        /// <summary>
         /// Vervangt de afdelingen van het lid met Id <paramref name="lidId"/> door de afdelingen
         /// met AFDELINGSJAARIds gegeven door <paramref name="afdelingsJaarIds"/>.
         /// </summary>
@@ -620,6 +610,7 @@ namespace Chiro.Gap.Services
         /// die per definitie enkel voor leden bestaat.</remarks>
         public int LoonVerliesVerzekeren(int lidId)
         {
+            PersoonsVerzekering persoonsVerzekering;
             var lid = _ledenRepo.ByID(lidId);
             Gav.Check(lid);
 
@@ -627,8 +618,8 @@ namespace Chiro.Gap.Services
 
             try
             {
-                _verzekeringenMgr.Verzekeren(lid, verzekeringstype, DateTime.Today,
-                                             _groepsWerkJarenMgr.EindDatum(lid.GroepsWerkJaar));
+                persoonsVerzekering = _verzekeringenMgr.Verzekeren(lid, verzekeringstype, DateTime.Today,
+                                                                   _groepsWerkJarenMgr.EindDatum(lid.GroepsWerkJaar));
             }
             catch (FoutNummerException ex)
             {
@@ -640,11 +631,34 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.BestaatAl("Verzekering");
             }
 
-            _ledenRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _verzekeringenSync.Bewaren(persoonsVerzekering, lid.GroepsWerkJaar);
+                _ledenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
             return lid.GelieerdePersoon.ID;
         }
 
         #endregion
+
+        /// <summary>
+        /// Haalt summiere info van een lid met gegeven <paramref name="lidId"/> op.
+        /// (naam van lid, afdeling, en lidtype)
+        /// </summary>
+        /// <param name="lidId">Id van het lid waarin we geinteresseerd zijn</param>
+        /// <returns>naam, afdeling en lidtype van het gegeven lid</returns>
+        public LidAfdelingInfo AfdelingenOphalen(int lidId)
+        {
+            var lid = _ledenRepo.ByID(lidId);
+            Gav.Check(lid); // throwt als je geen rechten hebt.
+
+            return Mapper.Map<Lid, LidAfdelingInfo>(lid);
+        }
 
         /// <summary>
         /// Haalt actief lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies
