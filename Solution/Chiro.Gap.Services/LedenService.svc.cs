@@ -709,9 +709,17 @@ namespace Chiro.Gap.Services
                 nieuwLid.Functie.Add(f);
             }
 
-            // TODO: syncen met kipadmin
-            _ledenRepo.SaveChanges();
-
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _ledenSync.TypeUpdaten(nieuwLid);
+                _ledenSync.AfdelingenUpdaten(nieuwLid);
+                _ledenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
             return gelieerdePersoon.ID;
         }
         #endregion
