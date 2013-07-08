@@ -710,6 +710,13 @@ namespace Chiro.Gap.Services.Test
 
             // dependency injection
 
+            // We prutsen wat, zodat het volgende werkjaar altijd 2012 is.
+            var groepsWerkJarenManagerMock = new Mock<IGroepsWerkJarenManager>();
+            groepsWerkJarenManagerMock.Setup(src => src.NieuweWerkJaar(groep.ID)).Returns(2012);
+            groepsWerkJarenManagerMock.Setup(src => src.OvergangMogelijk(It.IsAny<DateTime>(), It.IsAny<int>())).Returns(true);
+            Factory.InstantieRegistreren(groepsWerkJarenManagerMock.Object);
+
+            // Data access faken
             var dummyRepositoryProvider = new Mock<IRepositoryProvider>();
             dummyRepositoryProvider.Setup(src => src.RepositoryGet<Groep>())
                                    .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
