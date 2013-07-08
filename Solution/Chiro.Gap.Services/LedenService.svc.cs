@@ -589,7 +589,19 @@ namespace Chiro.Gap.Services
                 }
             }
 
-            _ledenRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                foreach (var l in leden)
+                {
+                    _ledenSync.AfdelingenUpdaten(l);
+                }
+                _ledenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
         }
 
         /// <summary>
