@@ -121,52 +121,8 @@ namespace Chiro.Gap.Services
 
         #endregion
 
-        /// <summary>
-        /// Bewaart een uitstap voor de groep met gegeven <paramref name="groepId"/>
-        /// </summary>
-        /// <param name="groepId">ID van de groep horende bij de uitstap.
-        ///  Is eigenlijk enkel relevant als het om een nieuwe uitstap gaat.</param>
-        /// <param name="info">Details over de uitstap.  Als <c>uitstap.ID</c> <c>0</c> is,
-        ///  dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
-        /// <returns>ID van de uitstap</returns>
-        public int Bewaren(int groepId, UitstapInfo info)
-        {
-            // Als de uitstap een ID heeft, moet een bestaande uitstap opgehaald worden.
-            // Anders maken we een nieuwe.
 
-            Uitstap uitstap;
-
-            var groepsWerkJaar = _groepsWerkJaarRepo.Select()
-                                                    .Where(gwj => gwj.Groep.ID == groepId)
-                                                    .OrderByDescending(gwj => gwj.WerkJaar)
-                                                    .First();
-
-            if (!_autorisatieMgr.IsGav(groepsWerkJaar.Groep))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            if (info.ID == 0)
-            {
-                // Nieuwe uitstap
-                uitstap = Mapper.Map<UitstapInfo, Uitstap>(info);
-                uitstap.GroepsWerkJaar = groepsWerkJaar;
-            }
-            else
-            {
-                // Haal origineel op, gekoppeld aan groepswerkjaar
-                uitstap = (from u in groepsWerkJaar.Uitstap
-                           where u.ID == info.ID
-                           select u).First();
-
-                // overschrijf met gegevens uit 'info'
-                Mapper.Map(info, uitstap);
-            }
-
-            _groepsWerkJaarRepo.SaveChanges();
-            return uitstap.ID;
-        }
-
+        #region ophalen
         /// <summary>
         /// Haalt alle uitstappen van een gegeven groep op.
         /// </summary>
@@ -223,6 +179,136 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
+        /// Haalt informatie over de deelnemer met ID <paramref name="deelnemerId"/> op.
+        /// </summary>
+        /// <param name="deelnemerId">ID van de relevante deelnemer</param>
+        /// <returns>Informatie over de deelnemer met ID <paramref name="deelnemerId"/></returns>
+        public DeelnemerDetail DeelnemerOphalen(int deelnemerId)
+        {
+            var resultaat = _deelnemersRepo.Select().FirstOrDefault(dln => dln.ID == deelnemerId);
+            return Mapper.Map<Deelnemer, DeelnemerDetail>(resultaat);
+        }
+
+        /// <summary>
+        /// Haalt informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapId"/> op.
+        /// </summary>
+        /// <param name="uitstapId">ID van de relevante uitstap</param>
+        /// <returns>Informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapId"/></returns>
+        public IEnumerable<DeelnemerDetail> DeelnemersOphalen(int uitstapId)
+        {
+            var uitstap = _uitstappenRepo.ByID(uitstapId);
+            Gav.Check(uitstap);
+
+            return Mapper.Map<IEnumerable<Deelnemer>, IEnumerable<DeelnemerDetail>>(uitstap.Deelnemer);
+        }
+
+        /// <summary>
+        /// Haalt informatie over de bivakaangifte op van de groep <paramref name="groepId"/> voor diens recentste 
+        /// werkJaar.
+        /// </summary>
+        /// <param name="groepId">
+        /// De groep waarvan info wordt gevraagd
+        /// </param>
+        /// <returns>
+        /// Een lijstje met de geregistreerde bivakken en feedback over wat er op dit moment moet gebeuren 
+        /// voor de bivakaangifte
+        /// </returns>
+        public BivakAangifteLijstInfo BivakStatusOphalen(int groepId)
+        {
+            var resultaat = new BivakAangifteLijstInfo();
+
+            var gwjQuery = _groepsWerkJaarRepo.Select();
+
+            var groepsWerkJaar =
+                gwjQuery.Where(gwj => gwj.Groep.ID == groepId).OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
+
+            if (groepsWerkJaar == null || !_autorisatieMgr.IsGav(groepsWerkJaar))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            if (!_uitstappenMgr.BivakAangifteVanBelang(groepsWerkJaar))
+            {
+                resultaat.AlgemeneStatus = BivakAangifteStatus.NogNietVanBelang;
+            }
+            else
+            {
+                resultaat.Bivakinfos = (from u in groepsWerkJaar.Uitstap
+                                        where u.IsBivak
+                                        select
+                                            new BivakAangifteInfo
+                                            {
+                                                ID = u.ID,
+                                                Omschrijving = u.Naam,
+                                                Status = _uitstappenMgr.StatusBepalen(u)
+                                            }).ToList();
+
+                if (resultaat.Bivakinfos.FirstOrDefault() == null)
+                {
+                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ontbrekend;
+                }
+                else if (resultaat.Bivakinfos.Any(bi => bi.Status != BivakAangifteStatus.Ok))
+                {
+                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ontbrekend;
+                }
+                else
+                {
+                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ok;
+                }
+            }
+
+            return resultaat;
+        }
+        #endregion
+
+        #region te syncen wijzigingen
+        /// <summary>
+        /// Bewaart een uitstap voor de groep met gegeven <paramref name="groepId"/>
+        /// </summary>
+        /// <param name="groepId">ID van de groep horende bij de uitstap.
+        ///  Is eigenlijk enkel relevant als het om een nieuwe uitstap gaat.</param>
+        /// <param name="info">Details over de uitstap.  Als <c>uitstap.ID</c> <c>0</c> is,
+        ///  dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
+        /// <returns>ID van de uitstap</returns>
+        public int Bewaren(int groepId, UitstapInfo info)
+        {
+            // Als de uitstap een ID heeft, moet een bestaande uitstap opgehaald worden.
+            // Anders maken we een nieuwe.
+
+            Uitstap uitstap;
+
+            var groepsWerkJaar = _groepsWerkJaarRepo.Select()
+                                                    .Where(gwj => gwj.Groep.ID == groepId)
+                                                    .OrderByDescending(gwj => gwj.WerkJaar)
+                                                    .First();
+
+            if (!_autorisatieMgr.IsGav(groepsWerkJaar.Groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            if (info.ID == 0)
+            {
+                // Nieuwe uitstap
+                uitstap = Mapper.Map<UitstapInfo, Uitstap>(info);
+                uitstap.GroepsWerkJaar = groepsWerkJaar;
+            }
+            else
+            {
+                // Haal origineel op, gekoppeld aan groepswerkjaar
+                uitstap = (from u in groepsWerkJaar.Uitstap
+                           where u.ID == info.ID
+                           select u).First();
+
+                // overschrijf met gegevens uit 'info'
+                Mapper.Map(info, uitstap);
+            }
+
+            _groepsWerkJaarRepo.SaveChanges();
+            return uitstap.ID;
+        }
+
+        /// <summary>
         /// Bewaart de plaats voor een uitstap
         /// </summary>
         /// <param name="uitstapId">ID van de uitstap</param>
@@ -239,6 +325,57 @@ namespace Chiro.Gap.Services
             _uitstappenRepo.SaveChanges();
         }
 
+        /// <summary>
+        /// Verwijdert een uitstap met als ID <paramref name="uitstapId"/>
+        /// </summary>
+        /// <param name="uitstapId">ID van de te verwijderen uitstap</param>
+        /// <returns>Verwijderd de uitstap en toont daarna het overzicht scherm</returns>
+        public void UitstapVerwijderen(int uitstapId)
+        {
+            var uitstap = _uitstappenRepo.ByID(uitstapId);
+            Gav.Check(uitstap);
+
+            if (uitstap != null)
+            {
+                _uitstappenRepo.Delete(uitstap);
+                _uitstappenRepo.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Stelt de deelnemer met gegeven <paramref name="deelnemerId" /> in als contactpersoon voor de uitstap
+        /// waaraan hij deelneemt
+        /// </summary>
+        /// <param name="deelnemerId">ID van de als contact in te stellen deelnemer</param>
+        /// <returns>De ID van de uitstap, ter controle, en misschien handig voor feedback</returns>
+        public int ContactInstellen(int deelnemerId)
+        {
+            var deelnemer = _deelnemersRepo.ByID(deelnemerId);
+            Gav.Check(deelnemer);
+
+            Debug.Assert(deelnemer.Uitstap != null);
+
+            if (deelnemer.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() == null)
+            {
+                // Een deelnemer kan alleen contact zijn voor zijn eigen uitstap.  Is de deelnemer
+                // al contact voor een uitstap, dan volgt daaruit dat hij al contact is voor zijn
+                // eigen uitstap.
+                var vorigeVerantwoordelijke = deelnemer.Uitstap.ContactDeelnemer;
+
+                if (vorigeVerantwoordelijke != null)
+                {
+                    vorigeVerantwoordelijke.UitstapWaarvoorVerantwoordelijk = null;
+                }
+
+                deelnemer.Uitstap.ContactDeelnemer = deelnemer;
+                deelnemer.UitstapWaarvoorVerantwoordelijk.Add(deelnemer.Uitstap);
+            }
+
+            return deelnemer.Uitstap.ID;
+        }
+        #endregion
+
+        #region wijzigingen niet te syncen
         /// <summary>
         /// Schrijft de gelieerde personen met ID's <paramref name="gelieerdePersoonIDs"/> in voor de
         /// uitstap met ID <paramref name="geselecteerdeUitstapId" />.  Als
@@ -300,68 +437,6 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapId"/> op.
-        /// </summary>
-        /// <param name="uitstapId">ID van de relevante uitstap</param>
-        /// <returns>Informatie over alle deelnemers van de uitstap met gegeven <paramref name="uitstapId"/></returns>
-        public IEnumerable<DeelnemerDetail> DeelnemersOphalen(int uitstapId)
-        {
-            var uitstap = _uitstappenRepo.ByID(uitstapId);
-            Gav.Check(uitstap);
-
-            return Mapper.Map<IEnumerable<Deelnemer>, IEnumerable<DeelnemerDetail>>(uitstap.Deelnemer);
-        }
-
-        /// <summary>
-        /// Verwijdert een uitstap met als ID <paramref name="uitstapId"/>
-        /// </summary>
-        /// <param name="uitstapId">ID van de te verwijderen uitstap</param>
-        /// <returns>Verwijderd de uitstap en toont daarna het overzicht scherm</returns>
-        public void UitstapVerwijderen(int uitstapId)
-        {
-            var uitstap = _uitstappenRepo.ByID(uitstapId);
-            Gav.Check(uitstap);
-
-            if (uitstap != null)
-            {
-                _uitstappenRepo.Delete(uitstap);
-                _uitstappenRepo.SaveChanges();
-            }
-        }
-
-        /// <summary>
-        /// Stelt de deelnemer met gegeven <paramref name="deelnemerId" /> in als contactpersoon voor de uitstap
-        /// waaraan hij deelneemt
-        /// </summary>
-        /// <param name="deelnemerId">ID van de als contact in te stellen deelnemer</param>
-        /// <returns>De ID van de uitstap, ter controle, en misschien handig voor feedback</returns>
-        public int ContactInstellen(int deelnemerId)
-        {
-            var deelnemer = _deelnemersRepo.ByID(deelnemerId);
-            Gav.Check(deelnemer);
-
-            Debug.Assert(deelnemer.Uitstap != null);
-
-            if (deelnemer.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() == null)
-            {
-                // Een deelnemer kan alleen contact zijn voor zijn eigen uitstap.  Is de deelnemer
-                // al contact voor een uitstap, dan volgt daaruit dat hij al contact is voor zijn
-                // eigen uitstap.
-                var vorigeVerantwoordelijke = deelnemer.Uitstap.ContactDeelnemer;
-
-                if (vorigeVerantwoordelijke != null)
-                {
-                    vorigeVerantwoordelijke.UitstapWaarvoorVerantwoordelijk = null;
-                }
-
-                deelnemer.Uitstap.ContactDeelnemer = deelnemer;
-                deelnemer.UitstapWaarvoorVerantwoordelijk.Add(deelnemer.Uitstap);
-            }
-
-            return deelnemer.Uitstap.ID;
-        }
-
-        /// <summary>
         /// Schrijft de deelnemer met gegeven <paramref name="deelnemerId"/> uit voor zijn uitstap.
         /// </summary>
         /// <param name="deelnemerId">ID uit te schrijven deelnemer</param>
@@ -385,17 +460,6 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt informatie over de deelnemer met ID <paramref name="deelnemerId"/> op.
-        /// </summary>
-        /// <param name="deelnemerId">ID van de relevante deelnemer</param>
-        /// <returns>Informatie over de deelnemer met ID <paramref name="deelnemerId"/></returns>
-        public DeelnemerDetail DeelnemerOphalen(int deelnemerId)
-        {
-            var resultaat = _deelnemersRepo.Select().FirstOrDefault(dln => dln.ID == deelnemerId);
-            return Mapper.Map<Deelnemer, DeelnemerDetail>(resultaat);
-        }
-
-        /// <summary>
         /// Updatet een deelnemer op basis van de info in <paramref name="info"/>
         /// </summary>
         /// <param name="info">Info nodig voor de update</param>
@@ -411,63 +475,6 @@ namespace Chiro.Gap.Services
             Mapper.Map(info, deelnemer);
             _deelnemersRepo.SaveChanges();
         }
-
-        /// <summary>
-        /// Haalt informatie over de bivakaangifte op van de groep <paramref name="groepId"/> voor diens recentste 
-        /// werkJaar.
-        /// </summary>
-        /// <param name="groepId">
-        /// De groep waarvan info wordt gevraagd
-        /// </param>
-        /// <returns>
-        /// Een lijstje met de geregistreerde bivakken en feedback over wat er op dit moment moet gebeuren 
-        /// voor de bivakaangifte
-        /// </returns>
-        public BivakAangifteLijstInfo BivakStatusOphalen(int groepId)
-        {
-            var resultaat = new BivakAangifteLijstInfo();
-
-            var gwjQuery = _groepsWerkJaarRepo.Select();
-
-            var groepsWerkJaar =
-                gwjQuery.Where(gwj => gwj.Groep.ID == groepId).OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
-
-            if (groepsWerkJaar == null || !_autorisatieMgr.IsGav(groepsWerkJaar))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            if (!_uitstappenMgr.BivakAangifteVanBelang(groepsWerkJaar))
-            {
-                resultaat.AlgemeneStatus = BivakAangifteStatus.NogNietVanBelang;
-            }
-            else
-            {
-                resultaat.Bivakinfos = (from u in groepsWerkJaar.Uitstap
-                                        where u.IsBivak
-                                        select
-                                            new BivakAangifteInfo
-                                                {
-                                                    ID = u.ID,
-                                                    Omschrijving = u.Naam,
-                                                    Status = _uitstappenMgr.StatusBepalen(u)
-                                                }).ToList();
-
-                if (resultaat.Bivakinfos.FirstOrDefault() == null)
-                {
-                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ontbrekend;
-                }
-                else if (resultaat.Bivakinfos.Any(bi => bi.Status != BivakAangifteStatus.Ok))
-                {
-                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ontbrekend;
-                }
-                else
-                {
-                    resultaat.AlgemeneStatus = BivakAangifteStatus.Ok;
-                }
-            }
-
-            return resultaat;
-        }
+        #endregion
     }
 }
