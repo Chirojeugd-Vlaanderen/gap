@@ -28,6 +28,7 @@ using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Services.Properties;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Services
@@ -54,7 +55,13 @@ namespace Chiro.Gap.Services
         private readonly IUitstappenManager _uitstappenMgr;
         private readonly IAdressenManager _adressenMgr;
 
-                private readonly GavChecker _gav;
+        // Sync
+
+        private readonly IBivakSync _bivakSync;
+
+        // rariteit
+
+        private readonly GavChecker _gav;
 
         /// <summary>
         /// Constructor, verantwoordelijk voor dependency injection
@@ -63,10 +70,12 @@ namespace Chiro.Gap.Services
         /// <param name="autorisatieManager">Businesslogica m.b.t. autorisatie</param>
         /// <param name="uitstappenManager">Businesslogica m.b.t. uitstappen</param>
         /// <param name="adressenManager">Businesslogica m.b.t. adressen</param>
+        /// <param name="bivakSync"></param>
         public UitstappenService(IRepositoryProvider repositoryProvider,
                                  IAutorisatieManager autorisatieManager,
                                  IUitstappenManager uitstappenManager,
-                                 IAdressenManager adressenManager)
+                                 IAdressenManager adressenManager,
+                                 IBivakSync bivakSync)
         {
             _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
@@ -81,6 +90,8 @@ namespace Chiro.Gap.Services
             _autorisatieMgr = autorisatieManager;
             _uitstappenMgr = uitstappenManager;
             _adressenMgr = adressenManager;
+
+            _bivakSync = bivakSync;
 
             _gav = new GavChecker(_autorisatieMgr);
         }
@@ -276,6 +287,7 @@ namespace Chiro.Gap.Services
             // Anders maken we een nieuwe.
 
             Uitstap uitstap;
+            bool wasBivak = false;
 
             var groepsWerkJaar = _groepsWerkJaarRepo.Select()
                                                     .Where(gwj => gwj.Groep.ID == groepId)
@@ -299,12 +311,30 @@ namespace Chiro.Gap.Services
                 uitstap = (from u in groepsWerkJaar.Uitstap
                            where u.ID == info.ID
                            select u).First();
+                wasBivak = uitstap.IsBivak;
 
                 // overschrijf met gegevens uit 'info'
                 Mapper.Map(info, uitstap);
             }
 
-            _groepsWerkJaarRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                if (uitstap.IsBivak)
+                {
+                    _bivakSync.Bewaren(uitstap);
+                }
+                else if (wasBivak)
+                {
+                    _bivakSync.Verwijderen(uitstap.ID);
+                }
+
+                _groepsWerkJaarRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
             return uitstap.ID;
         }
 
