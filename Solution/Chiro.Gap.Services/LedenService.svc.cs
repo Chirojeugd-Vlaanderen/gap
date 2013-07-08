@@ -800,8 +800,12 @@ namespace Chiro.Gap.Services
             {
                 return Mapper.Map<IList<Lid>, List<LidOverzicht>>(leden);
             }
-            var list = Mapper.Map<IList<Lid>, List<KleinLidOverzicht>>(leden);
-            return Mapper.Map<IList<KleinLidOverzicht>, List<LidOverzicht>>(list);
+
+            // TODO: Waarom wordt er hier twee keer gemapt?
+            // Misschien om informatie expliciet niet mee te nemen?
+
+            var list = Mapper.Map<IList<Lid>, List<LidOverzichtZonderAdres>>(leden);
+            return Mapper.Map<IList<LidOverzichtZonderAdres>, List<LidOverzicht>>(list);
         }
         #endregion
 
