@@ -465,20 +465,6 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Haalt summiere info van een lid met gegeven <paramref name="lidId"/> op.
-        /// (naam van lid, afdeling, en lidtype)
-        /// </summary>
-        /// <param name="lidId">Id van het lid waarin we geinteresseerd zijn</param>
-        /// <returns>naam, afdeling en lidtype van het gegeven lid</returns>
-        public LidAfdelingInfo AfdelingenOphalen(int lidId)
-        {
-            var lid = _ledenRepo.ByID(lidId);
-            Gav.Check(lid); // throwt als je geen rechten hebt.
-
-            return Mapper.Map<Lid, LidAfdelingInfo>(lid);
-        }
-
-        /// <summary>
         /// Vervangt de afdelingen van het lid met Id <paramref name="lidId"/> door de afdelingen
         /// met AFDELINGSJAARIds gegeven door <paramref name="afdelingsJaarIds"/>.
         /// </summary>
@@ -639,6 +625,20 @@ namespace Chiro.Gap.Services
         }
 
         #endregion
+
+        /// <summary>
+        /// Haalt summiere info van een lid met gegeven <paramref name="lidId"/> op.
+        /// (naam van lid, afdeling, en lidtype)
+        /// </summary>
+        /// <param name="lidId">Id van het lid waarin we geinteresseerd zijn</param>
+        /// <returns>naam, afdeling en lidtype van het gegeven lid</returns>
+        public LidAfdelingInfo AfdelingenOphalen(int lidId)
+        {
+            var lid = _ledenRepo.ByID(lidId);
+            Gav.Check(lid); // throwt als je geen rechten hebt.
+
+            return Mapper.Map<Lid, LidAfdelingInfo>(lid);
+        }
 
         /// <summary>
         /// Haalt actief lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies
