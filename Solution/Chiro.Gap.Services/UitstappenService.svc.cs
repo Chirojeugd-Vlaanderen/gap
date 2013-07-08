@@ -349,9 +349,28 @@ namespace Chiro.Gap.Services
         {
             var uitstap = _uitstappenRepo.ByID(uitstapId);
             Gav.Check(uitstap);
+            var groep = uitstap.GroepsWerkJaar.Groep;
+            
+            // zoek of maak adres
+            var adres = _adressenMgr.ZoekenOfMaken(adresInfo, _adressenRepo.Select(), _straatNamenRepo.Select(), _woonPlaatsenRepo.Select(), _landenRepo.Select());
 
-            uitstap.Plaats.Naam = plaatsNaam;
-            uitstap.Plaats.Adres = _adressenMgr.ZoekenOfMaken(adresInfo, _adressenRepo.Select(), _straatNamenRepo.Select(), _woonPlaatsenRepo.Select(), _landenRepo.Select());
+            // zoek plaats
+            var plaats = (from p in adres.BivakPlaats
+                          where String.Equals(p.Naam, plaatsNaam, StringComparison.OrdinalIgnoreCase)
+                          && Equals(p.Groep, groep)
+                          select p).FirstOrDefault();
+
+            if (plaats == null)
+            {
+                // als niet gevonden: maak
+                plaats = new Plaats {Naam = plaatsNaam, Adres = adres, Groep = groep};
+                groep.BivakPlaats.Add(plaats);
+                adres.BivakPlaats.Add(plaats);
+            }
+
+            // koppelen
+            uitstap.Plaats = plaats;
+            plaats.Uitstap.Add(uitstap);
 
             _uitstappenRepo.SaveChanges();
         }

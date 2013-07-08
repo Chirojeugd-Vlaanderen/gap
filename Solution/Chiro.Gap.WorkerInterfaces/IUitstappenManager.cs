@@ -25,20 +25,6 @@ namespace Chiro.Gap.WorkerInterfaces
     public interface IUitstappenManager
     {
         /// <summary>
-        /// Koppelt een plaats aan een uitstap
-        /// </summary>
-        /// <param name="uitstap">
-        /// Te koppelen uitstap
-        /// </param>
-        /// <param name="plaats">
-        /// Te koppelen plaats
-        /// </param>
-        /// <returns>
-        /// Uitstap, met plaats gekoppeld.  Persisteert niet
-        /// </returns>
-        Uitstap Koppelen(Uitstap uitstap, Plaats plaats);
-
-        /// <summary>
         /// Bepaalt of het de tijd van het jaar is voor de bivakaangifte
         /// </summary>
         /// <param name="groepsWerkJaar">Huidige groepswerkjaar</param>
