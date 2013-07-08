@@ -694,8 +694,8 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
-        ///A test for TypeToggle
-        ///</summary>
+        /// Controleert of TypeToggle een kind omzet naar een leid(st)er
+        /// </summary>
         [TestMethod()]
         public void TypeToggleTest()
         {
@@ -1268,6 +1268,85 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             verzekeringenSyncMock.Verify(src => src.Bewaren(It.IsAny<PersoonsVerzekering>(), It.IsAny<GroepsWerkJaar>()), Times.Once());
+        }
+
+        /// <summary>
+        /// Controleert of het togglen kind/leiding synct naar Kipadmin
+        /// </summary>
+        [TestMethod()]
+        public void TypeToggleSyncTest()
+        {
+            // ARRANGE
+            // We maken een eenvoudig model.
+
+            var groep = new ChiroGroep
+            {
+                GroepsWerkJaar = new List<GroepsWerkJaar>(),
+                Afdeling = new List<Afdeling>(),
+                GelieerdePersoon = new List<GelieerdePersoon>(),
+            };
+
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = groep,
+                Lid = new List<Lid>(),
+                AfdelingsJaar = new List<AfdelingsJaar>(),
+                WerkJaar = 2012
+            };
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            var afdeling = new Afdeling { Naam = "Dingskes", ChiroGroep = groep };
+            groep.Afdeling.Add(afdeling);
+
+            var afdelingsJaar = new AfdelingsJaar
+            {
+                Afdeling = afdeling,
+                GeboorteJaarVan = 1995,
+                GeboorteJaarTot = 1996
+            };
+            groepsWerkJaar.AfdelingsJaar.Add(afdelingsJaar);
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Groep = groep,
+                ID = 2,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1996, 7, 3)
+                    },
+                ChiroLeefTijd = 0
+            };
+            groep.GelieerdePersoon.Add(gelieerdePersoon);
+
+            var lid = new Kind { ID = 1, AfdelingsJaar = afdelingsJaar, GelieerdePersoon = gelieerdePersoon, GroepsWerkJaar = groepsWerkJaar };
+            groepsWerkJaar.Lid.Add(lid);
+
+            // mocking van de ledensync
+
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(src => src.TypeUpdaten(It.IsAny<Lid>())).Verifiable();
+            ledenSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Lid>())).Verifiable();
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+
+            // mocking van de data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(groepsWerkJaar.Lid.ToList()));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            target.TypeToggle(lid.ID);
+
+            // ASSERT
+
+            ledenSyncMock.Verify(src => src.TypeUpdaten(It.IsAny<Lid>()), Times.AtLeastOnce());
+            ledenSyncMock.Verify(src => src.AfdelingenUpdaten(It.IsAny<Lid>()), Times.AtLeastOnce());
         }
     }
 }
