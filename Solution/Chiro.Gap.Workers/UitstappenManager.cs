@@ -36,42 +36,6 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class UitstappenManager : IUitstappenManager
     {
-        private readonly IAutorisatieManager _autorisatieManager;
-        private readonly IBivakSync _sync;
-
-        public UitstappenManager(
-            IAutorisatieManager autorisatieManager,
-            IBivakSync sync)
-        {
-            _autorisatieManager = autorisatieManager;
-            _sync = sync;
-        }
-
-        /// <summary>
-        /// Koppelt een plaats aan een uitstap
-        /// </summary>
-        /// <param name="uitstap">
-        /// Te koppelen uitstap
-        /// </param>
-        /// <param name="plaats">
-        /// Te koppelen plaats
-        /// </param>
-        /// <returns>
-        /// Uitstap, met plaats gekoppeld.  Persisteert niet
-        /// </returns>
-        public Uitstap Koppelen(Uitstap uitstap, Plaats plaats)
-        {
-            if (!_autorisatieManager.IsSuperGav() && (!_autorisatieManager.IsGav(uitstap) || !_autorisatieManager.IsGav(plaats)))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
-            plaats.Uitstap.Add(uitstap);
-            uitstap.Plaats = plaats;
-
-            return uitstap;
-        }
-
         /// <summary>
         /// Bepaalt of het de tijd van het jaar is voor de bivakaangifte
         /// </summary>
