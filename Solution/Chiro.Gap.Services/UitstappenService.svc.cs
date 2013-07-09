@@ -445,6 +445,7 @@ namespace Chiro.Gap.Services
                 deelnemer.UitstapWaarvoorVerantwoordelijk.Add(deelnemer.Uitstap);
             }
 
+            _deelnemersRepo.SaveChanges();
             return deelnemer.Uitstap.ID;
         }
         #endregion
