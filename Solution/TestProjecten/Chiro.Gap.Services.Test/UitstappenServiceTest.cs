@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Moq;
-using Chiro.Gap.Services;
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Domain;
@@ -409,5 +407,41 @@ namespace Chiro.Gap.Services.Test
         }
 
 
+
+        /// <summary>
+        /// Test om te kijken of verwijderen van bivak wel synct
+        /// </summary>
+        [TestMethod()]
+        public void UitstapVerwijderenTest()
+        {
+            // ARRANGE 
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = new ChiroGroep { ID = 1 },
+            };
+            var bivak = new Uitstap { ID = 2, IsBivak = true, GroepsWerkJaar = groepsWerkJaar };
+            groepsWerkJaar.Uitstap.Add(bivak);
+
+            // mock synchronisatie voor kipadmin
+            var bivakSyncMock = new Mock<IBivakSync>();
+            bivakSyncMock.Setup(src => src.Verwijderen(bivak.ID)).Verifiable();
+            Factory.InstantieRegistreren(bivakSyncMock.Object);
+
+            // mock data acces
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Uitstap>())
+                                   .Returns(new DummyRepo<Uitstap>(new List<Uitstap> { bivak }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<UitstappenService>();
+
+            target.UitstapVerwijderen(bivak.ID);
+
+            // ASSERT
+
+            bivakSyncMock.Verify(src => src.Verwijderen(bivak.ID), Times.AtLeastOnce());
+        }
     }
 }
