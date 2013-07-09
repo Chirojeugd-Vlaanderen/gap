@@ -33,10 +33,13 @@ namespace Chiro.Gap.Dummies
     public class DummyRepo<T>: IRepository<T> where T:BasisEntiteit
     {
         private IList<T> _entiteiten;
+        private int _saveCount;
+
 
         public DummyRepo(IList<T> entiteiten)
         {
             _entiteiten = entiteiten;
+            _saveCount = 0;
         }
 
         public void Dispose()
@@ -104,6 +107,12 @@ namespace Chiro.Gap.Dummies
         public int ContextHash { get; private set; }
         public void SaveChanges()
         {
+            ++_saveCount;
+        }
+
+        public int SaveCount
+        {
+            get { return _saveCount; }
         }
     }
 }
