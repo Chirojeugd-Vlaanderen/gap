@@ -51,8 +51,6 @@ namespace Chiro.Gap.Services.Test
     [TestClass]
     public class LedenServiceTest
     {
-        private IGelieerdePersonenService _personenSvc = null;
-
         private TestContext testContextInstance;
 
         /// <summary>
@@ -261,62 +259,83 @@ namespace Chiro.Gap.Services.Test
 
         }
 
+        /// <summary>
+        /// Test voor lid maken, met andere afdeling dan de  voorgestelde.
+        /// </summary>
         [TestMethod]
         public void TestLidMakenBuitenVoorstel()
         {
-            using (var ts = new TransactionScope())
-            {
+            #region Arrange
 
-                #region Arrange
+            string fouten;
 
-                string fouten;
+            var mijnAfdeling = new AfdelingsJaar
+                                   {
+                                       ID = 1,
+                                       GeboorteJaarVan = 1996,
+                                       GeboorteJaarTot = 1997,
+                                       Geslacht = GeslachtsType.Gemengd
+                                   };
+            var jongereAfdeling = new AfdelingsJaar
+                                      {
+                                          ID = 2,
+                                          GeboorteJaarVan = 1998,
+                                          GeboorteJaarTot = 1999,
+                                          Geslacht = GeslachtsType.Gemengd
+                                      };
 
-                // Maak een nieuwe persoon
-                var gp = _personenSvc.AanmakenForceer(
-                    new PersoonInfo
-                        {
-                            AdNummer = null,
-                            ChiroLeefTijd = 0,
-                            GeboorteDatum = new System.DateTime(2003, 5, 8),
-                            Geslacht = GeslachtsType.Vrouw,
-                            Naam = "TestLidMakenBuitenVoorstel",
-                            VoorNaam = "Sabine",
-                        },
-                    groepID: TestInfo.GROEP_ID,
-                    forceer: true);
+            var groepsWerkJaar = new GroepsWerkJaar
+                                     {
+                                         WerkJaar = 2013,
+                                         AfdelingsJaar =
+                                             new List<AfdelingsJaar>
+                                                 {
+                                                     mijnAfdeling,
+                                                     jongereAfdeling
+                                                 }
+                                     };
 
-                // GP2 zit niet in een afdeling, we vragen zijn voorgestelde afdeling en steken hem/haar dan in de andere
-                var gelieerdePersoonIDs = new List<int> {gp.GelieerdePersoonID};
+            var gelieerdePersoon = new GelieerdePersoon
+                                       {
+                                           ID = 3,
+                                           Persoon = new Persoon
+                                                         {
+                                                             GeboorteDatum = new DateTime(1997, 3, 8),
+                                                             Geslacht = GeslachtsType.Vrouw
+                                                         },
+                                           Groep = new ChiroGroep
+                                                       {
+                                                           GroepsWerkJaar = new List<GroepsWerkJaar>
+                                                                                {
+                                                                                    groepsWerkJaar
+                                                                                }
+                                                       }
+                                       };
+            groepsWerkJaar.Groep = gelieerdePersoon.Groep;
 
-                var ledenService = Factory.Maak<LedenService>();
+            // dependency injection voor data access
 
-                #endregion
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+            #endregion
 
-                var voorstel = ledenService.VoorstelTotInschrijvenGenereren(gelieerdePersoonIDs, out fouten).First();
-                int gekozenafdelingsjaarID = voorstel.AfdelingsJaarIDs.Contains(TestInfo.AFDELINGS_JAAR2_ID)
-                                                 ? TestInfo.AFDELINGS_JAAR1_ID
-                                                 : TestInfo.AFDELINGS_JAAR2_ID;
-                voorstel.AfdelingsJaarIDs = new[] {gekozenafdelingsjaarID};
-                voorstel.AfdelingsJaarIrrelevant = false;
-                var defvoorstel = new InTeSchrijvenLid[] {voorstel};
+            #region act
+            var ledenService = Factory.Maak<LedenService>();
+            ledenService.Inschrijven(new [] {new InTeSchrijvenLid
+                                                 {
+                                                     AfdelingsJaarIDs = new [] {jongereAfdeling.ID},
+                                                     AfdelingsJaarIrrelevant = false,
+                                                     GelieerdePersoonID = gelieerdePersoon.ID,
+                                                     LeidingMaken = false,
+                                                     VolledigeNaam = "Laat ons hopen dat dit irrelevant is (zie #1584)."
+                                                 }}, out fouten);
+            #endregion
 
-                #region Act
-
-                int lidID = ledenService.Inschrijven(defvoorstel, out fouten).First();
-
-                #endregion
-
-                #region Assert
-
-                var l = ledenService.DetailsOphalen(lidID);
-                Assert.IsTrue(l.LidInfo.AfdelingIdLijst.Contains(TestInfo.AFDELING2_ID));
-
-                #endregion
-
-                // We committen de transactie niet, zodat we het lid achteraf niet
-                // opnieuw moeten uitschrijven.
-
-            } // Rollback
+            #region Assert
+            Assert.AreEqual(gelieerdePersoon.Lid.First().AfdelingsJaarIDs.First(), jongereAfdeling.ID);
+            #endregion
         }
 
         /// <summary>
