@@ -25,7 +25,6 @@ using System.Linq;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Properties;
@@ -33,43 +32,10 @@ using Chiro.Gap.Workers.Properties;
 namespace Chiro.Gap.Workers
 {
     /// <summary>
-    /// Klasse met extra methode om het einde van de jaarovergang in een groepswerkjaar op te vragen.
-    /// </summary>
-    public static class GroepsWerkJaarHelper
-    {
-        /// <summary>
-        /// Berekent aan de hand van een gegeven werkJaar de datum van het verplichte einde van de instapperiode in dat jaar.
-        /// Belangrijk =&gt; volgens de HUIDIGE settings van dat werkjaareinde (moest dat in de toekomst veranderen en we hebben dat van vroeger nodig)
-        /// </summary>
-        /// <param name="gwj">
-        /// Het groepswerkjaar waarvoor we het einde van de jaarovergang willen berekenen
-        /// </param>
-        /// <returns>
-        /// De datum waarom de jaarovergang eindigt
-        /// </returns>
-        public static DateTime GetEindeJaarovergang(this GroepsWerkJaar gwj)
-        {
-            // Haal de einddatum voor de overgang/aansluiting uit de settings, en bereken wanneer die datum valt in dit werkJaar
-            var dt = Settings.Default.WerkjaarVerplichteOvergang;
-            return new DateTime(gwj.WerkJaar, dt.Month, dt.Day);
-        }
-    }
-
-    /// <summary>
     /// Worker die alle businesslogica i.v.m. leden bevat
     /// </summary>
     public class LedenManager : ILedenManager
     {
-        private readonly IAutorisatieManager _autorisatieMgr;
-        private readonly ILedenSync _sync;
-
-        public LedenManager(IAutorisatieManager autorisatie,
-                            ILedenSync sync)
-        {
-            _autorisatieMgr = autorisatie;
-            _sync = sync;
-        }
-
         /// <summary>
         /// Maakt een gelieerde persoon <paramref name="gp"/> lid in groepswerkjaar <paramref name="gwj"/>,
         /// met lidtype <paramref name="type"/>, persisteert niet.
@@ -118,11 +84,6 @@ namespace Chiro.Gap.Workers
                     break;
             }
 
-            if (!_autorisatieMgr.IsGav(gp) || !_autorisatieMgr.IsGav(gwj))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
             // GroepsWerkJaar en GelieerdePersoon invullen
             lid.GroepsWerkJaar = gwj;
             lid.GelieerdePersoon = gp;
@@ -130,26 +91,26 @@ namespace Chiro.Gap.Workers
             gwj.Lid.Add(lid);
 
             var stdProbeerPeriode = DateTime.Today.AddDays(Settings.Default.LengteProbeerPeriode);
+            
+            var eindeJaarOvergang = Settings.Default.WerkjaarVerplichteOvergang;
+            eindeJaarOvergang = new DateTime(gwj.WerkJaar, eindeJaarOvergang.Month, eindeJaarOvergang.Day);
 
             if ((gp.Groep.Niveau & (Niveau.Gewest | Niveau.Verbond)) != 0)
             {
-                // Gewesten en verbonden: instapperiode enkel vandaag
-                // ! NIET RECHTSTREEKS SYNCEN, ZODAT DE GROEPN NOG EVEN TIJD HEEFT OM
-                // FOUT INGESCHREVEN LEDEN OPNIEUW UIT TE SCHRIJVEN.
                 lid.EindeInstapPeriode = DateTime.Today;
             }
             else if (!isJaarOvergang)
             {
                 // Standaardinstapperiode indien niet in jaarovergang
-                lid.EindeInstapPeriode = gwj.GetEindeJaarovergang() >= stdProbeerPeriode
-                                             ? gwj.GetEindeJaarovergang()
+                lid.EindeInstapPeriode = eindeJaarOvergang >= stdProbeerPeriode
+                                             ? eindeJaarOvergang
                                              : stdProbeerPeriode;
             }
             else
             {
                 // Voor jaarovergang: vaste deadline (gek idee, maar blijkbaar in de specs)
-                lid.EindeInstapPeriode = gwj.GetEindeJaarovergang() >= DateTime.Now
-                                             ? gwj.GetEindeJaarovergang()
+                lid.EindeInstapPeriode = eindeJaarOvergang >= DateTime.Now
+                                             ? eindeJaarOvergang
                                              : stdProbeerPeriode;
             }
 
@@ -414,11 +375,6 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public LidVoorstel InschrijvingVoorstellen(GelieerdePersoon gp, GroepsWerkJaar gwj, bool leidingIndienMogelijk)
         {
-            if (!_autorisatieMgr.IsGav(gp) || !_autorisatieMgr.IsGav(gwj))
-            {
-                throw new GeenGavException(Properties.Resources.GeenGav);
-            }
-
             // We moeten kunnen bepalen hoe oud iemand is, om hem/haar ofwel in een afdeling te steken,
             // of te kijken of hij/zij oud genoeg is om leiding te zijn.
 
