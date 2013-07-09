@@ -484,5 +484,50 @@ namespace Chiro.Gap.Services.Test
 
             Assert.IsFalse(deelnemersRepoMock.SaveCount == 0);
         }
+
+        /// <summary>
+        /// Test de 'kipsyncrhonisatie' voor ContactInstellen
+        ///</summary>
+        [TestMethod()]
+        public void ContactInstellenSyncTest()
+        {
+            // ARRANGE 
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = new ChiroGroep { ID = 1 },
+            };
+            var bivak = new Uitstap
+                            {
+                                ID = 2,
+                                IsBivak = true,
+                                GroepsWerkJaar = groepsWerkJaar,
+                            };
+            var deelnemer = new Deelnemer {ID = 3, Uitstap = bivak};
+
+            groepsWerkJaar.Uitstap.Add(bivak);
+
+            // mock synchronisatie voor kipadmin
+            var bivakSyncMock = new Mock<IBivakSync>();
+            bivakSyncMock.Setup(src => src.Bewaren(bivak)).Verifiable();
+            Factory.InstantieRegistreren(bivakSyncMock.Object);
+
+            // mock data acces
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Deelnemer>())
+                                   .Returns(new DummyRepo<Deelnemer>(new List<Deelnemer> { deelnemer }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<UitstappenService>();
+
+            target.ContactInstellen(deelnemer.ID);
+
+            // ASSERT
+
+            bivakSyncMock.Verify(src => src.Bewaren(bivak), Times.AtLeastOnce());
+        }
+                
+
     }
 }
