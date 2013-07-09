@@ -11,6 +11,8 @@ using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Services;
+using System;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -442,6 +444,45 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             bivakSyncMock.Verify(src => src.Verwijderen(bivak.ID), Times.AtLeastOnce());
+        }
+
+        /// <summary>
+        /// Test of nieuw contact gepersisteerd wordt.
+        /// </summary>
+        [TestMethod()]
+        public void ContactInstellenSaveTest()
+        {
+            // ARRANGE 
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = new ChiroGroep { ID = 1 },
+            };
+            var bivak = new Uitstap
+            {
+                ID = 2,
+                IsBivak = true,
+                GroepsWerkJaar = groepsWerkJaar,
+            };
+            var deelnemer = new Deelnemer { ID = 3, Uitstap = bivak };
+
+            groepsWerkJaar.Uitstap.Add(bivak);
+
+            // mock data acces
+            var deelnemersRepoMock = new DummyRepo<Deelnemer>(new List<Deelnemer> {deelnemer});
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Deelnemer>())
+                                   .Returns(deelnemersRepoMock);
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<UitstappenService>();
+
+            target.ContactInstellen(deelnemer.ID);
+
+            // ASSERT
+
+            Assert.IsFalse(deelnemersRepoMock.SaveCount == 0);
         }
     }
 }
