@@ -146,6 +146,48 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
+        /// Controleert of een gesavede bivakplaats ook gesynct wordt naar Kipadmin
+        /// </summary>
+        [TestMethod()]
+        public void PlaatsBewarenTest()
+        {
+            // ARRANGE 
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = new ChiroGroep { ID = 1 },
+            };
+            var bivak = new Uitstap { ID = 2, IsBivak = true, GroepsWerkJaar = groepsWerkJaar };
+            groepsWerkJaar.Uitstap.Add(bivak);
+            var land = new Land() {Naam = "Nederland"};
+
+            // mock synchronisatie kipadmin
+            var bivakSyncMock = new Mock<IBivakSync>();
+            bivakSyncMock.Setup(src => src.Bewaren(It.IsAny<Uitstap>())).Verifiable();
+            Factory.InstantieRegistreren(bivakSyncMock.Object);
+
+            // mock data acces
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Uitstap>())
+                                  .Returns(new DummyRepo<Uitstap>(new List<Uitstap> { bivak }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
+                                   .Returns(new DummyRepo<Adres>(new List<Adres>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Land>())
+                                   .Returns(new DummyRepo<Land>(new List<Land> { land }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<WoonPlaats>())
+                                   .Returns(new DummyRepo<WoonPlaats>(new List<WoonPlaats>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<StraatNaam>())
+                                   .Returns(new DummyRepo<StraatNaam>(new List<StraatNaam>()));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var target = Factory.Maak<UitstappenService>();
+            target.PlaatsBewaren(bivak.ID, "Onze kampplaats", new AdresInfo {LandNaam = land.Naam});
+
+            // ASSERT
+            bivakSyncMock.Verify(src => src.Bewaren(It.IsAny<Uitstap>()), Times.AtLeastOnce());
+        }
+
+        /// <summary>
         /// Test: gekende bivakplaats toevoegen als eerste bivakplaats aan een uitstap
         /// </summary>
         [TestMethod()]

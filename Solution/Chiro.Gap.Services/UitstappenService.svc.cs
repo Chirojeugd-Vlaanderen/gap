@@ -372,7 +372,19 @@ namespace Chiro.Gap.Services
             uitstap.Plaats = plaats;
             plaats.Uitstap.Add(uitstap);
 
-            _uitstappenRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                if (uitstap.IsBivak)
+                {
+                    _bivakSync.Bewaren(uitstap);
+                }
+                _uitstappenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
         }
 
         /// <summary>
