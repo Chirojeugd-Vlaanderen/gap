@@ -400,7 +400,19 @@ namespace Chiro.Gap.Services
             if (uitstap != null)
             {
                 _uitstappenRepo.Delete(uitstap);
-                _uitstappenRepo.SaveChanges();
+#if KIPDORP
+                using (var tx = new TransactionScope())
+                {
+#endif
+                    if (uitstap.IsBivak)
+                    {
+                        _bivakSync.Verwijderen(uitstap.ID);
+                    }
+                    _uitstappenRepo.SaveChanges();
+#if KIPDORP
+                    tx.Complete();
+                }
+#endif
             }
         }
 
