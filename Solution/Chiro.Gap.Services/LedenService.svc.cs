@@ -769,23 +769,34 @@ namespace Chiro.Gap.Services
         /// </remarks>
         public List<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
         {
-            var leden = (from ld in _ledenRepo.Select()
-                         where
-                             ld.UitschrijfDatum == null &&
-                             (filter.GroepID == null || ld.GroepsWerkJaar.Groep.ID == filter.GroepID) &&
-                             (filter.GroepsWerkJaarID == null || ld.GroepsWerkJaar.ID == filter.GroepsWerkJaarID) &&
-                             (filter.FunctieID == null || ld.Functie.Select(e => e.ID == filter.FunctieID).Any()) &&
-                             (filter.ProbeerPeriodeNa == null || !ld.EindeInstapPeriode.HasValue ||
-                              filter.ProbeerPeriodeNa < ld.EindeInstapPeriode.Value) &&
-                             (filter.HeeftVoorkeurAdres == null || (ld.GelieerdePersoon.PersoonsAdres != null && filter.HeeftVoorkeurAdres == true) ||
-                             (ld.GelieerdePersoon.PersoonsAdres == null && filter.HeeftVoorkeurAdres == false)) &&
-                             (filter.HeeftTelefoonNummer == null ||
-                              ld.GelieerdePersoon.Communicatie.Any(e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer) ==
-                              filter.HeeftTelefoonNummer) &&
-                             (filter.HeeftEmailAdres == null ||
-                              ld.GelieerdePersoon.Communicatie.Any(e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email) ==
-                              filter.HeeftEmailAdres)
-                         select ld).ToList();
+            // De afdelingen kan ik niet op deze manier 'eager loaden', omdat 
+            // 'AfdelingsJaar' geen navigation property is van Lid, maar wel van
+            // 'Kind' of 'Leiding'. Dat bekijk ik straks verder.
+
+            var leden =
+                (from ld in
+                     _ledenRepo.Select("GelieerdePersoon.Communicatie.CommunicatieType",
+                                       "Functie", "GelieerdePersoon.Persoon",
+                                       "GelieerdePersoon.PersoonsAdres.Adres")
+                 where
+                     ld.UitschrijfDatum == null &&
+                     (filter.GroepID == null || ld.GroepsWerkJaar.Groep.ID == filter.GroepID) &&
+                     (filter.GroepsWerkJaarID == null || ld.GroepsWerkJaar.ID == filter.GroepsWerkJaarID) &&
+                     (filter.FunctieID == null || ld.Functie.Select(e => e.ID == filter.FunctieID).Any()) &&
+                     (filter.ProbeerPeriodeNa == null || !ld.EindeInstapPeriode.HasValue ||
+                      filter.ProbeerPeriodeNa < ld.EindeInstapPeriode.Value) &&
+                     (filter.HeeftVoorkeurAdres == null ||
+                      (ld.GelieerdePersoon.PersoonsAdres != null && filter.HeeftVoorkeurAdres == true) ||
+                      (ld.GelieerdePersoon.PersoonsAdres == null && filter.HeeftVoorkeurAdres == false)) &&
+                     (filter.HeeftTelefoonNummer == null ||
+                      ld.GelieerdePersoon.Communicatie.Any(
+                          e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer) ==
+                      filter.HeeftTelefoonNummer) &&
+                     (filter.HeeftEmailAdres == null ||
+                      ld.GelieerdePersoon.Communicatie.Any(
+                          e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email) ==
+                      filter.HeeftEmailAdres)
+                 select ld).ToList();
 
             if (filter.AfdelingID != null)
             {
