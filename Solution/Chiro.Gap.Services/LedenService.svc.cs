@@ -58,7 +58,9 @@ namespace Chiro.Gap.Services
         private readonly IRepository<Functie> _functiesRepo;
         private readonly IRepository<GroepsWerkJaar> _groepsWerkJarenRepo;
         private readonly IRepository<Kind> _kinderenRepo;
-        private readonly IRepository<Leiding> _leidingRepo; 
+        private readonly IRepository<Leiding> _leidingRepo;
+        private readonly IRepository<BuitenLandsAdres> _buitenlandseAdressenRepo;
+        private readonly IRepository<BelgischAdres> _belgischeAdressenRepo; 
 
         // Managers voor niet-triviale businesslogica
 
@@ -103,6 +105,8 @@ namespace Chiro.Gap.Services
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
             _kinderenRepo = repositoryProvider.RepositoryGet<Kind>();
             _leidingRepo = repositoryProvider.RepositoryGet<Leiding>();
+            _buitenlandseAdressenRepo = repositoryProvider.RepositoryGet<BuitenLandsAdres>();
+            _belgischeAdressenRepo = repositoryProvider.RepositoryGet<BelgischAdres>();
 
             _verzekeringenMgr = verzekeringenMgr;
             _ledenMgr = ledenMgr;
@@ -147,6 +151,8 @@ namespace Chiro.Gap.Services
                     _groepsWerkJarenRepo.Dispose();
                     _kinderenRepo.Dispose();
                     _leidingRepo.Dispose();
+                    _buitenlandseAdressenRepo.Dispose();
+                    _belgischeAdressenRepo.Dispose();
                 }
                 disposed = true;
             }
@@ -783,6 +789,12 @@ namespace Chiro.Gap.Services
         {
             List<LidOverzicht> resultaat;
 
+            // Let op. Deze method is zorgvuldig geschreven opdat de lidinfo na 2 of 4 query's 
+            // (alnaargelang met of zonder adressen) allemaal geladen zou zijn.
+            // Oorspronkelijk waren dat er een 10-tal per lid. (zie #1587)
+            // Als je hier iets aanpast, controleer dan de gegenereerde query's. Of als je niet weet hoe daaraan
+            // te beginnen, geef mij (johan) een seintje.
+
             var teLadenDependencies = new List<string>
                                           {
                                               "GelieerdePersoon.Communicatie.CommunicatieType",
@@ -863,8 +875,27 @@ namespace Chiro.Gap.Services
                 leden = leden.Union(leiding);
             }
 
+
             if (metAdressen)
             {
+                // Laad hier meteen alle adressen in 1 query. Entity Framework zal ze koppelen
+                // aan de gelieerde personen die we al hebben. En zo vermijden we bij het mappen
+                // een adresquery voor iedere gelieerde persoon.
+
+                var gpIDs = (from l in leden select l.GelieerdePersoon.ID).ToList();
+
+                // Resharper melding afzetten hieronder. Het is wel degelijk de bedoeling dat de query's worden 
+                // geevalueerd
+
+                // ReSharper disable UnusedVariable
+                var buitenlandseAdressen = (from adr in _buitenlandseAdressenRepo.Select("PersoonsAdres.GelieerdePersoon", "Land")
+                                            where adr.PersoonsAdres.Any(pa => pa.GelieerdePersoon.Any(gp => gpIDs.Contains(gp.ID)))
+                                            select adr).ToList();
+                var belgischeAdressen = (from adr in _belgischeAdressenRepo.Select("PersoonsAdres.GelieerdePersoon", "StraatNaam", "Woonplaats")
+                                         where adr.PersoonsAdres.Any(pa => pa.GelieerdePersoon.Any(gp => gpIDs.Contains(gp.ID)))
+                                         select adr).ToList();
+                // ReSharper restore UnusedVariable
+
                 resultaat = Mapper.Map<IList<Lid>, List<LidOverzicht>>(leden.ToList());
             }
             else
