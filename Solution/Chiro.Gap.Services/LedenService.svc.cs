@@ -769,6 +769,8 @@ namespace Chiro.Gap.Services
         /// </remarks>
         public List<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
         {
+            List<LidOverzicht> resultaat;
+
             // De afdelingen kan ik niet op deze manier 'eager loaden', omdat 
             // 'AfdelingsJaar' geen navigation property is van Lid, maar wel van
             // 'Kind' of 'Leiding'. Dat bekijk ik straks verder.
@@ -796,27 +798,35 @@ namespace Chiro.Gap.Services
                       ld.GelieerdePersoon.Communicatie.Any(
                           e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email) ==
                       filter.HeeftEmailAdres)
-                 select ld).ToList();
+                 select ld);
 
             if (filter.AfdelingID != null)
             {
-                leden = leden.Where(e => e.AfdelingIds.Contains(filter.AfdelingID.Value)).ToList();
+                leden = leden.Where(e => e.AfdelingIds.Contains(filter.AfdelingID.Value));
             }
 
-            leden =
-                leden.Where(e => (filter.LidType != LidType.Kind || e.Type == LidType.Kind) &&
-                            (filter.LidType != LidType.Leiding || e.Type == LidType.Leiding)).ToList();
 
             if (metAdressen)
             {
-                return Mapper.Map<IList<Lid>, List<LidOverzicht>>(leden);
+                resultaat = Mapper.Map<IList<Lid>, List<LidOverzicht>>(leden.ToList());
+            }
+            else
+            {
+                // TODO: Waarom wordt er hier twee keer gemapt?
+                // Misschien om informatie expliciet niet mee te nemen?
+
+                var list = Mapper.Map<IList<Lid>, List<LidOverzichtZonderAdres>>(leden.ToList());
+                resultaat = Mapper.Map<IList<LidOverzichtZonderAdres>, List<LidOverzicht>>(list);
             }
 
-            // TODO: Waarom wordt er hier twee keer gemapt?
-            // Misschien om informatie expliciet niet mee te nemen?
+            // De filter op lid/leiding doen we hier op het einde, omdat dat niet rechtstreeks
+            // kan in entity famework
 
-            var list = Mapper.Map<IList<Lid>, List<LidOverzichtZonderAdres>>(leden);
-            return Mapper.Map<IList<LidOverzichtZonderAdres>, List<LidOverzicht>>(list);
+            resultaat = resultaat.Where(e => (filter.LidType != LidType.Kind || e.Type == LidType.Kind) &&
+                (filter.LidType != LidType.Leiding || e.Type == LidType.Leiding)).ToList();
+
+            return resultaat;
+
         }
         #endregion
 
