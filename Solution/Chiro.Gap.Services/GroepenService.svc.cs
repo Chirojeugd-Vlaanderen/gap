@@ -773,15 +773,6 @@ namespace Chiro.Gap.Services
             return groep;
         }
 
-        Groep GetGroepEnCheckGav(string groepCode)
-        {
-            var groep = (from g in _groepenRepo.Select()
-                         where Equal(g.Code, groepCode)
-                         select g).FirstOrDefault();
-            Gav.Check(groep);
-            return groep;
-        }
-
         /// <summary>
         /// Voegt een functie toe aan de groep
         /// </summary>
@@ -993,14 +984,6 @@ namespace Chiro.Gap.Services
         }
 
         #endregion
-
-
-        Groep GetGroepEnCheckGav(int groepId)
-        {
-            var groep = _groepenRepo.ByID(groepId);
-            Gav.Check(groep);
-            return groep;
-        }
 
         #region adresgegevens ophalen
 
