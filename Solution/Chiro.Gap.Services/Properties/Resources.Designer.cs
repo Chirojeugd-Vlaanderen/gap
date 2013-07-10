@@ -223,6 +223,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je mag geen nationale functies bewerken..
+        /// </summary>
+        internal static string NationaleFunctieNietBewerken {
+            get {
+                return ResourceManager.GetString("NationaleFunctieNietBewerken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dit is niet mogelijk voor kaderploegen..
         /// </summary>
         internal static string NietVoorKader {

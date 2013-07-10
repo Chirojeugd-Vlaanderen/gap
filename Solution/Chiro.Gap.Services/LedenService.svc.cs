@@ -57,6 +57,8 @@ namespace Chiro.Gap.Services
         private readonly IRepository<AfdelingsJaar> _afdelingsJaarRepo;
         private readonly IRepository<Functie> _functiesRepo;
         private readonly IRepository<GroepsWerkJaar> _groepsWerkJarenRepo;
+        private readonly IRepository<Kind> _kinderenRepo;
+        private readonly IRepository<Leiding> _leidingRepo; 
 
         // Managers voor niet-triviale businesslogica
 
@@ -99,6 +101,8 @@ namespace Chiro.Gap.Services
             _groepsWerkJarenRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
             _verzekerRepo = repositoryProvider.RepositoryGet<VerzekeringsType>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
+            _kinderenRepo = repositoryProvider.RepositoryGet<Kind>();
+            _leidingRepo = repositoryProvider.RepositoryGet<Leiding>();
 
             _verzekeringenMgr = verzekeringenMgr;
             _ledenMgr = ledenMgr;
@@ -141,6 +145,8 @@ namespace Chiro.Gap.Services
                     _afdelingsJaarRepo.Dispose();
                     _functiesRepo.Dispose();
                     _groepsWerkJarenRepo.Dispose();
+                    _kinderenRepo.Dispose();
+                    _leidingRepo.Dispose();
                 }
                 disposed = true;
             }
@@ -775,43 +781,103 @@ namespace Chiro.Gap.Services
         /// </remarks>
         public List<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
         {
-            var leden = (from ld in _ledenRepo.Select()
-                         where
-                             ld.UitschrijfDatum == null &&
-                             (filter.GroepID == null || ld.GroepsWerkJaar.Groep.ID == filter.GroepID) &&
-                             (filter.GroepsWerkJaarID == null || ld.GroepsWerkJaar.ID == filter.GroepsWerkJaarID) &&
-                             (filter.FunctieID == null || ld.Functie.Select(e => e.ID == filter.FunctieID).Any()) &&
-                             (filter.ProbeerPeriodeNa == null || !ld.EindeInstapPeriode.HasValue ||
-                              filter.ProbeerPeriodeNa < ld.EindeInstapPeriode.Value) &&
-                             (filter.HeeftVoorkeurAdres == null || (ld.GelieerdePersoon.PersoonsAdres != null && filter.HeeftVoorkeurAdres == true) ||
-                             (ld.GelieerdePersoon.PersoonsAdres == null && filter.HeeftVoorkeurAdres == false)) &&
-                             (filter.HeeftTelefoonNummer == null ||
-                              ld.GelieerdePersoon.Communicatie.Any(e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer) ==
-                              filter.HeeftTelefoonNummer) &&
-                             (filter.HeeftEmailAdres == null ||
-                              ld.GelieerdePersoon.Communicatie.Any(e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email) ==
-                              filter.HeeftEmailAdres)
-                         select ld).ToList();
+            List<LidOverzicht> resultaat;
 
-            if (filter.AfdelingID != null)
+            var teLadenDependencies = new List<string>
+                                          {
+                                              "GelieerdePersoon.Communicatie.CommunicatieType",
+                                              "Functie",
+                                              "GelieerdePersoon.Persoon",
+                                              "AfdelingsJaar.Afdeling"
+                                          };
+            if (metAdressen)
             {
-                leden = leden.Where(e => e.AfdelingIds.Contains(filter.AfdelingID.Value)).ToList();
+                teLadenDependencies.Add("GelieerdePersoon.PersoonsAdres.Adres");
             }
 
-            leden =
-                leden.Where(e => (filter.LidType != LidType.Kind || e.Type == LidType.Kind) &&
-                            (filter.LidType != LidType.Leiding || e.Type == LidType.Leiding)).ToList();
+            // Het lukt me niet om afdelingen eager te loaden, vermoedelijk omdat
+            // die anders gekoppeld zijn aan kinderen en aan leiding. Dus ik doe
+            // nu al het werk dubbel, 1 keer voor kinderen, 1 keer voor leiding.
+            // Op het einde voeg ik de resultaten samen.
+
+            var kinderen =
+                (from ld in
+                     _kinderenRepo.Select(teLadenDependencies.ToArray())
+                 where
+                     ld.UitschrijfDatum == null &&
+                     (filter.GroepID == null || ld.GroepsWerkJaar.Groep.ID == filter.GroepID) &&
+                     (filter.GroepsWerkJaarID == null || ld.GroepsWerkJaar.ID == filter.GroepsWerkJaarID) &&
+                     (filter.FunctieID == null || ld.Functie.Select(e => e.ID == filter.FunctieID).Any()) &&
+                     (filter.ProbeerPeriodeNa == null || !ld.EindeInstapPeriode.HasValue ||
+                      filter.ProbeerPeriodeNa < ld.EindeInstapPeriode.Value) &&
+                     (filter.HeeftVoorkeurAdres == null ||
+                      (ld.GelieerdePersoon.PersoonsAdres != null && filter.HeeftVoorkeurAdres == true) ||
+                      (ld.GelieerdePersoon.PersoonsAdres == null && filter.HeeftVoorkeurAdres == false)) &&
+                     (filter.HeeftTelefoonNummer == null ||
+                      ld.GelieerdePersoon.Communicatie.Any(
+                          e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer) ==
+                      filter.HeeftTelefoonNummer) &&
+                     (filter.HeeftEmailAdres == null ||
+                      ld.GelieerdePersoon.Communicatie.Any(
+                          e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email) ==
+                      filter.HeeftEmailAdres) &&
+                     (filter.AfdelingID == null || filter.AfdelingID == ld.AfdelingsJaar.Afdeling.ID)
+                 select ld).ToList();
+
+            var leiding = (from ld in
+                               _leidingRepo.Select(teLadenDependencies.ToArray())
+                           where
+                               ld.UitschrijfDatum == null &&
+                               (filter.GroepID == null || ld.GroepsWerkJaar.Groep.ID == filter.GroepID) &&
+                               (filter.GroepsWerkJaarID == null || ld.GroepsWerkJaar.ID == filter.GroepsWerkJaarID) &&
+                               (filter.FunctieID == null || ld.Functie.Select(e => e.ID == filter.FunctieID).Any()) &&
+                               (filter.ProbeerPeriodeNa == null || !ld.EindeInstapPeriode.HasValue ||
+                                filter.ProbeerPeriodeNa < ld.EindeInstapPeriode.Value) &&
+                               (filter.HeeftVoorkeurAdres == null ||
+                                (ld.GelieerdePersoon.PersoonsAdres != null && filter.HeeftVoorkeurAdres == true) ||
+                                (ld.GelieerdePersoon.PersoonsAdres == null && filter.HeeftVoorkeurAdres == false)) &&
+                               (filter.HeeftTelefoonNummer == null ||
+                                ld.GelieerdePersoon.Communicatie.Any(
+                                    e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer) ==
+                                filter.HeeftTelefoonNummer) &&
+                               (filter.HeeftEmailAdres == null ||
+                                ld.GelieerdePersoon.Communicatie.Any(
+                                    e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email) ==
+                                filter.HeeftEmailAdres) &&
+                               (filter.AfdelingID == null ||
+                                ld.AfdelingsJaar.Any(aj => aj.Afdeling.ID == filter.AfdelingID))
+                           select ld).ToList();
+
+            IEnumerable<Lid> leden;
+
+            if (filter.LidType.HasFlag(LidType.Kind))
+            {
+                leden = kinderen;
+            }
+            else
+            {
+                leden = new List<Lid>();
+            }
+            if (filter.LidType.HasFlag(LidType.Leiding))
+            {
+                leden = leden.Union(leiding);
+            }
 
             if (metAdressen)
             {
-                return Mapper.Map<IList<Lid>, List<LidOverzicht>>(leden);
+                resultaat = Mapper.Map<IList<Lid>, List<LidOverzicht>>(leden.ToList());
+            }
+            else
+            {
+                // TODO: Waarom wordt er hier twee keer gemapt?
+                // Misschien om informatie expliciet niet mee te nemen?
+
+                var list = Mapper.Map<IList<Lid>, List<LidOverzichtZonderAdres>>(leden.ToList());
+                resultaat = Mapper.Map<IList<LidOverzichtZonderAdres>, List<LidOverzicht>>(list);
             }
 
-            // TODO: Waarom wordt er hier twee keer gemapt?
-            // Misschien om informatie expliciet niet mee te nemen?
+            return resultaat;
 
-            var list = Mapper.Map<IList<Lid>, List<LidOverzichtZonderAdres>>(leden);
-            return Mapper.Map<IList<LidOverzichtZonderAdres>, List<LidOverzicht>>(list);
         }
         #endregion
 

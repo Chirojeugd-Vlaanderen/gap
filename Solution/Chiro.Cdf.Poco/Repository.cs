@@ -19,6 +19,8 @@
 using System.Collections.Generic;
 ﻿using System.Data.Entity.Infrastructure;
 ﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 
 namespace Chiro.Cdf.Poco
 {
@@ -48,7 +50,6 @@ namespace Chiro.Cdf.Poco
         public IQueryable<TEntity> Select(params string[] paths)
         {
             var set = this.Context.Set<TEntity>();
-
             var x = (DbQuery<TEntity>) (set);
 
             x = paths.Aggregate(x, (current, param) => current.Include(param));
