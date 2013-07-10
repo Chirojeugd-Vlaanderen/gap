@@ -98,7 +98,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns>JsonResult.</returns>
 	    public JsonResult LandenVoorstellen()
 	    {
-	        List<LandInfo> landen =  VeelGebruikt.LandenOphalen();
+	        var landen =  VeelGebruikt.LandenOphalen();
 	        return Json(landen, JsonRequestBehavior.AllowGet);
 	    }
 

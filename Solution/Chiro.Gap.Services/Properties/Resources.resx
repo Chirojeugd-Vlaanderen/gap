@@ -213,4 +213,7 @@
   <data name="OngeldigAfdelingsJaar" xml:space="preserve">
     <value>Afdeling niet goed gedefinieerd in zijn werkjaar</value>
   </data>
+  <data name="NationaleFunctieNietBewerken" xml:space="preserve">
+    <value>Je mag geen nationale functies bewerken.</value>
+  </data>
 </root>

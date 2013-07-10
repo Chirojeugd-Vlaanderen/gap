@@ -422,8 +422,16 @@ namespace Chiro.Gap.Services
             {
                 _afdelingenRepo.SaveChanges();
             }
-            catch (DbUpdateException)
+            catch (Exception ex)
             {
+                // In principe moeten we een specifiekere exception catchen.
+                // In dit geval zal die specifieke exceptie van entity framework komen,
+                // en daar willen we dan weer typisch niet naar refereren.
+
+                // De SaveChanges van de repository zou exceptions zoals de
+                // DbUpdateException moeten catchen, en dan generieke fouten throwen.
+                // (zie #1588)
+
                 // Naam of code is niet uniek. Zoek op.
 
                 var query = from afd in afdeling.ChiroGroep.Afdeling
@@ -1062,11 +1070,10 @@ namespace Chiro.Gap.Services
         /// <returns>Gegevens van de gevonden straten</returns>
         public IEnumerable<StraatInfo> StratenOphalen(string straatStukje, int postNr)
         {
-            var likeString = @"%" + straatStukje + @"%";
             var straatNaams =
                 _straatRepo.Select().Where(e =>
-                    e.PostNummer == postNr
-                    && SqlFunctions.PatIndex(likeString, e.Naam) > 0) // We gebruiken hier expliciet een van de SqlFuncties, om de query op SQL te laten uitvoeren
+                                           e.PostNummer == postNr
+                                           && e.Naam.Contains(straatStukje))
                            .Take(Properties.Settings.Default.AantalStraatSuggesties)
                            .ToList();
 
