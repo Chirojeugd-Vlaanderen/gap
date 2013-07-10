@@ -445,7 +445,19 @@ namespace Chiro.Gap.Services
                 deelnemer.UitstapWaarvoorVerantwoordelijk.Add(deelnemer.Uitstap);
             }
 
-            _deelnemersRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                if (deelnemer.Uitstap.IsBivak)
+                {
+                    _bivakSync.Bewaren(deelnemer.Uitstap);
+                }
+                _deelnemersRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
             return deelnemer.Uitstap.ID;
         }
         #endregion
