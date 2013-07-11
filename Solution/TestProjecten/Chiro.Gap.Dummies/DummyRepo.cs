@@ -46,14 +46,9 @@ namespace Chiro.Gap.Dummies
         {
         }
 
-        public IQueryable<T> Select()
-        {
-            return _entiteiten.AsQueryable();
-        }
-
         public IQueryable<T> Select(params string[] paths)
         {
-            throw new NotImplementedException();
+            return _entiteiten.AsQueryable();
         }
 
         public IEnumerable<T> GetAll()
@@ -76,7 +71,7 @@ namespace Chiro.Gap.Dummies
             return _entiteiten.First(predicate);
         }
 
-        public T ByID(int id)
+        public T ByID(int id, params string[] paths)
         {
             return _entiteiten.FirstOrDefault(en => en.ID == id);
         }

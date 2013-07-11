@@ -24,8 +24,8 @@ namespace Chiro.Cdf.Poco
     public interface IRepository<TEntity> : IDisposable where TEntity: BasisEntiteit
     {
         /// <summary>
-        /// Geeft een queryable voor alle objecten van type <typeparamref name="TEntity"/>,
-        /// die gebruikt kan worden voor data access.
+        /// Levert een queryable op voor entiteiten van het type <typeparamref name="TEntity"/>, met eager loading
+        /// voor de gekoppelde entiteiten gegeven door <paramref name="paths"/>
         /// </summary>
         /// <param name="paths">Je kunt aan Select een lijstje met entiteiten meegeven die
         /// 'eager geload' moeten worden. Wat niet meegegeven wordt, wordt later on demand
@@ -38,16 +38,19 @@ namespace Chiro.Cdf.Poco
         /// wanneer later de adressen van alle personen nodig zijn, ze een voor een een nog lazy
         /// opgehaald moeten worden.</remarks>
         IQueryable<TEntity> Select(params string[] paths);
+
         IEnumerable<TEntity> GetAll();
         TEntity GetSingle(Func<TEntity, bool> predicate);
         TEntity GetFirst(Func<TEntity, bool> predicate);
 
         /// <summary>
-        /// Zoekt de entiteit op met de gegeven ID
+        /// Zoekt de entiteit op met de gegeven ID, samen met de gekoppelde entiteiten bepaald door 
+        /// <paramref name="paths"/>
         /// </summary>
         /// <param name="id">ID van op te zoeken entiteit</param>
+        /// <param name="paths">namen van de eager te loaden gekoppelde entiteiten</param>
         /// <returns>Entiteit met de gegeven ID. <c>null</c> als ze niet is gevonden.</returns>
-        TEntity ByID(int id);
+        TEntity ByID(int id, params string[] paths);
 
         /// <summary>
         /// Zoekt de entiteiten met gegeven <paramref name="IDs"/>.

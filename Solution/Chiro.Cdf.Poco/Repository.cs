@@ -19,8 +19,6 @@
 using System.Collections.Generic;
 ﻿using System.Data.Entity.Infrastructure;
 ﻿using System.Linq;
-﻿using System.Diagnostics;
-using System.Linq;
 
 namespace Chiro.Cdf.Poco
 {
@@ -74,13 +72,19 @@ namespace Chiro.Cdf.Poco
         }
 
         /// <summary>
-        /// Zoekt de entiteit op met de gegeven ID
+        /// Zoekt de entiteit op met de gegeven ID, samen met de gekoppelde entiteiten bepaald door 
+        /// <paramref name="paths"/>
         /// </summary>
         /// <param name="id">ID van op te zoeken entiteit</param>
+        /// <param name="paths">namen van de eager te loaden gekoppelde entiteiten</param>
         /// <returns>Entiteit met de gegeven ID. <c>null</c> als ze niet is gevonden.</returns>
-        public TEntity ByID(int id)
+        public TEntity ByID(int id, params string[] paths)
         {
-            return this.Context.Set<TEntity>().FirstOrDefault(x => x.ID == id);
+            DbQuery<TEntity> set = Context.Set<TEntity>();
+
+            set = paths.Aggregate(set, (current, path) => current.Include(path));
+
+            return set.FirstOrDefault(x => x.ID == id);
         }
 
         /// <summary>

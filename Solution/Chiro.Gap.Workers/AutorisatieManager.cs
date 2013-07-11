@@ -64,11 +64,11 @@ namespace Chiro.Gap.Workers
         public bool IsGav(Groep groep)
         {
             var gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
-            return
-                groep.GebruikersRecht.Any(
-                    gr =>
-                    String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) == 0 &&
-                    (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now));
+            return groep != null &&
+                   groep.GebruikersRecht.Any(
+                       gr =>
+                       String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) == 0 &&
+                       (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now));
         }
 
         public bool IsGav(CommunicatieVorm communicatieVorm)

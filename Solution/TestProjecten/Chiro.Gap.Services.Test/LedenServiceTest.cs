@@ -17,9 +17,11 @@
  */
 
 using System.Collections.ObjectModel;
+using System.ServiceModel;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
@@ -651,7 +653,7 @@ namespace Chiro.Gap.Services.Test
         ///Controleert of zoeken op leden geen uitgeschreven leden oplevert.
         ///</summary>
         [TestMethod()]
-        public void ZoekenTest()
+        public void ZoekenIngeschrevenTest()
         {
             // ARRANGE
 
@@ -1384,6 +1386,38 @@ namespace Chiro.Gap.Services.Test
 
             ledenSyncMock.Verify(src => src.TypeUpdaten(It.IsAny<Lid>()), Times.AtLeastOnce());
             ledenSyncMock.Verify(src => src.AfdelingenUpdaten(It.IsAny<Lid>()), Times.AtLeastOnce());
+        }
+
+        /// <summary>
+        /// Kijkt na of leden zoeken rekening houdt met gebruikersrechten
+        /// </summary>
+        [TestMethod()]
+        [ExpectedException(typeof(FaultException<FoutNummerFault>))]
+        public void ZoekenAutorisatieTest()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep {ID = 1};
+
+            var dummyAutorisatieManager = new AutMgrNooitGav();
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                                  .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Kind>())
+                                  .Returns(new DummyRepo<Kind>(new List<Kind>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Leiding>())
+                      .Returns(new DummyRepo<Leiding>(new List<Leiding>()));
+
+
+            Factory.InstantieRegistreren<IAutorisatieManager>(dummyAutorisatieManager);
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            target.Zoeken(new LidFilter {GroepID = groep.ID}, false);
+
+            // verwacht exception
         }
     }
 }
