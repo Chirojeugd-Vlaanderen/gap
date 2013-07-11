@@ -23,8 +23,14 @@ namespace Chiro.Cdf.Poco
 {
     public interface IRepository<TEntity> : IDisposable where TEntity: BasisEntiteit
     {
-        //IQueryable<TEntity> Select();
+        /// <summary>
+        /// Levert een queryable op voor entiteiten van het type <typeparamref name="TEntity"/>, met eager loading
+        /// voor de gekoppelde entiteiten gegeven door <paramref name="paths"/>
+        /// </summary>
+        /// <param name="paths">namen van de eager te loaden gekoppelde entiteiten</param>
+        /// <returns>de gevraagde queryable</returns>
         IQueryable<TEntity> Select(params string[] paths);
+
         IEnumerable<TEntity> GetAll();
         // Dit is een gevaarlijke functie, want hiermee evalueren we op SQL en worden nadien alle selecties in RAM uitgevoerd
         // terwijl dat dat helemaal niet zo duidelijk is. Voorlopig laten we dit weg dus.
@@ -33,11 +39,13 @@ namespace Chiro.Cdf.Poco
         TEntity GetFirst(Func<TEntity, bool> predicate);
 
         /// <summary>
-        /// Zoekt de entiteit op met de gegeven ID
+        /// Zoekt de entiteit op met de gegeven ID, samen met de gekoppelde entiteiten bepaald door 
+        /// <paramref name="paths"/>
         /// </summary>
         /// <param name="id">ID van op te zoeken entiteit</param>
+        /// <param name="paths">namen van de eager te loaden gekoppelde entiteiten</param>
         /// <returns>Entiteit met de gegeven ID. <c>null</c> als ze niet is gevonden.</returns>
-        TEntity ByID(int id);
+        TEntity ByID(int id, params string[] paths);
 
         /// <summary>
         /// Zoekt de entiteiten met gegeven <paramref name="IDs"/>.

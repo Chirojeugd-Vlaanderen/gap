@@ -71,7 +71,7 @@ namespace Chiro.Gap.Dummies
             return _entiteiten.First(predicate);
         }
 
-        public T ByID(int id)
+        public T ByID(int id, params string[] paths)
         {
             return _entiteiten.FirstOrDefault(en => en.ID == id);
         }

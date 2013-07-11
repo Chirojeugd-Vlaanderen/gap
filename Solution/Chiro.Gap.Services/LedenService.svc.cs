@@ -57,7 +57,9 @@ namespace Chiro.Gap.Services
         private readonly IRepository<Kind> _kinderenRepo;
         private readonly IRepository<Leiding> _leidingRepo;
         private readonly IRepository<BuitenLandsAdres> _buitenlandseAdressenRepo;
-        private readonly IRepository<BelgischAdres> _belgischeAdressenRepo; 
+        private readonly IRepository<BelgischAdres> _belgischeAdressenRepo;
+        private readonly IRepository<Groep> _groepenRepo;
+        private readonly IRepository<Afdeling> _afdelingenRepo; 
 
         // Managers voor niet-triviale businesslogica
 
@@ -104,6 +106,8 @@ namespace Chiro.Gap.Services
             _leidingRepo = repositoryProvider.RepositoryGet<Leiding>();
             _buitenlandseAdressenRepo = repositoryProvider.RepositoryGet<BuitenLandsAdres>();
             _belgischeAdressenRepo = repositoryProvider.RepositoryGet<BelgischAdres>();
+            _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
+            _afdelingenRepo = repositoryProvider.RepositoryGet<Afdeling>();
 
             _verzekeringenMgr = verzekeringenMgr;
             _ledenMgr = ledenMgr;
@@ -150,6 +154,8 @@ namespace Chiro.Gap.Services
                     _leidingRepo.Dispose();
                     _buitenlandseAdressenRepo.Dispose();
                     _belgischeAdressenRepo.Dispose();
+                    _groepenRepo.Dispose();
+                    _afdelingenRepo.Dispose();
                 }
                 disposed = true;
             }
@@ -781,6 +787,39 @@ namespace Chiro.Gap.Services
         /// </remarks>
         public List<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
         {
+            // Check security
+            // We verwachten minstens 1 van volgende zaken:
+            // GroepID, GroepsWerkJaarID, AfdelingID, FunctieID
+            // Als je recht hebt op groep, groepswerkjaar, afdeling of functie
+            // dan krijg je resultaat. Securitygewijze is dat geen probleem, want 
+            // alle zoekvoorwaarden worden 'ge-and'.
+            // Heb je geen rechten op groep, groepswerjaar, afdeling of functie,
+            // dan krijg je een exception (te veel geknoei)
+            
+            Groep groep = null;
+
+            if (filter.GroepID != null)
+            {
+                groep = _groepenRepo.ByID(filter.GroepID.Value);
+            }
+            else if (filter.GroepsWerkJaarID != null)
+            {
+                groep = _groepsWerkJarenRepo.ByID(filter.GroepsWerkJaarID.Value, "Groep").Groep;
+            }
+            else if (filter.AfdelingID != null)
+            {
+                groep = _afdelingenRepo.ByID(filter.AfdelingID.Value, "Groep").ChiroGroep;
+            }
+            else if (filter.FunctieID != null)
+            {
+                groep = _functiesRepo.ByID(filter.FunctieID.Value, "Groep").Groep;
+            }
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
             List<LidOverzicht> resultaat;
 
             // Let op. Deze method is zorgvuldig geschreven opdat de lidinfo na 2 of 4 query's 
