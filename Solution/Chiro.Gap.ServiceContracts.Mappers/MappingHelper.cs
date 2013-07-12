@@ -434,7 +434,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.StraatNaamNaam, opt => opt.MapFrom(src => src.StraatGet()))
                 .ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()))
                 .ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.LandGet()))
-                .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()));
+                .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()))
+                .ForMember(dst => dst.IsBelgisch, opt => opt.MapFrom(src => src is BelgischAdres));
 
             Mapper.CreateMap<Adres, GezinInfo>()
                 .ForMember(
@@ -446,7 +447,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.StraatNaamNaam, opt => opt.MapFrom(src => src.StraatGet()))
                 .ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()))
                 .ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.LandGet()))
-                .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()));
+                .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()))
+                .ForMember(dst => dst.IsBelgisch, opt => opt.MapFrom(src => src is BelgischAdres));
 
             // Domme mapping
             Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo>()
@@ -472,7 +474,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.WoonPlaatsNaam,
                     opt => opt.MapFrom(src => src.Adres.WoonPlaatsGet()))
                 .ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.Adres.LandGet()))
-                .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.Adres.PostCodeGet()));
+                .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.Adres.PostCodeGet()))
+                .ForMember(dst => dst.IsBelgisch, opt => opt.MapFrom(src => src.Adres is BelgischAdres));
 
             Mapper.CreateMap<GelieerdePersoon, BewonersInfo>()
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.ID))

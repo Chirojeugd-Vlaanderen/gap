@@ -88,5 +88,12 @@ namespace Chiro.Gap.Domain
 	    /// </summary>
 	    [DataMember]
 		public String LandNaam { get; set; }
+
+        /// <summary>
+        /// True als het om een Belgisch adres gaat
+        /// </summary>
+        [DataMember]
+        public bool IsBelgisch { get; set; }
+
 	}
 }
