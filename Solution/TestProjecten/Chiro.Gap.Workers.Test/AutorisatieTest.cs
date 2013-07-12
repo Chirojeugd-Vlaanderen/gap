@@ -73,37 +73,6 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
-		/// Probeert ledenlijst op te halen voor niet-GAV.
-		/// Verwacht een exception.
-		/// </summary>
-		[TestMethod]
-		[ExpectedException(typeof(GeenGavException))]
-		public void LijstLedenGeenGav()
-		{
-            //// Arrange
-
-            //var testData = new DummyData();
-            //var ledenDaoMock = new Mock<ILedenDao>();
-            //var autorisatieMgrMock = new Mock<IAutorisatieManager>();
-
-            //ledenDaoMock.Setup(foo => foo.OphalenUitGroepsWerkJaar(testData.HuidigGwj.ID, false)).Returns(new List<Lid>());
-            //autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(false);
-
-            //Factory.InstantieRegistreren(ledenDaoMock.Object);
-            //Factory.InstantieRegistreren(autorisatieMgrMock.Object);
-
-            //var daos = Factory.Maak<LedenDaoCollectie>();
-            //var lm = Factory.Maak<LedenManager>();
-
-            //// Act
-
-            //lm.Zoeken(new LidFilter { GroepsWerkJaarID = testData.HuidigGwj.ID, LidType = LidType.Alles }, LidExtras.Geen);
-
-            //// Verwacht exception
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-		}
-
-		/// <summary>
 		/// Probeert aantal groepswerkjaren van een groep op te halen waarvoor
 		/// men geen GAV is, via LedenManager.PaginaOphalen.
 		/// Verwacht een exception.
