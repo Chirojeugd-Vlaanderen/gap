@@ -141,62 +141,6 @@ namespace Chiro.Gap.Workers.Test
         //    // Verwacht exception
         }
 
-        /// <summary>
-        /// Probeert lijst actieve leden op te halen als wel GAV
-        /// Verwacht geen exception.
-        /// </summary>
-        [TestMethod]
-        public void LijstActieveLedenGav()
-        {
-        //    // Arrange
-
-        //    // Gebruik static member variable _testData, zodat die gemaakt wordt vooraleer er ergens wordt
-        //    // gemockt.  (=> Fouten vermijden bij het maken van testdata)
-        //    var testData = _testData;
-
-        //    var ledenDaoMock = new Mock<ILedenDao>();
-        //    var groepenDaoMock = new Mock<IGroepenDao>();
-        //    var autorisatieMgrMock = new Mock<IAutorisatieManager>();
-        //    var groepsWerkJaarDaoMock = new Mock<IGroepsWerkJaarDao>();
-        //    var leidingDaoMock = new Mock<ILeidingDao>();
-        //    var kindDaoMock = new Mock<IKindDao>();
-
-        //    // We mocken de dao's dat het zoeken naar leden/leiding een lege lijst oplevert
-
-        //    ledenDaoMock.Setup(foo => foo.OphalenUitGroepsWerkJaar(testData.HuidigGwj.ID, false)).Returns(new List<Lid>());
-        //    leidingDaoMock.Setup(foo => foo.Zoeken(It.IsAny<LidFilter>(), It.IsAny<LidExtras>())).
-        //        Returns(new List<Leiding>());
-        //    kindDaoMock.Setup(foo => foo.Zoeken(It.IsAny<LidFilter>(), It.IsAny<LidExtras>())).
-        //        Returns(new List<Kind>());
-
-			
-        //    autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(true);
-        //    autorisatieMgrMock.Setup(foo => foo.IsGavGroep(testData.DummyGroep.ID)).Returns(true);
-
-        //    groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(testData.HuidigGwj.ID, It.IsAny<Expression<Func<GroepsWerkJaar, object>>>())).Returns(testData.HuidigGwj);
-        //    groepsWerkJaarDaoMock.Setup(foo => foo.IsRecentste(testData.HuidigGwj.ID)).Returns(true);
-        //    groepenDaoMock.Setup(foo => foo.Ophalen(testData.DummyGroep.ID, It.IsAny<Expression<Func<Groep, object>>>())).Returns(testData.DummyGroep);
-			
-        //    Factory.InstantieRegistreren(ledenDaoMock.Object);
-        //    Factory.InstantieRegistreren(leidingDaoMock.Object);
-        //    Factory.InstantieRegistreren(kindDaoMock.Object);
-        //    Factory.InstantieRegistreren(autorisatieMgrMock.Object);
-        //    Factory.InstantieRegistreren(groepenDaoMock.Object);
-        //    Factory.InstantieRegistreren(groepsWerkJaarDaoMock.Object);
-
-        //    var lm = Factory.Maak<LedenManager>();
-
-        //    // Act
-        //    var lijst = lm.Zoeken(
-        //        new LidFilter { GroepsWerkJaarID = testData.HuidigGwj.ID, LidType = LidType.Alles }, 
-        //        LidExtras.Geen);
-
-        //    // Assert
-
-        //    Assert.IsTrue(lijst != null);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-		}
-
 		/// <summary>
 		/// Probeer een afdelingsjaar van een eigen afdeling te maken in een groep waar je
 		/// geen GAV van bent
