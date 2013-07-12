@@ -142,64 +142,6 @@ namespace Chiro.Gap.Workers.Test
         }
 
         /// <summary>
-        /// Als een niet-GAV probeert een communicatievorm te verwijderen
-        /// die niet aan een gelieerde persoon gekoppeld is, moet die een
-        /// GeenGavException krijgen, en niks anders :)
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(GeenGavException))]
-        public void FouteCommVormVerwijderenGeenGav()
-        {
-            throw new NotImplementedException();
-        //    #region arrange
-
-        //    // fake gelieerde persoon zonder communicatiemiddelen.
-
-        //    var communicatielozePersoon = new GelieerdePersoon();
-        //    communicatielozePersoon.Communicatie = new System.Data.Objects.DataClasses.EntityCollection<CommunicatieVorm>();
-
-        //    // GelieerdePersonenDao mocken, zodat die steeds de fake persoon oproept
-
-        //    var gpDaoMock = new Mock<IGelieerdePersonenDao>();
-        //    gpDaoMock.Setup(foo => foo.Ophalen(It.IsAny<int>()
-        //        , It.IsAny<Expression<Func<GelieerdePersoon, object>>[]>())).Returns(communicatielozePersoon);
-
-        //    // GroepenDao mocken.
-
-        //    var groepenDaoMock = new Mock<IGroepenDao>();
-
-        //    // GelieerdePersonenManager aanmaken, waarbij autorisatieManager steeds 'false'
-        //    // antwoordt.
-
-        //    Factory.InstantieRegistreren(gpDaoMock.Object);
-        //    Factory.InstantieRegistreren(groepenDaoMock.Object);
-        //    Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrNooitGav());
-
-        //    var gpMgr = Factory.Maak<CommVormManager>();
-        //    #endregion
-
-        //    #region act
-        //    // Probeer nu een fictieve communicatievorm te verwijderen.
-        //    // We verwachten 'GeenGavException'
-
-        //    // CommunicatieVormID en GelieerdePersoonID zijn irrelevant owv de mocking,
-        //    // maar als je hier null meegeeft voor parameter 'origineel' 
-        //    // throwt gpMgr een NullRefereneException omdat hij origineel.ID opvraagt
-        //    var commVorm = new CommunicatieVorm();
-        //    commVorm.ID = 0;
-        //    commVorm.GelieerdePersoon = new GelieerdePersoon();
-        //    commVorm.GelieerdePersoon.ID = 0;
-        //    gpMgr.CommunicatieVormVerwijderen(commVorm);
-
-        //    #endregion
-
-        //    #region assert
-        //    // Als we dit tegenkomen, is het sowieso mislukt
-        //    Assert.IsTrue(false);
-        //    #endregion
-        }
-
-        /// <summary>
         /// Probeert lijst actieve leden op te halen als wel GAV
         /// Verwacht geen exception.
         /// </summary>
