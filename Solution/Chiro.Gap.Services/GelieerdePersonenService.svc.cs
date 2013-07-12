@@ -512,9 +512,9 @@ namespace Chiro.Gap.Services
 
             var huisGenoten =
                 (from gp in
-                     gelieerdePersoon.Persoon.PersoonsAdres.Select(pa => pa.Persoon).SelectMany(p => p.GelieerdePersoon)
+                     gelieerdePersoon.Persoon.PersoonsAdres.Select(pa => pa.Adres).SelectMany(p => p.PersoonsAdres).Select(pa => pa.Persoon).SelectMany(p => p.GelieerdePersoon)
                  where Equals(gp.Groep, gelieerdePersoon.Groep)
-                 select gp).ToList();
+                 select gp).Distinct().ToList();
 
             if (!huisGenoten.Any())
             {
