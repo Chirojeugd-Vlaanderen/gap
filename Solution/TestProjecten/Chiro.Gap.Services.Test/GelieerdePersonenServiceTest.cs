@@ -764,10 +764,10 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
-        /// Test of CommunicatieVormVerwijderenVanPersoon synct met Kipadmin
+        /// Test of CommunicatieVormVerwijderen synct met Kipadmin
         ///</summary>
         [TestMethod()]
-        public void CommunicatieVormVerwijderenVanPersoonTest()
+        public void CommunicatieVormVerwijderenSyncTest()
         {
             // ARRANGE
 
@@ -804,7 +804,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<GelieerdePersonenService>();
-            target.CommunicatieVormVerwijderenVanPersoon(communicatieVorm.ID);
+            target.CommunicatieVormVerwijderen(communicatieVorm.ID);
 
             // ASSERT
 

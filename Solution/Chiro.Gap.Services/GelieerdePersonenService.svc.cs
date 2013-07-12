@@ -1054,7 +1054,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="commvormID">ID van de communicatievorm</param>
         /// <returns>De ID van de gelieerdepersoon die bij de commvorm hoort</returns>
-        public int CommunicatieVormVerwijderenVanPersoon(int commvormID)
+        public int CommunicatieVormVerwijderen(int commvormID)
         {
             var communicatieVorm = _communicatieVormRepo.ByID(commvormID);
             int gelieerdePersoonID = communicatieVorm.GelieerdePersoon.ID;

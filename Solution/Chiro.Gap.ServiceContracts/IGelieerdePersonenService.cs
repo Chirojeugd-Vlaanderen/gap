@@ -341,7 +341,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		int CommunicatieVormVerwijderenVanPersoon(int commvormID);
+		int CommunicatieVormVerwijderen(int commvormID);
 
 		/// <summary>
 		/// Persisteert de wijzigingen aan een bestaande communicatievorm

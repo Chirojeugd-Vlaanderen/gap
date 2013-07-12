@@ -1091,7 +1091,7 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult VerwijderenCommVorm(int commvormID, int groepID)
         {
-            var gelieerdePersoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.CommunicatieVormVerwijderenVanPersoon(commvormID));
+            var gelieerdePersoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.CommunicatieVormVerwijderen(commvormID));
 
             VeelGebruikt.LedenProblemenResetten(groepID);
 
