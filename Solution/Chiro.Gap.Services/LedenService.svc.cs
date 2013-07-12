@@ -895,16 +895,25 @@ namespace Chiro.Gap.Services
 
             IEnumerable<Lid> leden;
 
-            if (filter.LidType.HasFlag(LidType.Kind))
+            // Als lidtype=LidType.Geen, dan gaan we ervan uit dat dit een vergissing is, en de gebruiker
+            // LidType.Alles bedoelt.
+
+            if (filter.LidType != LidType.Leiding)
             {
+                // Er zijn maar 2 lidtypes: Kind of Leiding.
+                // Als de gebruiker niet expliciet naar de leiding vraagt, dan mogen we de kinderen
+                // opleveren.
+
                 leden = kinderen;
             }
             else
             {
                 leden = new List<Lid>();
             }
-            if (filter.LidType.HasFlag(LidType.Leiding))
+            if (filter.LidType != LidType.Kind)
             {
+                // Tenzij de user enkel de kinderen vraagt, leveren we de leiding op.
+
                 leden = leden.Union(leiding);
             }
 
