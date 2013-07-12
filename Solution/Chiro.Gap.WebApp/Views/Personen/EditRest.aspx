@@ -278,7 +278,7 @@
            { %>
         <li>Niet extra verzekerd tegen loonverlies.
             <%=Html.ActionLink("[verzekeren tegen loonverlies]", "LoonVerliesVerzekeren", new {Controller="Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
-            <%if (Model.GroepsNiveau.HasFlag(Niveau.KaderGroep))
+            <%if (Model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep))
               { %>
               (dit is gratis voor kaderleden)
               <% }
