@@ -256,69 +256,6 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
-		/// Kijk na of adresgenoten van groepen waarvan je geen GAV
-		/// bent toch niet worden opgehaald.
-		/// </summary>
-		[TestMethod]
-		public void AdresGenotenEnkelEigenGroep()
-		{
-            //#region Arrange
-
-            //// Test een beetje opgekuist.  Er wordt heel wat gemockt, dus is er
-            //// minder voorbereiding nodig.
-
-            //// Stel een situatie op waarbij er 3 personen op hetzelfde
-            //// adres wonen, en waarbij 2 van die 3 personen gelieerd
-            //// zijn aan jouw groep.
-
-            //var p1 = new Persoon { ID = 1 };
-            //var p2 = new Persoon { ID = 2 };
-            //var p3 = new Persoon { ID = 3 };
-
-            //// Creeer nu PersonenDaoMock, dia alle huisgenoten van p1 ophaalt.
-
-            //var pDaoMock = new Mock<IPersonenDao>();
-            //pDaoMock.Setup(foo => foo.HuisGenotenOphalen(1)).Returns(new List<Persoon> { p1, p2, p3 });
-
-            //// en een AutorisatieManagerMock, die zorgt dat gebruiker alvast toegang heeft tot p1.
-
-            //var auManMock = new Mock<IAutorisatieManager>();
-
-            //auManMock.Setup(foo => foo.IsGavGelieerdePersoon(1)).Returns(true);
-            //auManMock.Setup(foo => foo.EnkelMijnPersonen(It.IsAny<IList<int>>())).Returns(new List<int> { 1, 3 });
-
-            //// Tenslotte de personenManager die we willen
-            //// testen.
-
-            //Factory.InstantieRegistreren(pDaoMock.Object);
-            //Factory.InstantieRegistreren(auManMock.Object);
-
-            //var pm = Factory.Maak<PersonenManager>();
-
-            //#endregion
-
-            //#region Act
-            //IList<Persoon> huisgenoten = pm.HuisGenotenOphalen(p1.ID);
-            //#endregion
-
-            //#region Assert
-            //// We verwachten enkel p1 en p3.
-
-            //var idQuery = (from p in huisgenoten select p.ID);
-
-            //Assert.IsTrue(idQuery.Contains(1));
-            //Assert.IsTrue(idQuery.Contains(3));
-            //Assert.IsFalse(idQuery.Contains(2));
-
-            //// Ik vermoed dat onderstaande nakijkt of alle 'gesetupte' methods wel
-            //// aangerpen werden.
-            //auManMock.VerifyAll();
-
-            //#endregion
-            throw new NotImplementedException(Nieuwebackend.Info);
-		}
-
-		/// <summary>
 		/// Probeer een afdelingsjaar van een eigen afdeling te maken in een groep waar je
 		/// geen GAV van bent
 		/// </summary>

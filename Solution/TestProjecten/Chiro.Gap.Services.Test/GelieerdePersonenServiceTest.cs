@@ -810,5 +810,125 @@ namespace Chiro.Gap.Services.Test
             communicatieSyncMock.Verify(src => src.Verwijderen(It.IsAny<CommunicatieVorm>()),
                                         Times.AtLeastOnce());
         }
+
+        /// <summary>
+        /// Kijkt na of HuisgenotenOphalenZelfdeGroep geen huisgenoten uit een andere groep ophaalt.
+        /// </summary>
+        [TestMethod()]
+        public void HuisGenotenOphalenZelfdeGroepSecurityTest()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep();
+
+            var gelieerdePersoon1 = new GelieerdePersoon { ID = 4, Persoon = new Persoon { ID = 1 }, Groep = groep };
+            var gelieerdePersoon2 = new GelieerdePersoon { ID = 5, Persoon = new Persoon { ID = 2 }, Groep = groep };
+            var persoon3 = new Persoon {ID = 3};
+
+            gelieerdePersoon1.Persoon.GelieerdePersoon.Add(gelieerdePersoon1);
+            gelieerdePersoon2.Persoon.GelieerdePersoon.Add(gelieerdePersoon2);
+
+            var persoonsAdres1 = new PersoonsAdres {Persoon = gelieerdePersoon1.Persoon};
+            var persoonsAdres2 = new PersoonsAdres {Persoon = gelieerdePersoon2.Persoon};
+            var persoonsAdres3 = new PersoonsAdres {Persoon = persoon3};
+
+            gelieerdePersoon1.Persoon.PersoonsAdres.Add(persoonsAdres1);
+            gelieerdePersoon2.Persoon.PersoonsAdres.Add(persoonsAdres2);
+            persoon3.PersoonsAdres.Add(persoonsAdres3);
+
+            var adres = new BelgischAdres
+                            {
+                                PersoonsAdres = new List<PersoonsAdres>
+                                                    {
+                                                        persoonsAdres1,
+                                                        persoonsAdres2,
+                                                        persoonsAdres3
+                                                    }
+                            };
+            persoonsAdres1.Adres = adres;
+            persoonsAdres2.Adres = adres;
+            persoonsAdres3.Adres = adres;
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(
+                                      new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>
+                                                                          {
+                                                                              gelieerdePersoon1,
+                                                                              gelieerdePersoon2
+                                                                          }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            var actual = target.HuisGenotenOphalenZelfdeGroep(gelieerdePersoon1.ID);
+
+            // ASSERT
+
+            Assert.AreEqual(actual.Count, 2);
+            Assert.IsFalse(actual.Select(bi => bi.PersoonID).Contains(persoon3.ID));
+        }
+
+        /// <summary>
+        /// Kijkt na of HuisgenotenOphalenZelfdeGroep geen dubbele resultaten oplevert.
+        /// </summary>
+        [TestMethod()]
+        public void HuisGenotenOphalenZelfdeGroepDistinctTest()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep();
+
+            var gelieerdePersoon1 = new GelieerdePersoon { ID = 4, Persoon = new Persoon { ID = 1 }, Groep = groep };
+
+            gelieerdePersoon1.Persoon.GelieerdePersoon.Add(gelieerdePersoon1);
+
+            var persoonsAdres1 = new PersoonsAdres { Persoon = gelieerdePersoon1.Persoon };
+            var persoonsAdres2 = new PersoonsAdres { Persoon = gelieerdePersoon1.Persoon };
+
+            gelieerdePersoon1.Persoon.PersoonsAdres.Add(persoonsAdres1);
+            gelieerdePersoon1.Persoon.PersoonsAdres.Add(persoonsAdres2);
+
+            var adres1 = new BelgischAdres
+            {
+                ID = 5,
+                PersoonsAdres = new List<PersoonsAdres>
+                                                    {
+                                                        persoonsAdres1
+                                                    }
+            };
+
+            var adres2 = new BelgischAdres
+            {
+                ID = 6,
+                PersoonsAdres = new List<PersoonsAdres>
+                                                    {
+                                                        persoonsAdres2
+                                                    }
+            };
+
+
+            persoonsAdres1.Adres = adres1;
+            persoonsAdres2.Adres = adres2;
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(
+                                      new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>
+                                                                          {
+                                                                              gelieerdePersoon1,
+                                                                          }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            var actual = target.HuisGenotenOphalenZelfdeGroep(gelieerdePersoon1.ID);
+
+            // ASSERT
+
+            Assert.AreEqual(1, actual.Count);
+        }
     }
 }
