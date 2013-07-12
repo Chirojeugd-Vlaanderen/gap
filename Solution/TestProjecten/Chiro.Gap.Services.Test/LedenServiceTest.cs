@@ -670,6 +670,13 @@ namespace Chiro.Gap.Services.Test
             // dependency injection opzetten
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(new DummyRepo<Lid>(gwj.Lid.ToList()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
+                                  .Returns(new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar> {gwj}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Kind>())
+                                  .Returns(new DummyRepo<Kind>(new List<Kind> {kind}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Leiding>())
+                                  .Returns(new DummyRepo<Leiding>(new List<Leiding> ()));
+
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // service construeren
@@ -970,6 +977,12 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
                                   .Returns(new DummyRepo<Lid>(new List<Lid> {lid}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
+                      .Returns(new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Kind>())
+                                  .Returns(new DummyRepo<Kind>(new List<Kind> ()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Leiding>())
+                                  .Returns(new DummyRepo<Leiding>(new List<Leiding> {lid}));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
@@ -1025,6 +1038,13 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
                                   .Returns(new DummyRepo<Lid>(new List<Lid> { lid }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
+                                  .Returns(new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Kind>())
+                                  .Returns(new DummyRepo<Kind>(new List<Kind>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Leiding>())
+                                  .Returns(new DummyRepo<Leiding>(new List<Leiding> { lid }));
+
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
@@ -1079,6 +1099,12 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
                                   .Returns(new DummyRepo<Lid>(new List<Lid> { lid }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
+                      .Returns(new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Kind>())
+                                  .Returns(new DummyRepo<Kind>(new List<Kind>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Leiding>())
+                                  .Returns(new DummyRepo<Leiding>(new List<Leiding> { lid }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
