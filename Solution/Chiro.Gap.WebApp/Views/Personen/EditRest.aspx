@@ -194,7 +194,7 @@
                     </td>
                     <td id="adres">
                         <%= Html.Encode(String.Format("{0} {1} {2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus))%>,
-                         <%if (pa.LandNaam != "België") { %>
+                         <%if (pa.LandNaam != "Belgiï¿½") { %>
                             <%= Html.Encode(String.Format("{0} {3} {1}, {4} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode, pa.LandNaam)) %>
                         <% } else { %> 
                             <%= Html.Encode(String.Format("{0} {3} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode)) %>
