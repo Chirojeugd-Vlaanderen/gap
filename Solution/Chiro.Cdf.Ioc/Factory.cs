@@ -124,5 +124,17 @@ namespace Chiro.Cdf.Ioc
 				// Doe niets. :-/
 			}	
 		}
+
+        /// <summary>
+        /// Configureert de IOC-container zodanig dat er telkens een nieuwe instantie van het gegeven
+        /// <paramref name="type"/> gebruikt wordt als er een klase van type <typeparamref name="T"/>
+        /// gevraagd wordt.
+        /// </summary>
+        /// <typeparam name="T">Gevraagde type</typeparam>
+        /// <param name="type">Type van opgeleverd object</param>
+        public static void TypeRegistreren<T>(Type type)
+        {
+            _container.RegisterType(type);
+        }
 	}
 }

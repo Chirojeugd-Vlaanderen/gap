@@ -73,44 +73,6 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
-		/// Probeert aantal groepswerkjaren van een groep op te halen waarvoor
-		/// men geen GAV is, via LedenManager.PaginaOphalen.
-		/// Verwacht een exception.
-		/// </summary>
-		[TestMethod]
-		[ExpectedException(typeof(GeenGavException))]
-		public void LijstLedenGeenGavAantalGwj()
-		{
-            throw new NotImplementedException();
-        //    // Arrange
-
-        //    var testData = new DummyData();
-
-        //    var ledenDaoMock = new Mock<ILedenDao>();
-        //    var autorisatieMgrMock = new Mock<IAutorisatieManager>();
-        //    var groepenDaoMock = new Mock<IGroepenDao>();
-        //    var groepsWerkJaarDaoMock = new Mock<IGroepsWerkJaarDao>();
-
-        //    ledenDaoMock.Setup(foo => foo.OphalenUitGroepsWerkJaar(testData.HuidigGwj.ID, false)).Returns(new List<Lid>());
-        //    autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(false);
-        //    groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(testData.HuidigGwj.ID)).Returns(testData.HuidigGwj);
-        //    groepenDaoMock.Setup(foo => foo.Ophalen(testData.DummyGroep.ID)).Returns(testData.DummyGroep);
-
-        //    Factory.InstantieRegistreren(ledenDaoMock.Object);
-        //    Factory.InstantieRegistreren(groepenDaoMock.Object);
-        //    Factory.InstantieRegistreren(autorisatieMgrMock.Object);
-        //    Factory.InstantieRegistreren(groepsWerkJaarDaoMock.Object);
-
-        //    Factory.Maak<LedenDaoCollectie>();
-        //    var lm = Factory.Maak<LedenManager>();
-
-        //    // Act
-        //    lm.Zoeken(new LidFilter { GroepsWerkJaarID = testData.HuidigGwj.ID, LidType = LidType.Alles }, LidExtras.Geen);
-
-        //    // Verwacht exception
-        }
-
-		/// <summary>
 		/// Probeer een afdelingsjaar van een eigen afdeling te maken in een groep waar je
 		/// geen GAV van bent
 		/// </summary>

@@ -1419,13 +1419,15 @@ namespace Chiro.Gap.Services.Test
         /// </summary>
         [TestMethod()]
         [ExpectedException(typeof(FaultException<FoutNummerFault>))]
-        public void ZoekenAutorisatieTest()
+        public void ZoekenAutorisatieGroepTest()
         {
             // ARRANGE
 
             var groep = new ChiroGroep {ID = 1};
 
-            var dummyAutorisatieManager = new AutMgrNooitGav();
+            // we gaan de 'gewone' autorisatiemanager gebruiken voor autorisatie. Dan
+            // hebben we meer controle over waar we toegang toe hebben, en waar niet.
+            
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
                                   .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
@@ -1435,13 +1437,49 @@ namespace Chiro.Gap.Services.Test
                       .Returns(new DummyRepo<Leiding>(new List<Leiding>()));
 
 
-            Factory.InstantieRegistreren<IAutorisatieManager>(dummyAutorisatieManager);
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
+            var auMgr = Factory.Maak<AutorisatieManager>();
+            Factory.InstantieRegistreren<IAutorisatieManager>(auMgr);
 
             // ACT
 
             var target = Factory.Maak<LedenService>();
             target.Zoeken(new LidFilter {GroepID = groep.ID}, false);
+
+            // verwacht exception
+        }
+
+        /// <summary>
+        /// Kijkt na of leden zoeken rekening houdt met gebruikersrechten
+        /// </summary>
+        [TestMethod()]
+        [ExpectedException(typeof(FaultException<FoutNummerFault>))]
+        public void ZoekenAutorisatieGroepsWerkjaarTest()
+        {
+            // ARRANGE
+
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep {ID = 1}};
+
+            // we gaan de 'gewone' autorisatiemanager gebruiken voor autorisatie. Dan
+            // hebben we meer controle over waar we toegang toe hebben, en waar niet.
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
+                                  .Returns(new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar> { groepsWerkJaar }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Kind>())
+                                  .Returns(new DummyRepo<Kind>(new List<Kind>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Leiding>())
+                      .Returns(new DummyRepo<Leiding>(new List<Leiding>()));
+
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+            var auMgr = Factory.Maak<AutorisatieManager>();
+            Factory.InstantieRegistreren<IAutorisatieManager>(auMgr);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            target.Zoeken(new LidFilter { GroepsWerkJaarID = groepsWerkJaar.ID }, false);
 
             // verwacht exception
         }
