@@ -262,39 +262,24 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void IrrelevanteVerplichteFunctie()
         {
-            //// Arrange
+            // ARRANGE
 
-            //Factory.ContainerInit();	// Container resetten alvorens dummydata te maken.
-            //var testData = new DummyData();
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep(), WerkJaar = 2012};
+            var vervallenFunctie = new Functie
+                                       {
+                                           WerkJaarTot = groepsWerkJaar.WerkJaar - 1,
+                                           MinAantal = 1,
+                                           Groep = groepsWerkJaar.Groep
+                                       };
+            // ACT
 
-            //var fm = Factory.Maak<FunctiesManager>();
-            //var gm = Factory.Maak<GroepenManager>();
+            var functiesManager = Factory.Maak<FunctiesManager>();
+            var probleemIDs = functiesManager.AantallenControleren(groepsWerkJaar, new List<Functie> {vervallenFunctie}).Select(src => src.ID);
 
-            //Functie f = gm.FunctieToevoegen(
-            //    testData.DummyGroep,
-            //    testData.NieuweFunctieNaam,
-            //    testData.NieuweFunctieCode,
-            //    1, 1,
-            //    LidType.Alles);	// pas volgend jaar geldig
+            // ASSERT
 
-            //f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
+            Assert.IsFalse(probleemIDs.Contains(vervallenFunctie.ID));
 
-            //f.ID = testData.NieuweFunctieID;
-
-            //// Jos krijgt alle nationaal bepaalde functies, zodat eventuele verplichte
-            //// nationaal bepaalde functies OK zijn.
-            //fm.Toekennen(testData.LeiderJos, fm.NationaalBepaaldeFunctiesOphalen());
-
-            //// Act
-
-            //var problemen = from p in fm.AantallenControleren(testData.HuidigGwj)
-            //                where p.ID == testData.NieuweFunctieID
-            //                select p;
-
-            //// Assert
-
-            //Assert.AreEqual(problemen.Count(), 0);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
