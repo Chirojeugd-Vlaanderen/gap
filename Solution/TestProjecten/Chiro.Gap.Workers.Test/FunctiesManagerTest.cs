@@ -150,31 +150,32 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void ToekennenFunctieOngeldigWerkJaar()
         {
-            //// Arrange
+            // ARRANGE
 
-            //var testData = new DummyData();
+            var groepsWerkJaar = new GroepsWerkJaar
+                                     {
+                                         Groep = new ChiroGroep(),
+                                         WerkJaar = 2012
+                                     };
+            groepsWerkJaar.Groep.GroepsWerkJaar.Add(groepsWerkJaar);
+            var lid = new Leiding {GroepsWerkJaar = groepsWerkJaar};
 
-            //FunctiesManager fm = Factory.Maak<FunctiesManager>();
-            //GroepenManager gm = Factory.Maak<GroepenManager>();
+            var vervallenFunctie = new Functie
+            {
+                WerkJaarTot = groepsWerkJaar.WerkJaar - 1,
+                MinAantal = 1,
+                Groep = groepsWerkJaar.Groep,
+                Niveau = Niveau.Groep
+            };
 
-            //Functie f = gm.FunctieToevoegen(
-            //    testData.DummyGroep,
-            //    testData.NieuweFunctieNaam,
-            //    testData.NieuweFunctieCode,
-            //    1, 0,
-            //    LidType.Alles);
+            // ACT
 
-            //f.WerkJaarTot = testData.HuidigGwj.WerkJaar - 1; // vervallen functie
+            var functiesManager = Factory.Maak<FunctiesManager>();
+            functiesManager.Toekennen(lid, new List<Functie>{vervallenFunctie});
 
-            //IEnumerable<Functie> functies = new Functie[] { f };
+            // ASSERT
 
-            //// Act
-
-            //fm.Toekennen(testData.LeiderJos, functies);
-
-            //// Assert
-            //Assert.IsTrue(false);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            // Als er geen exception gethrowd worden, zal de test failen.
         }
 
         /// <summary>
