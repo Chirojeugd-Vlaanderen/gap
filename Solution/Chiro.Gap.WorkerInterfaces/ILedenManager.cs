@@ -162,5 +162,15 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns>Nieuw lid, met ander type</returns>
         /// <remarks>Het origineel lid moet door de caller zelf uit de repository verwijderd worden.</remarks>
         Lid TypeToggle(Lid origineelLid);
+
+        /// <summary>
+        /// Vervang de afdelingsjaren van gegeven <paramref name="lid"/> door de 
+        /// gegeven <paramref name="afdelingsJaren"/>/
+        /// </summary>
+        /// <param name="lid">lid waarvan afdelingsjaren te vervangen</param>
+        /// <param name="afdelingsJaren">nieuwe afdelingsjaren voor <paramref name="lid"/></param>
+        /// <remarks>als <paramref name="lid"/> een kindlid is, dan moet <paramref name="afdelingsJaren"/>
+        /// precies 1 afdelingsjaar bevatten.</remarks>
+        void AfdelingsJarenVervangen(Lid lid, IList<AfdelingsJaar> afdelingsJaren);
     }
 }

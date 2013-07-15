@@ -194,7 +194,8 @@ namespace Chiro.Gap.Workers.Test
                 GeboorteJaarVan = 1999,
                 GeboorteJaarTot = 2000,
                 Geslacht = GeslachtsType.Gemengd,
-                OfficieleAfdeling = new OfficieleAfdeling()
+                OfficieleAfdeling = new OfficieleAfdeling(),
+                GroepsWerkJaar = gwj
             };
             var afdelingsJaar2 = new AfdelingsJaar
             {
@@ -202,7 +203,8 @@ namespace Chiro.Gap.Workers.Test
                 GeboorteJaarVan = 1997,
                 GeboorteJaarTot = 1998,
                 Geslacht = GeslachtsType.Gemengd,
-                OfficieleAfdeling = new OfficieleAfdeling()
+                OfficieleAfdeling = new OfficieleAfdeling(),
+                GroepsWerkJaar = gwj
             };
             gwj.AfdelingsJaar.Add(afdelingsJaar1);
             gwj.AfdelingsJaar.Add(afdelingsJaar2);

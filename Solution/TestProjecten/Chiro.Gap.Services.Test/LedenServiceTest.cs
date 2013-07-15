@@ -290,6 +290,8 @@ namespace Chiro.Gap.Services.Test
                                                      jongereAfdeling
                                                  }
                                      };
+            mijnAfdeling.GroepsWerkJaar = groepsWerkJaar;
+            jongereAfdeling.GroepsWerkJaar = groepsWerkJaar;
 
             var gelieerdePersoon = new GelieerdePersoon
                                        {
@@ -314,6 +316,13 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<AfdelingsJaar>())
+                                  .Returns(
+                                      new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar>
+                                                                       {
+                                                                           mijnAfdeling,
+                                                                           jongereAfdeling
+                                                                       }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
             #endregion
 
@@ -1267,6 +1276,8 @@ namespace Chiro.Gap.Services.Test
                                                      nieuwAfdelingsJaar
                                                  }
                                      };
+            oudAfdelingsJaar.GroepsWerkJaar = groepsWerkJaar;
+            nieuwAfdelingsJaar.GroepsWerkJaar = groepsWerkJaar;
 
             var lid = new Kind {ID = 3, AfdelingsJaar = oudAfdelingsJaar, GroepsWerkJaar = groepsWerkJaar};
 
@@ -1533,7 +1544,7 @@ namespace Chiro.Gap.Services.Test
             repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
                                   .Returns(new DummyRepo<Lid>(new List<Lid> {lid}));
             repositoryProviderMock.Setup(src => src.RepositoryGet<AfdelingsJaar>())
-                                  .Returns(new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar>()));
+                                  .Returns(new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar>{afdelingsJaar1, afdelingsJaar2}));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             var target = Factory.Maak<LedenService>();

@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -737,6 +738,67 @@ namespace Chiro.Gap.Workers
 
             return AfdelingsJaarVoorstellen(gelieerdePersoon.GebDatumMetChiroLeefTijd.Value, gelieerdePersoon.Persoon.Geslacht,
                                             groepsWerkJaar);
+        }
+
+        /// <summary>
+        /// Vervang de afdelingsjaren van gegeven <paramref name="lid"/> door de 
+        /// gegeven <paramref name="afdelingsJaren"/>/
+        /// </summary>
+        /// <param name="lid">lid waarvan afdelingsjaren te vervangen</param>
+        /// <param name="afdelingsJaren">nieuwe afdelingsjaren voor <paramref name="lid"/></param>
+        /// <remarks>als <paramref name="lid"/> een kindlid is, dan moet <paramref name="afdelingsJaren"/>
+        /// precies 1 afdelingsjaar bevatten.</remarks>
+        public void AfdelingsJarenVervangen(Lid lid, IList<AfdelingsJaar> afdelingsJaren)
+        {
+            var query = from aj in afdelingsJaren
+                        where !Equals(aj.GroepsWerkJaar, lid.GroepsWerkJaar)
+                        select aj;
+
+            if (query.Any())
+            {
+                throw new FoutNummerException(FoutNummer.AfdelingNietVanGroep, Resources.AfdelingNietVanGroep);
+            }
+
+            var kind = lid as Kind;
+            if (kind != null)
+            {
+                // lid is kind.
+                if (afdelingsJaren.Count != 1)
+                {
+                    throw new FoutNummerException(FoutNummer.AlgemeneKindFout,
+                                                          Properties.Resources.AfdelingKindVerplicht);
+                }
+                kind.AfdelingsJaar = afdelingsJaren.First();
+            }
+            else
+            {
+                // lid is leiding
+                var leiding = (Leiding)lid;
+
+                // hmmm. Dat zijn hier precies nogal veel loops.
+                // Gelukkig zijn het kleine loopjes (loopen over afdelingsjaren)
+
+                // te verwijderen afdelingsjaren verwijderen
+                var teVerwijderen = (from aj in leiding.AfdelingsJaar
+                                     where !afdelingsJaren.Contains(aj)
+                                     select aj).ToList();
+                foreach (var aj in teVerwijderen)
+                {
+                    leiding.AfdelingsJaar.Remove(aj);
+                    aj.Leiding.Remove(leiding);
+                }
+
+                // toe te voegen afdelingsjaren toevoegen
+
+                foreach (var aj in afdelingsJaren)
+                {
+                    if (!leiding.AfdelingsJaar.Contains(aj))
+                    {
+                        leiding.AfdelingsJaar.Add(aj);
+                        aj.Leiding.Add(leiding);
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Transactions;
 using AutoMapper;
@@ -330,6 +331,21 @@ namespace Chiro.Gap.Services
                                 }
                                 _ledenRepo.Delete(l);
                                 l = nieuwLid;
+                                try
+                                {
+                                    _ledenMgr.AfdelingsJarenVervangen(l, lidVoorstel.AfdelingsJaren);
+                                }
+                                catch (FoutNummerException ex)
+                                {
+                                    if (ex.FoutNummer == FoutNummer.AlgemeneKindFout)
+                                    {
+                                        throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingKindVerplicht, Properties.Resources.KindInEenAfdelingsJaar);
+                                    }
+                                    else
+                                    {
+                                        throw;
+                                    }
+                                }
 
                                 // TODO: afdelingen toekennen!
                             }
@@ -581,43 +597,19 @@ namespace Chiro.Gap.Services
 
             foreach (var lid in leden)
             {
-                var kind = lid as Kind;
-                if (kind != null)
+                try
                 {
-                    // lid is kind.
-                    if (afdelingsJaren.Count != 1)
-                    {
-                        throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneKindFout, Properties.Resources.KindInEenAfdelingsJaar);
-                    }
-                    kind.AfdelingsJaar = afdelingsJaren.First();
+                    _ledenMgr.AfdelingsJarenVervangen(lid, afdelingsJaren);
                 }
-                else
+                catch (FoutNummerException ex)
                 {
-                    // lid is leiding
-                    var leiding = (Leiding) lid;
-
-                    // hmmm. Dat zijn hier precies nogal veel loops.
-                    // Gelukkig zijn het kleine loopjes (loopen over afdelingsjaren)
-
-                    // te verwijderen afdelingsjaren verwijderen
-                    var teVerwijderen = (from aj in leiding.AfdelingsJaar
-                                         where !afdelingsJaren.Contains(aj)
-                                         select aj).ToList();
-                    foreach (var aj in teVerwijderen)
+                    if (ex.FoutNummer == FoutNummer.AlgemeneKindFout)
                     {
-                        leiding.AfdelingsJaar.Remove(aj);
-                        aj.Leiding.Remove(leiding);
+                        throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingKindVerplicht, Properties.Resources.KindInEenAfdelingsJaar);
                     }
-
-                    // toe te voegen afdelingsjaren toevoegen
-
-                    foreach (var aj in afdelingsJaren)
+                    else
                     {
-                        if (!leiding.AfdelingsJaar.Contains(aj))
-                        {
-                            leiding.AfdelingsJaar.Add(aj);
-                            aj.Leiding.Add(leiding);
-                        }
+                        throw;
                     }
                 }
             }
@@ -636,6 +628,8 @@ namespace Chiro.Gap.Services
             }
 #endif
         }
+
+
 
         /// <summary>
         /// Verzekert lid met Id <paramref name="lidId"/> tegen loonverlies
