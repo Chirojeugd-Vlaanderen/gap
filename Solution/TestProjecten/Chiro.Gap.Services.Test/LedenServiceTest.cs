@@ -16,11 +16,9 @@
  * limitations under the License.
  */
 
-using System.Collections.ObjectModel;
 using System.ServiceModel;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
@@ -30,17 +28,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
-
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.Mappers;
-using Chiro.Gap.TestDbInfo;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Cdf.Poco;
 using Moq;
 using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
-using Chiro.Gap.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 
 namespace Chiro.Gap.Services.Test
@@ -696,7 +690,7 @@ namespace Chiro.Gap.Services.Test
         ///Controleert of een uitgeschreven lid opnieuw ingeschreven kan worden.
         ///</summary>
         [TestMethod()]
-        public void InschrijvenTest()
+        public void HerinschrijvenTest()
         {
             // ARRANGE
 
@@ -1482,6 +1476,86 @@ namespace Chiro.Gap.Services.Test
             target.Zoeken(new LidFilter { GroepsWerkJaarID = groepsWerkJaar.ID }, false);
 
             // verwacht exception
+        }
+
+        /// <summary>
+        /// Probeer iemand die uitgeschreven is als leiding terug in te schrijven als lid
+        /// </summary>
+        [TestMethod()]
+        public void LeidingHerinschrijvenAlsLidTest()
+        {
+            // ARRANGE
+
+            // testdata
+            var groepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep(), ID = 4, WerkJaar = 2012 };
+            groepsWerkJaar.Groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            var afdelingsJaar1 = new AfdelingsJaar {ID = 2, GroepsWerkJaar = groepsWerkJaar, OfficieleAfdeling = new OfficieleAfdeling()};
+            var afdelingsJaar2 = new AfdelingsJaar {ID = 3, GroepsWerkJaar = groepsWerkJaar, OfficieleAfdeling = new OfficieleAfdeling()};
+            groepsWerkJaar.AfdelingsJaar.Add(afdelingsJaar1);
+            groepsWerkJaar.AfdelingsJaar.Add(afdelingsJaar2);
+
+            Lid lid = new Leiding
+                          {
+                              UitschrijfDatum = DateTime.Today,
+                              GroepsWerkJaar = groepsWerkJaar,
+                              AfdelingsJaar = new List<AfdelingsJaar> {afdelingsJaar1}
+                          };
+            groepsWerkJaar.Lid.Add(lid);
+
+            var gp = new GelieerdePersoon // gelieerde persoon, uitgeschreven als leiding
+                         {
+                             ID = 1,
+                             Persoon =
+                                 new Persoon
+                                     {
+                                         Naam = "Bosmans",
+                                         VoorNaam = "Jos",
+                                         Geslacht = GeslachtsType.Man,
+                                         GeboorteDatum = new DateTime(1997, 3, 8)
+                                     },
+                             Lid = new List<Lid> {lid},
+                             Groep = groepsWerkJaar.Groep,
+                         };
+
+            lid.GelieerdePersoon = gp;
+
+            // dependency injection
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gp }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid> {lid}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var target = Factory.Maak<LedenService>();
+
+            // ACT
+            var lidInformatie = new[]
+                                    {
+                                        new InTeSchrijvenLid
+                                            {
+                                                AfdelingsJaarIrrelevant = false,
+                                                GelieerdePersoonID = gp.ID,
+                                                LeidingMaken = false,
+                                                VolledigeNaam = gp.Persoon.VolledigeNaam,
+                                                AfdelingsJaarIDs = new [] {afdelingsJaar2.ID}
+                                            }
+                                    };
+            string foutBerichten;
+            target.Inschrijven(lidInformatie, out foutBerichten);
+
+            // ASSERT
+
+            var leden = (from l in groepsWerkJaar.Lid
+                         where l.GelieerdePersoon.ID == gp.ID
+                         select l).ToList();
+            Assert.IsTrue(leden.Count() == 1);
+
+            var nieuwLid = leden.FirstOrDefault() as Kind;
+            Assert.IsNotNull(nieuwLid);
+
+            Assert.AreEqual(nieuwLid.AfdelingsJaar,  afdelingsJaar2);
         }
     }
 }
