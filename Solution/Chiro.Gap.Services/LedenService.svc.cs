@@ -221,7 +221,11 @@ namespace Chiro.Gap.Services
                             voorgesteldelijst.Add(new InTeSchrijvenLid
                                                       {
                                                           AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant,
-                                                          AfdelingsJaarIDs = voorstel.AfdelingsJaren.Select(aj => aj.ID).ToArray(),
+                                                          AfdelingsJaarIDs =
+                                                              voorstel.AfdelingsJarenIrrelevant
+                                                                  ? new int[0]
+                                                                  : voorstel.AfdelingsJaren.Select(aj => aj.ID)
+                                                                            .ToArray(),
                                                           GelieerdePersoonID = gp.ID,
                                                           LeidingMaken = voorstel.LeidingMaken,
                                                           VolledigeNaam = gp.Persoon.VolledigeNaam
