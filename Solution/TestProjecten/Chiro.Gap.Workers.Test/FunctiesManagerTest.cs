@@ -76,32 +76,39 @@ namespace Chiro.Gap.Workers.Test
         [TestMethod]
         public void TweeKeerUniekeFunctieToekennenTestVerschillendLid()
         {
-            //// Arrange
+            // ARRANGE
 
-            //var testData = new DummyData();
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = new ChiroGroep(),
+                WerkJaar = 2012
+            };
+            groepsWerkJaar.Groep.GroepsWerkJaar.Add(groepsWerkJaar);
 
-            //var fm = Factory.Maak<FunctiesManager>();
-            //var gm = Factory.Maak<GroepenManager>();
+            var uniekeFunctie = new Functie
+            {
+                MaxAantal = 1,
+                Groep = groepsWerkJaar.Groep,
+                Niveau = Niveau.Groep
+            };
 
-            //var f = gm.FunctieToevoegen(
-            //    testData.DummyGroep,
-            //    testData.NieuweFunctieNaam,
-            //    testData.NieuweFunctieCode,
-            //    1, 0,
-            //    LidType.Alles);
+            var lid1 = new Leiding { GroepsWerkJaar = groepsWerkJaar, Functie = new List<Functie> { uniekeFunctie } };
+            var lid2 = new Leiding { GroepsWerkJaar = groepsWerkJaar };
+            uniekeFunctie.Lid.Add(lid1);
 
-            //IEnumerable<Functie> functies = new Functie[] { f };
+            groepsWerkJaar.Lid.Add(lid1);
+            groepsWerkJaar.Lid.Add(lid2);
 
-            //// Act
+            // ACT
 
-            //fm.Toekennen(testData.LeiderJos, functies);
-            //fm.Toekennen(testData.LidYvonne, functies);
+            var functiesManager = Factory.Maak<FunctiesManager>();
+            functiesManager.Toekennen(lid2, new List<Functie> { uniekeFunctie });
 
-            //// Assert
+            // ASSERT
 
-            //var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
-            //Assert.AreNotEqual(problemen.Count(), 0);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
+            var issues = functiesManager.AantallenControleren(groepsWerkJaar, new List<Functie> {uniekeFunctie});
+
+            Assert.IsTrue(issues.Select(src=>src.ID).Contains(uniekeFunctie.ID));
         }
 
         /// <summary>
