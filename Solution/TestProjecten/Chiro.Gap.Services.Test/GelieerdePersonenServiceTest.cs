@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
 using System.Linq;
+using System.Web.UI.MobileControls;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
@@ -930,6 +931,35 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.AreEqual(1, actual.Count);
+        }
+
+        /// <summary>
+        /// Controleert of een categorie niet twee keer aan dezelfde persoon kan gekoppeld worden.
+        /// </summary>
+        [TestMethod()]
+        public void CategorieKoppelenDubbelTest()
+        {
+            // ARRANGE
+
+            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Groep = new ChiroGroep()};
+            var categorie = new Categorie {ID = 2, Groep = gelieerdePersoon.Groep};
+            gelieerdePersoon.Categorie.Add(categorie);
+            gelieerdePersoon.Groep.Categorie.Add(categorie);
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var gelieerdePersonenService = Factory.Maak<GelieerdePersonenService>();
+            gelieerdePersonenService.CategorieKoppelen(new [] {gelieerdePersoon.ID}, new [] {categorie.ID});
+
+            // ASSERT
+
+            Assert.AreEqual(gelieerdePersoon.Categorie.Count, 1);
         }
     }
 }
