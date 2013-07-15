@@ -117,6 +117,7 @@ namespace Chiro.Gap.Workers
             foreach (var f in functies)
             {
                 lid.Functie.Add(f);
+                f.Lid.Add(lid);
             }
 
         }
