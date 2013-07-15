@@ -64,7 +64,6 @@
     <Compile Include="ICommunicatie.cs" />
     <Compile Include="IPeriode.cs" />
     <Compile Include="LidFilter.cs" />
-    <Compile Include="LidVoorstel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

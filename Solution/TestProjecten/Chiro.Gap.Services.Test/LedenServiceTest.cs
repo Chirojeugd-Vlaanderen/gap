@@ -711,6 +711,8 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gp}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<AfdelingsJaar>())
+                                  .Returns(new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar>()));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             var target = Factory.Maak<LedenService>();
@@ -1159,6 +1161,8 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<AfdelingsJaar>())
+                                              .Returns(new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar>()));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             var ledenSyncMock = new Mock<ILedenSync>();
@@ -1227,6 +1231,8 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<AfdelingsJaar>())
+                                  .Returns(new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar>()));
 
             Factory.InstantieRegistreren(ledenSyncMock.Object);
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
@@ -1526,6 +1532,8 @@ namespace Chiro.Gap.Services.Test
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gp }));
             repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
                                   .Returns(new DummyRepo<Lid>(new List<Lid> {lid}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<AfdelingsJaar>())
+                                  .Returns(new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar>()));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             var target = Factory.Maak<LedenService>();

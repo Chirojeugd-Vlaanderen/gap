@@ -153,5 +153,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// of leiding in het huidige werkjaar van zijn groep. Anders <c>false</c>.
         /// </returns>
         bool IsActiefLid(GelieerdePersoon gelieerdePersoon);
+
+        /// <summary>
+        /// Verandert het lidtype van <paramref name="origineelLid"/> van
+        /// <c>Kind</c> naar <c>Leiding</c> of omgekeerd
+        /// </summary>
+        /// <param name="origineelLid">Lid waarvan type veranderd moet worden</param>
+        /// <returns>Nieuw lid, met ander type</returns>
+        /// <remarks>Het origineel lid moet door de caller zelf uit de repository verwijderd worden.</remarks>
+        Lid TypeToggle(Lid origineelLid);
     }
 }

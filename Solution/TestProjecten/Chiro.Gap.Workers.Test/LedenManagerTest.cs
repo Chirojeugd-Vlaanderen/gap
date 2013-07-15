@@ -104,7 +104,6 @@ namespace Chiro.Gap.Workers.Test
                 target.NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false,
                                         new LidVoorstel
                                             {
-                                                AfdelingsJaarIDs = null,
                                                 AfdelingsJarenIrrelevant = false,
                                                 LeidingMaken = true
                                             }) as Leiding;
@@ -113,42 +112,6 @@ namespace Chiro.Gap.Workers.Test
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(0, actual.AfdelingsJaar.Count);
-        }
-
-        ///<summary>
-        /// Test herinschrijven van leiding als lid en in een andere afdeling
-        ///</summary>
-        [TestMethod()]
-        public void HerInschrijvenAlsLidTest()
-        {
-            //var kindDaoMock = new Mock<IKindDao>();
-            //kindDaoMock.Setup(src => src.Bewaren(It.IsAny<Kind>(), It.IsAny<LidExtras>())).Returns<Kind, LidExtras>((kind, extra) => kind);
-
-            //// we verwachten dat het kind bewaard zal worden
-
-            //Factory.InstantieRegistreren(kindDaoMock.Object);
-
-            //var target = Factory.Maak<LedenManager>();
-            //Setup();
-            
-            //// act
-            //var actual = target.NieuwInschrijven(_gp, _gwj, false, _voorstel) as Leiding;
-            //actual.UitschrijfDatum = DateTime.Today;
-            
-            //var voorstel2 = new LidVoorstel
-            //{
-            //    AfdelingsJaarIDs = new[]{1},
-            //    AfdelingsJarenIrrelevant = false,
-            //    LeidingMaken = false
-            //};
-
-            //var newlid = target.Wijzigen(actual, voorstel2) as Kind;
-
-            //// assert
-            //Assert.IsNotNull(newlid);
-            //Assert.AreEqual(_afd1, newlid.AfdelingsJaar);
-            //Assert.IsNull(newlid.UitschrijfDatum);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
         }
 
         /// <summary>
@@ -170,23 +133,25 @@ namespace Chiro.Gap.Workers.Test
                                       };
 
             var gwj = new GroepsWerkJaar {WerkJaar = 2011};
-            gwj.AfdelingsJaar.Add(new AfdelingsJaar
-                                      {
-                                          ID = 1,
-                                          GeboorteJaarVan = 1996,
-                                          GeboorteJaarTot = 1997,
-                                          Geslacht = GeslachtsType.Man,
-                                          OfficieleAfdeling = new OfficieleAfdeling()
-                                      });
-                        gwj.AfdelingsJaar.Add(new AfdelingsJaar
-                                      {
-                                          ID = 2,
-                                          GeboorteJaarVan = 1996,
-                                          GeboorteJaarTot = 1997,
-                                          Geslacht = GeslachtsType.Vrouw,
-                                          OfficieleAfdeling = new OfficieleAfdeling()
-                                      });
 
+            var afdelingsJaar1 = new AfdelingsJaar
+                                     {
+                                         ID = 1,
+                                         GeboorteJaarVan = 1996,
+                                         GeboorteJaarTot = 1997,
+                                         Geslacht = GeslachtsType.Man,
+                                         OfficieleAfdeling = new OfficieleAfdeling()
+                                     };
+            var afdelingsJaar2 = new AfdelingsJaar
+                                     {
+                                         ID = 2,
+                                         GeboorteJaarVan = 1996,
+                                         GeboorteJaarTot = 1997,
+                                         Geslacht = GeslachtsType.Vrouw,
+                                         OfficieleAfdeling = new OfficieleAfdeling()
+                                     };
+            gwj.AfdelingsJaar.Add(afdelingsJaar1);
+            gwj.AfdelingsJaar.Add(afdelingsJaar2);
 
             var target = Factory.Maak<LedenManager>();
 
@@ -196,7 +161,7 @@ namespace Chiro.Gap.Workers.Test
 
             // Assert
 
-            Assert.AreEqual(actual.AfdelingsJaarIDs[0], 2);
+            Assert.AreEqual(actual.AfdelingsJaren[0], afdelingsJaar2);
         }
 
         /// <summary>
@@ -223,22 +188,24 @@ namespace Chiro.Gap.Workers.Test
 
             var gwj = new GroepsWerkJaar {WerkJaar = 2011};
 
-            gwj.AfdelingsJaar.Add(new AfdelingsJaar
+            var afdelingsJaar1 = new AfdelingsJaar
             {
                 ID = 1,
                 GeboorteJaarVan = 1999,
                 GeboorteJaarTot = 2000,
                 Geslacht = GeslachtsType.Gemengd,
                 OfficieleAfdeling = new OfficieleAfdeling()
-            });
-            gwj.AfdelingsJaar.Add(new AfdelingsJaar
+            };
+            var afdelingsJaar2 = new AfdelingsJaar
             {
                 ID = 2,
                 GeboorteJaarVan = 1997,
                 GeboorteJaarTot = 1998,
                 Geslacht = GeslachtsType.Gemengd,
                 OfficieleAfdeling = new OfficieleAfdeling()
-            });
+            };
+            gwj.AfdelingsJaar.Add(afdelingsJaar1);
+            gwj.AfdelingsJaar.Add(afdelingsJaar2);
 
 
             var target = Factory.Maak<LedenManager>();
@@ -249,7 +216,7 @@ namespace Chiro.Gap.Workers.Test
 
             // Assert
 
-            Assert.AreEqual(actual.AfdelingsJaarIDs[0], 2);
+            Assert.AreEqual(actual.AfdelingsJaren[0], afdelingsJaar2);
         }
 
         /// <summary>

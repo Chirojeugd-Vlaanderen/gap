@@ -422,7 +422,7 @@ namespace Chiro.Gap.Services
             {
                 _afdelingenRepo.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // In principe moeten we een specifiekere exception catchen.
                 // In dit geval zal die specifieke exceptie van entity framework komen,
