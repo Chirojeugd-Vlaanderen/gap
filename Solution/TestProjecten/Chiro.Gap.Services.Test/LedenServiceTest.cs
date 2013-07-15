@@ -36,6 +36,7 @@ using Chiro.Cdf.Poco;
 using Moq;
 using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using Chiro.Gap.Services;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -351,9 +352,8 @@ namespace Chiro.Gap.Services.Test
         /// wel moet failen, moet ticket #1391 mogelijk opnieuw geopend worden.)
         /// </summary>
         [TestMethod()]
-        public void VoorstelTotInschrijvenGenererenTest()
+        public void VoorstelTotInschrijvenGenererenSorteringTest()
         {
-
             // ARRANGE
 
             string foutBerichten;
@@ -1575,6 +1575,78 @@ namespace Chiro.Gap.Services.Test
             Assert.IsNotNull(nieuwLid);
 
             Assert.AreEqual(nieuwLid.AfdelingsJaar,  afdelingsJaar2);
+        }
+
+        /// <summary>
+        /// Test op inschrijving voorstellen voor leiding (illustreert #1593)
+        /// </summary>
+        [TestMethod()]
+        public void VoorstelTotInschrijvenGenererenLeidingTest()
+        {
+            // ARRANGE
+
+            string foutBerichten;
+
+            // Gauw wat handgemaakte dummydata:
+
+            var mijnAfdeling = new AfdelingsJaar
+            {
+                ID = 1,
+                GeboorteJaarVan = 1996,
+                GeboorteJaarTot = 1998,
+                Geslacht = GeslachtsType.Gemengd,
+                OfficieleAfdeling = new OfficieleAfdeling { ID = (int)NationaleAfdeling.Ketis }
+            };
+
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                WerkJaar = 2013,
+                AfdelingsJaar =
+                    new List<AfdelingsJaar>
+                                                 {
+                                                     mijnAfdeling,
+                                                 }
+            };
+
+            // gelieerde persoon te oud voor een afdeling
+            var oudeGelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 3,
+                Persoon = new Persoon
+                {
+                    GeboorteDatum = new DateTime(1992, 3, 8),
+                    Geslacht = GeslachtsType.Vrouw
+                },
+                Groep = new ChiroGroep
+                {
+                    GroepsWerkJaar = new List<GroepsWerkJaar>
+                                                                                    {
+                                                                                        groepsWerkJaar
+                                                                                    }
+                }
+            };
+            groepsWerkJaar.Groep = oudeGelieerdePersoon.Groep;
+
+            // We mocken een en ander:
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(
+                                      new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>
+                                                                          {
+                                                                              oudeGelieerdePersoon,
+                                                                          }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            var actual = target.VoorstelTotInschrijvenGenereren(new[] { oudeGelieerdePersoon.ID }, out foutBerichten);
+
+            // We verwachten nu dat de personen opgeleverd worden van jong naar oud.  Dus
+            // eerst persoon 2, dan persoon 1.
+
+            Assert.IsTrue(actual.First().LeidingMaken);
         }
     }
 }
