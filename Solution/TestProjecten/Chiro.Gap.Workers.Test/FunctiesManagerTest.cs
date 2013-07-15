@@ -450,66 +450,6 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
-		/// Test voor ticket #890 
-		/// </summary>
-		[TestMethod]
-		public void FunctieOphalenTest()
-		{
-            //// Arrange
-
-            //var auMgrMock = new Mock<IAutorisatieManager>();
-            //var funDaoMock = new Mock<IFunctiesDao>();
-
-            //auMgrMock.Setup(mgr => mgr.IsGavCategorie(It.IsAny<int>())).Returns(false);
-            //auMgrMock.Setup(mgr => mgr.IsGavFunctie(It.IsAny<int>())).Returns(true);
-
-            //funDaoMock.Setup(mgr => mgr.Ophalen(It.IsAny<int>())).Returns(new Functie());
-
-            //Factory.InstantieRegistreren<IAutorisatieManager>(auMgrMock.Object);
-            //Factory.InstantieRegistreren<IFunctiesDao>(funDaoMock.Object);
-
-            //var funMgr = Factory.Maak<FunctiesManager>();
-
-            //// act
-
-            //var resultaat = funMgr.Ophalen(100, false); // haal functie op zonder iets extra
-
-            //// assert
-
-            //// Aangezien ik de autorisatiemanager gemockt heb, zodat je rechten krijgt op iedere
-            //// functie, moet er een functie opgehaald zijn.
-
-            //Assert.IsNotNull(resultaat);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-		}
-
-		/// <summary>
-		/// Controleert of een ongebruikte functie probleemloos verwijderd kan worden
-		/// </summary>
-		[TestMethod]
-		public void OngebruikteFunctieVerwijderenTest()
-		{
-            //// arrange
-
-            //var testData = new DummyData();
-
-            //var veelGebruiktMock = new Mock<IVeelGebruikt>();
-            //veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarIDOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj.ID);
-            //Factory.InstantieRegistreren(veelGebruiktMock.Object);
-
-            //var mgr = Factory.Maak<FunctiesManager>();
-
-            //// act
-
-            //var result = mgr.Verwijderen(testData.OngebruikteFunctie, false);
-
-            //// assert
-
-            //Assert.IsNull(result);
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-		}
-
-		/// <summary>
 		/// probeert een functie die dit jaar in gebruik is te verwijderen.  We verwachten een exception.
 		/// </summary>
 		[TestMethod]

@@ -408,7 +408,7 @@ namespace Chiro.Gap.Services.Test
         ///</summary>
         [TestMethod()]
         [ExpectedException(typeof (FaultException<BlokkerendeObjectenFault<PersoonLidInfo>>))]
-        public void FunctieVerwijderenTest()
+        public void FunctieVerwijderenInGebruikTest()
         {
             // ARRANGE
 
@@ -1127,6 +1127,42 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             groepenSyncMock.Verify(src=>src.Bewaren(It.IsAny<Groep>()), Times.Once());
+        }
+
+        /// <summary>
+        /// Een test op het verwijderen van een eigen functie zonder speciallekes
+        /// </summary>
+        [TestMethod()]
+        public void FunctieVerwijderenGewoonTest()
+        {
+            // ARRANGE
+
+            var functie = new Functie
+                              {
+                                  ID = 1,
+                                  Groep =
+                                      new ChiroGroep
+                                          {
+                                              GroepsWerkJaar =
+                                                  new List<GroepsWerkJaar> {new GroepsWerkJaar()}
+                                          },
+                                  IsNationaal = false
+                              };
+            var alleFuncties = new List<Functie> {functie};
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Functie>())
+                                  .Returns(new DummyRepo<Functie>(alleFuncties));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GroepenService>();
+            target.FunctieVerwijderen(functie.ID, false);
+
+            // ASSERT
+
+            Assert.IsNull(alleFuncties.FirstOrDefault());
         }
     }
 }

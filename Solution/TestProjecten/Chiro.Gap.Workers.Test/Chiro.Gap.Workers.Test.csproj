@@ -86,7 +86,6 @@
     <Compile Include="AfdelingsJaarManagerTest.cs" />
     <Compile Include="AutorisatieManagerTest.cs" />
     <Compile Include="AutorisatieTest.cs" />
-    <Compile Include="CategorieTest.cs" />
     <Compile Include="CommunicatieVormenManagerTest.cs" />
     <Compile Include="GelieerdePersonenManagerTest.cs" />
     <Compile Include="GroepsWerkJarenManagerTest.cs" />
