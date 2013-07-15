@@ -394,46 +394,6 @@ namespace Chiro.Gap.Workers.Test
             Assert.AreEqual(leiding.Functie, leidingsFuncties);
         }
 
-
-		/// <summary>
-		/// Controleert of de nationaal bepaalde functies gecachet worden, door te tellen hoe dikwijls
-		/// de DAO opgevraagd wordt.
-		/// </summary>
-		[TestMethod]
-		public void NationaalBepaaldeFunctiesOphalenTest()
-		{
-            //#region Arrange
-
-            //// Deze DAO's nog eens expliciet registreren, om te vermijden dat wijzigingen in
-            //// andere tests een vertekend beeld opleveren.
-
-            //Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
-            //Factory.InstantieRegistreren<ILedenDao>(new DummyLedenDao());
-
-            //// Mock voor IFunctieDao, die een lege lijst geeft als de nationaal bepaalde functies
-            //// opgevraagd worden.  We willen gewoon tellen hoe dikwijls deze opgevraagd wordt.
-            //var funDaoMock = new Mock<IFunctiesDao>();
-            //funDaoMock.Setup(dao => dao.NationaalBepaaldeFunctiesOphalen()).Returns(new List<Functie>());
-            //Factory.InstantieRegistreren(funDaoMock.Object);
-
-            //var target = Factory.Maak<FunctiesManager>();
-
-            //#endregion
-
-            //#region Act
-            //// tweemaal opvragen
-            //var resultaat = target.NationaalBepaaldeFunctiesOphalen();
-            //resultaat = target.NationaalBepaaldeFunctiesOphalen();
-            //#endregion
-
-            //#region Assert
-
-            //funDaoMock.Verify(dao => dao.NationaalBepaaldeFunctiesOphalen(), Times.AtMost(1), "Nationale functies waren niet gecachet.");
-
-            //#endregion
-            throw new NotImplementedException(NIEUWEBACKEND.Info);
-		}
-
 		/// <summary>
 		/// probeert een functie die dit jaar in gebruik is te verwijderen.  We verwachten een exception.
 		/// </summary>
