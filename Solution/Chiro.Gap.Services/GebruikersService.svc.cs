@@ -54,10 +54,10 @@ namespace Chiro.Gap.Services
             {
                 if (disposing)
                 {
-                    // Dispose managed resources.
-                    // TODO, release repositories
-                    //_someRepo.Dispose();
-
+                    _rechtenRepo.Dispose();
+                    _groepenRepo.Dispose();
+                    _gelieerdePersonenRepo.Dispose();
+                    _gavRepo.Dispose();
                 }
                 disposed = true;
             }
@@ -70,16 +70,6 @@ namespace Chiro.Gap.Services
 
         #endregion
 
-        /// <summary>
-        /// _context is verantwoordelijk voor het tracken van de wijzigingen aan de
-        /// entiteiten. Via _context.SaveChanges() kunnen wijzigingen gepersisteerd
-        /// worden.
-        /// 
-        /// Context is IDisposable. De context wordt aangemaakt door de IOC-container,
-        /// en gedisposed op het moment dat de service gedisposed wordt. Dit gebeurt
-        /// na iedere call.
-        /// </summary>
-        private readonly IContext _context;
 
         // Repositories, verantwoordelijk voor data access.
         private readonly IRepository<Gav> _rechtenRepo;
@@ -107,7 +97,6 @@ namespace Chiro.Gap.Services
                                  IAuthenticatieManager authenticatieManager,
                                  IRepositoryProvider repositoryProvider)
         {
-            _context = repositoryProvider.ContextGet();
             _rechtenRepo = repositoryProvider.RepositoryGet<Gav>();
 
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
@@ -185,7 +174,7 @@ namespace Chiro.Gap.Services
                 _gebruikersRechtenMgr.ToekennenOfVerlengen(account, groep);
             }
 
-            _context.SaveChanges();
+            _rechtenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -235,7 +224,7 @@ namespace Chiro.Gap.Services
                 vervallenrecht.VervalDatum = DateTime.Today.AddDays(-1);
             }
 
-            _context.SaveChanges();
+            _rechtenRepo.SaveChanges();
         }
 
         /// <summary>
