@@ -1,5 +1,5 @@
 <%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.GavOverzichtModel>" MasterPageFile="~/Views/Shared/Site.Master" %>
-<asp:Content runat="server" ID="Head" ContentPlaceHolderID="head"></asp:Content>
+<asp:Content runat="server" ID="Head" ContentPlaceHolderID="head">
 <%
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 %>
+</asp:Content>
 <asp:Content runat="server" ID="Main" ContentPlaceHolderID="MainContent">
 
 <table>
