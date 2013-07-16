@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CategorieVerwijderen.cs" />
+    <Compile Include="GebruikersServiceTest.cs" />
     <Compile Include="GelieerdePersonenServiceTest.cs" />
     <Compile Include="LedenServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
