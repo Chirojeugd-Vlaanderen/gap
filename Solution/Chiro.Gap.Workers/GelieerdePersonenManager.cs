@@ -21,6 +21,7 @@ using System.Transactions;
 using System.Collections.Generic;
 using System.Linq;
 using Chiro.Cdf.Poco;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
@@ -78,6 +79,21 @@ namespace Chiro.Gap.Workers
         public bool IsGekendInKipadmin(GelieerdePersoon gp)
         {
             return gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag;
+        }
+
+        /// <summary>
+        /// Levert het contact-e-mailadres op van een gelieerde persoon
+        /// </summary>
+        /// <param name="gelieerdePersoon">Gelieerde persoon waarvan contact-e-mailadres opgeleverd moet worden</param>
+        /// <returns>Het betreffende e-mailadres</returns>
+        /// <remarks>Als er geen e-mailadres de voorkeur heeft, wordt gewoon een willekeurig opgeleverd. Of 
+        /// <c>null</c>, als er geen e-mailadressen zijn</remarks>
+        public string ContactEmail(GelieerdePersoon gelieerdePersoon)
+        {
+            return (from cv in gelieerdePersoon.Communicatie
+                    where cv.CommunicatieType.ID == (int) (CommunicatieTypeEnum.Email)
+                    orderby cv.Voorkeur
+                    select cv.Nummer).LastOrDefault();
         }
 
         /// <summary>

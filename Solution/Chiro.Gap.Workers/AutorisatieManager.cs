@@ -50,7 +50,11 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public bool IsSuperGav()
         {
-            throw new NotImplementedException(Domain.Nieuwebackend.Info);
+            // In het GAP zijn er (op dit moment althans) geen super-GAV's.
+            // GapUpdate (de service) is super-GAV, maar die heeft zijn eigen
+            // IAutorisatieManger.
+
+            return false;
         }
 
         /// <summary>

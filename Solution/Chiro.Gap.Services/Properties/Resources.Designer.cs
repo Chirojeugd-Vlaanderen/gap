@@ -79,6 +79,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dit is enkel mogelijk voor personen met een AD-nummer..
+        /// </summary>
+        internal static string AdNummerVerplicht {
+            get {
+                return ResourceManager.GetString("AdNummerVerplicht", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Het gevraagde adres is niet gekoppeld aan de gevraagde persoon..
         /// </summary>
         internal static string AdresNietGekoppeld {

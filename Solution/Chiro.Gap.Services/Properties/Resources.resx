@@ -216,4 +216,7 @@
   <data name="NationaleFunctieNietBewerken" xml:space="preserve">
     <value>Je mag geen nationale functies bewerken.</value>
   </data>
+  <data name="AdNummerVerplicht" xml:space="preserve">
+    <value>Dit is enkel mogelijk voor personen met een AD-nummer.</value>
+  </data>
 </root>

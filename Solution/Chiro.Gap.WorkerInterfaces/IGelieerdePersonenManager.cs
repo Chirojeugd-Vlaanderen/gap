@@ -88,5 +88,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns><c>true</c> als de gelieerde persoon <paramref name="gp"/> naar alle waarschijnlijkheid is gekend
         /// in Kipadmin, anders <c>false</c>.</returns>
         bool IsGekendInKipadmin(GelieerdePersoon gp);
+
+        /// <summary>
+        /// Levert het contact-e-mailadres op van een gelieerde persoon
+        /// </summary>
+        /// <param name="gelieerdePersoon">Gelieerde persoon waarvan contact-e-mailadres opgeleverd moet worden</param>
+        /// <returns>Het betreffende e-mailadres</returns>
+        /// <remarks>Als er geen e-mailadres de voorkeur heeft, wordt gewoon een willekeurig opgeleverd. Of 
+        /// <c>null</c>, als er geen e-mailadressen zijn</remarks>
+        string ContactEmail(GelieerdePersoon gelieerdePersoon);
     }
 }

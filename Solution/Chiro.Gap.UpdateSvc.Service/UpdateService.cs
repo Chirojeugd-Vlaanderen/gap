@@ -33,17 +33,6 @@ namespace Chiro.Gap.UpdateSvc.Service
     /// </summary>
     public class UpdateService : IUpdateService
     {
-        /// <summary>
-        /// _context is verantwoordelijk voor het tracken van de wijzigingen aan de
-        /// entiteiten. Via _context.SaveChanges() kunnen wijzigingen gepersisteerd
-        /// worden.
-        /// 
-        /// Context is IDisposable. De context wordt aangemaakt door de IOC-container,
-        /// en gedisposed op het moment dat de service gedisposed wordt. Dit gebeurt
-        /// na iedere call.
-        /// </summary>
-        private readonly IContext _context;
-
         private readonly ILedenSync _ledenSync;
 
         private readonly IRepository<Groep> _groepenRepo;
@@ -53,7 +42,6 @@ namespace Chiro.Gap.UpdateSvc.Service
 
         public UpdateService(IAutorisatieManager autorisatieMgr, ILedenSync ledenSync, IRepositoryProvider repositoryProvider)
         {
-            _context = repositoryProvider.ContextGet();
             _personenRepo = repositoryProvider.RepositoryGet<Persoon>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _ledenSync = ledenSync;
@@ -67,7 +55,8 @@ namespace Chiro.Gap.UpdateSvc.Service
 
         public void Dispose()
         {
-            _context.Dispose();
+            _personenRepo.Dispose();
+            _groepenRepo.Dispose();
         }
 
         /// <summary>
@@ -91,7 +80,7 @@ namespace Chiro.Gap.UpdateSvc.Service
 
             Console.WriteLine("Ad-nummer {0} toegekend aan {1}. (ID {2})", adNummer, persoon.VolledigeNaam, persoon.ID);
 
-            _context.SaveChanges();
+            _personenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -110,7 +99,7 @@ namespace Chiro.Gap.UpdateSvc.Service
                 Console.WriteLine("Ad-nummer {0} vervangen door {1}. ({2}, ID {3})", oudAd, nieuwAd, p.VolledigeNaam, p.ID);
             }
 
-            _context.SaveChanges();
+            _personenRepo.SaveChanges();
         }
 
         private void AdNummerToekennen(Persoon persoon, int adNummer)

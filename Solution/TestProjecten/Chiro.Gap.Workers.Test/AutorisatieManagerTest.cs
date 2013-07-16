@@ -15,15 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System.Collections.ObjectModel;
+
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Poco.Model;
 using Moq;
-using System.Collections.Generic;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -174,6 +172,17 @@ namespace Chiro.Gap.Workers.Test
             // ASSERT
 
             Assert.IsFalse(actual);
+        }
+
+        /// <summary>
+        /// Zelfs om te testen zijn we geen super-GAV
+        /// </summary>
+        [TestMethod()]
+        public void IsSuperGavTest()
+        {
+            var target = Factory.Maak<AutorisatieManager>();
+
+            Assert.IsFalse(target.IsSuperGav());
         }
     }
 }

@@ -30,12 +30,6 @@
     public interface IRepositoryProvider
     {
         /// <summary>
-        /// Vraagt de (gedeelde) context van alle repository's op
-        /// </summary>
-        /// <returns>de (gedeelde) context van alle repository's</returns>
-        IContext ContextGet();
-
-        /// <summary>
         /// Creeert een repository voor entiteiten van type <typeparamref name="TEntity"/>.
         /// </summary>
         /// <typeparam name="TEntity">type van entiteit waarvoor repository gevraagd</typeparam>

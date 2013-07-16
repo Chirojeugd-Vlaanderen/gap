@@ -37,14 +37,11 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class GebruikersRechtenManager : IGebruikersRechtenManager
     {
-        private readonly IAutorisatieManager _autorisatieManager;
         private readonly IMailer _mailer;
 
         public GebruikersRechtenManager(
-            IAutorisatieManager autorisatieManager,
             IMailer mailer)
         {
-            _autorisatieManager = autorisatieManager;
             _mailer = mailer;
         }
 
@@ -56,11 +53,6 @@ namespace Chiro.Gap.Workers
         /// </param>
         public void Verlengen(GebruikersRecht gebruikersRecht)
         {
-            if (!_autorisatieManager.IsGav(gebruikersRecht))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
             if (!gebruikersRecht.IsVerlengbaar)
             {
                 // Als er gebruikersrecht is, maar dat is niet verlengbaar, dan gooien
@@ -207,11 +199,6 @@ namespace Chiro.Gap.Workers
         /// <remarks>Gebruikersrechten die al vervallen zijn, blijven onaangeroerd</remarks>
         public void Intrekken(GebruikersRecht[] gebruikersRechten)
         {
-            if (gebruikersRechten.Any(e => !_autorisatieManager.IsGav(e)))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
             foreach (var gr in gebruikersRechten.Where(r => r.VervalDatum > DateTime.Now))
             {
                 gr.VervalDatum = DateTime.Now.AddDays(-1);
@@ -272,14 +259,6 @@ namespace Chiro.Gap.Workers
         /// <remarks>Persisteert niet.</remarks>
         public GebruikersRecht ToekennenOfVerlengen(Gav account, Groep groep)
         {
-            // Omdat een account niet per se aan een gelieerde persoon gekoppeld is, controleren we enkel of
-            // we gebruikersrechten hebben op de groep. Een koppeling account-groep hebben we vooralsnog niet.
-
-            if (!_autorisatieManager.IsGav(groep))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
             DateTime vervaldatum = NieuweVervalDatum();
 
             return ToekennenOfVerlengen(account, groep, vervaldatum);
