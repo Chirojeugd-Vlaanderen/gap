@@ -93,7 +93,22 @@ namespace Chiro.Gap.Services.Test
                                                        Naam = "Magdalena",
                                                        VoorNaam = "Maria"
                                                    },
-                                           Groep = new ChiroGroep {ID = 1}
+                                           Groep = new ChiroGroep {ID = 1},
+                                           Communicatie = new List<CommunicatieVorm>
+                                                              {
+                                                                  new CommunicatieVorm
+                                                                      {
+                                                                          CommunicatieType =
+                                                                              new CommunicatieType
+                                                                                  {
+                                                                                      ID =
+                                                                                          (int)
+                                                                                          CommunicatieTypeEnum
+                                                                                              .Email
+                                                                                  },
+                                                                          Nummer = "piep@boe.be"
+                                                                      }
+                                                              }
                                        };
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
