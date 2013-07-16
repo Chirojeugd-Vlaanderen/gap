@@ -283,7 +283,7 @@ namespace Chiro.Gap.Services
                 // Zoek eerst recentste groepswerkjaar.
                 var gwj = _groepenMgr.HuidigWerkJaar(g);
 
-                foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g.ID))
+                foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g.ID).ToList())
                 {
                     var info = (from i in inschrijfInfo where i.GelieerdePersoonID == gp.ID select i).First();
 
@@ -316,8 +316,7 @@ namespace Chiro.Gap.Services
                         else
                         {
                             l.UitschrijfDatum = null;
-                            l.NonActief = false;
-                            teSyncen.Add(l);
+                            l.NonActief = false;                            
 
                             if (lidVoorstel.LeidingMaken != (l.Type == LidType.Leiding))
                             {
@@ -335,22 +334,24 @@ namespace Chiro.Gap.Services
                                 }
                                 _ledenRepo.Delete(l);
                                 l = nieuwLid;
-                                try
+                            }
+                            try
+                            {
+                                _ledenMgr.AfdelingsJarenVervangen(l, lidVoorstel.AfdelingsJaren);
+                            }
+                            catch (FoutNummerException ex)
+                            {
+                                if (ex.FoutNummer == FoutNummer.AlgemeneKindFout)
                                 {
-                                    _ledenMgr.AfdelingsJarenVervangen(l, lidVoorstel.AfdelingsJaren);
+                                    throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingKindVerplicht, Properties.Resources.KindInEenAfdelingsJaar);
                                 }
-                                catch (FoutNummerException ex)
+                                else
                                 {
-                                    if (ex.FoutNummer == FoutNummer.AlgemeneKindFout)
-                                    {
-                                        throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingKindVerplicht, Properties.Resources.KindInEenAfdelingsJaar);
-                                    }
-                                    else
-                                    {
-                                        throw;
-                                    }
+                                    throw;
                                 }
                             }
+
+                            teSyncen.Add(l);
 
                         }
                     }
