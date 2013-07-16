@@ -17,11 +17,13 @@
  */
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+﻿using System.Diagnostics;
+﻿using System.Linq;
 using System.ServiceModel;
 using System.Web;
-
-using Chiro.Cdf.Poco;
+﻿using Chiro.Ad.ServiceContracts;
+﻿using Chiro.Adf.ServiceModel;
+﻿using Chiro.Cdf.Poco;
 using Chiro.Cdf.Sso;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -82,6 +84,7 @@ namespace Chiro.Gap.Services
         private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IAuthenticatieManager _authenticatieMgr;
+        private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
 
         private readonly GavChecker _gav;
 
@@ -91,10 +94,12 @@ namespace Chiro.Gap.Services
         /// <param name="autorisatieMgr">Verantwoordelijke voor autorisatie</param>
         /// <param name="gebruikersRechtenMgr">Businesslogica aangaande gebruikersrechten</param>
         /// <param name="authenticatieManager">Levert de gebruikersnaam op</param>
+        /// <param name="gelieerdePersonenManager">Businesslogica i.f.v. gelieerde personen</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         public GebruikersService(IAutorisatieManager autorisatieMgr,
                                  IGebruikersRechtenManager gebruikersRechtenMgr,
                                  IAuthenticatieManager authenticatieManager,
+                                 IGelieerdePersonenManager gelieerdePersonenManager,
                                  IRepositoryProvider repositoryProvider)
         {
             _rechtenRepo = repositoryProvider.RepositoryGet<Gav>();
@@ -106,6 +111,7 @@ namespace Chiro.Gap.Services
             _gebruikersRechtenMgr = gebruikersRechtenMgr;
             _autorisatieMgr = autorisatieMgr;
             _authenticatieMgr = authenticatieManager;
+            _gelieerdePersonenMgr = gelieerdePersonenManager;
 
             _gav = new GavChecker(_autorisatieMgr);
         }
@@ -131,9 +137,48 @@ namespace Chiro.Gap.Services
             var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonId);
             Gav.Check(gelieerdePersoon);
 
-            var account = _gebruikersRechtenMgr.AccountZoekenOfMaken(gelieerdePersoon);
+            var p = gelieerdePersoon.Persoon;
+            var account = p.Gav.FirstOrDefault();
 
+            if (account == null)
+            {
+                if (p.AdNummer == null)
+                {
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.AdNummerVerplicht,
+                                                          Properties.Resources.AdNummerVerplicht);
+                }
+                if (string.IsNullOrEmpty(_gelieerdePersonenMgr.ContactEmail(gelieerdePersoon)))
+                {
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.EMailVerplicht, Properties.Resources.EmailOntbreekt);
+                }
+
+                account = new Gav();
+                account.Persoon.Add(p);
+                p.Gav.Add(account);
+            }           
             RechtenToekennen(account, gebruikersRechten);
+
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                if (account.ID == 0)
+                {
+                    Debug.Assert(p.AdNummer != null);
+
+                    // nieuw account
+                    string username =
+                        ServiceHelper.CallService<IAdService, string>(
+                            svc =>
+                            svc.GapLoginAanvragen(p.AdNummer.Value, p.VoorNaam, p.Naam,
+                                                  _gelieerdePersonenMgr.ContactEmail(gelieerdePersoon)));
+                    account.Login = string.Format(@"CHIROPUBLIC\{0}", username);
+                }
+                _gavRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
         }
 
         /// <summary>
@@ -158,6 +203,18 @@ namespace Chiro.Gap.Services
 
         private void RechtenToekennen(Gav account, GebruikersRecht[] gebruikersRechten)
         {
+            // TODO: Deze method staat hier zo wat verloren.
+            // In principe zou ze beter naar de workers gaan. Maar daar hebben we geen toegang
+            // tot _groepenRepo.
+            // Beter zou zijn dat de groepen al opgehaald zijn, en er een structuurtje is
+            // {Groep, Recht}, maar dat is dan weer nog niet helemaal afgestemd op de database.
+            // (zie #1357)
+
+            if (gebruikersRechten == null)
+            {
+                return;
+            }
+
             // Momenteel ondersteunen we enkel GAV-rollen
             var nietOndersteund = (from gr in gebruikersRechten
                                    where gr.Rol != Rol.Gav
