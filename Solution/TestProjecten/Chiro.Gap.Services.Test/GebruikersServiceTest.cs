@@ -114,13 +114,14 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Gav>()).Returns(new DummyRepo<Gav>(new List<Gav>()));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
 
             var target = Factory.Maak<GebruikersService>();
             // maak een gebruiker zonder rechten
-            target.RechtenToekennen(gelieerdePersoon.ID, new GebruikersRecht[]{});
+            target.RechtenToekennen(gelieerdePersoon.ID, null);
 
             // ASSERT
 
