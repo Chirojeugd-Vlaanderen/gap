@@ -335,12 +335,10 @@ namespace Chiro.Gap.Services
             {
                 result.GebruikersInfo = Mapper.Map<Poco.Model.GebruikersRecht, GebruikersInfo>(gebruikersRecht);
             }
-
-            // Als er geen gebruikersrecht is op eigen groep, maar wel een gebruiker, dan mappen we de gebruiker
-            // naar GebruikersInfo
-
-            if (gelieerdePersoon.Persoon.Gav.Any())
+            else if (gelieerdePersoon.Persoon.Gav.Any())
             {
+                // Als er geen gebruikersrecht is op eigen groep, maar wel een gebruiker, dan mappen we de gebruiker
+                // naar GebruikersInfo
                 result.GebruikersInfo = Mapper.Map<Gav, GebruikersInfo>(gelieerdePersoon.Persoon.Gav.FirstOrDefault());
             }
 
