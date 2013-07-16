@@ -41,6 +41,7 @@ using Chiro.Gap.TestDbInfo;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -960,6 +961,67 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.AreEqual(gelieerdePersoon.Categorie.Count, 1);
+        }
+
+        /// <summary>
+        /// Kijkt na of de gebruikersrechten meekomen met AlleDetailsOphalen
+        /// </summary>
+        [TestMethod()]
+        public void AlleDetailsOphalenTest()
+        {
+            // ARRANGE
+
+            var groepsWerkJaar = new GroepsWerkJaar();
+
+            var gelieerdePersoon = new GelieerdePersoon
+                                       {
+                                           ID = 1,
+                                           Groep =
+                                               new ChiroGroep
+                                                   {
+                                                       GroepsWerkJaar =
+                                                           new List<GroepsWerkJaar>
+                                                               {
+                                                                   groepsWerkJaar
+                                                               }
+                                                   },
+                                           Persoon = new Persoon()
+                                       };
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+            groepsWerkJaar.Groep = gelieerdePersoon.Groep;
+            
+            var gebruikersRecht = new GebruikersRecht
+                                      {
+                                          Groep = gelieerdePersoon.Groep,
+                                          VervalDatum =
+                                              DateTime.Today.AddMonths(1)
+                                      };
+            gelieerdePersoon.Groep.GebruikersRecht.Add(gebruikersRecht);
+            var gav = new Gav
+                          {
+                              GebruikersRecht =
+                                  new List<GebruikersRecht>
+                                      {
+                                          gebruikersRecht
+                                      }
+                          };
+            gav.Persoon.Add(gelieerdePersoon.Persoon);
+            gelieerdePersoon.Persoon.Gav.Add(gav);
+            gebruikersRecht.Gav = gav;
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();          
+            var actual = target.AlleDetailsOphalen(gelieerdePersoon.ID);
+
+            // ASSERT
+
+            Assert.AreEqual(actual.GebruikersInfo.VervalDatum, gebruikersRecht.VervalDatum);
         }
     }
 }
