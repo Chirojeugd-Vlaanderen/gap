@@ -228,6 +228,7 @@ namespace Chiro.Gap.Workers
             // Eerst controleren of de groep nog niet aan de gebruiker is gekoppeld
             var gebruikersrecht = (from gr in gav.GebruikersRecht
                                    where gr.Groep.ID == groep.ID
+				   && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)
                                    select gr).FirstOrDefault();
 
             if (gebruikersrecht == null)
