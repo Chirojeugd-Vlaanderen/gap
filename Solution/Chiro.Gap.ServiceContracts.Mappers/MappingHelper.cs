@@ -609,17 +609,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.VolledigeNaam,
                     opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VolledigeNaam));
 
-            Mapper.CreateMap<InTeSchrijvenLid, LidVoorstel>()
-                .ForMember(
-                    dst => dst.AfdelingsJaarIDs,
-                    opt => opt.MapFrom(src => src.AfdelingsJaarIDs))
-                .ForMember(
-                    dst => dst.AfdelingsJarenIrrelevant,
-                    opt => opt.MapFrom(src => src.AfdelingsJaarIrrelevant))
-                .ForMember(
-                    dst => dst.LeidingMaken,
-                    opt => opt.MapFrom(src => src.LeidingMaken));
-
             Mapper.CreateMap<GebruikersRecht, GebruikersDetail>()
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsVerlengbaar))
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => GelieerdePersoonIDGet(src)))

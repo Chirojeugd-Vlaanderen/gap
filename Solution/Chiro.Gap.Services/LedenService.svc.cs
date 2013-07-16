@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 
 using System.Transactions; // NIET VERWIJDEREN!!
@@ -35,6 +36,7 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Services
 {
@@ -223,7 +225,11 @@ namespace Chiro.Gap.Services
                             voorgesteldelijst.Add(new InTeSchrijvenLid
                                                       {
                                                           AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant,
-                                                          AfdelingsJaarIDs = voorstel.AfdelingsJaarIDs,
+                                                          AfdelingsJaarIDs =
+                                                              voorstel.AfdelingsJarenIrrelevant
+                                                                  ? new int[0]
+                                                                  : voorstel.AfdelingsJaren.Select(aj => aj.ID)
+                                                                            .ToArray(),
                                                           GelieerdePersoonID = gp.ID,
                                                           LeidingMaken = voorstel.LeidingMaken,
                                                           VolledigeNaam = gp.Persoon.VolledigeNaam
@@ -263,9 +269,6 @@ namespace Chiro.Gap.Services
             var lidIDs = new List<int>();
             var foutBerichtenBuilder = new StringBuilder();
 
-            // Haal meteen alle gelieerde personen op, samen met alle info die nodig is om het lid
-            // over te zetten naar Kipadmin: groep, persoon, voorkeursadres
-
             var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(inschrijfInfo.Select(e => e.GelieerdePersoonID));
 
             if (!_autorisatieMgr.IsGav(gelieerdePersonen) || inschrijfInfo.Count() != gelieerdePersonen.Count)
@@ -284,9 +287,16 @@ namespace Chiro.Gap.Services
                 // Zoek eerst recentste groepswerkjaar.
                 var gwj = _groepenMgr.HuidigWerkJaar(g);
 
-                Groep g1 = g;
-                foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g1.ID))
+                foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g.ID).ToList())
                 {
+                    var info = (from i in inschrijfInfo where i.GelieerdePersoonID == gp.ID select i).First();
+
+                    var lidVoorstel = new LidVoorstel
+                                          {
+                                              AfdelingsJaren = _afdelingsJaarRepo.ByIDs(info.AfdelingsJaarIDs),
+                                              LeidingMaken = info.LeidingMaken
+                                          };
+
                     // TODO: Dit is te veel business. Bekijken of een lid al ingeschreven is, moet in de workers gebeuren.
 
                     // Behandel leden 1 voor 1 zodat een probleem met 1 lid niet verhindert dat de rest bewaard wordt.
@@ -310,17 +320,50 @@ namespace Chiro.Gap.Services
                         else
                         {
                             l.UitschrijfDatum = null;
-                            l.NonActief = false;
-                            teSyncen.Add(l); 
+                            l.NonActief = false;                            
+
+                            if (lidVoorstel.LeidingMaken != (l.Type == LidType.Leiding))
+                            {
+                                // lidtype moet worden veranderd
+
+                                Lid nieuwLid;
+                                try
+                                {
+                                    nieuwLid = _ledenMgr.TypeToggle(l);
+                                }
+                                catch (FoutNummerException ex)
+                                {
+                                    // Dit is misschien wat kort door de bocht:
+                                    throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
+                                }
+                                _ledenRepo.Delete(l);
+                                l = nieuwLid;
+                            }
+                            try
+                            {
+                                _ledenMgr.AfdelingsJarenVervangen(l, lidVoorstel.AfdelingsJaren);
+                            }
+                            catch (FoutNummerException ex)
+                            {
+                                if (ex.FoutNummer == FoutNummer.AlgemeneKindFout)
+                                {
+                                    throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingKindVerplicht, Properties.Resources.KindInEenAfdelingsJaar);
+                                }
+                                else
+                                {
+                                    throw;
+                                }
+                            }
+
+                            teSyncen.Add(l);
+
                         }
                     }
                     else // nieuw lid
                     {
                         try
                         {
-                            l = _ledenMgr.NieuwInschrijven(gp, gwj, false,
-                                                           Mapper.Map<InTeSchrijvenLid, LidVoorstel>(
-                                                               inschrijfInfo.First(e => e.GelieerdePersoonID == gp.ID)));
+                            l = _ledenMgr.NieuwInschrijven(gp, gwj, false, lidVoorstel);
 
                             // Als er nog geen AD-nummer is, markeren we 'AdInAanvraag'.
                             l.GelieerdePersoon.Persoon.AdInAanvraag = (l.GelieerdePersoon.Persoon.AdNummer == null);
@@ -562,43 +605,19 @@ namespace Chiro.Gap.Services
 
             foreach (var lid in leden)
             {
-                var kind = lid as Kind;
-                if (kind != null)
+                try
                 {
-                    // lid is kind.
-                    if (afdelingsJaren.Count != 1)
-                    {
-                        throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneKindFout, Properties.Resources.KindInEenAfdelingsJaar);
-                    }
-                    kind.AfdelingsJaar = afdelingsJaren.First();
+                    _ledenMgr.AfdelingsJarenVervangen(lid, afdelingsJaren);
                 }
-                else
+                catch (FoutNummerException ex)
                 {
-                    // lid is leiding
-                    var leiding = (Leiding) lid;
-
-                    // hmmm. Dat zijn hier precies nogal veel loops.
-                    // Gelukkig zijn het kleine loopjes (loopen over afdelingsjaren)
-
-                    // te verwijderen afdelingsjaren verwijderen
-                    var teVerwijderen = (from aj in leiding.AfdelingsJaar
-                                         where !afdelingsJaren.Contains(aj)
-                                         select aj).ToList();
-                    foreach (var aj in teVerwijderen)
+                    if (ex.FoutNummer == FoutNummer.AlgemeneKindFout)
                     {
-                        leiding.AfdelingsJaar.Remove(aj);
-                        aj.Leiding.Remove(leiding);
+                        throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingKindVerplicht, Properties.Resources.KindInEenAfdelingsJaar);
                     }
-
-                    // toe te voegen afdelingsjaren toevoegen
-
-                    foreach (var aj in afdelingsJaren)
+                    else
                     {
-                        if (!leiding.AfdelingsJaar.Contains(aj))
-                        {
-                            leiding.AfdelingsJaar.Add(aj);
-                            aj.Leiding.Add(leiding);
-                        }
+                        throw;
                     }
                 }
             }
@@ -617,6 +636,8 @@ namespace Chiro.Gap.Services
             }
 #endif
         }
+
+
 
         /// <summary>
         /// Verzekert lid met Id <paramref name="lidId"/> tegen loonverlies
@@ -669,74 +690,25 @@ namespace Chiro.Gap.Services
         /// <returns>GelieerdePersoonId van lid</returns>
         public int TypeToggle(int lidId)
         {
-            var lid = _ledenRepo.ByID(lidId);
-            Lid nieuwLid;
-            Gav.Check(lid);
-
-            DateTime? eindeInstap = lid.EindeInstapPeriode;
-            var nieuwNiveau = (lid is Kind) ? Niveau.LeidingInGroep : Niveau.LidInGroep;
-
-            var gelieerdePersoon = lid.GelieerdePersoon;
-            var groepsWerkJaar = lid.GroepsWerkJaar;
-
-            // Een bestaand object van type wisselen, is niet mogelijk (denk ik)
-            // dus we verwijderen het bestaande lid, en maken een nieuw aan.
-
-            // Zaken uit de repository verwijderen, kan moeilijk tot niet in de workers,
-            // dus doen we het hier.
-
-            if (!groepsWerkJaar.Groep.Niveau.HasFlag(Niveau.Groep))
-            {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.LidTypeVerkeerd, Properties.Resources.NietVoorKader);
-            }
-
-            // Behoud bestaande functies die straks nog van 
-            // toepassing zijn, om opnieuw te kunnen toekennen.
-
-            var teBewarenFuncties = (from f in lid.Functie
-                                     where f.Niveau.HasFlag(nieuwNiveau)
-                                     select f).ToList();
-
-
-            // Koppel de bestaande functies en afdelingen los van het lid, en verwijder het bestaande lid.
-
-            lid.Functie.Clear();
-            if (lid is Leiding)
-            {
-                (lid as Leiding).AfdelingsJaar.Clear();
-            }
-
-            gelieerdePersoon.Lid.Remove(lid);
-            groepsWerkJaar.Lid.Remove(lid);
-            _ledenRepo.Delete(lid);
-
-            var voorstelLid = new LidVoorstel
-            {
-                AfdelingsJaarIDs = null,
-                AfdelingsJarenIrrelevant = true,
-                LeidingMaken = (nieuwNiveau == Niveau.LeidingInGroep)
-            };
+            var origineelLid = _ledenRepo.ByID(lidId);
+            Lid nieuwLid = null;
+            Gav.Check(origineelLid);
 
             try
             {
-                nieuwLid = _ledenMgr.NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstelLid);
+                nieuwLid = _ledenMgr.TypeToggle(origineelLid);
             }
             catch (FoutNummerException ex)
             {
+                // Dit is misschien wat kort door de bocht:
                 throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
-            }
-
-            nieuwLid.EindeInstapPeriode = eindeInstap;
-
-            foreach (var f in teBewarenFuncties)
-            {
-                nieuwLid.Functie.Add(f);
-            }
+            }           
 
 #if KIPDORP
             using (var tx = new TransactionScope())
             {
 #endif
+                _ledenRepo.Delete(origineelLid);
                 _ledenSync.TypeUpdaten(nieuwLid);
                 _ledenSync.AfdelingenUpdaten(nieuwLid);
                 _ledenRepo.SaveChanges();
@@ -744,8 +716,10 @@ namespace Chiro.Gap.Services
                 tx.Complete();
             }
 #endif
-            return gelieerdePersoon.ID;
+            return nieuwLid.GelieerdePersoon.ID;
         }
+
+
         #endregion
 
         #region zoeken en ophalen

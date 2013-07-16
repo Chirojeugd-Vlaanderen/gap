@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -143,6 +144,69 @@ namespace Chiro.Gap.Workers
 
             return lid;
         }
+
+        /// <summary>
+        /// Verandert het lidtype van <paramref name="origineelLid"/> van
+        /// <c>Kind</c> naar <c>Leiding</c> of omgekeerd
+        /// </summary>
+        /// <param name="origineelLid">Lid waarvan type veranderd moet worden</param>
+        /// <returns>Nieuw lid, met ander type</returns>
+        /// <remarks>Het origineel lid moet door de caller zelf uit de repository verwijderd worden.</remarks>
+        public Lid TypeToggle(Lid origineelLid)
+        {
+            DateTime? eindeInstap = origineelLid.EindeInstapPeriode;
+            var nieuwNiveau = (origineelLid is Kind) ? Niveau.LeidingInGroep : Niveau.LidInGroep;
+
+            var gelieerdePersoon = origineelLid.GelieerdePersoon;
+            var groepsWerkJaar = origineelLid.GroepsWerkJaar;
+
+            // Een bestaand object van type wisselen, is niet mogelijk (denk ik)
+            // dus we verwijderen het bestaande lid, en maken een nieuw aan.
+
+            // Zaken uit de repository verwijderen, kan moeilijk tot niet in de workers,
+            // dus doen we het hier.
+
+            if (!groepsWerkJaar.Groep.Niveau.HasFlag(Niveau.Groep))
+            {
+                throw new FoutNummerException(FoutNummer.LidTypeVerkeerd, Properties.Resources.FoutiefLidType);
+            }
+
+            // Behoud bestaande functies die straks nog van 
+            // toepassing zijn, om opnieuw te kunnen toekennen.
+
+            var teBewarenFuncties = (from f in origineelLid.Functie
+                                     where f.Niveau.HasFlag(nieuwNiveau)
+                                     select f).ToList();
+
+
+            // Koppel de bestaande functies en afdelingen los van het lid, en verwijder het bestaande lid.
+
+            origineelLid.Functie.Clear();
+            if (origineelLid is Leiding)
+            {
+                (origineelLid as Leiding).AfdelingsJaar.Clear();
+            }
+
+            gelieerdePersoon.Lid.Remove(origineelLid);
+            groepsWerkJaar.Lid.Remove(origineelLid);
+
+            var voorstelLid = new LidVoorstel
+            {
+                AfdelingsJarenIrrelevant = true,
+                LeidingMaken = (nieuwNiveau == Niveau.LeidingInGroep)
+            };
+
+            var nieuwLid = NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstelLid);
+
+            nieuwLid.EindeInstapPeriode = eindeInstap;
+
+            foreach (var f in teBewarenFuncties)
+            {
+                nieuwLid.Functie.Add(f);
+            }
+            return nieuwLid;
+        }
+
 
         /// <summary>
         /// Maakt gelieerde persoon een kind (lid) voor het gegeven werkJaar.
@@ -407,8 +471,7 @@ namespace Chiro.Gap.Workers
             if (mogelijkeAfdelingsJaren.Any())
             {
                 // Als we lid kunnen maken: doen
-                resultaat.AfdelingsJaarIDs = new [] {mogelijkeAfdelingsJaren.First().ID};
-                resultaat.AfdelingsJarenIrrelevant = false;
+                resultaat.AfdelingsJaren = new List<AfdelingsJaar> {mogelijkeAfdelingsJaren.First()};
                 resultaat.LeidingMaken = false;
             }
             else if (leidingIndienMogelijk && KanLeidingWorden(gp, gwj))
@@ -434,8 +497,7 @@ namespace Chiro.Gap.Workers
                                                   Properties.Resources.InschrijvenZonderAfdelingen);
                 }
 
-                resultaat.AfdelingsJaarIDs = new[] {geschiktsteAfdelingsjaar.ID};
-                resultaat.AfdelingsJarenIrrelevant = false;
+                resultaat.AfdelingsJaren = new List<AfdelingsJaar> {geschiktsteAfdelingsjaar};
                 resultaat.LeidingMaken = false;
             }
 
@@ -481,37 +543,32 @@ namespace Chiro.Gap.Workers
                     FoutNummer.OnbekendGeslachtFout, Resources.GeslachtVerplicht);
             }
 
-            List<AfdelingsJaar> afdelingsJaren = null;
+            IList<AfdelingsJaar> afdelingsJaren = null;
 
             if (voorstellid.AfdelingsJarenIrrelevant && !voorstellid.LeidingMaken)
             {
                 // Lid maken en zelf afdeling bepalen
-
-                int afdelingsJaarID = InschrijvingVoorstellen(gp, gwj, false).AfdelingsJaarIDs.FirstOrDefault();
-                afdelingsJaren = (from aj in gwj.AfdelingsJaar
-                                 where aj.ID == afdelingsJaarID
-                                 select aj).ToList();
+                afdelingsJaren = InschrijvingVoorstellen(gp, gwj, false).AfdelingsJaren;
             }
             else
             {
                 // Eerst even checken of we geen lid proberen te maken met een ongeldig aantal afdelingen.
 
-                if (!voorstellid.LeidingMaken && voorstellid.AfdelingsJaarIDs.Count() != 1)
+                if (!voorstellid.LeidingMaken && voorstellid.AfdelingsJaren.Count() != 1)
                 {
                     throw new FoutNummerException(FoutNummer.AfdelingKindVerplicht, Properties.Resources.AfdelingKindVerplicht);
                 }
 
-                if (voorstellid.AfdelingsJaarIDs != null)
+                if (voorstellid.AfdelingsJaren != null)
                 {
                     // Als er afdelingsjaarID's meegegeven zijn, dan zoeken we die op in het huidige
                     // groepswerkjaar.
 
-                    afdelingsJaren = (from a in gwj.AfdelingsJaar
-                                     where
-                                         voorstellid.AfdelingsJaarIDs.Contains(a.ID)
-                                     select a).ToList();
+                    afdelingsJaren = (from aj in voorstellid.AfdelingsJaren
+                                      where Equals(aj.GroepsWerkJaar, gwj)
+                                      select aj).ToList();
 
-                    if (afdelingsJaren.Count() != voorstellid.AfdelingsJaarIDs.Count())
+                    if (afdelingsJaren.Count() != voorstellid.AfdelingsJaren.Count())
                     {
                         throw new FoutNummerException(FoutNummer.AfdelingNietBeschikbaar,
                                                       Properties.Resources.AfdelingNietBeschikbaar);
@@ -689,6 +746,67 @@ namespace Chiro.Gap.Workers
 
             return AfdelingsJaarVoorstellen(gelieerdePersoon.GebDatumMetChiroLeefTijd.Value, gelieerdePersoon.Persoon.Geslacht,
                                             groepsWerkJaar);
+        }
+
+        /// <summary>
+        /// Vervang de afdelingsjaren van gegeven <paramref name="lid"/> door de 
+        /// gegeven <paramref name="afdelingsJaren"/>/
+        /// </summary>
+        /// <param name="lid">lid waarvan afdelingsjaren te vervangen</param>
+        /// <param name="afdelingsJaren">nieuwe afdelingsjaren voor <paramref name="lid"/></param>
+        /// <remarks>als <paramref name="lid"/> een kindlid is, dan moet <paramref name="afdelingsJaren"/>
+        /// precies 1 afdelingsjaar bevatten.</remarks>
+        public void AfdelingsJarenVervangen(Lid lid, IList<AfdelingsJaar> afdelingsJaren)
+        {
+            var query = from aj in afdelingsJaren
+                        where !Equals(aj.GroepsWerkJaar, lid.GroepsWerkJaar)
+                        select aj;
+
+            if (query.Any())
+            {
+                throw new FoutNummerException(FoutNummer.AfdelingNietVanGroep, Resources.AfdelingNietVanGroep);
+            }
+
+            var kind = lid as Kind;
+            if (kind != null)
+            {
+                // lid is kind.
+                if (afdelingsJaren.Count != 1)
+                {
+                    throw new FoutNummerException(FoutNummer.AlgemeneKindFout,
+                                                          Properties.Resources.AfdelingKindVerplicht);
+                }
+                kind.AfdelingsJaar = afdelingsJaren.First();
+            }
+            else
+            {
+                // lid is leiding
+                var leiding = (Leiding)lid;
+
+                // hmmm. Dat zijn hier precies nogal veel loops.
+                // Gelukkig zijn het kleine loopjes (loopen over afdelingsjaren)
+
+                // te verwijderen afdelingsjaren verwijderen
+                var teVerwijderen = (from aj in leiding.AfdelingsJaar
+                                     where !afdelingsJaren.Contains(aj)
+                                     select aj).ToList();
+                foreach (var aj in teVerwijderen)
+                {
+                    leiding.AfdelingsJaar.Remove(aj);
+                    aj.Leiding.Remove(leiding);
+                }
+
+                // toe te voegen afdelingsjaren toevoegen
+
+                foreach (var aj in afdelingsJaren)
+                {
+                    if (!leiding.AfdelingsJaar.Contains(aj))
+                    {
+                        leiding.AfdelingsJaar.Add(aj);
+                        aj.Leiding.Add(leiding);
+                    }
+                }
+            }
         }
 
         /// <summary>

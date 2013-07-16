@@ -15,7 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Chiro.Gap.Domain
+
+using System.Collections.Generic;
+using Chiro.Gap.Poco.Model;
+
+namespace Chiro.Gap.WorkerInterfaces
 {
     /// <summary>
     /// Class voor een combinatie van gegevens die bepalen hoe iemand ingeschreven wordt
@@ -25,12 +29,16 @@ namespace Chiro.Gap.Domain
         /// <summary>
         /// In welk afdelingsjaren het lid moet worden ingeschreven.
         /// </summary>
-        public int[] AfdelingsJaarIDs;
+        public IList<AfdelingsJaar> AfdelingsJaren { get; set; }
 
         /// <summary>
-        /// True als er geen rekening moet worden gehouden met de inhoud van afdelingsjaarIDs
+        /// True als er geen rekening moet worden gehouden met de inhoud van AfdelingsJaren
         /// </summary>
-        public bool AfdelingsJarenIrrelevant;
+        public bool AfdelingsJarenIrrelevant
+        {
+            get { return AfdelingsJaren == null; }
+            set { AfdelingsJaren = value ? null : AfdelingsJaren ?? new List<AfdelingsJaar>(); }
+        }
 
         /// <summary>
         /// Of het lid moet worden ingeschreven als leiding
