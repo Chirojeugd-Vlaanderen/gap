@@ -1648,5 +1648,117 @@ namespace Chiro.Gap.Services.Test
 
             Assert.IsTrue(actual.First().LeidingMaken);
         }
+
+        /// <summary>
+        /// Schrijf iemand uit als leiding, en opnieuw in als lid.
+        /// Verwacht dat een lid gesynct wordt, en geen leiding. 
+        /// (Bug nog te rapporteren. Stash voor fix staat klaar)
+        ///</summary>
+        [TestMethod()]
+        public void InschrijvenOudLeidingAlsLidSyncTest()
+        {
+            // ARRANGE
+            // We maken een eenvoudig model.
+
+            var groep = new ChiroGroep
+            {
+                GroepsWerkJaar = new List<GroepsWerkJaar>(),
+                Afdeling = new List<Afdeling>(),
+                GelieerdePersoon = new List<GelieerdePersoon>(),
+            };
+
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = groep,
+                Lid = new List<Lid>(),
+                AfdelingsJaar = new List<AfdelingsJaar>(),
+                WerkJaar = 2012
+            };
+            groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            var afdeling = new Afdeling {Naam = "Dingskes", ChiroGroep = groep};
+            groep.Afdeling.Add(afdeling);
+
+            var afdelingsJaar = new AfdelingsJaar
+                                    {
+                                        Afdeling = afdeling,
+                                        GeboorteJaarVan = 1995,
+                                        GeboorteJaarTot = 1996,
+                                        ID = 3,
+                                        GroepsWerkJaar = groepsWerkJaar,
+                                        OfficieleAfdeling = new OfficieleAfdeling()
+                                    };
+
+
+            groepsWerkJaar.AfdelingsJaar.Add(afdelingsJaar);
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Groep = groep,
+                ID = 2,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1996, 7, 3)
+                    },
+                ChiroLeefTijd = 0
+            };
+            groep.GelieerdePersoon.Add(gelieerdePersoon);
+
+            var lid = new Leiding
+                          {
+                              ID = 1,
+                              GelieerdePersoon = gelieerdePersoon,
+                              GroepsWerkJaar = groepsWerkJaar,
+                              UitschrijfDatum = DateTime.Now.AddDays(-1) // uitgeschreven
+                          };
+            gelieerdePersoon.Lid.Add(lid);
+            groepsWerkJaar.Lid.Add(lid);
+
+            // mocking van de ledensync
+
+            // als bewaren(List) wordt aangeroepen, registreren we of List een Kind bevat of een Leid(st)er.
+            var ledenSyncMock = new Mock<ILedenSync>();
+            ledenSyncMock.Setup(src => src.Bewaren(It.Is<IList<Lid>>(lst => lst.Any(el => el is Kind)))).Verifiable();
+            ledenSyncMock.Setup(src => src.Bewaren(It.Is<IList<Lid>>(lst => lst.Any(el => el is Leiding)))).Verifiable();
+            
+
+            Factory.InstantieRegistreren(ledenSyncMock.Object);
+
+            // mocking van de data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<AfdelingsJaar>())
+                                  .Returns(new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar> {afdelingsJaar}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid> {lid}));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            var lidInformatie = new[]
+                                    {
+                                        new InTeSchrijvenLid
+                                            {
+                                                AfdelingsJaarIrrelevant = false,
+                                                AfdelingsJaarIDs = new [] {afdelingsJaar.ID},
+                                                GelieerdePersoonID = gelieerdePersoon.ID,
+                                                LeidingMaken = false,
+                                                VolledigeNaam = gelieerdePersoon.Persoon.VolledigeNaam
+                                            }
+                                    };
+            string foutBerichten;
+            target.Inschrijven(lidInformatie, out foutBerichten);
+
+            // ASSERT
+
+            ledenSyncMock.Verify(src => src.Bewaren(It.Is<IList<Lid>>(lst => lst.Any(el => el is Leiding))), Times.Never());
+            ledenSyncMock.Verify(src => src.Bewaren(It.Is<IList<Lid>>(lst => lst.Any(el => el is Kind))), Times.Once());
+        }
     }
 }
