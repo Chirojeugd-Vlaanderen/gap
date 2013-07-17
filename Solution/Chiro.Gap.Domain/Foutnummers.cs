@@ -69,6 +69,7 @@ namespace Chiro.Gap.Domain
         GroepsWerkJaarNietBeschikbaar,
         FunctieNietBeschikbaar,
         AfdelingNietBeschikbaar,
+        GroepInactief,
         #endregion
 
         #region container niet leeg

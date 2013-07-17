@@ -19,8 +19,10 @@
 using System.ServiceModel;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.TestAttributes;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -1759,6 +1761,54 @@ namespace Chiro.Gap.Services.Test
 
             ledenSyncMock.Verify(src => src.Bewaren(It.Is<IList<Lid>>(lst => lst.Any(el => el is Leiding))), Times.Never());
             ledenSyncMock.Verify(src => src.Bewaren(It.Is<IList<Lid>>(lst => lst.Any(el => el is Kind))), Times.Once());
+        }
+
+        /// <summary>
+        /// Test op een exception als je probeert iemand in te schrijven bij een inactieve groep.
+        /// </summary>
+        [TestMethod()]
+        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.GroepInactief)]
+        public void InschrijvenGestoptTest()
+        {
+            // ARRANGE
+
+            // model
+            var groep = new KaderGroep()
+            {
+                StopDatum = DateTime.Now.AddMonths(-1)
+            };
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Groep = groep,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1980, 8, 8)
+                    }
+            };
+
+            var lidVoorsel = new InTeSchrijvenLid
+            {
+                AfdelingsJaarIrrelevant = true,
+                GelieerdePersoonID = gelieerdePersoon.ID,
+                LeidingMaken = true,
+                VolledigeNaam = "Ham Burger" // moet weg; zie #1544
+            };
+
+            // dependency injection
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var ledenService = Factory.Maak<LedenService>();
+            string feedback;
+            ledenService.Inschrijven(new[] { lidVoorsel }, out feedback);
+
         }
     }
 }
