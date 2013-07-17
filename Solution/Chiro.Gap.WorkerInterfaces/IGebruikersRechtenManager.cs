@@ -33,34 +33,6 @@ namespace Chiro.Gap.WorkerInterfaces
         void Verlengen(GebruikersRecht gebruikersRecht);
 
         /// <summary>
-        /// Zoekt een account voor de gegeven <paramref name="gelieerdePersoon"/>, en maakt een account aan
-        /// als die niet gevonden wordt. Als een nieuwe account wordt gemaakt, krijgt de gelieerde persoon
-        /// een e-mail via zijn voorkeursmailadres.
-        /// </summary>
-        /// <param name="gelieerdePersoon">Gelieerde persoon waarvoor een account gezocht of gemaakt moet 
-        /// worden. Er wordt verondersteld dat die al gekoppeld is aan zijn accounts. Wat mogelijk een
-        /// beetje stom is. Soit.</param>
-        /// <returns>Account voor de gelieerde persoon (klasse Gav zou beter hernoemd worden als account, 
-        /// zie #1357)</returns>
-        /// <remarks>De gemaakte account heeft geen rechten.</remarks>
-        Gav AccountZoekenOfMaken(GelieerdePersoon gelieerdePersoon);
-
-        /// <summary>
-        /// Zoekt een account voor de gegeven <paramref name="gelieerdePersoon"/>. Als geen account wordt
-        /// gevonden, en <paramref name="makenAlsNietGevonden"/> <c>true</c> is, wordt een nieuwe account 
-        /// aangemaakt, en krijgt de gelieerde persoon een e-mail via zijn voorkeursmailadres.
-        /// </summary>
-        /// <param name="gelieerdePersoon">Gelieerde persoon waarvoor een account gezocht of gemaakt moet 
-        /// worden. Er wordt verondersteld dat die al gekoppeld is aan zijn accounts. Wat mogelijk een
-        /// beetje stom is. Soit.</param>
-        /// <param name="makenAlsNietGevonden"> Indien <c>true</c> wordt een nieuwe account gemaakt als
-        /// er geen is gevonden.</param>
-        /// <returns>Account voor de gelieerde persoon (klasse Gav zou beter hernoemd worden als account, 
-        /// zie #1357)</returns>
-        /// <remarks>De gemaakte account heeft geen rechten.</remarks>
-        Gav AccountZoekenOfMaken(GelieerdePersoon gelieerdePersoon, bool makenAlsNietGevonden);
-
-        /// <summary>
         /// Pas de vervaldatum van het gegeven <paramref name="gebruikersRecht"/> aan, zodanig dat
         /// het niet meer geldig is.  ZONDER TE PERSISTEREN.
         /// </summary>
