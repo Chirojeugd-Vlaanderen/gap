@@ -22,6 +22,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.TestAttributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Moq;
@@ -309,6 +310,42 @@ namespace Chiro.Gap.Workers.Test
 
             //Assert
             Assert.Fail();  // Als we hier komen zonder exception, dan is het mislukt.
+        }
+
+        /// <summary>
+        /// Als je groep als gestopt staat geregistreerd, dan mag je leden niet meer naar
+        /// een andere afdeling verhuizen.
+        ///</summary>
+        [TestMethod()]
+        [ExpectedFoutNummer(typeof(FoutNummerException), FoutNummer.GroepInactief)]
+        public void AfdelingsJarenVervangenGestoptTest()
+        {
+            var target = new LedenManager();
+
+            var groepsWerkJaar = new GroepsWerkJaar
+                                     {
+                                         Groep =
+                                             new ChiroGroep
+                                                 {
+                                                     StopDatum = DateTime.Now.AddMonths(-1)
+                                                 }
+                                     };
+
+            var lid = new Kind
+                          {
+                              GroepsWerkJaar = groepsWerkJaar                                 
+                          };
+
+            IList<AfdelingsJaar> afdelingsJaren = new List<AfdelingsJaar>
+                                                      {
+                                                          new AfdelingsJaar
+                                                              {
+                                                                  GroepsWerkJaar =
+                                                                      groepsWerkJaar
+                                                              }
+                                                      };
+
+            target.AfdelingsJarenVervangen(lid, afdelingsJaren);
         }
     }
 }

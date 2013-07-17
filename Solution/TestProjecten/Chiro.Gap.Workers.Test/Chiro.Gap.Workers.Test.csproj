@@ -145,6 +145,10 @@
       <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
       <Name>Chiro.Gap.SyncInterfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.TestAttributes\Chiro.Gap.TestAttributes.csproj">
+      <Project>{3588ACB4-0203-478E-A25D-A1C64458D023}</Project>
+      <Name>Chiro.Gap.TestAttributes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj">
       <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
       <Name>Chiro.Gap.Validatie</Name>
