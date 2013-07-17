@@ -659,6 +659,11 @@ namespace Chiro.Gap.Services
             var lid = _ledenRepo.ByID(lidId);
             Gav.Check(lid);
 
+            if (lid.GroepsWerkJaar.Groep.StopDatum != null && lid.GroepsWerkJaar.Groep.StopDatum < DateTime.Now)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+            }
+
             var verzekeringstype = (from g in _verzekerRepo.Select() where g.ID == (int)Verzekering.LoonVerlies select g).First();
 
             try
