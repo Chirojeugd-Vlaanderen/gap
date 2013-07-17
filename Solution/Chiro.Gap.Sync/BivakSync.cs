@@ -48,20 +48,7 @@ namespace Chiro.Gap.Sync
 
             GelieerdePersoon contactPersoon;
 
-            if (uitstap.ContactDeelnemer != null)
-            {
-                // Er is een contactdeelnemer.  Is de persoon nog geladen?
-
-                if (uitstap.ContactDeelnemer.GelieerdePersoon == null || uitstap.ContactDeelnemer.GelieerdePersoon.Persoon == null)
-                {
-                    throw new NotImplementedException();
-                }
-                contactPersoon = uitstap.ContactDeelnemer.GelieerdePersoon;
-            }
-            else
-            {
-                contactPersoon = null;
-            }
+            contactPersoon = uitstap.ContactDeelnemer != null ? uitstap.ContactDeelnemer.GelieerdePersoon : null;
 
             if (uitstap.Plaats != null && uitstap.Plaats.Adres != null)
             {
