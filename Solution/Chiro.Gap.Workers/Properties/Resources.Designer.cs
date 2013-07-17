@@ -367,6 +367,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je groep is geregistreerd als gestopte groep..
+        /// </summary>
+        internal static string GroepInactief {
+            get {
+                return ResourceManager.GetString("GroepInactief", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Verkeerde groep..
         /// </summary>
         internal static string GroepsWerkJaarNietVanGroep {

@@ -325,4 +325,7 @@ de helpdesk</value>
   <data name="AfdelingsJaarOngeldig" xml:space="preserve">
     <value>Ongeldige koppeling afdeling-werkjaar</value>
   </data>
+  <data name="GroepInactief" xml:space="preserve">
+    <value>Je groep is geregistreerd als gestopte groep.</value>
+  </data>
 </root>
