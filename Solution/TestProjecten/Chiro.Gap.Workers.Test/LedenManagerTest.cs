@@ -347,5 +347,31 @@ namespace Chiro.Gap.Workers.Test
 
             target.AfdelingsJarenVervangen(lid, afdelingsJaren);
         }
+
+        /// <summary>
+        /// Lid/Leiding omwisselen mag niet in een inactieve groep
+        /// </summary>
+        [TestMethod()]
+        [ExpectedFoutNummer(typeof(FoutNummerException), FoutNummer.GroepInactief)]
+        public void TypeToggleGestoptTest()
+        {
+            var target = new LedenManager();
+
+            Lid origineelLid = new Kind
+                                   {
+                                       GroepsWerkJaar =
+                                           new GroepsWerkJaar
+                                               {
+                                                   Groep =
+                                                       new ChiroGroep
+                                                           {
+                                                               StopDatum =
+                                                                   DateTime.Now.AddMonths(-1)
+                                                           }
+                                               }
+                                   };
+            
+            target.TypeToggle(origineelLid);
+        }
     }
 }
