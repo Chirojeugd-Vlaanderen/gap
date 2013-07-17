@@ -433,6 +433,11 @@ namespace Chiro.Gap.Services
 
             foreach (var g in groepen)
             {
+                if (g.StopDatum != null && g.StopDatum < DateTime.Now)
+                {
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+                }
+
                 var gwj = _groepenMgr.HuidigWerkJaar(g);
 
                 // Handel per groep de uitschrijvingen af, zodat we per groep kunnen
