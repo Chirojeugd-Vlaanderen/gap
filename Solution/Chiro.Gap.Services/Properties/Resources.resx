@@ -219,4 +219,7 @@
   <data name="AdNummerVerplicht" xml:space="preserve">
     <value>Dit is enkel mogelijk voor personen met een AD-nummer.</value>
   </data>
+  <data name="GroepInactief" xml:space="preserve">
+    <value>Je groep staat geregistreerd als gestopte groep.</value>
+  </data>
 </root>
