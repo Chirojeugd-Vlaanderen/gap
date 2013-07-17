@@ -111,14 +111,15 @@ namespace Chiro.Gap.UpdateSvc.Service
 
             foreach (var p in personenAlBestaand.Where(prs => prs.ID != persoon.ID))
             {
-                // Als er andere personen zijn met hetzelfde AD-nummer, merge dan met deze persoon.
-                // Door 'persoon.ID' als origineel te kiezen, vermijden we dat persoon van ID verandert.
-                throw new NotImplementedException();
-                // Was vroeger blijkbaar een stored procedure
-                // _dao.DubbelVerwijderen(persoon.ID, p.ID);
+                DubbelVerwijderen(persoon, p);
             }
 
             persoon.AdNummer = adNummer;
+        }
+
+        private void DubbelVerwijderen(Persoon persoon, Persoon persoon1)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

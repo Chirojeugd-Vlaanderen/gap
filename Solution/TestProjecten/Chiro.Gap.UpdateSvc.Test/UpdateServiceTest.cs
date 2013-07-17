@@ -97,5 +97,33 @@ namespace Chiro.Gap.UpdateSvc.Test
 
             Assert.IsNotNull(groep.StopDatum);
         }
+
+        /// <summary>
+        ///A test for DubbelVerwijderen
+        ///</summary>
+        [TestMethod()]
+        public void DubbelVerwijderenTest()
+        {
+            // ARRANGE
+
+            var origineel = new Persoon();
+            var dubbel = new Persoon();
+
+            var allePersonen = new List<Persoon> {origineel, dubbel};
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Persoon>())
+                                  .Returns(new DummyRepo<Persoon>(allePersonen));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var target = Factory.Maak<UpdateService_Accessor>();
+            target.DubbelVerwijderen(origineel, dubbel);
+
+            // ASSERT
+            Assert.IsTrue(allePersonen.Contains(origineel));
+            Assert.IsFalse(allePersonen.Contains(dubbel));
+        }
     }
 }
