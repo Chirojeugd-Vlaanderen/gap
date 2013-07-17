@@ -1276,7 +1276,8 @@ namespace Chiro.Gap.Services.Test
                                                  {
                                                      oudAfdelingsJaar,
                                                      nieuwAfdelingsJaar
-                                                 }
+                                                 },
+                                         Groep = new ChiroGroep()
                                      };
             oudAfdelingsJaar.GroepsWerkJaar = groepsWerkJaar;
             nieuwAfdelingsJaar.GroepsWerkJaar = groepsWerkJaar;
@@ -1317,7 +1318,8 @@ namespace Chiro.Gap.Services.Test
             var lid = new Leiding
                           {
                               ID = 1,
-                              GroepsWerkJaar = new GroepsWerkJaar{WerkJaar = DateTime.Now.Year},
+                              GroepsWerkJaar =
+                                  new GroepsWerkJaar {WerkJaar = DateTime.Now.Year, Groep = new ChiroGroep()},
                               GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
                           };
 
