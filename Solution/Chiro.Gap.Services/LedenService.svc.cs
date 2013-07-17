@@ -262,6 +262,8 @@ namespace Chiro.Gap.Services
         /// <returns>De LidIds van de personen die lid zijn gemaakt</returns>
         public IEnumerable<int> Inschrijven(InTeSchrijvenLid[] inschrijfInfo, out string foutBerichten)
         {
+            // TODO: wat opkuis.
+
             foutBerichten = String.Empty;
 
             var teSyncen = new List<Lid>();
@@ -276,13 +278,17 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-
             // Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
             // al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
             var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
 
             foreach (var g in groepen)
             {
+                if (g.StopDatum != null && g.StopDatum < DateTime.Now)
+                {
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+                }
+
                 // Per groep lid maken.
                 // Zoek eerst recentste groepswerkjaar.
                 var gwj = _groepenMgr.HuidigWerkJaar(g);
@@ -431,6 +437,11 @@ namespace Chiro.Gap.Services
 
             foreach (var g in groepen)
             {
+                if (g.StopDatum != null && g.StopDatum < DateTime.Now)
+                {
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+                }
+
                 var gwj = _groepenMgr.HuidigWerkJaar(g);
 
                 // Handel per groep de uitschrijvingen af, zodat we per groep kunnen
@@ -652,6 +663,11 @@ namespace Chiro.Gap.Services
             PersoonsVerzekering persoonsVerzekering;
             var lid = _ledenRepo.ByID(lidId);
             Gav.Check(lid);
+
+            if (lid.GroepsWerkJaar.Groep.StopDatum != null && lid.GroepsWerkJaar.Groep.StopDatum < DateTime.Now)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+            }
 
             var verzekeringstype = (from g in _verzekerRepo.Select() where g.ID == (int)Verzekering.LoonVerlies select g).First();
 

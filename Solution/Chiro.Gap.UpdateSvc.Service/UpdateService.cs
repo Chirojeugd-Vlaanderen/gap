@@ -129,12 +129,17 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <remarks>Als <paramref name="stopDatum"/> <c>null</c> is, wordt de groep opnieuw actief.</remarks>
         public void GroepDesactiveren(string stamNr, DateTime? stopDatum)
         {
-            // De Johan moet dit nog verder uitwerken, wordt opgeroepen voor KipAdmin als een groep gestopt is
-            throw new NotImplementedException(Nieuwebackend.Info);
-            //var g = _groepenMgr.Ophalen(stamNr);
-            //g.StopDatum = stopDatum;
-            //_groepenMgr.Bewaren(g);
-            //Console.WriteLine(stopDatum == null ? "Groep opnieuw geactiveerd: {0}" : "Groep gedesactiveerd: {0}", stamNr);
+            var groep = (from g in _groepenRepo.Select()
+                         where String.Compare(g.Code, stamNr, StringComparison.OrdinalIgnoreCase) == 0
+                         select g).FirstOrDefault();
+
+            if (groep != null)
+            {
+                groep.StopDatum = stopDatum;
+                _groepenRepo.SaveChanges();
+            }
+
+            Console.WriteLine(stopDatum == null ? "Groep opnieuw geactiveerd: {0}" : "Groep gedesactiveerd: {0}", stamNr);
         }
 
     }

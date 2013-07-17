@@ -154,6 +154,12 @@ namespace Chiro.Gap.Workers
         /// <remarks>Het origineel lid moet door de caller zelf uit de repository verwijderd worden.</remarks>
         public Lid TypeToggle(Lid origineelLid)
         {
+            if (origineelLid.GroepsWerkJaar.Groep.StopDatum != null &&
+                origineelLid.GroepsWerkJaar.Groep.StopDatum < DateTime.Now)
+            {
+                throw new FoutNummerException(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+            }
+
             DateTime? eindeInstap = origineelLid.EindeInstapPeriode;
             var nieuwNiveau = (origineelLid is Kind) ? Niveau.LeidingInGroep : Niveau.LidInGroep;
 
@@ -758,6 +764,11 @@ namespace Chiro.Gap.Workers
         /// precies 1 afdelingsjaar bevatten.</remarks>
         public void AfdelingsJarenVervangen(Lid lid, IList<AfdelingsJaar> afdelingsJaren)
         {
+            if (lid.GroepsWerkJaar.Groep.StopDatum != null && lid.GroepsWerkJaar.Groep.StopDatum < DateTime.Now)
+            {
+                throw new FoutNummerException(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+            }
+
             var query = from aj in afdelingsJaren
                         where !Equals(aj.GroepsWerkJaar, lid.GroepsWerkJaar)
                         select aj;

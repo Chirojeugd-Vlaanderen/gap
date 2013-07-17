@@ -27,17 +27,6 @@ namespace Chiro.Gap.WorkerInterfaces
     public interface IVeelGebruikt
     {
         /// <summary>
-        /// Haalt het groepID van de groep met gegeven stamnummer op uit de cache.
-        /// </summary>
-        /// <param name="code">
-        /// Stamnummer van groep waarvan groepID te bepalen is
-        /// </param>
-        /// <returns>
-        /// GroepID van de groep met stamnummer <paramref name="code"/>.
-        /// </returns>
-        int CodeNaarGroepID(string code);
-
-        /// <summary>
         /// Haalt het beginjaar van het huidig werkjaar van de gegeven <paramref name="groep"/> op.
         /// (Bijv. 2012 voor 2012-2013)
         /// </summary>

@@ -32,41 +32,9 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class VeelGebruikt : IVeelGebruikt
     {
-        private const string GroepIdCacheKey = "gid_{0}";
         private const string WerkJaarCacheKey = "wj_{0}";
 
         private readonly Cache _cache = HttpRuntime.Cache;
-
-        /// <summary>
-        /// Haalt het groepID van de groep met gegeven stamnummer op uit de cache.
-        /// </summary>
-        /// <param name="code">
-        /// Stamnummer van groep waarvan groepID te bepalen is
-        /// </param>
-        /// <returns>
-        /// GroepID van de groep met stamnummer <paramref name="code"/>.
-        /// </returns>
-        public int CodeNaarGroepID(string code)
-        {
-            var groepID = (int?)_cache.Get(string.Format(GroepIdCacheKey, code));
-
-            if (groepID == null || groepID == 0)
-            {
-                throw new NotImplementedException(Domain.Nieuwebackend.Info);
-                //groepID = _groepenDao.Ophalen(code).ID;
-
-                //_cache.Add(
-                //    string.Format(GroepIdCacheKey, code),
-                //    groepID,
-                //    null,
-                //    Cache.NoAbsoluteExpiration,
-                //    new TimeSpan(2, 0, 0),
-                //    CacheItemPriority.Normal,
-                //    null);
-            }
-
-            return groepID ?? 0;
-        }
 
         /// <summary>
         /// Haalt het beginjaar van het huidig werkjaar van de gegeven <paramref name="groep"/> op.

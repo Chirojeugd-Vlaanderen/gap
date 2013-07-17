@@ -19,8 +19,10 @@
 using System.ServiceModel;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.TestAttributes;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -1274,7 +1276,8 @@ namespace Chiro.Gap.Services.Test
                                                  {
                                                      oudAfdelingsJaar,
                                                      nieuwAfdelingsJaar
-                                                 }
+                                                 },
+                                         Groep = new ChiroGroep()
                                      };
             oudAfdelingsJaar.GroepsWerkJaar = groepsWerkJaar;
             nieuwAfdelingsJaar.GroepsWerkJaar = groepsWerkJaar;
@@ -1308,14 +1311,15 @@ namespace Chiro.Gap.Services.Test
         /// Kijkt na of LoonVerliesVerzekeren synct met Kipadmin
         /// </summary>
         [TestMethod()]
-        public void LoonVerliesVerzekerenTest()
+        public void LoonVerliesVerzekerenSyncTest()
         {
             // ARRANGE
 
             var lid = new Leiding
                           {
                               ID = 1,
-                              GroepsWerkJaar = new GroepsWerkJaar{WerkJaar = DateTime.Now.Year},
+                              GroepsWerkJaar =
+                                  new GroepsWerkJaar {WerkJaar = DateTime.Now.Year, Groep = new ChiroGroep()},
                               GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
                           };
 
@@ -1759,6 +1763,145 @@ namespace Chiro.Gap.Services.Test
 
             ledenSyncMock.Verify(src => src.Bewaren(It.Is<IList<Lid>>(lst => lst.Any(el => el is Leiding))), Times.Never());
             ledenSyncMock.Verify(src => src.Bewaren(It.Is<IList<Lid>>(lst => lst.Any(el => el is Kind))), Times.Once());
+        }
+
+        /// <summary>
+        /// Test op een exception als je probeert iemand in te schrijven bij een inactieve groep.
+        /// </summary>
+        [TestMethod()]
+        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.GroepInactief)]
+        public void InschrijvenGestoptTest()
+        {
+            // ARRANGE
+
+            // model
+            var groep = new KaderGroep()
+            {
+                StopDatum = DateTime.Now.AddMonths(-1)
+            };
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Groep = groep,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1980, 8, 8)
+                    }
+            };
+
+            var lidVoorsel = new InTeSchrijvenLid
+            {
+                AfdelingsJaarIrrelevant = true,
+                GelieerdePersoonID = gelieerdePersoon.ID,
+                LeidingMaken = true,
+                VolledigeNaam = "Ham Burger" // moet weg; zie #1544
+            };
+
+            // dependency injection
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var ledenService = Factory.Maak<LedenService>();
+            string feedback;
+            ledenService.Inschrijven(new[] { lidVoorsel }, out feedback);
+
+        }
+
+        /// <summary>
+        /// Gestopte groepen kunnen geen leden uitschrijven.
+        /// </summary>
+        [TestMethod()]
+        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.GroepInactief)]
+        public void UitschrijvenGestoptTest()
+        {
+            // ARRANGE
+
+            // testsituatie opbouwen
+            var groepsWerkJaar = new GroepsWerkJaar
+                                     {
+                                         Groep =
+                                             new KaderGroep
+                                                 {
+                                                     NiveauInt = (int) Niveau.Gewest,
+                                                     StopDatum = DateTime.Now.AddMonths(-1)
+                                                 }
+                                     };
+            groepsWerkJaar.Groep.GroepsWerkJaar = new List<GroepsWerkJaar> { groepsWerkJaar };
+
+            var gelieerdePersoon1 = new GelieerdePersoon { ID = 1, Groep = groepsWerkJaar.Groep };
+            groepsWerkJaar.Groep.GelieerdePersoon = new List<GelieerdePersoon> { gelieerdePersoon1 };
+
+            var medewerker1 = new Leiding
+            {
+                EindeInstapPeriode = DateTime.Today,
+                // probeerperiode kadermedewerker is irrelevant
+                GroepsWerkJaar = groepsWerkJaar,
+                GelieerdePersoon = gelieerdePersoon1
+            };
+
+            gelieerdePersoon1.Lid = new List<Lid> { medewerker1 };
+
+            // data access opzetten
+            var dummyGpRepo = new DummyRepo<GelieerdePersoon>(groepsWerkJaar.Groep.GelieerdePersoon.ToList());
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>()).Returns(dummyGpRepo);
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+
+            var target = Factory.Maak<LedenService>();
+
+            // ACT
+
+            string foutBerichten = string.Empty;
+            target.Uitschrijven(new[] { gelieerdePersoon1.ID }, out foutBerichten);
+        }
+
+        /// <summary>
+        /// Gestopte groepen mogen niet verzekeren voor loonverlies.
+        /// </summary>
+        /// <remarks>
+        /// Loonverlies is een uitbreiding op de 'gewone' Chiroverzekering. Dus in principe kun je je daarvoor
+        /// maar verzekeren als je lid bent. Leden van een gestopte groep zijn per definitie oude leden 
+        /// (van vroeger). Dus kun je geen uitbreiding op de verzekering nemen.
+        /// </remarks>
+        [TestMethod()]
+        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.GroepInactief)]
+        public void LoonVerliesVerzekerenGestoptTest()
+        {
+            // ARRANGE
+
+            var lid = new Leiding
+                          {
+                              ID = 1,
+                              GroepsWerkJaar =
+                                  new GroepsWerkJaar
+                                      {
+                                          WerkJaar = DateTime.Now.Year,
+                                          Groep = new ChiroGroep {StopDatum = DateTime.Now.AddMonths(-1)}
+                                      },
+                              GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
+                          };
+
+            var verzekering = new VerzekeringsType { ID = (int)Verzekering.LoonVerlies };
+
+            // mock voor data-access registreren
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid> { lid }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            target.LoonVerliesVerzekeren(lid.ID);
+
+            // Verwacht een exception.
         }
     }
 }

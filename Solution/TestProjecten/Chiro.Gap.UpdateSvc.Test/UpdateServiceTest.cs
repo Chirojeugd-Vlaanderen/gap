@@ -1,0 +1,101 @@
+﻿using System.Collections.Generic;
+using Chiro.Cdf.Ioc;
+using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.UpdateSvc.Service;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.SyncInterfaces;
+using Chiro.Cdf.Poco;
+using Moq;
+
+namespace Chiro.Gap.UpdateSvc.Test
+{
+    
+    
+    /// <summary>
+    ///This is a test class for UpdateServiceTest and is intended
+    ///to contain all UpdateServiceTest Unit Tests
+    ///</summary>
+    [TestClass()]
+    public class UpdateServiceTest
+    {
+
+
+        private TestContext testContextInstance;
+
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
+        }
+
+        #region Additional test attributes
+        // 
+        //You can use the following additional attributes as you write your tests:
+        //
+        //Use ClassInitialize to run code before running the first test in the class
+        //[ClassInitialize()]
+        //public static void MyClassInitialize(TestContext testContext)
+        //{
+        //}
+        //
+        //Use ClassCleanup to run code after all tests in a class have run
+        //[ClassCleanup()]
+        //public static void MyClassCleanup()
+        //{
+        //}
+        //
+        //Use TestInitialize to run code before running each test
+        [TestInitialize()]
+        public void MyTestInitialize()
+        {
+            Factory.ContainerInit();
+        }
+        
+        //Use TestCleanup to run code after each test has run
+        //[TestCleanup()]
+        //public void MyTestCleanup()
+        //{
+        //}
+        //
+        #endregion
+
+
+        /// <summary>
+        ///A test for GroepDesactiveren
+        ///</summary>
+        [TestMethod()]
+        public void GroepDesactiverenTest()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep {Code = "TST/0001"};
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                                  .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<UpdateService>();
+            target.GroepDesactiveren(groep.Code, DateTime.Now);
+
+            // ASSERT
+
+            Assert.IsNotNull(groep.StopDatum);
+        }
+    }
+}
