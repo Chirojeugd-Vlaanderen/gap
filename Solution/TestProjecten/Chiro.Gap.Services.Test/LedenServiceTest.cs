@@ -1310,7 +1310,7 @@ namespace Chiro.Gap.Services.Test
         /// Kijkt na of LoonVerliesVerzekeren synct met Kipadmin
         /// </summary>
         [TestMethod()]
-        public void LoonVerliesVerzekerenTest()
+        public void LoonVerliesVerzekerenSyncTest()
         {
             // ARRANGE
 
@@ -1857,6 +1857,49 @@ namespace Chiro.Gap.Services.Test
 
             string foutBerichten = string.Empty;
             target.Uitschrijven(new[] { gelieerdePersoon1.ID }, out foutBerichten);
+        }
+
+        /// <summary>
+        /// Gestopte groepen mogen niet verzekeren voor loonverlies.
+        /// </summary>
+        /// <remarks>
+        /// Loonverlies is een uitbreiding op de 'gewone' Chiroverzekering. Dus in principe kun je je daarvoor
+        /// maar verzekeren als je lid bent. Leden van een gestopte groep zijn per definitie oude leden 
+        /// (van vroeger). Dus kun je geen uitbreiding op de verzekering nemen.
+        /// </remarks>
+        [TestMethod()]
+        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.GroepInactief)]
+        public void LoonVerliesVerzekerenGestoptTest()
+        {
+            // ARRANGE
+
+            var lid = new Leiding
+                          {
+                              ID = 1,
+                              GroepsWerkJaar =
+                                  new GroepsWerkJaar
+                                      {
+                                          WerkJaar = DateTime.Now.Year,
+                                          Groep = new ChiroGroep {StopDatum = DateTime.Now.AddMonths(-1)}
+                                      },
+                              GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
+                          };
+
+            var verzekering = new VerzekeringsType { ID = (int)Verzekering.LoonVerlies };
+
+            // mock voor data-access registreren
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid> { lid }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            target.LoonVerliesVerzekeren(lid.ID);
+
+            // Verwacht een exception.
         }
     }
 }
