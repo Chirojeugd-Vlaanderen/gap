@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="BivakSyncTest.cs" />
     <Compile Include="LedenSyncTest.cs" />
+    <Compile Include="PersonenSyncTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
