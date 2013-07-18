@@ -1,10 +1,12 @@
 ﻿using Chiro.Cdf.Ioc;
 using Chiro.Gap.Sync;
 using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Chiro.Gap.Poco.Model;
 using Moq;
+using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync.Test
 {
@@ -74,7 +76,7 @@ namespace Chiro.Gap.Sync.Test
         /// Als ik een bivak met adres bewaar, dan verwacht ik dat dat adres naar Kipadmin wordt gestuurd.
         /// </summary>
         [TestMethod()]
-        public void BewarenTest()
+        public void BewarenMetAdresTest()
         {
             // ARRANGE
 
@@ -97,6 +99,38 @@ namespace Chiro.Gap.Sync.Test
             // ASSERT 
 
             kipSyncMock.VerifyAll();
+        }
+
+        ///<summary>
+        /// Als een bivak met contactpersoon zonder AD-nummer bewaard moet worden,
+        /// dan verwachten we dat de persoonsgegevens mee naar Kipadmin gaan.
+        ///</summary>
+        [TestMethod()]
+        public void BewarenContactZonderAdTest()
+        {
+            // ARRANGE
+
+            var kipSyncMock = new Mock<ISyncPersoonService>();
+            kipSyncMock.Setup(src => src.BivakContactBewarenAdOnbekend(It.IsAny<int>(), It.IsAny<PersoonDetails>())).Verifiable();
+            Factory.InstantieRegistreren(kipSyncMock.Object);
+
+            var uitstap = new Uitstap
+                              {
+                                  IsBivak = true,
+                                  GroepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()},
+                                  ContactDeelnemer =
+                                      new Deelnemer {GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}}
+                              };
+
+            // ACT
+
+            var target = new BivakSync();
+            target.Bewaren(uitstap);
+
+            // ASSERT 
+
+            kipSyncMock.VerifyAll();
+            Assert.IsTrue(uitstap.ContactDeelnemer.GelieerdePersoon.Persoon.AdInAanvraag);
         }
     }
 }
