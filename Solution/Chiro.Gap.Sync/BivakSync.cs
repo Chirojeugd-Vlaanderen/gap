@@ -46,13 +46,14 @@ namespace Chiro.Gap.Sync
             var teSyncen = Mapper.Map<Uitstap, Bivak>(uitstap);
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakBewaren(teSyncen));
 
-            GelieerdePersoon contactPersoon;
-
-            contactPersoon = uitstap.ContactDeelnemer != null ? uitstap.ContactDeelnemer.GelieerdePersoon : null;
+            var contactPersoon = uitstap.ContactDeelnemer != null ? uitstap.ContactDeelnemer.GelieerdePersoon : null;
 
             if (uitstap.Plaats != null && uitstap.Plaats.Adres != null)
             {
-                throw new NotImplementedException();
+                ServiceHelper.CallService<ISyncPersoonService>(
+                    svc =>
+                    svc.BivakPlaatsBewaren(uitstap.ID, uitstap.Plaats.Naam,
+                                           Mapper.Map<Adres, Kip.ServiceContracts.DataContracts.Adres>(uitstap.Plaats.Adres)));
             }
 
             if (contactPersoon != null)
