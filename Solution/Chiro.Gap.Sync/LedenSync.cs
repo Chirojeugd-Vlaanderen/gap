@@ -184,7 +184,36 @@ namespace Chiro.Gap.Sync
         /// te veel een gedoe.</remarks>
         public void AfdelingenUpdaten(Lid lid)
         {
-            throw new NotImplementedException();
+            var chiroGroep = (lid.GroepsWerkJaar.Groep as ChiroGroep);
+            // TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
+
+            Debug.Assert(chiroGroep != null);
+
+            List<AfdelingEnum> kipAfdelingen;
+
+            if (lid is Kind)
+            {
+                kipAfdelingen = new List<AfdelingEnum>
+                                    {
+                                        _afdelingVertaling[
+                                            (NationaleAfdeling)
+                                            ((lid as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
+                                    };
+            }
+            else
+            {
+                var leiding = lid as Leiding;
+                Debug.Assert(leiding != null);
+
+                kipAfdelingen = (from aj in leiding.AfdelingsJaar
+                                 select _afdelingVertaling[(NationaleAfdeling) (aj.OfficieleAfdeling.ID)]).ToList();
+            }
+
+            ServiceHelper.CallService<ISyncPersoonService>(
+                svc =>
+                svc.AfdelingenUpdaten(
+                    Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
+                    chiroGroep.Code, lid.GroepsWerkJaar.WerkJaar, kipAfdelingen));
         }
 
         /// <summary>
