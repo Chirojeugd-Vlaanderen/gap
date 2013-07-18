@@ -222,21 +222,10 @@ namespace Chiro.Gap.Sync
         /// <param name="lid">Lid waarvan het lidtype geupdatet moet worden</param>
         public void TypeUpdaten(Lid lid)
         {
-            Lid l;
-
-            if (lid.GelieerdePersoon == null || lid.GelieerdePersoon.Persoon == null || lid.GroepsWerkJaar == null || lid.GroepsWerkJaar.Groep == null)
-            {
-                throw new NotImplementedException();
-            }
-            else
-            {
-                l = lid;
-            }
-
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidTypeUpdaten(
-                Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(l.GelieerdePersoon.Persoon),
-                l.GroepsWerkJaar.Groep.Code,
-                l.GroepsWerkJaar.WerkJaar,
+                Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
+                lid.GroepsWerkJaar.Groep.Code,
+                lid.GroepsWerkJaar.WerkJaar,
                 _lidTypeVertaling[lid.Type]));
         }
 
