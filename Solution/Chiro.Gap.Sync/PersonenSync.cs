@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Linq;
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
@@ -75,7 +75,10 @@ namespace Chiro.Gap.Sync
 			}
 			if (metCommunicatie)
 			{
-                throw new NotImplementedException();
+			    var syncCommunicatie =
+			        Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(
+			            gp.Persoon.GelieerdePersoon.SelectMany(gp2 => gp2.Communicatie));
+			    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie));
 			}
 		}
 
