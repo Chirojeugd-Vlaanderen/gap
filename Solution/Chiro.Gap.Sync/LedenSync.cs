@@ -159,31 +159,20 @@ namespace Chiro.Gap.Sync
         /// <remarks>Als geen persoonsgegevens meegeleverd zijn, dan zoeken we die wel even op in de database.</remarks>
         public void FunctiesUpdaten(Lid lid)
         {
-            Lid l;
-
-            if (lid.GelieerdePersoon == null || lid.GelieerdePersoon.Persoon == null)
-            {
-                throw new NotImplementedException();
-            }
-            else
-            {
-                l = lid;
-            }
-
-            Debug.Assert(l.GroepsWerkJaar != null);
-            Debug.Assert(l.GroepsWerkJaar.Groep != null);
+            Debug.Assert(lid.GroepsWerkJaar != null);
+            Debug.Assert(lid.GroepsWerkJaar.Groep != null);
 
             // TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
 
-            var kipFunctieIDs = (from f in l.Functie
+            var kipFunctieIDs = (from f in lid.Functie
                                  where f.IsNationaal
                                  select _functieVertaling[(NationaleFunctie)f.ID]).ToList();
 
             ServiceHelper.CallService<ISyncPersoonService>(
                 svc => svc.FunctiesUpdaten(Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
-                    l.GelieerdePersoon.Persoon),
-                                           l.GroepsWerkJaar.Groep.Code,
-                                           l.GroepsWerkJaar.WerkJaar,
+                    lid.GelieerdePersoon.Persoon),
+                                           lid.GroepsWerkJaar.Groep.Code,
+                                           lid.GroepsWerkJaar.WerkJaar,
                                            kipFunctieIDs));
         }
 
