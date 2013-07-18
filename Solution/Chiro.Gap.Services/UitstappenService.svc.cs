@@ -449,6 +449,9 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
+                // Let op: eerst kipsync, en dan SaveChanges. Want het kan zijn dat
+                // KipSync de vlag 'AdNrInAanvraag' voor de contactpersoon zet.
+
                 if (deelnemer.Uitstap.IsBivak)
                 {
                     _bivakSync.Bewaren(deelnemer.Uitstap);

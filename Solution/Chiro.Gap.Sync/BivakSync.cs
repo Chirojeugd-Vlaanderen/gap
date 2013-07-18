@@ -67,7 +67,11 @@ namespace Chiro.Gap.Sync
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    contactPersoon.Persoon.AdInAanvraag = true;
+                    ServiceHelper.CallService<ISyncPersoonService>(
+                        svc =>
+                        svc.BivakContactBewarenAdOnbekend(uitstap.ID,
+                                                          Mapper.Map<GelieerdePersoon, PersoonDetails>(contactPersoon)));
                 }
             }
         }
