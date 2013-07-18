@@ -33,11 +33,5 @@ namespace Chiro.Gap.SyncInterfaces
 		/// communicatie-info opgehaald, omdat de workers typisch niet toestaan dat de gebruiker alle
 		/// communicatie ophaalt.</param>
 		void Bewaren(GelieerdePersoon gp, bool metStandaardAdres, bool metCommunicatie);
-
-		/// <summary>
-		/// Stuurt enkel de communicatie van een gelieerde persoon naar Kipadmin
-		/// </summary>
-		/// <param name="gp">Gelieerde persoon, met daaraan gekoppeld zijn communicatie</param>
-		void CommunicatieUpdaten(GelieerdePersoon gp);
 	}
 }

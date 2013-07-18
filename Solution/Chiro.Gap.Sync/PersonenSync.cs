@@ -81,15 +81,5 @@ namespace Chiro.Gap.Sync
 			    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie));
 			}
 		}
-
-		/// <summary>
-		/// Stuurt *alle* communicatie van de persoon gekoppeld aan <paramref name="gp"/> naar Kipadmin 
-		/// (dus ook de communicatie gekend bij andere groepen)
-		/// </summary>
-		/// <param name="gp">Gelieerde persoon</param>
-		public void CommunicatieUpdaten(GelieerdePersoon gp)
-		{
-            throw new NotImplementedException();
-		}
 	}
 }
