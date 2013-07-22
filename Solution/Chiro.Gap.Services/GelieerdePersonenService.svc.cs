@@ -19,7 +19,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;      // laten staan voor live!
+#if KIPDORP
+using System.Transactions;
+#endif
 using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;

@@ -19,12 +19,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel;
 using System.Text;
+#if KIPDORP
 using System.Transactions;
+#endif
 using AutoMapper;
 using Chiro.Cdf.Poco;
-
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -33,7 +33,6 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Services
 {
@@ -399,7 +398,7 @@ namespace Chiro.Gap.Services
                 _ledenSync.Bewaren(teSyncen);     // TODO: (#1436) Sync naar Kipadmin
                 _gelieerdePersonenRepo.SaveChanges();
 #if KIPDORP
-                tx.Commit();
+                tx.Complete();
             }
 #endif
             

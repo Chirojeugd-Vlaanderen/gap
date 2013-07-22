@@ -17,9 +17,6 @@
  */
 using System;
 using System.Linq;
-// ReSharper disable RedundantUsingDirective
-using System.Transactions;
-// ReSharper restore RedundantUsingDirective
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
