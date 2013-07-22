@@ -67,43 +67,5 @@ namespace Chiro.Gap.WorkerInterfaces
         /// zal hij of zij ook niet verhuizen
         /// </remarks>
         List<PersoonsAdres> Verhuizen(IList<Persoon> verhuizers, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType);
-
-        /// <summary>
-        /// Verlegt alle referenties van de persoon met ID <paramref name="dubbelID"/> naar de persoon met ID
-        /// <paramref name="origineelID"/>, en verwijdert vervolgens de dubbele persoon.
-        /// </summary>
-        /// <param name="origineelID">
-        /// ID van de te behouden persoon
-        /// </param>
-        /// <param name="dubbelID">
-        /// ID van de te verwijderen persoon, die eigenlijk gewoon dezelfde is de te
-        /// behouden.
-        /// </param>
-        /// <remarks>
-        /// Het is niet proper dit soort van logica in de data access te doen.  Anderzijds zou het een 
-        /// heel gedoe zijn om dit in de businesslaag te implementeren, omdat er heel wat relaties verlegd moeten worden.
-        /// Dat wil zeggen: relaties verwijderen en vervolgens nieuwe maken.  Dit zou een heel aantal 'TeVerwijderens' met zich
-        /// meebrengen, wat het allemaal zeer complex zou maken.  Vandaar dat we gewoon via een stored procedure werken.
-        /// <para>
-        /// </para>
-        /// </remarks>
-        void DubbelVerwijderen(int origineelID, int dubbelID);
-
-        /// <summary>
-        /// Zoekt in de database personen met een gedeeld AD-nummer, en merget deze.
-        /// </summary>
-        void FixGedeeldeAds();
-
-        /// <summary>
-        /// Kent een AD-nummer toe aan een persoon, en persisteert.  Als er al een persoon bestond met
-        /// het gegeven AD-nummer, worden de personen gemerged.
-        /// </summary>
-        /// <param name="persoon">
-        /// Persoon met toe te kennen AD-nummer
-        /// </param>
-        /// <param name="adNummer">
-        /// Toe te kennen AD-nummer
-        /// </param>
-        void AdNummerToekennen(Persoon persoon, int adNummer);
     }
 }

@@ -7,19 +7,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Chiro.Gap.Poco.Model;
 using Moq;
-using Persoon = Chiro.Gap.Poco.Model.Persoon;
+using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
 
 namespace Chiro.Gap.Sync.Test
 {
     
     
     /// <summary>
-    ///This is a test class for LedenSyncTest and is intended
-    ///to contain all LedenSyncTest Unit Tests
+    ///This is a test class for PersonenSyncTest and is intended
+    ///to contain all PersonenSyncTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class LedenSyncTest
+    public class PersonenSyncTest
     {
+
+
         private TestContext testContextInstance;
 
         /// <summary>
@@ -72,28 +74,29 @@ namespace Chiro.Gap.Sync.Test
 
 
         /// <summary>
-        ///A test for AfdelingenUpdaten
+        ///A test for Bewaren
         ///</summary>
         [TestMethod()]
-        public void AfdelingenUpdatenTest()
+        public void BewarenMetCommunicatieTest()
         {
             // ARRANGE
 
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Kip.ServiceContracts.DataContracts.Persoon>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<IEnumerable<AfdelingEnum>>())).Verifiable();
+            kipSyncMock.Setup(src => src.AlleCommunicatieBewaren(It.IsAny<Persoon>(), It.IsAny<IEnumerable<CommunicatieMiddel>>())).Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
-            var lid = new Kind
-                          {
-                              AfdelingsJaar = new AfdelingsJaar {OfficieleAfdeling = new OfficieleAfdeling {ID = 1}},
-                              GroepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()},
-                              GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
-                          };
+            var gelieerdePersoon = new GelieerdePersoon
+                                       {
+                                           Persoon = new Gap.Poco.Model.Persoon {AdInAanvraag = true},
+                                           Communicatie =
+                                               new List<CommunicatieVorm> {new CommunicatieVorm()}
+                                       };
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
 
             // ACT
 
-            var target = new LedenSync();
-            target.AfdelingenUpdaten(lid);
+            var target = new PersonenSync();
+            target.Bewaren(gelieerdePersoon, false, true);
 
             // ASSERT
 

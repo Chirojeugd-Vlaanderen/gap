@@ -159,26 +159,20 @@ namespace Chiro.Gap.Sync
         /// <remarks>Als geen persoonsgegevens meegeleverd zijn, dan zoeken we die wel even op in de database.</remarks>
         public void FunctiesUpdaten(Lid lid)
         {
-            if (lid.GelieerdePersoon == null || lid.GelieerdePersoon.Persoon == null)
-            {
-                throw new NotImplementedException();
-            }
-            var l = lid;
-
-            Debug.Assert(l.GroepsWerkJaar != null);
-            Debug.Assert(l.GroepsWerkJaar.Groep != null);
+            Debug.Assert(lid.GroepsWerkJaar != null);
+            Debug.Assert(lid.GroepsWerkJaar.Groep != null);
 
             // TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
 
-            var kipFunctieIDs = (from f in l.Functie
+            var kipFunctieIDs = (from f in lid.Functie
                                  where f.IsNationaal
                                  select _functieVertaling[(NationaleFunctie)f.ID]).ToList();
 
             ServiceHelper.CallService<ISyncPersoonService>(
                 svc => svc.FunctiesUpdaten(Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
-                    l.GelieerdePersoon.Persoon),
-                                           l.GroepsWerkJaar.Groep.Code,
-                                           l.GroepsWerkJaar.WerkJaar,
+                    lid.GelieerdePersoon.Persoon),
+                                           lid.GroepsWerkJaar.Groep.Code,
+                                           lid.GroepsWerkJaar.WerkJaar,
                                            kipFunctieIDs));
         }
 
@@ -190,7 +184,35 @@ namespace Chiro.Gap.Sync
         /// te veel een gedoe.</remarks>
         public void AfdelingenUpdaten(Lid lid)
         {
-            throw new NotImplementedException();
+            var chiroGroep = (lid.GroepsWerkJaar.Groep as ChiroGroep);
+            // TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
+
+            Debug.Assert(chiroGroep != null);
+            List<AfdelingEnum> kipAfdelingen;
+
+            if (lid is Kind)
+            {
+                kipAfdelingen = new List<AfdelingEnum>
+                                    {
+                                        _afdelingVertaling[
+                                            (NationaleAfdeling)
+                                            ((lid as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
+                                    };
+            }
+            else
+            {
+                var leiding = lid as Leiding;
+                Debug.Assert(leiding != null);
+
+                kipAfdelingen = (from aj in leiding.AfdelingsJaar
+                                 select _afdelingVertaling[(NationaleAfdeling)(aj.OfficieleAfdeling.ID)]).ToList();
+            }
+
+            ServiceHelper.CallService<ISyncPersoonService>(
+                svc =>
+                svc.AfdelingenUpdaten(
+                    Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
+                    chiroGroep.Code, lid.GroepsWerkJaar.WerkJaar, kipAfdelingen));
         }
 
         /// <summary>
@@ -199,16 +221,10 @@ namespace Chiro.Gap.Sync
         /// <param name="lid">Lid waarvan het lidtype geupdatet moet worden</param>
         public void TypeUpdaten(Lid lid)
         {
-            if (lid.GelieerdePersoon == null || lid.GelieerdePersoon.Persoon == null || lid.GroepsWerkJaar == null || lid.GroepsWerkJaar.Groep == null)
-            {
-                throw new NotImplementedException();
-            }
-            var l = lid;
-
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidTypeUpdaten(
-                Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(l.GelieerdePersoon.Persoon),
-                l.GroepsWerkJaar.Groep.Code,
-                l.GroepsWerkJaar.WerkJaar,
+                Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(lid.GelieerdePersoon.Persoon),
+                lid.GroepsWerkJaar.Groep.Code,
+                lid.GroepsWerkJaar.WerkJaar,
                 _lidTypeVertaling[lid.Type]));
         }
 

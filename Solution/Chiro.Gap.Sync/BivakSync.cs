@@ -24,6 +24,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using Adres = Chiro.Gap.Poco.Model.Adres;
 
 namespace Chiro.Gap.Sync
 {
@@ -44,26 +45,14 @@ namespace Chiro.Gap.Sync
             var teSyncen = Mapper.Map<Uitstap, Bivak>(uitstap);
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakBewaren(teSyncen));
 
-            GelieerdePersoon contactPersoon;
-
-            if (uitstap.ContactDeelnemer != null)
-            {
-                // Er is een contactdeelnemer.  Is de persoon nog geladen?
-
-                if (uitstap.ContactDeelnemer.GelieerdePersoon == null || uitstap.ContactDeelnemer.GelieerdePersoon.Persoon == null)
-                {
-                    throw new NotImplementedException();
-                }
-                contactPersoon = uitstap.ContactDeelnemer.GelieerdePersoon;
-            }
-            else
-            {
-                contactPersoon = null;
-            }
+            var contactPersoon = uitstap.ContactDeelnemer != null ? uitstap.ContactDeelnemer.GelieerdePersoon : null;
 
             if (uitstap.Plaats != null && uitstap.Plaats.Adres != null)
             {
-                throw new NotImplementedException();
+                ServiceHelper.CallService<ISyncPersoonService>(
+                    svc =>
+                    svc.BivakPlaatsBewaren(uitstap.ID, uitstap.Plaats.Naam,
+                                           Mapper.Map<Adres, Kip.ServiceContracts.DataContracts.Adres>(uitstap.Plaats.Adres)));
             }
 
             if (contactPersoon != null)
@@ -77,7 +66,11 @@ namespace Chiro.Gap.Sync
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    contactPersoon.Persoon.AdInAanvraag = true;
+                    ServiceHelper.CallService<ISyncPersoonService>(
+                        svc =>
+                        svc.BivakContactBewarenAdOnbekend(uitstap.ID,
+                                                          Mapper.Map<GelieerdePersoon, PersoonDetails>(contactPersoon)));
                 }
             }
         }

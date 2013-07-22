@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Linq;
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
@@ -75,18 +75,11 @@ namespace Chiro.Gap.Sync
 			}
 			if (metCommunicatie)
 			{
-                throw new NotImplementedException();
+			    var syncCommunicatie =
+			        Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(
+			            gp.Persoon.GelieerdePersoon.SelectMany(gp2 => gp2.Communicatie));
+			    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie));
 			}
-		}
-
-		/// <summary>
-		/// Stuurt *alle* communicatie van de persoon gekoppeld aan <paramref name="gp"/> naar Kipadmin 
-		/// (dus ook de communicatie gekend bij andere groepen)
-		/// </summary>
-		/// <param name="gp">Gelieerde persoon</param>
-		public void CommunicatieUpdaten(GelieerdePersoon gp)
-		{
-            throw new NotImplementedException();
 		}
 	}
 }

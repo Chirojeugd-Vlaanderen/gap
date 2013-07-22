@@ -14,12 +14,13 @@ namespace Chiro.Gap.Sync.Test
     
     
     /// <summary>
-    ///This is a test class for LedenSyncTest and is intended
-    ///to contain all LedenSyncTest Unit Tests
+    ///This is a test class for VerzekeringenSyncTest and is intended
+    ///to contain all VerzekeringenSyncTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class LedenSyncTest
+    public class VerzekeringenSyncTest
     {
+
         private TestContext testContextInstance;
 
         /// <summary>
@@ -72,28 +73,36 @@ namespace Chiro.Gap.Sync.Test
 
 
         /// <summary>
-        ///A test for AfdelingenUpdaten
-        ///</summary>
+        /// Kijkt na of verzekeringen loonverlies ook gesynct worden voor personen zonder AD-nummer
+        /// (dat AD-nummer is dan waarschijnlijk in aanvraag.)
+        /// </summary>
         [TestMethod()]
-        public void AfdelingenUpdatenTest()
+        public void BewarenTest()
         {
             // ARRANGE
 
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()};
+            var gelieerdePersoon = new GelieerdePersoon {Groep = groepsWerkJaar.Groep, Persoon = new Persoon
+                                                      {
+                                                          AdNummer = null,
+                                                      }};
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+            groepsWerkJaar.Groep.GelieerdePersoon.Add(gelieerdePersoon);
+                                                                                                          
+            var persoonsVerzekering = new PersoonsVerzekering
+                                          {
+                                              Persoon = gelieerdePersoon.Persoon
+                                          };
+
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Kip.ServiceContracts.DataContracts.Persoon>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<IEnumerable<AfdelingEnum>>())).Verifiable();
+            kipSyncMock.Setup(
+                src =>
+                src.LoonVerliesVerzekerenAdOnbekend(It.IsAny<PersoonDetails>(), It.IsAny<string>(), It.IsAny<int>())).Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
-            var lid = new Kind
-                          {
-                              AfdelingsJaar = new AfdelingsJaar {OfficieleAfdeling = new OfficieleAfdeling {ID = 1}},
-                              GroepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()},
-                              GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
-                          };
-
             // ACT
-
-            var target = new LedenSync();
-            target.AfdelingenUpdaten(lid);
+            var target = new VerzekeringenSync(); // TODO: Initialize to an appropriate value
+            target.Bewaren(persoonsVerzekering, groepsWerkJaar);
 
             // ASSERT
 

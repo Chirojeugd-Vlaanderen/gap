@@ -17,9 +17,8 @@
  */
 using System;
 using System.Linq;
-
+using System.Transactions;
 using Chiro.Cdf.Poco;
-using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Services;
 using Chiro.Gap.SyncInterfaces;
@@ -37,6 +36,14 @@ namespace Chiro.Gap.UpdateSvc.Service
 
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Persoon> _personenRepo;
+        private readonly IRepository<Lid> _ledenRepo;
+        private readonly IRepository<CommunicatieVorm> _communicatieVormenRepo;
+        private readonly IRepository<Deelnemer> _deelnemersRepo;
+        private readonly IRepository<Abonnement> _abonnementenRepo;
+        private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
+        private readonly IRepository<PersoonsAdres> _persoonsAdressenRepo;
+        private readonly IRepository<PersoonsVerzekering> _persoonsVerzekeringenRepo;
+        private readonly IRepository<GebruikersRecht> _gebruikersRechtenRepo;
 
         private readonly GavChecker _gav;
 
@@ -44,6 +51,15 @@ namespace Chiro.Gap.UpdateSvc.Service
         {
             _personenRepo = repositoryProvider.RepositoryGet<Persoon>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
+            _ledenRepo = repositoryProvider.RepositoryGet<Lid>();
+            _communicatieVormenRepo = repositoryProvider.RepositoryGet<CommunicatieVorm>();
+            _deelnemersRepo = repositoryProvider.RepositoryGet<Deelnemer>();
+            _abonnementenRepo = repositoryProvider.RepositoryGet<Abonnement>();
+            _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
+            _persoonsAdressenRepo = repositoryProvider.RepositoryGet<PersoonsAdres>();
+            _persoonsVerzekeringenRepo = repositoryProvider.RepositoryGet<PersoonsVerzekering>();
+            _gebruikersRechtenRepo = repositoryProvider.RepositoryGet<GebruikersRecht>();
+
             _ledenSync = ledenSync;
             _gav = new GavChecker(autorisatieMgr);
         }
@@ -57,6 +73,13 @@ namespace Chiro.Gap.UpdateSvc.Service
         {
             _personenRepo.Dispose();
             _groepenRepo.Dispose();
+            _ledenRepo.Dispose();
+            _communicatieVormenRepo.Dispose();
+            _deelnemersRepo.Dispose();
+            _gelieerdePersonenRepo.Dispose();
+            _persoonsAdressenRepo.Dispose();
+            _persoonsVerzekeringenRepo.Dispose();
+            _gebruikersRechtenRepo.Dispose();
         }
 
         /// <summary>
@@ -76,11 +99,9 @@ namespace Chiro.Gap.UpdateSvc.Service
                 return;
             }
 
-            AdNummerToekennen(persoon, adNummer);
+            AdNummerToekennen(persoon, adNummer); // PERSISTEERT
 
             Console.WriteLine("Ad-nummer {0} toegekend aan {1}. (ID {2})", adNummer, persoon.VolledigeNaam, persoon.ID);
-
-            _personenRepo.SaveChanges();
         }
 
         /// <summary>
@@ -95,13 +116,20 @@ namespace Chiro.Gap.UpdateSvc.Service
             var personen = (from g in _personenRepo.Select() where g.AdNummer == oudAd select g);
             foreach (var p in personen)
             {
-                AdNummerToekennen(p, nieuwAd);
+                AdNummerToekennen(p, nieuwAd); // PERSISTEERT!
                 Console.WriteLine("Ad-nummer {0} vervangen door {1}. ({2}, ID {3})", oudAd, nieuwAd, p.VolledigeNaam, p.ID);
             }
 
-            _personenRepo.SaveChanges();
         }
 
+        /// <summary>
+        /// Kent gegeven <paramref name="adNummer"/> toe aan de gegeven
+        /// <paramref name="persoon"/>. Als er al iemand bestaat met hetzelfde
+        /// AD-nr, dan worden de personen gemerged.
+        /// </summary>
+        /// <param name="persoon"></param>
+        /// <param name="adNummer"></param>
+        /// <remarks>PERSISTEERT!</remarks>
         private void AdNummerToekennen(Persoon persoon, int adNummer)
         {
             Gav.CheckSuperGav();
@@ -111,14 +139,280 @@ namespace Chiro.Gap.UpdateSvc.Service
 
             foreach (var p in personenAlBestaand.Where(prs => prs.ID != persoon.ID))
             {
-                // Als er andere personen zijn met hetzelfde AD-nummer, merge dan met deze persoon.
-                // Door 'persoon.ID' als origineel te kiezen, vermijden we dat persoon van ID verandert.
-                throw new NotImplementedException();
-                // Was vroeger blijkbaar een stored procedure
-                // _dao.DubbelVerwijderen(persoon.ID, p.ID);
+                DubbelVerwijderen(persoon, p);
             }
 
             persoon.AdNummer = adNummer;
+            _personenRepo.SaveChanges();
+        }
+
+        /// <summary>
+        /// Merget personen <paramref name="origineel"/> en <paramref name="dubbel"/>.
+        /// </summary>
+        /// <param name="origineel"></param>
+        /// <param name="dubbel"></param>
+        /// <remarks>PERSISTEERT!</remarks>
+        private void DubbelVerwijderen(Persoon origineel, Persoon dubbel)
+        {
+            // TODO: Dit kan nog wel wat unit tests gebruiken...
+
+            using (var tx = new TransactionScope())
+            {
+                // Voor de groepen die niet zowel origineel als dubbel bevatten, verleggen we
+                // het gelieerde-persoonobject van dubbel naar origineel
+
+                var teVerleggenGPs = (from gp in dubbel.GelieerdePersoon
+                                      where !gp.Groep.GelieerdePersoon.Any(gp2 => Equals(gp2.Persoon, origineel))
+                                      select gp).ToList();
+
+                foreach (var gp in teVerleggenGPs)
+                {
+                    gp.Persoon = origineel;
+                }
+
+                // Dat gaan we al eens bewaren.
+
+                _personenRepo.SaveChanges();
+
+                // De gelieerde personen die nu nog aan dubbel hangen, moeten weg. We zetten zo veel 
+                // mogelijk relevante informatie over naar de originele gelieerde personen.
+
+                foreach (var dubbeleGp in dubbel.GelieerdePersoon)
+                {
+                    var origineleGp = (from gp in origineel.GelieerdePersoon
+                                       where Equals(gp.Groep, dubbeleGp.Groep)
+                                       select gp).Single();
+
+                    foreach (var dubbelLid in dubbeleGp.Lid)
+                    {
+                        var origineelLid = (from l in origineleGp.Lid
+                                            where Equals(l.GroepsWerkJaar, dubbelLid.GroepsWerkJaar)
+                                            select l).SingleOrDefault();
+
+                        if (origineelLid != null)
+                        {
+                            // Zowel originele als dubbele gelieerde persoon waren lid. We behouden
+                            // het originele lidobject, tenzij in het geval de originele is uitgeschreven,
+                            // en de dubbele niet.
+
+                            if (origineelLid.NonActief && !dubbelLid.NonActief)
+                            {
+                                LidVerwijderen(origineelLid);
+                                dubbelLid.GelieerdePersoon = origineleGp;
+                            }
+                            else
+                            {
+                                LidVerwijderen(dubbelLid);
+                                // eventuele functies en afdelingen van het dubbel lid worden
+                                // zonder boe of ba weggegooid.
+                            }
+                        }
+                        else
+                        {
+                            dubbelLid.GelieerdePersoon = origineleGp;
+                        }
+                        _ledenRepo.SaveChanges();
+                    }
+
+                    foreach (var dubbeleCommunicatie in dubbeleGp.Communicatie)
+                    {
+                        var origineleCommunicatie = (from c in origineleGp.Communicatie
+                                                     where
+                                                         Equals(c.CommunicatieType, dubbeleCommunicatie.CommunicatieType) &&
+                                                         String.Compare(c.Nummer, dubbeleCommunicatie.Nummer,
+                                                                        StringComparison.OrdinalIgnoreCase) == 0
+                                                     select c).FirstOrDefault();
+                        if (origineleCommunicatie != null)
+                        {
+                            // Als zowel origineel als dubbel de communicatievorm hebben, dan
+                            // verwijderen we de dubbele.
+                            _communicatieVormenRepo.Delete(dubbeleCommunicatie);
+                        }
+                        else
+                        {
+                            // Anders kennen we de dubbele toe aan de originele.
+                            // TODO: problemen met meerdere voorkeuren fixen
+                            dubbeleCommunicatie.GelieerdePersoon = origineleGp;
+                        }
+                        _communicatieVormenRepo.SaveChanges();
+                    }
+
+                    foreach (var dubbeleCategorie in dubbeleGp.Categorie)
+                    {
+                        var origineleCategorie = (from c in origineleGp.Categorie
+                                                  where
+                                                      Equals(c, dubbeleCategorie)
+                                                  select c).FirstOrDefault();
+                        if (origineleCategorie == null)
+                        {
+                            // Als de originele niet in de categorie zit, fixen
+                            // we dat hier.
+                            dubbeleCategorie.GelieerdePersoon.Add(origineleGp);
+                        }
+                        dubbeleCategorie.GelieerdePersoon.Remove(dubbeleGp);
+
+                        _groepenRepo.SaveChanges();
+                    }
+
+                    foreach (var dubbeleDeelnemer in dubbeleGp.Deelnemer)
+                    {
+                        var origineleDeelnemer = (from d in origineleGp.Deelnemer
+                                                  where Equals(d.Uitstap, dubbeleDeelnemer.Uitstap)
+                                                  select d).FirstOrDefault();
+
+                        if (origineleDeelnemer != null)
+                        {
+                            _deelnemersRepo.Delete(dubbeleDeelnemer);
+                        }
+                        else
+                        {
+                            dubbeleDeelnemer.GelieerdePersoon = origineleGp;
+                        }
+                        _deelnemersRepo.SaveChanges();
+                    }
+
+                    foreach (var dubbelAbonnement in dubbeleGp.Abonnement)
+                    {
+                        // Dubbelpuntabonnementen lopen niet meer via het GAP. Maar omdat die er nog inzitten van
+                        // vroeger, moeten we ze wel verleggen.
+
+                        var origineelAbonnement = (from d in origineleGp.Abonnement
+                                                  where Equals(d.Publicatie, dubbelAbonnement.Publicatie)
+                                                  select d).FirstOrDefault();
+
+                        if (origineelAbonnement != null)
+                        {
+                            _abonnementenRepo.Delete(origineelAbonnement);
+                        }
+                        else
+                        {
+                            dubbelAbonnement.GelieerdePersoon = origineleGp;
+                        }
+                        _abonnementenRepo.SaveChanges();
+                    }
+
+                    _gelieerdePersonenRepo.Delete(origineleGp);
+                    _gelieerdePersonenRepo.SaveChanges();
+                }
+
+                // Verleg persoonsAdressen waar mogelijk
+
+                var teVerleggenPAs = (from pa in dubbel.PersoonsAdres
+                                      where !pa.Adres.PersoonsAdres.Any(pa2 => Equals(pa2.Persoon, origineel))
+                                      select pa).ToList();
+
+                foreach (var pa in teVerleggenPAs)
+                {
+                    pa.Persoon = origineel;
+                }
+
+                // Dat gaan we al eens bewaren.
+
+                _personenRepo.SaveChanges();
+
+                // De persoonsadressen die nu nog aan de dubbele hangen, hangen ook aan het origineel.
+                // Verwijder.
+
+                foreach (var dubbelPa in dubbel.PersoonsAdres)
+                {
+                    if (dubbelPa.GelieerdePersoon.Any())
+                    {
+                        // Oeps. Dit is nog ergens een voorkeursadres. verleg.
+                        var origineelPa = (from pa in origineel.PersoonsAdres
+                                           where Equals(pa.Adres, dubbelPa.Adres)
+                                           select pa).Single();
+                        foreach (var gp in dubbelPa.GelieerdePersoon)
+                        {
+                            gp.PersoonsAdres = origineelPa;
+                        }
+                    }
+                    _persoonsAdressenRepo.Delete(dubbelPa);
+                    _persoonsAdressenRepo.SaveChanges();
+                }
+
+                // Verleg verzekeringen waar mogelijk
+
+                var teVerleggenPvs = (from pv in dubbel.PersoonsVerzekering
+                                      where !pv.VerzekeringsType.PersoonsVerzekering.Any(pv2 => Equals(pv2.Persoon, origineel))
+                                      select pv).ToList();
+
+                foreach (var pv in teVerleggenPvs)
+                {
+                    pv.Persoon = origineel;
+                }
+                _personenRepo.SaveChanges();
+
+                foreach (var pv in dubbel.PersoonsVerzekering)
+                {
+                    // Nog niet verlegde verzekeringen zijn dubbel, en mogen verwijderd worden
+                    _persoonsVerzekeringenRepo.Delete(pv);
+                }
+                _personenRepo.SaveChanges();
+
+                // Gebruikersrechten nog
+
+                var teVerleggenGavs = (from g in dubbel.Gav
+                                       where
+                                           !g.GebruikersRecht.Any(
+                                               gr => gr.Groep.GebruikersRecht.Any(gr2 => gr2.Gav.Persoon.Contains(origineel)))
+                                       select g).ToList();
+
+                foreach (var g in teVerleggenGavs)
+                {
+                    dubbel.Gav.Remove(g);
+                    origineel.Gav.Add(g);
+                }
+                _personenRepo.SaveChanges();
+
+                foreach (var g in dubbel.Gav)
+                {
+                    // wat een gepruts.
+
+                    foreach (var dubbelGebruikersRecht in g.GebruikersRecht)
+                    {
+                        var origineelGebruikersRecht = (from gr in origineel.Gav.SelectMany(g2 => g2.GebruikersRecht)
+                                                        where Equals(gr.Groep, dubbelGebruikersRecht.Groep)
+                                                        select gr).SingleOrDefault();
+
+                        if (origineelGebruikersRecht != null)
+                        {
+                            // TODO: Rollen (maar die hebben we nu nog niet, zie #844)
+
+                            if (dubbelGebruikersRecht.VervalDatum > origineelGebruikersRecht.VervalDatum)
+                            {
+                                origineelGebruikersRecht.VervalDatum = dubbelGebruikersRecht.VervalDatum;
+                            }
+                            _gebruikersRechtenRepo.Delete(dubbelGebruikersRecht);
+                        }
+                        else
+                        {
+                            dubbelGebruikersRecht.Gav = origineel.Gav.Single();
+                        }
+                        _gebruikersRechtenRepo.SaveChanges();
+                    }
+                }
+
+                _personenRepo.Delete(dubbel);
+                _personenRepo.SaveChanges();
+                
+                tx.Complete();
+            }
+
+        }
+
+        /// <summary>
+        /// Verwijdert het geven <paramref name="lid"/>, ZONDER TE PERSISTEREN
+        /// </summary>
+        /// <param name="lid"></param>
+        private void LidVerwijderen(Lid lid)
+        {
+            var leiding = lid as Leiding;
+            if (leiding != null)
+            {
+                leiding.AfdelingsJaar.Clear();
+            }
+            lid.Functie.Clear();
+            _ledenRepo.Delete(lid);
         }
 
         /// <summary>
