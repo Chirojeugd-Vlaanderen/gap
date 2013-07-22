@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Linq;
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
@@ -49,7 +50,21 @@ namespace Chiro.Gap.Sync
             }
             else
             {
-                throw new NotImplementedException();
+                // Verzekeren op basis van details.
+                // Een verzekering loonverlies (de enige die we voorlopig ondersteunen) is
+                // alleen mogelijk voor leden. Sinds gap 1.x ergens in het verleden, krijgen
+                // probeerleden ook al een AD-nr. Dus mogen we ervanuit gaan dat het AD-nummer
+                // al in aanvraag is.
+                // Niet dat dat nog relevant is eigenlijk.
+
+                var gelieerdePersoon = (from gp in persoonsVerzekering.Persoon.GelieerdePersoon
+                                        where Equals(gp.Groep, gwj.Groep)
+                                        select gp).Single();
+
+                ServiceHelper.CallService<ISyncPersoonService>(
+                    svc =>
+                    svc.LoonVerliesVerzekerenAdOnbekend(Mapper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon),
+                                                        gwj.Groep.Code, gwj.WerkJaar));
             }
         }
     }
