@@ -225,20 +225,16 @@ $(function () {
             title: "Functie verwijderen",
             buttons: {
                 'Ja': function () {
-                    doorgaan = true;
                     $(this).dialog('close');
+                    $.post(url, { FunctieID: functieId }).done(function () {
+                        location.reload();
+                    });
                 },
                 'Nee': function () {
                     $(this).dialog('close');
                 }
             }
         });
-        if (doorgaan) {
-            $.post(url, { FunctieID: functieId }).done(function () {
-                location.reload();
-            });
-            doorgaan = false;
-        }
     });
 
     //---------------------------------------------------------------------------
