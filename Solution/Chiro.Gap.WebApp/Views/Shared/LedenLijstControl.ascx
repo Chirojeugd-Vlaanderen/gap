@@ -29,7 +29,9 @@
     <thead>
             <tr>
                 <th><%=Html.CheckBox("checkall") %></th>
+                <% if (!Model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep)) { %>
                 <th class="center">Type</th>
+                <% } %>
                 <th>Naam</th>
                 <th>Geboortedatum</th>
                 <th>
@@ -58,9 +60,11 @@
                 <input type="checkbox" name="SelectieGelieerdePersoonIDs" value="<%=lidOverzicht.GelieerdePersoonID %>"
                     <%=Model.SelectieGelieerdePersoonIDs != null && Model.SelectieGelieerdePersoonIDs.Contains(lidOverzicht.GelieerdePersoonID) ? "checked=\"checked\"" : String.Empty%> />
             </td>
+            <% if (!Model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep)) { %>
             <td>
                 <%= lidOverzicht.Type == LidType.Kind ? "Lid" : "Leiding" %>
             </td>
+            <% } %>
             <td>
                 <%=Html.PersoonsLink(lidOverzicht.GelieerdePersoonID, lidOverzicht.VoorNaam, lidOverzicht.Naam)%>
                 <%=lidOverzicht.SterfDatum.HasValue? "&nbsp;(&dagger;)" : string.Empty %>

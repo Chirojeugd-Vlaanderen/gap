@@ -231,7 +231,7 @@ namespace Chiro.Gap.Services
                                                                   : voorstel.AfdelingsJaren.Select(aj => aj.ID)
                                                                             .ToArray(),
                                                           GelieerdePersoonID = gp.ID,
-                                                          LeidingMaken = voorstel.LeidingMaken,
+                                                          LeidingMaken = voorstel.LeidingMaken || g.Niveau.HeeftNiveau(Niveau.KaderGroep),
                                                           VolledigeNaam = gp.Persoon.VolledigeNaam
                                                       });
                         }
@@ -300,7 +300,7 @@ namespace Chiro.Gap.Services
                     var lidVoorstel = new LidVoorstel
                                           {
                                               AfdelingsJaren = _afdelingsJaarRepo.ByIDs(info.AfdelingsJaarIDs),
-                                              LeidingMaken = info.LeidingMaken
+                                              LeidingMaken = info.LeidingMaken || gp.Groep.Niveau.HeeftNiveau(Niveau.KaderGroep)
                                           };
 
                     // TODO: Dit is te veel business. Bekijken of een lid al ingeschreven is, moet in de workers gebeuren.

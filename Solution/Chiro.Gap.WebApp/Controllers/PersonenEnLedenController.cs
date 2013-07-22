@@ -158,7 +158,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // De service verwacht een lijst met AfdelingsJaarIDs.  Ik ga dus alle lijsten die
             // enkel 0 bevatten, vervangen door lege lijsten.
 
-            foreach (var pli in inTeSchrijven.Where(pli => pli.AfdelingsJaarIDs.Count() == 1 && pli.AfdelingsJaarIDs.First() == 0))
+            foreach (var pli in inTeSchrijven.Where(pli => pli.AfdelingsJaarIDs == null || (pli.AfdelingsJaarIDs.Count() == 1 && pli.AfdelingsJaarIDs.First() == 0)))
             {
                 pli.AfdelingsJaarIDs = new int[0];  // lege array van ints
             }

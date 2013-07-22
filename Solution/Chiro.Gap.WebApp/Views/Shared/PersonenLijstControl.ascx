@@ -80,12 +80,12 @@
             <%=p.IsLid ? "lid" : p.IsLeiding ? "leiding" : "--" %>
         </td>
         <td>
-            <% if (!p.IsLid && !p.IsLeiding && (p.KanLidWorden || p.KanLeidingWorden))
-               { %>
-            <%=Html.ActionLink(
-				String.Format("inschrijven als {0}", p.KanLidWorden ? "lid": "leiding"), 
-				"Inschrijven", 
-				new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
+            <% if (!p.IsLid && !p.IsLeiding && (p.KanLidWorden || p.KanLeidingWorden)) { %>
+                <%=Html.ActionLink(
+                    String.Format("inschrijven{0}", Model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep) ? "" : (p.KanLidWorden ? " als lid" : " als leiding")), 
+				    "Inschrijven", 
+				    new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
+                &nbsp;
             <% } %>
             <%=Html.ActionLink("zus/broer maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
         </td>
