@@ -22,13 +22,7 @@
  * limitations under the License.
  */
 %>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<script src="<%= ResolveUrl("~/Scripts/jquery-groep.js") %>" type="text/javascript"></script>
-    <input id='MGID' value="<%=Model.Info.ID %>" hidden readonly/>
-    <div id="extraInfoDialog" hidden>
-        <img src="<%= ResolveUrl("~/Content/images/loading.gif")%>" />
-    </div>
+    <script src="<%= ResolveUrl("~/Scripts/jquery-groep.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
             $('#groep_Menu').menu();
@@ -54,6 +48,13 @@
             }
         });
     </script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    
+    <input id='MGID' value="<%=Model.Info.ID %>" hidden readonly/>
+    <div id="extraInfoDialog" hidden>
+        <img src="<%= ResolveUrl("~/Content/images/loading.gif")%>" />
+    </div>
 
     <ul id="groep_Menu">
         <li><a href="#" id="algInfo">Algemene groepsinfo</a></li>
