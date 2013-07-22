@@ -74,6 +74,7 @@
     <Compile Include="LedenSyncTest.cs" />
     <Compile Include="PersonenSyncTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VerzekeringenSyncTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
