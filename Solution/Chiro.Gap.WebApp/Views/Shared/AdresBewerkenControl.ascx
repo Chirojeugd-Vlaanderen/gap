@@ -30,7 +30,7 @@
     </tr>
     <tr>
         <td><%=Html.LabelFor(mdl => mdl.Straat)%></td>
-        <td><%=Html.EditorFor(mdl => mdl.Straat)%> <br />(Hoofdletter gevoelig!)
+        <td><%=Html.EditorFor(mdl => mdl.Straat)%> <br />
         <%=Html.ValidationMessageFor(mdl => mdl.Straat)%></td>
     </tr>   
     
