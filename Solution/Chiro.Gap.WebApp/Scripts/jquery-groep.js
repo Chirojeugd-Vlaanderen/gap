@@ -217,7 +217,6 @@ $(function () {
     //      een functie VERWIJDEREN
     $('.functieVerwijderen').click(function () {
         functieId = $(this).parent().parent().find('td input').val();
-        alert(functieId);
         url = link("Functies", "Verwijderen");
         $('#extraInfoDialog').html('Ben je zeker dat je deze functie wil verwijderen?');
         $('#extraInfoDialog').dialog({
