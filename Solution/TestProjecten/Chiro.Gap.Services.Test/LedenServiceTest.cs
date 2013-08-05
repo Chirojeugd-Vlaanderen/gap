@@ -1903,5 +1903,62 @@ namespace Chiro.Gap.Services.Test
 
             // Verwacht een exception.
         }
+
+        /// <summary>
+        /// Een inschrijvingsvoorstel voor een kadergroep moet altijd suggereren om als leiding in te schrijven.
+        /// </summary>
+        [TestMethod()]
+        public void VoorstelTotInschrijvenGenererenKaderTest()
+        {
+            // ARRANGE
+
+            string foutBerichten;
+
+            // Gauw wat handgemaakte dummydata:
+
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                WerkJaar = 2013,
+            };
+
+            var gelieerdePersoon = new GelieerdePersoon
+                                   {
+                                       ID = 3,
+                                       Persoon = new Persoon
+                                                 {
+                                                     GeboorteDatum = new DateTime(1997, 3, 8),  // extreem jong voor kaderploeg
+                                                     Geslacht = GeslachtsType.Vrouw
+                                                 },
+                                       Groep = new KaderGroep
+                                               {
+                                                   GroepsWerkJaar = new List<GroepsWerkJaar>
+                                                                    {
+                                                                        groepsWerkJaar
+                                                                    }
+                                               }
+                                   };
+
+            groepsWerkJaar.Groep = gelieerdePersoon.Groep;
+
+            // We mocken een en ander:
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(
+                                      new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>
+                                                                          {
+                                                                              gelieerdePersoon,
+                                                                          }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            var actual = target.VoorstelTotInschrijvenGenereren(new[] { gelieerdePersoon.ID }, out foutBerichten);
+
+            // We verwachten dat de opgeleverde gelieerde persoon ingeschreven wordt als lid.
+
+            Assert.IsTrue(actual.First().LeidingMaken);
+        }
     }
 }
