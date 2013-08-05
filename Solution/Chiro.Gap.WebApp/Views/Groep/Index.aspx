@@ -149,7 +149,7 @@
                 <th></th>
 		    </thead>
 		    <tbody>
-			    <% foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Type)) { %>
+			    <% foreach (var fie in Model.Detail.Functies.Where(fie=>fie.WerkJaarTot == null || fie.WerkJaarTot < Model.HuidigWerkJaar).OrderBy(fie => fie.Type)) { %>
 			    <tr>
 			        <td hidden><input value="<%=fie.ID %>"/></td>
 			        <td><%=fie.Naam %></td>
