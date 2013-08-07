@@ -242,12 +242,17 @@
                         cv.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email ? "<a href='mailto:{0}'>{0}</a>" : "{0}",
                         Html.Encode(cv.Nummer));
                     teller++;
+
+                    // FIXME: dit is gepruts
+                    
+                    string cvID = (cv.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email ? "email" : "tel") + cv.ID;
+                    string tag = cv.Voorkeur ? "strong" : "span";
             %>
-             <tr <%= cv.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email ? "id='email'" : "id='tel'" %>>
+             <tr>
                  
-                <td><%= commType.Key.Omschrijving + " " + teller %> <input id="cvID" value="<%= cv.ID %>" hidden readonly /></td>
-                <td class="contact" title="<%= Html.Encode(cv.Nota) %>">
-                    <%= cv.Voorkeur ? "<strong>" + ctTekst + "</strong>" : ctTekst %>  
+                <td><%= commType.Key.Omschrijving + " " + teller %> </td>
+                <td title="<%= Html.Encode(cv.Nota) %>">
+                    <<%:tag %> id="<%:cvID %>" class="contact"><%=ctTekst %></<%:tag %>>
                 </td>
                 <td >
                     <div class="contactBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>

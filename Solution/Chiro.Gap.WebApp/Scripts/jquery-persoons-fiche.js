@@ -238,9 +238,11 @@ $(function () {
                 if ($.trim(value) == '') return "Dit veld mag niet leeg zijn! gebruik '-' om te verwijderen";
                 var antwoord;
 
-                var type = $(this).parent().attr('id');
+                var type = $(this).attr('id');
 
-                if (type == 'tel') {
+                // FIXME: dit is gepruts
+
+                if (type.charAt(0) == 't') {
                     antwoord = controleerTel(value);
                     return antwoord;
                 } else {
@@ -251,7 +253,10 @@ $(function () {
         })
         .on('save', function (e, params) {
             e.preventDefault();
-            var cvID = $(this).parent().find('td:first input').val();
+            var rijID = $(this).attr('id');
+            // extract communicatievormid uit ID van de rij.
+            var pattern = /([0-9]*)$/;
+            var cvID = pattern.exec(rijID)[0];
 
             bewaarContactGegevens(cvID, 'nummer', params.newValue);
         });
@@ -260,7 +265,7 @@ $(function () {
         e.stopPropagation();
         e.preventDefault();
 
-        $(this).parent().parent().find('td:eq(1)').editable('toggle');
+        $(this).parent().parent().find('.contact').editable('toggle');
     });
     //------------------------------------------------------------------------------------------
     //email & Telefoonnummer verwijderen
