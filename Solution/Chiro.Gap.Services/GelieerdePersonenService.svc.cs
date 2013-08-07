@@ -19,9 +19,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using System.Transactions; // NIET VERWIJDEREN!!
-// als de define KIPDORP is gezet (voor publieke test/live), gebruiken we wel transacties
+#if KIPDORP
+using System.Transactions;
+#endif
 
 using AutoMapper;
 using Chiro.Cdf.Poco;

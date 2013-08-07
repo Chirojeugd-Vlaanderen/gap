@@ -16,11 +16,8 @@
  * limitations under the License.
  */
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Transactions;      // NIET VERWIJDEREN, nodig voor live deploy!
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;

@@ -30,6 +30,9 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Services.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
+#if KIPDORP
+using System.Transactions;
+#endif
 
 namespace Chiro.Gap.Services
 {

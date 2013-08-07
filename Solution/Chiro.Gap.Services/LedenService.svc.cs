@@ -19,15 +19,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel;
 using System.Text;
 
+#if KIPDORP
 using System.Transactions; // NIET VERWIJDEREN!!
-// als de define KIPDORP is gezet (voor publiek test/live), gebruiken we wel transacties
+#endif
 
 using AutoMapper;
 using Chiro.Cdf.Poco;
-
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -36,7 +35,6 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Services
 {

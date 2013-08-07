@@ -32,6 +32,9 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
+#if KIPDORP
+using System.Transactions;
+#endif
 
 using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 
