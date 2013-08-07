@@ -300,7 +300,7 @@ namespace Chiro.Gap.Services
                     var lidVoorstel = new LidVoorstel
                                           {
                                               AfdelingsJaren = _afdelingsJaarRepo.ByIDs(info.AfdelingsJaarIDs),
-                                              LeidingMaken = info.LeidingMaken || gp.Groep.Niveau.HeeftNiveau(Niveau.KaderGroep)
+                                              LeidingMaken = info.LeidingMaken 
                                           };
 
                     // TODO: Dit is te veel business. Bekijken of een lid al ingeschreven is, moet in de workers gebeuren.
@@ -378,12 +378,26 @@ namespace Chiro.Gap.Services
                         catch (BestaatAlException<Kind>)
                         {
                             foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLid,
-                                                                          gp.Persoon.VolledigeNaam));
+                                gp.Persoon.VolledigeNaam));
                         }
                         catch (BestaatAlException<Leiding>)
                         {
                             foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLeiding,
-                                                                          gp.Persoon.VolledigeNaam));
+                                gp.Persoon.VolledigeNaam));
+                        }
+                        catch (FoutNummerException ex)
+                        {
+                            if (ex.FoutNummer == FoutNummer.LidTypeVerkeerd)
+                            {
+                                foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.OngeldigLidType));
+                            }
+                            else
+                            {
+                                // FIXME: Dit is tamelijk lelijk, en stuurt backendinformatie naar de frontend.
+
+                                foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.AlgemeneFout,
+                                    gp.Persoon.VolledigeNaam, ex.FoutNummer, ex.Message));
+                            }
                         }
                         catch (GapException ex)
                         {

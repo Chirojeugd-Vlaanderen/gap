@@ -222,4 +222,7 @@
   <data name="GroepInactief" xml:space="preserve">
     <value>Je groep staat geregistreerd als gestopte groep.</value>
   </data>
+  <data name="AlgemeneFout" xml:space="preserve">
+    <value>Fout {1} bij inschrijven {0}: {2}</value>
+  </data>
 </root>

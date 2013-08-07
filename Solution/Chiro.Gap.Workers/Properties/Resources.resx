@@ -157,7 +157,7 @@
   <data name="FoutiefGroepsWerkJaarFunctie" xml:space="preserve">
     <value>Je probeert een lid te koppelen aan een functie die niet geldig is voor het gegeven werkjaar.</value>
   </data>
-  <data name="FoutiefLidType" xml:space="preserve">
+  <data name="FoutiefLidTypeFunctie" xml:space="preserve">
     <value>Deze functie is niet toegelaten voor dit type lid (kind/leiding).</value>
   </data>
   <data name="AfdelingNietBeschikbaar" xml:space="preserve">
@@ -327,5 +327,8 @@ de helpdesk</value>
   </data>
   <data name="GroepInactief" xml:space="preserve">
     <value>Je groep is geregistreerd als gestopte groep.</value>
+  </data>
+  <data name="KindLidInKader" xml:space="preserve">
+    <value>Poging tot inschrijven kindleden in een kaderploeg.</value>
   </data>
 </root>

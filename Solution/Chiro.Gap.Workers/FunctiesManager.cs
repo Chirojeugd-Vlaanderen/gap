@@ -102,7 +102,7 @@ namespace Chiro.Gap.Workers
                 {
                     throw new FoutNummerException(
                         FoutNummer.LidTypeVerkeerd,
-                        Resources.FoutiefLidType);
+                        Resources.FoutiefLidTypeFunctie);
                 }
 
                 // Ik test hier bewust niet of er niet te veel leden zijn met de functie;

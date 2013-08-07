@@ -106,6 +106,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fout {1} bij inschrijven {0}: {2}.
+        /// </summary>
+        internal static string AlgemeneFout {
+            get {
+                return ResourceManager.GetString("AlgemeneFout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to België.
         /// </summary>
         internal static string Belgie {
@@ -258,7 +267,7 @@ namespace Chiro.Gap.Services.Properties {
             }
         }
         
-         /// <summary>
+        /// <summary>
         ///   Looks up a localized string similar to Afdeling niet goed gedefinieerd in zijn werkjaar.
         /// </summary>
         internal static string OngeldigAfdelingsJaar {
@@ -266,8 +275,6 @@ namespace Chiro.Gap.Services.Properties {
                 return ResourceManager.GetString("OngeldigAfdelingsJaar", resourceCulture);
             }
         }
-       
-        
         
         /// <summary>
         ///   Looks up a localized string similar to De naam van een categorie mag niet leeg zijn..

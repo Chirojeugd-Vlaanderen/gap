@@ -174,7 +174,7 @@ namespace Chiro.Gap.Workers
 
             if (!groepsWerkJaar.Groep.Niveau.HasFlag(Niveau.Groep))
             {
-                throw new FoutNummerException(FoutNummer.LidTypeVerkeerd, Properties.Resources.FoutiefLidType);
+                throw new FoutNummerException(FoutNummer.LidTypeVerkeerd, Properties.Resources.FoutiefLidTypeFunctie);
             }
 
             // Behoud bestaande functies die straks nog van 
@@ -445,6 +445,8 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public LidVoorstel InschrijvingVoorstellen(GelieerdePersoon gp, GroepsWerkJaar gwj, bool leidingIndienMogelijk)
         {
+            var resultaat = new LidVoorstel();
+
             // We moeten kunnen bepalen hoe oud iemand is, om hem/haar ofwel in een afdeling te steken,
             // of te kijken of hij/zij oud genoeg is om leiding te zijn.
 
@@ -453,7 +455,10 @@ namespace Chiro.Gap.Workers
                 throw new FoutNummerException(FoutNummer.GeboorteDatumOntbreekt, Properties.Resources.GeboorteDatumOntbreekt);
             }
 
-            var resultaat = new LidVoorstel();
+            if (!gwj.Groep.Niveau.HasFlag(Niveau.Groep) && !leidingIndienMogelijk)
+            {
+                throw new FoutNummerException(FoutNummer.LidTypeVerkeerd, Properties.Resources.FoutiefLidTypeFunctie);
+            }
 
             // TODO: Bekijken of we 'AfdelingsJaarVoorstellen' niet kunnen hergebruiken.
 
@@ -536,6 +541,14 @@ namespace Chiro.Gap.Workers
             // genereren via InschrijvingVoorstellen.
 
             Debug.Assert(voorstellid != null);
+
+            // Controleer of lidtype wel overeenkomt met groeptype
+
+            if (!gwj.Groep.Niveau.HasFlag(Niveau.Groep) && !voorstellid.LeidingMaken)
+            {
+                throw new FoutNummerException(FoutNummer.LidTypeVerkeerd, Properties.Resources.KindLidInKader);
+            }
+
 
             // Lid maken zonder geboortedatum is geen probleem meer, aangezien de afdeling
             // bij in het voorstel zit. (en dus niet op dit moment bepaald moet worden.)

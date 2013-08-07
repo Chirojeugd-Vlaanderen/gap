@@ -133,7 +133,7 @@ namespace Chiro.Gap.Workers.Test
                                                   }
                                       };
 
-            var gwj = new GroepsWerkJaar {WerkJaar = 2011};
+            var gwj = new GroepsWerkJaar {WerkJaar = 2011, Groep = new ChiroGroep()};
 
             var afdelingsJaar1 = new AfdelingsJaar
                                      {
@@ -187,7 +187,7 @@ namespace Chiro.Gap.Workers.Test
                     }
             };
 
-            var gwj = new GroepsWerkJaar {WerkJaar = 2011};
+            var gwj = new GroepsWerkJaar {WerkJaar = 2011, Groep = new ChiroGroep()};
 
             var afdelingsJaar1 = new AfdelingsJaar
             {
@@ -234,7 +234,7 @@ namespace Chiro.Gap.Workers.Test
             // niet relevant. Wat wel van belang is, is dat de persoon te jong is om
             // lid te worden. We verwachten dat het maken van een lidvoorstel crasht.
 
-            var gwj = new GroepsWerkJaar { WerkJaar = 2012 };  // Werkjaar 2012-2013
+            var gwj = new GroepsWerkJaar {WerkJaar = 2012, Groep = new ChiroGroep()};  // Werkjaar 2012-2013
 
             var gp = new GelieerdePersoon
             {
