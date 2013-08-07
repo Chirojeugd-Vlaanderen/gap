@@ -23,6 +23,7 @@
  * limitations under the License.
  */
 %>
+        <script src="<%= ResolveUrl("~/Scripts/jquery-1.7.1.min.js")%>" type="text/javascript"></script>
 		<script type="text/javascript">
 		    $(document).ready(function () {
 
