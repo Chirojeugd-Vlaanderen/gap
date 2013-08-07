@@ -24,13 +24,13 @@
  */
 %>
     <link href="<%= ResolveUrl("~/Content/print.css") %>" media="print" rel="stylesheet" type="text/css" />
+    
+    <script src="<%= ResolveUrl("~/Scripts/jquery-persoons-fiche.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/moment.js") %>" type="text/javascript"></script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
-    <script src="<%= ResolveUrl("~/Scripts/jquery-persoons-fiche.js") %>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/moment.js") %>" type="text/javascript"></script>
-
+    
     <div id="printLogo"></div>
     <div id="PersoonsInformatie">
     <% // dialog voor het weergeven van het info-kadertje %>
@@ -129,11 +129,12 @@
     <% // PERSOONLIJKE GEGEVENS (LINKERKANT) %>
     <h3>Persoonlijke gegevens</h3>
     <hr />
+    
     <table class="persoonlijkeGegevens">
            <tr>
                <td>Voornaam</td>
-               <td id="voornaamInfo">
-                   <b><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VoorNaam) %></b>
+               <td>
+                   <b id="voornaamInfo"><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VoorNaam) %></b>
                </td> 
                <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkVoorNaam" style="cursor: pointer"></div></td>
                <td id="voornaamIconen">
@@ -141,8 +142,8 @@
            </tr>
            <tr>
                <td>Naam</td>
-               <td id="achternaamInfo">
-                   <b><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.Naam) %></b>
+               <td>
+                   <b id="achternaamInfo"><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.Naam) %></b>
                </td> 
                <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkAchterNaam" style="cursor: pointer"></div></td>
                <td id="achternaamIconen">
