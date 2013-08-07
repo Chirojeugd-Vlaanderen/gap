@@ -1934,7 +1934,8 @@ namespace Chiro.Gap.Services.Test
                                                    GroepsWerkJaar = new List<GroepsWerkJaar>
                                                                     {
                                                                         groepsWerkJaar
-                                                                    }
+                                                                    },
+                                                   NiveauInt = (int)Niveau.Gewest
                                                }
                                    };
 
@@ -1959,6 +1960,62 @@ namespace Chiro.Gap.Services.Test
             // We verwachten dat de opgeleverde gelieerde persoon ingeschreven wordt als lid.
 
             Assert.IsTrue(actual.First().LeidingMaken);
+        }
+
+        /// <summary>
+        /// Ook kaderleden moeten aan de minimum(leidings)leeftijd voldoen
+        /// </summary>
+        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.LidTeJong)]
+        public void VoorstelTotInschrijvenGenererenKaderTeJongTest()
+        {
+            // ARRANGE
+
+            string foutBerichten;
+
+            // Gauw wat handgemaakte dummydata:
+
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                WerkJaar = 2013,
+            };
+
+            var gelieerdePersoon = new GelieerdePersoon
+                                   {
+                                       ID = 3,
+                                       Persoon = new Persoon
+                                                 {
+                                                     GeboorteDatum = new DateTime(2007, 3, 8), // te jong voor leiding
+                                                     Geslacht = GeslachtsType.Vrouw
+                                                 },
+                                       Groep = new KaderGroep
+                                               {
+                                                   GroepsWerkJaar = new List<GroepsWerkJaar>
+                                                                    {
+                                                                        groepsWerkJaar
+                                                                    },
+                                                   NiveauInt = (int) Niveau.Gewest
+                                               }
+                                   };
+
+            groepsWerkJaar.Groep = gelieerdePersoon.Groep;
+
+            // We mocken een en ander:
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(
+                                      new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>
+                                                                          {
+                                                                              gelieerdePersoon,
+                                                                          }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<LedenService>();
+            var actual = target.VoorstelTotInschrijvenGenereren(new[] { gelieerdePersoon.ID }, out foutBerichten);
+
+            // Normaal trad er een exception op.
         }
     }
 }
