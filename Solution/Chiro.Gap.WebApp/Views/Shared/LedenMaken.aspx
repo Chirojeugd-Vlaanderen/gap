@@ -36,7 +36,7 @@
 		        // 'geen' toevoegt of verwijdert aan de lijst met mogelijke afdelingen
 
 		        $('input[id*="LeidingMaken"]').click(function () {
-		            if ($(this).attr('checked')) {
+		            if ($(this).is(':checked')) {
 		                $(this).parent().parent().find('select').append('<option value="0">geen</option>');
 		            }
 		            else {
