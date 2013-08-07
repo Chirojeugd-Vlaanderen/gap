@@ -131,7 +131,15 @@
                     <%=Html.DropDownListFor(mdl => mdl.PersoonEnLidInfos[j].AfdelingsJaarIDs, afdelingsLijstItems)%>
 
 				    </td>
-            <% } %>
+            <% }
+                   else
+                   {
+                       // Bij kaderploegen heb je de mogelijkheid niet om lid/leiding
+                       // te kiezen.
+                       %>
+                       <%:Html.HiddenFor(mdl=>mdl.PersoonEnLidInfos[j].LeidingMaken) %>
+                       <%                       
+                   } %>
 			</tr>
 		<%}%>
 		</table>
