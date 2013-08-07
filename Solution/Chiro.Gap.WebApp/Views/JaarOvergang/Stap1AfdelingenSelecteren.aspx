@@ -22,11 +22,10 @@
  */
 %>
     <% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #697) %>
-    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.7.1.min.js")%>"></script>
         <script type="text/javascript">
             $(document).ready(function () {
                 $("#checkall").click(function () {
-                    $("INPUT[@name=GekozenAfdelingsIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
+                    $(this).closest('table').find(':checkbox').prop('checked', this.checked);
                 });
             });
     </script>

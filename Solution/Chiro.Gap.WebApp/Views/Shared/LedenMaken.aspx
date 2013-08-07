@@ -26,6 +26,12 @@
 		<script type="text/javascript">
 		    $(document).ready(function () {
 
+		        // Gedrag van vakje 'alles selecteren'
+
+		        $("#checkall").click(function () {
+		            $(this).closest('table').find("input[name*='InTeSchrijven']").prop('checked', this.checked);
+		        });
+		        
 		        // onderstaande zorgt ervoor dat een klik op een checkbox 'leiding maken' de optie
 		        // 'geen' toevoegt of verwijdert aan de lijst met mogelijke afdelingen
 
