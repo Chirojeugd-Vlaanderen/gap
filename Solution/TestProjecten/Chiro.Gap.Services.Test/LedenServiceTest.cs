@@ -2017,5 +2017,63 @@ namespace Chiro.Gap.Services.Test
 
             // Normaal trad er een exception op.
         }
+
+        /// <summary>
+        ///Als je probeert een kindlid aan te sluiten bij een kaderploeg, verwachten we een foutmelding.
+        ///</summary>
+        [TestMethod()]
+        public void InschrijvenKindBijKaderTest()
+        {
+            // De foutmeldingen doorgeven als string, vind ik een slecht idee. (Zie #530)
+            // Maar momenteel is het wel zo, en is het op die manier dat we moeten
+            // nakijken of een inschrijving al dan niet gelukt is.
+
+            // ARRANGE
+
+            // model
+            var groep = new KaderGroep()
+                        {
+                            NiveauInt = (int) Niveau.Gewest
+                        };
+
+            var groepswerkjaar = new GroepsWerkJaar {WerkJaar = 2013, Groep = groep};
+            groep.GroepsWerkJaar.Add(groepswerkjaar);
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Groep = groep,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1997, 8, 8)
+                    }
+            };
+
+            var lidVoorsel = new InTeSchrijvenLid
+            {
+                AfdelingsJaarIrrelevant = true,
+                GelieerdePersoonID = gelieerdePersoon.ID,
+                LeidingMaken = false,
+                VolledigeNaam = "Ham Burger" // moet weg; zie #1544
+            };
+
+            // dependency injection
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<AfdelingsJaar>())
+                .Returns(new DummyRepo<AfdelingsJaar>(new List<AfdelingsJaar>()));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var ledenService = Factory.Maak<LedenService>();
+            string feedback;
+            ledenService.Inschrijven(new[] { lidVoorsel }, out feedback);
+
+            // ASSERT
+            Assert.IsFalse(String.IsNullOrEmpty(feedback));
+        }
     }
 }
