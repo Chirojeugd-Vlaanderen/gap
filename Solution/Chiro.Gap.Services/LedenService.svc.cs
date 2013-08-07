@@ -231,7 +231,7 @@ namespace Chiro.Gap.Services
                                                                   : voorstel.AfdelingsJaren.Select(aj => aj.ID)
                                                                             .ToArray(),
                                                           GelieerdePersoonID = gp.ID,
-                                                          LeidingMaken = voorstel.LeidingMaken || g.Niveau.HeeftNiveau(Niveau.KaderGroep),
+                                                          LeidingMaken = voorstel.LeidingMaken,
                                                           VolledigeNaam = gp.Persoon.VolledigeNaam
                                                       });
                         }
