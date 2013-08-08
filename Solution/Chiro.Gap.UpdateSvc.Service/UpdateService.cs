@@ -22,7 +22,6 @@ using System.Transactions;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Services;
-using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.UpdateSvc.Contracts;
 using Chiro.Gap.WorkerInterfaces;
 
@@ -33,8 +32,6 @@ namespace Chiro.Gap.UpdateSvc.Service
     /// </summary>
     public class UpdateService : IUpdateService
     {
-        private readonly ILedenSync _ledenSync;
-
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Persoon> _personenRepo;
         private readonly IRepository<Lid> _ledenRepo;
@@ -48,7 +45,7 @@ namespace Chiro.Gap.UpdateSvc.Service
 
         private readonly GavChecker _gav;
 
-        public UpdateService(IAutorisatieManager autorisatieMgr, ILedenSync ledenSync, IRepositoryProvider repositoryProvider)
+        public UpdateService(IAutorisatieManager autorisatieMgr, IRepositoryProvider repositoryProvider)
         {
             _personenRepo = repositoryProvider.RepositoryGet<Persoon>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
@@ -61,7 +58,6 @@ namespace Chiro.Gap.UpdateSvc.Service
             _persoonsVerzekeringenRepo = repositoryProvider.RepositoryGet<PersoonsVerzekering>();
             _gebruikersRechtenRepo = repositoryProvider.RepositoryGet<GebruikersRecht>();
 
-            _ledenSync = ledenSync;
             _gav = new GavChecker(autorisatieMgr);
         }
 
