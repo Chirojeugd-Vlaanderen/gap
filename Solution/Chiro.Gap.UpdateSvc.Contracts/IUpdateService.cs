@@ -55,7 +55,6 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 	    /// <param name="stopDatum">Datum vanaf wanneer gestopt, <c>null</c> om de groep opnieuw te activeren.</param>
 	    /// <remarks>Als <paramref name="stopDatum"/> <c>null</c> is, wordt de groep opnieuw actief.</remarks>
 	    [OperationContract(IsOneWay = true)]
-	    void GroepDesactiveren(string stamNr, DateTime? stopDatum);
-        
+	    void GroepDesactiveren(string stamNr, DateTime? stopDatum);      
 	}
 }
