@@ -69,7 +69,7 @@
 		        <tbody>
 			        <tr>
 				        <td><%=Html.LabelFor(mdl => mdl.Detail.Naam)%></td>
-				        <td id="groepsNaam"><%=Html.DisplayFor(mdl => mdl.Detail.Naam)%></td>
+				        <td><span id="groepsNaam"><%=Html.DisplayFor(mdl => mdl.Detail.Naam)%></span></td>
                         <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkGroepsNaam" style="cursor:pointer"></div></td>
 			        </tr>
 			        <tr>
