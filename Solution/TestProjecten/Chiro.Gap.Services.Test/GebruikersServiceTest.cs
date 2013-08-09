@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
@@ -126,6 +127,44 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.IsTrue(gelieerdePersoon.Persoon.Gav.Any());
+        }
+
+        /// <summary>
+        ///A test for RechtenAfnemen
+        ///</summary>
+        [TestMethod()]
+        public void RechtenAfnemenTest()
+        {
+            // ARRANGE
+
+            var gav = new Gav();
+            var gelieerdePersoon = new GelieerdePersoon
+                                   {
+                                       ID = 1,
+                                       Groep = new ChiroGroep {ID = 3},
+                                       Persoon = new Persoon {ID = 2, Gav = new List<Gav> {gav}}
+                                   };
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+            gav.Persoon.Add(gelieerdePersoon.Persoon);
+            var gebruikersrecht = new Poco.Model.GebruikersRecht {Gav = gav, Groep = gelieerdePersoon.Groep};
+            gav.GebruikersRecht.Add(gebruikersrecht);
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Gav>())
+                .Returns(new DummyRepo<Gav>(new List<Gav> {gav}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GebruikersService>();
+            target.RechtenAfnemen(gelieerdePersoon.ID, new[] {gelieerdePersoon.Groep.ID});
+
+            // ASSERT
+
+            Assert.IsTrue(gebruikersrecht.VervalDatum <= DateTime.Now);
+            
         }
     }
 }
