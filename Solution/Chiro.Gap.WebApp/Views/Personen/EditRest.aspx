@@ -60,41 +60,7 @@
             
         </fieldset>
     </div>
-
-    <div id="adresDialog" hidden >
-        <form>
-            <fieldset>
-                <label for="landNaam"><b>Land</b></label><br/>
-                <select id="landNaam"></select>
-                <label for="straatnaam"><b>Straatnaam</b></label>
-                <input type="text" name="straatnaam" id="straatnaam" /> 
-                <label for="huisnr"><b>Huisnummer</b></label>
-                <input type="text" size="5"name="huisnr" id="huisnr" class="ui-widget-content ui-corner-all" />
-                <br/>
-                <label for="adresType"><b>Type</b></label><br/>
-                <select id="adresType">
-                    <option>Thuis</option>
-                    <option>Kot</option>
-                    <option>Werk</option>
-                    <option>Overig</option>
-                </select>
-                <br/>
-                <label for="bus"><b>Bus</b></label><br/>
-                <input type="text" size="5"name="bus" id="bus" class="ui-widget-content ui-corner-all" />
-                <label for="postnummer"><b>Postnummer</b></label>
-                <input type="text" size="6" name="postnummer" id="postnummer" class="ui-widget-content ui-corner-all" />
-                <label><b>Gemeente</b></label>
-                <br/>
-                <select name="gemeente" id="gemeente" class="ui-widget-content ui-corner-all" >
-                    <option></option>
-                </select>
-                <input id="gemeenteBuitenland" hidden/><br/>
-                <label id="pcbLabel" for="postCodeBuitenland" hidden><b>Postcode</b></label><br/>
-                <input id="postCodeBuitenland" hidden/>
-            </fieldset>
-        </form>
-    </div>
-    
+   
     <div id="commDialog" hidden>
         <form>
                 <table>

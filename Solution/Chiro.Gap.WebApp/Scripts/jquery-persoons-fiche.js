@@ -1,5 +1,6 @@
 ﻿/*
 * Copyright 2013, Arno Soontjens
+* Copyright 2013, Chirojeugd-Vlaanderen (hergebruik adressenscripts)
 * 
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -471,214 +472,55 @@ $(function() {
     // (uitgelezen uit de hiddenfields op de pagina)
     //--------------------------------------------------------------------
     $('.bewerkAdres').click(function(e) {
-        //TODO: Checkboxen voor de gelieerde personen die mee moeten 'verhuizen' 
-        //TODO:(id's worden al ingelezen, dus enkel nog naam ophalen, in een checkbox zetten en enkel de gechekte in de lijst plaatsen)
-        //TODO: automatisch aanvullen van straatnamen (zie code in comm. hierboven). Geeft in JSON de straatnamen terug maar nog niet als lijst in de inputbox
-        //TODO: Fout (in antwoord op post) opvangen en weergeven.
-        e.preventDefault();
-        var gpidList = [];
-        var straatnaam;
-        var huisnummer;
-        var postnummer;
-        var postcode;
-        var bus;
-        var gemeente;
-        var oudAdresId;
-        var adresType;
-        var land = 'België';
-        var woonplaatsbuitenland;
+        $('#extraInfoDialog').dialog();
 
-        var stratenCache = {};
-        var lastXhr;
+        // FIXME: dit lijkt me allemaal erg moeilijk te onderhouden, omdat
+        // we sterk afhankelijk zijn van hoe alle controller acties heten, e.d.
 
-        $("input#straatnaam").autocomplete({
-            minLength: 3,
-            source: function(request, response) {
-                var term = request.term;
-                if (term in stratenCache) {
-                    response(stratenCache[term]);
-                    return;
+        // zouden we die url niet ergens gewoon bij in de html kunnen steken, en hem
+        // daar oppikken met JQuery? Dat lijkt me ook noodzakelijk moesten we de javascript
+        // opnieuw inobtrusive maken.
+
+        var adresID = parseInt($(this).parent().parent().find('td input#persoonsAdresID').val());
+        url = link("Personen", "Verhuizen") + "/" + adresID + '?aanvragerID=' + GPid;
+
+        $('#extraInfoDialog').load(url, function() {
+            gedeeltelijkTonen('#extraInfoDialog');
+            $('#tabel').show();
+
+            // Door deze code kunnen users de form niet submitten met 'enter' (gaf een fout over de postcode)
+            $(this).keydown(function(event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    return false;
                 }
-                var url2 = link('Adressen', 'StratenVoorstellen');
-                lastXhr = $.getJSON(url2, { q: term, postNummer: postnummer }, function(data, status, xhr) {
-                    stratenCache[term] = data;
-                    if (xhr === lastXhr) {
-                        response(data);
-                    }
-                });
-            }
-        });
-
-        var adresID = $(this).parent().parent().find('td input#persoonsAdresID').val();
-        adresID = parseInt(adresID);
-
-        url = link("Personen", "Verhuizen");
-        url += "/" + adresID;
-        //model ophalen
-        $.getJSON(url, { aanvragerID: GPid }, function(data) {
-            //info uit model invullen in variablen
-            straatnaam = data.Straat;
-            postnummer = data.PostNr;
-            postcode = data.PostCode;
-            huisnummer = data.HuisNr;
-
-            land = data.PersoonsAdresInfo.LandNaam;
-            if (land != 'België') {
-                $('#gemeenteBuitenland, #postCodeBuitenland, #pcbLabel').show();
-                $('#gemeente').hide();
-                gemeente = data.WoonPlaats;
-            } else {
-                $('#gemeenteBuitenland, #postCodeBuitenland, #pcbLabel').hide();
-                $('#gemeente').show();
-                $('#postCodeBuitenland').val(postcode);
-            }
-
-            bus = data.Bus;
-            adresType = data.PersoonsAdresInfo.AdresType;
-            var adresTekst;
-            switch (adresType) {
-            case 1:
-                adresTekst = 'Thuis';
-                break;
-            case 2:
-                adresTekst = 'Kot';
-                break;
-            case 3:
-                adresTekst = 'Werk';
-                break;
-            case 4:
-                adresTekst = 'Overig';
-                break;
-            default:
-                adresTekst = 'Thuis';
-            }
-            //lijst met gelieerde personen aanmaken (hier ook best de checkboxes aanmaken)
-            $.each(data.GelieerdePersoonIDs, function(index, value) {
-                var waarde = parseInt(value);
-                gpidList.push(waarde);
-            });
-            //invullen in de velden
-            $('#straatnaam').val(straatnaam);
-            $('#huisnr').val(huisnummer);
-            $('#postnummer').val(postnummer);
-            $('#bus').val(bus);
-            $('#adresType').val(adresTekst);
-
-            if (land != 'België') {
-                $('#postCodeBuitenland').val(postcode);
-                $('#gemeenteBuitenland').val(gemeente);
-            }
-
-            url = link("Adressen", "LandenVoorstellen");
-            $.getJSON(url, function(data2) {
-                $.each(data2, function(index, value) {
-                    $('#landNaam').append('<option id="' + data2[index].ID + '" value="' + data2[index].Naam + '">' + data2[index].Naam + '</option>');
-                });
-            }).done(function() {
-                $('#landNaam').val(land);
+                return true;
             });
 
-            $('#landNaam').change(function() {
-                land = $(this).val();
-                alert(land);
-                if (land != 'België') {
-                    $('#gemeenteBuitenland, #postCodeBuitenland, #pcbLabel').show();
-                    $('#gemeente').hide();
-                } else {
-                    $('#gemeenteBuitenland, #postCodeBuitenland, #pcbLabel').hide();
-                    $('#gemeente').show();
-                }
-            });
-
-            oudAdresId = data.OudAdresID;
-            type = data.PersoonsAdresInfo.AdresType;
-            land = data.PersoonsAdresInfo.LandNaam;
-            postnummer = data.PersoonsAdresInfo.PostNr;
-            woonplaatsbuitenland = data.WoonPlaatsBuitenLand;
+            AdresBewerken();
 
             success:
             {
-                toonGemeenten(postnummer, '#gemeente');
-            }
-        });
-
-        $('#postnummer').change(function() {
-            if (land == 'België') {
-                postnummer = $(this).val();
-                toonGemeenten(postnummer, '#gemeente');
-            }
-        });
-
-        $('#adresType').change(function() {
-            var geselecteerd = $(this).val();
-            switch (geselecteerd) {
-            case 'Thuis':
-                adresType = 1;
-                break;
-            case 'Kot':
-                adresType = 2;
-                break;
-            case 'Werk':
-                adresType = 3;
-                break;
-            case 'Overig':
-                adresType = 4;
-                break;
-            default:
-                adresType = 1;
-            }
-        });
-
-        $('#adresDialog').dialog({
-            modal: true,
-            title: "Adres wijzigen",
-            buttons: {
-                "Wijzig adres": function() {
-
-                    straatnaam = $('#straatnaam').val();
-                    huisnummer = $('#huisnr').val();
-                    postnummer = $('#postnummer').val();
-                    bus = $('#bus').val();
-
-                    if (land == 'België') {
-                        gemeente = $('#gemeente').val();
-                    } else {
-                        gemeente = $('#buitenlandseGemeente').val();
-                        postcode = $('#postCodeBuitenland').val();
-                    }
-
-
-                    url = link("Personen", "Verhuizen");
-                    url += "/" + adresID;
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        traditional: true,
-                        data: {
-                            action: "Bewaren",
-                            "PersoonsAdresInfo.AdresType": adresType,
-                            Land: land,
-                            PostNr: postnummer,
-                            PostCode: postcode,
-                            Straat: straatnaam,
-                            HuisNr: huisnummer,
-                            Bus: bus,
-                            WoonPlaats: gemeente,
-                            WoonPlaatsBuitenLand: woonplaatsbuitenland,
-                            AanvragerID: GPid,
-                            OudAdresID: oudAdresId,
-                            GelieerdePersoonIDs: gpidList
+                $('#extraInfoDialog fieldset').css('width', '600px');
+                $(this).dialog({
+                    title: "Verhuizen",
+                    modal: true,
+                    width: 700,
+                    height: 600,
+                    resizable: true,
+                    buttons: {
+                        'Bewaren': function() {
+                            $('#extraInfoDialog #bewaarAdres').click();
+                            $(this).dialog('close');
+                        },
+                        'Annuleren': function() {
+                            $(this).dialog('destroy');
+                            $(this).dialog('close');
                         }
-                    }).done(function() {
-                        location.reload();
-                    });
-                    bezig();
-                    $(this).dialog("close");
-                },
-                "Annuleren": function() {
-                    $(this).dialog("close");
-                }
+                    }
+                });
             }
+
         });
     });
 

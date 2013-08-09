@@ -612,8 +612,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="groepID">Momenteel geselecteerde groep</param>
         /// <returns>De view 'AdresBewerken'</returns>
         [HandleError]
-        //ActionResult
-        public JsonResult Verhuizen(int id, int aanvragerID, int groepID)
+        public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
         {
             var model = new AdresModel();
             BaseModelInit(model, groepID);
@@ -668,7 +667,7 @@ namespace Chiro.Gap.WebApp.Controllers
                                 model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
             model.Titel = "Personen verhuizen";
-            return Json(model, JsonRequestBehavior.AllowGet); //View("AdresBewerken", model);
+            return View("AdresBewerken", model);
         }
 
         /// <summary>
