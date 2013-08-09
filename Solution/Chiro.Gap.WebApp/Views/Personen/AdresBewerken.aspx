@@ -25,62 +25,6 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/javascript">
-        $(function () {
-            var land;
-            $('#tabel').show();
-            $('#uitlegBinnenland').show();
-
-            $('#Land').on('change', function () {
-                land = $(this).val();
-                if (land != 'België') {
-                    //show gegevens voor buitenland en gewone gegevens
-                    $('#uitlegBuitenland').show();
-                    $('#uitlegBinnenland').hide();
-                    $('#tabel').show();
-                    $('#postCode').show();
-                    $('#woonplaatsBuitenland').show();
-                    //hide gegevens voor binnenland
-                    $('#woonplaatsBinnenland').hide();
-                } else {
-                    $('#woonplaatsBinnenland').show();
-                    $('#uitlegBuitenland').hide();
-                    $('#uitlegBinnenland').show();
-                    $('#tabel').show();
-                    $('#postCode').hide();
-                    $('#woonplaatsBuitenland').hide();
-                }
-            });
-            $('#PostNr').on('change', function () {
-                var pc = $(this).val();
-                if (land == 'België') {
-                    toonGemeenten(pc, '#WoonPlaats');
-                }
-            });
-            
-            var stratenCache = {};
-            var lastXhr;
-
-            $("input#Straat").autocomplete({
-                minLength: 3,
-                source: function (request, response) {
-                    var term = request.term;
-                    if (term in stratenCache) {
-                        response(stratenCache[term]);
-                        return;
-                    }
-                    var url2 = link('Adressen', 'StratenVoorstellen');
-                    lastXhr = $.getJSON(url2, { q: term, postNummer: pc }, function (data, status, xhr) {
-                        stratenCache[term] = data;
-                        if (xhr === lastXhr) {
-                            response(data);
-                        }
-                    });
-                }
-            });
-
-        });
-    </script>
 	<% 
 		Html.EnableClientValidation();
 // ReSharper disable Asp.NotResolved
