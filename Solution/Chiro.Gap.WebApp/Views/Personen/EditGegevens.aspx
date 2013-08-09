@@ -41,7 +41,7 @@
 
 	<ul id="acties">
 		<li><button type="button" class="ui-button-text-only" id="knopBewaren">Bewaren</button></li>
-		<li><button type="button" class="ui-button-text-only" id="knopReset"/>Reset</li>
+		<li><button type="button" class="ui-button-text-only" id="knopReset">Reset</button></li>
 	</ul>
 	<% if(Model.BroerzusID != 0)
 {
