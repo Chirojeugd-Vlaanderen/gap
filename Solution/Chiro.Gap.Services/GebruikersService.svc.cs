@@ -246,11 +246,10 @@ namespace Chiro.Gap.Services
         /// <remarks>In praktijk gebeurt dit door de vervaldatum in het verleden te leggen.</remarks>
         public void RechtenAfnemen(int gelieerdePersoonId, int[] groepIds)
         {
-            var persoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonId);
-            Gav.Check(persoon);
-            var account =
-                (from g in _rechtenRepo.Select() where g.Persoon.Any(e => e.GelieerdePersoon.Contains(persoon)) select g)
-                    .FirstOrDefault();
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonId);
+            Gav.Check(gelieerdePersoon);
+
+            var account = gelieerdePersoon.Persoon.Gav.Single();
             RechtenAfnemen(account, groepIds);
         }
 
