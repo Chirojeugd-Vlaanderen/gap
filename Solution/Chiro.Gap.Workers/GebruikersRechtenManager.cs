@@ -32,14 +32,6 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class GebruikersRechtenManager : IGebruikersRechtenManager
     {
-        private readonly IMailer _mailer;
-
-        public GebruikersRechtenManager(
-            IMailer mailer)
-        {
-            _mailer = mailer;
-        }
-
         /// <summary>
         /// Verlengt het gegeven <paramref name="gebruikersRecht"/> (indien mogelijk)
         /// </summary>
