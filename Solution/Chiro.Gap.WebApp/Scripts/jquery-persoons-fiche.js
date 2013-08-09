@@ -948,27 +948,6 @@ $(function () {
     //PANEEL AAN DE RECHTERZIJDE
     //------------------------------------------------------------------------------------------
 
-    //gebruikersrechten
-    $('#loginMaken').click(function () {
-        bezig();
-        url = link("GebruikersRecht", "LoginMaken");
-        url += "/" + GPid;
-
-        $.post(url).fail(function () {
-            alert("Fout! Er is iets misgelopen");
-            location.reload();
-        });
-    });
-
-    $('#gbrToekennen').click(function () {
-        bezig();
-        url = link("GebruikersRecht", "AanGpToekennen");
-        url += "/" + GPid;
-        $.post(url).fail(function () {
-            alert("Fout! Er is iets misgelopen");
-            location.reload();
-        });
-    });
     //------------------------------------------------------------------------------------------
     // Categoriën verwijderen / Toevoegen
     $('.catVerw').click(function (e) {
