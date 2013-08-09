@@ -26,6 +26,7 @@
     <link href="<%= ResolveUrl("~/Content/print.css") %>" media="print" rel="stylesheet" type="text/css" />
     
     <script src="<%= ResolveUrl("~/Scripts/jquery-persoons-fiche.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/AdresBewerken.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/moment.js") %>" type="text/javascript"></script>
 </asp:Content>
 

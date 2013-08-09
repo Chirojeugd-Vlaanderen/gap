@@ -1176,8 +1176,6 @@ $(function() {
         $('#extraInfoDialog').load(url, function() {
             gedeeltelijkTonen('#extraInfoDialog');
             $('#tabel').show();
-            $('#uitlegBinnenland').show();
-            var land = 'België';
 
             // Door deze code kunnen users de form niet submitten met 'enter' (gaf een fout over de postcode)
             $(this).keydown(function(event) {
@@ -1185,56 +1183,11 @@ $(function() {
                     event.preventDefault();
                     return false;
                 }
+                return true;
             });
 
-            $('#Land').on('change', function() {
-                land = $(this).val();
-                if (land != 'België') {
-                    //show gegevens voor buitenland en gewone gegevens
-                    $('#uitlegBuitenland').show();
-                    $('#uitlegBinnenland').hide();
-                    $('#tabel').show();
-                    $('#postCode').show();
-                    $('#woonplaatsBuitenland').show();
-                    //hide gegevens voor binnenland
-                    $('#woonplaatsBinnenland').hide();
-                } else {
-                    $('#woonplaatsBinnenland').show();
-                    $('#uitlegBuitenland').hide();
-                    $('#uitlegBinnenland').show();
-                    $('#tabel').show();
-                    $('#postCode').hide();
-                    $('#woonplaatsBuitenland').hide();
-                }
-            });
-            $('#PostNr').on('change', function() {
-                var pc = $(this).val();
-                if (land == 'België') {
-                    toonGemeenten(pc, '#WoonPlaats');
-                }
-
-                var stratenCache = {};
-                var lastXhr;
-
-                $("input#Straat").autocomplete({
-                    minLength: 3,
-                    source: function(request, response) {
-                        var term = request.term;
-                        if (term in stratenCache) {
-                            response(stratenCache[term]);
-                            return;
-                        }
-                        var url2 = link('Adressen', 'StratenVoorstellen');
-                        lastXhr = $.getJSON(url2, { q: term, postNummer: pc }, function(data, status, xhr) {
-                            stratenCache[term] = data;
-                            if (xhr === lastXhr) {
-                                response(data);
-                            }
-                        });
-                    }
-                });
-            });
-
+            AdresBewerken();
+            
             success:
             {
                 $('#extraInfoDialog fieldset').css('width', '600px');
