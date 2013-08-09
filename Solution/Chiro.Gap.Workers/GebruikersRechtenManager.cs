@@ -32,14 +32,6 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class GebruikersRechtenManager : IGebruikersRechtenManager
     {
-        private readonly IMailer _mailer;
-
-        public GebruikersRechtenManager(
-            IMailer mailer)
-        {
-            _mailer = mailer;
-        }
-
         /// <summary>
         /// Verlengt het gegeven <paramref name="gebruikersRecht"/> (indien mogelijk)
         /// </summary>
@@ -129,10 +121,9 @@ namespace Chiro.Gap.Workers
         /// </returns>
         private GebruikersRecht ToekennenOfVerlengen(Gav gav, Groep groep, DateTime vervalDatum)
         {
-            // Eerst controleren of de groep nog niet aan de gebruiker is gekoppeld
+            // Eerst controleren of de groep nog niet aan de gebruiker is/was gekoppeld
             var gebruikersrecht = (from gr in gav.GebruikersRecht
                                    where gr.Groep.ID == groep.ID
-				   && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)
                                    select gr).FirstOrDefault();
 
             if (gebruikersrecht == null)
