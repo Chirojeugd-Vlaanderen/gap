@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.FunctieModel>" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 <div id="bewerken">
@@ -16,6 +17,23 @@
                 <td><%=Html.EditorFor(mdl => mdl.HuidigeFunctie.Code) %></td>
                 <%=Html.HiddenFor(mdl => mdl.HuidigeFunctie.ID) %>  
             </tr>
+			<tr>
+			    <td><%=Html.LabelFor(mdl => mdl.HuidigeFunctie.Type)%></td>
+                <td>
+<%
+			var values = from LidType lt in Enum.GetValues(typeof (LidType))
+			     select new
+	                    		{
+	                    			value = lt,
+	                    			text = String.Format(
+	                    				"Ingeschreven {0}",
+	                    				lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding")
+	                    		};
+%>
+			<%=Html.DropDownListFor(mdl => mdl.HuidigeFunctie.Type,
+						       new SelectList(values.Reverse(), "value", "text"))%>
+                 </td>
+			</tr>
         </table>
     <input type="submit" value="Bewaren" id="bewaarFunctie"/>
 
