@@ -132,7 +132,6 @@ $(function() {
                             $('#bewaar').click();
                         },
                         'Annuleren': function() {
-                            $(this).dialog('destroy');
                             $(this).dialog('close');
                         }
                     }
@@ -467,9 +466,7 @@ $(function() {
     });
 
     //------------------------------------------------------------------------------------------
-    //Adres
-    //verster wordt getoond bij het wijzigen van een adres, gegevens worden automatisch ingevuld
-    // (uitgelezen uit de hiddenfields op de pagina)
+    //Adres bewerken
     //--------------------------------------------------------------------
     $('.bewerkAdres').click(function(e) {
         $('#extraInfoDialog').dialog();
@@ -482,7 +479,7 @@ $(function() {
         // opnieuw inobtrusive maken.
 
         var adresID = parseInt($(this).parent().parent().find('td input#persoonsAdresID').val());
-        url = link("Personen", "Verhuizen") + "/" + adresID + '?aanvragerID=' + GPid;
+        url = link("Personen", "Verhuizen") + "/" + adresID + '?aanvragerID=' + GPid + " #main";
 
         $('#extraInfoDialog').load(url, function() {
             gedeeltelijkTonen('#extraInfoDialog');
@@ -514,7 +511,6 @@ $(function() {
                             $(this).dialog('close');
                         },
                         'Annuleren': function() {
-                            $(this).dialog('destroy');
                             $(this).dialog('close');
                         }
                     }
@@ -546,7 +542,6 @@ $(function() {
                             $(this).dialog('close');
                         },
                         'Annuleren': function() {
-                            $(this).dialog('destroy');
                             $(this).dialog('close');
                         }
                     },
@@ -823,7 +818,6 @@ $(function() {
                             $('#bewaarCat').click();
                         },
                         'Annuleren': function() {
-                            $(this).dialog('destroy');
                             $(this).dialog('close');
                         }
                     }
@@ -1045,7 +1039,6 @@ $(function() {
                             $(this).dialog('close');
                         },
                         'Annuleren': function() {
-                            $(this).dialog('destroy');
                             $(this).dialog('close');
                         }
                     }
@@ -1055,6 +1048,7 @@ $(function() {
         clearDialog();
     }
 
+            //gedeeltelijkTonen("#johan_dialog");
 });  
 //------------------------------------------------------------------------------------------
 // EINDE EIGEN FUNCTIES

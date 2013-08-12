@@ -204,7 +204,6 @@ $(function () {
                             $(this).dialog('close');
                         },
                         'Annuleren': function () {
-                            $(this).dialog('destroy');
                             $(this).dialog('close');
                         }
                     }
