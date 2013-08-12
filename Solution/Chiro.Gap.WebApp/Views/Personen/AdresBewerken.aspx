@@ -53,10 +53,6 @@
 			<td><%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.AdresType) %></td>
 			<td><%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.AdresType, new SelectList(values, "value", "text"))%></td>
 		</tr>
-        <tr>
-            <td><%=Html.LabelFor(mdl => mdl.Land) %></td>
-            <td><%=Html.DropDownListFor(mdl => mdl.Land, new SelectList(Model.AlleLanden, "Naam", "Naam")) %></td>  
-        </tr>
     </table>
 
     <p id="uitlegBinnenland" hidden>

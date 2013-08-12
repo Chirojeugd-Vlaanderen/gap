@@ -18,6 +18,10 @@
  * limitations under the License.
  */
 %>
+    <tr>
+        <td><%=Html.LabelFor(mdl => mdl.Land) %></td>
+        <td><%=Html.DropDownListFor(mdl => mdl.Land, new SelectList(Model.AlleLanden, "Naam", "Naam")) %></td>
+    </tr>
     <tr id="postCode" hidden>
         <td><%=Html.LabelFor(mdl => mdl.PostCode) %></td>
         <td><%=Html.EditorFor(mdl => mdl.PostCode)%>

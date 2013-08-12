@@ -23,8 +23,15 @@
 %>
 <script src="<%= ResolveUrl("~/Scripts/AdresBewerken.js") %>" type="text/javascript"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        AdresBewerken();
+    $(document).ready(function () {
+
+        // Ehh...
+        
+        $('#tabel').show();
+        $('#postCode').hide();
+        $('#woonplaatsBuitenland').hide();
+
+       AdresBewerken();
     });
 </script>
 </asp:Content>
@@ -68,7 +75,10 @@
 			<%=Html.ActionLink("de handleiding", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweStraatnaam"})%>
 			hoe we daar een mouw aan kunnen passen.</p>
             <% =Html.ValidationSummary() %>
-        <% Html.RenderPartial("AdresBewerkenControl", Model); %>
+            
+            <table>
+            <% Html.RenderPartial("AdresBewerkenControl", Model); %>
+            </table>
         <%
 }%>
     </div>
