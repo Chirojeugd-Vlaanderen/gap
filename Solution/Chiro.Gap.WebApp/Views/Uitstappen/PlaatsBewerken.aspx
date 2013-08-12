@@ -21,6 +21,12 @@
  * limitations under the License.
  */
 %>
+<script src="<%= ResolveUrl("~/Scripts/AdresBewerken.js") %>" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        AdresBewerken();
+    });
+</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="kaderke">
