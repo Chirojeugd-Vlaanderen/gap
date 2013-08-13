@@ -922,7 +922,17 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout,
                     Properties.Resources.NationaleFunctieNietBewerken);
+            }
 
+            if (String.Compare(detail.Code, functie.Code, StringComparison.InvariantCultureIgnoreCase) != 0)
+            {
+                // Code verandert. Controleer of ze nog niet bestaat
+                var bestaandeFunctie = _groepenMgr.FunctieZoeken(functie.Groep, detail.Code, _functiesRepo);
+                if (bestaandeFunctie != null)
+                {
+                    throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(
+                        bestaandeFunctie));
+                }
             }
 
             // Ik gebruik hier geen mappers, om te vermijden dat
