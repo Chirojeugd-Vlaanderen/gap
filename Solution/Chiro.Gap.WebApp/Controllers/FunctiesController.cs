@@ -140,6 +140,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Bewerken(FunctieModel model, int groepID)
         {
             ServiceHelper.CallService<IGroepenService>(svc => svc.FunctieBewerken(model.HuidigeFunctie));
+            VeelGebruikt.FunctieProblemenOphalen(groepID);
             return RedirectToAction("Index", "Groep");
         }
 

@@ -59,6 +59,13 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="groepsNiveau">Plaatselijke groep, gewestploeg, verbondsploeg, satelliet</param>
         /// <returns>Niveau van het <paramref name="lidType"/> voor een groep met gegeven <paramref name="groepsNiveau"/></returns>
         Niveau LidTypeNaarMiveau(LidType lidType, Niveau groepsNiveau);
+
+        /// <summary>
+        /// Converteert het niveau van een functie naar het lidtype waarop de functie van toepassing is.
+        /// </summary>
+        /// <param name="niveau">niveau van een functie</param>
+        /// <returns>Type van de leden waarop de functie van toepassing kan zijn</returns>
+        LidType NiveauNaarLidType(Niveau niveau);
         
         /// <summary>
         /// Bepaalt het huidige groepswerkjaar van de gegeven <paramref name="groep"/>

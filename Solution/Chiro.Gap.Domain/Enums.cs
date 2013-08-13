@@ -28,14 +28,10 @@ namespace Chiro.Gap.Domain
     [Flags]
     public enum LidType
     {
-        [EnumMember]
-        Kind = 0x01,
-
-        [EnumMember]
-        Leiding = 0x02,
-
-        [EnumMember]
-        Alles = Kind | Leiding
+        [EnumMember] Geen = 0x0,
+        [EnumMember] Kind = 0x01,
+        [EnumMember] Leiding = 0x02,
+        [EnumMember] Alles = Kind | Leiding,
     }
 
     /// <summary>

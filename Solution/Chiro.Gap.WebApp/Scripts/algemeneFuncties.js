@@ -158,6 +158,14 @@ function clearDialog() {
 
 //------------------------------------------------------------------------------------------
 function gedeeltelijkTonen(container) {
+    // Arno gebruikt dit script om zaken te verbergen als hij 'oude' pagina's laadt in
+    // een dialoog in de nieuwe frontend.
+    // Let op dat je niet de hele oude pagina mag laden, want het 'gedeeltelijk tonen' 
+    // verbergt wel wat er staat, maar verhindert niet dat scripts dubbel ingelezen en
+    // uitgevoerd worden.
+    // jquery.load() ondersteunt het enkel inlezen van een bepaalde div; doe dat om 
+    // miserie te vermijden
+    
     $(container).find('#header, #footer, .mededelingen, legend, h2, #acties').hide();
     $(container + ' fieldset').css({ 'width': '350px' });
 }

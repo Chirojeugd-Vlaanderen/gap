@@ -184,6 +184,14 @@ $(function () {
     });
     //      een functie bewerken
     $('.functieBewerken').click(function () {
+
+        // die clearDialog stond oorspronkelijk achter de 'load'. Maar
+        // alnaargelang hoe lang de load duurt, wordt die meestal toch
+        // uitgevoerd voor de load afgelopen is, en de inhoud wordt
+        // getoond. Het zou beter en alleszins duidelijker zijn, moest
+        // die clearDialog overal naar voren verhuisd worden.
+        clearDialog();
+        
         functieId = $(this).parent().parent().find('td input').val();
         url = link("Functies", "Bewerken");
         url += "/" + functieId + " #main";
@@ -195,8 +203,8 @@ $(function () {
                 $('#bewaarFunctie').hide();
                 $('#extraInfoDialog').dialog({
                     modal: true,
-                    width: 300,
-                    height: 200,
+                    width: 550,
+                    height: 350,
                     title: "Functie bewerken",
                     buttons: {
                         'Bevestigen': function () {
@@ -209,8 +217,7 @@ $(function () {
                     }
                 });
             }
-        });
-        clearDialog();
+        });        
     });
 
     //      een functie VERWIJDEREN

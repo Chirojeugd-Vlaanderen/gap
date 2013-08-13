@@ -907,12 +907,12 @@ namespace Chiro.Gap.Services
             _functiesRepo.SaveChanges();
         }
 
-	/// <summary>
-	/// Overschrijft een functie, op basis van de informatie uit <paramref name="detail" />
-	/// </summary>
-	/// <param name="detail">Te bewaren functie-informatie.</param>
-	/// <remarks>Het veld <c>ID</c> van <paramref name="detail" /> bepaalt welke functie
-	/// overschreven zal worden.</remarks>
+        /// <summary>
+        /// Overschrijft een functie, op basis van de informatie uit <paramref name="detail" />
+        /// </summary>
+        /// <param name="detail">Te bewaren functie-informatie.</param>
+        /// <remarks>Het veld <c>ID</c> van <paramref name="detail" /> bepaalt welke functie
+        /// overschreven zal worden.</remarks>
         public void FunctieBewerken(FunctieDetail detail)
         {
             var functie = _functiesRepo.ByID(detail.ID);
@@ -921,7 +921,7 @@ namespace Chiro.Gap.Services
             if (functie.IsNationaal)
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout,
-                                                      Properties.Resources.NationaleFunctieNietBewerken);
+                    Properties.Resources.NationaleFunctieNietBewerken);
 
             }
 
@@ -930,7 +930,7 @@ namespace Chiro.Gap.Services
 
             functie.Naam = detail.Naam;
             functie.Code = detail.Code;
-            functie.LidTypeInt = (int)detail.Type;
+            functie.Niveau = _groepenMgr.LidTypeNaarMiveau(detail.Type, functie.Groep.Niveau);
             functie.MaxAantal = detail.MaxAantal;
             functie.MinAantal = detail.MinAantal;
 

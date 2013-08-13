@@ -155,6 +155,34 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Converteert het niveau van een functie naar het lidtype waarop de functie van toepassing is.
+        /// </summary>
+        /// <param name="niveau">niveau van een functie</param>
+        /// <returns>Type van de leden waarop de functie van toepassing kan zijn</returns>
+        public LidType NiveauNaarLidType(Niveau niveau)
+        {
+            LidType resultaat = LidType.Geen;
+
+            if ((niveau & ~Niveau.Groep) != 0)
+            {
+                resultaat |= LidType.Leiding; 
+                // voorlopig: als het geen plaatselijke groep is,
+                // dan is het een kadergroep, met enkel leiding
+            }
+
+            if (niveau.HasFlag(Niveau.LeidingInGroep))
+            {
+                resultaat |= LidType.Leiding;
+            }
+
+            if (niveau.HasFlag(Niveau.LidInGroep))
+            {
+                resultaat |= LidType.Kind;
+            }
+            return resultaat;
+        }
+
+        /// <summary>
         /// Bepaalt het huidige groepswerkjaar van de gegeven <paramref name="groep"/>
         /// </summary>
         /// <param name="groep">De groep waarvoor het huidige werkjaar gevraagd is</param>

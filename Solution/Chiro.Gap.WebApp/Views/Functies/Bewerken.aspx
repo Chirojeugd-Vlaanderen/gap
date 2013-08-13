@@ -17,6 +17,14 @@
                 <td><%=Html.EditorFor(mdl => mdl.HuidigeFunctie.Code) %></td>
                 <%=Html.HiddenFor(mdl => mdl.HuidigeFunctie.ID) %>  
             </tr>
+            <tr>
+                <td><%=Html.LabelFor(xx => xx.HuidigeFunctie.MaxAantal) %> </td>
+                <td><%=Html.EditorFor(mdl => mdl.HuidigeFunctie.MaxAantal)%></td>
+            </tr>
+            <tr>
+                <td><%=Html.LabelFor(xx => xx.HuidigeFunctie.MinAantal) %> </td>
+                <td><%=Html.EditorFor(mdl => mdl.HuidigeFunctie.MinAantal)%></td>
+            </tr>
 			<tr>
 			    <td><%=Html.LabelFor(mdl => mdl.HuidigeFunctie.Type)%></td>
                 <td>

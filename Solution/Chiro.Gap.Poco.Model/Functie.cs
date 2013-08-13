@@ -64,8 +64,12 @@ namespace Chiro.Gap.Poco.Model
         }
 
         /// <summary>
-        /// Koppeling tussen enum LidType en databaseveld LidTypeInt
+        /// Koppeling tussen enum LidType en (calculated) databaseveld LidTypeInt
         /// </summary>
+        /// <remarks>
+        /// Dit is een berekend veld! Updates worden niet bewaard; zorg ervoor
+        /// dat niveau in orde is!
+        /// </remarks>
         public LidType Type
         {
             get { return (LidType)LidTypeInt; }
