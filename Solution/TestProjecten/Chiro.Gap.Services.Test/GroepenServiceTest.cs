@@ -1164,5 +1164,42 @@ namespace Chiro.Gap.Services.Test
 
             Assert.IsNull(alleFuncties.FirstOrDefault());
         }
+
+        /// <summary>
+        /// Controleert of het niveau van een functie goed bewaard wordt door FunctieBewerken.
+        /// </summary>
+        [TestMethod()]
+        public void FunctieBewerkenTest()
+        {
+            // ARRANGE
+
+            var functie = new Functie
+            {
+                ID = 1,
+                Groep =
+                    new ChiroGroep
+                    {
+                        GroepsWerkJaar =
+                            new List<GroepsWerkJaar> { new GroepsWerkJaar() }
+                    },
+                IsNationaal = false,
+                Niveau = Niveau.LeidingInGroep
+            };
+            var alleFuncties = new List<Functie> { functie };
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Functie>())
+                                  .Returns(new DummyRepo<Functie>(alleFuncties));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GroepenService>();
+            target.FunctieBewerken(new FunctieDetail {ID = functie.ID, IsNationaal = functie.IsNationaal, Type = LidType.Kind});
+
+            // ASSERT
+
+            Assert.AreEqual(Niveau.LidInGroep, functie.Niveau);
+        }
     }
 }
