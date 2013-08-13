@@ -86,7 +86,6 @@ $(function () {
 
     $('.categorieVerwijderen').click(function () {
         categorieId = $(this).parent().parent().find('td input').val();
-        alert(categorieId);
         url = link("Categorieen", "CategorieVerwijderen");
         url += "/" + categorieId;
         $('#extraInfoDialog').html('Ben je zeker dat je deze categorie wil verwijderen?');
