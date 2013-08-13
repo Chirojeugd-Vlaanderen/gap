@@ -96,19 +96,16 @@ $(function () {
                 'Ja': function () {
                     doorgaan = true;
                     $(this).dialog('close');
+                    $.post(url, { CategorieID: categorieId }).done(function () {
+                        doorgaan = false;
+                        location.reload();
+                    });
                 },
                 'Nee': function () {
                     $(this).dialog('close');
                 }
             }
         });
-        if (doorgaan) {
-            $.post(url).done(function () {
-                doorgaan = false;
-                location.reload();
-            });
-            
-        }
     });
 
     //      Afdelingsverdeling aanpassen
@@ -190,7 +187,7 @@ $(function () {
         // getoond. Het zou beter en alleszins duidelijker zijn, moest
         // die clearDialog overal naar voren verhuisd worden.
         clearDialog();
-        
+
         functieId = $(this).parent().parent().find('td input').val();
         url = link("Functies", "Bewerken");
         url += "/" + functieId + " #main";
@@ -216,7 +213,7 @@ $(function () {
                     }
                 });
             }
-        });        
+        });
     });
 
     //      een functie VERWIJDEREN
