@@ -523,6 +523,7 @@ namespace Chiro.Gap.ServiceContracts
         IList<AfdelingDetail> NieuweAfdelingsJarenVoorstellen(int[] afdelingsIDs, int groepID);
 
         [OperationContract]
+        [FaultContract(typeof(BestaatAlFault<FunctieInfo>))]
 	    void FunctieBewerken(FunctieDetail detail);
 
 	    /// <summary>

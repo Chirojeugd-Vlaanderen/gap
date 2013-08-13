@@ -11,19 +11,23 @@
             <tr>
                 <td><%=Html.LabelFor(xx => xx.HuidigeFunctie.Naam) %> </td>
                 <td><%=Html.EditorFor(mdl => mdl.HuidigeFunctie.Naam) %></td>
+                <td><%=Html.ValidationMessageFor(mdl => mdl.HuidigeFunctie.Naam) %></td>
             </tr>
             <tr>
                 <td><%=Html.LabelFor(xx => xx.HuidigeFunctie.Code) %></td> 
                 <td><%=Html.EditorFor(mdl => mdl.HuidigeFunctie.Code) %></td>
+                <td><%=Html.ValidationMessageFor(mdl => mdl.HuidigeFunctie.Code) %></td>
                 <%=Html.HiddenFor(mdl => mdl.HuidigeFunctie.ID) %>  
             </tr>
             <tr>
                 <td><%=Html.LabelFor(xx => xx.HuidigeFunctie.MaxAantal) %> </td>
                 <td><%=Html.EditorFor(mdl => mdl.HuidigeFunctie.MaxAantal)%></td>
+                <td><%=Html.ValidationMessageFor(mdl => mdl.HuidigeFunctie.MaxAantal) %></td>
             </tr>
             <tr>
                 <td><%=Html.LabelFor(xx => xx.HuidigeFunctie.MinAantal) %> </td>
                 <td><%=Html.EditorFor(mdl => mdl.HuidigeFunctie.MinAantal)%></td>
+                <td><%=Html.ValidationMessageFor(mdl => mdl.HuidigeFunctie.MinAantal) %></td>
             </tr>
 			<tr>
 			    <td><%=Html.LabelFor(mdl => mdl.HuidigeFunctie.Type)%></td>
@@ -41,6 +45,7 @@
 			<%=Html.DropDownListFor(mdl => mdl.HuidigeFunctie.Type,
 						       new SelectList(values.Reverse(), "value", "text"))%>
                  </td>
+                 <td><%=Html.ValidationMessageFor(mdl => mdl.HuidigeFunctie.Type) %></td>
 			</tr>
         </table>
     <input type="submit" value="Bewaren" id="bewaarFunctie"/>

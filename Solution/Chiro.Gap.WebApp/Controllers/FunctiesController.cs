@@ -139,9 +139,34 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Bewerken(FunctieModel model, int groepID)
         {
-            ServiceHelper.CallService<IGroepenService>(svc => svc.FunctieBewerken(model.HuidigeFunctie));
-            VeelGebruikt.FunctieProblemenOphalen(groepID);
-            return RedirectToAction("Index", "Groep");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ServiceHelper.CallService<IGroepenService>(svc => svc.FunctieBewerken(model.HuidigeFunctie));
+                }
+                catch (FaultException<BestaatAlFault<FunctieInfo>> ex)
+                {
+                    BaseModelInit(model, groepID);
+                    ModelState.AddModelError(
+                        "HuidigeFunctie.Code",
+                        String.Format(
+                            Properties.Resources.FunctieCodeBestaatAl,
+                            ex.Detail.Bestaande.Code,
+                            ex.Detail.Bestaande.Naam));
+
+                    model.Titel = "Functie aanpassen";
+                    return View(model);
+                }
+                return RedirectToAction("Index", "Groep");
+            }
+            else
+            {
+                BaseModelInit(model, groepID);
+                model.Titel = "Functie aanpassen";
+                return View(model);                
+            }
+
         }
 
         /// <summary>
