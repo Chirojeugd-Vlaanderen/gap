@@ -73,7 +73,7 @@
         <td>
             <% foreach (var c in p.CategorieLijst)
                { %>
-            <%=Html.ActionLink(Html.Encode(c.Code), "List", new { Controller = "Personen", id = c.ID, page = 1, sortering = "Naam"}, new { title = "Toon alleen mensen uit de categorie " + c.Naam })%>
+            <%=Html.ActionLink(Html.Encode(c.Code), "List", new { Controller = "Personen", id = c.ID }, new { title = "Toon alleen mensen uit de categorie " + c.Naam })%>
             <% } %>
         </td>
         <td>

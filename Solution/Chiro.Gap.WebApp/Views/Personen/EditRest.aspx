@@ -479,7 +479,7 @@
                 <%=Html.ActionLink(String.Format("{0} ({1})", info.Naam, info.Code), 
 				    "List", 
 			        "Personen",
-					new { page = 1, id = info.ID, groepID = Model.GroepID, sortering = PersoonSorteringsEnum.Naam },
+					new { id = info.ID, groepID = Model.GroepID },
 				    new { title= info.Naam })%>
                      <input id="catID" value="<%=info.ID %>" hidden />
                 </td>
