@@ -617,10 +617,6 @@ function controle() {
         errors += "<li>De ingegeven naam is te kort</li>";
         fout = true;
     }
-    if (geboortedatum.length <= 8) {
-        errors += "<li>De ingegeven geboortedatum is te kort</li>";
-        fout = true;
-    }
     var antwoord;
     if (emailadres.length >= 1) {
         antwoord = controleerEmail(emailadres);
