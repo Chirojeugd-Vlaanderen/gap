@@ -265,7 +265,8 @@
                    // Lid/Leiding en afdelingen zijn enkel relevant voor plaatselijke groepen.%>
                 <tr>
                     <td>Ingeschreven als</td>
-                    <td><a  id="lidInfoInfo" data-type="select"><b><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></b></a></td> 
+                    <td><a  id="lidInfoInfo" data-type="select"><b><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></b></a>
+                    <%: Html.ActionLink("(uitschrijven)", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></td> 
                     <td><div class="ui-icon ui-icon-pencil" id="bewerkLidInfo" title="Bewerken" style="cursor: pointer"></div></td>
                 </tr>
             
@@ -396,6 +397,8 @@
    <% } %>
 
         </tr>
+        
+        
 
        
         <% } else { 
