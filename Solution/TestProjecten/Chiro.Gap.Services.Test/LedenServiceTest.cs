@@ -1903,5 +1903,63 @@ namespace Chiro.Gap.Services.Test
 
             // Verwacht een exception.
         }
+
+        /// <summary>
+        ///A test for Zoeken op functie
+        ///</summary>
+        [TestMethod()]
+        public void ZoekenOpFunctieTest()
+        {
+            // ARRANGE
+
+            // testmodelletje
+
+            var functie1 = new Functie {ID = 2};
+            var functie2 = new Functie {ID = 3};
+
+            var lid = new Leiding
+                          {
+                              ID = 1,
+                              GelieerdePersoon = new GelieerdePersoon
+                                                     {
+                                                         Persoon = new Persoon()
+                                                     },
+                              Functie = new List<Functie> {functie1}
+                          };
+
+            var lid2 = new Leiding
+                           {
+                               ID = 4,
+                               GelieerdePersoon = new GelieerdePersoon
+                                                      {
+                                                          Persoon = new Persoon()
+                                                      },
+                               Functie = new List<Functie> {functie2}
+                           };
+
+
+            // dependency injection
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                                  .Returns(new DummyRepo<Lid>(new List<Lid> { lid, lid2 }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
+                      .Returns(new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Kind>())
+                                  .Returns(new DummyRepo<Kind>(new List<Kind>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Leiding>())
+                                  .Returns(new DummyRepo<Leiding>(new List<Leiding> { lid, lid2 }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Functie>())
+                                  .Returns(new DummyRepo<Functie>(new List<Functie> {functie1, functie2}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var target = Factory.Maak<LedenService>();
+            var actual = target.Zoeken(new LidFilter { FunctieID = functie1.ID }, false);
+
+            // ASSERT
+            Assert.AreEqual(1, actual.Count);
+
+        }
     }
 }
