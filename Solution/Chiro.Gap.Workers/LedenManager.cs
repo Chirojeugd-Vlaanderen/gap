@@ -360,12 +360,12 @@ namespace Chiro.Gap.Workers
         {
             Debug.Assert(gp != null && gp.GebDatumMetChiroLeefTijd != null);
 
-            var leiding = LidMaken(gp, gwj, LidType.Leiding, isJaarovergang) as Leiding;
-
             if (!KanLeidingWorden(gp, gwj))
             {
-                throw new GapException(Resources.TeJongVoorLeidingEnGeenGepasteAfdeling);
+                throw new FoutNummerException(FoutNummer.LeidingTeJong, Resources.TeJongVoorLeiding);
             }
+
+            var leiding = LidMaken(gp, gwj, LidType.Leiding, isJaarovergang) as Leiding;
 
             Debug.Assert(leiding != null);
 

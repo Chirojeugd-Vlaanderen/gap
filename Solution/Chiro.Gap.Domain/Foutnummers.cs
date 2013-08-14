@@ -30,9 +30,9 @@ namespace Chiro.Gap.Domain
         ChronologieFout,		// fout ivm volgorde datums
 
         #region personen
-        OngeldigeGeboorteJarenVoorAfdeling,      
-	    GeboorteDatumOntbreekt,
-	    PersoonOverleden,
+        OngeldigeGeboorteJarenVoorAfdeling,
+        GeboorteDatumOntbreekt,
+        PersoonOverleden,
         #endregion
 
         #region adressen
@@ -53,6 +53,7 @@ namespace Chiro.Gap.Domain
         AlgemeneLeidingFout,
         OnbekendGeslachtFout,
         LidTeJong,
+        LeidingTeJong,
         LidTypeVerkeerd,
         AfdelingKindVerplicht,
         #endregion
