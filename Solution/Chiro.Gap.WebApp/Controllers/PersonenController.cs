@@ -604,7 +604,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Uitschrijven(int gelieerdepersoonID, int groepID)
         {
             GelieerdePersonenUitschrijven(new List<int> { gelieerdepersoonID }, groepID, Properties.Resources.LedenUitgeschreven);
-            return TerugNaarVorigeLijst();
+            return RedirectToAction("EditRest", new {ID = gelieerdepersoonID, groepID});
         }
 
         #endregion leden
