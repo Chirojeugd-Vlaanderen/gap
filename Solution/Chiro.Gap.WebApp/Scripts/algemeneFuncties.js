@@ -222,4 +222,12 @@ function link(controller, functie) {
 function checkProtocol() {
     return window.location.protocol;
 }
-    
+
+// Url parameter opvragen
+// Credits: http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values/901144#901144
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}

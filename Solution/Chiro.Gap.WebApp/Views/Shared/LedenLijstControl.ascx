@@ -34,6 +34,7 @@
                 <% } %>
                 <th>Naam</th>
                 <th>Geboortedatum</th>
+                <th>Vrjrdg</th>
                 <th>
                     <%=Html.Geslacht(GeslachtsType.Man) %>
                     <%=Html.Geslacht(GeslachtsType.Vrouw) %>
@@ -71,6 +72,9 @@
             </td>
             <td class="right">
                 <%=lidOverzicht.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)lidOverzicht.GeboorteDatum).ToString("d")%>
+            </td>
+            <td>
+                <%=lidOverzicht.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" :  ((DateTime)lidOverzicht.GeboorteDatum).ToString("MM-dd") %>
             </td>
             <td class="center">
                 <%= Html.Geslacht(lidOverzicht.Geslacht)%>

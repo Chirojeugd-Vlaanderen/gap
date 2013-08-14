@@ -15,6 +15,7 @@
  */
 
 $(function () {
+    
     $('#filter').hide();
     $('#kiesActie').hide();
     $("#AfdelingID").change(function () {
@@ -24,7 +25,7 @@ $(function () {
         $('#filter').click();
     });
     $("#SpecialeLijst").change(function () {
-        $('#filter').click();
+            $('#filter').click();
     });
     $("#GekozenActie").change(function () {
         $('#kiesActie').click();
@@ -57,7 +58,8 @@ $(function () {
              { "sWidth": "150px", "aTargets": [ 2 ] },
              { "sWidth": "50px", "aTargets": [ 3 ] },
              { "bSearchable": false, "aTargets": [0,1,4,5,6,7,8,10,11]},
-             { "sType": "html", "aTargets": [2,6,7,10,11]}
+            { "sType": "html", "aTargets": [2, 6, 7, 10, 11] },
+            { "bVisible": false, "aTargets": [4] }
         ],
         "oLanguage": {
             "sLengthMenu": "Toon _MENU_ personen per pagina",
@@ -99,6 +101,11 @@ $(function () {
             ]
         }
     });
+    
+    // UGLY: Als verjaardagslijst gekozen, sorteer dan op verjaardag.
+    if (getParameterByName("sortering") == "Verjaardag") {
+        $('#ledenOverzichtsTabel').dataTable().fnSort([[4, "asc"]]);
+    }
     
     //css eigenschappen toevoegen aan/verwijderen voor deze tabel
     $('#ledenOverzichtsTabel_wrapper').find('.DTTT_container').attr('id', 'knoppenBalk');
