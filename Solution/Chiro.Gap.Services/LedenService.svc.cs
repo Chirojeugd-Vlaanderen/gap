@@ -842,7 +842,7 @@ namespace Chiro.Gap.Services
                      ld.UitschrijfDatum == null &&
                      (filter.GroepID == null || ld.GroepsWerkJaar.Groep.ID == filter.GroepID) &&
                      (filter.GroepsWerkJaarID == null || ld.GroepsWerkJaar.ID == filter.GroepsWerkJaarID) &&
-                     (filter.FunctieID == null || ld.Functie.Select(e => e.ID == filter.FunctieID).Any()) &&
+                     (filter.FunctieID == null || ld.Functie.Any(e => e.ID == filter.FunctieID)) &&
                      (filter.ProbeerPeriodeNa == null || !ld.EindeInstapPeriode.HasValue ||
                       filter.ProbeerPeriodeNa < ld.EindeInstapPeriode.Value) &&
                      (filter.HeeftVoorkeurAdres == null ||
@@ -865,7 +865,7 @@ namespace Chiro.Gap.Services
                                ld.UitschrijfDatum == null &&
                                (filter.GroepID == null || ld.GroepsWerkJaar.Groep.ID == filter.GroepID) &&
                                (filter.GroepsWerkJaarID == null || ld.GroepsWerkJaar.ID == filter.GroepsWerkJaarID) &&
-                               (filter.FunctieID == null || ld.Functie.Select(e => e.ID == filter.FunctieID).Any()) &&
+                               (filter.FunctieID == null || ld.Functie.Any(e => e.ID == filter.FunctieID)) &&
                                (filter.ProbeerPeriodeNa == null || !ld.EindeInstapPeriode.HasValue ||
                                 filter.ProbeerPeriodeNa < ld.EindeInstapPeriode.Value) &&
                                (filter.HeeftVoorkeurAdres == null ||
