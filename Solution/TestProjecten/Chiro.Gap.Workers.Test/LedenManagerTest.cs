@@ -373,5 +373,51 @@ namespace Chiro.Gap.Workers.Test
             
             target.TypeToggle(origineelLid);
         }
+
+        /// <summary>
+        /// NieuwInschrijven mag niet inschrijven als leiding als de persoon daar te jong voor is.
+        ///</summary>
+        [TestMethod()]
+        public void NieuwInschrijvenLeidingLeeftijd()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep();
+            var groepsWerkJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2012 };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Groep = groep,
+                ChiroLeefTijd = 0,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(2000, 04, 23)  // wat jong om leiding te worden
+                    }
+            };
+
+            var target = Factory.Maak<LedenManager>();
+
+            // ACT
+
+            try
+            {
+                target.NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false,
+                                        new LidVoorstel
+                                        {
+                                            AfdelingsJarenIrrelevant = false,
+                                            LeidingMaken = true
+                                        });
+            }
+            catch (GapException)
+            {
+                // We verwachten weliswaar een exception, maar we verwachten ook
+                // dat het lid niet gemaakt is.
+            }
+
+            // ASSERT
+
+            Assert.AreEqual(0, gelieerdePersoon.Lid.Count);
+        }
     }
 }
