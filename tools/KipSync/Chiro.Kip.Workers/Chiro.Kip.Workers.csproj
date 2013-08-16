@@ -71,14 +71,6 @@
     <Compile Include="WerkJaarManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
-      <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
-      <Name>Chiro.Cdf.Data.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
-      <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
-      <Name>Chiro.Cdf.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chiro.Kip.Data\Chiro.Kip.Data.csproj">
       <Project>{6E07BADE-3705-44AB-A77A-41189D14806F}</Project>
       <Name>Chiro.Kip.Data</Name>

@@ -18,8 +18,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.ServiceModel;
-using Chiro.Cdf.Data.Entity;
-using Chiro.Kip.Data;
+﻿using Chiro.Kip.Data;
 using System.Linq;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -80,7 +79,7 @@ namespace Chiro.Kip.Services
 				// Zoek eerst naar een geschikte lijn in ExtraVerzekering die we
 				// kunnen recupereren voor deze verzekering.
 
-				var extraVerzDitWerkjaar = (from v in db.ExtraVerzekering.Include(verz => verz.REKENING)
+				var extraVerzDitWerkjaar = (from v in db.ExtraVerzekering.Include("REKENING")
 							    where v.WerkJaar == werkJaar
 								  && v.Groep.GroepID == groep.GroepID
 							    select v).OrderByDescending(vv => vv.VolgNummer);

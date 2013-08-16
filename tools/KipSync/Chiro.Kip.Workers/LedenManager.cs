@@ -16,12 +16,10 @@
  * limitations under the License.
  */
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Chiro.Cdf.Data.Entity;
-using Chiro.Kip.Data;
+﻿using Chiro.Kip.Data;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.Kip.Workers
