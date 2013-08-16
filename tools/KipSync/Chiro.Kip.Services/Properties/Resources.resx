@@ -144,4 +144,13 @@
   <data name="LidMetAansl0" xml:space="preserve">
     <value>Lid met aansluitnr 0 niet geupgradet {0} {1} wj {2}.</value>
   </data>
+  <data name="CommAanpassenOnbekendePersoon" xml:space="preserve">
+    <value>Kan communicatie {2} van onbekend persoon {0} {1} niet aanpassen.</value>
+  </data>
+  <data name="CommVormGewijzigd" xml:space="preserve">
+    <value>Communicatie {2} van {0} {1} gewijzigd naar {3}.</value>
+  </data>
+  <data name="TeWijzigenCommunicatieNietGevonden" xml:space="preserve">
+    <value>Te wijzigen communicatie {2} voor {0} {1} niet gevonden. Nieuwe communicatie {3} aangemaakt.</value>
+  </data>
 </root>

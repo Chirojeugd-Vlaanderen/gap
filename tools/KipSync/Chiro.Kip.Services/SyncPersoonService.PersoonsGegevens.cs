@@ -391,8 +391,66 @@ namespace Chiro.Kip.Services
 			return adresInDb;
 		}
 
+        /// <summary>
+        /// Zoekt in de communicatievormen van de persoon bepaald door <paramref name="persoonsGegevens"/> een 
+        /// communicatiemiddel op van hetzelfde type als <paramref name="communicatieMiddel"/>, maar met nummer 
+        /// <paramref name="nummerBijTeWerken"/>. Die communicatievorm wordt vervangen door de gegevens in 
+        /// <paramref name="communicatieMiddel"/>.
+        /// </summary>
+        /// <param name="persoonsGegevens">bepaald persoon met aan te passen communicatievorm</param>
+        /// <param name="nummerBijTeWerken">nummer van te vervangen communicatievorm</param>
+        /// <param name="communicatieMiddel">informatie nieuwe communicatievorm</param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+	    public void CommunicatieBijwerken(Persoon persoonsGegevens, string nummerBijTeWerken, CommunicatieMiddel communicatieMiddel)
+        {
+            string feedback = String.Empty;
 
-		/// <summary>
+            Mapper.CreateMap<Persoon, PersoonZoekInfo>()
+                  .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int) src.Geslacht))
+                  .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
+
+            using (var db = new kipadminEntities())
+            {
+                var mgr = new PersonenManager();
+                var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(persoonsGegevens);
+                var persoon = mgr.Zoeken(zoekInfo, false, db);
+
+                if (persoon == null)
+                {
+                    _log.FoutLoggen(0, String.Format(Properties.Resources.CommAanpassenOnbekendePersoon,
+                                                     persoonsGegevens.VoorNaam, persoonsGegevens.Naam, nummerBijTeWerken));
+                    return;
+                }
+
+                int communicatieTypID = (int)communicatieMiddel.Type;
+
+                var aanTePassen = (from ci in db.ContactInfoSet
+                                   where ci.kipPersoon.AdNummer == persoon.AdNummer
+                                         && ci.ContactTypeId == communicatieTypID
+                                         && ci.Info == nummerBijTeWerken
+                                   select ci).FirstOrDefault();
+
+                if (aanTePassen == null)
+                {
+                    feedback = String.Format(Properties.Resources.TeWijzigenCommunicatieNietGevonden,
+                                             persoonsGegevens.VoorNaam, persoonsGegevens.Naam, nummerBijTeWerken,
+                                             communicatieMiddel.Waarde);
+                    mgr.CommunicatieToevoegen(communicatieMiddel, persoon, db);
+                }
+                else
+                {
+                    feedback = String.Format(Properties.Resources.CommVormGewijzigd, persoonsGegevens.VoorNaam,
+                                             persoonsGegevens.Naam, nummerBijTeWerken, communicatieMiddel.Waarde);
+                    aanTePassen.GeenMailings = communicatieMiddel.GeenMailings;
+                    aanTePassen.Info = communicatieMiddel.Waarde;
+                }
+
+                db.SaveChanges();
+                _log.BerichtLoggen(0, feedback);
+            }
+        }
+
+	    /// <summary>
 		/// Verwijdert alle bestaande contactinfo, en vervangt door de contactinfo meegegeven in 
 		/// <paramref name="communicatieMiddelen"/>.
 		/// </summary>
@@ -527,55 +585,19 @@ namespace Chiro.Kip.Services
 						communicatie.Waarde));
 					return;
 				}
-				// Zoek bestaande communicatie van zelfde type op
-
-				var bestaande = from ci in persoon.kipContactInfo
-						where ci.ContactTypeId == (int)communicatie.Type
-						select ci;
-
-				// Voeg enkel toe als nog niet bestaat.
-
-				var gevonden = (from ci in bestaande
-						where String.Compare(ci.Info, communicatie.Waarde, true) == 0
-						select ci.ContactInfoId).FirstOrDefault();
-
-				if (gevonden == 0)
+				
+				if (mgr.CommunicatieToevoegen(communicatie, persoon, db))
 				{
-					// volgnummer bepalen
-					int volgnr;
-
-					if (bestaande.FirstOrDefault() == null)
-					{
-						// Er bestaan er nog geen: volgnr = 1
-						volgnr = 1;
-					}
-					else
-					{
-						volgnr = (from ci in bestaande select ci.VolgNr).Max() + 1;
-					}
-
-					var contactinfo = new ContactInfo
-					{
-						ContactInfoId = 0,
-						ContactTypeId = (int)communicatie.Type,
-						GeenMailings = communicatie.GeenMailings,
-						Info = communicatie.Waarde,
-						kipPersoon = persoon,
-						VolgNr = volgnr
-					};
-					db.AddToContactInfoSet(contactinfo);
-					db.SaveChanges();
-
-					feedback = String.Format(
-						"Communicate toegevoegd voor ID{0} {1} {2} AD{3}: {4}",
-						persoon.GapID, persoon.VoorNaam, persoon.Naam, persoon.AdNummer, communicatie.Waarde);
-				}
+				    feedback = String.Format(
+				        "Communicate toegevoegd voor ID{0} {1} {2} AD{3}: {4}",
+				        persoon.GapID, persoon.VoorNaam, persoon.Naam, persoon.AdNummer, communicatie.Waarde);
+				};
 			}
 			_log.BerichtLoggen(0, feedback);
 
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Verwijdert een communicatiemiddel uit Kipadmin.
 		/// </summary>
 		/// <param name="pers">Persoonsgegevens van de persoon waarvan het communicatiemiddel moet verdwijnen.</param>
