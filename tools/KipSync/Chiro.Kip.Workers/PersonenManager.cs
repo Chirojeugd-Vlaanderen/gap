@@ -19,8 +19,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Chiro.Cdf.Data.Entity;
-using Chiro.Kip.Data;
+﻿using Chiro.Kip.Data;
 
 namespace Chiro.Kip.Workers
 {
@@ -56,7 +55,7 @@ namespace Chiro.Kip.Workers
 			// poging 1
 			if (zoekInfo.AdNummer != null)
 			{
-				resultaat = (from p in db.PersoonSet.Include(prs => prs.kipContactInfo).Include(prs => prs.kipWoont.First().kipAdres)
+				resultaat = (from p in db.PersoonSet.Include("kipContactInfo").Include("kipWoont.KipAdres")
 					     where p.AdNummer == zoekInfo.AdNummer
 					     select p).FirstOrDefault();
 				if (resultaat != null)
@@ -68,7 +67,7 @@ namespace Chiro.Kip.Workers
 			// poging 2
 			if (zoekInfo.GapID != null)
 			{
-				resultaat = (from p in db.PersoonSet.Include(prs => prs.kipContactInfo).Include(prs => prs.kipWoont.First().kipAdres)
+                resultaat = (from p in db.PersoonSet.Include("kipContactInfo").Include("kipWoont.KipAdres")
 					     where p.GapID == zoekInfo.GapID select p).FirstOrDefault();
 				if (resultaat != null) return resultaat;
 			}
@@ -83,8 +82,7 @@ namespace Chiro.Kip.Workers
 			// Zoeken bij naamgenoten.
 
 			var naamgenoten = (from p in db.PersoonSet
-						.Include(prs => prs.kipContactInfo)
-						.Include(prs => prs.kipWoont.First().kipAdres)
+                        .Include("kipContactInfo").Include("kipWoont.KipAdres")
 					   where p.Naam == zoekInfo.Naam && p.VoorNaam == zoekInfo.VoorNaam
 						 && p.Geslacht == zoekInfo.Geslacht
 					   select p).ToArray();  // ToArray lijkt nodig te zijn om communicatie te behouden.
@@ -164,7 +162,7 @@ namespace Chiro.Kip.Workers
 				       where g.STAMNR == stamNummer
 				       select g.GroepID).FirstOrDefault();
 
-			var lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie.First().Functie).Include(ld=>ld.Persoon)
+			var lid = (from l in db.Lid.Include("HeeftFunctie.Functie").Include("Persoon")
 				   where l.Persoon.AdNummer == persoon.AdNummer
 					 && l.Groep.GroepID == groepID
 					 && l.werkjaar == werkJaar

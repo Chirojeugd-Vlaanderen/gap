@@ -22,8 +22,7 @@ using System.Diagnostics;
 using System.ServiceModel;
 using System.Text;
 using AutoMapper;
-using Chiro.Cdf.Data.Entity;
-using Chiro.Kip.Data;
+﻿using Chiro.Kip.Data;
 using System.Linq;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Chiro.Kip.Workers;
@@ -69,7 +68,7 @@ namespace Chiro.Kip.Services
                 // Negeer dus die records.  Op het moment dat het eerste lid van het nieuwe
                 // werkjaar wordt overgezet, verdwijnen de leden met aansl_jr = 0
 
-                Lid lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie.First().Functie)
+                Lid lid = (from l in db.Lid.Include("HeeftFunctie.Functie")
                            where
 
                                l.AANSL_NR > 0 &&
@@ -106,7 +105,7 @@ namespace Chiro.Kip.Services
                     // Zoek eerst naar een geschikte aansluiting om het lid aan
                     // toe te voegen.
 
-                    var aansluitingenDitWerkjaar = (from a in db.Aansluiting.Include(asl => asl.REKENING)
+                    var aansluitingenDitWerkjaar = (from a in db.Aansluiting.Include("REKENING")
                                                     where a.WerkJaar == gedoe.WerkJaar
                                                           && a.Groep.GroepID == groep.GroepID
                                                     select a).OrderByDescending(aa => aa.VolgNummer);
@@ -120,7 +119,7 @@ namespace Chiro.Kip.Services
                         // Eerste lid voor dit werkjaar.  Verwijder alle huidige
                         // leden, die er nog in zitten als kopietje van vorig jaar.
 
-                        var teVerwijderenLeden = (from l in db.Lid.Include(ld => ld.HeeftFunctie)
+                        var teVerwijderenLeden = (from l in db.Lid.Include("HeeftFunctie")
                                                   where l.Groep.GroepID == groep.GroepID
                                                         && l.werkjaar == gedoe.WerkJaar
                                                   select l).ToList();
@@ -541,7 +540,7 @@ namespace Chiro.Kip.Services
         {
             using (var db = new kipadminEntities())
             {
-                var lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie).Include(ld => ld.Groep)
+                var lid = (from l in db.Lid.Include("HeeftFunctie.Groep")
                            where
                                l.Persoon.AdNummer == adNummer && (l.Groep is ChiroGroep) &&
                                String.Compare((l.Groep as ChiroGroep).STAMNR, stamNummer, StringComparison.OrdinalIgnoreCase) == 0 &&
