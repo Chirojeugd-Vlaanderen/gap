@@ -20,6 +20,8 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 ﻿using Chiro.Kip.Data;
+﻿using Chiro.Kip.ServiceContracts.DataContracts;
+﻿using Persoon = Chiro.Kip.Data.Persoon;
 
 namespace Chiro.Kip.Workers
 {
@@ -170,6 +172,60 @@ namespace Chiro.Kip.Workers
 
 			return lid;
 		}
+
+        /// <summary>
+        /// Voegt <paramref name="communicatie"/> toe als communicatiemiddel voor <paramref name="persoon"/>.
+        /// </summary>
+        /// <param name="communicatie">Toe te voegen communicatie</param>
+        /// <param name="persoon">Persoon die communicatie krijgt</param>
+        /// <param name="db">Object context</param>
+        /// <returns><c>false</c> als de communicatievorm al bestond, anders <c>true</c>.</returns>
+        public bool CommunicatieToevoegen(CommunicatieMiddel communicatie, Persoon persoon, kipadminEntities db)
+        {
+            var bestaande = (from ci in persoon.kipContactInfo
+                            where ci.ContactTypeId == (int)communicatie.Type
+                            select ci).ToList();
+
+            // Voeg enkel toe als nog niet bestaat.
+
+            var gevonden = (from ci in bestaande
+                            where
+                                String.Compare(ci.Info, communicatie.Waarde,
+                                               StringComparison.OrdinalIgnoreCase) == 0
+                            select ci.ContactInfoId).FirstOrDefault();
+
+            if (gevonden == 0)
+            {
+                // volgnummer bepalen
+                int volgnr;
+
+                if (bestaande.FirstOrDefault() == null)
+                {
+                    // Er bestaan er nog geen: volgnr = 1
+                    volgnr = 1;
+                }
+                else
+                {
+                    volgnr = (from ci in bestaande select ci.VolgNr).Max() + 1;
+                }
+
+                var contactinfo = new ContactInfo
+                {
+                    ContactInfoId = 0,
+                    ContactTypeId = (int)communicatie.Type,
+                    GeenMailings = communicatie.GeenMailings,
+                    Info = communicatie.Waarde,
+                    kipPersoon = persoon,
+                    VolgNr = volgnr
+                };
+                db.AddToContactInfoSet(contactinfo);
+                db.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
+
 	}
 
 	/// <summary>
