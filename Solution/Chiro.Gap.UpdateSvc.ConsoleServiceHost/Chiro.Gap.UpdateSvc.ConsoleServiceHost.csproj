@@ -76,6 +76,10 @@
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
+      <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
+      <Name>Chiro.Ad.ServiceContracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>

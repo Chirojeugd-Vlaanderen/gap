@@ -111,6 +111,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
+      <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
+      <Name>Chiro.Ad.ServiceContracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
@@ -118,6 +122,14 @@
     <ProjectReference Include="..\Chiro.Cdf.ServiceModel\Chiro.Cdf.ServiceModel.csproj">
       <Project>{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}</Project>
       <Name>Chiro.Cdf.ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj">
+      <Project>{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}</Project>
+      <Name>Chiro.Cdf.UnityWcfExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Poco.Context\Chiro.Gap.Poco.Context.csproj">
+      <Project>{C83B2DF6-4352-4FAD-A09E-9C59DC335B05}</Project>
+      <Name>Chiro.Gap.Poco.Context</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Sync\Chiro.Gap.Sync.csproj">
       <Project>{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}</Project>
@@ -134,6 +146,10 @@
     <ProjectReference Include="..\Chiro.Gap.UpdateSvc.Service\Chiro.Gap.UpdateSvc.Service.csproj">
       <Project>{B2E725F5-E3F8-4511-99AB-2EB84124F302}</Project>
       <Name>Chiro.Gap.UpdateSvc.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
+      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
+      <Name>Chiro.Gap.Workers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
