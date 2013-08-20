@@ -152,7 +152,7 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// </summary>
         /// <param name="origineel"></param>
         /// <param name="dubbel"></param>
-        /// <remarks>PERSISTEERT!</remarks>
+        /// <remarks>PERSISTEERT NIET!</remarks>
         private void DubbelVerwijderen(Persoon origineel, Persoon dubbel)
         {
             // TODO: Dit kan nog wel wat unit tests gebruiken...
@@ -168,12 +168,10 @@ namespace Chiro.Gap.UpdateSvc.Service
 
                 foreach (var gp in teVerleggenGPs)
                 {
+                    dubbel.GelieerdePersoon.Remove(gp);
                     gp.Persoon = origineel;
+                    origineel.GelieerdePersoon.Add(gp);
                 }
-
-                // Dat gaan we al eens bewaren.
-
-                _personenRepo.SaveChanges();
 
                 // De gelieerde personen die nu nog aan dubbel hangen, moeten weg. We zetten zo veel 
                 // mogelijk relevante informatie over naar de originele gelieerde personen.
@@ -212,7 +210,6 @@ namespace Chiro.Gap.UpdateSvc.Service
                         {
                             dubbelLid.GelieerdePersoon = origineleGp;
                         }
-                        _ledenRepo.SaveChanges();
                     }
 
                     foreach (var dubbeleCommunicatie in dubbeleGp.Communicatie)
@@ -235,7 +232,6 @@ namespace Chiro.Gap.UpdateSvc.Service
                             // TODO: problemen met meerdere voorkeuren fixen
                             dubbeleCommunicatie.GelieerdePersoon = origineleGp;
                         }
-                        _communicatieVormenRepo.SaveChanges();
                     }
 
                     foreach (var dubbeleCategorie in dubbeleGp.Categorie)
@@ -251,8 +247,6 @@ namespace Chiro.Gap.UpdateSvc.Service
                             dubbeleCategorie.GelieerdePersoon.Add(origineleGp);
                         }
                         dubbeleCategorie.GelieerdePersoon.Remove(dubbeleGp);
-
-                        _groepenRepo.SaveChanges();
                     }
 
                     foreach (var dubbeleDeelnemer in dubbeleGp.Deelnemer)
@@ -269,7 +263,6 @@ namespace Chiro.Gap.UpdateSvc.Service
                         {
                             dubbeleDeelnemer.GelieerdePersoon = origineleGp;
                         }
-                        _deelnemersRepo.SaveChanges();
                     }
 
                     foreach (var dubbelAbonnement in dubbeleGp.Abonnement)
@@ -289,11 +282,9 @@ namespace Chiro.Gap.UpdateSvc.Service
                         {
                             dubbelAbonnement.GelieerdePersoon = origineleGp;
                         }
-                        _abonnementenRepo.SaveChanges();
                     }
 
                     _gelieerdePersonenRepo.Delete(origineleGp);
-                    _gelieerdePersonenRepo.SaveChanges();
                 }
 
                 // Verleg persoonsAdressen waar mogelijk
@@ -306,10 +297,6 @@ namespace Chiro.Gap.UpdateSvc.Service
                 {
                     pa.Persoon = origineel;
                 }
-
-                // Dat gaan we al eens bewaren.
-
-                _personenRepo.SaveChanges();
 
                 // De persoonsadressen die nu nog aan de dubbele hangen, hangen ook aan het origineel.
                 // Verwijder.
@@ -328,7 +315,6 @@ namespace Chiro.Gap.UpdateSvc.Service
                         }
                     }
                     _persoonsAdressenRepo.Delete(dubbelPa);
-                    _persoonsAdressenRepo.SaveChanges();
                 }
 
                 // Verleg verzekeringen waar mogelijk
@@ -341,14 +327,12 @@ namespace Chiro.Gap.UpdateSvc.Service
                 {
                     pv.Persoon = origineel;
                 }
-                _personenRepo.SaveChanges();
 
                 foreach (var pv in dubbel.PersoonsVerzekering)
                 {
                     // Nog niet verlegde verzekeringen zijn dubbel, en mogen verwijderd worden
                     _persoonsVerzekeringenRepo.Delete(pv);
                 }
-                _personenRepo.SaveChanges();
 
                 // Gebruikersrechten nog
 
@@ -363,7 +347,6 @@ namespace Chiro.Gap.UpdateSvc.Service
                     dubbel.Gav.Remove(g);
                     origineel.Gav.Add(g);
                 }
-                _personenRepo.SaveChanges();
 
                 foreach (var g in dubbel.Gav)
                 {
@@ -389,12 +372,10 @@ namespace Chiro.Gap.UpdateSvc.Service
                         {
                             dubbelGebruikersRecht.Gav = origineel.Gav.Single();
                         }
-                        _gebruikersRechtenRepo.SaveChanges();
                     }
                 }
 
                 _personenRepo.Delete(dubbel);
-                _personenRepo.SaveChanges();
                 
                 tx.Complete();
             }
