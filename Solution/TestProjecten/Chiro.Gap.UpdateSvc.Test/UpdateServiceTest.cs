@@ -125,5 +125,52 @@ namespace Chiro.Gap.UpdateSvc.Test
             Assert.IsTrue(allePersonen.Contains(origineel));
             Assert.IsFalse(allePersonen.Contains(dubbel));
         }
+
+        /// <summary>
+        /// Test op dubbel verwijderen waar de 2 personen een adres delen.
+        /// </summary>
+        [TestMethod()]
+        public void DubbelVerwijderenGedeeldAdresTest()
+        {
+            // ARRANGE
+
+            var origineel = new Persoon();
+            var dubbel = new Persoon();
+
+            var gelieerdeOrigineel = new GelieerdePersoon {Persoon = origineel, Groep = new ChiroGroep()};
+            var gelieerdeDubbel = new GelieerdePersoon {Persoon = dubbel, Groep = new ChiroGroep()};
+
+            origineel.GelieerdePersoon.Add(gelieerdeOrigineel);
+            dubbel.GelieerdePersoon.Add(gelieerdeDubbel);
+
+            var adres = new BelgischAdres();
+
+            var origineelPa = new PersoonsAdres {Persoon = origineel, Adres = adres};
+            var dubbelPa = new PersoonsAdres {Persoon = dubbel, Adres = adres};
+
+            adres.PersoonsAdres.Add(origineelPa);
+            adres.PersoonsAdres.Add(dubbelPa);
+
+            origineel.PersoonsAdres.Add(origineelPa);
+            dubbel.PersoonsAdres.Add(dubbelPa);
+
+            var allePersonen = new List<Persoon> { origineel, dubbel };
+            var allePersoonsAdressen = new List<PersoonsAdres> {origineelPa, dubbelPa};
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Persoon>())
+                .Returns(new DummyRepo<Persoon>(allePersonen));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<PersoonsAdres>())
+                .Returns(new DummyRepo<PersoonsAdres>(allePersoonsAdressen));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var target = Factory.Maak<UpdateService_Accessor>();
+            target.DubbelVerwijderen(origineel, dubbel);
+
+            // ASSERT
+            Assert.AreEqual(1, allePersoonsAdressen.Count);
+        }
     }
 }
