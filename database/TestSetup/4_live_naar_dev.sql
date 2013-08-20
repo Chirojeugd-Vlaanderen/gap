@@ -6,13 +6,52 @@
 USE [master]
 GO
 
-ALTER DATABASE [Gap_Dev] SET COMPATIBILITY_LEVEL = 100
+-- VOOR TEST:
+
+-- database: simple
+
+ALTER DATABASE [gap_tst] SET COMPATIBILITY_LEVEL = 100
 GO
 
-ALTER DATABASE [Gap_Dev] SET RECOVERY SIMPLE WITH NO_WAIT
+ALTER DATABASE [gap_tst] SET RECOVERY SIMPLE WITH NO_WAIT
 GO
 
-USE gap_dev
+-- users:
+
+-- eerst service-user uit DB deleten, dan terug koppelen
+-- aan user op deze server.
+
+USE [gap_tst]
+GO
+
+DROP SCHEMA [kipdorp\gapservice_tst]
+GO
+
+DROP USER [KIPDORP\gapservice_tst]
+GO
+
+CREATE USER [KIPDORP\gapservice_tst] FOR LOGIN [KIPDORP\gapservice_tst]
+GO
+EXEC sp_addrolemember N'db_datareader', N'KIPDORP\gapservice_tst'
+GO
+EXEC sp_addrolemember N'GapRole', N'KIPDORP\gapservice_tst'
+GO
+
+
+CREATE PROCEDURE auth.spWillekeurigeGroepToekennen (@login varchar(40)) AS
+-- Doel: Kent gebruikersrecht voor willekeurige actieve groep
+-- toe aan user met gegeven login. (Enkel voor debugging purposes)
+BEGIN 
+	DECLARE @stamnr as varchar(10);
+
+	set @stamnr = (select top 1 g.Code from grp.Groep g where g.StopDatum is null order by newid());
+	exec auth.spGebruikersRechtToekennen @stamnr, @login
+END
+
+
+-- echte werk:
+
+USE gap_tst
 GO
 
 
