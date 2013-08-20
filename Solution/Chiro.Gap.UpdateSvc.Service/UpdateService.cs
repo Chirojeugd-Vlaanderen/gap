@@ -168,6 +168,7 @@ namespace Chiro.Gap.UpdateSvc.Service
             {
                 dubbel.GelieerdePersoon.Remove(gp);
                 gp.Persoon = origineel;
+                    origineel.GelieerdePersoon.Add(gp);
             }
 
             // De gelieerde personen die nu nog aan dubbel hangen, moeten weg. We zetten zo veel 
