@@ -313,6 +313,7 @@ namespace Chiro.Gap.UpdateSvc.Service
                         gp.PersoonsAdres = origineelPa;
                     }
                 }
+                _persoonsAdressenRepo.Delete(dubbelPa);
             }
 
             // Verleg verzekeringen waar mogelijk
