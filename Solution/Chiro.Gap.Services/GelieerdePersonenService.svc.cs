@@ -935,7 +935,14 @@ namespace Chiro.Gap.Services
                 gp.PersoonsAdres = nieuwVoorkeurAdres;
                 if (_gelieerdePersonenMgr.IsGekendInKipadmin(gp))
                 {
-                    teSyncen.Add(nieuwVoorkeurAdres);
+                    if (nieuwVoorkeurAdres != null)
+                    {
+                        teSyncen.Add(nieuwVoorkeurAdres);
+                    }
+                    else
+                    {
+                        // TODO (#1647): feit dat voorkeursadres vervalt syncen naar Kipadmin
+                    }
                 }
             }
 
