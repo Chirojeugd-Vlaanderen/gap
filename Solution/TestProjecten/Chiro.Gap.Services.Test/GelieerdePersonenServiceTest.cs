@@ -659,11 +659,8 @@ namespace Chiro.Gap.Services.Test
         /// Als het voorkeursadres van een persoon verandert na het verwijderen van een adres,
         /// dan moet die wijziging gesynct worden. Een unit test.
         ///</summary>
-        // TODO: Ensure that the UrlToTest attribute specifies a URL to an ASP.NET page (for example,
-        // http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
-        // whether you are testing a page, web service, or a WCF service.
         [TestMethod()]
-        public void AdresVerwijderenVanPersonenTest()
+        public void AdresVerwijderenVanPersonenNieuweVoorkeurTest()
         {
             // ARRANGE
 
@@ -1022,6 +1019,58 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.AreEqual(actual.GebruikersInfo.VervalDatum, gebruikersRecht.VervalDatum);
+        }
+
+        /// <summary>
+        /// Als het laatste adres van een persoon wordt verwijderd, dan kan AdressenSync.StandaardAdresBewaren
+        /// niet opgeroepen worden, want dat vraagt een PersoonsAdres. Als alle adressen zijn verwijderd, dan
+        /// is er geen PersonsAdres meer.
+        ///</summary>
+        [TestMethod()]
+        public void LaatsteAdresVerwijderenVanPersonenTest()
+        {
+            // ARRANGE
+
+            var voorkeursAdres = new BelgischAdres { ID = 2 };
+
+            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, AdInAanvraag = true } };
+
+            var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
+
+            // wat gepruts om alle relaties goed te leggen
+
+            gelieerdePersoon.Persoon.PersoonsAdres.Add(voorkeursPa);
+            gelieerdePersoon.PersoonsAdres = voorkeursPa;   // persoonsadres gelieere persoon bepaalt voorkeursadres
+            voorkeursAdres.PersoonsAdres.Add(voorkeursPa);
+            voorkeursPa.GelieerdePersoon.Add(gelieerdePersoon);
+
+
+            // Dependency injection synchronisatie
+
+            var adressenSyncMock = new Mock<IAdressenSync>();
+            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IList<PersoonsAdres>>()))
+                            .Verifiable();
+            Factory.InstantieRegistreren(adressenSyncMock.Object);
+
+            // Dependency injection data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
+                                  .Returns(new DummyRepo<Adres>(new List<Adres> { voorkeursAdres }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<PersoonsAdres>())
+                                  .Returns(new DummyRepo<PersoonsAdres>(new List<PersoonsAdres> { voorkeursPa }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.AdresVerwijderenVanPersonen(new[] { gelieerdePersoon.Persoon.ID }, voorkeursAdres.ID);
+
+            // ASSERT
+
+            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IList<PersoonsAdres>>()),
+                                    Times.Never());
+
         }
     }
 }
