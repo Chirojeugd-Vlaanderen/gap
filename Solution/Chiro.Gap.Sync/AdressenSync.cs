@@ -41,20 +41,21 @@ namespace Chiro.Gap.Sync
         /// </summary>
         /// <param name="persoonsAdressen">Persoonsadressen die als standaardadressen (adres 1) naar
         /// Kipadmin moeten.  Personen moeten gekoppeld zijn, net zoals adressen met straatnaam en gemeente</param>
-        public void StandaardAdressenBewaren(IEnumerable<PersoonsAdres> persoonsAdressen)
+        public void StandaardAdressenBewaren(IList<PersoonsAdres> persoonsAdressen)
         {
-            // Voorlopig afhandelen per adres.  Zou die distinct werken?
+            // Voorlopig afhandelen per adres.
 
-            foreach (var adr in persoonsAdressen.Select(pa => pa.Adres).Distinct())
+            var gegroepeerdOpAdres = persoonsAdressen.GroupBy(pa => pa.Adres, pa => pa);
+
+            foreach (var persoonsAdressenVoorAdres in gegroepeerdOpAdres)
             {
-                var bewoners = from pa in adr.PersoonsAdres
+                var adres = Mapper.Map<Poco.Model.Adres, Kip.ServiceContracts.DataContracts.Adres>(persoonsAdressenVoorAdres.Key);
+                var bewoners = from pa in persoonsAdressenVoorAdres
                                select new Bewoner
                                {
                                    Persoon = Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(pa.Persoon),
                                    AdresType = (AdresTypeEnum)pa.AdresType
                                };
-
-                var adres = Mapper.Map<Poco.Model.Adres, Kip.ServiceContracts.DataContracts.Adres>(adr);
 
                 ServiceHelper.CallService<ISyncPersoonService>(svc => svc.StandaardAdresBewaren(adres, bewoners.ToList()));
             }

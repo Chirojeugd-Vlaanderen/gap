@@ -578,7 +578,7 @@ namespace Chiro.Gap.Services.Test
 
             // mock voor sync
             var adressenSyncMock = new Mock<IAdressenSync>();
-            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>())).Verifiable();
+            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IList<PersoonsAdres>>())).Verifiable();
 
             // mocks registreren bij dependency-injectioncontainer
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
@@ -594,7 +594,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()), Times.AtLeastOnce());
+            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IList<PersoonsAdres>>()), Times.AtLeastOnce());
         }
 
         /// <summary>
@@ -624,7 +624,7 @@ namespace Chiro.Gap.Services.Test
             // mock voor sync
 
             var adressenSyncMock = new Mock<IAdressenSync>();
-            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()))
+            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IList<PersoonsAdres>>()))
                             .Verifiable();
             Factory.InstantieRegistreren(adressenSyncMock.Object);
 
@@ -650,7 +650,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()),
+            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IList<PersoonsAdres>>()),
                                     Times.AtLeastOnce());
         }
 
@@ -688,7 +688,7 @@ namespace Chiro.Gap.Services.Test
             // Dependency injection synchronisatie
 
             var adressenSyncMock = new Mock<IAdressenSync>();
-            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()))
+            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IList<PersoonsAdres>>()))
                             .Verifiable();
             Factory.InstantieRegistreren(adressenSyncMock.Object);
 
@@ -708,7 +708,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()),
+            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IList<PersoonsAdres>>()),
                                     Times.AtLeastOnce());
         }
 
@@ -742,7 +742,7 @@ namespace Chiro.Gap.Services.Test
             // Dependency injection synchronisatie
 
             var adressenSyncMock = new Mock<IAdressenSync>();
-            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()))
+            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.IsAny<IList<PersoonsAdres>>()))
                             .Verifiable();
             Factory.InstantieRegistreren(adressenSyncMock.Object);
 
@@ -760,7 +760,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IEnumerable<PersoonsAdres>>()),
+            adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IList<PersoonsAdres>>()),
                         Times.AtLeastOnce());
         }
 
