@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdressenSyncTest.cs" />
     <Compile Include="BivakSyncTest.cs" />
     <Compile Include="LedenSyncTest.cs" />
     <Compile Include="PersonenSyncTest.cs" />
