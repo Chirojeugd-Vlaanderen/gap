@@ -591,7 +591,13 @@ namespace Chiro.Kip.Services
 				    feedback = String.Format(
 				        "Communicate toegevoegd voor ID{0} {1} {2} AD{3}: {4}",
 				        persoon.GapID, persoon.VoorNaam, persoon.Naam, persoon.AdNummer, communicatie.Waarde);
-				};
+				}
+				else
+				{
+                    feedback = String.Format(
+                        "Communicatie was al gekend voor ID{0} {1} {2} AD{3}: {4}",
+                        persoon.GapID, persoon.VoorNaam, persoon.Naam, persoon.AdNummer, communicatie.Waarde);
+				}
 			}
 			_log.BerichtLoggen(0, feedback);
 

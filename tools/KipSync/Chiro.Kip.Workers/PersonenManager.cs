@@ -192,9 +192,9 @@ namespace Chiro.Kip.Workers
                             where
                                 String.Compare(ci.Info, communicatie.Waarde,
                                                StringComparison.OrdinalIgnoreCase) == 0
-                            select ci.ContactInfoId).FirstOrDefault();
+                            select ci).FirstOrDefault();
 
-            if (gevonden == 0)
+            if (gevonden == null)
             {
                 // volgnummer bepalen
                 int volgnr;
@@ -210,19 +210,25 @@ namespace Chiro.Kip.Workers
                 }
 
                 var contactinfo = new ContactInfo
-                {
-                    ContactInfoId = 0,
-                    ContactTypeId = (int)communicatie.Type,
-                    GeenMailings = communicatie.GeenMailings,
-                    Info = communicatie.Waarde,
-                    kipPersoon = persoon,
-                    VolgNr = volgnr
-                };
+                                  {
+                                      ContactInfoId = 0,
+                                      ContactTypeId = (int) communicatie.Type,
+                                      GeenMailings = communicatie.GeenMailings,
+                                      Info = communicatie.Waarde,
+                                      kipPersoon = persoon,
+                                      VolgNr = volgnr
+                                  };
                 db.AddToContactInfoSet(contactinfo);
                 db.SaveChanges();
 
                 return true;
             }
+
+            // communicatievorm was wel gevonden. Neem 'GeenMailings' over.
+
+            gevonden.GeenMailings = communicatie.GeenMailings;
+            db.SaveChanges();
+            
             return false;
         }
 
