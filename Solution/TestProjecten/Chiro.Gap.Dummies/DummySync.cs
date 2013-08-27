@@ -28,7 +28,7 @@ namespace Chiro.Gap.Dummies
     /// </summary>
     public class DummySync : IAdressenSync, ICommunicatieSync, IPersonenSync, ILedenSync, IVerzekeringenSync, IBivakSync, IGroepenSync
     {
-        public void StandaardAdressenBewaren(IEnumerable<PersoonsAdres> persoonsAdressen)
+        public void StandaardAdressenBewaren(IList<PersoonsAdres> persoonsAdressen)
         {
         }
 
