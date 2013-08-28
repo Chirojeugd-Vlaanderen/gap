@@ -226,10 +226,12 @@
                     Snelleberichtenlijst<%= Html.InfoLink("snelBerichtInfo")%>: <a class="sblink" href="#" id="sb<%: cvID %>"><%= cv.IsVoorOptIn ? "ja" : "nee" %></a>
                     <% } %>
                 </td>
-                <td >
+                <td>
                     <div class="contactBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>
                 </td>
-                <td></td>
+                <td>
+                    <div class="contactVerwijderen ui-icon ui-icon-circle-minus" title="Verwijderen" style="cursor: pointer" id="cverw<%: cvID %>"></div>
+                </td>
               </tr>
                 <% } %>
             

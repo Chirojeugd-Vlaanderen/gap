@@ -296,27 +296,19 @@ $(function () {
         $(this).parent().parent().find('.contact').editable('toggle');
     });
     //------------------------------------------------------------------------------------------
-    //email & Telefoonnummer verwijderen
-    $('.emailverw, .telverw').click(function (e) {
+    //communicatie verwijderen
+    $('.contactVerwijderen').click(function (e) {
         e.preventDefault();
-        var comID = $(this).parent().parent().find('td input').val();
-        $('#extraInfoDialog').html("Ben je zeker dat je deze communicatievorm wil verwijderen?")
-            .dialog({
-                modal: true,
-                title: "Bevestiging",
-                buttons: {
-                    'Ja': function () {
-                        url = link("Personen", "VerwijderenCommVorm");
-                        $.get(url, { commvormID: comID });
-                        //verbergt de rij in de tabel zodat de pagina niet herladen hoeft te worden.
-                        $('input[value=' + comID + ']').parent().parent().hide();
-                        $(this).dialog('close');
-                    },
-                    'Nee': function () {
-                        $(this).dialog('close');
-                    }
-                }
-            });
+
+        var divID = $(this).attr('id');
+        // extraheer communicatievormID
+        var pattern = /([0-9]*)$/;
+        var cvID = pattern.exec(divID)[0];
+
+        url = link("Personen", "VerwijderenCommVorm");
+        $.get(url, { commvormID: cvID });
+        //verberg de rij in de tabel zodat de pagina niet herladen hoeft te worden.
+        $(this).parent().parent().hide();
     });
     //------------------------------------------------------------------------------------------
     //Nieuwe communicatievorm toevoegen
