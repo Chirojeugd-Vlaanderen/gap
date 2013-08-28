@@ -540,7 +540,7 @@ namespace Chiro.Kip.Services
         {
             using (var db = new kipadminEntities())
             {
-                var lid = (from l in db.Lid.Include("HeeftFunctie.Groep")
+                var lid = (from l in db.Lid.Include("HeeftFunctie").Include("Groep")
                            where
                                l.Persoon.AdNummer == adNummer && (l.Groep is ChiroGroep) &&
                                String.Compare((l.Groep as ChiroGroep).STAMNR, stamNummer, StringComparison.OrdinalIgnoreCase) == 0 &&
