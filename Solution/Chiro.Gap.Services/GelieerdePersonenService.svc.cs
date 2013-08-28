@@ -1183,6 +1183,7 @@ namespace Chiro.Gap.Services
                 _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
             }
 #if KIPDORP
+            tx.Complete();
             }
 #endif
         }
