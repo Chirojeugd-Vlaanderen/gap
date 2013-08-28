@@ -599,6 +599,7 @@ namespace Chiro.Gap.Services
                                                            communicatieVorm.CommunicatieType.Omschrijving));
             }
 
+            string origineelNummer = communicatieVorm.Nummer;
             communicatieVorm.Nummer = waarde;
 
             // Niet vergeten te bewaren en te syncen
@@ -613,6 +614,37 @@ namespace Chiro.Gap.Services
                 }
 #if KIPDORP
                 tx.Complete();
+            }
+#endif
+        }
+
+        /// <summary>
+        /// Schrijft een communicatievorm in of uit voor de snelleberichtgenlijsten
+        /// </summary>
+        /// <param name="communicatieVormID">ID in/uit te schrijven communicatievorm</param>
+        /// <param name="inschrijven"><c>true</c> voor inschrijven, <c>false</c> voor uitschrijven.</param>
+        public void SnelleBerichtenInschrijven(int communicatieVormID, bool inschrijven)
+        {
+            var communicatieVorm = _communicatieVormRepo.ByID(communicatieVormID);
+            if (!_autorisatieMgr.IsGav(communicatieVorm))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            communicatieVorm.IsVoorOptIn = inschrijven;
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _communicatieVormRepo.SaveChanges();
+                if (communicatieVorm.GelieerdePersoon.Persoon.AdNummer != null ||
+                    communicatieVorm.GelieerdePersoon.Persoon.AdInAanvraag)
+                {
+                    // het nummer veranderde niet.
+                    _communicatieSync.Bijwerken(communicatieVorm, communicatieVorm.Nummer);
+                }
+#if KIPDORP
+            tx.Complete();
             }
 #endif
         }
@@ -1190,12 +1222,12 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
-            _communicatieVormRepo.SaveChanges();
-            if (communicatieVorm.GelieerdePersoon.Persoon.AdNummer != null ||
-                communicatieVorm.GelieerdePersoon.Persoon.AdInAanvraag)
-            {
-                _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
-            }
+                _communicatieVormRepo.SaveChanges();
+                if (communicatieVorm.GelieerdePersoon.Persoon.AdNummer != null ||
+                    communicatieVorm.GelieerdePersoon.Persoon.AdInAanvraag)
+                {
+                    _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
+                }
 #if KIPDORP
             tx.Complete();
             }

@@ -1378,6 +1378,20 @@ namespace Chiro.Gap.WebApp.Controllers
             return Json(null);
         }
 
+        /// <summary>
+        /// Schrijft een communicatievorm in of uit voor snelleberichtenlijst.
+        /// </summary>
+        /// <param name="groepID">Groep waarin we werken. Speelt eigenlijk geen rol.</param>
+        /// <param name="wijziging">Bevat communciatieVormID, en een string. Als de string leeg is,
+        /// wordt uitgeschreven, anders wordt ingeschreven.</param>
+        /// <returns>Voorlopig leeg JsonResult. Zou beter een foutcode worden.</returns>
+        public JsonResult SnelleBerichtenInschrijven(int groepID, IntStringModel wijziging)
+        {
+            ServiceHelper.CallService<IGelieerdePersonenService>(
+                svc => svc.SnelleBerichtenInschrijven(wijziging.ID, !String.IsNullOrEmpty(wijziging.Waarde)));
+            return Json(null);
+        }
+
         #endregion
 
 

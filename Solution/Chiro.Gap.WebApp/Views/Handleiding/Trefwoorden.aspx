@@ -191,8 +191,7 @@
         <dd id="SBLINFO">
             Chirojeugd Vlaanderen heeft een aantal mailinglijsten. We gebruiken die niet om
             je te overstelpen met mails, wel om je snel te kunnen bereiken als we dringend nieuws
-            hebben. Zo zijn er lijsten voor leiding, kaderleiding, groepsleiding, VB's en jeugdraadvertegenwoordigers.
-            Meer info vind je <a href="http://www.chiro.be/Snelleberichtenlijst">op de Chirosite</a>.</dd>
+            hebben. Zo zijn er lijsten voor leiding, kaderleiding, groepsleiding, VB's en jeugdraadvertegenwoordigers.</dd>
         <dt><a class="anchor" id="Uitschrijven"></a><strong>Uitschrijven</strong>:</dt>
         <dd id="UITSCHRINFO">
             Iemand uitschrijven is een drastische maatregel. In principe kan het ook niet -

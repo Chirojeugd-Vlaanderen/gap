@@ -62,6 +62,11 @@ $(function () {
         toonInfo('#CLINFO', 'Chiroleeftijd', '#extraInfoDialog');
     });
 
+    $('#snelBerichtInfo').click(function () {
+        $('#extraInfoDialog').dialog();
+        toonInfo('#SBLINFO', 'Snelleberichtenlijsten', '#extraInfoDialog');
+    });
+
     $('#print').click(function () {
         window.print();
     });
