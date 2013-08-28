@@ -203,7 +203,7 @@ function controleerEmail(email) {
 function controleerTel(tel) {
     var telReg = /^(^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$)|^\+[0-9]*$/;
     if (!telReg.test(tel)) {
-        return "Het ingegeven telefoonnummer is ongeldig. Gebruik de vorm: '000-00 00 00' of '0000-00 00 00'";
+        return "Het ingegeven telefoonnummer heeft een ongeldig formaat. Voorbeelden: 02-345 67 89, 014-56 78 89, +323456789";
     }
     return "";
 }
