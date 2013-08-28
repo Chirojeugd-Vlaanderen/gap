@@ -286,6 +286,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;{0}&quot; is geen geldige waarde voor een communicatievorm van het type {1}..
+        /// </summary>
+        internal static string OngeldigeCommunicatie {
+            get {
+                return ResourceManager.GetString("OngeldigeCommunicatie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;Geboortejaar van&apos; mag niet groter zijn dan &apos;geboortejaar tot&apos;..
         /// </summary>
         internal static string OngeldigeGeborteJarenAfdelingsJaar {

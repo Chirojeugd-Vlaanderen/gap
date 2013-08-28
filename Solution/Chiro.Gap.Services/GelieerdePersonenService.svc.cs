@@ -578,6 +578,31 @@ namespace Chiro.Gap.Services
             return Mapper.Map<CommunicatieVorm, CommunicatieDetail>(communicatieVorm);
         }
 
+        /// <summary>
+        /// Wijzigt het nummer van de communicatievorm met gegeven <paramref name="ID"/>
+        /// naar <paramref name="waarde"/>.
+        /// </summary>
+        /// <param name="ID">CommunicatieVormID</param>
+        /// <param name="waarde">Nieuw nummer</param>
+        public void NummerCommunicatieVormWijzigen(int ID, string waarde)
+        {
+            var communicatieVorm = _communicatieVormRepo.ByID(ID);
+            if (!_autorisatieMgr.IsGav(communicatieVorm))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            if (!_communicatieVormenMgr.IsGeldig(waarde, communicatieVorm.CommunicatieType))
+            {
+                throw new FoutNummerException(FoutNummer.ValidatieFout, string.Format(Resources.OngeldigeCommunicatie,
+                                                           waarde,
+                                                           communicatieVorm.CommunicatieType.Omschrijving));
+            }
+
+            communicatieVorm.Nummer = waarde;
+            _communicatieVormRepo.SaveChanges();
+        }
+
         #endregion
 
         #region aanmaken (wordt niet gesynct)

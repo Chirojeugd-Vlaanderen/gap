@@ -258,7 +258,7 @@ $(function() {
             var pattern = /([0-9]*)$/;
             var cvID = pattern.exec(rijID)[0];
 
-            bewaarContactGegevens(cvID, 'nummer', params.newValue);
+            wijzigCommunicatieNr(cvID, params.newValue);
         });
 
     $('.contactBewerken').click(function(e) {
@@ -941,62 +941,17 @@ $(function() {
     }
 
     //-------------------------------------------------------------------------
-    // Bewaar telefoonnummers en email adressen
+    // Verandert van de communicatievorm met gegeven CommunicatieVormID het
+    // nummer/e-mailadres/...
     //-------------------------------------------------------------------------
-
-    function bewaarContactGegevens(cvid, teVeranderen, nieuweWaarde) {
-
-        var nummer = "";
-        var snelleBerichten = false;
-        var voorkeur1 = true;
-        var voorkeur2 = false;
-        var GG = false;
-        var nota = "";
-
-        url = link("Personen", "CommVormBewerken");
-        $.getJSON(url, { commvormID: cvid, gelieerdePersoonID: GPid }, function(data) {
-            nummer = data.NieuweCommVorm.Nummer;
-            snelleBerichten = data.NieuweCommVorm.IsVoorOptIn;
-            voorkeur1 = data.NieuweCommVorm.Voorkeur;
-            GG = data.NieuweCommVorm.IsGezinsGebonden;
-            nota = data.NieuweCommVorm.Nota;
-
-            success:
-            {
-                switch (teVeranderen) {
-                case 'nummer':
-                    nummer = nieuweWaarde;
-                    break;
-                case 'snelleBerichten':
-                    snelleBerichten = nieuweWaarde;
-                    break;
-                case 'voorkeur':
-                    voorkeur1 = nieuweWaarde;
-                    break;
-                case 'gezin':
-                    GG = nieuweWaarde;
-                    break;
-                case 'nota':
-                    nota = nieuweWaarde;
-                    break;
-                default:
-                }
-
-                url = link("Personen", "CommVormBewerken");
+    function wijzigCommunicatieNr(cvid, nieuweWaarde) {
+                url = link("Personen", "NummerWijzigen");
 
                 $.post(url,
                     {
-                        "NieuweCommVorm.Nummer": nummer,
-                        "NieuweCommVorm.IsVoorOptIn": snelleBerichten,
-                        "NieuweCommVorm.Voorkeur": voorkeur1,
-                        "NieuweCommVorm.IsGezinsGebonden": GG,
-                        "NieuweCommVorm.Nota": nota,
-                        "NieuweCommVorm.ID": cvid,
-                        "NieuweCommVorm.VersieString": versiestring,
-                        "gelieerdePersoonID": GPid
+                        "Waarde": nieuweWaarde,
+                        "ID": cvid
                     });
-            }
-        });
     }
 
     //-------------------------------------------------------------------------

@@ -148,6 +148,7 @@
     <Compile Include="Models\GavOverzichtModel.cs" />
     <Compile Include="Models\GroepInfoModel.cs" />
     <Compile Include="Models\IAdresBewerkenModel.cs" />
+    <Compile Include="Models\IntStringModel.cs" />
     <Compile Include="Models\LidAfdelingenModel.cs" />
     <Compile Include="Models\Mededeling.cs" />
     <Compile Include="Models\PersoonEnLidModel.cs" />

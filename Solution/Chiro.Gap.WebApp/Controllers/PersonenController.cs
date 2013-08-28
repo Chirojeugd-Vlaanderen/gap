@@ -57,6 +57,8 @@ namespace Chiro.Gap.WebApp.Controllers
         }
         // TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
 
+        #region personenlijst
+
         [HandleError]
         public override ActionResult Index(int groepID)
         {
@@ -67,11 +69,6 @@ namespace Chiro.Gap.WebApp.Controllers
             });
         }
 
-        public JsonResult PersonenJson(int groepID, int pageSize, int page)
-        {
-            var resultaat = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.PaginaOphalen(groepID, pageSize, page));
-            return Json(resultaat,JsonRequestBehavior.AllowGet);
-        }
 
         /// <summary>
         /// Toont de persoonsinformatie (inclusief lidinfo) voor personen van wie de familienaam begint met
@@ -261,6 +258,8 @@ namespace Chiro.Gap.WebApp.Controllers
 
             return r;
         }
+
+        #endregion
 
         #region personen
 
@@ -983,7 +982,31 @@ namespace Chiro.Gap.WebApp.Controllers
 
         #endregion adressen
 
-        #region commvormen
+        #region communicatievormen
+
+        /// <summary>
+        /// Redirect naar het wijzigen van eigen e-mailadres.
+        /// </summary>
+        /// <returns>Een redirect naar het wijzigen van eigen e-mailadres</returns>
+        public ActionResult MijnEmailInstellen(int groepID)
+        {
+            // Dit is tamelijk omslachtig, maar ik wil op dit moment niet veel meer
+            // wijzigen aan de oude backend.
+
+            var gavs =
+                ServiceHelper.CallService<IGroepenService, IEnumerable<GebruikersDetail>>(
+                    svc => svc.GebruikersOphalen(groepID));
+
+
+            string mijnUser = System.Web.HttpContext.Current.User.Identity.Name;
+
+            var mijnGav = (from gav in gavs
+                           where String.Compare(gav.GavLogin, mijnUser, StringComparison.OrdinalIgnoreCase) == 0
+                           select gav).First();
+
+            return RedirectToAction("NieuweCommVorm", new { groepID, gelieerdePersoonID = mijnGav.GelieerdePersoonID });
+        }
+
 
         /// <summary>
         /// Toont het formulier waarmee een nieuwe communicatievorm toegevoegd kan worden
@@ -1098,18 +1121,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns></returns>
         /// <!-- GET: /Personen/CommVormBewerken/gelieerdePersoonID -->
         [HandleError]
-        public JsonResult CommVormBewerken(int commvormID, int gelieerdePersoonID, int groepID)
-        {
-            // TODO (#1026): dit is niet juist broes, want hij haalt 2 keer de persoon op?
-            var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonID));
-            var commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieDetail>(l => l.CommunicatieVormOphalen(commvormID));
-            var model = new CommVormModel(persoonDetail, commv);
-            BaseModelInit(model, groepID);
-            model.Titel = "Communicatievorm bewerken";
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
-        /*
-         * public ActionResult CommVormBewerken(int commvormID, int gelieerdePersoonID, int groepID)
+        public ActionResult CommVormBewerken(int commvormID, int gelieerdePersoonID, int groepID)
         {
             // TODO (#1026): dit is niet juist broes, want hij haalt 2 keer de persoon op?
             var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonID));
@@ -1118,10 +1130,7 @@ namespace Chiro.Gap.WebApp.Controllers
             BaseModelInit(model, groepID);
             model.Titel = "Communicatievorm bewerken";
             return View("CommVormBewerken", model);
-        }
-         */
-
-        // TODO (#1027): meerdere commvormen tegelijk
+        } 
 
         /// <summary>
         /// Stuurt de ingevulde gegevens naar de service, die de geselecteerde communicatievorm aanpast
@@ -1339,27 +1348,38 @@ namespace Chiro.Gap.WebApp.Controllers
         }
         #endregion
 
+
+        #region Enkel nodig voor javascriptcalls van de client
+
         /// <summary>
-        /// Redirect naar het wijzigen van eigen e-mailadres.
+        /// Haalt persoonsgegevens op in JSON-formaat
         /// </summary>
-        /// <returns>Een redirect naar het wijzigen van eigen e-mailadres</returns>
-        public ActionResult MijnEmailInstellen(int groepID)
+        /// <param name="groepID">ID van de groep wiens personen opgehaald moeten worden</param>
+        /// <param name="pageSize">Paginagrootte</param>
+        /// <param name="page">Op te halen pagina</param>
+        /// <returns>Persoonsgegevens in JSON-formaat</returns>
+        public JsonResult PersonenJson(int groepID, int pageSize, int page)
         {
-            // Dit is tamelijk omslachtig, maar ik wil op dit moment niet veel meer
-            // wijzigen aan de oude backend.
-
-            var gavs =
-                ServiceHelper.CallService<IGroepenService, IEnumerable<GebruikersDetail>>(
-                    svc => svc.GebruikersOphalen(groepID));
-
-
-            string mijnUser = System.Web.HttpContext.Current.User.Identity.Name;
-
-            var mijnGav = (from gav in gavs
-                           where String.Compare(gav.GavLogin, mijnUser, StringComparison.OrdinalIgnoreCase) == 0
-                           select gav).First();
-
-            return RedirectToAction("NieuweCommVorm", new {groepID, gelieerdePersoonID = mijnGav.GelieerdePersoonID});
+            var resultaat = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>(g => g.PaginaOphalen(groepID, pageSize, page));
+            return Json(resultaat, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// Verandert het nummer van de communicatievorm met gegeven ID door de gegeven string.
+        /// </summary>
+        /// <param name="groepID">ID van de groep waarin we werken</param>
+        /// <param name="wijziging">bevat ID van de te wijzigen communicatievorm, en nieuw nummer</param>
+        /// <returns>Leeg JsonResult</returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult NummerWijzigen(int groepID, IntStringModel wijziging)
+        {
+            ServiceHelper.CallService<IGelieerdePersonenService>(
+                svc => svc.NummerCommunicatieVormWijzigen(wijziging.ID, wijziging.Waarde));
+            return Json(null);
+        }
+
+        #endregion
+
+
     }
 }

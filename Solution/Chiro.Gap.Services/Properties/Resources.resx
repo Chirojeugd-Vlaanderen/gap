@@ -225,4 +225,7 @@
   <data name="AlgemeneFout" xml:space="preserve">
     <value>Fout {1} bij inschrijven {0}: {2}</value>
   </data>
+  <data name="OngeldigeCommunicatie" xml:space="preserve">
+    <value>"{0}" is geen geldige waarde voor een communicatievorm van het type {1}.</value>
+  </data>
 </root>

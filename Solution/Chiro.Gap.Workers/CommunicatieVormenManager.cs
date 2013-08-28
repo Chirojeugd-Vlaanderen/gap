@@ -219,7 +219,7 @@ namespace Chiro.Gap.Workers
         /// <param name="communicatieType">een communicatietype</param>
         /// <returns><c>true</c> als <paramref name="p"/> een geldige communicatievorm zou zijn
         /// voor het gegeven <paramref name="communicatieType"/></returns>
-        private bool IsGeldig(string p, CommunicatieType communicatieType)
+        public bool IsGeldig(string p, CommunicatieType communicatieType)
         {
             var validator = new CommunicatieVormValidator();
 

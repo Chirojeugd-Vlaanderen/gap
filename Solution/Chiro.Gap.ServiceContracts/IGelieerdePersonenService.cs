@@ -380,6 +380,16 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		CommunicatieDetail CommunicatieVormOphalen(int commvormID);
 
+        /// <summary>
+        /// Wijzigt het nummer van de communicatievorm met gegeven <paramref name="ID"/>
+        /// naar <paramref name="waarde"/>.
+        /// </summary>
+        /// <param name="ID">CommunicatieVormID</param>
+        /// <param name="waarde">Nieuw nummer</param>
+        [OperationContract]
+        void NummerCommunicatieVormWijzigen(int ID, string waarde);
+
+
 		#endregion commvormen
 
 		#region categorieën
@@ -405,7 +415,6 @@ namespace Chiro.Gap.ServiceContracts
 		void UitCategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
 
 		#endregion categorieën
-
 
 	}
 }

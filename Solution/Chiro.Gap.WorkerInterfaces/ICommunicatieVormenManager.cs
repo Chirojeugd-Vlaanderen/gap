@@ -59,5 +59,15 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="communicatieVorm">Bij te werken communicatievorm</param>
         /// <param name="communicatieInfo">Nieuwe informatie communicatievorm</param>
         void Bijwerken(CommunicatieVorm communicatieVorm, CommunicatieInfo communicatieInfo);
+
+        /// <summary>
+        /// Controleert of <paramref name="p"/> een geldige communicatievorm zou zijn
+        /// voor het gegeven <paramref name="communicatieType"/>
+        /// </summary>
+        /// <param name="p">telefoonnummer, e-mailadres,...</param>
+        /// <param name="communicatieType">een communicatietype</param>
+        /// <returns><c>true</c> als <paramref name="p"/> een geldige communicatievorm zou zijn
+        /// voor het gegeven <paramref name="communicatieType"/></returns>
+        bool IsGeldig(string p, CommunicatieType communicatieType);
     }
 }
