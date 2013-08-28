@@ -644,12 +644,16 @@ namespace Chiro.Kip.Services
 									   && ci.Info == communicatie.Waarde
 						     select ci).FirstOrDefault();
 
-				if (teVerwijderen != null)
-				{
-					feedback = String.Format("Verwijderen communicatie: AD{0} {1}", persoon.AdNummer, communicatie.Waarde);
-					db.DeleteObject(teVerwijderen);
-					db.SaveChanges();
-				}
+			    if (teVerwijderen != null)
+			    {
+			        feedback = String.Format("Verwijderen communicatie: AD{0} {1}", persoon.AdNummer, communicatie.Waarde);
+			        db.DeleteObject(teVerwijderen);
+			        db.SaveChanges();
+			    }
+			    else
+			    {
+                    feedback = String.Format("Te verwijderen communicatievorm {1} van AD{0} niet gevonden.", persoon.AdNummer, communicatie.Waarde);
+			    }
 			}
 
 			_log.BerichtLoggen(0, feedback);
