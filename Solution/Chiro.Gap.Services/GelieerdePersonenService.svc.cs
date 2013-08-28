@@ -600,7 +600,21 @@ namespace Chiro.Gap.Services
             }
 
             communicatieVorm.Nummer = waarde;
-            _communicatieVormRepo.SaveChanges();
+
+            // Niet vergeten te bewaren en te syncen
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _communicatieVormRepo.SaveChanges();
+                if (_gelieerdePersonenMgr.IsGekendInKipadmin(communicatieVorm.GelieerdePersoon))
+                {
+                    _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
+                }
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
         }
 
         #endregion
