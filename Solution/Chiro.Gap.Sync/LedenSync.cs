@@ -20,11 +20,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -86,7 +88,8 @@ namespace Chiro.Gap.Sync
 				};
 
         /// <summary>
-        /// Stuurt een lid naar Kipadmin
+        /// Stuurt een lid naar Kipadmin. Als het lid inactief is, gebeurt er niets. Daarvoor is er de 
+        /// method 'Verwijderen' 
         /// </summary>
         /// <param name="l">Te bewaren lid</param>
         /// <remarks>Voor het gemak gaan we ervan uit dat persoonsgegevens, adressen, afdelingen en functies al
@@ -99,49 +102,47 @@ namespace Chiro.Gap.Sync
             Debug.Assert(l.GroepsWerkJaar != null);
             Debug.Assert(l.GroepsWerkJaar.Groep != null);
 
-            if (l.NonActief)
-            {
-                Verwijderen(l);
-            }
-            else
+            if (!l.NonActief)
             {
                 var nationaleFuncties = (from f in l.Functie
-                                         where f.IsNationaal
-                                         select _functieVertaling[(NationaleFunctie)f.ID]).ToList();
+                    where f.IsNationaal
+                    select _functieVertaling[(NationaleFunctie) f.ID]).ToList();
 
                 List<AfdelingEnum> officieleAfdelingen;
 
                 if (l is Kind)
                 {
                     officieleAfdelingen = new List<AfdelingEnum>
-                                              {
-                                                  _afdelingVertaling[(NationaleAfdeling)((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
-                                              };
+                                          {
+                                              _afdelingVertaling[
+                                                  (NationaleAfdeling) ((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
+                                          };
                 }
                 else
                 {
                     Debug.Assert(l is Leiding);
                     officieleAfdelingen = (from a in (l as Leiding).AfdelingsJaar
-                                           select _afdelingVertaling[(NationaleAfdeling)a.OfficieleAfdeling.ID]).ToList
+                        select _afdelingVertaling[(NationaleAfdeling) a.OfficieleAfdeling.ID]).ToList
                         ();
                 }
 
                 // Euh, en waarom heb ik hiervoor geen mapper gemaakt?
 
                 var lidGedoe = new LidGedoe
-                                   {
-                                       StamNummer = l.GroepsWerkJaar.Groep.Code,
-                                       WerkJaar = l.GroepsWerkJaar.WerkJaar,
-                                       LidType = l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
-                                       NationaleFuncties = nationaleFuncties,
-                                       OfficieleAfdelingen = officieleAfdelingen,
-                                       EindeInstapPeriode = l.EindeInstapPeriode
-                                   };
+                               {
+                                   StamNummer = l.GroepsWerkJaar.Groep.Code,
+                                   WerkJaar = l.GroepsWerkJaar.WerkJaar,
+                                   LidType = l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
+                                   NationaleFuncties = nationaleFuncties,
+                                   OfficieleAfdelingen = officieleAfdelingen,
+                                   EindeInstapPeriode = l.EindeInstapPeriode
+                               };
 
                 if (l.GelieerdePersoon.Persoon.AdNummer != null)
                 {
                     // AD-nummer gekend. Persoon dus zeker gekend door Kipadmin.
-                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidBewaren(l.GelieerdePersoon.Persoon.AdNummer.Value, lidGedoe));
+                    ServiceHelper.CallService<ISyncPersoonService>(
+                        svc => svc.LidBewaren(l.GelieerdePersoon.Persoon.AdNummer.Value, lidGedoe));
                 }
                 else
                 {
@@ -149,6 +150,10 @@ namespace Chiro.Gap.Sync
 
                     ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidBewaren(details, lidGedoe));
                 }
+            }
+            else
+            {
+                throw new FoutNummerException(FoutNummer.LidUitgeschreven, Properties.Resources.UitgeschrevenLidSyncen);
             }
         }
 
