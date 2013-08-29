@@ -609,11 +609,11 @@ function controle() {
         errors += "<li>Deze persoon is te jong om als leiding ingeschreven te worden</li>";
         fout = true;
     }
-    if(voornaam.length <= 2) {
+    if(voornaam.length < 2) {
         errors += "<li>De ingegeven voornaam is te kort</li>";
         fout = true;
     }
-    if (naam.length <= 2) {
+    if (naam.length == 0) {
         errors += "<li>De ingegeven naam is te kort</li>";
         fout = true;
     }
