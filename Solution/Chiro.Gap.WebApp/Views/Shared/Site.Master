@@ -63,6 +63,7 @@
         <br />
         Stamnummer:
         <%=Html.Encode(ViewData.Model.StamNummer)%>
+        <span id="MGID" hidden><%=Model.GroepID %></span>
     </p>
     <%  }
         else

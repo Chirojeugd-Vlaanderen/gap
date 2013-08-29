@@ -20,7 +20,6 @@
 %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
-<input id="MGID" value="<%=Model.GroepID %>" hidden/>
 <%	if (Model.Mededelingen != null && Model.Mededelingen.Any())
 	{
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression

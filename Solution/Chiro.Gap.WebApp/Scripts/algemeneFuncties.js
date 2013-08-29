@@ -22,7 +22,7 @@ $(function () {
     $.fn.editable.defaults.clear = true;
     $.fn.editable.defaults.toggle = 'manual';
 
-    GID = $('#MGID').val();
+    GID = $('#MGID').text();
     var url;
 
     $('.ui-dialog').on('dialogbeforeclose', function () {
