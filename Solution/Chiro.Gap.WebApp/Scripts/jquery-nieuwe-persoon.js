@@ -55,7 +55,9 @@ $(function () {
              showAnim: "slide",
              changeYear: true,
              changeMonth: true,
-             maxDate: "-6y"
+             maxDate: "-0y",
+             defaultDate: "-6y", // ik doe maar iets
+             yearRange: "-20:+0"
          });   
     }  
         $.datepicker.setDefaults($.datepicker.regional['be']);

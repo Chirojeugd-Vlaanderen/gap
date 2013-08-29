@@ -203,6 +203,7 @@ $(function () {
         $('#gdInfo').datepicker({
             changeMonth: true,
             changeYear: true,
+            maxDate: "-0y",
             onSelect: function () {
                 geboortedatum = $('#gdInfo').val();
                 bewaarGegevens('geboortedatum', geboortedatum, GID, GPid);
