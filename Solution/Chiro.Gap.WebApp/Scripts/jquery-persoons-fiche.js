@@ -104,7 +104,7 @@ $(function () {
         var geboortejaar = geboortedatum.substr(-4);
         geboortejaar = parseInt(geboortejaar);
         var leeftijd = werkjaar - geboortejaar;
-        if (leeftijd < 7) {
+        if (leeftijd < 6) {
             $('#extraInfoDialog').html("Het is niet mogelijk om kleuters in te schrijven!");
             $('#extraInfoDialog').dialog({
                 title: "Onmogelijk",
