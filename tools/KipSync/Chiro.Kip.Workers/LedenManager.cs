@@ -70,6 +70,8 @@ namespace Chiro.Kip.Workers
         /// <returns>Een string met feedback. #ugly</returns>
         public string FunctiesVervangen(Lid lid, FunctieEnum[] functies, kipadminEntities db)
         {
+            int? adNieuweFinVer = null;
+
             var feedback = new StringBuilder();
 
             var teVerwijderen = lid.HeeftFunctie.Where(hf => !functies.Cast<int>().Contains(hf.Functie.id)).ToArray();
@@ -85,6 +87,37 @@ namespace Chiro.Kip.Workers
                         lid.Persoon.Naam,
                         lid.Persoon.AdNummer, hf.Functie.CODE));
                 }
+                if (hf.Functie.id == (int)FunctieEnum.FinancieelVerantwoordelijke)
+                {
+                    if (lid.Groep == null)
+                    {
+                        lid.GroepReference.Load();
+                    }
+
+                    // zoek andere financieel verantwoordelijke
+                    // bij gebrek: neem contactpersoon
+                    // en anders blijft deze het toch :-)
+
+                    var andereFv = (from l in db.Lid.Include("HeeftFunctie")
+                        where l.Groep.GroepID == lid.Groep.GroepID && l.werkjaar == lid.werkjaar && l.Persoon.AdNummer != lid.Persoon.AdNummer
+                              &&
+                              l.HeeftFunctie.Any(
+                                  hft =>
+                                      hft.Functie.id == (int) FunctieEnum.FinancieelVerantwoordelijke ||
+                                      hft.Functie.id == (int) FunctieEnum.ContactPersoon)
+                        select
+                            new
+                            {
+                                AdNr = l.Persoon.AdNummer,
+                                IsFv =
+                                    l.HeeftFunctie.Any(
+                                        hft => hft.Functie.id == (int) FunctieEnum.FinancieelVerantwoordelijke)
+                            }
+                        ).OrderByDescending(res => res.IsFv).FirstOrDefault();
+
+                    adNieuweFinVer = andereFv == null ? null : (int?)andereFv.AdNr;
+                };
+
                 db.DeleteObject(hf);
             }
 
@@ -124,29 +157,37 @@ namespace Chiro.Kip.Workers
 
                 if (functieID == (int)FunctieEnum.FinancieelVerantwoordelijke)
                 {
-                    lid.GroepReference.Load();
-
-                    // FIXME (#555): oud-leidingsploegen! 
-
-                    var cg = lid.Groep as ChiroGroep;
-
-                    if (cg != null)
+                    if (lid.Persoon == null)
                     {
-                        // OH NEE, dat is geen foreign key :-(
-
-                        if (lid.Persoon == null)
-                        {
-                            lid.PersoonReference.Load();
-                        }
-                        
-                        Debug.Assert(lid.Persoon != null);  // een lid zonder persoon kan niet in Kipadmin, en we hebben net de persoon geladen.
-
-                        cg.BET_ADNR = lid.Persoon.AdNummer;
-                        cg.STEMPEL = DateTime.Now;
+                        lid.PersoonReference.Load();
                     }
 
-                    feedback.AppendLine("'BET_ADNR' bijgewerkt");
+                    Debug.Assert(lid.Persoon != null);  // een lid zonder persoon kan niet in Kipadmin, en we hebben net de persoon geladen.
+
+                    adNieuweFinVer = lid.Persoon.AdNummer;
                 }
+            }
+
+            if (adNieuweFinVer != null)
+            {
+                if (lid.Groep == null)
+                {
+                    lid.GroepReference.Load();
+                }
+
+                // FIXME (#555): oud-leidingsploegen! 
+
+                var cg = lid.Groep as ChiroGroep;
+
+                if (cg != null)
+                {
+                    // OH NEE, dat is geen foreign key :-(
+
+                    cg.BET_ADNR = adNieuweFinVer;
+                    cg.STEMPEL = DateTime.Now;
+                }
+
+                feedback.AppendLine(String.Format("'BET_ADNR' bijgewerkt: {0}", adNieuweFinVer));
             }
             return feedback.ToString();
         }
