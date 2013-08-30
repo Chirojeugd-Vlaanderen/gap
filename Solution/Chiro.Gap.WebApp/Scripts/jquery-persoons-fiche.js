@@ -754,7 +754,6 @@ $(function () {
                             // hulpeloos is, totdat de pagina refresht :-)
                             // (zie #1665)
                             $(this).dialog("option", "buttons", []);
-                            $(this).dialog('close');
                         },
                         "Annuleren": function () {
                             $(this).dialog('close');
