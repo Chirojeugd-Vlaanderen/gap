@@ -9,7 +9,7 @@
   
 	<ul id="acties">
 		<li>
-			<input id="bewerkFuncties" type="submit" value="Gegevens wijzigen" /></li>
+			<input id="bewaarFuncties" type="submit" value="Gegevens wijzigen" /></li>
 	</ul>
     
 	<fieldset>

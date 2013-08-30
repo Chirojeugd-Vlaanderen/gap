@@ -749,7 +749,11 @@ $(function () {
                     title: "Functies bewerken",
                     buttons: {
                         "Bevestigen": function () {
-                            $('#extraInfoDialog #bewerkFuncties').click();
+                            $('#bewaarFuncties').click();
+                            // verwijder de knoppen, zodat de user eventjes
+                            // hulpeloos is, totdat de pagina refresht :-)
+                            // (zie #1665)
+                            $(this).dialog("option", "buttons", []);
                             $(this).dialog('close');
                         },
                         "Annuleren": function () {
