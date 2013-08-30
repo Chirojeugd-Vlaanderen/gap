@@ -31,7 +31,7 @@ $(function () {
 
     //mededelingen
     $('.mededelingen').click(function () {
-        url = link("", 'GavTaken');
+        url = $(this).find("a").attr("href");
         window.location = url;
     });
     //--------------------------------------------------------------------------------
