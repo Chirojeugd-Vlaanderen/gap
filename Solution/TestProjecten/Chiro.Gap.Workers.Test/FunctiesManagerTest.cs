@@ -491,10 +491,10 @@ namespace Chiro.Gap.Workers.Test
 		}
 
         /// <summary>
-        /// A test for AantallenControleren
+        /// Bekijkt AantallenControleren wel degelijk enkel de angeleverde functies?
         /// </summary>
         [TestMethod()]
-        public void AantallenControlerenTest()
+        public void AantallenControlerenBeperkTest()
         {
             // ARRANGE
 
@@ -510,6 +510,37 @@ namespace Chiro.Gap.Workers.Test
 
             var target = Factory.Maak<FunctiesManager>();
             var actual = target.AantallenControleren(groepsWerkJaar, new List<Functie>{functie2});
+            // controleer enkel op functie2.
+
+            // ASSERT
+
+            Assert.AreEqual(0, actual.Count);
+        }
+
+        /// <summary>
+        /// Test op het controleren van maximum aantal leden met gegeven functie.
+        ///</summary>
+        [TestMethod()]
+        public void AantallenControlerenBovengrensTest()
+        {
+            // ARRANGE
+
+            var functie = new Functie { IsNationaal = true, MaxAantal = 1 };
+
+            var groepsWerkJaar1 = new GroepsWerkJaar();
+            var leiding1 = new Leiding {Functie = new List<Functie> {functie}};
+            functie.Lid.Add(leiding1);
+            groepsWerkJaar1.Lid.Add(leiding1);
+
+            var groepsWerkJaar2 = new GroepsWerkJaar();
+            var leiding2 = new Leiding { Functie = new List<Functie> { functie } };
+            functie.Lid.Add(leiding2);
+            groepsWerkJaar2.Lid.Add(leiding2);
+
+            // ACT
+
+            var target = Factory.Maak<FunctiesManager>();
+            var actual = target.AantallenControleren(groepsWerkJaar1, new List<Functie> { functie });
             // controleer enkel op functie2.
 
             // ASSERT
