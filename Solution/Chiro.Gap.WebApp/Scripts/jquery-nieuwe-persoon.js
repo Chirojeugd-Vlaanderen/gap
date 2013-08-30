@@ -555,8 +555,9 @@ $(function () {
 // functies die aangeroepen worden tijdens het bewaren van de nieuwe persoon
 //------------------------------------------------------------------------------------------------------------
 function vulVariabelenIn() {
+    geselecteerdeAfdelingsIDs = [];
 
-     $.each($('#afdelingSelectie input:checked'), function() {
+    $.each($('#afdelingSelectie input:checked'), function() {
          var waarde = parseInt($(this).val());
          geselecteerdeAfdelingsIDs.push(waarde);
      });
