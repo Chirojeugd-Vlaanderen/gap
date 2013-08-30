@@ -24,6 +24,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Properties;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Chiro.Gap.Workers
 {
@@ -215,7 +216,6 @@ namespace Chiro.Gap.Workers
         {
             var toegekendeFuncties =
                 groepsWerkJaar.Lid.SelectMany(ld => ld.Functie)
-                              .Distinct()
                               .Where(functies.Contains);
 
             // bovenstaande syntax is wat ongebruikelijker, maar wel juist. Ze is
@@ -228,28 +228,24 @@ namespace Chiro.Gap.Workers
                                          select fn;
 
             // toegekende functies waarvan er te veel of te weinig zijn
-            var problemenToegekendeFuncties =
-                toegekendeFuncties.Where(fn => (fn.WerkJaarVan == null ||
-                                                fn.WerkJaarVan <= groepsWerkJaar.WerkJaar)
-                                               &&
-                                               (fn.WerkJaarTot == null ||
-                                                fn.WerkJaarTot >= groepsWerkJaar.WerkJaar)
-                                               &&
-                                               (fn.Lid.Count() > fn.MaxAantal
-                                                // geeft false als maxaant == null
-                                                || fn.Lid.Count() < fn.MinAantal)).Select(fn => new Telling
-                                                                                                       {
-                                                                                                           ID = fn.ID,
-                                                                                                           Aantal =
-                                                                                                               fn.Lid
-                                                                                                                 .Count(),
-                                                                                                           Max =
-                                                                                                               fn
-                                                                                                               .MaxAantal,
-                                                                                                           Min =
-                                                                                                               fn
-                                                                                                               .MinAantal
-                                                                                                       });
+
+            var problemenToegekendeFuncties = from f in toegekendeFuncties
+                group f by f
+                into gegroepeerd
+                where (gegroepeerd.Key.WerkJaarVan == null || gegroepeerd.Key.WerkJaarVan <= groepsWerkJaar.WerkJaar)
+                      && (gegroepeerd.Key.WerkJaarTot == null || gegroepeerd.Key.WerkJaarTot >= groepsWerkJaar.WerkJaar)
+                      &&
+                      (gegroepeerd.Count() > gegroepeerd.Key.MaxAantal ||
+                       gegroepeerd.Count() < gegroepeerd.Key.MinAantal)
+                select
+                    new Telling
+                    {
+                        ID = gegroepeerd.Key.ID,
+                        Aantal = gegroepeerd.Count(),
+                        Max = gegroepeerd.Key.MaxAantal,
+                        Min = gegroepeerd.Key.MinAantal
+                    };
+                                          
 
             // niet-toegekende functies waarvan er te weinig zijn
             var problemenOntbrekendeFuncties =
