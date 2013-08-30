@@ -18,7 +18,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using Chiro.Gap.Dummies;
+﻿using System.Web.UI.MobileControls;
+﻿using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 ﻿using Chiro.Gap.ServiceContracts.FaultContracts;
 ﻿using Chiro.Gap.SyncInterfaces;
@@ -1163,6 +1164,38 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.IsNull(alleFuncties.FirstOrDefault());
+        }
+
+        /// <summary>
+        /// A test for FunctiesControleren
+        /// </summary>
+        [TestMethod()]
+        public void FunctiesControlerenTest()
+        {
+            // ARRANGE
+
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()};
+            groepsWerkJaar.Groep.GroepsWerkJaar.Add(groepsWerkJaar);
+            var verplichteFunctie = new Functie {Code = "bla", IsNationaal = true, MinAantal = 1};
+
+            // een groep met groepswerkjaar zonder leden. We verwachten dat er gemeld wordt dat 
+            // de verplichte functie niet is ingevuld.
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Functie>())
+                .Returns(new DummyRepo<Functie>(new List<Functie> {verplichteFunctie}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                .Returns(new DummyRepo<Groep>(new List<Groep> {groepsWerkJaar.Groep}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GroepenService>();
+            var actual = target.FunctiesControleren(groepsWerkJaar.Groep.ID);
+
+            // ASSERT
+
+            Assert.IsNotNull(actual.Select(prob => prob.Code = verplichteFunctie.Code).FirstOrDefault());
         }
     }
 }
