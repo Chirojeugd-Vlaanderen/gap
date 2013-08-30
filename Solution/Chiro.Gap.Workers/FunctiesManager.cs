@@ -218,6 +218,9 @@ namespace Chiro.Gap.Workers
                               .Distinct()
                               .Where(functies.Contains);
 
+            // bovenstaande syntax is wat ongebruikelijker, maar wel juist. Ze is
+            // equivalent met .Where(fn => functies.Contains(fn))
+
             var nietToegekendeFuncties = from fn in functies
                                          where !toegekendeFuncties.Contains(fn)
                                                && (fn.IsNationaal || Equals(fn.Groep, groepsWerkJaar.Groep))
