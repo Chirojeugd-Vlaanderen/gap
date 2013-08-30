@@ -725,7 +725,7 @@ namespace Chiro.Gap.Services
 
             var problemen = _functiesMgr.AantallenControleren(groepsWerkJaar,
                                                               relevanteFuncties);
-            var resultaat = (from f in groepsWerkJaar.Groep.Functie
+            var resultaat = (from f in relevanteFuncties
                              join p in problemen on f.ID equals p.ID
                              select new FunctieProbleemInfo
                                         {
