@@ -29,6 +29,7 @@ using Moq;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -488,5 +489,63 @@ namespace Chiro.Gap.Workers.Test
             // enkel het lid van dit werkJaar blijft over
             Assert.AreEqual(result.Lid.Count, 1);
 		}
+
+        /// <summary>
+        /// Bekijkt AantallenControleren wel degelijk enkel de angeleverde functies?
+        /// </summary>
+        [TestMethod()]
+        public void AantallenControlerenBeperkTest()
+        {
+            // ARRANGE
+
+            var functie1 = new Functie {MaxAantal = 1};
+            var functie2 = new Functie();
+
+            var groepsWerkJaar = new GroepsWerkJaar();
+
+            groepsWerkJaar.Lid.Add(new Leiding {Functie = new List<Functie> {functie1}});
+            groepsWerkJaar.Lid.Add(new Leiding {Functie = new List<Functie> {functie1}});    // 2 personen met de functie
+
+            // ACT
+
+            var target = Factory.Maak<FunctiesManager>();
+            var actual = target.AantallenControleren(groepsWerkJaar, new List<Functie>{functie2});
+            // controleer enkel op functie2.
+
+            // ASSERT
+
+            Assert.AreEqual(0, actual.Count);
+        }
+
+        /// <summary>
+        /// Test op het controleren van maximum aantal leden met gegeven functie.
+        ///</summary>
+        [TestMethod()]
+        public void AantallenControlerenBovengrensTest()
+        {
+            // ARRANGE
+
+            var functie = new Functie { IsNationaal = true, MaxAantal = 1 };
+
+            var groepsWerkJaar1 = new GroepsWerkJaar();
+            var leiding1 = new Leiding {Functie = new List<Functie> {functie}};
+            functie.Lid.Add(leiding1);
+            groepsWerkJaar1.Lid.Add(leiding1);
+
+            var groepsWerkJaar2 = new GroepsWerkJaar();
+            var leiding2 = new Leiding { Functie = new List<Functie> { functie } };
+            functie.Lid.Add(leiding2);
+            groepsWerkJaar2.Lid.Add(leiding2);
+
+            // ACT
+
+            var target = Factory.Maak<FunctiesManager>();
+            var actual = target.AantallenControleren(groepsWerkJaar1, new List<Functie> { functie });
+            // controleer enkel op functie2.
+
+            // ASSERT
+
+            Assert.AreEqual(0, actual.Count);
+        }
 	}
 }
