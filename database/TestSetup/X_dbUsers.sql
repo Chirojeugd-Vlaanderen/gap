@@ -73,3 +73,13 @@ GRANT SELECT ON pers.Persoon TO GapSuperRole
 GRANT SELECT ON pers.GelieerdePersoon TO GapSuperRole
 GRANT SELECT ON pers.CommunicatieType TO GapSuperRole
 GRANT SELECT ON pers.CommunicatieVorm TO GapSuperRole
+
+
+USE [kipadmin_tst]
+GO
+CREATE USER [cividev] FOR LOGIN [cividev]
+GO
+USE [kipadmin_tst]
+GO
+EXEC sp_addrolemember N'db_datareader', N'cividev'
+GO
