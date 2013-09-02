@@ -34,17 +34,6 @@ namespace Chiro.Gap.Workers
     /// </summary>
     public class AdressenManager : IAdressenManager
     {
-        private readonly IAutorisatieManager _autorisatieMgr;
-        private readonly IAdressenSync _sync;
-
-        public AdressenManager(
-            IAutorisatieManager autorisatieMgr,
-            IAdressenSync sync)
-        {
-            _autorisatieMgr = autorisatieMgr;
-            _sync = sync;
-        }
-
         /// <summary>
         /// Maakt een nieuw adres op basis van de info in <paramref name="adresInfo"/>, en persisteert
         /// </summary>
