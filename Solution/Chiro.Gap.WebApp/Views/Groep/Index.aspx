@@ -50,8 +50,7 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    
-    <input id='MGID' value="<%=Model.Info.ID %>" hidden readonly/>
+   
     <div id="extraInfoDialog" hidden>
         <img src="<%= ResolveUrl("~/Content/images/loading.gif")%>" />
     </div>
