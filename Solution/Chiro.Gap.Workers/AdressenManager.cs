@@ -240,7 +240,7 @@ namespace Chiro.Gap.Workers
             return (from adr in adressen.OfType<BelgischAdres>()
                     where adr.StraatNaam.Naam == adresInfo.StraatNaamNaam
                           && adr.StraatNaam.PostNummer == adresInfo.PostNr
-                          && adr.HuisNr == adresInfo.HuisNr
+                          && adr.HuisNr == adresInfo.HuisNr && adr.Bus == adresInfo.Bus 
                     select adr).FirstOrDefault() ?? ((from adr in adressen.OfType<BuitenLandsAdres>()
                                                       where adr.Straat == adresInfo.StraatNaamNaam
                                                             && adr.PostNummer == adresInfo.PostNr
