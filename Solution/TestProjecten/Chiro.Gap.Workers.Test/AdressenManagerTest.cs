@@ -77,7 +77,7 @@ namespace Chiro.Gap.Workers.Test
         /// met busnummers.
         ///</summary>
         [TestMethod()]
-        public void ZoekenOfMakenTest()
+        public void ZoekenOfMakenBusTest1()
         {
             // ARRANGE
 
@@ -111,6 +111,46 @@ namespace Chiro.Gap.Workers.Test
             // ASSERT
 
             Assert.AreNotEqual(adres, actual);
+        }
+        /// <summary>
+        /// Controleert of ZoekenOfMaken voor de busnummers null en leeg gelijkschakelt
+        ///</summary>
+        [TestMethod()]
+        public void ZoekenOfMakenBusTest2()
+        {
+            // ARRANGE
+
+            var adres = new BelgischAdres
+            {
+                ID = 1,
+                StraatNaam = new StraatNaam { Naam = "Kipdorp", PostNummer = 2000 },
+                HuisNr = 30,
+                Bus = null,
+                WoonPlaats = new WoonPlaats { Naam = "Antwerpen", PostNummer = 2000 }
+            };
+
+            // ACT
+
+            var target = Factory.Maak<AdressenManager>();
+            var adresInfo = new AdresInfo
+            {
+                StraatNaamNaam = adres.StraatNaam.Naam,
+                HuisNr = adres.HuisNr,
+                Bus = "",
+                PostNr = adres.StraatNaam.PostNummer,
+                WoonPlaatsNaam = adres.WoonPlaats.Naam
+            };
+
+            var adressen = new List<Adres> { adres }.AsQueryable();
+            var straatNamen = new List<StraatNaam> { adres.StraatNaam }.AsQueryable();
+            var woonPlaatsen = new List<WoonPlaats> { adres.WoonPlaats }.AsQueryable();
+            var landen = new List<Land>().AsQueryable();
+
+            var actual = target.ZoekenOfMaken(adresInfo, adressen, straatNamen, woonPlaatsen, landen);
+
+            // ASSERT
+
+            Assert.AreEqual(adres, actual);
         }
     }
 }
