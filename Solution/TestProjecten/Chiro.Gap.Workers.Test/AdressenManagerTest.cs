@@ -1,29 +1,13 @@
-/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
- * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-﻿using Chiro.Cdf.Ioc;
+﻿using System.Collections.Generic;
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Workers;
-using Chiro.Gap.Workers.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Orm.SyncInterfaces;
-using Chiro.Gap.Orm;
+using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
+using System.Linq;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -73,10 +57,11 @@ namespace Chiro.Gap.Workers.Test
         //}
         //
         //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
+        [TestInitialize()]
+        public void MyTestInitialize()
+        {
+            Factory.ContainerInit();
+        }
         //
         //Use TestCleanup to run code after each test has run
         //[TestCleanup()]
@@ -88,19 +73,44 @@ namespace Chiro.Gap.Workers.Test
 
 
         /// <summary>
-        /// Controleert of AdressenManager.Bewaren de gebruikersrechten wel test
-        /// </summary>
+        /// Controleert of ZoekenOfMaken wel degelijk rekening houdt
+        /// met busnummers.
+        ///</summary>
         [TestMethod()]
-        [ExpectedException(typeof(GeenGavException))]
-        public void BewarenTest()
+        public void ZoekenOfMakenTest()
         {
+            // ARRANGE
+
+            var adres = new BelgischAdres
+                        {
+                            ID = 1,
+                            StraatNaam = new StraatNaam {Naam = "Kipdorp", PostNummer = 2000},
+                            HuisNr = 30,
+                            WoonPlaats = new WoonPlaats {Naam = "Antwerpen", PostNummer = 2000}
+                        };
+
+            // ACT
+
             var target = Factory.Maak<AdressenManager>();
+            var adresInfo = new AdresInfo
+                            {
+                                StraatNaamNaam = adres.StraatNaam.Naam,
+                                HuisNr = adres.HuisNr,
+                                Bus = "B", // iets anders.
+                                PostNr = adres.StraatNaam.PostNummer,
+                                WoonPlaatsNaam = adres.WoonPlaats.Naam
+                            };
 
-            Adres adr = new BelgischAdres {ID = 5}; // adres met willekeurig bestaand ID. Geen idee of ik er rechten op heb :)
+            var adressen = new List<Adres> {adres}.AsQueryable();
+            var straatNamen = new List<StraatNaam> {adres.StraatNaam}.AsQueryable();
+            var woonPlaatsen = new List<WoonPlaats> {adres.WoonPlaats}.AsQueryable();
+            var landen = new List<Land>().AsQueryable();
 
-            target.Bewaren(adr);    // probeer te bwearen.
+            var actual = target.ZoekenOfMaken(adresInfo, adressen, straatNamen, woonPlaatsen, landen);
 
-            Assert.Fail();      // Er had een exception moeten zijn.
+            // ASSERT
+
+            Assert.AreNotEqual(adres, actual);
         }
     }
 }
