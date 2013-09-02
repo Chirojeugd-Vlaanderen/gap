@@ -96,7 +96,7 @@ $(function () {
 				    {
 				        "sExtends": "xls",
 				        "sButtonText": "<strong>Opslaan als Excel</strong>",
-				        "mColumns": [ 1,2,3,4,5,6,7,9,10,11 ]
+				        "mColumns": [ 1,2,3,4,5,6,7,9,10,11,12 ]
 				    }
             ]
         }
