@@ -33,7 +33,7 @@
                 <th class="center">Type</th>
                 <% } %>
                 <th>Naam</th>
-                <th>Geboortedatum</th>
+                <th>Geb.</th>
                 <th>Vrjrdg</th>
                 <th>
                     <%=Html.Geslacht(GeslachtsType.Man) %>
@@ -51,7 +51,7 @@
                 <th>Instap tot</th>
                 <th>Telefoon</th>
                 <th>E-mail</th>
-                <th style="overflow: hidden" hidden >Adres</th>
+                <th>Adres</th>
         </tr>
     </thead>
     <tbody>
@@ -120,9 +120,11 @@
                 <%
                     }%>
             </td>
-            <td style="overflow: hidden" hidden>
+            <td>
                 <%if (lidOverzicht.PostNummer.HasValue) { %>
-                    <%= lidOverzicht.StraatNaam + " " + lidOverzicht.HuisNummer + ", " + lidOverzicht.PostNummer + " " + lidOverzicht.WoonPlaats %>
+                    <%= String.Format( "{0} {1}{2}, {3} {4} {5} {6}", lidOverzicht.StraatNaam, lidOverzicht.HuisNummer, 
+                    String.IsNullOrEmpty(lidOverzicht.Bus) ? String.Empty: "/" + lidOverzicht.Bus, lidOverzicht.PostNummer, lidOverzicht.PostCode, lidOverzicht.WoonPlaats, 
+                    lidOverzicht.Land.StartsWith("Belg") ? String.Empty: "- " + lidOverzicht.Land) %>
                 <% } %>
             </td>
         </tr>
