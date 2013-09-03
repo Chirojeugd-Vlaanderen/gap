@@ -56,18 +56,16 @@
            }
         %>
     </h1>
+       <p>
     <%  if (ViewData.Model.Plaats != "geen" && ViewData.Model.Plaats != "nvt")
         { %>
-    <p>
-        <%=Html.Encode(ViewData.Model.Plaats)%>
-        <br />
-    </p>
+    <%=Html.Encode(ViewData.Model.Plaats)%><br />
     <%  }
     %>
-    <p>
         Stamnummer:
-        <%=Html.Encode(ViewData.Model.StamNummer)%></p>
+        <%=Html.Encode(ViewData.Model.StamNummer)%>
         <span id="MGID" hidden><%=Model.GroepID %></span>
+       </p>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
     <% if (Model.GroepID > 0)
