@@ -56,15 +56,12 @@
            }
         %>
     </h1>
+       <p>
     <%  if (ViewData.Model.Plaats != "geen" && ViewData.Model.Plaats != "nvt")
         { %>
-    <p>
-        <%=Html.Encode(ViewData.Model.Plaats)%>
-        <br />
-    </p>
+    <%=Html.Encode(ViewData.Model.Plaats)%><br />
     <%  }
     %>
-    <p>
         Stamnummer:
         <%=Html.Encode(ViewData.Model.StamNummer)%></p>
         <span id="MGID" hidden><%=Model.GroepID %></span>

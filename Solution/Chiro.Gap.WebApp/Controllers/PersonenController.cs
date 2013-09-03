@@ -71,14 +71,12 @@ namespace Chiro.Gap.WebApp.Controllers
 
 
         /// <summary>
-        /// Toont de persoonsinformatie (inclusief lidinfo) voor personen van wie de familienaam begint met
-        /// de letter <paramref name="page"/> uit een bepaalde categorie, en toont deze via de view 'Index'.
+        /// Toont de persoonsinformatie (inclusief lidinfo) voor personen uit een bepaalde categorie, 
+        /// en toont deze via de view 'Index'.
         /// </summary>
-        /// <param name="page">Beginletter familienamen te tonen personen</param>
         /// <param name="groepID">Huidige groep waarin de gebruiker aan het werken is</param>
         /// <param name="id">ID van de gevraagde categorie.  Kan ook 0 zijn; dan worden alle personen
         /// geselecteerd.</param>
-        /// <param name="sortering">Geeft de sortering van de pagina en lijst aan</param>
         /// <returns>De personenlijst in de view 'Index'</returns>
         /// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
         /// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>

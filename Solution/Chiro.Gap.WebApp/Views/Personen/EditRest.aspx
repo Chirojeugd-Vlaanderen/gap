@@ -307,8 +307,6 @@
             %>
         </tr>   
         <% } %>
-        <% if (Model.PersoonLidInfo.PersoonDetail.IsLeiding)
-           { %>
              <% // Geeft alle functies van een persoon weer %>
             <tr>
                 <td>Functies</td>
@@ -339,7 +337,6 @@
                     <div class="ui-icon ui-icon-pencil" id="bewerkFuncties" title="Bewerken" style="cursor: pointer"></div>
                 </td>
             </tr>
-        <% } %>
         <% // Controleert of het lidgeld betaald werd
         if ((Model.GroepsNiveau & (Niveau.Gewest | Niveau.Verbond | Niveau.Nationaal)) == 0) { %>
         <tr>
