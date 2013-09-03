@@ -187,7 +187,8 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
         public IList<PersoonDetail> OphalenMetLidInfoViaLetter(int groepID, string letter, out int aantalTotaal)
         {
-            var groep = _groepenRepo.ByID(groepID);
+            var groep = _groepenRepo.ByID(groepID, "GelieerdePersoon.Persoon", "GelieerdePersoon.PersoonsAdres",
+                "GelieerdePersoon.Categorie");
 
             if (!_autorisatieMgr.IsGav(groep))
             {
