@@ -16,9 +16,8 @@
  * limitations under the License.
  */
 ﻿using AutoMapper;
-
-using Chiro.Adf.ServiceModel;
-using Chiro.Gap.Poco.Model;
+﻿using Chiro.Cdf.ServiceHelper;
+﻿using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 

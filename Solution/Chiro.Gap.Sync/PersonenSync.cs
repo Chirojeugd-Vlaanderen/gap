@@ -16,13 +16,11 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
-
-using Chiro.Adf.ServiceModel;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;

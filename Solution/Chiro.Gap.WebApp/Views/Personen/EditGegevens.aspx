@@ -2,7 +2,6 @@
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
-<%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server" EnableViewState="False">
 <%
 /*

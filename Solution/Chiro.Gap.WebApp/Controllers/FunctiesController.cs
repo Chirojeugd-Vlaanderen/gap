@@ -22,8 +22,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
 using System.Web.Routing;
-
-using Chiro.Adf.ServiceModel;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;

@@ -86,9 +86,9 @@
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
-      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
-      <Name>Chiro.Adf.ServiceModel</Name>
+    <ProjectReference Include="..\Chiro.Adf\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
       <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>

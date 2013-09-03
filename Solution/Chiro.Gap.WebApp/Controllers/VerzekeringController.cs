@@ -17,8 +17,8 @@
  */
 ﻿using System.ServiceModel;
 using System.Web.Mvc;
-using Chiro.Adf.ServiceModel;
-using Chiro.Gap.Domain;
+﻿using Chiro.Cdf.ServiceHelper;
+﻿using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.Models;

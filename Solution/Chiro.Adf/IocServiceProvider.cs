@@ -15,15 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using Chiro.Cdf.Ioc;
-
 using Microsoft.Practices.Unity;
 
-namespace Chiro.Adf
+namespace Chiro.Cdf.ServiceHelper
 {
     /// <summary>
     /// Service provider die IOC gebruikt om implementaties van de service-interface te genereren.

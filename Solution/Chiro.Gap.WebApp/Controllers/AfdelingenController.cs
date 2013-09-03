@@ -20,8 +20,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.ServiceModel;
 using System.Web.Mvc;
-
-using Chiro.Adf.ServiceModel;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;

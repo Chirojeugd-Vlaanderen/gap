@@ -1,4 +1,6 @@
 ﻿// Copyright 2008 Capgemini - Accelerated Delivery Framework - http://www.be.capgemini.com/
+// Copyright 2008-2013 the GAP developers. See the NOTICE file at the top-level directory 
+// of this distribution, and at https://develop.chiro.be/gap/wiki/copyright
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,8 +18,8 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Chiro.Adf")]
-[assembly: AssemblyDescription("ADF Core classes")]
+[assembly: AssemblyTitle("Chiro.Cdf.ServiceHelper")]
+[assembly: AssemblyDescription("ServiceHelper implementation")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 

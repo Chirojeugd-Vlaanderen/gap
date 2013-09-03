@@ -107,10 +107,6 @@
       <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
-      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
-      <Name>Chiro.Adf.ServiceModel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\tools\LoginService\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
       <Project>{18FF2008-106F-48A6-BEFB-5F8B301354D0}</Project>
       <Name>Chiro.Cdf.Mailer</Name>

@@ -1,4 +1,5 @@
 /*
+ * Copyright 2008 Capgemini - Accelerated Delivery Framework - http://www.be.capgemini.com/
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
@@ -15,15 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.ServiceModel;
+using Chiro.Cdf.ServiceHelper.Configuration;
 
-using Chiro.Adf.Configuration;
-
-namespace Chiro.Adf
+namespace Chiro.Cdf.ServiceHelper
 {
 	/// <summary>
 	/// Resolves dependencies through configured or registered service providers.
@@ -36,7 +38,7 @@ namespace Chiro.Adf
 
 		static ServiceProvider()
 		{
-			var configSection = ConfigurationManager.GetSection(AdfConfigurationSection.DEFAULT_ADF_CONFIGURATION_SECTION_NAME) as AdfConfigurationSection;
+			var configSection = ConfigurationManager.GetSection(CdfConfigurationSection.DEFAULT_CONFIGURATION_SECTION_NAME) as CdfConfigurationSection;
 
 			if (configSection != null)
 				DefaultInstance.ApplyConfiguration(configSection);
@@ -64,7 +66,7 @@ namespace Chiro.Adf
 		/// Initializes a new instance of the ServiceProvider class 
 		/// </summary>
 		/// <param name="configurationSection"></param>
-		public ServiceProvider(AdfConfigurationSection configurationSection)
+		public ServiceProvider(CdfConfigurationSection configurationSection)
 		{
 			if(configurationSection != null)
 				ApplyConfiguration(configurationSection);
@@ -214,7 +216,7 @@ namespace Chiro.Adf
 		/// Configures the ServiceProviders with the specified configuration section
 		/// </summary>
 		/// <param name="configurationSection"></param>
-		public void ApplyConfiguration(AdfConfigurationSection configurationSection)
+		public void ApplyConfiguration(CdfConfigurationSection configurationSection)
 		{
 			if (configurationSection == null) throw new ArgumentNullException("configurationSection");
 

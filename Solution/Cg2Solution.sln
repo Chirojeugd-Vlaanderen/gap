@@ -32,9 +32,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc", "Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj", "{C100E957-CEE2-4707-BF13-C64553C28C7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf", "Chiro.Adf\Chiro.Adf.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf.ServiceModel", "Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj", "{174890F3-1F4C-4CFC-83A1-AA88F5748A67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceHelper", "Chiro.Adf\Chiro.Cdf.ServiceHelper.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts.Mappers", "Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj", "{08F94344-8414-4136-8314-4B7380B10CD7}"
 EndProject
@@ -173,18 +171,6 @@ Global
 		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Win32.ActiveCfg = Release|Any CPU
 		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|x86.ActiveCfg = Release|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Release|Any CPU.Build.0 = Release|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Release|Win32.ActiveCfg = Release|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Release|x86.ActiveCfg = Release|Any CPU
 		{08F94344-8414-4136-8314-4B7380B10CD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08F94344-8414-4136-8314-4B7380B10CD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08F94344-8414-4136-8314-4B7380B10CD7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

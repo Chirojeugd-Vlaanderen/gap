@@ -1,4 +1,5 @@
 /*
+ * Copyright 2008 Capgemini - Accelerated Delivery Framework - http://www.be.capgemini.com/
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
@@ -15,10 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System.Collections.Generic;
+
+using System.Collections.Generic;
 using System.Configuration;
 
-namespace Chiro.Adf.Configuration
+namespace Chiro.Cdf.ServiceHelper.Configuration
 {
 	/// <summary>
 	/// Represents a ServiceProvider configuration element.

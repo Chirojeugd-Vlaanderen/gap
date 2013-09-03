@@ -23,8 +23,7 @@ using System.ServiceModel;
 using System.Web.Mvc;
 using System.Web.Routing;
 using AutoMapper;
-
-using Chiro.Adf.ServiceModel;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;

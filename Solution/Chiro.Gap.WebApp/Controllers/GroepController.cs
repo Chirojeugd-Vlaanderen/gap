@@ -18,12 +18,11 @@
 
 using System.ServiceModel;
 using System.Web.Mvc;
-
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.Models;
-using Chiro.Adf.ServiceModel;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
