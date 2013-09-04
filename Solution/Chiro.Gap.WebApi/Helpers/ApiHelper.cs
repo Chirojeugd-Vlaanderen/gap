@@ -15,7 +15,7 @@ namespace Chiro.Gap.WebApi.Helpers
             // Selector voor de geldige gebruikersrechten
             Func<GebruikersRecht, bool> geldigeRechten =
                 g =>
-                g.Gav.Login == HttpContext.Current.User.Identity.Name &&
+                String.Equals(g.Gav.Login, HttpContext.Current.User.Identity.Name, StringComparison.CurrentCultureIgnoreCase) &&
                 (g.VervalDatum == null || g.VervalDatum > DateTime.Now);
 
             // Haal het eerste geldige recht op
