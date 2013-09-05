@@ -144,7 +144,7 @@
     <comment>Param 0: naam van de gelieerde persoon</comment>
   </data>
   <data name="IsNogIngeschreven" xml:space="preserve">
-    <value>{0} was is al ingeschreven in je groep.</value>
+    <value>{0} was al ingeschreven in je groep.</value>
     <comment>Param 0: naam van de gelieerde persoon</comment>
   </data>
   <data name="WasAlLeiding" xml:space="preserve">
