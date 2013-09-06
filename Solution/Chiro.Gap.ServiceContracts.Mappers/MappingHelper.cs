@@ -491,18 +491,28 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             Mapper.CreateMap<Deelnemer, DeelnemerDetail>()
                 .ForMember(dst => dst.Afdelingen,
-                           opt => opt.MapFrom(src => Afdelingen(src.GelieerdePersoon.Lid.FirstOrDefault())))
+                    opt => opt.MapFrom(src => Afdelingen(src.GelieerdePersoon.Lid.FirstOrDefault())))
                 .ForMember(dst => dst.DeelnemerID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.PersoonOverzicht, opt => opt.Ignore())
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
                 .ForMember(dst => dst.Type,
-                           opt => opt.MapFrom(src => src.IsLogistieker ? DeelnemerType.Logistiek :
-                                                      src.GelieerdePersoon.Lid.FirstOrDefault() is Leiding ? DeelnemerType.Begeleiding :
-                                                      src.GelieerdePersoon.Lid.FirstOrDefault() != null ? DeelnemerType.Deelnemer :
-                                                      DeelnemerType.Onbekend))
+                    opt =>
+                        opt.MapFrom(
+                            src =>
+                                src.IsLogistieker
+                                    ? DeelnemerType.Logistiek
+                                    : DeelnemerTypeBepalen(src.GelieerdePersoon, src.Uitstap.DatumVan)))
                 .ForMember(dst => dst.IsContact,
-                           opt => opt.MapFrom(src => src.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() != null));
+                    opt => opt.MapFrom(src => src.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() != null));
+
+            Mapper.CreateMap<DeelnemerInfo, Deelnemer>()
+                .ForMember(dst => dst.ID, opt => opt.Ignore())
+                .ForMember(dst => dst.Versie, opt => opt.Ignore())
+                .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
+                .ForMember(dst => dst.Uitstap, opt => opt.Ignore())
+                .ForMember(dst => dst.UitstapWaarvoorVerantwoordelijk, opt => opt.Ignore())
+                .ForMember(dst => dst.VersieString, opt => opt.Ignore());
 
             // Als de property's van de doelobjecten strategisch gekozen namen hebben, configureert
             // Automapper alles automatisch, zoals hieronder:
@@ -681,10 +691,38 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             Mapper.AssertConfigurationIsValid();
         }
-
         #endregion
 
         #region Helperfuncties waarvan ik niet zeker ben of ze hier goed staan.
+
+        /// <summary>
+        /// Bepaalt het deelnemertype van een <paramref name="gelieerdePersoon"/> als hij voor een uitstap wordt
+        /// ingeschreven die plaats vindt vanaf <paramref name="datum"/>.
+        /// Als de person op dat moment lid is, dan is het deelnemer. Is de persoon op dat moment leiding, dan
+        /// is het begeleiding, en anders is het onbekend.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Gelieerde persoon met te bepalen DeelnemerType</param>
+        /// <param name="datum">Datum voor deelnemertype</param>
+        /// <returns>Als de persoon op de gegeven <paramref name="datum"/> lid is, dan Deelnemers. Is hij \
+        /// leiding, dan Begeleiding. En anders onbekend.</returns>
+        private static DeelnemerType DeelnemerTypeBepalen(GelieerdePersoon gelieerdePersoon, DateTime datum)
+        {
+            int werkJaar = datum.Year;
+            DateTime nieuwWerkJaarDatum = new DateTime(werkJaar, Properties.Settings.Default.NieuwWerkJaarMaand,
+                Properties.Settings.Default.NieuwWerkjaarDag);
+
+            if (datum < nieuwWerkJaarDatum)
+            {
+                --werkJaar;
+            }
+
+            var lid =
+                (from l in gelieerdePersoon.Lid where l.GroepsWerkJaar.WerkJaar == werkJaar select l).FirstOrDefault();
+
+            return (lid == null
+                ? DeelnemerType.Onbekend
+                : lid is Kind ? DeelnemerType.Deelnemer : DeelnemerType.Begeleiding);
+        }
 
         /// <summary>
         /// Controleert of een lid <paramref name="src"/>in zijn werkJaar verzekerd is wat betreft de verzekering gegeven
