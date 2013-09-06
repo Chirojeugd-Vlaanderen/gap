@@ -15,11 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using AutoMapper;
+
+using System;
+using AutoMapper;
 
 using System.Collections.Generic;
 using System.Linq;
-using Chiro.Gap.Dummies;
+﻿using Chiro.Gap.Domain;
+﻿using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
@@ -89,5 +92,116 @@ namespace Chiro.Gap.ServiceContracts.Test
 			LidInfo li = Mapper.Map<Lid, LidInfo>(leiderJos);
 			Assert.IsTrue(li.Functies.Any());
 		}
+
+	    /// <summary>
+	    /// Controleert of lid/leiding goed wordt gemapt van Deelnemer naar DeelnemerDetail.
+	    /// </summary>
+	    [TestMethod]
+	    public void MapDeelnemerUitstapDitJaar()
+	    {
+            // ARRANGE
+
+	        var groep = new ChiroGroep();
+	        var vorigJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2012};
+	        var ditJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2013};
+	        var gelieerdePersoon = new GelieerdePersoon {Groep = groep};
+            var lidVorigJaar = new Kind
+            {
+                GroepsWerkJaar = vorigJaar,
+                GelieerdePersoon = gelieerdePersoon,
+                AfdelingsJaar = new AfdelingsJaar { Afdeling = new Afdeling() }
+            };
+	        var lidDitJaar = new Leiding {GroepsWerkJaar = ditJaar, GelieerdePersoon = gelieerdePersoon};
+	        gelieerdePersoon.Lid = new List<Lid> {lidVorigJaar, lidDitJaar};
+
+	        var uitstap = new Uitstap
+	                      {
+                              DatumVan = new DateTime(ditJaar.WerkJaar + 1, 07, 1),
+                              DatumTot = new DateTime(ditJaar.WerkJaar + 1, 07, 10)
+	                      };
+	        var deelnemer = new Deelnemer {Uitstap = uitstap, GelieerdePersoon = gelieerdePersoon, IsLogistieker = false};
+
+            // ACT
+
+	        var result = Mapper.Map<Deelnemer, DeelnemerDetail>(deelnemer);
+
+            // ASSERT
+
+            Assert.AreEqual(DeelnemerType.Begeleiding, result.Type);
+	    }
+
+        /// <summary>
+        /// Controleert of lid/leiding goed wordt gemapt van Deelnemer naar DeelnemerDetail.
+        /// </summary>
+        [TestMethod]
+        public void MapDeelnemerUitstapVorigJaar()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep();
+            var vorigJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2012 };
+            var ditJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2013 };
+            var gelieerdePersoon = new GelieerdePersoon { Groep = groep };
+            var lidVorigJaar = new Kind
+            {
+                GroepsWerkJaar = vorigJaar,
+                GelieerdePersoon = gelieerdePersoon,
+                AfdelingsJaar = new AfdelingsJaar { Afdeling = new Afdeling() }
+            };
+            var lidDitJaar = new Leiding { GroepsWerkJaar = ditJaar, GelieerdePersoon = gelieerdePersoon };
+            gelieerdePersoon.Lid = new List<Lid> { lidDitJaar, lidVorigJaar };
+
+            var uitstap = new Uitstap
+            {
+                DatumVan = new DateTime(vorigJaar.WerkJaar + 1, 07, 1),
+                DatumTot = new DateTime(vorigJaar.WerkJaar + 1, 07, 10)
+            };
+            var deelnemer = new Deelnemer { Uitstap = uitstap, GelieerdePersoon = gelieerdePersoon, IsLogistieker = false };
+
+            // ACT
+
+            var result = Mapper.Map<Deelnemer, DeelnemerDetail>(deelnemer);
+
+            // ASSERT
+
+            Assert.AreEqual(DeelnemerType.Deelnemer, result.Type);
+        }
+
+        /// <summary>
+        /// Controleert of lid/leiding goed wordt gemapt van Deelnemer naar DeelnemerDetail.
+        /// </summary>
+        [TestMethod]
+        public void MapDeelnemerUitstapOudLid()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep();
+            var vorigJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2012 };
+            var gelieerdePersoon = new GelieerdePersoon { Groep = groep };
+            var lidVorigJaar = new Kind
+                               {
+                                   GroepsWerkJaar = vorigJaar,
+                                   GelieerdePersoon = gelieerdePersoon,
+                                   AfdelingsJaar = new AfdelingsJaar {Afdeling = new Afdeling()}
+                               };
+            gelieerdePersoon.Lid = new List<Lid> { lidVorigJaar };
+
+            var uitstap = new Uitstap
+            {
+                DatumVan = new DateTime(vorigJaar.WerkJaar + 2, 07, 1),
+                DatumTot = new DateTime(vorigJaar.WerkJaar + 2, 07, 10)
+            };
+            var deelnemer = new Deelnemer { Uitstap = uitstap, GelieerdePersoon = gelieerdePersoon, IsLogistieker = false };
+
+            // ACT
+
+            var result = Mapper.Map<Deelnemer, DeelnemerDetail>(deelnemer);
+
+            // ASSERT
+
+            Assert.AreEqual(DeelnemerType.Onbekend, result.Type);
+            // Deelnemer voor bivak dit jaar, die dit jaar geen lid is, krijgt type 'onbekend'
+        }
+
 	}
 }
