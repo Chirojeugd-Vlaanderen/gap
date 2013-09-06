@@ -506,6 +506,14 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.IsContact,
                     opt => opt.MapFrom(src => src.UitstapWaarvoorVerantwoordelijk.FirstOrDefault() != null));
 
+            Mapper.CreateMap<DeelnemerInfo, Deelnemer>()
+                .ForMember(dst => dst.ID, opt => opt.Ignore())
+                .ForMember(dst => dst.Versie, opt => opt.Ignore())
+                .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
+                .ForMember(dst => dst.Uitstap, opt => opt.Ignore())
+                .ForMember(dst => dst.UitstapWaarvoorVerantwoordelijk, opt => opt.Ignore())
+                .ForMember(dst => dst.VersieString, opt => opt.Ignore());
+
             // Als de property's van de doelobjecten strategisch gekozen namen hebben, configureert
             // Automapper alles automatisch, zoals hieronder:
 
