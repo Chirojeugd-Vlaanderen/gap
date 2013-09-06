@@ -527,7 +527,44 @@ namespace Chiro.Gap.Services.Test
 
             bivakSyncMock.Verify(src => src.Bewaren(bivak), Times.AtLeastOnce());
         }
-                
 
+        /// <summary>
+        /// Test voor het bewaren van een deelnemer.
+        /// </summary>
+        [TestMethod]
+        public void DeelnemerBewarenTest()
+        {
+            // ARRANGE
+
+            var deelnemer = new Deelnemer
+                            {
+                                ID = 1,
+                                Uitstap = new Uitstap(),
+                                GelieerdePersoon = new GelieerdePersoon(),
+                                HeeftBetaald = false
+                            };
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Deelnemer>())
+                .Returns(new DummyRepo<Deelnemer>(new List<Deelnemer> {deelnemer}));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<UitstappenService>();
+            target.DeelnemerBewaren(new DeelnemerInfo
+                                    {
+                                        DeelnemerID = deelnemer.ID,
+                                        HeeftBetaald = true,
+                                        IsLogistieker = deelnemer.IsLogistieker,
+                                        MedischeFicheOk = deelnemer.MedischeFicheOk,
+                                        Opmerkingen = deelnemer.Opmerkingen
+                                    });
+
+            // ASSERT
+
+            Assert.IsTrue(deelnemer.HeeftBetaald);
+        }
     }
 }
