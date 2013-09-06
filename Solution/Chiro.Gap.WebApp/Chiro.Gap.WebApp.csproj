@@ -319,7 +319,7 @@
     <Content Include="Views\Shared\Globaal.Master" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chiro.Adf\Chiro.Cdf.ServiceHelper.csproj">
+    <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
       <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
       <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
