@@ -1311,6 +1311,9 @@ namespace Chiro.Gap.WebApp.Controllers
             else
             {
                 object gevonden;
+
+                // Dat gat hier via die TempData. Brr.
+
                 TempData.TryGetValue("ids", out gevonden);
                 var gelieerdePersoonIDs = gevonden as IList<int>;
 
