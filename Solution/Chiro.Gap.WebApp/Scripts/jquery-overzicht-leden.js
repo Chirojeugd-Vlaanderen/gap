@@ -59,7 +59,7 @@ $(function () {
              { "sWidth": "50px", "aTargets": [ 3 ] },
              { "bSearchable": false, "aTargets": [0,1,4,5,6,7,8,10,11]},
             { "sType": "html", "aTargets": [2, 6, 7, 10, 11] },
-            { "bVisible": false, "aTargets": [4] }
+            { "bVisible": false, "aTargets": [4, 12, 13, 14, 15, 16] } // dat gaat niet werken voor kader, #1688
         ],
         "oLanguage": {
             "sLengthMenu": "Toon _MENU_ personen per pagina",
@@ -96,7 +96,7 @@ $(function () {
 				    {
 				        "sExtends": "xls",
 				        "sButtonText": "<strong>Opslaan als Excel</strong>",
-				        "mColumns": [ 1,2,3,4,5,6,7,9,10,11,12 ]
+				        "mColumns": [ 1,2,3,4,5,6,7,9,10,11,12,13,14,15,16 ]
 				    }
             ]
         }
