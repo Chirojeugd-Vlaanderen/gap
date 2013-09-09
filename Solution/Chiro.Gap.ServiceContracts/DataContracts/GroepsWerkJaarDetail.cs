@@ -34,7 +34,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public int WerkJaar { get; set; }
 
 	    /// <summary>
-	    /// De ID van het werkJaar
+	    /// De ID van het groepswerkJaar
 	    /// </summary>
 	    [DataMember]
 		public int WerkJaarID { get; set; }

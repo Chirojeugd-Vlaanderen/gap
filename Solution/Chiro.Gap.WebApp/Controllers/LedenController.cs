@@ -447,7 +447,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Downloadt de lijst van leden uit groepswerkjaar met GroepsWerkJaarID <paramref name="id"/> als
         /// Exceldocument.
         /// </summary>
-        /// <param name="id">ID van het gevraagde groepswerkjaar (komt uit url)</param>
+        /// <param name="id">ID van het gevraagde groepswerkjaar (komt uit url). Gebruik 0 voor het huidige werkjaar.</param>
         /// <param name="afdelingID">Als verschillend van 0, worden enkel de leden met afdelng bepaald door dit ID
         /// getoond.</param>
         /// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie bepaald door
@@ -458,7 +458,8 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="sortering">Eigenschap waarop gesorteerd moet worden</param>
         /// <returns>Exceldocument met gevraagde ledenlijst</returns>
         [HandleError]
-        public ActionResult Download(int id, int afdelingID, int functieID, int groepID, LidInfoModel.SpecialeLedenLijst ledenLijst, LidEigenschap sortering)
+        [ParametersMatch]
+        public ActionResult Download([RouteValue]int id, [QueryStringValue]int afdelingID, [QueryStringValue]int functieID, [RouteValue]int groepID, [QueryStringValue]LidInfoModel.SpecialeLedenLijst ledenLijst, [QueryStringValue]LidEigenschap sortering)
         {
             var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, true);
             if (model == null)
@@ -500,6 +501,19 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => it.LidgeldBetaald ? "Ja" : "Nee");
 
             return new ExcelResult(stream, bestandsNaam);
+        }
+
+        /// <summary>
+        /// Downloadt een Exceldocument met de leden uit het groepswerkjaar met gegeven <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id">ID van een groepswerkjaar. 0 voor recentste.</param>
+        /// <param name="groepID">ID van de groep waarvan de leden te downloaden zijn (komt uit url)</param>
+        /// <returns>Exceldocument met de leden uit het gevraagde werkjaar</returns>
+        [HandleError]
+        [ParametersMatch]
+        public ActionResult Download([RouteValue]int id, [RouteValue] int groepID)
+        {
+            return Download(id, 0, 0, groepID, LidInfoModel.SpecialeLedenLijst.Geen, LidEigenschap.Afdeling);
         }
 
         // TODO (#967): Er zijn methods 'AfdelingBewerken' (1 persoon) en 'AfdelingenBewerken' (meerdere personen)

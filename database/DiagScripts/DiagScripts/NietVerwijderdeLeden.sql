@@ -11,5 +11,5 @@ join grp.groep g on g.groepid = gwj.groepid
 join kipadmin.lid.lid kl on kl.adnr = p.adnummer and kl.werkjaar=gwj.werkjaar and kl.aansl_nr > 0
 join kipadmin.dbo.kippersoon kp on p.adnummer = kp.adnr
 left outer join grp.chirogroep cg on g.groepid = cg.chirogroepid
-where (l.uitschrijfdatum > l.eindeinstapperiode) and  gwj.werkjaar=2012 and cg.chirogroepid is not null
+where (l.uitschrijfdatum > l.eindeinstapperiode) and  gwj.werkjaar=2013 and cg.chirogroepid is not null
 
