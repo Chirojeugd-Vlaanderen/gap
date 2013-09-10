@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+
+
 //DocumentReady function
 $(function () {
     //instellingen voor datatable
@@ -22,6 +24,17 @@ $(function () {
         "sPaginationType": "full_numbers",
         "iDisplayLength": 25,
         "aaSorting": [[2,"asc"]],
+        "aoColumns": [
+			null,
+            null,
+			null,
+			{ "sType": 'date-euro' }, // geboortedata worden niet als string gesorteerd
+			null,
+			null,
+            null,
+            null,
+            null
+		],
         "aoColumnDefs": [
              { "bSortable": false, "aTargets": [ 0 ] }
         ],

@@ -243,6 +243,7 @@
     <Compile Include="Models\InschrijfbaarLid.cs" />
     <Content Include="Scripts\AdresBewerken.js" />
     <Content Include="Scripts\algemeneFuncties.js" />
+    <Content Include="Scripts\datestringsort.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-groep.js" />
     <Content Include="Scripts\jquery-nieuwe-persoon.js" />

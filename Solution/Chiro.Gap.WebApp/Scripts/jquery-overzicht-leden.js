@@ -51,6 +51,21 @@ $(function () {
         "sPaginationType": "full_numbers",
         "iDisplayLength": 25,
         "aaSorting": [[2, "asc"]],
+        "aoColumns": [
+			null,
+            null,
+			null,
+			{ "sType": 'date-euro' }, // geboortedata worden niet als string gesorteerd
+            null,
+			null,
+			null,
+            null,
+            null,
+            { "sType": 'date-euro' }, // instapdata worden niet als string gesorteerd
+            null,
+            null,
+            null
+		],
         "aLengthMenu": [[25, 50, 100, 150, -1], [25, 50, 100, 150, "Alle"]],
         "aoColumnDefs": [
              { "bSortable": false, "aTargets": [ 0 ] },
