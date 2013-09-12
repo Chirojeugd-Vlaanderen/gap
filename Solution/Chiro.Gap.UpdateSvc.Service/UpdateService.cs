@@ -174,6 +174,21 @@ namespace Chiro.Gap.UpdateSvc.Service
             // De gelieerde personen die nu nog aan dubbel hangen, moeten weg. We zetten zo veel 
             // mogelijk relevante informatie over naar de originele gelieerde personen.
 
+            // Om straks problemen te vermijden, verwijderen we eerst de inactieve leden van de
+            // te behouden persoon, waarvoor de te verwijderen persoon een actief lid heeft in 
+            // hetzelfde werkjaar. (Zie #1693)
+
+            var teVerwijderenLeden = (from l in origineel.GelieerdePersoon.SelectMany(gp => gp.Lid)
+                where
+                    l.NonActief &&
+                    l.GroepsWerkJaar.Lid.Any(l2 => Equals(l2.GelieerdePersoon.Persoon, dubbel) && !l2.NonActief)
+                select l).ToList();
+
+            foreach (var tv in teVerwijderenLeden)
+            {
+                LidVerwijderen(tv);
+            }
+
             foreach (var dubbeleGp in dubbel.GelieerdePersoon.ToList())
             {
                 var origineleGp = (from gp in origineel.GelieerdePersoon
@@ -189,26 +204,16 @@ namespace Chiro.Gap.UpdateSvc.Service
                     if (origineelLid != null)
                     {
                         // Zowel originele als dubbele gelieerde persoon waren lid. We behouden
-                        // het originele lidobject, tenzij in het geval de originele is uitgeschreven,
-                        // en de dubbele niet.
+                        // het originele lidobject.
 
-                        if (origineelLid.NonActief && !dubbelLid.NonActief)
-                        {
-                            LidVerwijderen(origineelLid);
-                            dubbelLid.GelieerdePersoon = origineleGp;
-                            dubbeleGp.Lid.Remove(dubbelLid);
-                            origineleGp.Lid.Add(dubbelLid);
-                        }
-                        else
-                        {
-                            LidVerwijderen(dubbelLid);
-                            // eventuele functies en afdelingen van het dubbel lid worden
-                            // zonder boe of ba weggegooid.
-                        }
+                        LidVerwijderen(dubbelLid);
+                        // eventuele functies en afdelingen van het dubbel lid worden
+                        // zonder boe of ba weggegooid.
                     }
                     else
                     {
                         dubbelLid.GelieerdePersoon = origineleGp;
+                        origineleGp.Lid.Add(dubbelLid);
                     }
                 }
 

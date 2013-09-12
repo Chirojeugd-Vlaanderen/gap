@@ -177,9 +177,6 @@ namespace Chiro.Gap.UpdateSvc.Test
         /// A test for DubbelVerwijderen. Concrete situatie dat dubbel en origineel lid zijn, maar origineel lid
         /// is inactief.
         ///</summary>
-        // TODO: Ensure that the UrlToTest attribute specifies a URL to an ASP.NET page (for example,
-        // http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
-        // whether you are testing a page, web service, or a WCF service.
         [TestMethod()]
         public void DubbelVerwijderenTestOrigineelLidInactief()
         {
@@ -216,6 +213,8 @@ namespace Chiro.Gap.UpdateSvc.Test
                             };
             origineleGp.Lid.Add(origineelLid);
             dubbeleGp.Lid.Add(dubbelLid);
+            groepsWerkJaar.Lid.Add(origineelLid);
+            groepsWerkJaar.Lid.Add(dubbelLid);
 
             var allePersonen = new List<Persoon> {origineel, dubbel};
 
