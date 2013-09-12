@@ -152,7 +152,8 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// </summary>
         /// <param name="origineel"></param>
         /// <param name="dubbel"></param>
-        /// <remarks>PERSISTEERT NIET!</remarks>
+        /// <remarks>Persisteert enkel om #1693 te voorkomen. Wat erg lelijk is. Maar
+        /// ik kan er voorlopig niet aan doen.</remarks>
         private void DubbelVerwijderen(Persoon origineel, Persoon dubbel)
         {
             // TODO: Dit kan nog wel wat unit tests gebruiken...
@@ -184,9 +185,17 @@ namespace Chiro.Gap.UpdateSvc.Service
                     l.GroepsWerkJaar.Lid.Any(l2 => Equals(l2.GelieerdePersoon.Persoon, dubbel) && !l2.NonActief)
                 select l).ToList();
 
-            foreach (var tv in teVerwijderenLeden)
+            if (teVerwijderenLeden.Any())
             {
-                LidVerwijderen(tv);
+                foreach (var tv in teVerwijderenLeden)
+                {
+                    LidVerwijderen(tv);
+                }
+                // ik wou dat ik onderstaande savechanges kon vermijden, maar als ik dat niet doe
+                // dan herkoppelt entity framework straks een lid alvorens de verwijdering uit te voeren,
+                // met een key exception tot gevolg. (zie #1693)
+
+                _ledenRepo.SaveChanges();
             }
 
             foreach (var dubbeleGp in dubbel.GelieerdePersoon.ToList())
