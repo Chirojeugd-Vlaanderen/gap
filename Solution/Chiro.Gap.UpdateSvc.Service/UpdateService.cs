@@ -161,8 +161,8 @@ namespace Chiro.Gap.UpdateSvc.Service
             // het gelieerde-persoonobject van dubbel naar origineel
 
             var teVerleggenGPs = (from gp in dubbel.GelieerdePersoon
-                                  where !gp.Groep.GelieerdePersoon.Any(gp2 => Equals(gp2.Persoon, origineel))
-                                  select gp).ToList();
+                where !origineel.GelieerdePersoon.Any(gp2 => Equals(gp2.Groep, gp.Groep))
+                select gp).ToList();
 
             foreach (var gp in teVerleggenGPs)
             {
@@ -196,6 +196,8 @@ namespace Chiro.Gap.UpdateSvc.Service
                         {
                             LidVerwijderen(origineelLid);
                             dubbelLid.GelieerdePersoon = origineleGp;
+                            dubbeleGp.Lid.Remove(dubbelLid);
+                            origineleGp.Lid.Add(dubbelLid);
                         }
                         else
                         {
@@ -393,6 +395,7 @@ namespace Chiro.Gap.UpdateSvc.Service
             }
             lid.Functie.Clear();
             lid.GelieerdePersoon.Lid.Remove(lid);
+            lid.GroepsWerkJaar.Lid.Remove(lid);
             _ledenRepo.Delete(lid);
         }
 
