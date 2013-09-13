@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviCrm.Client", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.UnityWcfExtensions", "..\..\Solution\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj", "{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviCrm.BehaviorExtension", "..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Behavior\Chiro.CiviCrm.BehaviorExtension.csproj", "{F39A9E29-95E9-4304-A42D-1266F81B5ECF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F39A9E29-95E9-4304-A42D-1266F81B5ECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F39A9E29-95E9-4304-A42D-1266F81B5ECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F39A9E29-95E9-4304-A42D-1266F81B5ECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F39A9E29-95E9-4304-A42D-1266F81B5ECF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

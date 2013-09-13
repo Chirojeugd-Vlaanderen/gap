@@ -60,6 +60,8 @@ namespace Chiro.Cdf.ServiceHelper
                 ChannelFactory<I> factory;
                 try
                 {
+                    // Als dit crasht, dan gebruik je mogelijk een message queue die je niet
+                    // hebt aangemaakt. Controleer de config file van de caller.
                     factory = new ChannelFactory<I>(instanceName); // use the named endpoint
                 }
                 catch(InvalidOperationException)
