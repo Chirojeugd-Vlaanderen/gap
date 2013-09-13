@@ -16,10 +16,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
+using AutoMapper;
+using Chiro.CiviCrm.ClientInterfaces;
+using Chiro.CiviCrm.ServiceContracts.DataContracts;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -27,11 +26,23 @@ namespace Chiro.CiviSync.Services
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "SyncService" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select SyncService.svc or SyncService.svc.cs at the Solution Explorer and start debugging.
-    public class SyncService : ISyncPersoonService
+    public class SyncService : ISyncPersoonService, IDisposable
     {
+        private readonly ICiviCrmClient _civiCrmClient;
+
+        public SyncService(ICiviCrmClient civiCrmClient)
+        {
+            _civiCrmClient = civiCrmClient;
+        }
+
         public void PersoonUpdaten(Persoon persoon)
         {
-            throw new NotImplementedException();
+            var contact = (persoon.AdNummer == null
+                ? new Contact {Id = 0}
+                : _civiCrmClient.ContactFind(persoon.AdNummer.Value)) ?? new Contact {Id = 0};
+
+            Mapper.Map<Persoon, Contact>(persoon, contact);
+            _civiCrmClient.ContactSave(contact);
         }
 
         public void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners)
@@ -132,6 +143,11 @@ namespace Chiro.CiviSync.Services
         public void GroepUpdaten(Groep g)
         {
             throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            _civiCrmClient.Dispose();
         }
     }
 }
