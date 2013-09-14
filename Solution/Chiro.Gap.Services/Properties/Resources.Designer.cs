@@ -250,7 +250,7 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Je mag geen nationale functies bewerken..
+        ///   Looks up a localized string similar to Je mag geen nationale functies bewerken.
         /// </summary>
         internal static string NationaleFunctieNietBewerken {
             get {

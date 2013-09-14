@@ -152,7 +152,8 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// </summary>
         /// <param name="origineel"></param>
         /// <param name="dubbel"></param>
-        /// <remarks>PERSISTEERT NIET!</remarks>
+        /// <remarks>Persisteert enkel om #1693 te voorkomen. Wat erg lelijk is. Maar
+        /// ik kan er voorlopig niet aan doen.</remarks>
         private void DubbelVerwijderen(Persoon origineel, Persoon dubbel)
         {
             // TODO: Dit kan nog wel wat unit tests gebruiken...
@@ -161,8 +162,8 @@ namespace Chiro.Gap.UpdateSvc.Service
             // het gelieerde-persoonobject van dubbel naar origineel
 
             var teVerleggenGPs = (from gp in dubbel.GelieerdePersoon
-                                  where !gp.Groep.GelieerdePersoon.Any(gp2 => Equals(gp2.Persoon, origineel))
-                                  select gp).ToList();
+                where !origineel.GelieerdePersoon.Any(gp2 => Equals(gp2.Groep, gp.Groep))
+                select gp).ToList();
 
             foreach (var gp in teVerleggenGPs)
             {
@@ -173,6 +174,29 @@ namespace Chiro.Gap.UpdateSvc.Service
 
             // De gelieerde personen die nu nog aan dubbel hangen, moeten weg. We zetten zo veel 
             // mogelijk relevante informatie over naar de originele gelieerde personen.
+
+            // Om straks problemen te vermijden, verwijderen we eerst de inactieve leden van de
+            // te behouden persoon, waarvoor de te verwijderen persoon een actief lid heeft in 
+            // hetzelfde werkjaar. (Zie #1693)
+
+            var teVerwijderenLeden = (from l in origineel.GelieerdePersoon.SelectMany(gp => gp.Lid)
+                where
+                    l.NonActief &&
+                    l.GroepsWerkJaar.Lid.Any(l2 => Equals(l2.GelieerdePersoon.Persoon, dubbel) && !l2.NonActief)
+                select l).ToList();
+
+            if (teVerwijderenLeden.Any())
+            {
+                foreach (var tv in teVerwijderenLeden)
+                {
+                    LidVerwijderen(tv);
+                }
+                // ik wou dat ik onderstaande savechanges kon vermijden, maar als ik dat niet doe
+                // dan herkoppelt entity framework straks een lid alvorens de verwijdering uit te voeren,
+                // met een key exception tot gevolg. (zie #1693)
+
+                _ledenRepo.SaveChanges();
+            }
 
             foreach (var dubbeleGp in dubbel.GelieerdePersoon.ToList())
             {
@@ -189,24 +213,16 @@ namespace Chiro.Gap.UpdateSvc.Service
                     if (origineelLid != null)
                     {
                         // Zowel originele als dubbele gelieerde persoon waren lid. We behouden
-                        // het originele lidobject, tenzij in het geval de originele is uitgeschreven,
-                        // en de dubbele niet.
+                        // het originele lidobject.
 
-                        if (origineelLid.NonActief && !dubbelLid.NonActief)
-                        {
-                            LidVerwijderen(origineelLid);
-                            dubbelLid.GelieerdePersoon = origineleGp;
-                        }
-                        else
-                        {
-                            LidVerwijderen(dubbelLid);
-                            // eventuele functies en afdelingen van het dubbel lid worden
-                            // zonder boe of ba weggegooid.
-                        }
+                        LidVerwijderen(dubbelLid);
+                        // eventuele functies en afdelingen van het dubbel lid worden
+                        // zonder boe of ba weggegooid.
                     }
                     else
                     {
                         dubbelLid.GelieerdePersoon = origineleGp;
+                        origineleGp.Lid.Add(dubbelLid);
                     }
                 }
 
@@ -393,6 +409,7 @@ namespace Chiro.Gap.UpdateSvc.Service
             }
             lid.Functie.Clear();
             lid.GelieerdePersoon.Lid.Remove(lid);
+            lid.GroepsWerkJaar.Lid.Remove(lid);
             _ledenRepo.Delete(lid);
         }
 

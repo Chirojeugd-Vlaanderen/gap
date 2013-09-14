@@ -55,22 +55,16 @@ USE gap_tst
 GO
 
 
--- versie 1.6?
+-- Wijzigingen voor 1.9.1
 
-ALTER TABLE grp.Groep ADD StopDatum DateTime NULL;
-
--- Wijzigingen voor 1.9
-
-ALTER TABLE pers.Persoon ADD SeNaam AS SOUNDEX(Naam);
-ALTER TABLE pers.Persoon ADD SeVoornaam AS SOUNDEX(VoorNaam);
-
-CREATE INDEX IX_Persoon_SoundEx ON pers.Persoon(Naam,Voornaam);
-CREATE INDEX IX_Persoon_SoundEx2 ON pers.Persoon(Voornaam,Naam);
-
-
-DROP INDEX [IX_Lid_AfdelingsJaarID] ON [lid].[Kind]
-ALTER TABLE lid.Kind ALTER COLUMN afdelingsJaarID integer not null;
-CREATE NONCLUSTERED INDEX [IX_Lid_AfdelingsJaarID] ON [lid].[Kind]([afdelingsJaarID] ASC);
+GRANT UPDATE ON verz.PersoonsVerzekering TO GapSuperRole
+GO
+GRANT UPDATE ON verz.PersoonsVerzekering TO GapRole
+GO
+GRANT DELETE ON auth.GavSchap TO GapSuperRole
+GO
+GRANT DELETE ON auth.GavSchap TO GapRole
+GO
 
 use [KipAdmin]
 GO
