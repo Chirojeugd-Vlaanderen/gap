@@ -218,7 +218,7 @@
       <Project>{c83b2df6-4352-4fad-a09e-9c59dc335b05}</Project>
       <Name>Chiro.Gap.Poco.Context</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Poco\Chiro.Gap.Poco.Model.csproj">
+    <ProjectReference Include="..\Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj">
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
     </ProjectReference>
