@@ -99,7 +99,7 @@ namespace Chiro.Gap.UpdateSvc.Test
         }
 
         /// <summary>
-        ///A test for DubbelVerwijderen
+        ///A test for DubbelVerwijderen. Is de dubbele inderdaad weg?
         ///</summary>
         [TestMethod()]
         public void DubbelVerwijderenTest()
@@ -171,6 +171,70 @@ namespace Chiro.Gap.UpdateSvc.Test
 
             // ASSERT
             Assert.AreEqual(1, allePersoonsAdressen.Count);
+        }
+
+        /// <summary>
+        /// A test for DubbelVerwijderen. Concrete situatie dat dubbel en origineel lid zijn, maar origineel lid
+        /// is inactief.
+        ///</summary>
+        [TestMethod()]
+        public void DubbelVerwijderenTestOrigineelLidInactief()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep();
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = groep};
+
+            var origineel = new Persoon();
+            var dubbel = new Persoon();
+
+            var origineleGp = new GelieerdePersoon {Persoon = origineel, Groep = groep};
+            var dubbeleGp = new GelieerdePersoon {Persoon = dubbel, Groep = groep};
+            origineel.GelieerdePersoon.Add(origineleGp);
+            dubbel.GelieerdePersoon.Add(dubbeleGp);
+            groep.GelieerdePersoon.Add(origineleGp);
+            groep.GelieerdePersoon.Add(dubbeleGp);
+
+            var origineelLid = new Leiding
+                               {
+                                   GelieerdePersoon = origineleGp,
+                                   GroepsWerkJaar = groepsWerkJaar,
+                                   UitschrijfDatum = DateTime.Today.AddDays(-1),
+                                   NonActief = true,
+                                   ID = 1
+                               };
+            var dubbelLid = new Leiding
+                            {
+                                GelieerdePersoon = dubbeleGp,
+                                GroepsWerkJaar = groepsWerkJaar,
+                                UitschrijfDatum = null,
+                                NonActief = false,
+                                ID = 2
+                            };
+            origineleGp.Lid.Add(origineelLid);
+            dubbeleGp.Lid.Add(dubbelLid);
+            groepsWerkJaar.Lid.Add(origineelLid);
+            groepsWerkJaar.Lid.Add(dubbelLid);
+
+            var allePersonen = new List<Persoon> {origineel, dubbel};
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Persoon>())
+                .Returns(new DummyRepo<Persoon>(allePersonen));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Lid>())
+                .Returns(new DummyRepo<Lid>(new List<Lid> {origineelLid, dubbelLid}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {origineleGp, dubbeleGp}));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            var target = Factory.Maak<UpdateService_Accessor>();
+            target.DubbelVerwijderen(origineel, dubbel);
+
+            // ASSERT
+            Assert.IsTrue(origineleGp.Lid.Contains(dubbelLid));
+            Assert.IsFalse(groepsWerkJaar.Lid.Contains(origineelLid));
         }
     }
 }
