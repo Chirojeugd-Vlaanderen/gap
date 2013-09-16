@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Chiro.CiviCrm.ClientInterfaces;
 using Chiro.CiviCrm.ServiceContracts.DataContracts;
@@ -35,19 +36,84 @@ namespace Chiro.CiviSync.Services
             _civiCrmClient = civiCrmClient;
         }
 
+        /// <summary>
+        /// Updatet de persoonsgegevens van <paramref name="persoon"/> in CiviCRM
+        /// </summary>
+        /// <param name="persoon">Persoon wiens gegevens te updaten zijn</param>
         public void PersoonUpdaten(Persoon persoon)
         {
+            // TODO: personen met AD-nummer in aanvraag
             var contact = (persoon.AdNummer == null
                 ? new Contact {Id = 0}
                 : _civiCrmClient.ContactFind(persoon.AdNummer.Value)) ?? new Contact {Id = 0};
 
-            Mapper.Map<Persoon, Contact>(persoon, contact);
+            Mapper.Map(persoon, contact);
             _civiCrmClient.ContactSave(contact);
         }
 
+        /// <summary>
+        /// Maakt het gegeven <paramref name="adres"/> het standaardadres van de gegeven <paramref name="bewoners"/>.
+        /// Als het adres al bestond voor de gegeven bewoner, dan wordt het bestaande adres het standaardadres.
+        /// Zo niet, wordt een nieuw adres als standaardadres gekoppeld.
+        /// </summary>
+        /// <param name="adres">Nieuw standaardadres van de gegeven <paramref name="bewoners"/></param>
+        /// <param name="bewoners">Bewoners die het nieuw <paramref name="adres"/> krijgen</param>
         public void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners)
         {
-            throw new NotImplementedException();
+            var nieuwAdres = Mapper.Map<Adres, Address>(adres);
+
+            // TODO: personen met AD-nummer in aanvraag
+
+            foreach (var bewoner in bewoners)
+            {
+                if (bewoner.Persoon.AdNummer != null)
+                {
+                    var adressen = _civiCrmClient.AddressesFind(bewoner.Persoon.AdNummer.Value);
+
+                    var bestaande = (from a in adressen where IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
+
+                    if (bestaande != null)
+                    {
+                        nieuwAdres.Id = bestaande.Id;
+                        // Door het ID te bewaren, overschrijven we het bestaande adres
+                        nieuwAdres.ContactId = bestaande.ContactId;
+                    }
+                    else
+                    {
+                        // TODO: dit is geen manier van werken.
+                        var contact = _civiCrmClient.ContactFind(bewoner.Persoon.AdNummer.Value);
+                        nieuwAdres.ContactId = contact.Id;
+                    }
+
+                    nieuwAdres.IsBilling = true;
+                    nieuwAdres.IsPrimary = true;
+
+                    switch (bewoner.AdresType)
+                    {
+                        case AdresTypeEnum.Thuis:
+                            nieuwAdres.LocationTypeId = 1;
+                            break;
+                        case AdresTypeEnum.Werk:
+                            nieuwAdres.LocationTypeId = 2;
+                            break;
+                        default:
+                            nieuwAdres.LocationTypeId = 4; // (other)
+                            // TODO: kot
+                            break;
+                    }
+
+                    _civiCrmClient.AddressSave(nieuwAdres);
+                }
+            }
+        }
+
+        private bool IsHetzelfde(Address a1, Address a2)
+        {
+            return (String.Equals(a1.City, a2.City, StringComparison.InvariantCultureIgnoreCase) &&
+                    a1.CountryId == a2.CountryId && a1.PostalCode == a2.PostalCode &&
+                    String.Equals(a1.PostalCodeSuffix, a2.PostalCodeSuffix, StringComparison.InvariantCultureIgnoreCase) &&
+                    a1.StateProvinceId == a2.StateProvinceId &&
+                    String.Equals(a1.StreetAddress, a2.StreetAddress, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public void CommunicatieToevoegen(Persoon persoon, CommunicatieMiddel communicatieMiddel)
