@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using Chiro.Adf.ServiceModel;
@@ -12,10 +13,12 @@ namespace Chiro.Gap.WebApi.Helpers
     {
         public static GroepsWerkJaar GetGroepsWerkJaar(ChiroGroepEntities context)
         {
+            Debug.Assert(HttpContext.Current.Request.LogonUserIdentity != null);
+
             // Selector voor de geldige gebruikersrechten
             Func<GebruikersRecht, bool> geldigeRechten =
                 g =>
-                String.Equals(g.Gav.Login, HttpContext.Current.User.Identity.Name, StringComparison.CurrentCultureIgnoreCase) &&
+                String.Equals(g.Gav.Login, HttpContext.Current.Request.LogonUserIdentity.Name, StringComparison.CurrentCultureIgnoreCase) &&
                 (g.VervalDatum == null || g.VervalDatum > DateTime.Now);
 
             // Haal het eerste geldige recht op
