@@ -149,9 +149,14 @@ namespace Chiro.Kip.Services
                     //
                     // In de andere gevallen wordt het nieuwe lid toegevoegd aan de recentste aansluiting.
 
-                    // (Voor kaderploegen
+                    // OPMERKING: Voor kaderploegen
                     // is er geen factuur gekoppeld aan een aansluiting.  Daar gaat
-                    // dus alles op aansluiting 1.)
+                    // dus alles op aansluiting 1.
+
+                    // OPMERKING: Ik controleer of REKENING.DOORGEBOE != 'N'. Dat is belangrijk, want
+                    // met het nieuwe systeem van lidkaarten printen, zal ik DOORGEBOE = 'X' zetten
+                    // tijdens het proces van de verwerking van de factuur. Bedoeling is dat dat terug
+                    // 'N' wordt als de user achteraf aangeeft dat het doorboeken niet gelukt is.
 
                     if (aansluiting == null || // er was nog geen aansluiting
                         IsTeOud(aansluiting, gedoe) ||
