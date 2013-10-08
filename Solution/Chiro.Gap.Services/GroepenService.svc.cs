@@ -749,7 +749,14 @@ namespace Chiro.Gap.Services
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
             Gav.Check(gwj);
             Debug.Assert(gwj != null, "gwj != null");
-            var ongebruikteAfdelingen = (from afd in ((ChiroGroep)gwj.Groep).Afdeling
+
+            var chiroGroep = (gwj.Groep as ChiroGroep);
+            if (chiroGroep == null)
+            {
+                return new List<AfdelingInfo>();    // lege lijst
+            }
+
+            var ongebruikteAfdelingen = (from afd in (chiroGroep).Afdeling
                                          where !afd.AfdelingsJaar.Any(aj => Equals(aj.GroepsWerkJaar, gwj))
                                          select afd).ToList();
             return Mapper.Map<List<Afdeling>, List<AfdelingInfo>>(ongebruikteAfdelingen);

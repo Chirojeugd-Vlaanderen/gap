@@ -364,7 +364,10 @@ $(function () {
                             //----------------------------------------------------------------------------------------
                             //Persoon inschrijven
                             if (inschrijven) {
-                                   
+                                    // Erg hacky. In eerste instantie word je lid van de eerst beschikbare afdeling.
+                                    // Straks wordt de echte afdeling toegekend.
+                                    // Niet zeker waarom dat zo is. Misschien omdat je nu een afdelingsjaarID nodig hebt,
+                                    // en straks een afdelingID kunt gebruiken.
                                     url = link("Leden", "LedenMaken");
                                     $.ajax({
                                         url: url,
@@ -390,29 +393,39 @@ $(function () {
                                             volledigeNaam = res.HuidigePersoon.volledigeNaam;
                                             voortgang.progressbar('value', val += 5);
                                         }).done(function() {
-                                            
-                                            //'beschikbare afdelingen' uit het model halen
-                                            url = link("Leden", "AfdelingBewerken");
-                                            $.getJSON(url, { lidID: lidID, groepID: GID }, function(antwoord) {
-                                                beschikbareAfdelingen.push(antwoord.BeschikbareAfdelingen);
-                                            }).done(function() {
-                                                voortgang.progressbar('value', val += 20);
-                                                $.ajax({
-                                                    url: url,
-                                                    type: 'POST',
-                                                    traditional: true,
-                                                    data: {
-                                                        "groepsWerkJaarID": werkjaar,
-                                                         lidID: lidID,
-                                                         "Info.AfdelingsJaarIDs": geselecteerdeAfdelingsIDs
-                                                    }
+                                            // afdelingsJaarIDs bevat de IDs van de beschikbare afdelingen.
+                                            // Als dat er geen zijn, dan hebben we waarschijnlijk met een
+                                            // kadergroep te doen (erg vreemde manier van controleren), en dus
+                                            // laten we het afdelingen toekennen voor wat het is.
+                                            if (afdelingsJaarIDs.length == 0) {
+                                                        voortgang.progressbar('value', 100);
+                                                        url = link("Personen", "EditRest");
+                                                        url += "/" + np_gpID;
+                                                        window.location = url;
+                                            } else {
+                                                //'beschikbare afdelingen' uit het model halen
+                                                url = link("Leden", "AfdelingBewerken");
+                                                $.getJSON(url, { lidID: lidID, groepID: GID }, function(antwoord) {
+                                                    beschikbareAfdelingen.push(antwoord.BeschikbareAfdelingen);
                                                 }).done(function() {
-                                                    voortgang.progressbar('value', 100);
-                                                    url = link("Personen", "EditRest");
-                                                    url += "/" + np_gpID;
-                                                    window.location = url;
+                                                    voortgang.progressbar('value', val += 20);
+                                                    $.ajax({
+                                                        url: url,
+                                                        type: 'POST',
+                                                        traditional: true,
+                                                        data: {
+                                                            "groepsWerkJaarID": werkjaar,
+                                                            lidID: lidID,
+                                                            "Info.AfdelingsJaarIDs": geselecteerdeAfdelingsIDs
+                                                        }
+                                                    }).done(function() {
+                                                        voortgang.progressbar('value', 100);
+                                                        url = link("Personen", "EditRest");
+                                                        url += "/" + np_gpID;
+                                                        window.location = url;
+                                                    });
                                                 });
-                                            });
+                                            }
                                         });
                                 });
                             }

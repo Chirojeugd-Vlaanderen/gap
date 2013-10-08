@@ -59,6 +59,16 @@ namespace Chiro.Gap.WebApp.Controllers
 			return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), groepID);
 		}
 
+        /// <summary>
+        /// Levert een JSON-representatie van een AfdelingsOverzichtModel op voor het groepswerkjaar met gegeven
+        /// <paramref name="groepsWerkJaarID"/>. Een AfdelingsOverzichtModel bevat een lijst van actieve afdelingen
+        /// en een lijst van inactieve afdelingen.
+        /// </summary>
+        /// <param name="groepsWerkJaarID">ID van groepswerkjaar waarvoor AfdelingsOverzicht op te halen is</param>
+        /// <param name="groepID">Groep waarin we aan het werk zijn</param>
+        /// <returns>JSON-representatie van een AfdelingsOverzichtModel voor het groepswerkjaar met gegeven
+        /// <paramref name="groepsWerkJaarID"/>. Een AfdelingsOverzichtModel bevat een lijst van actieve afdelingen
+        /// en een lijst van inactieve afdelingen.</returns>
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
         public JsonResult AfdelingsInfo(int groepsWerkJaarID, int groepID)

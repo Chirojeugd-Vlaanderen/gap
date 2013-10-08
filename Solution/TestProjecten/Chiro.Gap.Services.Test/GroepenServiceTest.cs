@@ -1289,5 +1289,36 @@ namespace Chiro.Gap.Services.Test
 
             // niks te assert. Hopelijk hebben we een exception gecatcht.
         }
+
+        /// <summary>
+        /// OngebruikteAfdelingenOphalen moet een lege lijst opleveren voor een kadergroep.
+        /// </summary>
+        [TestMethod()]
+        public void OngebruikteAfdelingenOphalenKaderGroepTest()
+        {
+            // ARRANGE
+
+            // het model
+
+            var groep = new KaderGroep();
+            var ditWerkJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2012, ID = 2 };
+
+            // dependency injection voor data acces
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
+                                  .Returns(
+                                      new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar>
+                                                                        {
+                                                                            ditWerkJaar
+                                                                        }));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var target = Factory.Maak<GroepenService>();
+
+            var actual = target.OngebruikteAfdelingenOphalen(ditWerkJaar.ID);
+            Assert.AreEqual(actual.Count, 0);
+        }
     }
 }

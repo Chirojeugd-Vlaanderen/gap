@@ -252,21 +252,19 @@
                 <td id="adNummerInfo"><%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %></td>
                 <td id="ad"></td>
            </tr>
-        <% } %>
-        <% // controleert of de persoon ingeschreven is %>
-        <%if ((Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding) &&
-                                                                !Model.PersoonLidInfo.LidInfo.NonActief) { %>
             <% if ((Model.GroepsNiveau & Niveau.Groep) != 0) { // Chiroleeftijd is enkel relevant voor plaatselijke groepen 
-                   if (Model.PersoonLidInfo.LidInfo.Type == LidType.Kind)
-                   { %>
+                    %>
                 <tr>
                     <td>Chiroleeftijd<%= Html.InfoLink("clInfo") %></td>
                     <td><a  id="chiroleeftijdInfo" data-type="select"><%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd) %></a></td>
                     <td><div class="ui-icon ui-icon-pencil" id="bewerkCl"title="Bewerken" style="cursor: pointer"></div></td>
                 </tr>
-                <% } %>
             <% } %>
 
+        <% } %>
+        <% // controleert of de persoon ingeschreven is %>
+        <%if ((Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding) &&
+                                                                !Model.PersoonLidInfo.LidInfo.NonActief) { %>
             <% //Lid of leiding
                 if ((Model.GroepsNiveau & Niveau.Groep) != 0) {
                    // Lid/Leiding en afdelingen zijn enkel relevant voor plaatselijke groepen.%>
