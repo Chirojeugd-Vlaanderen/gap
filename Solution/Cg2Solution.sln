@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Express 2013 for Web
+VisualStudioVersion = 12.0.20827.3
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{994E80C0-DD18-417A-A51C-F781D3B012AB}"
 	ProjectSection(SolutionItems) = preProject
 		Cg2Solution4.vsmdi = Cg2Solution4.vsmdi
@@ -99,9 +101,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Sync.Test", "TestProjecten\Chiro.Gap.Sync.Test\Chiro.Gap.Sync.Test.csproj", "{FB1B9BDC-EF8B-4AA1-882F-BF5AC3912D3F}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Cg2Solution8.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -575,5 +574,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Cg2Solution8.vsmdi
 	EndGlobalSection
 EndGlobal
