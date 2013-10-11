@@ -576,7 +576,7 @@ namespace Chiro.Kip.Services
                     db.SaveChanges();
 
                     // als er geen andere leden meer zijn met hetzelfde 'aansluitnr', verwijder dan
-                    // die aansluiting
+                    // die aansluiting 
 
                     var allesOp = (from l in db.Lid
                                    where l.AANSL_NR == aansluitNr && l.Groep.GroepID == groepID && l.werkjaar == werkjaar
@@ -589,14 +589,22 @@ namespace Chiro.Kip.Services
                                                a.WerkJaar == werkjaar && a.Groep.GroepID == groepID &&
                                                a.VolgNummer == aansluitNr
                                            select a).FirstOrDefault();
-                        db.DeleteObject(aansluiting);
-                        db.SaveChanges();
+                        if (aansluiting != null)
+                        {
+                            // In uitzonderlijke gevallen zou het kunnen dat er een lid wordt verwijderd waarvan
+                            // de aansluiting niet (meer?) bestaat. Om te vermijden dat kipsync daarop crasht,
+                            // doen we de test hierboven.
+                            // Meestal ligt manueel gepruts in de kipadmin aan de basis van dit probleem; zie #1709
 
-                        _log.BerichtLoggen(0, String.Format(
-                            "{2} - Aansluiting verwijderd. Nr {0} wj {1} uitschrijfdatum {3}",
-                            aansluitNr,
-                            werkjaar,
-                            stamNummer, uitschrijfDatum));
+                            db.DeleteObject(aansluiting);
+                            db.SaveChanges();
+
+                            _log.BerichtLoggen(0, String.Format(
+                                "{2} - Aansluiting verwijderd. Nr {0} wj {1} uitschrijfdatum {3}",
+                                aansluitNr,
+                                werkjaar,
+                                stamNummer, uitschrijfDatum));
+                        }
                     }
 
                     _log.BerichtLoggen(0, String.Format(
