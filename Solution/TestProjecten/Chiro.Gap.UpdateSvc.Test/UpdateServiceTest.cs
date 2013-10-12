@@ -118,7 +118,7 @@ namespace Chiro.Gap.UpdateSvc.Test
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
-            var target = Factory.Maak<UpdateService_Accessor>();
+            var target = Factory.Maak<UpdateService>();
             target.DubbelVerwijderen(origineel, dubbel);
 
             // ASSERT
@@ -166,7 +166,7 @@ namespace Chiro.Gap.UpdateSvc.Test
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
-            var target = Factory.Maak<UpdateService_Accessor>();
+            var target = Factory.Maak<UpdateService>();
             target.DubbelVerwijderen(origineel, dubbel);
 
             // ASSERT
@@ -229,7 +229,7 @@ namespace Chiro.Gap.UpdateSvc.Test
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
-            var target = Factory.Maak<UpdateService_Accessor>();
+            var target = Factory.Maak<UpdateService>();
             target.DubbelVerwijderen(origineel, dubbel);
 
             // ASSERT

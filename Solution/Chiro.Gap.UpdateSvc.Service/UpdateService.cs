@@ -154,8 +154,10 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <param name="dubbel"></param>
         /// <remarks>Persisteert enkel om #1693 te voorkomen. Wat erg lelijk is. Maar
         /// ik kan er voorlopig niet aan doen.</remarks>
-        private void DubbelVerwijderen(Persoon origineel, Persoon dubbel)
+        public void DubbelVerwijderen(Persoon origineel, Persoon dubbel)
         {
+            Gav.CheckSuperGav();
+
             // TODO: Dit kan nog wel wat unit tests gebruiken...
 
             // Voor de groepen die niet zowel origineel als dubbel bevatten, verleggen we

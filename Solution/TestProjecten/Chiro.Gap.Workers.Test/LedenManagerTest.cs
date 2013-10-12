@@ -303,10 +303,10 @@ namespace Chiro.Gap.Workers.Test
             var ledenMgr = Factory.Maak<LedenManager>();
             var accessor = new PrivateObject(ledenMgr);
 
-            var target = new LedenManager_Accessor(accessor);
+            var target = new LedenManager();
 
             // Act
-            target.LidMaken(gp, gwj, LidType.Kind, false);
+            target.NieuwInschrijven(gp, gwj, false, new LidVoorstel { AfdelingsJaren = null, AfdelingsJarenIrrelevant = true, LeidingMaken = false });
 
             //Assert
             Assert.Fail();  // Als we hier komen zonder exception, dan is het mislukt.
