@@ -29,9 +29,7 @@
     <thead>
             <tr>
                 <th><%=Html.CheckBox("checkall") %></th>
-                <% if (!Model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep)) { %>
                 <th class="center">Type</th>
-                <% } %>
                 <th>Naam</th>
                 <th>Geb.</th>
                 <th>Vrjrdg</th>
@@ -40,13 +38,7 @@
                     <%=Html.Geslacht(GeslachtsType.Vrouw) %>
                 </th>
                 <th>Betaald</th>
-                <% // Afdelingen enkel relevant voor plaatselijke groepen		
-                  if ((Model.GroepsNiveau & Niveau.Groep) != 0) {
-                %>
-                    <th>Afd.</th>
-                <% } else { %>
-                        <th style="overflow: hidden" hidden></th>
-                <% } %> 
+                <th>Afd.</th>
                 <th>Func.</th>
                 <th>Instap tot</th>
                 <th>Telefoon</th>
@@ -65,11 +57,9 @@
                 <input type="checkbox" name="SelectieGelieerdePersoonIDs" value="<%=lidOverzicht.GelieerdePersoonID %>"
                     <%=Model.SelectieGelieerdePersoonIDs != null && Model.SelectieGelieerdePersoonIDs.Contains(lidOverzicht.GelieerdePersoonID) ? "checked=\"checked\"" : String.Empty%> />
             </td>
-            <% if (!Model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep)) { %>
             <td>
                 <%= lidOverzicht.Type == LidType.Kind ? "Lid" : "Leiding" %>
             </td>
-            <% } %>
             <td>
                 <%=Html.PersoonsLink(lidOverzicht.GelieerdePersoonID, lidOverzicht.VoorNaam, lidOverzicht.Naam)%>
                 <%=lidOverzicht.SterfDatum.HasValue? "&nbsp;(&dagger;)" : string.Empty %>
@@ -85,17 +75,10 @@
             </td>
             <td>
                 <%= lidOverzicht.LidgeldBetaald?"Ja":"Nee"%>
+            </td>           
+            <td>
+            <%=Html.AfdelingsLinks(lidOverzicht.Afdelingen, Model.IDGetoondGroepsWerkJaar, Model.GroepID)%>
             </td>
-            
-            <%  // Afdelingen enkel relevant voor plaatselijke groepen
-                if ((Model.GroepsNiveau & Niveau.Groep) != 0){     %>
-                <td>
-                <%=Html.AfdelingsLinks(lidOverzicht.Afdelingen, Model.IDGetoondGroepsWerkJaar, Model.GroepID)%>
-                </td>
-            <%}else { %> 
-                <td style="overflow: hidden" hidden>
-                </td>
-            <%}%>
             <td>
                 <% foreach (var functieInfo in lidOverzicht.Functies)
                    { %>
