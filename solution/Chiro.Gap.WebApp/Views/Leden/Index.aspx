@@ -96,6 +96,7 @@
 						
 						    <%=Html.HiddenFor(s => s.IDGetoondGroepsWerkJaar)%>
 						    <%=Html.HiddenFor(s => s.GekozenSortering)%>
+                            <%=Html.HiddenFor(s => s.GroepsNiveau) %>
 
                         </fieldset>
 

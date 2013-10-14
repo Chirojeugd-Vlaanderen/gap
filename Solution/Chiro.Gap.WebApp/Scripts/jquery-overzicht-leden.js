@@ -74,7 +74,7 @@ $(function () {
              { "sWidth": "50px", "aTargets": [ 3 ] },
              { "bSearchable": false, "aTargets": [0,1,4,5,6,7,8,10,11]},
             { "sType": "html", "aTargets": [2, 6, 7, 10, 11] },
-            { "bVisible": false, "aTargets": [4, 12, 13, 14, 15, 16] } // dat gaat niet werken voor kader, #1688
+            { "bVisible": false, "aTargets": [4, 12, 13, 14, 15, 16] } 
         ],
         "oLanguage": {
             "sLengthMenu": "Toon _MENU_ personen per pagina",
@@ -120,6 +120,16 @@ $(function () {
     // UGLY: Als verjaardagslijst gekozen, sorteer dan op verjaardag.
     if (getParameterByName("sortering") == "Verjaardag") {
         $('#ledenOverzichtsTabel').dataTable().fnSort([[4, "asc"]]);
+    }
+    
+    // Verwijder kolommen lidtype, betaald, afdeling, instapperiode voor kadergroep
+    
+    if ($("#GroepsNiveau").attr("value") != "Groep") {
+        var tabel = $("#ledenOverzichtsTabel").dataTable();
+        tabel.fnSetColumnVis(1, false);     // lidtype
+        tabel.fnSetColumnVis(6, false);     // betaald
+        tabel.fnSetColumnVis(7, false);     // afdeling
+        tabel.fnSetColumnVis(9, false);     // instapperiode
     }
     
     //css eigenschappen toevoegen aan/verwijderen voor deze tabel
