@@ -1,0 +1,11 @@
+Dit zijn gerelateerde projecten.
+
+Chiro.CiviCrm.Wcf - submodule om de CiviCrm-API aan te spreken
+Chiro.Gap.Diagnostics - administratieve interface voor GAP. Stond nooit echt op punt.
+Chiro.Sso.DecryptieTool - software die de verzekeraar moet gebruiken om de credentials te decrypteren.
+GapCli - command line tools om gap aan te spreken. Niet zeker of ze allemaal nog werken.
+InitieleImport - hiermee importeerden we initiele gegevens uit het oude Chriogroepprogramma
+KipSync - leest berichten van GAP, en voert wijzigingen uit aan Kipadmin
+LoginBeheer - oude voorbeeldclient voor LoginService
+LoginService - service die logins aanmaakt. Niet ideaal qua architectuur.
+Mailer - shellscript dat we gebruiken voor de herinneringsmails. Niet helemaal meer up to date, geloof ik.

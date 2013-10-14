@@ -1,0 +1,2 @@
+De bedoeling was om hier wat voorbeeldprogramma's te zetten, om een aantal concepten van .NET
+te illustreren. Ik weet niet meer hoever dit stond, en hoe relevant het nog allemaal is.

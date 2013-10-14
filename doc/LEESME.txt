@@ -1,0 +1,4 @@
+Analyse is de output van de analyse in Enterprise Architect. Geen idee of daar iets
+mee aan te vangen is als je geen toegang hebt tot de database.
+
+De rest is verouderd. Documentatie hoort dan ook hier niet thuis, maar wel in de wiki.

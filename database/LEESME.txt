@@ -1,0 +1,4 @@
+Deze scripts zijn verouderd, met uitzondering van 'DiagScripts' (diagnostic dingen die nakijkt of alles 
+wel goed naar Kipadmin overkwam), en 'TestSetup' (procedure om de live-db om te zetten naar de
+database met testdata).
+
