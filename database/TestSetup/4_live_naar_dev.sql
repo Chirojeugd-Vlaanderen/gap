@@ -69,6 +69,8 @@ GRANT UPDATE ON adr.BelgischAdres TO GapRole
 GO
 GRANT UPDATE ON abo.Abonnement TO GapSuperRole
 GO
+GRANT UPDATE ON abo.Abonnement TO GapRole
+GO
 
 use [KipAdmin]
 GO
