@@ -65,6 +65,8 @@ GRANT DELETE ON auth.GavSchap TO GapSuperRole
 GO
 GRANT DELETE ON auth.GavSchap TO GapRole
 GO
+GRANT UPDATE ON adr.BelgischAdres TO GapRole
+GO
 
 use [KipAdmin]
 GO

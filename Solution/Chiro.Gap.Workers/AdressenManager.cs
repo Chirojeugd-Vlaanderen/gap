@@ -230,12 +230,21 @@ namespace Chiro.Gap.Workers
         /// Gevonden adres
         /// </returns>
         /// <remarks>
-        /// Ieder heeft het recht adressen op te zoeken
+        /// Ieder heeft het recht adressen op te zoeken.
+        /// Voor een Belgisch adres levert het zoeken ook een resultaat op als enkel de woonplaats
+        /// verschilt. De combinatie straat-postnummer is immers uniek.
+        /// Omdat ik er niet zeker van ben of je dat in het buitenland ook mag doen, neem ik daar
+        /// de woonplaats wel mee in de zoekquery. Fusiegemeenten lijkt me vooral iets Belgisch.
         /// </remarks>
         public Adres ZoekenOfMaken(AdresInfo adresInfo, IQueryable<Adres> adressen, IQueryable<StraatNaam> straatNamen,
                             IQueryable<WoonPlaats> woonPlaatsen, IQueryable<Land> landen)
         {
             // In volgorde: Belgisch adres, buitenlands adres, nieuw adres
+
+            // Voor een Belgisch adres levert het zoeken ook een resultaat op als enkel de woonplaats
+            // verschilt. De combinatie straat-postnummer is immers uniek.
+            // Omdat ik er niet zeker van ben of je dat in het buitenland ook mag doen, neem ik daar
+            // de woonplaats wel mee in de zoekquery. Fusiegemeenten lijkt me vooral iets Belgisch.
 
             return (from adr in adressen.OfType<BelgischAdres>()
                     where adr.StraatNaam.Naam == adresInfo.StraatNaamNaam
@@ -247,6 +256,7 @@ namespace Chiro.Gap.Workers
                                                       where adr.Straat == adresInfo.StraatNaamNaam
                                                             && adr.PostNummer == adresInfo.PostNr
                                                             && adr.HuisNr == adresInfo.HuisNr
+                                                            && adr.WoonPlaats == adresInfo.WoonPlaatsNaam
                                                             && (adr.Bus ?? String.Empty) == (adresInfo.Bus ?? String.Empty)
                                                             && adr.Land.Naam == adresInfo.LandNaam
                                                             && adr.PostCode == adresInfo.PostCode
