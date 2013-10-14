@@ -866,6 +866,31 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.Ongeldig(ex.Berichten);
             }
 
+            if (nieuwAdres.ID == oudAdresID)
+            {
+                if (nieuwAdres is BelgischAdres)
+                {
+                    // Vang situatie op dat enkel gemeente verandert (en postnummer hetzelfde blijft). ZoekenOfMaken
+                    // levert dan het bestaande adres op, en we moeten dan vermijden dat er met de wijziging niets
+                    // gebeurt.
+
+                    var adres = nieuwAdres as BelgischAdres;
+
+                    var nieuweWoonPlaats = (from wp in _woonPlaatsenRepo.Select()
+                        where wp.PostNummer == nieuwAdresInfo.PostNr && wp.Naam == nieuwAdresInfo.WoonPlaatsNaam
+                        select wp).FirstOrDefault();
+
+                    adres.WoonPlaats = nieuweWoonPlaats;
+                    _adressenRepo.SaveChanges();
+                    return;
+                }
+                // Buitenlandse adressen worden enkel als gelijk beschouwd als alle velden overeenkomen, dus inclusief
+                // woonplaats. Als we hier terechtkomen, is bron- en doeladres dus sowieso identiek, en hoeven we
+                // niets meer te doen.
+
+                return; 
+            }
+
             var verhuizers = (from pa in oudAdres.PersoonsAdres
                               where pa.Persoon.GelieerdePersoon.Any(gp => gelieerdePersoonIDs.Contains(gp.ID))
                               select pa.Persoon).ToList();

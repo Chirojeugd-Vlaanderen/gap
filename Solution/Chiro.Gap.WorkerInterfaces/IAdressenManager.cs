@@ -44,7 +44,11 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Gevonden adres
         /// </returns>
         /// <remarks>
-        /// Ieder heeft het recht adressen op te zoeken
+        /// Ieder heeft het recht adressen op te zoeken.
+        /// Voor een Belgisch adres levert het zoeken ook een resultaat op als enkel de woonplaats
+        /// verschilt. De combinatie straat-postnummer is immers uniek.
+        /// Omdat ik er niet zeker van ben of je dat in het buitenland ook mag doen, neem ik daar
+        /// de woonplaats wel mee in de zoekquery. Fusiegemeenten lijkt me vooral iets Belgisch.
         /// </remarks>
         Adres ZoekenOfMaken(AdresInfo adresInfo, IQueryable<Adres> adressen, IQueryable<StraatNaam> straatNamen,
                             IQueryable<WoonPlaats> woonPlaatsen, IQueryable<Land> landen);

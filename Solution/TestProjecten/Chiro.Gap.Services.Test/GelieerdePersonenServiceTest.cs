@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.UI.MobileControls;
 using Chiro.Cdf.Ioc;
@@ -1070,6 +1071,216 @@ namespace Chiro.Gap.Services.Test
             adressenSyncMock.Verify(src => src.StandaardAdressenBewaren(It.IsAny<IList<PersoonsAdres>>()),
                                     Times.Never());
 
+        }
+
+        /// <summary>
+        /// Als je van een adres enkel de deelgemeente moet veranderen, dan moet die wijziging bewaard worden.
+        /// Omdat GAP adressen als hetzelfde beschouwt als straat (bepaalt ook postnummer), nummer en bus 
+        /// overeenkomen, is dat niet zo vanzelfsprekend als het lijkt.
+        /// </summary>
+        [TestMethod()]
+        public void GelieerdePersonenVerhuizenWoonplaatsTest()
+        {
+            // ARRANGE.
+
+            #region testdata
+
+            var gelieerdePersoon = new GelieerdePersoon
+                                   {
+                                       ID = 1,
+                                       Persoon = new Persoon
+                                                 {
+                                                     AdInAanvraag = true,
+                                                     PersoonsAdres = new List<PersoonsAdres>
+                                                                     {
+                                                                         new PersoonsAdres
+                                                                         {
+                                                                             Adres = new BelgischAdres
+                                                                                     {
+                                                                                         ID = 2,
+                                                                                         StraatNaam
+                                                                                             =
+                                                                                             new StraatNaam
+                                                                                             {
+                                                                                                 ID
+                                                                                                     =
+                                                                                                     3,
+                                                                                                 Naam
+                                                                                                     =
+                                                                                                     "Nieuwstraat",
+                                                                                                 PostNummer
+                                                                                                     =
+                                                                                                     2560
+                                                                                             },
+                                                                                         HuisNr = 77,
+                                                                                         WoonPlaats =
+                                                                                             new WoonPlaats
+                                                                                             {
+                                                                                                 ID = 5,
+                                                                                                 Naam =
+                                                                                                     "Nijlen",
+                                                                                                 PostNummer
+                                                                                                     = 2560
+                                                                                             }
+                                                                                     }
+                                                                         }
+                                                                     }
+                                                 }
+                                   };
+
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+            gelieerdePersoon.PersoonsAdres = gelieerdePersoon.Persoon.PersoonsAdres.First();
+            gelieerdePersoon.PersoonsAdres.Adres.PersoonsAdres.Add(gelieerdePersoon.PersoonsAdres);
+            gelieerdePersoon.PersoonsAdres.Persoon = gelieerdePersoon.Persoon;
+            gelieerdePersoon.PersoonsAdres.GelieerdePersoon.Add(gelieerdePersoon);
+
+            var infoNieuwAdres = new PersoonsAdresInfo
+            {
+                StraatNaamNaam = ((BelgischAdres)gelieerdePersoon.PersoonsAdres.Adres).StraatNaam.Naam,
+                HuisNr = gelieerdePersoon.PersoonsAdres.Adres.HuisNr,
+                PostNr = ((BelgischAdres)gelieerdePersoon.PersoonsAdres.Adres).StraatNaam.PostNummer,
+                WoonPlaatsNaam = "Kessel",
+                AdresType = AdresTypeEnum.Thuis
+            };
+            #endregion
+
+            #region Dependency injection
+
+            // mocks voor data access
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
+                                  .Returns(new DummyRepo<Adres>(new List<Adres> { gelieerdePersoon.PersoonsAdres.Adres }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<StraatNaam>())
+                                  .Returns(
+                                      new DummyRepo<StraatNaam>(new List<StraatNaam>
+                                                                    {
+                                                                        ((BelgischAdres)
+                                                                         gelieerdePersoon.PersoonsAdres
+                                                                                         .Adres)
+                                                                            .StraatNaam
+                                                                    }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<WoonPlaats>())
+                                  .Returns(
+                                      new DummyRepo<WoonPlaats>(new List<WoonPlaats>
+                                                                    {
+                                                                        new WoonPlaats
+                                                                            {
+                                                                                PostNummer =
+                                                                                    infoNieuwAdres
+                                                                                    .PostNr,
+                                                                                Naam =
+                                                                                    infoNieuwAdres
+                                                                                    .WoonPlaatsNaam
+                                                                            }
+                                                                    }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Land>())
+                                  .Returns(new DummyRepo<Land>(new List<Land>()));
+
+
+
+            // mocks registreren bij dependency-injectioncontainer
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            #endregion
+
+            // ACT
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.GelieerdePersonenVerhuizen(new[] { gelieerdePersoon.ID }, infoNieuwAdres,
+                                              gelieerdePersoon.PersoonsAdres.Adres.ID);
+
+            // ASSERT
+            Assert.AreEqual((gelieerdePersoon.PersoonsAdres.Adres as BelgischAdres).WoonPlaats.Naam, infoNieuwAdres.WoonPlaatsNaam);
+        }
+
+        /// <summary>
+        /// Als je van een adres enkel de deelgemeente moet veranderen, dan moet die wijziging bewaard worden.
+        /// Test voor buitenlands adres.
+        /// </summary>
+        [TestMethod()]
+        public void GelieerdePersonenVerhuizenWoonplaatsBuitenlandTest()
+        {
+            // ARRANGE.
+
+            #region testdata
+
+            var gelieerdePersoon = new GelieerdePersoon
+                                   {
+                                       ID = 1,
+                                       Persoon = new Persoon
+                                                 {
+                                                     AdInAanvraag = true,
+                                                     PersoonsAdres = new List<PersoonsAdres>
+                                                                     {
+                                                                         new PersoonsAdres
+                                                                         {
+                                                                             Adres = new BuitenLandsAdres()
+                                                                                     {
+                                                                                         ID = 2,
+                                                                                         Straat = "Rue Nouvelle",
+                                                                                         PostNummer = 12345,
+                                                                                         HuisNr = 77,
+                                                                                         WoonPlaats = "Nilin",
+                                                                                         Land =
+                                                                                             new Land
+                                                                                             {
+                                                                                                 Naam =
+                                                                                                     "Frankrijk"
+                                                                                             }
+                                                                                     }
+                                                                         }
+                                                                     }
+                                                 }
+                                   };
+
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+            gelieerdePersoon.PersoonsAdres = gelieerdePersoon.Persoon.PersoonsAdres.First();
+            gelieerdePersoon.PersoonsAdres.Adres.PersoonsAdres.Add(gelieerdePersoon.PersoonsAdres);
+            gelieerdePersoon.PersoonsAdres.Persoon = gelieerdePersoon.Persoon;
+            gelieerdePersoon.PersoonsAdres.GelieerdePersoon.Add(gelieerdePersoon);
+
+            var infoNieuwAdres = new PersoonsAdresInfo
+            {
+                StraatNaamNaam = ((BuitenLandsAdres)gelieerdePersoon.PersoonsAdres.Adres).Straat,
+                HuisNr = gelieerdePersoon.PersoonsAdres.Adres.HuisNr,
+                PostNr = ((BuitenLandsAdres)gelieerdePersoon.PersoonsAdres.Adres).PostNummer ?? 0,
+                WoonPlaatsNaam = "Kessle",
+                LandNaam = ((BuitenLandsAdres)gelieerdePersoon.PersoonsAdres.Adres).Land.Naam,
+                AdresType = AdresTypeEnum.Thuis
+            };
+            #endregion
+
+            #region Dependency injection
+
+            // mocks voor data access
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
+                                  .Returns(new DummyRepo<Adres>(new List<Adres> { gelieerdePersoon.PersoonsAdres.Adres }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Land>())
+                .Returns(
+                    new DummyRepo<Land>(new List<Land>
+                                        {
+                                            ((BuitenLandsAdres)
+                                                gelieerdePersoon.PersoonsAdres
+                                                .Adres)
+                                                .Land
+                                        }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<StraatNaam>())
+                .Returns(new DummyRepo<StraatNaam>(new List<StraatNaam>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<WoonPlaats>())
+                .Returns(new DummyRepo<WoonPlaats>(new List<WoonPlaats>()));
+
+            // mocks registreren bij dependency-injectioncontainer
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            #endregion
+
+            // ACT
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.GelieerdePersonenVerhuizen(new[] { gelieerdePersoon.ID }, infoNieuwAdres,
+                                              gelieerdePersoon.PersoonsAdres.Adres.ID);
+
+            // ASSERT
+            Assert.AreEqual((gelieerdePersoon.PersoonsAdres.Adres as BuitenLandsAdres).WoonPlaats, infoNieuwAdres.WoonPlaatsNaam);
         }
     }
 }
