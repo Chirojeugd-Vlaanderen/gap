@@ -57,7 +57,7 @@ $(function () {
     if (chiroleeftijd == "") {
         chiroleeftijd = 0;
     }
-    var werkjaar = $('#werkjaar').val();
+    var werkjaar = parseInt($('#werkjaar').val());
     var versiestring = $('#versieString').val().trim();
     var groepswerkJaar = $('#gwJaar').val().trim();
     var lidType = $('#lidType').val().trim();
@@ -101,9 +101,16 @@ $(function () {
 
 
     $('#btn_inschrijven').click(function () {
+        // Omdat de inhoud van geboortedatum en Chiroleeftijd niet altijd erg accuraat is,
+        // haal ik die hier gewoon terug op.
+        // Dit is tamelijk lelijk, maar ik vrees dat heel de javascriptlaag nog eens
+        // gerefactord zal moeten worden (zie #1529)
+        geboortedatum = $('#gdInfo').val();
+        chiroleeftijd = parseInt($('#chiroleeftijdInfo').text().trim());
+        
         var geboortejaar = geboortedatum.substr(-4);
         geboortejaar = parseInt(geboortejaar);
-        var leeftijd = werkjaar - geboortejaar;
+        var leeftijd = werkjaar - geboortejaar + chiroleeftijd;
         if (leeftijd < 6) {
             $('#extraInfoDialog').html("Het is niet mogelijk om kleuters in te schrijven!");
             $('#extraInfoDialog').dialog({
