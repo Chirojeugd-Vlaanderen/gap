@@ -4,7 +4,7 @@ USE master;
 GO
 
 -- aanpassen:
-DECLARE @backupFile AS VARCHAR(200); SET @backupFile = 'C:\tmp\gap_backup.fbu';
+DECLARE @backupFile AS VARCHAR(200); SET @backupFile = 'C:\sqlbak\gap\gap_backup_201310132056.fbu';
 DECLARE @dbNaam AS VARCHAR(200); SET @dbNaam = 'gap_tst';
 
 -- wordt berekend:
@@ -13,4 +13,9 @@ DECLARE @logFile AS VARCHAR(200); SET @logFile='C:\Program Files\Microsoft SQL S
 
 RESTORE DATABASE @dbNaam FROM DISK = @backupFile WITH  FILE = 1,  MOVE N'gap1rc2' TO @dataFile,  MOVE N'gap1rc2_log' TO @logFile,  NOUNLOAD,  REPLACE,  STATS = 10
 
+GO
 
+USE [master]
+GO
+ALTER DATABASE [gap_tst] SET RECOVERY SIMPLE WITH NO_WAIT
+GO

@@ -6,15 +6,6 @@
 USE [master]
 GO
 
--- VOOR TEST:
-
--- database: simple
-
-ALTER DATABASE [gap_tst] SET COMPATIBILITY_LEVEL = 100
-GO
-
-ALTER DATABASE [gap_tst] SET RECOVERY SIMPLE WITH NO_WAIT
-GO
 
 -- users:
 
@@ -24,11 +15,6 @@ GO
 USE [gap_tst]
 GO
 
-DROP SCHEMA [kipdorp\gapservice_tst]
-GO
-
-DROP USER [KIPDORP\gapservice_tst]
-GO
 
 CREATE USER [KIPDORP\gapservice_tst] FOR LOGIN [KIPDORP\gapservice_tst]
 GO
@@ -72,7 +58,7 @@ GO
 GRANT UPDATE ON abo.Abonnement TO GapRole
 GO
 
-use [KipAdmin]
+use [KipAdmin_tst]
 GO
 GRANT DELETE ON [lid].[Aansluiting] TO [KipSyncRole]
 GO
