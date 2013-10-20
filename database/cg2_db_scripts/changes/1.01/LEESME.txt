@@ -1,3 +1,0 @@
-Niet vergeten:
-
-Stored procedures bijmaken uit ..\..\sql\handigheidjes

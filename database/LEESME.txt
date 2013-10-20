@@ -1,4 +1,3 @@
-Deze scripts zijn verouderd, met uitzondering van 'DiagScripts' (diagnostic dingen die nakijkt of alles 
-wel goed naar Kipadmin overkwam), en 'TestSetup' (procedure om de live-db om te zetten naar de
-database met testdata).
-
+DiagScripts: diagnostic dingen om de communicatie GAP->Kipadmin na te kijken
+live-to-dev: hoe de live-database te transformeren naar dev- of testdatabase
+initiele-conversie: conversiequery's van kipadmin naar GAP. Enkel gebruikt voor initiele migratie

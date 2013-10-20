@@ -1,4 +1,14 @@
+Recente technische documentatie over het GAP, vind je in de wiki:
+https://develop.chiro.be:3000/projects/gap/wiki
+
+
+De zaken in deze folder zijn enigszins verouderd:
+
 Analyse is de output van de analyse in Enterprise Architect. Geen idee of daar iets
 mee aan te vangen is als je geen toegang hebt tot de database.
 
-De rest is verouderd. Documentatie hoort dan ook hier niet thuis, maar wel in de wiki.
+In misc zit nog ergens een rtf-output van die analyse.
+
+Coding standards moeten bijgewerkt worden.
+
+Voorstelling zit daar nog uit nostalgie. Daarmee hebben we GAP in het begin gepromoot.
