@@ -19,3 +19,7 @@ join rekening r on r.nr = a.rekeningid
 where l.werkjaar=@werkjaar and r.doorgeboe='j'
 group by a.aansluitingid
 having max(ribbelsj+ribbelsm+speelclubj+speelclubm+rakwisj+rakwism+titosj+titosm+ketisj+ketism+aspisj+aspism+speciaalj+speciaalm+leidingj+leidingm+vb+proost+a.freelance)<>count(*)
+
+select * from rekening r
+left outer join lid.aansluiting a on r.id=a.rekeningid
+where r.rek_bron='aansluit' and r.werkjaar=@werkjaar
