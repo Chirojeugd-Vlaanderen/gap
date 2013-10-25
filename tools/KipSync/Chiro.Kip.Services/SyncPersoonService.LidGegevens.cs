@@ -235,9 +235,12 @@ namespace Chiro.Kip.Services
 
                     if (aansluiting.REKENING != null)
                     {
-                        // Rekening mag pas overgezet worden (en bedrag pas berekend) nadat
-                        // de instapperiode van dit lid voorbij is.
-                        aansluiting.REKENING.FacturerenVanaf = gedoe.EindeInstapPeriode;
+                        if (aansluiting.REKENING.FacturerenVanaf == null || aansluiting.REKENING.FacturerenVanaf < gedoe.EindeInstapPeriode)
+                        {
+                            // Rekening mag pas overgezet worden (en bedrag pas berekend) nadat
+                            // de instapperiode van dit lid voorbij is.
+                            aansluiting.REKENING.FacturerenVanaf = gedoe.EindeInstapPeriode;
+                        }
                     }
 
 
@@ -596,8 +599,29 @@ namespace Chiro.Kip.Services
                             // doen we de test hierboven.
                             // Meestal ligt manueel gepruts in de kipadmin aan de basis van dit probleem; zie #1709
 
+                            var rekening = aansluiting.REKENING;
+
                             db.DeleteObject(aansluiting);
                             db.SaveChanges();
+
+                            if (rekening != null)
+                            {
+                                // We verwachten eigenlijk dat die rekening bestaat.
+
+                                if (rekening.DOORGEBOE != "N")
+                                {
+                                    // Dit mag ook niet gebeuren, maar zou gevolg kunnen zijn
+                                    // van issue #1719
+                                    _log.FoutLoggen(0, String.Format(
+                                        "{0} - Kan factuur {3} van aansluting{1} wj {2} niet verwijderen. Factuur is doorgeboekt",
+                                        stamNummer, aansluitNr, werkjaar, rekening.FACTUURNR));
+                                }
+                                else
+                                {
+                                    db.DeleteObject(rekening);
+                                    db.SaveChanges();
+                                }
+                            }
 
                             _log.BerichtLoggen(0, String.Format(
                                 "{2} - Aansluiting verwijderd. Nr {0} wj {1} uitschrijfdatum {3}",
