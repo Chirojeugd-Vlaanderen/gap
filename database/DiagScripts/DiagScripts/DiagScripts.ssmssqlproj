@@ -79,6 +79,12 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>FixContactType.sql</FullPath>
         </FileNode>
+        <FileNode Name="FixNietDoorgeboekteProbleemFacturen.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>FixNietDoorgeboekteProbleemFacturen.sql</FullPath>
+        </FileNode>
         <FileNode Name="GpsOpAd.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
@@ -139,11 +145,23 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>PersoonOpAd.sql</FullPath>
         </FileNode>
+        <FileNode Name="ProbleemFacturen.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>ProbleemFacturen.sql</FullPath>
+        </FileNode>
         <FileNode Name="RecentGewijzigdeAdressen.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>RecentGewijzigdeAdressen.sql</FullPath>
+        </FileNode>
+        <FileNode Name="UpdateVervalDatumFactuur.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>UpdateVervalDatumFactuur.sql</FullPath>
         </FileNode>
         <FileNode Name="vAdresInfo.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
