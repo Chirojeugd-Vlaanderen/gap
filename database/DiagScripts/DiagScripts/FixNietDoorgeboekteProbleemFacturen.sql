@@ -5,6 +5,7 @@ declare @nu as datetime; set @nu=getdate();
 
 update r
 set r.facturerenvanaf = tmp2.eindeperiode
+--select r.facturerenvanaf, tmp2.eindeperiode
 from kipadmin.dbo.rekening r
 join
 (
