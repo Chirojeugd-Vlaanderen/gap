@@ -3,7 +3,6 @@
 <%@ Import Namespace="System.Globalization" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
-<%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server" EnableViewState="False">
 <%
 /*
@@ -28,7 +27,29 @@
 // (al dan niet een kloon van een bestaande)
 %>
     <script src="<%=ResolveUrl("~/Scripts/AdresBewerken.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
     <script src="<%=ResolveUrl("~/Scripts/jquery-nieuwe-persoon.js")%>" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    // validatie reguliere expressies e-mail en telefoonnummer
+
+    $.validator.addMethod(
+            "regex",
+            function (value, element, regexp) {
+                var re = new RegExp(regexp, 'i');   // case insensitive
+                return this.optional(element) || re.test(value);
+            },
+            "Ongeldig formaat."
+        );
+    
+    $(function() {
+        $("#EMail_Nummer").rules("add", { regex: "<%=Model.EMailType.Validatie %>" });
+        $("#TelefoonNummer_Nummer").rules("add", { regex: "<%=Model.TelefoonNummerType.Validatie %>" });
+    });
+</script>    
+    
 	<%	// OPGELET: de opening en closing tag voor 'script' niet vervangen door 1 enkele tag, want dan
 		// toont de browser blijkbaar niets meer van dit form.  (Zie #664) %>
 </asp:Content>
@@ -45,8 +66,8 @@
 	{ %>
 
 	<ul id="acties">
-		<li><button type="button" class="ui-button-text-only" id="knopBewaren" value="bewaren">Bewaren</button></li>
-		<li><button type="button" class="ui-button-text-only" value="bewarenEnNieuw">Bewaren en nog iemand toevoegen</button></li>
+		<li><button name="button" type="button" class="ui-button-text-only" id="knopBewaren" value="bewaren">Bewaren</button></li>
+		<li><button name="button" type="button" class="ui-button-text-only" value="bewarenEnNieuw">Bewaren en nog iemand toevoegen</button></li>
 	</ul>
 
 	<% if (Model.BroerzusID != 0)
@@ -60,7 +81,8 @@
         </p>	
 	<%
 	   } %>
-
+       
+    <%Html.EnableClientValidation(); %>
     <% =Html.ValidationSummary() %>
     
 	<fieldset>
@@ -132,7 +154,8 @@
                 <td><%=Html.LabelFor(s => s.EMail) %></td>
                 <td>
                     E-mailadres:<br />
-                    <%=Html.EditorFor(mdl => mdl.EMail.Nummer) %> <%=Html.ValidationMessageFor(mdl => mdl.EMail) %> <br />
+                    <%=Html.TextBoxFor(mdl => mdl.EMail.Nummer, new { placeholder = Model.EMailType.Voorbeeld }) %> 
+                    <%=Html.ValidationMessageFor(mdl => mdl.EMail.Nummer) %> <br />
                     <%=Html.CheckBoxFor(mdl => mdl.EMail.IsVoorOptIn) %>
                     <%=Html.LabelFor(mdl => mdl.EMail.IsVoorOptIn) %>
                     <%=Html.InfoLink("snelBerichtInfo")%><br />
@@ -146,7 +169,8 @@
                 <td><%=Html.LabelFor(s => s.TelefoonNummer) %></td>
                 <td>
                     Telefoonnummer:<br />
-                    <%=Html.EditorFor(mdl => mdl.TelefoonNummer.Nummer) %> <%=Html.ValidationMessageFor(mdl => mdl.TelefoonNummer)%><br />
+                    <%=Html.TextBoxFor(mdl => mdl.TelefoonNummer.Nummer, new { placeholder = Model.TelefoonNummerType.Voorbeeld}) %> 
+                    <%=Html.ValidationMessageFor(mdl => mdl.TelefoonNummer.Nummer)%><br />
                     <%=Html.CheckBoxFor(mdl => mdl.TelefoonNummer.IsGezinsGebonden)%>
                     <%=Html.LabelFor(mdl => mdl.TelefoonNummer.IsGezinsGebonden)%><br />
                     <%=Html.HiddenFor(mdl => mdl.TelefoonNummer.Voorkeur) %>
@@ -244,4 +268,5 @@
     </fieldset>
    
 	<% } %>
+    
 </asp:Content>

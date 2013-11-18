@@ -273,11 +273,23 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new NieuwePersoonModel();
             BaseModelInit(model, groepID);
 
+            // zeken ophalen voor het model
             model.GroepsWerkJaarID = VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID;
+            model.TelefoonNummerType =
+                ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieTypeInfo>(
+                    svc => svc.CommunicatieTypeOphalen((int) CommunicatieTypeEnum.TelefoonNummer));
+            model.EMailType =
+                ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieTypeInfo>(
+                    svc => svc.CommunicatieTypeOphalen((int)CommunicatieTypeEnum.Email));
+
             model.NieuwePersoon = new PersoonDetail();
             model.Land = Properties.Resources.Belgie;
-            model.EMail = new CommunicatieInfo{CommunicatieTypeID = 3, Voorkeur = true};
-            model.TelefoonNummer = new CommunicatieInfo{CommunicatieTypeID = 1, Voorkeur = true};
+            model.EMail = new CommunicatieInfo {CommunicatieTypeID = (int) CommunicatieTypeEnum.Email, Voorkeur = true};
+            model.TelefoonNummer = new CommunicatieInfo
+                                   {
+                                       CommunicatieTypeID = (int) CommunicatieTypeEnum.TelefoonNummer,
+                                       Voorkeur = true
+                                   };
             model.BeschikbareWoonPlaatsen = new List<WoonPlaatsInfo>();
             model.Forceer = false;
             model.BeschikbareAfdelingen =

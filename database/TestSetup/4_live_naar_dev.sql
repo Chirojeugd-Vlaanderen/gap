@@ -57,6 +57,8 @@ GO
 
 -- Wijzigingen voor 1.9.1
 
+-- nodig voor mergen van personen (mogelijk):
+
 GRANT UPDATE ON verz.PersoonsVerzekering TO GapSuperRole
 GO
 GRANT UPDATE ON verz.PersoonsVerzekering TO GapRole
@@ -71,6 +73,15 @@ GRANT UPDATE ON abo.Abonnement TO GapSuperRole
 GO
 GRANT UPDATE ON abo.Abonnement TO GapRole
 GO
+
+-- beter voorbeeld voor telefoonnummer en faxnummer
+
+update pers.communicatietype set voorbeeld='0483-67 94 90' where communicatietypeid = 1
+update pers.communicatietype set voorbeeld='03-232 15 62' where communicatietypeid = 2
+
+update pers.communicatietype set validatie='^0[0-9]{1,2}\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^[+][0-9]*$' where communicatietypeid=1
+update pers.communicatietype set validatie='^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$' where communicatietypeid in (3,5,6,8)
+
 
 use [KipAdmin]
 GO
