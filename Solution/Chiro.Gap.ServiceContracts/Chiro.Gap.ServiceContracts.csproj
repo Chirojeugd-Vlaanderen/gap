@@ -78,6 +78,7 @@
     <Compile Include="DataContracts\GroepsWerkJaarDetail.cs" />
     <Compile Include="DataContracts\LandInfo.cs" />
     <Compile Include="DataContracts\LedenProbleemInfo.cs" />
+    <Compile Include="DataContracts\NieuwePersoonDetails.cs" />
     <Compile Include="DataContracts\PlaatsInfo.cs" />
     <Compile Include="DataContracts\FunctieInfo.cs" />
     <Compile Include="DataContracts\FunctieProbleemInfo.cs" />

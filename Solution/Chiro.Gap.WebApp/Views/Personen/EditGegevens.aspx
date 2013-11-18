@@ -1,5 +1,6 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<GelieerdePersonenModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<NieuwePersoonModel>" %>
 
+<%@ Import Namespace="System.Globalization" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
@@ -22,236 +23,225 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// Dit form wordt normaal gezien enkel gebruikt om een nieuwe persoon aan te maken.
+// (al dan niet een kloon van een bestaande)
 %>
+    <script src="<%=ResolveUrl("~/Scripts/AdresBewerken.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jquery-nieuwe-persoon.js")%>" type="text/javascript"></script>
 	<%	// OPGELET: de opening en closing tag voor 'script' niet vervangen door 1 enkele tag, want dan
 		// toont de browser blijkbaar niets meer van dit form.  (Zie #664) %>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server"
 	EnableViewState="False">
+    
+    <!-- Div hieronder wordt gebruikt voor hulplinks. -->
+    <div id="extraInfoDialog" hidden><img src="/Content/images/loading.gif"/></div>
      
 	<%=Html.ValidationSummary("Er zijn enkele opmerkingen:") %>
 	<% Html.EnableClientValidation(); // Deze instructie moet (enkel) voor de BeginForm komen %>
 	<% using (Html.BeginForm())
 	{ %>
-        <script src="<%=ResolveUrl("~/Scripts/jquery-nieuwe-persoon.js")%>" type="text/javascript"></script>
-
-    <input id="np_groepID" value="<%=Model.GroepID %>" hidden/>
-    <input id="np_werkJaarID" value="<%=Model.GroepsWerkJaarID %>" hidden/>
 
 	<ul id="acties">
-		<li><button type="button" class="ui-button-text-only" id="knopBewaren">Bewaren</button></li>
-		<li><button type="button" class="ui-button-text-only" id="knopReset">Reset</button></li>
+		<li><button type="button" class="ui-button-text-only" id="knopBewaren" value="bewaren">Bewaren</button></li>
+		<li><button type="button" class="ui-button-text-only" value="bewarenEnNieuw">Bewaren en nog iemand toevoegen</button></li>
 	</ul>
-	<% if(Model.BroerzusID != 0)
-{
+
+	<% if (Model.BroerzusID != 0)
+	   {
 	%>
-	<p>
-	Het adres en de gezinsgebonden communicatievormen&nbsp;
-    <%=Html.InfoLink("gezinsCom") %>
-    worden gekopieerd van de broer of zus. 
-    <%=Html.InfoLink("zusBroer") %>
-    </p>	
+	    <p>
+	    Het adres en de gezinsgebonden communicatievormen&nbsp;
+        <%= Html.InfoLink("gezinsCom") %>
+        worden gekopieerd van de broer of zus. 
+        <%= Html.InfoLink("zusBroer") %>
+        </p>	
 	<%
-} %>
-    <div id="errorfield" class="ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" hidden>
-        <h3>Fouten</h3>
-        <img src="<%=ResolveUrl("~/Content/images/Exclamation.png")%>" />
-        <div id="errorMessages">
-            errors
-        </div>
-        <div style="clear: both"></div>
-    </div>
+	   } %>
+
+    <% =Html.ValidationSummary() %>
     
-    <div id="progress" hidden>
-        <div id="balk"><div class="progress-label">Verwerken...</div></div>
-    </div>
-
 	<fieldset>
-		<legend>Persoonlijke gegevens</legend>
-        <div id="confirmDialog" title="Reset" hidden>
-            <p>Ben je zeker dat je alle velden wil resetten?</p>
-        </div>
-
-        <div id="extraInfoDialog" hidden><img src="/Content/images/loading.gif"/></div> 
+	  <legend>Persoonlijke gegevens</legend>
         
-        <% /* Dit stuk is enkel relevant bij personen die reeds ingeschreven zijn en hoeft dus niet 
-             getoond te worden bij nieuwe personen */ %>
-    <table>
+      <table>
         
-        <% if (Model.HuidigePersoon.AdNummer != null) {  %> 
+        <% if (Model.NieuwePersoon.AdNummer != null) {  %> 
             
 		    <tr>
-                <td><%=Html.LabelFor(s => s.HuidigePersoon.AdNummer)%></td>        
+                <td><%=Html.LabelFor(s => s.NieuwePersoon.AdNummer)%></td>        
                 <td>
-                    <%=Html.DisplayFor(s => s.HuidigePersoon.AdNummer) %>
+                    <%=Html.DisplayFor(s => s.NieuwePersoon.AdNummer)%>
                     <%=Html.InfoLink("Ad-info")%>
                 </td>
-			    <%=Html.HiddenFor(s => s.HuidigePersoon.AdNummer) %>
-			    <% // Het AD-nummer moet mee terug gepost worden, zowel als het null is als wanneer het niet null is:
-                   // De service zal wel protesteren als het ad-nummer niet overeenkomt met het oorspronkelijke. %>
 		    </tr>
         <% }%>
 		<tr>
-			<td><%=Html.LabelFor(s => s.HuidigePersoon.VoorNaam) %></td>
-			<td><%=Html.EditorFor(s => s.HuidigePersoon.VoorNaam)%></td>
-			<%=Html.ValidationMessageFor(s => s.HuidigePersoon.VoorNaam) %>
+			<td><%=Html.LabelFor(s => s.NieuwePersoon.VoorNaam)%></td>
+			<td>
+			    <%=Html.EditorFor(s => s.NieuwePersoon.VoorNaam)%>
+                <%=Html.ValidationMessageFor(s => s.NieuwePersoon.VoorNaam)%>
+			</td>
 		</tr>
 		<tr>
-			<td><%=Html.LabelFor(s => s.HuidigePersoon.Naam) %></td>
-			<td><%=Html.EditorFor(s => s.HuidigePersoon.Naam) %></td>
-			<%=Html.ValidationMessageFor(s => s.HuidigePersoon.Naam) %>
+			<td><%=Html.LabelFor(s => s.NieuwePersoon.Naam)%></td>
+			<td>
+			    <%=Html.EditorFor(s => s.NieuwePersoon.Naam)%>
+			    <%=Html.ValidationMessageFor(s => s.NieuwePersoon.Naam)%>
+			</td>
 		</tr>
         
 		<tr >
-			<td><%=Html.LabelFor(s => s.HuidigePersoon.GeboorteDatum) %></td>
-			<td><%=Html.EditorFor(s => s.HuidigePersoon.GeboorteDatum)%></td>
-			<%=Html.ValidationMessageFor(s => s.HuidigePersoon.GeboorteDatum) %>
+			<td><%=Html.LabelFor(s => s.NieuwePersoon.GeboorteDatum)%></td>
+			<td>
+			    <%=Html.EditorFor(s => s.NieuwePersoon.GeboorteDatum)%>
+			    <%=Html.ValidationMessageFor(s => s.NieuwePersoon.GeboorteDatum)%>
+			</td>
 		</tr>
         <tr>
-            <td><%=Html.LabelFor(s => s.HuidigePersoon.Geslacht)%></td>
+            <td><%=Html.LabelFor(s => s.NieuwePersoon.Geslacht)%></td>
 		    <td>
-                <span id="geslacht">
-		            <input type="radio" id="man" name="HuidigePersoon.Geslacht" value="Man" 
-                    <%= Model.HuidigePersoon.Geslacht==GeslachtsType.Man ? "checked=\"checked\"":"" %> />
-                    <label for="man">Man</label>
-		            <input type="radio" id="vrouw" name="HuidigePersoon.Geslacht" value="Vrouw" 
-                    <%= Model.HuidigePersoon.Geslacht==GeslachtsType.Vrouw ? "checked=\"checked\"":"" %>/>
-                    <label for="vrouw">Vrouw</label> 
-                </span>
-             </td> 
+		        <%=Html.RadioButtonFor(mdl => mdl.NieuwePersoon.Geslacht, GeslachtsType.Man) %> <%=Html.Geslacht(GeslachtsType.Man) %>
+                <%=Html.RadioButtonFor(mdl => mdl.NieuwePersoon.Geslacht, GeslachtsType.Vrouw) %> <%=Html.Geslacht(GeslachtsType.Vrouw) %>
+            </td>
         </tr>
-
-        <tr class="np_adres" id="eersteAdres">
-                <td>Adres:</td>
-                <td>
-                    Land: <select id="landSelect"></select>
-                    Postnummer: <input type="text" id="np_postNr" size="6"/>
-                    <span id="postCodeVeld" hidden>Postcode: <input  id="postCode"type="text" size="6"/></span>
-                    Gemeente: <select id="np_gemeente"></select><input type="text" id="buitenlandseGemeente" hidden/>
-                    <br/>
-                    <br/>
-                    Straat: <input type="text" id="np_straat"/> 
-                    Nr: <input type="text" size="6" id="np_nummer"/> Bus: <input type="text" id="np_bus" size="5"/>
-                    Type: <select id="adresType">
-                              <option>Thuis</option>
-                              <option>Kot</option>
-                              <option>Werk</option>
-                              <option>Overig</option>
-                          </select>
-                </td>
-        </tr>
-        <tr hidden>
-            <td><b>Adres toevoegen</b></td>
-            <td><div class="ui-icon ui-icon-circle-plus" id="np_adresToevoegen" title="Toevoegen" style="cursor: pointer"></div></td> 
-        </tr>
-
-    </table>
-    
-    
-
+      </table>
+    </fieldset>
+        
     <fieldset>
-        <legend>Telefoonnummer</legend>
-            <table>
-                <tr class="np_telefoonnummer" id="eersteTel" hidden>
-                    <td>Telefoonnnummer</td>
-                    <td><input type="text" id="np_telefoonnummer"/></td>
-                </tr>
-                <tr>
-                    <td><b>Telefoonnummer <br/> toevoegen</b></td>
-                    <td><div class="ui-icon ui-icon-circle-plus" id="np_telToevoegen" title="Toevoegen" style="cursor: pointer"></div></td>
-                </tr>
-            </table>
+      <legend>Adres</legend>
+        <% var adresTypes = from AdresTypeEnum e in Enum.GetValues(typeof(AdresTypeEnum))
+				  select new { value = e, text = e.ToString() }; 
+		%>        
+      <table>
+        <tr>
+			<td><%=Html.LabelFor(mdl => mdl.AdresType) %></td>
+			<td><%=Html.DropDownListFor(mdl => mdl.AdresType, new SelectList(adresTypes, "value", "text"))%></td>
+		</tr>
+          
+            <% Html.RenderPartial("AdresBewerkenControl", Model); %>
+      </table>
     </fieldset>
     
-   
     <fieldset>
-        <legend>E-mail adres</legend>
+        <legend>Communicatie</legend>
         <table>
-            <tr class="np_emailadres" id="eersteEmail" hidden>
-                <td>E-mail adres</td>
-                <td><input type="email" id="np_emailadres" size="30"/></td>
+            <tr>
+                <td><%=Html.LabelFor(s => s.EMail) %></td>
+                <td>
+                    E-mailadres:<br />
+                    <%=Html.EditorFor(mdl => mdl.EMail.Nummer) %> <%=Html.ValidationMessageFor(mdl => mdl.EMail) %> <br />
+                    <%=Html.CheckBoxFor(mdl => mdl.EMail.IsVoorOptIn) %>
+                    <%=Html.LabelFor(mdl => mdl.EMail.IsVoorOptIn) %>
+                    <%=Html.InfoLink("snelBerichtInfo")%><br />
+                    <%=Html.CheckBoxFor(mdl => mdl.EMail.IsGezinsGebonden) %>
+                    <%=Html.LabelFor(mdl => mdl.EMail.IsGezinsGebonden) %><br />
+                    <%=Html.HiddenFor(mdl => mdl.EMail.Voorkeur) %>
+                    <%=Html.HiddenFor(mdl => mdl.EMail.CommunicatieTypeID) %>
+                </td>
             </tr>
             <tr>
-                <td><b>E-mailadres toevoegen</b></td>
-                <td><div class="ui-icon ui-icon-circle-plus" id="np_emailToevoegen" title="Toevoegen" style="cursor: pointer"></div></td>
+                <td><%=Html.LabelFor(s => s.TelefoonNummer) %></td>
+                <td>
+                    Telefoonnummer:<br />
+                    <%=Html.EditorFor(mdl => mdl.TelefoonNummer.Nummer) %> <%=Html.ValidationMessageFor(mdl => mdl.TelefoonNummer)%><br />
+                    <%=Html.CheckBoxFor(mdl => mdl.TelefoonNummer.IsGezinsGebonden)%>
+                    <%=Html.LabelFor(mdl => mdl.TelefoonNummer.IsGezinsGebonden)%><br />
+                    <%=Html.HiddenFor(mdl => mdl.TelefoonNummer.Voorkeur) %>
+                    <%=Html.HiddenFor(mdl => mdl.TelefoonNummer.CommunicatieTypeID) %>
+                </td>
             </tr>
         </table>
     </fieldset>
-		<%=Html.HiddenFor(s => s.HuidigePersoon.GelieerdePersoonID)%>
-		<%=Html.HiddenFor(s => s.BroerzusID)%>
-		<%=Html.HiddenFor(s => s.HuidigePersoon.VersieString)%>
-		<%
-			if (Model.Forceer)
-			{
-				// Ik krijg onderstaande niet geregeld met een html helper... :(
-		%>
-		<input type="hidden" name="Forceer" id="Forceer" value="True" />
-		<%
-			}
-		%>
-       <button type="button" id="tochInschrijven" hidden>Ik weet niet wat ik wil en ga deze persoon TOCH inschrijven</button>
-       <fieldset id='chiroGegevens'>
-          <legend>Chirogegevens</legend>
-          <p>Inschrijven in huidige werkjaar?
-                <button id='ja' type="button">Ja</button>
-                <button id='nee' type="button">Nee</button>
-          </p>
-
-          <table hidden>
-              <tr>
-            <td>Leiding/Lid</td>
-            <td>
-                <span id="type">
-		                <input type="radio" id="leiding" name="type" value="Leiding" />
-                        <label for="leiding">Leiding</label>
-
-		                <input type="radio" id="lid" name="type" value="Lid" />
-                        <label for="lid">Lid</label>
-                </span> 
-            </td>
-        </tr>
-        <tr>
-            <td>Afdeling</td>
-            <td>
-                <span id="afdelingSelectie">
-
-                </span>
-            </td>
-        </tr>
-         <%
-		if ((Model.GroepsNiveau & Niveau.Groep) != 0)
+    
+	<%=Html.HiddenFor(s => s.BroerzusID)%>
+    <%=Html.HiddenFor(mdl => mdl.GroepsWerkJaarID) %>
+	<%
+		if (Model.Forceer)
 		{
-			// Chiroleeftijd is enkel relevant voor plaatselijke groepen
-	%>		
-		
-			<tr id="wrap_chiroleeftijd" hidden>
-			    <td>Chiroleeftijd</td>
-				<td>
-				    <select id="select_chiroleeftijd">
-				        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-				    </select>
-                    <%=Html.InfoLink("clInfo") %>
-                </td>
-			</tr>
+			// Ik krijg onderstaande niet geregeld met een html helper... :(
+	%>
+	<input type="hidden" name="Forceer" id="Forceer" value="True" />
 	<%
 		}
 	%>
-        <tr>
-           <td colspan="2"><button id="tochNiet" type="button" hidden>Oeps, toch niet inschrijven!</button></td> 
-        </tr>
-        <%//<button id="btn_verder">Ga Verder</button> %>
 
-   
-          </table>
-      </fieldset>
-	</fieldset>
+    <fieldset id='chiroGegevens'>
+        <legend>Chirogegevens</legend>
+
+        <table>
+            <tr>
+                <td>Meteen inschrijven?</td>
+                <td>
+                    <%=Html.RadioButtonFor(mdl => mdl.InschrijvenAls, LidType.Geen) %> Nee
+                    <% if (Model.GroepsNiveau == Niveau.Groep)
+                       { %>
+                    <%= Html.RadioButtonFor(mdl => mdl.InschrijvenAls, LidType.Kind) %> Lid
+                    <% } %>
+                    <%=Html.RadioButtonFor(mdl => mdl.InschrijvenAls, LidType.Leiding) %> Leiding
+                </td>
+            </tr>
+            <tr id="rij_afdeling">
+                <td>Afdeling</td>
+                <td>
+<%
+                        // TODO: Erg gelijkaardige code komt voor in Views/Shared/LedenMaken.aspx.
+                        // Dat wordt best nog eens ontdubbeld.
+                        
+                        // In principe is InTeSchrijvenLid.AfdelingsJaarIDs een array, maar in praktijk kunnen we voor dit
+                        // formulier maar 1 keuze aan. Vandaar dat enkel naar het eerste item in die array wordt gekeken.
+
+				        int geselecteerdAfdelingsJaarID = Model.AfdelingsJaarIDs == null
+				                                  ? 0
+				                                  : Model.AfdelingsJaarIDs.FirstOrDefault();
+                                              
+                        var afdelingsLijstItems = (from ba in Model.BeschikbareAfdelingen
+                               select
+                                   new SelectListItem
+                                   {
+                                       // voorlopig maar 1 afdeling tegelijk (first or default)
+                                       Selected = (geselecteerdAfdelingsJaarID == ba.AfdelingsJaarID),
+                                       Text = ba.AfdelingNaam,
+                                       Value = ba.AfdelingsJaarID.ToString(CultureInfo.InvariantCulture)
+                                   }).ToList();
+                               
+                        // Afdeling 'geen' is mogelijk (en default) als het om leiding gaat.
+                        // In principe moet die er enkel staan als 'leiding maken' aangevinkt is.  Maar
+                        // omdat het tonen en verbergen via javascript loopt, voeg ik het item
+                        // sowieso eerst altijd toe, om problemen te vermijden als javascript 
+                        // gedisabled is.
+                    
+                        afdelingsLijstItems.Add(new SelectListItem { Selected = geselecteerdAfdelingsJaarID == 0, Text = @"geen", Value = "0" });
+                    
+                    
+                    %>
+                                                               
+                    <%=Html.DropDownListFor(mdl => mdl.AfdelingsJaarIDs, afdelingsLijstItems)%>
+
+                </td>
+            </tr>
+        <%
+	if ((Model.GroepsNiveau & Niveau.Groep) != 0)
+	{
+		// Chiroleeftijd is enkel relevant voor plaatselijke groepen
+%>		
+		
+		    <tr id="rij_chiroleeftijd">
+			    <td><%=Html.LabelFor(mdl => mdl.NieuwePersoon.ChiroLeefTijd) %></td>
+    			<td>
+			        <%=Html.EditorFor(mdl => mdl.NieuwePersoon.ChiroLeefTijd) %>
+                    <%=Html.InfoLink("clInfo") %>
+                    <%=Html.ValidationMessageFor(mdl => mdl.NieuwePersoon.ChiroLeefTijd) %>
+                </td>
+		    </tr>
+<%
+	}
+%>
+  
+        </table>
+    </fieldset>
    
 	<% } %>
-    <% if (Model.HuidigePersoon.GelieerdePersoonID > 0) { %>
-	<%= Html.ActionLink("Terug naar de persoonsfiche", "EditRest", new { Controller = "Personen", id = Model.HuidigePersoon.GelieerdePersoonID }) %>
-    <% } %>
 </asp:Content>

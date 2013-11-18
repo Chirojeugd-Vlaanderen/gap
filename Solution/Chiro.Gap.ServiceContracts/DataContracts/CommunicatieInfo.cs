@@ -79,7 +79,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// Snelleberichtenlijsten. Bij <c>true</c> geeft de gebruiker aan dat het adres
         /// ingeschreven mag worden op de Snelleberichtenlijst.</remarks>
         [DataMember]
-        [DisplayName(@"Mag gebruikt worden voor Snelleberichtenlijsten?")]
+        [DisplayName(@"Mag gebruikt worden voor Snelleberichtenlijsten")]
         public bool IsVoorOptIn { get; set; }
 
         /// <summary>
@@ -96,6 +96,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         [DataMember]
         [StringLengte(320)]
         [DataType(DataType.MultilineText)]
+        [DisplayName(@"Noot")]
         public string Nota { get; set; }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// is typisch gezinsgebonden, een gsm-nummer niet.
         /// </summary>
         [DataMember]
-        [DisplayName(@"Voor heel het gezin?")]
+        [DisplayName(@"Voor heel het gezin")]
         public bool IsGezinsGebonden { get; set; }
 
         /// <summary>

@@ -695,12 +695,12 @@ namespace Chiro.Gap.Services
         /// Informatie over alle actieve afdelingen in het groepswerkjaar met 
         /// ID <paramref name="groepswerkjaarId"/>
         /// </returns>
-        public IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepswerkjaarId)
+        public List<AfdelingDetail> ActieveAfdelingenOphalen(int groepswerkjaarId)
         {
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
             Gav.Check(gwj);
             Debug.Assert(gwj != null, "gwj != null");
-            return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<AfdelingDetail>>(gwj.AfdelingsJaar);
+            return Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingDetail>>(gwj.AfdelingsJaar);
         }
 
         /// <summary>

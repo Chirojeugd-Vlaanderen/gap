@@ -270,12 +270,23 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult Nieuw(int groepID)
         {
-            var model = new GelieerdePersonenModel();
-            model.GroepsWerkJaarID = VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID;
+            var model = new NieuwePersoonModel();
             BaseModelInit(model, groepID);
-            model.HuidigePersoon = new PersoonDetail();
+
+            model.GroepsWerkJaarID = VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID;
+            model.NieuwePersoon = new PersoonDetail();
+            model.Land = Properties.Resources.Belgie;
+            model.EMail = new CommunicatieInfo{CommunicatieTypeID = 3, Voorkeur = true};
+            model.TelefoonNummer = new CommunicatieInfo{CommunicatieTypeID = 1, Voorkeur = true};
+            model.BeschikbareWoonPlaatsen = new List<WoonPlaatsInfo>();
+            model.Forceer = false;
+            model.BeschikbareAfdelingen =
+                ServiceHelper.CallService<IGroepenService, List<AfdelingDetail>>(svc => svc.ActieveAfdelingenOphalen(model.GroepsWerkJaarID));
+            model.AlleLanden = VeelGebruikt.LandenOphalen();
 
             model.Titel = Properties.Resources.NieuwePersoonTitel;
+
+
             return View("EditGegevens", model);
         }
 
