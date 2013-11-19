@@ -31,6 +31,8 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         [DataMember]
         public AdresInfo Adres { get; set; }
         [DataMember]
+        public AdresTypeEnum AdresType { get; set; }
+        [DataMember]
         public CommunicatieInfo EMail { get; set; }
         [DataMember]
         public CommunicatieInfo TelefoonNummer { get; set; }
@@ -40,6 +42,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         [DataMember]
         public LidType InschrijvenAls { get; set; }
         [DataMember]
-        public List<int> AfdelingIDs { get; set; } 
+        public List<int> AfdelingsJaarIDs { get; set; } 
     }
 }

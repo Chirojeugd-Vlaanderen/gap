@@ -66,8 +66,8 @@
 	{ %>
 
 	<ul id="acties">
-		<li><button name="button" type="button" class="ui-button-text-only" id="knopBewaren" value="bewaren">Bewaren</button></li>
-		<li><button name="button" type="button" class="ui-button-text-only" value="bewarenEnNieuw">Bewaren en nog iemand toevoegen</button></li>
+		<li><button name="button" type="submit" class="ui-button-text-only" id="knopBewaren" value="bewaren">Bewaren</button></li>
+		<li><button name="button" type="submit" class="ui-button-text-only" value="bewarenEnNieuw">Bewaren en nog iemand toevoegen</button></li>
 	</ul>
 
 	<% if (Model.BroerzusID != 0)
@@ -182,6 +182,7 @@
     
 	<%=Html.HiddenFor(s => s.BroerzusID)%>
     <%=Html.HiddenFor(mdl => mdl.GroepsWerkJaarID) %>
+    <%=Html.HiddenFor(mdl => mdl.Forceer) %>
 	<%
 		if (Model.Forceer)
 		{
@@ -205,6 +206,7 @@
                     <%= Html.RadioButtonFor(mdl => mdl.InschrijvenAls, LidType.Kind) %> Lid
                     <% } %>
                     <%=Html.RadioButtonFor(mdl => mdl.InschrijvenAls, LidType.Leiding) %> Leiding
+                    <%=Html.ValidationMessageFor(mdl => mdl.InschrijvenAls) %>
                 </td>
             </tr>
             <tr id="rij_afdeling">

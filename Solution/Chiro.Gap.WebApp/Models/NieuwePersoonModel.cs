@@ -40,7 +40,7 @@ namespace Chiro.Gap.WebApp.Models
         /// Als er bestaande personen gevonden zijn die hard op de nieuwe lijken, dan zitten
         /// hier de gegevens van de bestaande personen.
         /// </summary>
-        public List<PersoonInfo> GelijkaardigePersonen { get; set; }
+        public IEnumerable<PersoonInfo> GelijkaardigePersonen { get; set; }
         /// <summary>
         /// Als Forceer <c>true</c> is, wordt er ook bewaard als GelijkaardigePersonen niet leeg is.
         /// </summary>
@@ -97,5 +97,10 @@ namespace Chiro.Gap.WebApp.Models
         public string Bus { get; set; }
         public string WoonPlaats { get; set; }
         public string WoonPlaatsBuitenLand { get; set; }
+
+        /// <summary>
+        /// Hier houden we bij welke knop de gebruiker klikte om te bewaren.
+        /// </summary>
+        public string Button { get; set; }
     }
 }

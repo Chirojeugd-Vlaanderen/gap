@@ -34,7 +34,7 @@
     </tr>
     <tr>
         <td><%=Html.LabelFor(mdl => mdl.Straat)%></td>
-        <td><%=Html.EditorFor(mdl => mdl.Straat)%> <br />
+        <td><%=Html.EditorFor(mdl => mdl.Straat)%> 
         <%=Html.ValidationMessageFor(mdl => mdl.Straat)%></td>
     </tr>   
     

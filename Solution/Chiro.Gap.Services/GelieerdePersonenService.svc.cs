@@ -59,6 +59,7 @@ namespace Chiro.Gap.Services
         private readonly IRepository<StraatNaam> _straatNamenRepo;
         private readonly IRepository<WoonPlaats> _woonPlaatsenRepo;
         private readonly IRepository<Land> _landenRepo;
+        private readonly IRepository<AfdelingsJaar> _afdelingsJarenRepo; 
 
         // Managers voor niet-triviale businesslogica
 
@@ -68,12 +69,15 @@ namespace Chiro.Gap.Services
         private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
         private readonly IAdressenManager _adressenMgr;
         private readonly IPersonenManager _personenMgr;
+        private readonly IGroepenManager _groepenMgr;
+        private readonly ILedenManager _ledenMgr;
 
         // Sync-interfaces
 
         private readonly ICommunicatieSync _communicatieSync;
         private readonly IAdressenSync _adressenSync;
         private readonly IPersonenSync _personenSync;
+        private readonly ILedenSync _ledenSync;
 
         /// <summary>
         /// Constructor
@@ -86,18 +90,24 @@ namespace Chiro.Gap.Services
         /// <param name="gelieerdePersonenMgr">Logica m.b.t. gelieerde personen</param>
         /// <param name="adressenManager">Logica m.b.t. adressen</param>
         /// <param name="personenManager">Logica m.b.t. personen (geeuw)</param>
+        /// <param name="groepenManager">Logica m.b.t. groepen</param>
+        /// <param name="ledenManager">Logica m.b.t. leden</param>
         /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
         /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         /// <param name="adressenSync">Voor synchronisatie van adressen naar Kipadmin</param>
+        /// <param name="ledenSync">Voor synchronisatie lidgegevens naar Kipadmin</param>
         public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
-                                        ICommunicatieVormenManager communicatieVormenMgr,
-                                        IGebruikersRechtenManager gebruikersRechtenMgr,
-                                        IGelieerdePersonenManager gelieerdePersonenMgr,
-                                        IAdressenManager adressenManager,
-                                        IPersonenManager personenManager,
-                                        ICommunicatieSync communicatieSync,
-                                        IPersonenSync personenSync,
-                                        IAdressenSync adressenSync)
+            ICommunicatieVormenManager communicatieVormenMgr,
+            IGebruikersRechtenManager gebruikersRechtenMgr,
+            IGelieerdePersonenManager gelieerdePersonenMgr,
+            IAdressenManager adressenManager,
+            IPersonenManager personenManager,
+            IGroepenManager groepenManager,
+            ILedenManager ledenManager,
+            ICommunicatieSync communicatieSync,
+            IPersonenSync personenSync,
+            IAdressenSync adressenSync,
+            ILedenSync ledenSync)
         {
             _communicatieVormRepo = repositoryProvider.RepositoryGet<CommunicatieVorm>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
@@ -111,6 +121,7 @@ namespace Chiro.Gap.Services
             _straatNamenRepo = repositoryProvider.RepositoryGet<StraatNaam>();
             _woonPlaatsenRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
             _landenRepo = repositoryProvider.RepositoryGet<Land>();
+            _afdelingsJarenRepo = repositoryProvider.RepositoryGet<AfdelingsJaar>();
 
             _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
@@ -118,10 +129,13 @@ namespace Chiro.Gap.Services
             _gelieerdePersonenMgr = gelieerdePersonenMgr;
             _adressenMgr = adressenManager;
             _personenMgr = personenManager;
+            _groepenMgr = groepenManager;
+            _ledenMgr = ledenManager;
 
             _communicatieSync = communicatieSync;
             _adressenSync = adressenSync;
             _personenSync = personenSync;
+            _ledenSync = ledenSync;
         }
 
         #region Disposable etc
@@ -654,6 +668,238 @@ namespace Chiro.Gap.Services
         #endregion
 
         #region aanmaken (wordt niet gesynct)
+
+        /// <summary>
+        /// Maakt een nieuwe persoon aan, met adres, e-mailadres en telefoonnummer, en maakt de persoon
+        /// desgevallend ook lid.
+        /// </summary>
+        /// <param name="details">details voor de aanmaak van de persoon</param>
+        /// <param name="groepID">ID van de groep waaraan de persoon gekoppeld moet worden</param>
+        /// <param name="forceer">Als <c>true</c>, doe dan ook verder als er al een gelijkaardige persoon bestaat</param>
+        /// <returns>ID en GelieerdePersoonID van de nieuwe persoon</returns>
+        public IDPersEnGP Nieuw(NieuwePersoonDetails details, int groepID, bool forceer)
+        {
+            // We weten dat we hier met een volledig nieuw persoon te maken hebben. 
+            // We moeten dus niet syncen tot op het moment dat we weten dat hij/zij lid 
+            // moet worden.
+
+            Lid lid = null;
+            GelieerdePersoon gelieerdePersoon;
+            Adres adres = null;
+
+            var problemen = new Dictionary<string, FoutBericht>();
+
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            // Persoon maken
+
+            var nieuwePersoon = new Persoon
+                                {
+                                    AdNummer = null,    // een nieuwe persoon heeft geen AD-nummer
+                                    VoorNaam = details.PersoonInfo.VoorNaam,
+                                    Naam = details.PersoonInfo.Naam,
+                                    Geslacht = details.PersoonInfo.Geslacht,
+                                    GeboorteDatum = details.PersoonInfo.GeboorteDatum
+                                };
+
+
+            try
+            {
+                gelieerdePersoon = _gelieerdePersonenMgr.Toevoegen(nieuwePersoon, groep, 0, forceer);
+                gelieerdePersoon.ChiroLeefTijd = details.PersoonInfo.ChiroLeefTijd;
+            }
+            catch (BlokkerendeObjectenException<GelieerdePersoon> ex)
+            {
+                // als er een gelijkaardige persoon bestaat, en we forceren niet, dan throwen we deze
+
+                throw FaultExceptionHelper.Blokkerend(
+                    Mapper.Map<IList<GelieerdePersoon>, List<PersoonDetail>>(ex.Objecten), ex.Message);
+            }
+
+            // Telefoonnummer en e-mailadres koppelen
+
+            if (details.EMail != null)
+            {
+                var eMail = new CommunicatieVorm()
+                            {
+                                ID = 0, // nieuw e-mailadres
+                                CommunicatieType = _communicatieTypesRepo.ByID((int) CommunicatieTypeEnum.Email),
+                                IsGezinsgebonden = details.EMail.IsGezinsGebonden,
+                                IsVoorOptIn = details.EMail.IsVoorOptIn,
+                                Nota = details.EMail.Nota,
+                                Nummer = details.EMail.Nummer,
+                                Voorkeur = details.EMail.Voorkeur
+                            };
+
+                // Communicatie koppelen is een beetje een gedoe, omdat je die voorkeuren hebt, en het concept
+                // 'gezinsgebonden' dat eigenlijk niet helemaal klopt. Al die brol handelen we af in de manager.
+
+                try
+                {
+                    _communicatieVormenMgr.Koppelen(gelieerdePersoon, eMail);
+                }
+                catch (FoutNummerException ex)
+                {
+                    if (ex.FoutNummer == FoutNummer.ValidatieFout)
+                    {
+                        problemen.Add("EMail_Nummer", new FoutBericht
+                                                      {
+                                                          FoutNummer = FoutNummer.ValidatieFout,
+                                                          Bericht =
+                                                              string.Format(Resources.OngeldigeCommunicatie,
+                                                                  details.EMail,
+                                                                  eMail.CommunicatieType.Omschrijving)
+                                                      });
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            if (details.TelefoonNummer != null)
+            {
+                var telefoonNummer = new CommunicatieVorm()
+                                     {
+                                         ID = 0, // nieuw e-mailadres
+                                         CommunicatieType =
+                                             _communicatieTypesRepo.ByID((int) CommunicatieTypeEnum.TelefoonNummer),
+                                         IsGezinsgebonden = details.TelefoonNummer.IsGezinsGebonden,
+                                         IsVoorOptIn = details.TelefoonNummer.IsVoorOptIn,
+                                         Nota = details.TelefoonNummer.Nota,
+                                         Nummer = details.TelefoonNummer.Nummer,
+                                         Voorkeur = details.TelefoonNummer.Voorkeur
+                                     };
+
+
+                try
+                {
+                    _communicatieVormenMgr.Koppelen(gelieerdePersoon, telefoonNummer);
+                }
+                catch (FoutNummerException ex)
+                {
+                    if (ex.FoutNummer == FoutNummer.ValidatieFout)
+                    {
+                        problemen.Add("TelefoonNummer_Nummer", new FoutBericht
+                                                               {
+                                                                   FoutNummer = FoutNummer.ValidatieFout,
+                                                                   Bericht =
+                                                                       string.Format(Resources.OngeldigeCommunicatie,
+                                                                           details.TelefoonNummer.Nummer,
+                                                                           telefoonNummer.CommunicatieType.Omschrijving)
+                                                               });
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            // adres koppelen
+
+            if (details.Adres != null)
+            {
+                try
+                {
+                    adres = _adressenMgr.ZoekenOfMaken(details.Adres, _adressenRepo.Select(), _straatNamenRepo.Select(),
+                        _woonPlaatsenRepo.Select(), _landenRepo.Select());
+                }
+                catch (OngeldigObjectException ex)
+                {
+                    adres = null;
+                    foreach (KeyValuePair<string, FoutBericht> kvp in ex.Berichten)
+                    {
+                        problemen.Add(kvp.Key, kvp.Value);
+                    }
+                }
+
+                if (adres != null)
+                {
+                    _gelieerdePersonenMgr.AdresToevoegen(new List<GelieerdePersoon> {gelieerdePersoon}, adres,
+                        details.AdresType, true);
+                }
+            }
+
+            // Zo nodig lid maken.
+
+            if (details.InschrijvenAls != LidType.Geen)
+            {
+                if (groep.StopDatum != null && groep.StopDatum < DateTime.Now)
+                {
+                    problemen.Add("InschrijvenAls",
+                        new FoutBericht {FoutNummer = FoutNummer.GroepInactief, Bericht = Resources.GroepInactief});
+                }
+                else
+                {
+                    var gwj = _groepenMgr.HuidigWerkJaar(groep);
+                    var lidVoorstel = new LidVoorstel
+                                      {
+                                          AfdelingsJaren =
+                                              _afdelingsJarenRepo.ByIDs(details.AfdelingsJaarIDs),
+                                          LeidingMaken = details.InschrijvenAls == LidType.Leiding
+                                      };
+
+                    // Een nieuwe persoon kan nog niet ingeschreven zijn. Gemakkelijk.
+
+                    try
+                    {
+                        lid = _ledenMgr.NieuwInschrijven(gelieerdePersoon, gwj, false, lidVoorstel);
+                        gelieerdePersoon.Persoon.AdInAanvraag = true;
+                    }
+                    catch (FoutNummerException ex)
+                    {
+                        switch (ex.FoutNummer)
+                        {
+                            case FoutNummer.LidTypeVerkeerd:
+                            case FoutNummer.LidTeJong:
+                            case FoutNummer.AfdelingKindVerplicht:
+                            case FoutNummer.LeidingTeJong:
+                                // TODO: backendinformatie naar frontend om rechtsteeks te tonen:
+                                // geen goed idee.
+                                problemen.Add("InschrijvenAls",
+                                    new FoutBericht {Bericht = ex.Message, FoutNummer = ex.FoutNummer});
+                                lid = null;
+                                break;
+                            default:
+                                throw;
+                        }
+                    }
+                }
+            }
+
+            if (problemen.Count > 0)
+            {
+                throw FaultExceptionHelper.Ongeldig(problemen);
+            }
+
+            if (lid == null)
+            {
+                _gelieerdePersonenRepo.SaveChanges();
+            }
+            else
+            {
+#if KIPDORP
+                using (var tx = new TransactionScope())
+                {
+#endif
+                _ledenSync.Bewaren(lid);
+                _gelieerdePersonenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+                }
+#endif
+            }
+            return new IDPersEnGP {GelieerdePersoonID = gelieerdePersoon.ID, PersoonID = gelieerdePersoon.Persoon.ID};
+        }
+
+
         /// <summary>
         /// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
         /// <paramref>groepID</paramref>
