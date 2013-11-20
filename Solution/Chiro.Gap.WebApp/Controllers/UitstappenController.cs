@@ -266,7 +266,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             if (String.Compare(model.Land, Properties.Resources.Belgie, true) != 0)
             {
-                model.WoonPlaats = model.WoonPlaatsBuitenLand;
+                model.WoonPlaatsNaam = model.WoonPlaatsBuitenLand;
             }
 
             try

@@ -16,8 +16,6 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System.Web.Mvc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
@@ -92,10 +90,10 @@ namespace Chiro.Gap.WebApp.Models
         public string Land { get; set; }
         public int PostNr { get; set; }
         public string PostCode { get; set; }
-        public string Straat { get; set; }
+        public string StraatNaamNaam { get; set; }
         public int? HuisNr { get; set; }
         public string Bus { get; set; }
-        public string WoonPlaats { get; set; }
+        public string WoonPlaatsNaam { get; set; }
         public string WoonPlaatsBuitenLand { get; set; }
 
         /// <summary>

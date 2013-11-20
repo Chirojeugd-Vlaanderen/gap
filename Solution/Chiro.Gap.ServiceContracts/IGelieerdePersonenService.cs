@@ -184,6 +184,7 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="forceer">Als <c>true</c>, doe dan ook verder als er al een gelijkaardige persoon bestaat</param>
         /// <returns>ID en GelieerdePersoonID van de nieuwe persoon</returns>
         [OperationContract]
+        [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
         [FaultContract(typeof(OngeldigObjectFault))]
         IDPersEnGP Nieuw(NieuwePersoonDetails details, int groepID, bool forceer);

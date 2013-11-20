@@ -36,9 +36,9 @@ namespace Chiro.Gap.WebApp.Models
 		[StringLengte(80)]
 		string Land { get; set; }
 
-		// De upper limit is verhoogd van 9999 naar 99999, om dit datacontract ook te kunnen gebruiken voor
-		// buitenlandse adressen.  Een beetje een hack dus.
-		[Range(1000, 99999, ErrorMessageResourceType = typeof(System.ComponentModel.DataAnnotations.Properties.Resources), ErrorMessageResourceName = "RangeError")]
+        // TODO: Rangerestrictie terug aanzetten. Uitgezet voor fix #1723.
+        // (eventueel aanzetten in implementatie ipv in interface)
+        //[Range(1000, 99999, ErrorMessageResourceType = typeof(System.ComponentModel.DataAnnotations.Properties.Resources), ErrorMessageResourceName = "RangeError")]
 		[Verplicht]
 		[DisplayName(@"Postnr.")]
 		int PostNr { get; set;  }
@@ -47,9 +47,11 @@ namespace Chiro.Gap.WebApp.Models
 		[DisplayName(@"Postcode")]
 		string PostCode { get; set; }
 
-		[Verplicht]
+        // TODO: Opnieuw verplicht maken. Uitgezet voor #1723.
+		//[Verplicht]
+        [DisplayName(@"Straat")]
 		[StringLengte(80)]
-		string Straat { get; set; }
+		string StraatNaamNaam { get; set; }
 
 		[Range(0, int.MaxValue, ErrorMessageResourceType = typeof(System.ComponentModel.DataAnnotations.Properties.Resources), ErrorMessageResourceName = "RangeError")]
 		[DisplayName(@"Nr.")]
@@ -59,7 +61,7 @@ namespace Chiro.Gap.WebApp.Models
 
 		[DisplayName(@"Woonplaats")]
 		[StringLengte(80)]
-		string WoonPlaats { get; set; }
+		string WoonPlaatsNaam { get; set; }
 
 		[DisplayName(@"Woonplaats")]
 		[StringLengte(80)]

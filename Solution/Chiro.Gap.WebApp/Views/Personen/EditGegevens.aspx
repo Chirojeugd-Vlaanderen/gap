@@ -83,7 +83,6 @@
 	   } %>
        
     <%Html.EnableClientValidation(); %>
-    <% =Html.ValidationSummary() %>
     
 	<fieldset>
 	  <legend>Persoonlijke gegevens</legend>
@@ -127,6 +126,7 @@
 		    <td>
 		        <%=Html.RadioButtonFor(mdl => mdl.NieuwePersoon.Geslacht, GeslachtsType.Man) %> <%=Html.Geslacht(GeslachtsType.Man) %>
                 <%=Html.RadioButtonFor(mdl => mdl.NieuwePersoon.Geslacht, GeslachtsType.Vrouw) %> <%=Html.Geslacht(GeslachtsType.Vrouw) %>
+                <%=Html.ValidationMessageFor(s => s.NieuwePersoon.Geslacht)%>
             </td>
         </tr>
       </table>

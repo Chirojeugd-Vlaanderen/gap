@@ -65,7 +65,8 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// <summary>
         /// De waarde voor de communicatievorm (kan ook bv. een e-mailadres zijn)
         /// </summary>
-        [Verplicht]
+        // TODO: Opnieuw verplicht maken. Uitgezet voor #1723
+        //[Verplicht]
         [DataMember]
         [StringLengte(160)]
         public string Nummer { get; set; }

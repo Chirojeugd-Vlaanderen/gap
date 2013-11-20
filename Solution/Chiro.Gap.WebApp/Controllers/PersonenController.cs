@@ -279,7 +279,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             var groepsWerkJaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
             model.GroepsWerkJaarID = groepsWerkJaar.WerkJaarID;
-
+            model.AlleLanden = VeelGebruikt.LandenOphalen();
             model.TelefoonNummerType =
                 ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieTypeInfo>(
                     svc => svc.CommunicatieTypeOphalen((int) CommunicatieTypeEnum.TelefoonNummer));
@@ -299,7 +299,6 @@ namespace Chiro.Gap.WebApp.Controllers
                                    };
             model.BeschikbareWoonPlaatsen = new List<WoonPlaatsInfo>();
             model.Forceer = false;
-            model.AlleLanden = VeelGebruikt.LandenOphalen();
 
             model.Titel = Properties.Resources.NieuwePersoonTitel;
 
@@ -343,14 +342,14 @@ namespace Chiro.Gap.WebApp.Controllers
                 {
                     details.Adres = new AdresInfo
                                     {
-                                        StraatNaamNaam = model.Straat,
+                                        StraatNaamNaam = model.StraatNaamNaam,
                                         HuisNr = model.HuisNr,
                                         Bus = model.Bus,
                                         PostNr = model.PostNr,
                                         PostCode = model.PostCode,
                                         WoonPlaatsNaam =
                                             model.Land == Properties.Resources.Belgie
-                                                ? model.WoonPlaats
+                                                ? model.WoonPlaatsNaam
                                                 : model.WoonPlaatsBuitenLand,
                                         LandNaam = model.Land
                                     };
@@ -392,6 +391,7 @@ namespace Chiro.Gap.WebApp.Controllers
             if (!gelukt)
             {
                 // Bouw model opnieuw op, en laat user opnieuw proberen.
+                model.AlleLanden = VeelGebruikt.LandenOphalen();
                 model.TelefoonNummerType =
                     ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieTypeInfo>(
                         svc => svc.CommunicatieTypeOphalen((int) CommunicatieTypeEnum.TelefoonNummer));
@@ -399,7 +399,9 @@ namespace Chiro.Gap.WebApp.Controllers
                     ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieTypeInfo>(
                         svc => svc.CommunicatieTypeOphalen((int)CommunicatieTypeEnum.Email));
                 model.BeschikbareAfdelingen =
-                    ServiceHelper.CallService<IGroepenService, List<AfdelingDetail>>(svc => svc.ActieveAfdelingenOphalen(model.GroepsWerkJaarID));
+                    ServiceHelper.CallService<IGroepenService, List<AfdelingDetail>>(
+                        svc => svc.ActieveAfdelingenOphalen(model.GroepsWerkJaarID));
+                model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
                 return View("EditGegevens", model);
             }
 
@@ -988,7 +990,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // vrij in te vullen veld.
             if (model.WoonPlaatsBuitenLand != null)
             {
-                model.WoonPlaats = model.WoonPlaatsBuitenLand;
+                model.WoonPlaatsNaam = model.WoonPlaatsBuitenLand;
             }
             try
             {

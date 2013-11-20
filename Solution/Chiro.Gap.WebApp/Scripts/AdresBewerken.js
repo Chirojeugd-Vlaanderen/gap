@@ -43,13 +43,13 @@ function AdresBewerken() {
     $('#PostNr').on('change', function () {
         var pc = $(this).val();
         if (land.substring(0, 5) == 'Belgi') {
-            toonGemeenten(pc, '#WoonPlaats');
+            toonGemeenten(pc, '#WoonPlaatsNaam');
         }
 
         var stratenCache = {};
         var lastXhr;
 
-        $("input#Straat").autocomplete({
+        $("input#StraatNaamNaam").autocomplete({
             minLength: 3,
             source: function (request, response) {
                 var term = request.term;

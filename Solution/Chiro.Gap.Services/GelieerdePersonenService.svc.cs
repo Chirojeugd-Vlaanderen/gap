@@ -867,6 +867,11 @@ namespace Chiro.Gap.Services
                                     new FoutBericht {Bericht = ex.Message, FoutNummer = ex.FoutNummer});
                                 lid = null;
                                 break;
+                            case FoutNummer.OnbekendGeslachtFout:
+                                problemen.Add("NieuwePersoon.Geslacht",
+                                    new FoutBericht {Bericht = ex.Message, FoutNummer = ex.FoutNummer});
+                                lid = null;
+                                break;
                             default:
                                 throw;
                         }
