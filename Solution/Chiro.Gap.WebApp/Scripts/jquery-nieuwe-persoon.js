@@ -52,27 +52,35 @@ $(function () {
     //------------------------------------------------------------------------------------------------------------
     //Persoon inschrijven of niet?
 
-    // Ik weet niet goed hoe ik dit voor 1 'groep' radio-options doe.
-    // Dus voor alles, en ik kijk wat er geselecteerd is.
-    $(':radio').change(function () {
-        var selectedValue = $(this).val();
-        if (selectedValue === "Geen") {
-            // niet inschrijven
-            $('#rij_afdeling').hide();
-            $('#rij_chiroleeftijd').hide();
-        } else if (selectedValue === "Kind") {
-            $('#rij_afdeling').show();
-            $('#rij_chiroleeftijd').show();
-            $('#AfdelingsJaarIDs').find('option[value="0"]').remove();
-        } else if (selectedValue === "Leiding") {
-            $('#rij_afdeling').show();
-            $('#rij_chiroleeftijd').show();
-            if (!$('#AfdelingsJaarIDs').find('option[value="0"]').length) {
-                // als de optie 'geen afdeling' nog niet bestaat, voegen we ze toe
+    // We doen dit initieel
+    ToonVerbergLidInfo($(":radio[name='InschrijvenAls'][checked='checked']").val());
 
-                $('#AfdelingsJaarIDs').append('<option value="0">geen</option>');
-            }
-            $('#AfdelingsJaarIDs').find('option[value="0"]').attr('selected', true);
-        }
+    // .. en iedere keer er een radio dink geklikt wordt.
+    // (wat niet helemaal juist is, want dit gebeurt ook bij wijzigen van geslacht.
+    // Niet mooi, maar kan ook geen kwaad.)
+    $(':radio').change(function () {
+        ToonVerbergLidInfo($(this).val());
     });
 });
+
+// Verbergt of toont lidinfo alnaargelang welk lidtype geselecteerd is.
+function ToonVerbergLidInfo(selectedValue) {
+    if (selectedValue === "Geen") {
+        // niet inschrijven
+        $('#rij_afdeling').hide();
+        $('#rij_chiroleeftijd').hide();
+    } else if (selectedValue === "Kind") {
+        $('#rij_afdeling').show();
+        $('#rij_chiroleeftijd').show();
+        $('#AfdelingsJaarIDs').find('option[value="0"]').remove();
+    } else if (selectedValue === "Leiding") {
+        $('#rij_afdeling').show();
+        $('#rij_chiroleeftijd').show();
+        if (!$('#AfdelingsJaarIDs').find('option[value="0"]').length) {
+            // als de optie 'geen afdeling' nog niet bestaat, voegen we ze toe
+
+            $('#AfdelingsJaarIDs').append('<option value="0">geen</option>');
+        }
+        $('#AfdelingsJaarIDs').find('option[value="0"]').attr('selected', true);
+    }    
+}
