@@ -747,12 +747,12 @@ namespace Chiro.Gap.Services
                 {
                     if (ex.FoutNummer == FoutNummer.ValidatieFout)
                     {
-                        problemen.Add("EMail_Nummer", new FoutBericht
+                        problemen.Add("EMail.Nummer", new FoutBericht
                                                       {
                                                           FoutNummer = FoutNummer.ValidatieFout,
                                                           Bericht =
                                                               string.Format(Resources.OngeldigeCommunicatie,
-                                                                  details.EMail,
+                                                                  details.EMail.Nummer,
                                                                   eMail.CommunicatieType.Omschrijving)
                                                       });
                     }
@@ -786,7 +786,7 @@ namespace Chiro.Gap.Services
                 {
                     if (ex.FoutNummer == FoutNummer.ValidatieFout)
                     {
-                        problemen.Add("TelefoonNummer_Nummer", new FoutBericht
+                        problemen.Add("TelefoonNummer.Nummer", new FoutBericht
                                                                {
                                                                    FoutNummer = FoutNummer.ValidatieFout,
                                                                    Bericht =
