@@ -59,6 +59,48 @@
     
     <!-- Div hieronder wordt gebruikt voor hulplinks. -->
     <div id="extraInfoDialog" hidden><img src="/Content/images/loading.gif"/></div>
+    
+    	<%
+		if (Model.GelijkaardigePersonen != null && Model.GelijkaardigePersonen.Any())
+		{
+			if (Model.GelijkaardigePersonen.Count() == 1)
+			{
+	%>
+	<p class="validation-summary-errors">
+		Pas op! Je nieuwe persoon lijkt erg veel op iemand die al gekend is in
+		de Chiroadministratie. Als je zeker bent dat je niemand dubbel toevoegt, klik
+		dan opnieuw op &lsquo;Bewaren&rsquo;.
+	</p>
+	<%
+		}
+			else
+			{
+	%>
+	<p class="validation-summary-errors">
+		Pas op! Je nieuwe persoon lijkt erg veel op personen die al gekend zijn
+		in de Chiroadministratie. Als je zeker bent dat je niemand dubbel toevoegt,
+		klik dan opnieuw op &lsquo;Bewaren&rsquo;.
+	</p>
+	<%
+		}
+	%>
+	<ul>
+		<% 
+			// Toon gelijkaardige personen
+			foreach (var pi in Model.GelijkaardigePersonen)
+			{
+		%>
+		<li>
+			<%=Html.PersoonsLink(pi.GelieerdePersoonID, pi.VoorNaam, pi.Naam)%>
+			-
+			<%=String.Format("{0:d}", pi.GeboorteDatum) %></li>
+		<%
+			}
+		%>
+	</ul>
+	<%      
+		}
+	%>
      
 	<%=Html.ValidationSummary("Er zijn enkele opmerkingen:") %>
 	<% Html.EnableClientValidation(); // Deze instructie moet (enkel) voor de BeginForm komen %>
@@ -182,7 +224,7 @@
     
 	<%=Html.HiddenFor(s => s.BroerzusID)%>
     <%=Html.HiddenFor(mdl => mdl.GroepsWerkJaarID) %>
-    <%=Html.HiddenFor(mdl => mdl.Forceer) %>
+    <%--<%=Html.HiddenFor(mdl => mdl.Forceer) %>--%>
 	<%
 		if (Model.Forceer)
 		{
