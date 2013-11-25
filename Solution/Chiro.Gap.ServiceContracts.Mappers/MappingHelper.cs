@@ -404,6 +404,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                         src,
                         Verzekering.LoonVerlies)));
 
+            // Dit was beperkt. Dit moet uitgebreider voor de Excelexport.
             Mapper.CreateMap<Lid, PersoonLidInfo>()
                 .ForMember(
                     dst => dst.PersoonDetail,

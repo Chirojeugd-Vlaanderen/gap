@@ -26,6 +26,7 @@ using System.Web.Mvc;
 using Chiro.Adf.ServiceModel;
 using Chiro.Cdf.ExcelManip;
 using Chiro.Gap.Domain;
+using Chiro.Gap.ExcelManip;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -193,19 +194,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // Haal de op te lijsten leden op; de filter wordt bepaald uit de method parameters.
             model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
                 svc => svc.LijstZoekenLidOverzicht(
-                    new LidFilter
-                        {
-                            GroepsWerkJaarID = groepsWerkJaarID,
-                            AfdelingID = (afdelingID == 0) ? null : (int?)afdelingID,
-                            FunctieID = (functieID == 0) ? null : (int?)functieID,
-                            ProbeerPeriodeNa =
-                                (ledenLijst == LidInfoModel.SpecialeLedenLijst.Probeerleden) ? (DateTime?)DateTime.Today : null,
-                            HeeftVoorkeurAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendAdres) ? (bool?)false : null,
-                            HeeftTelefoonNummer =
-                                (ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendTelefoonNummer) ? (bool?)false : null,
-                            HeeftEmailAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail) ? (bool?)false : null,
-                            LidType = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail) ? LidType.Leiding : LidType.Alles
-                        },
+                    FilterMaken(afdelingID, functieID, ledenLijst, groepsWerkJaarID),
                     metAdressen));
 
             if (functieID != 0)
@@ -249,6 +238,23 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             model.LidInfoLijst = Sorteren(model.LidInfoLijst, sortering).ToList();
             return model;
+        }
+
+        private static LidFilter FilterMaken(int afdelingID, int functieID, LidInfoModel.SpecialeLedenLijst ledenLijst, int groepsWerkJaarID)
+        {
+            return new LidFilter
+                   {
+                       GroepsWerkJaarID = groepsWerkJaarID,
+                       AfdelingID = (afdelingID == 0) ? null : (int?)afdelingID,
+                       FunctieID = (functieID == 0) ? null : (int?)functieID,
+                       ProbeerPeriodeNa =
+                           (ledenLijst == LidInfoModel.SpecialeLedenLijst.Probeerleden) ? (DateTime?)DateTime.Today : null,
+                       HeeftVoorkeurAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendAdres) ? (bool?)false : null,
+                       HeeftTelefoonNummer =
+                           (ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendTelefoonNummer) ? (bool?)false : null,
+                       HeeftEmailAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail) ? (bool?)false : null,
+                       LidType = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail) ? LidType.Leiding : LidType.Alles
+                   };
         }
 
         /// <summary>
@@ -463,44 +469,34 @@ namespace Chiro.Gap.WebApp.Controllers
         [ParametersMatch]
         public ActionResult Download([RouteValue]int id, [QueryStringValue]int afdelingID, [QueryStringValue]int functieID, [RouteValue]int groepID, [QueryStringValue]LidInfoModel.SpecialeLedenLijst ledenLijst, [QueryStringValue]LidEigenschap sortering)
         {
-            var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, true);
-            if (model == null)
+            WerkJaarInfo werkJaarInfo;
+            int groepsWerkJaarID;
+
+            // Als geen groepswerkjaar gegeven is: haal recentste op 
+
+            if (id == 0)
             {
-                return TerugNaarVorigeLijst();
+                var gwj = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
+                werkJaarInfo = new WerkJaarInfo {WerkJaar = gwj.WerkJaar, ID = gwj.WerkJaarID};
+                groepsWerkJaarID = werkJaarInfo.ID;
+            }
+            else
+            {
+                var gwjs = ServiceHelper.CallService<IGroepenService, IEnumerable<WerkJaarInfo>>(svc => svc.WerkJarenOphalen(groepID));
+                werkJaarInfo = (from wj in gwjs
+                    where wj.ID == id
+                    select wj).FirstOrDefault();
+                groepsWerkJaarID = id;
             }
 
-            // Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
-            // gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
-            string[] kolomkoppen = 
-                  {
-			       	"Type", "AD-nr", "Voornaam", "Naam", "Afdelingen", "Functies", "Geboortedatum", "Geslacht", "Straat", "Nr", "Bus", "Postnr", "Postcode", "Gemeente", "Land", "Tel", "Mail", "Betaald"
-			      };
+            // Haal de op te lijsten leden op; de filter wordt bepaald uit de method parameters.
+            var leden = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(
+                svc => svc.LijstZoekenPersoonLidInfo(
+                    FilterMaken(afdelingID, functieID, ledenLijst, groepsWerkJaarID)));
 
-            var bestandsNaam = String.Format("{0}.xlsx", model.Titel.Replace(" ", "-"));
+            const string bestandsNaam = "leden.xlsx";
 
-            var stream = (new ExcelManip()).ExcelTabel(
-                model.LidInfoLijst,
-                kolomkoppen,
-                it => it.Type == LidType.Kind ? "Lid" : "Leiding",
-                it => it.AdNummer,
-                it => it.VoorNaam,
-                it => it.Naam,
-                it => it.Afdelingen == null ? String.Empty : String.Concat(it.Afdelingen.Select(afd => afd.Afkorting + " ").ToArray()),
-                it => it.Functies == null ? String.Empty : String.Concat(it.Functies.Select(fun => fun.Code + " ").ToArray()),
-                it => it.GeboorteDatum,
-                it => it.Geslacht,
-                // Contactgegevens enkel opnemen bij levende mensen
-                it => !it.SterfDatum.HasValue ? it.StraatNaam : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.HuisNummer : null,
-                it => !it.SterfDatum.HasValue ? it.Bus : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.PostNummer : null,
-                it => !it.SterfDatum.HasValue ? it.PostCode : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.WoonPlaats : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.Land : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.TelefoonNummer : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.Email : string.Empty,
-                // 'Lidgeld betaald' mag wel getoond worden bij overledenen, want daar kan eventueel discussie over ontstaan
-                it => it.LidgeldBetaald ? "Ja" : "Nee");
+            var stream = (new GapExcelManip()).LidExcelTabel(leden);
 
             return new ExcelResult(stream, bestandsNaam);
         }
