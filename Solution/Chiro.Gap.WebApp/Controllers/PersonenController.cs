@@ -23,6 +23,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Services.Description;
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
@@ -433,14 +434,55 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult Kloon(int gelieerdepersoonID, int groepID)
         {
-            var model = new GelieerdePersonenModel();
+            var model = new NieuwePersoonModel();
             BaseModelInit(model, groepID);
-            var broerzus = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdepersoonID));
-            model.HuidigePersoon = new PersoonDetail();
 
-            model.BroerzusID = broerzus.GelieerdePersoonID;
-            model.HuidigePersoon.Naam = broerzus.Naam;
+            // Doe eerst iets gelijkaardigs als voor een nieuwe persoon
+
+            model.NieuwePersoon = new PersoonDetail();
             model.GroepsWerkJaarID = VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID;
+            model.Forceer = false;
+
+            model.AlleLanden = VeelGebruikt.LandenOphalen();
+            model.TelefoonNummerType =
+                ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieTypeInfo>(
+                    svc => svc.CommunicatieTypeOphalen((int)CommunicatieTypeEnum.TelefoonNummer));
+            model.EMailType =
+                ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieTypeInfo>(
+                    svc => svc.CommunicatieTypeOphalen((int)CommunicatieTypeEnum.Email));
+            model.BeschikbareAfdelingen =
+                ServiceHelper.CallService<IGroepenService, List<AfdelingDetail>>(svc => svc.ActieveAfdelingenOphalen(model.GroepsWerkJaarID));
+            
+            // Neem een aantal gegevens over van origineel.
+
+            var broerzus =
+                ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>(
+                    l => l.OverzichtOphalen(new[] { gelieerdepersoonID })).FirstOrDefault();
+
+            // Omdat we klonen, veronderstellen we dat het origineel bestaat en opgevraagd kan worden.
+            Debug.Assert(broerzus != null);  
+
+            model.NieuwePersoon.Naam = broerzus.Naam;
+
+            model.StraatNaamNaam = broerzus.StraatNaam;
+            model.HuisNr = broerzus.HuisNummer;
+            model.PostNr = broerzus.PostNummer ?? 0;
+            model.PostCode = broerzus.PostCode;
+            model.Land = broerzus.Land;
+
+            if (String.Compare(model.Land, Properties.Resources.Belgie, StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                model.WoonPlaatsNaam = broerzus.WoonPlaats;
+                model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
+            }
+            else
+            {
+                model.WoonPlaatsBuitenLand = broerzus.WoonPlaats;
+                model.BeschikbareWoonPlaatsen = new List<WoonPlaatsInfo>();
+            }
+
+            model.TelefoonNummer = new CommunicatieInfo {Nummer = broerzus.TelefoonNummer};
+            model.EMail = new CommunicatieInfo {Nummer = broerzus.Email};           
 
             model.Titel = Properties.Resources.NieuwePersoonTitel;
             return View("EditGegevens", model);
@@ -459,69 +501,9 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [HandleError]
-        public ActionResult Kloon(GelieerdePersonenModel model, int groepID)
+        public ActionResult Kloon(NieuwePersoonModel model, int groepID)
         {
-            // TODO (#1028): dit is mss iets om op de server te draaien?
-
-            /////BEGIN DUPLICATE CODE
-
-            if (model.BroerzusID == 0)
-            {
-                throw new InvalidOperationException("Zou niet 0 mogen zijn? Als wel zo is, maak volledig nieuwe persoon");
-            }
-
-            BaseModelInit(model, groepID);
-            model.Titel = Properties.Resources.NieuwePersoonTitel;
-
-            if (!ModelState.IsValid)
-            {
-                return View("EditGegevens", model);
-            }
-
-            IDPersEnGP ids;
-            try
-            {
-                // (ivm forceer: 0: false, 1: true)
-                ids = ServiceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(l => l.AanmakenForceer(model.HuidigePersoon, groepID, model.Forceer));
-            }
-            catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> fault)
-            {
-                model.GelijkaardigePersonen = fault.Detail.Objecten;
-                model.Forceer = true;
-                return View("EditGegevens", model);
-            }
-            /////END DUPLICATE CODE
-
-            var broerzus = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(model.BroerzusID));
-
-            var gezinsComm = (from a in broerzus.CommunicatieInfo
-                              where a.Voorkeur && a.IsGezinsGebonden
-                              select a).ToList();
-
-            if (gezinsComm.Count() != 0)
-            {
-                foreach (var c in gezinsComm)
-                {
-                    // Do not use var here
-                    CommunicatieDetail c1 = c;
-                    ServiceHelper.CallService<IGelieerdePersonenService>(
-                        l => l.CommunicatieVormToevoegen(ids.GelieerdePersoonID, c1));
-                }
-            }
-
-            if (broerzus.PersoonDetail.VoorkeursAdresID != null)
-            {
-                var voorkeursAdres = (from a in broerzus.PersoonsAdresInfo
-                                      where a.PersoonsAdresID == broerzus.PersoonDetail.VoorkeursAdresID
-                                      select a).FirstOrDefault();
-                if (voorkeursAdres != null)
-                {
-                    var list = new List<int> { ids.GelieerdePersoonID };
-                    ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenGelieerdePersonen(list, voorkeursAdres, true));
-                }
-            }
-
-            return RedirectToAction("EditRest", new { id = ids.GelieerdePersoonID });
+            return Nieuw(model, groepID);
         }
 
         /// <summary>

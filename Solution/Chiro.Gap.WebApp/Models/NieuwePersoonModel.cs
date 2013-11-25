@@ -31,10 +31,6 @@ namespace Chiro.Gap.WebApp.Models
         /// </summary>
         public PersoonInfo NieuwePersoon { get; set; }
         /// <summary>
-        /// Een eventuele ID als een broer zus waarvan de NIEUWE persoon gemaakt wordt gekend is.
-        /// </summary>
-        public int BroerzusID { get; set; }
-        /// <summary>
         /// Als er bestaande personen gevonden zijn die hard op de nieuwe lijken, dan zitten
         /// hier de gegevens van de bestaande personen.
         /// </summary>

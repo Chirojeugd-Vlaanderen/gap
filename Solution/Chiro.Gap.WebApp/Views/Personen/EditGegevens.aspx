@@ -111,19 +111,7 @@
 		<li><button name="button" type="submit" class="ui-button-text-only" id="knopBewaren" value="bewaren">Bewaren</button></li>
 		<li><button name="button" type="submit" class="ui-button-text-only" value="bewarenEnNieuw">Bewaren en nog iemand toevoegen</button></li>
 	</ul>
-
-	<% if (Model.BroerzusID != 0)
-	   {
-	%>
-	    <p>
-	    Het adres en de gezinsgebonden communicatievormen&nbsp;
-        <%= Html.InfoLink("gezinsCom") %>
-        worden gekopieerd van de broer of zus. 
-        <%= Html.InfoLink("zusBroer") %>
-        </p>	
-	<%
-	   } %>
-       
+      
     <%Html.EnableClientValidation(); %>
     
 	<fieldset>
@@ -222,9 +210,7 @@
         </table>
     </fieldset>
     
-	<%=Html.HiddenFor(s => s.BroerzusID)%>
     <%=Html.HiddenFor(mdl => mdl.GroepsWerkJaarID) %>
-    <%--<%=Html.HiddenFor(mdl => mdl.Forceer) %>--%>
 	<%
 		if (Model.Forceer)
 		{

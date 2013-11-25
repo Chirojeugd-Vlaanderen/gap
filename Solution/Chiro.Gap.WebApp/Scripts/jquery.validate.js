@@ -569,6 +569,8 @@
                         if (this.settings.debug && window.console) {
                             console.log("Exception occurred when checking element " + element.id + ", check the '" + rule.method + "' method.", e);
                         }
+                        // Javascript-error hier? Controleer de reguliere expressies voor de communicatievormen in
+                        // de database.
                         throw e;
                     }
                 }
