@@ -323,6 +323,10 @@
       <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
       <Name>Chiro.Adf.ServiceModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.ExcelManip\Chiro.Cdf.ExcelManip.csproj">
+      <Project>{3512085D-DC3F-4193-9C22-F7AB7142BF21}</Project>
+      <Name>Chiro.Cdf.ExcelManip</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
@@ -362,9 +366,6 @@
     <Compile Include="Controllers\GavTakenController.cs" />
     <Compile Include="Controllers\HandleidingController.cs" />
     <Compile Include="Controllers\JaarOvergangController.cs" />
-    <Compile Include="ExcelManip.cs" />
-    <Compile Include="ExcelManip.WorkbookStyles.cs" />
-    <Compile Include="ExcelResult.cs" />
     <Compile Include="HtmlHelpers\AdresHelper.cs" />
     <Compile Include="HtmlHelpers\TelefoonHelper.cs" />
     <Compile Include="HtmlHelpers\GeslachtHelper.cs" />
