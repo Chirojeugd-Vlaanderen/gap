@@ -49,6 +49,12 @@
                     <fieldset >
                         <legend>Acties</legend> 
                    
+                        <%=Html.ActionLink(
+                                    "Lijst downloaden",
+                                    "Download",
+                                    new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.AfdelingID, functieID = Model.FunctieID, sortering = Model.GekozenSortering, ledenLijst = Model.SpecialeLijst },
+                                    new { title = "Download de geselecteerde gegevens in een Excel-bestand" })%><br />
+
                         <strong>Toepassen op selectie</strong><br/>
     	                <select id="GekozenActie" name="GekozenActie">
 		                    <option value="0">kies een actie</option>
@@ -96,7 +102,7 @@
 						
 						    <%=Html.HiddenFor(s => s.IDGetoondGroepsWerkJaar)%>
 						    <%=Html.HiddenFor(s => s.GekozenSortering)%>
-                            <%=Html.HiddenFor(s => s.GroepsNiveau) %>
+                            <%=Html.HiddenFor(s => s.GroepsNiveau) %></br>                     
 
                         </fieldset>
 
