@@ -394,7 +394,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			        };
 
             var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));
-            var stream = (new ExcelManip()).ExcelTabel(
+            var stream = (new Cdf.ExcelManip.ExcelManip()).ExcelTabel(
                 lijst,
                 kolomkoppen,
                 it => it.PersoonOverzicht.AdNummer,
