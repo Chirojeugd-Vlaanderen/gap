@@ -413,13 +413,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src))
                 .ForMember(
                     dst => dst.PersoonsAdresInfo,
-                    opt => opt.Ignore())
+                    opt => opt.Ignore()) // zit al in PersoonDetail
                 .ForMember(
                     dst => dst.CommunicatieInfo,
-                    opt => opt.Ignore())
+                    opt => opt.Ignore()) // zit al in PersoonDetail
                 .ForMember(
                     dst => dst.GebruikersInfo,
-                    opt => opt.Ignore());
+                    opt => opt.Ignore()); // niet relevant, denk ik :-P
 
             // De bedoeling was om zo veel mogelijk automatisch te kunnen mappen.  Vandaar ook properties
             // zoals StraatNaamNaam en WoonPlaatsNaam.  Maar met de invoering van de buitenlandse adressen,

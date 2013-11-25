@@ -822,9 +822,28 @@ namespace Chiro.Gap.Services
             return resultaat;
         }
 
+        /// <summary>
+        /// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>. Levert een lijst van PersoonLidInfo af.
+        /// </summary>
+        /// <param name="filter">De niet-nulle properties van de filter
+        /// bepalen waarop gezocht moet worden</param>
+        /// <returns>Lijst met PersoonLidInfo over gevonden leden</returns>
+        /// <remarks>
+        /// Er worden enkel actieve leden opgehaald.
+        /// Let er ook op dat je in de filter iets opgeeft als LidType
+        /// (Kind, Leiding of Alles), want anders krijg je niets terug.
+        /// </remarks>
         public List<PersoonLidInfo> LijstZoekenPersoonLidInfo(LidFilter filter)
         {
-            throw new NotImplementedException();
+            // Onderstaande throwt een exception als de filter zaken bevat waar je geen rechten op
+            // hebt.
+            SecurityCheck(filter);
+
+            var leden = Zoeken(filter, true);
+
+            var resultaat = Mapper.Map<IList<Lid>, List<PersoonLidInfo>>(leden.ToList());
+
+            return resultaat;
         }
 
         #endregion
