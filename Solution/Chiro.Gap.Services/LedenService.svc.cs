@@ -797,6 +797,72 @@ namespace Chiro.Gap.Services
         /// </remarks>
         public List<LidOverzicht> LijstZoekenLidOverzicht(LidFilter filter, bool metAdressen)
         {
+            // Onderstaande throwt een exception als de filter zaken bevat waar je geen rechten op
+            // hebt.
+            SecurityCheck(filter);
+
+            List<LidOverzicht> resultaat;
+
+                var leden = Zoeken(filter, metAdressen);
+
+            // mappen
+            if (metAdressen)
+            {
+                resultaat = Mapper.Map<IList<Lid>, List<LidOverzicht>>(leden.ToList());
+            }
+            else
+            {
+                // TODO: Waarom wordt er hier twee keer gemapt?
+                // Misschien om informatie expliciet niet mee te nemen?
+
+                var list = Mapper.Map<IList<Lid>, List<LidOverzichtZonderAdres>>(leden.ToList());
+                resultaat = Mapper.Map<IList<LidOverzichtZonderAdres>, List<LidOverzicht>>(list);
+            }
+
+            return resultaat;
+        }
+
+        public List<PersoonLidInfo> LijstZoekenPersoonLidInfo(LidFilter filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+
+        /// <summary>
+        /// Togglet het vlagje 'lidgeld betaald' van het lid met LidId <paramref name="lidId"/>.  Geeft als resultaat
+        /// het GelieerdePersoonId.  (Niet proper, maar wel interessant voor redirect.)
+        /// </summary>
+        /// <param name="lidId">Id van lid met te togglen lidgeld</param>
+        /// <returns>GelieerdePersoonId van lid</returns>
+        public int LidGeldToggle(int lidId)
+        {
+            var lid = _ledenRepo.ByID(lidId);
+            Gav.Check(lid);
+
+            // Arno: de toggle werkte niet als de status 'null' was, daarom set ik hem hier eerst 
+            if (lid.LidgeldBetaald == null)
+            {
+                lid.LidgeldBetaald = true;
+            }
+            else
+            {
+                lid.LidgeldBetaald = !lid.LidgeldBetaald;
+            }
+            _ledenRepo.SaveChanges();
+            return lid.GelieerdePersoon.ID;
+        }
+
+        #region Private zaken. Misschien hoort dit eerder thuis in een worker? Geen idee.
+
+        /// <summary>
+        /// Controleer of <paramref name="filter"/> geen zaken probeert op te vragen waarvoor
+        /// je geen rechten hebt.
+        /// </summary>
+        /// <param name="filter">Een lidfilter</param>
+        private void SecurityCheck(LidFilter filter)
+        {
             // Check security
             // We verwachten minstens 1 van volgende zaken:
             // GroepID, GroepsWerkJaarID, AfdelingID, FunctieID
@@ -805,7 +871,7 @@ namespace Chiro.Gap.Services
             // alle zoekvoorwaarden worden 'ge-and'.
             // Heb je geen rechten op groep, groepswerjaar, afdeling of functie,
             // dan krijg je een exception (te veel geknoei)
-            
+
             Groep groep = null;
 
             if (filter.GroepID != null)
@@ -829,9 +895,18 @@ namespace Chiro.Gap.Services
             {
                 throw FaultExceptionHelper.GeenGav();
             }
+        }
 
-            List<LidOverzicht> resultaat;
-
+        /// <summary>
+        /// Zoekt alle leden die voldoen aan de gegeven <paramref name="filter"/>. Als
+        /// <paramref name="metAdressen"/> <c>true</c> is, dan worden de adressen eager
+        /// geload.
+        /// </summary>
+        /// <param name="filter">bepaalt de te zoeken leden</param>
+        /// <param name="metAdressen">Als <c>true</c>, dan worden de adressen eager geload.</param>
+        /// <returns>Enumerable voor de gevonden leden.</returns>
+        private IEnumerable<Lid> Zoeken(LidFilter filter, bool metAdressen)
+        {
             // Let op. Deze method is zorgvuldig geschreven opdat de lidinfo na 2 of 4 query's 
             // (alnaargelang met of zonder adressen) allemaal geladen zou zijn.
             // Oorspronkelijk waren dat er een 10-tal per lid. (zie #1587)
@@ -839,12 +914,12 @@ namespace Chiro.Gap.Services
             // te beginnen, geef mij (johan) een seintje.
 
             var teLadenDependencies = new List<string>
-                                          {
-                                              "GelieerdePersoon.Communicatie.CommunicatieType",
-                                              "Functie",
-                                              "GelieerdePersoon.Persoon",
-                                              "AfdelingsJaar.Afdeling"
-                                          };
+                                      {
+                                          "GelieerdePersoon.Communicatie.CommunicatieType",
+                                          "Functie",
+                                          "GelieerdePersoon.Persoon",
+                                          "AfdelingsJaar.Afdeling"
+                                      };
             if (metAdressen)
             {
                 teLadenDependencies.Add("GelieerdePersoon.PersoonsAdres.Adres");
@@ -870,11 +945,11 @@ namespace Chiro.Gap.Services
                       (ld.GelieerdePersoon.PersoonsAdres == null && filter.HeeftVoorkeurAdres == false)) &&
                      (filter.HeeftTelefoonNummer == null ||
                       ld.GelieerdePersoon.Communicatie.Any(
-                          e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer) ==
+                          e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.TelefoonNummer) ==
                       filter.HeeftTelefoonNummer) &&
                      (filter.HeeftEmailAdres == null ||
                       ld.GelieerdePersoon.Communicatie.Any(
-                          e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email) ==
+                          e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email) ==
                       filter.HeeftEmailAdres) &&
                      (filter.AfdelingID == null || filter.AfdelingID == ld.AfdelingsJaar.Afdeling.ID)
                  select ld).ToList();
@@ -893,11 +968,11 @@ namespace Chiro.Gap.Services
                                 (ld.GelieerdePersoon.PersoonsAdres == null && filter.HeeftVoorkeurAdres == false)) &&
                                (filter.HeeftTelefoonNummer == null ||
                                 ld.GelieerdePersoon.Communicatie.Any(
-                                    e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer) ==
+                                    e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.TelefoonNummer) ==
                                 filter.HeeftTelefoonNummer) &&
                                (filter.HeeftEmailAdres == null ||
                                 ld.GelieerdePersoon.Communicatie.Any(
-                                    e => e.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email) ==
+                                    e => e.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email) ==
                                 filter.HeeftEmailAdres) &&
                                (filter.AfdelingID == null ||
                                 ld.AfdelingsJaar.Any(aj => aj.Afdeling.ID == filter.AfdelingID))
@@ -940,61 +1015,22 @@ namespace Chiro.Gap.Services
                 // geevalueerd
 
                 // ReSharper disable UnusedVariable
-                var buitenlandseAdressen = (from adr in _buitenlandseAdressenRepo.Select("PersoonsAdres.GelieerdePersoon", "Land")
-                                            where adr.PersoonsAdres.Any(pa => pa.GelieerdePersoon.Any(gp => gpIDs.Contains(gp.ID)))
-                                            select adr).ToList();
-                var belgischeAdressen = (from adr in _belgischeAdressenRepo.Select("PersoonsAdres.GelieerdePersoon", "StraatNaam", "Woonplaats")
-                                         where adr.PersoonsAdres.Any(pa => pa.GelieerdePersoon.Any(gp => gpIDs.Contains(gp.ID)))
-                                         select adr).ToList();
-                // ReSharper restore UnusedVariable
-
-                resultaat = Mapper.Map<IList<Lid>, List<LidOverzicht>>(leden.ToList());
+                var buitenlandseAdressen =
+                    (from adr in _buitenlandseAdressenRepo.Select("PersoonsAdres.GelieerdePersoon", "Land")
+                     where adr.PersoonsAdres.Any(pa => pa.GelieerdePersoon.Any(gp => gpIDs.Contains(gp.ID)))
+                     select adr).ToList();
+                var belgischeAdressen =
+                    (from adr in _belgischeAdressenRepo.Select("PersoonsAdres.GelieerdePersoon", "StraatNaam", "Woonplaats")
+                     where adr.PersoonsAdres.Any(pa => pa.GelieerdePersoon.Any(gp => gpIDs.Contains(gp.ID)))
+                     select adr).ToList();
+                // ReSharper restore UnusedVariable     
             }
-            else
-            {
-                // TODO: Waarom wordt er hier twee keer gemapt?
-                // Misschien om informatie expliciet niet mee te nemen?
-
-                var list = Mapper.Map<IList<Lid>, List<LidOverzichtZonderAdres>>(leden.ToList());
-                resultaat = Mapper.Map<IList<LidOverzichtZonderAdres>, List<LidOverzicht>>(list);
-            }
-
-            return resultaat;
-
+            return leden;
         }
 
-        public List<PersoonLidInfo> LijstZoekenPersoonLidInfo(LidFilter filter)
-        {
-            throw new NotImplementedException();
-        }
+
 
         #endregion
-
-
-        /// <summary>
-        /// Togglet het vlagje 'lidgeld betaald' van het lid met LidId <paramref name="lidId"/>.  Geeft als resultaat
-        /// het GelieerdePersoonId.  (Niet proper, maar wel interessant voor redirect.)
-        /// </summary>
-        /// <param name="lidId">Id van lid met te togglen lidgeld</param>
-        /// <returns>GelieerdePersoonId van lid</returns>
-        public int LidGeldToggle(int lidId)
-        {
-            var lid = _ledenRepo.ByID(lidId);
-            Gav.Check(lid);
-
-            // Arno: de toggle werkte niet als de status 'null' was, daarom set ik hem hier eerst 
-            if (lid.LidgeldBetaald == null)
-            {
-                lid.LidgeldBetaald = true;
-            }
-            else
-            {
-                lid.LidgeldBetaald = !lid.LidgeldBetaald;
-            }
-            _ledenRepo.SaveChanges();
-            return lid.GelieerdePersoon.ID;
-        }
-
 
     }
 }
