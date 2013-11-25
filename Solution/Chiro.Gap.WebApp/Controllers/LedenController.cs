@@ -192,7 +192,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             // Haal de op te lijsten leden op; de filter wordt bepaald uit de method parameters.
             model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
-                svc => svc.Zoeken(
+                svc => svc.LijstZoekenLidOverzicht(
                     new LidFilter
                         {
                             GroepsWerkJaarID = groepsWerkJaarID,

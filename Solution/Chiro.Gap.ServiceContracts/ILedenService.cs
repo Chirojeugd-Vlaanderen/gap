@@ -142,14 +142,14 @@ namespace Chiro.Gap.ServiceContracts
 		PersoonLidInfo DetailsOphalen(int lidId);
 
 		/// <summary>
-		/// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>.
+		/// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>. Levert een lijst van LidOverzicht af.
 		/// </summary>
 		/// <param name="filter">De niet-nulle properties van de filter
 		/// bepalen waarop gezocht moet worden</param>
         /// <param name="metAdressen">Indien <c>true</c>, worden de
         /// adressen mee opgehaald. (Adressen ophalen vertraagt aanzienlijk.)
         /// </param>
-		/// <returns>Lijst met info over gevonden leden</returns>
+		/// <returns>Lijst met LidOverzicht over gevonden leden</returns>
 		/// <remarks>
 		/// Er worden enkel actieve leden opgehaald.
 		/// Let er ook op dat je in de filter iets opgeeft als LidType
@@ -158,7 +158,23 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		List<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen);
+		List<LidOverzicht> LijstZoekenLidOverzicht(LidFilter filter, bool metAdressen);
+
+        /// <summary>
+        /// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>. Levert een lijst van PersoonLidInfo af.
+        /// </summary>
+        /// <param name="filter">De niet-nulle properties van de filter
+        /// bepalen waarop gezocht moet worden</param>
+        /// <returns>Lijst met PersoonLidInfo over gevonden leden</returns>
+        /// <remarks>
+        /// Er worden enkel actieve leden opgehaald.
+        /// Let er ook op dat je in de filter iets opgeeft als LidType
+        /// (Kind, Leiding of Alles), want anders krijg je niets terug.
+        /// </remarks>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        List<PersoonLidInfo> LijstZoekenPersoonLidInfo(LidFilter filter);
 
 		#endregion
 

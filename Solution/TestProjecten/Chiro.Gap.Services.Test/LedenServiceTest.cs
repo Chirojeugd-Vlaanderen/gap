@@ -690,7 +690,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var filter = new LidFilter { GroepsWerkJaarID = gwj.ID };
-            var actual = target.Zoeken(filter, false);
+            var actual = target.LijstZoekenLidOverzicht(filter, false);
 
             // ASSERT
 
@@ -994,7 +994,7 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var target = Factory.Maak<LedenService>();
-            var actual = target.Zoeken(new LidFilter {HeeftVoorkeurAdres = false}, false);
+            var actual = target.LijstZoekenLidOverzicht(new LidFilter {HeeftVoorkeurAdres = false}, false);
 
             // ASSERT
             Assert.IsFalse(actual.Select(ld => ld.LidID == lid.ID).Any());
@@ -1056,7 +1056,7 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var target = Factory.Maak<LedenService>();
-            var actual = target.Zoeken(new LidFilter { HeeftTelefoonNummer = false }, false);
+            var actual = target.LijstZoekenLidOverzicht(new LidFilter { HeeftTelefoonNummer = false }, false);
 
             // ASSERT
             Assert.IsTrue(actual.Select(ld => ld.LidID == lid.ID).Any());
@@ -1116,7 +1116,7 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var target = Factory.Maak<LedenService>();
-            var actual = target.Zoeken(new LidFilter { HeeftEmailAdres = false }, false);
+            var actual = target.LijstZoekenLidOverzicht(new LidFilter { HeeftEmailAdres = false }, false);
 
             // ASSERT
             Assert.IsTrue(actual.Select(ld => ld.LidID == lid.ID).Any());
@@ -1459,7 +1459,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<LedenService>();
-            target.Zoeken(new LidFilter {GroepID = groep.ID}, false);
+            target.LijstZoekenLidOverzicht(new LidFilter {GroepID = groep.ID}, false);
 
             // verwacht exception
         }
@@ -1494,7 +1494,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<LedenService>();
-            target.Zoeken(new LidFilter { GroepsWerkJaarID = groepsWerkJaar.ID }, false);
+            target.LijstZoekenLidOverzicht(new LidFilter { GroepsWerkJaarID = groepsWerkJaar.ID }, false);
 
             // verwacht exception
         }
@@ -2127,7 +2127,7 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var target = Factory.Maak<LedenService>();
-            var actual = target.Zoeken(new LidFilter { FunctieID = functie1.ID }, false);
+            var actual = target.LijstZoekenLidOverzicht(new LidFilter { FunctieID = functie1.ID }, false);
 
             // ASSERT
             Assert.AreEqual(1, actual.Count);

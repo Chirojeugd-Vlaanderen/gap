@@ -201,7 +201,7 @@ namespace Chiro.Gap.WebApp.Controllers
             try
             {
                 gelieerdepersoonIDs =
-					ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(svc => svc.Zoeken(filter, false)).Select(
+					ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(svc => svc.LijstZoekenLidOverzicht(filter, false)).Select(
                     e => e.GelieerdePersoonID).ToList();
             }
             catch (FaultException<FoutNummerFault>)

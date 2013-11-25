@@ -781,19 +781,21 @@ namespace Chiro.Gap.Services
             return Mapper.Map<Lid, PersoonLidInfo>(lid);
         }
 
-        /// <summary></summary>
+        /// <summary>
+        /// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>. Levert een lijst van LidOverzicht af.
+        /// </summary>
         /// <param name="filter">De niet-nulle properties van de filter
         /// bepalen waarop gezocht moet worden</param>
         /// <param name="metAdressen">Indien <c>true</c>, worden de
         /// adressen mee opgehaald. (Adressen ophalen vertraagt aanzienlijk.)
         /// </param>
-        /// <returns>Lijst met info over gevonden leden</returns>
+        /// <returns>Lijst met LidOverzicht over gevonden leden</returns>
         /// <remarks>
         /// Er worden enkel actieve leden opgehaald.
         /// Let er ook op dat je in de filter iets opgeeft als LidType
         /// (Kind, Leiding of Alles), want anders krijg je niets terug.
         /// </remarks>
-        public List<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
+        public List<LidOverzicht> LijstZoekenLidOverzicht(LidFilter filter, bool metAdressen)
         {
             // Check security
             // We verwachten minstens 1 van volgende zaken:
@@ -960,6 +962,12 @@ namespace Chiro.Gap.Services
             return resultaat;
 
         }
+
+        public List<PersoonLidInfo> LijstZoekenPersoonLidInfo(LidFilter filter)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
 
