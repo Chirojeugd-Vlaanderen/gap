@@ -21,9 +21,6 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <% // TODO: onderstaand script moet naar 'head'. %>
-<script src="<%= ResolveUrl("~/Scripts/TableTools.js")%>" type="text/javascript"></script>
-<script src="<%= ResolveUrl("~/Scripts/ZeroClipboard.js")%>" type="text/javascript"></script>
-<link href="<%= ResolveUrl("~/Content/TableTools.css")%>" rel="stylesheet" type="text/css" />
 
 <table style="width: 100%" id="ledenOverzichtsTabel" class="overzicht">
     <thead>

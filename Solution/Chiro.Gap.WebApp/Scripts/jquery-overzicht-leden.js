@@ -38,13 +38,6 @@ $(function () {
         $('input[type="checkbox"]').prop('checked', bool);
     });
     
-    //hier maak ik de juiste url naar de .swf file om de pdf te maken
-    var protocol = checkProtocol();
-    var url =protocol + "//" + document.location.host + root;
-    url += "Content/media/copy_csv_xls_pdf.swf";
-    
-    
-    
     //instellingen voor datatable
     $('#ledenOverzichtsTabel').dataTable({
         "bJQueryUI": true,
@@ -96,25 +89,6 @@ $(function () {
             }
         },
         "sDom": '<"H"Tlfr>t<"F"ip>',
-        "oTableTools": {
-            "sSwfPath": url ,
-            "aButtons": [
-                    {
-                        "sExtends": "pdf",
-                        "sFileName": '*.pdf',
-                        "mColumns": [ 1,2,3,6,9,10 ],
-                        "sButtonText": "<strong>Opslaan als pdf</strong>",
-                        "sPdfOrientation": "landscape",
-                        "sPdfMessage": "Geïmporteerd uit het GroepsAdministratieProgramma (GAP).",
-                        "sPdfSize": "A4",
-                    },
-				    {
-				        "sExtends": "xls",
-				        "sButtonText": "<strong>Opslaan als Excel</strong>",
-				        "mColumns": [ 1,2,3,4,5,6,7,9,10,11,12,13,14,15,16 ]
-				    }
-            ]
-        }
     });
     
     // UGLY: Als verjaardagslijst gekozen, sorteer dan op verjaardag.
