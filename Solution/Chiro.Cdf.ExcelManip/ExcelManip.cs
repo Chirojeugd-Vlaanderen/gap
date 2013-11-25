@@ -82,7 +82,7 @@ namespace Chiro.Cdf.ExcelManip
 			return result;
 		}
 
-		private void KolomTitelsInvullen(SpreadsheetDocument spreadSheet, string[] koppen)
+		protected void KolomTitelsInvullen(SpreadsheetDocument spreadSheet, string[] koppen)
 		{
 			int colIndex = 1;
 
