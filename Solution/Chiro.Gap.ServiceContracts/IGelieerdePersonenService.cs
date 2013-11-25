@@ -18,10 +18,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-
-using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -178,7 +175,21 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		int Bewaren(PersoonInfo persoonInfo);
 
-		/// <summary>
+        /// <summary>
+        /// Maakt een nieuwe persoon aan, met adres, e-mailadres en telefoonnummer, en maakt de persoon
+        /// desgevallend ook lid.
+        /// </summary>
+        /// <param name="details">details voor de aanmaak van de persoon</param>
+        /// <param name="groepID">ID van de groep waaraan de persoon gekoppeld moet worden</param>
+        /// <param name="forceer">Als <c>true</c>, doe dan ook verder als er al een gelijkaardige persoon bestaat</param>
+        /// <returns>ID en GelieerdePersoonID van de nieuwe persoon</returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
+        [FaultContract(typeof(OngeldigObjectFault))]
+        IDPersEnGP Nieuw(NieuwePersoonDetails details, int groepID, bool forceer);
+
+        /// <summary>
 		/// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
 		/// <paramref>groepID</paramref>
 		/// </summary>
@@ -423,7 +434,5 @@ namespace Chiro.Gap.ServiceContracts
 		void UitCategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
 
 		#endregion categorieën
-
-
 	}
 }

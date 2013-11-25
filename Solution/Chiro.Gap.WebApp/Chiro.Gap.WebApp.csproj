@@ -185,6 +185,7 @@
     <Compile Include="Models\IntStringModel.cs" />
     <Compile Include="Models\LidAfdelingenModel.cs" />
     <Compile Include="Models\Mededeling.cs" />
+    <Compile Include="Models\NieuwePersoonModel.cs" />
     <Compile Include="Models\PersoonEnLidModel.cs" />
     <Compile Include="Models\GroepsInstellingenModel.cs" />
     <Compile Include="Models\IMasterViewModel.cs" />

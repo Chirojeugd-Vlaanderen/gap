@@ -40,7 +40,7 @@ namespace Chiro.Gap.Validatie
 	    public override FoutNummer? FoutNummer(ICommunicatie teValideren)
 	    {
             if (teValideren != null && teValideren.Nummer != null &&
-                Regex.IsMatch(teValideren.Nummer, teValideren.CommunicatieTypeValidatie))
+                Regex.IsMatch(teValideren.Nummer, teValideren.CommunicatieTypeValidatie, RegexOptions.IgnoreCase))
             {
                 return null;
             }

@@ -251,6 +251,13 @@ namespace Chiro.Gap.Services
             // **                                                                                      **
             // ******************************************************************************************
             return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
+            // ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH
+            // Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
+            // Werk je op de algemene dev-db, check dan de connectie met devsrv1.
+            // Werk je op een eigen database, dan moeten je connectionstrings aangepast zijn.
+            // en uiteraard moet je database service gestart zijn :-P
+
+
         }
 
         /// <summary>
@@ -691,12 +698,12 @@ namespace Chiro.Gap.Services
         /// Informatie over alle actieve afdelingen in het groepswerkjaar met 
         /// ID <paramref name="groepswerkjaarId"/>
         /// </returns>
-        public IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepswerkjaarId)
+        public List<AfdelingDetail> ActieveAfdelingenOphalen(int groepswerkjaarId)
         {
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
             Gav.Check(gwj);
             Debug.Assert(gwj != null, "gwj != null");
-            return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<AfdelingDetail>>(gwj.AfdelingsJaar);
+            return Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingDetail>>(gwj.AfdelingsJaar);
         }
 
         /// <summary>

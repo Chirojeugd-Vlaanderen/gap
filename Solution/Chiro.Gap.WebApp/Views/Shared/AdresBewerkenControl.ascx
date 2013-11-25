@@ -33,9 +33,9 @@
         <%=Html.ValidationMessageFor(mdl => mdl.PostNr)%></td>
     </tr>
     <tr>
-        <td><%=Html.LabelFor(mdl => mdl.Straat)%></td>
-        <td><%=Html.EditorFor(mdl => mdl.Straat)%> <br />
-        <%=Html.ValidationMessageFor(mdl => mdl.Straat)%></td>
+        <td><%=Html.LabelFor(mdl => mdl.StraatNaamNaam)%></td>
+        <td><%=Html.EditorFor(mdl => mdl.StraatNaamNaam)%> 
+        <%=Html.ValidationMessageFor(mdl => mdl.StraatNaamNaam)%></td>
     </tr>   
     
     <tr>
@@ -53,9 +53,9 @@
         <!--<input type="submit" name="action" value="Woonplaatsen ophalen" />-->
  
     <tr id="woonplaatsBinnenland">
-        <td><%=Html.LabelFor(mdl => mdl.WoonPlaats)%></td>
-        <td><%=Html.DropDownListFor(mdl => mdl.WoonPlaats, new SelectList(Model.BeschikbareWoonPlaatsen, "Naam", "Naam"))%>
-        <%=Html.ValidationMessageFor(mdl => mdl.WoonPlaats)%></td>
+        <td><%=Html.LabelFor(mdl => mdl.WoonPlaatsNaam)%></td>
+        <td><%=Html.DropDownListFor(mdl => mdl.WoonPlaatsNaam, new SelectList(Model.BeschikbareWoonPlaatsen, "Naam", "Naam"))%>
+        <%=Html.ValidationMessageFor(mdl => mdl.WoonPlaatsNaam)%></td>
     </tr>
     <tr id="woonplaatsBuitenland" hidden>
         <td><%=Html.LabelFor(mdl => mdl.WoonPlaatsBuitenLand)%></td>

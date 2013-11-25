@@ -31,6 +31,10 @@ namespace Chiro.Gap.WebApp.Models
 	/// een boolean <c>Forceer</c> die aangeeft of een nieuwe persoon geforceerd moet worden
 	/// ondanks gevonden gelijkaardige personen.
 	/// </summary>
+	/// <remarks>
+	/// Dit model wordt enkel nog gebruikt voor het
+	/// bewerken van een overleden persoon. Op termijn zou ik van dit model af willen, wegens te verwarrend.
+	/// </remarks>
 	public class GelieerdePersonenModel : MasterViewModel
 	{
         public GelieerdePersonenModel()

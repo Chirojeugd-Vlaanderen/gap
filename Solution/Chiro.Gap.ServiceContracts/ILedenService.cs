@@ -182,5 +182,6 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		int TypeToggle(int lidId);
+
 	}
 }

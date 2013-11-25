@@ -57,7 +57,7 @@ namespace Chiro.Gap.WebApp.Models
             set { Uitstap.Adres.PostCode = value; }
         }
 
-        public string Straat
+        public string StraatNaamNaam
         {
             get { return Uitstap.Adres.StraatNaamNaam; }
             set { Uitstap.Adres.StraatNaamNaam = value; }
@@ -75,7 +75,7 @@ namespace Chiro.Gap.WebApp.Models
             set { Uitstap.Adres.Bus = value; }
         }
 
-        public string WoonPlaats
+        public string WoonPlaatsNaam
         {
             get { return Uitstap.Adres.WoonPlaatsNaam; }
             set { Uitstap.Adres.WoonPlaatsNaam = value; }

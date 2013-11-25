@@ -151,6 +151,12 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>ProbleemFacturen.sql</FullPath>
         </FileNode>
+        <FileNode Name="ProbleemFacturen2.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>ProbleemFacturen2.sql</FullPath>
+        </FileNode>
         <FileNode Name="RecentGewijzigdeAdressen.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>

@@ -122,7 +122,7 @@ namespace Chiro.Gap.WebApp.Models
 			set { PersoonsAdresInfo.PostCode = value; }
 		}
 
-		public string Straat
+		public string StraatNaamNaam
 		{
 			get { return PersoonsAdresInfo.StraatNaamNaam; }
 			set { PersoonsAdresInfo.StraatNaamNaam = value; }
@@ -140,7 +140,7 @@ namespace Chiro.Gap.WebApp.Models
 			set { PersoonsAdresInfo.Bus = value; }
 		}
 
-		public string WoonPlaats
+		public string WoonPlaatsNaam
 		{
 			get { return PersoonsAdresInfo.WoonPlaatsNaam; }
 			set { PersoonsAdresInfo.WoonPlaatsNaam = value; }
