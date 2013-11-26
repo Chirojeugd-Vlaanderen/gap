@@ -894,8 +894,11 @@ namespace Chiro.Gap.Services
                 using (var tx = new TransactionScope())
                 {
 #endif
-                _ledenSync.Bewaren(lid);
-                _gelieerdePersonenRepo.SaveChanges();
+                    // eerst savechanges, en dan lid bewaren
+                    // op die manier hebben we het gapID van de gelieerde persoon.
+
+                    _gelieerdePersonenRepo.SaveChanges();
+                    _ledenSync.Bewaren(lid);
 #if KIPDORP
                 tx.Complete();
                 }

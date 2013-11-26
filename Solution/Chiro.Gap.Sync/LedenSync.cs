@@ -148,6 +148,9 @@ namespace Chiro.Gap.Sync
                 {
                     var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon);
 
+                    // kijk na of de persoon al bewaard is in GAP:
+                    Debug.Assert(l.GelieerdePersoon.Persoon.ID != 0);
+
                     ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidBewaren(details, lidGedoe));
                 }
             }
