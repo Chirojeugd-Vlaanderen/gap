@@ -414,10 +414,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src))
                 .ForMember(
                     dst => dst.PersoonsAdresInfo,
-                    opt => opt.Ignore()) // zit al in PersoonDetail
+                    opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.PersoonsAdres))
                 .ForMember(
                     dst => dst.CommunicatieInfo,
-                    opt => opt.Ignore()) // zit al in PersoonDetail
+                    opt => opt.MapFrom(src => src.GelieerdePersoon.Communicatie))
                 .ForMember(
                     dst => dst.GebruikersInfo,
                     opt => opt.Ignore()); // niet relevant, denk ik :-P
