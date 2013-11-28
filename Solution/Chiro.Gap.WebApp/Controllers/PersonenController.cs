@@ -27,7 +27,6 @@ using System.Web.Services.Description;
 using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
-using Chiro.Cdf.ExcelManip;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -215,7 +214,8 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => !it.SterfDatum.HasValue ? it.TelefoonNummer : string.Empty,
                 it => !it.SterfDatum.HasValue ? it.Email : string.Empty);
 
-            return new ExcelResult(stream, "personen.xlsx");
+            throw new NotImplementedException();
+            // return new ExcelResult(stream, "personen.xlsx");
         }
 
         /// <summary>

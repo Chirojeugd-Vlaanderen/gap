@@ -24,7 +24,6 @@ using System.ServiceModel;
 using System.Web.Mvc;
 
 using Chiro.Adf.ServiceModel;
-using Chiro.Cdf.ExcelManip;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ExcelManip;
 using Chiro.Gap.ServiceContracts;
@@ -500,9 +499,9 @@ namespace Chiro.Gap.WebApp.Controllers
 
             const string bestandsNaam = "leden.xlsx";
 
-            var stream = (new GapExcelManip()).LidExcelTabel(leden, alleAfdelingen);
+            var pkg = (new GapExcelManip()).LidExcelTabel(leden, alleAfdelingen);
 
-            return new ExcelResult(stream, bestandsNaam);
+            return new ExcelResult(pkg, bestandsNaam);
         }
 
         /// <summary>

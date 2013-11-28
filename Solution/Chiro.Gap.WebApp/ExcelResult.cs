@@ -19,8 +19,9 @@
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+using OfficeOpenXml;
 
-namespace Chiro.Cdf.ExcelManip
+namespace Chiro.Gap.WebApp
 {
 	/// <summary>
 	/// Actionresult voor een Exceldocument.  Schaamteloos overgenomen van
@@ -29,28 +30,21 @@ namespace Chiro.Cdf.ExcelManip
 	public class ExcelResult : ActionResult
 	{
 		private readonly string _fileName;
-		private readonly MemoryStream _stream;
+        private readonly ExcelPackage _package;
 
-		public ExcelResult(MemoryStream stream, string fileName)
+		public ExcelResult(ExcelPackage package, string fileName)
 		{
-			_stream = stream;
+			_package = package;
 			_fileName = fileName;
 		}
 
 		public override void ExecuteResult(ControllerContext cContext)
 		{
 			HttpContext context = HttpContext.Current;
-			context.Response.Clear();
-			context.Response.AddHeader(@"content-disposition", @"attachment; filename=" + _fileName);
-			context.Response.Charset = string.Empty;
 
-			// Zetten van de cacheability verwijderd, omdat dat problemen opleverde
-			// met Internet Explorer (#775)
-			// context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
-
-			context.Response.ContentType = @"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-			context.Response.BinaryWrite(_stream.ToArray());
-			context.Response.End();
+		    _package.SaveAs(context.Response.OutputStream);
+            context.Response.ContentType = @"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            context.Response.AddHeader(@"content-disposition", @"attachment; filename=" + _fileName);
 		}
 	}
 }
