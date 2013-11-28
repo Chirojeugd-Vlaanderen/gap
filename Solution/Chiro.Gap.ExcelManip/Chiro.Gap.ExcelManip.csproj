@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -38,6 +39,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GapExcelManip.cs" />
@@ -47,6 +49,10 @@
     <ProjectReference Include="..\Chiro.Cdf.ExcelManip\Chiro.Cdf.ExcelManip.csproj">
       <Project>{3512085D-DC3F-4193-9C22-F7AB7142BF21}</Project>
       <Name>Chiro.Cdf.ExcelManip</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
+      <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
+      <Name>Chiro.Gap.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>

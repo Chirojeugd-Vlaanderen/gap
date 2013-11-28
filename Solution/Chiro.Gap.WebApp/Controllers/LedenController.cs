@@ -494,9 +494,13 @@ namespace Chiro.Gap.WebApp.Controllers
                 svc => svc.LijstZoekenPersoonLidInfo(
                     FilterMaken(afdelingID, functieID, ledenLijst, groepsWerkJaarID)));
 
+            var alleAfdelingen =
+                ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>(
+                    svc => svc.ActieveAfdelingenOphalen(groepsWerkJaarID));
+
             const string bestandsNaam = "leden.xlsx";
 
-            var stream = (new GapExcelManip()).LidExcelTabel(leden);
+            var stream = (new GapExcelManip()).LidExcelTabel(leden, alleAfdelingen);
 
             return new ExcelResult(stream, bestandsNaam);
         }
