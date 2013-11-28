@@ -196,7 +196,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			                       	"Postcode", "Gemeente", "Land", "Tel", "Mail"
 			                       };
 
-            var stream = (new Cdf.ExcelManip.ExcelManip()).ExcelTabel(
+            var stream = (new ExcelManip.GapExcelManip()).ExcelTabel(
                 data,
                 kolomkoppen,
                 it => it.AdNummer,
