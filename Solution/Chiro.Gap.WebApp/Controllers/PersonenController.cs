@@ -195,7 +195,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			                       	"Postcode", "Gemeente", "Land", "Tel", "Mail"
 			                       };
 
-            var stream = (new ExcelManip.GapExcelManip()).ExcelTabel(
+            var package = (new ExcelManip.GapExcelManip()).ExcelDocument(
                 data,
                 kolomkoppen,
                 it => it.AdNummer,
@@ -214,8 +214,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => !it.SterfDatum.HasValue ? it.TelefoonNummer : string.Empty,
                 it => !it.SterfDatum.HasValue ? it.Email : string.Empty);
 
-            throw new NotImplementedException();
-            // return new ExcelResult(stream, "personen.xlsx");
+            return new ExcelResult(package, "personen.xlsx");
         }
 
         /// <summary>

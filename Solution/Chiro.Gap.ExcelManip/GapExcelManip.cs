@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Chiro.Gap.Domain;
@@ -40,7 +39,6 @@ namespace Chiro.Gap.ExcelManip
         /// <returns>Een memorystream met daarin het Exceldocument</returns>
         public ExcelPackage LidExcelTabel(IList<PersoonLidInfo> rows, IList<AfdelingDetail> alleAfdelingen)
         {
-            // Creëer een nieuw document in de stream
             var pkg = new ExcelPackage();
             var aantallen = (from r in rows
                 select new
@@ -213,27 +211,6 @@ namespace Chiro.Gap.ExcelManip
         }
 
         /// <summary>
-        /// Genereer een Exceldocument op basis van een rij objecten van type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">Type van de objecten</typeparam>
-        /// <param name="rows">Objecten die in een rij terecht moeten komen</param>
-        /// <param name="cols">Een (param)array van lambda-expressies, die de kolommen van het document bepaalt</param>
-        /// <returns>Een memorystream met daarin het Exceldocument</returns>
-        public MemoryStream ExcelTabel<T>(IEnumerable<T> rows, params Func<T, object>[] cols)
-        {
-            var result = new MemoryStream();
-
-            // Importeer de tabel in het document 
-            using (var pkg = new ExcelPackage(result))
-            {
-                var worksheet = pkg.Workbook.Worksheets.Add("Export");
-                WriteRows(worksheet, rows, cols);
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Genereer een Exceldocument op basis van een rij objecten van type <typeparamref name="T"/>,
         /// en gebruikt de waarden in <paramref name="koppen"/> als kolomtitels
         /// </summary>
@@ -242,20 +219,14 @@ namespace Chiro.Gap.ExcelManip
         /// <param name="koppen">Een (param)array van strings die als kolomkoppen in het Exceldocument moeten komen</param>
         /// <param name="cols">Een (param)array van lambda-expressies, die de kolommen van het document bepaalt</param>
         /// <returns>Een memorystream met daarin het Exceldocument</returns>
-        public MemoryStream ExcelTabel<T>(IEnumerable<T> rows, string[] koppen, params Func<T, object>[] cols)
+        public ExcelPackage ExcelDocument<T>(IEnumerable<T> rows, string[] koppen, params Func<T, object>[] cols)
         {
-            var result = new MemoryStream();
+            var pkg = new ExcelPackage();
+            var worksheet = pkg.Workbook.Worksheets.Add("Ledenlijst");
+            KolomTitelsInvullen(worksheet, koppen);
+            WriteRows(worksheet, rows, cols);
 
-            // Importeer de tabel in het document 
-            using (var pkg = new ExcelPackage(result))
-            {
-                var worksheet = pkg.Workbook.Worksheets.Add("Export");
-                KolomTitelsInvullen(worksheet, koppen);
-
-                WriteRows(worksheet, rows, cols);
-            }
-
-            return result;
+            return pkg;
         }
 
         protected void KolomTitelsInvullen(ExcelWorksheet spreadSheet, string[] koppen)

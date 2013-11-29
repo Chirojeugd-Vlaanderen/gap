@@ -393,7 +393,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			        };
 
             var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));
-            var stream = (new ExcelManip.GapExcelManip()).ExcelTabel(
+            var package = (new ExcelManip.GapExcelManip()).ExcelDocument(
                 lijst,
                 kolomkoppen,
                 it => it.PersoonOverzicht.AdNummer,
@@ -413,8 +413,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => it.MedischeFicheOk ? "Ja" : "Nee",
                 it => it.Opmerkingen);
 
-            throw new NotImplementedException();
-            //return new ExcelResult(stream, bestandsNaam);
+            return new ExcelResult(package, bestandsNaam);
         }
     }
 }
