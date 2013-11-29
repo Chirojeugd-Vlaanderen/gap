@@ -183,7 +183,7 @@ namespace Chiro.Gap.ExcelManip
             KolomTitelsInvullen(adressenBlad, new string[]
                                               {
                                                   "Type", "AD-nummer", "Voornaam", "Naam", "Afdelingen", "Straat", "Nr.",
-                                                  "Bus", "Postnr.",
+                                                  "Bus", "Postnr.", "Postcode",
                                                   "Woonplaats", "Land"
                                               });
 
@@ -207,6 +207,33 @@ namespace Chiro.Gap.ExcelManip
                     ++rijNr;
                 }
             }
+
+            // derde werkblad: communicatievormen
+
+            var communicatieBlad = pkg.Workbook.Worksheets.Add("Communicatie");
+            KolomTitelsInvullen(communicatieBlad, new string[]
+                                              {
+                                                  "Type", "AD-nummer", "Voornaam", "Naam", "Afdelingen", "Type",
+                                                  "Nr./adres", "Snelleberichtenlijst", "Opmerking"
+                                              });
+            rijNr = 2;
+            foreach (var lid in leden)
+            {
+                foreach (var ci in lid.CommunicatieInfo)
+                {
+                    Insert(communicatieBlad, lid.LidInfo.Type.ToString(), 1, rijNr);
+                    Insert(communicatieBlad, lid.PersoonDetail.AdNummer, 2, rijNr);
+                    Insert(communicatieBlad, lid.PersoonDetail.VoorNaam, 3, rijNr);
+                    Insert(communicatieBlad, lid.PersoonDetail.Naam, 4, rijNr);
+                    Insert(communicatieBlad, GeconcateneerdeAfdelingen(lid.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
+                    Insert(communicatieBlad, ci.CommunicatieTypeOmschrijving, 6, rijNr);
+                    Insert(communicatieBlad, ci.Nummer, 7, rijNr);
+                    Insert(communicatieBlad, ci.IsVoorOptIn, 8, rijNr);
+                    Insert(communicatieBlad, ci.Nota, 9, rijNr);
+                    ++rijNr;
+                }
+            }
+
             return pkg;
         }
 
