@@ -28,6 +28,7 @@ using AutoMapper;
 
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Domain;
+using Chiro.Gap.ExcelManip;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -195,7 +196,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			                       	"Postcode", "Gemeente", "Land", "Tel", "Mail"
 			                       };
 
-            var package = (new ExcelManip.GapExcelManip()).ExcelDocument(
+            var package = GapExcelManip.ExcelDocument(
                 data,
                 kolomkoppen,
                 it => it.AdNummer,

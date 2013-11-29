@@ -29,18 +29,24 @@ namespace Chiro.Gap.ExcelManip
     /// <summary>
     /// GAP-specifieke Excelmanipulaties
     /// </summary>
-    public class GapExcelManip
+    /// <remarks>
+    /// Dit kan nog wat opkuis gebruiken. We zijn van iets custom aan het migreren naar EPPlus, en die migratie
+    /// is van de rap-rap gebeurd.
+    /// </remarks>
+    public static class GapExcelManip
     {
         /// <summary>
         /// Genereer een Exceldocument op basis van een rij PersoonLidInfo-objecten.
         /// </summary>
-        /// <param name="rows">Objecten die in een rij terecht moeten komen</param>
+        /// <param name="leden">Objecten die in een rij terecht moeten komen</param>
         /// <param name="alleAfdelingen">Lijstje van (minstens) alle gebruikte afdelingen</param>
         /// <returns>Een memorystream met daarin het Exceldocument</returns>
-        public ExcelPackage LidExcelTabel(IList<PersoonLidInfo> rows, IList<AfdelingDetail> alleAfdelingen)
+        public static ExcelPackage LidExcelDocument(IList<PersoonLidInfo> leden, IList<AfdelingDetail> alleAfdelingen)
         {
+            // TODO: Needs cleanup.
+
             var pkg = new ExcelPackage();
-            var aantallen = (from r in rows
+            var aantallen = (from r in leden
                 select new
                        {
                            AantalAdressen = r.PersoonsAdresInfo.Count(),
@@ -56,39 +62,41 @@ namespace Chiro.Gap.ExcelManip
             int maxAantalEmail = aantallen.Max(a => a.AantalEmail);
             int maxAantalTel = aantallen.Max(a => a.AantalTel);
 
-            // Dit is vrij omslachtig. Maar voorlopig heb ik niets beter.
+            // In het eerste werkblad zit een grote tabel met erg veel informatie.
+            // Opbouw is tamelijk omslachtig, maar daar heb ik niets beters voor.
 
-            var worksheet = pkg.Workbook.Worksheets.Add("Ledenlijst");
+            var ledenBlad = pkg.Workbook.Worksheets.Add("Ledenlijst");
+            
             // Bouw koppen op
-
-            Insert(worksheet, "Type", 1, 1);
-            Insert(worksheet, "AD-nr.", 2, 1);
-            Insert(worksheet, "Voornaam", 3, 1);
-            Insert(worksheet, "Naam", 4, 1);
-            Insert(worksheet, "Afdelingen", 5, 1);
-            Insert(worksheet, "Functies", 6, 1);
-            Insert(worksheet, "Geboortedatum", 7, 1);
-            Insert(worksheet, "Betaald", 8, 1);
+            
+            Insert(ledenBlad, "Type", 1, 1);
+            Insert(ledenBlad, "AD-nr.", 2, 1);
+            Insert(ledenBlad, "Voornaam", 3, 1);
+            Insert(ledenBlad, "Naam", 4, 1);
+            Insert(ledenBlad, "Afdelingen", 5, 1);
+            Insert(ledenBlad, "Functies", 6, 1);
+            Insert(ledenBlad, "Geboortedatum", 7, 1);
+            Insert(ledenBlad, "Betaald", 8, 1);
 
             for (int i = 0; i < maxAantalAdressen; ++i)
             {
-                Insert(worksheet, String.Format("Straat {0}", i + 1), i*7 + 9, 1);
-                Insert(worksheet, String.Format("Nr. {0}", i + 1), i*7 + 10, 1);
-                Insert(worksheet, String.Format("Bus {0}", i + 1), i*7 + 11, 1);
-                Insert(worksheet, String.Format("Postnr. {0}", i + 1), i*7 + 12, 1);
-                Insert(worksheet, String.Format("Postcode {0}", i + 1), i*7 + 13, 1);
-                Insert(worksheet, String.Format("Woonplaats {0}", i + 1), i*7 + 14, 1);
-                Insert(worksheet, String.Format("Land {0}", i + 1), i*7 + 15, 1);
+                Insert(ledenBlad, String.Format("Straat {0}", i + 1), i*7 + 9, 1);
+                Insert(ledenBlad, String.Format("Nr. {0}", i + 1), i*7 + 10, 1);
+                Insert(ledenBlad, String.Format("Bus {0}", i + 1), i*7 + 11, 1);
+                Insert(ledenBlad, String.Format("Postnr. {0}", i + 1), i*7 + 12, 1);
+                Insert(ledenBlad, String.Format("Postcode {0}", i + 1), i*7 + 13, 1);
+                Insert(ledenBlad, String.Format("Woonplaats {0}", i + 1), i*7 + 14, 1);
+                Insert(ledenBlad, String.Format("Land {0}", i + 1), i*7 + 15, 1);
             }
 
             for (int i = 0; i < maxAantalTel; ++i)
             {
-                Insert(worksheet, String.Format("Tel. {0}", i + 1), 7*maxAantalAdressen + i + 9, 1);
+                Insert(ledenBlad, String.Format("Tel. {0}", i + 1), 7*maxAantalAdressen + i + 9, 1);
             }
 
             for (int i = 0; i < maxAantalEmail; ++i)
             {
-                Insert(worksheet, String.Format("E-mail. {0}", i + 1),
+                Insert(ledenBlad, String.Format("E-mail. {0}", i + 1),
                     7*maxAantalAdressen + maxAantalTel + i + 9, 1);
             }
 
@@ -96,42 +104,35 @@ namespace Chiro.Gap.ExcelManip
 
             uint rijNr = 2;
 
-            foreach (var rij in rows)
+            foreach (var rij in leden)
             {
-                Insert(worksheet, rij.LidInfo.Type.ToString(), 1, rijNr);
-                Insert(worksheet, rij.PersoonDetail.AdNummer, 2, rijNr);
-                Insert(worksheet, rij.PersoonDetail.VoorNaam, 3, rijNr);
-                Insert(worksheet, rij.PersoonDetail.Naam, 4, rijNr);
+                Insert(ledenBlad, rij.LidInfo.Type.ToString(), 1, rijNr);
+                Insert(ledenBlad, rij.PersoonDetail.AdNummer, 2, rijNr);
+                Insert(ledenBlad, rij.PersoonDetail.VoorNaam, 3, rijNr);
+                Insert(ledenBlad, rij.PersoonDetail.Naam, 4, rijNr);
 
-                var afdelingIDs = rij.LidInfo.AfdelingIdLijst;
+                Insert(ledenBlad, GeconcateneerdeAfdelingen(rij.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
 
-                if (afdelingIDs != null)
-                {
-                    var afkortingen = from afd in alleAfdelingen
-                                      where afdelingIDs.Contains(afd.AfdelingID)
-                                      select afd.AfdelingAfkorting + " "; // spatie als separator bij concatenatie
-                    Insert(worksheet, String.Concat(afkortingen), 5, rijNr);
-                }
 
                 if (rij.LidInfo.Functies != null)
                 {
-                    Insert(worksheet, String.Concat(rij.LidInfo.Functies.Select(fn => fn.Code + " ")), 6,
+                    Insert(ledenBlad, String.Concat(rij.LidInfo.Functies.Select(fn => fn.Code + " ")), 6,
                         rijNr);
                 }
 
-                Insert(worksheet, rij.PersoonDetail.GeboorteDatum, 7, rijNr);
-                Insert(worksheet, rij.LidInfo.LidgeldBetaald ? "Ja" : "Nee", 8, rijNr);
+                Insert(ledenBlad, rij.PersoonDetail.GeboorteDatum, 7, rijNr);
+                Insert(ledenBlad, rij.LidInfo.LidgeldBetaald ? "Ja" : "Nee", 8, rijNr);
 
                 int i = 0;
                 foreach (var adres in rij.PersoonsAdresInfo)
                 {
-                    Insert(worksheet, adres.StraatNaamNaam, i * 7 + 9, rijNr);
-                    Insert(worksheet, adres.HuisNr, i * 7 + 10, rijNr);
-                    Insert(worksheet, adres.Bus, i * 7 + 11, rijNr);
-                    Insert(worksheet, adres.PostNr, i * 7 + 12, rijNr);
-                    Insert(worksheet, adres.PostCode, i * 7 + 13, rijNr);
-                    Insert(worksheet, adres.WoonPlaatsNaam, i * 7 + 14, rijNr);
-                    Insert(worksheet, String.Format("Land {0}", i + 1), i * 7 + 15, 1);
+                    Insert(ledenBlad, adres.StraatNaamNaam, i * 7 + 9, rijNr);
+                    Insert(ledenBlad, adres.HuisNr, i * 7 + 10, rijNr);
+                    Insert(ledenBlad, adres.Bus, i * 7 + 11, rijNr);
+                    Insert(ledenBlad, adres.PostNr, i * 7 + 12, rijNr);
+                    Insert(ledenBlad, adres.PostCode, i * 7 + 13, rijNr);
+                    Insert(ledenBlad, adres.WoonPlaatsNaam, i * 7 + 14, rijNr);
+                    Insert(ledenBlad, adres.LandNaam, i * 7 + 15, rijNr);
                     ++i;
                 }
 
@@ -150,7 +151,7 @@ namespace Chiro.Gap.ExcelManip
                     {
                         output = String.Format("{0} ({1})", tel.Nummer, tel.Nota);
                     }
-                    Insert(worksheet, output, 7 * maxAantalAdressen + i + 9, rijNr);
+                    Insert(ledenBlad, output, 7 * maxAantalAdressen + i + 9, rijNr);
                     ++i;
                 }
 
@@ -170,12 +171,68 @@ namespace Chiro.Gap.ExcelManip
                         output = String.Format("{0} ({2}) <{1}>", rij.PersoonDetail.VolledigeNaam, email.Nummer,
                             email.Nota);
                     }
-                    Insert(worksheet, output, 7 * maxAantalAdressen + maxAantalTel + i + 9, rijNr);
+                    Insert(ledenBlad, output, 7 * maxAantalAdressen + maxAantalTel + i + 9, rijNr);
                     ++i;
                 }
                 ++rijNr;
             }
+
+            // tweede werkblad: adressen
+
+            var adressenBlad = pkg.Workbook.Worksheets.Add("Adressen");
+            KolomTitelsInvullen(adressenBlad, new string[]
+                                              {
+                                                  "Type", "AD-nummer", "Voornaam", "Naam", "Afdelingen", "Straat", "Nr.",
+                                                  "Bus", "Postnr.",
+                                                  "Woonplaats", "Land"
+                                              });
+
+            rijNr = 2;
+            foreach (var lid in leden)
+            {
+                foreach (var adres in lid.PersoonsAdresInfo)
+                {
+                    Insert(adressenBlad, lid.LidInfo.Type.ToString(), 1, rijNr);
+                    Insert(adressenBlad, lid.PersoonDetail.AdNummer, 2, rijNr);
+                    Insert(adressenBlad, lid.PersoonDetail.VoorNaam, 3, rijNr);
+                    Insert(adressenBlad, lid.PersoonDetail.Naam, 4, rijNr);
+                    Insert(adressenBlad, GeconcateneerdeAfdelingen(lid.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
+                    Insert(adressenBlad, adres.StraatNaamNaam, 6, rijNr);
+                    Insert(adressenBlad, adres.HuisNr, 7, rijNr);
+                    Insert(adressenBlad, adres.Bus, 8, rijNr);
+                    Insert(adressenBlad, adres.PostNr, 9, rijNr);
+                    Insert(adressenBlad, adres.PostCode, 10, rijNr);
+                    Insert(adressenBlad, adres.WoonPlaatsNaam, 11, rijNr);
+                    Insert(adressenBlad, adres.LandNaam, 12, rijNr);
+                    ++rijNr;
+                }
+            }
             return pkg;
+        }
+
+        /// <summary>
+        /// Gegeven een aantal <paramref name="afdelingIDs"/>, lever de concatenatie op van de afkortingen van de
+        /// afdelingen horende bij die IDs.
+        /// </summary>
+        /// <param name="afdelingIDs">ID's van afdelingen waarvan code te concateneren is.</param>
+        /// <param name="alleAfdelingen">Lijst van afdelingen, die minstens de afdelingen met de gevraagde ID's 
+        /// bevat.</param>
+        /// <returns>String met geconcateneerde afdelingsafkortingen.</returns>
+        private static string GeconcateneerdeAfdelingen(ICollection<int> afdelingIDs, IEnumerable<AfdelingDetail> alleAfdelingen)
+        {
+            string geconcateneerdeAfdelingen;
+            if (afdelingIDs != null)
+            {
+                var afkortingen = from afd in alleAfdelingen
+                    where afdelingIDs.Contains(afd.AfdelingID)
+                    select afd.AfdelingAfkorting + " "; // spatie als separator bij concatenatie
+                geconcateneerdeAfdelingen = String.Concat(afkortingen);
+            }
+            else
+            {
+                geconcateneerdeAfdelingen = null;
+            }
+            return geconcateneerdeAfdelingen;
         }
 
         /// <summary>
@@ -186,13 +243,13 @@ namespace Chiro.Gap.ExcelManip
         /// <param name="value">Te inserten object</param>
         /// <param name="kolom">Kolomnummer (te beginnen van 1)</param>
         /// <param name="rij">Rijnumer (te beginnen van 1)</param>
-        private void Insert(ExcelWorksheet worksheet, Object value, int kolom, uint rij)
+        private static void Insert(ExcelWorksheet worksheet, Object value, int kolom, uint rij)
         {
             string celNaam = String.Format("{0}{1}", KolomLetter(kolom), rij);
             worksheet.Cells[celNaam].Value = value;
         }
 
-        private object KolomLetter(int colNum)
+        private static object KolomLetter(int colNum)
         {
             var result = new StringBuilder();
 
@@ -216,27 +273,45 @@ namespace Chiro.Gap.ExcelManip
         /// </summary>
         /// <typeparam name="T">Type van de objecten</typeparam>
         /// <param name="rows">Objecten die in een rij terecht moeten komen</param>
-        /// <param name="koppen">Een (param)array van strings die als kolomkoppen in het Exceldocument moeten komen</param>
-        /// <param name="cols">Een (param)array van lambda-expressies, die de kolommen van het document bepaalt</param>
+        /// <param name="koppen">Een array van strings die als kolomkoppen in het Exceldocument moeten komen</param>
+        /// <param name="cols">Een (param-)array van lambda-expressies, die de kolommen van het document bepaalt</param>
         /// <returns>Een memorystream met daarin het Exceldocument</returns>
-        public ExcelPackage ExcelDocument<T>(IEnumerable<T> rows, string[] koppen, params Func<T, object>[] cols)
+        public static ExcelPackage ExcelDocument<T>(IEnumerable<T> rows, string[] koppen, params Func<T, object>[] cols)
         {
             var pkg = new ExcelPackage();
-            var worksheet = pkg.Workbook.Worksheets.Add("Ledenlijst");
-            KolomTitelsInvullen(worksheet, koppen);
-            WriteRows(worksheet, rows, cols);
-
+            WerkBladMaken(pkg, Properties.Resources.StandaardWerkBladNaam, rows, koppen, cols);
             return pkg;
         }
 
-        protected void KolomTitelsInvullen(ExcelWorksheet spreadSheet, string[] koppen)
+        /// <summary>
+        /// Maakt een werkblad bij in het bestaande Exceldocument <paramref name="pkg" />. Gegevens van het type 
+        /// <typeparamref name="T"/> worden in kolommen weerkgegeven volgens de functies (lambda-expressies)
+        /// <paramref name="cols"/>. De koppen van de kolom zijn gegeven door <paramref name="koppen"/>.
+        /// </summary>
+        /// <typeparam name="T">Type van de objecten</typeparam>
+        /// <param name="pkg">Exceldocument waaraan het nieuwe werkblad toe te voegen is</param>
+        /// <param name="rows">Objecten met op te lijsten gegevens</param>
+        /// <param name="koppen">Namen van de kolomkoppen</param>
+        /// <param name="cols"></param>
+        /// <param name="naam"></param>
+        /// <returns></returns>
+        public static ExcelWorksheet WerkBladMaken<T>(ExcelPackage pkg, string naam, IEnumerable<T> rows, string[] koppen, params Func<T, object>[] cols)
+        {
+            var worksheet = pkg.Workbook.Worksheets.Add(naam);
+            KolomTitelsInvullen(worksheet, koppen);
+            WriteRows(worksheet, rows, cols);
+            return worksheet;
+        }
+
+        private static void KolomTitelsInvullen(ExcelWorksheet werkBlad, IEnumerable<string> koppen)
         {
             int colIndex = 1;
 
             foreach (var kop in koppen)
             {
                 // Zet de kolomtitels in de eerste rij
-                Insert(spreadSheet, kop, colIndex, 1);
+                Insert(werkBlad, kop, colIndex, 1);
+                werkBlad.Row(1).Style.Font.Bold = true;
                 ++colIndex;
             }
         }
@@ -249,7 +324,7 @@ namespace Chiro.Gap.ExcelManip
         /// <param name="spreadSheet">Spreadsheet waarin de tabel moet komen</param>
         /// <param name="rows">Rij objecten; elke rij is gebaseerd op een object</param>
         /// <param name="cols">Een (param)array van lambda-expressies, die de kolommen bepalen</param>
-        public void WriteRows<T>(ExcelWorksheet spreadSheet, IEnumerable<T> rows, params Func<T, object>[] cols)
+        public static void WriteRows<T>(ExcelWorksheet spreadSheet, IEnumerable<T> rows, params Func<T, object>[] cols)
         {
             uint rowIndex = 2; // In de eerste rij vulden we al kolomtitels in
 			

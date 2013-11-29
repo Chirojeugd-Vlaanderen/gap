@@ -24,6 +24,7 @@ using System.Web.Mvc;
 
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Domain;
+using Chiro.Gap.ExcelManip;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -393,7 +394,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			        };
 
             var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));
-            var package = (new ExcelManip.GapExcelManip()).ExcelDocument(
+            var package = GapExcelManip.ExcelDocument(
                 lijst,
                 kolomkoppen,
                 it => it.PersoonOverzicht.AdNummer,

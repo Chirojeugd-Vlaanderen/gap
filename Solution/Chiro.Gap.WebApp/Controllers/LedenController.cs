@@ -31,6 +31,7 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
+using DocumentFormat.OpenXml.Drawing.ChartDrawing;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -499,8 +500,8 @@ namespace Chiro.Gap.WebApp.Controllers
 
             const string bestandsNaam = "leden.xlsx";
 
-            var pkg = (new GapExcelManip()).LidExcelTabel(leden, alleAfdelingen);
-
+            var pkg = GapExcelManip.LidExcelDocument(leden, alleAfdelingen);
+            
             return new ExcelResult(pkg, bestandsNaam);
         }
 
