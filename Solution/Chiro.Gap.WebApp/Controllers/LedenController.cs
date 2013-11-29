@@ -118,6 +118,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
         /// <summary>
         /// Voert een zoekopdracht uit op de leden, en plaatst het resultaat in een LidInfoModel.
+        /// Levert normaal geen adressen op.
         /// </summary>
         /// <param name="gwjID">ID van het groepswerkjaar waarvoor een ledenlijst wordt gevraagd.  
         ///  Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
@@ -128,8 +129,6 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie met
         ///  dit FunctieID getoond.</param>
         /// <param name="ledenLijst">Hiermee kan je speciale lijsten opzoeken</param>
-        /// <param name="metAdressen">Geeft aan of de adressen mee opgevraagd moeten worden
-        /// (!duurt lang!)</param>
         /// <returns>Een LidInfoModel, met in member LidInfoLijst de gevonden leden. Null als de groep en groepswerkjaar niet geassocieerd zijn</returns>
         private LidInfoModel Zoeken(
             int gwjID,
@@ -137,8 +136,7 @@ namespace Chiro.Gap.WebApp.Controllers
             LidEigenschap sortering,
             int afdelingID,
             int functieID,
-            LidInfoModel.SpecialeLedenLijst ledenLijst,
-            bool metAdressen)
+            LidInfoModel.SpecialeLedenLijst ledenLijst)
         {
             // Het sorteren gebeurt nu in de webapp, en niet in de backend.  Sorteren is immers presentatie, dus de service
             // moet zich daar niet mee bezig houden.
@@ -195,7 +193,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
                 svc => svc.LijstZoekenLidOverzicht(
                     FilterMaken(afdelingID, functieID, ledenLijst, groepsWerkJaarID),
-                    metAdressen));
+                    false)); // false om geen adressen op te halen.
 
             if (functieID != 0)
             {
@@ -364,7 +362,7 @@ namespace Chiro.Gap.WebApp.Controllers
             Debug.Assert(Request.Url != null);
             // Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
             ClientState.VorigeLijst = Request.Url.ToString();
-            var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, true);
+            var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst);
             return model == null ? TerugNaarVorigeLijst() : View("Index", model);
         }
 
