@@ -642,11 +642,11 @@ namespace Chiro.Gap.WebApp.Controllers
 
             // TODO (#1031): DetailsOphalen is eigenlijk overkill; we hebben enkel de volledige naam en 
             // het GelieerdePersoonID nodig.
-            var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
+            var info = ServiceHelper.CallService<ILedenService, PersoonInfo>(svc => svc.PersoonOphalen(id));
 
             model.LidID = id;
-            model.GelieerdePersoonID = info.PersoonDetail.GelieerdePersoonID;
-            model.VolledigeNaam = info.PersoonDetail.VolledigeNaam;
+            model.GelieerdePersoonID = info.GelieerdePersoonID;
+            model.VolledigeNaam = string.Format("{0} {1}", info.VoorNaam, info.Naam);
             model.Prijs = Properties.Settings.Default.PrijsVerzekeringLoonVerlies;
             model.Titel = String.Format("{0} verzekeren tegen loonverlies", model.VolledigeNaam);
 
@@ -680,9 +680,10 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new LidFunctiesModel();
             BaseModelInit(model, groepID);
 
-            model.HuidigLid = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(l => l.DetailsOphalen(id));
+            model.Persoon = ServiceHelper.CallService<ILedenService, PersoonInfo>(l => l.PersoonOphalen(id));
+            model.LidInfo = ServiceHelper.CallService<ILedenService, LidInfo>(svc => svc.LidInfoOphalen(id));
 
-            if (model.HuidigLid != null)
+            if (model.Persoon != null)
             {
                 // Ik had liever hierboven nog eens LidExtras.AlleAfdelingen meegegeven, maar
                 // het datacontract (LidInfo) voorziet daar niets voor.
@@ -691,7 +692,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 model.Titel = String.Format(
                     Properties.Resources.FunctiesVan,
-                    model.HuidigLid.PersoonDetail.VolledigeNaam);
+                    String.Format("{0} {1}", model.Persoon.VoorNaam, model.Persoon.Naam));
 
                 return View("FunctiesToekennen", model);
             }
@@ -721,18 +722,18 @@ namespace Chiro.Gap.WebApp.Controllers
                 VeelGebruikt.FunctieProblemenResetten(groepID);
 
                 TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-                return RedirectToAction("EditRest", "Personen", new { groepID, id = model.HuidigLid.PersoonDetail.GelieerdePersoonID });
+                return RedirectToAction("EditRest", "Personen", new { groepID, id = model.Persoon.GelieerdePersoonID });
             }
             catch (Exception)
             {
-                model.HuidigLid = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(l => l.DetailsOphalen(id));
+                model.Persoon = ServiceHelper.CallService<ILedenService, PersoonInfo>(svc => svc.PersoonOphalen(id));
                 TempData["fout"] = Properties.Resources.WijzigingenNietOpgeslagenFout;
                 return View("FunctiesToekennen", model);
             }
         }
 
         /// <summary>
-        /// Bekijkt model.HuidigLid.  Haalt alle functies van het groepswerkjaar van het lid op, relevant
+        /// Bekijkt model.Persoon.  Haalt alle functies van het groepswerkjaar van het lid op, relevant
         /// voor het type lid (kind/leiding), en bewaart ze in model.AlleFuncties.  
         /// In model.FunctieIDs komen de ID's van de toegekende functies voor het lid.
         /// </summary>
@@ -742,9 +743,9 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             model.AlleFuncties = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieDetail>>
                 (svc => svc.FunctiesOphalen(
-                    model.HuidigLid.LidInfo.GroepsWerkJaarID,
-                    model.HuidigLid.LidInfo.Type));
-            model.FunctieIDs = (from f in model.HuidigLid.LidInfo.Functies
+                    model.LidInfo.GroepsWerkJaarID,
+                    model.LidInfo.Type));
+            model.FunctieIDs = (from f in model.LidInfo.Functies
                                 select f.ID).ToList();
         }
 
@@ -791,8 +792,8 @@ namespace Chiro.Gap.WebApp.Controllers
                         // TODO: Makkelijkere manier implementeren om lidID om te zetten naar persoonID.
                         // (Omdat we typisch van een lidfiche komen, zouden we die mapping kunnen cachen; het is maar een idee.)
                         var info =
-                            ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
-                        gelieerdePersoonID = info.PersoonDetail.GelieerdePersoonID;
+                            ServiceHelper.CallService<ILedenService, PersoonInfo>(svc => svc.PersoonOphalen(id));
+                        gelieerdePersoonID = info.GelieerdePersoonID;
 
                         // Normaalgezien geven we foutmeldingen graag door via de modelstate.
                         // Maar omdat we hier geen model opbouwen, maar naar een redirect gaan, doe ik

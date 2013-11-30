@@ -141,6 +141,22 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		PersoonLidInfo DetailsOphalen(int lidId);
 
+        /// <summary>
+        /// Haalt persoonsgegevens op voor (actief) lid met gegeven <paramref name="lidID"/>
+        /// </summary>
+        /// <param name="lidID">ID van een lid</param>
+        /// <returns>beperkte informatie over de person</returns>
+        [OperationContract]
+	    PersoonInfo PersoonOphalen(int lidID);
+
+        /// <summary>
+        /// Haalt beperkte lidinfo op voor (actief) lid met gegeven <paramref name="lidID"/>
+        /// </summary>
+        /// <param name="lidID">ID van een lid</param>
+        /// <returns>beperkte lidinfo voor lid met gegeven <paramref name="lidID" /></returns>
+        [OperationContract]
+	    LidInfo LidInfoOphalen(int lidID);
+
 		/// <summary>
 		/// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>. Levert een lijst van LidOverzicht af.
 		/// </summary>

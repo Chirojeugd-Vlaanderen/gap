@@ -250,6 +250,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Het lid met gegeven LidID is niet meer actief.
+        /// </summary>
+        internal static string LidInactief {
+            get {
+                return ResourceManager.GetString("LidInactief", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je mag geen nationale functies bewerken..
         /// </summary>
         internal static string NationaleFunctieNietBewerken {

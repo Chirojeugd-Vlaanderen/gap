@@ -608,7 +608,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Bekijkt model.HuidigLid.  Haalt alle afdelingen van het groepswerkjaar van het lid op, en
+        /// Bekijkt model.Persoon.  Haalt alle afdelingen van het groepswerkjaar van het lid op, en
         /// bewaart ze in model.AlleAfdelingen.  In model.AfdelingIDs komen de ID's van de toegekende
         /// afdelingen voor het lid.
         /// </summary>

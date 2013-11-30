@@ -776,9 +776,41 @@ namespace Chiro.Gap.Services
             Gav.Check(lid);
             if (lid.NonActief)
             {
-                FaultExceptionHelper.GeenGav();
+                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Properties.Resources.LidInactief);
             }
             return Mapper.Map<Lid, PersoonLidInfo>(lid);
+        }
+
+        /// <summary>
+        /// Haalt persoonsgegevens op voor (actief) lid met gegeven <paramref name="lidID"/>
+        /// </summary>
+        /// <param name="lidID">ID van een lid</param>
+        /// <returns>beperkte informatie over de person</returns>
+        public PersoonInfo PersoonOphalen(int lidID)
+        {
+            var lid = _ledenRepo.ByID(lidID);
+            Gav.Check(lid);
+            if (lid.NonActief)
+            {
+                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Properties.Resources.LidInactief);
+            }
+            return Mapper.Map<GelieerdePersoon, PersoonInfo>(lid.GelieerdePersoon);
+        }
+
+        /// <summary>
+        /// Haalt beperkte lidinfo op voor (actief) lid met gegeven <paramref name="lidID"/>
+        /// </summary>
+        /// <param name="lidID">ID van een lid</param>
+        /// <returns>beperkte lidinfo voor lid met gegeven <paramref name="lidID" /></returns>
+        public LidInfo LidInfoOphalen(int lidID)
+        {
+            var lid = _ledenRepo.ByID(lidID);
+            Gav.Check(lid);
+            if (lid.NonActief)
+            {
+                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Properties.Resources.LidInactief);
+            }
+            return Mapper.Map<Lid, LidInfo>(lid);
         }
 
         /// <summary>
