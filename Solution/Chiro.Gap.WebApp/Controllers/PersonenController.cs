@@ -27,6 +27,7 @@ using System.Web.Services.Description;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
+using Chiro.Gap.ExcelManip;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -170,50 +171,31 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult Download(int groepID, int id)
         {
-            IList<PersoonOverzicht> data;
+            IList<PersoonLidInfo> data;
 
             // Alle personen bekijken
             if (id == 0)
             {
                 data =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonOverzicht>>
-                    (g => g.AllenOphalenUitGroep(groepID)).Sorteren(PersoonSorteringsEnum.Naam);
+                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonLidInfo>>
+                    (g => g.AllenOphalenUitGroep(groepID)).AsQueryable().Sorteren(PersoonSorteringsEnum.Naam).ToList();
             }
             else
             {
                 data =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonOverzicht>>
-                    (g => g.AllenOphalenUitCategorie(id)).Sorteren(PersoonSorteringsEnum.Naam);
+                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonLidInfo>>
+                    (g => g.AllenOphalenUitCategorie(id)).AsQueryable().Sorteren(PersoonSorteringsEnum.Naam).ToList();
             }
 
-            // Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
-            // gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
-            string[] kolomkoppen = 
-                                   {
-			                       	"AD-nr", "Voornaam", "Naam", "Geboortedatum", "Geslacht", "Straat", "Nr", "Bus", "Postnr",
-			                       	"Postcode", "Gemeente", "Land", "Tel", "Mail"
-			                       };
+            var alleAfdelingen =
+                ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>(
+                    svc => svc.AlleAfdelingenOphalen(groepID));
 
-            var stream = (new ExcelManip()).ExcelTabel(
-                data,
-                kolomkoppen,
-                it => it.AdNummer,
-                it => it.VoorNaam,
-                it => it.Naam,
-                it => it.GeboorteDatum,
-                it => it.Geslacht,
-                // Contactgegevens enkel opnemen bij levende mensen
-                it => !it.SterfDatum.HasValue ? it.StraatNaam : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.HuisNummer : null,
-                it => !it.SterfDatum.HasValue ? it.Bus : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.PostNummer : null,
-                it => !it.SterfDatum.HasValue ? it.PostCode : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.WoonPlaats : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.Land : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.TelefoonNummer : string.Empty,
-                it => !it.SterfDatum.HasValue ? it.Email : string.Empty);
+            const string bestandsNaam = "leden.xlsx";
 
-            return new ExcelResult(stream, "personen.xlsx");
+            var pkg = GapExcelManip.LidExcelDocument(data, alleAfdelingen);
+
+            return new ExcelResult(pkg, bestandsNaam);
         }
 
         /// <summary>
@@ -606,7 +588,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Bekijkt model.HuidigLid.  Haalt alle afdelingen van het groepswerkjaar van het lid op, en
+        /// Bekijkt model.Persoon.  Haalt alle afdelingen van het groepswerkjaar van het lid op, en
         /// bewaart ze in model.AlleAfdelingen.  In model.AfdelingIDs komen de ID's van de toegekende
         /// afdelingen voor het lid.
         /// </summary>

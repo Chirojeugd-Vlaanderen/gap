@@ -23,6 +23,7 @@ using System.ServiceModel;
 using System.Web.Mvc;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
+using Chiro.Gap.ExcelManip;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -392,7 +393,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			        };
 
             var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));
-            var stream = (new ExcelManip()).ExcelTabel(
+            var package = GapExcelManip.ExcelDocument(
                 lijst,
                 kolomkoppen,
                 it => it.PersoonOverzicht.AdNummer,
@@ -412,7 +413,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => it.MedischeFicheOk ? "Ja" : "Nee",
                 it => it.Opmerkingen);
 
-            return new ExcelResult(stream, bestandsNaam);
+            return new ExcelResult(package, bestandsNaam);
         }
     }
 }

@@ -919,6 +919,10 @@ namespace Chiro.Gap.Services
             {
                 // Er waren leden dit werkjaar met de gegeven functie:
                 // stuur faultexception
+
+                // TODO: PersoonLidInfo bevat wat te veel bloat voor deze stomme exceptie.
+                // een gelieerdepersoonID en een naam zou al genoeg zijn.
+
                 throw FaultExceptionHelper.Blokkerend(Mapper.Map<IList<Lid>, List<PersoonLidInfo>>(ex.Objecten), ex.Message);
             }
             _functiesRepo.SaveChanges();

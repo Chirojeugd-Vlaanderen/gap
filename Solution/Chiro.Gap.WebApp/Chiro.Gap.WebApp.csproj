@@ -53,6 +53,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=3.1.3.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EPPlus.3.1.3.3\lib\net35\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Microsoft Unity Application Block 2.1\Bin\Microsoft.Practices.Unity.dll</HintPath>
@@ -147,6 +151,7 @@
     <Compile Include="Controllers\list.cs" />
     <Compile Include="Controllers\PersonenEnLedenController.cs" />
     <Compile Include="Controllers\UitstappenController.cs" />
+    <Compile Include="ExcelResult.cs" />
     <Compile Include="GapSortering.cs" />
     <Compile Include="Controllers\VerzekeringController.cs" />
     <Compile Include="HtmlHelpers\AfdelingsLinksHelper.cs" />
@@ -252,7 +257,6 @@
     <Content Include="Content\indicator.gif" />
     <Content Include="Content\jquery-ui-1.10.2.custom.css" />
     <Content Include="Content\jqueryui-editable.css" />
-    <Content Include="Content\media\copy_csv_xls_pdf.swf" />
     <Content Include="Content\oLanguage.txt" />
     <Content Include="Content\print.css" />
     <Content Include="Content\Screenshots\Deelnemersinfo_bewerken.png" />
@@ -287,7 +291,6 @@
     <Content Include="Scripts\jqueryui-editable.js" />
     <Content Include="Scripts\jquery-overzicht-iedereen.js" />
     <Content Include="Scripts\moment.js" />
-    <Content Include="Scripts\TableTools.js" />
     <Content Include="Scripts\ZeroClipboard.js" />
     <Content Include="Views\Afdelingen\Afdeling.aspx" />
     <Content Include="Views\Afdelingen\AfdelingsJaar.aspx" />
@@ -406,6 +409,10 @@
       <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
       <Name>Chiro.Gap.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.ExcelManip\Chiro.Gap.ExcelManip.csproj">
+      <Project>{B69C5D68-264F-483F-AB05-726B3C3FB1B1}</Project>
+      <Name>Chiro.Gap.ExcelManip</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
       <Name>Chiro.Gap.ServiceContracts</Name>
@@ -433,9 +440,6 @@
     <Compile Include="Controllers\GavTakenController.cs" />
     <Compile Include="Controllers\HandleidingController.cs" />
     <Compile Include="Controllers\JaarOvergangController.cs" />
-    <Compile Include="ExcelManip.cs" />
-    <Compile Include="ExcelManip.WorkbookStyles.cs" />
-    <Compile Include="ExcelResult.cs" />
     <Compile Include="HtmlHelpers\AdresHelper.cs" />
     <Compile Include="HtmlHelpers\TelefoonHelper.cs" />
     <Compile Include="HtmlHelpers\GeslachtHelper.cs" />
@@ -604,6 +608,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\media\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

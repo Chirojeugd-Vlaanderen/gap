@@ -30,10 +30,10 @@
 		<%
 			}
 		%>
-		<%= Html.HiddenFor(mdl=>mdl.HuidigLid.PersoonDetail.GelieerdePersoonID) %>
+		<%= Html.HiddenFor(mdl=>mdl.Persoon.GelieerdePersoonID) %>
 	</fieldset>
 	<br />
 	<%} %>
-	<%= Html.ActionLink("Terug naar de persoonsfiche", "EditRest", new { Controller = "Personen", id = Model.HuidigLid.PersoonDetail.GelieerdePersoonID}) %>
+	<%= Html.ActionLink("Terug naar de persoonsfiche", "EditRest", new { Controller = "Personen", id = Model.Persoon.GelieerdePersoonID}) %>
     
 </asp:Content>

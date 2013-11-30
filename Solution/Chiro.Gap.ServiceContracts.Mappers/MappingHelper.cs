@@ -404,6 +404,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                         src,
                         Verzekering.LoonVerlies)));
 
+            // Dit was beperkt. Dit moet uitgebreider voor de Excelexport.
             Mapper.CreateMap<Lid, PersoonLidInfo>()
                 .ForMember(
                     dst => dst.PersoonDetail,
@@ -413,13 +414,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src))
                 .ForMember(
                     dst => dst.PersoonsAdresInfo,
-                    opt => opt.Ignore())
+                    opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.PersoonsAdres))
                 .ForMember(
                     dst => dst.CommunicatieInfo,
-                    opt => opt.Ignore())
+                    opt => opt.MapFrom(src => src.GelieerdePersoon.Communicatie))
                 .ForMember(
                     dst => dst.GebruikersInfo,
-                    opt => opt.Ignore());
+                    opt => opt.Ignore()); // niet relevant, denk ik :-P
 
             // De bedoeling was om zo veel mogelijk automatisch te kunnen mappen.  Vandaar ook properties
             // zoals StraatNaamNaam en WoonPlaatsNaam.  Maar met de invoering van de buitenlandse adressen,

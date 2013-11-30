@@ -21,9 +21,6 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <% // TODO: onderstaand script moet naar 'head'. %>
-<script src="<%= ResolveUrl("~/Scripts/TableTools.js")%>" type="text/javascript"></script>
-<script src="<%= ResolveUrl("~/Scripts/ZeroClipboard.js")%>" type="text/javascript"></script>
-<link href="<%= ResolveUrl("~/Content/TableTools.css")%>" rel="stylesheet" type="text/css" />
 
 <table style="width: 100%" id="ledenOverzichtsTabel" class="overzicht">
     <thead>
@@ -43,11 +40,6 @@
                 <th>Instap tot</th>
                 <th>Telefoon</th>
                 <th>E-mail</th>
-                <th>Straat</th>
-                <th>Nr</th>
-                <th>Postnr.</th>
-                <th>Woonplaats</th>
-                <th>Land</th>
         </tr>
     </thead>
     <tbody>
@@ -106,22 +98,6 @@
                     <%=lidOverzicht.Email %></a>
                 <%
                     }%>
-            </td>
-            <td>
-                <%: lidOverzicht.StraatNaam %>
-            </td>
-            <td>
-                <%: String.Format( "{0}{1}", lidOverzicht.HuisNummer, 
-                    String.IsNullOrEmpty(lidOverzicht.Bus) ? String.Empty: "/" + lidOverzicht.Bus) %>
-            </td>
-            <td>
-                    <%= String.Format( "{0} {1}", lidOverzicht.PostNummer, lidOverzicht.PostCode) %>
-            </td>
-            <td>
-                <%: lidOverzicht.WoonPlaats %>
-            </td>
-            <td>
-                    <%: (lidOverzicht.Land ?? String.Empty).StartsWith("Belg") ? String.Empty : lidOverzicht.Land%>
             </td>
         </tr>
         <% } %>
