@@ -41,7 +41,7 @@ namespace Chiro.Gap.ExcelManip
         /// <param name="leden">Objecten die in een rij terecht moeten komen</param>
         /// <param name="alleAfdelingen">Lijstje van (minstens) alle gebruikte afdelingen</param>
         /// <returns>Een memorystream met daarin het Exceldocument</returns>
-        public static ExcelPackage LidExcelDocument(IList<PersoonLidInfo> leden, IList<AfdelingDetail> alleAfdelingen)
+        public static ExcelPackage LidExcelDocument(IList<PersoonLidInfo> leden, IEnumerable<AfdelingInfo> alleAfdelingen)
         {
             // TODO: Needs cleanup.
 
@@ -106,22 +106,23 @@ namespace Chiro.Gap.ExcelManip
 
             foreach (var rij in leden)
             {
-                Insert(ledenBlad, rij.LidInfo.Type.ToString(), 1, rijNr);
                 Insert(ledenBlad, rij.PersoonDetail.AdNummer, 2, rijNr);
                 Insert(ledenBlad, rij.PersoonDetail.VoorNaam, 3, rijNr);
                 Insert(ledenBlad, rij.PersoonDetail.Naam, 4, rijNr);
 
-                Insert(ledenBlad, GeconcateneerdeAfdelingen(rij.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
-
-
-                if (rij.LidInfo.Functies != null)
+                if (rij.LidInfo != null)
                 {
-                    Insert(ledenBlad, String.Concat(rij.LidInfo.Functies.Select(fn => fn.Code + " ")), 6,
-                        rijNr);
+                    Insert(ledenBlad, rij.LidInfo.Type.ToString(), 1, rijNr);
+                    Insert(ledenBlad, GeconcateneerdeAfdelingen(rij.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
+                    if (rij.LidInfo.Functies != null)
+                    {
+                        Insert(ledenBlad, String.Concat(rij.LidInfo.Functies.Select(fn => fn.Code + " ")), 6,
+                            rijNr);
+                    }
+                    Insert(ledenBlad, rij.LidInfo.LidgeldBetaald ? "Ja" : "Nee", 8, rijNr);
                 }
 
                 Insert(ledenBlad, rij.PersoonDetail.GeboorteDatum, 7, rijNr);
-                Insert(ledenBlad, rij.LidInfo.LidgeldBetaald ? "Ja" : "Nee", 8, rijNr);
 
                 int i = 0;
                 foreach (var adres in rij.PersoonsAdresInfo)
@@ -192,11 +193,14 @@ namespace Chiro.Gap.ExcelManip
             {
                 foreach (var adres in lid.PersoonsAdresInfo)
                 {
-                    Insert(adressenBlad, lid.LidInfo.Type.ToString(), 1, rijNr);
+                    if (lid.LidInfo != null)
+                    {
+                        Insert(adressenBlad, lid.LidInfo.Type.ToString(), 1, rijNr);
+                        Insert(adressenBlad, GeconcateneerdeAfdelingen(lid.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
+                    }
                     Insert(adressenBlad, lid.PersoonDetail.AdNummer, 2, rijNr);
                     Insert(adressenBlad, lid.PersoonDetail.VoorNaam, 3, rijNr);
                     Insert(adressenBlad, lid.PersoonDetail.Naam, 4, rijNr);
-                    Insert(adressenBlad, GeconcateneerdeAfdelingen(lid.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
                     Insert(adressenBlad, adres.StraatNaamNaam, 6, rijNr);
                     Insert(adressenBlad, adres.HuisNr, 7, rijNr);
                     Insert(adressenBlad, adres.Bus, 8, rijNr);
@@ -221,11 +225,14 @@ namespace Chiro.Gap.ExcelManip
             {
                 foreach (var ci in lid.CommunicatieInfo)
                 {
-                    Insert(communicatieBlad, lid.LidInfo.Type.ToString(), 1, rijNr);
+                    if (lid.LidInfo != null)
+                    {
+                        Insert(communicatieBlad, lid.LidInfo.Type.ToString(), 1, rijNr);
+                        Insert(communicatieBlad, GeconcateneerdeAfdelingen(lid.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
+                    }
                     Insert(communicatieBlad, lid.PersoonDetail.AdNummer, 2, rijNr);
                     Insert(communicatieBlad, lid.PersoonDetail.VoorNaam, 3, rijNr);
                     Insert(communicatieBlad, lid.PersoonDetail.Naam, 4, rijNr);
-                    Insert(communicatieBlad, GeconcateneerdeAfdelingen(lid.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
                     Insert(communicatieBlad, ci.CommunicatieTypeOmschrijving, 6, rijNr);
                     Insert(communicatieBlad, ci.Nummer, 7, rijNr);
                     Insert(communicatieBlad, ci.IsVoorOptIn, 8, rijNr);
@@ -245,14 +252,14 @@ namespace Chiro.Gap.ExcelManip
         /// <param name="alleAfdelingen">Lijst van afdelingen, die minstens de afdelingen met de gevraagde ID's 
         /// bevat.</param>
         /// <returns>String met geconcateneerde afdelingsafkortingen.</returns>
-        private static string GeconcateneerdeAfdelingen(ICollection<int> afdelingIDs, IEnumerable<AfdelingDetail> alleAfdelingen)
+        private static string GeconcateneerdeAfdelingen(ICollection<int> afdelingIDs, IEnumerable<AfdelingInfo> alleAfdelingen)
         {
             string geconcateneerdeAfdelingen;
             if (afdelingIDs != null)
             {
                 var afkortingen = from afd in alleAfdelingen
-                    where afdelingIDs.Contains(afd.AfdelingID)
-                    select afd.AfdelingAfkorting + " "; // spatie als separator bij concatenatie
+                    where afdelingIDs.Contains(afd.ID)
+                    select afd.Afkorting + " "; // spatie als separator bij concatenatie
                 geconcateneerdeAfdelingen = String.Concat(afkortingen);
             }
             else
@@ -274,6 +281,10 @@ namespace Chiro.Gap.ExcelManip
         {
             string celNaam = String.Format("{0}{1}", KolomLetter(kolom), rij);
             worksheet.Cells[celNaam].Value = value;
+            if (value is DateTime)
+            {
+                worksheet.Cells[celNaam].Style.Numberformat.Format = Properties.Resources.DatumFormaat;
+            }
         }
 
         private static object KolomLetter(int colNum)

@@ -492,9 +492,11 @@ namespace Chiro.Gap.WebApp.Controllers
                 svc => svc.LijstZoekenPersoonLidInfo(
                     FilterMaken(afdelingID, functieID, ledenLijst, groepsWerkJaarID)));
 
+            // Alle afdelingen is eigenlijk overkill. De actieve zou genoeg zijn. Maar meestal
+            // zal daar niet zo' n verschil opzitten.
             var alleAfdelingen =
-                ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>(
-                    svc => svc.ActieveAfdelingenOphalen(groepsWerkJaarID));
+                ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>(
+                    svc => svc.AlleAfdelingenOphalen(groepID));
 
             const string bestandsNaam = "leden.xlsx";
 

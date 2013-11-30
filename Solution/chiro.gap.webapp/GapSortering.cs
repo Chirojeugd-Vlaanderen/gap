@@ -47,6 +47,24 @@ namespace Chiro.Gap.WebApp
             }
             return detail.CategorieLijst.First().Code;
         }
+
+        /// <summary>
+        /// Levert de code van een van de categorieen van de persoon met gegeven <paramref name="info"/>
+        /// op, of <c>null</c> als er geen categorieen in <paramref name="info"/> zijn.
+        /// </summary>
+        /// <param name="info">Details van een persoon</param>
+        /// <returns>
+        /// De code van een van de categorieen van de persoon met gegeven <paramref name="info"/>m
+        /// of <c>null</c> als er geen categorieen in <paramref name="info"/> zijn.
+        /// </returns>
+        private static string WillkeurigeCategorieCodeGet(PersoonLidInfo info)
+        {
+            if (info.PersoonDetail.CategorieLijst == null || info.PersoonDetail.CategorieLijst.FirstOrDefault() == null)
+            {
+                return null;
+            }
+            return info.PersoonDetail.CategorieLijst.First().Code;
+        }
         #endregion
 
         /// <summary>
@@ -75,6 +93,36 @@ namespace Chiro.Gap.WebApp
                 default:
                     {
                         return details;
+                    }
+            }
+        }
+
+        /// <summary>
+        /// Sorteert de <paramref name="info"/> volgens de gegeven <paramref name="sortering"/>
+        /// </summary>
+        /// <param name="info">details van personen</param>
+        /// <param name="sortering">bepaalt de manier waarop de <paramref name="info gesorteerd moeten worden"/></param>
+        /// <returns>De <paramref name="info"/>, gesorteerd volgens <paramref name="sortering"/></returns>
+        public static IQueryable<PersoonLidInfo> Sorteren(this IQueryable<PersoonLidInfo> info,
+                                                         PersoonSorteringsEnum sortering)
+        {
+            switch (sortering)
+            {
+                case PersoonSorteringsEnum.Categorie:
+                    {
+                        return info.OrderBy(det => WillkeurigeCategorieCodeGet(det));
+                    }
+                case PersoonSorteringsEnum.Leeftijd:
+                    {
+                        return info.OrderByDescending(dst => dst.PersoonDetail.GeboorteDatum);
+                    }
+                case PersoonSorteringsEnum.Naam:
+                    {
+                        return info.OrderBy(dst => dst.PersoonDetail.Naam).ThenBy(dst => dst.PersoonDetail.VoorNaam);
+                    }
+                default:
+                    {
+                        return info;
                     }
             }
         }

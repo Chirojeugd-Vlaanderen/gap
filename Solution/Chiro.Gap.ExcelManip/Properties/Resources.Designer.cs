@@ -61,6 +61,15 @@ namespace Chiro.Gap.ExcelManip.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to dd/mm/yyyy.
+        /// </summary>
+        internal static string DatumFormaat {
+            get {
+                return ResourceManager.GetString("DatumFormaat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to export.
         /// </summary>
         internal static string StandaardWerkBladNaam {

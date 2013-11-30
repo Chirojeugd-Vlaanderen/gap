@@ -366,8 +366,8 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="categorieID">Indien verschillend van 0, worden alle personen uit de categore met
         /// gegeven CategoreID opgehaald.  Anders alle personen tout court.</param>
-        /// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
-        public IList<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID)
+        /// <returns>Lijst 'PersoonLidInfo'-objecten van alle gelieerde personen uit de categorie</returns>
+        public IList<PersoonLidInfo> AllenOphalenUitCategorie(int categorieID)
         {
             var categorie = _categorieenRepo.ByID(categorieID);
 
@@ -379,7 +379,7 @@ namespace Chiro.Gap.Services
             var gelieerdePersonen = from gp in categorie.GelieerdePersoon
                                     select gp;
 
-            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonOverzicht>>(gelieerdePersonen);
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonLidInfo>>(gelieerdePersonen);
 
             return result;
         }
@@ -388,8 +388,8 @@ namespace Chiro.Gap.Services
         /// Haalt gegevens op van alle personen uit groep met ID <paramref name="groepID"/>.
         /// </summary>
         /// <param name="groepID">ID van de groep waaruit de personen gehaald moeten worden</param>
-        /// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
-        public IList<PersoonOverzicht> AllenOphalenUitGroep(int groepID)
+        /// <returns>'PersoonLidInfo'-objecten van alle gelieerde personen uit de groep.</returns>
+        public IList<PersoonLidInfo> AllenOphalenUitGroep(int groepID)
         {
             var groep = _groepenRepo.ByID(groepID);
 
@@ -401,7 +401,7 @@ namespace Chiro.Gap.Services
             var gelieerdePersonen = from gp in groep.GelieerdePersoon
                                     select gp;
 
-            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonOverzicht>>(gelieerdePersonen);
+            var result = Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonLidInfo>>(gelieerdePersonen);
 
             return result;
         }

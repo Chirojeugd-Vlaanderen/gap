@@ -132,21 +132,21 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="categorieID">Indien verschillend van 0, worden alle personen uit de categore met
 		/// gegeven CategoreID opgehaald.  Anders alle personen tout court.</param>
-		/// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
+        /// <returns>Lijst 'PersoonLidInfo'-objecten van alle gelieerde personen uit de categorie</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID);
+		IList<PersoonLidInfo> AllenOphalenUitCategorie(int categorieID);
 
 		/// <summary>
 		/// Haalt gegevens op van alle personen uit groep met ID <paramref name="groepID"/>.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waaruit de personen gehaald moeten worden</param>
-		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
+		/// <returns>'PersoonLidInfo'-objecten van alle gelieerde personen uit de groep.</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonOverzicht> AllenOphalenUitGroep(int groepID);
+		IList<PersoonLidInfo> AllenOphalenUitGroep(int groepID);
 
 		/// <summary>
 		/// Haalt gegevens op van alle gelieerdepersonen met IDs in <paramref name="gelieerdePersoonIDs"/>.
