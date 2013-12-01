@@ -76,8 +76,8 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public IList<CategorieInfo> CategorieLijst { get; set; }
 
 		/// <summary>
-		/// De ID van het adres dat als voorkeursadres gemarkeerd is
-		/// voor deze persoon
+		/// De ID van het PERSOONSadres dat als voorkeursadres gemarkeerd is
+		/// voor deze persoon. (Dit is een slechte naam.)
 		/// </summary>
 		[DataMember]
 		public int? VoorkeursAdresID { get; set; }

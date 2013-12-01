@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using OfficeOpenXml;
 
 namespace Chiro.Gap.ExcelManip
@@ -124,8 +125,12 @@ namespace Chiro.Gap.ExcelManip
 
                 Insert(ledenBlad, rij.PersoonDetail.GeboorteDatum, 7, rijNr);
 
+                int voorkeursAdresID = rij.PersoonDetail.VoorkeursAdresID ?? 0;
                 int i = 0;
-                foreach (var adres in rij.PersoonsAdresInfo)
+
+                // die order by hieronder is een nifty hack om het voorkeursadres eerst te krijgen.
+
+                foreach (var adres in rij.PersoonsAdresInfo.OrderBy(pai => Math.Abs(pai.PersoonsAdresID - voorkeursAdresID)))
                 {
                     Insert(ledenBlad, adres.StraatNaamNaam, i * 7 + 9, rijNr);
                     Insert(ledenBlad, adres.HuisNr, i * 7 + 10, rijNr);
@@ -185,12 +190,13 @@ namespace Chiro.Gap.ExcelManip
                                               {
                                                   "Type", "AD-nummer", "Voornaam", "Naam", "Afdelingen", "Straat", "Nr.",
                                                   "Bus", "Postnr.", "Postcode",
-                                                  "Woonplaats", "Land"
+                                                  "Woonplaats", "Land", "Adrestype", "Voorkeur"
                                               });
 
             rijNr = 2;
             foreach (var lid in leden)
             {
+                int voorkeursAdresID = lid.PersoonDetail.VoorkeursAdresID ?? 0;
                 foreach (var adres in lid.PersoonsAdresInfo)
                 {
                     if (lid.LidInfo != null)
@@ -208,6 +214,8 @@ namespace Chiro.Gap.ExcelManip
                     Insert(adressenBlad, adres.PostCode, 10, rijNr);
                     Insert(adressenBlad, adres.WoonPlaatsNaam, 11, rijNr);
                     Insert(adressenBlad, adres.LandNaam, 12, rijNr);
+                    Insert(adressenBlad, adres.AdresType.ToString(), 13, rijNr);
+                    Insert(adressenBlad, adres.PersoonsAdresID == voorkeursAdresID, 14, rijNr);
                     ++rijNr;
                 }
             }
