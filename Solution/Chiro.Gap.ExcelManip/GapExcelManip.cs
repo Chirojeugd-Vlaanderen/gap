@@ -22,7 +22,6 @@ using System.Linq;
 using System.Text;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using OfficeOpenXml;
 
 namespace Chiro.Gap.ExcelManip
