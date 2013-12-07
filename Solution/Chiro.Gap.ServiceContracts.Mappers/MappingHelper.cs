@@ -247,6 +247,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.PostCodeGet()))
                 .ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.LandGet()));
 
+            // Deze mapping moet alle adresvelden negeren. Ze zal gebruikt worden als tussenstap wanneer
+            // we een LidOverzicht nodig hebben, maar de adressen irrelevant zijn. Op die manier vermijden
+            // we dat de adressen 'gelazyload' worden.
             Mapper.CreateMap<Lid, LidOverzichtZonderAdres>()
                   .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
                   .ForMember(dst => dst.Email,

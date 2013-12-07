@@ -24,12 +24,10 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
-    // TODO (#1482): Ik denk dat deze klasse weg kan.
 	/// <summary>
-	/// Datacontract met informatie over een lid (kind of leiding), zonder adresinfo.
-	/// Wat een beetje stom is, want PersoonsOverzicht bevat wel adresinfo. Ik vermoed
-	/// dus dat als je deze klasse gebruikt, bij conventie zegt dat de adresinfo 
-	/// leeg/ongeldig is. Een erg vreemde manier van werken, i.m.o.
+    /// Datacontract met informatie over een lid (kind of leiding), zonder adresinfo.
+    /// Wordt eigenlijk vooral gebruikt om te vermijden dat de mapping op het datacontract
+    /// LidOverzicht adressen begint te laden als die niet nodig zijn.
 	/// </summary>
 	[DataContract]
 	public class LidOverzichtZonderAdres : PersoonOverzicht
