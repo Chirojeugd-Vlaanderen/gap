@@ -24,12 +24,6 @@
     
 	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>
 	
-    <% //Html.RenderPartial("PersoonZoekenScriptsControl", Model); %>
-    
-   
-
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
      <%//jQuery scripts (algemeen en Datatables) %>
     <script src="<%= ResolveUrl("~/Scripts/jquery.dataTables.min.js")%>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/datestringsort.js")%>" type="text/javascript"></script>
@@ -50,6 +44,9 @@
             });
         });
 	</script>
+   
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <p><em>Hou je muispijl boven een link in de tabel - zonder te klikken - voor iets meer uitleg over wat de link doet.</em></p>
 	<%using (Html.BeginForm("List", "Personen"))
    { %>
