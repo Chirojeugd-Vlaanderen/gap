@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <connectionStrings>
+    <add name="kipadminEntities" connectionString="metadata=res://*/KipAdmin.csdl|res://*/KipAdmin.ssdl|res://*/KipAdmin.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.\SQLEXPRESS;initial catalog=gap_local;persist security info=True;Integrated Security=SSPI;multipleactiveresultsets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+  </connectionStrings>
+</configuration>

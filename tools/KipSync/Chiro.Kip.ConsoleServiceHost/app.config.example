@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<configuration>
+
+  <configSections>
+    <section name="serviceHelper" type="Chiro.Adf.Configuration.AdfConfigurationSection, Chiro.Adf"/>
+    <section name="unity" type="Microsoft.Practices.Unity.Configuration.UnityConfigurationSection, Microsoft.Practices.Unity.Configuration"/>
+  </configSections>
+
+  <serviceHelper>
+    <serviceProviders>
+      <add name="wcf" type="Chiro.Adf.ChannelFactoryServiceProvider, Chiro.Adf"/>
+    </serviceProviders>
+  </serviceHelper>
+
+  <unity xmlns="http://schemas.microsoft.com/practices/2010/unity">
+    <!-- Geen unity nodig, want ik wil messages in the f*** queue -->
+    <!--<type type="Chiro.Kip.Services.UpdateService.IUpdateService, Chiro.Kip.Services" mapTo="Chiro.Kip.Services.UpdateService.UpdateServiceClient, Chiro.Kip.Services"/>-->
+    <container />
+  </unity>
+
+
+  <system.diagnostics>
+    <sources>
+      <source name="System.ServiceModel.MessageLogging" switchValue="Warning, ActivityTracing">
+        <listeners>
+          <add type="System.Diagnostics.DefaultTraceListener" name="Default">
+            <filter type=""/>
+          </add>
+          <add name="ServiceModelMessageLoggingListener">
+            <filter type=""/>
+          </add>
+        </listeners>
+      </source>
+      <source name="System.ServiceModel" switchValue="Off, ActivityTracing" propagateActivity="true">
+        <listeners>
+          <add type="System.Diagnostics.DefaultTraceListener" name="Default">
+            <filter type=""/>
+          </add>
+          <add name="ServiceModelTraceListener">
+            <filter type=""/>
+          </add>
+        </listeners>
+      </source>
+    </sources>
+    <sharedListeners>
+      <add initializeData="c:\wcflogs\app_messages.svclog" type="System.Diagnostics.XmlWriterTraceListener, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" name="ServiceModelMessageLoggingListener" traceOutputOptions="Timestamp">
+        <filter type=""/>
+      </add>
+      <add initializeData="c:\wcflogs\app_tracelog.svclog" type="System.Diagnostics.XmlWriterTraceListener, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" name="ServiceModelTraceListener" traceOutputOptions="Timestamp">
+        <filter type=""/>
+      </add>
+    </sharedListeners>
+  </system.diagnostics>
+  
+  <connectionStrings>
+  
+    <!-- Connection string voor entity framework op Kipadmin -->
+    <add name="kipadminEntities" connectionString="metadata=res://*/KipAdmin.csdl|res://*/KipAdmin.ssdl|res://*/KipAdmin.msl;provider=System.Data.SqlClient;provider connection string=&quot;Data Source=.\SQLEXPRESS;Initial Catalog=kipadmin_local;Persist Security Info=True;Integrated Security=SSPI;MultipleActiveResultSets=True;Application Name=kipsync_local&quot;" providerName="System.Data.EntityClient"/>
+  </connectionStrings>
+  <!-- When deploying the service library project, the content of the config file must be added to the host's 
+  app.config file. System.Configuration does not support config files for libraries. -->
+  <system.serviceModel>
+    <diagnostics>
+      <messageLogging logMalformedMessages="false" logMessagesAtServiceLevel="false" logMessagesAtTransportLevel="false"/>
+    </diagnostics>
+    <bindings>
+      <netMsmqBinding>
+        <binding name="NoMsmqSecurity" receiveTimeout="2.00:00:00" receiveErrorHandling="Fault" timeToLive="14.00:00:00">
+          <security mode="None"/>
+        </binding>
+      </netMsmqBinding>
+
+      <!-- Metadata Exchange binding, wordt enkel gebruikt om de proxy te genereren
+           in Chiro.Gap.Sync (GAP) -->
+      
+      <mexHttpBinding>
+        <binding name="MexBinding"/>
+      </mexHttpBinding>
+      
+    </bindings>
+
+    <!-- Configuratie van de queue voor KIP->GAP (ad-nummers); KipSync is hier client -->
+    <client>
+      <endpoint address="net.msmq://localhost/private/gapupdate" binding="netMsmqBinding" bindingConfiguration="NoMsmqSecurity" contract="Chiro.Gap.UpdateSvc.Contracts.IUpdateService">
+        <identity>
+          <dns value="localhost"/>
+        </identity>
+      </endpoint>
+    </client>
+    
+    <!-- Configuratie van de queue GAP->KIP (deze service); KipSync is hier server -->
+    
+    <services>
+      <service behaviorConfiguration="Chiro.Kip.Services.SyncServiceBehavior" name="Chiro.Kip.Services.SyncPersoonService">
+        <endpoint address="net.msmq://localhost/private/kipsyncpersoonservicequeue" binding="netMsmqBinding" bindingConfiguration="NoMsmqSecurity" contract="Chiro.Kip.ServiceContracts.ISyncPersoonService"/>
+        <host>
+          <baseAddresses>
+            <add baseAddress="net.msmq://localhost/private/kipsyncpersoonservicequeue"/>
+            
+            <!-- Base address voor metadata exchange -->
+            <add baseAddress="http://localhost:8000/KipSyncService"/>
+            
+          </baseAddresses>
+        </host>
+      </service>
+    </services>
+
+    <extensions>
+      <behaviorExtensions>
+        <!-- <add name="DIServiceBehaviorExtension" type="Chiro.Cdf.DependencyInjection.DIServiceBehaviorSection, Chiro.Cdf.DependencyInjectionBehavior, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/> -->
+        <add name="unity" type="Chiro.Cdf.UnityWcfExtensions.UnityBehaviorExtensionElement, Chiro.Cdf.UnityWcfExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </behaviorExtensions>
+    </extensions>    
+    
+    <behaviors>
+      <serviceBehaviors>
+        <behavior name="Chiro.Kip.Services.SyncServiceBehavior">
+          <unity operationContextEnabled="true" instanceContextEnabled="false" />
+          <serviceThrottling maxConcurrentCalls="1" maxConcurrentSessions="10"
+            maxConcurrentInstances="1" />
+          <serviceDebug includeExceptionDetailInFaults="true" />
+          <serviceMetadata httpGetEnabled="true" httpsGetEnabled="false" />
+        </behavior>
+      </serviceBehaviors>
+    </behaviors>
+  </system.serviceModel>
+  
+  <!-- Er is hier geen unity configuration, omdat unity voor kipsync enkel gebruikt wordt als we
+  service calls mocken. (denk ik toch) -->
+<startup><supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.0"/></startup></configuration>

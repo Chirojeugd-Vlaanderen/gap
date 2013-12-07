@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<configuration>
+	<configSections>
+    <section name="serviceHelper" type="Chiro.Cdf.ServiceHelper.Configuration.CdfConfigurationSection, Chiro.Cdf.ServiceHelper"/>
+    <section name="unity" type="Microsoft.Practices.Unity.Configuration.UnityConfigurationSection, Microsoft.Practices.Unity.Configuration"/>
+		<sectionGroup name="userSettings" type="System.Configuration.UserSettingsGroup, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+			<section name="Chiro.Gap.Services.Test.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" allowExeDefinition="MachineToLocalUser" requirePermission="false"/>
+		</sectionGroup>
+	</configSections>
+
+  <serviceHelper>
+    <serviceProviders>
+      <!-- We gebruiken IOC om de service-implementaties te resolven. -->
+      <add name="ioc" type="Chiro.Cdf.ServiceHelper.IocServiceProvider, Chiro.Cdf.ServiceHelper" />
+    </serviceProviders>
+  </serviceHelper>
+
+
+  <connectionStrings>
+    <add name="ChiroGroepEntities" connectionString="metadata=res://*/ChiroGroepModel.csdl|res://*/ChiroGroepModel.ssdl|res://*/ChiroGroepModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;Data Source=.\SQLEXPRESS;Initial Catalog=gap_local;Integrated Security=SSPI;MultipleActiveResultSets=True&quot;" providerName="System.Data.EntityClient"/>
+  </connectionStrings>
+	<unity>
+		<containers>
+			<container>
+				<types>
+					<!-- altijd GAV voor deze tests -->
+					<type type="Chiro.Gap.WorkerInterfaces.IAutorisatieManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Dummies.AutMgrAltijdGav, Chiro.Gap.Dummies"/>
+					<type type="Chiro.Gap.WorkerInterfaces.IAuthenticatieManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.AuthenticatieManager, Chiro.Gap.Workers"/>
+          <!-- de workerinterfaces; ik denk niet dat die gemockt gaan moeten worden -->
+          <type type="Chiro.Gap.WorkerInterfaces.IVeelGebruikt, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.VeelGebruikt, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IChiroGroepenManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.ChiroGroepenManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IAfdelingsJaarManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.AfdelingsJaarManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IGroepsWerkJarenManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.GroepsWerkJarenManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IGelieerdePersonenManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.GelieerdePersonenManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.ILedenManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.LedenManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IGebruikersRechtenManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.GebruikersRechtenManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IGroepenManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.GroepenManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IJaarOvergangManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.JaarOvergangManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IFunctiesManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.FunctiesManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IVerzekeringenManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.VerzekeringenManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IPersonenManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.PersonenManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.ICommunicatieVormenManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.CommunicatieVormenManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IAdressenManager, Chiro.Gap.WorkerInterfaces" mapTo="Chiro.Gap.Workers.AdressenManager, Chiro.Gap.Workers"/>
+          <type type="Chiro.Gap.WorkerInterfaces.IUitstappenManager, Chiro.Gap.WorkerInterfaces"
+                mapTo="Chiro.Gap.Workers.UitstappenManager, Chiro.Gap.Workers" />
+
+          <!-- Syncen is voor deze tests niet van belang -->
+					<type type="Chiro.Gap.SyncInterfaces.IAdressenSync, Chiro.Gap.SyncInterfaces" mapTo="Chiro.Gap.Dummies.DummySync, Chiro.Gap.Dummies"/>
+					<type type="Chiro.Gap.SyncInterfaces.ICommunicatieSync, Chiro.Gap.SyncInterfaces" mapTo="Chiro.Gap.Dummies.DummySync, Chiro.Gap.Dummies"/>
+					<type type="Chiro.Gap.SyncInterfaces.IPersonenSync, Chiro.Gap.SyncInterfaces" mapTo="Chiro.Gap.Dummies.DummySync, Chiro.Gap.Dummies"/>
+					<type type="Chiro.Gap.SyncInterfaces.ILedenSync, Chiro.Gap.SyncInterfaces" mapTo="Chiro.Gap.Dummies.DummySync, Chiro.Gap.Dummies"/>
+					<type type="Chiro.Gap.SyncInterfaces.IVerzekeringenSync, Chiro.Gap.SyncInterfaces" mapTo="Chiro.Gap.Dummies.DummySync, Chiro.Gap.Dummies"/>
+          <type type="Chiro.Gap.SyncInterfaces.IGroepenSync, Chiro.Gap.SyncInterfaces" mapTo="Chiro.Gap.Dummies.DummySync, Chiro.Gap.Dummies"/>
+          <type type="Chiro.Gap.SyncInterfaces.IBivakSync, Chiro.Gap.SyncInterfaces"
+                mapTo="Chiro.Gap.Dummies.DummySync, Chiro.Gap.Dummies" />
+          
+          <!-- Mailen, AD-service: evenmin -->
+          <type type="Chiro.Cdf.Mailer.IMailer, Chiro.Cdf.Mailer" mapTo="Chiro.Cdf.Mailer.FakeMailer, Chiro.Cdf.Mailer"/>
+          <type type="Chiro.Ad.ServiceContracts.IAdService, Chiro.Ad.ServiceContracts" mapTo="Chiro.Ad.ServiceContracts.AdServiceMock, Chiro.Ad.ServiceContracts" />         
+
+        </types>
+			</container>
+		</containers>
+	</unity>
+	<userSettings>
+		<Chiro.Gap.Services.Test.Properties.Settings>
+			<setting name="TestSecurityGroep" serializeAs="String">
+				<value>CgUsers</value>
+			</setting>
+			<setting name="TestUser" serializeAs="String">
+				<value>tester</value>
+			</setting>
+		</Chiro.Gap.Services.Test.Properties.Settings>
+	</userSettings>
+	<runtime>
+		<assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+			<dependentAssembly>
+				<assemblyIdentity name="EntityFramework" publicKeyToken="B77A5C561934E089" culture="neutral"/>
+				<bindingRedirect oldVersion="0.0.0.0-4.4.0.0" newVersion="4.4.0.0"/>
+			</dependentAssembly>
+		</assemblyBinding>
+	</runtime>
+</configuration>
