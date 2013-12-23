@@ -43,6 +43,7 @@ using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
+using Chiro.Gap.TestAttributes;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -104,15 +105,15 @@ namespace Chiro.Gap.Services.Test
             // ARRANGE
 
             // testdata
-            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Persoon = new Persoon()};
-            var communicatieType = new CommunicatieType {ID = 2, Validatie = "^[0-9]*$"};
+            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon() };
+            var communicatieType = new CommunicatieType { ID = 2, Validatie = "^[0-9]*$" };
 
             // dependency injection
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
             repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
-                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> {communicatieType}));
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { communicatieType }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
@@ -141,7 +142,7 @@ namespace Chiro.Gap.Services.Test
 
             // modelletje
 
-            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Persoon = new Persoon()};
+            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon() };
             var telefoonNr = new CommunicatieType
                                  {
                                      ID = 1,
@@ -155,9 +156,9 @@ namespace Chiro.Gap.Services.Test
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
             repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
-                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> {telefoonNr}));
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { telefoonNr }));
 
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
@@ -188,8 +189,8 @@ namespace Chiro.Gap.Services.Test
         {
             // ARRANGE
 
-            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Persoon = new Persoon {AdInAanvraag = true}};
-            var email = new CommunicatieType {ID = 3, Validatie = ".*"};
+            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon { AdInAanvraag = true } };
+            var email = new CommunicatieType { ID = 3, Validatie = ".*" };
 
             var commDetail = new CommunicatieInfo
             {
@@ -210,9 +211,9 @@ namespace Chiro.Gap.Services.Test
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
             repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
-                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> {email}));
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { email }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
@@ -265,7 +266,7 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieVorm>())
                                   .Returns(
-                                      new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> {testCommunicatieVorm}));
+                                      new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> { testCommunicatieVorm }));
 
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
@@ -301,12 +302,12 @@ namespace Chiro.Gap.Services.Test
 
             var origineleCommunicatieVorm = new CommunicatieVorm
                                                 {
-                                                    CommunicatieType = new CommunicatieType {ID = 1, Validatie = ".*"},
+                                                    CommunicatieType = new CommunicatieType { ID = 1, Validatie = ".*" },
                                                     GelieerdePersoon =
                                                         new GelieerdePersoon
                                                             {
                                                                 Persoon =
-                                                                    new Persoon {AdInAanvraag = true}
+                                                                    new Persoon { AdInAanvraag = true }
                                                             },
                                                     ID = 2,
                                                     Voorkeur = true,
@@ -365,10 +366,10 @@ namespace Chiro.Gap.Services.Test
         {
             // arbitraire dingen
 
-            const int someGid = 5;     
-            const int someGpid = 3;    
-            const string someUsername = "UserName";   
-            DateTime someGeboorteDatum = new DateTime(1977,03,08);
+            const int someGid = 5;
+            const int someGpid = 3;
+            const string someUsername = "UserName";
+            DateTime someGeboorteDatum = new DateTime(1977, 03, 08);
             const int someWerkJaar = 2012;
 
             // arrange
@@ -397,7 +398,7 @@ namespace Chiro.Gap.Services.Test
                                                        }
                                        };
 
-            var groepsWerkJaar = new GroepsWerkJaar {WerkJaar = someWerkJaar, Groep = gelieerdePersoon.Groep};
+            var groepsWerkJaar = new GroepsWerkJaar { WerkJaar = someWerkJaar, Groep = gelieerdePersoon.Groep };
             gelieerdePersoon.Groep.GroepsWerkJaar.Add(groepsWerkJaar);
 
 
@@ -407,7 +408,7 @@ namespace Chiro.Gap.Services.Test
             var communicatieVormenManagerMock = new Mock<ICommunicatieVormenManager>();
 
             repositoryProviderMock.Setup(mck => mck.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>{gelieerdePersoon}));
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
 
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
             Factory.InstantieRegistreren(communicatieVormenManagerMock.Object);
@@ -448,7 +449,7 @@ namespace Chiro.Gap.Services.Test
             // mocks
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
@@ -474,6 +475,47 @@ namespace Chiro.Gap.Services.Test
             }
 
             Assert.IsTrue(gevangen);
+        }
+
+        ///<summary>
+        /// Controleert of de service verhindert dat een Civi-ID wordt overschreven
+        ///</summary>
+        [TestMethod()]
+        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.AlgemeneFout)]
+        public void BewarenCiviIdTest()
+        {
+            // ARRANGE
+
+            // model
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon
+                {
+                    CiviID = 2
+                }
+            };
+
+            // mocks
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            target.Bewaren(
+                new PersoonInfo
+                    {
+                        GelieerdePersoonID = gelieerdePersoon.ID,
+                        CiviID = 39198
+                    }
+                );
+
+            // Als we hieronder geraken zonder exception, is het mis.
+            Assert.IsTrue(false);
         }
 
         /// <summary>
@@ -541,7 +583,7 @@ namespace Chiro.Gap.Services.Test
             // mocks voor data access
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
-                                  .Returns(new DummyRepo<Adres>(new List<Adres> {gelieerdePersoon.PersoonsAdres.Adres}));
+                                  .Returns(new DummyRepo<Adres>(new List<Adres> { gelieerdePersoon.PersoonsAdres.Adres }));
             repositoryProviderMock.Setup(src => src.RepositoryGet<StraatNaam>())
                                   .Returns(
                                       new DummyRepo<StraatNaam>(new List<StraatNaam>
@@ -590,7 +632,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<GelieerdePersonenService>();
-            target.GelieerdePersonenVerhuizen(new[] {gelieerdePersoon.ID}, infoNieuwAdres,
+            target.GelieerdePersonenVerhuizen(new[] { gelieerdePersoon.ID }, infoNieuwAdres,
                                               gelieerdePersoon.PersoonsAdres.Adres.ID);
 
             // ASSERT
@@ -608,10 +650,10 @@ namespace Chiro.Gap.Services.Test
 
             // testdata
 
-            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Persoon = new Persoon {AdInAanvraag = true}};
+            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon { AdInAanvraag = true } };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
 
-            var nederland = new Land {Naam = "Nederland"};
+            var nederland = new Land { Naam = "Nederland" };
 
             var persoonsAdresInfo = new PersoonsAdresInfo
                                         {
@@ -633,7 +675,7 @@ namespace Chiro.Gap.Services.Test
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
             repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
                                   .Returns(new DummyRepo<Adres>(new List<Adres>()));
             repositoryProviderMock.Setup(src => src.RepositoryGet<StraatNaam>())
@@ -641,13 +683,13 @@ namespace Chiro.Gap.Services.Test
             repositoryProviderMock.Setup(src => src.RepositoryGet<WoonPlaats>())
                                   .Returns(new DummyRepo<WoonPlaats>(new List<WoonPlaats>()));
             repositoryProviderMock.Setup(src => src.RepositoryGet<Land>())
-                                  .Returns(new DummyRepo<Land>(new List<Land> {nederland}));
+                                  .Returns(new DummyRepo<Land>(new List<Land> { nederland }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
 
             var target = Factory.Maak<GelieerdePersonenService>();
-            target.AdresToevoegenGelieerdePersonen(new [] {gelieerdePersoon.ID}, persoonsAdresInfo, true);
+            target.AdresToevoegenGelieerdePersonen(new[] { gelieerdePersoon.ID }, persoonsAdresInfo, true);
 
             // ASSERT
 
@@ -664,12 +706,12 @@ namespace Chiro.Gap.Services.Test
         {
             // ARRANGE
 
-            var voorkeursAdres = new BelgischAdres {ID = 2};
-            var anderAdres = new BelgischAdres {ID = 3};
+            var voorkeursAdres = new BelgischAdres { ID = 2 };
+            var anderAdres = new BelgischAdres { ID = 3 };
 
-            var gelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon {ID = 1, AdInAanvraag = true}};
+            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, AdInAanvraag = true } };
 
-            var voorkeursPa = new PersoonsAdres {Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres};
+            var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
             var anderPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = anderAdres };
 
             // wat gepruts om alle relaties goed te leggen
@@ -694,15 +736,15 @@ namespace Chiro.Gap.Services.Test
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
-                                  .Returns(new DummyRepo<Adres>(new List<Adres> {voorkeursAdres, anderAdres}));
+                                  .Returns(new DummyRepo<Adres>(new List<Adres> { voorkeursAdres, anderAdres }));
             repositoryProviderMock.Setup(src => src.RepositoryGet<PersoonsAdres>())
-                                  .Returns(new DummyRepo<PersoonsAdres>(new List<PersoonsAdres> {voorkeursPa, anderPa}));
+                                  .Returns(new DummyRepo<PersoonsAdres>(new List<PersoonsAdres> { voorkeursPa, anderPa }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
 
             var target = Factory.Maak<GelieerdePersonenService>();
-            target.AdresVerwijderenVanPersonen(new [] {gelieerdePersoon.Persoon.ID}, voorkeursAdres.ID);
+            target.AdresVerwijderenVanPersonen(new[] { gelieerdePersoon.Persoon.ID }, voorkeursAdres.ID);
 
             // ASSERT
 
@@ -748,7 +790,7 @@ namespace Chiro.Gap.Services.Test
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
@@ -796,7 +838,7 @@ namespace Chiro.Gap.Services.Test
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieVorm>())
-                                  .Returns(new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> {communicatieVorm}));
+                                  .Returns(new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> { communicatieVorm }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
 
@@ -823,14 +865,14 @@ namespace Chiro.Gap.Services.Test
 
             var gelieerdePersoon1 = new GelieerdePersoon { ID = 4, Persoon = new Persoon { ID = 1 }, Groep = groep };
             var gelieerdePersoon2 = new GelieerdePersoon { ID = 5, Persoon = new Persoon { ID = 2 }, Groep = groep };
-            var persoon3 = new Persoon {ID = 3};
+            var persoon3 = new Persoon { ID = 3 };
 
             gelieerdePersoon1.Persoon.GelieerdePersoon.Add(gelieerdePersoon1);
             gelieerdePersoon2.Persoon.GelieerdePersoon.Add(gelieerdePersoon2);
 
-            var persoonsAdres1 = new PersoonsAdres {Persoon = gelieerdePersoon1.Persoon};
-            var persoonsAdres2 = new PersoonsAdres {Persoon = gelieerdePersoon2.Persoon};
-            var persoonsAdres3 = new PersoonsAdres {Persoon = persoon3};
+            var persoonsAdres1 = new PersoonsAdres { Persoon = gelieerdePersoon1.Persoon };
+            var persoonsAdres2 = new PersoonsAdres { Persoon = gelieerdePersoon2.Persoon };
+            var persoonsAdres3 = new PersoonsAdres { Persoon = persoon3 };
 
             gelieerdePersoon1.Persoon.PersoonsAdres.Add(persoonsAdres1);
             gelieerdePersoon2.Persoon.PersoonsAdres.Add(persoonsAdres2);
@@ -939,21 +981,21 @@ namespace Chiro.Gap.Services.Test
         {
             // ARRANGE
 
-            var gelieerdePersoon = new GelieerdePersoon {ID = 1, Groep = new ChiroGroep()};
-            var categorie = new Categorie {ID = 2, Groep = gelieerdePersoon.Groep};
+            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Groep = new ChiroGroep() };
+            var categorie = new Categorie { ID = 2, Groep = gelieerdePersoon.Groep };
             gelieerdePersoon.Categorie.Add(categorie);
             gelieerdePersoon.Groep.Categorie.Add(categorie);
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
-            
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
 
             var gelieerdePersonenService = Factory.Maak<GelieerdePersonenService>();
-            gelieerdePersonenService.CategorieKoppelen(new [] {gelieerdePersoon.ID}, new [] {categorie.ID});
+            gelieerdePersonenService.CategorieKoppelen(new[] { gelieerdePersoon.ID }, new[] { categorie.ID });
 
             // ASSERT
 
@@ -986,7 +1028,7 @@ namespace Chiro.Gap.Services.Test
                                        };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             groepsWerkJaar.Groep = gelieerdePersoon.Groep;
-            
+
             var gebruikersRecht = new GebruikersRecht
                                       {
                                           Groep = gelieerdePersoon.Groep,
@@ -1008,12 +1050,12 @@ namespace Chiro.Gap.Services.Test
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
 
-            var target = Factory.Maak<GelieerdePersonenService>();          
+            var target = Factory.Maak<GelieerdePersonenService>();
             var actual = target.AlleDetailsOphalen(gelieerdePersoon.ID);
 
             // ASSERT
