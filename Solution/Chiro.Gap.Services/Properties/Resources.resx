@@ -231,4 +231,7 @@
   <data name="LidInactief" xml:space="preserve">
     <value>Het lid met gegeven LidID is niet meer actief</value>
   </data>
+  <data name="CiviIdNietWijzigen" xml:space="preserve">
+    <value>Je mag geen Civi-ID's wijzigen.</value>
+  </data>
 </root>

@@ -1074,6 +1074,11 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout, Resources.AdNummerNietWijzigen);
             }
 
+            if (gp.Persoon.CiviID != persoonInfo.CiviID)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout, Resources.CiviIdNietWijzigen);
+            }
+
             gp.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;   // Chiroleeftijd vullen we gauw zo in
             Mapper.Map(persoonInfo, gp.Persoon);    // overschrijf persoonsgegevens met info uit persoonInfo
 
