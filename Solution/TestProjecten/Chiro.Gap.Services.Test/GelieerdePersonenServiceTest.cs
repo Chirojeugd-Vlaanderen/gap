@@ -427,6 +427,47 @@ namespace Chiro.Gap.Services.Test
         }
 
         ///<summary>
+        /// Controleert of de service verhindert dat een AD-nummer wordt toegekend
+        ///</summary>
+        [TestMethod()]
+        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.AlgemeneFout)]
+        public void ToekennenAdNrTest()
+        {
+            // ARRANGE
+
+            // model
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon
+                {
+                    AdNummer = null
+                }
+            };
+
+            // mocks
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            target.Bewaren
+            (
+                new PersoonInfo
+                {
+                    GelieerdePersoonID = gelieerdePersoon.ID,
+                    AdNummer = 39198
+                }
+            );
+
+            Assert.IsTrue(false);
+        }
+
+        ///<summary>
         /// Controleert of de service verhindert dat een AD-nummer wordt overschreven
         ///</summary>
         [TestMethod()]
