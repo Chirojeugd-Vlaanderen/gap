@@ -39,6 +39,7 @@ namespace Chiro.Gap.Poco.Model
         internal int GeslachtsInt { get; set; }
         public DateTime? SterfDatum { get; set; }
         public override int ID { get; set; }
+        public int? CiviID { get; set; }
         public override byte[] Versie { get; set; }
         public bool AdInAanvraag { get; set; }
         public string SeNaam { get; set; }          // Resultaat SOUNDEX op naam (computed)

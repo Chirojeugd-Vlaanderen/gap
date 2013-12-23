@@ -3,6 +3,13 @@
 -- Hier moeten alle aanpassingen komen aan de database die nodig zijn om de live-db
 -- om te zetten naar de db die gebruikt wordt in dev.
 
+
+------------------------------------------------------------------------------------
+--- LET OP! De wijzigingen in de structuur in de database, zijn weggehaald uit   ---
+--- dit script. Ik verplaats ze naar ..\changes, zodat (hopelijk) duidelijk      ---
+--- wordt welke wijzigingen relevant zijn voor welke versie.                     ---
+------------------------------------------------------------------------------------
+
 USE [master]
 GO
 
@@ -33,33 +40,4 @@ BEGIN
 	set @stamnr = (select top 1 g.Code from grp.Groep g where g.StopDatum is null order by newid());
 	exec auth.spGebruikersRechtToekennen @stamnr, @login
 END
-
-
--- echte werk:
-
-USE gap_tst
-GO
-
-
--- Wijzigingen voor 1.9.1
-
-GRANT UPDATE ON verz.PersoonsVerzekering TO GapSuperRole
-GO
-GRANT UPDATE ON verz.PersoonsVerzekering TO GapRole
-GO
-GRANT DELETE ON auth.GavSchap TO GapSuperRole
-GO
-GRANT DELETE ON auth.GavSchap TO GapRole
-GO
-GRANT UPDATE ON adr.BelgischAdres TO GapRole
-GO
-GRANT UPDATE ON abo.Abonnement TO GapSuperRole
-GO
-GRANT UPDATE ON abo.Abonnement TO GapRole
-GO
-
-use [KipAdmin_tst]
-GO
-GRANT DELETE ON [lid].[Aansluiting] TO [KipSyncRole]
-GO
 
