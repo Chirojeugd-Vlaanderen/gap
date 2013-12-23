@@ -87,9 +87,15 @@ namespace Chiro.Gap.Sync.Test
 
             var gelieerdePersoon = new GelieerdePersoon
                                        {
-                                           Persoon = new Gap.Poco.Model.Persoon {AdInAanvraag = true},
+                                           Persoon = new Gap.Poco.Model.Persoon { AdInAanvraag = true },
                                            Communicatie =
-                                               new List<CommunicatieVorm> {new CommunicatieVorm()}
+                                               new List<CommunicatieVorm> 
+                                               {
+                                                   new CommunicatieVorm 
+                                                   { 
+                                                       CommunicatieType = new Chiro.Gap.Poco.Model.CommunicatieType { ID = 3 } 
+                                                   }
+                                               }
                                        };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
 

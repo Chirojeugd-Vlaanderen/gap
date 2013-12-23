@@ -113,9 +113,9 @@ namespace Chiro.Gap.Services.Test
             var lid = new Leiding
                           {
                               ID = 1,
-                              GelieerdePersoon = new GelieerdePersoon(),
+                              GelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon(), Groep = new ChiroGroep() },
                               Functie =
-                                  new List<Functie> {contactPersoon, mijnFunctie}
+                                  new List<Functie> { contactPersoon, mijnFunctie }
                           };
 
             // (mocking opzetten)

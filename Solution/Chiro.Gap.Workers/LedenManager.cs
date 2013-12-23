@@ -650,6 +650,11 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public Lid HuidigLidGet(GelieerdePersoon gelieerdePersoon)
         {
+            if (!gelieerdePersoon.Groep.GroepsWerkJaar.Any())
+            {
+                // Als er geen groepswerkjaar is, dan is er ook geen lid.
+                return null;
+            }
             return
                 gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
                                 .First()
@@ -668,6 +673,10 @@ namespace Chiro.Gap.Workers
         /// bestaat.</returns>
         public AfdelingsJaar AfdelingsJaarVoorstellen(GelieerdePersoon gelieerdePersoon)
         {
+            if (!gelieerdePersoon.Groep.GroepsWerkJaar.Any())
+            {
+                return null;
+            }
             return AfdelingsJaarVoorstellen(gelieerdePersoon,
                                             gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar)
                                                             .First());

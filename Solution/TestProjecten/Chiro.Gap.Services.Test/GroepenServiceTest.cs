@@ -153,7 +153,7 @@ namespace Chiro.Gap.Services.Test
 
             var afdeling = new Afdeling {ID = 11};
             var categorie = new Categorie {ID = 21};
-            var groepsWerkJaar = new GroepsWerkJaar {AfdelingsJaar = new[] {new AfdelingsJaar {Afdeling = afdeling}}};
+            var groepsWerkJaar = new GroepsWerkJaar { AfdelingsJaar = new[] { new AfdelingsJaar { Afdeling = afdeling, OfficieleAfdeling = new OfficieleAfdeling() } } };
             var groep = new ChiroGroep
                             {
                                 ID = 1,
@@ -427,7 +427,12 @@ namespace Chiro.Gap.Services.Test
                                      };
             groepswerkjaar.Groep.GroepsWerkJaar.Add(groepswerkjaar);
             functie.Groep = groepswerkjaar.Groep;
-            var lid = new Leiding {Functie = new List<Functie>() {functie}, GroepsWerkJaar = groepswerkjaar};
+            var lid = new Leiding
+            {
+                Functie = new List<Functie>() { functie },
+                GelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon(), Groep = groepswerkjaar.Groep },
+                GroepsWerkJaar = groepswerkjaar
+            };
             functie.Lid.Add(lid);
 
             // repository opzetten

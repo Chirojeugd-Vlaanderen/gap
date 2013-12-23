@@ -60,7 +60,7 @@ namespace Chiro.Gap.Poco.Model
         /// Lijst met afdelingIDs
         /// </returns>
         /// <remarks>
-        /// Een kind is hoogstens aan 1 afdeling gekoppeld
+        /// Een kind is precies aan 1 afdeling gekoppeld
         /// </remarks>
         public IList<int> AfdelingIds
         {

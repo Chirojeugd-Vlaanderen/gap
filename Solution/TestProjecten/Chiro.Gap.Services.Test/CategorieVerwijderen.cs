@@ -129,7 +129,7 @@ namespace Chiro.Gap.Services.Test
             var categorie = new Categorie
                                 {
                                     ID = 1,
-                                    GelieerdePersoon = new List<GelieerdePersoon> {new GelieerdePersoon()}
+                                    GelieerdePersoon = new List<GelieerdePersoon> { new GelieerdePersoon { Persoon = new Persoon(), Groep = new ChiroGroep() } }
                                 };
             #endregion
 

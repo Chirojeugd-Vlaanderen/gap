@@ -52,7 +52,8 @@ namespace Chiro.Gap.ServiceContracts.Test
 		[TestMethod]
 		public void MapLijstLeden()
 		{
-		    var huidigGwj = new GroepsWerkJaar {Lid = new List<Lid> {new Kind(), new Kind()}};
+            var afdelingsJaar = new AfdelingsJaar { Afdeling = new Afdeling() };
+            var huidigGwj = new GroepsWerkJaar { Lid = new List<Lid> { new Kind { AfdelingsJaar = afdelingsJaar }, new Kind { AfdelingsJaar = afdelingsJaar } } };
 			var lidInfoLijst = Mapper.Map<IEnumerable<Lid>, IList<LidInfo>>(huidigGwj.Lid);
 
 			Assert.IsTrue(lidInfoLijst.Count > 0);
@@ -104,7 +105,7 @@ namespace Chiro.Gap.ServiceContracts.Test
 	        var groep = new ChiroGroep();
 	        var vorigJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2012};
 	        var ditJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2013};
-	        var gelieerdePersoon = new GelieerdePersoon {Groep = groep};
+	        var gelieerdePersoon = new GelieerdePersoon {Groep = groep, Persoon = new Persoon()};
             var lidVorigJaar = new Kind
             {
                 GroepsWerkJaar = vorigJaar,
@@ -141,7 +142,7 @@ namespace Chiro.Gap.ServiceContracts.Test
             var groep = new ChiroGroep();
             var vorigJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2012 };
             var ditJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2013 };
-            var gelieerdePersoon = new GelieerdePersoon { Groep = groep };
+            var gelieerdePersoon = new GelieerdePersoon { Groep = groep, Persoon = new Persoon() };
             var lidVorigJaar = new Kind
             {
                 GroepsWerkJaar = vorigJaar,
@@ -177,7 +178,7 @@ namespace Chiro.Gap.ServiceContracts.Test
 
             var groep = new ChiroGroep();
             var vorigJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2012 };
-            var gelieerdePersoon = new GelieerdePersoon { Groep = groep };
+            var gelieerdePersoon = new GelieerdePersoon { Groep = groep, Persoon = new Persoon() };
             var lidVorigJaar = new Kind
                                {
                                    GroepsWerkJaar = vorigJaar,
