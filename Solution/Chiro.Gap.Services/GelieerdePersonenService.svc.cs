@@ -1069,7 +1069,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            if (gp.Persoon.AdNummer != null && gp.Persoon.AdNummer != persoonInfo.AdNummer)
+            if (gp.Persoon.AdNummer != persoonInfo.AdNummer)
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout, Resources.AdNummerNietWijzigen);
             }
