@@ -16,7 +16,7 @@ IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = 'CgApp')
 GO
 
 
-USE [gap_dev]
+USE [gap_stg]
 GO
 
 IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'CgApp')
@@ -47,12 +47,15 @@ GO
 
 GRANT SELECT ON diag.vVerlorenBivakken TO GapSuperRole;
 
-USE KIPADMIN_tst
+USE kip_stg
 GO
 
 IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'gapsuper')
 	DROP USER gapsuper;
 GO	
+
+IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'gapsuper')
+	DROP USER [gapsuper];
 
 CREATE USER [gapsuper] FOR LOGIN [gapsuper]
 GO
@@ -60,13 +63,13 @@ GO
 EXEC sp_addrolemember N'GapSuperRole', N'gapsuper'
 GO
 
-USE [kipadmin_tst]
+USE [kip_stg]
 
 GRANT SELECT ON biv.BivakOverzicht TO GapSuperRole
 GRANT SELECT ON grp.ChiroGroep TO GapSuperRole
 GRANT SELECT ON dbo.HuidigWerkJaar TO GapSuperRole
 
-USE [gap_dev]
+USE [gap_stg]
 
 GRANT SELECT ON adr.Adres TO GapSuperRole
 GRANT SELECT ON adr.BelgischAdres TO GapSuperRole
@@ -86,14 +89,12 @@ GRANT SELECT ON pers.CommunicatieType TO GapSuperRole
 GRANT SELECT ON pers.CommunicatieVorm TO GapSuperRole
 
 
-USE [kipadmin_tst]
+USE [kip_stg]
 GO
 IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'CiviDev')
 	DROP USER CiviDev;
 
 CREATE USER [cividev] FOR LOGIN [cividev]
-GO
-USE [kipadmin_tst]
 GO
 EXEC sp_addrolemember N'db_datareader', N'cividev'
 GO
