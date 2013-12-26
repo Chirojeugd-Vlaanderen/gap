@@ -437,5 +437,45 @@ namespace Chiro.Gap.UpdateSvc.Service
             Console.WriteLine(stopDatum == null ? "Groep opnieuw geactiveerd: {0}" : "Groep gedesactiveerd: {0}", stamNr);
         }
 
+        /// <summary>
+        /// Kent gegeven <paramref name="civiID"/> toe aan de persoon met gegeven
+        /// <paramref name="persoonID"/>.
+        /// </summary>
+        /// <param name="persoonID">ID van persoon met toe te kennen Civi-ID</param>
+        /// <param name="civiID">toe te kennen Civi-ID</param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void CiviIdToekennen(int persoonID, int civiID)
+        {
+            var persoon = _personenRepo.ByID(persoonID);
+            if (persoon == null)
+            {
+                return;
+            }
+
+            CiviIdToekennen(persoon, civiID); // PERSISTEERT
+
+            Console.WriteLine("Civi-ID {0} toegekend aan {1}. (persoon-ID {2})", civiID, persoon.VolledigeNaam, persoon.ID);
+        }
+
+        /// <summary>
+        /// Kent gegeven <paramref name="civiID"/> toe aan de gegeven <paramref name="persoon"/>.
+        /// </summary>
+        /// <param name="persoon">persoon met toe te kennen Civi-ID</param>
+        /// <param name="civiID">toe te kennen Civi-ID</param>
+        private void CiviIdToekennen(Persoon persoon, int civiID)
+        {
+            Gav.CheckSuperGav();
+
+            // Wie heeft het gegeven AD-nummer al?
+            var personenAlBestaand = (from g in _personenRepo.Select() where g.CiviID == civiID select g);
+
+            foreach (var p in personenAlBestaand.Where(prs => prs.ID != persoon.ID).ToList())
+            {
+                DubbelVerwijderen(persoon, p);
+            }
+
+            persoon.CiviID = civiID;
+            _personenRepo.SaveChanges();
+        }
     }
 }

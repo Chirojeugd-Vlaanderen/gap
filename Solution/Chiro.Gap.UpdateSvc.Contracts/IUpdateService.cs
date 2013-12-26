@@ -38,6 +38,15 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 		[OperationContract]
 		void AdNummerToekennen(int persoonID, int adNummer);
 
+        /// <summary>
+        /// Kent gegeven <paramref name="civiID"/> toe aan de persoon met gegeven
+        /// <paramref name="persoonID"/>.
+        /// </summary>
+        /// <param name="persoonID">ID van persoon met toe te kennen Civi-ID</param>
+        /// <param name="civiID">toe te kennen Civi-ID</param>
+        [OperationContract]
+        void CiviIdToekennen(int persoonID, int civiID);
+
 		/// <summary>
 		/// Vervangt het AD-nummer van de persoon met AD-nummer <paramref name="oudAd"/>
 		/// door <paramref name="nieuwAd"/>.  Als er al een persoon bestond met AD-nummer
