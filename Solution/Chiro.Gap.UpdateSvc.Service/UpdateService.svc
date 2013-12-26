@@ -1,0 +1,1 @@
+<%@ ServiceHost Language="C#" Debug="true" Service="Chiro.Gap.UpdateSvc.Service.UpdateService" CodeBehind="UpdateService.svc.cs" %>

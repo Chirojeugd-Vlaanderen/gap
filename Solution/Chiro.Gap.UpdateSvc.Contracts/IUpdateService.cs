@@ -35,7 +35,7 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 		/// <param name="adNummer">
 		/// Nieuw AD-nummer
 		/// </param>
-		[OperationContract(IsOneWay = true)]
+		[OperationContract]
 		void AdNummerToekennen(int persoonID, int adNummer);
 
 		/// <summary>
@@ -45,7 +45,7 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 		/// </summary>
 		/// <param name="oudAd">AD-nummer van persoon met te vervangen AD-nummer</param>
 		/// <param name="nieuwAd">Nieuw AD-nummer</param>
-		[OperationContract(IsOneWay = true)]
+		[OperationContract]
 		void AdNummerVervangen(int oudAd, int nieuwAd);
 
 	    /// <summary>
@@ -54,7 +54,7 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 	    /// <param name="stamNr">Stamnummer te stoppen groep</param>
 	    /// <param name="stopDatum">Datum vanaf wanneer gestopt, <c>null</c> om de groep opnieuw te activeren.</param>
 	    /// <remarks>Als <paramref name="stopDatum"/> <c>null</c> is, wordt de groep opnieuw actief.</remarks>
-	    [OperationContract(IsOneWay = true)]
+	    [OperationContract]
 	    void GroepDesactiveren(string stamNr, DateTime? stopDatum);      
 	}
 }

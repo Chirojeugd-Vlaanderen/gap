@@ -74,10 +74,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateSvc.Service
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.WorkerInterfaces", "Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj", "{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateSvc.ConsoleServiceHost", "Chiro.Gap.UpdateSvc.ConsoleServiceHost\Chiro.Gap.UpdateSvc.ConsoleServiceHost.csproj", "{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateSvc.ServiceHost", "Chiro.Gap.UpdateSvc.ServiceHost\Chiro.Gap.UpdateSvc.ServiceHost.csproj", "{1FD873E8-1CF1-4824-A559-D5EA843BF459}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Services.Test", "TestProjecten\Chiro.Gap.Services.Test\Chiro.Gap.Services.Test.csproj", "{61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Dummies", "TestProjecten\Chiro.Gap.Dummies\Chiro.Gap.Dummies.csproj", "{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}"
@@ -409,31 +405,6 @@ Global
 		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Release|Win32.ActiveCfg = Release|Any CPU
 		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Release|x86.ActiveCfg = Release|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Release|Win32.ActiveCfg = Release|Any CPU
-		{3D8478B1-A4C7-4A6E-8975-A344B0ACE359}.Release|x86.ActiveCfg = Release|Any CPU
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Debug|Win32.ActiveCfg = Debug|x86
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Debug|x86.ActiveCfg = Debug|x86
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Debug|x86.Build.0 = Debug|x86
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Release|Any CPU.ActiveCfg = Release|x86
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Release|Mixed Platforms.Build.0 = Release|x86
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Release|Win32.ActiveCfg = Release|x86
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Release|x86.ActiveCfg = Release|x86
-		{1FD873E8-1CF1-4824-A559-D5EA843BF459}.Release|x86.Build.0 = Release|x86
 		{61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
