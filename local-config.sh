@@ -24,8 +24,6 @@ read a
 
 cp    Solution/Chiro.Gap.Poco.Context/App.Config.example    Solution/Chiro.Gap.Poco.Context/App.Config
 cp    Solution/Chiro.Gap.Services/Web.config.example    Solution/Chiro.Gap.Services/Web.config
-cp    Solution/Chiro.Gap.UpdateSvc.ConsoleServiceHost/App.config.example    Solution/Chiro.Gap.UpdateSvc.ConsoleServiceHost/App.config
-cp    Solution/Chiro.Gap.UpdateSvc.ServiceHost/App.config.example    Solution/Chiro.Gap.UpdateSvc.ServiceHost/App.config
 cp    Solution/Chiro.Gap.WebApi/Web.config.example    Solution/Chiro.Gap.WebApi/Web.config
 cp    Solution/Chiro.Gap.WebApp/Web.config.example    Solution/Chiro.Gap.WebApp/Web.config
 cp    Solution/TestProjecten/Chiro.Gap.Services.Test/App.config.example    Solution/TestProjecten/Chiro.Gap.Services.Test/App.config
