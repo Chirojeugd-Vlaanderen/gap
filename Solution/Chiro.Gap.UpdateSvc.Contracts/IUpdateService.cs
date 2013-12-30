@@ -26,6 +26,13 @@ namespace Chiro.Gap.UpdateSvc.Contracts
 	[ServiceContract]
 	public interface IUpdateService
 	{
+        /// <summary>
+        /// Testmethod.
+        /// </summary>
+        /// <returns>Een halloboodschap</returns>
+        [OperationContract]
+        string Hello();
+
 		/// <summary>
 		/// Stelt het AD-nummer van de persoon met ID <paramref name="persoonID"/> in.  
 		/// </summary>

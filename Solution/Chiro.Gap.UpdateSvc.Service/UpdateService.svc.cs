@@ -477,5 +477,14 @@ namespace Chiro.Gap.UpdateSvc.Service
             persoon.CiviID = civiID;
             _personenRepo.SaveChanges();
         }
+
+        /// <summary>
+        /// Testmethod.
+        /// </summary>
+        /// <returns>Een halloboodschap</returns>
+        public string Hello()
+        {
+            return "Hello UpdateService!";
+        }
     }
 }
