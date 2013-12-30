@@ -112,6 +112,10 @@
       <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
       <Name>Chiro.Gap.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Poco.Context\Chiro.Gap.Poco.Context.csproj">
+      <Project>{c83b2df6-4352-4fad-a09e-9c59dc335b05}</Project>
+      <Name>Chiro.Gap.Poco.Context</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj">
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
