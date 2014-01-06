@@ -338,6 +338,7 @@
             <PropertyRef Name="PersoonID" />
           </Key>
           <Property Name="AdNummer" Type="int" />
+          <Property Name="CiviID" Type="int" />
           <Property Name="Naam" Type="varchar" MaxLength="160" Nullable="false" />
           <Property Name="VoorNaam" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="GeboorteDatum" Type="datetime" />
