@@ -10,11 +10,11 @@
 # default for csharp files.
 # Note: This is only used by command line
 ###############################################################################
-*.cs     diff=csharp
-*.config text
-*.css    text
-*.aspx   text
-*.edmx   text
+*.cs     diff=csharp text
+*.config diff=html text
+*.css    diff text
+*.aspx   diff text
+*.edmx   diff text
 
 ###############################################################################
 # Set the merge driver for project and solution files
