@@ -234,4 +234,7 @@
   <data name="CiviIdNietWijzigen" xml:space="preserve">
     <value>Je mag geen Civi-ID's wijzigen.</value>
   </data>
+  <data name="IdsNietWijzigen" xml:space="preserve">
+    <value>Civi-ID, GelieerdePersoonID en AD-nummer mag je niet zelf kiezen.</value>
+  </data>
 </root>

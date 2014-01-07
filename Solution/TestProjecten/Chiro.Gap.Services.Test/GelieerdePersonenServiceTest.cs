@@ -443,6 +443,8 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
                                   .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>()));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT

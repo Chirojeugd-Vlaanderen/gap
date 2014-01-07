@@ -223,6 +223,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Civi-ID, GelieerdePersoonID en AD-nummer mag je niet zelf kiezen..
+        /// </summary>
+        internal static string IdsNietWijzigen {
+            get {
+                return ResourceManager.GetString("IdsNietWijzigen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} was al uitgeschreven uit je groep..
         /// </summary>
         internal static string IsAlUitgeschreven {

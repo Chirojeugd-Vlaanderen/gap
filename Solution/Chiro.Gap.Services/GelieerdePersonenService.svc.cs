@@ -708,6 +708,11 @@ namespace Chiro.Gap.Services
 
             // Persoon maken
 
+            if (details.PersoonInfo.GelieerdePersoonID != 0 || details.PersoonInfo.AdNummer != null || details.PersoonInfo.CiviID != null)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout, Resources.IdsNietWijzigen);
+            }
+
             var nieuwePersoon = new Persoon
                                 {
                                     AdNummer = null,    // een nieuwe persoon heeft geen AD-nummer
