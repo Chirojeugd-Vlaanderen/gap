@@ -285,7 +285,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Titel = Properties.Resources.NieuwePersoonTitel;
 
 
-            return View("EditGegevens", model);
+            return View(model);
         }
 
         /// <summary>
@@ -384,7 +384,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     ServiceHelper.CallService<IGroepenService, List<AfdelingDetail>>(
                         svc => svc.ActieveAfdelingenOphalen(model.GroepsWerkJaarID));
                 model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
-                return View("EditGegevens", model);
+                return View(model);
             }
 
             // Voorlopig opnieuw redirecten naar EditRest;
@@ -466,7 +466,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.EMail = new CommunicatieInfo {Nummer = broerzus.Email};           
 
             model.Titel = Properties.Resources.NieuwePersoonTitel;
-            return View("EditGegevens", model);
+            return View("Nieuw", model);
         }
 
         /// <summary>
@@ -499,10 +499,8 @@ namespace Chiro.Gap.WebApp.Controllers
         { 
             var model = new GelieerdePersonenModel();
             BaseModelInit(model, groepID);
-            // model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.AlleDetailsOphalen(id, groepID));
             model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(id));
             model.Titel = model.HuidigePersoon.VolledigeNaam;
-            //return View("EditGegevens", model);
             return View ("EditGegevens",model);
            
         }
@@ -511,10 +509,8 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             var model = new GelieerdePersonenModel();
             BaseModelInit(model, groepID);
-            // model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.AlleDetailsOphalen(id, groepID));
             model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonId));
             model.Titel = model.HuidigePersoon.VolledigeNaam;
-            //return View("EditGegevens", model);
             return Json(model,JsonRequestBehavior.AllowGet);
         }
 
@@ -527,14 +523,45 @@ namespace Chiro.Gap.WebApp.Controllers
         /// 'EditGegevens'.</returns>
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
-        public ActionResult EditGegevens(GelieerdePersonenModel model, int groepID)
+        public ActionResult EditGegevens(PersoonsWijzigingModel model, int groepID)
         {
             if (!ModelState.IsValid)
             {
+                // Als er iets niet in orde is met de wijzigingen, vullen we de ontbrekende gegevens aan, en tonen we 
+                // een view.
+                // In praktijk zal die niet gebruikt worden, aangezien deze methode enkel wordt aangeroepen door JQuery.
+                var persoonInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonInfo>(
+                    svc => svc.InfoOphalen(model.Wijziging.GelieerdePersoonID));
+
+                if (model.Wijziging.ChiroLeefTijd == null)
+                {
+                    model.Wijziging.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;
+                }
+                if (model.Wijziging.GeboorteDatum == null)
+                {
+                    model.Wijziging.GeboorteDatum = persoonInfo.GeboorteDatum;
+                }
+                if (model.Wijziging.Geslacht == null)
+                {
+                    model.Wijziging.Geslacht = persoonInfo.Geslacht;
+                }
+                if (model.Wijziging.Naam == null)
+                {
+                    model.Wijziging.Naam = persoonInfo.Naam;
+                }
+                if (model.Wijziging.SterfDatum == null)
+                {
+                    model.Wijziging.SterfDatum = persoonInfo.SterfDatum;
+                }
+                if (model.Wijziging.VoorNaam == null)
+                {
+                    model.Wijziging.VoorNaam = persoonInfo.VoorNaam;
+                }
+
                 return View("EditGegevens", model);
             }
 
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Bewaren(model.HuidigePersoon)); 
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Wijzigen(model.Wijziging)); 
 
             // Voorlopig opnieuw redirecten naar EditRest;
             // er zou wel gemeld moeten worden dat het wijzigen
@@ -545,7 +572,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // (er wordt hier geredirect ipv de view te tonen,
             // zodat je bij een 'refresh' niet de vraag krijgt
             // of je de gegevens opnieuw wil posten.)
-            return RedirectToAction("EditRest", new { id = model.HuidigePersoon.GelieerdePersoonID, groepID });
+            return RedirectToAction("EditRest", new { id = model.Wijziging.GelieerdePersoonID, groepID });
         }
 
         // NEW CODE
@@ -1304,7 +1331,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 object value;
                 TempData.TryGetValue("list", out value);
                 model.GelieerdePersoonIDs = (List<int>)value;
-                var persoonsnamen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(l => l.InfoOphalen(model.GelieerdePersoonIDs));
+                var persoonsnamen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(l => l.InfosOphalen(model.GelieerdePersoonIDs));
                 model.GelieerdePersoonNamen = persoonsnamen.Select(e => e.VoorNaam + " " + e.Naam).ToList();
                 return View("CategorieToevoegenAanLijst", model);
             }
@@ -1374,7 +1401,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 model.GelieerdePersonen =
                     ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(
-                        svc => svc.InfoOphalen(gelieerdePersoonIDs));
+                        svc => svc.InfosOphalen(gelieerdePersoonIDs));
                 return View(model);
             }
         }

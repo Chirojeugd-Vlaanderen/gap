@@ -79,7 +79,17 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonInfo> InfoOphalen(IList<int> gelieerdePersoonIDs);
+		IList<PersoonInfo> InfosOphalen(IList<int> gelieerdePersoonIDs);
+
+        /// <summary>
+        /// Haalt persoonsgegevens op voor een gegeven gelieerde persoon.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">GelieerdePersoonID van op te halen persoon</param>
+        /// <returns>PersoonInfo voor de persoon met gegeven <paramref name="gelieerdePersoonIDs" /></returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        PersoonInfo InfoOphalen(int gelieerdePersoonID);
 
 	    /// <summary>
 	    /// Haalt een lijst op van de eerste letters van de achternamen van gelieerde personen van een groep
@@ -165,15 +175,19 @@ namespace Chiro.Gap.ServiceContracts
 
 		#region bewaren
 
-		/// <summary>
-		/// Updatet een persoon op basis van <paramref name="persoonInfo"/>
-		/// </summary>
-		/// <param name="persoonInfo">Info over te bewaren persoon</param>
-		/// <returns>GelieerderPersoonID van de bewaarde gelieerde persoon</returns>
+        /// <summary>
+        /// Updatet een bestaand persoon op basis van <paramref name="wijzigingen"/>
+        /// </summary>
+        /// <param name="wijzigingen">De velden die niet <c>null</c> zijn, bevatten de toe te passen wijzigingen.
+        /// </param>
+        /// <returns>GelieerdePersoonID van de bewaarde persoon</returns>
+        /// <remarks>We hebben hier een issue als er informatie verwijderd moet worden. Ik zeg maar iets, geboorte-
+        /// of sterfdatum. Misschien moet dit toch maar aangepast worden zodanig dat alles wordt bewaard, i.e.
+        /// als een value <c>null</c> is, wordt de oorspronkelijke waarde overschreven door <c>null</c>.</remarks>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		int Bewaren(PersoonInfo persoonInfo);
+		int Wijzigen(PersoonsWijziging wijzigingen);
 
         /// <summary>
         /// Maakt een nieuwe persoon aan, met adres, e-mailadres en telefoonnummer, en maakt de persoon

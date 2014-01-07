@@ -48,7 +48,6 @@ $(function () {
     var GID = $('#groepID').val();
     var id = $('#lidIdH').val();
     var GPid = $('#GPid').val();
-    var adnummer = $('#adNummerInfo').text().trim();
     var voornaam = $('#voornaamInfo').text().trim();
     var achternaam = $('#achternaamInfo').text().trim();
     var geboortedatum = $('#gdInfo').val().trim();
@@ -958,15 +957,13 @@ $(function () {
         }
         $.post(url,
             {
-                "HuidigePersoon.AdNummer": adnummer,
-                "HuidigePersoon.Voornaam": vn,
-                "HuidigePersoon.Naam": n,
-                "HuidigePersoon.GeboorteDatum": gb,
-                "HuidigePersoon.Geslacht": g,
-                "HuidigePersoon.ChiroLeefTijd": cl,
-                "HuidigePersoon.GelieerdePersoonID": GPid,
-                "BroerZusID": 0,
-                "HuidigePersoon.VersieString": versiestring
+                "Wijziging.VoorNaam": vn,
+                "Wijziging.Naam": n,
+                "Wijziging.GeboorteDatum": gb,
+                "Wijziging.Geslacht": g,
+                "Wijziging.ChiroLeefTijd": cl,
+                "Wijziging.GelieerdePersoonID": GPid,
+                "Wijziging.VersieString": versiestring
             });
 
     }

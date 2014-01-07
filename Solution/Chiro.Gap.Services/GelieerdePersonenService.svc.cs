@@ -245,7 +245,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="gelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
         /// <returns>List van PersoonInfo overeenkomend met die IDs</returns>
-        public IList<PersoonInfo> InfoOphalen(IList<int> gelieerdePersoonIDs)
+        public IList<PersoonInfo> InfosOphalen(IList<int> gelieerdePersoonIDs)
         {
             var p = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIDs);
 
@@ -255,6 +255,16 @@ namespace Chiro.Gap.Services
             }
 
             return Mapper.Map<IList<GelieerdePersoon>, List<PersoonInfo>>(p);
+        }
+
+        /// <summary>
+        /// Haalt persoonsgegevens op voor een gegeven gelieerde persoon.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">GelieerdePersoonID van op te halen persoon</param>
+        /// <returns>PersoonInfo voor de persoon met gegeven <paramref name="gelieerdePersoonIDs" /></returns>
+        public PersoonInfo InfoOphalen(int gelieerdePersoonID)
+        {
+            return InfosOphalen(new List<int> { gelieerdePersoonID }).FirstOrDefault();
         }
 
         /// <summary>
@@ -1056,31 +1066,50 @@ namespace Chiro.Gap.Services
         #region te syncen updates
 
         /// <summary>
-        /// Updatet een bestaand persoon op basis van <paramref name="persoonInfo"/>
+        /// Updatet een bestaand persoon op basis van <paramref name="wijzigingen"/>
         /// </summary>
-        /// <param name="persoonInfo">Info over te bewaren persoon</param>
+        /// <param name="wijzigingen">De velden die niet <c>null</c> zijn, bevatten de toe te passen wijzigingen.
+        /// </param>
         /// <returns>GelieerdePersoonID van de bewaarde persoon</returns>
-        public int Bewaren(PersoonInfo persoonInfo)
+        /// <remarks>We hebben hier een issue als er informatie verwijderd moet worden. Ik zeg maar iets, geboorte-
+        /// of sterfdatum. Misschien moet dit toch maar aangepast worden zodanig dat alles wordt bewaard, i.e.
+        /// als een value <c>null</c> is, wordt de oorspronkelijke waarde overschreven door <c>null</c>.</remarks>
+        public int Wijzigen(PersoonsWijziging wijzigingen)
         {
-            var gp = _gelieerdePersonenRepo.ByID(persoonInfo.GelieerdePersoonID);
+            var gp = _gelieerdePersonenRepo.ByID(wijzigingen.GelieerdePersoonID);
 
             if (gp == null || !_autorisatieMgr.IsGav(gp))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
-
-            if (gp.Persoon.AdNummer != persoonInfo.AdNummer)
+            if (wijzigingen.ChiroLeefTijd.HasValue)
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout, Resources.AdNummerNietWijzigen);
+                gp.ChiroLeefTijd = wijzigingen.ChiroLeefTijd.Value;
             }
-
-            if (gp.Persoon.CiviID != persoonInfo.CiviID)
+            if (wijzigingen.GeboorteDatum.HasValue)
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout, Resources.CiviIdNietWijzigen);
+                gp.Persoon.GeboorteDatum = wijzigingen.GeboorteDatum;
             }
-
-            gp.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;   // Chiroleeftijd vullen we gauw zo in
-            Mapper.Map(persoonInfo, gp.Persoon);    // overschrijf persoonsgegevens met info uit persoonInfo
+            if (wijzigingen.Geslacht.HasValue)
+            {
+                gp.Persoon.Geslacht = wijzigingen.Geslacht.Value;
+            }
+            if (wijzigingen.Naam != null)
+            {
+                gp.Persoon.Naam = wijzigingen.Naam;
+            }
+            if (wijzigingen.SterfDatum != null)
+            {
+                gp.Persoon.SterfDatum = wijzigingen.SterfDatum;
+            }
+            if (wijzigingen.VersieString != null)
+            {
+                gp.Persoon.VersieString = wijzigingen.VersieString;
+            }
+            if (wijzigingen.VoorNaam != null)
+            {
+                gp.Persoon.VoorNaam = wijzigingen.VoorNaam;
+            }
 
 #if KIPDORP
             using (var tx = new TransactionScope())

@@ -427,7 +427,7 @@ namespace Chiro.Gap.Services.Test
         }
 
         ///<summary>
-        /// Controleert of de service verhindert dat een AD-nummer wordt toegekend
+        /// Controleert of de service verhindert dat een AD-nummer wordt toegekend bij het maken van een nieuwe persoon.
         ///</summary>
         [TestMethod()]
         [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.AlgemeneFout)]
@@ -436,128 +436,99 @@ namespace Chiro.Gap.Services.Test
             // ARRANGE
 
             // model
-            var gelieerdePersoon = new GelieerdePersoon
-            {
-                ID = 1,
-                Persoon = new Persoon
-                {
-                    AdNummer = null
-                }
-            };
+
+            var groep = new ChiroGroep { ID = 1 };
 
             // mocks
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
-            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                                  .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
 
             var target = Factory.Maak<GelieerdePersonenService>();
 
-            target.Bewaren
+            target.Nieuw
             (
-                new PersoonInfo
+                new NieuwePersoonDetails
                 {
-                    GelieerdePersoonID = gelieerdePersoon.ID,
-                    AdNummer = 39198
-                }
+                    PersoonInfo = new PersoonInfo { AdNummer = 39198 }
+                }, groep.ID, false
             );
 
             Assert.IsTrue(false);
         }
 
         ///<summary>
-        /// Controleert of de service verhindert dat een AD-nummer wordt overschreven
-        ///</summary>
-        [TestMethod()]
-        public void BewarenAdNrTest()
-        {
-            bool gevangen = false;
-
-            // ARRANGE
-
-            // model
-            var gelieerdePersoon = new GelieerdePersoon
-                                       {
-                                           ID = 1,
-                                           Persoon = new Persoon
-                                                         {
-                                                             AdNummer = 2
-                                                         }
-                                       };
-
-            // mocks
-            var repositoryProviderMock = new Mock<IRepositoryProvider>();
-            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
-            Factory.InstantieRegistreren(repositoryProviderMock.Object);
-
-            // ACT
-
-            var target = Factory.Maak<GelieerdePersonenService>();
-
-            try
-            {
-                target.Bewaren(new PersoonInfo
-                                   {
-                                       GelieerdePersoonID = gelieerdePersoon.ID,
-                                       AdNummer = 39198
-                                   }
-                    );
-
-            }
-            catch (FaultException<FoutNummerFault> ex)
-            {
-                // ASSERT
-
-                Assert.AreEqual(ex.Detail.FoutNummer, FoutNummer.AlgemeneFout);
-                gevangen = true;
-            }
-
-            Assert.IsTrue(gevangen);
-        }
-
-        ///<summary>
-        /// Controleert of de service verhindert dat een Civi-ID wordt overschreven
+        /// Controleert of de service verhindert dat een Civi-ID wordt toegekend bij het maken van een nieuwe persoon.
         ///</summary>
         [TestMethod()]
         [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.AlgemeneFout)]
-        public void BewarenCiviIdTest()
+        public void ToekennenCiviIdTest()
         {
             // ARRANGE
 
             // model
-            var gelieerdePersoon = new GelieerdePersoon
-            {
-                ID = 1,
-                Persoon = new Persoon
-                {
-                    CiviID = 2
-                }
-            };
+
+            var groep = new ChiroGroep { ID = 1 };
 
             // mocks
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
-            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                                  .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
 
             var target = Factory.Maak<GelieerdePersonenService>();
 
-            target.Bewaren(
-                new PersoonInfo
-                    {
-                        GelieerdePersoonID = gelieerdePersoon.ID,
-                        CiviID = 39198
-                    }
-                );
+            target.Nieuw
+            (
+                new NieuwePersoonDetails
+                {
+                    PersoonInfo = new PersoonInfo { CiviID = 39198 }
+                }, groep.ID, false
+            );
 
-            // Als we hieronder geraken zonder exception, is het mis.
             Assert.IsTrue(false);
         }
+
+        ///<summary>
+        /// Controleert of de service verhindert dat een GelieerdePersoonID wordt toegekend bij het maken van een 
+        /// nieuwe persoon.
+        ///</summary>
+        [TestMethod()]
+        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.AlgemeneFout)]
+        public void ToekennenGelieerdePersoonIdTest()
+        {
+            // ARRANGE
+
+            // model
+
+            var groep = new ChiroGroep { ID = 1 };
+
+            // mocks
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                                  .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            target.Nieuw
+            (
+                new NieuwePersoonDetails
+                {
+                    PersoonInfo = new PersoonInfo { GelieerdePersoonID = 39198 }
+                }, groep.ID, false
+            );
+
+            Assert.IsTrue(false);
+        }
+
 
         /// <summary>
         /// Controleert of een nieuw voorkeursadres van een gekende gelieerde persoon wordt gesynct
