@@ -36,8 +36,8 @@
             Je groep is aangesloten bij Chirojeugd Vlaanderen als je de jaarovergang uitgevoerd
             hebt en minstens één leider of leidster ingeschreven hebt.
         </dd>
-        <dt ><strong><a class="anchor" id="AD-nummer">AD-nummer</a></strong>:</dt>
-        <dd id="ADINFO">
+        <dt ><strong><a class="anchor" id="Civi-ID">AD-nummer</a></strong>:</dt>
+        <dd id="CIDINFO">
             Iedereen die in de administratie van het nationaal Chirosecretariaat terechtkomt,
             krijgt een administratief identificatienummer. Je hebt dat nodig als je bepaalde
             zaken wilt op-of aanvragen, en Chirojeugd Vlaanderen gebruikt het om je makkelijk

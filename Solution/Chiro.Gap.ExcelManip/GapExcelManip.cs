@@ -70,7 +70,7 @@ namespace Chiro.Gap.ExcelManip
             // Bouw koppen op
             
             Insert(ledenBlad, "Type", 1, 1);
-            Insert(ledenBlad, "AD-nr.", 2, 1);
+            Insert(ledenBlad, "Civi-ID", 2, 1);
             Insert(ledenBlad, "Voornaam", 3, 1);
             Insert(ledenBlad, "Naam", 4, 1);
             Insert(ledenBlad, "Afdelingen", 5, 1);
@@ -106,7 +106,7 @@ namespace Chiro.Gap.ExcelManip
 
             foreach (var rij in leden)
             {
-                Insert(ledenBlad, rij.PersoonDetail.AdNummer, 2, rijNr);
+                Insert(ledenBlad, rij.PersoonDetail.CiviID, 2, rijNr);
                 Insert(ledenBlad, rij.PersoonDetail.VoorNaam, 3, rijNr);
                 Insert(ledenBlad, rij.PersoonDetail.Naam, 4, rijNr);
 
@@ -187,7 +187,7 @@ namespace Chiro.Gap.ExcelManip
             var adressenBlad = pkg.Workbook.Worksheets.Add("Adressen");
             KolomTitelsInvullen(adressenBlad, new string[]
                                               {
-                                                  "Type", "AD-nummer", "Voornaam", "Naam", "Afdelingen", "Straat", "Nr.",
+                                                  "Type", "Civi-ID", "Voornaam", "Naam", "Afdelingen", "Straat", "Nr.",
                                                   "Bus", "Postnr.", "Postcode",
                                                   "Woonplaats", "Land", "Adrestype", "Voorkeur"
                                               });
@@ -203,7 +203,7 @@ namespace Chiro.Gap.ExcelManip
                         Insert(adressenBlad, lid.LidInfo.Type.ToString(), 1, rijNr);
                         Insert(adressenBlad, GeconcateneerdeAfdelingen(lid.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
                     }
-                    Insert(adressenBlad, lid.PersoonDetail.AdNummer, 2, rijNr);
+                    Insert(adressenBlad, lid.PersoonDetail.CiviID, 2, rijNr);
                     Insert(adressenBlad, lid.PersoonDetail.VoorNaam, 3, rijNr);
                     Insert(adressenBlad, lid.PersoonDetail.Naam, 4, rijNr);
                     Insert(adressenBlad, adres.StraatNaamNaam, 6, rijNr);
@@ -224,7 +224,7 @@ namespace Chiro.Gap.ExcelManip
             var communicatieBlad = pkg.Workbook.Worksheets.Add("Communicatie");
             KolomTitelsInvullen(communicatieBlad, new string[]
                                               {
-                                                  "Type", "AD-nummer", "Voornaam", "Naam", "Afdelingen", "Type",
+                                                  "Type", "Civi-ID", "Voornaam", "Naam", "Afdelingen", "Type",
                                                   "Nr./adres", "Snelleberichtenlijst", "Opmerking"
                                               });
             rijNr = 2;
@@ -237,7 +237,7 @@ namespace Chiro.Gap.ExcelManip
                         Insert(communicatieBlad, lid.LidInfo.Type.ToString(), 1, rijNr);
                         Insert(communicatieBlad, GeconcateneerdeAfdelingen(lid.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
                     }
-                    Insert(communicatieBlad, lid.PersoonDetail.AdNummer, 2, rijNr);
+                    Insert(communicatieBlad, lid.PersoonDetail.CiviID, 2, rijNr);
                     Insert(communicatieBlad, lid.PersoonDetail.VoorNaam, 3, rijNr);
                     Insert(communicatieBlad, lid.PersoonDetail.Naam, 4, rijNr);
                     Insert(communicatieBlad, ci.CommunicatieTypeOmschrijving, 6, rijNr);

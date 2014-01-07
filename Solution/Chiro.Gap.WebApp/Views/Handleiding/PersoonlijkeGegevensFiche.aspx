@@ -36,7 +36,7 @@
 	<p>
 	    Alle persoonlijke- en Chirogegevens van een persoon kunnen via zijn of haar persoonsfiche aangepast worden. 
         Klik op het <strong>'pen'-icoon</strong> achter het gegeven in de tabel dat je wil aanpassen. Je krijgt nu ofwel een tekstveld om het geven in te vullen, ofwel een
-        pop-up waarin de juiste gegevens ingegeven kunnen worden. Gegevens waarachter geen 'pen'-icoon staat (bv. AD-nummer) kunnen niet aangepast worden.
+        pop-up waarin de juiste gegevens ingegeven kunnen worden. Gegevens waarachter geen 'pen'-icoon staat (bv. Civi-ID) kunnen niet aangepast worden.
     </p>
     <p>Je kan van hieruit ook iemand leiding maken, een functie toekennen of zijn of haar Chiroleeftijd aanpassen en,
      als dat nog niet gebeurd is, de persoon inschrijven.</p>

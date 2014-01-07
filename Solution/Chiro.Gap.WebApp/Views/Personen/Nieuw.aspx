@@ -127,13 +127,13 @@
         
       <table>
         
-        <% if (Model.NieuwePersoon.AdNummer != null) {  %> 
+        <% if (Model.NieuwePersoon.CiviID != null) {  %> 
             
 		    <tr>
-                <td><%=Html.LabelFor(s => s.NieuwePersoon.AdNummer)%></td>        
+                <td><%=Html.LabelFor(s => s.NieuwePersoon.CiviID)%></td>        
                 <td>
-                    <%=Html.DisplayFor(s => s.NieuwePersoon.AdNummer)%>
-                    <%=Html.InfoLink("Ad-info")%>
+                    <%=Html.DisplayFor(s => s.NieuwePersoon.CiviID)%>
+                    <%=Html.InfoLink("Civi-ID")%>
                 </td>
 		    </tr>
         <% }%>

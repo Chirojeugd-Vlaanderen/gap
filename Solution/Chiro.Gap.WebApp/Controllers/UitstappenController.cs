@@ -388,14 +388,14 @@ namespace Chiro.Gap.WebApp.Controllers
 
             string[] kolomkoppen = 
                     {
-			        "ADnummer", "Voornaam", "Familienaam", "Geboortedatum", "Geslacht", "Telefoon", "Straat", "Huisnummer", "Postnummer", "Woonplaats", "Afdelingen", "Functie", "Contactpersoon", "Betaald", "Medische fiche", "Opmerkingen"
+			        "Civi-ID", "Voornaam", "Familienaam", "Geboortedatum", "Geslacht", "Telefoon", "Straat", "Huisnummer", "Postcode", "Woonplaats", "Afdelingen", "Functie", "Contactpersoon", "Betaald", "Medische fiche", "Opmerkingen"
 			        };
 
             var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));
             var package = GapExcelManip.ExcelDocument(
                 lijst,
                 kolomkoppen,
-                it => it.PersoonOverzicht.AdNummer,
+                it => it.PersoonOverzicht.CiviID,
                 it => it.VoorNaam,
                 it => it.FamilieNaam,
                 it => it.PersoonOverzicht.GeboorteDatum,
