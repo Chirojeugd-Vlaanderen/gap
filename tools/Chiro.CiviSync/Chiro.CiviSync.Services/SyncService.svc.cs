@@ -19,9 +19,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Chiro.CiviCrm.ClientInterfaces;
-using Chiro.CiviCrm.ServiceContracts.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using Chiro.CiviCrm.Domain;
 
 namespace Chiro.CiviSync.Services
 {
@@ -68,7 +69,7 @@ namespace Chiro.CiviSync.Services
             {
                 if (bewoner.Persoon.AdNummer != null)
                 {
-                    var adressen = _civiCrmClient.AddressesFind(bewoner.Persoon.AdNummer.Value);
+                    var adressen = _civiCrmClient.ContactAddressesFind(bewoner.Persoon.AdNummer.Value);
 
                     var bestaande = (from a in adressen where IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
 

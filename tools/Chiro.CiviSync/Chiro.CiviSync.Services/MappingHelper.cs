@@ -16,8 +16,9 @@
 
 using System;
 using AutoMapper;
-using Chiro.CiviCrm.ServiceContracts.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using Chiro.CiviCrm.Domain;
 
 namespace Chiro.CiviSync.Services
 {
@@ -31,13 +32,11 @@ namespace Chiro.CiviSync.Services
                 .ForMember(dst => dst.DeceasedDate, opt => opt.MapFrom(src => src.SterfDatum))
                 .ForMember(dst => dst.ExternalId, opt => opt.MapFrom(src => src.AdNummer))
                 .ForMember(dst => dst.FirstName, opt => opt.MapFrom(src => src.VoorNaam))
-                .ForMember(dst => dst.Gender, opt => opt.MapFrom(src => (Gender) (3 - (int) src.Geslacht)))
-                .ForMember(dst => dst.GenderId, opt => opt.MapFrom(src => 3 - (int) src.Geslacht))
+                .ForMember(dst => dst.Gender, opt => opt.MapFrom(src => (Gender)(3 - (int)src.Geslacht)))
+                .ForMember(dst => dst.GenderId, opt => opt.MapFrom(src => 3 - (int)src.Geslacht))
                 .ForMember(dst => dst.Id, opt => opt.Ignore()) // contactID != persoonID
                 .ForMember(dst => dst.IsDeceased, opt => opt.MapFrom(src => src.SterfDatum != null))
-                .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Naam))
-                .ForMember(dst => dst.BirthDateString, opt => opt.Ignore())
-                .ForMember(dst => dst.DeceasedDateString, opt => opt.Ignore());
+                .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Naam));
 
             Mapper.CreateMap<Adres, Address>()
                 .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))

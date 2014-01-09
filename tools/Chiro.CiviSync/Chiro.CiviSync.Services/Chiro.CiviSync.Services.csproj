@@ -88,9 +88,13 @@
       <Project>{C51D5B97-3AF5-4AD8-9B40-3C04DF6FC1C4}</Project>
       <Name>Chiro.CiviCrm.ClientInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.ServiceContracts\Chiro.CiviCrm.ServiceContracts.csproj">
-      <Project>{C27C0FB3-740A-4705-98DF-3B237984C44F}</Project>
-      <Name>Chiro.CiviCrm.ServiceContracts</Name>
+    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Domain\Chiro.CiviCrm.Domain.csproj">
+      <Project>{7c6f2810-20be-4dc8-a7d1-92999be67d61}</Project>
+      <Name>Chiro.CiviCrm.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.ServiceContracts\Chiro.CiviCrm.Api.csproj">
+      <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
+      <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
