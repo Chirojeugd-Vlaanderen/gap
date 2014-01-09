@@ -43,10 +43,10 @@ namespace Chiro.CiviSync.Services
         /// <param name="persoon">Persoon wiens gegevens te updaten zijn</param>
         public void PersoonUpdaten(Persoon persoon)
         {
-            // TODO: personen met AD-nummer in aanvraag
-            var contact = (persoon.AdNummer == null
+            // TODO: personen met Civi-ID in aanvraag
+            var contact = (persoon.CiviID == null
                 ? new Contact {Id = 0}
-                : _civiCrmClient.ContactFind(persoon.AdNummer.Value)) ?? new Contact {Id = 0};
+                : _civiCrmClient.ContactGet(persoon.CiviID.Value)) ?? new Contact {Id = 0};
 
             Mapper.Map(persoon, contact);
             _civiCrmClient.ContactSave(contact);
@@ -63,13 +63,12 @@ namespace Chiro.CiviSync.Services
         {
             var nieuwAdres = Mapper.Map<Adres, Address>(adres);
 
-            // TODO: personen met AD-nummer in aanvraag
-
+            // TODO: personen met civi-ID in aanvraag
             foreach (var bewoner in bewoners)
             {
-                if (bewoner.Persoon.AdNummer != null)
+                if (bewoner.Persoon.CiviID != null)
                 {
-                    var adressen = _civiCrmClient.ContactAddressesFind(bewoner.Persoon.AdNummer.Value);
+                    var adressen = _civiCrmClient.ContactAddressesGet(bewoner.Persoon.CiviID.Value);
 
                     var bestaande = (from a in adressen where IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
 
@@ -81,9 +80,7 @@ namespace Chiro.CiviSync.Services
                     }
                     else
                     {
-                        // TODO: dit is geen manier van werken.
-                        var contact = _civiCrmClient.ContactFind(bewoner.Persoon.AdNummer.Value);
-                        nieuwAdres.ContactId = contact.Id;
+                        nieuwAdres.ContactId = bewoner.Persoon.CiviID.Value;
                     }
 
                     nieuwAdres.IsBilling = true;
@@ -99,7 +96,7 @@ namespace Chiro.CiviSync.Services
                             break;
                         default:
                             nieuwAdres.LocationTypeId = 4; // (other)
-                            // TODO: kot
+                            // TODO: kot (type moet uit de database gehaald worden)
                             break;
                     }
 

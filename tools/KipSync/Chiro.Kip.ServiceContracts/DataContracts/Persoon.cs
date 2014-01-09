@@ -34,7 +34,7 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
 
         /// <summary>
         /// Het administratief identificatienummer dat aan die persoon toegekend werd
-        /// door het administratieprogramma van Chirojeugd Vlaanderen.
+        /// door het oude administratieprogramma van Chirojeugd Vlaanderen (Kipadmin).
         /// </summary>
         /// <remarks>
         /// Wordt toegekend op het moment dat er een reden is om de persoon te registreren in de
@@ -43,6 +43,18 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// </remarks>
         [DataMember]
         public int? AdNummer { get; set; }
+
+        /// <summary>
+        /// Het administratief identificatienummer dat aan die persoon toegekend werd
+        /// door het nieuwe administratieprogramma van Chirojeugd Vlaanderen (ChiroCivi).
+        /// </summary>
+        /// <remarks>
+        /// Wordt toegekend op het moment dat er een reden is om de persoon te registreren in de
+        /// nationale Chiroadministratie: bij aansluiting, bij inschrijving voor een evenement of 
+        /// bij een gift waar de persoon een fiscaal attest voor wil/moet krijgen.
+        /// </remarks>
+        [DataMember]
+        public int? CiviID { get; set; }
 
         /// <summary>
         /// De voornaam van de persoon
