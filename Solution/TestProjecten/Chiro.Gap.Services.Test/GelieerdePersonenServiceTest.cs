@@ -189,7 +189,7 @@ namespace Chiro.Gap.Services.Test
         {
             // ARRANGE
 
-            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon { AdInAanvraag = true } };
+            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon { InSync = true } };
             var email = new CommunicatieType { ID = 3, Validatie = ".*" };
 
             var commDetail = new CommunicatieInfo
@@ -307,7 +307,7 @@ namespace Chiro.Gap.Services.Test
                                                         new GelieerdePersoon
                                                             {
                                                                 Persoon =
-                                                                    new Persoon { AdInAanvraag = true }
+                                                                    new Persoon { InSync = true }
                                                             },
                                                     ID = 2,
                                                     Voorkeur = true,
@@ -548,7 +548,7 @@ namespace Chiro.Gap.Services.Test
                                            ID = 1,
                                            Persoon = new Persoon
                                                          {
-                                                             AdInAanvraag = true,
+                                                             InSync = true,
                                                              PersoonsAdres = new List<PersoonsAdres>
                                                                                  {
                                                                                      new PersoonsAdres
@@ -664,7 +664,7 @@ namespace Chiro.Gap.Services.Test
 
             // testdata
 
-            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon { AdInAanvraag = true } };
+            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon { InSync = true } };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
 
             var nederland = new Land { Naam = "Nederland" };
@@ -723,7 +723,7 @@ namespace Chiro.Gap.Services.Test
             var voorkeursAdres = new BelgischAdres { ID = 2 };
             var anderAdres = new BelgischAdres { ID = 3 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, AdInAanvraag = true } };
+            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
             var anderPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = anderAdres };
@@ -777,7 +777,7 @@ namespace Chiro.Gap.Services.Test
             var voorkeursAdres = new BelgischAdres { ID = 2 };
             var anderAdres = new BelgischAdres { ID = 3 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, AdInAanvraag = true } };
+            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
             var anderPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = anderAdres };
@@ -835,7 +835,7 @@ namespace Chiro.Gap.Services.Test
                                                        Persoon =
                                                            new Persoon
                                                                {
-                                                                   AdInAanvraag =
+                                                                   InSync =
                                                                        true
                                                                }
                                                    }
@@ -1089,7 +1089,7 @@ namespace Chiro.Gap.Services.Test
 
             var voorkeursAdres = new BelgischAdres { ID = 2 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, AdInAanvraag = true } };
+            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
 
@@ -1146,7 +1146,7 @@ namespace Chiro.Gap.Services.Test
                                        ID = 1,
                                        Persoon = new Persoon
                                                  {
-                                                     AdInAanvraag = true,
+                                                     InSync = true,
                                                      PersoonsAdres = new List<PersoonsAdres>
                                                                      {
                                                                          new PersoonsAdres
@@ -1264,7 +1264,7 @@ namespace Chiro.Gap.Services.Test
                                        ID = 1,
                                        Persoon = new Persoon
                                                  {
-                                                     AdInAanvraag = true,
+                                                     InSync = true,
                                                      PersoonsAdres = new List<PersoonsAdres>
                                                                      {
                                                                          new PersoonsAdres

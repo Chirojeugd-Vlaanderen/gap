@@ -67,18 +67,6 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Geeft <c>true</c> als de gelieerde persoon <paramref name="gp"/> naar alle waarschijnlijkheid is gekend
-        /// in Kipadmin. Anders <c>false</c>.
-        /// </summary>
-        /// <param name="gp">Een gelieerde persoon</param>
-        /// <returns><c>true</c> als de gelieerde persoon <paramref name="gp"/> naar alle waarschijnlijkheid is gekend
-        /// in Kipadmin, anders <c>false</c>.</returns>
-        public bool IsGekendInKipadmin(GelieerdePersoon gp)
-        {
-            return gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag;
-        }
-
-        /// <summary>
         /// Levert het contact-e-mailadres op van een gelieerde persoon
         /// </summary>
         /// <param name="gelieerdePersoon">Gelieerde persoon waarvan contact-e-mailadres opgeleverd moet worden</param>

@@ -634,7 +634,7 @@ namespace Chiro.Gap.Services
             {
 #endif
                 _communicatieVormRepo.SaveChanges();
-                if (_gelieerdePersonenMgr.IsGekendInKipadmin(communicatieVorm.GelieerdePersoon))
+                if (communicatieVorm.GelieerdePersoon.Persoon.InSync)
                 {
                     _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
                 }
@@ -663,8 +663,7 @@ namespace Chiro.Gap.Services
             {
 #endif
                 _communicatieVormRepo.SaveChanges();
-                if (communicatieVorm.GelieerdePersoon.Persoon.AdNummer != null ||
-                    communicatieVorm.GelieerdePersoon.Persoon.AdInAanvraag)
+                if (communicatieVorm.GelieerdePersoon.Persoon.InSync)
                 {
                     // het nummer veranderde niet.
                     _communicatieSync.Bijwerken(communicatieVorm, communicatieVorm.Nummer);
@@ -866,7 +865,7 @@ namespace Chiro.Gap.Services
                     try
                     {
                         lid = _ledenMgr.NieuwInschrijven(gelieerdePersoon, gwj, false, lidVoorstel);
-                        gelieerdePersoon.Persoon.AdInAanvraag = true;
+                        gelieerdePersoon.Persoon.InSync = true;
                     }
                     catch (FoutNummerException ex)
                     {
@@ -1121,7 +1120,7 @@ namespace Chiro.Gap.Services
             {
 #endif
             _gelieerdePersonenRepo.SaveChanges();
-            if (gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag)
+            if (gp.Persoon.InSync)
             {
                 _personenSync.Bewaren(gp, false, false);
             }
@@ -1213,7 +1212,7 @@ namespace Chiro.Gap.Services
 
             // de persoonsadressen gekoppeld aan een gelieerde persoon, zijn de voorkeursadresen van die gelieerde persoon.
             var teSyncen = (from pa in persoonsAdressen
-                            where pa.GelieerdePersoon.Any(gp => _gelieerdePersonenMgr.IsGekendInKipadmin(gp))
+                            where pa.GelieerdePersoon.Any(gp => gp.Persoon.InSync)
                             select pa).ToList();
 
 
@@ -1274,7 +1273,7 @@ namespace Chiro.Gap.Services
             }
 
             var teSyncen = (from pa in nieuwePersoonsAdressen
-                            where pa.GelieerdePersoon.Any(gp => _gelieerdePersonenMgr.IsGekendInKipadmin(gp))
+                            where pa.GelieerdePersoon.Any(gp => gp.Persoon.InSync)
                             select pa).ToList();
                             
 #if KIPDORP
@@ -1324,7 +1323,7 @@ namespace Chiro.Gap.Services
                                           select pa).FirstOrDefault();
 
                 gp.PersoonsAdres = nieuwVoorkeurAdres;
-                if (_gelieerdePersonenMgr.IsGekendInKipadmin(gp))
+                if (gp.Persoon.InSync)
                 {
                     if (nieuwVoorkeurAdres != null)
                     {
@@ -1386,7 +1385,7 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
-                if (_gelieerdePersonenMgr.IsGekendInKipadmin(gelieerdePersoon))
+                if (gelieerdePersoon.Persoon.InSync)
                 {
                     _adressenSync.StandaardAdressenBewaren(new List<PersoonsAdres>{persoonsAdres});
                 }
@@ -1438,7 +1437,7 @@ namespace Chiro.Gap.Services
             }
             var tesyncen = (from cv in gekoppeld
                             where
-                                cv.GelieerdePersoon.Persoon.AdNummer != null || cv.GelieerdePersoon.Persoon.AdInAanvraag
+                                cv.GelieerdePersoon.Persoon.InSync
                             select cv).ToList();
 
 #if KIPDORP
@@ -1494,7 +1493,7 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
-                if (_gelieerdePersonenMgr.IsGekendInKipadmin(communicatieVorm.GelieerdePersoon))
+                if (communicatieVorm.GelieerdePersoon.Persoon.InSync)
                 {
                     _communicatieSync.Verwijderen(communicatieVorm);
                 }
@@ -1543,8 +1542,7 @@ namespace Chiro.Gap.Services
             {
 #endif
                 _communicatieVormRepo.SaveChanges();
-                if (communicatieVorm.GelieerdePersoon.Persoon.AdNummer != null ||
-                    communicatieVorm.GelieerdePersoon.Persoon.AdInAanvraag)
+                if (communicatieVorm.GelieerdePersoon.Persoon.InSync)
                 {
                     _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
                 }

@@ -64,7 +64,7 @@ namespace Chiro.Gap.Sync
                 }
                 else
                 {
-                    contactPersoon.Persoon.AdInAanvraag = true;
+                    contactPersoon.Persoon.InSync = true;
                     ServiceHelper.CallService<ISyncPersoonService>(
                         svc =>
                         svc.BivakContactBewarenAdOnbekend(uitstap.ID,

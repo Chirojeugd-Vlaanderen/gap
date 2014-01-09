@@ -1488,7 +1488,7 @@
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Persoon" FromRole="Persoon" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Persoon" FromRole="Persoon" ToRole="PersoonsAdres" />
           <NavigationProperty Name="PersoonsVerzekering" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_Persoon" FromRole="Persoon" ToRole="PersoonsVerzekering" />
-          <Property Name="AdInAanvraag" Type="Boolean" Nullable="false" />
+          <Property Name="InSync" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Gav" Relationship="ChiroGroepModel.GavSchap" FromRole="Persoon" ToRole="Gav" />
           <Property Type="String" Name="SeNaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="SeVoornaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
@@ -2024,7 +2024,7 @@
               <MappingFragment StoreEntitySet="Persoon">
                 <ScalarProperty Name="SeVoornaam" ColumnName="SeVoornaam" />
                 <ScalarProperty Name="SeNaam" ColumnName="SeNaam" />
-                <ScalarProperty Name="AdInAanvraag" ColumnName="AdInAanvraag" />
+                <ScalarProperty Name="InSync" ColumnName="AdInAanvraag" />
                 <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
                 <ScalarProperty Name="CiviID" ColumnName="CiviID"/>
                 <ScalarProperty Name="Naam" ColumnName="Naam" />

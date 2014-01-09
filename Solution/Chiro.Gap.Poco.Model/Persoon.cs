@@ -24,6 +24,8 @@ namespace Chiro.Gap.Poco.Model
 {
     public class Persoon: BasisEntiteit
     {
+        private bool _inSync = false;
+
         public Persoon()
         {
             this.GelieerdePersoon = new HashSet<GelieerdePersoon>();
@@ -41,7 +43,18 @@ namespace Chiro.Gap.Poco.Model
         public override int ID { get; set; }
         public int? CiviID { get; set; }
         public override byte[] Versie { get; set; }
-        public bool AdInAanvraag { get; set; }
+        public bool InSync
+        {
+            get 
+            { 
+                // TODO (#1757): Dit moet op termijn gewoon een automatic property
+                // worden, zoals al de rest ({get;set;}). Maar dat kan pas als
+                // de database is bijgewerkt.
+
+                return _inSync || AdNummer.HasValue || CiviID.HasValue; 
+            }
+            set { _inSync = value; }
+        }
         public string SeNaam { get; set; }          // Resultaat SOUNDEX op naam (computed)
         public string SeVoornaam { get; set; }      // Resultaat SOUNDEX op naam (computed)
     

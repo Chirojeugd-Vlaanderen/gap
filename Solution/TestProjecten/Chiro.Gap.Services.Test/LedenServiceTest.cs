@@ -1255,7 +1255,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            Assert.IsTrue(gelieerdePersoon.Persoon.AdInAanvraag);
+            Assert.IsTrue(gelieerdePersoon.Persoon.InSync);
         }
 
 

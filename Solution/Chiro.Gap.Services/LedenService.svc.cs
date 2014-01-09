@@ -369,8 +369,7 @@ namespace Chiro.Gap.Services
                         {
                             l = _ledenMgr.NieuwInschrijven(gp, gwj, false, lidVoorstel);
 
-                            // Als er nog geen AD-nummer is, markeren we 'AdInAanvraag'.
-                            l.GelieerdePersoon.Persoon.AdInAanvraag = (l.GelieerdePersoon.Persoon.AdNummer == null);
+                            l.GelieerdePersoon.Persoon.InSync = true;
                             teSyncen.Add(l);
                         }
                         catch (BestaatAlException<Kind>)

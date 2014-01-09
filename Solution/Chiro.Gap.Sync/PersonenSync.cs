@@ -49,7 +49,7 @@ namespace Chiro.Gap.Sync
 			// Wijzigingen van personen met ad-nummer worden doorgesluisd
 			// naar Kipadmin.
 
-			Debug.Assert(gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag);
+			Debug.Assert(gp.Persoon.InSync);
 
             var syncPersoon = Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon);
 			ServiceHelper.CallService<ISyncPersoonService>(svc => svc.PersoonUpdaten(syncPersoon));

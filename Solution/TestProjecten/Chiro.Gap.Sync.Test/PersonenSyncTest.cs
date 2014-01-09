@@ -87,7 +87,7 @@ namespace Chiro.Gap.Sync.Test
 
             var gelieerdePersoon = new GelieerdePersoon
                                        {
-                                           Persoon = new Gap.Poco.Model.Persoon { AdInAanvraag = true },
+                                           Persoon = new Gap.Poco.Model.Persoon { InSync = true },
                                            Communicatie =
                                                new List<CommunicatieVorm> 
                                                {

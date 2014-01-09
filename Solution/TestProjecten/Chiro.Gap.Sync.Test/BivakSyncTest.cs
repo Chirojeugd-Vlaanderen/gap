@@ -130,7 +130,7 @@ namespace Chiro.Gap.Sync.Test
             // ASSERT 
 
             kipSyncMock.VerifyAll();
-            Assert.IsTrue(uitstap.ContactDeelnemer.GelieerdePersoon.Persoon.AdInAanvraag);
+            Assert.IsTrue(uitstap.ContactDeelnemer.GelieerdePersoon.Persoon.InSync);
         }
     }
 }

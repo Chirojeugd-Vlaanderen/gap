@@ -658,7 +658,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                   .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
                   .ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
                   .ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
-                  .ForMember(dst => dst.AdInAanvraag, opt => opt.Ignore())
+                  .ForMember(dst => dst.InSync, opt => opt.MapFrom(src => src.AdNummer.HasValue || src.CiviID.HasValue))
                   .ForMember(dst => dst.Gav, opt => opt.Ignore())
                   .ForMember(dst => dst.SeNaam, opt => opt.Ignore())
                   .ForMember(dst => dst.SeVoornaam, opt => opt.Ignore());

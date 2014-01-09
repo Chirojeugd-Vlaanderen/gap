@@ -81,15 +81,6 @@ namespace Chiro.Gap.WorkerInterfaces
         GelieerdePersoon Toevoegen(Persoon nieuwePersoon, Groep groep, int chiroLeeftijd, bool forceer);
 
         /// <summary>
-        /// Geeft <c>true</c> als de gelieerde persoon <paramref name="gp"/> naar alle waarschijnlijkheid is gekend
-        /// in Kipadmin. Anders <c>false</c>.
-        /// </summary>
-        /// <param name="gp">Een gelieerde persoon</param>
-        /// <returns><c>true</c> als de gelieerde persoon <paramref name="gp"/> naar alle waarschijnlijkheid is gekend
-        /// in Kipadmin, anders <c>false</c>.</returns>
-        bool IsGekendInKipadmin(GelieerdePersoon gp);
-
-        /// <summary>
         /// Levert het contact-e-mailadres op van een gelieerde persoon
         /// </summary>
         /// <param name="gelieerdePersoon">Gelieerde persoon waarvan contact-e-mailadres opgeleverd moet worden</param>
