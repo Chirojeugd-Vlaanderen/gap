@@ -23,6 +23,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Domain;
+using System.ServiceModel;
 
 namespace Chiro.CiviSync.Services
 {
@@ -41,6 +42,7 @@ namespace Chiro.CiviSync.Services
         /// Updatet de persoonsgegevens van <paramref name="persoon"/> in CiviCRM
         /// </summary>
         /// <param name="persoon">Persoon wiens gegevens te updaten zijn</param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void PersoonUpdaten(Persoon persoon)
         {
             // TODO: personen met Civi-ID in aanvraag
@@ -59,6 +61,7 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="adres">Nieuw standaardadres van de gegeven <paramref name="bewoners"/></param>
         /// <param name="bewoners">Bewoners die het nieuw <paramref name="adres"/> krijgen</param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners)
         {
             var nieuwAdres = Mapper.Map<Adres, Address>(adres);

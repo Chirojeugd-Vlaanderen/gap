@@ -33,7 +33,6 @@ namespace Chiro.CiviSync.Services
                 .ForMember(dst => dst.ExternalId, opt => opt.MapFrom(src => src.AdNummer))
                 .ForMember(dst => dst.FirstName, opt => opt.MapFrom(src => src.VoorNaam))
                 .ForMember(dst => dst.Gender, opt => opt.MapFrom(src => (Gender)(3 - (int)src.Geslacht)))
-                .ForMember(dst => dst.GenderId, opt => opt.MapFrom(src => 3 - (int)src.Geslacht))
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.CiviID))
                 .ForMember(dst => dst.IsDeceased, opt => opt.MapFrom(src => src.SterfDatum != null))
                 .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Naam));

@@ -18,6 +18,7 @@ using System;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceModel;
 using Chiro.CiviSync.Services;
+using System.Net;
 
 namespace Chiro.CiviSync.ConsoleServiceHost
 {
@@ -34,6 +35,7 @@ namespace Chiro.CiviSync.ConsoleServiceHost
             Factory.ContainerInit();
 
             // Creeer en open service host.
+            
             var host = new ServiceHost<SyncService>();
             host.Open();
 
