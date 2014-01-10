@@ -281,7 +281,9 @@
     <Content Include="Scripts\AdresBewerken.js" />
     <Content Include="Scripts\algemeneFuncties.js" />
     <Content Include="Scripts\datestringsort.js" />
-    <Content Include="Scripts\jquery-1.9.1.js" />
+    <None Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\jquery-2.0.3.js" />
+    <Content Include="Scripts\jquery-2.0.3.min.js" />
     <Content Include="Scripts\jquery-groep.js" />
     <Content Include="Scripts\jquery-nieuwe-persoon.js" />
     <Content Include="Scripts\jquery-overzicht-leden.js" />
@@ -289,6 +291,12 @@
     <Content Include="Content\jquery.dataTables_themeroller.css" />
     <Content Include="Scripts\jquery-ui-1.10.2.custom.min.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
+    <Content Include="Scripts\jquery-2.0.3.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jqueryui-editable.js" />
     <Content Include="Scripts\jquery-overzicht-iedereen.js" />
     <Content Include="Scripts\moment.js" />
@@ -296,8 +304,6 @@
     <Content Include="Views\Afdelingen\Afdeling.aspx" />
     <Content Include="Views\Afdelingen\AfdelingsJaar.aspx" />
     <Content Include="Views\Afdelingen\Index.aspx" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Views\Functies\Bewerken.aspx" />
     <Content Include="Views\Gav\Index.aspx" />
     <Content Include="Views\GebruikersRecht\Index.aspx" />
@@ -319,7 +325,6 @@
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\OverledenPersoon.aspx" />
     <Content Include="Views\Shared\NavigatieBeperktControl.ascx" />
-    <Content Include="Views\Shared\PersoonZoekenScriptsControl.ascx" />
     <Content Include="Views\Shared\NavigatieBeperktControl.ascx" />
     <Content Include="Views\Shared\LedenMaken.aspx" />
     <Content Include="Views\Personen\AdresVerwijderen.aspx" />
@@ -347,12 +352,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Views\Shared\Site.Master" />
     <Content Include="Views\Web.config" />
-    <Content Include="Scripts\jquery-1.4.4.js" />
-    <Content Include="Scripts\jquery-1.4.4-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.4.4.min.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
-    <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\MicrosoftAjax.js" />
     <Content Include="Scripts\MicrosoftAjax.debug.js" />
     <Content Include="Scripts\MicrosoftMvcAjax.js" />
@@ -361,8 +362,6 @@
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -534,7 +533,6 @@
     <Content Include="Content\Screenshots\word2003_etiketten12.png" />
     <Content Include="Content\Screenshots\word2003_etiketten13.png" />
     <Content Include="Content\Screenshots\writer_Samenvoegen.png" />
-    <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Views\Categorieen\Index.aspx" />
     <Content Include="Views\Handleiding\AfdelingActiveren.aspx" />
     <Content Include="Views\Handleiding\AfdelingsverdelingAanpassen.aspx" />

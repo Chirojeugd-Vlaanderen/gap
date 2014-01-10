@@ -54,14 +54,16 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// De voornaam van de persoon
         /// </summary>
         [DisplayName(@"Voornaam")]
-        [StringLengte(60), StringMinimumLengte(2)]
+        [Verplicht]
+        [StringLength(60, MinimumLength = 2)]
         [DataMember]
         public string VoorNaam { get; set; }
 
         /// <summary>
         /// De familienaam van de persoon
         /// </summary>
-        [StringLengte(160), StringMinimumLengte(1)]
+        [StringLength(160, MinimumLength = 1)]
+        [Verplicht]
         [DisplayName(@"Familienaam")]
         [DataMember]
         public string Naam { get; set; }

@@ -33,13 +33,15 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// <summary>
 		/// Naam van de categorie
 		/// </summary>
-		[Verplicht, StringLengte(80), StringMinimumLengte(2)]
+        [Verplicht]
+        [StringLength(80, MinimumLength = 2)]
 		public string Naam { get; set; }
 
 		/// <summary>
 		/// Code voor de categorie
 		/// </summary>
-		[Verplicht, StringLengte(10), StringMinimumLengte(2)]
-		public string Code { get; set; }
+        [Verplicht]
+        [StringLength(10, MinimumLength = 2)]
+        public string Code { get; set; }
 	}
 }

@@ -92,7 +92,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// Apart invulveld voor woonplaats in het buitenland
 		/// </summary>
 		[DisplayName(@"Woonplaats")]
-		[StringLengte(80)]
+        [StringLength(80)]
 		public string WoonPlaatsBuitenLand { get; set; }
 
 		#region Implementatie IAdresBewerkenModel

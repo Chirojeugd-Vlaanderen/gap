@@ -37,8 +37,8 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// Naam van de afdeling
 		/// </summary>
         [Verplicht]
-        [StringLengte(50), StringMinimumLengte(2)]
-		[DataMember]
+        [StringLength(50, MinimumLength = 2)]
+        [DataMember]
 		public string Naam { get; set; }
 
 		/// <summary>
@@ -46,7 +46,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
         [Verplicht]
-        [StringLengte(10), StringMinimumLengte(1)]
-		public string Afkorting { get; set; }
+        [StringLength(10, MinimumLength = 1)]
+        public string Afkorting { get; set; }
 	}
 }

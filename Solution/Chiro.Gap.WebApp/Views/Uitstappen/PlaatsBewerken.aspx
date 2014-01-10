@@ -52,7 +52,6 @@
             // Ik neem in het form hidden de niet-wijzigbare informatie uit het model op.  Op die manier is die
             // gemakkelijk beschikbaar als er zich validatiefouten voordoen.
 
-            Html.EnableClientValidation();
             using (Html.BeginForm())
             {%>
         <ul id="acties">

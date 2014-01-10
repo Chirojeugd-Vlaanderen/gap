@@ -23,7 +23,6 @@
  */
 %>
     <% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #697) %>
-    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.7.1.min.js")%>"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <%:Html.ValidationSummary() %>

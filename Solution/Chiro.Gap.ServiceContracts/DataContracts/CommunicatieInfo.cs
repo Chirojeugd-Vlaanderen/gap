@@ -68,7 +68,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         // TODO: Opnieuw verplicht maken. Uitgezet voor #1723
         //[Verplicht]
         [DataMember]
-        [StringLengte(160)]
+        [StringLength(160)]
         public string Nummer { get; set; }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// Extra info over de persoon, die niet in een specifieke property thuishoort
         /// </summary>
         [DataMember]
-        [StringLengte(320)]
+        [StringLength(320)]
         [DataType(DataType.MultilineText)]
         [DisplayName(@"Noot")]
         public string Nota { get; set; }

@@ -23,7 +23,6 @@
 <asp:Content runat="server" ID="Main" ContentPlaceHolderID="MainContent">
 
 <%
-    Html.EnableClientValidation();
     using (Html.BeginForm())
     {
         %>

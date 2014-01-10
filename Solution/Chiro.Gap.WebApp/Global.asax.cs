@@ -38,8 +38,6 @@ namespace Chiro.Gap.WebApp
 
             // Registreer de nieuwe adapters voor validatie via client side scripting
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(VerplichtAttribute), typeof(VerplichtAttributeAdapter));
-            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(StringLengteAttribute), typeof(StringLengteAttributeAdapter));
-            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(StringMinimumLengteAttribute), typeof(StringMinimumLengteAttributeAdapter));
 
             // Dit mogen we niet op true zetten, want dan zijn de booleans / checkboxen allemaal aan te kruisen
             // Dit mag toch niet weg ook niet!

@@ -28,7 +28,6 @@
 %>
     <script src="<%=ResolveUrl("~/Scripts/AdresBewerken.js")%>" type="text/javascript"></script>
     <script src="<%=ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
-    <script src="<%=ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
     <script src="<%=ResolveUrl("~/Scripts/jquery-nieuwe-persoon.js")%>" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -43,6 +42,18 @@
             },
             "Ongeldig formaat."
         );
+
+    // Als ik de validator hieronder niet toevoeg, blijf ik errors krijgen op de jquery.validate
+    // als het e-mailadres of telefoonnummer focus verliest. Geen idee waarom.
+    // Zie #1758
+    $.validator.addMethod(
+        "__dummy__",
+        function (value, element, regexp) {
+            return true;
+        },
+        "Dit is altijd true."
+    );
+
     
     $(function() {
         $("#EMail_Nummer").rules("add", { regex: "<%=Model.EMailType.Validatie %>" });
@@ -103,7 +114,6 @@
 	%>
      
 	<%=Html.ValidationSummary("Er zijn enkele opmerkingen:") %>
-	<% Html.EnableClientValidation(); // Deze instructie moet (enkel) voor de BeginForm komen %>
 	<% using (Html.BeginForm())
 	{ %>
 
@@ -112,8 +122,6 @@
 		<li><button name="button" type="submit" class="ui-button-text-only" value="bewarenEnNieuw">Bewaren en nog iemand toevoegen</button></li>
 	</ul>
       
-    <%Html.EnableClientValidation(); %>
-    
 	<fieldset>
 	  <legend>Persoonlijke gegevens</legend>
         

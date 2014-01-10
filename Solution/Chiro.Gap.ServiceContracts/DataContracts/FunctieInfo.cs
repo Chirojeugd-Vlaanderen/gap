@@ -37,15 +37,17 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// <summary>
 		/// De afkorting van de functie
 		/// </summary>
-		[Verplicht, StringLengte(10), StringMinimumLengte(2)]
-		[DataMember]
+        [Verplicht]
+        [StringLength(10, MinimumLength = 2)]
+        [DataMember]
 		public string Code { get; set; }
 
 		/// <summary>
 		/// De volledige naam van de functie
 		/// </summary>
-		[Verplicht, StringLengte(80), StringMinimumLengte(2)]
-		[DataMember]
+        [Verplicht]
+        [StringLength(80, MinimumLength = 2)]
+        [DataMember]
 		public string Naam { get; set; }
 	}
 }

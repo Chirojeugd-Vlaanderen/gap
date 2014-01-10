@@ -32,8 +32,11 @@
 		// En dit staat in servercomments ipv html-comments omdat gebruikers daar geen zaken mee hebben. :)		%>
     
     <%//Javascripts %>
-    <script src="<%=ResolveUrl("~/Scripts/jquery-1.9.1.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jquery-2.0.3.js")%>" type="text/javascript"></script>
     <script src="<%=ResolveUrl("~/Scripts/jquery-ui-1.10.2.custom.min.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jquery.validate.unobtrusive.js")%>" type="text/javascript"></script>
+
     <script src="<%=ResolveUrl("~/Scripts/algemeneFuncties.js")%>" type="text/javascript"></script>
     <script src="<%=ResolveUrl("~/Scripts/jqueryui-editable.js") %>" type="text/javascript"></script>
     <% // CSS files %>

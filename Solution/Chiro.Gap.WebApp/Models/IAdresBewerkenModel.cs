@@ -33,7 +33,7 @@ namespace Chiro.Gap.WebApp.Models
 		IEnumerable<WoonPlaatsInfo> BeschikbareWoonPlaatsen { get; set; }
 
 		[Verplicht]
-		[StringLengte(80)]
+		[StringLength(80)]
 		string Land { get; set; }
 
         // TODO: Rangerestrictie terug aanzetten. Uitgezet voor fix #1723.
@@ -43,14 +43,14 @@ namespace Chiro.Gap.WebApp.Models
 		[DisplayName(@"Postnr.")]
 		int PostNr { get; set;  }
 
-		[StringLengte(10)]
+        [StringLength(10)]
 		[DisplayName(@"Postcode")]
 		string PostCode { get; set; }
 
         // TODO: Opnieuw verplicht maken. Uitgezet voor #1723.
 		//[Verplicht]
         [DisplayName(@"Straat")]
-		[StringLengte(80)]
+        [StringLength(80)]
 		string StraatNaamNaam { get; set; }
 
 		[Range(0, int.MaxValue, ErrorMessageResourceType = typeof(System.ComponentModel.DataAnnotations.Properties.Resources), ErrorMessageResourceName = "RangeError")]
@@ -60,11 +60,11 @@ namespace Chiro.Gap.WebApp.Models
 		string Bus { get; set; }
 
 		[DisplayName(@"Woonplaats")]
-		[StringLengte(80)]
+        [StringLength(80)]
 		string WoonPlaatsNaam { get; set; }
 
 		[DisplayName(@"Woonplaats")]
-		[StringLengte(80)]
+        [StringLength(80)]
 		string WoonPlaatsBuitenLand { get; set; }
 
 		// 'Straat' wordt gedeeld voor binnenlandse en buitenlandse adressen.
