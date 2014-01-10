@@ -41,7 +41,6 @@
 		</ul>
 	</fieldset>
 	<% 
-		Html.EnableClientValidation();
 		using (Html.BeginForm())
 		{ %>
 	<fieldset>

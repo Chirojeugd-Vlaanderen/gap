@@ -113,7 +113,7 @@
 		}
 	%>
      
-	<%=Html.ValidationSummary("Er zijn enkele opmerkingen:") %>
+	<%=Html.ValidationSummary() %>
 	<% using (Html.BeginForm())
 	{ %>
 

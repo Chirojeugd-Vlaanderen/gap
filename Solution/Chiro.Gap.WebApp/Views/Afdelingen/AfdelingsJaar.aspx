@@ -26,7 +26,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<% 
-		Html.EnableClientValidation();
 		using (Html.BeginForm("AfdJaarBewerken", "Afdelingen", new { groepID = Model.GroepID }))
 		{%>
             

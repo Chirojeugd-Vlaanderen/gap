@@ -22,13 +22,9 @@
  */
 %>
 	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #697) %> 
-	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<%=Html.ValidationSummary("Er zijn enkele opmerkingen:") %>
+	<%=Html.ValidationSummary() %>
 	<% using (Html.BeginForm())
 	{%>
 	<ul id="acties">
