@@ -111,7 +111,7 @@ namespace Chiro.CiviSync.Services
         private bool IsHetzelfde(Address a1, Address a2)
         {
             return (String.Equals(a1.City, a2.City, StringComparison.InvariantCultureIgnoreCase) &&
-                    a1.CountryId == a2.CountryId && a1.PostalCode == a2.PostalCode &&
+                    String.Equals(a1.Country, a2.Country, StringComparison.InvariantCultureIgnoreCase) && a1.PostalCode == a2.PostalCode &&
                     String.Equals(a1.PostalCodeSuffix, a2.PostalCodeSuffix, StringComparison.InvariantCultureIgnoreCase) &&
                     a1.StateProvinceId == a2.StateProvinceId &&
                     String.Equals(a1.StreetAddress, a2.StreetAddress, StringComparison.InvariantCultureIgnoreCase));

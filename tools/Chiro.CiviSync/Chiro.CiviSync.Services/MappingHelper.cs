@@ -40,8 +40,7 @@ namespace Chiro.CiviSync.Services
             Mapper.CreateMap<Adres, Address>()
                 .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))
                 .ForMember(dst => dst.ContactId, opt => opt.Ignore())
-                .ForMember(dst => dst.CountryId, opt => opt.MapFrom(src => 1020))
-                // TODO: map land via ISO-code; toe te voegen aan GAP-landentabel.
+                .ForMember(dst => dst.Country, opt => opt.UseValue("BE"))
                 .ForMember(dst => dst.LocationTypeId, opt => opt.Ignore())
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
                 .ForMember(dst => dst.IsBilling, opt => opt.Ignore())
