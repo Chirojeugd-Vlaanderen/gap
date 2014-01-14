@@ -29,6 +29,7 @@ namespace Chiro.Gap.Poco.Model
     
         public override int ID { get; set; }
         public string Naam { get; set; }
+        public string IsoCode { get; set; }
     
         public virtual ICollection<BuitenLandsAdres> BuitenLandsAdres { get; set; }
 

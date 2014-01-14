@@ -235,21 +235,30 @@ namespace Chiro.Gap.Services
         /// <returns>De (informatie over de) groepen van de gebruiker</returns>
         public IEnumerable<GroepInfo> MijnGroepenOphalen()
         {
+            IEnumerable<Groep> groepen = new List<Groep>();
             var mijnLogin = _authenticatieMgr.GebruikersNaamGet();
-            var groepen = from g in _groepenRepo.Select()
+            try
+            {
+                groepen = from g in _groepenRepo.Select()
                           where
                               g.GebruikersRecht.Any(
                                   gr =>
                                   String.Compare(gr.Gav.Login, mijnLogin, StringComparison.InvariantCultureIgnoreCase) ==
                                   0 && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
                           select g;
+            }
+            catch (Exception ex)
+            {
+                // ******************************************************************************************
+                // **                                                                                      **
+                // ** Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.            **
+                // ** Check je databaseserver, je connection string in Web.Config, of indien nodig je VPN. **
+                // **                                                                                      **
+                // ******************************************************************************************
 
-            // ******************************************************************************************
-            // **                                                                                      **
-            // ** Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.            **
-            // ** Check je databaseserver, je connection string in Web.Config, of indien nodig je VPN. **
-            // **                                                                                      **
-            // ******************************************************************************************
+                Console.WriteLine(ex.Message);
+                throw;
+            }
             return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(groepen);
             // ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH ** CRASH
             // Als we hier crashen, zou het kunnnen dat de database niet beschikbaar is.
@@ -1127,7 +1136,8 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst met alle beschikbare landen</returns>
         public List<LandInfo> LandenOphalen()
         {
-            return Mapper.Map<IEnumerable<Land>, List<LandInfo>>(_landRepo.GetAll());
+            var alleLanden = _landRepo.GetAll();
+            return Mapper.Map<IEnumerable<Land>, List<LandInfo>>(alleLanden);
         }
 
         /// <summary>

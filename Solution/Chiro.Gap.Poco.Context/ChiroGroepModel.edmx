@@ -60,6 +60,7 @@
           </Key>
           <Property Name="LandID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Naam" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="IsoCode" Type="varchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="StraatNaam">
           <Key>
@@ -1862,6 +1863,7 @@
           </Key>
           <Property Type="Int32" Name="ID" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Naam" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="IsoCode" Type="String" Nullable="false" MaxLength="10" />
           <NavigationProperty Name="BuitenLandsAdres" Relationship="ChiroGroepModel.FK_BuitenlandsAdres_Land" FromRole="Land" ToRole="BuitenLandsAdres" />
         </EntityType>
         <Association Name="FK_BelgischAdres_StraatNaam">
@@ -2481,6 +2483,7 @@
               <MappingFragment StoreEntitySet="Land">
                 <ScalarProperty Name="Naam" ColumnName="Naam" />
                 <ScalarProperty Name="ID" ColumnName="LandID" />
+                <ScalarProperty Name="IsoCode" ColumnName="IsoCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2683,7 +2686,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="ChiroGroepModel" ZoomLevel="75" xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+      <Diagram Name="ChiroGroepModel" ZoomLevel="86" xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
         <EntityTypeShape EntityType="ChiroGroepModel.ChiroGroep" Width="1.5" PointX="1" PointY="32.125" Height="1.5956835937500102" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Groep" Width="1.5" PointX="1" PointY="25.375" Height="3.5186979166666674" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Persoon" Width="1.5" PointX="9" PointY="4.875" Height="4.0956022135416656" IsExpanded="true" />
