@@ -87,9 +87,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Solution\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
-      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
-      <Name>Chiro.Adf.ServiceModel</Name>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.ServiceModel\Chiro.Cdf.ServiceModel.csproj">
+      <Project>{e25a11ab-b2eb-4579-9df5-d1761c464bae}</Project>
+      <Name>Chiro.Cdf.ServiceModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Solution\Chiro.Gap.UpdateSvc.Contracts\Chiro.Gap.UpdateSvc.Contracts.csproj">
       <Project>{EFA70FDE-2295-4A91-9553-847C272E7FA4}</Project>

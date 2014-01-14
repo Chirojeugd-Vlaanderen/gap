@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Web
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8A21DB2-33C9-4350-952D-12A2B85DFD90}"
 	ProjectSection(SolutionItems) = preProject
 		KipSync.vsmdi = KipSync.vsmdi
@@ -32,16 +34,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceModel", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateSvc.Contracts", "..\..\Solution\Chiro.Gap.UpdateSvc.Contracts\Chiro.Gap.UpdateSvc.Contracts.csproj", "{EFA70FDE-2295-4A91-9553-847C272E7FA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf.ServiceModel", "..\..\Solution\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj", "{174890F3-1F4C-4CFC-83A1-AA88F5748A67}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf", "..\..\Solution\Chiro.Adf\Chiro.Adf.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.UnityWcfExtensions", "..\..\Solution\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj", "{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceHelper", "..\..\Solution\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
+EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = KipSync.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -87,23 +84,22 @@ Global
 		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{174890F3-1F4C-4CFC-83A1-AA88F5748A67}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = KipSync.vsmdi
 	EndGlobalSection
 EndGlobal

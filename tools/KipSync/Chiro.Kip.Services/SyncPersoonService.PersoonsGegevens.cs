@@ -22,7 +22,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using AutoMapper;
-using Chiro.Adf.ServiceModel;
+using Chiro.Cdf.ServiceModel;
 using Chiro.Gap.UpdateSvc.Contracts;
 using Chiro.Kip.Data;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -30,6 +30,7 @@ using Chiro.Kip.Workers;
 using Adres = Chiro.Kip.ServiceContracts.DataContracts.Adres;
 using KipPersoon = Chiro.Kip.Data.Persoon;
 using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Kip.Services
 {

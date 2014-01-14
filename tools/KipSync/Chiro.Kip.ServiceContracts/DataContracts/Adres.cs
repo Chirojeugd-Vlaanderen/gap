@@ -70,6 +70,12 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         public string Land { get; set; }
 
         /// <summary>
+        /// ISO-Code voor het land.
+        /// </summary>
+        [DataMember]
+        public string LandIsoCode { get; set; }
+
+        /// <summary>
         /// Returns a System.String that represents the current Persoon
         /// </summary>
         /// <returns>System.String that represents the current Persoon</returns>

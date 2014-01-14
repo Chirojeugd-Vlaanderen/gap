@@ -43,6 +43,16 @@ namespace Chiro.Gap.Sync
             return ((BuitenLandsAdres)adres).Land.Naam;
         }
 
+        private static string LandCodeGet(this Adres adres)
+        {
+            if (adres is BelgischAdres)
+            {
+                return "BE";
+            }
+            Debug.Assert(adres is BuitenLandsAdres);
+            return ((BuitenLandsAdres)adres).Land.IsoCode;
+        }
+
         private static string PostCodeGet(this Adres adres)
         {
             if (adres is BelgischAdres)
@@ -62,6 +72,7 @@ namespace Chiro.Gap.Sync
 
             Mapper.CreateMap<Adres, Kip.ServiceContracts.DataContracts.Adres>()
                 .ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.LandGet()))
+                .ForMember(dst => dst.LandIsoCode, opt => opt.MapFrom(src => src.LandCodeGet()))
                 .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()))
                 .ForMember(dst => dst.PostNr,
                            opt =>
