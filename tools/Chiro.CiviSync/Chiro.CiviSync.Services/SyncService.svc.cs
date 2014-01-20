@@ -57,7 +57,7 @@ namespace Chiro.CiviSync.Services
         /// <summary>
         /// Maakt het gegeven <paramref name="adres"/> het standaardadres van de gegeven <paramref name="bewoners"/>.
         /// Als het adres al bestond voor de gegeven bewoner, dan wordt het bestaande adres het standaardadres.
-        /// Zo niet, wordt een nieuw adres als standaardadres gekoppeld.
+        /// Zo niet, wordt een nieuw adres als standaardadres gekoppeld, en het oude voorkeursadres verwijderd.
         /// </summary>
         /// <param name="adres">Nieuw standaardadres van de gegeven <paramref name="bewoners"/></param>
         /// <param name="bewoners">Bewoners die het nieuw <paramref name="adres"/> krijgen</param>
@@ -73,19 +73,19 @@ namespace Chiro.CiviSync.Services
                 {
                     var adressen = _civiCrmClient.ContactAddressesGet(bewoner.Persoon.CiviID.Value);
 
+                    // Als het adres al bestaat, dan kunnen we het overschrijven om casing te veranderen,
+                    // voorkeursadres te zetten, en adrestype te bewaren.
+
                     var bestaande = (from a in adressen where IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
 
                     if (bestaande != null)
                     {
                         nieuwAdres.Id = bestaande.Id;
-                        // Door het ID te bewaren, overschrijven we het bestaande adres
-                        nieuwAdres.ContactId = bestaande.ContactId;
+                        // Neem het ID van het bestaande adres over, zodanig dat we het bestaande
+                        // overschrijven.
                     }
-                    else
-                    {
-                        nieuwAdres.ContactId = bewoner.Persoon.CiviID.Value;
-                    }
-
+                    
+                    nieuwAdres.ContactId = bewoner.Persoon.CiviID.Value;
                     nieuwAdres.IsBilling = true;
                     nieuwAdres.IsPrimary = true;
 
@@ -104,6 +104,19 @@ namespace Chiro.CiviSync.Services
                     }
 
                     _civiCrmClient.AddressSave(nieuwAdres);
+                    // Verwijder oude voorkeuradres.
+
+                    var teVerwijderenAdressen = (from adr in adressen
+                                                 where adr.IsPrimary && adr.Id != nieuwAdres.Id
+                                                 select adr).ToList();
+                    foreach (var tvAdres in teVerwijderenAdressen)
+                    {
+                        _civiCrmClient.AddressDelete(tvAdres.Id);
+                        _log.Debug(String.Format(
+                            "Oud voorkeursadres voor {0} {1} verwijderd (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
+                            bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, bewoner.Persoon.CiviID,
+                            tvAdres.StreetAddress, tvAdres.PostalCode, tvAdres.PostalCodeSuffix, tvAdres.City, tvAdres.Country));
+                    }
                 }
             }
         }
