@@ -1,20 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{62E4DF52-639E-4CFE-AD0F-2850604B280A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chiro.CiviSync.ConsoleServiceHost</RootNamespace>
-    <AssemblyName>Chiro.CiviSync.ConsoleServiceHost</AssemblyName>
+    <RootNamespace>Chiro.CiviSync.SyncServiceHost</RootNamespace>
+    <AssemblyName>Chiro.CiviSync.SyncServiceHost</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,35 +26,52 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Installer1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Installer1.Designer.cs">
+      <DependentUpon>Installer1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CiviSyncServiceBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CiviSyncServiceBase.Designer.cs">
+      <DependentUpon>CiviSyncServiceBase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
@@ -62,33 +83,22 @@
       <Name>Chiro.Cdf.ServiceModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj">
-      <Project>{268708cb-f3e8-4afa-9e61-824cfa27be0e}</Project>
+      <Project>{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}</Project>
       <Name>Chiro.Cdf.UnityWcfExtensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Behavior\Chiro.CiviCrm.BehaviorExtension.csproj">
-      <Project>{f39a9e29-95e9-4304-a42d-1266f81b5ecf}</Project>
-      <Name>Chiro.CiviCrm.BehaviorExtension</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.ClientInterfaces\Chiro.CiviCrm.ClientInterfaces.csproj">
-      <Project>{c51d5b97-3af5-4ad8-9b40-3c04df6fc1c4}</Project>
-      <Name>Chiro.CiviCrm.ClientInterfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Client\Chiro.CiviCrm.Client.csproj">
-      <Project>{b0f99afc-7cd5-4c06-b362-840f0dfb560c}</Project>
-      <Name>Chiro.CiviCrm.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.ServiceContracts\Chiro.CiviCrm.Api.csproj">
-      <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
-      <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.CiviSync.Services\Chiro.CiviSync.Services.csproj">
-      <Project>{30215F07-A682-4E89-8FF9-D33F705E9842}</Project>
+      <Project>{30215f07-a682-4e89-8ff9-d33f705e9842}</Project>
       <Name>Chiro.CiviSync.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
