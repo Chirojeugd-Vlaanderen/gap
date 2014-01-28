@@ -1,6 +1,6 @@
 -- STAP 2: anonimize data
 
-USE gap_tst;
+USE gap_dev;
 
 update cv
 set nummer = cast(communicatievormid as varchar(50)) + '@example.org'
@@ -68,3 +68,7 @@ from
 pers.persoon where AdNummer is not null) p1 join
 (select *, row_number() over (order by newid()) as volgorde from
 pers.persoon where AdNummer is not null) p2 on p1.volgorde=p2.volgorde
+
+-- log nog maar eens opnieuw shrinken :-)
+
+dbcc shrinkfile(gap1rc2_log, 128, NOTRUNCATE)

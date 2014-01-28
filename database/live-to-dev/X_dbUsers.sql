@@ -1,5 +1,9 @@
 ﻿-- rechten op de dev-db via SQL authenticatie
 -- (omdat de developers typisch niet aan het werken zijn met hun kipdorplogin)
+
+-- !! Kijk alle lijnen die met USE beginnen goed na, om te zien of je wel
+-- op de juiste database werkt!
+
 USE Master
 GO
 
@@ -31,6 +35,9 @@ CREATE USER [CgDevelop] FOR LOGIN [CgDevelop];
 EXEC sp_addrolemember N'db_owner', N'CgDevelop';
 GO
 
+IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'gapsuper')
+	DROP USER gapsuper;
+GO	
 CREATE USER [gapsuper] FOR LOGIN [gapsuper]
 GO
 
@@ -40,8 +47,12 @@ GO
 
 GRANT SELECT ON diag.vVerlorenBivakken TO GapSuperRole;
 
-USE KIPADMIN_dev
+USE KIPADMIN_tst
 GO
+
+IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'gapsuper')
+	DROP USER gapsuper;
+GO	
 
 CREATE USER [gapsuper] FOR LOGIN [gapsuper]
 GO
@@ -49,7 +60,7 @@ GO
 EXEC sp_addrolemember N'GapSuperRole', N'gapsuper'
 GO
 
-USE [kipadmin_dev]
+USE [kipadmin_tst]
 
 GRANT SELECT ON biv.BivakOverzicht TO GapSuperRole
 GRANT SELECT ON grp.ChiroGroep TO GapSuperRole
@@ -77,6 +88,9 @@ GRANT SELECT ON pers.CommunicatieVorm TO GapSuperRole
 
 USE [kipadmin_tst]
 GO
+IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N'CiviDev')
+	DROP USER CiviDev;
+
 CREATE USER [cividev] FOR LOGIN [cividev]
 GO
 USE [kipadmin_tst]

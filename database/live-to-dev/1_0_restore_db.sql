@@ -5,7 +5,7 @@ GO
 
 -- aanpassen:
 DECLARE @backupFile AS VARCHAR(200); SET @backupFile = 'C:\sqlbak\gap\gap_backup_201310132056.fbu';
-DECLARE @dbNaam AS VARCHAR(200); SET @dbNaam = 'gap_tst';
+DECLARE @dbNaam AS VARCHAR(200); SET @dbNaam = 'gap_dev';
 
 -- wordt berekend:
 DECLARE @dataFile AS VARCHAR(200); SET @dataFile= 'C:\Program Files\Microsoft SQL Server\MSSQL10_50.SQL2K8\MSSQL\DATA\'+@dbNaam+'.mdf';
@@ -17,5 +17,5 @@ GO
 
 USE [master]
 GO
-ALTER DATABASE [gap_tst] SET RECOVERY SIMPLE WITH NO_WAIT
+ALTER DATABASE [gap_dev] SET RECOVERY SIMPLE WITH NO_WAIT
 GO

@@ -19,7 +19,7 @@ GO
 -- eerst service-user uit DB deleten, dan terug koppelen
 -- aan user op deze server.
 
-USE [gap_tst]
+USE [gap_dev]
 GO
 
 

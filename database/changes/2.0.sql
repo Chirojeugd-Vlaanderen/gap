@@ -14,10 +14,11 @@
 --   limitations under the License.
 
 
-use gap_local;
+use gap_dev;
 
 alter table pers.persoon add CiviID int null;
 alter table adr.land add IsoCode varchar(10);
+go
 
 -- landcodes.
 -- Schotland is al geen land.
