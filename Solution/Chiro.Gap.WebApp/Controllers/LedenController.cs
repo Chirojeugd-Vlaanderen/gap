@@ -779,6 +779,8 @@ namespace Chiro.Gap.WebApp.Controllers
             try
             {
                 gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.TypeToggle(id));
+                VeelGebruikt.LedenProblemenResetten(groepID);
+                VeelGebruikt.FunctieProblemenResetten(groepID);
             }
             catch (FaultException<FoutNummerFault> ex)
             {

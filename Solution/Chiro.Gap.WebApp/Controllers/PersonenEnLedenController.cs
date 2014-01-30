@@ -68,6 +68,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				TempData["succes"] = succesboodschap;
 
 				VeelGebruikt.FunctieProblemenResetten(groepID);
+                VeelGebruikt.LedenProblemenResetten(groepID);
 			}
 			else
 			{
@@ -119,8 +120,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		                                              VolledigeNaam = p.VolledigeNaam
 		                                          }).ToArray();
 
-			// TODO "Geen" ook toevoegen en met ajax verwijderen uit de lijst als je lid selecteert
 			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<ActieveAfdelingInfo>>(svc => svc.HuidigeAfdelingsJarenOphalen(groepID));
+
+            VeelGebruikt.LedenProblemenResetten(groepID);
+
 		    return View("LedenMaken", model);
 		}
 
@@ -163,18 +166,18 @@ namespace Chiro.Gap.WebApp.Controllers
             }
 
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.Inschrijven(inTeSchrijven, out foutBerichten));
-			if (String.IsNullOrEmpty(foutBerichten))
+
+            // Als een persoon wordt aangemaakt, worden best de ledenproblemen gereset (want die persoon zal bvb geen adres hebben).
+            // Ledenproblemen resetten ook wanneer er fouten zijn, want het kan zijn dat sommige leden wel ingeschreven werden
+            VeelGebruikt.LedenProblemenResetten(groepID);
+
+            if (String.IsNullOrEmpty(foutBerichten))
 			{
 				TempData["succes"] = Properties.Resources.IngeschrevenFeedback;
-
-				// Als een persoon wordt aangemaakt, worden best de ledenproblemen gereset (want die persoon zal bvb geen adres hebben).
-				VeelGebruikt.LedenProblemenResetten(groepID);
 			}
 			else
 			{
 				TempData["fout"] = string.Concat(Properties.Resources.MultiInschrijvenMisluktFout, Environment.NewLine, foutBerichten);
-                // Ledenproblemen resetten ook wanneer er fouten zijn, want het kan zijn dat sommige leden wel ingeschreven werden
-                VeelGebruikt.LedenProblemenResetten(groepID);
 			}
             return RedirectToAction("Index", "Leden");
 		}

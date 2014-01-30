@@ -575,8 +575,6 @@ namespace Chiro.Gap.WebApp.Controllers
             return RedirectToAction("EditRest", new { id = model.Wijziging.GelieerdePersoonID, groepID });
         }
 
-        // NEW CODE
-
         /// <summary>
         /// Deze actie met onduidelijke naam toont gewoon de personenfiche van de gelieerde
         /// persoon met id <paramref name="id"/>.
