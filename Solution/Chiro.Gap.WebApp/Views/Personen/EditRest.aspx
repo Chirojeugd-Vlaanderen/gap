@@ -304,6 +304,9 @@
             }
             %>
         </tr>   
+        <% } else {
+            // Maar we moeten kaderleden wel kunnen uitschrijven%>
+            <tr><td><%: Html.ActionLink("(uitschrijven)", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></td></tr>
         <% } %>
              <% // Geeft alle functies van een persoon weer %>
             <tr>
