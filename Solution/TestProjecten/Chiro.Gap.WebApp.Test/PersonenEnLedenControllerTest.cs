@@ -242,5 +242,40 @@ namespace Chiro.Gap.WebApp.Test
             Assert.IsNull(probleem.FirstOrDefault());
 
         }
+
+        ///<summary>
+        /// Test of leden uitschrijven de functieproblemencache cleart
+        ///</summary>
+        [TestMethod()]
+        public void FunctieProblemenClearenNaUitschrijven()
+        {
+            const int GROEPID = 426;            // arbitrair
+
+            // setup mocks
+
+            var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            veelGebruiktMock.Setup(src => src.LedenProblemenResetten(GROEPID));
+            var ledenServiceMock = new Mock<ILedenService>();
+
+            Factory.InstantieRegistreren(veelGebruiktMock.Object);
+
+
+            Factory.InstantieRegistreren(ledenServiceMock.Object);
+
+            // Ik maak een PersonenController, omdat PersonenEnLedenController abstract is, en dus 
+            // niet als dusdanig kan worden geïnstantieerd.
+
+            var target = Factory.Maak<PersonenController>();
+
+
+            // act
+
+            target.Uitschrijven(1, GROEPID);
+
+            // assert
+
+            veelGebruiktMock.Verify(src => src.LedenProblemenResetten(It.IsAny<int>()), Times.AtLeastOnce());
+
+        }
     }
 }
