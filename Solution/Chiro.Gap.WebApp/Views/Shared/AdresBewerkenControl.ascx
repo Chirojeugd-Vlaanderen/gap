@@ -22,15 +22,15 @@
         <td><%=Html.LabelFor(mdl => mdl.Land) %></td>
         <td><%=Html.DropDownListFor(mdl => mdl.Land, new SelectList(Model.AlleLanden, "Naam", "Naam")) %></td>
     </tr>
-    <tr id="postCode" hidden>
-        <td><%=Html.LabelFor(mdl => mdl.PostCode) %></td>
-        <td><%=Html.EditorFor(mdl => mdl.PostCode)%>
-        <%=Html.ValidationMessageFor(mdl => mdl.PostCode)%></td>
-    </tr>
     <tr>
         <td><%=Html.LabelFor(mdl => mdl.PostNr) %></td>
         <td><%=Html.EditorFor(mdl => mdl.PostNr)%>
         <%=Html.ValidationMessageFor(mdl => mdl.PostNr)%></td>
+    </tr>
+    <tr id="postCode" hidden>
+        <td><%=Html.LabelFor(mdl => mdl.PostCode) %></td>
+        <td><%=Html.EditorFor(mdl => mdl.PostCode)%>
+        <%=Html.ValidationMessageFor(mdl => mdl.PostCode)%></td>
     </tr>
     <tr>
         <td><%=Html.LabelFor(mdl => mdl.StraatNaamNaam)%></td>
