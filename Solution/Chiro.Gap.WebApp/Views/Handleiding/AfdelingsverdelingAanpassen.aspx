@@ -46,9 +46,7 @@
 	<p>
 		Mogelijke procedures:</p>
 	<ul>
-		<li>
-			<%=Html.ActionLink("Een nieuwe afdeling aanmaken", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweAfdeling" })%></li>
-		<li>
-			<%=Html.ActionLink("Een bestaande afdeling activeren", "ViewTonen", new { controller = "Handleiding", helpBestand = "AfdelingActiveren" })%></li>
+		<li><%=Html.ActionLink("Een nieuwe afdeling aanmaken", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweAfdeling" })%></li>
+		<li><%=Html.ActionLink("Een bestaande afdeling activeren", "ViewTonen", new { controller = "Handleiding", helpBestand = "AfdelingActiveren" })%></li>
 	</ul>
 </asp:Content>

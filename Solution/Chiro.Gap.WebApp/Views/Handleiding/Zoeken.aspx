@@ -30,19 +30,19 @@
     zijn er een aantal mogelijkheden om de gegevens te filteren of te doorzoeken
    </p>
    <h3>De Zoekbalk</h3>
-   <p>In de zoekbalk bovenaan de pagina kan je personen zoeken op hun naam, voornaam of geboortedatum.
+   <p>In de zoekbalk boven aan de pagina kun je personen zoeken op hun naam, voornaam of geboortedatum.
    De gegevens in de tabel die voldoen aan je zoekopdracht blijven staan, de rest verdwijnt.</p>
    <img src="<%=ResolveUrl("~/Content/Screenshots/Zoeken_Zoekbalk.png") %>" alt="Zoekbalk" />
    <h3>Sorteren</h3>
    <p>De gegevens in de tabellen kunnen gesorteerd worden door op de hoofding van een bepaalde kolom te klikken.
-   Eén keer klikken sorteert de tabel van laag naar hoog (voor datums) of van A naar Z, klik je een tweede keer dan wordt de sortering omgedraaid.
+   Eén keer klikken sorteert de tabel van laag naar hoog (voor datums) of van A naar Z. Klik je een tweede keer, dan wordt die sortering omgedraaid.
    De tabel kan gesorteerd worden op elke kolom waarboven de twee pijltjes te zien zijn.</p>
    <img src="<%=ResolveUrl("~/Content/Screenshots/Zoeken_Sortering.png") %>" alt="Sorteren" />
    <h3>Paginering</h3>
-   <p>In de linkerbovenhoek van de tabel kan je de paginering aanpassen. Hier kan je selecteren hoeveel personen
+   <p>In de linkerbovenhoek van de tabel kun je de paginering aanpassen. Hier selecteer je hoeveel personen
    er per pagina weergegeven worden.</p>
    <img src="<%=ResolveUrl("~/Content/Screenshots/Zoeken_Paginering.png") %>" alt="Paginering" />                               
    <img src="<%=ResolveUrl("~/Content/Screenshots/Zoeken_Paginering2.png") %>" alt="Paginering" />   
-   <p>Onderaan de tabel kan je dan tussen die verschillende pagina's navigeren.</p>
+   <p>Onder de tabel kun je tussen die verschillende pagina's navigeren.</p>
    <img src="<%=ResolveUrl("~/Content/Screenshots/Zoeken_Paginering3.png") %>" alt="Paginering" />   
 </asp:Content>

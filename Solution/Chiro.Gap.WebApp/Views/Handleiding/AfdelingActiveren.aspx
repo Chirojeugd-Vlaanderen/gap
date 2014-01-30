@@ -67,7 +67,7 @@
 					invulde die niet overeenkomen met die van de corresponderende offici&euml;le
 					afdeling. Je mag bijvoorbeeld wel drie jaar speelclub hebben, maar minstens
 					één van die drie geboortejaren moet bij de offici&euml;le speelclub staan. Of
-					misschien hield je geen rekening met <a href="http://www.chiro.be/minimumleeftijd"
+					misschien hield je geen rekening met <a href="http://www.chiro.be/wat-is-chiro/voor-ouders/minimumleeftijd"
 						title="Uitleg over de minimumleeftijd voor Chiroleden">de minimumleeftijd</a>:
 					de Chiro sluit geen kleuters aan.</li>
 				<li class="goed">Als er geen problemen meer zijn, keer je automatisch terug naar

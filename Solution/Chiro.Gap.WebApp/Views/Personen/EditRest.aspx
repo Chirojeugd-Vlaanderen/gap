@@ -184,7 +184,7 @@
                  </tr>            
                  <% } %>
             
-            <% //EMAIL EN TELEFOONNUMMER 
+            <% //E-MAIL EN TELEFOONNUMMER 
                 var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(
                         cv => new
                         {
@@ -440,7 +440,7 @@
         <div class="opzij">
         <h3>Overige gegevens</h3>
         <hr/>
-        <h3>GAP account</h3>
+        <h3>GAP-account</h3>
             <%
                 if (Model.PersoonLidInfo.GebruikersInfo == null)
                 {
@@ -485,7 +485,7 @@
                 }
             %>
         
-        <h3>Toegevoegd aan volgende categorie&euml;n:</h3>
+        <h3>Toegevoegd aan de volgende categorie&euml;n:</h3>
         <table>
            <% if (!Model.PersoonLidInfo.PersoonDetail.CategorieLijst.Any())
               { %>
