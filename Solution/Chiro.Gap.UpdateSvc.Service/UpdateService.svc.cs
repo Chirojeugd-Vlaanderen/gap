@@ -443,8 +443,10 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// </summary>
         /// <param name="persoonID">ID van persoon met toe te kennen Civi-ID</param>
         /// <param name="civiID">toe te kennen Civi-ID</param>
+        /// <param name="dupesMergen">Als <c>true</c>, dan wordt de persoon gemerged met
+        /// eventuele bestaande andere personen met datzelfde <paramref name="civiIC"/>.</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void CiviIdToekennen(int persoonID, int civiID)
+        public void CiviIdToekennen(int persoonID, int civiID, bool dupesMergen)
         {
             var persoon = _personenRepo.ByID(persoonID);
             if (persoon == null)
@@ -452,7 +454,7 @@ namespace Chiro.Gap.UpdateSvc.Service
                 return;
             }
 
-            CiviIdToekennen(persoon, civiID); // PERSISTEERT
+            CiviIdToekennen(persoon, civiID, dupesMergen); // PERSISTEERT
 
             Console.WriteLine("Civi-ID {0} toegekend aan {1}. (persoon-ID {2})", civiID, persoon.VolledigeNaam, persoon.ID);
         }
@@ -462,7 +464,9 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// </summary>
         /// <param name="persoon">persoon met toe te kennen Civi-ID</param>
         /// <param name="civiID">toe te kennen Civi-ID</param>
-        private void CiviIdToekennen(Persoon persoon, int civiID)
+        /// <param name="dupesMergen">Als <c>true</c>, dan wordt de persoon gemerged met
+        /// eventuele bestaande andere personen met datzelfde <paramref name="civiIC"/>.</param>
+        private void CiviIdToekennen(Persoon persoon, int civiID, bool dupesMergen)
         {
             Gav.CheckSuperGav();
 
@@ -471,7 +475,14 @@ namespace Chiro.Gap.UpdateSvc.Service
 
             foreach (var p in personenAlBestaand.Where(prs => prs.ID != persoon.ID).ToList())
             {
-                DubbelVerwijderen(persoon, p);
+                if (dupesMergen)
+                {
+                    DubbelVerwijderen(persoon, p);
+                }
+                else
+                {
+                    p.CiviID = null;
+                }
             }
 
             persoon.CiviID = civiID;

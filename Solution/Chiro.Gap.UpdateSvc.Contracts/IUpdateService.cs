@@ -51,8 +51,10 @@ namespace Chiro.Gap.UpdateSvc.Contracts
         /// </summary>
         /// <param name="persoonID">ID van persoon met toe te kennen Civi-ID</param>
         /// <param name="civiID">toe te kennen Civi-ID</param>
+        /// <param name="dupesMergen">Als <c>true</c>, dan wordt de persoon gemerged met
+        /// eventuele bestaande andere personen met datzelfde <paramref name="civiIC"/>.</param>
         [OperationContract]
-        void CiviIdToekennen(int persoonID, int civiID);
+        void CiviIdToekennen(int persoonID, int civiID, bool dupesMergen);
 
 		/// <summary>
 		/// Vervangt het AD-nummer van de persoon met AD-nummer <paramref name="oudAd"/>
