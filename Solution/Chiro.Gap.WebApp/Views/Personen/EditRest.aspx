@@ -265,48 +265,62 @@
         <% // controleert of de persoon ingeschreven is %>
         <%if ((Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding) &&
                                                                 !Model.PersoonLidInfo.LidInfo.NonActief) { %>
-            <% //Lid of leiding
-                if ((Model.GroepsNiveau & Niveau.Groep) != 0) {
-                   // Lid/Leiding en afdelingen zijn enkel relevant voor plaatselijke groepen.%>
-                <tr>
-                    <td>Ingeschreven als</td>
-                    <td><a  id="lidInfoInfo" data-type="select"><b><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></b></a>
-                    <%: Html.ActionLink("(uitschrijven)", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></td> 
-                    <td><div class="ui-icon ui-icon-pencil" id="bewerkLidInfo" title="Bewerken" style="cursor: pointer"></div></td>
-                </tr>
-            
-            <tr>
-            <% //Geeft de afdeling(en) weer 
-            if (Model.PersoonLidInfo.LidInfo.Type == LidType.Leiding)
-            { %>
-                <td>Afdeling(en)</td>
-                <td id="afdelingInfo"><%=Html.PrintLijst(Model.PersoonLidInfo.LidInfo.AfdelingIdLijst, Model.AlleAfdelingen) %></td>
-                <td><div class="ui-icon ui-icon-pencil" id="bewerkAfdeling" title="Bewerken" style="cursor: pointer"></div></td>
-               <% } else {
-                // TODO: Opkuis
-                if (Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count > 0 &&
-                    Model.AlleAfdelingen.FirstOrDefault(
-                        s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)) != null)
-                { %>
-               <% if ((Model.GroepsNiveau & Niveau.Groep) != 0) {%> 
-                    <td>Afdeling</td>
-                    <td>
-                        <a  id="afdelingInfo" data-type="select">
-                        <%=Model.AlleAfdelingen.First(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam %>
-                        </a>
-                   </td>
-                   <td>
-                       <div class="ui-icon ui-icon-pencil" id="bewerkAfdeling" title="Bewerken" style="cursor: pointer"></div>
-                   </td>
-                <%} %>
-
-                   <%  }
-            }
+            <% // Plaatselijke groep: toon lid/leiding en afdeling(en)
+                if ((Model.GroepsNiveau & Niveau.Groep) != 0) 
+                {
+                    // Ingeschreven als lid of leiding:
             %>
-        </tr>   
+                    <tr>
+                        <td>Ingeschreven als</td>
+                        <td><a  id="lidInfoInfo" data-type="select"><b><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></b></a>
+                        <%: Html.ActionLink("(uitschrijven)", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></td> 
+                        <td><div class="ui-icon ui-icon-pencil" id="bewerkLidInfo" title="Bewerken" style="cursor: pointer"></div></td>
+                    </tr>
+            
+                    <tr>
+                    <% 
+                        
+                    // In afdeling:
+                    
+                    if (Model.PersoonLidInfo.LidInfo.Type == LidType.Leiding)
+                    { 
+                        // Leiding heeft meerdere afdelingen
+                        %>
+                        <td>Afdeling(en)</td>
+                        <td id="afdelingInfo"><%=Html.PrintLijst(Model.PersoonLidInfo.LidInfo.AfdelingIdLijst, Model.AlleAfdelingen) %></td>
+                        <td><div class="ui-icon ui-icon-pencil" id="bewerkAfdeling" title="Bewerken" style="cursor: pointer"></div></td>
+                       <% 
+                    } 
+                    else 
+                    {
+                        // TODO: Opkuis. Een lid heeft maar 1 afdeling; hoe moeilijk kan het zijn.
+                        
+                        if (Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count > 0 &&
+                            Model.AlleAfdelingen.FirstOrDefault(
+                                s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)) != null)
+                        { %>
+                            <td>Afdeling</td>
+                            <td>
+                                <a  id="afdelingInfo" data-type="select">
+                                <%=Model.AlleAfdelingen.First(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam %>
+                                </a>
+                           </td>
+                           <td>
+                               <div class="ui-icon ui-icon-pencil" id="bewerkAfdeling" title="Bewerken" style="cursor: pointer"></div>
+                           </td>
+                           <%  
+                        }
+                    }
+                    %>
+                </tr>   
+
         <% } else {
             // Maar we moeten kaderleden wel kunnen uitschrijven%>
-            <tr><td><%: Html.ActionLink("(uitschrijven)", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></td></tr>
+            <tr>
+                <td>Ingeschreven</td>
+                <td />
+                <td><%: Html.ActionLink("[Uitschr.]", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></td>
+            </tr>
         <% } %>
              <% // Geeft alle functies van een persoon weer %>
             <tr>
