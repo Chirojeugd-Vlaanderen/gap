@@ -17,6 +17,14 @@ right('000000000' + cast (20000000 + cv.communicatievormid as
 varchar(50)),2)
 from pers.communicatievorm cv where cv.communicatietypeid < 3
 
+-- verwijder privacygevoelige info
+
+delete from pers.communicatieVorm where communicatietypeid >= 4
+update pers.communicatieVorm set nota = null;
+update biv.uitstap set opmerkingen = null;
+
+
+
 -- dit is ook niet écht willekeurig, maar hopelijk wel goed genoeg om gauw
 -- te anonymiseren
 --
