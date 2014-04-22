@@ -485,24 +485,6 @@ namespace Chiro.Gap.WebApp.Controllers
             return Nieuw(model, groepID);
         }
 
-        /// <summary>
-        /// Laat toe persoonsgegevens te wijzigen
-        /// </summary>
-        /// <param name="id">GelieerdePersoonID van te wijzigen persoon</param>
-        /// <param name="groepID">GroepID van de huidig geselecteerde groep</param>
-        /// <returns>De view 'Nieuw'</returns>
-        //[AcceptVerbs(HttpVerbs.Post)]
-        [HandleError]
-        public ActionResult Nieuw(int id, int groepID)
-        { 
-            var model = new GelieerdePersonenModel();
-            BaseModelInit(model, groepID);
-            model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(id));
-            model.Titel = model.HuidigePersoon.VolledigeNaam;
-            return View("Nieuw", model);
-           
-        }
-
         public JsonResult PersoonsGegevensOphalenJson(int groepID, int gelieerdePersoonId)
         {
             var model = new GelieerdePersonenModel();
