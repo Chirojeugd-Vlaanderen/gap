@@ -83,6 +83,7 @@ namespace Chiro.Gap.Domain
         #region verplichte gegevens
         AdNummerVerplicht,
         EMailVerplicht,
+        ContactMoetNieuwsBriefKrijgen,
         #endregion
 
         #region nog te groeperen

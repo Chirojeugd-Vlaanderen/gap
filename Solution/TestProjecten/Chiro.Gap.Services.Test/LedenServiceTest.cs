@@ -451,12 +451,15 @@ namespace Chiro.Gap.Services.Test
             };
             gwj.Groep = groep;
 
-            var contactPersoon = new Functie
+            // De functie hieronder speelt eigenlijk geen rol, maar kies niet 'contactpersoon', want dan
+            // doet de backend lastig over het ontbreken van een e-mailadres.
+
+            var financieelVerantwoordelijke = new Functie
             {
-                ID = 1,
+                ID = (int)NationaleFunctie.FinancieelVerantwoordelijke,
                 IsNationaal = true,
                 Niveau = Niveau.Alles,
-                Naam = "Contactpersoon",
+                Naam = "Financieel Verantwoordelijke",
                 Type = LidType.Leiding
             };
 
@@ -470,7 +473,7 @@ namespace Chiro.Gap.Services.Test
 
             // repositories maken die de testdata opleveren
             var ledenRepo = new DummyRepo<Lid>(new[] { leiding });
-            var functieRepo = new DummyRepo<Functie>(new[] { contactPersoon });
+            var functieRepo = new DummyRepo<Functie>(new[] { financieelVerantwoordelijke });
 
             // repositoryprovider opzetten
             var repoProviderMock = new Mock<IRepositoryProvider>();
@@ -489,7 +492,7 @@ namespace Chiro.Gap.Services.Test
             #endregion
 
             #region act
-            ledenService.FunctiesVervangen(leiding.ID, new [] { contactPersoon.ID });
+            ledenService.FunctiesVervangen(leiding.ID, new [] { financieelVerantwoordelijke.ID });
             #endregion
 
             #region Assert

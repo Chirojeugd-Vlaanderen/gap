@@ -106,6 +106,29 @@ namespace Chiro.Gap.Workers
                         Resources.FoutiefLidTypeFunctie);
                 }
 
+                // Custom foliekes voor nationale functies
+
+                if (f.Is(NationaleFunctie.ContactPersoon))
+                {
+                    // Hebben we een e-mailadres waarop we de contactpersoon mogen contacteren?
+
+                    var mailAdressen = (from c in lid.GelieerdePersoon.Communicatie
+                                        where c.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email
+                                            select c).ToList();
+
+                    if (!mailAdressen.Any())
+                    {
+                        throw new FoutNummerException(FoutNummer.EMailVerplicht, Properties.Resources.EMailVerplicht);
+                    }
+
+                    // Schrijft de persoon zich in voor de nieuwsbrief?
+
+                    if (!mailAdressen.Any(ma => ma.IsVoorOptIn))
+                    {
+                        throw new FoutNummerException(FoutNummer.ContactMoetNieuwsBriefKrijgen, Properties.Resources.ContactMoetNieuwsBriefKrijgen);
+                    }
+                }
+
                 // Ik test hier bewust niet of er niet te veel leden zijn met de functie;
                 // op die manier worden inconsistenties bij het veranderen van functies toegelaten,
                 // wat me voor de UI makkelijker lijkt.  De method 'AantallenControleren' kan

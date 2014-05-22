@@ -517,8 +517,10 @@ namespace Chiro.Gap.Services
             var functies = _functiesRepo.ByIDs(functieIds);
 
             // TODO: optimaliseren. Tien tegen 1 zijn al die functies aan dezelfde groep gekoppeld.
+            // (Als ze al gekoppeld zijn, want de nationale functies hebben geen gekoppelde groep.)
             // In dat geval volstaat het om 1 check te doen, ipv een check per functie.
             // TIP: controleer GAV-schap functies.SelectMany(fn=>fn.Groep).Distinct().
+
             foreach (var functie in functies)
             {
                 Gav.Check(functie);
@@ -536,6 +538,8 @@ namespace Chiro.Gap.Services
                     case FoutNummer.FunctieNietVanGroep:
                     case FoutNummer.FunctieNietBeschikbaar: 
                     case FoutNummer.LidTypeVerkeerd:
+                    case FoutNummer.EMailVerplicht:
+                    case FoutNummer.ContactMoetNieuwsBriefKrijgen:
                         // Deze exceptions verwachten we; we sturen een foutnummerfault
                         throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
                     default:
