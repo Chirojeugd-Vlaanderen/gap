@@ -30,6 +30,7 @@ using Moq;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Workers;
+using Chiro.Gap.TestAttributes;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -288,8 +289,44 @@ namespace Chiro.Gap.Workers.Test
             // ASSERT
 
             Assert.IsFalse(probleemIDs.Contains(vervallenFunctie.ID));
-
         }
+
+        /// <summary>
+        /// Kijkt na of er een exception opgeworpen wordt als iemand zonder e-mailadres contactpersoon wil worden.
+        /// </summary>
+        [TestMethod]
+        [ExpectedFoutNummer(typeof(FoutNummerException), FoutNummer.EMailVerplicht)]
+        public void ContactZonderEmail()
+        {
+            // ARRANGE
+
+            var groepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep(), WerkJaar = 2012 };
+            groepsWerkJaar.Groep.GroepsWerkJaar.Add(groepsWerkJaar);
+
+            var contactPersoonFunctie = new Functie
+            {
+                ID = (int)NationaleFunctie.ContactPersoon,
+                MinAantal = 1,
+                IsNationaal = true,
+                Niveau = Niveau.LeidingInGroep,
+            };
+            var lid = new Leiding
+            {
+                GroepsWerkJaar = groepsWerkJaar,
+                GelieerdePersoon = new GelieerdePersoon()
+            };
+
+            // ACT
+
+            var functiesManager = Factory.Maak<FunctiesManager>();
+            functiesManager.Toekennen(lid, new List<Functie> { contactPersoonFunctie });
+
+            // ASSERT
+
+            // Normaal gezien hebben we hier al lang een exception op ons dak.
+            Assert.IsFalse(true);
+        }
+
 
         /// <summary>
         /// Standaard 'AantallenControleren'.  Nakijken of rekening wordt gehouden
