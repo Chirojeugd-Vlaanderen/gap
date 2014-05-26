@@ -723,17 +723,30 @@ namespace Chiro.Gap.WebApp.Controllers
                 VeelGebruikt.FunctieProblemenResetten(groepID);
 
                 TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-                return RedirectToAction("EditRest", "Personen", new { groepID, id = model.Persoon.GelieerdePersoonID });
             }
-            catch (Exception)
+            catch (FaultException<FoutNummerFault> ex)
             {
-                model.Persoon = ServiceHelper.CallService<ILedenService, PersoonInfo>(svc => svc.PersoonOphalen(id));
-                TempData["fout"] = Properties.Resources.WijzigingenNietOpgeslagenFout;
-                return View("FunctiesToekennen", model);
+                var lidInfo = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
+                string naam = lidInfo.PersoonDetail.VolledigeNaam;
+                string persoonlijk = lidInfo.PersoonDetail.Geslacht == GeslachtsType.Vrouw ? "haar" : "hem";
+                string bezittelijk = lidInfo.PersoonDetail.Geslacht == GeslachtsType.Vrouw ? "haar" : "zijn";
+                switch (ex.Detail.FoutNummer)
+                {
+                    case FoutNummer.EMailVerplicht:
+                        TempData["fout"] = String.Format(Properties.Resources.EmailVoorContactOntbreekt, naam,
+                            persoonlijk);
+                        break;
+                    case FoutNummer.ContactMoetNieuwsBriefKrijgen:
+                        TempData["fout"] = String.Format(Properties.Resources.ContactMoetNieuwsBriefKrijgen, naam, bezittelijk);
+                        break;
+                    default:
+                        throw;
+                }
             }
+            return RedirectToAction("EditRest", "Personen", new { groepID, id = model.Persoon.GelieerdePersoonID });
         }
 
-        /// <summary>
+        /// <summary> 
         /// Bekijkt model.Persoon.  Haalt alle functies van het groepswerkjaar van het lid op, relevant
         /// voor het type lid (kind/leiding), en bewaart ze in model.AlleFuncties.  
         /// In model.FunctieIDs komen de ID's van de toegekende functies voor het lid.
