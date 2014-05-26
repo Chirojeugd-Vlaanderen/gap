@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
@@ -116,6 +117,14 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
 
+        /// <summary>
+        /// Nadat de user de geboortejaren van en tot heeft gedefinieerd voor iedere nieuw afdelingsjaar,
+        /// wordt het nieuwe werkjaar gemaakt. Zo nodig wordt er geredirect naar een pagina die toelaat
+        /// iedereen uit het vorige werkjaar opnieuw in te schrijven.
+        /// </summary>
+        /// <param name="model">bevat de nieuwe afdelingsjaren</param>
+        /// <param name="groepID">groep waarvoor we de jaarovergang uitvoeren.</param>
+        /// <returns></returns>
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Stap2AfdelingsJarenVerdelen(JaarOvergangAfdelingsJaarModel model, int groepID)
         {
@@ -177,44 +186,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 return RedirectToAction("Index", "Leden");
             }
 
-            // We hebben de gelieerdepersoonID's nodig van alle leden uit het huidige (oude) werkjaar.
-            // We doen dat hieronder door alle leden op te halen, en daaruit de gelieerdepersoonID's te 
-            // halen.
-            // TODO: Dit is een tamelijk dure operatie, omdat we gewoon de ID's nodig hebben. 
-            // Bovendien halen we in een volgende stap opnieuw de persoonsinfo op.
-            // Best eens herwerken dus.
-
-            var filter = new LidFilter
-                            {
-                                GroepsWerkJaarID = vorigGwjID,
-                                AfdelingID = null,
-                                FunctieID = null,
-                                ProbeerPeriodeNa = null,
-                                HeeftVoorkeurAdres = null,
-                                HeeftTelefoonNummer = null,
-                                HeeftEmailAdres = null,
-                                LidType = LidType.Alles
-                            };
-            List<int> gelieerdepersoonIDs;
-
-            try
-            {
-                gelieerdepersoonIDs =
-					ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(svc => svc.LijstZoekenLidOverzicht(filter, false)).Select(
-                    e => e.GelieerdePersoonID).ToList();
-            }
-            catch (FaultException<FoutNummerFault>)
-            {
-                const string Error = "Er is iets foutgegaan bij het laden van de volledige ledenlijst.\n" +
-                                     "Je bent nu in het nieuwe werkjaar, maar er zijn nog geen leden overgezet.\n" +
-                                     "Je kan dit doen door onder Leden te klikken op het vorige werkjaar, daar de leden te \n" +
-                                     "selecteren die je wilt lid maken voor het komende jaar en klikken op Lid maken.\n";
-                TempData["fout"] = Error;
-                return RedirectToAction("Index", "Leden");
-            }
-			
-            TempData["list"] = gelieerdepersoonIDs;
-            return RedirectToAction("LedenMaken", "Leden");
+            return RedirectToAction("Herinschrijven", "Personen", new {groepID, groepsWerkJaarID = vorigGwjID});
         }
 
         /// <summary>

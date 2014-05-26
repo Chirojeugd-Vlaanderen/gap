@@ -39,7 +39,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         public int GelieerdePersoonID { get; set; }
 
         /// <summary>
-        /// Geeft aan of het een leiding moet worden ipv een kind
+        /// Gaat het om leiding of een kind
         /// </summary>
         [DataMember]
         public bool LeidingMaken { get; set; }

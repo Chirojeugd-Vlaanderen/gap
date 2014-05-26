@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ExcelManip;
@@ -433,7 +434,8 @@ namespace Chiro.Gap.WebApp.Controllers
             switch (model.GekozenActie)
             {
                 case 1:
-                    return GelieerdePersonenInschrijven(model.SelectieGelieerdePersoonIDs);
+                    return RedirectToAction("Inschrijven", "Personen",
+                        new {gelieerdePersoonIDs = model.SelectieGelieerdePersoonIDs});
                 case 2:
                     GelieerdePersonenUitschrijven(model.SelectieGelieerdePersoonIDs, groepID, Properties.Resources.LedenUitgeschreven);
                     return RedirectToAction("Index", new {groepID});

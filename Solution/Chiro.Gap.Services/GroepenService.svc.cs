@@ -745,7 +745,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="groepId">ID van de groep waarvoor de info gevraagd is</param>
         /// <returns>Lijst van AfdelingInfo</returns>
-        public IList<ActieveAfdelingInfo> HuidigeAfdelingsJarenOphalen(int groepId)
+        public List<ActieveAfdelingInfo> HuidigeAfdelingsJarenOphalen(int groepId)
         {
             var gwj = _groepenMgr.HuidigWerkJaar(_groepenRepo.ByID(groepId));
             if (!_autorisatieMgr.IsGav(gwj))
@@ -754,7 +754,7 @@ namespace Chiro.Gap.Services
             }
 
             Debug.Assert(gwj != null, "gwj != null");
-            return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
+            return Mapper.Map<IEnumerable<AfdelingsJaar>, List<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
         }
 
         /// <summary>

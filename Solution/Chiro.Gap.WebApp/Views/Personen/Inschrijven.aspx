@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<GeselecteerdePersonenEnLedenModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<InschrijvingsModel>" %>
 
 <%@ Import Namespace="System.Globalization" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
@@ -6,7 +6,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -56,7 +56,11 @@
 		</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<% using (Html.BeginForm())
+	<% 
+    
+    // Dit formulier wordt gebruikt door verschillende actions. De boeling is dat het
+    // bij submit altijd doorschakelt naar Personen/Inschrijven.
+    using (Html.BeginForm("Inschrijven", "Personen"))
 	{
 	%>
 	<ul id="acties">
@@ -89,19 +93,19 @@
 		</tr>
 		
 		<%
-	    for (var j = 0; j < Model.PersoonEnLidInfos.Count(); ++j)
+        for (var j = 0; j < Model.Inschrijvingen.Count(); ++j)
         {%>
 			<tr class="<%: ((j&1)==0)?"even":"oneven" %>">
 			<%
             //TODO de checkboxlist gaat alleen die bevatten die true zijn, terwijl we ook ergens de volledige lijst nog moeten hebben %>
 				<td>
-                    <%:Html.HiddenFor(mdl => mdl.PersoonEnLidInfos[j].GelieerdePersoonID)%>
-                    <%:Html.CheckBoxFor(mdl => mdl.PersoonEnLidInfos[j].InTeSchrijven) %>
+                    <%:Html.HiddenFor(mdl => mdl.Inschrijvingen[j].GelieerdePersoonID)%>
+                    <%:Html.CheckBoxFor(mdl => mdl.Inschrijvingen[j].InTeSchrijven) %>
                 </td>
-				<td><%:Html.DisplayFor(mdl => mdl.PersoonEnLidInfos[j].VolledigeNaam)%></td>
+				<td><%:Html.DisplayFor(mdl => mdl.Inschrijvingen[j].VolledigeNaam)%></td>
                 
                 <% if (!Model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep)) { %>
-				    <td><%:Html.CheckBoxFor(mdl => mdl.PersoonEnLidInfos[j].LeidingMaken)%></td>
+				    <td><%:Html.CheckBoxFor(mdl => mdl.Inschrijvingen[j].LeidingMaken)%></td>
 				    <td>
 
 				    <%
@@ -109,9 +113,9 @@
                         // In principe is InTeSchrijvenLid.AfdelingsJaarIDs een array, maar in praktijk kunnen we voor dit
                         // formulier maar 1 keuze aan. Vandaar dat enkel naar het eerste item in die array wordt gekeken.
 
-				        int voorgesteldAjID = Model.PersoonEnLidInfos[j].AfdelingsJaarIDs == null
+                       int voorgesteldAjID = Model.Inschrijvingen[j].AfdelingsJaarIDs == null
 				                                  ? 0
-				                                  : Model.PersoonEnLidInfos[j].AfdelingsJaarIDs.FirstOrDefault();
+                                                  : Model.Inschrijvingen[j].AfdelingsJaarIDs.FirstOrDefault();
                                               
                         var afdelingsLijstItems = (from ba in Model.BeschikbareAfdelingen
                                select
@@ -128,13 +132,13 @@
                         // omdat het tonen en verbergen via javascript loopt, voeg ik het item
                         // sowieso eerst altijd toe, om problemen te vermijden als javascript 
                         // gedisabled is.
-                    
-                        afdelingsLijstItems.Add(new SelectListItem { Selected = Model.PersoonEnLidInfos[j].LeidingMaken, Text = @"geen", Value = "0" });
+
+                        afdelingsLijstItems.Add(new SelectListItem { Selected = Model.Inschrijvingen[j].LeidingMaken, Text = @"geen", Value = "0" });
                     
                     
                     %>
                                                                
-                    <%=Html.DropDownListFor(mdl => mdl.PersoonEnLidInfos[j].AfdelingsJaarIDs, afdelingsLijstItems)%>
+                    <%=Html.DropDownListFor(mdl => mdl.Inschrijvingen[j].AfdelingsJaarIDs, afdelingsLijstItems)%>
 
 				    </td>
             <% }
@@ -143,7 +147,7 @@
                        // Bij kaderploegen heb je de mogelijkheid niet om lid/leiding
                        // te kiezen.
                        %>
-                       <%:Html.HiddenFor(mdl=>mdl.PersoonEnLidInfos[j].LeidingMaken) %>
+                       <%:Html.HiddenFor(mdl=>mdl.Inschrijvingen[j].LeidingMaken) %>
                        <%                       
                    } %>
 			</tr>

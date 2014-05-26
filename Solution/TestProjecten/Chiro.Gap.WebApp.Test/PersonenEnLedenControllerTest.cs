@@ -15,10 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
+using System.Collections.Generic;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
@@ -26,10 +24,6 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Chiro.Gap.WebApp.Models;
-using System.Web.Mvc;
-
 using Moq;
 
 namespace Chiro.Gap.WebApp.Test
@@ -169,79 +163,6 @@ namespace Chiro.Gap.WebApp.Test
             return target;
         }
 
-        ///<summary>
-        ///Test of je met de webinterface leiding kunt maken zonder afdeling
-        ///</summary>
-        [TestMethod()]
-        public void LedenMakenTest()
-        {
-            // Het inschrijven van leden en leiding via de webinterface is nogal vreemd
-            // geïmplementeerd.  Je mag namelijk maar 1 afdeling(sjaar) kiezen, en dat kan ook
-            // 'geen' zijn.  Dat gekozen item moet dan geconverteerd worden naar een lijst met
-            // afdelingsjaarID's, die dan eventueel nul mag zijn.
-            //
-            // Als leden maken herwerkt wordt, dan vervalt natuurlijk deze test.
-
-            const int GROEPID = 426;            // arbitrair
-            const int WERKJAAR = 2011;          // werkJaar 2011-2012, om iets te doen
-            const int GROEPSWERKJAARID = 2971;  // arbitrair
-
-            // setup mocks
-            // (dit is nogal hetzelfde in veel tests.  Best eens afsplitsen)
-
-            var veelGebruiktMock = new Mock<IVeelGebruikt>();
-            veelGebruiktMock.Setup(vg => vg.GroepsWerkJaarOphalen(GROEPID)).Returns(new GroepsWerkJaarDetail
-                                                                                        {
-                                                                                            GroepID = GROEPID,
-                                                                                            WerkJaar = WERKJAAR,
-                                                                                            WerkJaarID =
-                                                                                                GROEPSWERKJAARID
-                                                                                        });
-            veelGebruiktMock.Setup(vg => vg.BivakStatusHuidigWerkjaarOphalen(GROEPID)).Returns(new BivakAangifteLijstInfo
-                                                                                                   {
-                                                                                                       AlgemeneStatus =
-                                                                                                           BivakAangifteStatus.NogNietVanBelang
-                                                                                                   });
-
-
-            Factory.InstantieRegistreren(veelGebruiktMock.Object);
-            Factory.InstantieRegistreren<ILedenService>(new FakeLedenService());
-
-            // we doen het volgende:
-            // We roepen LedenMaken aan met een model waarbij '0' geselecteerd is als enige afdeling voor
-            // een leid(st)er, wat dus wil zeggen dat we een leid(st)er maken zonder afdeling.
-            // We verifieren dat de ledenservice niet wordt aangeroepen met dat afdelingsjaar 0.
-
-            // Ik maak een LedenController, omdat PersonenEnLedenController abstract is, en dus 
-            // niet als dusdanig kan worden geïnstantieerd.
-
-            var target = Factory.Maak<LedenController>();
-            var model = new GeselecteerdePersonenEnLedenModel
-                            {
-                                PersoonEnLidInfos = new[]
-                                                        {
-                                                            new InschrijfbaarLid
-                                                                {
-                                                                    AfdelingsJaarIDs = new int[] {0},
-                                                                    LeidingMaken = true,
-                                                                    InTeSchrijven = true
-                                                                }
-                                                        }
-                            };
-
-            // act
-
-            target.LedenMaken(model, GROEPID);
-
-            // assert
-
-            var probleem = from p in FakeLedenService.DoorgekregenInschrijving
-                           where p.AfdelingsJaarIDs.Any(ajid => ajid == 0)
-                           select p;
-
-            Assert.IsNull(probleem.FirstOrDefault());
-
-        }
 
         ///<summary>
         /// Test of leden uitschrijven de functieproblemencache cleart

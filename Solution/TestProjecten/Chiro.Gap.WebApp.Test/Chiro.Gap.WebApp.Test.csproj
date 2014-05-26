@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="JaarOvergangControllerTest.cs" />
     <Compile Include="PersonenEnLedenControllerTest.cs" />
+    <Compile Include="PersonenControllerTest.cs" />
     <Compile Include="VeelGebruiktTest.cs" />
     <Compile Include="GroepControllerTest.cs" />
     <Compile Include="MockContext.cs" />

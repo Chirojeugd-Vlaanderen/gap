@@ -368,4 +368,11 @@
   <data name="EmailVoorContactOntbreekt" xml:space="preserve">
     <value>{0} heeft geen e-mailadres. Om {1} contactpersoon te maken, moet je {1} een e-mailadres geven, en {1} met dat e-mailadres inschrijven voor de nieuwsbrief.</value>
   </data>
+  <data name="PersonenInschrijven" xml:space="preserve">
+    <value>Personen inschrijven</value>
+  </data>
+  <data name="VoorstelNieuweLedenMislukt" xml:space="preserve">
+    <value>Er is iets foutgegaan bij het laden van de volledige ledenlijst. Het nieuwe werkjaar is aangemaakt, maar er zijn nog geen leden overgezet.
+Je kunt dit nog steeds doen door onder 'leden' te klikken op het vorige werkjaar. Daar selecteer je diegenen die opnieuw lid wilt maken, en kies je 'inschrijven' onder 'acties'.</value>
+  </data>
 </root>

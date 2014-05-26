@@ -187,6 +187,7 @@
     <Compile Include="Models\GavOverzichtModel.cs" />
     <Compile Include="Models\GroepInfoModel.cs" />
     <Compile Include="Models\IAdresBewerkenModel.cs" />
+    <Compile Include="Models\InschrijvingsModel.cs" />
     <Compile Include="Models\IntStringModel.cs" />
     <Compile Include="Models\LidAfdelingenModel.cs" />
     <Compile Include="Models\Mededeling.cs" />
@@ -326,7 +327,7 @@
     <Content Include="Views\Personen\OverledenPersoon.aspx" />
     <Content Include="Views\Shared\NavigatieBeperktControl.ascx" />
     <Content Include="Views\Shared\NavigatieBeperktControl.ascx" />
-    <Content Include="Views\Shared\LedenMaken.aspx" />
+    <Content Include="Views\Personen\Inschrijven.aspx" />
     <Content Include="Views\Personen\AdresVerwijderen.aspx" />
     <Content Include="Views\Personen\CommVormBewerken.aspx" />
     <Content Include="Views\Personen\CategorieToevoegenAanLijst.aspx" />

@@ -23,7 +23,6 @@ using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Web.Services.Description;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
@@ -35,7 +34,6 @@ using Chiro.Gap.Validatie;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.HtmlHelpers;
 using Chiro.Gap.WebApp.Models;
-using DocumentFormat.OpenXml.EMMA;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -222,7 +220,7 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 case 1:
                 case 2:  // 2 is stiekem verdwenen, zie #625.
-                    r = GelieerdePersonenInschrijven(model.GekozenGelieerdePersoonIDs);
+                    r = Inschrijven(groepID, model.GekozenGelieerdePersoonIDs);
                     break;
                 case 3:
                     TempData["list"] = model.GekozenGelieerdePersoonIDs;
@@ -651,16 +649,156 @@ namespace Chiro.Gap.WebApp.Controllers
         #region leden
 
         /// <summary>
-        /// Schrijft een gelieerde persoon in in de groep
+        /// Genereert een voorstel om de gelieerde personen met gegeven
+        /// <paramref name="gelieerdePersoonIDs"/> in te schrijven voor de groep met
+        /// gegeven <paramref name="groepID"/>
         /// </summary>
-        /// <param name="gelieerdepersoonID">ID van de gelieerde persoon die we willen inschrijven</param>
-        /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
-        /// <returns></returns>
-        /// <!-- GET: /Personen/Inschrijven/gelieerdepersoonID -->
-        [HandleError]
-        public ActionResult Inschrijven(int gelieerdepersoonID, int groepID)
+        /// <param name="groepID">ID van groep waarvoor in te schrijven.</param>
+        /// <param name="gelieerdePersoonIDs">ID's van in te schrijven gelieerde personen.</param>
+        /// <returns>Een inschrijvingsvoorstel.</returns>
+        /// <remarks>Het voorstel bevat een 'submit button' die expliciet verwijst naar
+        /// Personen/Inschrijven. Deze method kan aangeroepen worden vanuit eender welke
+        /// andere method; de postback komt altijd terecht.
+        /// 
+        /// Rechtstreeks aanroepen via de URL is lastiger, o.w.v. de collectie ID's.</remarks>
+        public ActionResult Inschrijven(int groepID, List<int> gelieerdePersoonIDs)
         {
-            return GelieerdePersonenInschrijven(new List<int> { gelieerdepersoonID });
+            var model = new InschrijvingsModel {GelieerdePersoonIDs = gelieerdePersoonIDs};
+            return Inschrijven(groepID, model);
+        }
+
+
+        /// <summary>
+        /// Inschrijven van een selectie gelieerde personen. Als model.Inschrijvingen leeg is, wordt
+        /// een voorstel gedaan om de gelieerde personen met gelieerdePersoonID in
+        /// model.GelieerdePersoonIDs in te schrijven. Als model.Inschrijvingen niet leeg is, wordt
+        /// de inschrijving doorgevoerd op basis van de informatie in model.Inschrijvingen.
+        /// Er wordt ingeschreven voor het huidige werkjaar van de groep
+        /// met gegeven <paramref name="groepID"/>.
+        /// </summary>
+        /// <param name="groepID">Groep waarvoor personen ingeschreven moeten worden.</param>
+        /// <param name="model">Bevat informatie om een inschrijvingsvoorstel te genereren of een 
+        /// inschrijving effectief uit te voeren.</param>
+        /// <returns>Inschrijvingsvoorstel of ledenlijst na effectieve inschrijving.</returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Inschrijven(int groepID, InschrijvingsModel model)
+        {
+            BaseModelInit(model, groepID);
+            model.Titel = Properties.Resources.PersonenInschrijven;
+
+            // Van foutberichten moeten we af. Dat moet in foutcodes komen als feedback van het
+            // inschrijvingsvoorstel. Maar dat zal een volgende stap zijn.
+            string foutBerichten = String.Empty;
+
+            if (model.Inschrijvingen != null)
+            {
+                // Er zijn effectief inschrijvingen gegeven. Voer die uit.
+
+                var inTeSchrijven = (from rij in model.Inschrijvingen
+                    where rij.InTeSchrijven
+                    select new InTeSchrijvenLid
+                    {
+                        AfdelingsJaarIDs = rij.AfdelingsJaarIDs,
+                        AfdelingsJaarIrrelevant = false,
+                        GelieerdePersoonID = rij.GelieerdePersoonID,
+                        LeidingMaken = rij.LeidingMaken
+                    }).ToArray();
+
+                // De user interface is zodanig gemaakt dat AfdelingsJaarIDs precies 1 ID bevat,
+                // dat 0 kan zijn als het over 'geen' gaat. Dat is niet zoals het moet zijn, maar
+                // wel de praktijk.
+                // De service verwacht een lijst met AfdelingsJaarIDs. Ik ga dus alle lijsten die 
+                // enkel 0 bevatten, vervangen door lege lijsten.
+
+                foreach (
+                    var ins in
+                        inTeSchrijven.Where(
+                            i =>
+                                i.AfdelingsJaarIDs == null ||
+                                (i.AfdelingsJaarIDs.Count() == 1 && i.AfdelingsJaarIDs.First() == 0)))
+                {
+                    ins.AfdelingsJaarIDs = new int[0]; // lege array van ints.
+                }
+
+                ServiceHelper.CallService<ILedenService, IEnumerable<int>>(
+                    svc => svc.Inschrijven(inTeSchrijven, out foutBerichten));
+
+                if (String.IsNullOrEmpty(foutBerichten))
+                {
+                    return RedirectToAction("Index", "Leden");
+                }
+
+                // TODO: Error handling
+            }
+
+            // Genereer inschrijvingsvoorstel.
+
+            var personenOverzicht = ServiceHelper.CallService<ILedenService, IEnumerable<InTeSchrijvenLid>>(
+                svc => svc.VoorstelTotInschrijvenGenereren(model.GelieerdePersoonIDs, out foutBerichten));
+
+            // Negeer de foutberichten. We moeten dat in nog in de view verwerken.
+
+            model.Inschrijvingen = (from p in personenOverzicht
+                select new InschrijfbaarLid
+                {
+                    AfdelingsJaarIDs = p.AfdelingsJaarIDs,
+                    AfdelingsJaarIrrelevant = false,
+                    GelieerdePersoonID = p.GelieerdePersoonID,
+                    InTeSchrijven = true,
+                    LeidingMaken = p.LeidingMaken,
+                    VolledigeNaam = p.VolledigeNaam
+                }).ToList();
+
+            model.BeschikbareAfdelingen =
+                ServiceHelper.CallService<IGroepenService, List<ActieveAfdelingInfo>>(
+                    svc => svc.HuidigeAfdelingsJarenOphalen(groepID));
+
+            return View("Inschrijven", model);
+        }
+
+        /// <summary>
+        /// Doet een voorsel om alle leden uit groepswerkjaar met ID <paramref name="groepsWerkJaarID"/>
+        /// opnieuw in te schrijven voor het recentste groepswerkjaar.
+        /// </summary>
+        /// <param name="groepID">ID van groep waarvoor we willen inschrijven</param>
+        /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvan we de leden willen herinschrijven.</param>
+        /// <returns>Voorstel voor de inschrijving</returns>
+        public ActionResult Herinschrijven(int groepID, int groepsWerkJaarID)
+        {
+            // We hebben de gelieerdepersoonID's nodig van alle leden uit het gegeven (oude) werkjaar.
+            // We doen dat hieronder door alle leden op te halen, en daaruit de gelieerdepersoonID's te 
+            // halen.
+            // TODO: Dit is een tamelijk dure operatie, omdat we gewoon de ID's nodig hebben. 
+            // Bovendien halen we in een volgende stap opnieuw de persoonsinfo op.
+            // Best eens herwerken dus.
+
+            var filter = new LidFilter
+            {
+                GroepsWerkJaarID = groepsWerkJaarID,
+                AfdelingID = null,
+                FunctieID = null,
+                ProbeerPeriodeNa = null,
+                HeeftVoorkeurAdres = null,
+                HeeftTelefoonNummer = null,
+                HeeftEmailAdres = null,
+                LidType = LidType.Alles
+            };
+            List<int> gelieerdepersoonIDs;
+
+            try
+            {
+                gelieerdepersoonIDs =
+                    ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(svc => svc.LijstZoekenLidOverzicht(filter, false)).Select(
+                    e => e.GelieerdePersoonID).ToList();
+            }
+            catch (FaultException<FoutNummerFault>)
+            {
+                TempData["fout"] = Properties.Resources.VoorstelNieuweLedenMislukt;
+                return RedirectToAction("Index", "Leden");
+            }
+
+            var inschrijvingsModel = new InschrijvingsModel() { GelieerdePersoonIDs = gelieerdepersoonIDs };
+            return Inschrijven(groepID, inschrijvingsModel);
         }
 
         /// <summary>

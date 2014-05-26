@@ -682,6 +682,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Personen inschrijven.
+        /// </summary>
+        public static string PersonenInschrijven {
+            get {
+                return ResourceManager.GetString("PersonenInschrijven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je moet de contactpersoon nog invullen van je bivak &lt;a href=&apos;{1}&apos;&gt; {0} &lt;/a&gt;..
         /// </summary>
         public static string PersoonNogInvullenOpBivakAangifte {
@@ -759,6 +768,16 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string VanTotUitstap {
             get {
                 return ResourceManager.GetString("VanTotUitstap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Er is iets foutgegaan bij het laden van de volledige ledenlijst. Het nieuwe werkjaar is aangemaakt, maar er zijn nog geen leden overgezet.
+        ///Je kunt dit nog steeds doen door onder &apos;leden&apos; te klikken op het vorige werkjaar. Daar selecteer je diegenen die opnieuw lid wilt maken, en kies je &apos;inschrijven&apos; onder &apos;acties&apos;..
+        /// </summary>
+        public static string VoorstelNieuweLedenMislukt {
+            get {
+                return ResourceManager.GetString("VoorstelNieuweLedenMislukt", resourceCulture);
             }
         }
         

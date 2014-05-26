@@ -255,7 +255,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<ActieveAfdelingInfo> HuidigeAfdelingsJarenOphalen(int groepID);
+		List<ActieveAfdelingInfo> HuidigeAfdelingsJarenOphalen(int groepID);
 
 	    /// <summary>
 	    /// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 

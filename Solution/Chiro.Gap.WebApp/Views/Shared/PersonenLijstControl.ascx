@@ -90,7 +90,13 @@
                 <%=Html.ActionLink(
                     String.Format("inschrijven{0}", Model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep) ? "" : (p.KanLidWorden ? " als lid" : " als leiding")), 
 				    "Inschrijven", 
-				    new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
+				    new { Controller = "Personen", gelieerdePersoonIDs = p.GelieerdePersoonID })
+                    %><%
+                   
+                    // tamelijk lelijke hack hierboven. Door een int door te geven aan gelieerdePersoonIDs, zal
+                    // personen/inschrijven die int interpreteren als een lijst.
+                    
+                    %>
                 &nbsp;
             <% } %>
             <%=Html.ActionLink("zus/broer maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
