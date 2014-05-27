@@ -422,5 +422,42 @@ namespace Chiro.Gap.Workers.Test
 
             Assert.AreEqual(0, gelieerdePersoon.Lid.Count);
         }
+
+        /// <summary>
+        /// NieuwInschrijven mag geen leden inschrijven zonder adres.
+        ///</summary>
+        [TestMethod()]
+        [ExpectedFoutNummer(typeof(FoutNummerException), FoutNummer.AdresOntbreekt)]
+        public void NieuwInschrijvenLidAdres()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep();
+            var groepsWerkJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2014};
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Groep = groep,
+                ChiroLeefTijd = 0,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1994, 04, 23)
+                    }
+            };
+
+            var target = Factory.Maak<LedenManager>();
+
+            // ACT
+
+            target.NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false,
+                new LidVoorstel
+                {
+                    AfdelingsJarenIrrelevant = false,
+                    LeidingMaken = true
+                });
+
+            // We don't assert anything. We just expect an exception.
+        }
     }
 }
