@@ -132,7 +132,8 @@ namespace Chiro.Gap.Workers.Test
                                                   {
                                                       GeboorteDatum = new DateTime(1996, 03, 07),
                                                       Geslacht = GeslachtsType.Vrouw,
-                                                  }
+                                                  },
+                                          PersoonsAdres = new PersoonsAdres(),
                                       };
 
             var gwj = new GroepsWerkJaar {WerkJaar = 2011, Groep = new ChiroGroep()};
@@ -187,7 +188,8 @@ namespace Chiro.Gap.Workers.Test
                     {
                         GeboorteDatum = new DateTime(1996, 03, 07),
                         Geslacht = GeslachtsType.Vrouw,
-                    }
+                    },
+                PersoonsAdres = new PersoonsAdres(),
             };
 
             var gwj = new GroepsWerkJaar {WerkJaar = 2011, Groep = new ChiroGroep()};

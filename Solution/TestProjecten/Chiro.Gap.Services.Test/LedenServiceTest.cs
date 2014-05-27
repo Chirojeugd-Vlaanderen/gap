@@ -392,7 +392,8 @@ namespace Chiro.Gap.Services.Test
                                                                                     {
                                                                                         groepsWerkJaar
                                                                                     }
-                                                           }
+                                                           },
+                                               PersoonsAdres = new PersoonsAdres()
                                            };
             groepsWerkJaar.Groep = oudeGelieerdePersoon.Groep;
             var jongeGelieerdePersoon = new GelieerdePersoon
@@ -403,7 +404,8 @@ namespace Chiro.Gap.Services.Test
                     GeboorteDatum = new DateTime(1998, 3, 8),
                     Geslacht = GeslachtsType.Vrouw
                 },
-                Groep = groepsWerkJaar.Groep
+                Groep = groepsWerkJaar.Groep,
+                PersoonsAdres = new PersoonsAdres()
             };
          
             // We mocken een en ander:
@@ -1629,10 +1631,11 @@ namespace Chiro.Gap.Services.Test
                 Groep = new ChiroGroep
                 {
                     GroepsWerkJaar = new List<GroepsWerkJaar>
-                                                                                    {
-                                                                                        groepsWerkJaar
-                                                                                    }
-                }
+                    {
+                        groepsWerkJaar
+                    }
+                },
+                PersoonsAdres = new PersoonsAdres()
             };
             groepsWerkJaar.Groep = oudeGelieerdePersoon.Groep;
 
@@ -1940,7 +1943,8 @@ namespace Chiro.Gap.Services.Test
                                                                         groepsWerkJaar
                                                                     },
                                                    NiveauInt = (int)Niveau.Gewest
-                                               }
+                                               },
+                                       PersoonsAdres = new PersoonsAdres()
                                    };
 
             groepsWerkJaar.Groep = gelieerdePersoon.Groep;
@@ -2025,10 +2029,6 @@ namespace Chiro.Gap.Services.Test
         [TestMethod()]
         public void InschrijvenKindBijKaderTest()
         {
-            // De foutmeldingen doorgeven als string, vind ik een slecht idee. (Zie #530)
-            // Maar momenteel is het wel zo, en is het op die manier dat we moeten
-            // nakijken of een inschrijving al dan niet gelukt is.
-
             // ARRANGE
 
             // model
@@ -2049,7 +2049,8 @@ namespace Chiro.Gap.Services.Test
                     {
                         Geslacht = GeslachtsType.Vrouw,
                         GeboorteDatum = new DateTime(1997, 8, 8)
-                    }
+                    },
+                PersoonsAdres = new PersoonsAdres(),
             };
 
             var lidVoorsel = new InschrijvingsVerzoek
