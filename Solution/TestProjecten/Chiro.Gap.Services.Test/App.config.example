@@ -55,7 +55,6 @@
                 mapTo="Chiro.Gap.Dummies.DummySync, Chiro.Gap.Dummies" />
           
           <!-- Mailen, AD-service: evenmin -->
-          <type type="Chiro.Cdf.Mailer.IMailer, Chiro.Cdf.Mailer" mapTo="Chiro.Cdf.Mailer.FakeMailer, Chiro.Cdf.Mailer"/>
           <type type="Chiro.Ad.ServiceContracts.IAdService, Chiro.Ad.ServiceContracts" mapTo="Chiro.Ad.ServiceContracts.AdServiceMock, Chiro.Ad.ServiceContracts" />         
 
         </types>

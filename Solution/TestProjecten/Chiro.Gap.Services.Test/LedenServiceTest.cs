@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -266,8 +266,6 @@ namespace Chiro.Gap.Services.Test
         {
             #region Arrange
 
-            string fouten;
-
             var mijnAfdeling = new AfdelingsJaar
                                    {
                                        ID = 1,
@@ -338,7 +336,7 @@ namespace Chiro.Gap.Services.Test
                                                      GelieerdePersoonID = gelieerdePersoon.ID,
                                                      LeidingMaken = false,
                                                      VolledigeNaam = "Laat ons hopen dat dit irrelevant is (zie #1584)."
-                                                 }}, out fouten);
+                                                 }});
             #endregion
 
             #region Assert
@@ -739,8 +737,7 @@ namespace Chiro.Gap.Services.Test
                                                 VolledigeNaam = gp.Persoon.VolledigeNaam
                                             }
                                     };
-            string foutBerichten;
-            target.Inschrijven(lidInformatie, out foutBerichten);
+            target.Inschrijven(lidInformatie);
 
             // ASSERT
             Assert.IsNull(leider.UitschrijfDatum);
@@ -1182,8 +1179,7 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var ledenService = Factory.Maak<LedenService>();
-            string feedback;
-            ledenService.Inschrijven(new[] {lidVoorsel}, out feedback);
+            ledenService.Inschrijven(new[] {lidVoorsel});
 
             var lid = groepsWerkJaar.Lid.First();
 
@@ -1250,8 +1246,7 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var ledenService = Factory.Maak<LedenService>();
-            string feedback;
-            ledenService.Inschrijven(new[] { lidVoorsel }, out feedback);
+            ledenService.Inschrijven(new[] { lidVoorsel });
 
             // ASSERT
 
@@ -1565,8 +1560,7 @@ namespace Chiro.Gap.Services.Test
                                                 AfdelingsJaarIDs = new [] {afdelingsJaar2.ID}
                                             }
                                     };
-            string foutBerichten;
-            target.Inschrijven(lidInformatie, out foutBerichten);
+            target.Inschrijven(lidInformatie);
 
             // ASSERT
 
@@ -1753,8 +1747,7 @@ namespace Chiro.Gap.Services.Test
                                                 VolledigeNaam = gelieerdePersoon.Persoon.VolledigeNaam
                                             }
                                     };
-            string foutBerichten;
-            target.Inschrijven(lidInformatie, out foutBerichten);
+            target.Inschrijven(lidInformatie);
 
             // ASSERT
 
@@ -1763,10 +1756,9 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
-        /// Test op een exception als je probeert iemand in te schrijven bij een inactieve groep.
+        /// Test op een foutnummer als je probeert iemand in te schrijven bij een inactieve groep.
         /// </summary>
         [TestMethod()]
-        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.GroepInactief)]
         public void InschrijvenGestoptTest()
         {
             // ARRANGE
@@ -1789,12 +1781,11 @@ namespace Chiro.Gap.Services.Test
                     }
             };
 
-            var lidVoorsel = new InschrijvingsVoorstel
+            var lidVoorstel = new InschrijvingsVerzoek
             {
                 AfdelingsJaarIrrelevant = true,
                 GelieerdePersoonID = gelieerdePersoon.ID,
                 LeidingMaken = true,
-                VolledigeNaam = "Ham Burger" // moet weg; zie #1544
             };
 
             // dependency injection
@@ -1805,8 +1796,11 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var ledenService = Factory.Maak<LedenService>();
-            string feedback;
-            ledenService.Inschrijven(new[] { lidVoorsel }, out feedback);
+            var result = ledenService.Inschrijven(new[] { lidVoorstel });
+
+            // ASSERT
+
+            Assert.IsTrue(result.First().FoutNummer == FoutNummer.GroepInactief);
 
         }
 
@@ -2042,12 +2036,11 @@ namespace Chiro.Gap.Services.Test
                     }
             };
 
-            var lidVoorsel = new InschrijvingsVoorstel
+            var lidVoorsel = new InschrijvingsVerzoek
             {
                 AfdelingsJaarIrrelevant = true,
                 GelieerdePersoonID = gelieerdePersoon.ID,
                 LeidingMaken = false,
-                VolledigeNaam = "Ham Burger" // moet weg; zie #1544
             };
 
             // dependency injection
@@ -2060,11 +2053,10 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var ledenService = Factory.Maak<LedenService>();
-            string feedback;
-            ledenService.Inschrijven(new[] { lidVoorsel }, out feedback);
+            var feedback = ledenService.Inschrijven(new[] { lidVoorsel });
 
             // ASSERT
-            Assert.IsFalse(String.IsNullOrEmpty(feedback));
+            Assert.IsTrue(feedback.Any(info => info.FoutNummer == FoutNummer.LidTypeVerkeerd));
         }
         
         /// <summary>

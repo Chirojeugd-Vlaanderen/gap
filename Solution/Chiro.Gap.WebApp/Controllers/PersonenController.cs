@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -683,20 +683,17 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Inschrijven(int groepID, InschrijvingsModel model)
         {
-            BaseModelInit(model, groepID);
-            model.Titel = Properties.Resources.PersonenInschrijven;
+            List<InschrijvingsVoorstel> personenOverzicht = null;
 
-            // Van foutberichten moeten we af. Dat moet in foutcodes komen als feedback van het
-            // inschrijvingsvoorstel. Maar dat zal een volgende stap zijn.
-            string foutBerichten = String.Empty;
+            BaseModelInit(model, groepID);           
 
-            if (model.Inschrijvingen != null)
+            if (model.Inschrijvingen != null )
             {
-                // Er zijn effectief inschrijvingen gegeven. Voer die uit.
+                // Inschrijvingen gegeven: schrijf in.
 
                 var inTeSchrijven = (from rij in model.Inschrijvingen
                     where rij.InTeSchrijven
-                    select new InschrijvingsVoorstel
+                    select new InschrijvingsVerzoek
                     {
                         AfdelingsJaarIDs = rij.AfdelingsJaarIDs,
                         AfdelingsJaarIrrelevant = false,
@@ -720,21 +717,30 @@ namespace Chiro.Gap.WebApp.Controllers
                     ins.AfdelingsJaarIDs = new int[0]; // lege array van ints.
                 }
 
-                ServiceHelper.CallService<ILedenService, IEnumerable<int>>(
-                    svc => svc.Inschrijven(inTeSchrijven, out foutBerichten));
+                personenOverzicht = ServiceHelper.CallService<ILedenService, List<InschrijvingsVoorstel>>(
+                    svc => svc.Inschrijven(inTeSchrijven));
 
-                if (String.IsNullOrEmpty(foutBerichten))
+                if (!personenOverzicht.Any())
                 {
+                    // Als er geen fouten optraden, redirecten we naar de ledenlijst.
                     return RedirectToAction("Index", "Leden");
                 }
 
-                // TODO: Error handling
+                // In het andere geval tonen we nog de probleemgevallen.
+
+                model.Titel = Properties.Resources.MultiInschrijvenMisluktFout;
+            }
+            else
+            {
+                model.Titel = Properties.Resources.PersonenInschrijven;
+
+                // Er werd niet gevraagd om in te schrijven. Genereer een inschrijvingsvoorstel.
+
+                personenOverzicht = ServiceHelper.CallService<ILedenService, IEnumerable<InschrijvingsVoorstel>>(
+                    svc => svc.InschrijvingVoorstellen(model.GelieerdePersoonIDs)).ToList();
             }
 
-            // Genereer inschrijvingsvoorstel.
-
-            var personenOverzicht = ServiceHelper.CallService<ILedenService, IEnumerable<InschrijvingsVoorstel>>(
-                svc => svc.InschrijvingVoorstellen(model.GelieerdePersoonIDs));
+            // Toon ofwel inschrijvingsvoorstel, ofwel lijst met mislukte inschrijvingen.
 
             model.Inschrijvingen = (from p in personenOverzicht
                 select new InschrijfbaarLid
@@ -775,6 +781,8 @@ namespace Chiro.Gap.WebApp.Controllers
                     return Properties.Resources.OnbekendGeslacht;
                 case FoutNummer.LidWasAlIngeschreven:
                     return Properties.Resources.LidWasAlIngeschreven;
+                case FoutNummer.GroepInactief:
+                    return Properties.Resources.GroepInactief;
                 default:
                     return Properties.Resources.OnverwachteFout;
             }
@@ -821,7 +829,10 @@ namespace Chiro.Gap.WebApp.Controllers
                 return RedirectToAction("Index", "Leden");
             }
 
-            var inschrijvingsModel = new InschrijvingsModel() { GelieerdePersoonIDs = gelieerdepersoonIDs };
+            var inschrijvingsModel = new InschrijvingsModel()
+            {
+                GelieerdePersoonIDs = gelieerdepersoonIDs,
+            };
             return Inschrijven(groepID, inschrijvingsModel);
         }
 

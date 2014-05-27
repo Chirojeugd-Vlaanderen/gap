@@ -393,4 +393,7 @@ Je kunt dit nog steeds doen door onder 'leden' te klikken op het vorige werkjaar
   <data name="PersoonOverleden" xml:space="preserve">
     <value>Persoon is overleden.</value>
   </data>
+  <data name="GroepInactief" xml:space="preserve">
+    <value>Je groep is inactief.</value>
+  </data>
 </root>

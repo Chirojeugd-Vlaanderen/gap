@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -241,21 +241,18 @@ namespace Chiro.Gap.Services
         #region te syncen
 
         /// <summary>
-        /// Probeert de opgegeven personen in te schrijven met de meegegeven informatie. Als dit niet mogelijk blijkt te zijn, wordt er niemand ingeschreven.
+        /// Probeert de opgegeven personen in te schrijven met de meegegeven informatie.
+        /// Je krijgt een lijstje terug met gegevens over de personen die niet ingeschreven konden
+        /// worden.
         /// </summary>
         /// <param name="inschrijfInfo">Lijst van informatie over wie lid moet worden</param>
-        /// <param name="foutBerichten">Als er sommige personen geen lid konden worden gemaakt, bevat foutBerichten een string waarin wat uitleg staat. </param>
-        /// <returns>De LidIds van de personen die lid zijn gemaakt</returns>
-        public IEnumerable<int> Inschrijven(InschrijvingsVoorstel[] inschrijfInfo, out string foutBerichten)
+        /// <returns>Lijst met meer informatie over de personen die niet ingeschreven konden worden.</returns>
+        public List<InschrijvingsVoorstel> Inschrijven(IList<InschrijvingsVerzoek> inschrijfInfo)
         {
-            // TODO: wat opkuis.
+            // TODO: Te veel nesting. Opkuis nodig.
 
-            foutBerichten = String.Empty;
-
+            var probleemGevallen = new List<InschrijvingsVoorstel>();
             var teSyncen = new List<Lid>();
-
-            var lidIDs = new List<int>();
-            var foutBerichtenBuilder = new StringBuilder();
 
             var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(inschrijfInfo.Select(e => e.GelieerdePersoonID));
 
@@ -270,10 +267,7 @@ namespace Chiro.Gap.Services
 
             foreach (var g in groepen)
             {
-                if (g.StopDatum != null && g.StopDatum < DateTime.Now)
-                {
-                    throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
-                }
+                bool groepInactief = g.StopDatum != null && g.StopDatum < DateTime.Now;
 
                 // Per groep lid maken.
                 // Zoek eerst recentste groepswerkjaar.
@@ -281,119 +275,124 @@ namespace Chiro.Gap.Services
 
                 foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g.ID).ToList())
                 {
+                    FoutNummer? foutNummer = groepInactief ? (FoutNummer?) FoutNummer.GroepInactief : null;
+
                     var info = (from i in inschrijfInfo where i.GelieerdePersoonID == gp.ID select i).First();
 
-                    var lidVoorstel = new LidVoorstel
-                                          {
-                                              AfdelingsJaren = _afdelingsJaarRepo.ByIDs(info.AfdelingsJaarIDs),
-                                              LeidingMaken = info.LeidingMaken 
-                                          };
-
-                    // TODO: Dit is te veel business. Bekijken of een lid al ingeschreven is, moet in de workers gebeuren.
-
-                    // Behandel leden 1 voor 1 zodat een probleem met 1 lid niet verhindert dat de rest bewaard wordt.
-
-                    // Kijk of het lid al bestaat (eventueel niet-actief).  In de meeste gevallen zal dit geen
-                    // resultaat opleveren.  Als er toch al een lid is, worden persoon, voorkeursadres, officiele afdeling,
-                    // functies ook opgehaald, omdat een eventueel geheractiveerd lid opnieuw naar Kipadmin zal moeten.
-
-                    var l = gp.Lid.FirstOrDefault(ld => ld.GroepsWerkJaar.ID == gwj.ID);
-
-                    if (l != null) // al ingeschreven
-                    {
-                        if (l.UitschrijfDatum == null)
+                    if (foutNummer == null)
+                    {                       
+                        var lidVoorstel = new LidVoorstel
                         {
-                            // Al ingeschreven als actief lid; we doen er verder niets mee.
-                            // (Behalve een foutbericht meegeven, wat ook niet echt correct is, zie #1053)
+                            AfdelingsJaren = _afdelingsJaarRepo.ByIDs(info.AfdelingsJaarIDs),
+                            LeidingMaken = info.LeidingMaken
+                        };
 
-                            foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven,
-                                                                          gp.Persoon.VolledigeNaam));
-                        }
-                        else
+                        // TODO: Dit is te veel business. Bekijken of een lid al ingeschreven is, moet in de workers gebeuren.
+
+                        // Behandel leden 1 voor 1 zodat een probleem met 1 lid niet verhindert dat de rest bewaard wordt.
+
+                        // Kijk of het lid al bestaat (eventueel niet-actief).  In de meeste gevallen zal dit geen
+                        // resultaat opleveren.  Als er toch al een lid is, worden persoon, voorkeursadres, officiele afdeling,
+                        // functies ook opgehaald, omdat een eventueel geheractiveerd lid opnieuw naar Kipadmin zal moeten.
+
+                        var l = gp.Lid.FirstOrDefault(ld => ld.GroepsWerkJaar.ID == gwj.ID);
+
+                        if (l != null) // al ingeschreven
                         {
-                            l.UitschrijfDatum = null;
-                            l.NonActief = false;                            
-
-                            if (lidVoorstel.LeidingMaken != (l.Type == LidType.Leiding))
+                            if (l.UitschrijfDatum == null)
                             {
-                                // lidtype moet worden veranderd
+                                // Al ingeschreven als actief lid; we doen er verder niets mee.
+                                // (Behalve een foutcode meegeven)
 
-                                Lid nieuwLid;
-                                try
-                                {
-                                    nieuwLid = _ledenMgr.TypeToggle(l);
-                                }
-                                catch (FoutNummerException ex)
-                                {
-                                    // Dit is misschien wat kort door de bocht:
-                                    throw FaultExceptionHelper.FoutNummer(ex.FoutNummer, ex.Message);
-                                }
-                                _ledenRepo.Delete(l);
-                                l = nieuwLid;
-                            }
-                            try
-                            {
-                                _ledenMgr.AfdelingsJarenVervangen(l, lidVoorstel.AfdelingsJaren);
-                            }
-                            catch (FoutNummerException ex)
-                            {
-                                if (ex.FoutNummer == FoutNummer.AlgemeneKindFout)
-                                {
-                                    throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingKindVerplicht, Properties.Resources.KindInEenAfdelingsJaar);
-                                }
-                                else
-                                {
-                                    throw;
-                                }
-                            }
-
-                            teSyncen.Add(l);
-
-                        }
-                    }
-                    else // nieuw lid
-                    {
-                        try
-                        {
-                            l = _ledenMgr.NieuwInschrijven(gp, gwj, false, lidVoorstel);
-
-                            l.GelieerdePersoon.Persoon.InSync = true;
-                            teSyncen.Add(l);
-                        }
-                        catch (BestaatAlException<Kind>)
-                        {
-                            foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLid,
-                                gp.Persoon.VolledigeNaam));
-                        }
-                        catch (BestaatAlException<Leiding>)
-                        {
-                            foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLeiding,
-                                gp.Persoon.VolledigeNaam));
-                        }
-                        catch (FoutNummerException ex)
-                        {
-                            if (ex.FoutNummer == FoutNummer.LidTypeVerkeerd)
-                            {
-                                foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.OngeldigLidType));
+                                foutNummer = FoutNummer.LidWasAlIngeschreven;
                             }
                             else
                             {
-                                // FIXME: Dit is tamelijk lelijk, en stuurt backendinformatie naar de frontend.
+                                l.UitschrijfDatum = null;
+                                l.NonActief = false;
 
-                                foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.AlgemeneFout,
-                                    gp.Persoon.VolledigeNaam, ex.FoutNummer, ex.Message));
+                                if (lidVoorstel.LeidingMaken != (l.Type == LidType.Leiding))
+                                {
+                                    // lidtype moet worden veranderd
+
+                                    Lid nieuwLid = null;
+                                    try
+                                    {
+                                        nieuwLid = _ledenMgr.TypeToggle(l);
+                                    }
+                                    catch (FoutNummerException ex)
+                                    {
+                                        foutNummer = ex.FoutNummer;
+                                    }
+
+                                    if (foutNummer == null)
+                                    {
+                                        // verwijder bestaande lid
+                                        _ledenRepo.Delete(l);
+
+                                        // bewaar nieuw lid (ander type) in l; wordt straks
+                                        // toegevoegd aan 'te syncen', waardoor het zal worden
+                                        // bewaard en gesynct.
+
+                                        l = nieuwLid;
+                                    }
+                                }
+                                try
+                                {
+                                    _ledenMgr.AfdelingsJarenVervangen(l, lidVoorstel.AfdelingsJaren);
+                                }
+                                catch (FoutNummerException ex)
+                                {
+                                    foutNummer = ex.FoutNummer;
+                                }
+
+                                if (foutNummer == null)
+                                {
+                                    teSyncen.Add(l);
+                                }
                             }
                         }
-                        catch (GapException ex)
+                        else // nieuw lid
                         {
-                            foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam,
-                                                                          ex.Message));
+                            try
+                            {
+                                l = _ledenMgr.NieuwInschrijven(gp, gwj, false, lidVoorstel);
+
+                                l.GelieerdePersoon.Persoon.InSync = true;
+                                teSyncen.Add(l);
+                            }
+                            catch (BestaatAlException<Kind>)
+                            {
+                                foutNummer = FoutNummer.LidWasAlIngeschreven;
+                            }
+                            catch (BestaatAlException<Leiding>)
+                            {
+                                foutNummer = FoutNummer.LidWasAlIngeschreven;
+                            }
+                            catch (FoutNummerException ex)
+                            {
+                                foutNummer = ex.FoutNummer;
+                            }
+                            catch (GapException ex)
+                            {
+                                foutNummer = FoutNummer.AlgemeneLidFout;
+                            }
                         }
+                    }
+                    if (foutNummer != null)
+                    {
+                        probleemGevallen.Add(new InschrijvingsVoorstel
+                        {
+                            GelieerdePersoonID = gp.ID,
+                            FoutNummer = foutNummer,
+                            VolledigeNaam = gp.Persoon.VolledigeNaam,
+                            AfdelingsJaarIDs = info.AfdelingsJaarIDs,
+                            AfdelingsJaarIrrelevant = info.AfdelingsJaarIrrelevant,
+                            LeidingMaken = info.LeidingMaken
+                        });
                     }
                 }
             }
-
-            foutBerichten = foutBerichtenBuilder.ToString();
 
 #if KIPDORP
             using (var tx = new TransactionScope())
@@ -407,7 +406,7 @@ namespace Chiro.Gap.Services
 #endif
             
 
-            return lidIDs;
+            return probleemGevallen;
         }
 
         /// <summary>

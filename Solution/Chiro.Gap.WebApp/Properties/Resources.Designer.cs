@@ -430,6 +430,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je groep is inactief..
+        /// </summary>
+        public static string GroepInactief {
+            get {
+                return ResourceManager.GetString("GroepInactief", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Het gegeven groepswerkjaar hoort niet bij de gegeven groeps..
         /// </summary>
         public static string GroepNietBijGroepsWerKjaar {

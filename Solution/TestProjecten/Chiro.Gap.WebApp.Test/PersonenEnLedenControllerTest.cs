@@ -34,7 +34,7 @@ namespace Chiro.Gap.WebApp.Test
     /// </summary>
     internal class FakeLedenService: ILedenService
     {
-        public static IEnumerable<InschrijvingsVoorstel> DoorgekregenInschrijving { get; set; }
+        public static IEnumerable<InschrijvingsVerzoek> DoorgekregenInschrijving { get; set; }
 
         #region irrelevante methods voor deze test
 
@@ -43,11 +43,10 @@ namespace Chiro.Gap.WebApp.Test
             throw new NotImplementedException();
         }
 
-        public IEnumerable<int> Inschrijven(InschrijvingsVoorstel[] inschrijfInfo, out string foutBerichten)
+        public List<InschrijvingsVoorstel> Inschrijven(IList<InschrijvingsVerzoek> inschrijfInfo)
         {
             DoorgekregenInschrijving = inschrijfInfo;
-            foutBerichten = String.Empty;
-            return null;
+            return new List<InschrijvingsVoorstel>();
         }
 
         public void Uitschrijven(IList<int> gelieerdePersoonIDs, out string foutBerichten)

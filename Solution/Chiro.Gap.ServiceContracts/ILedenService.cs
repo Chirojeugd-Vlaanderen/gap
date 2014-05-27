@@ -43,16 +43,17 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		List<InschrijvingsVoorstel> InschrijvingVoorstellen(IList<int> gelieerdePersoonIDs);
 
-		/// <summary>
-		/// Probeert de opgegeven personen in te schrijven met de meegegeven informatie. Als dit niet mogelijk blijkt te zijn, wordt er niemand ingeschreven.
-		/// </summary>
-		/// <param name="inschrijfInfo">Lijst van informatie over wie lid moet worden</param>
-		/// <param name="foutBerichten">Als er sommige personen geen lid konden worden gemaakt, bevat foutBerichten een string waarin wat uitleg staat. </param>
-		/// <returns>De lidIds van de personen die lid zijn gemaakt</returns>
+        /// <summary>
+        /// Probeert de opgegeven personen in te schrijven met de meegegeven informatie.
+        /// Je krijgt een lijstje terug met gegevens over de personen die niet ingeschreven konden
+        /// worden.
+        /// </summary>
+        /// <param name="inschrijfInfo">Lijst van informatie over wie lid moet worden</param>
+        /// <returns>Lijst met meer informatie over de personen die niet ingeschreven konden worden.</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-        IEnumerable<int> Inschrijven(InschrijvingsVoorstel[] inschrijfInfo, out string foutBerichten);
+        List<InschrijvingsVoorstel> Inschrijven(IList<InschrijvingsVerzoek> inschrijfInfo);
 
 	    /// <summary>
         /// Schrijft de leden met gegeven <paramref name="gelieerdePersoonIDs"/> uit voor het huidige

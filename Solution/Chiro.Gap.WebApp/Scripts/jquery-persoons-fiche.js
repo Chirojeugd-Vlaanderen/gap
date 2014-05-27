@@ -123,7 +123,7 @@ $(function () {
             });
         } else {
             url = link("Personen", "Inschrijven");
-            url += "?gelieerdePersoonID=" + GPid + " #main";
+            url += "?gelieerdePersoonIDs=" + GPid + " #main";
             $('#extraInfoDialog').dialog();
             $('#extraInfoDialog').load(url, function () {
                 gedeeltelijkTonen('#extraInfoDialog');
