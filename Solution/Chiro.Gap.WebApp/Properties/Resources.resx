@@ -396,4 +396,7 @@ Je kunt dit nog steeds doen door onder 'leden' te klikken op het vorige werkjaar
   <data name="GroepInactief" xml:space="preserve">
     <value>Je groep is inactief.</value>
   </data>
+  <data name="LidAdresOntbreekt" xml:space="preserve">
+    <value>Adres is verplicht.</value>
+  </data>
 </root>

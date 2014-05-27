@@ -547,6 +547,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adres is verplicht..
+        /// </summary>
+        public static string LidAdresOntbreekt {
+            get {
+                return ResourceManager.GetString("LidAdresOntbreekt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to inschrijvingsgegevens.
         /// </summary>
         public static string LidGegevens {
