@@ -79,6 +79,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Een adres is verplicht..
+        /// </summary>
+        internal static string AdresVerplicht {
+            get {
+                return ResourceManager.GetString("AdresVerplicht", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Een kind moet exact 1 afdeling krijgen bij het inschrijven..
         /// </summary>
         internal static string AfdelingKindVerplicht {

@@ -308,7 +308,9 @@ namespace Chiro.Gap.Services.Test
                                                                                 {
                                                                                     groepsWerkJaar
                                                                                 }
-                                                       }
+                                                       },
+                                           // adres nodig voor inschrijving.
+                                           PersoonsAdres = new PersoonsAdres()
                                        };
             groepsWerkJaar.Groep = gelieerdePersoon.Groep;
 
@@ -789,7 +791,9 @@ namespace Chiro.Gap.Services.Test
                                                        Geslacht = GeslachtsType.Vrouw,
                                                        GeboorteDatum = new DateTime(1996, 7, 3)
                                                    },
-                                           ChiroLeefTijd = 0
+                                           ChiroLeefTijd = 0,
+                                           // adres nodig voor inschrijving.
+                                           PersoonsAdres = new PersoonsAdres()
                                        };
             groep.GelieerdePersoon.Add(gelieerdePersoon);
 
@@ -866,7 +870,9 @@ namespace Chiro.Gap.Services.Test
                         Geslacht = GeslachtsType.Vrouw,
                         GeboorteDatum = new DateTime(1996, 7, 3)
                     },
-                ChiroLeefTijd = 0
+                ChiroLeefTijd = 0,
+                // adres nodig voor inschrijving.
+                PersoonsAdres = new PersoonsAdres()
             };
             groep.GelieerdePersoon.Add(gelieerdePersoon);
 
@@ -1153,7 +1159,9 @@ namespace Chiro.Gap.Services.Test
                                                    {
                                                        Geslacht = GeslachtsType.Vrouw,
                                                        GeboorteDatum = new DateTime(1980, 8, 8)
-                                                   }
+                                                   },
+                                           // adres nodig voor inschrijving.
+                                           PersoonsAdres = new PersoonsAdres()
                                        };
 
             var lidVoorsel = new InschrijvingsVoorstel
@@ -1222,7 +1230,9 @@ namespace Chiro.Gap.Services.Test
                     {
                         Geslacht = GeslachtsType.Vrouw,
                         GeboorteDatum = new DateTime(1980, 8, 8)
-                    }
+                    },
+                // adres nodig voor inschrijving.
+                PersoonsAdres = new PersoonsAdres()
             };
 
             var lidVoorsel = new InschrijvingsVoorstel
@@ -1391,7 +1401,9 @@ namespace Chiro.Gap.Services.Test
                         Geslacht = GeslachtsType.Vrouw,
                         GeboorteDatum = new DateTime(1996, 7, 3)
                     },
-                ChiroLeefTijd = 0
+                ChiroLeefTijd = 0,
+                // adres nodig voor inschrijving.
+                PersoonsAdres = new PersoonsAdres()
             };
             groep.GelieerdePersoon.Add(gelieerdePersoon);
 
@@ -1520,20 +1532,22 @@ namespace Chiro.Gap.Services.Test
             groepsWerkJaar.Lid.Add(lid);
 
             var gp = new GelieerdePersoon // gelieerde persoon, uitgeschreven als leiding
-                         {
-                             ID = 1,
-                             Persoon =
-                                 new Persoon
-                                     {
-                                         Naam = "Bosmans",
-                                         VoorNaam = "Jos",
-                                         Geslacht = GeslachtsType.Man,
-                                         GeboorteDatum = new DateTime(1997, 3, 8)
-                                     },
-                             Lid = new List<Lid> {lid},
-                             Groep = groepsWerkJaar.Groep,
-                         };
-
+            {
+                ID = 1,
+                Persoon =
+                    new Persoon
+                    {
+                        Naam = "Bosmans",
+                        VoorNaam = "Jos",
+                        Geslacht = GeslachtsType.Man,
+                        GeboorteDatum = new DateTime(1997, 3, 8)
+                    },
+                Lid = new List<Lid> {lid},
+                Groep = groepsWerkJaar.Groep,
+                // adres nodig voor inschrijving.
+                PersoonsAdres = new PersoonsAdres()
+            };
+            
             lid.GelieerdePersoon = gp;
 
             // dependency injection
@@ -1697,7 +1711,9 @@ namespace Chiro.Gap.Services.Test
                         Geslacht = GeslachtsType.Vrouw,
                         GeboorteDatum = new DateTime(1996, 7, 3)
                     },
-                ChiroLeefTijd = 0
+                ChiroLeefTijd = 0,
+                // adres nodig voor inschrijving.
+                PersoonsAdres = new PersoonsAdres()
             };
             groep.GelieerdePersoon.Add(gelieerdePersoon);
 

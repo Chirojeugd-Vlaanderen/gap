@@ -94,7 +94,9 @@ namespace Chiro.Gap.Workers.Test
                                                    {
                                                        Geslacht = GeslachtsType.Vrouw,
                                                        GeboorteDatum = new DateTime(1990, 04, 23)
-                                                   }
+                                                   },
+                                           // adres nodig voor inschrijving.
+                                           PersoonsAdres = new PersoonsAdres()
                                        };
 
             var target = Factory.Maak<LedenManager>();

@@ -564,6 +564,13 @@ namespace Chiro.Gap.Workers
                     FoutNummer.OnbekendGeslacht, Resources.GeslachtVerplicht);
             }
 
+            if (gp.PersoonsAdres == null)
+            {
+                // refs #1786 - geen leden meer zonder adres.
+
+                throw new FoutNummerException(FoutNummer.AdresOntbreekt, Resources.AdresVerplicht);
+            }
+
             IList<AfdelingsJaar> afdelingsJaren = null;
 
             if (voorstellid.AfdelingsJarenIrrelevant && !voorstellid.LeidingMaken)

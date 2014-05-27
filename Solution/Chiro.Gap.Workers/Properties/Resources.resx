@@ -337,4 +337,7 @@ de helpdesk</value>
   <data name="LidWasAlIngeschreven" xml:space="preserve">
     <value>Je probeerde een persoon in te schrijven die al lid is.</value>
   </data>
+  <data name="AdresVerplicht" xml:space="preserve">
+    <value>Een adres is verplicht.</value>
+  </data>
 </root>
