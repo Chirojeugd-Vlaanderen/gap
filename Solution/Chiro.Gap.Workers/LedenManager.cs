@@ -261,7 +261,8 @@ namespace Chiro.Gap.Workers
             // Probeer nu afdeling te vinden.
             if (gwj.AfdelingsJaar.Count == 0)
             {
-                throw new InvalidOperationException(Resources.InschrijvenZonderAfdelingen);
+                throw new FoutNummerException(FoutNummer.AfdelingKindVerplicht,
+                    Properties.Resources.InschrijvenZonderAfdelingen);
             }
 
             // allemaal om resharper blij tehouden:
@@ -299,7 +300,7 @@ namespace Chiro.Gap.Workers
 
                 if (afdelingsjaren.Count == 0)
                 {
-                    throw new InvalidOperationException(Resources.GeenAfdelingVoorLeeftijd);
+                    throw new FoutNummerException(FoutNummer.AfdelingNietBeschikbaar, Resources.GeenAfdelingVoorLeeftijd);
                 }
 
                 // Kijk of er een afdeling is met een overeenkomend geslacht
@@ -560,7 +561,7 @@ namespace Chiro.Gap.Workers
                 // FIXME: (#530) De boodschap in onderstaande exception wordt getoond aan de user,
                 // terwijl dit eigenlijk een technische boodschap voor de developer moet zijn.
                 throw new FoutNummerException(
-                    FoutNummer.OnbekendGeslachtFout, Resources.GeslachtVerplicht);
+                    FoutNummer.OnbekendGeslacht, Resources.GeslachtVerplicht);
             }
 
             IList<AfdelingsJaar> afdelingsJaren = null;

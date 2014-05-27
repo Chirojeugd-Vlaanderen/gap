@@ -210,9 +210,6 @@
   <data name="OnbestaandeActieFeedback" xml:space="preserve">
     <value>Er bestaat zo geen actie om uit te voeren op een selectie personen.</value>
   </data>
-  <data name="FouteGeboortejarenVoorAfdelingFout" xml:space="preserve">
-    <value />
-  </data>
   <data name="OngeldigeGeboorteJarenVoorAfdeling" xml:space="preserve">
     <value>Er is iets mis met de geboortejaren. Staan ze overal in de juiste volgorde? Let er ook op dat je geen kleuters mag aansluiten bij de Chiro.</value>
   </data>
@@ -374,5 +371,26 @@
   <data name="VoorstelNieuweLedenMislukt" xml:space="preserve">
     <value>Er is iets foutgegaan bij het laden van de volledige ledenlijst. Het nieuwe werkjaar is aangemaakt, maar er zijn nog geen leden overgezet.
 Je kunt dit nog steeds doen door onder 'leden' te klikken op het vorige werkjaar. Daar selecteer je diegenen die opnieuw lid wilt maken, en kies je 'inschrijven' onder 'acties'.</value>
+  </data>
+  <data name="AfdelingKindVerplicht" xml:space="preserve">
+    <value>Afdeling is verplicht.</value>
+  </data>
+  <data name="AfdelingNietBeschikbaar" xml:space="preserve">
+    <value>Leeftijd valt buiten afdelingsverdeling.</value>
+  </data>
+  <data name="GeboorteDatumOntbreekt" xml:space="preserve">
+    <value>Geboortedatum ontbreekt.</value>
+  </data>
+  <data name="LidWasAlIngeschreven" xml:space="preserve">
+    <value>Was al ingeschreven.</value>
+  </data>
+  <data name="OnbekendGeslacht" xml:space="preserve">
+    <value>Onbekend geslacht.</value>
+  </data>
+  <data name="OnverwachteFout" xml:space="preserve">
+    <value>Onverwachte fout.</value>
+  </data>
+  <data name="PersoonOverleden" xml:space="preserve">
+    <value>Persoon is overleden.</value>
   </data>
 </root>

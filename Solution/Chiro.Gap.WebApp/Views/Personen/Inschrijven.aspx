@@ -89,6 +89,7 @@
             <% if (!Model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep)) {%>
 			    <th>Leiding maken</th>
 			    <th>Afdeling</th>
+                <th>Probleem</th>
             <%}%>
 		</tr>
 		
@@ -96,13 +97,13 @@
         for (var j = 0; j < Model.Inschrijvingen.Count(); ++j)
         {%>
 			<tr class="<%: ((j&1)==0)?"even":"oneven" %>">
-			<%
-            //TODO de checkboxlist gaat alleen die bevatten die true zijn, terwijl we ook ergens de volledige lijst nog moeten hebben %>
 				<td>
                     <%:Html.HiddenFor(mdl => mdl.Inschrijvingen[j].GelieerdePersoonID)%>
                     <%:Html.CheckBoxFor(mdl => mdl.Inschrijvingen[j].InTeSchrijven) %>
                 </td>
-				<td><%:Html.DisplayFor(mdl => mdl.Inschrijvingen[j].VolledigeNaam)%></td>
+				<td>
+                    <%=Html.PersoonsLink(Model.Inschrijvingen[j].GelieerdePersoonID, Model.Inschrijvingen[j].VolledigeNaam, String.Empty) %>
+				</td>
                 
                 <% if (!Model.GroepsNiveau.HeeftNiveau(Niveau.KaderGroep)) { %>
 				    <td><%:Html.CheckBoxFor(mdl => mdl.Inschrijvingen[j].LeidingMaken)%></td>
@@ -147,9 +148,11 @@
                        // Bij kaderploegen heb je de mogelijkheid niet om lid/leiding
                        // te kiezen.
                        %>
-                       <%:Html.HiddenFor(mdl=>mdl.Inschrijvingen[j].LeidingMaken) %>
+                       <td><%:Html.HiddenFor(mdl=>mdl.Inschrijvingen[j].LeidingMaken) %></td>
+                       <td><!-- afdelingen irrelevant --></td>
                        <%                       
                    } %>
+                <td><%:Html.DisplayFor(mdl=>mdl.Inschrijvingen[j].FoutBoodschap) %></td>
 			</tr>
 		<%}%>
 		</table>

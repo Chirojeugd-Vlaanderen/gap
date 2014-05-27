@@ -33,5 +33,10 @@ namespace Chiro.Gap.WebApp.Models
         /// Enkel true als de persoon wel degelijk ingeschreven moet worden.
         /// </summary>
         public bool InTeSchrijven { get; set; }
+
+        /// <summary>
+        /// Eventuele foutboodschap bij dit in te schrijven lid.
+        /// </summary>
+        public string FoutBoodschap { get; set; }
     }
 }

@@ -88,6 +88,24 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Afdeling is verplicht..
+        /// </summary>
+        public static string AfdelingKindVerplicht {
+            get {
+                return ResourceManager.GetString("AfdelingKindVerplicht", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leeftijd valt buiten afdelingsverdeling..
+        /// </summary>
+        public static string AfdelingNietBeschikbaar {
+            get {
+                return ResourceManager.GetString("AfdelingNietBeschikbaar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De geselecteerde afdeling bevat leden of leiding, en kan dus niet verwijderd worden..
         /// </summary>
         public static string AfdelingNietLeeg {
@@ -241,15 +259,6 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string FouteGeboortejarenVoorAfdelingFout {
-            get {
-                return ResourceManager.GetString("FouteGeboortejarenVoorAfdelingFout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Je kon van deze persoon geen lid maken.  Misschien is er geen geschikte afdeling? Controleer eventueel de geboortedatum en/of Chiroleeftijd..
         /// </summary>
         public static string FoutToggleNaarKind {
@@ -336,6 +345,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string FunctieTeWeinig {
             get {
                 return ResourceManager.GetString("FunctieTeWeinig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geboortedatum ontbreekt..
+        /// </summary>
+        public static string GeboorteDatumOntbreekt {
+            get {
+                return ResourceManager.GetString("GeboorteDatumOntbreekt", resourceCulture);
             }
         }
         
@@ -538,6 +556,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Was al ingeschreven..
+        /// </summary>
+        public static string LidWasAlIngeschreven {
+            get {
+                return ResourceManager.GetString("LidWasAlIngeschreven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alle filters opheffen.
         /// </summary>
         public static string LijstAlles {
@@ -655,6 +682,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Onbekend geslacht..
+        /// </summary>
+        public static string OnbekendGeslacht {
+            get {
+                return ResourceManager.GetString("OnbekendGeslacht", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er bestaat zo geen actie om uit te voeren op een selectie personen..
         /// </summary>
         public static string OnbestaandeActieFeedback {
@@ -669,6 +705,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string OngeldigeGeboorteJarenVoorAfdeling {
             get {
                 return ResourceManager.GetString("OngeldigeGeboorteJarenVoorAfdeling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Onverwachte fout..
+        /// </summary>
+        public static string OnverwachteFout {
+            get {
+                return ResourceManager.GetString("OnverwachteFout", resourceCulture);
             }
         }
         
@@ -696,6 +741,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string PersoonNogInvullenOpBivakAangifte {
             get {
                 return ResourceManager.GetString("PersoonNogInvullenOpBivakAangifte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Persoon is overleden..
+        /// </summary>
+        public static string PersoonOverleden {
+            get {
+                return ResourceManager.GetString("PersoonOverleden", resourceCulture);
             }
         }
         

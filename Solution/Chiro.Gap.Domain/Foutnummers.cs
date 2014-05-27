@@ -51,7 +51,7 @@ namespace Chiro.Gap.Domain
         AlgemeneLidFout,
         AlgemeneKindFout,
         AlgemeneLeidingFout,
-        OnbekendGeslachtFout,
+        OnbekendGeslacht,
         LidTeJong,
         LeidingTeJong,
         LidTypeVerkeerd,

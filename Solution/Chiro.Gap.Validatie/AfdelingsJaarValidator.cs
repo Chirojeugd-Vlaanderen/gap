@@ -38,7 +38,7 @@ namespace Chiro.Gap.Validatie
 
             if (teValideren.Geslacht == GeslachtsType.Onbekend)
             {
-                return Domain.FoutNummer.OnbekendGeslachtFout;
+                return Domain.FoutNummer.OnbekendGeslacht;
             }
 
             return null;

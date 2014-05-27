@@ -736,17 +736,16 @@ namespace Chiro.Gap.WebApp.Controllers
             var personenOverzicht = ServiceHelper.CallService<ILedenService, IEnumerable<InschrijvingsVoorstel>>(
                 svc => svc.InschrijvingVoorstellen(model.GelieerdePersoonIDs));
 
-            // Negeer de foutberichten. We moeten dat in nog in de view verwerken.
-
             model.Inschrijvingen = (from p in personenOverzicht
                 select new InschrijfbaarLid
                 {
                     AfdelingsJaarIDs = p.AfdelingsJaarIDs,
                     AfdelingsJaarIrrelevant = false,
                     GelieerdePersoonID = p.GelieerdePersoonID,
-                    InTeSchrijven = true,
+                    InTeSchrijven = p.FoutNummer == null,
                     LeidingMaken = p.LeidingMaken,
-                    VolledigeNaam = p.VolledigeNaam
+                    VolledigeNaam = p.VolledigeNaam,
+                    FoutBoodschap = FeedbackLidMaken(p),
                 }).ToList();
 
             model.BeschikbareAfdelingen =
@@ -754,6 +753,31 @@ namespace Chiro.Gap.WebApp.Controllers
                     svc => svc.HuidigeAfdelingsJarenOphalen(groepID));
 
             return View("Inschrijven", model);
+        }
+
+        private string FeedbackLidMaken(InschrijvingsVoorstel p)
+        {
+            switch (p.FoutNummer)
+            {
+                case null:
+                    return String.Empty;
+                case FoutNummer.AfdelingKindVerplicht:
+                    return Properties.Resources.AfdelingKindVerplicht;
+                case FoutNummer.AfdelingNietBeschikbaar:
+                    return Properties.Resources.AfdelingNietBeschikbaar;
+                case FoutNummer.GeboorteDatumOntbreekt:
+                    return Properties.Resources.GeboorteDatumOntbreekt;
+                case FoutNummer.LidTeJong:
+                    return Properties.Resources.MinimumLeeftijd;
+                case FoutNummer.PersoonOverleden:
+                    return Properties.Resources.PersoonOverleden;
+                case FoutNummer.OnbekendGeslacht:
+                    return Properties.Resources.OnbekendGeslacht;
+                case FoutNummer.LidWasAlIngeschreven:
+                    return Properties.Resources.LidWasAlIngeschreven;
+                default:
+                    return Properties.Resources.OnverwachteFout;
+            }
         }
 
         /// <summary>
