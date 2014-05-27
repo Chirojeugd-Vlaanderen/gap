@@ -110,7 +110,7 @@
 
 				    <%
                         // Dit formulier selecteert by default het voorgestelde afdelingsjaar van ieder in te schrijven lid.
-                        // In principe is InTeSchrijvenLid.AfdelingsJaarIDs een array, maar in praktijk kunnen we voor dit
+                        // In principe is InschrijvingsVoorstel.AfdelingsJaarIDs een array, maar in praktijk kunnen we voor dit
                         // formulier maar 1 keuze aan. Vandaar dat enkel naar het eerste item in die array wordt gekeken.
 
                        int voorgesteldAjID = Model.Inschrijvingen[j].AfdelingsJaarIDs == null

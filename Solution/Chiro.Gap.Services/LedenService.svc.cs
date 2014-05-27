@@ -176,17 +176,10 @@ namespace Chiro.Gap.Services
         /// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
         /// </summary>
         /// <param name="gelieerdePersoonIds">Lijst van gelieerde persoonIds waarover we inforamtie willen</param>
-        /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
         /// <returns>De LidIds van de personen die lid zijn gemaakt</returns>
-        public List<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IList<int> gelieerdePersoonIds, out string foutBerichten)
+        public List<InschrijvingsVoorstel> InschrijvingVoorstellen(IList<int> gelieerdePersoonIds)
         {
             // TODO (#195): van onderstaande logica moet wel wat verhuizen naar de workers!
-            // TODO (#1053): beter systeem bedenken voor feedback dan via foutBerichten.
-            //      Foutberichten bevat nu een string die gewoon in de UI wordt geplakt, en dat breekt de seperation of concerns.
-
-            foutBerichten = string.Empty;
-            var foutBerichtenBuilder = new StringBuilder();
-
             var gelieerdePersonen = _gelieerdePersonenRepo.ByIDs(gelieerdePersoonIds);
 
             if (!_autorisatieMgr.IsGav(gelieerdePersonen) || gelieerdePersoonIds.Count != gelieerdePersonen.Count)
@@ -194,60 +187,55 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-
             // We gaan ervan uit dat alle gelieerde personen op dit moment tot dezelfde groep behoren.
             // Maar in de toekomst is dat misschien niet meer zo. Dus laten we onderstaande constructie
             // maar staan.
-            var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
+            var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct().ToList();
 
-            var voorgesteldelijst = new List<InTeSchrijvenLid>();
+            var resultaat = new List<InschrijvingsVoorstel>();
 
             foreach (var g in groepen)
             {
                 var gwj = _groepenMgr.HuidigWerkJaar(g);
 
-                Groep g1 = g;
-                foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g1.ID).OrderByDescending(gp => gp.GebDatumMetChiroLeefTijd))
+                foreach (var gp in gelieerdePersonen.Where(gelp => gelp.Groep.ID == g.ID).OrderByDescending(gp => gp.GebDatumMetChiroLeefTijd))
                 {
-                    if (_ledenMgr.IsActiefLid(gp))
+                    var inschrijvingsVoorstel = new InschrijvingsVoorstel
                     {
-                        foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven,
-                                                                      gp.Persoon.VolledigeNaam));
+                        GelieerdePersoonID = gp.ID,
+                        VolledigeNaam = gp.Persoon.VolledigeNaam
+                    };
+
+                    try
+                    {
+                        var voorstel = _ledenMgr.InschrijvingVoorstellen(gp, gwj, true);
+
+                        inschrijvingsVoorstel.AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant;
+                        inschrijvingsVoorstel.AfdelingsJaarIDs =
+                            voorstel.AfdelingsJarenIrrelevant
+                                ? new int[0]
+                                : voorstel.AfdelingsJaren.Select(aj => aj.ID)
+                                    .ToArray();
+                        inschrijvingsVoorstel.LeidingMaken = voorstel.LeidingMaken;
+                        inschrijvingsVoorstel.VolledigeNaam = gp.Persoon.VolledigeNaam;
+                        inschrijvingsVoorstel.FoutNummer = null;
+                    }
+                    catch (FoutNummerException ex)
+                    {
+                        inschrijvingsVoorstel.FoutNummer = ex.FoutNummer;
+                    }
+                    if (inschrijvingsVoorstel.FoutNummer == null)
+                    {
+                        resultaat.Add(inschrijvingsVoorstel);
                     }
                     else
                     {
-                        try
-                        {
-                            var voorstel = _ledenMgr.InschrijvingVoorstellen(gp, gwj, true);
-
-                            voorgesteldelijst.Add(new InTeSchrijvenLid
-                                                      {
-                                                          AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant,
-                                                          AfdelingsJaarIDs =
-                                                              voorstel.AfdelingsJarenIrrelevant
-                                                                  ? new int[0]
-                                                                  : voorstel.AfdelingsJaren.Select(aj => aj.ID)
-                                                                            .ToArray(),
-                                                          GelieerdePersoonID = gp.ID,
-                                                          LeidingMaken = voorstel.LeidingMaken,
-                                                          VolledigeNaam = gp.Persoon.VolledigeNaam
-                                                      });
-                        }
-                        catch (GapException ex)
-                        {
-                            // TODO (#95): ex.Message, wat een bericht voor de programmeur moet zijn, wordt meegegeven met 'foutberichten', 
-                            //      waarvan de inhoud rechtstreeks op de GUI getoond zal worden. Dit breekt de seperation of concerns.
-
-                            foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam,
-                                                                          ex.Message));
-                        }
+                        // Foutberichten vooraan de feedback.
+                        resultaat.Insert(0, inschrijvingsVoorstel);
                     }
                 }
             }
-
-            foutBerichten = foutBerichtenBuilder.ToString();
-
-            return voorgesteldelijst;
+            return resultaat;
         }
 
         #region te syncen
@@ -258,7 +246,7 @@ namespace Chiro.Gap.Services
         /// <param name="inschrijfInfo">Lijst van informatie over wie lid moet worden</param>
         /// <param name="foutBerichten">Als er sommige personen geen lid konden worden gemaakt, bevat foutBerichten een string waarin wat uitleg staat. </param>
         /// <returns>De LidIds van de personen die lid zijn gemaakt</returns>
-        public IEnumerable<int> Inschrijven(InTeSchrijvenLid[] inschrijfInfo, out string foutBerichten)
+        public IEnumerable<int> Inschrijven(InschrijvingsVoorstel[] inschrijfInfo, out string foutBerichten)
         {
             // TODO: wat opkuis.
 

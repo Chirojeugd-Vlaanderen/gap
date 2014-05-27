@@ -252,7 +252,7 @@
                         // TODO: Erg gelijkaardige code komt voor in Views/Shared/LedenMaken.aspx.
                         // Dat wordt best nog eens ontdubbeld.
                         
-                        // In principe is InTeSchrijvenLid.AfdelingsJaarIDs een array, maar in praktijk kunnen we voor dit
+                        // In principe is InschrijvingsVoorstel.AfdelingsJaarIDs een array, maar in praktijk kunnen we voor dit
                         // formulier maar 1 keuze aan. Vandaar dat enkel naar het eerste item in die array wordt gekeken.
 
 				        int geselecteerdAfdelingsJaarID = Model.AfdelingsJaarIDs == null

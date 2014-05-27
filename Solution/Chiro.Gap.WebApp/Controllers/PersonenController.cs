@@ -696,7 +696,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 var inTeSchrijven = (from rij in model.Inschrijvingen
                     where rij.InTeSchrijven
-                    select new InTeSchrijvenLid
+                    select new InschrijvingsVoorstel
                     {
                         AfdelingsJaarIDs = rij.AfdelingsJaarIDs,
                         AfdelingsJaarIrrelevant = false,
@@ -733,8 +733,8 @@ namespace Chiro.Gap.WebApp.Controllers
 
             // Genereer inschrijvingsvoorstel.
 
-            var personenOverzicht = ServiceHelper.CallService<ILedenService, IEnumerable<InTeSchrijvenLid>>(
-                svc => svc.VoorstelTotInschrijvenGenereren(model.GelieerdePersoonIDs, out foutBerichten));
+            var personenOverzicht = ServiceHelper.CallService<ILedenService, IEnumerable<InschrijvingsVoorstel>>(
+                svc => svc.InschrijvingVoorstellen(model.GelieerdePersoonIDs));
 
             // Negeer de foutberichten. We moeten dat in nog in de view verwerken.
 

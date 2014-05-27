@@ -443,6 +443,11 @@ namespace Chiro.Gap.Workers
         {
             var resultaat = new LidVoorstel();
 
+            if (IsActiefLid(gp))
+            {
+                throw new FoutNummerException(FoutNummer.LidWasAlIngeschreven, Properties.Resources.LidWasAlIngeschreven);
+            }
+
             // We moeten kunnen bepalen hoe oud iemand is, om hem/haar ofwel in een afdeling te steken,
             // of te kijken of hij/zij oud genoeg is om leiding te zijn.
 

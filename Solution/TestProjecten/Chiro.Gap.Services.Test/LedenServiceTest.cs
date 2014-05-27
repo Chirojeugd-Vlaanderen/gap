@@ -331,7 +331,7 @@ namespace Chiro.Gap.Services.Test
 
             #region act
             var ledenService = Factory.Maak<LedenService>();
-            ledenService.Inschrijven(new [] {new InTeSchrijvenLid
+            ledenService.Inschrijven(new [] {new InschrijvingsVoorstel
                                                  {
                                                      AfdelingsJaarIDs = new [] {jongereAfdeling.ID},
                                                      AfdelingsJaarIrrelevant = false,
@@ -357,9 +357,6 @@ namespace Chiro.Gap.Services.Test
         public void VoorstelTotInschrijvenGenererenSorteringTest()
         {
             // ARRANGE
-
-            string foutBerichten;
-
             // Gauw wat handgemaakte dummydata:
 
             var mijnAfdeling = new AfdelingsJaar
@@ -424,7 +421,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<LedenService>();
-            var actual = target.VoorstelTotInschrijvenGenereren(new[]{oudeGelieerdePersoon.ID, jongeGelieerdePersoon.ID}, out foutBerichten);
+            var actual = target.InschrijvingVoorstellen(new[]{oudeGelieerdePersoon.ID, jongeGelieerdePersoon.ID});
 
             // We verwachten nu dat de personen opgeleverd worden van jong naar oud.  Dus
             // eerst persoon 2, dan persoon 1.
@@ -734,7 +731,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
             var lidInformatie = new[]
                                     {
-                                        new InTeSchrijvenLid
+                                        new InschrijvingsVoorstel
                                             {
                                                 AfdelingsJaarIrrelevant = true,
                                                 GelieerdePersoonID = gp.ID,
@@ -1162,7 +1159,7 @@ namespace Chiro.Gap.Services.Test
                                                    }
                                        };
 
-            var lidVoorsel = new InTeSchrijvenLid
+            var lidVoorsel = new InschrijvingsVoorstel
                                  {
                                      AfdelingsJaarIrrelevant = true,
                                      GelieerdePersoonID = gelieerdePersoon.ID,
@@ -1232,7 +1229,7 @@ namespace Chiro.Gap.Services.Test
                     }
             };
 
-            var lidVoorsel = new InTeSchrijvenLid
+            var lidVoorsel = new InschrijvingsVoorstel
             {
                 AfdelingsJaarIrrelevant = true,
                 GelieerdePersoonID = gelieerdePersoon.ID,
@@ -1559,7 +1556,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
             var lidInformatie = new[]
                                     {
-                                        new InTeSchrijvenLid
+                                        new InschrijvingsVoorstel
                                             {
                                                 AfdelingsJaarIrrelevant = false,
                                                 GelieerdePersoonID = gp.ID,
@@ -1591,9 +1588,6 @@ namespace Chiro.Gap.Services.Test
         public void VoorstelTotInschrijvenGenererenLeidingTest()
         {
             // ARRANGE
-
-            string foutBerichten;
-
             // Gauw wat handgemaakte dummydata:
 
             var mijnAfdeling = new AfdelingsJaar
@@ -1648,7 +1642,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<LedenService>();
-            var actual = target.VoorstelTotInschrijvenGenereren(new[] { oudeGelieerdePersoon.ID }, out foutBerichten);
+            var actual = target.InschrijvingVoorstellen(new[] { oudeGelieerdePersoon.ID });
 
             // We verwachten nu dat de personen opgeleverd worden van jong naar oud.  Dus
             // eerst persoon 2, dan persoon 1.
@@ -1750,7 +1744,7 @@ namespace Chiro.Gap.Services.Test
             var target = Factory.Maak<LedenService>();
             var lidInformatie = new[]
                                     {
-                                        new InTeSchrijvenLid
+                                        new InschrijvingsVoorstel
                                             {
                                                 AfdelingsJaarIrrelevant = false,
                                                 AfdelingsJaarIDs = new [] {afdelingsJaar.ID},
@@ -1795,7 +1789,7 @@ namespace Chiro.Gap.Services.Test
                     }
             };
 
-            var lidVoorsel = new InTeSchrijvenLid
+            var lidVoorsel = new InschrijvingsVoorstel
             {
                 AfdelingsJaarIrrelevant = true,
                 GelieerdePersoonID = gelieerdePersoon.ID,
@@ -1914,9 +1908,6 @@ namespace Chiro.Gap.Services.Test
         public void VoorstelTotInschrijvenGenererenKaderTest()
         {
             // ARRANGE
-
-            string foutBerichten;
-
             // Gauw wat handgemaakte dummydata:
 
             var groepsWerkJaar = new GroepsWerkJaar
@@ -1958,7 +1949,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<LedenService>();
-            var actual = target.VoorstelTotInschrijvenGenereren(new[] { gelieerdePersoon.ID }, out foutBerichten);
+            var actual = target.InschrijvingVoorstellen(new[] { gelieerdePersoon.ID });
 
             // We verwachten dat de opgeleverde gelieerde persoon ingeschreven wordt als lid.
 
@@ -1972,9 +1963,6 @@ namespace Chiro.Gap.Services.Test
         public void VoorstelTotInschrijvenGenererenKaderTeJongTest()
         {
             // ARRANGE
-
-            string foutBerichten;
-
             // Gauw wat handgemaakte dummydata:
 
             var groepsWerkJaar = new GroepsWerkJaar
@@ -2016,7 +2004,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<LedenService>();
-            var actual = target.VoorstelTotInschrijvenGenereren(new[] { gelieerdePersoon.ID }, out foutBerichten);
+            var actual = target.InschrijvingVoorstellen(new[] { gelieerdePersoon.ID });
 
             // Normaal trad er een exception op.
         }
@@ -2054,7 +2042,7 @@ namespace Chiro.Gap.Services.Test
                     }
             };
 
-            var lidVoorsel = new InTeSchrijvenLid
+            var lidVoorsel = new InschrijvingsVoorstel
             {
                 AfdelingsJaarIrrelevant = true,
                 GelieerdePersoonID = gelieerdePersoon.ID,

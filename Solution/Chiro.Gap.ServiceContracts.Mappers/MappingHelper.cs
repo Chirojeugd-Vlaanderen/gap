@@ -611,7 +611,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.GebruikersInfo,
                     opt => opt.Ignore());
 
-            Mapper.CreateMap<Lid, InTeSchrijvenLid>()
+            Mapper.CreateMap<Lid, InschrijvingsVoorstel>()
                 .ForMember(
                     dst => dst.GelieerdePersoonID,
                     opt => opt.MapFrom(src => src.GelieerdePersoon.ID))
@@ -626,7 +626,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src is Leiding))
                 .ForMember(
                     dst => dst.VolledigeNaam,
-                    opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VolledigeNaam));
+                    opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VolledigeNaam))
+                .ForMember(
+                    dst => dst.FoutNummer,
+                    opt => opt.MapFrom(src => null));
 
             Mapper.CreateMap<GebruikersRecht, GebruikersDetail>()
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsVerlengbaar))

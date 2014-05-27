@@ -134,6 +134,7 @@ namespace Chiro.Gap.Workers.Test
                                       };
 
             var gwj = new GroepsWerkJaar {WerkJaar = 2011, Groep = new ChiroGroep()};
+            gp.Groep = gwj.Groep;
 
             var afdelingsJaar1 = new AfdelingsJaar
                                      {
@@ -188,6 +189,7 @@ namespace Chiro.Gap.Workers.Test
             };
 
             var gwj = new GroepsWerkJaar {WerkJaar = 2011, Groep = new ChiroGroep()};
+            gp.Groep = gwj.Groep;
 
             var afdelingsJaar1 = new AfdelingsJaar
             {
@@ -245,6 +247,7 @@ namespace Chiro.Gap.Workers.Test
                         Geslacht = GeslachtsType.Vrouw,
                     }
             };
+            gp.Groep = gwj.Groep;
 
             gwj.AfdelingsJaar.Add(new AfdelingsJaar
             {

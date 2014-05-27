@@ -57,6 +57,7 @@ namespace Chiro.Gap.Domain
         LidTypeVerkeerd,
         AfdelingKindVerplicht,
         LidUitgeschreven,
+        LidWasAlIngeschreven,
         #endregion
 
         #region verkeerde groep

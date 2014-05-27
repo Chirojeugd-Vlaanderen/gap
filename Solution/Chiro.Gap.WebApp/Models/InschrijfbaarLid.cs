@@ -27,7 +27,7 @@ namespace Chiro.Gap.WebApp.Models
     /// of de gelieerde persoon wel of niet ingeschreven moet worden
     /// </summary>
     [Serializable]
-    public class InschrijfbaarLid : InTeSchrijvenLid
+    public class InschrijfbaarLid : InschrijvingsVoorstel
     {
         /// <summary>
         /// Enkel true als de persoon wel degelijk ingeschreven moet worden.

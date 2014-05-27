@@ -334,4 +334,7 @@ de helpdesk</value>
   <data name="ContactMoetNieuwsBriefKrijgen" xml:space="preserve">
     <value>Van een contactpersoon verwachten we dat hij/zij zich inschrijft voor de nieuwsbrief.</value>
   </data>
+  <data name="LidWasAlIngeschreven" xml:space="preserve">
+    <value>Je probeerde een persoon in te schrijven die al lid is.</value>
+  </data>
 </root>

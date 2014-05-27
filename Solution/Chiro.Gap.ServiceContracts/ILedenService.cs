@@ -37,12 +37,11 @@ namespace Chiro.Gap.ServiceContracts
 	    /// Genereert de lijst van inteschrijven leden met de informatie die ze zouden krijgen als ze automagisch zouden worden ingeschreven, gebaseerd op een lijst van in te schrijven gelieerde personen.
 	    /// </summary>
 	    /// <param name="gelieerdePersoonIDs">Lijst van gelieerde persoonIDs waarover we inforamtie willen</param>
-	    /// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een string waarin wat uitleg staat.</param>
 	    /// <returns>De lidIds van de personen die lid zijn gemaakt</returns>
 	    [OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		List<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IList<int> gelieerdePersoonIDs, out string foutBerichten);
+		List<InschrijvingsVoorstel> InschrijvingVoorstellen(IList<int> gelieerdePersoonIDs);
 
 		/// <summary>
 		/// Probeert de opgegeven personen in te schrijven met de meegegeven informatie. Als dit niet mogelijk blijkt te zijn, wordt er niemand ingeschreven.
@@ -53,7 +52,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-        IEnumerable<int> Inschrijven(InTeSchrijvenLid[] inschrijfInfo, out string foutBerichten);
+        IEnumerable<int> Inschrijven(InschrijvingsVoorstel[] inschrijfInfo, out string foutBerichten);
 
 	    /// <summary>
         /// Schrijft de leden met gegeven <paramref name="gelieerdePersoonIDs"/> uit voor het huidige

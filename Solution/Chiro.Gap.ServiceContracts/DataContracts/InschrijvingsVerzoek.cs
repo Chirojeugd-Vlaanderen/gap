@@ -1,5 +1,5 @@
-/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+﻿/*
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -21,16 +21,16 @@ using System.Runtime.Serialization;
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
     /// <summary>
-    /// DataContract voor summiere info over aangesloten leden/leiding en hun afdeling(en)
+    /// Datacontract met alle nodige informatie om een gelieerde persoon in te schrijven.
     /// </summary>
     [DataContract]
-    public class InTeSchrijvenLid
+    public class InschrijvingsVerzoek
     {
         /// <summary>
-        /// De volledige naam van de gelieerde persoon
+        /// Boolean die aangeeft of het afdelingsjaar aangepast moet worden.
         /// </summary>
         [DataMember]
-        public string VolledigeNaam { get; set; }
+        public bool AfdelingsJaarIrrelevant;
 
         /// <summary>
         /// De id van de gelieerde persoon die we leiding willen maken
@@ -49,10 +49,5 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public int[] AfdelingsJaarIDs { get; set; }
-
-        /// <summary>
-        /// Boolean die aangeeft of het afdelingsjaar aangepast moet worden.
-        /// </summary>
-        public bool AfdelingsJaarIrrelevant;
     }
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
@@ -34,16 +34,16 @@ namespace Chiro.Gap.WebApp.Test
     /// </summary>
     internal class FakeLedenService: ILedenService
     {
-        public static IEnumerable<InTeSchrijvenLid> DoorgekregenInschrijving { get; set; }
+        public static IEnumerable<InschrijvingsVoorstel> DoorgekregenInschrijving { get; set; }
 
         #region irrelevante methods voor deze test
 
-        public List<InTeSchrijvenLid> VoorstelTotInschrijvenGenereren(IList<int> gelieerdePersoonIDs, out string foutBerichten)
+        public List<InschrijvingsVoorstel> InschrijvingVoorstellen(IList<int> gelieerdePersoonIDs)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<int> Inschrijven(InTeSchrijvenLid[] inschrijfInfo, out string foutBerichten)
+        public IEnumerable<int> Inschrijven(InschrijvingsVoorstel[] inschrijfInfo, out string foutBerichten)
         {
             DoorgekregenInschrijving = inschrijfInfo;
             foutBerichten = String.Empty;

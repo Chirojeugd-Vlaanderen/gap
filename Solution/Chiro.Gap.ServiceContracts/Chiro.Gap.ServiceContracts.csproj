@@ -69,11 +69,12 @@
     <Compile Include="DataContracts\CommunicatieDetail.cs" />
     <Compile Include="DataContracts\CommunicatieInfo.cs" />
     <Compile Include="DataContracts\CommunicatieTypeInfo.cs" />
+    <Compile Include="DataContracts\InschrijvingsVerzoek.cs" />
     <Compile Include="DataContracts\LidOverzichtZonderAdres.cs" />
     <Compile Include="DataContracts\GebruikersDetail.cs" />
     <Compile Include="DataContracts\GebruikersInfo.cs" />
     <Compile Include="DataContracts\GebruikersRecht.cs" />
-    <Compile Include="DataContracts\InTeSchrijvenLid.cs" />
+    <Compile Include="DataContracts\InschrijvingsVoorstel.cs" />
     <Compile Include="DataContracts\DeelnemerInfo.cs" />
     <Compile Include="DataContracts\GroepsWerkJaarDetail.cs" />
     <Compile Include="DataContracts\LandInfo.cs" />
@@ -142,7 +143,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
-    <None Include="DataContracts\DataContractsDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
