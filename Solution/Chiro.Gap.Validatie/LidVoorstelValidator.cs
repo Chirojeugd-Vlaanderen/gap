@@ -16,10 +16,8 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Chiro.Gap.Domain;
 using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Validatie
@@ -28,12 +26,74 @@ namespace Chiro.Gap.Validatie
     {
         public bool Valideer(LidVoorstel teValideren)
         {
-            throw new NotImplementedException();
+            return FoutNummer(teValideren) == null;
         }
 
         public Domain.FoutNummer? FoutNummer(LidVoorstel teValideren)
         {
-            throw new NotImplementedException();
+            var gp = teValideren.GelieerdePersoon;
+            var gwj = teValideren.GroepsWerkJaar;
+
+            // Is de persoon al lid?
+
+            bool isAlLid = gwj.Lid.Where(ld => !ld.NonActief)
+                .Any(ld => ld.GelieerdePersoon.ID == gp.ID);
+
+            if (isAlLid)
+            {
+                return Domain.FoutNummer.LidWasAlIngeschreven;
+            }
+
+            // We moeten kunnen bepalen hoe oud iemand is, om hem/haar ofwel in een afdeling te steken,
+            // of te kijken of hij/zij oud genoeg is om leiding te zijn.
+
+            if (!gp.GebDatumMetChiroLeefTijd.HasValue)
+            {
+                return Domain.FoutNummer.GeboorteDatumOntbreekt;
+            }
+
+            var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
+
+            if (gwj.WerkJaar - geboortejaar < new LidValidator().MinimumLeeftijd)
+            {
+                return Domain.FoutNummer.LidTeJong;
+            }
+
+            // Geslacht is verplicht; kipadmin kan geen onzijdige mensen aan.
+            if (gp.Persoon.Geslacht != GeslachtsType.Man && gp.Persoon.Geslacht != GeslachtsType.Vrouw)
+            {
+                return Domain.FoutNummer.OnbekendGeslacht;
+            }
+
+            if (gp.PersoonsAdres == null)
+            {
+                // refs #1786 - geen leden meer zonder adres.
+                return Domain.FoutNummer.AdresOntbreekt;
+            }
+
+            if (!gwj.Groep.Niveau.HasFlag(Niveau.Groep) && !teValideren.LeidingMaken)
+            {
+                // in gewesten, verbonden: enkel leiding (geen kinderen)
+                return Domain.FoutNummer.LidTypeVerkeerd;
+            }
+
+            if (teValideren.AfdelingsJarenIrrelevant) return null;
+
+            // Als de afdelingsjaren niet irrelevant zijn, dan moeten we ook die nakijken.
+
+            if (!teValideren.LeidingMaken && teValideren.AfdelingsJaren.Count() != 1)
+            {
+                // Exact 1 afdeling voor een kind.
+                return Domain.FoutNummer.AfdelingKindVerplicht;
+            }
+
+            if (teValideren.AfdelingsJaren.Any(aj => !Equals(aj.GroepsWerkJaar, gwj)))
+            {
+                // Een afdelingsjaar dat niet hoort bij het gegeven groepswerkjaar.
+                return Domain.FoutNummer.AfdelingNietBeschikbaar;
+            }
+
+            return null;
         }
     }
 }

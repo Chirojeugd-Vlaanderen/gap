@@ -378,6 +378,9 @@ namespace Chiro.Gap.Services.Test
                                                  }
                                      };
 
+            // Afdelingsjaar aan groepswerkjaar koppelen, anders loopt validatie straks mis.
+            mijnAfdeling.GroepsWerkJaar = groepsWerkJaar;
+
             var oudeGelieerdePersoon = new GelieerdePersoon
                                            {
                                                ID = 3,

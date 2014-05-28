@@ -340,4 +340,7 @@ de helpdesk</value>
   <data name="AdresVerplicht" xml:space="preserve">
     <value>Een adres is verplicht.</value>
   </data>
+  <data name="LidProbleem" xml:space="preserve">
+    <value>Algemeen probleem bij inschrijving.</value>
+  </data>
 </root>

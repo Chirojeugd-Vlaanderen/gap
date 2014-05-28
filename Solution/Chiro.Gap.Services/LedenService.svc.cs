@@ -34,6 +34,7 @@ using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Services
@@ -209,6 +210,7 @@ namespace Chiro.Gap.Services
                     try
                     {
                         var voorstel = _ledenMgr.InschrijvingVoorstellen(gp, gwj, true);
+                        var validator = new LidVoorstelValidator();
 
                         inschrijvingsVoorstel.AfdelingsJaarIrrelevant = voorstel.AfdelingsJarenIrrelevant;
                         inschrijvingsVoorstel.AfdelingsJaarIDs =
@@ -218,14 +220,16 @@ namespace Chiro.Gap.Services
                                     .ToArray();
                         inschrijvingsVoorstel.LeidingMaken = voorstel.LeidingMaken;
                         inschrijvingsVoorstel.VolledigeNaam = gp.Persoon.VolledigeNaam;
-                        inschrijvingsVoorstel.FoutNummer = null;
+                        inschrijvingsVoorstel.FoutNummer = validator.FoutNummer(voorstel);
                     }
                     catch (FoutNummerException ex)
                     {
                         inschrijvingsVoorstel.FoutNummer = ex.FoutNummer;
                     }
+
                     if (inschrijvingsVoorstel.FoutNummer == null)
                     {
+                        // Gelukte inschrijvingen achteraan toevoegen aan lijst.
                         resultaat.Add(inschrijvingsVoorstel);
                     }
                     else
@@ -375,7 +379,7 @@ namespace Chiro.Gap.Services
                             {
                                 foutNummer = ex.FoutNummer;
                             }
-                            catch (GapException ex)
+                            catch (GapException)
                             {
                                 foutNummer = FoutNummer.AlgemeneLidFout;
                             }

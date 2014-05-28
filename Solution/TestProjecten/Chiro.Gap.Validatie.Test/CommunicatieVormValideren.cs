@@ -19,7 +19,6 @@
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Validatie.Test
@@ -30,29 +29,14 @@ namespace Chiro.Gap.Validatie.Test
     [TestClass]
     public class CommunicatieVormValideren
     {
-        public CommunicatieVormValideren()
-        {
-        }
-
-        [ClassInitialize()]
-        public static void TestClassInitialiseren(TestContext testContext)
+        /// <summary>
+        /// Run code before running each test
+        /// </summary>
+        [TestInitialize]
+        public void MyTestInitialize()
         {
             Factory.ContainerInit();
         }
-
-        [ClassCleanup()]
-        public static void TestClassOpruimen()
-        {
-        }
-
-        [TestInitialize()]
-        public void TestInitialiseren()
-        {
-        }
-
-        [TestCleanup()]
-        public void TestOpruimen() { }
-
 
         [TestMethod]
         public void TestOngeldigTelefoonnummerValideren()

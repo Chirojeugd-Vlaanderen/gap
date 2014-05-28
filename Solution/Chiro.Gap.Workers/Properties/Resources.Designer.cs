@@ -448,6 +448,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Algemeen probleem bij inschrijving..
+        /// </summary>
+        internal static string LidProbleem {
+            get {
+                return ResourceManager.GetString("LidProbleem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je probeerde een persoon in te schrijven die al lid is..
         /// </summary>
         internal static string LidWasAlIngeschreven {
