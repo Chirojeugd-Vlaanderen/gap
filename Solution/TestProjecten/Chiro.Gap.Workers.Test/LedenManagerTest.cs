@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -21,12 +21,9 @@ using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.TestAttributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Moq;
-using Chiro.Gap.Workers;
 using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Workers.Test
@@ -104,12 +101,13 @@ namespace Chiro.Gap.Workers.Test
             // ACT
 
             var actual =
-                target.NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false,
-                                        new LidVoorstel
-                                            {
-                                                AfdelingsJarenIrrelevant = false,
-                                                LeidingMaken = true
-                                            }) as Leiding;
+                target.NieuwInschrijven(new LidVoorstel
+                {
+                    GroepsWerkJaar = groepsWerkJaar,
+                    GelieerdePersoon = gelieerdePersoon,
+                    AfdelingsJarenIrrelevant = false,
+                    LeidingMaken = true
+                }, false) as Leiding;
 
             // ASSERT
 
@@ -368,7 +366,14 @@ namespace Chiro.Gap.Workers.Test
             var target = new LedenManager();
 
             // Act
-            target.NieuwInschrijven(gp, gwj, false, new LidVoorstel { AfdelingsJaren = null, AfdelingsJarenIrrelevant = true, LeidingMaken = false });
+            target.NieuwInschrijven(
+                new LidVoorstel
+                {
+                    GelieerdePersoon = gp,
+                    GroepsWerkJaar = gwj,
+                    AfdelingsJarenIrrelevant = true,
+                    LeidingMaken = false
+                }, false);
 
             //Assert
             Assert.Fail();  // Als we hier komen zonder exception, dan is het mislukt.
@@ -464,12 +469,13 @@ namespace Chiro.Gap.Workers.Test
 
             try
             {
-                target.NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false,
-                                        new LidVoorstel
-                                        {
-                                            AfdelingsJarenIrrelevant = false,
-                                            LeidingMaken = true
-                                        });
+                target.NieuwInschrijven(new LidVoorstel
+                {
+                    GelieerdePersoon = gelieerdePersoon,
+                    GroepsWerkJaar = groepsWerkJaar,
+                    AfdelingsJarenIrrelevant = false,
+                    LeidingMaken = true
+                }, false);
             }
             catch (GapException)
             {
@@ -509,12 +515,13 @@ namespace Chiro.Gap.Workers.Test
 
             // ACT
 
-            target.NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false,
-                new LidVoorstel
-                {
-                    AfdelingsJarenIrrelevant = false,
-                    LeidingMaken = true
-                });
+            target.NieuwInschrijven(new LidVoorstel
+            {
+                GelieerdePersoon = gelieerdePersoon,
+                GroepsWerkJaar = groepsWerkJaar,
+                AfdelingsJarenIrrelevant = false,
+                LeidingMaken = true
+            }, false);
 
             // We don't assert anything. We just expect an exception.
         }

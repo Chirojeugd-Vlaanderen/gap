@@ -52,23 +52,17 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Schrijft een gelieerde persoon in, persisteert niet.  Er mag nog geen lidobject (ook geen inactief) voor de
         /// gelieerde persoon bestaan.
         /// </summary>
-        /// <param name="gp">
-        /// De persoon om in te schrijven, gekoppeld met groep en persoon
-        /// </param>
-        /// <param name="gwj">
-        /// Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren
+        /// <param name="voorstelLid">
+        ///     Voorstel voor de eigenschappen van het in te schrijven lid.
         /// </param>
         /// <param name="isJaarOvergang">
-        /// Geeft aan of het over de automatische jaarovergang gaat; relevant voor de
-        /// probeerperiode
-        /// </param>
-        /// <param name="voorstellid">
-        /// Voorstel voor de eigenschappen van het in te schrijven lid.
+        ///     Geeft aan of het over de automatische jaarovergang gaat; relevant voor de
+        ///     probeerperiode
         /// </param>
         /// <returns>
         /// Het aangemaakte lid object
         /// </returns>
-        Lid NieuwInschrijven(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang, LidVoorstel voorstellid);
+        Lid NieuwInschrijven(LidVoorstel voorstelLid, bool isJaarOvergang);
 
         /// <summary>
         /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar

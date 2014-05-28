@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -27,6 +27,16 @@ namespace Chiro.Gap.WorkerInterfaces
     public class LidVoorstel
     {
         /// <summary>
+        /// De gelieerde persoon die lid moet worden.
+        /// </summary>
+        public GelieerdePersoon GelieerdePersoon { get; set; }
+
+        /// <summary>
+        /// Het groepswerkjaar waarin de gelieerde persoon lid wil worden.
+        /// </summary>
+        public GroepsWerkJaar GroepsWerkJaar { get; set; }
+
+        /// <summary>
         /// In welk afdelingsjaren het lid moet worden ingeschreven.
         /// </summary>
         public IList<AfdelingsJaar> AfdelingsJaren { get; set; }
@@ -41,7 +51,7 @@ namespace Chiro.Gap.WorkerInterfaces
         }
 
         /// <summary>
-        /// Of het lid moet worden ingeschreven als leiding
+        /// Of de gelieerde persoon moet worden ingeschreven als leiding
         /// </summary>
         public bool LeidingMaken;
     }

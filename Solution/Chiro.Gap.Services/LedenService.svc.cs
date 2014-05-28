@@ -284,7 +284,9 @@ namespace Chiro.Gap.Services
                         var lidVoorstel = new LidVoorstel
                         {
                             AfdelingsJaren = _afdelingsJaarRepo.ByIDs(info.AfdelingsJaarIDs),
-                            LeidingMaken = info.LeidingMaken
+                            LeidingMaken = info.LeidingMaken,
+                            GelieerdePersoon = gp,
+                            GroepsWerkJaar = gwj
                         };
 
                         // TODO: Dit is te veel business. Bekijken of een lid al ingeschreven is, moet in de workers gebeuren.
@@ -356,7 +358,7 @@ namespace Chiro.Gap.Services
                         {
                             try
                             {
-                                l = _ledenMgr.NieuwInschrijven(gp, gwj, false, lidVoorstel);
+                                l = _ledenMgr.NieuwInschrijven(lidVoorstel, false);
 
                                 l.GelieerdePersoon.Persoon.InSync = true;
                                 teSyncen.Add(l);

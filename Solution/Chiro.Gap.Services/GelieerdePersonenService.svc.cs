@@ -857,14 +857,16 @@ namespace Chiro.Gap.Services
                                       {
                                           AfdelingsJaren =
                                               _afdelingsJarenRepo.ByIDs(details.AfdelingsJaarIDs),
-                                          LeidingMaken = details.InschrijvenAls == LidType.Leiding
+                                          LeidingMaken = details.InschrijvenAls == LidType.Leiding,
+                                          GelieerdePersoon = gelieerdePersoon,
+                                          GroepsWerkJaar = gwj
                                       };
 
                     // Een nieuwe persoon kan nog niet ingeschreven zijn. Gemakkelijk.
 
                     try
                     {
-                        lid = _ledenMgr.NieuwInschrijven(gelieerdePersoon, gwj, false, lidVoorstel);
+                        lid = _ledenMgr.NieuwInschrijven(lidVoorstel, false);
                         gelieerdePersoon.Persoon.InSync = true;
                     }
                     catch (FoutNummerException ex)

@@ -195,10 +195,12 @@ namespace Chiro.Gap.Workers
             var voorstelLid = new LidVoorstel
             {
                 AfdelingsJarenIrrelevant = true,
-                LeidingMaken = (nieuwNiveau == Niveau.LeidingInGroep)
+                LeidingMaken = (nieuwNiveau == Niveau.LeidingInGroep),
+                GelieerdePersoon = gelieerdePersoon,
+                GroepsWerkJaar = groepsWerkJaar
             };
 
-            var nieuwLid = NieuwInschrijven(gelieerdePersoon, groepsWerkJaar, false, voorstelLid);
+            var nieuwLid = NieuwInschrijven(voorstelLid, false);
 
             nieuwLid.EindeInstapPeriode = eindeInstap;
 
@@ -442,7 +444,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public LidVoorstel InschrijvingVoorstellen(GelieerdePersoon gp, GroepsWerkJaar gwj, bool leidingIndienMogelijk)
         {
-            var resultaat = new LidVoorstel();
+            var resultaat = new LidVoorstel {GelieerdePersoon = gp, GroepsWerkJaar = gwj};
 
             InschrijfProblemenThrowen(gp, gwj);
 
@@ -508,35 +510,32 @@ namespace Chiro.Gap.Workers
         /// Schrijft een gelieerde persoon in, persisteert niet.  Er mag nog geen lidobject (ook geen inactief) voor de
         /// gelieerde persoon bestaan.
         /// </summary>
-        /// <param name="gp">
-        /// De persoon om in te schrijven, gekoppeld met groep en persoon
-        /// </param>
-        /// <param name="gwj">
-        /// Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren
+        /// <param name="voorstelLid">
+        ///     Voorstel voor de eigenschappen van het in te schrijven lid.
         /// </param>
         /// <param name="isJaarOvergang">
-        /// Geeft aan of het over de automatische jaarovergang gaat; relevant voor de
-        /// probeerperiode
-        /// </param>
-        /// <param name="voorstellid">
-        /// Voorstel voor de eigenschappen van het in te schrijven lid.
+        ///     Geeft aan of het over de automatische jaarovergang gaat; relevant voor de
+        ///     probeerperiode
         /// </param>
         /// <returns>
         /// Het aangemaakte lid object
         /// </returns>
-        public Lid NieuwInschrijven(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang, LidVoorstel voorstellid)
+        public Lid NieuwInschrijven(LidVoorstel voorstelLid, bool isJaarOvergang)
         {
+            var gp = voorstelLid.GelieerdePersoon;
+            var gwj = voorstelLid.GroepsWerkJaar;
+
             // We gaan ervan uit dat er een voorstel is. Je kunt het voorstel automatisch laten 
             // genereren via InschrijvingVoorstellen.
 
-            Debug.Assert(voorstellid != null);
+            Debug.Assert(voorstelLid != null);
 
             // Gooi FoutNummerException als het sowieso niet gaat lukken.
             InschrijfProblemenThrowen(gp, gwj);
 
             // Controleer of lidtype wel overeenkomt met groeptype
 
-            if (!gwj.Groep.Niveau.HasFlag(Niveau.Groep) && !voorstellid.LeidingMaken)
+            if (!gwj.Groep.Niveau.HasFlag(Niveau.Groep) && !voorstelLid.LeidingMaken)
             {
                 throw new FoutNummerException(FoutNummer.LidTypeVerkeerd, Properties.Resources.KindLidInKader);
             }
@@ -546,7 +545,7 @@ namespace Chiro.Gap.Workers
 
             IList<AfdelingsJaar> afdelingsJaren = null;
 
-            if (voorstellid.AfdelingsJarenIrrelevant && !voorstellid.LeidingMaken)
+            if (voorstelLid.AfdelingsJarenIrrelevant && !voorstelLid.LeidingMaken)
             {
                 // Lid maken en zelf afdeling bepalen
                 afdelingsJaren = InschrijvingVoorstellen(gp, gwj, false).AfdelingsJaren;
@@ -555,21 +554,21 @@ namespace Chiro.Gap.Workers
             {
                 // Eerst even checken of we geen lid proberen te maken met een ongeldig aantal afdelingen.
 
-                if (!voorstellid.LeidingMaken && voorstellid.AfdelingsJaren.Count() != 1)
+                if (!voorstelLid.LeidingMaken && voorstelLid.AfdelingsJaren.Count() != 1)
                 {
                     throw new FoutNummerException(FoutNummer.AfdelingKindVerplicht, Properties.Resources.AfdelingKindVerplicht);
                 }
 
-                if (voorstellid.AfdelingsJaren != null)
+                if (voorstelLid.AfdelingsJaren != null)
                 {
                     // Als er afdelingsjaarID's meegegeven zijn, dan zoeken we die op in het huidige
                     // groepswerkjaar.
 
-                    afdelingsJaren = (from aj in voorstellid.AfdelingsJaren
+                    afdelingsJaren = (from aj in voorstelLid.AfdelingsJaren
                                       where Equals(aj.GroepsWerkJaar, gwj)
                                       select aj).ToList();
 
-                    if (afdelingsJaren.Count() != voorstellid.AfdelingsJaren.Count())
+                    if (afdelingsJaren.Count() != voorstelLid.AfdelingsJaren.Count())
                     {
                         throw new FoutNummerException(FoutNummer.AfdelingNietBeschikbaar,
                                                       Properties.Resources.AfdelingNietBeschikbaar);
@@ -578,7 +577,7 @@ namespace Chiro.Gap.Workers
             }
 
             Lid nieuwlid;
-            if (voorstellid.LeidingMaken)
+            if (voorstelLid.LeidingMaken)
             {
                 nieuwlid = LeidingMaken(gp, gwj, isJaarOvergang, afdelingsJaren);
             }
