@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,8 +10,29 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Chiro.Gap.Validatie.Test</RootNamespace>
     <AssemblyName>Chiro.Gap.Validatie.Test</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,7 +52,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -53,46 +74,46 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
-      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
-      <Name>Chiro.Adf.ServiceModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
-      <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
-      <Name>Chiro.Cdf.Data.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
-      <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
-      <Name>Chiro.Cdf.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
-      <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
-      <Name>Chiro.Gap.Orm</Name>
+    <ProjectReference Include="..\..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
+      <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
+      <Name>Chiro.Cdf.Poco</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
-      <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
-      <Name>Chiro.Gap.ServiceContracts</Name>
+    <ProjectReference Include="..\..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
+      <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
+      <Name>Chiro.Gap.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Gap.Services\Chiro.Gap.Services.csproj">
-      <Project>{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}</Project>
-      <Name>Chiro.Gap.Services</Name>
+    <ProjectReference Include="..\..\Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj">
+      <Project>{5b06d34a-3c2f-4041-914c-fa3b63f973e2}</Project>
+      <Name>Chiro.Gap.Poco.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj">
       <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
       <Name>Chiro.Gap.Validatie</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
+      <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
+      <Name>Chiro.Gap.WorkerInterfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
-      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
+      <Project>{35e2aed7-7c0a-4b30-b7c8-24f9078ac32e}</Project>
       <Name>Chiro.Gap.Workers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Dummies\Chiro.Gap.Dummies.csproj">
-      <Project>{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}</Project>
-      <Name>Chiro.Gap.Dummies</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

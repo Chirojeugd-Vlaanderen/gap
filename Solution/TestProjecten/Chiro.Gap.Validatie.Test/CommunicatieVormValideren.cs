@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -15,39 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Dummies;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Workers;
-using Chiro.Gap.Validatie;
-using Chiro.Gap.Services;
-using Chiro.Adf.ServiceModel;
-using Chiro.Gap.ServiceContracts;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Chiro.Gap.Workers.Test
+namespace Chiro.Gap.Validatie.Test
 {
-    // TODO: verplaatsen naar een ander project (ticket #160)
-    // Deze Workers-tests moeten de workers testen, en niet de DAO. (refs #129)
-
     /// <summary>
     /// Testclass CommunicatieVormValideren
     /// </summary>
     [TestClass]
     public class CommunicatieVormValideren
     {
-        PersonenManager _pMgr;
-        GelieerdePersoon _jos;
-        CommunicatieType _type;
-        CommunicatieVorm _comm;
-        CommunicatieVormValidator _cvValid;
-
         public CommunicatieVormValideren()
         {
         }
@@ -61,14 +43,11 @@ namespace Chiro.Gap.Workers.Test
         [ClassCleanup()]
         public static void TestClassOpruimen()
         {
-            Factory.Dispose();
         }
 
         [TestInitialize()]
         public void TestInitialiseren()
         {
-            _pMgr = Factory.Maak<PersonenManager>();
-            _jos = DummyData.GelieerdeJos;
         }
 
         [TestCleanup()]
@@ -79,13 +58,19 @@ namespace Chiro.Gap.Workers.Test
         public void TestOngeldigTelefoonnummerValideren()
         {
             // Arrange
-            _cvValid = new CommunicatieVormValidator();
-            _comm = new CommunicatieVorm();
-            _comm.CommunicatieType = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieType>(l => l.CommunicatieTypeOphalen(1));
-            _comm.Nummer = "03/231.07.95";
+            var cvValid = new CommunicatieVormValidator();
+            var comm = new CommunicatieVorm
+            {
+                CommunicatieType = new CommunicatieType
+                {
+                    ID = (int) CommunicatieTypeEnum.TelefoonNummer,
+                    Validatie = @"^0[0-9]{1,2}\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^[+][0-9]*$"
+                },
+                Nummer = "03/231.07.95"
+            };
 
             // Act
-            bool vlag = _cvValid.Valideer(_comm);
+            bool vlag = cvValid.Valideer(comm);
 
             // Assert
             Assert.IsFalse(vlag);
