@@ -18,9 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
@@ -166,6 +163,70 @@ namespace Chiro.Gap.Validatie.Test
 
             Assert.AreEqual(FoutNummer.AdresOntbreekt, foutNummer);
         }
+
+        /// <summary>
+        /// Personen zonder telefoonnummer moeten gedetecteerd worden bij validatie lidvoorstel.
+        ///</summary>
+        [TestMethod()]
+        public void ValidatieLidVoorstelZonderTelefoonNummer()
+        {
+            // Arrange
+            // Ik maak een persoon, en een werkjaar met 2 afdelingen.  Maar dat is hier
+            // niet relevant. Wat wel van belang is, is dat de persoon te jong is om
+            // lid te worden. We verwachten dat het maken van een lidvoorstel crasht.
+
+            var gwj = new GroepsWerkJaar { WerkJaar = 2014, Groep = new ChiroGroep() };  // Werkjaar 2012-2013
+
+            var gp = new GelieerdePersoon
+            {
+                Persoon =
+                    new Persoon
+                    {
+                        GeboorteDatum = new DateTime(2000, 06, 21),
+                        Geslacht = GeslachtsType.Vrouw,
+                    },
+                Groep = gwj.Groep,
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie = new List<CommunicatieVorm>() // geen telefoonnummer
+            };
+
+            gwj.AfdelingsJaar.Add(new AfdelingsJaar
+            {
+                ID = 1,
+                GeboorteJaarVan = 1999,
+                GeboorteJaarTot = 2000,
+                Geslacht = GeslachtsType.Gemengd,
+                OfficieleAfdeling = new OfficieleAfdeling()
+            });
+
+            gwj.AfdelingsJaar.Add(new AfdelingsJaar
+            {
+                ID = 2,
+                GeboorteJaarVan = 1997,
+                GeboorteJaarTot = 1998,
+                Geslacht = GeslachtsType.Gemengd,
+                OfficieleAfdeling = new OfficieleAfdeling()
+            });
+
+            var lidVoorstel = new LidVoorstel
+            {
+                GelieerdePersoon = gp,
+                GroepsWerkJaar = gwj,
+                AfdelingsJarenIrrelevant = true,
+                LeidingMaken = false
+            };
+
+            var target = new LidVoorstelValidator();
+
+            // Act
+
+            var foutNummer = target.FoutNummer(lidVoorstel);
+
+            // Assert
+
+            Assert.AreEqual(FoutNummer.TelefoonNummerOntbreekt, foutNummer);
+        }
+
 
     }
 }

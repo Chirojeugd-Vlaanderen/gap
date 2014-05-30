@@ -85,6 +85,7 @@ namespace Chiro.Gap.Domain
         AdNummerVerplicht,
         EMailVerplicht,
         ContactMoetNieuwsBriefKrijgen,
+        TelefoonNummerOntbreekt,
         #endregion
 
         #region nog te groeperen
