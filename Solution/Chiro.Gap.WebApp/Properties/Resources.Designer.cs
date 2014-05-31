@@ -799,6 +799,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Telefoonnummer ontbreekt..
+        /// </summary>
+        public static string TelefoonNummerOntbreekt {
+            get {
+                return ResourceManager.GetString("TelefoonNummerOntbreekt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inschrijven voor uitstap/bivak.
         /// </summary>
         public static string UitstapInschrijving {

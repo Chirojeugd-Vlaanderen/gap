@@ -31,6 +31,9 @@ namespace Chiro.Gap.Validatie
 
         public Domain.FoutNummer? FoutNummer(LidVoorstel teValideren)
         {
+            // Wellicht zou het beter zijn om een set van foutnummers op te leveren.
+            // Maar voorlopig is het er slechts 1.
+
             var gp = teValideren.GelieerdePersoon;
             var gwj = teValideren.GroepsWerkJaar;
 
@@ -69,6 +72,15 @@ namespace Chiro.Gap.Validatie
             {
                 // refs #1786 - geen leden meer zonder adres.
                 return Domain.FoutNummer.AdresOntbreekt;
+            }
+
+            var telefoonNr = from c in gp.Communicatie
+                where c.CommunicatieType.ID == (int) CommunicatieTypeEnum.TelefoonNummer
+                select c;
+
+            if (!telefoonNr.Any())
+            {
+                return Domain.FoutNummer.TelefoonNummerOntbreekt;
             }
 
             if (!gwj.Groep.Niveau.HasFlag(Niveau.Groep) && !teValideren.LeidingMaken)

@@ -399,4 +399,7 @@ Je kunt dit nog steeds doen door onder 'leden' te klikken op het vorige werkjaar
   <data name="LidAdresOntbreekt" xml:space="preserve">
     <value>Adres is verplicht.</value>
   </data>
+  <data name="TelefoonNummerOntbreekt" xml:space="preserve">
+    <value>Telefoonnummer ontbreekt.</value>
+  </data>
 </root>

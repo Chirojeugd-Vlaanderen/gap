@@ -785,6 +785,8 @@ namespace Chiro.Gap.WebApp.Controllers
                     return Properties.Resources.GroepInactief;
                 case FoutNummer.AdresOntbreekt:
                     return Properties.Resources.LidAdresOntbreekt;
+                case FoutNummer.TelefoonNummerOntbreekt:
+                    return Properties.Resources.TelefoonNummerOntbreekt;
                 default:
                     return Properties.Resources.OnverwachteFout;
             }
