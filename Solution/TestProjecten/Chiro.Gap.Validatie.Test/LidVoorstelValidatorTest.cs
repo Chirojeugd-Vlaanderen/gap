@@ -227,6 +227,57 @@ namespace Chiro.Gap.Validatie.Test
             Assert.AreEqual(FoutNummer.TelefoonNummerOntbreekt, foutNummer);
         }
 
+        /// <summary>
+        /// Leiding zonder e-mailadres moet gedetecteerd worden bij validatie lidvoorstel.
+        ///</summary>
+        [TestMethod()]
+        public void ValidatieLidVoorstelLeidingZonderEmail()
+        {
+            // Arrange
+            // Ik maak een persoon, en een werkjaar met 2 afdelingen.  Maar dat is hier
+            // niet relevant. Wat wel van belang is, is dat de persoon te jong is om
+            // lid te worden. We verwachten dat het maken van een lidvoorstel crasht.
 
+            var gwj = new GroepsWerkJaar { WerkJaar = 2014, Groep = new ChiroGroep() };  // Werkjaar 2012-2013
+
+            var gp = new GelieerdePersoon
+            {
+                Persoon =
+                    new Persoon
+                    {
+                        GeboorteDatum = new DateTime(1995, 06, 21),
+                        Geslacht = GeslachtsType.Vrouw,
+                    },
+                Groep = gwj.Groep,
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie = new List<CommunicatieVorm>
+                {
+                    // Enkel telefoonnummer; e-mailadres ontbreekt.
+                    new CommunicatieVorm
+                    {
+                        CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                    }
+                }
+            };
+
+            var lidVoorstel = new LidVoorstel
+            {
+                GelieerdePersoon = gp,
+                GroepsWerkJaar = gwj,
+                AfdelingsJaren = new List<AfdelingsJaar>(),
+                AfdelingsJarenIrrelevant = false,
+                LeidingMaken = true
+            };
+
+            var target = new LidVoorstelValidator();
+
+            // Act
+
+            var foutNummer = target.FoutNummer(lidVoorstel);
+
+            // Assert
+
+            Assert.AreEqual(FoutNummer.EMailVerplicht, foutNummer);
+        }
     }
 }

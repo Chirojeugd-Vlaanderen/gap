@@ -83,6 +83,21 @@ namespace Chiro.Gap.Validatie
                 return Domain.FoutNummer.TelefoonNummerOntbreekt;
             }
 
+            if (teValideren.LeidingMaken)
+            {
+                var emailAdres = from c in gp.Communicatie
+                    where c.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email
+                    select c;
+
+                if (!emailAdres.Any())
+                {
+                    return Domain.FoutNummer.EMailVerplicht;
+                }
+
+                // refs #1786 - e-mailadres verplicht voor leiding
+
+            }
+
             if (!gwj.Groep.Niveau.HasFlag(Niveau.Groep) && !teValideren.LeidingMaken)
             {
                 // in gewesten, verbonden: enkel leiding (geen kinderen)

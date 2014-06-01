@@ -402,4 +402,7 @@ Je kunt dit nog steeds doen door onder 'leden' te klikken op het vorige werkjaar
   <data name="TelefoonNummerOntbreekt" xml:space="preserve">
     <value>Telefoonnummer ontbreekt.</value>
   </data>
+  <data name="EmailVoorLeidingOntbreekt" xml:space="preserve">
+    <value>E-mailadres voor leiding verplicht.</value>
+  </data>
 </root>

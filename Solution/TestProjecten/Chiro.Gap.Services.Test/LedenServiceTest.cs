@@ -340,13 +340,12 @@ namespace Chiro.Gap.Services.Test
 
             #region act
             var ledenService = Factory.Maak<LedenService>();
-            ledenService.Inschrijven(new [] {new InschrijvingsVoorstel
+            ledenService.Inschrijven(new [] {new InschrijvingsVerzoek
                                                  {
                                                      AfdelingsJaarIDs = new [] {jongereAfdeling.ID},
                                                      AfdelingsJaarIrrelevant = false,
                                                      GelieerdePersoonID = gelieerdePersoon.ID,
                                                      LeidingMaken = false,
-                                                     VolledigeNaam = "Laat ons hopen dat dit irrelevant is (zie #1584)."
                                                  }});
             #endregion
 
@@ -764,12 +763,11 @@ namespace Chiro.Gap.Services.Test
             // ACT
             var lidInformatie = new[]
                                     {
-                                        new InschrijvingsVoorstel
+                                        new InschrijvingsVerzoek
                                             {
                                                 AfdelingsJaarIrrelevant = true,
                                                 GelieerdePersoonID = gp.ID,
                                                 LeidingMaken = true,
-                                                VolledigeNaam = gp.Persoon.VolledigeNaam
                                             }
                                     };
             target.Inschrijven(lidInformatie);
@@ -833,6 +831,10 @@ namespace Chiro.Gap.Services.Test
                         new CommunicatieVorm
                         {
                             CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        },
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.Email}
                         }
                     }
             };
@@ -920,6 +922,10 @@ namespace Chiro.Gap.Services.Test
                         new CommunicatieVorm
                         {
                             CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        },
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.Email}
                         }
                     }
             };
@@ -1217,16 +1223,19 @@ namespace Chiro.Gap.Services.Test
                         new CommunicatieVorm
                         {
                             CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        },
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.Email}
                         }
                     }
             };
 
-            var lidVoorsel = new InschrijvingsVoorstel
+            var verzoek = new InschrijvingsVerzoek
                                  {
                                      AfdelingsJaarIrrelevant = true,
                                      GelieerdePersoonID = gelieerdePersoon.ID,
                                      LeidingMaken = true,
-                                     VolledigeNaam = "Ham Burger" // moet weg; zie #1544
                                  };
 
             // dependency injection
@@ -1244,7 +1253,7 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var ledenService = Factory.Maak<LedenService>();
-            ledenService.Inschrijven(new[] {lidVoorsel});
+            ledenService.Inschrijven(new[] {verzoek});
 
             var lid = groepsWerkJaar.Lid.First();
 
@@ -1296,16 +1305,19 @@ namespace Chiro.Gap.Services.Test
                         new CommunicatieVorm
                         {
                             CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        },
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.Email}
                         }
                     }
             };
 
-            var lidVoorsel = new InschrijvingsVoorstel
+            var verzoek = new InschrijvingsVerzoek
             {
                 AfdelingsJaarIrrelevant = true,
                 GelieerdePersoonID = gelieerdePersoon.ID,
                 LeidingMaken = true,
-                VolledigeNaam = "Ham Burger" // moet weg; zie #1544
             };
 
             // dependency injection
@@ -1321,7 +1333,7 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var ledenService = Factory.Maak<LedenService>();
-            ledenService.Inschrijven(new[] { lidVoorsel });
+            ledenService.Inschrijven(new[] { verzoek });
 
             // ASSERT
 
@@ -1475,6 +1487,10 @@ namespace Chiro.Gap.Services.Test
                         new CommunicatieVorm
                         {
                             CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        },
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.Email}
                         }
                     }
             };
@@ -1646,12 +1662,11 @@ namespace Chiro.Gap.Services.Test
             // ACT
             var lidInformatie = new[]
                                     {
-                                        new InschrijvingsVoorstel
+                                        new InschrijvingsVerzoek
                                             {
                                                 AfdelingsJaarIrrelevant = false,
                                                 GelieerdePersoonID = gp.ID,
                                                 LeidingMaken = false,
-                                                VolledigeNaam = gp.Persoon.VolledigeNaam,
                                                 AfdelingsJaarIDs = new [] {afdelingsJaar2.ID}
                                             }
                                     };
@@ -1844,13 +1859,12 @@ namespace Chiro.Gap.Services.Test
             var target = Factory.Maak<LedenService>();
             var lidInformatie = new[]
                                     {
-                                        new InschrijvingsVoorstel
+                                        new InschrijvingsVerzoek
                                             {
                                                 AfdelingsJaarIrrelevant = false,
                                                 AfdelingsJaarIDs = new [] {afdelingsJaar.ID},
                                                 GelieerdePersoonID = gelieerdePersoon.ID,
                                                 LeidingMaken = false,
-                                                VolledigeNaam = gelieerdePersoon.Persoon.VolledigeNaam
                                             }
                                     };
             target.Inschrijven(lidInformatie);
@@ -1887,7 +1901,7 @@ namespace Chiro.Gap.Services.Test
                     }
             };
 
-            var lidVoorstel = new InschrijvingsVerzoek
+            var verzoek = new InschrijvingsVerzoek
             {
                 AfdelingsJaarIrrelevant = true,
                 GelieerdePersoonID = gelieerdePersoon.ID,
@@ -1902,7 +1916,7 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var ledenService = Factory.Maak<LedenService>();
-            var result = ledenService.Inschrijven(new[] { lidVoorstel });
+            var result = ledenService.Inschrijven(new[] { verzoek });
 
             // ASSERT
 
@@ -2149,7 +2163,7 @@ namespace Chiro.Gap.Services.Test
                     }
             };
 
-            var lidVoorsel = new InschrijvingsVerzoek
+            var verzoek = new InschrijvingsVerzoek
             {
                 AfdelingsJaarIrrelevant = true,
                 GelieerdePersoonID = gelieerdePersoon.ID,
@@ -2166,7 +2180,7 @@ namespace Chiro.Gap.Services.Test
 
             // ACT
             var ledenService = Factory.Maak<LedenService>();
-            var feedback = ledenService.Inschrijven(new[] { lidVoorsel });
+            var feedback = ledenService.Inschrijven(new[] { verzoek });
 
             // ASSERT
             Assert.IsTrue(feedback.Any(info => info.FoutNummer == FoutNummer.LidTypeVerkeerd));

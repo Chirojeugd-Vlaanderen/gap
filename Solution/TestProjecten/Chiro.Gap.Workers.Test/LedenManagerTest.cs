@@ -100,9 +100,12 @@ namespace Chiro.Gap.Workers.Test
                         new CommunicatieVorm
                         {
                             CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        },
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.Email}
                         }
                     }
-
             };
 
             var target = Factory.Maak<LedenManager>();

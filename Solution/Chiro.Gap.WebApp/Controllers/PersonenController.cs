@@ -787,6 +787,8 @@ namespace Chiro.Gap.WebApp.Controllers
                     return Properties.Resources.LidAdresOntbreekt;
                 case FoutNummer.TelefoonNummerOntbreekt:
                     return Properties.Resources.TelefoonNummerOntbreekt;
+                case FoutNummer.EMailVerplicht:
+                    return Properties.Resources.EmailVoorLeidingOntbreekt;
                 default:
                     return Properties.Resources.OnverwachteFout;
             }

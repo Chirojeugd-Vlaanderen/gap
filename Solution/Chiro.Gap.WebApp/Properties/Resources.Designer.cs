@@ -250,6 +250,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to E-mailadres voor leiding verplicht..
+        /// </summary>
+        public static string EmailVoorLeidingOntbreekt {
+            get {
+                return ResourceManager.GetString("EmailVoorLeidingOntbreekt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De waarde voor {0} voldoet niet aan de verplichte structuur: {1}.
         /// </summary>
         public static string FormatValidatieFout {
