@@ -752,7 +752,27 @@ namespace Chiro.Gap.WebApp.Controllers
                     LeidingMaken = p.LeidingMaken,
                     VolledigeNaam = p.VolledigeNaam,
                     FoutBoodschap = FeedbackLidMaken(p),
+                    FoutNummer = p.FoutNummer,
                 }).ToList();
+
+            // Als er gegevens ontbraken, geven we extra informatie mee.
+            // FIXME: dit is tamelijk hacky.
+
+            var ontbrekendeGegevensFouten = new List<FoutNummer?>
+            {
+                FoutNummer.GeboorteDatumOntbreekt,
+                FoutNummer.OnbekendGeslacht,
+                FoutNummer.AdresOntbreekt,
+                FoutNummer.TelefoonNummerOntbreekt,
+                FoutNummer.EMailVerplicht
+            };
+
+            if ((from i in model.Inschrijvingen
+                where ontbrekendeGegevensFouten.Contains(i.FoutNummer)
+                select i.FoutNummer).Any())
+            {
+                model.ExtraUitleg = Properties.Resources.WaaromWeLidgegevensVragen;
+            }
 
             model.BeschikbareAfdelingen =
                 ServiceHelper.CallService<IGroepenService, List<ActieveAfdelingInfo>>(

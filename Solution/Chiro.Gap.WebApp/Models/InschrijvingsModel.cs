@@ -40,5 +40,10 @@ namespace Chiro.Gap.WebApp.Models
         /// Afdeling(sjar)en beschikbaar voor het werkjaar van de inschrijving.
         /// </summary>
         public List<ActieveAfdelingInfo> BeschikbareAfdelingen { get; set; }
+
+        /// <summary>
+        /// Hacky oplossing om extra informatie aan de user te tonen.
+        /// </summary>
+        public string ExtraUitleg { get; set; }
     }
 }

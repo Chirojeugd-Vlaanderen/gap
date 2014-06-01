@@ -405,4 +405,7 @@ Je kunt dit nog steeds doen door onder 'leden' te klikken op het vorige werkjaar
   <data name="EmailVoorLeidingOntbreekt" xml:space="preserve">
     <value>E-mailadres voor leiding verplicht.</value>
   </data>
+  <data name="WaaromWeLidgegevensVragen" xml:space="preserve">
+    <value>Sommige personen kunnen niet ingeschreven worden omdat hun gegevens niet volledig zijn. We vragen dat ieder lid een adres en telefoonnummer heeft, en iedere leid(st)er ook een e-mailadres. Op die manier kunnen wij voor een goede dienstverlening zorgen.</value>
+  </data>
 </root>

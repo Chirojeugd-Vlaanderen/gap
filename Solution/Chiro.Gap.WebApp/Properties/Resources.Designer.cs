@@ -872,6 +872,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sommige personen kunnen niet ingeschreven worden omdat hun gegevens niet volledig zijn. We vragen dat ieder lid een adres en telefoonnummer heeft, en iedere leid(st)er ook een e-mailadres. Op die manier kunnen wij voor een goede dienstverlening zorgen..
+        /// </summary>
+        public static string WaaromWeLidgegevensVragen {
+            get {
+                return ResourceManager.GetString("WaaromWeLidgegevensVragen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De overgang naar werkjaar {0}-{1} moet nog gebeuren..
         /// </summary>
         public static string WerkJaarInOvergang {

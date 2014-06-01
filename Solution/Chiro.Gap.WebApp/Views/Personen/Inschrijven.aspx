@@ -56,7 +56,16 @@
 		</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<% 
+	<%
+	    if (!String.IsNullOrEmpty(Model.ExtraUitleg))
+	    {
+            %>
+    			<div class="Foutmelding">
+				<%: Model.ExtraUitleg%>
+			</div>
+    <%
+	        
+	    }
     
     // Dit formulier wordt gebruikt door verschillende actions. De boeling is dat het
     // bij submit altijd doorschakelt naar Personen/Inschrijven.
