@@ -83,18 +83,27 @@ namespace Chiro.Gap.Workers.Test
             var groep = new ChiroGroep();
             var groepsWerkJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2012};
             var gelieerdePersoon = new GelieerdePersoon
-                                       {
-                                           Groep = groep,
-                                           ChiroLeefTijd = 0,
-                                           Persoon =
-                                               new Persoon
-                                                   {
-                                                       Geslacht = GeslachtsType.Vrouw,
-                                                       GeboorteDatum = new DateTime(1990, 04, 23)
-                                                   },
-                                           // adres nodig voor inschrijving.
-                                           PersoonsAdres = new PersoonsAdres()
-                                       };
+            {
+                Groep = groep,
+                ChiroLeefTijd = 0,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1990, 04, 23)
+                    },
+                // verplichte velden voor inschrijving (#1786)
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
+
+            };
 
             var target = Factory.Maak<LedenManager>();
 

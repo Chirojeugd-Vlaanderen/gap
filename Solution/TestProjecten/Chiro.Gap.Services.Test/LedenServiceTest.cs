@@ -295,23 +295,32 @@ namespace Chiro.Gap.Services.Test
             jongereAfdeling.GroepsWerkJaar = groepsWerkJaar;
 
             var gelieerdePersoon = new GelieerdePersoon
-                                       {
-                                           ID = 3,
-                                           Persoon = new Persoon
-                                                         {
-                                                             GeboorteDatum = new DateTime(1997, 3, 8),
-                                                             Geslacht = GeslachtsType.Vrouw
-                                                         },
-                                           Groep = new ChiroGroep
-                                                       {
-                                                           GroepsWerkJaar = new List<GroepsWerkJaar>
-                                                                                {
-                                                                                    groepsWerkJaar
-                                                                                }
-                                                       },
-                                           // adres nodig voor inschrijving.
-                                           PersoonsAdres = new PersoonsAdres()
-                                       };
+            {
+                ID = 3,
+                Persoon = new Persoon
+                {
+                    GeboorteDatum = new DateTime(1997, 3, 8),
+                    Geslacht = GeslachtsType.Vrouw
+                },
+                Groep = new ChiroGroep
+                {
+                    GroepsWerkJaar = new List<GroepsWerkJaar>
+                    {
+                        groepsWerkJaar
+                    }
+                },
+                // verplichte velden voor inschrijving (#1786)
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
+
+            };
             groepsWerkJaar.Groep = gelieerdePersoon.Groep;
 
             // dependency injection voor data access
@@ -382,22 +391,32 @@ namespace Chiro.Gap.Services.Test
             mijnAfdeling.GroepsWerkJaar = groepsWerkJaar;
 
             var oudeGelieerdePersoon = new GelieerdePersoon
-                                           {
-                                               ID = 3,
-                                               Persoon = new Persoon
-                                                             {
-                                                                 GeboorteDatum = new DateTime(1997, 3, 8),
-                                                                 Geslacht = GeslachtsType.Vrouw
-                                                             },
-                                               Groep = new ChiroGroep
-                                                           {
-                                                               GroepsWerkJaar = new List<GroepsWerkJaar>
-                                                                                    {
-                                                                                        groepsWerkJaar
-                                                                                    }
-                                                           },
-                                               PersoonsAdres = new PersoonsAdres()
-                                           };
+            {
+                ID = 3,
+                Persoon = new Persoon
+                {
+                    GeboorteDatum = new DateTime(1997, 3, 8),
+                    Geslacht = GeslachtsType.Vrouw
+                },
+                Groep = new ChiroGroep
+                {
+                    GroepsWerkJaar = new List<GroepsWerkJaar>
+                    {
+                        groepsWerkJaar
+                    }
+                },
+                // verplichte velden voor inschrijving (#1786)
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
+
+            };
             groepsWerkJaar.Groep = oudeGelieerdePersoon.Groep;
             var jongeGelieerdePersoon = new GelieerdePersoon
             {
@@ -408,7 +427,16 @@ namespace Chiro.Gap.Services.Test
                     Geslacht = GeslachtsType.Vrouw
                 },
                 Groep = groepsWerkJaar.Groep,
-                PersoonsAdres = new PersoonsAdres()
+                // verplichte velden voor inschrijving (#1786)
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
             };
          
             // We mocken een en ander:
@@ -787,19 +815,27 @@ namespace Chiro.Gap.Services.Test
             groepsWerkJaar.AfdelingsJaar.Add(afdelingsJaar);
 
             var gelieerdePersoon = new GelieerdePersoon
-                                       {
-                                           Groep = groep,
-                                           ID = 2,
-                                           Persoon =
-                                               new Persoon
-                                                   {
-                                                       Geslacht = GeslachtsType.Vrouw,
-                                                       GeboorteDatum = new DateTime(1996, 7, 3)
-                                                   },
-                                           ChiroLeefTijd = 0,
-                                           // adres nodig voor inschrijving.
-                                           PersoonsAdres = new PersoonsAdres()
-                                       };
+            {
+                Groep = groep,
+                ID = 2,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1996, 7, 3)
+                    },
+                ChiroLeefTijd = 0,
+                // verplichte velden voor inschrijving (#1786)
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
+            };
             groep.GelieerdePersoon.Add(gelieerdePersoon);
 
             var lid = new Kind { ID = 1, AfdelingsJaar = afdelingsJaar, GelieerdePersoon = gelieerdePersoon, GroepsWerkJaar = groepsWerkJaar };
@@ -876,8 +912,16 @@ namespace Chiro.Gap.Services.Test
                         GeboorteDatum = new DateTime(1996, 7, 3)
                     },
                 ChiroLeefTijd = 0,
-                // adres nodig voor inschrijving.
-                PersoonsAdres = new PersoonsAdres()
+                // verplichte velden voor inschrijving (#1786)
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
             };
             groep.GelieerdePersoon.Add(gelieerdePersoon);
 
@@ -1156,18 +1200,26 @@ namespace Chiro.Gap.Services.Test
             groepsWerkJaar.Groep = groep;
 
             var gelieerdePersoon = new GelieerdePersoon
-                                       {
-                                           ID = 1,
-                                           Groep = groep,                                              
-                                           Persoon =
-                                               new Persoon
-                                                   {
-                                                       Geslacht = GeslachtsType.Vrouw,
-                                                       GeboorteDatum = new DateTime(1980, 8, 8)
-                                                   },
-                                           // adres nodig voor inschrijving.
-                                           PersoonsAdres = new PersoonsAdres()
-                                       };
+            {
+                ID = 1,
+                Groep = groep,
+                Persoon =
+                    new Persoon
+                    {
+                        Geslacht = GeslachtsType.Vrouw,
+                        GeboorteDatum = new DateTime(1980, 8, 8)
+                    },
+                // verplichte velden voor inschrijving (#1786)
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
+            };
 
             var lidVoorsel = new InschrijvingsVoorstel
                                  {
@@ -1236,8 +1288,16 @@ namespace Chiro.Gap.Services.Test
                         Geslacht = GeslachtsType.Vrouw,
                         GeboorteDatum = new DateTime(1980, 8, 8)
                     },
-                // adres nodig voor inschrijving.
-                PersoonsAdres = new PersoonsAdres()
+                // verplichte velden voor inschrijving (#1786)
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
             };
 
             var lidVoorsel = new InschrijvingsVoorstel
@@ -1407,8 +1467,16 @@ namespace Chiro.Gap.Services.Test
                         GeboorteDatum = new DateTime(1996, 7, 3)
                     },
                 ChiroLeefTijd = 0,
-                // adres nodig voor inschrijving.
-                PersoonsAdres = new PersoonsAdres()
+                // verplichte velden voor inschrijving (#1786)
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
             };
             groep.GelieerdePersoon.Add(gelieerdePersoon);
 
@@ -1549,8 +1617,16 @@ namespace Chiro.Gap.Services.Test
                     },
                 Lid = new List<Lid> {lid},
                 Groep = groepsWerkJaar.Groep,
-                // adres nodig voor inschrijving.
-                PersoonsAdres = new PersoonsAdres()
+                // verplichte velden voor inschrijving (#1786)
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
             };
             
             lid.GelieerdePersoon = gp;
@@ -1718,8 +1794,16 @@ namespace Chiro.Gap.Services.Test
                         GeboorteDatum = new DateTime(1996, 7, 3)
                     },
                 ChiroLeefTijd = 0,
-                // adres nodig voor inschrijving.
-                PersoonsAdres = new PersoonsAdres()
+                // verplichte velden voor inschrijving (#1786)
+                PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
             };
             groep.GelieerdePersoon.Add(gelieerdePersoon);
 
@@ -2053,7 +2137,16 @@ namespace Chiro.Gap.Services.Test
                         Geslacht = GeslachtsType.Vrouw,
                         GeboorteDatum = new DateTime(1997, 8, 8)
                     },
+                // verplichte velden voor inschrijving (#1786)
                 PersoonsAdres = new PersoonsAdres(),
+                Communicatie =
+                    new List<CommunicatieVorm>
+                    {
+                        new CommunicatieVorm
+                        {
+                            CommunicatieType = new CommunicatieType {ID = (int) CommunicatieTypeEnum.TelefoonNummer}
+                        }
+                    }
             };
 
             var lidVoorsel = new InschrijvingsVerzoek
