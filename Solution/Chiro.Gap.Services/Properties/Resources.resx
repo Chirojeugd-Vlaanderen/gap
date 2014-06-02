@@ -237,4 +237,10 @@
   <data name="IdsNietWijzigen" xml:space="preserve">
     <value>Civi-ID, GelieerdePersoonID en AD-nummer mag je niet zelf kiezen.</value>
   </data>
+  <data name="AdresOntbreekt" xml:space="preserve">
+    <value>We vragen een adres voor ieder ingeschreven lid.</value>
+  </data>
+  <data name="TelefoonNrOntbreekt" xml:space="preserve">
+    <value>We vragen een telefoonnummer voor ieder ingeschreven lid.</value>
+  </data>
 </root>

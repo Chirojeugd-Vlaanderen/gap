@@ -888,6 +888,18 @@ namespace Chiro.Gap.Services
                                     new FoutBericht {Bericht = ex.Message, FoutNummer = ex.FoutNummer});
                                 lid = null;
                                 break;
+                            case FoutNummer.AdresOntbreekt:
+                                problemen.Add("PostNr", new FoutBericht {Bericht = Properties.Resources.AdresOntbreekt});
+                                lid = null;
+                                break;
+                            case FoutNummer.TelefoonNummerOntbreekt:
+                                problemen.Add("TelefoonNummer.Nummer", new FoutBericht {Bericht = Properties.Resources.TelefoonNrOntbreekt});
+                                lid = null;
+                                break;
+                            case FoutNummer.EMailVerplicht:
+                                problemen.Add("Email.Nummer", new FoutBericht {Bericht = Properties.Resources.EmailOntbreekt});
+                                lid = null;
+                                break;
                             default:
                                 throw;
                         }
