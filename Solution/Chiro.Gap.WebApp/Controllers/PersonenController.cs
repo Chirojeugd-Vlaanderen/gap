@@ -494,66 +494,6 @@ namespace Chiro.Gap.WebApp.Controllers
             return Json(model,JsonRequestBehavior.AllowGet);
         }
 
-        /// <summary>
-        /// Probeert de gewijzigde persoonsgegevens te persisteren via de webservice
-        /// </summary>
-        /// <param name="model"><c>GelieerdePersonenModel</c> met gegevens gewijzigd door de gebruiker</param>
-        /// <param name="groepID">GroepID van huidig geseecteerde groep</param>
-        /// <returns>Redirect naar overzicht persoonsinfo indien alles ok, anders opnieuw de view
-        /// 'Nieuw'.</returns>
-        [AcceptVerbs(HttpVerbs.Post)]
-        [HandleError]
-        public ActionResult Nieuw(PersoonsWijzigingModel model, int groepID)
-        {
-            if (!ModelState.IsValid)
-            {
-                // Als er iets niet in orde is met de wijzigingen, vullen we de ontbrekende gegevens aan, en tonen we 
-                // een view.
-                // In praktijk zal die niet gebruikt worden, aangezien deze methode enkel wordt aangeroepen door JQuery.
-                var persoonInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonInfo>(
-                    svc => svc.InfoOphalen(model.Wijziging.GelieerdePersoonID));
-
-                if (model.Wijziging.ChiroLeefTijd == null)
-                {
-                    model.Wijziging.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;
-                }
-                if (model.Wijziging.GeboorteDatum == null)
-                {
-                    model.Wijziging.GeboorteDatum = persoonInfo.GeboorteDatum;
-                }
-                if (model.Wijziging.Geslacht == null)
-                {
-                    model.Wijziging.Geslacht = persoonInfo.Geslacht;
-                }
-                if (model.Wijziging.Naam == null)
-                {
-                    model.Wijziging.Naam = persoonInfo.Naam;
-                }
-                if (model.Wijziging.SterfDatum == null)
-                {
-                    model.Wijziging.SterfDatum = persoonInfo.SterfDatum;
-                }
-                if (model.Wijziging.VoorNaam == null)
-                {
-                    model.Wijziging.VoorNaam = persoonInfo.VoorNaam;
-                }
-
-                return View("Nieuw", model);
-            }
-
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Wijzigen(model.Wijziging));
-
-            // Voorlopig opnieuw redirecten naar Bewerken;
-            // er zou wel gemeld moeten worden dat het wijzigen
-            // gelukt is.
-            // TODO Wat als er een fout optreedt bij PersoonBewaren?
-            TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-
-            // (er wordt hier geredirect ipv de view te tonen,
-            // zodat je bij een 'refresh' niet de vraag krijgt
-            // of je de gegevens opnieuw wil posten.)
-            return RedirectToAction("Bewerken", new { id = model.Wijziging.GelieerdePersoonID, groepID });
-        }
 
         /// <summary>
         /// Deze actie met onduidelijke naam toont gewoon de personenfiche van de gelieerde
