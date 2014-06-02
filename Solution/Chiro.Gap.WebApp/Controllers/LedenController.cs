@@ -566,7 +566,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             int gpID = ServiceHelper.CallService<ILedenService, int>(svc => svc.AfdelingenVervangen(model.LidID, model.Info.AfdelingsJaarIDs));
 
-            return RedirectToAction("EditRest", "Personen", new { id = gpID });
+            return RedirectToAction("Bewerken", "Personen", new { id = gpID });
         }
 
         /// <summary>
@@ -668,7 +668,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult LoonVerliesVerzekeren(BevestigingsModel model, int groepID, int id)
         {
             int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.LoonVerliesVerzekeren(id));
-            return RedirectToAction("EditRest", "Personen", new { id = gelieerdePersoonID });
+            return RedirectToAction("Bewerken", "Personen", new { id = gelieerdePersoonID });
         }
 
         /// <summary>
@@ -745,7 +745,7 @@ namespace Chiro.Gap.WebApp.Controllers
                         throw;
                 }
             }
-            return RedirectToAction("EditRest", "Personen", new { groepID, id = model.Persoon.GelieerdePersoonID });
+            return RedirectToAction("Bewerken", "Personen", new { groepID, id = model.Persoon.GelieerdePersoonID });
         }
 
         /// <summary> 
@@ -777,7 +777,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.LidGeldToggle(id));
 
-            return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });
+            return RedirectToAction("Bewerken", "Personen", new { groepID, id = gelieerdePersoonID });
         }
 
         /// <summary>
@@ -827,7 +827,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 }
             }
 
-            return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });
+            return RedirectToAction("Bewerken", "Personen", new { groepID, id = gelieerdePersoonID });
         }
 
         #region Verkorte url's, die eigenlijk gewoon Lijst aanroepen met de jusite parameters

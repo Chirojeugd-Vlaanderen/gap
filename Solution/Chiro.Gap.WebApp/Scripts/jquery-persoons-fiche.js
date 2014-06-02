@@ -929,7 +929,7 @@ $(function () {
 
     function bewaarGegevens(teVeranderen, nieuweWaarde, GID, GPid) {
 
-        url = link("Personen", "EditGegevens");
+        url = link("Personen", "Nieuw");
         url += "/" + GPid;
         var n = achternaam;
         var vn = voornaam;

@@ -42,7 +42,7 @@
         <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.SterfDatum)%>:
         <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.SterfDatum)%>
         <br />
-        <%=Html.ActionLink("[persoonlijke gegevens aanpassen]", "EditGegevens", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %><br />
+        <%=Html.ActionLink("[persoonlijke gegevens aanpassen]", "Nieuw", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %><br />
     </p>
     <h3>
         Laatst gekende adressen</h3>

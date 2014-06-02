@@ -46,7 +46,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             ServiceHelper.CallService<IGebruikersService>(
                 svc => svc.RechtenToekennen(id, new[] {new GebruikersRecht {GroepID = groepID, Rol = Rol.Gav}}));
-            return RedirectToAction("EditRest", new { Controller = "Personen", id });
+            return RedirectToAction("Bewerken", new { Controller = "Personen", id });
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult VanGpAfnemen(int groepID, int id)
         {
             ServiceHelper.CallService<IGebruikersService>(svc => svc.RechtenAfnemen(id, new[] {groepID}));
-            return RedirectToAction("EditRest", new { Controller = "Personen", id });
+            return RedirectToAction("Bewerken", new { Controller = "Personen", id });
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult LoginMaken(int groepID, int id)
         {
             ServiceHelper.CallService<IGebruikersService>(svc => svc.RechtenToekennen(id, null));
-            return RedirectToAction("EditRest", "Personen", new {groepID, id});
+            return RedirectToAction("Bewerken", "Personen", new { groepID, id });
         }
     }
 }

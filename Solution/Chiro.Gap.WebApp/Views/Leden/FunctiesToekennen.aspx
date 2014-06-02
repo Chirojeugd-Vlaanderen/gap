@@ -34,6 +34,6 @@
 	</fieldset>
 	<br />
 	<%} %>
-	<%= Html.ActionLink("Terug naar de persoonsfiche", "EditRest", new { Controller = "Personen", id = Model.Persoon.GelieerdePersoonID}) %>
+	<%= Html.ActionLink("Terug naar de persoonsfiche", "Bewerken", new { Controller = "Personen", id = Model.Persoon.GelieerdePersoonID}) %>
     
 </asp:Content>

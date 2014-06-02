@@ -385,7 +385,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 return View(model);
             }
 
-            // Voorlopig opnieuw redirecten naar EditRest;
+            // Voorlopig opnieuw redirecten naar Bewerken;
             // er zou wel gemeld moeten worden dat het wijzigen
             // gelukt is.
             // TODO Wat als er een fout optreedt bij PersoonBewaren?
@@ -394,7 +394,7 @@ namespace Chiro.Gap.WebApp.Controllers
             if (String.Compare(model.Button, "bewaren", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 Debug.Assert(ids != null);
-                return RedirectToAction("EditRest", new {id = ids.GelieerdePersoonID});
+                return RedirectToAction("Bewerken", new { id = ids.GelieerdePersoonID });
             }
 
             // bewaren en nog iemand toevoegen
@@ -490,16 +490,16 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="id">GelieerdePersoonID van te wijzigen persoon</param>
         /// <param name="groepID">GroepID van de huidig geselecteerde groep</param>
-        /// <returns>De view 'EditGegevens'</returns>
+        /// <returns>De view 'Nieuw'</returns>
         //[AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
-        public ActionResult EditGegevens(int id, int groepID)
+        public ActionResult Nieuw(int id, int groepID)
         { 
             var model = new GelieerdePersonenModel();
             BaseModelInit(model, groepID);
             model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(id));
             model.Titel = model.HuidigePersoon.VolledigeNaam;
-            return View ("EditGegevens",model);
+            return View("Nieuw", model);
            
         }
 
@@ -518,10 +518,10 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="model"><c>GelieerdePersonenModel</c> met gegevens gewijzigd door de gebruiker</param>
         /// <param name="groepID">GroepID van huidig geseecteerde groep</param>
         /// <returns>Redirect naar overzicht persoonsinfo indien alles ok, anders opnieuw de view
-        /// 'EditGegevens'.</returns>
+        /// 'Nieuw'.</returns>
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
-        public ActionResult EditGegevens(PersoonsWijzigingModel model, int groepID)
+        public ActionResult Nieuw(PersoonsWijzigingModel model, int groepID)
         {
             if (!ModelState.IsValid)
             {
@@ -556,12 +556,12 @@ namespace Chiro.Gap.WebApp.Controllers
                     model.Wijziging.VoorNaam = persoonInfo.VoorNaam;
                 }
 
-                return View("EditGegevens", model);
+                return View("Nieuw", model);
             }
 
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Wijzigen(model.Wijziging)); 
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Wijzigen(model.Wijziging));
 
-            // Voorlopig opnieuw redirecten naar EditRest;
+            // Voorlopig opnieuw redirecten naar Bewerken;
             // er zou wel gemeld moeten worden dat het wijzigen
             // gelukt is.
             // TODO Wat als er een fout optreedt bij PersoonBewaren?
@@ -570,7 +570,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // (er wordt hier geredirect ipv de view te tonen,
             // zodat je bij een 'refresh' niet de vraag krijgt
             // of je de gegevens opnieuw wil posten.)
-            return RedirectToAction("EditRest", new { id = model.Wijziging.GelieerdePersoonID, groepID });
+            return RedirectToAction("Bewerken", new { id = model.Wijziging.GelieerdePersoonID, groepID });
         }
 
         /// <summary>
@@ -583,7 +583,7 @@ namespace Chiro.Gap.WebApp.Controllers
         // id = gelieerdepersonenid
         // GET
         [HandleError]
-        public ActionResult EditRest(int id, int groepID)
+        public ActionResult Bewerken(int id, int groepID)
         {
             var model = new PersoonEnLidModel();
             BaseModelInit(model, groepID);
@@ -601,7 +601,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.PrijsVerzekeringLoonVerlies = Properties.Settings.Default.PrijsVerzekeringLoonVerlies;
                 model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam;
 
-                return View("EditRest", model);
+                return View("Bewerken", model);
             }
             else
             {
@@ -873,7 +873,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Uitschrijven(int gelieerdepersoonID, int groepID)
         {
             GelieerdePersonenUitschrijven(new List<int> { gelieerdepersoonID }, groepID, Properties.Resources.LedenUitgeschreven);
-            return RedirectToAction("EditRest", new {ID = gelieerdepersoonID, groepID});
+            return RedirectToAction("Bewerken", new { ID = gelieerdepersoonID, groepID });
         }
 
         #endregion leden
@@ -982,7 +982,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="model">Bevat de nodige info voor de verhuis</param>
         /// <param name="groepID">Huidig geslecteerde groep van de gebruiker</param>
-        /// <returns>De view 'EditRest' indien OK, anders opnieuw de view 'AdresBewerken'.</returns>
+        /// <returns>De view 'Bewerken' indien OK, anders opnieuw de view 'AdresBewerken'.</returns>
         [AcceptVerbs(HttpVerbs.Post)]
         [ParameterAccepteren(Naam = "action", Waarde = "Bewaren")]
         [HandleError]
@@ -1004,7 +1004,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 ServiceHelper.CallService<IGelieerdePersonenService>(l => l.GelieerdePersonenVerhuizen(model.GelieerdePersoonIDs, model.PersoonsAdresInfo, model.OudAdresID));
 
-                return RedirectToAction("EditRest", "Personen", new { id = model.GelieerdePersoonIDs.First() });
+                return RedirectToAction("Bewerken", "Personen", new { id = model.GelieerdePersoonIDs.First() });
             }
             catch (FaultException<OngeldigObjectFault> ex)
             {
@@ -1101,7 +1101,7 @@ namespace Chiro.Gap.WebApp.Controllers
             ServiceHelper.CallService<IGelieerdePersonenService>(foo => foo.AdresVerwijderenVanPersonen(model.PersoonIDs, model.Adres.ID));
             VeelGebruikt.LedenProblemenResetten(groepID);
 
-            return RedirectToAction("EditRest", new { id = model.AanvragerID });
+            return RedirectToAction("Bewerken", new { id = model.AanvragerID });
         }
 
         /// <summary>
@@ -1191,7 +1191,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 // Door het AanvragerID te gebruiken ipv het tijdelijke cookie (uit TerugNaarVorigeFiche) werkt de
                 // redirect ook naar behoren als ondertussen in een andere tab een andere persoon bekeken is.
 
-                return RedirectToAction("EditRest", new { id = model.AanvragerID });
+                return RedirectToAction("Bewerken", new { id = model.AanvragerID });
             }
             catch (FaultException<OngeldigObjectFault> ex)
             {
@@ -1254,7 +1254,7 @@ namespace Chiro.Gap.WebApp.Controllers
             ServiceHelper.CallService<IGelieerdePersonenService>(l => l.VoorkeursAdresMaken(persoonsAdresID, gelieerdePersoonID));
             VeelGebruikt.LedenProblemenResetten(groepID);
 
-            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            return RedirectToAction("Bewerken", new { id = gelieerdePersoonID });
         }
 
         #endregion adressen
@@ -1368,7 +1368,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo));
                 VeelGebruikt.LedenProblemenResetten(groepID);
 
-                return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+                return RedirectToAction("Bewerken", new { id = gelieerdePersoonID });
             }
         }
 
@@ -1386,7 +1386,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             VeelGebruikt.LedenProblemenResetten(groepID);
 
-            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            return RedirectToAction("Bewerken", new { id = gelieerdePersoonID });
         }
 
         /// <summary>
@@ -1468,7 +1468,7 @@ namespace Chiro.Gap.WebApp.Controllers
             Mapper.Map(model.NieuweCommVorm, commInfo);
 
             ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(commInfo));
-            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            return RedirectToAction("Bewerken", new { id = gelieerdePersoonID });
         }
 
         #endregion commvormen
@@ -1488,7 +1488,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             IList<int> list = new List<int> { gelieerdePersoonID };
             ServiceHelper.CallService<IGelieerdePersonenService>(l => l.UitCategorieVerwijderen(list, categorieID));
-            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            return RedirectToAction("Bewerken", new { id = gelieerdePersoonID });
         }
 
         /// <summary>
@@ -1555,7 +1555,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             if (model.GelieerdePersoonIDs.Count == 1)
             {
-                return RedirectToAction("EditRest", "Personen", new { id = model.GelieerdePersoonIDs.First(), groepID });
+                return RedirectToAction("Bewerken", "Personen", new { id = model.GelieerdePersoonIDs.First(), groepID });
             }
             else
             {

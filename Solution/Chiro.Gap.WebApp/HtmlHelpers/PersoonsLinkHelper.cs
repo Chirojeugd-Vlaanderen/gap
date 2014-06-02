@@ -37,7 +37,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
         {
             // Een persoonslink komt typisch voor in sorteerbare lijsten, dus is het beter als de familienaam vooraan staat.
             return helper.ActionLink(String.Format("{0} {1}", naam, voornaam),
-                                     "EditRest",
+                                     "Bewerken",
                                      new { Controller = "Personen", id = gelieerdePersoonID });
         }
     }

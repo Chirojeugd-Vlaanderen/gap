@@ -25,9 +25,7 @@
 	Handleiding: Persoonsfiche
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
-	<h2>
-		Persoonsfiche</h2>
-	<!-- EditRest -->
+	<h2>Persoonsfiche</h2>
 	
 	<h3>
 		Wat kun je hier zien?</h3>
