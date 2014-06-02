@@ -324,6 +324,7 @@
     <Content Include="Views\JaarOvergang\Afdeling.aspx" />
     <Content Include="Views\Leden\AfdelingenBewerken.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
+    <Content Include="Views\Personen\Bewerken.aspx" />
     <Content Include="Views\Personen\OverledenPersoon.aspx" />
     <Content Include="Views\Shared\NavigatieBeperktControl.ascx" />
     <Content Include="Views\Shared\NavigatieBeperktControl.ascx" />
