@@ -204,5 +204,47 @@ namespace Chiro.Gap.ServiceContracts.Test
             // Deelnemer voor bivak dit jaar, die dit jaar geen lid is, krijgt type 'onbekend'
         }
 
+        /// <summary>
+        /// Controleert of de afdeling van een deelnemer goed wordt gemapt.
+        /// </summary>
+        [TestMethod]
+        public void MapDeelnemerAfdeling()
+        {
+            // ARRANGE
+
+            var groep = new ChiroGroep();
+            var vorigJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2012 };
+            var ditJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2013 };
+            var gelieerdePersoon = new GelieerdePersoon { Groep = groep, Persoon = new Persoon() };
+            var lidVorigJaar = new Kind
+            {
+                GroepsWerkJaar = vorigJaar,
+                GelieerdePersoon = gelieerdePersoon,
+                AfdelingsJaar = new AfdelingsJaar {Afdeling = new Afdeling {ID = 1}}
+            };
+            var lidDitJaar = new Kind
+            {
+                GroepsWerkJaar = ditJaar,
+                GelieerdePersoon = gelieerdePersoon,
+                AfdelingsJaar = new AfdelingsJaar {Afdeling = new Afdeling {ID = 2}}
+            };
+            gelieerdePersoon.Lid = new List<Lid> { lidVorigJaar, lidDitJaar };
+
+            var uitstap = new Uitstap
+            {
+                DatumVan = new DateTime(ditJaar.WerkJaar + 1, 07, 1),
+                DatumTot = new DateTime(ditJaar.WerkJaar + 1, 07, 10)
+            };
+            var deelnemer = new Deelnemer { Uitstap = uitstap, GelieerdePersoon = gelieerdePersoon, IsLogistieker = false };
+
+            // ACT
+
+            var result = Mapper.Map<Deelnemer, DeelnemerDetail>(deelnemer);
+
+            // ASSERT
+
+            Assert.AreEqual(2, result.Afdelingen.First().ID);
+        }
+
 	}
 }
