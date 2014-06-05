@@ -500,7 +500,12 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
             Mapper.CreateMap<Deelnemer, DeelnemerDetail>()
                 .ForMember(dst => dst.Afdelingen,
-                    opt => opt.MapFrom(src => Afdelingen(src.GelieerdePersoon.Lid.FirstOrDefault())))
+                    opt =>
+                        opt.MapFrom(
+                            src =>
+                                Afdelingen(
+                                    src.GelieerdePersoon.Lid.OrderByDescending(ld => ld.GroepsWerkJaar.WerkJaar)
+                                        .FirstOrDefault())))
                 .ForMember(dst => dst.DeelnemerID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.PersoonOverzicht, opt => opt.Ignore())
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
