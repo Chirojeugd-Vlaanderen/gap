@@ -38,6 +38,7 @@ namespace Chiro.Gap.WebApp.Models
             NieuweCategorie = new CategorieInfo();
             NieuweFunctie = new FunctieDetail();
             Types = new List<LidType>();
+            NonActieveAfdelingen = new List<AfdelingInfo>();
             Mededelingen = new List<Mededeling>();
         }
 
@@ -48,6 +49,8 @@ namespace Chiro.Gap.WebApp.Models
         public FunctieDetail NieuweFunctie { get; set; }
         
         public IEnumerable<LidType> Types { get; set; }
+       
+        public List<AfdelingInfo> NonActieveAfdelingen { get; set; }
 
         #region IMasterViewModel Members
 

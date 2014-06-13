@@ -112,7 +112,6 @@
     <Compile Include="ExcelResult.cs" />
     <Compile Include="GapSortering.cs" />
     <Compile Include="Controllers\VerzekeringController.cs" />
-    <Compile Include="HtmlHelpers\AfdelingsLinksHelper.cs" />
     <Compile Include="HtmlHelpers\CheckBoxListHelper.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GavController.cs" />
@@ -259,13 +258,14 @@
     <Content Include="Scripts\jquery-overzicht-iedereen.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\ZeroClipboard.js" />
-    <Content Include="Views\Afdelingen\Afdeling.aspx" />
     <Content Include="Views\Afdelingen\AfdelingsJaar.aspx" />
-    <Content Include="Views\Afdelingen\Index.aspx" />
     <Content Include="Views\Functies\Bewerken.aspx" />
     <Content Include="Views\Gav\Index.aspx" />
     <Content Include="Views\GebruikersRecht\Index.aspx" />
+    <Content Include="Views\Groep\Categorieen.aspx" />
+    <Content Include="Views\Groep\Afdelingen.aspx" />
     <Content Include="Views\Groep\NaamWijzigen.aspx" />
+    <Content Include="Views\Groep\Functies.aspx" />
     <Content Include="Views\Handleiding\Zoeken.aspx" />
     <Content Include="Views\Handleiding\Deadlines.aspx" />
     <Content Include="Views\Handleiding\Deelnemersadministratie.aspx" />

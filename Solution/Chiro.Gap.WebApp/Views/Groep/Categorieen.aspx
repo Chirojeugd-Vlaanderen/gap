@@ -47,26 +47,24 @@
         <li><%=Html.ActionLink("Functies", "Functies")%></li>
     </ul>
     
-    <fieldset id="groep_algemeen">
-        <legend>Algemene groepsinfo</legend>
+	<fieldset id="groep_categorieën">
+		<legend>Categorieën voor ingeschreven en niet-ingeschreven personen</legend>
 		<table>
+		    <thead>
+		        <th>Categorie</th>
+                <th>Code</th>
+                <th></th>
+		    </thead>
 		    <tbody>
-			    <tr>
-				    <td><%=Html.LabelFor(mdl => mdl.Detail.Naam)%></td>
-				    <td><span id="groepsNaam"><%=Html.DisplayFor(mdl => mdl.Detail.Naam)%></span></td>
-                    <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkGroepsNaam" style="cursor:pointer"></div></td>
-			    </tr>
-			    <tr>
-				    <td><%=Html.LabelFor(mdl => mdl.Detail.Plaats)%></td>
-				    <td><%=Html.DisplayFor(mdl => mdl.Detail.Plaats)%></td>
-                    <td></td>
-			    </tr>
-			    <tr>
-				    <td><%=Html.LabelFor(mdl => mdl.Detail.StamNummer)%></td>
-				    <td><%=Html.DisplayFor(mdl => mdl.Detail.StamNummer)%></td>
-                    <td></td>
-			    </tr>
+			<% foreach (var cat in Model.Detail.Categorieen.OrderBy(cat => cat.Code)) { %>
+			<tr>
+				<td><%=cat.Naam%><input value="<%=cat.ID %>" hidden/></td>
+                <td><%=cat.Code %></td>
+                <td><div class="categorieVerwijderen ui-icon ui-icon-circle-minus" title="Verwijderen" style="cursor: pointer"></div></td>
+			</tr>
+			<% } %>
             </tbody>
 		</table>
-    </fieldset>
+        <button id="groep_categorieën_Toevoegen">Categorie toevoegen</button>
+	</fieldset>
 </asp:Content>

@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.Web.Mvc;
 using Chiro.Cdf.ServiceHelper;
@@ -48,17 +49,54 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
-			var model = new GroepsInstellingenModel
-							{
-								Titel = Properties.Resources.GroepsInstellingenTitel,
-								Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(svc => svc.DetailOphalen(groepID))
-							};
+            var werkjaarID = ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID));
+            var model = new GroepsInstellingenModel
+            {
+                Titel = Properties.Resources.GroepsInstellingenTitel,
+                Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(svc => svc.DetailOphalen(groepID)),
+                NonActieveAfdelingen = ServiceHelper.CallService<IGroepenService, List<AfdelingInfo>>(svc => svc.OngebruikteAfdelingenOphalen(werkjaarID))
+            };
 
-			// Ook hier nakijken of we live zijn.
-			model.IsLive = VeelGebruikt.IsLive();
+            // Ook hier nakijken of we live zijn.
+            model.IsLive = VeelGebruikt.IsLive();
 
-			return View(model);
+            return View(model);
 		}
+
+        // NOTE: onderstaande methodes komen voort uit opsplitsing groepenscherm, maar halen dus eigenlijk wat teveel info op.
+
+        /// <summary>
+        /// Genereert een view met actieve afdelings gegevens over de groep
+        /// </summary>
+        /// <param name="groepID">ID van de gewenste groep</param>
+        /// <returns>View met actieve afdelings  gegevens over de groep</returns>
+        [HandleError]
+        public ActionResult Afdelingen(int groepID)
+        {
+            return Index(groepID);
+        }
+
+        /// <summary>
+        /// Genereert een view met categorie gegevens over de groep
+        /// </summary>
+        /// <param name="groepID">ID van de gewenste groep</param>
+        /// <returns>View met categorie gegevens over de groep</returns>
+        [HandleError]
+        public ActionResult Categorieen(int groepID)
+        {
+            return Index(groepID);
+        }
+
+        /// <summary>
+        /// Genereert een view met functie gegevens over de groep
+        /// </summary>
+        /// <param name="groepID">ID van de gewenste groep</param>
+        /// <returns>View met functie gegevens over de groep</returns>
+        [HandleError]
+        public ActionResult Functies(int groepID)
+        {
+            return Index(groepID);
+        }
 
         /// <summary>
         /// Laat de gebruiker de naam van de groep <paramref name="groepID"/> bewerken.

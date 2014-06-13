@@ -71,7 +71,7 @@ $(function () {
                     title: "Categorie toevoegen",
                     buttons: {
                         'Bewaren': function () {
-                            $('#form0').submit();
+                            $('#categorieToevoegen').click();
                             $(this).dialog('close');
                         },
                         'Annuleren': function () {
@@ -108,12 +108,37 @@ $(function () {
         });
     });
 
-    //      Afdelingsverdeling aanpassen
-    $('#groep_afdelingen_aanpassen_knop').click(function () {
-        url = link("Afdelingen", "Index");
-        window.location.href = url;
+    $('#groep_afdelingen_nieuw').click(function () {
+        $('#errors').hide();
+        url = link("Afdelingen", "Nieuw");
+        url += ' #main';
+        $('#extraInfoDialog').load(url, function () {
+            success:
+                {
+                    gedeeltelijkTonen('#extraInfoDialog');
+                    $(this).dialog({
+                        modal: true,
+                        width: 450,
+                        height: 300,
+                        title: "Een nieuwe afdeling maken",
+                        buttons: {
+                            'Bewaren': function () {
+                                $('#afdelingNieuw_bewaar').click();
+                                $(this).dialog('close');
+                            },
+                            'Annuleren': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                }
+        });
+        clearDialog();
     });
+
+    //      Afdelingsverdeling aanpassen
     $('.groep_bewerkAfdeling').click(function () {
+        $('#errors').hide();
         $('#extraInfoDialog').dialog();
         afdelingId = $(this).parent().parent().find('td input').val();
         url = link("Afdelingen", "AfdJaarBewerken");
@@ -131,9 +156,6 @@ $(function () {
                         'Bewaren': function () {
                             $('#afdelingBewerken_bewaar').click();
                         },
-                        'Reset': function () {
-                            $('#afdelingbewerken_reset').click();
-                        },
                         'Annuleren': function () {
                             $(this).dialog('close');
                         }
@@ -142,6 +164,92 @@ $(function () {
             }
         });
         clearDialog();
+    });
+
+    // een afdeling activeren
+    $('#afdActiveren').click(function () {
+        $('#errors').hide();
+        afdelingId = $(this).parent().parent().find('td input').val();
+        url = link("Afdelingen", "Activeren");
+        url += "/" + afdelingId + " #main";
+        $('#extraInfoDialog').load(url, function () {
+            success:
+                {
+                    gedeeltelijkTonen("#extraInfoDialog");
+                    $('#afdelingBewerken_bewaar').hide();
+                    $('#extraInfoDialog').dialog({
+                        modal: true,
+                        width: 450,
+                        height: 400,
+                        title: "Afdeling Activeren",
+                        buttons: {
+                            'Bevestigen': function () {
+                                $('#afdelingBewerken_bewaar').click();
+                                $(this).dialog('close');
+                            },
+                            'Annuleren': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                }
+        });
+    });
+
+    // een afdeling VERWIJDEREN
+    $('.afdelingVerwijderen').click(function () {
+        $('#errors').hide();
+        afdelingId = $(this).parent().parent().find('td input').val();
+        url = link("Afdelingen", "Verwijderen") + '/' + afdelingId;
+        $('#extraInfoDialog').html('Ben je zeker dat je deze afdeling wil verwijderen?');
+        $('#extraInfoDialog').dialog({
+            modal: true,
+            title: "Afdeling verwijderen",
+            buttons: {
+                'Ja': function () {
+                    $(this).dialog('close');
+                    $.getJSON(url, { }, function (data) {
+                        if (data[0] == "gelukt") {
+                            location.reload();
+                        } else {
+                            $('#errors').html('Afdeling kon niet verwijderd worden want ze is actief in sommige jaren');
+                            $('#errors').show();
+                        }
+                    });
+                },
+                'Nee': function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+    });
+
+    // een afdelingjaar VERWIJDEREN
+    $('.afdelingjaarVerwijderen').click(function () {
+        $('#errors').hide();
+        afdelingId = $(this).parent().parent().find('td input').val();
+        url = link("Afdelingen", "VerwijderenVanWerkjaar") + '/' + afdelingId;;
+        $('#extraInfoDialog').html('Ben je zeker dat je deze afdeling wil verwijderen voor dit jaar (kan enkel als er geen leden in zitten)?');
+        $('#extraInfoDialog').dialog({
+            modal: true,
+            title: "Afdeling verwijderen uit werkjaar",
+            buttons: {
+                'Ja': function () {
+                    $(this).dialog('close');
+                    $.getJSON(url, { }, function (data) {
+                        if (data[0] == "gelukt") {
+                            location.reload();
+                        } else {
+                            $('#errors').html('Afdeling kon niet verwijderd worden want ze heeft nog leden');
+                            $('#errors').show();
+                        }
+                    });
+                },
+                'Nee': function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
     });
 
     //      knop functies toevoegen

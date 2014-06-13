@@ -24,25 +24,14 @@
 	<%// Opgelet! Scripts MOETEN een expliciete closing tag (</script>) hebben!  Ze oa #722 %>
 </asp:Content>
 <asp:Content runat="server" ID="Content2" ContentPlaceHolderID="MainContent">
-	<fieldset id="categorieen_bestaand">
-		<legend>Persoonscategorie&euml;n</legend>
-		<ul>
-			<%
-				foreach (var cat in Model.Detail.Categorieen.OrderBy(cat => cat.Code))
-				{
-			%>
-			<li>
-				<%=Html.Encode(String.Format("{0} - {1}", cat.Code, cat.Naam)) %>
-				[<%=Html.ActionLink("verwijderen", "CategorieVerwijderen", new {id = cat.ID }) %>]
-			</li>
-			<%
-				}
-			%>
-		</ul>
-	</fieldset>
 	<% 
 		using (Html.BeginForm())
 		{ %>
+    <ul id="acties">
+		<li>
+			<input type="submit" value="Bewaren" id="categorieToevoegen" />
+        </li>
+	</ul>
 	<fieldset>
 		<legend>Categorie toevoegen</legend>
 		<p>
@@ -54,9 +43,6 @@
 			<%=Html.LabelFor(mdl=>mdl.NieuweCategorie.Code) %>
 			<%=Html.EditorFor(mdl=>mdl.NieuweCategorie.Code) %><br />
 			<%=Html.ValidationMessageFor(mdl=>mdl.NieuweCategorie.Code) %>
-		</p>
-		<p>
-			<input type="submit" value="Bewaren"/>
 		</p>
 	</fieldset>
 	<%} %>

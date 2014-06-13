@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<GroepsInstellingenModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<GroepsInstellingenModel>" %>
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
@@ -43,30 +43,33 @@
         %>
         <li><%=Html.ActionLink("Afdelingen dit werkjaar", "Afdelingen")%></li>
         <%} %>
-        <li><%=Html.ActionLink("Categorie�n", "Categorieen")%></li>
+        <li><%=Html.ActionLink("Categorieën", "Categorieen")%></li>
         <li><%=Html.ActionLink("Functies", "Functies")%></li>
     </ul>
     
-    <fieldset id="groep_algemeen">
-        <legend>Algemene groepsinfo</legend>
+	<fieldset id="groep_functies">
+		<legend>Eigen functies voor ingeschreven leden en leiding</legend>
 		<table>
+		    <thead>
+		        <th>Naam</th>
+                <th>Code</th>
+                <th>Type</th>
+                <th></th>
+                <th></th>
+		    </thead>
 		    <tbody>
+			    <% foreach (var fie in Model.Detail.Functies.Where(fie=>fie.WerkJaarTot == null || fie.WerkJaarTot < Model.HuidigWerkJaar).OrderBy(fie => fie.Type)) { %>
 			    <tr>
-				    <td><%=Html.LabelFor(mdl => mdl.Detail.Naam)%></td>
-				    <td><span id="groepsNaam"><%=Html.DisplayFor(mdl => mdl.Detail.Naam)%></span></td>
-                    <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkGroepsNaam" style="cursor:pointer"></div></td>
+			        <td hidden><input value="<%=fie.ID %>"/></td>
+			        <td><%=fie.Naam %></td>
+                    <td><%=fie.Code %></td>
+                    <td><%=fie.Type == LidType.Kind ? "leden" : fie.Type == LidType.Leiding ? "leiding" : "leden en leiding"%></td>
+                    <td><div class="functieBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor:pointer"></div></td>
+                    <td><div class="functieVerwijderen ui-icon ui-icon-circle-minus" title="Verwijderen" style="cursor: pointer"></div></td>
 			    </tr>
-			    <tr>
-				    <td><%=Html.LabelFor(mdl => mdl.Detail.Plaats)%></td>
-				    <td><%=Html.DisplayFor(mdl => mdl.Detail.Plaats)%></td>
-                    <td></td>
-			    </tr>
-			    <tr>
-				    <td><%=Html.LabelFor(mdl => mdl.Detail.StamNummer)%></td>
-				    <td><%=Html.DisplayFor(mdl => mdl.Detail.StamNummer)%></td>
-                    <td></td>
-			    </tr>
+			    <% } %>
             </tbody>
 		</table>
-    </fieldset>
+        <button id="groep_functies_toev_verw">Functie toevoegen</button>
+	</fieldset>
 </asp:Content>

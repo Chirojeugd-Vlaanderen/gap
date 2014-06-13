@@ -31,7 +31,6 @@
             
 	<ul id="acties">
 		<li><input id="afdelingBewerken_bewaar" type="submit" value="Bewaren" /></li>
-		<li><input id="afdelingBewerken_reset" type="reset" value="Reset" /></li>
 	</ul>
 
 	<fieldset>

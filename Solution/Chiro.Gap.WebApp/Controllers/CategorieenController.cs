@@ -77,7 +77,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(id, false));
 				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-				return RedirectToAction("Index", new { groepID });
+                return RedirectToAction("Categorieen", new { Controller = "Groep", groepID = groepID });
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
 			{
@@ -117,7 +117,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.CategorieID,
 				true));	// forceer; ook als categorie niet leeg.
 
-			return RedirectToAction("Index", new { groepID = model.GroepID });
+            return RedirectToAction("Categorieen", new { Controller = "Groep", groepID = model.GroepID });
 		}
 
 		/// <summary>
@@ -146,7 +146,7 @@ namespace Chiro.Gap.WebApp.Controllers
 						model.NieuweCategorie.Naam,
 						model.NieuweCategorie.Code));
 
-					return RedirectToAction("Index", new { groepID });
+                    return RedirectToAction("Categorieen", new { Controller = "Groep", groepID = groepID });
 				}
 				catch (FaultException<BestaatAlFault<CategorieInfo>> ex)
 				{

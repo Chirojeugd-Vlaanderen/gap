@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.ServiceModel;
@@ -56,7 +57,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
-			return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), groepID);
+            return RedirectToAction("Afdelingen", new { Controller = "Groep", groepID = groepID });
 		}
 
         /// <summary>
@@ -89,34 +90,6 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Titel = "Afdelingen";
             return Json(model,JsonRequestBehavior.AllowGet);
         }
-
-        /// <summary>
-        /// Toont het afdelingsoverzicht voor het groepswerkjaar met gegeven <paramref name="groepsWerkJaarID"/>:
-        /// de actieve afdelingen,  met links om dien te bekijken/bewerken.  De inactieve afdelingen worden ook 
-        /// getoond, met dan de mogelijkheid  om ze te activeren.
-        /// </summary>
-        /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor de gebruiker de afdelingen wil zien</param>
-		/// <param name="groepID">ID van de groep waarin de gebruiker aan het werken is.</param>
-		/// <returns>Het afdelingsoverzicht voor het groepswerkjaar met ID <paramref name="groepsWerkJaarID"/></returns>
-        [HandleError]
-		public ActionResult List(int groepsWerkJaarID, int groepID)
-		{
-			var model = new AfdelingsOverzichtModel();
-			BaseModelInit(model, groepID);
-
-			// AfdelingDetails voor Afdelingen die in het opgegeven werkJaar voorkomen als AfdelingsJaar
-			model.Actief =
-				ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
-				(groep => groep.ActieveAfdelingenOphalen(groepsWerkJaarID));
-
-			// AfdelingDetails voor Afdelingen die in het opgegeven werkJaar voorkomen als AfdelingsJaar
-
-			model.NietActief
-				= ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>(svc => svc.OngebruikteAfdelingenOphalen(groepsWerkJaarID));
-
-			model.Titel = "Afdelingen";
-			return View("Index", model);
-		}
 
 		/// <summary>
 		/// Toont de view die toelaat een nieuwe afdeling te maken.
@@ -159,10 +132,9 @@ namespace Chiro.Gap.WebApp.Controllers
 
 					TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
-					// (er wordt hier geredirect ipv de view te tonen,
-					// zodat je bij een 'refresh' niet de vraag krijgt
+					// (er wordt hier geredirect ipv de view te tonen, zodat je bij een 'refresh' niet de vraag krijgt
 					// of je de gegevens opnieuw wil posten.)
-					return RedirectToAction("Index");
+                    return RedirectToAction("Afdelingen", new { Controller = "Groep", groepID = model.GroepID });
 				}
 				catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
 				{
@@ -218,23 +190,24 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns></returns>
         /// <!-- GET: /Afdeling/VerwijderenVerwijderenVanWerkjaar/afdelingsJaarId -->
 		[HandleError]
-        public ActionResult VerwijderenVanWerkjaar(int groepID, int id)
-		{
-			// Afdeling van afdelingsjaar invullen
-			try
-			{
-				ServiceHelper.CallService<IGroepenService>(groep => groep.AfdelingsJaarVerwijderen(id));
-
-				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-			}
-			catch (FaultException)
-			{
-				TempData["fout"] = Properties.Resources.AfdelingNietLeeg;
-                // TODO (#1139): specifieke exceptions catchen en weergeven via de modelstate, en niet via tempdata.
-			}
-
-			return RedirectToAction("Index");
-		}
+        public JsonResult VerwijderenVanWerkjaar(int groepID, int id)
+        {
+            // Afdeling van afdelingsjaar invullen
+            try
+            {
+                ServiceHelper.CallService<IGroepenService>(groep => groep.AfdelingsJaarVerwijderen(id));
+                TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+                var l = new List<String>();
+                l.Add("gelukt");
+                return Json(l, JsonRequestBehavior.AllowGet);
+            }
+            catch (FaultException ex)
+            {
+                var l = new List<String>();
+                l.Add("fail");
+                return Json(l, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         /// <summary>
         /// Verwijdert een afdeling volledig uit de database.
@@ -244,22 +217,23 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns></returns>
         /// <!-- GET: /Afdeling/Verwijderen/afdelingsId -->
         [HandleError]
-        public ActionResult Verwijderen(int groepID, int id)
+        public JsonResult Verwijderen(int groepID, int id)
         {
             // Afdeling van afdelingsjaar invullen
             try
             {
                 ServiceHelper.CallService<IGroepenService>(groep => groep.AfdelingVerwijderen(id));
-
                 TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+                var l = new List<String>();
+                l.Add("gelukt");
+                return Json(l, JsonRequestBehavior.AllowGet);
             }
-            catch (FaultException)
+            catch (FaultException ex)
             {
-                TempData["fout"] = Properties.Resources.AfdelingNietLeeg;
-                // TODO (#1139): specifieke exceptions catchen en weergeven via de modelstate, en niet via tempdata.
+                var l = new List<String>();
+                l.Add("fail");
+                return Json(l, JsonRequestBehavior.AllowGet);
             }
-
-            return RedirectToAction("Index");
         }
 
 		/// <summary>
@@ -347,10 +321,8 @@ namespace Chiro.Gap.WebApp.Controllers
                 // Vandaar dat we zowel afdeling als afdelingsjaar moeten aanpassen.
 		        ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarBewaren(model.AfdelingsJaar));
 		        ServiceHelper.CallService<IGroepenService>(e => e.AfdelingBewaren(model.Afdeling));
-
 		        TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-
-                return RedirectToAction("Index", "Groep");
+                return RedirectToAction("Afdelingen", new { Controller = "Groep", groepID = model.GroepID });
 		    }
 		    catch (FaultException<FoutNummerFault> ex)
 		    {
@@ -374,7 +346,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		                svc => svc.OfficieleAfdelingenOphalen());
 
 		        model.Titel = "Afdeling bewerken";
-		        return RedirectToAction("Index","Groep");
+                return RedirectToAction("Afdelingen", new { Controller = "Groep", groepID = model.GroepID });
 		    }
 		    catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
 		    {
@@ -412,77 +384,5 @@ namespace Chiro.Gap.WebApp.Controllers
                 return View("AfdelingsJaar", model);
 		    }
 		}
-
-        /// <summary>
-        /// Laat de gebruiker een bestaande afdeling met afdelingID <paramref name="id"/>
-        /// bewerken.
-        /// </summary>
-        /// <param name="groepID">ID van de geselecteerde groep</param>
-        /// <param name="id">ID van de te bewerken afdeling</param>
-        /// <returns>De view 'afdeling'</returns>
-        [HandleError]
-        public ActionResult AfdBewerken(int groepID, int id)
-        {
-            var model = new AfdelingInfoModel();
-            BaseModelInit(model, groepID);
-
-            AfdelingInfo detail = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(id));
-
-            model.Info = detail;
-           
-            model.Titel = "Afdeling bewerken";
-            return View("Afdeling", model);
-        }
-
-        /// <summary>
-        /// Postback voor activeren/bewerken afdeling
-        /// </summary>
-        /// <param name="model">De property <c>model.AfdelingInfo</c> bevat de relevante details over de afdeling</param>
-        /// <param name="groepID">Groep waarin de gebruiker momenteel aan het werken is</param>
-        /// <returns>Het afdelingsoverzicht als de wijzigingen bewaard zijn, en anders opnieuw de
-        /// 'AfdelingView'.</returns>
-        [AcceptVerbs(HttpVerbs.Post)]
-        [HandleError]
-        public ActionResult AfdBewerken(AfdelingInfoModel model, int groepID)
-        {
-            BaseModelInit(model, groepID);
-            
-            try
-            {
-                ServiceHelper.CallService<IGroepenService>(e => e.AfdelingBewaren(model.Info));
-
-                TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-
-                return RedirectToAction("Index");
-            }
-            catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
-            {
-                if (System.String.Compare(ex.Detail.Bestaande.Afkorting, model.Info.Afkorting, System.StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    ModelState.AddModelError(
-                        "Info.Afkorting",
-                        string.Format(
-                            Properties.Resources.AfdelingsCodeBestaatAl,
-                            ex.Detail.Bestaande.Afkorting,
-                            ex.Detail.Bestaande.Naam));
-                }
-                else if (System.String.Compare(ex.Detail.Bestaande.Naam, model.Info.Naam, System.StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    ModelState.AddModelError(
-                        "Info.Naam",
-                        string.Format(
-                            Properties.Resources.AfdelingsNaamBestaatAl,
-                            ex.Detail.Bestaande.Afkorting,
-                            ex.Detail.Bestaande.Naam));
-                }
-                else
-                {
-                    // Dit kan niet.
-                    Debug.Assert(false);
-                }
-
-                return View("Afdeling", model);
-            }
-        }
 	}
 }

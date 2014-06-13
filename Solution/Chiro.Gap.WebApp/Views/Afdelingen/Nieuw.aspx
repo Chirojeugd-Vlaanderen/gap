@@ -23,14 +23,9 @@
 %>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<% 
-		using (Html.BeginForm())
-        {
-    %>
+	<%using (Html.BeginForm()) {%>
 	<ul id="acties">
-		<li>
-		    <input type="submit" value="Bewaren" />
-		</li>
+		<li><input type="submit" id="afdelingNieuw_bewaar" value="Bewaren" /></li>
 	</ul>
 	<fieldset>
 		<legend>Nieuwe afdeling</legend>

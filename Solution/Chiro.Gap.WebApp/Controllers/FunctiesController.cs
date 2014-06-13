@@ -76,7 +76,7 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 ServiceHelper.CallService<IGroepenService>(svc => svc.FunctieVerwijderen(id, false));
                 TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-                return RedirectToAction("Index", new { groepID });
+                return RedirectToAction("Functies", new { Controller = "Groep", groepID = groepID });
             }
             catch (FaultException<BlokkerendeObjectenFault<PersoonLidInfo>> ex)
             {
@@ -115,7 +115,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.FunctieID,
                 true));	// forceer; ook als er nog mensen zijn met die functie
 
-            return RedirectToAction("Index", new { groepID = model.GroepID });
+            return RedirectToAction("Functies", new { Controller = "Groep", groepID = model.GroepID });
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     model.Titel = "Functie aanpassen";
                     return View(model);
                 }
-                return RedirectToAction("Index", "Groep");
+                return RedirectToAction("Functies", new { Controller = "Groep", groepID = model.GroepID });
             }
             else
             {
@@ -198,8 +198,7 @@ namespace Chiro.Gap.WebApp.Controllers
                         model.NieuweFunctie.Type,
                         model.NieuweFunctie.WerkJaarVan));
 
-                    //return RedirectToAction("Index", new { groepID });
-                    return RedirectToAction("Index", "Groep");
+                    return RedirectToAction("Functies", new { Controller = "Groep", groepID = groepID });
                 }
                 catch (FaultException<BestaatAlFault<FunctieDetail>> ex)
                 {

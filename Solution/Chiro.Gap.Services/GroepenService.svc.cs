@@ -645,8 +645,15 @@ namespace Chiro.Gap.Services
             var afdelingsJaar = _afdelingsJaarRepo.ByID(afdelingsJaarId);
             Gav.Check(afdelingsJaar);
 
-            _afdelingsJaarRepo.Delete(afdelingsJaar);
-            _afdelingsJaarRepo.SaveChanges();
+            try
+            {
+                _afdelingsJaarRepo.Delete(afdelingsJaar);
+                _afdelingsJaarRepo.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietLeeg, Properties.Resources.OngeldigAfdelingsJaar);
+            }
         }
 
         /// <summary>
@@ -658,8 +665,12 @@ namespace Chiro.Gap.Services
             var afdeling = _afdelingenRepo.ByID(afdelingId);
             Gav.Check(afdeling);
 
-            _afdelingenRepo.Delete(afdeling);
-            _afdelingenRepo.SaveChanges();
+            try{
+                _afdelingenRepo.Delete(afdeling);
+                _afdelingenRepo.SaveChanges();
+            } catch(Exception){
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietLeeg, Properties.Resources.OngeldigAfdelingsJaar);
+            }
         }
 
         /// <summary>
