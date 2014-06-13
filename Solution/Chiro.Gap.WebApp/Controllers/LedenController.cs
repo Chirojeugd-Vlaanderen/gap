@@ -31,7 +31,6 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
-using DocumentFormat.OpenXml.Drawing.ChartDrawing;
 
 namespace Chiro.Gap.WebApp.Controllers
 {

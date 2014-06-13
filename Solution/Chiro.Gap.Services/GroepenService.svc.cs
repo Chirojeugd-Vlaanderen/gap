@@ -18,8 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Data.Objects.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using AutoMapper;

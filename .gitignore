@@ -11,6 +11,9 @@ obj
 [Tt]est[Rr]esults
 .localhistory
 
+#NuGet packages
+packages/
+
 # /
 /*.ncb
 
