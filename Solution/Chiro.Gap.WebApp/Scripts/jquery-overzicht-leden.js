@@ -43,6 +43,7 @@ $(function () {
         "bJQueryUI": true,
         "sPaginationType": "full_numbers",
         "iDisplayLength": 25,
+        "stateSave": true,
         "aaSorting": [[2, "asc"]],
         "aoColumns": [
 			null,   // checkbox
