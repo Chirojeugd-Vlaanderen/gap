@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -412,9 +412,19 @@ namespace Chiro.Gap.ServiceContracts
 
 		#endregion categorieën
 
-		#region adressen
+        #region groepsadres
+        /// <summary>
+        /// Stelt het groepsadres in.
+        /// </summary>
+        /// <param name="groepID">ID van groep waarvan adres in te stellen.</param>
+        /// <param name="adres">Nieuw adres van de groep.</param>
+        [OperationContract]
+	    void AdresInstellen(int groepID, AdresInfo adresInfo);
+        #endregion
 
-		// Dat adressengedoe staat een beetje verloren in de groepenservice.
+        #region straten en landen
+
+        // Dat adressengedoe staat een beetje verloren in de groepenservice.
 		// Maar bij gebrek aan adressenservice, staat het hier wel goed.
 
 		/// <summary>

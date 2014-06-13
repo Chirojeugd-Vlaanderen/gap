@@ -51,7 +51,8 @@ namespace Chiro.Gap.Services
         // Repositories, verantwoordelijk voor data access.
 
         private readonly IRepository<StraatNaam> _straatRepo;
-        private readonly IRepository<WoonPlaats> _adresRepo;
+        private readonly IRepository<WoonPlaats> _woonplaatsRepo;
+        private readonly IRepository<Adres> _adresRepo; 
         private readonly IRepository<Land> _landRepo;
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Categorie> _categorieenRepo;
@@ -70,6 +71,7 @@ namespace Chiro.Gap.Services
         private readonly IGroepenManager _groepenMgr;
         private readonly IChiroGroepenManager _chiroGroepenMgr;
         private readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
+        private readonly IAdressenManager _adressenMgr;
 
         private readonly IFunctiesManager _functiesMgr;
 
@@ -104,7 +106,8 @@ namespace Chiro.Gap.Services
                               IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IVeelGebruikt veelGebruikt)
         {
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
-            _adresRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
+            _woonplaatsRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
+            _adresRepo = repositoryProvider.RepositoryGet<Adres>();
             _landRepo = repositoryProvider.RepositoryGet<Land>();
             _categorieenRepo = repositoryProvider.RepositoryGet<Categorie>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
@@ -117,7 +120,7 @@ namespace Chiro.Gap.Services
 
             // De bedoeling is dat alle repositories dezelfde hash code delen.
             // Ik test er twee. Als dat goed is, zal het overal wel goed zijn.
-            Debug.Assert(_straatRepo == null || _adresRepo == null || _straatRepo.ContextHash == _adresRepo.ContextHash);
+            Debug.Assert(_straatRepo == null || _woonplaatsRepo == null || _straatRepo.ContextHash == _woonplaatsRepo.ContextHash);
             // (checks op null zijn van belang voor bij unit tests)
 
             _groepenMgr = groepenMgr;
@@ -157,7 +160,7 @@ namespace Chiro.Gap.Services
                 {
                     // Dispose managed resources.
                     _straatRepo.Dispose();
-                    _adresRepo.Dispose();
+                    _woonplaatsRepo.Dispose();
                     _landRepo.Dispose();
                     _groepenRepo.Dispose();
                     _categorieenRepo.Dispose();
@@ -1152,6 +1155,49 @@ namespace Chiro.Gap.Services
             return CategorieOpzoeken(groepId, code).ID;
         }
 
+        /// <summary>
+        /// Stelt het groepsadres in.
+        /// </summary>
+        /// <param name="groepID">ID van groep waarvan adres in te stellen.</param>
+        /// <param name="adresInfo">Nieuw adres van de groep.</param>
+        public void AdresInstellen(int groepID, AdresInfo adresInfo)
+        {
+            Adres adres;
+            var groep = _groepenRepo.ByID(groepID);
+
+            if (!_autorisatieMgr.IsGav(groep))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGav);
+            }
+
+            // zoek of maak adres
+
+            try
+            {
+                adres = _adressenMgr.ZoekenOfMaken(adresInfo, _adresRepo.Select(), _straatRepo.Select(),
+                    _woonplaatsRepo.Select(), _landRepo.Select());
+            }
+            catch (OngeldigObjectException ex)
+            {
+                throw FaultExceptionHelper.Ongeldig(ex.Berichten);
+            }
+
+            // koppelen
+
+            groep.Adres = adres;        
+
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _groepenSync.Bewaren(groep);
+                _groepenRepo.SaveChanges();
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
+        }
+
         #endregion
 
         #region adresgegevens ophalen
@@ -1163,7 +1209,7 @@ namespace Chiro.Gap.Services
         /// <returns>Lijst met alle beschikbare deelgemeentes</returns>
         public IEnumerable<WoonPlaatsInfo> GemeentesOphalen()
         {
-            return Mapper.Map<IEnumerable<WoonPlaats>, IEnumerable<WoonPlaatsInfo>>(_adresRepo.GetAll());
+            return Mapper.Map<IEnumerable<WoonPlaats>, IEnumerable<WoonPlaatsInfo>>(_woonplaatsRepo.GetAll());
         }
 
         /// <summary>
