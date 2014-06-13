@@ -43,6 +43,7 @@ namespace Chiro.Gap.Poco.Model
         public override int ID { get; set; }
         public override byte[] Versie { get; set; }
     
+        public virtual Adres Adres { get; set; }
         public virtual ICollection<GelieerdePersoon> GelieerdePersoon { get; set; }
         public virtual ICollection<GroepsWerkJaar> GroepsWerkJaar { get; set; }
         public virtual ICollection<GebruikersRecht> GebruikersRecht { get; set; }
