@@ -59,5 +59,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		public Niveau Niveau { get; set; }
+
+        /// <summary>
+        /// Adres van de groep
+        /// </summary>
+        [DataMember]
+        public AdresInfo Adres { get; set; }
 	}
 }
