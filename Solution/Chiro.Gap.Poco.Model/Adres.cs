@@ -36,6 +36,7 @@ namespace Chiro.Gap.Poco.Model
     
         public virtual ICollection<PersoonsAdres> PersoonsAdres { get; set; }
         public virtual ICollection<Plaats> BivakPlaats { get; set; }
+        public virtual ICollection<Groep> Groep { get; set; }
     }
     
 }
