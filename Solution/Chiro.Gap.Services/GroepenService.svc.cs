@@ -509,7 +509,7 @@ namespace Chiro.Gap.Services
             }
             catch (BestaatAlException<Afdeling> ex)
             {
-                throw FaultExceptionHelper.BestaatAl(ex);
+                throw FaultExceptionHelper.BestaatAl(Mapper.Map<Afdeling, AfdelingInfo>(ex.Bestaande));
             }
 
             _groepenRepo.SaveChanges();
