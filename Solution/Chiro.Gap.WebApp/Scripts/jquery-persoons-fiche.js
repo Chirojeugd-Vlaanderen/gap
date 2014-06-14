@@ -669,14 +669,28 @@ $(function () {
 
         url = link("Leden", "AfdelingBewerken");
         $.getJSON(url, { groepsWerkJaarID: groepswerkJaar, lidID: id }, function (data) {
-
+            
             $.each(data.BeschikbareAfdelingen, function (index, value) {
                 naam = data.BeschikbareAfdelingen[teller].Naam;
                 waarde = data.BeschikbareAfdelingen[teller].AfdelingsJaarID;
                 if (lidType == 'Leiding') {
-                    $('#afdelingenDialog fieldset').append('<input type="checkbox" id="' + naam + '" value="' + waarde + '">' + naam + "</input><br/>");
+                    record = '<input type="checkbox" id="' + naam + '" value="' + waarde + '"';
+                    $.each(data.Info.AfdelingsJaarIDs, function (index, value) {
+                        if (value == waarde) {
+                            record += ' checked="checked" ';
+                        }
+                    });
+                    record += '>' + naam + "</input><br/>";
+                    $('#afdelingenDialog fieldset').append(record);
                 } else {
-                    $('#afdelingenDialog fieldset').append('<input type="radio" id="' + naam + '" name="afdeling" value="' + waarde + '">' + naam + "</input><br/>");
+                    record = '<input type="radio" id="' + naam + '" name="afdeling" value="' + waarde + '"';
+                    $.each(data.Info.AfdelingsJaarIDs, function (index, value) {
+                        if (value == waarde) {
+                            record += ' checked="checked" ';
+                        }
+                    });
+                    record += '>' + naam + "</input><br/>";
+                    $('#afdelingenDialog fieldset').append(record);
                 }
                 teller++;
             });
