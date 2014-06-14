@@ -127,6 +127,36 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Zoekt in de eigen functies de gegeven <paramref name="groep"/> en in de nationale functies een
+        /// functie met gegeven <paramref name="naam"/>.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor functie gezocht moet worden</param>
+        /// <param name="naam">Naam van de te zoeken functie</param>
+        /// <param name="functieRepo">Repository die gebruikt kan worden om functies in op te zoeken</param>
+        /// <remarks>De repository wordt bewust niet via de constructor meegeleverd, om te vermijden dat de
+        /// IOC-container een nieuwe context zou aanmaken.</remarks>
+        public Functie FunctieZoeken(Groep groep, string naam, IRepository<Functie> functieRepo)
+        {
+            // Zoek eerst naar een nationale functie met gegeven code, want dat is
+            // gecachet, en bijgevolg snel.
+
+            var bestaandeNationaleFunctie = (from f in functieRepo.Select()
+                                             where f.IsNationaal && String.Compare(f.Naam, naam, StringComparison.OrdinalIgnoreCase) == 0
+                                             select f).FirstOrDefault();
+
+            if (bestaandeNationaleFunctie != null)
+            {
+                return bestaandeNationaleFunctie;
+            }
+
+            // Niet gevonden: zoek nog eens in eigen functies
+
+            return (from f in groep.Functie
+                    where String.Compare(f.Naam, naam, StringComparison.OrdinalIgnoreCase) == 0
+                    select f).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Converteert een <paramref name="lidType"/> naar een niveau, gegeven het niveau van de
         /// groep (<paramref name="groepsNiveau"/>)
         /// </summary>

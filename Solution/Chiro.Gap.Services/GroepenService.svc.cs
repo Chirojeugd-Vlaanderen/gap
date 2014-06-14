@@ -990,6 +990,17 @@ namespace Chiro.Gap.Services
                 }
             }
 
+            if (String.Compare(detail.Naam, functie.Naam, StringComparison.InvariantCultureIgnoreCase) != 0)
+            {
+                // Naam verandert. Controleer of ze nog niet bestaat
+                var bestaandeFunctie = _groepenMgr.FunctieZoeken(functie.Groep, detail.Naam, _functiesRepo);
+                if (bestaandeFunctie != null)
+                {
+                    throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(
+                        bestaandeFunctie));
+                }
+            }
+
             // Ik gebruik hier geen mappers, om te vermijden dat
             // er zaken overschreven worden die eigenlijk niet mogen overschreven worden.
 

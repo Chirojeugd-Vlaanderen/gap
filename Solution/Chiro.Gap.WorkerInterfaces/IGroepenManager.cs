@@ -52,6 +52,15 @@ namespace Chiro.Gap.WorkerInterfaces
         Functie FunctieZoeken(Groep groep, string code, IRepository<Functie> functieRepo);
 
         /// <summary>
+        /// Zoekt in de eigen functies de gegeven <paramref name="groep"/> en in de nationale functies een
+        /// functie met gegeven <paramref name="naam"/>.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor functie gezocht moet worden</param>
+        /// <param name="naam">Code van de te zoeken functie</param>
+        /// <param name="functieRepo"></param>
+        Functie FunctieZoekenOpNaam(Groep groep, string naam, IRepository<Functie> functieRepo);
+
+        /// <summary>
         /// Converteert een <paramref name="lidType"/> naar een niveau, gegeven het niveau van de
         /// groep (<paramref name="groepsNiveau"/>)
         /// </summary>
