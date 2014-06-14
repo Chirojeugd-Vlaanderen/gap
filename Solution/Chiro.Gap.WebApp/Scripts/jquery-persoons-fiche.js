@@ -205,6 +205,15 @@ $(function () {
     $('#gdInfo').attr('disabled', true);
     $.datepicker.setDefaults($.datepicker.regional['be']);
 
+    var updateGeboorteDatumChanges = function() {
+        if (geboortedatum != $('#gdInfo').val()) { // only save when something changed
+            geboortedatum = $('#gdInfo').val();
+            bewaarGegevens('geboortedatum', geboortedatum, GID, GPid);
+        }
+        $('#gdInput').hide();
+        $('#gdTekst').text(geboortedatum).show();
+    };
+
     $('#bewerkGd').click(function () {
         $('#gdInput').show();
         $('#gdTekst').hide();
@@ -213,16 +222,8 @@ $(function () {
             changeMonth: true,
             changeYear: true,
             maxDate: "-0y",
-            onSelect: function () {
-                geboortedatum = $('#gdInfo').val();
-                bewaarGegevens('geboortedatum', geboortedatum, GID, GPid);
-                $('#gdInput').hide();
-                $('#gdTekst').text(geboortedatum).show();
-            },
-            onClose: function () {
-                $('#gdInput').hide();
-                $('#gdTekst').text(geboortedatum).show();
-            }
+            onSelect: updateGeboorteDatumChanges,
+            onClose: updateGeboorteDatumChanges
         });
     });
     //------------------------------------------------------------------------------------------
