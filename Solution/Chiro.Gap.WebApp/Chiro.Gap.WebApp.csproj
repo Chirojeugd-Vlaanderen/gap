@@ -224,6 +224,12 @@
     <Content Include="Content\Screenshots\Fiche_bivakdetails_zonder_leden.png" />
     <Content Include="Content\Screenshots\Formulier_bivakdetails.png" />
     <Content Include="Content\Screenshots\Gebruikersrecht_toekennen.png" />
+    <Content Include="Content\Screenshots\IC-schadeoverzicht-stap1.png" />
+    <Content Include="Content\Screenshots\IC-schadeaangifte-stap1.png" />
+    <Content Include="Content\Screenshots\IC-schadeaangifte-stap2.png" />
+    <Content Include="Content\Screenshots\IC-schadeaangifte-stap3.png" />
+    <Content Include="Content\Screenshots\IC-schadeoverzicht-stap2.jpg" />
+    <Content Include="Content\Screenshots\IC-startpagina.png" />
     <Content Include="Content\Screenshots\Inschrijving_uitstap_bevestigen.png" />
     <Content Include="Content\Screenshots\Links_rechts_bovenaan.png" />
     <Content Include="Content\Screenshots\Link_Groepscategorieen.png" />
@@ -267,6 +273,7 @@
     <Content Include="Views\Groep\Afdelingen.aspx" />
     <Content Include="Views\Groep\NaamWijzigen.aspx" />
     <Content Include="Views\Groep\Functies.aspx" />
+    <Content Include="Views\Handleiding\Verzekering.aspx" />
     <Content Include="Views\Handleiding\Zoeken.aspx" />
     <Content Include="Views\Handleiding\Deadlines.aspx" />
     <Content Include="Views\Handleiding\Deelnemersadministratie.aspx" />

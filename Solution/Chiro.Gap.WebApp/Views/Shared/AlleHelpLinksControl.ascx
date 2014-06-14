@@ -34,6 +34,7 @@
             <li><%=Html.ActionLink("Groep", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Groep" }) %></li>
             <li><%=Html.ActionLink("Persoon toevoegen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwePersoon" }) %></li>
             <li><%=Html.ActionLink("Uitstappen/bivak", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Uitstappen" }) %></li>
+            <li><%=Html.ActionLink("Verzekering", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Verzekering" }) %></li>
         </ul>
     </li>
     <li><a href="#">Gegevens opzoeken en gebruiken</a>
@@ -78,6 +79,7 @@
             <li><%=Html.ActionLink("Jaarovergang uitvoeren", "ViewTonen", new { Controller = "Handleiding", helpBestand = "JaarovergangUitvoeren" })%></li>
             <li><%=Html.ActionLink("Ledenadministratie regelen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwLid" }, new { title = "Gegevens van een nieuw lid toevoegen (= iemand inschrijven)" })%></li>
             <li><%=Html.ActionLink("Bivakaangifte regelen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "UitstapToevoegen" })%></li>
+            <li><%=Html.ActionLink("Ongevalsaangifte indienen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Verzekering" })%></li>
         </ul>
     </li>
    
@@ -101,5 +103,5 @@
             <li><%=Html.ActionLink("Colofon", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Colofon" })%></li>
         </ul>
     </li>
-    <li><a href="http://www.chiro.be/sites/default/files/page/2010/02/handleiding_groepsadministratiewebsite.pdf" target="new">Download Pdf-versie</a></li>
+    <li><a href="https://chiro.be/sites/default/files/handleiding_groepsadministratiewebsite.pdf" target="new">Download Pdf-versie</a></li>
 </ul>
