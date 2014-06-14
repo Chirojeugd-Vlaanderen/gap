@@ -138,6 +138,32 @@ function bezig() {
     });
 }
 //-------------------------------------------------------------------------
+//Functie 'Klaar met success'
+function klaarMetSucces(boodschap) {
+    $('#extraInfoDialog').html("<p>" + boodschap + "</p>").dialog({
+        title: "Succesvol verwerkt",
+        modal: true,
+        height: 150,
+        closeOnEscape: true,
+        draggable: false,
+        resizable: false,
+        buttons: {}
+    });
+}
+//-------------------------------------------------------------------------
+//Functie 'Klaar met fout'
+function klaarMetFout(boodschap) {
+    $('#extraInfoDialog').html("<p>" + boodschap + "</p>").dialog({
+        title: "Fout",
+        modal: true,
+        height: 150,
+        closeOnEscape: true,
+        draggable: false,
+        resizable: false,
+        buttons: {}
+    });
+}
+//-------------------------------------------------------------------------
 function clearDialog() {
     $('#extraInfoDialog').html('<img src="' + root +'Content/images/loading.gif"/>')
             .dialog({

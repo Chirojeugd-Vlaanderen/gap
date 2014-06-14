@@ -272,7 +272,7 @@
             %>
                     <tr>
                         <td>Ingeschreven als</td>
-                        <td><a  id="lidInfoInfo" data-type="select"><b><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></b></a>
+                        <td><a  id="lidInfoInfo" data-type="select" style="font-weight: bold;"><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></a>
                         <%: Html.ActionLink("(uitschrijven)", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></td> 
                         <td><div class="ui-icon ui-icon-pencil" id="bewerkLidInfo" title="Bewerken" style="cursor: pointer"></div></td>
                     </tr>

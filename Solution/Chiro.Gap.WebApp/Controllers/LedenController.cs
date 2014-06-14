@@ -781,47 +781,21 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
         /// <returns>Opnieuw de persoonsfiche</returns>
         [HandleError]
-        public ActionResult TypeToggle(int id, int groepID)
+        public JsonResult TypeToggle(int id, int groepID)
         {
-            int gelieerdePersoonID = 0;
+            var nieuwLidId = 0;
 
             try
             {
-                gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.TypeToggle(id));
+                nieuwLidId = ServiceHelper.CallService<ILedenService, int>(svc => svc.TypeToggle(id));
                 VeelGebruikt.LedenProblemenResetten(groepID);
                 VeelGebruikt.FunctieProblemenResetten(groepID);
             }
             catch (FaultException<FoutNummerFault> ex)
             {
-                switch (ex.Detail.FoutNummer)
-                {
-                    case FoutNummer.AfdelingNietBeschikbaar:
-                        // Hier komen we terecht als we van een leid(st)er een lid willen maken, maar er zijn
-                        // geen afdelingen.
-
-                        // In dat geval moeten we het GelieerdePersoonID opnieuw ophalen.
-                        // Op dit moment kan dat enkel door alle liddetails op te vragen.
-                        // TODO: Makkelijkere manier implementeren om lidID om te zetten naar persoonID.
-                        // (Omdat we typisch van een lidfiche komen, zouden we die mapping kunnen cachen; het is maar een idee.)
-                        var info =
-                            ServiceHelper.CallService<ILedenService, PersoonInfo>(svc => svc.PersoonOphalen(id));
-                        gelieerdePersoonID = info.GelieerdePersoonID;
-
-                        // Normaalgezien geven we foutmeldingen graag door via de modelstate.
-                        // Maar omdat we hier geen model opbouwen, maar naar een redirect gaan, doe ik
-                        // het toch maar via TempData, hoewel dat niet echt mooi is.
-
-                        TempData["fout"] = Properties.Resources.GeenActieveAfdelingen;
-
-                        break;
-                    default:
-                        // Een onverwachte exception throwen we sowieso opnieuw, zodat eventuele bugs aan
-                        // de basis van deze exceptions niet ongemerkt blijven zitten.
-                        throw;
-                }
+                return Json("{\"fout\" : \"" + ex.Message + "\"}"); // moet met strip tags??
             }
-
-            return RedirectToAction("Bewerken", "Personen", new { groepID, id = gelieerdePersoonID });
+            return Json("{ \"succes\" : \"" + nieuwLidId + "\"}");
         }
 
         #region Verkorte url's, die eigenlijk gewoon Lijst aanroepen met de jusite parameters

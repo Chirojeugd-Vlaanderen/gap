@@ -628,32 +628,54 @@ $(function () {
     //Ingeschreven als (lid/ leiding)
 
     $('#bewerkLidInfo').click(function (e) {
-        e.stopPropagation();
         e.preventDefault();
-        $('#lidInfoInfo').editable('toggle');
+        var g = $('#lidInfoInfo').text().trim();
+        bezig();
+        clearDialog();
+        url = link("Leden", "TypeToggle");
+        $.post(url, { id: id, groepID: GID }, function (data) {
+            // parse to JSON Object
+            data = jQuery.parseJSON(data);
+            if (data.hasOwnProperty('succes')) { // gelukt
+                if (g == 'Lid') {
+                    $('#lidInfoInfo').text('Leiding');
+                } else {
+                    $('#lidInfoInfo').text('Lid');
+                }
+                id = data.succes;
+                klaarMetSucces("Type lid is aangepast.");
+            } else if (data.hasOwnProperty('fout')) {
+                klaarMetFout("Fout: "+data.fout);
+            } else {
+                throw new Error("Service wordt verwacht success of fout terug te geven");
+            }
+        }).fail(function () {
+            klaarMetFout("Fout: Er ging iets mis bij het veranderen van de status van deze persoon");
+        });
+        
     });
 
-    $('#lidInfoInfo').editable({
-        source: [
-            { value: 0, text: 'Leiding' },
-            { value: 1, text: 'Lid' }
-        ]
-    })
-        .on('save', function (e, params) {
-            e.preventDefault();
-            bezig();
-            url = link("Leden", "TypeToggle");
+    //$('#lidInfoInfo').editable({
+    //    source: [
+    //        { value: 0, text: 'Leiding' },
+    //        { value: 1, text: 'Lid' }
+    //    ]
+    //})
+    //    .on('save', function (e, params) {
+    //        e.preventDefault();
+    //        bezig();
+    //        url = link("Leden", "TypeToggle");
 
-            $.post(url, { id: id, groepID: GID }, function () {
-                success:
-                {
-                    location.reload();
-                }
-            }).fail(function () {
-                alert("Fout: Er ging iets mis bij het veranderen van de status van deze persoon");
-                location.reload();
-            });
-        });
+    //        $.post(url, { id: id, groepID: GID }, function () {
+    //            success:
+    //            {
+    //                location.reload();
+    //            }
+    //        }).fail(function () {
+    //            alert("Fout: Er ging iets mis bij het veranderen van de status van deze persoon");
+    //            location.reload();
+    //        });
+    //    });
 
     //------------------------------------------------------------------------------------------
     // afdeling bewerken

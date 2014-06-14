@@ -740,7 +740,7 @@ namespace Chiro.Gap.Services
                 tx.Complete();
             }
 #endif
-            return nieuwLid.GelieerdePersoon.ID;
+            return nieuwLid.ID;
         }
 
 
