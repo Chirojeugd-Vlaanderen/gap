@@ -423,7 +423,7 @@
         <% } else { 
               // Dit wordt weergegeven wanneer de persoon niet ingeschreven is in het huidige werkjaar%>
             <p>
-                <span style="color: red"><%=Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> is niet ingeschreven in het huidige werkjaar.</span>
+                <span style="color: red">Niet ingeschreven in het huidige werkjaar.</span>
                 <br/>
                 <button id="btn_inschrijven">Inschrijven</button>
             </p>
@@ -446,7 +446,7 @@
                 {
                     // Geen account
                     %>
-                    <%: Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> heeft geen Chirologin.
+                    Geen Chirologin.
                     <p><%: Html.ActionLink("Chirologin maken", "LoginMaken", new {Controller = "GebruikersRecht", id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></p>
                     <%
                 }
@@ -456,7 +456,7 @@
                     %>
                     <p><b>Chirologin: </b><%: Model.PersoonLidInfo.GebruikersInfo.GavLogin %></p>
                     <p>
-                        <%:Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> heeft geen toegang tot de gegevens van jouw groep. <br />
+                        Geen toegang tot de gegevens van jouw groep. <br />
                     <%: Html.ActionLink("Gebruikersrecht toekennen", "AanGpToekennen", new { Controller = "GebruikersRecht", id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                     </p>
                     <%                
@@ -510,7 +510,7 @@
             <%} %>     
         </table>
          <br />
-        <button id="toevoegenAanCat">Voeg <% =Model.PersoonLidInfo.PersoonDetail.VoorNaam %> toe aan een categorie</button>
+        <button id="toevoegenAanCat">Toevoegen aan categoriëen</button>
         <br />
         
         <h3>Opties</h3>
