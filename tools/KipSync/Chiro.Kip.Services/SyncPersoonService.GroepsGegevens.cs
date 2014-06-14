@@ -40,6 +40,10 @@ namespace Chiro.Kip.Services
 
                 Debug.Assert(groep != null);
                 groep.Naam = g.Naam;
+                groep.STRAAT_NR = String.Format("{0} {1}", g.Adres.Straat, NummerEnBus(g.Adres));
+                groep.POSTNR = KipPostNr(g.Adres);
+                groep.GEMEENTE = g.Adres.WoonPlaats;
+
                 db.SaveChanges();
                 _log.BerichtLoggen(groep.GroepID, String.Format("Groep {0} hernoemd: {1}", g.Code, g.Naam));
             }

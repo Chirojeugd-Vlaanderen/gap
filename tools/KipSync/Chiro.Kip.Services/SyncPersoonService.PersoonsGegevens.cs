@@ -334,26 +334,7 @@ namespace Chiro.Kip.Services
 			string postNr = KipPostNr(adres);
 			string huisNr = null;
 
-			if (adres.HuisNr != null)
-			{
-				if (String.IsNullOrEmpty(adres.Bus))
-				{
-					huisNr = adres.HuisNr.ToString();
-				}
-				else if (adres.Bus[0] >= '0' && adres.Bus[0] <= '9')
-				{
-					// Als de bus numeriek is, dan zetten we 'bus' tussen
-					// huisnummer en bus
-
-					huisNr = String.Format("{0} bus {1}", adres.HuisNr, adres.Bus);
-				}
-				else
-				{
-					// zo niet: een spatie
-
-					huisNr = String.Format("{0} {1}", adres.HuisNr, adres.Bus);
-				}
-			}
+			huisNr = NummerEnBus(adres);
 
 
 			var adresInDb = (from adr in db.AdresSet.Include("kipWoont.kipPersoon").Include("kipWoont.kipAdresType")
@@ -393,6 +374,38 @@ namespace Chiro.Kip.Services
 		}
 
         /// <summary>
+        /// Haalt nummer en bus uit een adres, en maakt daar 1 string van. Voegt
+        /// waar nodig het woord 'bus' toe.
+        /// </summary>
+        /// <param name="adres">Adres waarvan nummer en bus van belang</param>
+        /// <returns>Nummer en bus als string</returns>
+	    private string NummerEnBus(Adres adres)
+	    {
+	        string huisNr = null;
+	        if (adres.HuisNr != null)
+	        {
+	            if (String.IsNullOrEmpty(adres.Bus))
+	            {
+	                huisNr = adres.HuisNr.ToString();
+	            }
+	            else if (adres.Bus[0] >= '0' && adres.Bus[0] <= '9')
+	            {
+	                // Als de bus numeriek is, dan zetten we 'bus' tussen
+	                // huisnummer en bus
+
+	                huisNr = String.Format("{0} bus {1}", adres.HuisNr, adres.Bus);
+	            }
+	            else
+	            {
+	                // zo niet: een spatie
+
+	                huisNr = String.Format("{0} {1}", adres.HuisNr, adres.Bus);
+	            }
+	        }
+	        return huisNr;
+	    }
+
+	    /// <summary>
         /// Zoekt in de communicatievormen van de persoon bepaald door <paramref name="persoonsGegevens"/> een 
         /// communicatiemiddel op van hetzelfde type als <paramref name="communicatieMiddel"/>, maar met nummer 
         /// <paramref name="nummerBijTeWerken"/>. Die communicatievorm wordt vervangen door de gegevens in 

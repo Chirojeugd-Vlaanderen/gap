@@ -26,5 +26,6 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
     {
         public string Code { get; set; }
         public string Naam { get; set; }
+        public Adres Adres { get; set; }
     }
 }
