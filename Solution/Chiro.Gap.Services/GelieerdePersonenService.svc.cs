@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -876,6 +876,7 @@ namespace Chiro.Gap.Services
                             case FoutNummer.LidTypeVerkeerd:
                             case FoutNummer.LidTeJong:
                             case FoutNummer.AfdelingKindVerplicht:
+                            case FoutNummer.GeboorteDatumOntbreekt:
                             case FoutNummer.LeidingTeJong:
                                 // TODO: backendinformatie naar frontend om rechtsteeks te tonen:
                                 // geen goed idee.
