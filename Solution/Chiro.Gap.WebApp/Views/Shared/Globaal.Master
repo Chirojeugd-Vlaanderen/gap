@@ -46,6 +46,9 @@
     <link href="<%=ResolveUrl("~/Content/jqueryui-editable.css") %>" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
         var root = "<%= ResolveUrl("~/") %>";
+        $.ajaxSetup({
+            cache: false
+        });
     </script>
   
 
