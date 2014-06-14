@@ -66,6 +66,7 @@
             <li><%=Html.ActionLink("Persoonlijke- en Chirogegevens", "ViewTonen", new { Controller = "Handleiding", helpBestand = "PersoonlijkeGegevensfiche" })%></li>
             <li><%=Html.ActionLink("Adressen aanpassen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "AdresWijzigen" })%></li>
             <li><%=Html.ActionLink("Mensen in categorieën stoppen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Categoriseren" })%></li>
+            <li><%=Html.ActionLink("Leiding veranderen van afdeling", "ViewTonen", new { Controller = "Handleiding", helpBestand = "AfdelingLeidingWijzigen" })%></li>
             <li><%=Html.ActionLink("Iemand uitschrijven", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Uitschrijven" })%></li>
             <li><%=Html.ActionLink("Logins beheren", "ViewTonen", new { Controller = "Handleiding", helpBestand = "GavsBeheren" })%></li>
             <li><%=Html.ActionLink("Groepen fusioneren", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Fusioneren" })%></li>

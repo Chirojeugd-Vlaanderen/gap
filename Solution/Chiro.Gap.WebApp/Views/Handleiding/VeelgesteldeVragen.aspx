@@ -29,7 +29,7 @@
         Veelgestelde vragen</h2>
     <ul>
         <li><a href="#NieuweGav">Mag ik mijn login doorgeven aan mijn opvolger?</a></li>
-        <li><a href="#ExtraLogins">Kan ik extra logins aanvragen voor mede-GAV's?</a></li>
+        <li><a href="#ExtraLogins">Kan ik extra logins aanvragen voor andere leiding?</a></li>
         <li><a href="#AansluitingInOrde">Hoe weet ik of mijn aansluiting in orde is?</a></li>
         <li><a href="#JaarovergangFout">De jaarovergang lukt niet.</a></li>
         <li><a href="#BuitenlandsePostcode">Bij buitenlandse adressen moet je zowel een
@@ -41,8 +41,7 @@
             van 15 oktober. Wat nu?</a></li>
         <li><a href="#Bestandsprobleem">Ik kan wel lijsten downloaden, maar ik krijg ze
             niet open.</a></li>
-        <li><a href="#ExcelOpmaak">Kunnen er andere/meer kolommen in het gedownloade bestand?
-            Kan de opmaak anders?</a></li>
+        <li><a href="#AfdelingLeiding">Ik heb leiding ingeschreven maar vergat de afdeling te selecteren</a></li>
         <li><a href="#WaaromBivakaangifte">Waarom moeten we een bivakaangifte doen?</a></li>
         <li><a href="#BivakaangifteInOrde">Hoe weet ik of mijn bivakaangifte in orde is?</a></li>
         <li><a href="#Bivakverzekering">Hoe weet ik of iedereen die meegaat op bivak verzekerd
@@ -140,17 +139,12 @@
     <p>
         Microsoft Office voor Mac kan blijkbaar problemen hebben met de geboortedatums,
         daar moet je dus mee opletten.</p>
-    <h3>
-        <a class="anchor" id="ExcelOpmaak">Kunnen er andere/meer kolommen in het gedownloade
-            bestand? Kan de opmaak anders?</a></h3>
-    <p>
-        In een volgende versie willen we de download flexibeler maken, zodat er inderdaad
-        extra kolommen in kunnen komen. We kunnen daar geen timing op plakken, want
-        voorlopig zijn er nog heel wat dringender zaken die we moeten oplossen.</p>
-    <p>
-        De opmaak kunnen we niet veranderen: die is verschillend in verschillende programma's
-        en voor verschillende printers. Het is dus de bedoeling dat je dat bestand zelf
-        nog aanpast. Voor gevorderden: met macro's kun je dat wel wat automatiseren.</p>
+    <h3><a class="anchor" id="AfdelingLeiding">Ik heb leiding ingeschreven maar vergat de afdeling te selecteren</a></h3>
+    <p>Leiding ingeschreven zonder de afdeling te kiezen? Dat kan vervelend zijn. Omdat de leiding 
+        van de jongste afdelingen in het voorjaar het spel voor hun leden moet krijgen, omdat we aspileiding info willen geven over Aspitrant, 
+        en omdat dat anders allemaal bij de contactpersoon van je groep aankomt en hij of zij voor de verdere verdeling moet zorgen. Geen nood: 
+        dat is makkelijk aan te passen! Ga naar het tabblad Ingeschreven en klik daar op de naam van de leiding. Op de persoonlijke fiche klik 
+        je bij Chirogegevens op het potloodicoontje naast Afdelingen. In het pop-up-venstertje vink je de juiste afdeling(en).</p>
     <h3>
         <a class="anchor" id="WaaromBivakaangifte">Waarom moeten we een bivakaangifte doen?</a></h3>
     <p>
