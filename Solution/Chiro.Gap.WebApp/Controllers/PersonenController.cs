@@ -287,7 +287,8 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Gebruikt de ingevulde gegevens om een nieuwe persoon aan te maken
+        /// Gebruikt de ingevulde gegevens om een nieuwe persoon aan te maken, 
+        /// wordt (indirect) opgeroepen vanuit jquery-persoons-fiche.js via bewaarGegevens!!
         /// </summary>
         /// <param name="model">Het ingevulde model</param>
         /// <param name="groepID">ID van de groep waaraan de nieuwe persoon gelieerd moet worden</param>
@@ -297,7 +298,7 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult Nieuw(NieuwePersoonModel model, int groepID)
         {
-            bool gelukt = false;
+            bool gelukt;
 
             IDPersEnGP ids = null;
 
@@ -502,8 +503,9 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns>Redirect naar overzicht persoonsinfo indien alles ok, anders opnieuw de view
         /// 'Nieuw'.</returns>
         [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         [HandleError]
-        public ActionResult Nieuw(PersoonsWijzigingModel model, int groepID)
+        public ActionResult Bewerk(PersoonsWijzigingModel model, int groepID)
         {
             if (!ModelState.IsValid)
             {
