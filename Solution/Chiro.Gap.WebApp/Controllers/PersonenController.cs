@@ -698,7 +698,14 @@ namespace Chiro.Gap.WebApp.Controllers
                 if (!personenOverzicht.Any())
                 {
                     // Als er geen fouten optraden, redirecten we naar de ledenlijst.
-                    return RedirectToAction("Index", "Leden");
+                    if (inTeSchrijven.Count() == 1)
+                    {
+                        return RedirectToAction("Bewerken", "Personen", new { id = inTeSchrijven.First().GelieerdePersoonID });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Leden");
+                    }
                 }
 
                 // In het andere geval tonen we nog de probleemgevallen.
