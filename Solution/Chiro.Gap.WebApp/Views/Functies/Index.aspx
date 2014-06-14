@@ -26,36 +26,21 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<% 
-		using (Html.BeginForm())
-		{%>
+	<% using (Html.BeginForm())	{%>
     
 	<ul id="functies_bestaand">
-<%
-			foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Code))
-			{
-%>
-				<li>
-		
-				<%=Html.Encode(String.Format(
-					"{0} ({1})", 
-					fie.Naam, 
-					fie.Code))%>
-<% 
-				if ((Model.Detail.Niveau & Niveau.Groep) != 0)
-				{
-%>							                
-					<%=Html.Encode(String.Format(
-					" - Kan toegekend worden aan ingeschreven {0}",
-					fie.Type == LidType.Kind ? "leden" : fie.Type == LidType.Leiding ? "leiding" : "leden en leiding"))%>                
-<%
-				}
-%>      [<%=Html.ActionLink("Verwijderen", "Verwijderen", new {id = fie.ID}) %>]
-        [<%=Html.ActionLink("Bewerken","Bewerken", new {id = fie.ID}) %>]
+    <%foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Code)){%>
+		<li>
+		    <%=Html.Encode(String.Format("{0} ({1})", fie.Naam, fie.Code))%>
+            <% if ((Model.Detail.Niveau & Niveau.Groep) != 0) { %>							                
+			    <%=Html.Encode(String.Format(
+				    " - Kan toegekend worden aan ingeschreven {0}",
+				    fie.Type == LidType.Kind ? "leden" : fie.Type == LidType.Leiding ? "leiding" : "leden en leiding"))%>                
+            <%}%>      
+            [<%=Html.ActionLink("Verwijderen", "Verwijderen", new {id = fie.ID}) %>]
+            [<%=Html.ActionLink("Bewerken","Bewerken", new {id = fie.ID}) %>]
 		</li>
-		<%
-			}
-		%>
+		<%}%>
 	</ul>
 
 	<ul id="acties">
@@ -86,31 +71,20 @@
 			<%=Html.EditorFor(mdl => mdl.NieuweFunctie.MinAantal) %><br />
 			(Moet 0 zijn als er geen minimumaantal is)<%=Html.ValidationMessageFor(mdl => mdl.NieuweFunctie.MinAantal) %>
 		</p>
-<% 
-		if ((Model.Detail.Niveau & Niveau.Groep) != 0)
-		{
-%>							                
-			
+        <% 	if ((Model.Detail.Niveau & Niveau.Groep) != 0)	{ %>							                
 			<p>
 			<%=Html.LabelFor(mdl => mdl.NieuweFunctie.Type)%>
-<%
-			var values = from LidType lt in Enum.GetValues(typeof (LidType))
-			     select new
-	                    		{
-	                    			value = lt,
-	                    			text = String.Format(
-	                    				"Ingeschreven {0}",
-	                    				lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding")
-	                    		};
-%>
-			<%=Html.DropDownListFor(mdl => mdl.NieuweFunctie.Type,
-						       new SelectList(values.Reverse(), "value", "text"))%>
+            <%	var values = from LidType lt in Enum.GetValues(typeof (LidType)) 
+                 where lt!=LidType.Geen
+			     select new {
+	                value = lt,
+	                text = String.Format(
+	                    "Ingeschreven {0}",
+	                    lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding")
+                };%>
+			<%=Html.DropDownListFor(mdl => mdl.NieuweFunctie.Type, new SelectList(values.Reverse(), "value", "text"))%>
 			</p>
-<%
-		}
-%>
+        <%}%>
 	</fieldset>
-
-	<%}
-	%>
+	<%}	%>
 </asp:Content>

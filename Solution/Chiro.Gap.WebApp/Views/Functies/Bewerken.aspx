@@ -32,18 +32,15 @@
 			<tr>
 			    <td><%=Html.LabelFor(mdl => mdl.HuidigeFunctie.Type)%></td>
                 <td>
-<%
-			var values = from LidType lt in Enum.GetValues(typeof (LidType))
-			     select new
-	                    		{
-	                    			value = lt,
-	                    			text = String.Format(
-	                    				"Ingeschreven {0}",
-	                    				lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding")
-	                    		};
-%>
-			<%=Html.DropDownListFor(mdl => mdl.HuidigeFunctie.Type,
-						       new SelectList(values.Reverse(), "value", "text"))%>
+                    <%var values = from LidType lt in Enum.GetValues(typeof (LidType))
+                     where lt != LidType.Geen
+			         select new{
+	                        value = lt,
+	                        text = String.Format(
+	                    	    "Ingeschreven {0}",
+	                    	    lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding")
+	                    };%>
+			         <%=Html.DropDownListFor(mdl => mdl.HuidigeFunctie.Type,new SelectList(values.Reverse(), "value", "text"))%>
                  </td>
                  <td><%=Html.ValidationMessageFor(mdl => mdl.HuidigeFunctie.Type) %></td>
 			</tr>
