@@ -200,7 +200,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                     return RedirectToAction("Functies", new { Controller = "Groep", groepID = groepID });
                 }
-                catch (FaultException<BestaatAlFault<FunctieDetail>> ex)
+                catch (FaultException<BestaatAlFault<FunctieInfo>> ex)
                 {
                     if (System.String.Compare(model.NieuweFunctie.Code, ex.Detail.Bestaande.Code, System.StringComparison.OrdinalIgnoreCase) == 0)
                     {

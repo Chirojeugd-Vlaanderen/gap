@@ -879,8 +879,19 @@ namespace Chiro.Gap.Services
         {
             var groep = GetGroepEnCheckGav(groepId);
 
+            // Deze variabele vullen we als de functie al bestaat
+            Functie bestaandeFunctie = null;
+
             // Bestaat er al een eigen of nationale functie met dezelfde code?
-            var bestaandeFunctie = _groepenMgr.FunctieZoeken(groep, code, _functiesRepo);
+            bestaandeFunctie = _groepenMgr.FunctieZoeken(groep, code, _functiesRepo);
+            if (bestaandeFunctie != null)
+            {
+                throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(
+                    bestaandeFunctie));
+            }
+
+            // bestaat er al een functie met dezelfde naam?
+            bestaandeFunctie = _groepenMgr.FunctieZoekenOpNaam(groep, naam, _functiesRepo);
             if (bestaandeFunctie != null)
             {
                 throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(

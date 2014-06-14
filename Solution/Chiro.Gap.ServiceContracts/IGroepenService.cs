@@ -319,7 +319,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="werkJaarVan">Eventueel het vroegste werkJaar waarvoor de functie beschikbaar moet zijn</param>
 		/// <returns>De ID van de aangemaakte Functie</returns>
 		[OperationContract]
-		[FaultContract(typeof(BestaatAlFault<FunctieDetail>))]
+        [FaultContract(typeof(BestaatAlFault<FunctieInfo>))]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		int FunctieToevoegen(int groepID, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan);
