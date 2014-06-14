@@ -798,15 +798,19 @@ namespace Chiro.Gap.Services
             var gwj = _groepsWerkJarenRepo.ByID(groepswerkjaarId);
             Gav.Check(gwj); // throwt als ik geen GAV ben voor dit groepswerkjaar.
 
+            // Indien kadergroep => niveau van groep
+            //  Anders => meegeven lidType omgezet naar niveau (1 bit geshift)
+            var lidNiveau = (gwj.Groep.Niveau == Niveau.Groep ? ((int)lidType)<<1 : (int)gwj.Groep.Niveau);
+
             var nationaleFuncties = (from f in _functiesRepo.Select()
-                                     where f.IsNationaal && ((f.NiveauInt & (int)gwj.Groep.Niveau) != 0)
+                                     where f.IsNationaal && ((f.NiveauInt & lidNiveau) != 0)
                                      select f).ToList();
 
             var eigenRelevanteFuncties = (from f in gwj.Groep.Functie
                                           where
                                               f.WerkJaarVan <= gwj.WerkJaar &&
                                               (f.WerkJaarTot == null || gwj.WerkJaar <= f.WerkJaarTot) &&
-                                              ((f.Type & lidType) != 0)
+                                              ((f.NiveauInt & lidNiveau) != 0)
                                           select f).ToList();
 
             return Mapper.Map<IEnumerable<Functie>, IEnumerable<FunctieDetail>>(nationaleFuncties.Union(eigenRelevanteFuncties));
