@@ -78,3 +78,5 @@ update adr.land set IsoCode='CH' where Naam='Zwitserland';
 
 alter table adr.land alter column IsoCode varchar(10) not null
 alter table adr.land add constraint AK_Land_IsoCode unique(IsoCode)
+
+alter table lid.Kind alter column AfdelingsJaarID int not null;
