@@ -468,7 +468,7 @@ div#actiesmini
 	text-align: left;
 }
 
-div.Foutmelding, div.Succesmelding
+div.Foutmelding, div.Succesmelding, div.GewoneMelding
 {
 	font-size: 13px;
 	border: solid 1px;
@@ -489,6 +489,12 @@ div.Succesmelding
 {
 	border-color: Green;
 	background-color: #DFD;
+}
+
+div.GewoneMelding 
+{
+    border-color: #FBB117;
+	background-color: #FFF8C6;
 }
 
 table.overzicht

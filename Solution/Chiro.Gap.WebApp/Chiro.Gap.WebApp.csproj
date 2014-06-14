@@ -256,6 +256,7 @@
     <Content Include="Scripts\jquery-persoons-fiche.js" />
     <Content Include="Content\jquery.dataTables_themeroller.css" />
     <Content Include="Scripts\jquery-ui-1.10.2.custom.min.js" />
+    <Content Include="Scripts\jquery-uitstap.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

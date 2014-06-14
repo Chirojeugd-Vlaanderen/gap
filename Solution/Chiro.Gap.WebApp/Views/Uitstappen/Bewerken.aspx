@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 <%
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -20,6 +20,11 @@
  * limitations under the License.
  */
 %>
+    <script src="<%=ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jquery-uitstap.js")%>" type="text/javascript"></script>
+    
+    <%	// OPGELET: de opening en closing tag voor 'script' niet vervangen door 1 enkele tag, want dan
+		// toont de browser blijkbaar niets meer van dit form.  (Zie #664) %>
 
 	<% 
         // Deze view kan zowel gebruikt worden voor het aanmaken van nieuwe uitstappen, als voor het bewerken
