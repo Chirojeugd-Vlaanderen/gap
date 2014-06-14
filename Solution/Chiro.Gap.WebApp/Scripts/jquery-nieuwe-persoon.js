@@ -36,7 +36,7 @@ $(function () {
         changeMonth: true,
         maxDate: "-0y",
         defaultDate: "-6y", // ik doe maar iets
-        yearRange: "-20:+0"
+        yearRange: "-80:+0"
     });
 
     $.datepicker.setDefaults($.datepicker.regional['be']);
