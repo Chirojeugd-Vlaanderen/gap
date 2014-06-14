@@ -485,20 +485,11 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             return Nieuw(model, groepID);
         }
-
-        public JsonResult PersoonsGegevensOphalenJson(int groepID, int gelieerdePersoonId)
-        {
-            var model = new GelieerdePersonenModel();
-            BaseModelInit(model, groepID);
-            model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonId));
-            model.Titel = model.HuidigePersoon.VolledigeNaam;
-            return Json(model,JsonRequestBehavior.AllowGet);
-        }
-
+        
         /// <summary>
         /// Probeert de gewijzigde persoonsgegevens te persisteren via de webservice
         /// </summary>
-        /// <param name="model"><c>GelieerdePersonenModel</c> met gegevens gewijzigd door de gebruiker</param>
+        /// <param name="model"><c>PersoonsWijzigingModel</c> met gegevens gewijzigd door de gebruiker</param>
         /// <param name="groepID">GroepID van huidig geseecteerde groep</param>
         /// <returns>Redirect naar overzicht persoonsinfo indien alles ok, anders opnieuw de view
         /// 'Nieuw'.</returns>

@@ -156,7 +156,6 @@
     <Compile Include="Models\NieuweCommVormModel.cs" />
     <Compile Include="Models\GavModel.cs" />
     <Compile Include="Models\LidInfoModel.cs" />
-    <Compile Include="Models\GelieerdePersonenModel.cs" />
     <Compile Include="Models\LidFunctiesModel.cs" />
     <Compile Include="ActionFilters\MasterAttribute.cs" />
     <Compile Include="Models\MasterViewModel.cs" />
