@@ -65,6 +65,8 @@
     <Compile Include="DataContracts\AfdelingInfo.cs" />
     <Compile Include="DataContracts\AfdelingsJaarInfo.cs" />
     <Compile Include="DataContracts\AfdelingsJaarDetail.cs" />
+    <Compile Include="DataContracts\BivakAangifteInfo.cs" />
+    <Compile Include="DataContracts\BivakAangifteLijstInfo.cs" />
     <Compile Include="DataContracts\CategorieInfo.cs" />
     <Compile Include="DataContracts\CommunicatieDetail.cs" />
     <Compile Include="DataContracts\CommunicatieInfo.cs" />
