@@ -286,6 +286,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We kunnen je login niet koppelen aan een persoon..
+        /// </summary>
+        internal static string KoppelingGavPersoonOntbreekt {
+            get {
+                return ResourceManager.GetString("KoppelingGavPersoonOntbreekt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Het lid met gegeven LidID is niet meer actief.
         /// </summary>
         internal static string LidInactief {

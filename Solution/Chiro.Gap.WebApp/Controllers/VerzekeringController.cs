@@ -50,6 +50,13 @@ namespace Chiro.Gap.WebApp.Controllers
 
                     return View("EmailOntbreekt", model);
                 }
+                if (ex.Detail.FoutNummer == FoutNummer.KoppelingGavPersoonOntbreekt)
+                {
+                    var model = new MasterViewModel();
+                    BaseModelInit(model, groepID);
+
+                    return View("GavKoppelingOntbreekt", model);
+                }
                 else
                 {
                     throw;

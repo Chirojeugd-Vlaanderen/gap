@@ -83,7 +83,7 @@
                         <td><input id="snelCheck" type="checkbox" /></td>
                     </tr>
                     <tr id="gezin">
-                        <td>Voor het ganse gezin:</td>
+                        <td>Voor heel het gezin:</td>
                         <td><input id="gezinCheck" type="checkbox"/></td>
                     </tr>
                     <tr>

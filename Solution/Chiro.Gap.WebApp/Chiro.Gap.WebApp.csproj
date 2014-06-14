@@ -315,6 +315,7 @@
     <Content Include="Views\Uitstappen\Bewerken.aspx" />
     <Content Include="Views\Uitstappen\PlaatsBewerken.aspx" />
     <Content Include="Views\Verzekering\EmailOntbreekt.aspx" />
+    <Content Include="Views\Verzekering\GavKoppelingOntbreekt.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

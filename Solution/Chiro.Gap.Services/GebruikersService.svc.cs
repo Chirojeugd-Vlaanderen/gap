@@ -300,6 +300,15 @@ namespace Chiro.Gap.Services
                                               StringComparison.InvariantCultureIgnoreCase) == 0
                            select g).First();
 
+            if (mijnGav.Persoon.Count == 0 || mijnGav.Persoon.First().GelieerdePersoon == null)
+            {
+                throw new FaultException<FoutNummerFault>(new FoutNummerFault
+                {
+                    Bericht = Properties.Resources.KoppelingGavPersoonOntbreekt,
+                    FoutNummer = FoutNummer.KoppelingGavPersoonOntbreekt
+                });
+            }
+
             var mijnGp = (from gp in mijnGav.Persoon.First().GelieerdePersoon
                           where gp.Groep.ID == groepID
                           select gp).First();

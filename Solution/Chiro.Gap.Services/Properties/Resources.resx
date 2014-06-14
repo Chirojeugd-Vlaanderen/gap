@@ -246,4 +246,7 @@
   <data name="AfdelingNietLeeg" xml:space="preserve">
     <value>Er zijn nog leden aan de afdeling gekoppeld.</value>
   </data>
+  <data name="KoppelingGavPersoonOntbreekt" xml:space="preserve">
+    <value>We kunnen je login niet koppelen aan een persoon.</value>
+  </data>
 </root>
