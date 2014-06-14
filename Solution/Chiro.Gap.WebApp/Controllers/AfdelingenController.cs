@@ -171,14 +171,14 @@ namespace Chiro.Gap.WebApp.Controllers
 						Debug.Assert(false);
 					}
 
-					return View(model);
+                    return View(model);// FIXME only reloads part of the previous page
 				}
 			}
 			else
 			{
 				// Modelstate bevat ongeldige waarden; toon de pagina opnieuw
 
-				return View(model);
+                return View(model);// FIXME only reloads part of the previous page
 			}
 		}
 
@@ -340,7 +340,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		                svc => svc.OfficieleAfdelingenOphalen());
 
 		        model.Titel = "Afdeling bewerken";
-                return RedirectToAction("Afdelingen", new { Controller = "Groep", groepID = model.GroepID });
+                return View("AfdelingsJaar", model); // FIXME only reloads part of the previous page
 		    }
 		    catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
 		    {
@@ -375,7 +375,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		            Debug.Assert(false);
 		        }
                 model.OfficieleAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(groep => groep.OfficieleAfdelingenOphalen());
-                return View("AfdelingsJaar", model);
+                return View("AfdelingsJaar", model); // FIXME only reloads part of the previous page
 		    }
 		}
 	}

@@ -100,7 +100,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				model.Titel = String.Format("Categorie '{0}' verwijderen", categorieNaam);
 
-				return View("CategorieVerwijderen", model);
+                return View("CategorieVerwijderen", model); // FIXME only reloads part of the previous page
 			}
 		}
 
@@ -185,7 +185,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					model.Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
 						svc => svc.DetailOphalen(groepID));
 
-					return View(model);
+                    return View(model); // FIXME only reloads part of the previous page
 				}
 			}
 			else
@@ -195,7 +195,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
 					svc => svc.DetailOphalen(groepID));
 
-				return View(model);
+                return View(model); // FIXME only reloads part of the previous page
 			}
 		}
 	}

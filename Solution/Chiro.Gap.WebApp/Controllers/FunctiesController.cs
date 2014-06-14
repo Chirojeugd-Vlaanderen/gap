@@ -98,7 +98,7 @@ namespace Chiro.Gap.WebApp.Controllers
                                    select f).First().Naam;
                 model.Titel = String.Format("Functie '{0}' verwijderen", functieNaam);
 
-                return View("Verwijderen", model);
+                return View("Verwijderen", model); // FIXME only reloads part of the previous page
             }
         }
 
@@ -155,7 +155,7 @@ namespace Chiro.Gap.WebApp.Controllers
                             ex.Detail.Bestaande.Naam));
 
                     model.Titel = "Functie aanpassen";
-                    return View(model);
+                    return View(model); // FIXME only reloads part of the previous page
                 }
                 return RedirectToAction("Functies", new { Controller = "Groep", groepID = model.GroepID });
             }
@@ -163,7 +163,7 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 BaseModelInit(model, groepID);
                 model.Titel = "Functie aanpassen";
-                return View(model);                
+                return View(model); // FIXME only reloads part of the previous page
             }
 
         }
@@ -231,7 +231,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     model.Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
                         svc => svc.DetailOphalen(groepID));
 
-                    return View(model);
+                    return View(model); // FIXME only reloads part of the previous page
                 }
             }
             else
@@ -241,7 +241,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
                     svc => svc.DetailOphalen(groepID));
 
-                return View(model);
+                return View(model); // FIXME only reloads part of the previous page
             }
         }
     }
