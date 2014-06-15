@@ -35,7 +35,7 @@
         <li>Vul op de nieuwe pagina de nodige gegevens in. Gaat het over je groepsbivak, het
             'klein kamp' voor je jongste afdeling of een buitenlands bivak, vink dan aan dat
             het om een jaarlijks bivak gaat <em>(ook als je het niet elk jaar organiseert!)</em>.
-            Voor een bivak moet je namelijk een bivakaangifte<%=Html.InfoLink("BivakAangifte1") %> +doen. Dat vinkje zorgt ervoor dat de gegevens automatisch doorgegeven worden aan
+            Voor een bivak moet je namelijk een bivakaangifte<%=Html.InfoLink("BivakAangifte1") %> doen. Dat vinkje zorgt ervoor dat de gegevens automatisch doorgegeven worden aan
             het nationaal secretariaat. (<%=Html.ActionLink("Waarom is een bivakaangifte nodig?", "ViewTonen", new { controller = "Handleiding", helpBestand = "WaaromBivakaangifte" })%>)</li>
     </ul>
     <img src="<%=ResolveUrl("~/Content/Screenshots/Nieuwe_uitstap.png") %>" alt="Nieuwe uitstap registreren" />

@@ -38,7 +38,7 @@
         (boven of rechts van de tabel) voor 'Afdeling aanpassen'. Op een andere pagina
         kun je voor alle geselecteerde personen dan aanvinken bij welke afdeling ze
         staan.</p>
-        <img src="<%=ResolveUrl("~/Content/Screenshots/Mensen_van_afdeling_veranderen.png.png") %>"
+        <img src="<%=ResolveUrl("~/Content/Screenshots/Mensen_van_afdeling_veranderen.png") %>"
         alt="Mensen in een andere afdeling stoppen" />
     <p>
         Je wijzigingen worden normaal gezien binnen de 24 uur gesynchroniseerd met de

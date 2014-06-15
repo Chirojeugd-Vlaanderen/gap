@@ -37,20 +37,16 @@
 		de lagere school 'is blijven zitten'. Zo iemand zit meestal bij zijn of haar
 		klasgenoten in de afdeling, in plaats van bij zijn of haar leeftijdsgenoten.</p>
 	<p>
-		Bij nieuwe leden kun je de Chiroleeftijd al instellen op het moment dat je hen
-		als nieuwe persoon toevoegt.</p>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Nieuwe_persoon.png") %>" alt="De Chiroleeftijd instellen voor een nieuwe persoon" />
-	<p>
-		Voor iemand die al lid was en pas daarna blijft zitten, kun je dat nog aanpassen.
 		Stappen in het proces:</p>
 	<ul>
 		<li>Klik op het tabblad 'Iedereen' of 'Ingeschreven' op de naam van die persoon.
-			Je krijgt dan de persoonsfiche te zien.</li>
+			Je krijgt dan de persoonsfiche te zien, met links onderaan de Chirogegevens.</li>
+        <li>Klik in de rij van de Chiroleeftijd op het potloodicoontje. Je krijgt dan een dropdown 
+            waarin je de aanpassing kunt kiezen. +1 betekent dat de persoon bij de automatische 
+            afdelingsverdeling meegaat met de 'generatie' van een jaar ouder. Iemand die bijvoorbeeld 
+            op het eind van het jaar verjaart of die is blijven zitten, krijgt -1 om met de 'generatie' 
+            van een jaar jonger mee op te schuiven.</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_aanpassenlink.png") %>"
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Chiroleeftijd_aanpassen.png") %>"
 		alt="Chiroleeftijd aanpassen" />
-	<ul>
-		<li>Klik bovenaan op de link 'persoonlijke gegevens aanpassen'. Je krijgt dan hetzelfde
-			formulier te zien als bij een nieuwe persoon, maar wel al ingevuld.</li>
-	</ul>
 </asp:Content>

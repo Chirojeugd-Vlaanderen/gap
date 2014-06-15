@@ -50,7 +50,7 @@
             op kamp met hun jongste afdeling. Ook dat geldt als een bivak, en dus moet je er
             een bivakaangifte<%=Html.InfoLink("TW_BivakAangifte1") %> voor doen. Alle info over verzekeringen,
             administratie en praktische regelingen vind je op <a href="http://www.chiro.be/bivak">
-                www.chiro.be/bivak</a> en in <a href="http://www.chiro.be/info-voor-leiding/uitgaven/boeken/bivakboek">
+                chiro.be/bivak</a> en in <a href="http://www.chiro.be/info-voor-leiding/uitgaven/boeken/bivakboek">
                     het Bivakboek</a>.
         </dd>
         <dt><strong><a class="anchor" id="Bivakaangifte">Bivakaangifte</a></strong>:</dt>

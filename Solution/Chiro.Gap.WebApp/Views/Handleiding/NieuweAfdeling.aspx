@@ -57,7 +57,7 @@
 		<li>Onderaan vind je de 'offici&euml;le' afdelingen en de geboortejaren die daarmee
 			overeenkomen. Je hoeft je daar niet aan te houden, ze staan er gewoon als hulp.
 			Eén van de keuzes die je moet maken, is wel met welke offici&euml;le afdeling
-			de jouwe overeenkomt. Zo weet het nationaal secretariaat welke ledenuitgave<%=Html.InfoLink("LedenUitgave") %>
+			de jouwe overeenkomt. Zo weet het nationaal secretariaat welke ledenuitgave<%=Html.InfoLink("LUINFO") %>
 			we moeten opsturen voor die leden. Er is ook een optie 'Speciaal'. Dat is niet
 			voor bv. een speelclubafdeling met andere leeftijdsgrenzen dan de officiële!
 			Met speciale afdelingen wordt geen rekening gehouden bij de automatische indeling
