@@ -65,7 +65,7 @@
             aan iedereen die op hetzelfde adres woont.</li>
         <li>Vul je een mailadres in, dan kun je aanvinken of het ingeschreven mag worden op
             een Snelleberichtenlijst
-           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Snelleberichtenlijsten", new { helpBestand = "Trefwoorden" }, null)%>.
+           &nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Nieuwsbrief", new { helpBestand = "Trefwoorden" }, null)%>.
             Dat is dus alleen voor intern Chirogebruik. Chirojeugd Vlaanderen geeft dat soort
             gegevens nooit door aan derden - lees er de
             <%=Html.ActionLink("privacyverklaring", "ViewTonen", new { controller = "Handleiding", helpBestand = "Privacy" })%>

@@ -29,7 +29,7 @@
         financieel verantwoordelijke om facturen op te sturen. Uiteraard moeten hun
         contactgegevens daarom zo snel mogelijk en juist ingevuld zijn.</p>
     <p>
-        Van de leiding hebben we het mailadres nodig voor de Snelleberichtenlijsten.
+        Van de leiding hebben we het mailadres nodig voor de nieuwsbrief.
         Zo kunnen we jullie snel op de hoogte brengen van dringend nieuws. Gewest- en
         verbondsmedewerkers kunnen dat ook opvragen om makkelijker contact op te kunnen
         nemen. Postadressen hebben we bijvoorbeeld nodig om Dubbelpunt op te sturen

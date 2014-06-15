@@ -177,6 +177,10 @@
             Je kunt wel een verzekering voor een beperkte periode afsluiten (zie <a href="http://www.chiro.be/verzekeringen">
                 www.chiro.be/verzekeringen</a>).
         </dd>
+        <dt><strong><a class="anchor" id="Nieuwsbrief">Nieuwsbrief</a></strong>:</dt>
+        <dd id="SBLINFO">
+            Je kunt je via het GAP inschrijven voor de maandelijkse Chiro-nieuwsbrief met nieuws, info
+            en weetjes voor Chiroleiding.</dd>
         <dt><strong><a class="anchor" id="Persoon">Persoon</a></strong>:</dt>
         <dd id="PERINFO">
             In deze handleiding bedoelen we met een persoon om het even wie van wie je gegevens
@@ -187,11 +191,6 @@
             beschikbaar voor alle <a href="#GAV">GAV</a>'s van je groep. En wil je al die mensen
             makkelijk terugvinden tussen die honderden personen? Stop ze dan in duidelijke <a
                 href="#Categorie">categorieën</a>.</dd>
-        <dt><strong><a class="anchor" id="Snelleberichtenlijsten">Snelleberichtenlijsten</a></strong>:</dt>
-        <dd id="SBLINFO">
-            Chirojeugd Vlaanderen heeft een aantal mailinglijsten. We gebruiken die niet om
-            je te overstelpen met mails, wel om je snel te kunnen bereiken als we dringend nieuws
-            hebben. Zo zijn er lijsten voor leiding, kaderleiding, groepsleiding, VB's en jeugdraadvertegenwoordigers.</dd>
         <dt><a class="anchor" id="Uitschrijven"></a><strong>Uitschrijven</strong>:</dt>
         <dd id="UITSCHRINFO">
             Iemand uitschrijven is een drastische maatregel. In principe kan het ook niet -

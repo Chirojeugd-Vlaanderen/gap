@@ -67,7 +67,7 @@ $(function () {
 
     $('#snelBerichtInfo').click(function () {
         $('#extraInfoDialog').dialog();
-        toonInfo('#SBLINFO', 'Snelleberichtenlijsten', '#extraInfoDialog');
+        toonInfo('#SBLINFO', 'Nieuwsbrief', '#extraInfoDialog');
     });
 
     $('#print').click(function () {

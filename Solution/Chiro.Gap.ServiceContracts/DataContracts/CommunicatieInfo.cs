@@ -80,7 +80,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// Snelleberichtenlijsten. Bij <c>true</c> geeft de gebruiker aan dat het adres
         /// ingeschreven mag worden op de Snelleberichtenlijst.</remarks>
         [DataMember]
-        [DisplayName(@"Mag gebruikt worden voor Snelleberichtenlijsten")]
+        [DisplayName(@"Stuur de maandelijkse nieuwsbrief")]
         public bool IsVoorOptIn { get; set; }
 
         /// <summary>

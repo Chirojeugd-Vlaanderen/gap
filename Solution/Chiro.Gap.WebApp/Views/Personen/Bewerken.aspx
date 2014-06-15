@@ -79,7 +79,7 @@
                         <td><input id="voorkeurCheck" type="checkbox"/></td>
                     </tr>
                     <tr id="sb" hidden>
-                        <td>Snelleberichtenlijst:</td>
+                        <td>Nieuwsbrief ontvangen:</td>
                         <td><input id="snelCheck" type="checkbox" /></td>
                     </tr>
                     <tr id="gezin">
@@ -223,7 +223,7 @@
                     <% if (cv.CommunicatieTypeIsOptIn)
                        { %>
                     <br />
-                    Snelleberichtenlijst<%= Html.InfoLink("snelBerichtInfo")%>: <a class="sblink" href="#" id="sb<%: cvID %>"><%= cv.IsVoorOptIn ? "ja" : "nee" %></a>
+                    Nieuwsbrief ontvangen<%= Html.InfoLink("snelBerichtInfo")%>: <a class="sblink" href="#" id="sb<%: cvID %>"><%= cv.IsVoorOptIn ? "ja" : "nee" %></a>
                     <% } %>
                 </td>
                 <td>

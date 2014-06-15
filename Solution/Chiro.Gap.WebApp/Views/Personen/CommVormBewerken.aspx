@@ -59,7 +59,7 @@
             </tr>
             <tr>
                 <td>
-                    <%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn)%>
+                    <%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn)%><%= Html.InfoLink("snelBerichtInfo")%>
                 </td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn) %>
