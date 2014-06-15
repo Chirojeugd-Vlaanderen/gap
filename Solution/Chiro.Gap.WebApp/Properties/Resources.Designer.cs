@@ -881,7 +881,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to De overgang naar werkjaar {0}-{1} moet nog gebeuren..
+        ///   Looks up a localized string similar to De &lt;a href=&apos;{2}&apos;&gt;overgang&lt;/a&gt; naar werkjaar {0}-{1} moet nog gebeuren..
         /// </summary>
         public static string WerkJaarInOvergang {
             get {

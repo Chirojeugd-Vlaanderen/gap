@@ -238,7 +238,7 @@
     <value>---/----</value>
   </data>
   <data name="WerkJaarInOvergang" xml:space="preserve">
-    <value>De overgang naar werkjaar {0}-{1} moet nog gebeuren.</value>
+    <value>De &lt;a href='{2}'&gt;overgang&lt;/a&gt; naar werkjaar {0}-{1} moet nog gebeuren.</value>
   </data>
   <data name="BivakAangifteNogInTeVullen" xml:space="preserve">
     <value>Je moet je bivakaangifte nog &lt;a href='{0}'&gt; invullen &lt;/a&gt;.</value>

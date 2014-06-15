@@ -140,13 +140,15 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 if (gwjDetail.Status == WerkJaarStatus.InOvergang)
                 {
+                    var url = Url.Action("Index","JaarOvergang");
                     model.Mededelingen.Add(new Mededeling
                     {
                         Type = MededelingsType.Probleem,
                         Info = String.Format(
                             Properties.Resources.WerkJaarInOvergang,
                             gwjDetail.WerkJaar + 1,
-                            gwjDetail.WerkJaar + 2)
+                            gwjDetail.WerkJaar + 2,
+                            url)
                     });
                 }
 
