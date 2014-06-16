@@ -166,6 +166,12 @@ namespace Chiro.Gap.WebApp.Controllers
 				}
 				catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
 				{
+                    // Als de naam EN de afkorting van een afdeling al bestaan, dan hebben we graag twee
+                    // foutberichten. Vandaar het truukje met 'possible'. Maar dit vangt niet alle situaties op.
+                    // Als een nieuwe afdeling de naam heeft van bestaande afdeling A, en de code van bestaande
+                    // afdeling B, dan zul je enkel een exception krijgen op de afkorting, omdat de
+                    // BestaatAlException maar 1 object oplevert.
+
 				    var possible = false;
 					if (System.String.Compare(ex.Detail.Bestaande.Afkorting, model.Info.Afkorting, System.StringComparison.OrdinalIgnoreCase) == 0)
 					{
@@ -377,7 +383,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		                                  System.StringComparison.OrdinalIgnoreCase) == 0)
 		        {
 		            ModelState.AddModelError(
-		                "Info.Afkorting",
+                        // De key Afdeling.Afkorting geeft aan dat de fout zit in
+                        // Model.Afdeling.Afkorting. Die key moet juist zijn, anders laat
+                        // MVC de foutmelding niet zien.
+		                "Afdeling.Afkorting",
 		                string.Format(
 		                    Properties.Resources.AfdelingsCodeBestaatAl,
 		                    ex.Detail.Bestaande.Afkorting,
@@ -388,7 +397,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		                                  System.StringComparison.OrdinalIgnoreCase) == 0)
 		        {
 		            ModelState.AddModelError(
-		                "Info.Naam",
+		                "Afdeling.Naam",
 		                string.Format(
 		                    Properties.Resources.AfdelingsNaamBestaatAl,
 		                    ex.Detail.Bestaande.Afkorting,
