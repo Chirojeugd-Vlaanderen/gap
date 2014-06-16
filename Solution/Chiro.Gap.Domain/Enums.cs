@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -28,6 +28,12 @@ namespace Chiro.Gap.Domain
     [Flags]
     public enum LidType
     {
+        // Opgelet: Niveau.LidInGroep = 2*LidType.Kind
+        // en Niveau.LeidingInGroep = 2*LidType.Leiding
+        // Origineel was dit toevallig, maar dit wordt gebruikt in
+        // GroepenService.svc.cs voor conversie.
+        // Let dus goed op als je die zaken zou wijzigen.
+
         [EnumMember] Geen = 0x0,
         [EnumMember] Kind = 0x01,
         [EnumMember] Leiding = 0x02,
@@ -80,6 +86,12 @@ namespace Chiro.Gap.Domain
         // FUTURE
         //        [EnumMember]
         //        Satelliet = 0x01,
+
+        // Opgelet: Niveau.LidInGroep = 2*LidType.Kind
+        // en Niveau.LeidingInGroep = 2*LidType.Leiding
+        // Origineel was dit toevallig, maar dit wordt gebruikt in
+        // GroepenService.svc.cs voor conversie.
+        // Let dus goed op als je die zaken zou wijzigen.
         [EnumMember] LidInGroep = 0x02,
         [EnumMember] LeidingInGroep = 0x04,
         [EnumMember] Groep = LidInGroep | LeidingInGroep,
