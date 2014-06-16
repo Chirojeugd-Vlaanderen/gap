@@ -121,7 +121,9 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <Shadow Include="Test References\Chiro.Gap.UpdateSvc.Service.accessor" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Test References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
