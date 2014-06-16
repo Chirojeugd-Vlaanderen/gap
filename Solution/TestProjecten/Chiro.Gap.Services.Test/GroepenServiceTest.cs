@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -18,7 +18,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-﻿using System.Web.UI.MobileControls;
 ﻿using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 ﻿using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -34,10 +33,8 @@ using System;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Moq;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Chiro.Gap.WorkerInterfaces;
+﻿using Chiro.Gap.WorkerInterfaces;
 ﻿using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
-using Chiro.Gap.Services;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -1241,11 +1238,11 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
-        /// Test of GroepenService.FunctiesBewerken controleert op dubbele namen of codes
+        /// Test of GroepenService.FunctiesBewerken controleert op dubbele codes
         /// </summary>
         [TestMethod()]
         [ExpectedException(typeof(FaultException<BestaatAlFault<FunctieInfo>>))]
-        public void FunctieBewerkenCheckDubbelTest()
+        public void FunctieBewerkenCheckDubbeleCodeTest()
         {
             // ARRANGE
 
@@ -1289,6 +1286,62 @@ namespace Chiro.Gap.Services.Test
                                            Type = LidType.Leiding,
                                            Code = nationaleFunctie.Code
                                        });
+
+            // ASSERT
+
+            // niks te assert. Hopelijk hebben we een exception gecatcht.
+        }
+
+        /// <summary>
+        /// Test of GroepenService.FunctiesBewerken controleert op dubbele naam
+        /// </summary>
+        [TestMethod()]
+        [ExpectedException(typeof(FaultException<BestaatAlFault<FunctieInfo>>))]
+        public void FunctieBewerkenCheckDubbeleNaamTest()
+        {
+            // ARRANGE
+
+            var functie = new Functie
+            {
+                ID = 1,
+                Groep =
+                    new ChiroGroep
+                    {
+                        GroepsWerkJaar =
+                            new List<GroepsWerkJaar> { new GroepsWerkJaar() }
+                    },
+                IsNationaal = false,
+                Niveau = Niveau.LeidingInGroep,
+                Code = "MF",
+                Naam = "Mijn Functie"
+            };
+            var nationaleFunctie = new Functie
+            {
+                ID = 2,
+                IsNationaal = true,
+                Niveau = Niveau.LeidingInGroep,
+                Code = "NF",
+                Naam = "Nationale Functie"
+            };
+
+            var alleFuncties = new List<Functie> { functie, nationaleFunctie };
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Functie>())
+                                  .Returns(new DummyRepo<Functie>(alleFuncties));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GroepenService>();
+            target.FunctieBewerken(new FunctieDetail
+            {
+                ID = functie.ID,
+                IsNationaal = functie.IsNationaal,
+                Type = LidType.Leiding,
+                Code = functie.Code,
+                Naam = nationaleFunctie.Naam    // dubbele naam
+            });
 
             // ASSERT
 
