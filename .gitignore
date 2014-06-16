@@ -9,6 +9,7 @@ obj
 [Dd]ebug
 *.orig
 [Tt]est[Rr]esults
+.localhistory
 
 # /
 /*.ncb
