@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -22,7 +22,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
-using System.Web.Routing;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ExcelManip;
@@ -543,13 +542,9 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 // Geen afdelingen.
 
-                // Workaround via TempData["fout"].  Niet zeker of dat een geweldig goed
-                // idee is.
+                // Tempdata is niet relevant als het resultaat Json is.
 
-                TempData["fout"] = String.Format(
-                    Properties.Resources.GeenActieveAfdelingen,
-                    Url.Action("Index", "Afdelingen", new { groepID }));
-
+                // Volgens mij loopt dit sowieso verkeerd af:
                 return Json("{data:geen afdelingen}"); //TerugNaarVorigeLijst();
             }
             else
@@ -596,12 +591,12 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 // Geen afdelingen.
 
-                // Workaround via TempData["fout"].  Niet zeker of dat een geweldig goed
-                // idee is.
+                // Geef een foutmelding dat er geen afdelingen zijn, met een link
+                // naar de afdelingsinstellingen.
 
                 TempData["fout"] = String.Format(
                     Properties.Resources.GeenActieveAfdelingen,
-                    Url.Action("Index", "Afdelingen", new { groepID }));
+                    Url.Action("Afdelingen", "Groep", new { groepID }));
 
                 return TerugNaarVorigeLijst();
             }

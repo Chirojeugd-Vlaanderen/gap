@@ -652,7 +652,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception)
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietLeeg, Properties.Resources.OngeldigAfdelingsJaar);
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietLeeg, Properties.Resources.AfdelingNietLeeg);
             }
         }
 
@@ -669,7 +669,7 @@ namespace Chiro.Gap.Services
                 _afdelingenRepo.Delete(afdeling);
                 _afdelingenRepo.SaveChanges();
             } catch(Exception){
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietLeeg, Properties.Resources.OngeldigAfdelingsJaar);
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietLeeg, Properties.Resources.AfdelingNietLeeg);
             }
         }
 

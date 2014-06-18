@@ -243,4 +243,7 @@
   <data name="TelefoonNrOntbreekt" xml:space="preserve">
     <value>We vragen een telefoonnummer voor ieder ingeschreven lid.</value>
   </data>
+  <data name="AfdelingNietLeeg" xml:space="preserve">
+    <value>Er zijn nog leden aan de afdeling gekoppeld.</value>
+  </data>
 </root>

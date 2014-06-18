@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -111,7 +111,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Maakt een nieuwe afdeling, op basis van <paramref name="model"/>.
+		/// Maakt een nieuwe afdeling, op basis van <paramref name="model"/>
 		/// </summary>
 		/// <param name="model">Bevat naam en code voor de nieuwe afdeling</param>
 		/// <param name="groepID">ID van de groep waarvoor de afdeling gemaakt moet worden</param>
@@ -183,55 +183,49 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
         /// <summary>
-        /// Verwijdert een afdeling uit het lijstje van actieve afdelingen in een bepaald werkJaar.
+        /// Verwijdert een afdeling uit het lijstje van actieve afdelingen in een bepaald werkJaar,
+        /// en levert een JSON-lijst op die 'gelukt' bevat als het gelukt is, en anders 'fail'.
         /// </summary>
         /// <param name="groepID">ID van de groep die we aan het bewerken zijn</param>
         /// <param name="id">ID van het afdelingsjaar dat we willen verwijderen</param>
-        /// <returns></returns>
-        /// <!-- GET: /Afdeling/VerwijderenVerwijderenVanWerkjaar/afdelingsJaarId -->
+        /// <returns>'gelukt' als het gelukt is, anders 'fail'.</returns>
 		[HandleError]
         public JsonResult VerwijderenVanWerkjaar(int groepID, int id)
         {
-            // Afdeling van afdelingsjaar invullen
+            // TODO (#1812): gestandaardiseerde manier van feedback.
             try
             {
                 ServiceHelper.CallService<IGroepenService>(groep => groep.AfdelingsJaarVerwijderen(id));
-                TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-                var l = new List<String>();
-                l.Add("gelukt");
+                var l = new List<String> {"gelukt"};
                 return Json(l, JsonRequestBehavior.AllowGet);
             }
             catch (FaultException ex)
             {
-                var l = new List<String>();
-                l.Add("fail");
+                var l = new List<String> {"fail"};
                 return Json(l, JsonRequestBehavior.AllowGet);
             }
         }
 
         /// <summary>
-        /// Verwijdert een afdeling volledig uit de database.
+        /// Verwijdert een afdeling volledig uit de database. Levert een JSON-lijst op 
+        /// die 'gelukt' bevat als het gelukt is, en anders 'fail'.
         /// </summary>
         /// <param name="groepID">ID van de groep die we aan het bewerken zijn</param>
         /// <param name="id">ID van de afdeling dat we willen verwijderen</param>
-        /// <returns></returns>
-        /// <!-- GET: /Afdeling/Verwijderen/afdelingsId -->
+        /// <returns>'gelukt' als het gelukt is, anders 'fail'.</returns>
         [HandleError]
         public JsonResult Verwijderen(int groepID, int id)
         {
-            // Afdeling van afdelingsjaar invullen
+            // TODO (#1812): gestandaardiseerde manier van feedback.
             try
             {
                 ServiceHelper.CallService<IGroepenService>(groep => groep.AfdelingVerwijderen(id));
-                TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-                var l = new List<String>();
-                l.Add("gelukt");
+                var l = new List<String> {"gelukt"};
                 return Json(l, JsonRequestBehavior.AllowGet);
             }
             catch (FaultException ex)
             {
-                var l = new List<String>();
-                l.Add("fail");
+                var l = new List<String> {"fail"};
                 return Json(l, JsonRequestBehavior.AllowGet);
             }
         }

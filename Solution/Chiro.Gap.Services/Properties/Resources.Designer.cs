@@ -106,6 +106,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Er zijn nog leden aan de afdeling gekoppeld..
+        /// </summary>
+        internal static string AfdelingNietLeeg {
+            get {
+                return ResourceManager.GetString("AfdelingNietLeeg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} was al als {1} ingeschreven..
         /// </summary>
         internal static string AlAndersIngeschreven {
