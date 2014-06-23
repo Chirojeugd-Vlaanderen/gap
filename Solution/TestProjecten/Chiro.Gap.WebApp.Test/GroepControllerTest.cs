@@ -75,7 +75,7 @@ namespace Chiro.Gap.WebApp.Test
 
 		/// <summary>
 		/// Controleert of de action Groep/CategorieVerwijderen de categorieenservice aanroept,
-		/// en of achteraf terug de view met de groepsinstellingen getoond wordt.
+		/// en of achteraf terug de view met categorieen getoond wordt.
 		/// </summary>
 		[TestMethod]
 		public void CategorieVerwijderenTest()
@@ -99,7 +99,7 @@ namespace Chiro.Gap.WebApp.Test
 
 			// Verwacht de view met de groepsinstellingen.
 			Assert.IsNotNull(actual);
-			Assert.AreEqual("Index", actual.RouteValues["action"]);
+			Assert.AreEqual("Categorieen", actual.RouteValues["action"]);
 		}
 
 	}
