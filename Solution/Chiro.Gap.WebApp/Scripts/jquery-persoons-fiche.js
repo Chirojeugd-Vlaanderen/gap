@@ -1,20 +1,23 @@
 ﻿/*
-* Copyright 2013, Arno Soontjens
-* Copyright 2013, Chirojeugd-Vlaanderen (hergebruik adressenscripts)
-* 
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-* 
-*     http://www.apache.org/licenses/LICENSE-2.0
-* 
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
+ * Copyright 2013, Arno Soontjens
+ * Copyright 2013, Chirojeugd-Vlaanderen (hergebruik adressenscripts)
+ * Copyright 2014, the GAP developers. See the NOTICE file at the
+ * top-level directory of this distribution, and at
+ * https://develop.chiro.be/gap/wiki/copyright
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
 //--------------------------------------------------------------------------------
 //Document ready functie
 //--------------------------------------------------------------------------------
@@ -627,9 +630,9 @@ $(function () {
     //------------------------------------------------------------------------------------------
     //Ingeschreven als (lid/ leiding)
 
-    $('#bewerkLidInfo').click(function (e) {
+    $('#typeToggle').click(function (e) {
         e.preventDefault();
-        var g = $('#lidInfoInfo').text().trim();
+        var g = $('#lidTypeOmschrijving').text().trim();
         bezig();
         clearDialog();
         url = link("Leden", "TypeToggle");
@@ -638,9 +641,9 @@ $(function () {
             data = jQuery.parseJSON(data);
             if (data.hasOwnProperty('succes')) { // gelukt
                 if (g == 'Lid') {
-                    $('#lidInfoInfo').text('Leiding');
+                    $('#lidTypeOmschrijving').text('Leiding');
                 } else {
-                    $('#lidInfoInfo').text('Lid');
+                    $('#lidTypeOmschrijving').text('Lid');
                 }
                 id = data.succes;
                 klaarMetSucces("Type lid is aangepast.");
@@ -654,28 +657,6 @@ $(function () {
         });
         
     });
-
-    //$('#lidInfoInfo').editable({
-    //    source: [
-    //        { value: 0, text: 'Leiding' },
-    //        { value: 1, text: 'Lid' }
-    //    ]
-    //})
-    //    .on('save', function (e, params) {
-    //        e.preventDefault();
-    //        bezig();
-    //        url = link("Leden", "TypeToggle");
-
-    //        $.post(url, { id: id, groepID: GID }, function () {
-    //            success:
-    //            {
-    //                location.reload();
-    //            }
-    //        }).fail(function () {
-    //            alert("Fout: Er ging iets mis bij het veranderen van de status van deze persoon");
-    //            location.reload();
-    //        });
-    //    });
 
     //------------------------------------------------------------------------------------------
     // afdeling bewerken

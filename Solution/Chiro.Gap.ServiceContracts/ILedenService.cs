@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -209,7 +209,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// Verandert een kind in leiding of vice versa
 		/// </summary>
 		/// <param name="lidId">ID van lid met te togglen lidtype</param>
-		/// <returns>GelieerdePersoonID van lid</returns>
+        /// <returns>Lid-ID van lid</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]

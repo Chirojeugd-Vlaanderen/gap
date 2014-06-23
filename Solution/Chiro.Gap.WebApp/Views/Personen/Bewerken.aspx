@@ -6,7 +6,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -272,9 +272,9 @@
             %>
                     <tr>
                         <td>Ingeschreven als</td>
-                        <td><a  id="lidInfoInfo" data-type="select" style="font-weight: bold;"><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></a>
+                        <td><a  id="lidTypeOmschrijving" data-type="select" style="font-weight: bold;"><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></a>
                         <%: Html.ActionLink("(uitschrijven)", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></td> 
-                        <td><div class="ui-icon ui-icon-pencil" id="bewerkLidInfo" title="Bewerken" style="cursor: pointer"></div></td>
+                        <td><div class="ui-icon ui-icon-pencil" id="typeToggle" title="Bewerken" style="cursor: pointer"></div></td>
                     </tr>
             
                     <tr>

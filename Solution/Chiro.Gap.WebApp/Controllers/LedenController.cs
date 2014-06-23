@@ -779,11 +779,13 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="id">LidID</param>
         /// <param name="groepID">ID van de groep die de bewerking uitvoert</param>
-        /// <returns>Opnieuw de persoonsfiche</returns>
+        /// <returns>JSON resultaat, met een fout- of succesboodschap. RTFS.</returns>
         [HandleError]
         public JsonResult TypeToggle(int id, int groepID)
         {
             var nieuwLidId = 0;
+
+            // TODO (#1812): Feedback van callbackfunctie standaardiseren.
 
             try
             {

@@ -711,7 +711,7 @@ namespace Chiro.Gap.Services
         /// Verandert een kind in leiding of vice versa
         /// </summary>
         /// <param name="lidId">Id van lid met te togglen lidtype</param>
-        /// <returns>GelieerdePersoonId van lid</returns>
+        /// <returns>Lid-ID van lid</returns>
         public int TypeToggle(int lidId)
         {
             var origineelLid = _ledenRepo.ByID(lidId);
