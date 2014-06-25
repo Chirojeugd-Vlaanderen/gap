@@ -98,10 +98,8 @@
 		                <tr>
 			                <td><%=ai.Naam %><input value="<%=ai.ID %>" readonly hidden/></td>
 			                <td><%=ai.Afkorting %></td>
-                            <td>
-                                <button id="afdActiveren">Activeren</button>
-			                    <div class="afdelingVerwijderen ui-icon ui-icon-circle-minus" title="Verwijderen" style="cursor: pointer"></div>
-                            </td>
+                            <td><button id="activeer<%=ai.ID%>" class="afdActiveren">Activeren</button></td>
+			                <td><div class="afdelingVerwijderen ui-icon ui-icon-circle-minus" title="Verwijderen" style="cursor: pointer"></div></td>
 		                </tr>
 		                <% } %>
 	                </table>

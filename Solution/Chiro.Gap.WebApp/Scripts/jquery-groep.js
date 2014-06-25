@@ -167,7 +167,7 @@ $(function () {
     });
 
     // een afdeling activeren
-    $('#afdActiveren').click(function () {
+    $('.afdActiveren').click(function () {
         $('#errors').hide();
         afdelingId = $(this).parent().parent().find('td input').val();
         url = link("Afdelingen", "Activeren");

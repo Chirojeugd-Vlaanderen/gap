@@ -589,15 +589,15 @@ namespace Chiro.Gap.Services
 
             if (detail.AfdelingsJaarID == 0)
             {
-                var afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
-                    afdeling,
-                    officieleAfdeling,
-                    huidigGwj,
-                    detail.GeboorteJaarVan,
-                    detail.GeboorteJaarTot,
-                    detail.Geslacht);
                 try
                 {
+                    var afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
+                        afdeling,
+                        officieleAfdeling,
+                        huidigGwj,
+                        detail.GeboorteJaarVan,
+                        detail.GeboorteJaarTot,
+                        detail.Geslacht);
                     huidigGwj.AfdelingsJaar.Add(afdelingsJaar);
                 }
                 catch (FoutNummerException ex)
