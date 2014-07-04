@@ -27,10 +27,10 @@
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
           <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
         </ConnectionNode>
-        <ConnectionNode Name="kipsrv1\sql2k5:sa">
-          <Created>2012-08-22T12:33:12.5789142+02:00</Created>
+        <ConnectionNode Name="kip-sql02\sql2012:sa">
+          <Created>2014-07-04T11:51:59.9551243+02:00</Created>
           <Type>SQL</Type>
-          <Server>kipsrv1\sql2k5</Server>
+          <Server>kip-sql02\sql2012</Server>
           <UserName>sa</UserName>
           <Authentication>SQL</Authentication>
           <InitialDB />
@@ -44,75 +44,75 @@
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
         <FileNode Name="AantalLeden.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>AantalLeden.sql</FullPath>
         </FileNode>
         <FileNode Name="AdWijzigen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>AdWijzigen.sql</FullPath>
         </FileNode>
         <FileNode Name="DpVerwijderen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>DpVerwijderen.sql</FullPath>
         </FileNode>
         <FileNode Name="DubbelAd.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>DubbelAd.sql</FullPath>
         </FileNode>
         <FileNode Name="DubbelVerwijderen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>DubbelVerwijderen.sql</FullPath>
         </FileNode>
         <FileNode Name="FixContactType.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>FixContactType.sql</FullPath>
         </FileNode>
         <FileNode Name="FixNietDoorgeboekteProbleemFacturen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>FixNietDoorgeboekteProbleemFacturen.sql</FullPath>
         </FileNode>
         <FileNode Name="GpsOpAd.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>GpsOpAd.sql</FullPath>
         </FileNode>
         <FileNode Name="ix_persoon_AdNummer.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>ix_persoon_AdNummer.sql</FullPath>
         </FileNode>
         <FileNode Name="KipSyncLog.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>KipSyncLog.sql</FullPath>
         </FileNode>
         <FileNode Name="KipWerkJaarOntbreekt.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>KipWerkJaarOntbreekt.sql</FullPath>
         </FileNode>
         <FileNode Name="LedenOpFactuur.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>LedenOpFactuur.sql</FullPath>
         </FileNode>
         <FileNode Name="LidInKip.sql">
@@ -122,87 +122,87 @@
           <FullPath>LidInKip.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenAbonnement.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>NietDoorgekomenAbonnement.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenLeden.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02\sql2012:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kip-sql02\sql2012</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>NietDoorgekomenLeden.sql</FullPath>
         </FileNode>
         <FileNode Name="NietVerwijderdeLeden.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>NietVerwijderdeLeden.sql</FullPath>
         </FileNode>
         <FileNode Name="PersoonOpAd.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>PersoonOpAd.sql</FullPath>
         </FileNode>
         <FileNode Name="ProbleemFacturen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>ProbleemFacturen.sql</FullPath>
         </FileNode>
         <FileNode Name="ProbleemFacturen2.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>ProbleemFacturen2.sql</FullPath>
         </FileNode>
         <FileNode Name="RecentGewijzigdeAdressen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>RecentGewijzigdeAdressen.sql</FullPath>
         </FileNode>
         <FileNode Name="UpdateVervalDatumFactuur.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>UpdateVervalDatumFactuur.sql</FullPath>
         </FileNode>
         <FileNode Name="vAdresInfo.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>vAdresInfo.sql</FullPath>
         </FileNode>
         <FileNode Name="TijdelijkeGebruiker.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02\sql2012:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kip-sql02\sql2012</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>TijdelijkeGebruiker.sql</FullPath>
         </FileNode>
         <FileNode Name="VerkeerdeAdressen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>VerkeerdeAdressen.sql</FullPath>
         </FileNode>
         <FileNode Name="VerkeerdeContactInfo.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>VerkeerdeContactInfo.sql</FullPath>
         </FileNode>
         <FileNode Name="VerzVerwijderen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>VerzVerwijderen.sql</FullPath>
         </FileNode>
         <FileNode Name="vVerlorenAdressen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>vVerlorenAdressen.sql</FullPath>
         </FileNode>
         <FileNode Name="vVerlorenBivakken.sql">
@@ -212,8 +212,8 @@
           <FullPath>vVerlorenBivakken.sql</FullPath>
         </FileNode>
         <FileNode Name="ZoekLogs.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kipsrv1\sql2k5:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kipsrv1\sql2k5</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02\sql2012:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kip-sql02\sql2012</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>ZoekLogs.sql</FullPath>
         </FileNode>

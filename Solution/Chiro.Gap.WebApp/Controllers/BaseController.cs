@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Web.Mvc;
 
 using Chiro.Gap.Domain;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
 
