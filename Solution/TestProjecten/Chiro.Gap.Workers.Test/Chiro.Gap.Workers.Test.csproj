@@ -85,7 +85,6 @@
     <Compile Include="AdressenManagerTest.cs" />
     <Compile Include="AfdelingsJaarManagerTest.cs" />
     <Compile Include="AutorisatieManagerTest.cs" />
-    <Compile Include="AutorisatieTest.cs" />
     <Compile Include="CommunicatieVormenManagerTest.cs" />
     <Compile Include="GebruikersRechtenManagerTest.cs" />
     <Compile Include="GelieerdePersonenManagerTest.cs" />
