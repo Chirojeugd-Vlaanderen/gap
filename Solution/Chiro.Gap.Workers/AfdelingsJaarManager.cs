@@ -78,11 +78,6 @@ namespace Chiro.Gap.Workers
             int geboorteJaarEind,
             GeslachtsType geslacht)
         {
-            if (!_autorisatieMgr.IsGav(a) || !_autorisatieMgr.IsGav(gwj))
-            {
-                throw new GeenGavException(Resources.GeenGav);
-            }
-
             var afdelingsJaar = new AfdelingsJaar
                                     {
                                         OfficieleAfdeling = oa,
