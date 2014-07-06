@@ -547,6 +547,9 @@ namespace Chiro.Gap.Services
             }
 
             uitstap.Deelnemer.Remove(deelnemer);
+
+            // Vermoedelijk moet ik de deelnemer zelf ook nog verwijderen.
+
             _deelnemersRepo.SaveChanges();
 
             return uitstap.ID;

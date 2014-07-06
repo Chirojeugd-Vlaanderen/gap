@@ -529,6 +529,47 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
+        /// Test het verwijderen van deelnemers.
+        /// </summary>
+        [TestMethod()]
+        public void UitschrijvenTest()
+        {
+            // ARRANGE 
+            var groepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = new ChiroGroep { ID = 1 },
+            };
+            var bivak = new Uitstap
+            {
+                ID = 2,
+                IsBivak = true,
+                GroepsWerkJaar = groepsWerkJaar,
+            };
+            var deelnemer = new Deelnemer {ID = 3, Uitstap = bivak, GelieerdePersoon = new GelieerdePersoon()};
+
+            var alleDeelnemers = new List<Deelnemer> {deelnemer};
+
+            groepsWerkJaar.Uitstap.Add(bivak);
+
+            // mock data acces
+            var deelnemersRepoMock = new DummyRepo<Deelnemer>(alleDeelnemers);
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Deelnemer>())
+                                   .Returns(deelnemersRepoMock);
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<UitstappenService>();
+
+            target.Uitschrijven(deelnemer.ID);
+
+            // ASSERT
+
+            Assert.IsFalse(alleDeelnemers.Contains(deelnemer));
+        }
+
+        /// <summary>
         /// Test voor het bewaren van een deelnemer.
         /// </summary>
         [TestMethod]
