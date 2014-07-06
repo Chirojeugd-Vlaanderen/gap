@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -547,8 +547,8 @@ namespace Chiro.Gap.Services
             }
 
             uitstap.Deelnemer.Remove(deelnemer);
-
-            // Vermoedelijk moet ik de deelnemer zelf ook nog verwijderen.
+            deelnemer.GelieerdePersoon.Deelnemer.Remove(deelnemer);
+            _deelnemersRepo.Delete(deelnemer);
 
             _deelnemersRepo.SaveChanges();
 
