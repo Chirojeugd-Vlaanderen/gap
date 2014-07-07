@@ -96,14 +96,16 @@ namespace Chiro.Gap.Services
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
         /// <param name="functiesMgr">Businesslogica aangaande functies</param>
         /// <param name="jaarOvergangMgr">Businesslogica aangaande de jaarovergang</param>
+        /// <param name="adressenMgr">Businesslogica wat betreft adressen</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         /// <param name="groepenSync">Synchronisatie met Kipadmin</param>
         /// <param name="veelGebruikt">Cache</param>
-        public GroepenService(IAfdelingsJaarManager afdelingsJaarMgr, IAuthenticatieManager authenticatieMgr, IAutorisatieManager autorisatieMgr,
-                              IGroepenManager groepenMgr, IJaarOvergangManager jaarOvergangMgr,
-                                IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
-                              IFunctiesManager functiesMgr,
-                              IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IVeelGebruikt veelGebruikt)
+        public GroepenService(IAfdelingsJaarManager afdelingsJaarMgr, IAuthenticatieManager authenticatieMgr,
+            IAutorisatieManager autorisatieMgr,
+            IGroepenManager groepenMgr, IJaarOvergangManager jaarOvergangMgr,
+            IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
+            IFunctiesManager functiesMgr, IAdressenManager adressenMgr,
+            IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IVeelGebruikt veelGebruikt)
         {
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
             _woonplaatsRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
@@ -120,7 +122,8 @@ namespace Chiro.Gap.Services
 
             // De bedoeling is dat alle repositories dezelfde hash code delen.
             // Ik test er twee. Als dat goed is, zal het overal wel goed zijn.
-            Debug.Assert(_straatRepo == null || _woonplaatsRepo == null || _straatRepo.ContextHash == _woonplaatsRepo.ContextHash);
+            Debug.Assert(_straatRepo == null || _woonplaatsRepo == null ||
+                         _straatRepo.ContextHash == _woonplaatsRepo.ContextHash);
             // (checks op null zijn van belang voor bij unit tests)
 
             _groepenMgr = groepenMgr;
@@ -128,6 +131,7 @@ namespace Chiro.Gap.Services
             _groepsWerkJarenMgr = groepsWerkJarenMgr;
             _functiesMgr = functiesMgr;
             _afdelingsJaarMgr = afdelingsJaarMgr;
+            _adressenMgr = adressenMgr;
             _authenticatieMgr = authenticatieMgr;
             _autorisatieMgr = autorisatieMgr;
             _groepenSync = groepenSync;

@@ -28,6 +28,14 @@ namespace Chiro.Gap.WebApp.Models
     /// </summary>
     public class GroepsAdresModel : MasterViewModel, IAdresBewerkenModel
     {
+        public GroepsAdresModel()
+        {
+            // Maak een leeg adres, zodat alle members van IAdresBewerkenModel
+            // iets opleveren. (Vermijd null exceptions)
+
+            Adres = new AdresInfo();
+        }
+
         public AdresInfo Adres { get; set; }
 
         #region Implementation of IAdresBewerkenModel

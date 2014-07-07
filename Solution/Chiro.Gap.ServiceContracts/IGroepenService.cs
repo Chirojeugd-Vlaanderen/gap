@@ -417,8 +417,9 @@ namespace Chiro.Gap.ServiceContracts
         /// Stelt het groepsadres in.
         /// </summary>
         /// <param name="groepID">ID van groep waarvan adres in te stellen.</param>
-        /// <param name="adres">Nieuw adres van de groep.</param>
+        /// <param name="adresInfo">Nieuw adres van de groep.</param>
         [OperationContract]
+        [FaultContract(typeof(OngeldigObjectFault))]
 	    void AdresInstellen(int groepID, AdresInfo adresInfo);
         #endregion
 

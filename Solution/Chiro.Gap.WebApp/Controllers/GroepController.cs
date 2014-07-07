@@ -25,6 +25,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Validatie;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -181,5 +182,47 @@ namespace Chiro.Gap.WebApp.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Als <paramref name="model"/> geen fouten bevat, stuurt deze controller action het 
+        /// bijgewerkte adres naar de backend om te persisteren.
+        /// </summary>
+        /// <param name="groepID">Huidige groep</param>
+        /// <param name="model">Bevat de nieuw adres voor de lokalen van een groep</param>
+        /// <returns>Als alles goed liep, wordt geredirect naar de groepsinstellingen.  Anders
+        /// opnieuw de view voor het aanpassen van de uitstap, met de nodige feedback</returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AdresBewerken(int groepID, GroepsAdresModel model)
+        {
+            // Als het adres buitenlands is, neem dan de woonplaats over uit het
+            // vrij in te vullen veld.
+
+            if (String.Compare(model.Land, Properties.Resources.Belgie, StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                model.WoonPlaatsNaam = model.WoonPlaatsBuitenLand;
+            }
+
+            try
+            {
+                // De service zal model.Adres.ID negeren; dit wordt
+                // steeds opnieuw opgezocht.  Adressen worden nooit
+                // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
+
+                ServiceHelper.CallService<IGroepenService>(l => l.AdresInstellen(groepID, model.Adres));
+
+                return RedirectToAction("Index");
+            }
+            catch (FaultException<OngeldigObjectFault> ex)
+            {
+                BaseModelInit(model, groepID);
+
+                new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, String.Empty);
+
+                model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
+                model.AlleLanden = VeelGebruikt.LandenOphalen();
+                model.Titel = Properties.Resources.AdresLokalen; 
+
+                return View(model);
+            }
+        }
 	}
 }
