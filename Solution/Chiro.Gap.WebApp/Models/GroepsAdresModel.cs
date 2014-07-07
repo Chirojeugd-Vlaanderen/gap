@@ -1,0 +1,85 @@
+/*
+ * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * top-level directory of this distribution, and at
+ * https://develop.chiro.be/gap/wiki/copyright
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System.Collections.Generic;
+
+using Chiro.Gap.Domain;
+using Chiro.Gap.ServiceContracts.DataContracts;
+
+namespace Chiro.Gap.WebApp.Models
+{
+    /// <summary>
+    /// Model voor bewerken van de plaats van een uitstap.  (duh)
+    /// </summary>
+    public class GroepsAdresModel : MasterViewModel, IAdresBewerkenModel
+    {
+        public AdresInfo Adres { get; set; }
+
+        #region Implementation of IAdresBewerkenModel
+
+        public IEnumerable<LandInfo> AlleLanden { get; set; }
+
+        public IEnumerable<WoonPlaatsInfo> BeschikbareWoonPlaatsen { get; set; }
+
+        public string Land
+        {
+            get { return Adres.LandNaam; }
+            set { Adres.LandNaam = value; }
+        }
+
+        public int PostNr
+        {
+            get { return Adres.PostNr; }
+            set { Adres.PostNr = value; }
+        }
+
+        public string PostCode
+        {
+            get { return Adres.PostCode; }
+            set { Adres.PostCode = value; }
+        }
+
+        public string StraatNaamNaam
+        {
+            get { return Adres.StraatNaamNaam; }
+            set { Adres.StraatNaamNaam = value; }
+        }
+
+        public int? HuisNr
+        {
+            get { return Adres.HuisNr; }
+            set { Adres.HuisNr = value; }
+        }
+
+        public string Bus
+        {
+            get { return Adres.Bus; }
+            set { Adres.Bus = value; }
+        }
+
+        public string WoonPlaatsNaam
+        {
+            get { return Adres.WoonPlaatsNaam; }
+            set { Adres.WoonPlaatsNaam = value; }
+        }
+
+        public string WoonPlaatsBuitenLand { get; set; }
+
+        #endregion
+    }
+}

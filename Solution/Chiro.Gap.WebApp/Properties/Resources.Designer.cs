@@ -61,6 +61,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adres van de lokalen.
+        /// </summary>
+        public static string AdresLokalen {
+            get {
+                return ResourceManager.GetString("AdresLokalen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je moet het adres nog invullen van je bivak &lt;a href=&apos;{1}&apos;&gt; {0} &lt;/a&gt;..
         /// </summary>
         public static string AdresNogInvullenOpBivakAangifte {

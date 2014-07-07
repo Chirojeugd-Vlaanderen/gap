@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -16,10 +16,12 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Web.Mvc;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -148,5 +150,36 @@ namespace Chiro.Gap.WebApp.Controllers
                 return View("NaamWijzigen", model);
             }
         }
+
+        /// <summary>
+        /// Laat de user het adres van de lokalen bewerken.
+        /// </summary>
+        /// <param name="groepID">ID van de groep waarvan we het adres willen bewerken.</param>
+        /// <returns>Het formulier voor het aanpassen van het lokalenadres.</returns>
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult AdresBewerken(int groepID)
+        {
+            var model = new GroepsAdresModel();
+            BaseModelInit(model, groepID);
+
+            model.Adres =
+                ServiceHelper.CallService<IGroepenService, GroepDetail>(svc => svc.DetailOphalen(groepID)).Adres ??
+                new AdresInfo { LandNaam = Properties.Resources.Belgie };
+
+            // Als het adres buitenlands is, dan moeten we de woonplaats nog eens overnemen in
+            // WoonPlaatsBuitenland.  Dat is nodig voor de AdresBewerkenControl, die een beetje
+            // raar ineen zit.
+            if (String.Compare(model.Adres.LandNaam, Properties.Resources.Belgie, StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                model.WoonPlaatsBuitenLand = model.Adres.WoonPlaatsNaam;
+            }
+
+            model.Titel = Properties.Resources.AdresLokalen;
+            model.AlleLanden = VeelGebruikt.LandenOphalen();
+            model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.Adres.PostNr);
+
+            return View(model);
+        }
+
 	}
 }
