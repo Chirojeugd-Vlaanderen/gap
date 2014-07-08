@@ -45,7 +45,7 @@ namespace Chiro.Kip.Services
                 groep.GEMEENTE = g.Adres.WoonPlaats;
 
                 db.SaveChanges();
-                _log.BerichtLoggen(groep.GroepID, String.Format("Groep {0} hernoemd: {1}", g.Code, g.Naam));
+                _log.BerichtLoggen(groep.GroepID, String.Format("Groep {0} - naam: {1}, adres {2}, {3} {4}", g.Code, g.Naam, groep.STRAAT_NR, groep.POSTNR, groep.GEMEENTE));
             }
         }
 
