@@ -5,7 +5,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -66,6 +66,26 @@
 				    <td><%=Html.DisplayFor(mdl => mdl.Detail.StamNummer)%></td>
                     <td></td>
 			    </tr>
+                <tr>
+                    <td>Adres lokalen</td>
+                    <td>
+                        <%=Model.Detail.Adres.StraatNaamNaam%>
+			            <%=Model.Detail.Adres.HuisNr%>
+			            <%=Model.Detail.Adres.Bus%>,
+			            <%=Model.Detail.Adres.PostNr%>
+			            <%=Model.Detail.Adres.PostCode%>
+			            <%=Model.Detail.Adres.WoonPlaatsNaam%>
+			            (<%=Model.Detail.Adres.LandNaam%>)
+                    </td>
+                    <td>
+                        <% // Omdat ik die JQuery-toestanden in zijn huidige vorm zodanig
+                           // moeilijk te onderhouden vind, maak ik gewoon een saaie actionlink
+                           // om het adres te bewerken. Dat werkt ook.
+                           // Van zodra we een framework gebruiken voor JQuery, klappen we
+                           // nog eens :) %>
+                        <%:Html.ActionLink("Wijzig", "AdresBewerken") %>
+                    </td>
+                </tr>
             </tbody>
 		</table>
     </fieldset>
