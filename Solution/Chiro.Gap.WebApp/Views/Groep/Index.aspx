@@ -69,13 +69,16 @@
                 <tr>
                     <td>Adres lokalen</td>
                     <td>
-                        <%=Model.Detail.Adres.StraatNaamNaam%>
-			            <%=Model.Detail.Adres.HuisNr%>
-			            <%=Model.Detail.Adres.Bus%>,
-			            <%=Model.Detail.Adres.PostNr%>
-			            <%=Model.Detail.Adres.PostCode%>
-			            <%=Model.Detail.Adres.WoonPlaatsNaam%>
-			            (<%=Model.Detail.Adres.LandNaam%>)
+                        <% if (Model.Detail.Adres != null)
+                           { %>
+                            <%= Model.Detail.Adres.StraatNaamNaam %>
+			                <%= Model.Detail.Adres.HuisNr %>
+			                <%= Model.Detail.Adres.Bus %>,
+			                <%= Model.Detail.Adres.PostNr %>
+			                <%= Model.Detail.Adres.PostCode %>
+			                <%= Model.Detail.Adres.WoonPlaatsNaam %>
+			                (<%= Model.Detail.Adres.LandNaam %>)
+                        <% } %>
                     </td>
                     <td>
                         <% // Omdat ik die JQuery-toestanden in zijn huidige vorm zodanig
