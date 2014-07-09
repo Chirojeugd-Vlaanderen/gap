@@ -876,13 +876,20 @@ namespace Chiro.Gap.Services
                             case FoutNummer.LidTypeVerkeerd:
                             case FoutNummer.LidTeJong:
                             case FoutNummer.AfdelingKindVerplicht:
-                            case FoutNummer.GeboorteDatumOntbreekt:
                             case FoutNummer.LeidingTeJong:
                                 // TODO: backendinformatie naar frontend om rechtsteeks te tonen:
                                 // geen goed idee.
                                 problemen.Add("InschrijvenAls",
                                     new FoutBericht {Bericht = ex.Message, FoutNummer = ex.FoutNummer});
                                 lid = null;
+                                break;
+                            case FoutNummer.GeboorteDatumOntbreekt:
+                                problemen.Add("NieuwePersoon.GeboorteDatum",
+                                    new FoutBericht
+                                    {
+                                        Bericht = Resources.GeboorteDatumOntbreekt,
+                                        FoutNummer = ex.FoutNummer
+                                    });
                                 break;
                             case FoutNummer.OnbekendGeslacht:
                                 problemen.Add("NieuwePersoon.Geslacht",

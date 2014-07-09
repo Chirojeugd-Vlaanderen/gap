@@ -249,4 +249,7 @@
   <data name="KoppelingGavPersoonOntbreekt" xml:space="preserve">
     <value>We kunnen je login niet koppelen aan een persoon.</value>
   </data>
+  <data name="GeboorteDatumOntbreekt" xml:space="preserve">
+    <value>Geboortedatum is verplicht voor ingeschreven leden.</value>
+  </data>
 </root>

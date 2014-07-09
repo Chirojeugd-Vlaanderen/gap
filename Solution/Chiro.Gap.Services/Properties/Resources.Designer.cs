@@ -214,6 +214,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geboortedatum is verplicht voor ingeschreven leden..
+        /// </summary>
+        internal static string GeboorteDatumOntbreekt {
+            get {
+                return ResourceManager.GetString("GeboorteDatumOntbreekt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Geen toegang..
         /// </summary>
         internal static string GeenGav {
