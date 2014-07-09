@@ -881,7 +881,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sommige personen kunnen niet ingeschreven worden omdat hun gegevens niet volledig zijn. We vragen dat ieder lid een adres en telefoonnummer heeft, en iedere leid(st)er ook een e-mailadres. Op die manier kunnen wij voor een goede dienstverlening zorgen..
+        ///   Looks up a localized string similar to Sommige personen kunnen niet ingeschreven worden omdat hun gegevens niet volledig zijn. We vragen dat ieder lid een geboortedatum, adres en telefoonnummer heeft, en iedere leid(st)er ook een e-mailadres. Op die manier kunnen wij voor een goede dienstverlening zorgen..
         /// </summary>
         public static string WaaromWeLidgegevensVragen {
             get {
