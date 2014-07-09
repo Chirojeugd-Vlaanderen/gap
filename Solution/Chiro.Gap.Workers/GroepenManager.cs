@@ -105,7 +105,7 @@ namespace Chiro.Gap.Workers
         /// <param name="functieRepo">Repository die gebruikt kan worden om functies in op te zoeken</param>
         /// <remarks>De repository wordt bewust niet via de constructor meegeleverd, om te vermijden dat de
         /// IOC-container een nieuwe context zou aanmaken.</remarks>
-        public Functie FunctieZoeken(Groep groep, string code, IRepository<Functie> functieRepo)
+        public Functie FunctieZoekenOpCode(Groep groep, string code, IRepository<Functie> functieRepo)
         {
             // Zoek eerst naar een nationale functie met gegeven code, want dat is
             // gecachet, en bijgevolg snel.

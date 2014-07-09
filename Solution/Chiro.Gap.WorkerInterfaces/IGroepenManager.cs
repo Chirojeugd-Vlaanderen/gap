@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -49,7 +49,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="groep">Groep waarvoor functie gezocht moet worden</param>
         /// <param name="code">Code van de te zoeken functie</param>
         /// <param name="functieRepo"></param>
-        Functie FunctieZoeken(Groep groep, string code, IRepository<Functie> functieRepo);
+        Functie FunctieZoekenOpCode(Groep groep, string code, IRepository<Functie> functieRepo);
 
         /// <summary>
         /// Zoekt in de eigen functies de gegeven <paramref name="groep"/> en in de nationale functies een

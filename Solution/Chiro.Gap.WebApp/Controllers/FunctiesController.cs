@@ -147,12 +147,32 @@ namespace Chiro.Gap.WebApp.Controllers
                 catch (FaultException<BestaatAlFault<FunctieInfo>> ex)
                 {
                     BaseModelInit(model, groepID);
-                    ModelState.AddModelError(
-                        "HuidigeFunctie.Code",
-                        String.Format(
-                            Properties.Resources.FunctieCodeBestaatAl,
-                            ex.Detail.Bestaande.Code,
-                            ex.Detail.Bestaande.Naam));
+
+                    if (String.Compare(ex.Detail.Bestaande.Code, model.HuidigeFunctie.Code, StringComparison.OrdinalIgnoreCase) == 0)
+                    {
+                        ModelState.AddModelError(
+                            "HuidigeFunctie.Code",
+                            String.Format(
+                                Properties.Resources.FunctieCodeBestaatAl,
+                                ex.Detail.Bestaande.Code,
+                                ex.Detail.Bestaande.Naam));
+                    }
+                    else if (
+                        String.Compare(ex.Detail.Bestaande.Naam, model.HuidigeFunctie.Naam,
+                            StringComparison.OrdinalIgnoreCase) == 0)
+                    {
+                        ModelState.AddModelError(
+                            "HuidigeFunctie.Naam",
+                            String.Format(
+                                Properties.Resources.FunctieNaamBestaatAl,
+                                ex.Detail.Bestaande.Code,
+                                ex.Detail.Bestaande.Naam));
+                    }
+                    else
+                    {
+                        // Geen idee wat er mis is. Throw.
+                        throw;
+                    }
 
                     model.Titel = "Functie aanpassen";
                     return View(model); // FIXME only reloads part of the previous page

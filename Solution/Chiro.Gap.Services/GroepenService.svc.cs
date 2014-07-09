@@ -883,7 +883,7 @@ namespace Chiro.Gap.Services
             Functie bestaandeFunctie = null;
 
             // Bestaat er al een eigen of nationale functie met dezelfde code?
-            bestaandeFunctie = _groepenMgr.FunctieZoeken(groep, code, _functiesRepo);
+            bestaandeFunctie = _groepenMgr.FunctieZoekenOpCode(groep, code, _functiesRepo);
             if (bestaandeFunctie != null)
             {
                 throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(
@@ -982,7 +982,7 @@ namespace Chiro.Gap.Services
             if (String.Compare(detail.Code, functie.Code, StringComparison.InvariantCultureIgnoreCase) != 0)
             {
                 // Code verandert. Controleer of ze nog niet bestaat
-                var bestaandeFunctie = _groepenMgr.FunctieZoeken(functie.Groep, detail.Code, _functiesRepo);
+                var bestaandeFunctie = _groepenMgr.FunctieZoekenOpCode(functie.Groep, detail.Code, _functiesRepo);
                 if (bestaandeFunctie != null)
                 {
                     throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(
@@ -993,7 +993,7 @@ namespace Chiro.Gap.Services
             if (String.Compare(detail.Naam, functie.Naam, StringComparison.InvariantCultureIgnoreCase) != 0)
             {
                 // Naam verandert. Controleer of ze nog niet bestaat
-                var bestaandeFunctie = _groepenMgr.FunctieZoeken(functie.Groep, detail.Naam, _functiesRepo);
+                var bestaandeFunctie = _groepenMgr.FunctieZoekenOpNaam(functie.Groep, detail.Naam, _functiesRepo);
                 if (bestaandeFunctie != null)
                 {
                     throw FaultExceptionHelper.BestaatAl(Mapper.Map<Functie, FunctieInfo>(
