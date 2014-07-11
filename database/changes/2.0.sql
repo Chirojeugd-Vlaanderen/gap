@@ -96,4 +96,3 @@ alter table adr.land alter column IsoCode varchar(10) not null;
 alter table adr.land add constraint AK_Land_IsoCode unique(IsoCode);
 go
 
-
