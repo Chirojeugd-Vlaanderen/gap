@@ -78,6 +78,7 @@
       <serviceBehaviors>
         <behavior name="Chiro.Gap.UpdateSvc.Service.UpdateServiceBehavior">
           <unity operationContextEnabled="true" instanceContextEnabled="false" />
+          <serviceMetadata httpGetEnabled="false" />
           <serviceDebug includeExceptionDetailInFaults="false" />
           <serviceThrottling maxConcurrentCalls="1" />
           <!-- anders heb ik precies altijd deadlocks... -->
