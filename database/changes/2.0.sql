@@ -16,6 +16,22 @@
 
 use gap_dev;
 
+-- Het interessantst is om de wijzigingen in de mate van het mogelijke
+-- van recent naar oud te zetten. Als het script dan ergens breekt omdat
+-- er iets al eerder is toegepast, dan is het nieuwe ook in orde.
+
+
+-- een kind heeft altijd een afdeling
+
+alter table lid.Kind alter column AfdelingsJaarID int not null;
+
+-- een groep krijgt een adres #59
+
+alter table grp.Groep add AdresID int null;
+alter table grp.Groep add constraint FK_Groep_Adres foreign key (AdresID) references adr.Adres(AdresID);
+
+-- voorbereidingen ChiroCivii
+
 alter table pers.persoon add CiviID int null;
 alter table adr.land add IsoCode varchar(10);
 go
@@ -76,12 +92,8 @@ update adr.land set IsoCode='ZA' where Naam='Zuid-Afrika';
 update adr.land set IsoCode='SE' where Naam='Zweden';
 update adr.land set IsoCode='CH' where Naam='Zwitserland';
 
-alter table adr.land alter column IsoCode varchar(10) not null
-alter table adr.land add constraint AK_Land_IsoCode unique(IsoCode)
+alter table adr.land alter column IsoCode varchar(10) not null;
+alter table adr.land add constraint AK_Land_IsoCode unique(IsoCode);
+go
 
-alter table lid.Kind alter column AfdelingsJaarID int not null;
--- een groep krijgt een adres #59
-
-alter table grp.Groep add AdresID int null;
-alter table grp.Groep add constraint FK_Groep_Adres foreign key (AdresID) references adr.Adres(AdresID);
 
