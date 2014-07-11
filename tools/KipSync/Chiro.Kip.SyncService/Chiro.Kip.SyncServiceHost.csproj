@@ -84,6 +84,10 @@
       <Project>{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}</Project>
       <Name>Chiro.Cdf.UnityWcfExtensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Gap.UpdateSvc.Contracts\Chiro.Gap.UpdateSvc.Contracts.csproj">
+      <Project>{efa70fde-2295-4a91-9553-847c272e7fa4}</Project>
+      <Name>Chiro.Gap.UpdateSvc.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
