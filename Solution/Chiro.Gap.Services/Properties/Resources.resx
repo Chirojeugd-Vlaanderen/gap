@@ -252,4 +252,10 @@
   <data name="GeboorteDatumOntbreekt" xml:space="preserve">
     <value>Geboortedatum is verplicht voor ingeschreven leden.</value>
   </data>
+  <data name="WaaromEmail" xml:space="preserve">
+    <value>We vragen een e-mailadres van iedere leid(st)er om jullie makkelijk te kunnen contacteren bij noodgevallen.</value>
+  </data>
+  <data name="WaaromTelefoonNummer" xml:space="preserve">
+    <value>We vragen een telefoonnummer van ieder lid om makkelijk contact te kunnen opnemen bij noodgevallen.</value>
+  </data>
 </root>

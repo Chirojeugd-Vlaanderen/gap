@@ -901,11 +901,11 @@ namespace Chiro.Gap.Services
                                 lid = null;
                                 break;
                             case FoutNummer.TelefoonNummerOntbreekt:
-                                problemen.Add("TelefoonNummer.Nummer", new FoutBericht {Bericht = Properties.Resources.TelefoonNrOntbreekt});
+                                problemen.Add("TelefoonNummer.Nummer", new FoutBericht {Bericht = Properties.Resources.WaaromTelefoonNummer});
                                 lid = null;
                                 break;
                             case FoutNummer.EMailVerplicht:
-                                problemen.Add("Email.Nummer", new FoutBericht {Bericht = Properties.Resources.EmailOntbreekt});
+                                problemen.Add("Email.Nummer", new FoutBericht {Bericht = Properties.Resources.WaaromEmail});
                                 lid = null;
                                 break;
                             default:

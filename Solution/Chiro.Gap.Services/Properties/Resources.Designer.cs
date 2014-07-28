@@ -421,6 +421,24 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We vragen een e-mailadres van iedere leid(st)er om jullie makkelijk te kunnen contacteren bij noodgevallen..
+        /// </summary>
+        internal static string WaaromEmail {
+            get {
+                return ResourceManager.GetString("WaaromEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We vragen een telefoonnummer van ieder lid om makkelijk contact te kunnen opnemen bij noodgevallen..
+        /// </summary>
+        internal static string WaaromTelefoonNummer {
+            get {
+                return ResourceManager.GetString("WaaromTelefoonNummer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} was al leiding..
         /// </summary>
         internal static string WasAlLeiding {
