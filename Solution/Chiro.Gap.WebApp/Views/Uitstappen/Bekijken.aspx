@@ -62,6 +62,11 @@
 		Van een kamp wordt alleen de informatie voor de bivakaangifte
 		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Bivakaangifte", new { helpBestand = "Trefwoorden" }, new { title = "Bivakaangifte" } ) %>
 		doorgestuurd. De deelnemerslijst is alleen voor je groep toegankelijk.</p>
+    <p>
+        <strong>LET OP!</strong> Vergeet je kookploeg niet te verzekeren. Dat kan nog niet via het GAP; vul het 
+        <a href='https://chiro.be/formulier/administratie/verzekeringen/extra-verzekering/beperkte-periode/formulier'>formulier
+            'verzekering beperkte periode'</a> in op de Chirosite.
+    </p>
 	<%
 		if (Model.Deelnemers == null || Model.Deelnemers.FirstOrDefault() == null)
 		{
