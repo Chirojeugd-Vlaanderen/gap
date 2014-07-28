@@ -155,7 +155,15 @@
 		<tr >
 			<td><%=Html.LabelFor(s => s.NieuwePersoon.GeboorteDatum)%></td>
 			<td>
-			    <%=Html.EditorFor(s => s.NieuwePersoon.GeboorteDatum)%>
+                <input class="text-box single-line" id="NieuwePersoon_GeboorteDatum" name="NieuwePersoon.GeboorteDatum" type="text" value="" />
+<%
+                    // Bovenstaande is een workaround voor #2700. Normaal gezien zouden we dit gebruiken:
+       			    // 
+                    // Html.EditorFor(s => s.NieuwePersoon.GeboorteDatum)
+                    //
+                    // Maar dat rendert bovenstaande input met type="date". Hierdoor gebruikt chrome zijn built-in datepicker,
+                    // en dat geeft vermoedelijk conflicten met de datepicker van jquery.
+%>
 			    <%=Html.ValidationMessageFor(s => s.NieuwePersoon.GeboorteDatum)%>
 			</td>
 		</tr>
