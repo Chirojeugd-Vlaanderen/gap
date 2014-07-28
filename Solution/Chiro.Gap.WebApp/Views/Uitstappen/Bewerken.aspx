@@ -50,12 +50,17 @@
                     <%=Html.LabelFor(mdl=>mdl.Uitstap.IsBivak) %>
                     <%=Html.CheckBoxFor(mdl => mdl.Uitstap.IsBivak) %><br />
 
+                        <%
+                            // Voor DatumVan en DatumTot gebruiken we niet EditorFor,
+                            // maar zetten we hier de letterlijke html-code voor de input
+                            // box.
+                            // Dit is een workaround voor issue #2700. %>
                     <%=Html.LabelFor(mdl=>mdl.Uitstap.DatumVan) %>
-                    <%=Html.EditorFor(mdl => mdl.Uitstap.DatumVan) %>
+                    <input class="text-box single-line" id="Uitstap_DatumVan" name="Uitstap.DatumVan" type="text" value="<%=Html.DisplayFor(mdl => mdl.Uitstap.DatumVan) %>" />
                     <%=Html.ValidationMessageFor(mdl => mdl.Uitstap.DatumVan) %><br />
 
                     <%=Html.LabelFor(mdl=>mdl.Uitstap.DatumTot) %>
-                    <%=Html.EditorFor(mdl => mdl.Uitstap.DatumTot) %>
+                    <input class="text-box single-line" id="Uitstap_DatumTot" name="Uitstap.DatumTot" type="text" value="<%=Html.DisplayFor(mdl => mdl.Uitstap.DatumTot) %>" />
                     <%=Html.ValidationMessageFor(mdl => mdl.Uitstap.DatumTot) %><br />
 
                     <%=Html.LabelFor(mdl=>mdl.Uitstap.Opmerkingen) %>
