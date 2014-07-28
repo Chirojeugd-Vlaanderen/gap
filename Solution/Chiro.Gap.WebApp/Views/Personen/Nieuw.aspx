@@ -155,7 +155,7 @@
 		<tr >
 			<td><%=Html.LabelFor(s => s.NieuwePersoon.GeboorteDatum)%></td>
 			<td>
-                <input class="text-box single-line" id="NieuwePersoon_GeboorteDatum" name="NieuwePersoon.GeboorteDatum" type="text" value="" />
+                <input class="text-box single-line" id="NieuwePersoon_GeboorteDatum" name="NieuwePersoon.GeboorteDatum" type="text" value="<%=Html.DisplayFor(s => s.NieuwePersoon.GeboorteDatum)%>" />
 <%
                     // Bovenstaande is een workaround voor #2700. Normaal gezien zouden we dit gebruiken:
        			    // 
@@ -163,6 +163,10 @@
                     //
                     // Maar dat rendert bovenstaande input met type="date". Hierdoor gebruikt chrome zijn built-in datepicker,
                     // en dat geeft vermoedelijk conflicten met de datepicker van jquery.
+                    
+                    // De gebooredatum moet expliciet ingevuld worden (DisplayFor), omdat dezelfde view wordt
+                    // getoond als er een fout optrad. We willen dan niet dat de reeds ingevulde geboortedatum dan
+                    // verloren gaat.
 %>
 			    <%=Html.ValidationMessageFor(s => s.NieuwePersoon.GeboorteDatum)%>
 			</td>
