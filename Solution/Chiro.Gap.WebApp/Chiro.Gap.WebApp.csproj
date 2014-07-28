@@ -282,6 +282,7 @@
     <Content Include="Scripts\AdresBewerken.js" />
     <Content Include="Scripts\algemeneFuncties.js" />
     <Content Include="Scripts\datestringsort.js" />
+    <Content Include="Content\media\gap-handleiding.pdf" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -596,7 +597,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\media\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

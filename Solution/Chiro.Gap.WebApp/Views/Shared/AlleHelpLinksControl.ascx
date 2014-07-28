@@ -104,5 +104,5 @@
             <li><%=Html.ActionLink("Colofon", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Colofon" })%></li>
         </ul>
     </li>
-    <li><a href="https://chiro.be/sites/default/files/handleiding_groepsadministratiewebsite.pdf" target="new">Download Pdf-versie</a></li>
+    <li><a href="<%=ResolveUrl("~/Content/media/gap-handleiding.pdf")%>" target="new">Download Pdf-versie</a></li>
 </ul>
