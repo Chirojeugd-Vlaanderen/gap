@@ -624,6 +624,22 @@ namespace Chiro.Gap.WebApp.Controllers
         #region leden
 
         /// <summary>
+        /// Genereert een voorstel om de gelieerde personen met GelieerdePersoonIDs uit TempData["gpids"]
+        /// in te schrijven voor het huidige werkjaar.
+        /// 
+        /// Deze actie wordt op dit moment enkel gebruikt om naar te redirecten als er ingeschreven wordt
+        /// vanuit een ledenoverzicht van een ouder werkjaar.
+        /// </summary>
+        /// <param name="groepID">actieve groep</param>
+        /// <returns>Voorstel om de gelieerde personen met GelieerdePersoonIDs uit TempData["gpids"]
+        /// in te schrijven voor het huidige werkjaar.</returns>
+        public ActionResult InschrijvenTempData(int groepID)
+        {
+            return Inschrijven(groepID, TempData["gpids"] as List<int>);
+        }
+
+
+        /// <summary>
         /// Genereert een voorstel om de gelieerde personen met gegeven
         /// <paramref name="gelieerdePersoonIDs"/> in te schrijven voor de groep met
         /// gegeven <paramref name="groepID"/>
@@ -1655,7 +1671,6 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         #endregion
-
 
     }
 }

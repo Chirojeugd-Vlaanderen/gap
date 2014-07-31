@@ -432,8 +432,12 @@ namespace Chiro.Gap.WebApp.Controllers
             switch (model.GekozenActie)
             {
                 case 1:
-                    return RedirectToAction("Inschrijven", "Personen",
-                        new {gelieerdePersoonIDs = model.SelectieGelieerdePersoonIDs});
+                    // hack met tempdata, want inschrijven zit in de personencontroller.
+                    // Als je dit zou wijzigen, let er dan op dat je #2714 niet terug introduceert.
+
+                    TempData["gpids"] = model.SelectieGelieerdePersoonIDs;
+                    return RedirectToAction("InschrijvenTempData", "Personen",
+                        new { groepID });
                 case 2:
                     GelieerdePersonenUitschrijven(model.SelectieGelieerdePersoonIDs, groepID, Properties.Resources.LedenUitgeschreven);
                     return RedirectToAction("Index", new {groepID});
