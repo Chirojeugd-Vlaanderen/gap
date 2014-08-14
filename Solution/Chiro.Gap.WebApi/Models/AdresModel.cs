@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Linq;
 using Chiro.Gap.Poco.Model;
 
@@ -29,6 +30,7 @@ namespace Chiro.Gap.WebApi.Models
         public string Gemeente { get; set; }
         public string Land { get; set; }
         public bool InBelgie { get; set; }
+        public string Versie { get; set; }
 
         public IQueryable<PersoonModel> Personen { get; set; }
 
@@ -37,6 +39,8 @@ namespace Chiro.Gap.WebApi.Models
             Id = adres.ID;
             Nr = adres.HuisNr;
             Bus = adres.Bus;
+
+            Versie = BitConverter.ToString(adres.Versie);
 
             var belgischAdres = adres as BelgischAdres;
             var buitenLandsAdres = adres as BuitenLandsAdres;

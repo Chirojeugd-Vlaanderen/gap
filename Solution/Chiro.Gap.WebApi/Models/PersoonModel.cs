@@ -27,6 +27,7 @@ namespace Chiro.Gap.WebApi.Models
         public string Voornaam { get; set; }
         public DateTime? GeboorteDatum { get; set; }
         public string Type { get; set; }
+        public string Versie { get; set; }
 
         public virtual GroepModel Groep { get; set; }
         public virtual IQueryable<ContactgegevenModel> Contactgegevens { get; set; }
@@ -39,6 +40,7 @@ namespace Chiro.Gap.WebApi.Models
             Naam = gelieerdePersoon.Persoon.Naam;
             Voornaam = gelieerdePersoon.Persoon.VoorNaam;
             GeboorteDatum = gelieerdePersoon.Persoon.GeboorteDatum;
+            Versie = BitConverter.ToString(gelieerdePersoon.Persoon.Versie);
         }
 
         public PersoonModel(GelieerdePersoon gelieerdePersoon, GroepsWerkJaar groepsWerkJaar) : this(gelieerdePersoon)

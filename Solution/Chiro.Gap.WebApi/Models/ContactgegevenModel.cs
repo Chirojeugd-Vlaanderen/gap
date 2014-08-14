@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System;
 using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WebApi.Models
@@ -23,6 +24,7 @@ namespace Chiro.Gap.WebApi.Models
         public int Id { get; set; }
         public string Type { get; set; }
         public string Waarde { get; set; }
+        public string Versie { get; set; }
 
         public virtual PersoonModel Persoon { get; set; }
 
@@ -31,6 +33,7 @@ namespace Chiro.Gap.WebApi.Models
             Id = communicatieVorm.ID;
             Type = communicatieVorm.CommunicatieType.Omschrijving;
             Waarde = communicatieVorm.Nummer;
+            Versie = BitConverter.ToString(communicatieVorm.Versie);
         }
     }
 }
