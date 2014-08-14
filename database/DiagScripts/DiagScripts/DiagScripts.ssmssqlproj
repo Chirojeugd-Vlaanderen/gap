@@ -91,6 +91,12 @@
           <AssociatedConnUserName />
           <FullPath>GpsOpAd.sql</FullPath>
         </FileNode>
+        <FileNode Name="GroepOpPlaats.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02\sql2012:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kip-sql02\sql2012</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>GroepOpPlaats.sql</FullPath>
+        </FileNode>
         <FileNode Name="ix_persoon_AdNummer.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
@@ -120,6 +126,12 @@
           <AssociatedConnSrvName />
           <AssociatedConnUserName />
           <FullPath>LidInKip.sql</FullPath>
+        </FileNode>
+        <FileNode Name="LoginKoppelen.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02\sql2012:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kip-sql02\sql2012</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>LoginKoppelen.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenAbonnement.sql">
           <AssociatedConnectionMoniker />
