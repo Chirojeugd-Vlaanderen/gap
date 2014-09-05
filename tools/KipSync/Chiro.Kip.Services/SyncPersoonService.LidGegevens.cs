@@ -429,6 +429,7 @@ namespace Chiro.Kip.Services
 		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void LidTypeUpdaten(Persoon persoon, string stamNummer, int werkJaar, LidTypeEnum lidType)
 		{
+            Lid lid;
 			string feedback = String.Empty;
 
 			Mapper.CreateMap<Persoon, PersoonZoekInfo>()
@@ -438,7 +439,6 @@ namespace Chiro.Kip.Services
 			using (var db = new kipadminEntities())
 			{
 			    var ledenMgr = new LedenManager();
-				Lid lid;
 
 				// Eens kijken of we het lid waarvan sprake kunnen vinden.
 
@@ -450,27 +450,28 @@ namespace Chiro.Kip.Services
 
 				lid = mgr.LidZoeken(zoekInfo, stamNummer, werkJaar, db);
 
-				if (lid == null)
-				{
-					throw new InvalidOperationException(String.Format(
-						Properties.Resources.LidNietGevonden,
-						persoon.VoorNaam,
-						persoon.Naam,
-						stamNummer,
-						werkJaar));
-				}
+			    if (lid == null)
+			    {
+			        _log.FoutLoggen(0, String.Format(
+			            Properties.Resources.LidNietGevonden,
+			            persoon.VoorNaam,
+			            persoon.Naam,
+			            stamNummer,
+			            werkJaar));
 
-			    ledenMgr.LidTypeInstellen(lid,lidType);
+			        return;
+			    }
+			    ledenMgr.LidTypeInstellen(lid, lidType);
 
-				feedback = String.Format(
-					"Lidtype veranderd naar {0}: ID{1} {2} {3} AD{4}",
-					lid.SOORT,
-					persoon.ID,
-					persoon.VoorNaam,
-					persoon.Naam,
-					lid.Persoon.AdNummer);
+			    feedback = String.Format(
+			        "Lidtype veranderd naar {0}: ID{1} {2} {3} AD{4}",
+			        lid.SOORT,
+			        persoon.ID,
+			        persoon.VoorNaam,
+			        persoon.Naam,
+			        lid.Persoon.AdNummer);
 
-				db.SaveChanges();
+			    db.SaveChanges();
 			}
 			_log.BerichtLoggen(0, feedback);
 		}
