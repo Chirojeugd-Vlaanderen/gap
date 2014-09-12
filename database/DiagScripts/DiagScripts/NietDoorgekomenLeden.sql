@@ -11,5 +11,5 @@ join grp.groep g on g.groepid = gwj.groepid
 left outer join kipadmin.lid.lid kl on kl.adnr = p.adnummer and kl.werkjaar=gwj.werkjaar and kl.aansl_nr > 0
 left outer join kipadmin.dbo.kippersoon kp on p.adnummer = kp.adnr
 left outer join kipadmin.grp.chirogroep kcg on kcg.Stamnr=g.code collate latin1_general_ci_ai and kcg.groepid=kl.groepid
-where l.NonActief=0 and  gwj.werkjaar=2013 and kl.adnr is null
+where l.NonActief=0 and  gwj.werkjaar=2014 and kl.adnr is null
 
