@@ -40,7 +40,7 @@ namespace Chiro.CiviSync.Services
             Mapper.CreateMap<Adres, Address>()
                 .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))
                 .ForMember(dst => dst.ContactId, opt => opt.Ignore())
-                .ForMember(dst => dst.Country, opt => opt.UseValue("BE"))
+                .ForMember(dst => dst.Country, opt => opt.MapFrom(src => src.LandIsoCode))
                 .ForMember(dst => dst.LocationTypeId, opt => opt.Ignore())
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
                 .ForMember(dst => dst.IsBilling, opt => opt.Ignore())
