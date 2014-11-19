@@ -48,7 +48,7 @@ namespace Chiro.Cdf.Poco
         /// <returns>Een repository voor entiteiten van type <typeparamref name="TEntity"/></returns>
         public IRepository<TEntity> RepositoryGet<TEntity>() where TEntity : BasisEntiteit
         {
-            return Factory.Maak<IRepository<TEntity>>();
+            return new Repository<TEntity>(_context);
         }
     }
 }

@@ -33,6 +33,7 @@ namespace Chiro.Gap.Domain
         OngeldigeGeboorteJarenVoorAfdeling,
         GeboorteDatumOntbreekt,
         PersoonOverleden,
+        PersoonNietGevonden,
         #endregion
 
         #region adressen

@@ -52,8 +52,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Domain", "Chiro.G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Sync", "Chiro.Gap.Sync\Chiro.Gap.Sync.csproj", "{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateSvc.Contracts", "Chiro.Gap.UpdateSvc.Contracts\Chiro.Gap.UpdateSvc.Contracts.csproj", "{EFA70FDE-2295-4A91-9553-847C272E7FA4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceModel", "Chiro.Cdf.ServiceModel\Chiro.Cdf.ServiceModel.csproj", "{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.ServiceContracts", "..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj", "{D1E7BBDD-D833-4DC1-AF39-287448612425}"
@@ -69,8 +67,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Poco", "Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj", "{CDEA3723-7D66-44BF-93D0-913881918330}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.SyncInterfaces", "Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj", "{3ECF9801-795B-40FF-B19B-44A7C49DBB40}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateSvc.Service", "Chiro.Gap.UpdateSvc.Service\Chiro.Gap.UpdateSvc.Service.csproj", "{B2E725F5-E3F8-4511-99AB-2EB84124F302}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.WorkerInterfaces", "Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj", "{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}"
 EndProject
@@ -88,7 +84,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Sso", "Chiro.Cdf.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Algemeen.Test", "TestProjecten\Chiro.Gap.Algemeen.Test\Chiro.Gap.Algemeen.Test.csproj", "{CFFB2A00-E7BF-4E0C-B69A-7804C13EB5F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateSvc.Test", "TestProjecten\Chiro.Gap.UpdateSvc.Test\Chiro.Gap.UpdateSvc.Test.csproj", "{9912F375-BB2D-435C-8FF6-F2933C212A4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateApi.Test", "TestProjecten\Chiro.Gap.UpdateSvc.Test\Chiro.Gap.UpdateApi.Test.csproj", "{9912F375-BB2D-435C-8FF6-F2933C212A4B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.WebApi", "Chiro.Gap.WebApi\Chiro.Gap.WebApi.csproj", "{EA19D31F-AA1D-4C6C-9464-3D80520C105B}"
 EndProject
@@ -275,18 +271,6 @@ Global
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|Win32.ActiveCfg = Release|Any CPU
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|x86.ActiveCfg = Release|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Release|Win32.ActiveCfg = Release|Any CPU
-		{EFA70FDE-2295-4A91-9553-847C272E7FA4}.Release|x86.ActiveCfg = Release|Any CPU
 		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -383,18 +367,6 @@ Global
 		{3ECF9801-795B-40FF-B19B-44A7C49DBB40}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3ECF9801-795B-40FF-B19B-44A7C49DBB40}.Release|Win32.ActiveCfg = Release|Any CPU
 		{3ECF9801-795B-40FF-B19B-44A7C49DBB40}.Release|x86.ActiveCfg = Release|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Release|Win32.ActiveCfg = Release|Any CPU
-		{B2E725F5-E3F8-4511-99AB-2EB84124F302}.Release|x86.ActiveCfg = Release|Any CPU
 		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -595,7 +567,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution8.vsmdi

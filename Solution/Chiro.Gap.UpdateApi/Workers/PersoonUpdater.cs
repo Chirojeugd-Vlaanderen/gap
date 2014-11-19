@@ -1,37 +1,16 @@
-/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
- * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel;
-using System.Transactions;
+using System.Web;
 
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.Services;
-using Chiro.Gap.UpdateSvc.Contracts;
-using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.Domain;
 
-namespace Chiro.Gap.UpdateSvc.Service
+namespace Chiro.Gap.UpdateApi.Workers
 {
-    /// <summary>
-    /// Service die updates doorgeeft van GAP naar KipAdmin of omgekeerd
-    /// </summary>
-    public class UpdateService : IUpdateService
+    public class PersoonUpdater : IPersoonUpdater
     {
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Persoon> _personenRepo;
@@ -44,10 +23,16 @@ namespace Chiro.Gap.UpdateSvc.Service
         private readonly IRepository<PersoonsVerzekering> _persoonsVerzekeringenRepo;
         private readonly IRepository<GebruikersRecht> _gebruikersRechtenRepo;
 
-        private readonly GavChecker _gav;
-
-        public UpdateService(IAutorisatieManager autorisatieMgr, IRepositoryProvider repositoryProvider)
+        public PersoonUpdater(IRepositoryProvider repositoryProvider)
         {
+            // De repositoryprovider maakt een context, en die is disposable. De context
+            // wordt gedeeld door alle repositories die de repositoryprovider oplevert.
+            // Als een repository wordt gedisposet, dan disposet die ook de context, als
+            // dat nog niet gebeurd moest zijn.
+
+            // Enfin. In praktijk wil dat zeggen dat de context nog ergens
+            // gedisposet moet worden. In Dispose() lijkt een goed idee.
+
             _personenRepo = repositoryProvider.RepositoryGet<Persoon>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _ledenRepo = repositoryProvider.RepositoryGet<Lid>();
@@ -58,27 +43,51 @@ namespace Chiro.Gap.UpdateSvc.Service
             _persoonsAdressenRepo = repositoryProvider.RepositoryGet<PersoonsAdres>();
             _persoonsVerzekeringenRepo = repositoryProvider.RepositoryGet<PersoonsVerzekering>();
             _gebruikersRechtenRepo = repositoryProvider.RepositoryGet<GebruikersRecht>();
-
-            _gav = new GavChecker(autorisatieMgr);
         }
 
-        public GavChecker Gav
-        {
-            get { return _gav; }
-        }
+        #region Disposable etc
+
+        // Ik heb die constructie met 'disposed' en 'disposing' nooit begrepen.
+        // Maar ze zeggen dat dat zo moet :-)
+
+        private bool disposed;
 
         public void Dispose()
         {
-            _personenRepo.Dispose();
-            _groepenRepo.Dispose();
-            _ledenRepo.Dispose();
-            _communicatieVormenRepo.Dispose();
-            _deelnemersRepo.Dispose();
-            _gelieerdePersonenRepo.Dispose();
-            _persoonsAdressenRepo.Dispose();
-            _persoonsVerzekeringenRepo.Dispose();
-            _gebruikersRechtenRepo.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose de repositories. Van zodra er 1 gedisposet is, is ook de
+                    // context weg. En dat is waar het om gaat. Maar we disposen ze allemaal,
+                    // dat ziet er wat properder uit.
+
+                    _personenRepo.Dispose();
+                    _groepenRepo.Dispose();
+                    _ledenRepo.Dispose();
+                    _communicatieVormenRepo.Dispose();
+                    _deelnemersRepo.Dispose();
+                    _gelieerdePersonenRepo.Dispose();
+                    _persoonsAdressenRepo.Dispose();
+                    _persoonsVerzekeringenRepo.Dispose();
+                    _gebruikersRechtenRepo.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
+        ~PersoonUpdater()
+        {
+            Dispose(false);
+        }
+
+        #endregion
 
         /// <summary>
         /// Stelt het AD-nummer van de persoon met Id <paramref name="persoonId"/> in.  
@@ -89,7 +98,6 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <param name="adNummer">
         /// Nieuw AD-nummer
         /// </param>
-        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void AdNummerToekennen(int persoonId, int adNummer)
         {
             var persoon = _personenRepo.ByID(persoonId);
@@ -110,7 +118,6 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// </summary>
         /// <param name="oudAd">AD-nummer van persoon met te vervangen AD-nummer</param>
         /// <param name="nieuwAd">Nieuw AD-nummer</param>
-        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void AdNummerVervangen(int oudAd, int nieuwAd)
         {
             var personen = (from g in _personenRepo.Select() where g.AdNummer == oudAd select g);
@@ -132,8 +139,6 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <remarks>PERSISTEERT!</remarks>
         private void AdNummerToekennen(Persoon persoon, int adNummer)
         {
-            Gav.CheckSuperGav();
-
                 // Wie heeft het gegeven AD-nummer al?
                 var personenAlBestaand = (from g in _personenRepo.Select() where g.AdNummer == adNummer select g);
 
@@ -156,8 +161,6 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// ik kan er voorlopig niet aan doen.</remarks>
         public void DubbelVerwijderen(Persoon origineel, Persoon dubbel)
         {
-            Gav.CheckSuperGav();
-
             // TODO: Dit kan nog wel wat unit tests gebruiken...
 
             // Voor de groepen die niet zowel origineel als dubbel bevatten, verleggen we
@@ -421,7 +424,6 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <param name="stamNr">Stamnummer te stoppen groep</param>
         /// <param name="stopDatum">Datum vanaf wanneer gestopt, <c>null</c> om de groep opnieuw te activeren.</param>
         /// <remarks>Als <paramref name="stopDatum"/> <c>null</c> is, wordt de groep opnieuw actief.</remarks>
-        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void GroepDesactiveren(string stamNr, DateTime? stopDatum)
         {
             var groep = (from g in _groepenRepo.Select()
@@ -445,13 +447,12 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <param name="civiID">toe te kennen Civi-ID</param>
         /// <param name="dupesMergen">Als <c>true</c>, dan wordt de persoon gemerged met
         /// eventuele bestaande andere personen met datzelfde <paramref name="civiIC"/>.</param>
-        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void CiviIdToekennen(int persoonID, int civiID, bool dupesMergen)
         {
             var persoon = _personenRepo.ByID(persoonID);
             if (persoon == null)
             {
-                return;
+                throw new FoutNummerException(FoutNummer.PersoonNietGevonden, Properties.Resources.PersoonNietGevonden);
             }
 
             CiviIdToekennen(persoon, civiID, dupesMergen); // PERSISTEERT
@@ -468,8 +469,6 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// eventuele bestaande andere personen met datzelfde <paramref name="civiIC"/>.</param>
         private void CiviIdToekennen(Persoon persoon, int civiID, bool dupesMergen)
         {
-            Gav.CheckSuperGav();
-
             // Wie heeft het gegeven AD-nummer al?
             var personenAlBestaand = (from g in _personenRepo.Select() where g.CiviID == civiID select g);
 
@@ -487,15 +486,6 @@ namespace Chiro.Gap.UpdateSvc.Service
 
             persoon.CiviID = civiID;
             _personenRepo.SaveChanges();
-        }
-
-        /// <summary>
-        /// Testmethod.
-        /// </summary>
-        /// <returns>Een halloboodschap</returns>
-        public string Hello()
-        {
-            return "Hello UpdateService!";
         }
     }
 }

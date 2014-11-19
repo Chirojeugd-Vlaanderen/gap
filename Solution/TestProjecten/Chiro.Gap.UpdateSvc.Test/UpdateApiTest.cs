@@ -2,7 +2,7 @@
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.UpdateSvc.Service;
+using Chiro.Gap.UpdateApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
@@ -10,6 +10,7 @@ using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Cdf.Poco;
 using Moq;
+using Chiro.Gap.UpdateApi.Workers;
 
 namespace Chiro.Gap.UpdateSvc.Test
 {
@@ -20,7 +21,7 @@ namespace Chiro.Gap.UpdateSvc.Test
     ///to contain all UpdateServiceTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class UpdateServiceTest
+    public class UpdateApiTest
     {
 
 
@@ -90,7 +91,7 @@ namespace Chiro.Gap.UpdateSvc.Test
 
             // ACT
 
-            var target = Factory.Maak<UpdateService>();
+            var target = Factory.Maak<PersoonUpdater>();
             target.GroepDesactiveren(groep.Code, DateTime.Now);
 
             // ASSERT
@@ -118,7 +119,7 @@ namespace Chiro.Gap.UpdateSvc.Test
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
-            var target = Factory.Maak<UpdateService>();
+            var target = Factory.Maak<PersoonUpdater>();
             target.DubbelVerwijderen(origineel, dubbel);
 
             // ASSERT
@@ -166,7 +167,7 @@ namespace Chiro.Gap.UpdateSvc.Test
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
-            var target = Factory.Maak<UpdateService>();
+            var target = Factory.Maak<PersoonUpdater>();
             target.DubbelVerwijderen(origineel, dubbel);
 
             // ASSERT
@@ -229,7 +230,7 @@ namespace Chiro.Gap.UpdateSvc.Test
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
-            var target = Factory.Maak<UpdateService>();
+            var target = Factory.Maak<PersoonUpdater>();
             target.DubbelVerwijderen(origineel, dubbel);
 
             // ASSERT
