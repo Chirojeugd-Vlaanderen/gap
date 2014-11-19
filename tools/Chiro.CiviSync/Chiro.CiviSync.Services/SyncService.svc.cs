@@ -24,6 +24,7 @@ using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Domain;
 using System.ServiceModel;
+using log4net;
 
 namespace Chiro.CiviSync.Services
 {
@@ -32,6 +33,7 @@ namespace Chiro.CiviSync.Services
     public class SyncService : ISyncPersoonService, IDisposable
     {
         private readonly ICiviCrmClient _civiCrmClient;
+        private static readonly ILog _log = LogManager.GetLogger(typeof(SyncService));
 
         public SyncService(ICiviCrmClient civiCrmClient)
         {
