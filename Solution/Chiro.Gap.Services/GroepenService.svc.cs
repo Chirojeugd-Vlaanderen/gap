@@ -50,6 +50,7 @@ namespace Chiro.Gap.Services
     {
         // Repositories, verantwoordelijk voor data access.
 
+        private readonly IRepositoryProvider _repositoryProvider;
         private readonly IRepository<StraatNaam> _straatRepo;
         private readonly IRepository<WoonPlaats> _woonplaatsRepo;
         private readonly IRepository<Adres> _adresRepo; 
@@ -107,6 +108,7 @@ namespace Chiro.Gap.Services
             IFunctiesManager functiesMgr, IAdressenManager adressenMgr,
             IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IVeelGebruikt veelGebruikt)
         {
+            _repositoryProvider = repositoryProvider;
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
             _woonplaatsRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
             _adresRepo = repositoryProvider.RepositoryGet<Adres>();
@@ -163,16 +165,7 @@ namespace Chiro.Gap.Services
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    _straatRepo.Dispose();
-                    _woonplaatsRepo.Dispose();
-                    _landRepo.Dispose();
-                    _groepenRepo.Dispose();
-                    _categorieenRepo.Dispose();
-                    _afdelingenRepo.Dispose();
-                    _officieleAfdelingenRepo.Dispose();
-                    _afdelingsJaarRepo.Dispose();
-                    _functiesRepo.Dispose();
-                    _groepsWerkJarenRepo.Dispose();
+                    _repositoryProvider.Dispose();
                 }
                 disposed = true;
             }

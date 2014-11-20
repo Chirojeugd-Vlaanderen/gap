@@ -33,6 +33,7 @@ namespace Chiro.Gap.UpdateSvc.Service
     /// </summary>
     public class UpdateService : IUpdateService
     {
+        private readonly IRepositoryProvider _repositoryProvider;
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Persoon> _personenRepo;
         private readonly IRepository<Lid> _ledenRepo;
@@ -48,6 +49,7 @@ namespace Chiro.Gap.UpdateSvc.Service
 
         public UpdateService(IAutorisatieManager autorisatieMgr, IRepositoryProvider repositoryProvider)
         {
+            _repositoryProvider = repositoryProvider;
             _personenRepo = repositoryProvider.RepositoryGet<Persoon>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _ledenRepo = repositoryProvider.RepositoryGet<Lid>();
@@ -67,18 +69,36 @@ namespace Chiro.Gap.UpdateSvc.Service
             get { return _gav; }
         }
 
+        #region Disposable etc
+
+        private bool disposed;
+
         public void Dispose()
         {
-            _personenRepo.Dispose();
-            _groepenRepo.Dispose();
-            _ledenRepo.Dispose();
-            _communicatieVormenRepo.Dispose();
-            _deelnemersRepo.Dispose();
-            _gelieerdePersonenRepo.Dispose();
-            _persoonsAdressenRepo.Dispose();
-            _persoonsVerzekeringenRepo.Dispose();
-            _gebruikersRechtenRepo.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    _repositoryProvider.Dispose();
+
+                }
+                disposed = true;
+            }
+        }
+
+        ~UpdateService()
+        {
+            Dispose(false);
+        }
+
+        #endregion
 
         /// <summary>
         /// Stelt het AD-nummer van de persoon met Id <paramref name="persoonId"/> in.  

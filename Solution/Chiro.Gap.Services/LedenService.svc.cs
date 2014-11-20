@@ -52,6 +52,7 @@ namespace Chiro.Gap.Services
 
         // Repositories, verantwoordelijk voor data access.
 
+        private readonly IRepositoryProvider _repositoryProvider;
         private readonly IRepository<Lid> _ledenRepo;
         private readonly IRepository<VerzekeringsType> _verzekerRepo;
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
@@ -100,6 +101,8 @@ namespace Chiro.Gap.Services
                             IRepositoryProvider repositoryProvider, ILedenSync ledenSync,
                             IVerzekeringenSync verzekeringenSync)
         {
+            _repositoryProvider = repositoryProvider;
+
             _ledenRepo = repositoryProvider.RepositoryGet<Lid>();
             _afdelingsJaarRepo = repositoryProvider.RepositoryGet<AfdelingsJaar>();
             _functiesRepo = repositoryProvider.RepositoryGet<Functie>();
@@ -148,18 +151,7 @@ namespace Chiro.Gap.Services
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    _ledenRepo.Dispose();
-                    _verzekerRepo.Dispose();
-                    _gelieerdePersonenRepo.Dispose();
-                    _afdelingsJaarRepo.Dispose();
-                    _functiesRepo.Dispose();
-                    _groepsWerkJarenRepo.Dispose();
-                    _kinderenRepo.Dispose();
-                    _leidingRepo.Dispose();
-                    _buitenlandseAdressenRepo.Dispose();
-                    _belgischeAdressenRepo.Dispose();
-                    _groepenRepo.Dispose();
-                    _afdelingenRepo.Dispose();
+                    _repositoryProvider.Dispose();
                 }
                 disposed = true;
             }

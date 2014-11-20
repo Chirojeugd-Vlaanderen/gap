@@ -42,6 +42,7 @@ namespace Chiro.Gap.Services
     public class UitstappenService : IUitstappenService, IDisposable
     {
         // Repositories, verantwoordelijk voor data access
+        private readonly IRepositoryProvider _repositoryProvider;
         private readonly IRepository<GroepsWerkJaar> _groepsWerkJaarRepo;
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Adres> _adressenRepo;
@@ -80,6 +81,7 @@ namespace Chiro.Gap.Services
                                  IAdressenManager adressenManager,
                                  IBivakSync bivakSync)
         {
+            _repositoryProvider = repositoryProvider;
             _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _adressenRepo = repositoryProvider.RepositoryGet<Adres>();
@@ -121,7 +123,7 @@ namespace Chiro.Gap.Services
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    _groepsWerkJaarRepo.Dispose();
+                    _repositoryProvider.Dispose();
 
                 }
                 disposed = true;

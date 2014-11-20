@@ -21,7 +21,7 @@ using System.Linq;
 
 namespace Chiro.Cdf.Poco
 {
-    public interface IRepository<TEntity> : IDisposable where TEntity: BasisEntiteit
+    public interface IRepository<TEntity> where TEntity: BasisEntiteit
     {
         /// <summary>
         /// Levert een queryable op voor entiteiten van het type <typeparamref name="TEntity"/>, met eager loading
