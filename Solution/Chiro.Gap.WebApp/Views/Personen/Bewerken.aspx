@@ -194,7 +194,7 @@
                         });
             %>
                 <tr id="commLeeg">
-                   <td>Communicatie toevoegen</td>
+                   <td>Tel./mail/enz. toevoegen</td>
                    <td></td>
                    <td></td>
                    <td id="laadNieuweCom"></td>

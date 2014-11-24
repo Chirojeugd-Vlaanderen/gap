@@ -1298,7 +1298,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieTypeInfo>>(l => l.CommunicatieTypesOphalen());
             var model = new NieuweCommVormModel(persoonDetail, types);
             BaseModelInit(model, groepID);
-            model.Titel = "Nieuwe communicatievorm toevoegen";
+            model.Titel = "Tel./mail/enz. toevoegen";
             return View("NieuweCommVorm", model);
         }
 
@@ -1351,7 +1351,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 // info voor model herstellen
                 model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonID));
                 model.Types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieTypeInfo>>(l => l.CommunicatieTypesOphalen());
-                model.Titel = "Nieuwe communicatievorm toevoegen";
+                model.Titel = "Tel./mail/enz. toevoegen";
 
                 return View("NieuweCommVorm", model);
             }
@@ -1403,7 +1403,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieDetail>(l => l.CommunicatieVormOphalen(commvormID));
             var model = new CommVormModel(persoonDetail, commv);
             BaseModelInit(model, groepID);
-            model.Titel = "Communicatievorm bewerken";
+            model.Titel = "Tel./mail/enz. bewerken";
             return View("CommVormBewerken", model);
         } 
 
@@ -1454,7 +1454,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonID));
                 model.NieuweCommVorm = commVorm;
-                model.Titel = "Communicatievorm bewerken";
+                model.Titel = "Tel./mail/enz. bewerken";
 
                 return View("CommVormBewerken", model);
             }

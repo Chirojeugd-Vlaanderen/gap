@@ -22,17 +22,13 @@
  * limitations under the License.
  */
 %>
-    Handleiding: Nieuwe communicatievorm
+    Handleiding: Tel./mail/enz. toevoegen
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
     <h2>
-        Een nieuwe communicatievorm toevoegen</h2>
+        Tel./mail/enz. toevoegen</h2>
     <p>
-        Met 'communicatievorm' bedoelen we elke manier om op een directe manier met iemand
-        in contact te komen. De meest typische voorbeelden zijn een telefoonnummer en een
-        mailadres.</p>
-    <p>
-        Elk van die communicatievormen moet aan bepaalde voorwaarden voldoen. Voor een mailadres
+        Alle communicatievormen (tel./mail/andere) moeten aan bepaalde voorwaarden voldoen. Voor een mailadres
         is dat een technische kwestie: als het geen geldig adres is, kun je het niet gebruiken.
         Voor telefoonnummers hebben we de afspraak gemaakt dat we de notatie van de Chirohuisstijl
         volgen: het zonenummer, een koppelteken, en dan de rest van het nummer in groepjes
@@ -50,7 +46,7 @@
     <img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_communicatievormenlink.png") %>"
         alt="Een nieuwe communicatoevorm toevoegen vanop de persoonsfiche" />
     <ul>
-        <li>Klik daar op de link 'communicatievorm toevoegen'. Je komt dan op een formuliertje.</li></ul>
+        <li>Klik daar op het icoontje naast 'Tel./mail/enz. toevoegen'. Je komt dan op een formuliertje.</li></ul>
     <img src="<%=ResolveUrl("~/Content/Screenshots/Formulier_Nieuwe_communicatievorm.png") %>"
         alt="Een nieuwe communicatievorm toevoegen" />
     <ul>

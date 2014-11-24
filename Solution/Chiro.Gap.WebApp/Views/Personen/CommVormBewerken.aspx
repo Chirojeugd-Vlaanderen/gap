@@ -42,7 +42,7 @@
             <input type="submit" value="Bewaren" /></li>
     </ul>
     <fieldset>
-        <legend>Communicatievorm bewerken voor
+        <legend>Tel./mail/enz. bewerken voor
             <%=Model.Aanvrager.VolledigeNaam %></legend>
         <%=Html.ValidationSummary() %>
         <table>
