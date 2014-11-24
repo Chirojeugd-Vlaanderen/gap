@@ -54,7 +54,7 @@
 		</tr>
     </table>
 
-    <p id="uitlegBinnenland" hidden>
+    <p id="uitlegBinnenland">
 			<strong>Opgelet:</strong> voor binnenlandse adressen wordt alleen de officiële spelling van de straatnaam geaccepteerd.<br />
 			Ben je zeker van de straatnaam maar wordt ze geweigerd? Lees in
 			<%=Html.ActionLink("de handleiding", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweStraatnaam"})%>
@@ -66,7 +66,7 @@
     dat is bijvoorbeeld de lettercode die in Nederlandse adressen na het postnummer
     komt (bv. 1216 RA Hilversum).</p>
 
-        <table id="tabel" hidden>
+        <table id="tabel">
         <%
 			Html.RenderPartial("AdresBewerkenControl", Model);
          %>
