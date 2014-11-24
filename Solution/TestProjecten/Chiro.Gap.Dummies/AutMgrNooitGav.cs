@@ -28,8 +28,6 @@ namespace Chiro.Gap.Dummies
 	/// </summary>
 	public class AutMgrNooitGav : IAutorisatieManager
 	{
-		#region IAutorisatieManager Members
-
 		public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs)
 		{
 			return new List<int>();
@@ -90,7 +88,7 @@ namespace Chiro.Gap.Dummies
             return false;
 	    }
 
-	    public bool IsGav(GebruikersRecht gelieerdePersoon)
+	    public bool IsGav(GebruikersRechtV2 gelieerdePersoon)
 	    {
             return false;
 	    }
@@ -140,6 +138,9 @@ namespace Chiro.Gap.Dummies
 	        return false;
 	    }
 
-	    #endregion
-	}
+        public bool IsGav(Persoon p)
+        {
+            return false;
+        }
+    }
 }

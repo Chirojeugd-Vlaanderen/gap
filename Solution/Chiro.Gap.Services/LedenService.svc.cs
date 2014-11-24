@@ -89,6 +89,7 @@ namespace Chiro.Gap.Services
         /// <param name="groepsWerkJarenMgr">Businesslogica wat betreft groepswerkjaren</param>
         /// <param name="groepenMgr">Businesslogica m.b.t. groepen</param>
         /// <param name="functiesMgr">Businesslogica m.b.t. functies</param>
+        /// <param name="authenticatieMgr">Businesslogica m.b.t. authenticatie</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         /// <param name="ledenSync">Voor synchronisatie lidgegevens met Kipadmin</param>
         /// <param name="verzekeringenSync">Voor synchronisatie verzekeringsgegevens naar Kipadmin</param>
@@ -96,8 +97,9 @@ namespace Chiro.Gap.Services
                             IVerzekeringenManager verzekeringenMgr,
                             ILedenManager ledenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                             IGroepenManager groepenMgr, IFunctiesManager functiesMgr,
+                            IAuthenticatieManager authenticatieMgr,
                             IRepositoryProvider repositoryProvider, ILedenSync ledenSync,
-                            IVerzekeringenSync verzekeringenSync): base(ledenMgr, groepsWerkJarenMgr)
+                            IVerzekeringenSync verzekeringenSync): base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr)
         {
             _repositoryProvider = repositoryProvider;
 

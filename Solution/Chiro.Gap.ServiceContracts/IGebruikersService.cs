@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,12 +50,11 @@ namespace Chiro.Gap.ServiceContracts
         void RechtenToekennen(int gelieerdePersoonID, GebruikersRecht[] gebruikersRechten);
 
         /// <summary>
-        /// Geeft de account met gegeven <paramref name="gebruikersNaam"/> de gegeven
-        /// <paramref name="gebruikersRechten"/>.  Gebruikersrechten zijn standaard 14 maanden geldig.
-        /// De gegeven accout moet bestaan; we moeten vermijden dat eender welke user zomaar accounts
-        /// kan maken voor chiro.wereld.
+        /// Geeft de persoon met gegeven <paramref name="gelieerdePersoonID"/> de gegeven
+        /// <paramref name="gebruikersRechten"/>.  
         /// </summary>
-        /// <param name="gebruikersNaam">gebruikersnaam van de account die rechten moet krijgen</param>
+        /// <param name="gelieerdePersoonID">GelieerdePersoonID van een persoon die rechten
+        /// moet krijgen.</param>
         /// <param name="gebruikersRechten">Rechten die de account moet krijgen.
         /// Bestaande gebruikersrechten worden zo mogelijk verlengd als ze in 
         /// <paramref name="gebruikersRechten"/> voorkomen, eventuele bestaande rechten niet in 
@@ -63,7 +63,7 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
-        void RechtenToekennenGebruiker(string gebruikersNaam, GebruikersRecht[] gebruikersRechten);
+        void RechtenToekennenGelieerdePersoon(int gelieerdePersoonID, GebruikersRecht[] gebruikersRechten);
 
         /// <summary>
         /// Neemt de alle gebruikersrechten van de gelieerde persoon met gegeven
@@ -79,15 +79,15 @@ namespace Chiro.Gap.ServiceContracts
 
         /// <summary>
         /// Neemt de alle gebruikersrechten van de gelieerde persoon met gegeven
-        /// <paramref name="gebruikersNaam"/> af voor de groepen met gegeven <paramref name="groepIDs"/>
+        /// <paramref name="gelieerdePeroonID"/> af voor de groepen met gegeven <paramref name="groepIds"/>
         /// </summary>
-        /// <param name="gebruikersNaam">gebruikersnaam van gelieerde persoon met af te nemen gebruikersrechten</param>
-        /// <param name="groepIDs">ID's van groepen waarvoor gebruikersrecht afgenomen moet worden.</param>
+        /// <param name="gelieerdePersoonID">GelieerdePersoonID van gelieerde persoon met af te nemen gebruikersrechten</param>
+        /// <param name="groepIds">Id's van groepen waarvoor gebruikersrecht afgenomen moet worden.</param>
         /// <remarks>In praktijk gebeurt dit door de vervaldatum in het verleden te leggen.</remarks>
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
-        void RechtenAfnemenGebruiker(string gebruikersNaam, int[] groepIDs);
+        void RechtenAfnemenGelieerdePersoon(int gelieerdePersoonID, int[] groepIDs);
 
         /// <summary>
         /// Levert een redirection-url op naar de site van de verzekeraar

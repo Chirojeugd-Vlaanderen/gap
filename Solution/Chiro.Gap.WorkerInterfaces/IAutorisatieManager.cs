@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,15 +37,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// </returns>
         bool IsSuperGav();
 
-        /// <summary>
-        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van gegeven
-        /// <paramref name="groep"/>.
-        /// </summary>
-        /// <param name="groep">Groep waarvoor gebruikersrecht nagekeken moet worden</param>
-        /// <returns>
-        /// <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
-        /// <paramref name="groep"/>.
-        /// </returns>
+        #region Controleer of de aangelogde gebruiker GAV is van gegeven entity
         bool IsGav(Groep groep);
         bool IsGav(CommunicatieVorm communicatie);
         bool IsGav(GroepsWerkJaar g);
@@ -52,10 +45,12 @@ namespace Chiro.Gap.WorkerInterfaces
         bool IsGav(Deelnemer d);
         bool IsGav(Plaats p);
         bool IsGav(Uitstap u);
-        bool IsGav(GebruikersRecht g);
+        bool IsGav(GebruikersRechtV2 g);
         bool IsGav(Lid l);
         bool IsGav(Afdeling a);
         bool IsGav(Categorie c);
+        bool IsGav(Persoon p);
+        #endregion
 
         /// <summary>
         /// Controleert of de aangelogde persoon GAV is voor alle meegegeven

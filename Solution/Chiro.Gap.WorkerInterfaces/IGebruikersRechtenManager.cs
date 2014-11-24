@@ -30,7 +30,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="gebruikersRecht">
         /// Te verlengen gebruikersrecht
         /// </param>
-        void Verlengen(GebruikersRecht gebruikersRecht);
+        void Verlengen(GebruikersRechtV2 gebruikersRecht);
 
         /// <summary>
         /// Pas de vervaldatum van het gegeven <paramref name="gebruikersRecht"/> aan, zodanig dat
@@ -39,7 +39,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="gebruikersRecht">
         /// Te vervallen gebruikersrecht
         /// </param>
-        void Intrekken(GebruikersRecht gebruikersRecht);
+        void Intrekken(GebruikersRechtV2 gebruikersRecht);
 
         /// <summary>
         /// Pas de vervaldatum van het de <paramref name="gebruikersRechten"/> aan, zodanig dat
@@ -48,18 +48,17 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <param name="gebruikersRechten">
         /// Te vervallen gebruikersrecht
         /// </param>
-        void Intrekken(GebruikersRecht[] gebruikersRechten);
+        void Intrekken(GebruikersRechtV2[] gebruikersRechten);
 
         /// <summary>
-        /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="account"/>.
-        /// Standaard zijn deze rechten 14 maand geldig. Als de gebruikersrechten al bestonden, worden ze indien
-        /// mogelijk verlengd.
+        /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="persoon"/>.
+        /// Als de gebruikersrechten al bestonden, worden ze indien mogelijk verlengd.
         /// </summary>
-        /// <param name="account">account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
-        /// <param name="groep">groep waarvoor <paramref name="account"/> gebruikersrecht moet krijgen</param>
+        /// <param name="persoon">persoon die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
+        /// <param name="groep">groep waarvoor <paramref name="persoon"/> gebruikersrecht moet krijgen</param>
         /// <returns>Het gebruikersrecht</returns>
         /// <remarks>Persisteert niet.</remarks>
-        GebruikersRecht ToekennenOfVerlengen(Gav account, Groep groep);
+        GebruikersRechtV2 ToekennenOfVerlengen(Persoon persoon, Groep groep);
 
         /// <summary>
         /// Levert het gebruikersrecht op dat een <paramref name="gelieerdePersoon"/> heeft op zijn eigen groep. 
@@ -72,6 +71,6 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Als <paramref name="gelieerdePersoon"/> geen gebruikersrechten heeft op zijn groep, wordt <c>null</c> 
         /// opgeleverd.
         /// </returns>
-        GebruikersRecht GebruikersRechtGet(GelieerdePersoon gelieerdePersoon);
+        GebruikersRechtV2 GebruikersRechtGet(GelieerdePersoon gelieerdePersoon);
     }
 }

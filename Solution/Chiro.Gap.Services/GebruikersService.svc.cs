@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,16 +78,15 @@ namespace Chiro.Gap.Services
 
         // Repositories, verantwoordelijk voor data access.
         private readonly IRepositoryProvider _repositoryProvider;
-        private readonly IRepository<Gav> _rechtenRepo;
+        private readonly IRepository<GebruikersRechtV2> _rechtenRepo;
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
-        private readonly IRepository<Gav> _gavRepo; 
+        private readonly IRepository<Persoon> _personenRepo; 
 
         // Managers voor niet-triviale businesslogica
 
         private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
         private readonly IAutorisatieManager _autorisatieMgr;
-        private readonly IAuthenticatieManager _authenticatieMgr;
         private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
 
         private readonly GavChecker _gav;
@@ -109,18 +109,17 @@ namespace Chiro.Gap.Services
                                  IGroepsWerkJarenManager groepsWerkJarenManager,
                                  IGelieerdePersonenManager gelieerdePersonenManager,
                                  IRepositoryProvider repositoryProvider,
-                                 ServiceHelper serviceHelper): base(ledenManager, groepsWerkJarenManager)
+                                 ServiceHelper serviceHelper): base(ledenManager, groepsWerkJarenManager, authenticatieManager)
         {
             _repositoryProvider = repositoryProvider;
 
-            _rechtenRepo = repositoryProvider.RepositoryGet<Gav>();
+            _rechtenRepo = repositoryProvider.RepositoryGet<GebruikersRechtV2>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
-            _gavRepo = repositoryProvider.RepositoryGet<Gav>();
+            _personenRepo = repositoryProvider.RepositoryGet<Persoon>();
 
             _gebruikersRechtenMgr = gebruikersRechtenMgr;
             _autorisatieMgr = autorisatieMgr;
-            _authenticatieMgr = authenticatieManager;
             _gelieerdePersonenMgr = gelieerdePersonenManager;
 
             _gav = new GavChecker(_autorisatieMgr);
@@ -150,43 +149,31 @@ namespace Chiro.Gap.Services
             Gav.Check(gelieerdePersoon);
 
             var p = gelieerdePersoon.Persoon;
-            var account = p.Gav.FirstOrDefault();
 
-            if (account == null)
+            if (p.AdNummer == null)
             {
-                if (p.AdNummer == null)
-                {
-                    throw FaultExceptionHelper.FoutNummer(FoutNummer.AdNummerVerplicht,
-                                                          Properties.Resources.AdNummerVerplicht);
-                }
-                if (string.IsNullOrEmpty(_gelieerdePersonenMgr.ContactEmail(gelieerdePersoon)))
-                {
-                    throw FaultExceptionHelper.FoutNummer(FoutNummer.EMailVerplicht, Properties.Resources.EmailOntbreekt);
-                }
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AdNummerVerplicht,
+                                                        Properties.Resources.AdNummerVerplicht);
+            }
+            if (string.IsNullOrEmpty(_gelieerdePersonenMgr.ContactEmail(gelieerdePersoon)))
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.EMailVerplicht, Properties.Resources.EmailOntbreekt);
+            }
 
-                account = new Gav();
-                account.Persoon.Add(p);
-                p.Gav.Add(account);
-            }           
-            RechtenToekennen(account, gebruikersRechten);
+            RechtenToekennen(gelieerdePersoon.Persoon, gebruikersRechten);
 
 #if KIPDORP
             using (var tx = new TransactionScope())
             {
 #endif
-                if (account.ID == 0)
-                {
-                    Debug.Assert(p.AdNummer != null);
+                // Zoekt de gegeven gebruiker in active directory. Maakt die gebruiker aan als die nog
+                // niet bestaat. En voegt hem/haar toe aan de groep GapGebruikers.
 
-                    // nieuw account
-                    string username =
-                        ServiceHelper.CallService<IAdService, string>(
-                            svc =>
-                            svc.GapLoginAanvragen(p.AdNummer.Value, p.VoorNaam, p.Naam,
-                                                  _gelieerdePersonenMgr.ContactEmail(gelieerdePersoon)));
-                    account.Login = string.Format(@"CHIROPUBLIC\{0}", username);
-                }
-                _gavRepo.SaveChanges();
+                string username =
+                    ServiceHelper.CallService<IAdService, string>(
+                        svc =>
+                        svc.GapLoginAanvragen(p.AdNummer.Value, p.VoorNaam, p.Naam,
+                                                _gelieerdePersonenMgr.ContactEmail(gelieerdePersoon)));
 #if KIPDORP
                 tx.Complete();
             }
@@ -194,26 +181,24 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Geeft de account met gegeven <paramref name="gebruikersNaam"/> de gegeven
-        /// <paramref name="gebruikersRechten"/>.  Gebruikersrechten zijn standaard 14 maanden geldig.
-        /// De gegeven accout moet bestaan; we moeten vermijden dat eender welke user zomaar accounts
-        /// kan maken voor chiro.wereld.
+        /// Geeft de persoon met gegeven <paramref name="gelieerdePersoonID"/> de gegeven
+        /// <paramref name="gebruikersRechten"/>.  
         /// </summary>
-        /// <param name="gebruikersNaam">gebruikersnaam van de account die rechten moet krijgen</param>
+        /// <param name="gelieerdePersoonID">GelieerdePersoonID van een persoon die rechten
+        /// moet krijgen.</param>
         /// <param name="gebruikersRechten">Rechten die de account moet krijgen.
         /// Bestaande gebruikersrechten worden zo mogelijk verlengd als ze in 
         /// <paramref name="gebruikersRechten"/> voorkomen, eventuele bestaande rechten niet in 
         /// <paramref name="gebruikersRechten"/> blijven onaangeroerd.
         /// </param>
-        public void RechtenToekennenGebruiker(string gebruikersNaam, GebruikersRecht[] gebruikersRechten)
+        public void RechtenToekennenGelieerdePersoon(int gelieerdePersoonID, GebruikersRecht[] gebruikersRechten)
         {
-            var account =
-                (from g in _rechtenRepo.Select() where Equals(g.Login, gebruikersNaam) select g).FirstOrDefault();
+            var persoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID).Persoon;
 
-            RechtenToekennen(account, gebruikersRechten);
+            RechtenToekennen(persoon, gebruikersRechten);
         }
 
-        private void RechtenToekennen(Gav account, GebruikersRecht[] gebruikersRechten)
+        private void RechtenToekennen(Persoon persoon, GebruikersRecht[] gebruikersRechten)
         {
             // TODO: Deze method staat hier zo wat verloren.
             // In principe zou ze beter naar de workers gaan. Maar daar hebben we geen toegang
@@ -240,7 +225,7 @@ namespace Chiro.Gap.Services
             foreach (var groep in gebruikersRechten.Select(recht => _groepenRepo.ByID(recht.GroepID)))
             {
                 Gav.Check(groep);
-                _gebruikersRechtenMgr.ToekennenOfVerlengen(account, groep);
+                _gebruikersRechtenMgr.ToekennenOfVerlengen(persoon, groep);
             }
 
             _rechtenRepo.SaveChanges();
@@ -258,34 +243,34 @@ namespace Chiro.Gap.Services
             var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonId);
             Gav.Check(gelieerdePersoon);
 
-            var account = gelieerdePersoon.Persoon.Gav.Single();
-            RechtenAfnemen(account, groepIds);
+            var persoon = gelieerdePersoon.Persoon;
+            RechtenAfnemen(persoon, groepIds);
         }
 
         /// <summary>
         /// Neemt de alle gebruikersrechten van de gelieerde persoon met gegeven
-        /// <paramref name="gebruikersNaam"/> af voor de groepen met gegeven <paramref name="groepIds"/>
+        /// <paramref name="gelieerdePeroonID"/> af voor de groepen met gegeven <paramref name="groepIds"/>
         /// </summary>
-        /// <param name="gebruikersNaam">gebruikersnaam van gelieerde persoon met af te nemen gebruikersrechten</param>
+        /// <param name="gelieerdePersoonID">GelieerdePersoonID van gelieerde persoon met af te nemen gebruikersrechten</param>
         /// <param name="groepIds">Id's van groepen waarvoor gebruikersrecht afgenomen moet worden.</param>
         /// <remarks>In praktijk gebeurt dit door de vervaldatum in het verleden te leggen.</remarks>
-        public void RechtenAfnemenGebruiker(string gebruikersNaam, int[] groepIds)
+        public void RechtenAfnemenGelieerdePersoon(int gelieerdePersoonID, int[] groepIds)
         {
-            var account =
-                (from g in _rechtenRepo.Select() where Equals(g.Login, gebruikersNaam) select g).FirstOrDefault();
-            RechtenAfnemen(account, groepIds);
+            var persoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID).Persoon;
+            // RechtenAfnemen controleert de rechten.
+            RechtenAfnemen(persoon, groepIds);
         }
 
-        private void RechtenAfnemen(Gav account, IEnumerable<int> groepIds)
+        private void RechtenAfnemen(Persoon persoon, IEnumerable<int> groepIds)
         {
-            Gav.Check(account);
-            if (account == null)
+            Gav.Check(persoon);
+            if (persoon == null)
             {
                 throw FaultExceptionHelper.GeenGav();
             }
 
             var vervallenrechten =
-                (from g in account.GebruikersRecht where groepIds.Contains(g.Groep.ID) select g).ToList();
+                (from g in persoon.GebruikersRechtV2 where groepIds.Contains(g.Groep.ID) select g).ToList();
 
             foreach (var vervallenrecht in vervallenrechten)
             {
@@ -301,15 +286,27 @@ namespace Chiro.Gap.Services
         /// <returns>Redirection-url naar de site van de verzekeraar</returns>
         public string VerzekeringsUrlGet(int groepID)
         {
-            string userName = _authenticatieMgr.GebruikersNaamGet();
+            int? adNummer = _authenticatieMgr.AdNummerGet();
+            GelieerdePersoon mijnGp = null;
 
-            var mijnGav = (from g in _gavRepo.Select()
-                           where
-                               String.Compare(g.Login, userName,
-                                              StringComparison.InvariantCultureIgnoreCase) == 0
-                           select g).First();
+            if (adNummer == null)
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
 
-            if (mijnGav.Persoon.Count == 0 || mijnGav.Persoon.First().GelieerdePersoon == null)
+            var ik = (from p in _personenRepo.Select()
+                           where p.AdNummer == adNummer
+                           select p).First();
+
+            if (ik != null)
+            {
+                mijnGp = (from gp in ik.GelieerdePersoon
+                              where gp.Groep.ID == groepID
+                              select gp).FirstOrDefault();
+            }
+
+
+            if (mijnGp == null)
             {
                 throw new FaultException<FoutNummerFault>(new FoutNummerFault
                 {
@@ -318,13 +315,10 @@ namespace Chiro.Gap.Services
                 });
             }
 
-            var mijnGp = (from gp in mijnGav.Persoon.First().GelieerdePersoon
-                          where gp.Groep.ID == groepID
-                          select gp).First();
 
             // haal puntkomma's uit onderdelen, want die zijn straks veldseparatiedingen
             var naam = String.Format("{0} {1}", mijnGp.Persoon.VoorNaam, mijnGp.Persoon.Naam).Replace(';', ',');
-            var stamnr = (from gr in mijnGav.GebruikersRecht
+            var stamnr = (from gr in ik.GebruikersRechtV2
                           where gr.Groep.ID == groepID
                           select gr.Groep.Code).First().Replace(';', ',');
             string email =

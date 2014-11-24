@@ -31,7 +31,7 @@ namespace Chiro.Gap.Poco.Model
             this.GelieerdePersoon = new HashSet<GelieerdePersoon>();
             this.PersoonsAdres = new HashSet<PersoonsAdres>();
             this.PersoonsVerzekering = new HashSet<PersoonsVerzekering>();
-            this.Gav = new HashSet<Gav>();
+            this.GebruikersRechtV2 = new HashSet<GebruikersRechtV2>();
         }
     
         public int? AdNummer { get; set; }
@@ -60,7 +60,7 @@ namespace Chiro.Gap.Poco.Model
         public virtual ICollection<GelieerdePersoon> GelieerdePersoon { get; set; }
         public virtual ICollection<PersoonsAdres> PersoonsAdres { get; set; }
         public virtual ICollection<PersoonsVerzekering> PersoonsVerzekering { get; set; }
-        public virtual ICollection<Gav> Gav { get; set; }
+        public virtual ICollection<GebruikersRechtV2> GebruikersRechtV2 { get; set; }
 
         /// <summary>
         /// Een enumwaarde voor het geslacht van de persoon

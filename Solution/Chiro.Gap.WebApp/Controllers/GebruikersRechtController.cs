@@ -81,34 +81,33 @@ namespace Chiro.Gap.WebApp.Controllers
 
         /// <summary>
         /// Creert of verlengt het gebruikersrecht op de groep met gegeven <paramref name="groepID"/> van de
-        /// gebruiker met gegeven <paramref name="gebruikersNaam"/>
+        /// gebruiker met gegeven GelieerdePersoonID <paramref name="id"/>
         /// </summary>
-        /// <param name="gebruikersNaam">gebruikersnaam van gebruiker met aan te maken of te verlengen 
-        /// gebruikersrecht.</param>
+        /// <param name="id">GelieerdePersoonID van gelieerde persoon die gebruikersrecht moet krijgen.</param>
         /// <param name="groepID">ID van groep waarvoor gebruikersrecht aan te maken of te verlengen</param>
         /// <returns>Een redirect naar het gebruikersrechtenoverzicht</returns>
-        public ActionResult AanmakenOfVerlengen(int groepID, string gebruikersNaam)
+        public ActionResult AanmakenOfVerlengen(int groepID, int id)
         {
             ServiceHelper.CallService<IGebruikersService>(
                 gs =>
-                gs.RechtenToekennenGebruiker(gebruikersNaam,
+                gs.RechtenToekennenGelieerdePersoon(id,
                                              new[] {new GebruikersRecht {GroepID = groepID, Permissies = Permissies.Gav}}));
 
             return RedirectToAction("Index");
         }
 
         /// <summary>
-        /// Ontneemt de user met gegeven <paramref name="gebruikersNaam"/> alle rechten op de groep met
+        /// Ontneemt de user met GelieerdePersoonID <paramref name="id"/> alle rechten op de groep met
         /// gegeven <paramref name="groepID"/>
         /// </summary>
         /// <param name="groepID">groepID van groep waarop de user geen gebruikersrechten meer mag hebben</param>
-        /// <param name="gebruikersNaam">gebruikersnaam van user die geen gebruikersrechten meer mag hebben op
+        /// <param name="id">GelieerdePersoonID van user die geen gebruikersrechten meer mag hebben op
         /// gegeven groep</param>
         /// <returns>Een redirect naar het gebruikersrechtenoverzicht</returns>
-        public ActionResult Intrekken(int groepID, string gebruikersNaam)
+        public ActionResult Intrekken(int groepID, int id)
         {
             ServiceHelper.CallService<IGebruikersService>(
-                gs => gs.RechtenAfnemenGebruiker(gebruikersNaam, new[] {groepID}));
+                gs => gs.RechtenAfnemenGelieerdePersoon(id, new[] {groepID}));
             return RedirectToAction("Index");
         }
 

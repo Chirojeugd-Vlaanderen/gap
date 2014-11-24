@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -40,16 +40,22 @@ namespace Chiro.Gap.Services
     {
         protected readonly ILedenManager _ledenMgr;
         protected readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
+        protected readonly IAuthenticatieManager _authenticatieMgr;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="ledenManager">LedenManager.</param>
         /// <param name="groepsWerkJarenManager">GroepsWerkJarenManager.</param>
-        public BaseService(ILedenManager ledenManager, IGroepsWerkJarenManager groepsWerkJarenManager)
+        /// <param name="authenticatieManager">AuthenticatieManager.</param>
+        public BaseService(
+            ILedenManager ledenManager, 
+            IGroepsWerkJarenManager groepsWerkJarenManager,
+            IAuthenticatieManager authenticatieManager)
         {
             _ledenMgr = ledenManager;
             _groepsWerkJarenMgr = groepsWerkJarenManager;
+            _authenticatieMgr = authenticatieManager;
             MappingsDefinieren();
         }
 
@@ -534,19 +540,19 @@ namespace Chiro.Gap.Services
                     dst => dst.FoutNummer,
                     opt => opt.UseValue(null));
 
-            Mapper.CreateMap<Chiro.Gap.Poco.Model.GebruikersRecht, GebruikersDetail>()
+            Mapper.CreateMap<GebruikersRechtV2, GebruikersDetail>()
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsVerlengbaar))
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => GelieerdePersoonIDGet(src)))
-                .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? 0 : src.Gav.Persoon.First().ID))
-                .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? String.Empty : src.Gav.Persoon.First().Naam))
-                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? String.Empty : src.Gav.Persoon.First().VoorNaam));
+                .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Persoon.ID))
+                .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Persoon.Naam))
+                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam));
 
-            Mapper.CreateMap<Chiro.Gap.Poco.Model.GebruikersRecht, GebruikersInfo>();
+            Mapper.CreateMap<GebruikersRechtV2, GebruikersInfo>();
 
-            // Een gebruiker mappen naar GebruikersInfo mapt geen gebruikersrechten, omdat er maar rechten van 1
+            // Een persoon mappen naar GebruikersInfo mapt geen gebruikersrechten, omdat er maar rechten van 1
             // groep gemapt kunnen worden.
-            Mapper.CreateMap<Gav, GebruikersInfo>()
-                .ForMember(dst => dst.GavLogin, opt => opt.MapFrom(src => src.Login))
+            Mapper.CreateMap<Persoon, GebruikersInfo>()
+                .ForMember(dst => dst.GavLogin, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)))
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => false))
                 .ForMember(dst => dst.Permissies, opt => opt.MapFrom(src => Permissies.Geen))
                 .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => DateTime.Now.AddDays(-1)));
@@ -565,7 +571,7 @@ namespace Chiro.Gap.Services
                   .ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
                   .ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
                   .ForMember(dst => dst.InSync, opt => opt.MapFrom(src => src.AdNummer.HasValue))
-                  .ForMember(dst => dst.Gav, opt => opt.Ignore())
+                  .ForMember(dst => dst.GebruikersRechtV2, opt => opt.Ignore())
                   .ForMember(dst => dst.SeNaam, opt => opt.Ignore())
                   .ForMember(dst => dst.SeVoornaam, opt => opt.Ignore());
 
@@ -737,13 +743,13 @@ namespace Chiro.Gap.Services
         /// <param name="gebruikersRecht">Gebruikersrecht waarvan we het corresponderende GelieerdePersoonID zoeken</param>
         /// <returns>GelieerdePersoonID van de gelieerde persoon die hoort bij het gebruikersrecht
         /// <paramref name="gebruikersRecht"/>.  <c>null</c> indien onbekend.</returns>
-        private int? GelieerdePersoonIDGet(Chiro.Gap.Poco.Model.GebruikersRecht gebruikersRecht)
+        private static int? GelieerdePersoonIDGet(GebruikersRechtV2 gebruikersRecht)
         {
-            if (!gebruikersRecht.Gav.Persoon.Any())
+            if (gebruikersRecht.Persoon == null)
             {
                 return null;
             }
-            return (from gp in gebruikersRecht.Gav.Persoon.First().GelieerdePersoon
+            return (from gp in gebruikersRecht.Persoon.GelieerdePersoon
                     where gp.Groep.ID == gebruikersRecht.Groep.ID
                     select gp.ID).FirstOrDefault();
         }

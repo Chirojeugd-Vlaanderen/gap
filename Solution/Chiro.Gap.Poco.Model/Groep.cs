@@ -28,7 +28,7 @@ namespace Chiro.Gap.Poco.Model
         {
             GelieerdePersoon = new HashSet<GelieerdePersoon>();
             GroepsWerkJaar = new HashSet<GroepsWerkJaar>();
-            GebruikersRecht = new HashSet<GebruikersRecht>();
+            GebruikersRechtV2 = new HashSet<GebruikersRechtV2>();
             Categorie = new HashSet<Categorie>();
             Functie = new HashSet<Functie>();
             BivakPlaats = new HashSet<Plaats>();
@@ -46,7 +46,7 @@ namespace Chiro.Gap.Poco.Model
         public virtual Adres Adres { get; set; }
         public virtual ICollection<GelieerdePersoon> GelieerdePersoon { get; set; }
         public virtual ICollection<GroepsWerkJaar> GroepsWerkJaar { get; set; }
-        public virtual ICollection<GebruikersRecht> GebruikersRecht { get; set; }
+        public virtual ICollection<GebruikersRechtV2> GebruikersRechtV2 { get; set; }
         public virtual ICollection<Categorie> Categorie { get; set; }
         public virtual ICollection<Functie> Functie { get; set; }
         public virtual ICollection<Plaats> BivakPlaats { get; set; }

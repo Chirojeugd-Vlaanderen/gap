@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,5 +43,32 @@ namespace Chiro.Gap.WorkerInterfaces
         /// </summary>
         /// <param name="groep">Groep waarvan gecachete werkjaar moet worden geinvalideerd.</param>
         void WerkJaarInvalideren(Groep groep);
+
+        /// <summary>
+        /// Haalt het AD-nummer op van de user met gegeven <paramref name="gebruikersNaam"/>.
+        /// </summary>
+        /// <param name="gebruikersNaam">Een gebruikersnaam.</param>
+        /// <returns>Het AD-nummer van de user met die gebruikersnaam.</returns>
+        int? AdNummerOphalen(string gebruikersNaam);
+
+        /// <summary>
+        /// Invalideert het gecachete AD-nummer voor de gebruiker met gegeven <paramref name="gebruikersNaam"/>.
+        /// </summary>
+        /// <param name="gebruikersNaam">Gebruikersnaam van gebruiker waarvan gecachete AD-nummer
+        /// geinvalideerd moet worden.</param>
+        void AdNummerInvalideren(string gebruikersNaam);
+
+        /// <summary>
+        /// Vraagt de gebruikersnaam op van de persoon met gegeven <paramref name="adNummer"/>.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer van persoon wiens gebruikersnaam gezocht is.</param>
+        /// <returns>De gebruikersnaam van de persoon met gegeven AD-nummer.</returns>
+        string GebruikersNaamOphalen(int? adNummer);
+
+        /// <summary>
+        /// Invalideert de gecachete gebruikersnaam van de persoon met gegeven <paramref name="adNummer"/>.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer van persoon waarvan gebruikersnaam geinvalideerd moet worden.</param>
+        void GebruikersNaamInvalideren(int? adNummer);
     }
 }

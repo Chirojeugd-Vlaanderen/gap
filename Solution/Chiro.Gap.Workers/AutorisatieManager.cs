@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,12 +69,22 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public bool IsGav(Groep groep)
         {
-            var gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
-            return groep != null &&
-                   groep.GebruikersRecht.Any(
-                       gr =>
-                       String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) == 0 &&
-                       (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now));
+            int? adNummer = _authenticatieMgr.AdNummerGet();
+            return groep != null && adNummer != null &&
+                groep.GebruikersRechtV2.Any(gr => gr.Persoon.AdNummer == adNummer && gr.VervalDatum > DateTime.Now);
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven persoon <paramref name="p"/>.
+        /// </summary>
+        /// <param name="p">Persoon waarvoor gebruikersrecht nagekeken moet worden</param>
+        /// <returns>
+        /// <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven persoon
+        /// <paramref name="p"/>.
+        /// </returns>
+        public bool IsGav(Persoon p)
+        {
+            return p.GelieerdePersoon.Any(gp => IsGav(gp.Groep));
         }
 
         public bool IsGav(CommunicatieVorm communicatieVorm)
@@ -100,7 +111,7 @@ namespace Chiro.Gap.Workers
         {
             return IsGav(uitstap.GroepsWerkJaar.Groep);
         }
-        public bool IsGav(GebruikersRecht recht)
+        public bool IsGav(GebruikersRechtV2 recht)
         {
             return IsGav(recht.Groep);
         }
@@ -129,15 +140,14 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public bool IsGav(IList<GelieerdePersoon> gelieerdePersonen)
         {
-            // Als er een gelieerde persoon is waarvoor alle GAV's een gebruikersnaam hebben
-            // verschillend van de mijne, dan ben ik geen GAV voor alle gegeven personen.
+            // Als er een gelieerde persoon is waarvoor alle GAV's een AD-nummer hebben
+            // verschillend van het mijne, dan ben ik geen GAV voor alle gegeven personen.
 
-            var gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
+            int? adNummer = _authenticatieMgr.AdNummerGet();
             return (from gp in gelieerdePersonen
                     where
-                        gp.Groep.GebruikersRecht.All(
-                            gr =>
-                            String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.OrdinalIgnoreCase) != 0 ||
+                        gp.Groep.GebruikersRechtV2.All(
+                            gr => gr.Persoon.AdNummer != adNummer ||
                             (gr.VervalDatum != null && gr.VervalDatum < DateTime.Now))
                     select gp).FirstOrDefault() == null;
         }
@@ -175,17 +185,16 @@ namespace Chiro.Gap.Workers
         /// <paramref name="persoonsAdressen"/>, <c>false</c> in het andere geval</returns>
         public bool IsGav(IList<PersoonsAdres> persoonsAdressen)
         {
-            var gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
+            int? adNummer = _authenticatieMgr.AdNummerGet();
 
-            return
+            return adNummer != null &&
                 persoonsAdressen.All(
                     pa =>
                     pa.Persoon.GelieerdePersoon.Any(
                         gp =>
-                        gp.Groep.GebruikersRecht.Any(
-                            gr =>
-                            String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.InvariantCultureIgnoreCase) ==
-                            0 && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))));
+                        gp.Groep.GebruikersRechtV2.Any(
+                            gr => gr.Persoon.AdNummer == adNummer && 
+                                (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))));
         }
 
         /// <summary>
@@ -197,16 +206,15 @@ namespace Chiro.Gap.Workers
         /// <paramref name="personen"/>, <c>false</c> in het andere geval</returns>
         public bool IsGav(IList<Persoon> personen)
         {
-            var gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
+            int? adNummer = _authenticatieMgr.AdNummerGet();
 
-            return personen.All(
+            return adNummer != null && personen.All(
                 p =>
                 p.GelieerdePersoon.Any(
                     gp =>
-                    gp.Groep.GebruikersRecht.Any(
-                        gr =>
-                        String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.InvariantCultureIgnoreCase) ==
-                        0 && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))));
+                    gp.Groep.GebruikersRechtV2.Any(
+                        gr => gr.Persoon.AdNummer == adNummer && 
+                            (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))));
 
         }
 
@@ -219,12 +227,11 @@ namespace Chiro.Gap.Workers
         /// <paramref name="leden"/>, <c>false</c> in het andere geval</returns>
         public bool IsGav(IList<Lid> leden)
         {
-            var gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
+            int? adNummer = _authenticatieMgr.AdNummerGet();
 
-            return leden.Select(ld => ld.GroepsWerkJaar.Groep).Distinct().All(g => g.GebruikersRecht.Any(
-                gr =>
-                String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.InvariantCultureIgnoreCase) ==
-                0 && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)));
+            return adNummer != null && leden.Select(ld => ld.GroepsWerkJaar.Groep).Distinct().All(g => g.GebruikersRechtV2.Any(
+                gr => gr.Persoon.AdNummer == adNummer
+                    && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)));
         }
 
         /// <summary>
@@ -236,12 +243,11 @@ namespace Chiro.Gap.Workers
         /// <paramref name="groepen"/>, <c>false</c> in het andere geval</returns>
         public bool IsGav(IList<Groep> groepen)
         {
-            var gebruikersNaam = _authenticatieMgr.GebruikersNaamGet();
+            int? adNummer = _authenticatieMgr.AdNummerGet();
 
-            return groepen.All(g => g.GebruikersRecht.Any(
-                gr =>
-                String.Compare(gr.Gav.Login, gebruikersNaam, StringComparison.InvariantCultureIgnoreCase) ==
-                0 && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)));
+            return adNummer != null && groepen.All(g => g.GebruikersRechtV2.Any(
+                gr => gr.Persoon.AdNummer == adNummer
+                    && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)));
         }
     }
 }

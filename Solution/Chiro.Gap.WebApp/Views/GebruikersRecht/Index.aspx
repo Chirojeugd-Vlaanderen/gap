@@ -5,6 +5,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,14 +42,14 @@
             <% if (gebr.IsVerlengbaar)
                 { // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
             %>
-              <%=Html.ActionLink("Verlengen", "AanmakenOfVerlengen", new { gebruikersNaam = gebr.GavLogin }) %>
+              <%=Html.ActionLink("Verlengen", "AanmakenOfVerlengen", new { id = gebr.GelieerdePersoonID }) %>
             <%              
                 }
 
                 if (Model.GebruikersDetails.Count() > 1)
                 {
 %>
-              <%= Html.ActionLink("Afnemen", "Intrekken", new { gebruikersNaam = gebr.GavLogin })%>
+              <%= Html.ActionLink("Afnemen", "Intrekken", new { gebruikersNaam = gebr.GelieerdePersoonIDs })%>
             <% } %>
         </td>
     </tr>

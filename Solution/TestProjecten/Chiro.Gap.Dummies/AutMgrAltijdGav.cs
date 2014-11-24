@@ -32,8 +32,6 @@ namespace Chiro.Gap.Dummies
 	/// </summary>
 	public class AutMgrAltijdGav : IAutorisatieManager
 	{
-		#region IAutorisatieManager Members
-
 		public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs)
 		{
 			return gelieerdePersonenIDs.ToList();
@@ -89,7 +87,7 @@ namespace Chiro.Gap.Dummies
             return true;
 	    }
 
-	    public bool IsGav(GebruikersRecht gelieerdePersoon)
+	    public bool IsGav(GebruikersRechtV2 gelieerdePersoon)
 	    {
             return true;
 	    }
@@ -139,6 +137,9 @@ namespace Chiro.Gap.Dummies
 	        return true;
 	    }
 
-	    #endregion
-	}
+        public bool IsGav(Persoon p)
+        {
+            return true;
+        }
+    }
 }

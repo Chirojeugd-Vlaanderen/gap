@@ -38,7 +38,7 @@ namespace Chiro.Gap.Workers
         /// <param name="gebruikersRecht">
         /// Te verlengen gebruikersrecht
         /// </param>
-        public void Verlengen(GebruikersRecht gebruikersRecht)
+        public void Verlengen(GebruikersRechtV2 gebruikersRecht)
         {
             if (!gebruikersRecht.IsVerlengbaar)
             {
@@ -80,7 +80,7 @@ namespace Chiro.Gap.Workers
         /// <param name="gebruikersRecht">
         /// Te vervallen gebruikersrecht
         /// </param>
-        public void Intrekken(GebruikersRecht gebruikersRecht)
+        public void Intrekken(GebruikersRechtV2 gebruikersRecht)
         {
             Intrekken(new[] { gebruikersRecht });
         }
@@ -93,7 +93,7 @@ namespace Chiro.Gap.Workers
         /// Te vervallen gebruikersrechten
         /// </param>
         /// <remarks>Gebruikersrechten die al vervallen zijn, blijven onaangeroerd</remarks>
-        public void Intrekken(GebruikersRecht[] gebruikersRechten)
+        public void Intrekken(GebruikersRechtV2[] gebruikersRechten)
         {
             foreach (var gr in gebruikersRechten.Where(r => r.VervalDatum > DateTime.Now))
             {
@@ -102,11 +102,11 @@ namespace Chiro.Gap.Workers
         }
         
         /// <summary>
-        /// Koppelt de <paramref name="gav"/> aan de <paramref name="groep"/> met gegeven 
+        /// Koppelt de <paramref name="persoon"/> aan de <paramref name="groep"/> met gegeven 
         /// <paramref name="vervalDatum"/>.  PERSISTEERT NIET.
         /// </summary>
-        /// <param name="gav">
-        /// Te koppelen GAV
+        /// <param name="persoon">
+        /// Te koppelen persoon
         /// </param>
         /// <param name="groep">
         /// Groep waaraan te koppelen
@@ -119,19 +119,19 @@ namespace Chiro.Gap.Workers
         /// op fouten, en er worden geen notificatiemails gestuurd.  Deze method mag enkel
         /// onrechtstreeks gebruikt worden, via de publieke methods <see name="ToekennenOfVerlengen"/>
         /// </returns>
-        private GebruikersRecht ToekennenOfVerlengen(Gav gav, Groep groep, DateTime vervalDatum)
+        private GebruikersRechtV2 ToekennenOfVerlengen(Persoon persoon, Groep groep, DateTime vervalDatum)
         {
             // Eerst controleren of de groep nog niet aan de gebruiker is/was gekoppeld
-            var gebruikersrecht = (from gr in gav.GebruikersRecht
+            var gebruikersrecht = (from gr in persoon.GebruikersRechtV2
                                    where gr.Groep.ID == groep.ID
                                    select gr).FirstOrDefault();
 
             if (gebruikersrecht == null)
             {
                 // Nog geen gebruikersrecht.  Maak aan.
-                gebruikersrecht = new GebruikersRecht { ID = 0, Gav = gav, Groep = groep };
-                gav.GebruikersRecht.Add(gebruikersrecht);
-                groep.GebruikersRecht.Add(gebruikersrecht);
+                gebruikersrecht = new GebruikersRechtV2 { ID = 0, Persoon = persoon, Groep = groep };
+                persoon.GebruikersRechtV2.Add(gebruikersrecht);
+                groep.GebruikersRechtV2.Add(gebruikersrecht);
             }
             else if (!gebruikersrecht.IsVerlengbaar)
             {
@@ -146,18 +146,18 @@ namespace Chiro.Gap.Workers
 
 
         /// <summary>
-        /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="account"/>.
+        /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="persoon"/>.
         /// Als de gebruikersrechten al bestonden, worden ze indien mogelijk verlengd.
         /// </summary>
-        /// <param name="account">Account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
-        /// <param name="groep">Groep waarvoor <paramref name="account"/> gebruikersrecht moet krijgen</param>
+        /// <param name="persoon">Account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
+        /// <param name="groep">Groep waarvoor <paramref name="persoon"/> gebruikersrecht moet krijgen</param>
         /// <returns>Het gebruikersrecht</returns>
         /// <remarks>Persisteert niet.</remarks>
-        public GebruikersRecht ToekennenOfVerlengen(Gav account, Groep groep)
+        public GebruikersRechtV2 ToekennenOfVerlengen(Persoon persoon, Groep groep)
         {
             DateTime vervaldatum = NieuweVervalDatum();
 
-            return ToekennenOfVerlengen(account, groep, vervaldatum);
+            return ToekennenOfVerlengen(persoon, groep, vervaldatum);
         }
 
         /// <summary>
@@ -171,11 +171,11 @@ namespace Chiro.Gap.Workers
         /// Als <paramref name="gelieerdePersoon"/> geen gebruikersrechten heeft op zijn groep, wordt <c>null</c> 
         /// opgeleverd.
         /// </returns>
-        public GebruikersRecht GebruikersRechtGet(GelieerdePersoon gelieerdePersoon)
+        public GebruikersRechtV2 GebruikersRechtGet(GelieerdePersoon gelieerdePersoon)
         {
             return
-                gelieerdePersoon.Groep.GebruikersRecht.FirstOrDefault(
-                    gr => gr.Gav.Persoon.Any(p => p.ID == gelieerdePersoon.Persoon.ID));
+                gelieerdePersoon.Groep.GebruikersRechtV2.FirstOrDefault(
+                    gr => gr.Persoon.ID == gelieerdePersoon.Persoon.ID);
         }
     }
 }

@@ -2,6 +2,7 @@
  * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,11 +93,14 @@ namespace Chiro.Gap.Services
         /// <param name="groepenManager">Logica m.b.t. groepen</param>
         /// <param name="ledenManager">Logica m.b.t. leden</param>
         /// <param name="groepsWerkJarenManager">Logica m.b.t. groepswerkjaren</param>
+        /// <param name="authenticatieManager">Logica m.b.t. authenticatie</param>
         /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
         /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         /// <param name="adressenSync">Voor synchronisatie van adressen naar Kipadmin</param>
         /// <param name="ledenSync">Voor synchronisatie lidgegevens naar Kipadmin</param>
-        public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
+        public GelieerdePersonenService(
+            IRepositoryProvider repositoryProvider, 
+            IAutorisatieManager autorisatieMgr,
             ICommunicatieVormenManager communicatieVormenMgr,
             IGebruikersRechtenManager gebruikersRechtenMgr,
             IGelieerdePersonenManager gelieerdePersonenMgr,
@@ -105,10 +109,11 @@ namespace Chiro.Gap.Services
             IGroepenManager groepenManager,
             ILedenManager ledenManager,
             IGroepsWerkJarenManager groepsWerkJarenManager,
+            IAuthenticatieManager authenticatieManager,
             ICommunicatieSync communicatieSync,
             IPersonenSync personenSync,
             IAdressenSync adressenSync,
-            ILedenSync ledenSync): base(ledenManager, groepsWerkJarenManager)
+            ILedenSync ledenSync): base(ledenManager, groepsWerkJarenManager, authenticatieManager)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -351,24 +356,17 @@ namespace Chiro.Gap.Services
 
             var result = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gelieerdePersoon);
 
-            // Gebruikersrechten kunnen nog niet automatisch gemapt worden.
-
-            // Als er gebruikersrechten zijn op de eigen groep, dan mappen we die gebruikersrechten naar 
-            // GebruikersInfo
+            // Gebruikersrechten worden nog niet automatisch gemapt. Dat is een TODO.
+            // GebruikersRechtGet levert ook vervallen gebruikersrechten op, of gebruikersrechten
+            // zonder permissies. Dat gaat de manier zijn om te zien of iemand een AD-account
+            // heeft.
 
             var gebruikersRecht = _gebruikersRechtenMgr.GebruikersRechtGet(gelieerdePersoon);
 
             if (gebruikersRecht != null)
             {
-                result.GebruikersInfo = Mapper.Map<Poco.Model.GebruikersRecht, GebruikersInfo>(gebruikersRecht);
+                result.GebruikersInfo = Mapper.Map<Poco.Model.GebruikersRechtV2, GebruikersInfo>(gebruikersRecht);
             }
-            else if (gelieerdePersoon.Persoon.Gav.Any())
-            {
-                // Als er geen gebruikersrecht is op eigen groep, maar wel een gebruiker, dan mappen we de gebruiker
-                // naar GebruikersInfo
-                result.GebruikersInfo = Mapper.Map<Gav, GebruikersInfo>(gelieerdePersoon.Persoon.Gav.FirstOrDefault());
-            }
-
             return result;
         }
 
