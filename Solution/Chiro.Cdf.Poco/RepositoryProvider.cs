@@ -17,9 +17,6 @@
  */
 ﻿using System;
 
-using Chiro.Cdf.Ioc;
-
-
 namespace Chiro.Cdf.Poco
 {
     /// <summary>
@@ -50,5 +47,36 @@ namespace Chiro.Cdf.Poco
         {
             return new Repository<TEntity>(_context);
         }
+
+        #region Disposable administratie
+
+        private bool disposed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    //Debug.WriteLine("Disposing context {0}", _context.GetHashCode());
+                    _context.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
+        ~RepositoryProvider()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }

@@ -15,7 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿namespace Chiro.Cdf.Poco
+﻿using System;
+namespace Chiro.Cdf.Poco
 {
     /// <summary>
     /// Een repository provider levert eender welke repository af, en de
@@ -27,7 +28,7 @@
     /// nergens anders. Op die manier vermijden we dat er verschillende contexten
     /// in elkaars weg gaan lopen.
     /// </remarks>
-    public interface IRepositoryProvider
+    public interface IRepositoryProvider: IDisposable
     {
         /// <summary>
         /// Creeert een repository voor entiteiten van type <typeparamref name="TEntity"/>.

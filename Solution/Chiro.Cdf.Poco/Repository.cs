@@ -144,37 +144,5 @@ namespace Chiro.Cdf.Poco
         {
             this.Context.SaveChanges();
         }
-
-        #region Disposable etc
-
-        private bool disposed;
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    // Dispose managed resources.
-                    //Debug.WriteLine("Disposing context {0}", _context.GetHashCode());
-                   this.Context.Dispose();
-                }
-                disposed = true;
-            }
-        }
-
-        ~Repository()
-        {
-            Dispose(false);
-        }
-
-        #endregion
-
     }
 }

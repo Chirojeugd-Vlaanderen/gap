@@ -12,6 +12,7 @@ namespace Chiro.Gap.UpdateApi.Workers
 {
     public class PersoonUpdater : IPersoonUpdater
     {
+        private readonly IRepositoryProvider _repositoryProvider;
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<Persoon> _personenRepo;
         private readonly IRepository<Lid> _ledenRepo;
@@ -25,6 +26,7 @@ namespace Chiro.Gap.UpdateApi.Workers
 
         public PersoonUpdater(IRepositoryProvider repositoryProvider)
         {
+            _repositoryProvider = repositoryProvider;
             // De repositoryprovider maakt een context, en die is disposable. De context
             // wordt gedeeld door alle repositories die de repositoryprovider oplevert.
             // Als een repository wordt gedisposet, dan disposet die ook de context, als
@@ -64,19 +66,9 @@ namespace Chiro.Gap.UpdateApi.Workers
             {
                 if (disposing)
                 {
-                    // Dispose de repositories. Van zodra er 1 gedisposet is, is ook de
-                    // context weg. En dat is waar het om gaat. Maar we disposen ze allemaal,
-                    // dat ziet er wat properder uit.
+                    // Dispose managed resources.
+                    _repositoryProvider.Dispose();
 
-                    _personenRepo.Dispose();
-                    _groepenRepo.Dispose();
-                    _ledenRepo.Dispose();
-                    _communicatieVormenRepo.Dispose();
-                    _deelnemersRepo.Dispose();
-                    _gelieerdePersonenRepo.Dispose();
-                    _persoonsAdressenRepo.Dispose();
-                    _persoonsVerzekeringenRepo.Dispose();
-                    _gebruikersRechtenRepo.Dispose();
                 }
                 disposed = true;
             }

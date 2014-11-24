@@ -59,10 +59,7 @@ namespace Chiro.Gap.Services
             {
                 if (disposing)
                 {
-                    _rechtenRepo.Dispose();
-                    _groepenRepo.Dispose();
-                    _gelieerdePersonenRepo.Dispose();
-                    _gavRepo.Dispose();
+                    _repositoryProvider.Dispose();
                 }
                 disposed = true;
             }
@@ -77,6 +74,7 @@ namespace Chiro.Gap.Services
 
 
         // Repositories, verantwoordelijk voor data access.
+        private readonly IRepositoryProvider _repositoryProvider;
         private readonly IRepository<Gav> _rechtenRepo;
         private readonly IRepository<Groep> _groepenRepo;
         private readonly IRepository<GelieerdePersoon> _gelieerdePersonenRepo;
@@ -105,8 +103,9 @@ namespace Chiro.Gap.Services
                                  IGelieerdePersonenManager gelieerdePersonenManager,
                                  IRepositoryProvider repositoryProvider)
         {
-            _rechtenRepo = repositoryProvider.RepositoryGet<Gav>();
+            _repositoryProvider = repositoryProvider;
 
+            _rechtenRepo = repositoryProvider.RepositoryGet<Gav>();
             _groepenRepo = repositoryProvider.RepositoryGet<Groep>();
             _gelieerdePersonenRepo = repositoryProvider.RepositoryGet<GelieerdePersoon>();
             _gavRepo = repositoryProvider.RepositoryGet<Gav>();
