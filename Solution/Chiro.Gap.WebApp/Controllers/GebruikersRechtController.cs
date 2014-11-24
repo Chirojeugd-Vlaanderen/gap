@@ -46,7 +46,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult AanGpToekennen(int groepID, int id)
         {
             ServiceHelper.CallService<IGebruikersService>(
-                svc => svc.RechtenToekennen(id, new[] {new GebruikersRecht {GroepID = groepID, Rol = Rol.Gav}}));
+                svc => svc.RechtenToekennen(id, new[] {new GebruikersRecht {GroepID = groepID, Permissies = Permissies.Gav}}));
             return RedirectToAction("Bewerken", new { Controller = "Personen", id });
         }
 
@@ -92,7 +92,7 @@ namespace Chiro.Gap.WebApp.Controllers
             ServiceHelper.CallService<IGebruikersService>(
                 gs =>
                 gs.RechtenToekennenGebruiker(gebruikersNaam,
-                                             new[] {new GebruikersRecht {GroepID = groepID, Rol = Rol.Gav}}));
+                                             new[] {new GebruikersRecht {GroepID = groepID, Permissies = Permissies.Gav}}));
 
             return RedirectToAction("Index");
         }

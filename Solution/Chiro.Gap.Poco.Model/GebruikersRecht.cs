@@ -47,9 +47,9 @@ namespace Chiro.Gap.Poco.Model
         /// <summary>
         /// Rol van de gebruiker. Op dit moment ondersteunen we enkel GAV (zie #844)
         /// </summary>
-        public Rol Rol
+        public Permissies Permissies
         {
-            get { return VervalDatum == null || VervalDatum < DateTime.Now ? Rol.Geen : Rol.Gav; }
+            get { return VervalDatum == null || VervalDatum < DateTime.Now ? Permissies.Geen : Permissies.Gav; }
         }
     }
     

@@ -33,7 +33,10 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         [DataMember]
         public int GroepID { get; set; }
 
+        /// <summary>
+        /// Permissies op de groep
+        /// </summary>
         [DataMember]
-        public Rol Rol { get; set; }
+        public Permissies Permissies { get; set; }
     }
 }

@@ -297,15 +297,62 @@ namespace Chiro.Gap.Domain
     }
 
     /// <summary>
-    /// Mogelijke rollen van een gebruiker. Deze zijn altijd van toepassing op een groep.
-    /// (en dus niet globaal)
+    /// Mogelijke permissies van een gebruiker. Deze zijn - met uitzondering van God - 
+    /// van toepassing op een groep. (en dus niet globaal)
+    /// 
+    /// De laatste 8 bits zijn voor leesrechten, de eerste 8 bits voor schrijfrechten.
+    /// Je kunt ook geen schrijfrechten hebben op iets, zonder dat je het mag lezen.
+    /// (ik doe maar iets).
     /// </summary>
     [DataContract]
     [Flags]
-    public enum Rol
+    public enum Permissies
     {
-        [EnumMember] Geen = 0x00,        // Geen rechten
-        [EnumMember] Gav = 0x80          // GAV (voorlopig zijn de mogelijkheden beperkt)
+        /// <summary>
+        /// Geen rechten
+        /// </summary>
+        [EnumMember] Geen = 0x00,
+        /// <summary>
+        /// Leesrechten op groepsnaam, groepsadres, afdelingsverdeling
+        /// </summary>
+        [EnumMember] GroepsInfoLezen = 0x01,
+        /// <summary>
+        /// Leesrechten op eigen gegevens
+        /// </summary>
+        [EnumMember] EigenInfoLezen = 0x02,
+        /// <summary>
+        /// Leesrechten personen in je eigen afdeling(en)
+        /// </summary>
+        [EnumMember] AfdelingLezen = 0x04,
+
+        // Ik laat nog wat mogelijkheden over om achteraf extra rechten te kunnen
+        // toevoegen.
+
+        /// <summary>
+        /// Leesrechten op alle gegevens voor jouw groep
+        /// </summary>
+        [EnumMember] AllesLezen = 0x7F,
+
+        /// <summary>
+        /// Bewerken groepsnaam, groepsadres, afdelingsverdeling
+        /// </summary>
+        [EnumMember] GroepsInfoBewerken = 0x0101,
+        /// <summary>
+        /// Schrijfrechten eigen gegevens
+        /// </summary>
+        [EnumMember] EigenInfoBewerken = 0x0202,
+        /// <summary>
+        /// Schrijfrechten op personen in jouw afdeling
+        /// </summary>
+        [EnumMember] AfdelingBewerken = 0x0404,
+        /// <summary>
+        /// Alle lees- en schrijfrechten voor jouw groep
+        /// </summary>
+        [EnumMember] Gav = 0x7F7F,
+        /// <summary>
+        /// Specifieke rechten voor synchronisatie CRM-GAP.
+        /// </summary>
+        [EnumMember] SuperGav = 0x8080,
     }
 
     public static class Nieuwebackend

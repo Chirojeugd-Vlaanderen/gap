@@ -548,7 +548,7 @@ namespace Chiro.Gap.Services
             Mapper.CreateMap<Gav, GebruikersInfo>()
                 .ForMember(dst => dst.GavLogin, opt => opt.MapFrom(src => src.Login))
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => false))
-                .ForMember(dst => dst.Rol, opt => opt.MapFrom(src => Rol.Geen))
+                .ForMember(dst => dst.Permissies, opt => opt.MapFrom(src => Permissies.Geen))
                 .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => DateTime.Now.AddDays(-1)));
 
             #region mapping van datacontracts naar entity's

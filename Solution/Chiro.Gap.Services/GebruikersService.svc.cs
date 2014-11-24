@@ -229,12 +229,12 @@ namespace Chiro.Gap.Services
 
             // Momenteel ondersteunen we enkel GAV-rollen
             var nietOndersteund = (from gr in gebruikersRechten
-                                   where gr.Rol != Rol.Gav
+                                   where gr.Permissies != Permissies.Gav
                                    select gr).FirstOrDefault();
             if (nietOndersteund != null)
             {
                 throw new NotSupportedException(String.Format(Properties.Resources.RolNietOndersteund,
-                                                              nietOndersteund.Rol));
+                                                              nietOndersteund.Permissies));
             }
 
             foreach (var groep in gebruikersRechten.Select(recht => _groepenRepo.ByID(recht.GroepID)))
