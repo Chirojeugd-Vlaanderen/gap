@@ -1,4 +1,22 @@
-﻿using System;
+﻿/*
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * top-level directory of this distribution, and at
+ * https://develop.chiro.be/gap/wiki/copyright
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System;
 using System.Collections.Generic;
 using Chiro.Gap.Poco.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -73,27 +91,26 @@ namespace Chiro.Gap.Workers.Test
         {
             // ARRANGE
 
-            var gav = new Gav();
             var gelieerdePersoon = new GelieerdePersoon
             {
                 ID = 1,
                 Groep = new ChiroGroep { ID = 3 },
-                Persoon = new Persoon { ID = 2, Gav = new List<Gav> { gav } }
+                Persoon = new Persoon { ID = 2 }
             };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
-            gav.Persoon.Add(gelieerdePersoon.Persoon);
-            var gebruikersrecht = new GebruikersRecht
+
+            var gebruikersrecht = new GebruikersRechtV2
                                   {
-                                      Gav = gav,
+                                      Persoon = gelieerdePersoon.Persoon,
                                       Groep = gelieerdePersoon.Groep,
                                       VervalDatum = DateTime.Now.AddDays(-1)    // gisteren vervallen
                                   };
-            gav.GebruikersRecht.Add(gebruikersrecht);
+            gebruikersrecht.Persoon.GebruikersRechtV2.Add(gebruikersrecht);
 
             // ACT
 
             var target = new GebruikersRechtenManager();
-            var actual = target.ToekennenOfVerlengen(gav, gelieerdePersoon.Groep);
+            var actual = target.ToekennenOfVerlengen(gelieerdePersoon.Persoon, gelieerdePersoon.Groep);
 
             // ASSERT
 

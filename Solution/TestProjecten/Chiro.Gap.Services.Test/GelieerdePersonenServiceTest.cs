@@ -38,8 +38,6 @@ using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Services;
 using Chiro.Gap.TestAttributes;
 
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
-
 namespace Chiro.Gap.Services.Test
 {
     /// <summary>
@@ -375,16 +373,7 @@ namespace Chiro.Gap.Services.Test
                                                new Persoon
                                                    {
                                                        GeboorteDatum = someGeboorteDatum,
-                                                       Gav =
-                                                           new[]
-                                                               {
-                                                                   new Gav
-                                                                       {
-                                                                           Login
-                                                                               =
-                                                                               someUsername
-                                                                       }
-                                                               }
+                                                       AdNummer = 12345
                                                    },
                                            Groep = new ChiroGroep
                                                        {
@@ -1003,24 +992,15 @@ namespace Chiro.Gap.Services.Test
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             groepsWerkJaar.Groep = gelieerdePersoon.Groep;
 
-            var gebruikersRecht = new GebruikersRecht
+            var gebruikersRecht = new GebruikersRechtV2
                                       {
                                           Groep = gelieerdePersoon.Groep,
                                           VervalDatum =
-                                              DateTime.Today.AddMonths(1)
+                                              DateTime.Today.AddMonths(1),
+                                          Persoon = gelieerdePersoon.Persoon
                                       };
-            gelieerdePersoon.Groep.GebruikersRecht.Add(gebruikersRecht);
-            var gav = new Gav
-                          {
-                              GebruikersRecht =
-                                  new List<GebruikersRecht>
-                                      {
-                                          gebruikersRecht
-                                      }
-                          };
-            gav.Persoon.Add(gelieerdePersoon.Persoon);
-            gelieerdePersoon.Persoon.Gav.Add(gav);
-            gebruikersRecht.Gav = gav;
+            gelieerdePersoon.Groep.GebruikersRechtV2.Add(gebruikersRecht);
+            gelieerdePersoon.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())

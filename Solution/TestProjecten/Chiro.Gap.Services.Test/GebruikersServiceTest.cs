@@ -110,7 +110,7 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
-            repositoryProviderMock.Setup(src => src.RepositoryGet<Gav>()).Returns(new DummyRepo<Gav>(new List<Gav>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GebruikersRechtV2>()).Returns(new DummyRepo<GebruikersRechtV2>(new List<GebruikersRechtV2>()));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
@@ -121,7 +121,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            Assert.IsTrue(gelieerdePersoon.Persoon.Gav.Any());
+            Assert.IsTrue(gelieerdePersoon.Persoon.GebruikersRechtV2.Any());
         }
 
         /// <summary>
@@ -132,23 +132,24 @@ namespace Chiro.Gap.Services.Test
         {
             // ARRANGE
 
-            var gav = new Gav();
+            var gr = new GebruikersRechtV2();
             var gelieerdePersoon = new GelieerdePersoon
                                    {
                                        ID = 1,
                                        Groep = new ChiroGroep {ID = 3},
-                                       Persoon = new Persoon {ID = 2, Gav = new List<Gav> {gav}}
+                                       Persoon = new Persoon {ID = 2, GebruikersRechtV2 = new List<GebruikersRechtV2> {gr}}
                                    };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
-            gav.Persoon.Add(gelieerdePersoon.Persoon);
-            var gebruikersrecht = new GebruikersRecht {Gav = gav, Groep = gelieerdePersoon.Groep};
-            gav.GebruikersRecht.Add(gebruikersrecht);
+
+            gr.Groep = gelieerdePersoon.Groep;
+            gr.Persoon = gelieerdePersoon.Persoon;
+            gelieerdePersoon.Persoon.GebruikersRechtV2.Add(gr);
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                 .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
-            repositoryProviderMock.Setup(src => src.RepositoryGet<Gav>())
-                .Returns(new DummyRepo<Gav>(new List<Gav> {gav}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GebruikersRechtV2>())
+                .Returns(new DummyRepo<GebruikersRechtV2>(new List<GebruikersRechtV2> { gr }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
@@ -158,7 +159,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            Assert.IsTrue(gebruikersrecht.VervalDatum <= DateTime.Now);
+            Assert.IsTrue(gr.VervalDatum <= DateTime.Now);
             
         }
     }

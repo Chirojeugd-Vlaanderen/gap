@@ -35,8 +35,6 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WorkerInterfaces;
 
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
-
 ﻿
 namespace Chiro.Gap.Services.Test
 {
@@ -509,15 +507,15 @@ namespace Chiro.Gap.Services.Test
             // ARRANGE
 
             // testgroep; toegang met mijnLogin net vervallen.
-            const string mijnLogin = "MijnLogin";
+            const int mijnAdNummer = 12345;
 
             Groep groep = new ChiroGroep
             {
-                GebruikersRecht = new[]
+                GebruikersRechtV2 = new[]
                                                         {
-                                                            new GebruikersRecht
+                                                            new GebruikersRechtV2
                                                                 {
-                                                                    Gav = new Gav {Login = "MijnLogin"},
+                                                                    Persoon = new Persoon {AdNummer = mijnAdNummer},
                                                                     VervalDatum = DateTime.Today // net vervallen
                                                                 }
                                                         }
@@ -525,7 +523,7 @@ namespace Chiro.Gap.Services.Test
 
             // Zet mock op voor het opleveren van gebruikersnaam, en voor data-access groepen
             var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
-            authenticatieManagerMock.Setup(src => src.GebruikersNaamGet()).Returns(mijnLogin);
+            authenticatieManagerMock.Setup(src => src.AdNummerGet()).Returns(mijnAdNummer);
             Factory.InstantieRegistreren(authenticatieManagerMock.Object);
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();

@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,16 +95,16 @@ namespace Chiro.Gap.Workers.Test
         {
             // ARRANGE
 
-            // testgroep; toegang met mijnLogin net vervallen.
-            const string mijnLogin = "MijnLogin";
+            // testgroep; toegang voor deze persoon net vervallen.
+            const int mijnAdNummer = 12345;
 
             Groep groep = new ChiroGroep
             {
-                GebruikersRecht = new[]
+                GebruikersRechtV2 = new[]
                                                         {
-                                                            new GebruikersRecht
+                                                            new GebruikersRechtV2
                                                                 {
-                                                                    Gav = new Gav {Login = "MijnLogin"},
+                                                                    Persoon = new Persoon {AdNummer = mijnAdNummer},
                                                                     VervalDatum = DateTime.Today // net vervallen
                                                                 }
                                                         }
@@ -111,7 +112,7 @@ namespace Chiro.Gap.Workers.Test
 
             // Zet mock op voor het opleveren van gebruikersnaam
             var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
-            authenticatieManagerMock.Setup(src => src.GebruikersNaamGet()).Returns(mijnLogin);
+            authenticatieManagerMock.Setup(src => src.AdNummerGet()).Returns(mijnAdNummer);
             Factory.InstantieRegistreren(authenticatieManagerMock.Object);
 
 
@@ -137,15 +138,15 @@ namespace Chiro.Gap.Workers.Test
             // testgroep met gelieerde persoon; toegang met mijnLogin net vervallen.
             const string mijnLogin = "MijnLogin";
 
-            var gp = new GelieerdePersoon();
+            var gp = new GelieerdePersoon { Persoon = new Persoon() };
 
             var groep = new ChiroGroep
                               {
-                                  GebruikersRecht = new[]
+                                  GebruikersRechtV2 = new[]
                                                         {
-                                                            new GebruikersRecht
+                                                            new GebruikersRechtV2
                                                                 {
-                                                                    Gav = new Gav {Login = "MijnLogin"},
+                                                                    Persoon = gp.Persoon,
                                                                     VervalDatum = DateTime.Today // net vervallen
                                                                 }
                                                         },

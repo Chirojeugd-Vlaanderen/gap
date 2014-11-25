@@ -38,8 +38,6 @@ using Chiro.Gap.TestAttributes;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
 
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
-
 namespace Chiro.Gap.Services.Test
 {
 
@@ -210,13 +208,10 @@ namespace Chiro.Gap.Services.Test
 
             var authenticatieMgrMock = new Mock<IAuthenticatieManager>();
             authenticatieMgrMock.Setup(src => src.GebruikersNaamGet()).Returns("testGebruiker");
-            groep.GebruikersRecht.Add(new GebruikersRecht
+            groep.GebruikersRechtV2.Add(new GebruikersRechtV2
                                           {
                                               Groep = groep,
-                                              Gav = new Gav
-                                                        {
-                                                            Login = "testGebruiker"
-                                                        }
+                                              Persoon = new Persoon { AdNummer = 12345 }
                                           });
 
             Factory.InstantieRegistreren<IAutorisatieManager>(new AutorisatieManager(authenticatieMgrMock.Object));
