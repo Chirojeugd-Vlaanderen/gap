@@ -15,27 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-﻿using Chiro.Gap.Dummies;
-using Chiro.Gap.Poco.Model;
-﻿using Chiro.Gap.ServiceContracts.FaultContracts;
-﻿using Chiro.Gap.SyncInterfaces;
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.ServiceContracts;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.ServiceContracts.Mappers;
-﻿using System.Security.Principal;
+using System.Security.Principal;
 using System.Threading;
-using Chiro.Gap.ServiceContracts.DataContracts;
-using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+﻿
+using Chiro.Cdf.Ioc;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
-using Moq;
-﻿using Chiro.Gap.WorkerInterfaces;
-﻿using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
+using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.ServiceContracts.FaultContracts;
+﻿using Chiro.Gap.SyncInterfaces;
+﻿using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.WorkerInterfaces;
 
+using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
+
+﻿
 namespace Chiro.Gap.Services.Test
 {
     /// <summary>
@@ -81,7 +83,6 @@ namespace Chiro.Gap.Services.Test
         public static void InitialiseerTests(TestContext tc)
         {
             Factory.ContainerInit();
-            MappingHelper.MappingsDefinieren();
         }
 
         [ClassCleanup]

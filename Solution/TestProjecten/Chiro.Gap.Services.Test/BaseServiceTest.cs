@@ -1,5 +1,5 @@
-/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+﻿/*
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -17,119 +17,118 @@
  */
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoMapper;
 
-using System.Collections.Generic;
-using System.Linq;
-﻿using Chiro.Gap.Domain;
-﻿using Chiro.Gap.Dummies;
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Domain;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Chiro.Cdf.Ioc;		// is nodig voor dummydata in gap.dummies.  dummydata zou beter ergens anders zitten.
-using Chiro.Gap.ServiceContracts.Mappers;
-
-namespace Chiro.Gap.ServiceContracts.Test
+namespace Chiro.Gap.Services.Test
 {
-	/// <summary>
-	/// Summary description for UnitTest1
-	/// </summary>
-	[TestClass]
-	public class MapperTest
-	{
-		[ClassInitialize]
-		public static void Init(TestContext ctx)
-		{
-			Factory.ContainerInit();
-			MappingHelper.MappingsDefinieren();
-		}
+    /// <summary>
+    /// Unit tests voor de BaseService.
+    /// 
+    /// In praktijk: unit tests voor de mappings :-)
+    /// </summary>
+    [TestClass]
+    public class BaseServiceTest
+    {
+        [ClassInitialize]
+        public static void Init(TestContext ctx)
+        {
+            Factory.ContainerInit();
+            // Een BaseService insantieren definieert de mappings.
+            var dummy = Factory.Maak<BaseService>();
+        }
 
-		/// <summary>
-		/// Test die probeert de leden uit huidig groepswerkjaar te mappen op een lijst van LidInfo.
-		/// </summary>
-		[TestMethod]
-		public void MapLijstLeden()
-		{
+        /// <summary>
+        /// Test die probeert de leden uit huidig groepswerkjaar te mappen op een lijst van LidInfo.
+        /// </summary>
+        [TestMethod]
+        public void MapLijstLeden()
+        {
             var afdelingsJaar = new AfdelingsJaar { Afdeling = new Afdeling() };
             var huidigGwj = new GroepsWerkJaar { Lid = new List<Lid> { new Kind { AfdelingsJaar = afdelingsJaar }, new Kind { AfdelingsJaar = afdelingsJaar } } };
-			var lidInfoLijst = Mapper.Map<IEnumerable<Lid>, IList<LidInfo>>(huidigGwj.Lid);
+            var lidInfoLijst = Mapper.Map<IEnumerable<Lid>, IList<LidInfo>>(huidigGwj.Lid);
 
-			Assert.IsTrue(lidInfoLijst.Count > 0);
-		}
+            Assert.IsTrue(lidInfoLijst.Count > 0);
+        }
 
-		/// <summary>
-		/// Test voor de mapping van een groep naar GroepInfo
-		/// </summary>
-		[TestMethod]
-		public void MapGroepGroepInfo()
-		{
-		    var groep = new ChiroGroep {Code = "tst/0001"};
-			GroepInfo gi = Mapper.Map<Groep, GroepInfo>(groep);
+        /// <summary>
+        /// Test voor de mapping van een groep naar GroepInfo
+        /// </summary>
+        [TestMethod]
+        public void MapGroepGroepInfo()
+        {
+            var groep = new ChiroGroep { Code = "tst/0001" };
+            GroepInfo gi = Mapper.Map<Groep, GroepInfo>(groep);
 
-			Assert.IsTrue(gi.StamNummer != string.Empty);
-		}
+            Assert.IsTrue(gi.StamNummer != string.Empty);
+        }
 
-		/// <summary>
-		/// Controleert mapping Functie -> FunctieDetail
-		/// </summary>
-		[TestMethod]
-		public void MapFunctieInfo()
-		{
-		    var functie = new Functie {Code = "BLA"};
+        /// <summary>
+        /// Controleert mapping Functie -> FunctieDetail
+        /// </summary>
+        [TestMethod]
+        public void MapFunctieInfo()
+        {
+            var functie = new Functie { Code = "BLA" };
 
-			FunctieDetail fi = Mapper.Map<Functie, FunctieDetail>(functie);
-			Assert.AreEqual(fi.Code, functie.Code);
-		}
+            FunctieDetail fi = Mapper.Map<Functie, FunctieDetail>(functie);
+            Assert.AreEqual(fi.Code, functie.Code);
+        }
 
-		/// <summary>
-		/// Controleert of functies goed mee gemapt worden met lidinfo.
-		/// </summary>
-		[TestMethod]
-		public void MapLidInfoFuncties()
-		{
-		    var leiderJos = new Leiding {Functie = new List<Functie> {new Functie()}};
-			LidInfo li = Mapper.Map<Lid, LidInfo>(leiderJos);
-			Assert.IsTrue(li.Functies.Any());
-		}
+        /// <summary>
+        /// Controleert of functies goed mee gemapt worden met lidinfo.
+        /// </summary>
+        [TestMethod]
+        public void MapLidInfoFuncties()
+        {
+            var leiderJos = new Leiding { Functie = new List<Functie> { new Functie() } };
+            LidInfo li = Mapper.Map<Lid, LidInfo>(leiderJos);
+            Assert.IsTrue(li.Functies.Any());
+        }
 
-	    /// <summary>
-	    /// Controleert of lid/leiding goed wordt gemapt van Deelnemer naar DeelnemerDetail.
-	    /// </summary>
-	    [TestMethod]
-	    public void MapDeelnemerUitstapDitJaar()
-	    {
+        /// <summary>
+        /// Controleert of lid/leiding goed wordt gemapt van Deelnemer naar DeelnemerDetail.
+        /// </summary>
+        [TestMethod]
+        public void MapDeelnemerUitstapDitJaar()
+        {
             // ARRANGE
 
-	        var groep = new ChiroGroep();
-	        var vorigJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2012};
-	        var ditJaar = new GroepsWerkJaar {Groep = groep, WerkJaar = 2013};
-	        var gelieerdePersoon = new GelieerdePersoon {Groep = groep, Persoon = new Persoon()};
+            var groep = new ChiroGroep();
+            var vorigJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2012 };
+            var ditJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2013 };
+            var gelieerdePersoon = new GelieerdePersoon { Groep = groep, Persoon = new Persoon() };
             var lidVorigJaar = new Kind
             {
                 GroepsWerkJaar = vorigJaar,
                 GelieerdePersoon = gelieerdePersoon,
                 AfdelingsJaar = new AfdelingsJaar { Afdeling = new Afdeling() }
             };
-	        var lidDitJaar = new Leiding {GroepsWerkJaar = ditJaar, GelieerdePersoon = gelieerdePersoon};
-	        gelieerdePersoon.Lid = new List<Lid> {lidVorigJaar, lidDitJaar};
+            var lidDitJaar = new Leiding { GroepsWerkJaar = ditJaar, GelieerdePersoon = gelieerdePersoon };
+            gelieerdePersoon.Lid = new List<Lid> { lidVorigJaar, lidDitJaar };
 
-	        var uitstap = new Uitstap
-	                      {
-                              DatumVan = new DateTime(ditJaar.WerkJaar + 1, 07, 1),
-                              DatumTot = new DateTime(ditJaar.WerkJaar + 1, 07, 10)
-	                      };
-	        var deelnemer = new Deelnemer {Uitstap = uitstap, GelieerdePersoon = gelieerdePersoon, IsLogistieker = false};
+            var uitstap = new Uitstap
+            {
+                DatumVan = new DateTime(ditJaar.WerkJaar + 1, 07, 1),
+                DatumTot = new DateTime(ditJaar.WerkJaar + 1, 07, 10)
+            };
+            var deelnemer = new Deelnemer { Uitstap = uitstap, GelieerdePersoon = gelieerdePersoon, IsLogistieker = false };
 
             // ACT
 
-	        var result = Mapper.Map<Deelnemer, DeelnemerDetail>(deelnemer);
+            var result = Mapper.Map<Deelnemer, DeelnemerDetail>(deelnemer);
 
             // ASSERT
 
             Assert.AreEqual(DeelnemerType.Begeleiding, result.Type);
-	    }
+        }
 
         /// <summary>
         /// Controleert of lid/leiding goed wordt gemapt van Deelnemer naar DeelnemerDetail.
@@ -180,11 +179,11 @@ namespace Chiro.Gap.ServiceContracts.Test
             var vorigJaar = new GroepsWerkJaar { Groep = groep, WerkJaar = 2012 };
             var gelieerdePersoon = new GelieerdePersoon { Groep = groep, Persoon = new Persoon() };
             var lidVorigJaar = new Kind
-                               {
-                                   GroepsWerkJaar = vorigJaar,
-                                   GelieerdePersoon = gelieerdePersoon,
-                                   AfdelingsJaar = new AfdelingsJaar {Afdeling = new Afdeling()}
-                               };
+            {
+                GroepsWerkJaar = vorigJaar,
+                GelieerdePersoon = gelieerdePersoon,
+                AfdelingsJaar = new AfdelingsJaar { Afdeling = new Afdeling() }
+            };
             gelieerdePersoon.Lid = new List<Lid> { lidVorigJaar };
 
             var uitstap = new Uitstap
@@ -220,13 +219,13 @@ namespace Chiro.Gap.ServiceContracts.Test
             {
                 GroepsWerkJaar = vorigJaar,
                 GelieerdePersoon = gelieerdePersoon,
-                AfdelingsJaar = new AfdelingsJaar {Afdeling = new Afdeling {ID = 1}}
+                AfdelingsJaar = new AfdelingsJaar { Afdeling = new Afdeling { ID = 1 } }
             };
             var lidDitJaar = new Kind
             {
                 GroepsWerkJaar = ditJaar,
                 GelieerdePersoon = gelieerdePersoon,
-                AfdelingsJaar = new AfdelingsJaar {Afdeling = new Afdeling {ID = 2}}
+                AfdelingsJaar = new AfdelingsJaar { Afdeling = new Afdeling { ID = 2 } }
             };
             gelieerdePersoon.Lid = new List<Lid> { lidVorigJaar, lidDitJaar };
 
@@ -245,6 +244,5 @@ namespace Chiro.Gap.ServiceContracts.Test
 
             Assert.AreEqual(2, result.Afdelingen.First().ID);
         }
-
-	}
+    }
 }

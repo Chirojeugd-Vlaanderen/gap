@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -20,7 +20,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.ServiceContracts.Mappers;
 
 namespace Chiro.Gap.Services
 {
@@ -37,8 +36,11 @@ namespace Chiro.Gap.Services
         protected void Application_Start(object sender, EventArgs e)
         {
             Factory.ContainerInit();
-            MappingHelper.MappingsDefinieren(); // mappings voor servicecontracts
             Sync.MappingHelper.MappingsDefinieren(); // mappings voor sync
+
+            // De mappings voor de servicecontracts worden hier niet meer gedefinieerd,
+            // maar expliciet in de constructor van de services. Op die manier konden
+            // de mappers gebruik maken van geinjecteerde managers. (Zie #3150)
         }
 
         /// <summary>

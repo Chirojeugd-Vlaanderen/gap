@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -15,35 +15,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// <summary>
-//   Dit is een testclass voor Unit Tests van GelieerdePersonenServiceTest
-// </summary>
 
 using System;
 using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
 using System.Web.UI.MobileControls;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using Moq;
+
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.ServiceContracts.Mappers;
-using Chiro.Gap.SyncInterfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Moq;
-using System.ServiceModel;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.TestDbInfo;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 using Chiro.Gap.TestAttributes;
+
+using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -77,7 +74,6 @@ namespace Chiro.Gap.Services.Test
         [ClassInitialize]
         static public void MyClassInitialize(TestContext context)
         {
-            MappingHelper.MappingsDefinieren();
         }
 
         /// <summary>

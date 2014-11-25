@@ -44,7 +44,7 @@ namespace Chiro.Gap.Services
     /// <summary>
     /// Service voor operaties op gelieerde personen
     /// </summary>
-    public class GelieerdePersonenService : IGelieerdePersonenService, IDisposable
+    public class GelieerdePersonenService : BaseService, IGelieerdePersonenService, IDisposable
     {
         // Repositories, verantwoordelijk voor data access.
 
@@ -70,7 +70,6 @@ namespace Chiro.Gap.Services
         private readonly IAdressenManager _adressenMgr;
         private readonly IPersonenManager _personenMgr;
         private readonly IGroepenManager _groepenMgr;
-        private readonly ILedenManager _ledenMgr;
 
         // Sync-interfaces
 
@@ -92,6 +91,7 @@ namespace Chiro.Gap.Services
         /// <param name="personenManager">Logica m.b.t. personen (geeuw)</param>
         /// <param name="groepenManager">Logica m.b.t. groepen</param>
         /// <param name="ledenManager">Logica m.b.t. leden</param>
+        /// <param name="groepsWerkJarenManager">Logica m.b.t. groepswerkjaren</param>
         /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
         /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         /// <param name="adressenSync">Voor synchronisatie van adressen naar Kipadmin</param>
@@ -104,10 +104,11 @@ namespace Chiro.Gap.Services
             IPersonenManager personenManager,
             IGroepenManager groepenManager,
             ILedenManager ledenManager,
+            IGroepsWerkJarenManager groepsWerkJarenManager,
             ICommunicatieSync communicatieSync,
             IPersonenSync personenSync,
             IAdressenSync adressenSync,
-            ILedenSync ledenSync)
+            ILedenSync ledenSync): base(ledenManager, groepsWerkJarenManager)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -132,7 +133,6 @@ namespace Chiro.Gap.Services
             _adressenMgr = adressenManager;
             _personenMgr = personenManager;
             _groepenMgr = groepenManager;
-            _ledenMgr = ledenManager;
 
             _communicatieSync = communicatieSync;
             _adressenSync = adressenSync;

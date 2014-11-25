@@ -16,20 +16,20 @@
  * limitations under the License.
  */
 
+using System;
+using System.Collections.Generic;
+using System.ServiceModel;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+
+using Chiro.Cdf.Ioc;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.ServiceModel;
-using Chiro.Cdf.Ioc;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.ServiceContracts.Mappers;
-using Moq;
+
 
 namespace Chiro.Gap.Services.Test
 {
@@ -48,7 +48,6 @@ namespace Chiro.Gap.Services.Test
             // maar blijkbaar is het moeilijk de service te herstarten bij het testen.
             // Vandaar op deze manier:
 
-            MappingHelper.MappingsDefinieren();
             Factory.ContainerInit();
         }
 

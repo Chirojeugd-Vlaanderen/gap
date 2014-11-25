@@ -258,4 +258,7 @@
   <data name="WaaromTelefoonNummer" xml:space="preserve">
     <value>We vragen een telefoonnummer van ieder lid om makkelijk contact te kunnen opnemen bij noodgevallen.</value>
   </data>
+  <data name="NietVanToepassing" xml:space="preserve">
+    <value>n.v.t.</value>
+  </data>
 </root>
