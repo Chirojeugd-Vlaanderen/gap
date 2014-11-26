@@ -125,7 +125,7 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
-        public bool IsGav(GebruikersRecht gelieerdePersoon)
+        public bool IsGav(GebruikersRechtV2 gelieerdePersoon)
         {
             throw new NotImplementedException();
         }
@@ -181,7 +181,7 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <param name="gelieerdePersoonID">The gelieerde persoon ID.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public GebruikersRecht GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
+        public GebruikersRechtV2 GebruikersRechtGelieerdePersoon(int gelieerdePersoonID)
         {
             throw new NotImplementedException();
         }
@@ -193,7 +193,12 @@ namespace Chiro.Gap.UpdateSvc.Service
         /// <param name="gebruikersrecht">The gebruikersrecht.</param>
         /// <returns><c>true</c> if the specified gebruikersrecht is verlengbaar; otherwise, <c>false</c>.</returns>
         /// <remarks></remarks>
-        public bool IsVerlengbaar(GebruikersRecht gebruikersrecht)
+        public bool IsVerlengbaar(GebruikersRechtV2 gebruikersrecht)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGav(Persoon p)
         {
             throw new NotImplementedException();
         }
