@@ -545,17 +545,20 @@ namespace Chiro.Gap.Services
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => GelieerdePersoonIDGet(src)))
                 .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Persoon.ID))
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Persoon.Naam))
-                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam));
+                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
+                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)));
 
-            Mapper.CreateMap<GebruikersRechtV2, GebruikersInfo>();
+            Mapper.CreateMap<GebruikersRechtV2, GebruikersInfo>()
+                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)));
 
             // Een persoon mappen naar GebruikersInfo mapt geen gebruikersrechten, omdat er maar rechten van 1
             // groep gemapt kunnen worden.
             Mapper.CreateMap<Persoon, GebruikersInfo>()
-                .ForMember(dst => dst.GavLogin, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)))
+                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)))
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => false))
                 .ForMember(dst => dst.Permissies, opt => opt.MapFrom(src => Permissies.Geen))
-                .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => DateTime.Now.AddDays(-1)));
+                .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => DateTime.Now.AddDays(-1)))
+                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)));
 
             #region mapping van datacontracts naar entity's
 

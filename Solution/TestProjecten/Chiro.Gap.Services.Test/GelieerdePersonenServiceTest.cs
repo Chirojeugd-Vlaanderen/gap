@@ -406,7 +406,7 @@ namespace Chiro.Gap.Services.Test
 
             // assert
 
-            Assert.AreEqual(someUsername, actual.GebruikersInfo.GavLogin);
+            Assert.AreEqual(someUsername, actual.GebruikersInfo.Login);
         }
 
         ///<summary>

@@ -1277,7 +1277,7 @@ namespace Chiro.Gap.WebApp.Controllers
             string mijnUser = System.Web.HttpContext.Current.User.Identity.Name;
 
             var mijnGav = (from gav in gavs
-                           where String.Compare(gav.GavLogin, mijnUser, StringComparison.OrdinalIgnoreCase) == 0
+                           where String.Compare(gav.Login, mijnUser, StringComparison.OrdinalIgnoreCase) == 0
                            select gav).First();
 
             return RedirectToAction("NieuweCommVorm", new { groepID, gelieerdePersoonID = mijnGav.GelieerdePersoonID });
