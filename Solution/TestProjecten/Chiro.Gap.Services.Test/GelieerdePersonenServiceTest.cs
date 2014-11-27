@@ -2,6 +2,7 @@
  * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +38,7 @@ using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Services;
 using Chiro.Gap.TestAttributes;
+using Chiro.Ad.ServiceContracts;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -361,6 +363,7 @@ namespace Chiro.Gap.Services.Test
             const int someGid = 5;
             const int someGpid = 3;
             const string someUsername = "UserName";
+            const int someAdNummer = 12345;
             DateTime someGeboorteDatum = new DateTime(1977, 03, 08);
             const int someWerkJaar = 2012;
 
@@ -373,7 +376,7 @@ namespace Chiro.Gap.Services.Test
                                                new Persoon
                                                    {
                                                        GeboorteDatum = someGeboorteDatum,
-                                                       AdNummer = 12345
+                                                       AdNummer = someAdNummer
                                                    },
                                            Groep = new ChiroGroep
                                                        {
@@ -389,12 +392,16 @@ namespace Chiro.Gap.Services.Test
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             var communicatieVormenManagerMock = new Mock<ICommunicatieVormenManager>();
+            var adServiceMock = new Mock<IAdService>();
 
             repositoryProviderMock.Setup(mck => mck.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            adServiceMock.Setup(mck => mck.gebruikersNaamOphalen(someAdNummer))
+                .Returns(someUsername);
 
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
             Factory.InstantieRegistreren(communicatieVormenManagerMock.Object);
+            Factory.InstantieRegistreren(adServiceMock.Object);
 
 
             var target = Factory.Maak<GelieerdePersonenService>();
