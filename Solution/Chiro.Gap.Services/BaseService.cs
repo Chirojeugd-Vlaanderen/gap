@@ -329,10 +329,7 @@ namespace Chiro.Gap.Services
                     opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.PersoonsAdres))
                 .ForMember(
                     dst => dst.CommunicatieInfo,
-                    opt => opt.MapFrom(src => src.GelieerdePersoon.Communicatie))
-                .ForMember(
-                    dst => dst.GebruikersInfo,
-                    opt => opt.Ignore()); // niet relevant, denk ik :-P
+                    opt => opt.MapFrom(src => src.GelieerdePersoon.Communicatie));
 
             // De bedoeling was om zo veel mogelijk automatisch te kunnen mappen.  Vandaar ook properties
             // zoals StraatNaamNaam en WoonPlaatsNaam.  Maar met de invoering van de buitenlandse adressen,
@@ -500,10 +497,35 @@ namespace Chiro.Gap.Services
                 .ForMember(dst => dst.ID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Naam));
 
-
-            // Let op: Gebruikersrechten worden niet automatisch gemapt, want dat staat
-            // nog niet helemaal op punt.
             Mapper.CreateMap<GelieerdePersoon, PersoonLidInfo>()
+                .ForMember(
+                    dst => dst.PersoonDetail,
+                    opt => opt.MapFrom(src => src))
+                .ForMember(
+                    dst => dst.PersoonsAdresInfo,
+                    opt => opt.MapFrom(src => src.Persoon.PersoonsAdres))
+                .ForMember(
+                    dst => dst.CommunicatieInfo,
+                    opt => opt.MapFrom(src => src.Communicatie))
+                .ForMember(
+                    dst => dst.LidInfo,
+                    opt => opt.MapFrom(src => _ledenMgr.HuidigLidGet(src)));
+
+            Mapper.CreateMap<GelieerdePersoon, PersoonLidInfo>()
+                .ForMember(
+                    dst => dst.PersoonDetail,
+                    opt => opt.MapFrom(src => src))
+                .ForMember(
+                    dst => dst.PersoonsAdresInfo,
+                    opt => opt.MapFrom(src => src.Persoon.PersoonsAdres))
+                .ForMember(
+                    dst => dst.CommunicatieInfo,
+                    opt => opt.MapFrom(src => src.Communicatie))
+                .ForMember(
+                    dst => dst.LidInfo,
+                    opt => opt.MapFrom(src => _ledenMgr.HuidigLidGet(src)));
+
+            Mapper.CreateMap<GelieerdePersoon, PersoonLidGebruikersInfo>()
                 .ForMember(
                     dst => dst.PersoonDetail,
                     opt => opt.MapFrom(src => src))
@@ -518,7 +540,7 @@ namespace Chiro.Gap.Services
                     opt => opt.MapFrom(src => _ledenMgr.HuidigLidGet(src)))
                 .ForMember(
                     dst => dst.GebruikersInfo,
-                    opt => opt.Ignore());
+                    opt => opt.MapFrom(src => src));
 
             Mapper.CreateMap<Lid, InschrijvingsVoorstel>()
                 .ForMember(
@@ -551,14 +573,19 @@ namespace Chiro.Gap.Services
             Mapper.CreateMap<GebruikersRechtV2, GebruikersInfo>()
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)));
 
+            Mapper.CreateMap<GelieerdePersoon, GebruikersInfo>()
+                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)))
+                .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsGebuikersRechtVerlengbaar()))
+                .ForMember(dst => dst.Permissies, opt => opt.MapFrom(src => src.PermissiesOpEigenGroep()))
+                .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => src.VervalDatumEigenGebruikersRecht()));
+
             // Een persoon mappen naar GebruikersInfo mapt geen gebruikersrechten, omdat er maar rechten van 1
             // groep gemapt kunnen worden.
             Mapper.CreateMap<Persoon, GebruikersInfo>()
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)))
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => false))
                 .ForMember(dst => dst.Permissies, opt => opt.MapFrom(src => Permissies.Geen))
-                .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => DateTime.Now.AddDays(-1)))
-                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)));
+                .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => DateTime.Now.AddDays(-1)));
 
             #region mapping van datacontracts naar entity's
 
@@ -761,7 +788,54 @@ namespace Chiro.Gap.Services
 
     }
 
-    #region Private extension methods om gemakkelijker adressen te mappen.
+    #region Internal extension methods om gemakkelijker te mappen.
+
+    internal static class GelieerdePersoonExtensies
+    {
+        public static bool IsGebuikersRechtVerlengbaar(this GelieerdePersoon gp)
+        {
+            var eigenGebruikersRecht = (from gr in gp.Persoon.GebruikersRechtV2
+                                        where Equals(gr.Groep, gp.Groep)
+                                        select gr).FirstOrDefault();
+
+            // Als er geen gebruikersrecht is, dan mag het verlengd worden.
+            if (eigenGebruikersRecht == null)
+            {
+                return true;
+            }
+
+            return eigenGebruikersRecht.IsVerlengbaar;
+        }
+
+        public static Permissies PermissiesOpEigenGroep(this GelieerdePersoon gp)
+        {
+            var eigenGebruikersRecht = (from gr in gp.Persoon.GebruikersRechtV2
+                                        where Equals(gr.Groep, gp.Groep)
+                                        select gr).FirstOrDefault();
+
+            if (eigenGebruikersRecht == null)
+            {
+                return Permissies.Geen;
+            }
+
+            return eigenGebruikersRecht.Permissies;
+        }
+
+        public static DateTime? VervalDatumEigenGebruikersRecht(this GelieerdePersoon gp)
+        {
+            var eigenGebruikersRecht = (from gr in gp.Persoon.GebruikersRechtV2
+                                        where Equals(gr.Groep, gp.Groep)
+                                        select gr).FirstOrDefault();
+
+            if (eigenGebruikersRecht == null)
+            {
+                // Nooit een gebruikersrecht gehad. Geef gisteren als vervaldatum.
+                return DateTime.Now.AddDays(-1);
+            }
+
+            return eigenGebruikersRecht.VervalDatum;
+        }
+    };
 
     /// <summary>
     /// Extension methods om adressen makkelijk te kunnen mappen.

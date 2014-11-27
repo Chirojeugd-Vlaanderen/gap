@@ -53,12 +53,5 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		public IEnumerable<CommunicatieDetail> CommunicatieInfo { get; set; }
-
-	    /// <summary>
-	    /// Info over eventueel gebruikersrecht van deze gelieerde persoon op zijn eigen groep.
-	    /// (null als er geen gebruikersrecht is)
-	    /// </summary>
-        [DataMember]
-        public GebruikersInfo GebruikersInfo { get; set; }
 	}
 }

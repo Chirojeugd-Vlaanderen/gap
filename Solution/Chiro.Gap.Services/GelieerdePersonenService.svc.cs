@@ -343,9 +343,9 @@ namespace Chiro.Gap.Services
         /// <returns>
         /// Gelieerde persoon met ALLE nodige info om het persoons-bewerken scherm te vullen:
         /// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
-        /// functies
+        /// functies, gebruikersinfo
         /// </returns>
-        public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID)
+        public PersoonLidGebruikersInfo AlleDetailsOphalen(int gelieerdePersoonID)
         {
             var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
 
@@ -354,20 +354,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            var result = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gelieerdePersoon);
-
-            // Gebruikersrechten worden nog niet automatisch gemapt. Dat is een TODO.
-            // GebruikersRechtGet levert ook vervallen gebruikersrechten op, of gebruikersrechten
-            // zonder permissies. Dat gaat de manier zijn om te zien of iemand een AD-account
-            // heeft.
-
-            var gebruikersRecht = _gebruikersRechtenMgr.GebruikersRechtGet(gelieerdePersoon);
-
-            if (gebruikersRecht != null)
-            {
-                result.GebruikersInfo = Mapper.Map<Poco.Model.GebruikersRechtV2, GebruikersInfo>(gebruikersRecht);
-            }
-            return result;
+            return Mapper.Map<GelieerdePersoon, PersoonLidGebruikersInfo>(gelieerdePersoon);
         }
 
         /// <summary>

@@ -392,16 +392,16 @@ namespace Chiro.Gap.Services.Test
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             var communicatieVormenManagerMock = new Mock<ICommunicatieVormenManager>();
-            var adServiceMock = new Mock<IAdService>();
+            var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
 
             repositoryProviderMock.Setup(mck => mck.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
-            adServiceMock.Setup(mck => mck.gebruikersNaamOphalen(someAdNummer))
+            authenticatieManagerMock.Setup(mck => mck.GebruikersNaamGet(gelieerdePersoon.Persoon))
                 .Returns(someUsername);
 
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
             Factory.InstantieRegistreren(communicatieVormenManagerMock.Object);
-            Factory.InstantieRegistreren(adServiceMock.Object);
+            Factory.InstantieRegistreren(authenticatieManagerMock.Object);
 
 
             var target = Factory.Maak<GelieerdePersonenService>();
