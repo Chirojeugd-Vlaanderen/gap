@@ -95,7 +95,7 @@ namespace Chiro.Gap.Services
 
         public void Check(Lid g)
         {
-            if (g == null || !_autorisatieMgr.IsGav(g.GelieerdePersoon))
+            if (g == null || !_autorisatieMgr.IsGav(g))
             {
                 throw FaultExceptionHelper.GeenGav();
             }
