@@ -8,6 +8,7 @@ using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Chiro.Ad.ServiceContracts;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -72,11 +73,11 @@ namespace Chiro.Gap.Services.Test
         #endregion
 
 
-        /// <summary>
-        ///A test for RechtenToekennen
+        ///<summary>
+        ///Test voor gebruiker zonder rechten maken.
         ///</summary>
         [TestMethod()]
-        public void RechtenToekennenTest()
+        public void GebruikerMakenTest()
         {
             // ARRANGE
 
@@ -113,6 +114,11 @@ namespace Chiro.Gap.Services.Test
             repositoryProviderMock.Setup(src => src.RepositoryGet<GebruikersRechtV2>()).Returns(new DummyRepo<GebruikersRechtV2>(new List<GebruikersRechtV2>()));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
+            // Mock AD-service
+            var adServiceMock = new Mock<IAdService>();
+            adServiceMock.Setup(src => src.GapLoginAanvragen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            Factory.InstantieRegistreren(adServiceMock.Object);
+
             // ACT
 
             var target = Factory.Maak<GebruikersService>();
@@ -121,7 +127,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            Assert.IsTrue(gelieerdePersoon.Persoon.GebruikersRechtV2.Any());
+            adServiceMock.Verify(src => src.GapLoginAanvragen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
         /// <summary>
