@@ -34,9 +34,9 @@ namespace Chiro.Gap.Poco.Model
         public DateTime? VervalDatum { get; set; }
         public override byte[] Versie { get; set; }
 
-        public virtual Persoon Persoon { get; set; }
-        public virtual Groep Groep { get; set; }
-        public virtual Permissies Permissies { get; set; }
+        public Persoon Persoon { get; set; }
+        public Groep Groep { get; set; }
+        internal int PermissiesInt { get; set; }
 
         /// <summary>
         /// Geeft weer of de vervaldatum verlengbaar is. Dit is eigenlijk business, dus dat
@@ -49,6 +49,18 @@ namespace Chiro.Gap.Poco.Model
             {
                 return VervalDatum != null && ((DateTime)VervalDatum) < DateTime.Now.AddMonths(
                     Properties.Settings.Default.MaandenGebruikersRechtVerlengbaar);
+            }
+        }
+
+        public Permissies Permissies
+        {
+            get
+            {
+                return (Permissies)PermissiesInt;
+            }
+            set
+            {
+                PermissiesInt = (int)value;
             }
         }
     }

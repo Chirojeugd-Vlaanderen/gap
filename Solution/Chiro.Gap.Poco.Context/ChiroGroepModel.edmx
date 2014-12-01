@@ -1400,7 +1400,7 @@
             <End Role="Adres" EntitySet="Adres" />
             <End Role="Groep" EntitySet="Groep" />
           </AssociationSet>
-          <EntitySet Name="GebruikersRechtv2" EntityType="ChiroGroepModel.GebruikersRechtv2" />
+          <EntitySet Name="GebruikersRechtv2" EntityType="ChiroGroepModel.GebruikersRechtV2" />
           <AssociationSet Name="FK_GebruikersRechtV2_Groep" Association="ChiroGroepModel.FK_GebruikersRechtV2_Groep">
             <End Role="Groep" EntitySet="Groep" />
             <End Role="GebruikersRechtv2" EntitySet="GebruikersRechtv2" />
@@ -1433,7 +1433,7 @@
           <NavigationProperty Name="BivakPlaats" Relationship="ChiroGroepModel.FK_Plaats_Groep" FromRole="Groep" ToRole="Plaats" />
           <Property Type="DateTime" Name="StopDatum" Precision="3" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Groep_Adres" FromRole="Groep" ToRole="Adres" />
-          <NavigationProperty Name="GebruikersRechtv2" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Groep" FromRole="Groep" ToRole="GebruikersRechtv2" />
+          <NavigationProperty Name="GebruikersRechtV2" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Groep" FromRole="Groep" ToRole="GebruikersRechtv2" />
         </EntityType>
         <EntityType Name="Persoon">
           <Key>
@@ -1453,7 +1453,7 @@
           <Property Name="InSync" Type="Boolean" Nullable="false" />
           <Property Type="String" Name="SeNaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="SeVoornaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <NavigationProperty Name="GebruikersRechtv2" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" FromRole="Persoon" ToRole="GebruikersRechtv2" />
+          <NavigationProperty Name="GebruikersRechtV2" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" FromRole="Persoon" ToRole="GebruikersRechtv2" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -1922,24 +1922,24 @@
           <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="0..1" />
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="*" />
         </Association>
-        <EntityType Name="GebruikersRechtv2">
+        <EntityType Name="GebruikersRechtV2">
           <Key>
-            <PropertyRef Name="GebruikersRechtV2ID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="GebruikersRechtV2ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="VervalDatum" Type="DateTime" Precision="3" />
-          <Property Name="Permissies" Type="Int32" Nullable="false" />
+          <Property Name="PermissiesInt" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Groep" FromRole="GebruikersRechtv2" ToRole="Groep" />
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" FromRole="GebruikersRechtv2" ToRole="Persoon" />
         </EntityType>
         <Association Name="FK_GebruikersRechtV2_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
-          <End Type="ChiroGroepModel.GebruikersRechtv2" Role="GebruikersRechtv2" Multiplicity="*" />
+          <End Type="ChiroGroepModel.GebruikersRechtV2" Role="GebruikersRechtv2" Multiplicity="*" />
         </Association>
         <Association Name="FK_GebruikersRechtV2_Persoon">
           <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="1" />
-          <End Type="ChiroGroepModel.GebruikersRechtv2" Role="GebruikersRechtv2" Multiplicity="*" />
+          <End Type="ChiroGroepModel.GebruikersRechtV2" Role="GebruikersRechtv2" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -2583,18 +2583,18 @@
             <Condition ColumnName="AdresID" IsNull="false" />
           </AssociationSetMapping>
           <EntitySetMapping Name="GebruikersRechtv2">
-            <EntityTypeMapping TypeName="ChiroGroepModel.GebruikersRechtv2">
+            <EntityTypeMapping TypeName="ChiroGroepModel.GebruikersRechtV2">
               <MappingFragment StoreEntitySet="GebruikersRechtv2">
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
-                <ScalarProperty Name="Permissies" ColumnName="Permissies" />
+                <ScalarProperty Name="PermissiesInt" ColumnName="Permissies" />
                 <ScalarProperty Name="VervalDatum" ColumnName="VervalDatum" />
-                <ScalarProperty Name="GebruikersRechtV2ID" ColumnName="GebruikersRechtV2ID" />
+                <ScalarProperty Name="ID" ColumnName="GebruikersRechtV2ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="FK_GebruikersRechtV2_Groep" TypeName="ChiroGroepModel.FK_GebruikersRechtV2_Groep" StoreEntitySet="GebruikersRechtv2">
             <EndProperty Name="GebruikersRechtv2">
-              <ScalarProperty Name="GebruikersRechtV2ID" ColumnName="GebruikersRechtV2ID" />
+              <ScalarProperty Name="ID" ColumnName="GebruikersRechtV2ID" />
             </EndProperty>
             <EndProperty Name="Groep">
               <ScalarProperty Name="ID" ColumnName="GroepID" />
@@ -2602,7 +2602,7 @@
           </AssociationSetMapping>
           <AssociationSetMapping Name="FK_GebruikersRechtV2_Persoon" TypeName="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" StoreEntitySet="GebruikersRechtv2">
             <EndProperty Name="GebruikersRechtv2">
-              <ScalarProperty Name="GebruikersRechtV2ID" ColumnName="GebruikersRechtV2ID" />
+              <ScalarProperty Name="ID" ColumnName="GebruikersRechtV2ID" />
             </EndProperty>
             <EndProperty Name="Persoon">
               <ScalarProperty Name="ID" ColumnName="PersoonID" />
@@ -3108,7 +3108,7 @@
           <edmx:ConnectorPoint PointX="13.75" PointY="28.348294901041676" />
         </edmx:AssociationConnector>
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Groep_Adres" />
-        <edmx:EntityTypeShape EntityType="ChiroGroepModel.GebruikersRechtv2" Width="1.5" PointX="11.25" PointY="16" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.GebruikersRechtV2" Width="1.5" PointX="11.25" PointY="16" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_GebruikersRechtV2_Groep" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" />
       </edmx:Diagram>
