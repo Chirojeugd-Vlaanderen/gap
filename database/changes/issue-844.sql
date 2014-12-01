@@ -53,5 +53,58 @@ GO
 DROP TABLE auth.Gav;
 GO
 
+CREATE PROCEDURE [auth].[spGebruikersRechtToekennenAd]
+(
+	@stamNr VARCHAR(10)
+	, @adNr int
+)
+AS
+-- Doel: Geeft login gebruikersrecht op gegeven groep
+-- Als de persoon ooit gebruikersrecht had, wordt dit gewoon verlengd.
+BEGIN
 
--- TODO: Stored procedures updaten
+	INSERT INTO auth.GebruikersRechtV2(PersoonID, GroepID, VervalDatum, Permissies)
+	SELECT
+			-- voor de vervaldatum doen we maar iets; die wordt straks overschreven.
+			-- de permissies overigens ook.
+			p.PersoonID, g.GroepID, DateAdd(year, 1, getDate()), 0x7f7f
+	FROM
+			pers.Persoon p
+			, grp.Groep g
+	WHERE
+			p.AdNummer=@adNr
+			AND g.Code=@stamnr
+			AND NOT EXISTS (SELECT 1 FROM auth.GebruikersRechtV2 gr
+							WHERE gr.PersoonID = p.PersoonID AND gr.GroepID = g.GroepID)
+
+	-- nu de echte vervaldatum.
+	declare @datum datetime
+			, @jaar varchar(4)
+
+	-- Vanaf juli gaan we ervan uit dat de login voor degene is
+	-- die het volgende werkjaar de groepsadministratie zal regelen.
+	IF MONTH(getdate()) >= 7
+		set @jaar = cast(year(getdate()) + 1 as varchar)
+	ELSE
+		set @jaar = cast(year(getdate()) as varchar)
+
+	set @datum =  @jaar + '-11-01';
+
+	-- BELANGRIJK! Permissie 0x7f7f is GAV! Alle rechten in de groep.
+
+	UPDATE gr
+	SET gr.VervalDatum = @datum, gr.Permissies=0x7f7f
+	FROM auth.GebruikersRechtV2 gr JOIN grp.Groep g on gr.GroepID = g.GroepID
+	JOIN pers.Persoon p on gr.PersoonID = p.PersoonID
+	WHERE p.AdNummer=@adNr AND g.Code=@stamnr
+	
+	IF @@ROWCOUNT <= 0
+	BEGIN
+		RAISERROR('Dat StamNr is niet gevonden in de tabel Groep', 16, 1)
+	END
+END
+
+
+GO
+
+

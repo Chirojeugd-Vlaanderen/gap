@@ -84,5 +84,40 @@ namespace Chiro.Gap.WebApp.Models
         public bool IsInOvergangsPeriode { get; set; }
 
         #endregion
+
+        bool IMasterViewModel.IsLive
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        string IMasterViewModel.Titel
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        bool? IMasterViewModel.MeerdereGroepen
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        IList<Mededeling> IMasterViewModel.Mededelingen
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        int IMasterViewModel.HuidigWerkJaar
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        bool IMasterViewModel.IsInOvergangsPeriode
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        GebruikersDetail IMasterViewModel.Ik
+        {
+            get { throw new System.NotImplementedException(); }
+        }
     }
 }

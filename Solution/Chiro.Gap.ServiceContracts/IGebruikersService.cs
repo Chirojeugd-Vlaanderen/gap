@@ -97,5 +97,15 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
         string VerzekeringsUrlGet(int groepID);
+
+        /// <summary>
+        /// Levert de details van de gebruiker met gegeven <paramref name="login"/>.
+        /// </summary>
+        /// <param name="login">Login van een gebruiker.</param>
+        /// <returns>Details van de gebruiker met gegeven <paramref name="login"/>.</returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        GebruikersDetail GebruikerOphalen(string login);
     }
 }

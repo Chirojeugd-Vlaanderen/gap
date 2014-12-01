@@ -36,6 +36,8 @@ using System.Transactions;
 #endif
 
 using GebruikersRecht = Chiro.Gap.ServiceContracts.DataContracts.GebruikersRecht;
+using Chiro.Gap.ServiceContracts.DataContracts;
+using AutoMapper;
 
 namespace Chiro.Gap.Services
 {
@@ -310,8 +312,8 @@ namespace Chiro.Gap.Services
             {
                 throw new FaultException<FoutNummerFault>(new FoutNummerFault
                 {
-                    Bericht = Properties.Resources.KoppelingGavPersoonOntbreekt,
-                    FoutNummer = FoutNummer.KoppelingGavPersoonOntbreekt
+                    Bericht = Properties.Resources.KoppelingLoginPersoonOntbreekt,
+                    FoutNummer = FoutNummer.KoppelingLoginPersoonOntbreekt
                 });
             }
 
@@ -345,6 +347,46 @@ namespace Chiro.Gap.Services
             return String.Format(Properties.Settings.Default.UrlVerzekeraar,
                                  HttpUtility.UrlEncode(credentials.GeencrypteerdeUserInfo),
                                  HttpUtility.UrlEncode(credentials.Hash));
+        }
+
+        /// <summary>
+        /// Levert de details van de gebruiker met gegeven <paramref name="login"/>.
+        /// </summary>
+        /// <param name="login">Login van een gebruiker.</param>
+        /// <returns>Details van de gebruiker met gegeven <paramref name="login"/>.</returns>
+        public GebruikersDetail GebruikerOphalen(string login)
+        {
+            int? adNummer = _authenticatieMgr.AdNummerGet();
+            if (adNummer == null)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.KoppelingLoginPersoonOntbreekt, String.Format(
+                    Properties.Resources.KoppelingLoginPersoonOntbreekt,
+                    login,
+                    adNummer));
+            }
+            var persoon = (from p in _personenRepo.Select()
+                           where p.AdNummer == adNummer
+                           select p).FirstOrDefault();
+
+            if (persoon == null)
+            {
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.KoppelingLoginPersoonOntbreekt, String.Format(
+                    Properties.Resources.KoppelingLoginPersoonOntbreekt,
+                    login,
+                    adNummer));
+            }
+
+            // Als je hieronder een exception krijgt dat je gebruiker niet gevonden is, dan kun je die
+            // aanmaken, en meteen rechten geven op 1 of meerdere willekeurige groepen. Je hebt hiervoor het
+            // AD-nummer nodig uit de exception. (Als je aan het ontwikkelen bent, is dat een dummy-adnr.)
+            //
+            // Stel dat dat AD-nummer 1445 is, dan gaat het bijvoorbeeld als volgt:
+            //   exec auth.spWillekeurigeGroepToekennenAd 1455, 'Vervloet', 'Johan', '1977-03-08', 1
+            // De parameters zijn AD-nummer, naam, voornaam, geboortedatum en geslacht.
+
+            Gav.Check(persoon);
+
+            return Mapper.Map<Persoon, GebruikersDetail>(persoon);
         }
     }
 }

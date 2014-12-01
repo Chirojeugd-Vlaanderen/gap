@@ -97,7 +97,7 @@ namespace Chiro.Gap.Domain
         GebruikersRechtWasAlVervallen,
         CategorieNietGekoppeld,
         OvergangTeVroeg,
-        KoppelingGavPersoonOntbreekt,
+        KoppelingLoginPersoonOntbreekt,
         #endregion
     }
 }

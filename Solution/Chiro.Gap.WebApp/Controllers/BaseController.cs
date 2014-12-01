@@ -104,7 +104,10 @@ namespace Chiro.Gap.WebApp.Controllers
         protected void BaseModelInit(MasterViewModel model, int groepID)
         {
             // Werken we op test of live?
+            string login = User == null ? null : User.Identity.Name;
+
             model.IsLive = VeelGebruikt.IsLive();
+            model.Ik = VeelGebruikt.GebruikersDetail(login);
 
             if (groepID == 0)
             {
@@ -135,7 +138,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 // Als UniekeGroepGav een waarde heeft, is er maar één groep. Bij 0 zijn er meerdere.
 
-                model.MeerdereGroepen = (VeelGebruikt.UniekeGroepGav(User == null ? null : User.Identity.Name) == 0);
+                model.MeerdereGroepen = (VeelGebruikt.UniekeGroepGav(login) == 0);
 
                 #endregion
 

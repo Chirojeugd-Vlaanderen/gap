@@ -2,6 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +19,7 @@
 
 using System.Collections.Generic;
 using Chiro.Gap.Domain;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -93,5 +95,10 @@ namespace Chiro.Gap.WebApp.Models
 		/// Niveau van de groep (chirogroep of kadergroep)
 		/// </summary>
 		public Niveau GroepsNiveau { get; set; }
+
+        /// <summary>
+        /// Aangelogde gebruiker
+        /// </summary>
+        public GebruikersDetail Ik { get; set; }
 	}
 }

@@ -243,8 +243,8 @@
   <data name="AfdelingNietLeeg" xml:space="preserve">
     <value>Er zijn nog leden aan de afdeling gekoppeld.</value>
   </data>
-  <data name="KoppelingGavPersoonOntbreekt" xml:space="preserve">
-    <value>We kunnen je login niet koppelen aan een persoon.</value>
+  <data name="KoppelingLoginPersoonOntbreekt" xml:space="preserve">
+    <value>We kunnen je login ({0}, AD {1}) niet koppelen aan een persoon.</value>
   </data>
   <data name="GeboorteDatumOntbreekt" xml:space="preserve">
     <value>Geboortedatum is verplicht voor ingeschreven leden.</value>
