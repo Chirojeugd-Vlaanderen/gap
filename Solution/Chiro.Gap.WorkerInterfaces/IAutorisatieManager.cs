@@ -18,6 +18,8 @@
  */
 using System.Collections.Generic;
 using Chiro.Gap.Poco.Model;
+using System;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.WorkerInterfaces
 {
@@ -37,11 +39,37 @@ namespace Chiro.Gap.WorkerInterfaces
         /// </returns>
         bool IsSuperGav();
 
+        #region Controleer de permissies van de aangelogde user
+        /// <summary>
+        /// Controleert of de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft
+        /// op de gegeven <paramref name="groep"/>.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor permissies te controleren.</param>
+        /// <param name="permissies">Permissies waarop te controleren.</param>
+        /// <returns><c>true</c> als de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft.</returns>
+        bool HeeftPermissies(Groep groep, Permissies permissies);
+
+        /// <summary>
+        /// Controleert of de aangelogde persoon de gevraagde <param name="permissies" heeft voor alle meegegeven
+        /// <paramref name="gelieerdePersonen"/>
+        /// </summary>
+        /// <param name="gelieerdePersonen">Gelieerde personen waarvoor permissies
+        /// nagekeken moeten worden.</param>
+        /// <param name="permissies">Na te kijken permissies.</param>
+        /// <returns>
+        /// <c>true</c> als de aangelogde persoon de gegeven <paramref name="permissies"/> heeft voor alle meegegeven
+        /// <paramref name="gelieerdePersonen"/>
+        /// </returns>
+        bool HeeftPermissies(IList<GelieerdePersoon> gelieerdePersonen, Permissies permissies);
+        #endregion
+
         #region Controleer of de aangelogde gebruiker GAV is van gegeven entity
-        bool IsGav(Groep groep);
+        [Obsolete]
+        bool IsGav(Groep groep);    // gebruik liever HeeftPermissies
         bool IsGav(CommunicatieVorm communicatie);
         bool IsGav(GroepsWerkJaar g);
-        bool IsGav(GelieerdePersoon gelieerdePersoon);
+        [Obsolete]
+        bool IsGav(GelieerdePersoon gelieerdePersoon);  // gebruik liever HeeftPermissies
         bool IsGav(Deelnemer d);
         bool IsGav(Plaats p);
         bool IsGav(Uitstap u);

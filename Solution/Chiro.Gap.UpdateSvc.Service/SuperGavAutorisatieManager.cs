@@ -202,5 +202,15 @@ namespace Chiro.Gap.UpdateSvc.Service
         {
             throw new NotImplementedException();
         }
+
+        public bool HeeftPermissies(Groep groep, Domain.Permissies permissies)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HeeftPermissies(IList<GelieerdePersoon> gelieerdePersonen, Domain.Permissies permissies)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

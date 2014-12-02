@@ -141,5 +141,17 @@ namespace Chiro.Gap.Dummies
         {
             return true;
         }
+
+
+        public bool HeeftPermissies(Groep groep, Domain.Permissies permissies)
+        {
+            return true;
+        }
+
+
+        public bool HeeftPermissies(IList<GelieerdePersoon> gelieerdePersonen, Domain.Permissies permissies)
+        {
+            return true;
+        }
     }
 }

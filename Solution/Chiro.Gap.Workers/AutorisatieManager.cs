@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Workers
 {
@@ -60,28 +61,50 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van het gegeven <paramref name="object"/>.
+        /// Controleert of de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft
+        /// op de gegeven <paramref name="groep"/>.
         /// </summary>
-        /// <param name="groep">Groep waarvoor gebruikersrecht nagekeken moet worden</param>
-        /// <returns>
-        /// <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven
-        /// <paramref name="groep"/>.
-        /// </returns>
-        public bool IsGav(Groep groep)
+        /// <param name="groep">Groep waarvoor permissies te controleren.</param>
+        /// <param name="permissies">Permissies waarop te controleren.</param>
+        /// <returns><c>true</c> als de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft.</returns>
+        public bool HeeftPermissies(Groep groep, Permissies permissies)
         {
             int? adNummer = _authenticatieMgr.AdNummerGet();
             return groep != null && adNummer != null &&
-                groep.GebruikersRechtV2.Any(gr => gr.Persoon.AdNummer == adNummer && gr.VervalDatum > DateTime.Now);
+                groep.GebruikersRechtV2.Any(gr => gr.Persoon.AdNummer == adNummer && gr.Test(permissies));
+
         }
 
         /// <summary>
-        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven persoon <paramref name="p"/>.
+        /// Controleert of de aangelogde persoon de gevraagde <param name="permissies" heeft voor alle meegegeven
+        /// <paramref name="gelieerdePersonen"/>
         /// </summary>
-        /// <param name="p">Persoon waarvoor gebruikersrecht nagekeken moet worden</param>
+        /// <param name="gelieerdePersonen">Gelieerde personen waarvoor permissies
+        /// nagekeken moeten worden.</param>
+        /// <param name="permissies">Na te kijken permissies.</param>
         /// <returns>
-        /// <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven persoon
-        /// <paramref name="p"/>.
+        /// <c>true</c> als de aangelogde persoon de gegeven <paramref name="permissies"/> heeft voor alle meegegeven
+        /// <paramref name="gelieerdePersonen"/>
         /// </returns>
+        public bool HeeftPermissies(IList<GelieerdePersoon> gelieerdePersonen, Permissies permissies)
+        {
+            // Als er een gelieerde persoon is waarvoor alle GAV's een AD-nummer hebben
+            // verschillend van het mijne, dan ben ik geen GAV voor alle gegeven personen.
+
+            int? adNummer = _authenticatieMgr.AdNummerGet();
+            return (from gp in gelieerdePersonen
+                    where
+                        gp.Groep.GebruikersRechtV2.All(
+                            gr => gr.Persoon.AdNummer != adNummer ||
+                            (!gr.Test(permissies)))
+                    select gp).FirstOrDefault() == null;
+        }
+
+        public bool IsGav(Groep groep)
+        {
+            return HeeftPermissies(groep, Permissies.Gav);
+        }
+
         public bool IsGav(Persoon p)
         {
             return p.GelieerdePersoon.Any(gp => IsGav(gp.Groep));
@@ -140,16 +163,7 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public bool IsGav(IList<GelieerdePersoon> gelieerdePersonen)
         {
-            // Als er een gelieerde persoon is waarvoor alle GAV's een AD-nummer hebben
-            // verschillend van het mijne, dan ben ik geen GAV voor alle gegeven personen.
-
-            int? adNummer = _authenticatieMgr.AdNummerGet();
-            return (from gp in gelieerdePersonen
-                    where
-                        gp.Groep.GebruikersRechtV2.All(
-                            gr => gr.Persoon.AdNummer != adNummer ||
-                            (gr.VervalDatum != null && gr.VervalDatum < DateTime.Now))
-                    select gp).FirstOrDefault() == null;
+            return HeeftPermissies(gelieerdePersonen, Permissies.Gav);
         }
 
         /// <summary>
@@ -248,6 +262,26 @@ namespace Chiro.Gap.Workers
             return adNummer != null && groepen.All(g => g.GebruikersRechtV2.Any(
                 gr => gr.Persoon.AdNummer == adNummer
                     && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)));
+        }
+    }
+
+    /// <summary>
+    /// Extension method voor Permissies
+    /// </summary>
+    internal static class PermissieExtensions
+    {
+        /// <summary>
+        /// Controleert of het gegeven <paramref name="gebruikersRecht"/> niet vervallen is,
+        /// en de gegeven permissies <paramref name="teTesten"/> heeft.
+        /// </summary>
+        /// <param name="gebruikersRecht">Een gebruikresrecht</param>
+        /// <param name="teTesten">Te testen permissies</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="permissies"/> van toepassing
+        /// en nog niet vervallen zijn.</returns>
+        public static bool Test(this GebruikersRechtV2 gebruikersRecht, Permissies teTesten)
+        {
+            return (gebruikersRecht.VervalDatum.HasValue && gebruikersRecht.VervalDatum > DateTime.Now)
+                && (gebruikersRecht.Permissies & teTesten) == teTesten;
         }
     }
 }
