@@ -128,6 +128,40 @@ namespace Chiro.Gap.Workers.Test
         }
 
         /// <summary>
+        /// Als je gebruikersrechten hebt, maar geen GAV-permissies, dan mag IsGav ook niet zeggen
+        /// dat je GAV bent.
+        /// </summary>
+        [TestMethod()]
+        public void RechtenMaarGeenGavTest()
+        {
+            // ARRANGE
+
+            var gebruikersRecht = new GebruikersRechtV2
+            {
+                Persoon = new Persoon { ID = 1, AdNummer = 2 },
+                Groep = new ChiroGroep { ID = 3 },
+                Permissies = Domain.Permissies.Geen,
+                VervalDatum = DateTime.Now.AddDays(1)       // geldig tot morgen.
+            };
+            gebruikersRecht.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
+            gebruikersRecht.Groep.GebruikersRechtV2.Add(gebruikersRecht);
+
+            var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
+            authenticatieManagerMock.Setup(mgr => mgr.AdNummerGet()).Returns(gebruikersRecht.Persoon.AdNummer);
+            Factory.InstantieRegistreren(authenticatieManagerMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<AutorisatieManager>();
+            bool actual = target.IsGav(gebruikersRecht.Groep);
+
+            // ASSERT
+
+            Assert.IsFalse(actual);
+        }
+
+
+        /// <summary>
         ///Controleert of de GAV-check van een gelieerde persoon rekening houdt met de vervaldatum van gebruikersrechten.
         ///</summary>
         [TestMethod()]
