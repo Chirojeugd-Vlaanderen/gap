@@ -132,7 +132,7 @@ namespace Chiro.Gap.Workers.Test
         /// dat je GAV bent.
         /// </summary>
         [TestMethod()]
-        public void RechtenMaarGeenGavTest()
+        public void RechtenMaarGeenGavGroepTest()
         {
             // ARRANGE
 
@@ -154,6 +154,45 @@ namespace Chiro.Gap.Workers.Test
 
             var target = Factory.Maak<AutorisatieManager>();
             bool actual = target.IsGav(gebruikersRecht.Groep);
+
+            // ASSERT
+
+            Assert.IsFalse(actual);
+        }
+
+        /// <summary>
+        /// Als je gebruikersrechten hebt, maar geen GAV-permissies, dan mag IsGav ook niet zeggen
+        /// dat je GAV bent.
+        /// </summary>
+        [TestMethod()]
+        public void RechtenMaarGeenGavGelieerdePersoonTest()
+        {
+            // ARRANGE
+
+            var gebruikersRecht = new GebruikersRechtV2
+            {
+                Persoon = new Persoon { ID = 1, AdNummer = 2 },
+                Groep = new ChiroGroep { ID = 3 },
+                Permissies = Domain.Permissies.Geen,
+                VervalDatum = DateTime.Now.AddDays(1)       // geldig tot morgen.
+            };
+            gebruikersRecht.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
+            gebruikersRecht.Groep.GebruikersRechtV2.Add(gebruikersRecht);
+
+            var gp1 = new GelieerdePersoon { ID = 4, Groep = gebruikersRecht.Groep };
+            var gp2 = new GelieerdePersoon { ID = 5, Groep = gebruikersRecht.Groep };
+            gebruikersRecht.Groep.GelieerdePersoon.Add(gp1);
+            gebruikersRecht.Groep.GelieerdePersoon.Add(gp2);
+
+
+            var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
+            authenticatieManagerMock.Setup(mgr => mgr.AdNummerGet()).Returns(gebruikersRecht.Persoon.AdNummer);
+            Factory.InstantieRegistreren(authenticatieManagerMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<AutorisatieManager>();
+            bool actual = target.IsGav(new [] {gp1, gp2});
 
             // ASSERT
 
