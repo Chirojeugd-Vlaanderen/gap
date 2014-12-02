@@ -1,5 +1,5 @@
-/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+﻿/*
+ * Copyright 2014 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -16,146 +16,49 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-
 using AutoMapper;
-
-using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WorkerInterfaces;
-using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Web;
 
-namespace Chiro.Gap.ServiceContracts.Mappers
+namespace Chiro.Gap.Services
 {
     /// <summary>
-    /// Helperfunctionaiteit voor mapping
+    /// Base class voor onze services.
+    /// 
+    /// Deze doet in principe niet veel anders dan AutoMapper initializeren.
     /// </summary>
-    public static class MappingHelper
+    public class BaseService
     {
-
-        #region Systeem om workers op te halen
-
-        // Sommige worker methods zijn nuttig bij het mappen. Omdat de workers sinds de nieuwe
-        // backend geen toegang meer moeten hebben tot de repository's, kunnen we ze hier
-        // rechtstreeks gebruiken.
-
-        // Probleem: de workers worden normaalgezien geinjecteerd. En dat is niet vanzelfsprekend
-        // in een statische klasse. Om problemen te vermijden (zoals de dependency injection die
-        // geconfigureerd worden als de workers hier al bestaan), wordt een worker, als die van
-        // doen is, iedere keer opgeleverd door de IOC-container.
-
-        // Dat doen we alleen in deze klasse! In alle andere gevallen doen we dependency
-        // injection via de constructor.
-
-        private static ILedenManager LedenMgr { get { return Factory.Maak<ILedenManager>(); } }
-
-        #endregion
-
-        #region Private extension methods om gemakkelijker adressen te mappen.
+        protected readonly ILedenManager _ledenMgr;
+        protected readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
 
         /// <summary>
-        /// Bepaalt de straatnaam van een Adres
+        /// Constructor.
         /// </summary>
-        /// <param name="a">Het adres</param>
-        /// <returns>De straatnaam</returns>
-        private static string StraatGet(this Adres a)
+        /// <param name="ledenManager">LedenManager.</param>
+        /// <param name="groepsWerkJarenManager">GroepsWerkJarenManager.</param>
+        public BaseService(ILedenManager ledenManager, IGroepsWerkJarenManager groepsWerkJarenManager)
         {
-            if (a is BelgischAdres)
-            {
-                var ba = a as BelgischAdres;
-
-                return ba.StraatNaam != null ? ba.StraatNaam.Naam : null;
-            }
-            Debug.Assert(a is BuitenLandsAdres);
-            return ((BuitenLandsAdres)a).Straat;
+            _ledenMgr = ledenManager;
+            _groepsWerkJarenMgr = groepsWerkJarenManager;
+            MappingsDefinieren();
         }
-
-        /// <summary>
-        /// Bepaalt de woonplaats van een adres.
-        /// </summary>
-        /// <param name="a">Het adres</param>
-        /// <returns>Naam van de woonplaats</returns>
-        private static string WoonPlaatsGet(this Adres a)
-        {
-            if (a is BelgischAdres)
-            {
-                var ba = (a as BelgischAdres);
-                return ba.WoonPlaats != null ? ba.WoonPlaats.Naam : null;
-            }
-            Debug.Assert(a is BuitenLandsAdres);
-            return ((BuitenLandsAdres)a).WoonPlaats;
-        }
-
-        /// <summary>
-        /// Bepaalt naam van het land van een adres
-        /// </summary>
-        /// <param name="a">Het adres</param>
-        /// <returns>Naam van het land van het adres</returns>
-        private static string LandGet(this Adres a)
-        {
-            if (a is BelgischAdres)
-            {
-                return Properties.Resources.Belgie;
-            }
-            Debug.Assert(a is BuitenLandsAdres);
-            return ((BuitenLandsAdres)a).Land.Naam;
-        }
-
-        /// <summary>
-        /// Geeft postcode voor een buitenlands adres, of <c>null</c> voor een Belgisch adres.
-        /// </summary>
-        /// <param name="a">Het adres</param>
-        /// <returns>Als <paramref name="a"/> een buitenlands adres is, de postcode, 
-        /// anders <c>null</c>.</returns>
-        private static string PostCodeGet(this Adres a)
-        {
-            if (a is BelgischAdres)
-            {
-                return null;
-            }
-            Debug.Assert(a is BuitenLandsAdres);
-            return ((BuitenLandsAdres)a).PostCode;
-        }
-
-        /// <summary>
-        /// Bepaalt het postnummer van een adres.
-        /// </summary>
-        /// <param name="a">Het adres</param>
-        /// <returns>Het postnummer</returns>
-        private static int? PostNummerGet(this Adres a)
-        {
-            if (a is BelgischAdres)
-            {
-                var ba = a as BelgischAdres;
-                if (ba.WoonPlaats != null)
-                {
-                    return ba.WoonPlaats.PostNummer;
-                }
-                if (ba.StraatNaam != null)
-                {
-                    return ba.StraatNaam.PostNummer;
-                }
-                return null;
-            }
-            Debug.Assert(a is BuitenLandsAdres);
-            return ((BuitenLandsAdres)a).PostNummer;
-        }
-
-        #endregion
 
         #region Mappings voor service
 
         /// <summary>
         /// Definieert meteen alle nodige mappings.
         /// </summary>
-        public static void MappingsDefinieren()
+        private void MappingsDefinieren()
         {
             Mapper.CreateMap<Persoon, PersoonInfo>()
                 // de members die in src en dst hetzelfde heten, laat ik voor het gemak weg.
@@ -183,19 +86,19 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 // TODO (#968): opkuis
                   .ForMember(
                       dst => dst.IsLid,
-                      opt => opt.MapFrom(src => LedenMgr.IsActiefKind(src)))
+                      opt => opt.MapFrom(src => _ledenMgr.IsActiefKind(src)))
                   .ForMember(
                       dst => dst.IsLeiding,
-                      opt => opt.MapFrom(src => LedenMgr.IsActieveLeiding(src)))
+                      opt => opt.MapFrom(src => _ledenMgr.IsActieveLeiding(src)))
                   .ForMember(
                       dst => dst.LidID,
-                      opt => opt.MapFrom(src => LedenMgr.LidIDGet(src)))
+                      opt => opt.MapFrom(src => _ledenMgr.LidIDGet(src)))
                   .ForMember(
                       dst => dst.KanLidWorden,
-                      opt => opt.MapFrom(src => LedenMgr.KanInschrijvenAlsKind(src)))
+                      opt => opt.MapFrom(src => _ledenMgr.KanInschrijvenAlsKind(src)))
                   .ForMember(
                       dst => dst.KanLeidingWorden,
-                      opt => opt.MapFrom(src => LedenMgr.KanInschrijvenAlsLeiding(src)))
+                      opt => opt.MapFrom(src => _ledenMgr.KanInschrijvenAlsLeiding(src)))
                   .ForMember(
                       dst => dst.AdNummer,
                       opt => opt.MapFrom(src => src.Persoon.AdNummer))
@@ -611,7 +514,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     opt => opt.MapFrom(src => src.Communicatie))
                 .ForMember(
                     dst => dst.LidInfo,
-                    opt => opt.MapFrom(src => LedenMgr.HuidigLidGet(src)))
+                    opt => opt.MapFrom(src => _ledenMgr.HuidigLidGet(src)))
                 .ForMember(
                     dst => dst.GebruikersInfo,
                     opt => opt.Ignore());
@@ -636,14 +539,14 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.FoutNummer,
                     opt => opt.MapFrom(src => null));
 
-            Mapper.CreateMap<GebruikersRecht, GebruikersDetail>()
+            Mapper.CreateMap<Chiro.Gap.Poco.Model.GebruikersRecht, GebruikersDetail>()
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsVerlengbaar))
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => GelieerdePersoonIDGet(src)))
                 .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? 0 : src.Gav.Persoon.First().ID))
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? String.Empty : src.Gav.Persoon.First().Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? String.Empty : src.Gav.Persoon.First().VoorNaam));
 
-            Mapper.CreateMap<GebruikersRecht, GebruikersInfo>();
+            Mapper.CreateMap<Chiro.Gap.Poco.Model.GebruikersRecht, GebruikersInfo>();
 
             // Een gebruiker mappen naar GebruikersInfo mapt geen gebruikersrechten, omdat er maar rechten van 1
             // groep gemapt kunnen worden.
@@ -722,11 +625,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// <param name="datum">Datum voor deelnemertype</param>
         /// <returns>Als de persoon op de gegeven <paramref name="datum"/> lid is, dan Deelnemers. Is hij \
         /// leiding, dan Begeleiding. En anders onbekend.</returns>
-        private static DeelnemerType DeelnemerTypeBepalen(GelieerdePersoon gelieerdePersoon, DateTime datum)
+        private DeelnemerType DeelnemerTypeBepalen(GelieerdePersoon gelieerdePersoon, DateTime datum)
         {
             int werkJaar = datum.Year;
             DateTime nieuwWerkJaarDatum = new DateTime(werkJaar, Properties.Settings.Default.NieuwWerkJaarMaand,
-                Properties.Settings.Default.NieuwWerkjaarDag);
+                Properties.Settings.Default.NieuwWerkJaarDag);
 
             if (datum < nieuwWerkJaarDatum)
             {
@@ -748,19 +651,17 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// <param name="src">Lid van wie moet nagekeken worden of het verzekerd is</param>
         /// <param name="verzekering">Type verzekering waarop gecontroleerd moet worden</param>
         /// <returns><c>True</c> alss het lid een verzekering loonverlies heeft.</returns>
-        private static bool IsVerzekerd(Lid src, Verzekering verzekering)
+        private bool IsVerzekerd(Lid src, Verzekering verzekering)
         {
             if (src.GelieerdePersoon == null)
             {
                 return false;
             }
 
-            var gwjMgr = Factory.Maak<IGroepsWerkJarenManager>();
-
             var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
                                         where v.VerzekeringsType.ID == (int)verzekering &&
-                                          (gwjMgr.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
-                                           gwjMgr.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
+                                          (_groepsWerkJarenMgr.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
+                                           _groepsWerkJarenMgr.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
                                         select v;
 
             return persoonsverzekeringen.FirstOrDefault() != null;
@@ -773,7 +674,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// <param name="type">Communicatietype waarvan voorkeur gevraagd wordt.</param>
         /// <returns>Voorkeurtelefoonnr, -maiadres,... van de gelieerde persoon.  
         /// <c>null</c> indien onbestaand.</returns>
-        private static string VoorkeurCommunicatie(GelieerdePersoon gp, CommunicatieTypeEnum type)
+        private string VoorkeurCommunicatie(GelieerdePersoon gp, CommunicatieTypeEnum type)
         {
             var query = from c in gp.Communicatie
                         where (c.CommunicatieType.ID == (int)type) && c.Voorkeur
@@ -788,7 +689,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// </summary>
         /// <param name="l">Lid van wie we afdelingsjaren moeten ophalen</param>
         /// <returns>Rij afdelingsjaren van het lid <paramref name="l"/></returns>
-        private static IEnumerable<AfdelingsJaarInfo> AfdelingsJaren(Lid l)
+        private IEnumerable<AfdelingsJaarInfo> AfdelingsJaren(Lid l)
         {
             if (l == null)
             {
@@ -815,7 +716,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// </summary>
         /// <param name="l">Lid van wie we afdelingen moeten ophalen</param>
         /// <returns>Rij afdelingen van het lid <paramref name="l"/></returns>
-        private static IEnumerable<AfdelingInfo> Afdelingen(Lid l)
+        private IEnumerable<AfdelingInfo> Afdelingen(Lid l)
         {
             if (l == null)
             {
@@ -841,7 +742,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// <param name="gebruikersRecht">Gebruikersrecht waarvan we het corresponderende GelieerdePersoonID zoeken</param>
         /// <returns>GelieerdePersoonID van de gelieerde persoon die hoort bij het gebruikersrecht
         /// <paramref name="gebruikersRecht"/>.  <c>null</c> indien onbekend.</returns>
-        private static int? GelieerdePersoonIDGet(GebruikersRecht gebruikersRecht)
+        private int? GelieerdePersoonIDGet(Chiro.Gap.Poco.Model.GebruikersRecht gebruikersRecht)
         {
             if (!gebruikersRecht.Gav.Persoon.Any())
             {
@@ -853,5 +754,105 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         }
 
         #endregion
+
     }
+
+    #region Private extension methods om gemakkelijker adressen te mappen.
+
+    /// <summary>
+    /// Extension methods om adressen makkelijk te kunnen mappen.
+    /// </summary>
+    internal static class AdresExtensies
+    {
+        /// <summary>
+        /// Bepaalt de straatnaam van een Adres
+        /// </summary>
+        /// <param name="a">Het adres</param>
+        /// <returns>De straatnaam</returns>
+        public static string StraatGet(this Adres a)
+        {
+            if (a is BelgischAdres)
+            {
+                var ba = a as BelgischAdres;
+
+                return ba.StraatNaam != null ? ba.StraatNaam.Naam : null;
+            }
+            Debug.Assert(a is BuitenLandsAdres);
+            return ((BuitenLandsAdres)a).Straat;
+        }
+
+        /// <summary>
+        /// Bepaalt de woonplaats van een adres.
+        /// </summary>
+        /// <param name="a">Het adres</param>
+        /// <returns>Naam van de woonplaats</returns>
+        public static string WoonPlaatsGet(this Adres a)
+        {
+            if (a is BelgischAdres)
+            {
+                var ba = (a as BelgischAdres);
+                return ba.WoonPlaats != null ? ba.WoonPlaats.Naam : null;
+            }
+            Debug.Assert(a is BuitenLandsAdres);
+            return ((BuitenLandsAdres)a).WoonPlaats;
+        }
+
+        /// <summary>
+        /// Bepaalt naam van het land van een adres
+        /// </summary>
+        /// <param name="a">Het adres</param>
+        /// <returns>Naam van het land van het adres</returns>
+        public static string LandGet(this Adres a)
+        {
+            if (a is BelgischAdres)
+            {
+                return Properties.Resources.Belgie;
+            }
+            Debug.Assert(a is BuitenLandsAdres);
+            return ((BuitenLandsAdres)a).Land.Naam;
+        }
+
+        /// <summary>
+        /// Geeft postcode voor een buitenlands adres, of <c>null</c> voor een Belgisch adres.
+        /// </summary>
+        /// <param name="a">Het adres</param>
+        /// <returns>Als <paramref name="a"/> een buitenlands adres is, de postcode, 
+        /// anders <c>null</c>.</returns>
+        public static string PostCodeGet(this Adres a)
+        {
+            if (a is BelgischAdres)
+            {
+                return null;
+            }
+            Debug.Assert(a is BuitenLandsAdres);
+            return ((BuitenLandsAdres)a).PostCode;
+        }
+
+        /// <summary>
+        /// Bepaalt het postnummer van een adres.
+        /// </summary>
+        /// <param name="a">Het adres</param>
+        /// <returns>Het postnummer</returns>
+        public static int? PostNummerGet(this Adres a)
+        {
+            if (a is BelgischAdres)
+            {
+                var ba = a as BelgischAdres;
+                if (ba.WoonPlaats != null)
+                {
+                    return ba.WoonPlaats.PostNummer;
+                }
+                if (ba.StraatNaam != null)
+                {
+                    return ba.StraatNaam.PostNummer;
+                }
+                return null;
+            }
+            Debug.Assert(a is BuitenLandsAdres);
+            return ((BuitenLandsAdres)a).PostNummer;
+        }
+    }
+
+    #endregion
+
 }

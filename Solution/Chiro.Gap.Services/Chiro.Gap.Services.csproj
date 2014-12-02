@@ -105,6 +105,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseService.cs" />
     <Compile Include="FaultExceptionHelper.cs" />
     <Compile Include="GavChecker.cs" />
     <Compile Include="GebruikersService.svc.cs">
@@ -177,10 +178,6 @@
     <ProjectReference Include="..\Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj">
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj">
-      <Project>{08F94344-8414-4136-8314-4B7380B10CD7}</Project>
-      <Name>Chiro.Gap.ServiceContracts.Mappers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>

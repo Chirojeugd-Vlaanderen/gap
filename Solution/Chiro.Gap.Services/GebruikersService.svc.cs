@@ -41,7 +41,7 @@ namespace Chiro.Gap.Services
     /// <summary>
     /// Interface voor de service voor gebruikersrechtenbeheer.
     /// </summary>
-    public class GebruikersService : IGebruikersService, IDisposable
+    public class GebruikersService : BaseService, IGebruikersService, IDisposable
     {
         #region Disposable etc
 
@@ -95,13 +95,17 @@ namespace Chiro.Gap.Services
         /// <param name="autorisatieMgr">Verantwoordelijke voor autorisatie</param>
         /// <param name="gebruikersRechtenMgr">Businesslogica aangaande gebruikersrechten</param>
         /// <param name="authenticatieManager">Levert de gebruikersnaam op</param>
+        /// <param name="ledenManager">Businesslogica m.b.t. de leden</param>
+        /// <param name="groepsWerkJarenManager">Businesslogica m.b.t. de groepswerkjaren.</param>
         /// <param name="gelieerdePersonenManager">Businesslogica i.f.v. gelieerde personen</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         public GebruikersService(IAutorisatieManager autorisatieMgr,
                                  IGebruikersRechtenManager gebruikersRechtenMgr,
                                  IAuthenticatieManager authenticatieManager,
+                                 ILedenManager ledenManager,
+                                 IGroepsWerkJarenManager groepsWerkJarenManager,
                                  IGelieerdePersonenManager gelieerdePersonenManager,
-                                 IRepositoryProvider repositoryProvider)
+                                 IRepositoryProvider repositoryProvider): base(ledenManager, groepsWerkJarenManager)
         {
             _repositoryProvider = repositoryProvider;
 

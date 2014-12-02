@@ -39,7 +39,7 @@ namespace Chiro.Gap.Services
     /// <summary>
     /// Service methods m.b.t. uitstappen
     /// </summary>
-    public class UitstappenService : IUitstappenService, IDisposable
+    public class UitstappenService : BaseService, IUitstappenService, IDisposable
     {
         // Repositories, verantwoordelijk voor data access
         private readonly IRepositoryProvider _repositoryProvider;
@@ -74,12 +74,16 @@ namespace Chiro.Gap.Services
         /// <param name="autorisatieManager">Businesslogica m.b.t. autorisatie</param>
         /// <param name="uitstappenManager">Businesslogica m.b.t. uitstappen</param>
         /// <param name="adressenManager">Businesslogica m.b.t. adressen</param>
+        /// <param name="ledenManager">Businesslogica m.b.t. leden</param>
+        /// <param name="groepsWerkJarenManager">Businesslogica m.b.t. groepswerkjaren</param>
         /// <param name="bivakSync"></param>
         public UitstappenService(IRepositoryProvider repositoryProvider,
                                  IAutorisatieManager autorisatieManager,
                                  IUitstappenManager uitstappenManager,
                                  IAdressenManager adressenManager,
-                                 IBivakSync bivakSync)
+                                 ILedenManager ledenManager,
+                                 IGroepsWerkJarenManager groepsWerkJarenManager,
+                                 IBivakSync bivakSync): base(ledenManager, groepsWerkJarenManager)
         {
             _repositoryProvider = repositoryProvider;
             _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();

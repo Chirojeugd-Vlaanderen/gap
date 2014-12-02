@@ -46,7 +46,7 @@ namespace Chiro.Gap.Services
     /// <summary>
     /// Service voor operaties op groepsniveau
     /// </summary>
-    public class GroepenService : IGroepenService, IDisposable
+    public class GroepenService : BaseService, IGroepenService, IDisposable
     {
         // Repositories, verantwoordelijk voor data access.
 
@@ -71,7 +71,6 @@ namespace Chiro.Gap.Services
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IGroepenManager _groepenMgr;
         private readonly IChiroGroepenManager _chiroGroepenMgr;
-        private readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
         private readonly IAdressenManager _adressenMgr;
 
         private readonly IFunctiesManager _functiesMgr;
@@ -105,8 +104,8 @@ namespace Chiro.Gap.Services
             IAutorisatieManager autorisatieMgr,
             IGroepenManager groepenMgr, IJaarOvergangManager jaarOvergangMgr,
             IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
-            IFunctiesManager functiesMgr, IAdressenManager adressenMgr,
-            IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IVeelGebruikt veelGebruikt)
+            IFunctiesManager functiesMgr, IAdressenManager adressenMgr, ILedenManager ledenMgr,
+            IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IVeelGebruikt veelGebruikt): base(ledenMgr, groepsWerkJarenMgr)
         {
             _repositoryProvider = repositoryProvider;
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
@@ -130,7 +129,6 @@ namespace Chiro.Gap.Services
 
             _groepenMgr = groepenMgr;
             _chiroGroepenMgr = chiroGroepenMgr;
-            _groepsWerkJarenMgr = groepsWerkJarenMgr;
             _functiesMgr = functiesMgr;
             _afdelingsJaarMgr = afdelingsJaarMgr;
             _adressenMgr = adressenMgr;

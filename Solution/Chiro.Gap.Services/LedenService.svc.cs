@@ -47,7 +47,7 @@ namespace Chiro.Gap.Services
     /// <summary>
     /// Service voor operaties op leden en leiding
     /// </summary>
-    public class LedenService : ILedenService, IDisposable
+    public class LedenService : BaseService, ILedenService, IDisposable
     {
 
         // Repositories, verantwoordelijk voor data access.
@@ -70,8 +70,6 @@ namespace Chiro.Gap.Services
 
         private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IVerzekeringenManager _verzekeringenMgr;
-        private readonly ILedenManager _ledenMgr;
-        private readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
         private readonly IGroepenManager _groepenMgr;
         private readonly IFunctiesManager _functiesMgr;
 
@@ -99,7 +97,7 @@ namespace Chiro.Gap.Services
                             ILedenManager ledenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
                             IGroepenManager groepenMgr, IFunctiesManager functiesMgr,
                             IRepositoryProvider repositoryProvider, ILedenSync ledenSync,
-                            IVerzekeringenSync verzekeringenSync)
+                            IVerzekeringenSync verzekeringenSync): base(ledenMgr, groepsWerkJarenMgr)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -117,8 +115,6 @@ namespace Chiro.Gap.Services
             _afdelingenRepo = repositoryProvider.RepositoryGet<Afdeling>();
 
             _verzekeringenMgr = verzekeringenMgr;
-            _ledenMgr = ledenMgr;
-            _groepsWerkJarenMgr = groepsWerkJarenMgr;
             _autorisatieMgr = autorisatieMgr;
             _groepenMgr = groepenMgr;
             _functiesMgr = functiesMgr;
