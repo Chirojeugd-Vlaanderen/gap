@@ -2,7 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
- * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
+ * Bijgewerkt gebruikersbeheer Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,16 +39,12 @@ namespace Chiro.Gap.WorkerInterfaces
         /// </returns>
         bool IsSuperGav();
 
-        /// <summary>
-        /// Controleert of de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft
-        /// op de gegeven <paramref name="groep"/>.
-        /// </summary>
-        /// <param name="groep">Groep waarvoor permissies te controleren.</param>
-        /// <param name="permissies">Permissies waarop te controleren.</param>
-        /// <returns><c>true</c> als de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft.</returns>
-        bool HeeftPermissies(Groep groep, Permissies permissies);
+        #region Te vervangen functies
 
-        #region Controleer of de aangelogde gebruiker GAV is van gegeven entity
+        // 'IsGav' is iets van vroeger. Toen had je wel rechten of geen rechten. Maar nu
+        // heb je permissies. Deze functies moeten vervangen worden door
+        // MagLezen(entity) en MagSchrijven(entity) of iets dergelijks.
+
         [Obsolete]
         bool IsGav(Groep groep);    // gebruik liever HeeftPermissies
         bool IsGav(CommunicatieVorm communicatie);
@@ -62,7 +58,6 @@ namespace Chiro.Gap.WorkerInterfaces
         bool IsGav(Afdeling a);
         bool IsGav(Categorie c);
         bool IsGav(Persoon p);
-        #endregion
 
         /// <summary>
         /// Controleert of de aangelogde persoon GAV is voor alle meegegeven
@@ -130,5 +125,29 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns><c>true</c> als de aangemelde gebruiker GAV is van alle gegeven 
         /// <paramref name="leden"/>, <c>false</c> in het andere geval</returns>
         bool IsGav(IList<Lid> leden);
+
+        #endregion
+
+        #region Nieuw gebruikersbeheer
+        /// <summary>
+        /// Controleert of de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft
+        /// op de gegeven <paramref name="groep"/>.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor permissies te controleren.</param>
+        /// <param name="permissies">Permissies waarop te controleren.</param>
+        /// <returns><c>true</c> als de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft.</returns>
+        bool HeeftPermissies(Groep groep, Permissies permissies);
+
+        /// <summary>
+        /// Geeft <c>true</c> als <paramref name="ik"/> de gegevens van
+        /// <paramref name="persoon2"/> mag lezen. Anders <c>false</c>.
+        /// </summary> 
+        /// <param name="ik">De persoon die wil lezen.</param>
+        /// <param name="persoon2">De persoon die <paramref name="ik"/> wil lezen.</param>
+        /// <returns><c>true</c> als <paramref name="ik"/> de gegevens van
+        /// <paramref name="persoon2"/> mag lezen. Anders <c>false</c>.</returns>
+        bool MagLezen(Persoon ik, Persoon persoon2);
+
+        #endregion
     }
 }

@@ -2,7 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
- * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
+ * Bijgewerkt gebruikersbeheer Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -384,7 +384,11 @@ namespace Chiro.Gap.Services
             //   exec auth.spWillekeurigeGroepToekennenAd 1455, 'Vervloet', 'Johan', '1977-03-08', 1
             // De parameters zijn AD-nummer, naam, voornaam, geboortedatum en geslacht.
 
-            Gav.Check(persoon);
+            // Mag ik mijn eigen gegevens lezen?
+            if (_autorisatieMgr.MagLezen(persoon, persoon))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
 
             return Mapper.Map<Persoon, GebruikersDetail>(persoon);
         }

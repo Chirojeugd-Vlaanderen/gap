@@ -166,7 +166,6 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.IsTrue(gr.VervalDatum <= DateTime.Now);
-            
         }
     }
 }

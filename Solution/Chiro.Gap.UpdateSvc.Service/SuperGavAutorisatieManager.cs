@@ -208,5 +208,9 @@ namespace Chiro.Gap.UpdateSvc.Service
             throw new NotImplementedException();
         }
 
+        public bool MagLezen(Persoon ik, Persoon persoon2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

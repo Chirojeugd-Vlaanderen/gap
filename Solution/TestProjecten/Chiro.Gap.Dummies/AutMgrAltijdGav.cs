@@ -148,6 +148,9 @@ namespace Chiro.Gap.Dummies
             return true;
         }
 
-
+        public bool MagLezen(Persoon ik, Persoon persoon2)
+        {
+            return true;
+        }
     }
 }

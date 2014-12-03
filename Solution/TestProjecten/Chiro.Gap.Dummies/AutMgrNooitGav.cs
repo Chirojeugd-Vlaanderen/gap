@@ -143,11 +143,14 @@ namespace Chiro.Gap.Dummies
             return false;
         }
 
-
         public bool HeeftPermissies(Groep groep, Domain.Permissies permissies)
         {
             return false;
         }
 
+        public bool MagLezen(Persoon ik, Persoon persoon2)
+        {
+            return false;
+        }
     }
 }

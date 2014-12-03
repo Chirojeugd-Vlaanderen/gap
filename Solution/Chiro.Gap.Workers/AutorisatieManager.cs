@@ -254,6 +254,55 @@ namespace Chiro.Gap.Workers
                 gr => gr.Persoon.AdNummer == adNummer
                     && (gr.Test(Permissies.Gav))));
         }
+
+        /// <summary>
+        /// Geeft <c>true</c> als <paramref name="ik"/> de gegevens van
+        /// <paramref name="persoon2"/> mag lezen. Anders <c>false</c>.
+        /// </summary> 
+        /// <param name="ik">De persoon die wil lezen.</param>
+        /// <param name="persoon2">De persoon die <paramref name="ik"/> wil lezen.</param>
+        /// <returns><c>true</c> als <paramref name="ik"/> de gegevens van
+        /// <paramref name="persoon2"/> mag lezen. Anders <c>false</c>.</returns>
+        public bool MagLezen(Persoon ik, Persoon persoon2)
+        {
+            var mijnRechten = ik.GelieerdePersoon.SelectMany(gp => gp.Groep.GebruikersRechtV2);
+
+            // Als ik mijn eigen info mag lezen, en ik ben persoon2, dan is het ok.
+            if (Equals(ik, persoon2) && mijnRechten.Any(gr => gr.Test(Permissies.EigenInfoLezen)))
+            {
+                return true;
+            }
+
+            // Als ik alles mag lezen van mijn groep, en persoon2 is gelieerd aan mijn groep, dan
+            // is het ok.
+            foreach (var gr in mijnRechten.Where(gr2 => gr2.Test(Permissies.AllesLezen)))
+            {
+                if (persoon2.GelieerdePersoon.Any(gp => Equals(gp.Groep, gr.Groep)))
+                {
+                    return true;
+                }
+            }
+
+            // als ik de personen van mijn afdeling mag lezen, is het in orde als persoon2 in mijn 
+            // afdeling zit.
+            foreach (var gr in mijnRechten.Where(gr2 => gr2.Test(Permissies.AfdelingLezen)))
+            {
+                var huidigWerkJaar = gr.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
+                var mijnLid = (from l in ik.GelieerdePersoon.SelectMany(gp => gp.Lid)
+                               where Equals(l.GroepsWerkJaar, huidigWerkJaar)
+                               select l).FirstOrDefault();
+                var persoon2Lid = (from l in persoon2.GelieerdePersoon.SelectMany(gp => gp.Lid)
+                                   where Equals(l.GroepsWerkJaar, huidigWerkJaar)
+                                   select l).FirstOrDefault();
+                if (mijnLid.AfdelingsJaarIDs.Any(ajid => persoon2Lid.AfdelingsJaarIDs.Contains(ajid)))
+                {
+                    return true;
+                }
+            }
+
+            // Ik geef op.
+            return false;
+        }
     }
 
     /// <summary>
