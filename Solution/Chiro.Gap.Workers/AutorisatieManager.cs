@@ -2,7 +2,7 @@
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
- * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
+ * Bijgewerkt gebruikersbeheer Copyright 2014 Johan Vervloet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -199,7 +199,7 @@ namespace Chiro.Gap.Workers
                         gp =>
                         gp.Groep.GebruikersRechtV2.Any(
                             gr => gr.Persoon.AdNummer == adNummer && 
-                                (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))));
+                                (gr.Test(Permissies.Gav)))));
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace Chiro.Gap.Workers
                     gp =>
                     gp.Groep.GebruikersRechtV2.Any(
                         gr => gr.Persoon.AdNummer == adNummer && 
-                            (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))));
+                            (gr.Test(Permissies.Gav)))));
 
         }
 
@@ -236,7 +236,7 @@ namespace Chiro.Gap.Workers
 
             return adNummer != null && leden.Select(ld => ld.GroepsWerkJaar.Groep).Distinct().All(g => g.GebruikersRechtV2.Any(
                 gr => gr.Persoon.AdNummer == adNummer
-                    && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)));
+                    && (gr.Test(Permissies.Gav))));
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace Chiro.Gap.Workers
 
             return adNummer != null && groepen.All(g => g.GebruikersRechtV2.Any(
                 gr => gr.Persoon.AdNummer == adNummer
-                    && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now)));
+                    && (gr.Test(Permissies.Gav))));
         }
     }
 
