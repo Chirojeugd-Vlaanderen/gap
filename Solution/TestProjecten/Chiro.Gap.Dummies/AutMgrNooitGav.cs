@@ -149,10 +149,5 @@ namespace Chiro.Gap.Dummies
             return false;
         }
 
-
-        public bool HeeftPermissies(IList<GelieerdePersoon> gelieerdePersonen, Domain.Permissies permissies)
-        {
-            return false;
-        }
     }
 }

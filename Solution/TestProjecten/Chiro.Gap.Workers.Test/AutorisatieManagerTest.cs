@@ -165,7 +165,7 @@ namespace Chiro.Gap.Workers.Test
         /// dat je GAV bent.
         /// </summary>
         [TestMethod()]
-        public void RechtenMaarGeenGavGelieerdePersoonTest()
+        public void RechtenMaarGeenPermissiesGelieerdePersoonTest()
         {
             // ARRANGE
 

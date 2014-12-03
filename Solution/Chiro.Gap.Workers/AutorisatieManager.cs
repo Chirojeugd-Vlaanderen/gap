@@ -76,35 +76,17 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Controleert of de aangelogde persoon de gevraagde <param name="permissies" heeft voor alle meegegeven
-        /// <paramref name="gelieerdePersonen"/>
+        /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven persoon <paramref name="p"/>.
         /// </summary>
-        /// <param name="gelieerdePersonen">Gelieerde personen waarvoor permissies
-        /// nagekeken moeten worden.</param>
-        /// <param name="permissies">Na te kijken permissies.</param>
+        /// <param name="p">Persoon waarvoor gebruikersrecht nagekeken moet worden</param>
         /// <returns>
-        /// <c>true</c> als de aangelogde persoon de gegeven <paramref name="permissies"/> heeft voor alle meegegeven
-        /// <paramref name="gelieerdePersonen"/>
+        /// <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven persoon
+        /// <paramref name="p"/>.
         /// </returns>
-        public bool HeeftPermissies(IList<GelieerdePersoon> gelieerdePersonen, Permissies permissies)
-        {
-            // Als er een gelieerde persoon is waarvoor alle GAV's een AD-nummer hebben
-            // verschillend van het mijne, dan ben ik geen GAV voor alle gegeven personen.
-
-            int? adNummer = _authenticatieMgr.AdNummerGet();
-            return (from gp in gelieerdePersonen
-                    where
-                        gp.Groep.GebruikersRechtV2.All(
-                            gr => gr.Persoon.AdNummer != adNummer ||
-                            (!gr.Test(permissies)))
-                    select gp).FirstOrDefault() == null;
-        }
-
         public bool IsGav(Groep groep)
         {
             return HeeftPermissies(groep, Permissies.Gav);
         }
-
         public bool IsGav(Persoon p)
         {
             return p.GelieerdePersoon.Any(gp => IsGav(gp.Groep));
@@ -163,7 +145,16 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public bool IsGav(IList<GelieerdePersoon> gelieerdePersonen)
         {
-            return HeeftPermissies(gelieerdePersonen, Permissies.Gav);
+            // Als er een gelieerde persoon is waarvoor alle GAV's een AD-nummer hebben
+            // verschillend van het mijne, dan ben ik geen GAV voor alle gegeven personen.
+
+            int? adNummer = _authenticatieMgr.AdNummerGet();
+            return (from gp in gelieerdePersonen
+                    where
+                        gp.Groep.GebruikersRechtV2.All(
+                            gr => gr.Persoon.AdNummer != adNummer ||
+                            (!gr.Test(Permissies.Gav)))
+                    select gp).FirstOrDefault() == null;
         }
 
         /// <summary>
