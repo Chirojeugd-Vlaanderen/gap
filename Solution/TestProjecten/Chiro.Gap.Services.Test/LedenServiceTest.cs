@@ -150,6 +150,14 @@ namespace Chiro.Gap.Services.Test
                             };
             gwj.Groep = groep;
 
+            groep.GebruikersRechtV2.Add(new GebruikersRechtV2
+            {
+                Groep = groep,
+                Persoon = new Persoon { AdNummer = 12345 },
+                VervalDatum = DateTime.Now.AddDays(1),
+                Permissies = Permissies.Gav
+            });
+
             var contactPersoon = new Functie
                                      {
                                          ID = 1,
@@ -209,12 +217,6 @@ namespace Chiro.Gap.Services.Test
             var authenticatieMgrMock = new Mock<IAuthenticatieManager>();
             authenticatieMgrMock.Setup(src => src.GebruikersNaamGet()).Returns("testGebruiker");
             authenticatieMgrMock.Setup(src => src.AdNummerGet()).Returns(12345);
-            groep.GebruikersRechtV2.Add(new GebruikersRechtV2
-                                          {
-                                              Groep = groep,
-                                              Persoon = new Persoon { AdNummer = 12345 },
-                                              VervalDatum = DateTime.Now.AddDays(1),
-                                          });
 
             Factory.InstantieRegistreren<IAutorisatieManager>(new AutorisatieManager(authenticatieMgrMock.Object));
 
