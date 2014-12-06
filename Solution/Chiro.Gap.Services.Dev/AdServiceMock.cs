@@ -70,7 +70,7 @@ namespace Chiro.Gap.Services.Dev
         /// </summary>
         /// <param name="adNummer">AD-nummer</param>
         /// <returns>Dummy-gebruikersnaam voor persoon met gegeven adnr.</returns>
-        public string gebruikersNaamOphalen(int? adNummer)
+        public string gebruikersNaamOphalen(int adNummer)
         {
             return String.Format("ONGELDIG-{0}", adNummer);
         }

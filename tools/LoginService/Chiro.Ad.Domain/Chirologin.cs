@@ -203,7 +203,7 @@ namespace Chiro.Ad.Domain
         #endregion
 
         /// <summary>
-        /// De standaardconstructor
+        /// De standaardconstructor maakt een nieuwe login. Of hergebruikt een bestaande.
         /// </summary>
         /// <param name="domein">Rootpad in Active Directory</param>
         /// <param name="ouPad">Relatief pad naar de organisational unit waar nieuwe accounts in aangemaakt worden</param>
@@ -299,6 +299,25 @@ namespace Chiro.Ad.Domain
                 }
             }
         }
+
+        /// <summary>
+        /// Zoekt een bestaande login op AD-nummer.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer van bestaande login</param>
+        public Chirologin(int adNummer)
+        {
+            _gebruiker = LdapHelper.ZoekenUniek(Domein, string.Format("(pager={0})", adNummer));
+        }
+
+        /// <summary>
+        /// Zoekt een bestaande login op gebruikersnaam.
+        /// </summary>
+        /// <param name="gebruikersNaam">Te zoeken gebruikersnaam.</param>
+        public Chirologin(string gebruikersNaam)
+        {
+            _gebruiker = LdapHelper.ZoekenUniek(Domein, string.Concat("sAMAccountName=", gebruikersNaam));
+        }
+
 
         /// <summary>
         /// Login samenstellen op basis van voornaam en naam, en het opgegeven aantal letters van elk

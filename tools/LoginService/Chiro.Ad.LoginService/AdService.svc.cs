@@ -138,12 +138,14 @@ namespace Chiro.Ad.LoginService
 
         public int? AdNummerOpHalen(string userName)
         {
-            throw new NotImplementedException();
+            var gebruiker = new Chirologin(userName);
+            return gebruiker.AdNr;
         }
 
-        public string gebruikersNaamOphalen(int? adNummer)
+        public string gebruikersNaamOphalen(int adNummer)
         {
-            throw new NotImplementedException();
+            var gebruiker = new Chirologin(adNummer);
+            return gebruiker.Login;
         }
     }
 }

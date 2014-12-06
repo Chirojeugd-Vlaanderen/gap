@@ -81,7 +81,7 @@ namespace Chiro.Gap.Workers
                 return null;
             }
 
-            return _veelGebruikt.GebruikersNaamOphalen(persoon.AdNummer);
+            return _veelGebruikt.GebruikersNaamOphalen(persoon.AdNummer.Value);
         }
     }
 }

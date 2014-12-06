@@ -63,7 +63,7 @@ namespace Chiro.Gap.WorkerInterfaces
         /// </summary>
         /// <param name="adNummer">AD-nummer van persoon wiens gebruikersnaam gezocht is.</param>
         /// <returns>De gebruikersnaam van de persoon met gegeven AD-nummer.</returns>
-        string GebruikersNaamOphalen(int? adNummer);
+        string GebruikersNaamOphalen(int adNummer);
 
         /// <summary>
         /// Invalideert de gecachete gebruikersnaam van de persoon met gegeven <paramref name="adNummer"/>.

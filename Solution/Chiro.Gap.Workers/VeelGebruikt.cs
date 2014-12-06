@@ -132,7 +132,7 @@ namespace Chiro.Gap.Workers
         /// </summary>
         /// <param name="adNummer">AD-nummer van persoon wiens gebruikersnaam gezocht is.</param>
         /// <returns>De gebruikersnaam van de persoon met gegeven AD-nummer.</returns>
-        public string GebruikersNaamOphalen(int? adNummer)
+        public string GebruikersNaamOphalen(int adNummer)
         {
             string gebruikersNaam = (string)_cache.Get(string.Format(UserNameCacheKey, adNummer));
 
