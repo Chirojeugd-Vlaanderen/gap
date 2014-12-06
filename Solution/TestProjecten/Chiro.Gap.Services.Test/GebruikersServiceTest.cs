@@ -111,7 +111,10 @@ namespace Chiro.Gap.Services.Test
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
-            repositoryProviderMock.Setup(src => src.RepositoryGet<GebruikersRechtV2>()).Returns(new DummyRepo<GebruikersRechtV2>(new List<GebruikersRechtV2>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GebruikersRechtV2>())
+                .Returns(new DummyRepo<GebruikersRechtV2>(new List<GebruikersRechtV2>()));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                .Returns(new DummyRepo<Groep>(new List<Groep> {gelieerdePersoon.Groep}));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // Mock AD-service

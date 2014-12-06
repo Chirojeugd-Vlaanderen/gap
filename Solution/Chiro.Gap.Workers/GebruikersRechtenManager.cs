@@ -114,12 +114,15 @@ namespace Chiro.Gap.Workers
         /// <param name="vervalDatum">
         /// Vervaldatum gebruikersrecht
         /// </param>
+        /// <param name="permissies">
+        /// Toe te kennen permissies
+        /// </param>
         /// <returns>
         /// Deze method is PRIVATE en moet dat ook blijven, want er wordt niet gecheckt
         /// op fouten, en er worden geen notificatiemails gestuurd.  Deze method mag enkel
         /// onrechtstreeks gebruikt worden, via de publieke methods <see name="ToekennenOfVerlengen"/>
         /// </returns>
-        private GebruikersRechtV2 ToekennenOfVerlengen(Persoon persoon, Groep groep, DateTime vervalDatum)
+        private GebruikersRechtV2 ToekennenOfWijzigen(Persoon persoon, Groep groep, Permissies permissies, DateTime vervalDatum)
         {
             // Eerst controleren of de groep nog niet aan de gebruiker is/was gekoppeld
             var gebruikersrecht = (from gr in persoon.GebruikersRechtV2
@@ -129,17 +132,19 @@ namespace Chiro.Gap.Workers
             if (gebruikersrecht == null)
             {
                 // Nog geen gebruikersrecht.  Maak aan.
-                gebruikersrecht = new GebruikersRechtV2 { ID = 0, Persoon = persoon, Groep = groep };
+                gebruikersrecht = new GebruikersRechtV2 { ID = 0, Persoon = persoon, Groep = groep, VervalDatum = vervalDatum };
                 persoon.GebruikersRechtV2.Add(gebruikersrecht);
                 groep.GebruikersRechtV2.Add(gebruikersrecht);
             }
-            else if (!gebruikersrecht.IsVerlengbaar)
+            else if (gebruikersrecht.VervalDatum > vervalDatum || gebruikersrecht.IsVerlengbaar)
             {
-                throw new FoutNummerException(FoutNummer.GebruikersRechtNietVerlengbaar,
-                                              Resources.GebruikersRechtNietVerlengbaar);
+                // Gebruikersrecht vroeger laten vervallen kan altijd. Verlengen enkel
+                // als IsVerlengbaar is gezet.
+                gebruikersrecht.VervalDatum = vervalDatum;
             }
 
-            gebruikersrecht.VervalDatum = vervalDatum;
+            // Gebruikersrecht kan altijd gewijzigd worden
+            gebruikersrecht.Permissies = permissies;
 
             return gebruikersrecht;
         }
@@ -147,17 +152,18 @@ namespace Chiro.Gap.Workers
 
         /// <summary>
         /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="persoon"/>.
-        /// Als de gebruikersrechten al bestonden, worden ze indien mogelijk verlengd.
+        /// De vervaldatum wordt enkel verlaat als het gebruikersrecht verlengbaar is.
         /// </summary>
         /// <param name="persoon">Account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
         /// <param name="groep">Groep waarvoor <paramref name="persoon"/> gebruikersrecht moet krijgen</param>
+        /// <param name="permissies">Toe te kennen permissies.</param>
         /// <returns>Het gebruikersrecht</returns>
         /// <remarks>Persisteert niet.</remarks>
-        public GebruikersRechtV2 ToekennenOfVerlengen(Persoon persoon, Groep groep)
+        public GebruikersRechtV2 ToekennenOfWijzigen(Persoon persoon, Groep groep, Permissies permissies)
         {
             DateTime vervaldatum = NieuweVervalDatum();
 
-            return ToekennenOfVerlengen(persoon, groep, vervaldatum);
+            return ToekennenOfWijzigen(persoon, groep, permissies, vervaldatum);
         }
 
         /// <summary>

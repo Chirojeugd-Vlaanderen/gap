@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Workers.Test
@@ -110,7 +111,7 @@ namespace Chiro.Gap.Workers.Test
             // ACT
 
             var target = new GebruikersRechtenManager();
-            var actual = target.ToekennenOfVerlengen(gelieerdePersoon.Persoon, gelieerdePersoon.Groep);
+            var actual = target.ToekennenOfWijzigen(gelieerdePersoon.Persoon, gelieerdePersoon.Groep, Permissies.Gav);
 
             // ASSERT
 

@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.WorkerInterfaces
 {
@@ -52,13 +53,14 @@ namespace Chiro.Gap.WorkerInterfaces
 
         /// <summary>
         /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="persoon"/>.
-        /// Als de gebruikersrechten al bestonden, worden ze indien mogelijk verlengd.
+        /// De vervaldatum wordt enkel verlaat als het gebruikersrecht verlengbaar is.
         /// </summary>
-        /// <param name="persoon">persoon die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
-        /// <param name="groep">groep waarvoor <paramref name="persoon"/> gebruikersrecht moet krijgen</param>
+        /// <param name="persoon">Account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
+        /// <param name="groep">Groep waarvoor <paramref name="persoon"/> gebruikersrecht moet krijgen</param>
+        /// <param name="permissies">Toe te kennen permissies.</param>
         /// <returns>Het gebruikersrecht</returns>
         /// <remarks>Persisteert niet.</remarks>
-        GebruikersRechtV2 ToekennenOfVerlengen(Persoon persoon, Groep groep);
+        GebruikersRechtV2 ToekennenOfWijzigen(Persoon persoon, Groep groep, Permissies permissies);
 
         /// <summary>
         /// Levert het gebruikersrecht op dat een <paramref name="gelieerdePersoon"/> heeft op zijn eigen groep. 

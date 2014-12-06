@@ -450,7 +450,7 @@
                     <p><%: Html.ActionLink("Chirologin maken", "LoginMaken", new {Controller = "GebruikersRecht", id = Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID}) %></p>
                     <%
                 }
-                else if (Model.PersoonLidGebruikersInfo.GebruikersInfo.VervalDatum < DateTime.Now)
+                else if (Model.PersoonLidGebruikersInfo.GebruikersInfo.VervalDatum < DateTime.Now || Model.PersoonLidGebruikersInfo.GebruikersInfo.Permissies == Permissies.Geen)
                 {
                     // Account zonder gebruikersrecht
                     %>

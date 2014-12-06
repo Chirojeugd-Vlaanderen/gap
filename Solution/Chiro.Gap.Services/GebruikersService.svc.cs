@@ -150,6 +150,13 @@ namespace Chiro.Gap.Services
             var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonId);
             Gav.Check(gelieerdePersoon);
 
+            if (gebruikersRechten == null)
+            {
+                // Als er geen gebruikersrechten meegegeven zijn, dan geven we de gelieerde persoon
+                // rechten 'geen' op zijn eigen groep.
+                gebruikersRechten = new[] { new GebruikersRecht { GroepID = gelieerdePersoon.Groep.ID, Permissies = Permissies.Geen } };
+            }
+
             var p = gelieerdePersoon.Persoon;
 
             if (p.AdNummer == null)
@@ -214,20 +221,11 @@ namespace Chiro.Gap.Services
                 return;
             }
 
-            // Momenteel ondersteunen we enkel GAV-rollen
-            var nietOndersteund = (from gr in gebruikersRechten
-                                   where gr.Permissies != Permissies.Gav
-                                   select gr).FirstOrDefault();
-            if (nietOndersteund != null)
+            foreach (var gr in gebruikersRechten)
             {
-                throw new NotSupportedException(String.Format(Properties.Resources.RolNietOndersteund,
-                                                              nietOndersteund.Permissies));
-            }
-
-            foreach (var groep in gebruikersRechten.Select(recht => _groepenRepo.ByID(recht.GroepID)))
-            {
+                var groep = _groepenRepo.ByID(gr.GroepID);
                 Gav.Check(groep);
-                _gebruikersRechtenMgr.ToekennenOfVerlengen(persoon, groep);
+                _gebruikersRechtenMgr.ToekennenOfWijzigen(persoon, groep, gr.Permissies);
             }
 
             _rechtenRepo.SaveChanges();
