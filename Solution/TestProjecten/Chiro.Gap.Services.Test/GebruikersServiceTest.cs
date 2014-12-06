@@ -167,5 +167,46 @@ namespace Chiro.Gap.Services.Test
 
             Assert.IsTrue(gr.VervalDatum <= DateTime.Now);
         }
+
+        [TestMethod()]
+        public void GebruikerOphalenTest()
+        {
+            // ARRANGE
+
+            const int mijnAdNr = 1;
+            const string mijnLogin = "joe";
+
+            var gebruikersRecht = new GebruikersRechtV2
+            {
+                Persoon = new Persoon { ID = 2, AdNummer = mijnAdNr },
+                Groep = new ChiroGroep { ID = 3 },
+                Permissies = Permissies.Gav,
+                VervalDatum = DateTime.Now.AddDays(1)
+            };
+            gebruikersRecht.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
+            gebruikersRecht.Groep.GebruikersRechtV2.Add(gebruikersRecht);
+
+            var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
+            var autorisatieMangerMock = new Mock<IAutorisatieManager>();
+
+            authenticatieManagerMock.Setup(src => src.AdNummerGet()).Returns(mijnAdNr);
+            autorisatieMangerMock.Setup(svc => svc.MagLezen(gebruikersRecht.Persoon, gebruikersRecht.Persoon)).Verifiable();
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Persoon>()).Returns(new DummyRepo<Persoon>(new List<Persoon> {gebruikersRecht.Persoon}));
+
+            Factory.InstantieRegistreren(authenticatieManagerMock.Object);
+            Factory.InstantieRegistreren(autorisatieMangerMock.Object);
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GebruikersService>();
+            target.GebruikerOphalen(mijnLogin);
+
+            // ASSERT
+
+            autorisatieMangerMock.Verify(src => src.MagLezen(gebruikersRecht.Persoon, gebruikersRecht.Persoon), Times.AtLeastOnce());
+        }
     }
 }
