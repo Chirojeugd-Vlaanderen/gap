@@ -34,8 +34,10 @@ namespace Chiro.Gap.Poco.Model
         public DateTime? VervalDatum { get; set; }
         public override byte[] Versie { get; set; }
 
-        public Persoon Persoon { get; set; }
-        public Groep Groep { get; set; }
+        // virtual for lazy loading
+
+        public virtual Persoon Persoon { get; set; }
+        public virtual Groep Groep { get; set; }
         internal int PermissiesInt { get; set; }
 
         /// <summary>
