@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using Chiro.Adf.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ServiceModel;
 
 using Chiro.Ad.ServiceContracts;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Ad.Test
 {
