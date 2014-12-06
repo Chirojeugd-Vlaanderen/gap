@@ -1,6 +1,17 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7616F15C-CCB6-48AF-9DC4-5AFB580354F4}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		LoginService.vsmdi = LoginService.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjecten", "TestProjecten", "{E8B9DA2D-7370-4CDA-AD12-7C3DA0933278}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.ServiceContracts", "Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj", "{D1E7BBDD-D833-4DC1-AF39-287448612425}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.Domain", "Chiro.Ad.Domain\Chiro.Ad.Domain.csproj", "{3C42C96B-2F4C-46DC-B24D-0ECEB9BC4EDD}"
@@ -10,13 +21,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.Test", "Chiro.Ad.Test\Chiro.Ad.Test.csproj", "{34840A20-9F35-4509-979D-CC86B9F0C249}"
 	ProjectSection(ProjectDependencies) = postProject
 		{12DF63A0-A651-43E9-B72C-293C79EBB068} = {12DF63A0-A651-43E9-B72C-293C79EBB068}
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7616F15C-CCB6-48AF-9DC4-5AFB580354F4}"
-	ProjectSection(SolutionItems) = preProject
-		Local.testsettings = Local.testsettings
-		LoginService.vsmdi = LoginService.vsmdi
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.DommeTests", "DommeTests.cs\Chiro.Ad.DommeTests.csproj", "{6E6E9B57-EDED-4309-9D7F-36243CC3EA12}"
@@ -33,12 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.DependencyInjecti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc", "..\..\Solution\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj", "{C100E957-CEE2-4707-BF13-C64553C28C7B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjecten", "TestProjecten", "{E8B9DA2D-7370-4CDA-AD12-7C3DA0933278}"
-EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = LoginService.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -94,5 +93,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6E6E9B57-EDED-4309-9D7F-36243CC3EA12} = {E8B9DA2D-7370-4CDA-AD12-7C3DA0933278}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = LoginService.vsmdi
 	EndGlobalSection
 EndGlobal
