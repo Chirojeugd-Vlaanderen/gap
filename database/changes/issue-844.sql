@@ -46,6 +46,13 @@ JOIN auth.GavSchap gs on gav.GavID = gs.GavID
 GROUP BY gs.PersoonID, gr.GroepID
 GO
 
+CREATE INDEX IDX_GebruikersRechtV2_GroepID ON auth.GebruikersRechtV2(GroepID) INCLUDE(PersoonID, VervalDatum, Permissies);
+GO
+
+CREATE INDEX IDX_GebruikersRechtV2_PersoonID ON auth.GebruikersRechtV2(PersoonID) INCLUDE(GroepID, VervalDatum, Permissies);
+GO
+
+
 DROP TABLE auth.GavSchap;
 GO
 DROP TABLE auth.GebruikersRecht;
