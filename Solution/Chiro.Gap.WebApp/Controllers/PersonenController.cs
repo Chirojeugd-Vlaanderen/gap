@@ -564,24 +564,24 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new PersoonEnLidModel();
             BaseModelInit(model, groepID);
 
-            model.PersoonLidInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(id));
+            model.PersoonLidGebruikersInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidGebruikersInfo>(l => l.AlleDetailsOphalen(id));
 
-            if (!model.PersoonLidInfo.PersoonDetail.SterfDatum.HasValue)
+            if (!model.PersoonLidGebruikersInfo.PersoonDetail.SterfDatum.HasValue)
             {
                 AfdelingenOphalen(model);
 
-                model.KanVerzekerenLoonVerlies = model.PersoonLidInfo.PersoonDetail.GeboorteDatum != null &&
+                model.KanVerzekerenLoonVerlies = model.PersoonLidGebruikersInfo.PersoonDetail.GeboorteDatum != null &&
                                                  DateTime.Today.Year -
-                                                 ((DateTime)model.PersoonLidInfo.PersoonDetail.GeboorteDatum).Year >=
+                                                 ((DateTime)model.PersoonLidGebruikersInfo.PersoonDetail.GeboorteDatum).Year >=
                                                  Settings.Default.LoonVerliesVanafLeeftijd;
                 model.PrijsVerzekeringLoonVerlies = Settings.Default.PrijsVerzekeringLoonVerlies;
-                model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam;
+                model.Titel = model.PersoonLidGebruikersInfo.PersoonDetail.VolledigeNaam;
 
                 return View("Bewerken", model);
             }
             else
             {
-                model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam + " (†)";
+                model.Titel = model.PersoonLidGebruikersInfo.PersoonDetail.VolledigeNaam + " (†)";
                 return View("OverledenPersoon", model);
             }
         }
@@ -595,10 +595,10 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         private void AfdelingenOphalen(PersoonEnLidModel model)
         {
-            if (model.PersoonLidInfo.LidInfo != null)
+            if (model.PersoonLidGebruikersInfo.LidInfo != null)
             {
                 model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
-                (groep => groep.ActieveAfdelingenOphalen(model.PersoonLidInfo.LidInfo.GroepsWerkJaarID));
+                (groep => groep.ActieveAfdelingenOphalen(model.PersoonLidGebruikersInfo.LidInfo.GroepsWerkJaarID));
             }
         }
 

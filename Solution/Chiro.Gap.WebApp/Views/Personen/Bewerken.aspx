@@ -37,12 +37,12 @@
     <% // dialog voor het weergeven van het info-kadertje %>
     <div id="extraInfoDialog" hidden><img src="<%= ResolveUrl("~/Content/images/loading.gif") %>"/></div>
     <input id="groepID" value="<%= Model.GroepID %>" hidden readonly/>
-    <% if (Model.PersoonLidInfo.LidInfo != null)
+    <% if (Model.PersoonLidGebruikersInfo.LidInfo != null)
        { %>
-           <input id="lidIdH" value="<%= Model.PersoonLidInfo.LidInfo.LidID %>" hidden readonly/>
-           <input id="gwJaar" value="<%= Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID %>" hidden readonly/>
+           <input id="lidIdH" value="<%= Model.PersoonLidGebruikersInfo.LidInfo.LidID %>" hidden readonly/>
+           <input id="gwJaar" value="<%= Model.PersoonLidGebruikersInfo.LidInfo.GroepsWerkJaarID %>" hidden readonly/>
            
-           <input id="lidType" value="<%=Model.PersoonLidInfo.LidInfo.Type %>" hidden readonly/>
+           <input id="lidType" value="<%=Model.PersoonLidGebruikersInfo.LidInfo.Type %>" hidden readonly/>
       <% }
        else
        { %>
@@ -51,8 +51,8 @@
            <input id="lidType" value="geenType" hidden readonly/>
       <% }%>
    <input id="werkjaar" value="<%= Model.HuidigWerkJaar %>"hidden readonly/>
-    <input id="GPid" value="<%=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID  %>" hidden readonly/>
-    <input id="versieString" value="<%=Model.PersoonLidInfo.PersoonDetail.VersieString %>" hidden readonly/> 
+    <input id="GPid" value="<%=Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID  %>" hidden readonly/>
+    <input id="versieString" value="<%=Model.PersoonLidGebruikersInfo.PersoonDetail.VersieString %>" hidden readonly/> 
      
     <div id="afdelingenDialog" hidden>
         <p>Selecteer de afdelingen:</p>
@@ -101,7 +101,7 @@
            <tr>
                <td>Voornaam</td>
                <td>
-                   <b id="voornaamInfo"><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VoorNaam) %></b>
+                   <b id="voornaamInfo"><%=Html.DisplayFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.VoorNaam) %></b>
                </td> 
                <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkVoorNaam" style="cursor: pointer"></div></td>
                <td id="voornaamIconen">
@@ -110,7 +110,7 @@
            <tr>
                <td>Naam</td>
                <td>
-                   <b id="achternaamInfo"><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.Naam) %></b>
+                   <b id="achternaamInfo"><%=Html.DisplayFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.Naam) %></b>
                </td> 
                <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkAchterNaam" style="cursor: pointer"></div></td>
                <td id="achternaamIconen">
@@ -118,7 +118,7 @@
            </tr>
            <tr>
                <td>Geslacht</td> 
-               <td id="geslachtsInfo"><%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.Geslacht) %></td>
+               <td id="geslachtsInfo"><%=Html.DisplayFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.Geslacht) %></td>
                <td><div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkGeslacht" style="cursor: pointer"></div></td>
                <td id="geslachtIconen"></td>
            </tr>
@@ -126,7 +126,7 @@
                <td>GeboorteDatum</td>
                <td id="gdTekst"></td>
                <td id="gdInput" style="text-align: left" hidden>
-                   <input id="gdInfo" value="<%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>"/>
+                   <input id="gdInfo" value="<%=Html.DisplayFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.GeboorteDatum)%>"/>
                </td>
                <td style="text-align: center">
                    <div class="ui-icon ui-icon-pencil" title="Bewerken" id="bewerkGd" style="cursor: pointer"></div>
@@ -135,7 +135,7 @@
            </tr>
 
           <% int counter = 0; %>
-          <% if (!Model.PersoonLidInfo.PersoonsAdresInfo.Any())
+          <% if (!Model.PersoonLidGebruikersInfo.PersoonsAdresInfo.Any())
              { %>
                <tr id="adressenLeeg">
                    <td>Adres</td>
@@ -146,7 +146,7 @@
                <% }
              else
              { %>
-           <% foreach (PersoonsAdresInfo pa in ViewData.Model.PersoonLidInfo.PersoonsAdresInfo)
+           <% foreach (PersoonsAdresInfo pa in ViewData.Model.PersoonLidGebruikersInfo.PersoonsAdresInfo)
               { %>
                <tr id="adressen">      
                     <% //Hidden fields om gegevens in jQuery uit te kunnen lezen %>
@@ -167,7 +167,7 @@
                         <% } else { %> 
                             <%= Html.Encode(String.Format("{0} {3} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode)) %>
                         <% }%>
-                        <% if (Model.PersoonLidInfo.PersoonDetail.VoorkeursAdresID == pa.PersoonsAdresID)
+                        <% if (Model.PersoonLidGebruikersInfo.PersoonDetail.VoorkeursAdresID == pa.PersoonsAdresID)
                            { %>
                              <div class="ui-icon ui-icon-mail-closed" id="vkAdres"title="Voorkeurs adres. Klik voor meer info"  style="cursor: pointer"></div>  
                         <% } %>
@@ -176,7 +176,7 @@
                         <div class="bewerkAdres ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>
                     </td>
                     <td>
-                         <% if (Model.PersoonLidInfo.PersoonDetail.VoorkeursAdresID != pa.PersoonsAdresID) { %>
+                         <% if (Model.PersoonLidGebruikersInfo.PersoonDetail.VoorkeursAdresID != pa.PersoonsAdresID) { %>
                             <div class="voorkeursAdresMaken ui-icon ui-icon-home" title="Voorkeursadres maken" style="cursor: pointer"></div>
                          <% } %>
                     </td>
@@ -185,7 +185,7 @@
                  <% } %>
             
             <% //E-MAIL EN TELEFOONNUMMER 
-                var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(
+                var gegroepeerdeComm = Model.PersoonLidGebruikersInfo.CommunicatieInfo.GroupBy(
                         cv => new
                         {
                             Omschrijving = cv.CommunicatieTypeOmschrijving,
@@ -245,7 +245,7 @@
         <hr/>
 
         <table class="chiroGegevens">
-        <% if (Model.PersoonLidInfo.PersoonDetail.AdNummer != null)
+        <% if (Model.PersoonLidGebruikersInfo.PersoonDetail.AdNummer != null)
            { %>
            <tr>
                 <td ><%= Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><%= Html.InfoLink("AD-Info") %></td>
@@ -257,14 +257,14 @@
                 %>
             <tr>
                 <td>Chiroleeftijd<%= Html.InfoLink("clInfo") %></td>
-                <td><a  id="chiroleeftijdInfo" data-type="select"><%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd) %></a></td>
+                <td><a  id="chiroleeftijdInfo" data-type="select"><%= Html.DisplayFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.ChiroLeefTijd) %></a></td>
                 <td><div class="ui-icon ui-icon-pencil" id="bewerkCl"title="Bewerken" style="cursor: pointer"></div></td>
             </tr>
         <% } %>
 
         <% // controleert of de persoon ingeschreven is %>
-        <%if ((Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding) &&
-                                                                !Model.PersoonLidInfo.LidInfo.NonActief) { %>
+        <%if ((Model.PersoonLidGebruikersInfo.PersoonDetail.IsLid || Model.PersoonLidGebruikersInfo.PersoonDetail.IsLeiding) &&
+                                                                !Model.PersoonLidGebruikersInfo.LidInfo.NonActief) { %>
             <% // Plaatselijke groep: toon lid/leiding en afdeling(en)
                 if ((Model.GroepsNiveau & Niveau.Groep) != 0) 
                 {
@@ -272,8 +272,8 @@
             %>
                     <tr>
                         <td>Ingeschreven als</td>
-                        <td><a  id="lidTypeOmschrijving" data-type="select" style="font-weight: bold;"><%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></a>
-                        <%: Html.ActionLink("(uitschrijven)", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></td> 
+                        <td><a  id="lidTypeOmschrijving" data-type="select" style="font-weight: bold;"><%= Model.PersoonLidGebruikersInfo.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></a>
+                        <%: Html.ActionLink("(uitschrijven)", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID}) %></td> 
                         <td><div class="ui-icon ui-icon-pencil" id="typeToggle" title="Bewerken" style="cursor: pointer"></div></td>
                     </tr>
             
@@ -282,12 +282,12 @@
                         
                     // In afdeling:
                     
-                    if (Model.PersoonLidInfo.LidInfo.Type == LidType.Leiding)
+                    if (Model.PersoonLidGebruikersInfo.LidInfo.Type == LidType.Leiding)
                     { 
                         // Leiding heeft meerdere afdelingen
                         %>
                         <td>Afdeling(en)</td>
-                        <td id="afdelingInfo"><%=Html.PrintLijst(Model.PersoonLidInfo.LidInfo.AfdelingIdLijst, Model.AlleAfdelingen) %></td>
+                        <td id="afdelingInfo"><%=Html.PrintLijst(Model.PersoonLidGebruikersInfo.LidInfo.AfdelingIdLijst, Model.AlleAfdelingen) %></td>
                         <td><div class="ui-icon ui-icon-pencil" id="bewerkAfdeling" title="Bewerken" style="cursor: pointer"></div></td>
                        <% 
                     } 
@@ -295,14 +295,14 @@
                     {
                         // TODO: Opkuis. Een lid heeft maar 1 afdeling; hoe moeilijk kan het zijn.
                         
-                        if (Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count > 0 &&
+                        if (Model.PersoonLidGebruikersInfo.LidInfo.AfdelingIdLijst.Count > 0 &&
                             Model.AlleAfdelingen.FirstOrDefault(
-                                s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)) != null)
+                                s => s.AfdelingID == Model.PersoonLidGebruikersInfo.LidInfo.AfdelingIdLijst.ElementAt(0)) != null)
                         { %>
                             <td>Afdeling</td>
                             <td>
                                 <a  id="afdelingInfo" data-type="select">
-                                <%=Model.AlleAfdelingen.First(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam %>
+                                <%=Model.AlleAfdelingen.First(s => s.AfdelingID == Model.PersoonLidGebruikersInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam %>
                                 </a>
                            </td>
                            <td>
@@ -319,26 +319,26 @@
             <tr>
                 <td>Ingeschreven</td>
                 <td />
-                <td><%: Html.ActionLink("[Uitschr.]", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></td>
+                <td><%: Html.ActionLink("[Uitschr.]", "Uitschrijven", new { gelieerdePersoonID = Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID}) %></td>
             </tr>
         <% } %>
              <% // Geeft alle functies van een persoon weer %>
             <tr>
                 <td>Functies</td>
-                <% if ((Model.PersoonLidInfo.LidInfo.Functies).Count == 0)
+                <% if ((Model.PersoonLidGebruikersInfo.LidInfo.Functies).Count == 0)
                    { %>
                        <td><b>Geen</b></td>
                 <% }
                    else
                    { %>
                     <td>
-                    <% foreach (var f in Model.PersoonLidInfo.LidInfo.Functies)
+                    <% foreach (var f in Model.PersoonLidGebruikersInfo.LidInfo.Functies)
                        { %>
                         
                             <%= Html.ActionLink(f.Code, "Functie", "Leden",
                                                 new
                                                     {
-                                                        groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
+                                                        groepsWerkJaarID = Model.PersoonLidGebruikersInfo.LidInfo.GroepsWerkJaarID,
                                                         id = f.ID,
                                                         groepID = Model.GroepID,
                                                     },
@@ -357,7 +357,7 @@
         <tr>
             <td>Lidgeld <%=Html.InfoLink("lidgeldInfo") %></td>
             <td id="lidgeldInfo">
-                <% if (Model.PersoonLidInfo.LidInfo.LidgeldBetaald == true) { %>
+                <% if (Model.PersoonLidGebruikersInfo.LidInfo.LidgeldBetaald == true) { %>
                     <b>Betaald</b>
                 <% } else { %>
                     <b>Nog niet betaald</b>
@@ -374,27 +374,27 @@
             <tr>
             <td>Instapperiode<%=Html.InfoLink("instapperiodeInfo") %></td>
             <td><%= String.Format(
-				      Model.PersoonLidInfo.LidInfo.EindeInstapperiode < DateTime.Today ? "Verliep op {0:d}" : "tot {0:d}",
-							 Model.PersoonLidInfo.LidInfo.EindeInstapperiode)  %>
+				      Model.PersoonLidGebruikersInfo.LidInfo.EindeInstapperiode < DateTime.Today ? "Verliep op {0:d}" : "tot {0:d}",
+							 Model.PersoonLidGebruikersInfo.LidInfo.EindeInstapperiode)  %>
             </td>
             <td id="instap"></td>
         </tr>
         <% } %>
         
-        <% if(Model.PersoonLidInfo.LidInfo.Type == LidType.Leiding) { %>
+        <% if(Model.PersoonLidGebruikersInfo.LidInfo.Type == LidType.Leiding) { %>
             
         <div id="bewerkVerzekeringDialog"></div>
         <tr>
             <td>Verz. tegen loonverlies <%=Html.InfoLink("loonVerlies") %></td>
          <% //controleert verzekering tegen loonverlies 
-            if (Model.PersoonLidInfo.LidInfo.VerzekeringLoonVerlies)
+            if (Model.PersoonLidGebruikersInfo.LidInfo.VerzekeringLoonVerlies)
            {%>
                 <td>
                     <b>Ja</b>
                 </td>
                 <td></td>
         <% }
-           else if (Model.PersoonLidInfo.PersoonDetail.GeboorteDatum != null && Model.KanVerzekerenLoonVerlies)
+           else if (Model.PersoonLidGebruikersInfo.PersoonDetail.GeboorteDatum != null && Model.KanVerzekerenLoonVerlies)
            { %>
             <td>
                <b>Nee</b>
@@ -442,22 +442,22 @@
         <hr/>
         <h3>GAP-account</h3>
             <%
-                if (Model.PersoonLidInfo.GebruikersInfo == null)
+                if (String.IsNullOrEmpty(Model.PersoonLidGebruikersInfo.GebruikersInfo.Login))
                 {
                     // Geen account
                     %>
                     Geen Chirologin.
-                    <p><%: Html.ActionLink("Chirologin maken", "LoginMaken", new {Controller = "GebruikersRecht", id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></p>
+                    <p><%: Html.ActionLink("Chirologin maken", "LoginMaken", new {Controller = "GebruikersRecht", id = Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID}) %></p>
                     <%
                 }
-                else if (Model.PersoonLidInfo.GebruikersInfo.VervalDatum < DateTime.Now)
+                else if (Model.PersoonLidGebruikersInfo.GebruikersInfo.VervalDatum < DateTime.Now)
                 {
                     // Account zonder gebruikersrecht
                     %>
-                    <p><b>Chirologin: </b><%: Model.PersoonLidInfo.GebruikersInfo.GavLogin %></p>
+                    <p><b>Chirologin: </b><%: Model.PersoonLidGebruikersInfo.GebruikersInfo.Login %></p>
                     <p>
                         Geen toegang tot de gegevens van jouw groep. <br />
-                    <%: Html.ActionLink("Gebruikersrecht toekennen", "AanGpToekennen", new { Controller = "GebruikersRecht", id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+                    <%: Html.ActionLink("Gebruikersrecht toekennen", "AanGpToekennen", new { Controller = "GebruikersRecht", id = Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID })%>
                     </p>
                     <%                
                 }
@@ -467,19 +467,19 @@
                     // DisplayFor formatteert datums correct.
                     %>
                     <ul>
-                    <li>Chirologin: <%: Model.PersoonLidInfo.GebruikersInfo.GavLogin %></li>
-                    <li>Vervaldatum gebruikersrecht: <%: Html.DisplayFor(src => src.PersoonLidInfo.GebruikersInfo.VervalDatum)%></li>
+                    <li>Chirologin: <%: Model.PersoonLidGebruikersInfo.GebruikersInfo.Login %></li>
+                    <li>Vervaldatum gebruikersrecht: <%: Html.DisplayFor(src => src.PersoonLidGebruikersInfo.GebruikersInfo.VervalDatum)%></li>
                     <% 
-                        if (Model.PersoonLidInfo.GebruikersInfo.IsVerlengbaar)
+                        if (Model.PersoonLidGebruikersInfo.GebruikersInfo.IsVerlengbaar)
                         {
                             // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
                         %>
                         <!--<button id="Button1">Gebruikersrecht toekennen</button>-->
-                        <li><%: Html.ActionLink("Gebruikersrecht verlengen", "AanGpToekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
+                        <li><%: Html.ActionLink("Gebruikersrecht verlengen", "AanGpToekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID }) %></li>
                         <%                
                         }
                     %>
-                    <li><%: Html.ActionLink("Gebruikersrecht afnemen", "VanGpAfnemen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID }) %></li>
+                    <li><%: Html.ActionLink("Gebruikersrecht afnemen", "VanGpAfnemen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID }) %></li>
                     </ul>
                     <%                              
                 }
@@ -487,11 +487,11 @@
         
         <h3>Toegevoegd aan de volgende categorie&euml;n:</h3>
         <table>
-           <% if (!Model.PersoonLidInfo.PersoonDetail.CategorieLijst.Any())
+           <% if (!Model.PersoonLidGebruikersInfo.PersoonDetail.CategorieLijst.Any())
               { %>
                  <p>Geen</p>
                  <% } 
-              foreach (var info in Model.PersoonLidInfo.PersoonDetail.CategorieLijst)
+              foreach (var info in Model.PersoonLidGebruikersInfo.PersoonDetail.CategorieLijst)
                { %>
             <tr>
                 <td>
