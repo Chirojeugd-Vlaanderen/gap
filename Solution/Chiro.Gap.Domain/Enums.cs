@@ -297,7 +297,7 @@ namespace Chiro.Gap.Domain
     }
 
     /// <summary>
-    /// Mogelijke permissies van een gebruiker. Deze zijn - met uitzondering van God - 
+    /// Mogelijke permissies van een gebruiker. Deze zijn - met uitzondering van SuperGav - 
     /// van toepassing op een groep. (en dus niet globaal)
     /// 
     /// De laatste 8 bits zijn voor leesrechten, de eerste 8 bits voor schrijfrechten.
