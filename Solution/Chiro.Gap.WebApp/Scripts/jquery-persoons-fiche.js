@@ -383,7 +383,7 @@ $(function () {
             {
                 waarde = $('#NieuweCommVorm_CommunicatieTypeID').val();
                 $('#extraInfoDialog').dialog({
-                    title: "Nieuwe communicatievorm",
+                    title: "Tel./mail/enz. toevoegen",
                     modal: true,
                     width: 550,
                     height: 530,
@@ -443,7 +443,7 @@ $(function () {
         $('#commDialog').dialog({
             modal: true,
             width: 510,
-            title: "Communicatievorm toevoegen",
+            title: "Tel./mail/enz. toevoegen",
             buttons: {
                 'Bewaren': function () {
                     gaVerder = true;

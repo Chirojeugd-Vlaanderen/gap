@@ -54,6 +54,7 @@
             <li><%=Html.ActionLink("Functie", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuweFunctie" }, new { title = "Een nieuwe functie aanmaken" })%></li>
             <li><%=Html.ActionLink("Lid/leiding", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwLid" }, new { title = "Gegevens van een nieuw lid toevoegen (= iemand inschrijven)" })%></li>
             <li><%=Html.ActionLink("Persoon", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwePersoon" }, new { title = "Gegevens van een nieuwe persoon toevoegen" })%></li>
+            <li><%=Html.ActionLink("Tel./mail/enz.", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuweCommunicatievorm"}, new { title = "Tel./mail/enz. toevoegen"}) %></li>
             <li><%=Html.ActionLink("Zus/broer", "ViewTonen", new { Controller = "Handleiding", helpBestand = "ZusBroer" }, new { title = "Gegevens toevoegen voor de zus of broer van iemand die al in je gegevensbestand zit" })%></li>
             <li><%=Html.ActionLink("Adres", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwAdres" }, new { title = "Een nieuw adres toevoegen voor iemand die al in je gegevensbestand zit" })%></li>
             <li><%=Html.ActionLink("Straatnaam", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuweStraatnaam" }, new { title = "Een aanvraag indienen om een straatnaam toe te voegen aan het vaste lijstje" })%></li>

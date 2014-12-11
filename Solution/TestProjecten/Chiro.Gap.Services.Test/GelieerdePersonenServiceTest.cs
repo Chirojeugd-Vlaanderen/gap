@@ -1211,6 +1211,68 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
+        /// Controleert of bij het ophalen van een gezin waarbij een persoon aangesloten is bij
+        /// meerdere groepen, de juiste gelieerde persoon wordt opgehaald.
+        /// </summary>
+        [TestMethod()]
+        public void GezinOphalenTest()
+        {
+            // ARRANGE
+
+            var persoon = new Persoon { ID = 4 };
+
+            var groep6 = new ChiroGroep { ID = 6 };
+            var groep8 = new ChiroGroep { ID = 8 };
+
+            var gelieerdePersoon5 = new GelieerdePersoon 
+                        {
+                            ID = 5,
+                            Persoon = persoon,
+                            Groep = groep6
+                        };
+            var gelieerdePersoon7 = new GelieerdePersoon
+                        {
+                            ID = 7,
+                            Persoon = persoon,
+                            Groep = groep8
+                        };
+
+            var persoonsAdres = new PersoonsAdres
+            {
+                ID = 1,
+                Adres = new BelgischAdres { ID = 2 },
+                Persoon = new Persoon
+                {
+                    ID = 3,
+                    GelieerdePersoon = new List<GelieerdePersoon>
+                    {
+                        gelieerdePersoon5,
+                        gelieerdePersoon7
+                    }
+                }
+            };
+
+            persoonsAdres.Adres.PersoonsAdres.Add(persoonsAdres);
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>()).Returns(new DummyRepo<Groep>(new List<Groep> { groep6, groep8 }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>()).Returns(new DummyRepo<Adres>(new List<Adres> { persoonsAdres.Adres }));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+            
+            var target = Factory.Maak<GelieerdePersonenService>();
+            var result = target.GezinOphalen(persoonsAdres.Adres.ID, gelieerdePersoon7.Groep.ID);
+
+            // ASSERT
+
+            Assert.IsNotNull(result.Bewoners.Where(bew => bew.GelieerdePersoonID == gelieerdePersoon7.ID).FirstOrDefault());
+            Assert.IsNull(result.Bewoners.Where(bew => bew.GelieerdePersoonID == gelieerdePersoon5.ID).FirstOrDefault());
+
+        }
+
+        /// <summary>
         /// Als je van een adres enkel de deelgemeente moet veranderen, dan moet die wijziging bewaard worden.
         /// Test voor buitenlands adres.
         /// </summary>

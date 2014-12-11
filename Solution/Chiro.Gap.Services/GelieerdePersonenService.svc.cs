@@ -517,14 +517,18 @@ namespace Chiro.Gap.Services
 
             var adres = _adressenRepo.ByID(adresID);
 
-            var persoonsAdressen = (from pa in adres.PersoonsAdres
+            var personen = (from pa in adres.PersoonsAdres
                                     where pa.Persoon.GelieerdePersoon.Any(gp => Equals(gp.Groep, groep))
-                                    select pa).ToList();
+                                    select pa.Persoon).ToList();
+
+            // Belangrijk: selecteer alleen de gelieerde personen uit de gevraagde groep!
+            var gelieerdePersonen = personen.SelectMany(persoon => persoon.GelieerdePersoon, (persoon, gelieerdePersoon) => gelieerdePersoon)
+                                            .Where(gelieerdePersoon => Equals(gelieerdePersoon.Groep, groep)).ToList();
 
             var resultaat = new GezinInfo();
 
             Mapper.Map(adres, resultaat);
-            resultaat.Bewoners = Mapper.Map<IList<PersoonsAdres>, IList<BewonersInfo>>(persoonsAdressen);
+            resultaat.Bewoners = Mapper.Map<IList<GelieerdePersoon>, IList<BewonersInfo>>(gelieerdePersonen);
 
             return resultaat;
         }

@@ -23,7 +23,7 @@
 %>
 	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
 
-    <script src="<%=ResolveUrl("~/Scripts/jquery-ui-1.10.2.custom.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jquery-ui-1.10.2.custom.min.js")%>" type="text/javascript"></script>
     <script src="<%=ResolveUrl("~/Scripts/jqueryui-editable.js")%>" type="text/javascript"></script>
 
     <% // CSS files %>
@@ -42,7 +42,7 @@
 			<input type="submit" value="Bewaren" id="bewaarComm" /></li>
 	</ul>
 	<fieldset>
-		<legend>Communicatievorm toevoegen voor
+		<legend>Tel./mail/enz. toevoegen voor
 			<%=Model.Aanvrager.VolledigeNaam %></legend>
 		<%=Html.ValidationSummary() %>
 		<table>
