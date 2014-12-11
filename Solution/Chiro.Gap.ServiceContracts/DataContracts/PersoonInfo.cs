@@ -42,13 +42,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         public int? AdNummer { get; set; }
 
         /// <summary>
-        /// ID van de persoon in de ChiroCivi
-        /// </summary>
-        [DisplayName(@"Civi-ID")]
-        [DataMember]
-        public int? CiviID { get; set; }
-
-        /// <summary>
         /// De ID van de gelieerde persoon
         /// </summary>
         [DataMember]

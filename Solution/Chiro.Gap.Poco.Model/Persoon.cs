@@ -41,7 +41,6 @@ namespace Chiro.Gap.Poco.Model
         internal int GeslachtsInt { get; set; }
         public DateTime? SterfDatum { get; set; }
         public override int ID { get; set; }
-        public int? CiviID { get; set; }
         public override byte[] Versie { get; set; }
         public bool InSync
         {
@@ -51,7 +50,7 @@ namespace Chiro.Gap.Poco.Model
                 // worden, zoals al de rest ({get;set;}). Maar dat kan pas als
                 // de database is bijgewerkt.
 
-                return _inSync || AdNummer.HasValue || CiviID.HasValue; 
+                return _inSync || AdNummer.HasValue; 
             }
             set { _inSync = value; }
         }

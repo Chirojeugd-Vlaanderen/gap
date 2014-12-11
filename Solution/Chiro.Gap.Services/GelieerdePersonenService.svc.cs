@@ -712,7 +712,7 @@ namespace Chiro.Gap.Services
 
             // Persoon maken
 
-            if (details.PersoonInfo.GelieerdePersoonID != 0 || details.PersoonInfo.AdNummer != null || details.PersoonInfo.CiviID != null)
+            if (details.PersoonInfo.GelieerdePersoonID != 0 || details.PersoonInfo.AdNummer != null)
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout, Resources.IdsNietWijzigen);
             }

@@ -33,7 +33,7 @@
         <tr>
             <th>
                 <%=Html.CheckBox("checkall") %></th>
-            <th>Ad-nr.</th>
+            <th>AD-nummer</th>
             <th>
                 Naam
             </th>

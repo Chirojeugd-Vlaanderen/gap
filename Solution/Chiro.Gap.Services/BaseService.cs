@@ -75,14 +75,12 @@ namespace Chiro.Gap.Services
                 .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.Persoon.Geslacht))
                 .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Persoon.Naam))
                 .ForMember(dst => dst.VersieString, opt => opt.MapFrom(src => src.Persoon.VersieString))
-                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
-                .ForMember(dst => dst.CiviID, opt => opt.MapFrom(src => src.Persoon.CiviID));
+                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam));
 
             Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
                   .ForMember(
                       dst => dst.GelieerdePersoonID,
                       opt => opt.MapFrom(src => src.ID))
-                   .ForMember(dst => dst.CiviID, opt => opt.MapFrom(src => src.Persoon.CiviID))
                 // TODO (#968): opkuis
                   .ForMember(
                       dst => dst.IsLid,
@@ -135,7 +133,6 @@ namespace Chiro.Gap.Services
 
             Mapper.CreateMap<GelieerdePersoon, PersoonOverzicht>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))
-                .ForMember(dst => dst.CiviID, opt => opt.MapFrom(src => src.Persoon.CiviID))
                 .ForMember(dst => dst.Bus, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.Bus))
                 .ForMember(dst => dst.Email, opt => opt.MapFrom(src => VoorkeurCommunicatie(src, CommunicatieTypeEnum.Email)))
                 .ForMember(dst => dst.GeboorteDatum, opt => opt.MapFrom(src => src.Persoon.GeboorteDatum))
@@ -158,7 +155,6 @@ namespace Chiro.Gap.Services
             // we dat de adressen 'gelazyload' worden.
             Mapper.CreateMap<Lid, LidOverzichtZonderAdres>()
                   .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
-                  .ForMember(dst => dst.CiviID, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.CiviID))
                   .ForMember(dst => dst.Email,
                              opt =>
                              opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.Email)))
@@ -198,7 +194,6 @@ namespace Chiro.Gap.Services
 
             Mapper.CreateMap<Lid, LidOverzicht>()
                 .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
-                .ForMember(dst => dst.CiviID, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.CiviID))
                 .ForMember(dst => dst.Bus,
                            opt =>
                            opt.MapFrom(
@@ -569,7 +564,7 @@ namespace Chiro.Gap.Services
                   .ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
                   .ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
                   .ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
-                  .ForMember(dst => dst.InSync, opt => opt.MapFrom(src => src.AdNummer.HasValue || src.CiviID.HasValue))
+                  .ForMember(dst => dst.InSync, opt => opt.MapFrom(src => src.AdNummer.HasValue))
                   .ForMember(dst => dst.Gav, opt => opt.Ignore())
                   .ForMember(dst => dst.SeNaam, opt => opt.Ignore())
                   .ForMember(dst => dst.SeVoornaam, opt => opt.Ignore());
