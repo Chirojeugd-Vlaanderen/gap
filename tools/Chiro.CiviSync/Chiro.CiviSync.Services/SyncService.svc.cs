@@ -52,10 +52,10 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void PersoonUpdaten(Persoon persoon)
         {
-            // TODO: personen met Civi-ID in aanvraag
-            var contact = (persoon.CiviID == null
-                ? new Contact {Id = 0}
-                : _civiCrmClient.ContactGet(persoon.CiviID.Value)) ?? new Contact {Id = 0};
+            // TODO: personen met AD-nummer in aanvraag
+            var contact = (persoon.AdNummer == null
+                ? new Contact()
+                : _civiCrmClient.ContactFind(persoon.AdNummer.ToString())) ?? new Contact();
 
             Mapper.Map(persoon, contact);
             _civiCrmClient.ContactSave(contact);
@@ -76,9 +76,12 @@ namespace Chiro.CiviSync.Services
             // TODO: personen met civi-ID in aanvraag
             foreach (var bewoner in bewoners)
             {
-                if (bewoner.Persoon.CiviID != null)
+                if (bewoner.Persoon.AdNummer != null)
                 {
-                    var adressen = _civiCrmClient.ContactAddressesGet(bewoner.Persoon.CiviID.Value);
+                    // Even lelijke workaround
+                    int civiId = _civiCrmClient.ContactFind(bewoner.Persoon.AdNummer.ToString()).Id.Value;
+
+                    var adressen = _civiCrmClient.ContactAddressesGet(civiId);
 
                     // Als het adres al bestaat, dan kunnen we het overschrijven om casing te veranderen,
                     // voorkeursadres te zetten, en adrestype te bewaren.
@@ -92,7 +95,7 @@ namespace Chiro.CiviSync.Services
                         // overschrijven.
                     }
                     
-                    nieuwAdres.ContactId = bewoner.Persoon.CiviID.Value;
+                    nieuwAdres.ContactId = civiId;
                     nieuwAdres.IsBilling = true;
                     nieuwAdres.IsPrimary = true;
 
@@ -121,7 +124,7 @@ namespace Chiro.CiviSync.Services
                         _civiCrmClient.AddressDelete(tvAdres.Id.Value);
                         Console.WriteLine(String.Format(
                             "Oud voorkeursadres voor {0} {1} verwijderd (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
-                            bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, bewoner.Persoon.CiviID,
+                            bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, civiId,
                             tvAdres.StreetAddress, tvAdres.PostalCode, tvAdres.PostalCodeSuffix, tvAdres.City, tvAdres.Country));
                     }
                 }
