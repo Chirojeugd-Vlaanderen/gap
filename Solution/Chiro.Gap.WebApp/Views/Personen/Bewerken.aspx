@@ -248,8 +248,8 @@
         <% if (Model.PersoonLidInfo.PersoonDetail.AdNummer != null)
            { %>
            <tr>
-                <td ><%= Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><%= Html.InfoLink("Ad-info") %></td>
-                <td id="adNummerInfo"><%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %></td>
+                <td ><%= Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><%= Html.InfoLink("AD-Info") %></td>
+                <td id="adNrInfo"><%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %></td>
                 <td id="ad"></td>
            </tr>
         <% } %>

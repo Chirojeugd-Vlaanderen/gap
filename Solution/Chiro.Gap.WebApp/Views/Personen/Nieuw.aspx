@@ -133,7 +133,7 @@
                 <td><%=Html.LabelFor(s => s.NieuwePersoon.AdNummer)%></td>        
                 <td>
                     <%=Html.DisplayFor(s => s.NieuwePersoon.AdNummer)%>
-                    <%=Html.InfoLink("Ad-info")%>
+                    <%=Html.InfoLink("AD-nummer")%>
                 </td>
 		    </tr>
         <% }%>

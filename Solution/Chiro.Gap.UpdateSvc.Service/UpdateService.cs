@@ -101,7 +101,9 @@ namespace Chiro.Gap.UpdateSvc.Service
         #endregion
 
         /// <summary>
-        /// Stelt het AD-nummer van de persoon met Id <paramref name="persoonId"/> in.  
+        /// Stelt het AD-nummer van de persoon met Id <paramref name="persoonId"/> in. 
+        /// Als er al een persoon bestaat met hetzelfde AD-nummer, dan wordt die persoon
+        /// gemerged met de bestaande persoon.
         /// </summary>
         /// <param name="persoonId">
         /// Id van de persoon
@@ -115,6 +117,8 @@ namespace Chiro.Gap.UpdateSvc.Service
             var persoon = _personenRepo.ByID(persoonId);
             if (persoon == null)
             {
+                throw new InvalidOperationException(
+                    String.Format("Onbekend persoon (ID {0}) voor AD-nummer {1} genegeerd.", persoonId, adNummer));
                 return;
             }
 
@@ -456,6 +460,5 @@ namespace Chiro.Gap.UpdateSvc.Service
 
             Console.WriteLine(stopDatum == null ? "Groep opnieuw geactiveerd: {0}" : "Groep gedesactiveerd: {0}", stamNr);
         }
-
     }
 }

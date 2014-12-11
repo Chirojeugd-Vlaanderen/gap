@@ -50,7 +50,8 @@ $(function () {
         toonInfo('#CLINFO', "Chiroleeftijd", "#extraInfoDialog");
     });
 
-    $('#Ad-info').click(function () {
+    // extra info over AD-nummer
+    $('#AD-Info').click(function () {
         $('#extraInfoDialog').dialog();
         toonInfo('#ADINFO', 'AD-nummer', '#extraInfoDialog');
     });

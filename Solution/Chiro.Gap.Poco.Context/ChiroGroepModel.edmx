@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ChiroGroepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="ChiroGroepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Abonnement">
           <Key>
             <PropertyRef Name="AbonnementID" />
@@ -1015,15 +1015,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="spDeelnemerVerwijderen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="biv">
-          <Parameter Name="deelnemerID" Type="int" Mode="In" />
-        </Function>
         <Function Name="ufnSoundEx" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="core" ReturnType="varchar">
           <Parameter Name="tekst" Type="varchar(max)" Mode="In" />
-        </Function>
-        <Function Name="spDubbelePersoonVerwijderen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="data">
-          <Parameter Name="foutPID" Type="int" Mode="In" />
-          <Parameter Name="juistPID" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="ChiroGroepModelStoreContainer">
           <EntitySet Name="Abonnement" EntityType="Self.Abonnement" Schema="abo" store:Type="Tables" />
@@ -1274,7 +1267,7 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ChiroGroepModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <Schema Namespace="ChiroGroepModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
         <EntityContainer Name="ChiroGroepEntities">
           <EntitySet Name="Groep" EntityType="ChiroGroepModel.Groep" />
           <EntitySet Name="Persoon" EntityType="ChiroGroepModel.Persoon" />
@@ -1515,7 +1508,6 @@
           <NavigationProperty Name="Gav" Relationship="ChiroGroepModel.GavSchap" FromRole="Persoon" ToRole="Gav" />
           <Property Type="String" Name="SeNaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="SeVoornaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Type="Int32" Name="CiviID" ConcurrencyMode="Fixed" Nullable="true" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -1958,10 +1950,10 @@
           <Property Type="Boolean" Name="HeeftBetaald" Nullable="false" />
           <Property Type="Boolean" Name="MedischeFicheOk" Nullable="false" />
           <Property Type="String" Name="Opmerkingen" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Type="Binary" Name="Versie" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" ConcurrencyMode="Fixed" />
+          <Property Type="Binary" Name="Versie" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Deelnemer_GelieerdePersoon" FromRole="Deelnemer" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="Uitstap" Relationship="ChiroGroepModel.FK_Deelnemer_Uitstap" FromRole="Deelnemer" ToRole="Uitstap" />
-          <NavigationProperty Name="UitstapWaarvoorVerantwoordelijk" Relationship="ChiroGroepModel.FK_Uitstap_Deelnemer_Contact" FromRole="Deelnemer" ToRole="Uitstap" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Public" />
+          <NavigationProperty Name="UitstapWaarvoorVerantwoordelijk" Relationship="ChiroGroepModel.FK_Uitstap_Deelnemer_Contact" FromRole="Deelnemer" ToRole="Uitstap" a:GetterAccess="Public" a:SetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         </EntityType>
         <Association Name="FK_Deelnemer_GelieerdePersoon">
           <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="1" />
@@ -2020,7 +2012,7 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ChiroGroepModelStoreContainer" CdmEntityContainer="ChiroGroepEntities">
           <EntitySetMapping Name="Groep">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Groep)">
@@ -2055,7 +2047,6 @@
                 <ScalarProperty Name="SeNaam" ColumnName="SeNaam" />
                 <ScalarProperty Name="InSync" ColumnName="AdInAanvraag" />
                 <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
-                <ScalarProperty Name="CiviID" ColumnName="CiviID"/>
                 <ScalarProperty Name="Naam" ColumnName="Naam" />
                 <ScalarProperty Name="VoorNaam" ColumnName="VoorNaam" />
                 <ScalarProperty Name="GeboorteDatum" ColumnName="GeboorteDatum" />
@@ -2707,534 +2698,534 @@
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <edmx:Designer>
     <edmx:Connection>
-      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
-        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
-      </DesignerInfoPropertySet>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </edmx:DesignerInfoPropertySet>
     </edmx:Connection>
     <edmx:Options>
-      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
-        <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
-        <DesignerProperty Name="UseLegacyProvider" Value="True" />
-      </DesignerInfoPropertySet>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <edmx:DesignerProperty Name="EnablePluralization" Value="False" />
+        <edmx:DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <edmx:DesignerProperty Name="UseLegacyProvider" Value="True" />
+      </edmx:DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="ChiroGroepModel" ZoomLevel="86" xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
-        <EntityTypeShape EntityType="ChiroGroepModel.ChiroGroep" Width="1.5" PointX="1" PointY="32.125" Height="1.5956835937500102" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Groep" Width="1.5" PointX="1" PointY="25.375" Height="3.5186979166666674" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Persoon" Width="1.5" PointX="9" PointY="4.875" Height="4.0956022135416656" IsExpanded="true" />
-        <InheritanceConnector EntityType="ChiroGroepModel.ChiroGroep" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.75" PointY="28.893697916666667" />
-          <ConnectorPoint PointX="1.75" PointY="29.375" />
-          <ConnectorPoint PointX="0.92708333333333337" PointY="29.375" />
-          <ConnectorPoint PointX="0.76041666666666663" PointY="29.375" />
-          <ConnectorPoint PointX="0.75" PointY="29.375" />
-          <ConnectorPoint PointX="0.75" PointY="31.75" />
-          <ConnectorPoint PointX="0.76041666666666663" PointY="31.75" />
-          <ConnectorPoint PointX="0.92708333333333337" PointY="31.75" />
-          <ConnectorPoint PointX="1.75" PointY="31.75" />
-          <ConnectorPoint PointX="1.75" PointY="32.125" />
-        </InheritanceConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.CommunicatieVorm" Width="2.5" PointX="7.75" PointY="23.25" Height="2.749492187499996" />
-        <EntityTypeShape EntityType="ChiroGroepModel.GelieerdePersoon" Width="1.5" PointX="5.5" PointY="23.25" Height="2.9417936197916674" />
-        <AssociationConnector Association="ChiroGroepModel.FK_GelieerdePersoon_Groep">
-          <ConnectorPoint PointX="2.5" PointY="25.71875" />
-          <ConnectorPoint PointX="2.9166666666666665" PointY="25.71875" />
-          <ConnectorPoint PointX="3.0833333333333335" PointY="25.71875" />
-          <ConnectorPoint PointX="5.5" PointY="25.71875" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon">
-          <ConnectorPoint PointX="7" PointY="24.624746093749998" />
-          <ConnectorPoint PointX="7.75" PointY="24.624746093749998" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_GelieerdePersoon_Persoon">
-          <ConnectorPoint PointX="10.40625" PointY="8.9706022135416656" />
-          <ConnectorPoint PointX="10.40625" PointY="26.2879418359375" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="26.2879418359375" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="26.2879418359375" />
-          <ConnectorPoint PointX="7" PointY="26.2879418359375" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Adres" Width="1.5" PointX="0.75" PointY="9" Height="2.172587890624996" />
-        <EntityTypeShape EntityType="ChiroGroepModel.PersoonsAdres" Width="1.5" PointX="3.25" PointY="39.625" Height="2.3648893229166674" />
-        <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Adres">
-          <ConnectorPoint PointX="0.84375" PointY="11.172587890624996" />
-          <ConnectorPoint PointX="0.84375" PointY="40.807444661458334" />
-          <ConnectorPoint PointX="3.25" PointY="40.807444661458334" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon">
-          <ConnectorPoint PointX="5.875" PointY="6.582021484375" />
-          <ConnectorPoint PointX="6.625" PointY="6.582021484375" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.GroepsWerkJaar" Width="1.5" PointX="3.25" PointY="31.75" Height="2.3648893229166674" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Lid" Width="1.5" PointX="10.75" PointY="29.25" Height="2.9417936197916674" />
-        <AssociationConnector Association="ChiroGroepModel.FK_GroepsWerkjaar_Groep">
-          <ConnectorPoint PointX="2.5" PointY="28.837158455128204" />
-          <ConnectorPoint PointX="2.90625" PointY="29.243408455128204" />
-          <ConnectorPoint PointX="2.90625" PointY="33.028595377604169" />
-          <ConnectorPoint PointX="2.9166666666666665" PointY="33.028595377604169" />
-          <ConnectorPoint PointX="3.0833333333333335" PointY="33.028595377604169" />
-          <ConnectorPoint PointX="3.25" PointY="33.028595377604169" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar">
-          <ConnectorPoint PointX="4.75" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="5.572916666666667" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="5.739583333333333" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="8.4947941666666669" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="8.6614608333333347" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="9.1041666666666661" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="9.2708333333333339" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="10.104166666666666" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="10.270833333333334" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="11.697916666666666" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="11.94791666666667" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="12.057291666666668" PointY="32.968751875000009" />
-          <ConnectorPoint PointX="12.057291666666668" PointY="32.191793619791667" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon">
-          <ConnectorPoint PointX="7" PointY="26.576396484375003" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="26.576396484375003" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="26.576396484375003" />
-          <ConnectorPoint PointX="10.75" PointY="26.576396484375003" />
-          <ConnectorPoint PointX="10.75" PointY="29.25" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Gav" Width="1.5" PointX="12.75" PointY="5.875" Height="1.9802864583333388" />
-        <EntityTypeShape EntityType="ChiroGroepModel.GebruikersRecht" Width="1.5" PointX="3.25" PointY="26.125" Height="1.9802864583333388" />
-        <AssociationConnector Association="ChiroGroepModel.FK_GebruikersRecht_Gav">
-          <ConnectorPoint PointX="13.656249500000001" PointY="7.8552864583333388" />
-          <ConnectorPoint PointX="13.656249500000001" PointY="23.875" />
-          <ConnectorPoint PointX="12.958333333333334" PointY="23.875" />
-          <ConnectorPoint PointX="12.791666666666666" PointY="23.875" />
-          <ConnectorPoint PointX="12.75" PointY="23.875" />
-          <ConnectorPoint PointX="12.75" PointY="28.009095052083339" />
-          <ConnectorPoint PointX="12.739583333333334" PointY="28.009095052083339" />
-          <ConnectorPoint PointX="12.572916666666666" PointY="28.009095052083339" />
-          <ConnectorPoint PointX="12.489583333333334" PointY="28.009095052083339" />
-          <ConnectorPoint PointX="12.322916666666666" PointY="28.009095052083339" />
-          <ConnectorPoint PointX="10.833333333333334" PointY="28.009095052083339" />
-          <ConnectorPoint PointX="10.666666666666666" PointY="28.009095052083339" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="28.009095052083339" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="28.009095052083339" />
-          <ConnectorPoint PointX="7.75" PointY="28.009095052083339" />
-          <ConnectorPoint PointX="7.75" PointY="26.8819482421875" />
-          <ConnectorPoint PointX="6.411458333333333" PointY="26.8819482421875" />
-          <ConnectorPoint PointX="6.244791666666667" PointY="26.8819482421875" />
-          <ConnectorPoint PointX="5.739583333333333" PointY="26.8819482421875" />
-          <ConnectorPoint PointX="5.572916666666667" PointY="26.8819482421875" />
-          <ConnectorPoint PointX="4.75" PointY="26.8819482421875" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_GebruikersRecht_Groep">
-          <ConnectorPoint PointX="2.5" PointY="27.115143229166669" />
-          <ConnectorPoint PointX="2.9166666666666665" PointY="27.115143229166669" />
-          <ConnectorPoint PointX="3.0833333333333335" PointY="27.115143229166669" />
-          <ConnectorPoint PointX="3.25" PointY="27.115143229166669" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Afdeling" Width="1.5" PointX="5.875" PointY="27.375" Height="2.1725878906250102" />
-        <EntityTypeShape EntityType="ChiroGroepModel.AfdelingsJaar" Width="1.5" PointX="8.125" PointY="29.25" Height="2.9417936197916639" />
-        <EntityTypeShape EntityType="ChiroGroepModel.OfficieleAfdeling" Width="1.5" PointX="5.875" PointY="30.625" Height="2.172587890624996" />
-        <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar">
-          <ConnectorPoint PointX="4.75" PointY="32.937501015625" />
-          <ConnectorPoint PointX="5.572916666666667" PointY="32.937501015625" />
-          <ConnectorPoint PointX="5.739583333333333" PointY="32.937501015625" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="32.937501015625" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="32.937501015625" />
-          <ConnectorPoint PointX="8.32031125" PointY="32.937501015625" />
-          <ConnectorPoint PointX="8.32031125" PointY="32.191793619791667" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar1">
-          <ConnectorPoint PointX="4.75" PointY="10.876511230468751" />
-          <ConnectorPoint PointX="5.5" PointY="10.876511230468751" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_Afdeling">
-          <ConnectorPoint PointX="7.375" PointY="28.3124995" />
-          <ConnectorPoint PointX="7.541666666666667" PointY="28.3124995" />
-          <ConnectorPoint PointX="7.708333333333333" PointY="28.3124995" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="28.3124995" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="28.3124995" />
-          <ConnectorPoint PointX="8.875" PointY="28.3124995" />
-          <ConnectorPoint PointX="8.875" PointY="29.25" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling">
-          <ConnectorPoint PointX="7.375" PointY="31.408396809895834" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="31.408396809895834" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="31.408396809895834" />
-          <ConnectorPoint PointX="8.125" PointY="31.408396809895834" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon1">
-          <ConnectorPoint PointX="5.84375" PointY="7.41404296875" />
-          <ConnectorPoint PointX="5.84375" PointY="9.125" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Leiding" Width="2.875" PointX="8.75" PointY="33.125" Height="1.2110807291666674" />
-        <EntityTypeShape EntityType="ChiroGroepModel.LeidingInAfdelingsJaar" Width="1.5" PointX="11" PointY="13.5" Height="1.7566536458333317" />
-        <AssociationConnector Association="ChiroGroepModel.FK_GroepsWerkjaar_Groep1">
-          <ConnectorPoint PointX="3.6875" PointY="8.0320849609375" />
-          <ConnectorPoint PointX="3.6875" PointY="9.25" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar1">
-          <ConnectorPoint PointX="4.4062525" PointY="11.828390299479166" />
-          <ConnectorPoint PointX="4.4062525" PointY="12.123523297526042" />
-          <ConnectorPoint PointX="5.9127588541666674" PointY="12.123523297526042" />
-          <ConnectorPoint PointX="6.0794255208333334" PointY="12.123523297526042" />
-          <ConnectorPoint PointX="6.4713560416666667" PointY="12.123523297526042" />
-          <ConnectorPoint PointX="6.6380227083333327" PointY="12.123523297526042" />
-          <ConnectorPoint PointX="10.947916666666666" PointY="12.123523297526042" />
-          <ConnectorPoint PointX="11.114583333333334" PointY="12.123523297526042" />
-          <ConnectorPoint PointX="13.375" PointY="12.123523297526042" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar1">
-          <ConnectorPoint PointX="4.75" PointY="9.8320975748697919" />
-          <ConnectorPoint PointX="5.5" PointY="9.8320975748697919" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_LeidingInAfdelingsJaar_AfdelingsJaar">
-          <ConnectorPoint PointX="13.375" PointY="11.670412306315104" />
-          <ConnectorPoint PointX="11.03125" PointY="11.670412306315104" />
-          <ConnectorPoint PointX="11.03125" PointY="13.5" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_LeidingInAfdelingsJaar_Leiding">
-          <ConnectorPoint PointX="10" PointY="14.256805826822916" />
-          <ConnectorPoint PointX="11" PointY="14.256805826822916" />
-        </AssociationConnector>
-        <InheritanceConnector EntityType="ChiroGroepModel.Leiding" ManuallyRouted="false">
-          <ConnectorPoint PointX="11.5" PointY="32.191793619791667" />
-          <ConnectorPoint PointX="11.5" PointY="32.75" />
-          <ConnectorPoint PointX="10.1875" PointY="32.75" />
-          <ConnectorPoint PointX="10.1875" PointY="33.125" />
-        </InheritanceConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Kind" Width="1.5" PointX="9.5" PointY="35.125" Height="1.2110807291666674" />
-        <AssociationConnector Association="ChiroGroepModel.FK_GroepsWerkjaar_Groep1">
-          <ConnectorPoint PointX="3.6875" PointY="8.0320849609375" />
-          <ConnectorPoint PointX="3.6875" PointY="9.25" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar1">
-          <ConnectorPoint PointX="4.4062525" PointY="11.66404296875" />
-          <ConnectorPoint PointX="4.4062525" PointY="12.365327415947853" />
-          <ConnectorPoint PointX="6.0250639635416672" PointY="12.365327415947853" />
-          <ConnectorPoint PointX="6.1917306302083333" PointY="12.365327415947853" />
-          <ConnectorPoint PointX="6.4459652604166671" PointY="12.365327415947853" />
-          <ConnectorPoint PointX="6.6126319270833331" PointY="12.365327415947853" />
-          <ConnectorPoint PointX="9.7604166666666661" PointY="12.365327415947853" />
-          <ConnectorPoint PointX="9.9270833333333339" PointY="12.365327415947853" />
-          <ConnectorPoint PointX="13.375" PointY="12.365327415947853" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_Afdeling1">
-          <ConnectorPoint PointX="9.625" PointY="9.5000025" />
-          <ConnectorPoint PointX="13.7187475" PointY="9.5000025" />
-          <ConnectorPoint PointX="13.7187475" PointY="10.25" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling1">
-          <ConnectorPoint PointX="12.625" PointY="10.470413411458333" />
-          <ConnectorPoint PointX="13.375" PointY="10.470413411458333" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Kind_AfdelingsJaar">
-          <ConnectorPoint PointX="8.5781275" PointY="32.191793619791667" />
-          <ConnectorPoint PointX="8.5781275" PointY="35.730540364583334" />
-          <ConnectorPoint PointX="9.5" PointY="35.730540364583334" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon1">
-          <ConnectorPoint PointX="5.84375" PointY="7.2496956380208326" />
-          <ConnectorPoint PointX="5.84375" PointY="9.125" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.LeidingInAfdelingsJaar">
-          <ConnectorPoint PointX="9.1875" PointY="32.191793619791667" />
-          <ConnectorPoint PointX="9.1875" PointY="33.125" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Persoon">
-          <ConnectorPoint PointX="9" PointY="7.8528445520833383" />
-          <ConnectorPoint PointX="3.625" PointY="7.8528445520833383" />
-          <ConnectorPoint PointX="3.625" PointY="19.25" />
-          <ConnectorPoint PointX="4.125" PointY="19.25" />
-          <ConnectorPoint PointX="4.125" PointY="22.125" />
-          <ConnectorPoint PointX="3" PointY="22.125" />
-          <ConnectorPoint PointX="3" PointY="39.25" />
-          <ConnectorPoint PointX="4" PointY="39.25" />
-          <ConnectorPoint PointX="4" PointY="39.625" />
-        </AssociationConnector>
-        <InheritanceConnector EntityType="ChiroGroepModel.Kind" ManuallyRouted="false">
-          <ConnectorPoint PointX="11.5" PointY="32.191793619791667" />
-          <ConnectorPoint PointX="11.5" PointY="32.875" />
-          <ConnectorPoint PointX="11.697916666666666" PointY="32.875" />
-          <ConnectorPoint PointX="11.864583333333334" PointY="32.875" />
-          <ConnectorPoint PointX="11.875" PointY="32.875" />
-          <ConnectorPoint PointX="11.875" PointY="34.75" />
-          <ConnectorPoint PointX="11.864583333333334" PointY="34.75" />
-          <ConnectorPoint PointX="11.697916666666666" PointY="34.75" />
-          <ConnectorPoint PointX="10.25" PointY="34.75" />
-          <ConnectorPoint PointX="10.25" PointY="35.125" />
-        </InheritanceConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Categorie" Width="1.5" PointX="3.25" PointY="22.375" Height="2.172587890624996" />
-        <AssociationConnector Association="ChiroGroepModel.FK_Categorie_Groep">
-          <ConnectorPoint PointX="1.9804706250000002" PointY="25.375" />
-          <ConnectorPoint PointX="1.9804706250000002" PointY="23.461293945312498" />
-          <ConnectorPoint PointX="2.9166666666666665" PointY="23.461293945312498" />
-          <ConnectorPoint PointX="3.0833333333333335" PointY="23.461293945312498" />
-          <ConnectorPoint PointX="3.25" PointY="23.461293945312498" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.PersoonsCategorie">
-          <ConnectorPoint PointX="4.75" PointY="23.898793945312498" />
-          <ConnectorPoint PointX="5.5" PointY="23.898793945312498" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.CommunicatieType" Width="2.5" PointX="4.5" PointY="43.5" Height="2.3648893229166674" />
-        <AssociationConnector Association="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType">
-          <ConnectorPoint PointX="7" PointY="44.682444661458334" />
-          <ConnectorPoint PointX="7.90625" PointY="44.682444661458334" />
-          <ConnectorPoint PointX="7.90625" PointY="25.999492187499996" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Functie" Width="1.5" PointX="3.25" PointY="34.875" Height="3.5186979166666674" />
-        <AssociationConnector Association="ChiroGroepModel.FK_Functie_Groep">
-          <ConnectorPoint PointX="2.4757692307692274" PointY="29.085999348958335" />
-          <ConnectorPoint PointX="2.875" PointY="29.485230118189108" />
-          <ConnectorPoint PointX="2.875" PointY="36.634348958333334" />
-          <ConnectorPoint PointX="2.9166666666666665" PointY="36.634348958333334" />
-          <ConnectorPoint PointX="3.0833333333333335" PointY="36.634348958333334" />
-          <ConnectorPoint PointX="3.25" PointY="36.634348958333334" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.LidFunctie">
-          <ConnectorPoint PointX="4.75" PointY="37.396139322916667" />
-          <ConnectorPoint PointX="5.572916666666667" PointY="37.396139322916667" />
-          <ConnectorPoint PointX="5.739583333333333" PointY="37.396139322916667" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="37.396139322916667" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="37.396139322916667" />
-          <ConnectorPoint PointX="11.78125" PointY="37.396139322916667" />
-          <ConnectorPoint PointX="11.78125" PointY="32.191793619791667" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.StraatNaam" Width="1.5" PointX="3.875" PointY="16.375" Height="2.3648893229166674" />
-        <EntityTypeShape EntityType="ChiroGroepModel.WoonPlaats" Width="1.5" PointX="3.875" PointY="10.375" Height="2.3648893229166674" />
-        <AssociationConnector Association="ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres">
-          <ConnectorPoint PointX="4.75" PointY="40.807444661458334" />
-          <ConnectorPoint PointX="5.65625" PointY="40.807444661458334" />
-          <ConnectorPoint PointX="5.65625" PointY="26.576396484375003" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.PersoonsVerzekering" Width="1.5" PointX="4.625" PointY="4.5" Height="2.1725878906250102" />
-        <EntityTypeShape EntityType="ChiroGroepModel.VerzekeringsType" Width="1.5" PointX="0.5" PointY="4.375" Height="2.3648893229166674" />
-        <AssociationConnector Association="ChiroGroepModel.FK_PersoonsVerzekering_Persoon">
-          <ConnectorPoint PointX="9" PointY="5.7737939453125051" />
-          <ConnectorPoint PointX="6.125" PointY="5.7737939453125051" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType">
-          <ConnectorPoint PointX="2" PointY="5.5862939453125051" />
-          <ConnectorPoint PointX="4.625" PointY="5.5862939453125051" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.KaderGroep" Width="1.5" PointX="1" PointY="29.625" Height="1.7879850260416674" />
-        <AssociationConnector Association="ChiroGroepModel.FK_ChiroGroep_KaderGroep">
-          <ConnectorPoint PointX="2.1875" PointY="31.412985026041667" />
-          <ConnectorPoint PointX="2.1875" PointY="32.125" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_KaderGroep_KaderGroep">
-          <ConnectorPoint PointX="1" PointY="30.254394931891024" />
-          <ConnectorPoint PointX="0.92708333333333326" PointY="30.254394931891024" />
-          <ConnectorPoint PointX="0.66666666666666674" PointY="30.254394931891024" />
-          <ConnectorPoint PointX="0.5" PointY="30.254394931891024" />
-          <ConnectorPoint PointX="0.5" PointY="30.796189978966346" />
-          <ConnectorPoint PointX="0.66666666666666674" PointY="30.796189978966346" />
-          <ConnectorPoint PointX="0.92708333333333326" PointY="30.796189978966346" />
-          <ConnectorPoint PointX="1" PointY="30.796189978966346" />
-        </AssociationConnector>
-        <InheritanceConnector EntityType="ChiroGroepModel.KaderGroep" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.75" PointY="28.893697916666667" />
-          <ConnectorPoint PointX="1.75" PointY="29.625" />
-        </InheritanceConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Afdeling_ChiroGroep">
-          <ConnectorPoint PointX="2.5" PointY="32.156152846153851" />
-          <ConnectorPoint PointX="2.81607443490112" PointY="31.84007841125273" />
-          <ConnectorPoint PointX="3.0589255650988791" PointY="31.597227281054973" />
-          <ConnectorPoint PointX="3.09375" PointY="31.562402846153851" />
-          <ConnectorPoint PointX="3.09375" PointY="28.857686674479176" />
-          <ConnectorPoint PointX="5.572916666666667" PointY="28.857686674479176" />
-          <ConnectorPoint PointX="5.739583333333333" PointY="28.857686674479176" />
-          <ConnectorPoint PointX="5.875" PointY="28.857686674479176" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.BelgischAdres" Width="1.5" PointX="2.375" PointY="19.5" Height="1.4033821614583388" />
-        <EntityTypeShape EntityType="ChiroGroepModel.BuitenLandsAdres" Width="1.5" PointX="1.375" PointY="11.875" Height="1.9802864583333388" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Land" Width="1.5" PointX="7.625" PointY="11.875" Height="1.5956835937499816" />
-        <AssociationConnector Association="ChiroGroepModel.FK_BelgischAdres_StraatNaam" >
-          <ConnectorPoint PointX="4.65625" PointY="18.739889322916667" />
-          <ConnectorPoint PointX="4.65625" PointY="20.201691080729169" />
-          <ConnectorPoint PointX="4.208333333333333" PointY="20.201691080729169" />
-          <ConnectorPoint PointX="4.041666666666667" PointY="20.201691080729169" />
-          <ConnectorPoint PointX="3.875" PointY="20.201691080729169" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_BelgischAdres_WoonPlaats" >
-          <ConnectorPoint PointX="3.875" PointY="10.961293945312498" />
-          <ConnectorPoint PointX="3.7083333333333335" PointY="10.961293945312498" />
-          <ConnectorPoint PointX="3.5416666666666665" PointY="10.961293945312498" />
-          <ConnectorPoint PointX="3.5000025" PointY="10.961293945312498" />
-          <ConnectorPoint PointX="3.5000025" PointY="19.5" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_BuitenlandsAdres_Land" >
-          <ConnectorPoint PointX="7.625" PointY="13.136536458333325" />
-          <ConnectorPoint PointX="3.7083333333333335" PointY="13.136536458333323" />
-          <ConnectorPoint PointX="3.4166691666666664" PointY="13.136536458333325" />
-          <ConnectorPoint PointX="3.2083333333333335" PointY="13.136536458333325" />
-          <ConnectorPoint PointX="3.0416666666666665" PointY="13.136536458333325" />
-          <ConnectorPoint PointX="2.875" PointY="13.136536458333325" />
-        </AssociationConnector>
-        <InheritanceConnector EntityType="ChiroGroepModel.BelgischAdres" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.5" PointY="11.172587890624996" />
-          <ConnectorPoint PointX="1.5" PointY="11.547587890624996" />
-          <ConnectorPoint PointX="3.125" PointY="11.547587890624996" />
-          <ConnectorPoint PointX="3.125" PointY="19.5" />
-        </InheritanceConnector>
-        <InheritanceConnector EntityType="ChiroGroepModel.BuitenLandsAdres" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.5" PointY="11.172587890624996" />
-          <ConnectorPoint PointX="1.5" PointY="11.5" />
-          <ConnectorPoint PointX="2.125" PointY="11.5" />
-          <ConnectorPoint PointX="2.125" PointY="11.875" />
-        </InheritanceConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Plaats" Width="1.5" PointX="7.75" PointY="17.75" Height="2.3648893229166674" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Uitstap" Width="1.5" PointX="11" PointY="24.625" Height="2.7494921875000102" />
-        <AssociationConnector Association="ChiroGroepModel.FK_Plaats_Adres" >
-          <ConnectorPoint PointX="1.1093775" PointY="11.172587890624996" />
-          <ConnectorPoint PointX="1.1093775" PointY="19.119944661458334" />
-          <ConnectorPoint PointX="1.4303382291666666" PointY="19.119944661458334" />
-          <ConnectorPoint PointX="1.5970048958333332" PointY="19.119944661458334" />
-          <ConnectorPoint PointX="3.0416666666666665" PointY="19.119944661458334" />
-          <ConnectorPoint PointX="3.2083333333333335" PointY="19.119944661458334" />
-          <ConnectorPoint PointX="3.4166691666666664" PointY="19.119944661458334" />
-          <ConnectorPoint PointX="3.7083333333333335" PointY="19.119944661458334" />
-          <ConnectorPoint PointX="4.572916666666667" PointY="19.119944661458334" />
-          <ConnectorPoint PointX="4.739583333333333" PointY="19.119944661458334" />
-          <ConnectorPoint PointX="6.4791681666666667" PointY="19.119944661458334" />
-          <ConnectorPoint PointX="6.6458348333333328" PointY="19.119944661458334" />
-          <ConnectorPoint PointX="7.75" PointY="19.119944661458334" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact" >
-          <ConnectorPoint PointX="6.6440448515625" PointY="23.25" />
-          <ConnectorPoint PointX="6.6440448515625" PointY="18.369944661458334" />
-          <ConnectorPoint PointX="7.75" PointY="18.369944661458334" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Uitstap_Plaats" >
-          <ConnectorPoint PointX="9.25" PointY="18.932444661458334" />
-          <ConnectorPoint PointX="10.322916666666666" PointY="18.932444661458334" />
-          <ConnectorPoint PointX="10.489583333333334" PointY="18.932444661458334" />
-          <ConnectorPoint PointX="11.21875" PointY="18.932444661458334" />
-          <ConnectorPoint PointX="11.21875" PointY="24.625" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Uitstap_GroepsWerkJaar" >
-          <ConnectorPoint PointX="4.75" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="5.572916666666667" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="5.739583333333333" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="8.4947941666666669" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="8.6614608333333347" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="9.1041666666666661" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="9.2708333333333339" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="10.104166666666666" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="10.270833333333334" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="11.697916666666666" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="11.94791666666667" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="12.40625" PointY="33.000005195312504" />
-          <ConnectorPoint PointX="12.40625" PointY="27.759095052083335" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Plaats_Groep" >
-          <ConnectorPoint PointX="1.5136715625" PointY="25.375" />
-          <ConnectorPoint PointX="1.5136715625" PointY="18.929914492187507" />
-          <ConnectorPoint PointX="3.0416666666666665" PointY="18.929914492187507" />
-          <ConnectorPoint PointX="3.2083333333333335" PointY="18.929914492187507" />
-          <ConnectorPoint PointX="3.4166691666666664" PointY="18.929914492187507" />
-          <ConnectorPoint PointX="3.7083333333333335" PointY="18.929914492187507" />
-          <ConnectorPoint PointX="4.572916666666667" PointY="18.929914492187507" />
-          <ConnectorPoint PointX="4.739583333333333" PointY="18.929914492187507" />
-          <ConnectorPoint PointX="6.4791681666666667" PointY="18.929914492187507" />
-          <ConnectorPoint PointX="6.6458348333333328" PointY="18.929914492187507" />
-          <ConnectorPoint PointX="7.75" PointY="18.929914492187507" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Deelnemer" Width="1.5" PointX="13.25" PointY="24.125" Height="2.7494921874999818" />
-        <AssociationConnector Association="ChiroGroepModel.FK_Deelnemer_GelieerdePersoon" >
-          <ConnectorPoint PointX="5.99999875" PointY="23.25" />
-          <ConnectorPoint PointX="5.99999875" PointY="23" />
-          <ConnectorPoint PointX="6.4791681666666667" PointY="23" />
-          <ConnectorPoint PointX="6.6458348333333328" PointY="23" />
-          <ConnectorPoint PointX="10.322916666666666" PointY="23" />
-          <ConnectorPoint PointX="10.489583333333334" PointY="23" />
-          <ConnectorPoint PointX="11.135416666666666" PointY="23" />
-          <ConnectorPoint PointX="11.302083333333334" PointY="23" />
-          <ConnectorPoint PointX="12.572916666666666" PointY="23" />
-          <ConnectorPoint PointX="12.739583333333334" PointY="23" />
-          <ConnectorPoint PointX="12.875" PointY="23" />
-          <ConnectorPoint PointX="12.875" PointY="25.734121093749991" />
-          <ConnectorPoint PointX="13.25" PointY="25.734121093749991" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Deelnemer_Uitstap" >
-          <ConnectorPoint PointX="12.5" PointY="26.358994140624986" />
-          <ConnectorPoint PointX="12.572916666666666" PointY="26.358994140624986" />
-          <ConnectorPoint PointX="12.833333333333334" PointY="26.358994140624986" />
-          <ConnectorPoint PointX="13.25" PointY="26.358994140624986" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Uitstap_Deelnemer_Contact" >
-          <ConnectorPoint PointX="13.25" PointY="25.109248046874995" />
-          <ConnectorPoint PointX="12.958333333333334" PointY="25.109248046874995" />
-          <ConnectorPoint PointX="12.572916666666666" PointY="25.109248046874995" />
-          <ConnectorPoint PointX="12.5" PointY="25.109248046874995" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Gav_Persoon" >
-          <ConnectorPoint PointX="4.3450512083333335" PointY="8.8936979166666656" />
-          <ConnectorPoint PointX="4.3450512083333335" PointY="9.875" />
-          <ConnectorPoint PointX="4.02343575" PointY="9.875" />
-          <ConnectorPoint PointX="3.8567690833333335" PointY="9.875" />
-          <ConnectorPoint PointX="3.625" PointY="9.875" />
-          <ConnectorPoint PointX="3.625" PointY="19.25" />
-          <ConnectorPoint PointX="3.5833358333333334" PointY="19.25" />
-          <ConnectorPoint PointX="3.4166691666666664" PointY="19.25" />
-          <ConnectorPoint PointX="3.2083333333333335" PointY="19.25" />
-          <ConnectorPoint PointX="3.0416666666666665" PointY="19.25" />
-          <ConnectorPoint PointX="2.125" PointY="19.25" />
-          <ConnectorPoint PointX="2.125" PointY="22.125" />
-          <ConnectorPoint PointX="3" PointY="22.125" />
-          <ConnectorPoint PointX="3" PointY="48.143992513020834" />
-          <ConnectorPoint PointX="3.25" PointY="48.143992513020834" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Abonnement" Width="1.5" PointX="13.75" PointY="27.75" Height="2.1725878906250102" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Publicatie" Width="1.5" PointX="11.5" PointY="20.75" Height="1.9802864583333246" />
-        <AssociationConnector Association="ChiroGroepModel.FK_Abonnement_GelieerdePersoon" >
-          <ConnectorPoint PointX="6.328125" PointY="26.576396484375003" />
-          <ConnectorPoint PointX="6.328125" PointY="27.125" />
-          <ConnectorPoint PointX="7.625" PointY="27.125" />
-          <ConnectorPoint PointX="7.625" PointY="28.74999975" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="28.74999975" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="28.74999975" />
-          <ConnectorPoint PointX="8.7916666666666661" PointY="28.74999975" />
-          <ConnectorPoint PointX="8.9583333333333339" PointY="28.74999975" />
-          <ConnectorPoint PointX="10.666666666666666" PointY="28.74999975" />
-          <ConnectorPoint PointX="10.833333333333334" PointY="28.74999975" />
-          <ConnectorPoint PointX="12.322916666666666" PointY="28.74999975" />
-          <ConnectorPoint PointX="12.489583333333334" PointY="28.74999975" />
-          <ConnectorPoint PointX="13.75" PointY="28.74999975" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar" >
-          <ConnectorPoint PointX="4.75" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="5.572916666666667" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="5.739583333333333" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="8.4947941666666669" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="8.6614608333333347" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="9.1041666666666661" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="9.2708333333333339" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="10.104166666666666" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="10.270833333333334" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="11.697916666666666" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="11.864583333333334" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="12.322916666666666" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="12.489583333333334" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="14.5" PointY="32.9062505078125" />
-          <ConnectorPoint PointX="14.5" PointY="29.92258789062501" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Abonnement_Publicatie" >
-          <ConnectorPoint PointX="12.65625" PointY="22.730286458333325" />
-          <ConnectorPoint PointX="12.65625" PointY="28.348294901041676" />
-          <ConnectorPoint PointX="13.75" PointY="28.348294901041676" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.GavSchap" >
-          <ConnectorPoint PointX="12.75" PointY="6.8651432291666694" />
-          <ConnectorPoint PointX="10.5" PointY="6.8651432291666694" />
-        </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Groep_Adres" />
-      </Diagram>
+      <edmx:Diagram Name="ChiroGroepModel" ZoomLevel="86">
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.ChiroGroep" Width="1.5" PointX="1" PointY="32.125" Height="1.5956835937500102" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Groep" Width="1.5" PointX="1" PointY="25.375" Height="3.5186979166666674" IsExpanded="true" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Persoon" Width="1.5" PointX="9" PointY="4.875" Height="4.0956022135416656" IsExpanded="true" />
+        <edmx:InheritanceConnector EntityType="ChiroGroepModel.ChiroGroep" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="1.75" PointY="28.893697916666667" />
+          <edmx:ConnectorPoint PointX="1.75" PointY="29.375" />
+          <edmx:ConnectorPoint PointX="0.92708333333333337" PointY="29.375" />
+          <edmx:ConnectorPoint PointX="0.76041666666666663" PointY="29.375" />
+          <edmx:ConnectorPoint PointX="0.75" PointY="29.375" />
+          <edmx:ConnectorPoint PointX="0.75" PointY="31.75" />
+          <edmx:ConnectorPoint PointX="0.76041666666666663" PointY="31.75" />
+          <edmx:ConnectorPoint PointX="0.92708333333333337" PointY="31.75" />
+          <edmx:ConnectorPoint PointX="1.75" PointY="31.75" />
+          <edmx:ConnectorPoint PointX="1.75" PointY="32.125" />
+        </edmx:InheritanceConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.CommunicatieVorm" Width="2.5" PointX="7.75" PointY="23.25" Height="2.749492187499996" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.GelieerdePersoon" Width="1.5" PointX="5.5" PointY="23.25" Height="2.9417936197916674" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_GelieerdePersoon_Groep">
+          <edmx:ConnectorPoint PointX="2.5" PointY="25.71875" />
+          <edmx:ConnectorPoint PointX="2.9166666666666665" PointY="25.71875" />
+          <edmx:ConnectorPoint PointX="3.0833333333333335" PointY="25.71875" />
+          <edmx:ConnectorPoint PointX="5.5" PointY="25.71875" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon">
+          <edmx:ConnectorPoint PointX="7" PointY="24.624746093749998" />
+          <edmx:ConnectorPoint PointX="7.75" PointY="24.624746093749998" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_GelieerdePersoon_Persoon">
+          <edmx:ConnectorPoint PointX="10.40625" PointY="8.9706022135416656" />
+          <edmx:ConnectorPoint PointX="10.40625" PointY="26.2879418359375" />
+          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="26.2879418359375" />
+          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="26.2879418359375" />
+          <edmx:ConnectorPoint PointX="7" PointY="26.2879418359375" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Adres" Width="1.5" PointX="0.75" PointY="9" Height="2.172587890624996" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.PersoonsAdres" Width="1.5" PointX="3.25" PointY="39.625" Height="2.3648893229166674" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Adres">
+          <edmx:ConnectorPoint PointX="0.84375" PointY="11.172587890624996" />
+          <edmx:ConnectorPoint PointX="0.84375" PointY="40.807444661458334" />
+          <edmx:ConnectorPoint PointX="3.25" PointY="40.807444661458334" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon">
+          <edmx:ConnectorPoint PointX="5.875" PointY="6.582021484375" />
+          <edmx:ConnectorPoint PointX="6.625" PointY="6.582021484375" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.GroepsWerkJaar" Width="1.5" PointX="3.25" PointY="31.75" Height="2.3648893229166674" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Lid" Width="1.5" PointX="10.75" PointY="29.25" Height="2.9417936197916674" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_GroepsWerkjaar_Groep">
+          <edmx:ConnectorPoint PointX="2.5" PointY="28.837158455128204" />
+          <edmx:ConnectorPoint PointX="2.90625" PointY="29.243408455128204" />
+          <edmx:ConnectorPoint PointX="2.90625" PointY="33.028595377604169" />
+          <edmx:ConnectorPoint PointX="2.9166666666666665" PointY="33.028595377604169" />
+          <edmx:ConnectorPoint PointX="3.0833333333333335" PointY="33.028595377604169" />
+          <edmx:ConnectorPoint PointX="3.25" PointY="33.028595377604169" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar">
+          <edmx:ConnectorPoint PointX="4.75" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="5.572916666666667" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="5.739583333333333" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="8.4947941666666669" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="8.6614608333333347" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="9.1041666666666661" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="9.2708333333333339" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="10.104166666666666" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="10.270833333333334" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="11.697916666666666" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="11.94791666666667" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="12.057291666666668" PointY="32.968751875000009" />
+          <edmx:ConnectorPoint PointX="12.057291666666668" PointY="32.191793619791667" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon">
+          <edmx:ConnectorPoint PointX="7" PointY="26.576396484375003" />
+          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="26.576396484375003" />
+          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="26.576396484375003" />
+          <edmx:ConnectorPoint PointX="10.75" PointY="26.576396484375003" />
+          <edmx:ConnectorPoint PointX="10.75" PointY="29.25" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Gav" Width="1.5" PointX="12.75" PointY="5.875" Height="1.9802864583333388" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.GebruikersRecht" Width="1.5" PointX="3.25" PointY="26.125" Height="1.9802864583333388" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_GebruikersRecht_Gav">
+          <edmx:ConnectorPoint PointX="13.656249500000001" PointY="7.8552864583333388" />
+          <edmx:ConnectorPoint PointX="13.656249500000001" PointY="23.875" />
+          <edmx:ConnectorPoint PointX="12.958333333333334" PointY="23.875" />
+          <edmx:ConnectorPoint PointX="12.791666666666666" PointY="23.875" />
+          <edmx:ConnectorPoint PointX="12.75" PointY="23.875" />
+          <edmx:ConnectorPoint PointX="12.75" PointY="28.009095052083339" />
+          <edmx:ConnectorPoint PointX="12.739583333333334" PointY="28.009095052083339" />
+          <edmx:ConnectorPoint PointX="12.572916666666666" PointY="28.009095052083339" />
+          <edmx:ConnectorPoint PointX="12.489583333333334" PointY="28.009095052083339" />
+          <edmx:ConnectorPoint PointX="12.322916666666666" PointY="28.009095052083339" />
+          <edmx:ConnectorPoint PointX="10.833333333333334" PointY="28.009095052083339" />
+          <edmx:ConnectorPoint PointX="10.666666666666666" PointY="28.009095052083339" />
+          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="28.009095052083339" />
+          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="28.009095052083339" />
+          <edmx:ConnectorPoint PointX="7.75" PointY="28.009095052083339" />
+          <edmx:ConnectorPoint PointX="7.75" PointY="26.8819482421875" />
+          <edmx:ConnectorPoint PointX="6.411458333333333" PointY="26.8819482421875" />
+          <edmx:ConnectorPoint PointX="6.244791666666667" PointY="26.8819482421875" />
+          <edmx:ConnectorPoint PointX="5.739583333333333" PointY="26.8819482421875" />
+          <edmx:ConnectorPoint PointX="5.572916666666667" PointY="26.8819482421875" />
+          <edmx:ConnectorPoint PointX="4.75" PointY="26.8819482421875" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_GebruikersRecht_Groep">
+          <edmx:ConnectorPoint PointX="2.5" PointY="27.115143229166669" />
+          <edmx:ConnectorPoint PointX="2.9166666666666665" PointY="27.115143229166669" />
+          <edmx:ConnectorPoint PointX="3.0833333333333335" PointY="27.115143229166669" />
+          <edmx:ConnectorPoint PointX="3.25" PointY="27.115143229166669" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Afdeling" Width="1.5" PointX="5.875" PointY="27.375" Height="2.1725878906250102" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.AfdelingsJaar" Width="1.5" PointX="8.125" PointY="29.25" Height="2.9417936197916639" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.OfficieleAfdeling" Width="1.5" PointX="5.875" PointY="30.625" Height="2.172587890624996" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar">
+          <edmx:ConnectorPoint PointX="4.75" PointY="32.937501015625" />
+          <edmx:ConnectorPoint PointX="5.572916666666667" PointY="32.937501015625" />
+          <edmx:ConnectorPoint PointX="5.739583333333333" PointY="32.937501015625" />
+          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="32.937501015625" />
+          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="32.937501015625" />
+          <edmx:ConnectorPoint PointX="8.32031125" PointY="32.937501015625" />
+          <edmx:ConnectorPoint PointX="8.32031125" PointY="32.191793619791667" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar1">
+          <edmx:ConnectorPoint PointX="4.75" PointY="10.876511230468751" />
+          <edmx:ConnectorPoint PointX="5.5" PointY="10.876511230468751" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_Afdeling">
+          <edmx:ConnectorPoint PointX="7.375" PointY="28.3124995" />
+          <edmx:ConnectorPoint PointX="7.541666666666667" PointY="28.3124995" />
+          <edmx:ConnectorPoint PointX="7.708333333333333" PointY="28.3124995" />
+          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="28.3124995" />
+          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="28.3124995" />
+          <edmx:ConnectorPoint PointX="8.875" PointY="28.3124995" />
+          <edmx:ConnectorPoint PointX="8.875" PointY="29.25" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling">
+          <edmx:ConnectorPoint PointX="7.375" PointY="31.408396809895834" />
+          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="31.408396809895834" />
+          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="31.408396809895834" />
+          <edmx:ConnectorPoint PointX="8.125" PointY="31.408396809895834" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon1">
+          <edmx:ConnectorPoint PointX="5.84375" PointY="7.41404296875" />
+          <edmx:ConnectorPoint PointX="5.84375" PointY="9.125" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Leiding" Width="2.875" PointX="8.75" PointY="33.125" Height="1.2110807291666674" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.LeidingInAfdelingsJaar" Width="1.5" PointX="11" PointY="13.5" Height="1.7566536458333317" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_GroepsWerkjaar_Groep1">
+          <edmx:ConnectorPoint PointX="3.6875" PointY="8.0320849609375" />
+          <edmx:ConnectorPoint PointX="3.6875" PointY="9.25" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar1">
+          <edmx:ConnectorPoint PointX="4.4062525" PointY="11.828390299479166" />
+          <edmx:ConnectorPoint PointX="4.4062525" PointY="12.123523297526042" />
+          <edmx:ConnectorPoint PointX="5.9127588541666674" PointY="12.123523297526042" />
+          <edmx:ConnectorPoint PointX="6.0794255208333334" PointY="12.123523297526042" />
+          <edmx:ConnectorPoint PointX="6.4713560416666667" PointY="12.123523297526042" />
+          <edmx:ConnectorPoint PointX="6.6380227083333327" PointY="12.123523297526042" />
+          <edmx:ConnectorPoint PointX="10.947916666666666" PointY="12.123523297526042" />
+          <edmx:ConnectorPoint PointX="11.114583333333334" PointY="12.123523297526042" />
+          <edmx:ConnectorPoint PointX="13.375" PointY="12.123523297526042" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar1">
+          <edmx:ConnectorPoint PointX="4.75" PointY="9.8320975748697919" />
+          <edmx:ConnectorPoint PointX="5.5" PointY="9.8320975748697919" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_LeidingInAfdelingsJaar_AfdelingsJaar">
+          <edmx:ConnectorPoint PointX="13.375" PointY="11.670412306315104" />
+          <edmx:ConnectorPoint PointX="11.03125" PointY="11.670412306315104" />
+          <edmx:ConnectorPoint PointX="11.03125" PointY="13.5" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_LeidingInAfdelingsJaar_Leiding">
+          <edmx:ConnectorPoint PointX="10" PointY="14.256805826822916" />
+          <edmx:ConnectorPoint PointX="11" PointY="14.256805826822916" />
+        </edmx:AssociationConnector>
+        <edmx:InheritanceConnector EntityType="ChiroGroepModel.Leiding" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="11.5" PointY="32.191793619791667" />
+          <edmx:ConnectorPoint PointX="11.5" PointY="32.75" />
+          <edmx:ConnectorPoint PointX="10.1875" PointY="32.75" />
+          <edmx:ConnectorPoint PointX="10.1875" PointY="33.125" />
+        </edmx:InheritanceConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Kind" Width="1.5" PointX="9.5" PointY="35.125" Height="1.2110807291666674" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_GroepsWerkjaar_Groep1">
+          <edmx:ConnectorPoint PointX="3.6875" PointY="8.0320849609375" />
+          <edmx:ConnectorPoint PointX="3.6875" PointY="9.25" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar1">
+          <edmx:ConnectorPoint PointX="4.4062525" PointY="11.66404296875" />
+          <edmx:ConnectorPoint PointX="4.4062525" PointY="12.365327415947853" />
+          <edmx:ConnectorPoint PointX="6.0250639635416672" PointY="12.365327415947853" />
+          <edmx:ConnectorPoint PointX="6.1917306302083333" PointY="12.365327415947853" />
+          <edmx:ConnectorPoint PointX="6.4459652604166671" PointY="12.365327415947853" />
+          <edmx:ConnectorPoint PointX="6.6126319270833331" PointY="12.365327415947853" />
+          <edmx:ConnectorPoint PointX="9.7604166666666661" PointY="12.365327415947853" />
+          <edmx:ConnectorPoint PointX="9.9270833333333339" PointY="12.365327415947853" />
+          <edmx:ConnectorPoint PointX="13.375" PointY="12.365327415947853" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_Afdeling1">
+          <edmx:ConnectorPoint PointX="9.625" PointY="9.5000025" />
+          <edmx:ConnectorPoint PointX="13.7187475" PointY="9.5000025" />
+          <edmx:ConnectorPoint PointX="13.7187475" PointY="10.25" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling1">
+          <edmx:ConnectorPoint PointX="12.625" PointY="10.470413411458333" />
+          <edmx:ConnectorPoint PointX="13.375" PointY="10.470413411458333" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Kind_AfdelingsJaar">
+          <edmx:ConnectorPoint PointX="8.5781275" PointY="32.191793619791667" />
+          <edmx:ConnectorPoint PointX="8.5781275" PointY="35.730540364583334" />
+          <edmx:ConnectorPoint PointX="9.5" PointY="35.730540364583334" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon1">
+          <edmx:ConnectorPoint PointX="5.84375" PointY="7.2496956380208326" />
+          <edmx:ConnectorPoint PointX="5.84375" PointY="9.125" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.LeidingInAfdelingsJaar">
+          <edmx:ConnectorPoint PointX="9.1875" PointY="32.191793619791667" />
+          <edmx:ConnectorPoint PointX="9.1875" PointY="33.125" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Persoon">
+          <edmx:ConnectorPoint PointX="9" PointY="7.8528445520833383" />
+          <edmx:ConnectorPoint PointX="3.625" PointY="7.8528445520833383" />
+          <edmx:ConnectorPoint PointX="3.625" PointY="19.25" />
+          <edmx:ConnectorPoint PointX="4.125" PointY="19.25" />
+          <edmx:ConnectorPoint PointX="4.125" PointY="22.125" />
+          <edmx:ConnectorPoint PointX="3" PointY="22.125" />
+          <edmx:ConnectorPoint PointX="3" PointY="39.25" />
+          <edmx:ConnectorPoint PointX="4" PointY="39.25" />
+          <edmx:ConnectorPoint PointX="4" PointY="39.625" />
+        </edmx:AssociationConnector>
+        <edmx:InheritanceConnector EntityType="ChiroGroepModel.Kind" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="11.5" PointY="32.191793619791667" />
+          <edmx:ConnectorPoint PointX="11.5" PointY="32.875" />
+          <edmx:ConnectorPoint PointX="11.697916666666666" PointY="32.875" />
+          <edmx:ConnectorPoint PointX="11.864583333333334" PointY="32.875" />
+          <edmx:ConnectorPoint PointX="11.875" PointY="32.875" />
+          <edmx:ConnectorPoint PointX="11.875" PointY="34.75" />
+          <edmx:ConnectorPoint PointX="11.864583333333334" PointY="34.75" />
+          <edmx:ConnectorPoint PointX="11.697916666666666" PointY="34.75" />
+          <edmx:ConnectorPoint PointX="10.25" PointY="34.75" />
+          <edmx:ConnectorPoint PointX="10.25" PointY="35.125" />
+        </edmx:InheritanceConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Categorie" Width="1.5" PointX="3.25" PointY="22.375" Height="2.172587890624996" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Categorie_Groep">
+          <edmx:ConnectorPoint PointX="1.9804706250000002" PointY="25.375" />
+          <edmx:ConnectorPoint PointX="1.9804706250000002" PointY="23.461293945312498" />
+          <edmx:ConnectorPoint PointX="2.9166666666666665" PointY="23.461293945312498" />
+          <edmx:ConnectorPoint PointX="3.0833333333333335" PointY="23.461293945312498" />
+          <edmx:ConnectorPoint PointX="3.25" PointY="23.461293945312498" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.PersoonsCategorie">
+          <edmx:ConnectorPoint PointX="4.75" PointY="23.898793945312498" />
+          <edmx:ConnectorPoint PointX="5.5" PointY="23.898793945312498" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.CommunicatieType" Width="2.5" PointX="4.5" PointY="43.5" Height="2.3648893229166674" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType">
+          <edmx:ConnectorPoint PointX="7" PointY="44.682444661458334" />
+          <edmx:ConnectorPoint PointX="7.90625" PointY="44.682444661458334" />
+          <edmx:ConnectorPoint PointX="7.90625" PointY="25.999492187499996" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Functie" Width="1.5" PointX="3.25" PointY="34.875" Height="3.5186979166666674" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Functie_Groep">
+          <edmx:ConnectorPoint PointX="2.4757692307692274" PointY="29.085999348958335" />
+          <edmx:ConnectorPoint PointX="2.875" PointY="29.485230118189108" />
+          <edmx:ConnectorPoint PointX="2.875" PointY="36.634348958333334" />
+          <edmx:ConnectorPoint PointX="2.9166666666666665" PointY="36.634348958333334" />
+          <edmx:ConnectorPoint PointX="3.0833333333333335" PointY="36.634348958333334" />
+          <edmx:ConnectorPoint PointX="3.25" PointY="36.634348958333334" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.LidFunctie">
+          <edmx:ConnectorPoint PointX="4.75" PointY="37.396139322916667" />
+          <edmx:ConnectorPoint PointX="5.572916666666667" PointY="37.396139322916667" />
+          <edmx:ConnectorPoint PointX="5.739583333333333" PointY="37.396139322916667" />
+          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="37.396139322916667" />
+          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="37.396139322916667" />
+          <edmx:ConnectorPoint PointX="11.78125" PointY="37.396139322916667" />
+          <edmx:ConnectorPoint PointX="11.78125" PointY="32.191793619791667" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.StraatNaam" Width="1.5" PointX="3.875" PointY="16.375" Height="2.3648893229166674" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.WoonPlaats" Width="1.5" PointX="3.875" PointY="10.375" Height="2.3648893229166674" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres">
+          <edmx:ConnectorPoint PointX="4.75" PointY="40.807444661458334" />
+          <edmx:ConnectorPoint PointX="5.65625" PointY="40.807444661458334" />
+          <edmx:ConnectorPoint PointX="5.65625" PointY="26.576396484375003" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.PersoonsVerzekering" Width="1.5" PointX="4.625" PointY="4.5" Height="2.1725878906250102" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.VerzekeringsType" Width="1.5" PointX="0.5" PointY="4.375" Height="2.3648893229166674" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_PersoonsVerzekering_Persoon">
+          <edmx:ConnectorPoint PointX="9" PointY="5.7737939453125051" />
+          <edmx:ConnectorPoint PointX="6.125" PointY="5.7737939453125051" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType">
+          <edmx:ConnectorPoint PointX="2" PointY="5.5862939453125051" />
+          <edmx:ConnectorPoint PointX="4.625" PointY="5.5862939453125051" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.KaderGroep" Width="1.5" PointX="1" PointY="29.625" Height="1.7879850260416674" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_ChiroGroep_KaderGroep">
+          <edmx:ConnectorPoint PointX="2.1875" PointY="31.412985026041667" />
+          <edmx:ConnectorPoint PointX="2.1875" PointY="32.125" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_KaderGroep_KaderGroep">
+          <edmx:ConnectorPoint PointX="1" PointY="30.254394931891024" />
+          <edmx:ConnectorPoint PointX="0.92708333333333326" PointY="30.254394931891024" />
+          <edmx:ConnectorPoint PointX="0.66666666666666674" PointY="30.254394931891024" />
+          <edmx:ConnectorPoint PointX="0.5" PointY="30.254394931891024" />
+          <edmx:ConnectorPoint PointX="0.5" PointY="30.796189978966346" />
+          <edmx:ConnectorPoint PointX="0.66666666666666674" PointY="30.796189978966346" />
+          <edmx:ConnectorPoint PointX="0.92708333333333326" PointY="30.796189978966346" />
+          <edmx:ConnectorPoint PointX="1" PointY="30.796189978966346" />
+        </edmx:AssociationConnector>
+        <edmx:InheritanceConnector EntityType="ChiroGroepModel.KaderGroep" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="1.75" PointY="28.893697916666667" />
+          <edmx:ConnectorPoint PointX="1.75" PointY="29.625" />
+        </edmx:InheritanceConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Afdeling_ChiroGroep">
+          <edmx:ConnectorPoint PointX="2.5" PointY="32.156152846153851" />
+          <edmx:ConnectorPoint PointX="2.81607443490112" PointY="31.84007841125273" />
+          <edmx:ConnectorPoint PointX="3.0589255650988791" PointY="31.597227281054973" />
+          <edmx:ConnectorPoint PointX="3.09375" PointY="31.562402846153851" />
+          <edmx:ConnectorPoint PointX="3.09375" PointY="28.857686674479176" />
+          <edmx:ConnectorPoint PointX="5.572916666666667" PointY="28.857686674479176" />
+          <edmx:ConnectorPoint PointX="5.739583333333333" PointY="28.857686674479176" />
+          <edmx:ConnectorPoint PointX="5.875" PointY="28.857686674479176" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.BelgischAdres" Width="1.5" PointX="2.375" PointY="19.5" Height="1.4033821614583388" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.BuitenLandsAdres" Width="1.5" PointX="1.375" PointY="11.875" Height="1.9802864583333388" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Land" Width="1.5" PointX="7.625" PointY="11.875" Height="1.5956835937499816" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_BelgischAdres_StraatNaam">
+          <edmx:ConnectorPoint PointX="4.65625" PointY="18.739889322916667" />
+          <edmx:ConnectorPoint PointX="4.65625" PointY="20.201691080729169" />
+          <edmx:ConnectorPoint PointX="4.208333333333333" PointY="20.201691080729169" />
+          <edmx:ConnectorPoint PointX="4.041666666666667" PointY="20.201691080729169" />
+          <edmx:ConnectorPoint PointX="3.875" PointY="20.201691080729169" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_BelgischAdres_WoonPlaats">
+          <edmx:ConnectorPoint PointX="3.875" PointY="10.961293945312498" />
+          <edmx:ConnectorPoint PointX="3.7083333333333335" PointY="10.961293945312498" />
+          <edmx:ConnectorPoint PointX="3.5416666666666665" PointY="10.961293945312498" />
+          <edmx:ConnectorPoint PointX="3.5000025" PointY="10.961293945312498" />
+          <edmx:ConnectorPoint PointX="3.5000025" PointY="19.5" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_BuitenlandsAdres_Land">
+          <edmx:ConnectorPoint PointX="7.625" PointY="13.136536458333325" />
+          <edmx:ConnectorPoint PointX="3.7083333333333335" PointY="13.136536458333323" />
+          <edmx:ConnectorPoint PointX="3.4166691666666664" PointY="13.136536458333325" />
+          <edmx:ConnectorPoint PointX="3.2083333333333335" PointY="13.136536458333325" />
+          <edmx:ConnectorPoint PointX="3.0416666666666665" PointY="13.136536458333325" />
+          <edmx:ConnectorPoint PointX="2.875" PointY="13.136536458333325" />
+        </edmx:AssociationConnector>
+        <edmx:InheritanceConnector EntityType="ChiroGroepModel.BelgischAdres" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="1.5" PointY="11.172587890624996" />
+          <edmx:ConnectorPoint PointX="1.5" PointY="11.547587890624996" />
+          <edmx:ConnectorPoint PointX="3.125" PointY="11.547587890624996" />
+          <edmx:ConnectorPoint PointX="3.125" PointY="19.5" />
+        </edmx:InheritanceConnector>
+        <edmx:InheritanceConnector EntityType="ChiroGroepModel.BuitenLandsAdres" ManuallyRouted="false">
+          <edmx:ConnectorPoint PointX="1.5" PointY="11.172587890624996" />
+          <edmx:ConnectorPoint PointX="1.5" PointY="11.5" />
+          <edmx:ConnectorPoint PointX="2.125" PointY="11.5" />
+          <edmx:ConnectorPoint PointX="2.125" PointY="11.875" />
+        </edmx:InheritanceConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Plaats" Width="1.5" PointX="7.75" PointY="17.75" Height="2.3648893229166674" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Uitstap" Width="1.5" PointX="11" PointY="24.625" Height="2.7494921875000102" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Plaats_Adres">
+          <edmx:ConnectorPoint PointX="1.1093775" PointY="11.172587890624996" />
+          <edmx:ConnectorPoint PointX="1.1093775" PointY="19.119944661458334" />
+          <edmx:ConnectorPoint PointX="1.4303382291666666" PointY="19.119944661458334" />
+          <edmx:ConnectorPoint PointX="1.5970048958333332" PointY="19.119944661458334" />
+          <edmx:ConnectorPoint PointX="3.0416666666666665" PointY="19.119944661458334" />
+          <edmx:ConnectorPoint PointX="3.2083333333333335" PointY="19.119944661458334" />
+          <edmx:ConnectorPoint PointX="3.4166691666666664" PointY="19.119944661458334" />
+          <edmx:ConnectorPoint PointX="3.7083333333333335" PointY="19.119944661458334" />
+          <edmx:ConnectorPoint PointX="4.572916666666667" PointY="19.119944661458334" />
+          <edmx:ConnectorPoint PointX="4.739583333333333" PointY="19.119944661458334" />
+          <edmx:ConnectorPoint PointX="6.4791681666666667" PointY="19.119944661458334" />
+          <edmx:ConnectorPoint PointX="6.6458348333333328" PointY="19.119944661458334" />
+          <edmx:ConnectorPoint PointX="7.75" PointY="19.119944661458334" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact">
+          <edmx:ConnectorPoint PointX="6.6440448515625" PointY="23.25" />
+          <edmx:ConnectorPoint PointX="6.6440448515625" PointY="18.369944661458334" />
+          <edmx:ConnectorPoint PointX="7.75" PointY="18.369944661458334" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Uitstap_Plaats">
+          <edmx:ConnectorPoint PointX="9.25" PointY="18.932444661458334" />
+          <edmx:ConnectorPoint PointX="10.322916666666666" PointY="18.932444661458334" />
+          <edmx:ConnectorPoint PointX="10.489583333333334" PointY="18.932444661458334" />
+          <edmx:ConnectorPoint PointX="11.21875" PointY="18.932444661458334" />
+          <edmx:ConnectorPoint PointX="11.21875" PointY="24.625" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Uitstap_GroepsWerkJaar">
+          <edmx:ConnectorPoint PointX="4.75" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="5.572916666666667" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="5.739583333333333" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="8.4947941666666669" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="8.6614608333333347" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="9.1041666666666661" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="9.2708333333333339" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="10.104166666666666" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="10.270833333333334" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="11.697916666666666" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="11.94791666666667" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="12.40625" PointY="33.000005195312504" />
+          <edmx:ConnectorPoint PointX="12.40625" PointY="27.759095052083335" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Plaats_Groep">
+          <edmx:ConnectorPoint PointX="1.5136715625" PointY="25.375" />
+          <edmx:ConnectorPoint PointX="1.5136715625" PointY="18.929914492187507" />
+          <edmx:ConnectorPoint PointX="3.0416666666666665" PointY="18.929914492187507" />
+          <edmx:ConnectorPoint PointX="3.2083333333333335" PointY="18.929914492187507" />
+          <edmx:ConnectorPoint PointX="3.4166691666666664" PointY="18.929914492187507" />
+          <edmx:ConnectorPoint PointX="3.7083333333333335" PointY="18.929914492187507" />
+          <edmx:ConnectorPoint PointX="4.572916666666667" PointY="18.929914492187507" />
+          <edmx:ConnectorPoint PointX="4.739583333333333" PointY="18.929914492187507" />
+          <edmx:ConnectorPoint PointX="6.4791681666666667" PointY="18.929914492187507" />
+          <edmx:ConnectorPoint PointX="6.6458348333333328" PointY="18.929914492187507" />
+          <edmx:ConnectorPoint PointX="7.75" PointY="18.929914492187507" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Deelnemer" Width="1.5" PointX="13.25" PointY="24.125" Height="2.7494921874999818" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Deelnemer_GelieerdePersoon">
+          <edmx:ConnectorPoint PointX="5.99999875" PointY="23.25" />
+          <edmx:ConnectorPoint PointX="5.99999875" PointY="23" />
+          <edmx:ConnectorPoint PointX="6.4791681666666667" PointY="23" />
+          <edmx:ConnectorPoint PointX="6.6458348333333328" PointY="23" />
+          <edmx:ConnectorPoint PointX="10.322916666666666" PointY="23" />
+          <edmx:ConnectorPoint PointX="10.489583333333334" PointY="23" />
+          <edmx:ConnectorPoint PointX="11.135416666666666" PointY="23" />
+          <edmx:ConnectorPoint PointX="11.302083333333334" PointY="23" />
+          <edmx:ConnectorPoint PointX="12.572916666666666" PointY="23" />
+          <edmx:ConnectorPoint PointX="12.739583333333334" PointY="23" />
+          <edmx:ConnectorPoint PointX="12.875" PointY="23" />
+          <edmx:ConnectorPoint PointX="12.875" PointY="25.734121093749991" />
+          <edmx:ConnectorPoint PointX="13.25" PointY="25.734121093749991" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Deelnemer_Uitstap">
+          <edmx:ConnectorPoint PointX="12.5" PointY="26.358994140624986" />
+          <edmx:ConnectorPoint PointX="12.572916666666666" PointY="26.358994140624986" />
+          <edmx:ConnectorPoint PointX="12.833333333333334" PointY="26.358994140624986" />
+          <edmx:ConnectorPoint PointX="13.25" PointY="26.358994140624986" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Uitstap_Deelnemer_Contact">
+          <edmx:ConnectorPoint PointX="13.25" PointY="25.109248046874995" />
+          <edmx:ConnectorPoint PointX="12.958333333333334" PointY="25.109248046874995" />
+          <edmx:ConnectorPoint PointX="12.572916666666666" PointY="25.109248046874995" />
+          <edmx:ConnectorPoint PointX="12.5" PointY="25.109248046874995" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Gav_Persoon">
+          <edmx:ConnectorPoint PointX="4.3450512083333335" PointY="8.8936979166666656" />
+          <edmx:ConnectorPoint PointX="4.3450512083333335" PointY="9.875" />
+          <edmx:ConnectorPoint PointX="4.02343575" PointY="9.875" />
+          <edmx:ConnectorPoint PointX="3.8567690833333335" PointY="9.875" />
+          <edmx:ConnectorPoint PointX="3.625" PointY="9.875" />
+          <edmx:ConnectorPoint PointX="3.625" PointY="19.25" />
+          <edmx:ConnectorPoint PointX="3.5833358333333334" PointY="19.25" />
+          <edmx:ConnectorPoint PointX="3.4166691666666664" PointY="19.25" />
+          <edmx:ConnectorPoint PointX="3.2083333333333335" PointY="19.25" />
+          <edmx:ConnectorPoint PointX="3.0416666666666665" PointY="19.25" />
+          <edmx:ConnectorPoint PointX="2.125" PointY="19.25" />
+          <edmx:ConnectorPoint PointX="2.125" PointY="22.125" />
+          <edmx:ConnectorPoint PointX="3" PointY="22.125" />
+          <edmx:ConnectorPoint PointX="3" PointY="48.143992513020834" />
+          <edmx:ConnectorPoint PointX="3.25" PointY="48.143992513020834" />
+        </edmx:AssociationConnector>
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Abonnement" Width="1.5" PointX="13.75" PointY="27.75" Height="2.1725878906250102" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Publicatie" Width="1.5" PointX="11.5" PointY="20.75" Height="1.9802864583333246" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Abonnement_GelieerdePersoon">
+          <edmx:ConnectorPoint PointX="6.328125" PointY="26.576396484375003" />
+          <edmx:ConnectorPoint PointX="6.328125" PointY="27.125" />
+          <edmx:ConnectorPoint PointX="7.625" PointY="27.125" />
+          <edmx:ConnectorPoint PointX="7.625" PointY="28.74999975" />
+          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="28.74999975" />
+          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="28.74999975" />
+          <edmx:ConnectorPoint PointX="8.7916666666666661" PointY="28.74999975" />
+          <edmx:ConnectorPoint PointX="8.9583333333333339" PointY="28.74999975" />
+          <edmx:ConnectorPoint PointX="10.666666666666666" PointY="28.74999975" />
+          <edmx:ConnectorPoint PointX="10.833333333333334" PointY="28.74999975" />
+          <edmx:ConnectorPoint PointX="12.322916666666666" PointY="28.74999975" />
+          <edmx:ConnectorPoint PointX="12.489583333333334" PointY="28.74999975" />
+          <edmx:ConnectorPoint PointX="13.75" PointY="28.74999975" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar">
+          <edmx:ConnectorPoint PointX="4.75" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="5.572916666666667" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="5.739583333333333" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="8.4947941666666669" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="8.6614608333333347" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="9.1041666666666661" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="9.2708333333333339" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="10.104166666666666" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="10.270833333333334" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="11.697916666666666" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="11.864583333333334" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="12.322916666666666" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="12.489583333333334" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="14.5" PointY="32.9062505078125" />
+          <edmx:ConnectorPoint PointX="14.5" PointY="29.92258789062501" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Abonnement_Publicatie">
+          <edmx:ConnectorPoint PointX="12.65625" PointY="22.730286458333325" />
+          <edmx:ConnectorPoint PointX="12.65625" PointY="28.348294901041676" />
+          <edmx:ConnectorPoint PointX="13.75" PointY="28.348294901041676" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.GavSchap">
+          <edmx:ConnectorPoint PointX="12.75" PointY="6.8651432291666694" />
+          <edmx:ConnectorPoint PointX="10.5" PointY="6.8651432291666694" />
+        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Groep_Adres" />
+      </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
