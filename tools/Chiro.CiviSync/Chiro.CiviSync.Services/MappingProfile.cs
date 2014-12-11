@@ -21,6 +21,7 @@ namespace Chiro.CiviSync.Services
                 .ForMember(dst => dst.GenderId, opt => opt.MapFrom(src => (Gender)(3 - (int)src.Geslacht)))
                 .ForMember(dst => dst.IsDeceased, opt => opt.MapFrom(src => src.SterfDatum != null))
                 .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Naam))
+                .ForMember(dst => dst.Id, opt => opt.Ignore())
                 // Ondrstaande voor het gemak maar automatisch gegenereerd :-)
                 .ForMember(dst => dst.ContactSubType, opt => opt.Ignore())
                 .ForMember(dst => dst.SortName, opt => opt.Ignore())
