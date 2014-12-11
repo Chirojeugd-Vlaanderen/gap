@@ -52,9 +52,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
@@ -102,6 +99,10 @@
     <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.ClientInterfaces\Chiro.CiviCrm.ClientInterfaces.csproj">
       <Project>{C51D5B97-3AF5-4AD8-9B40-3C04DF6FC1C4}</Project>
       <Name>Chiro.CiviCrm.ClientInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Client\Chiro.CiviCrm.Client.csproj">
+      <Project>{b0f99afc-7cd5-4c06-b362-840f0dfb560c}</Project>
+      <Name>Chiro.CiviCrm.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Domain\Chiro.CiviCrm.Domain.csproj">
       <Project>{7c6f2810-20be-4dc8-a7d1-92999be67d61}</Project>

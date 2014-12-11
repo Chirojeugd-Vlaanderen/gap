@@ -24,7 +24,7 @@ using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Domain;
 using System.ServiceModel;
-using log4net;
+using Chiro.CiviCrm.Client;
 
 namespace Chiro.CiviSync.Services
 {
@@ -33,11 +33,15 @@ namespace Chiro.CiviSync.Services
     public class SyncService : ISyncPersoonService, IDisposable
     {
         private readonly ICiviCrmClient _civiCrmClient;
-        private static readonly ILog _log = LogManager.GetLogger(typeof(SyncService));
 
         public SyncService(ICiviCrmClient civiCrmClient)
         {
-            Mapper.Initialize(cfg => { cfg.AddProfile<MappingProfile>(); });
+            Mapper.Initialize(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>(); 
+                cfg.AddProfile<CiviToNetProfile>();
+                cfg.AddProfile<NetToCiviProfile>();
+            });
             _civiCrmClient = civiCrmClient;
         }
 
@@ -115,7 +119,7 @@ namespace Chiro.CiviSync.Services
                     foreach (var tvAdres in teVerwijderenAdressen)
                     {
                         _civiCrmClient.AddressDelete(tvAdres.Id.Value);
-                        _log.Debug(String.Format(
+                        Console.WriteLine(String.Format(
                             "Oud voorkeursadres voor {0} {1} verwijderd (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
                             bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, bewoner.Persoon.CiviID,
                             tvAdres.StreetAddress, tvAdres.PostalCode, tvAdres.PostalCodeSuffix, tvAdres.City, tvAdres.Country));
