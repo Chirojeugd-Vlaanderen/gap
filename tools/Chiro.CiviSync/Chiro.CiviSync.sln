@@ -21,12 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.UnityWcfExtension
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviCrm.BehaviorExtension", "..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Behavior\Chiro.CiviCrm.BehaviorExtension.csproj", "{F39A9E29-95E9-4304-A42D-1266F81B5ECF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{CAB7292B-1C13-4705-9F35-8E763A3DC887}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\Solution\References\Automapper-License.txt = ..\..\Solution\References\Automapper-License.txt
-		..\..\Solution\References\AutoMapper.dll = ..\..\Solution\References\AutoMapper.dll
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviCrm.Api", "..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.ServiceContracts\Chiro.CiviCrm.Api.csproj", "{C27C0FB3-740A-4705-98DF-3B237984C44F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviCrm.Domain", "..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Domain\Chiro.CiviCrm.Domain.csproj", "{7C6F2810-20BE-4DC8-A7D1-92999BE67D61}"

@@ -37,6 +37,7 @@ namespace Chiro.CiviSync.Services
 
         public SyncService(ICiviCrmClient civiCrmClient)
         {
+            Mapper.Initialize(cfg => { cfg.AddProfile<MappingProfile>(); });
             _civiCrmClient = civiCrmClient;
         }
 
@@ -113,7 +114,7 @@ namespace Chiro.CiviSync.Services
                                                  select adr).ToList();
                     foreach (var tvAdres in teVerwijderenAdressen)
                     {
-                        _civiCrmClient.AddressDelete(tvAdres.Id);
+                        _civiCrmClient.AddressDelete(tvAdres.Id.Value);
                         _log.Debug(String.Format(
                             "Oud voorkeursadres voor {0} {1} verwijderd (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
                             bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, bewoner.Persoon.CiviID,

@@ -22,38 +22,9 @@ using Chiro.CiviCrm.Domain;
 
 namespace Chiro.CiviSync.Services
 {
-    public static class MappingHelper
+    public static class MappingHelpers
     {
-        public static void MappingsDefinieren()
-        {
-            Mapper.CreateMap<Persoon, Contact>()
-                .ForMember(dst => dst.BirthDate, opt => opt.MapFrom(src => src.GeboorteDatum))
-                .ForMember(dst => dst.ContactType, opt => opt.MapFrom(src => ContactType.Individual))
-                .ForMember(dst => dst.DeceasedDate, opt => opt.MapFrom(src => src.SterfDatum))
-                .ForMember(dst => dst.ExternalId, opt => opt.MapFrom(src => src.AdNummer))
-                .ForMember(dst => dst.FirstName, opt => opt.MapFrom(src => src.VoorNaam))
-                .ForMember(dst => dst.Gender, opt => opt.MapFrom(src => (Gender)(3 - (int)src.Geslacht)))
-                .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.CiviID))
-                .ForMember(dst => dst.IsDeceased, opt => opt.MapFrom(src => src.SterfDatum != null))
-                .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Naam));
-
-            Mapper.CreateMap<Adres, Address>()
-                .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))
-                .ForMember(dst => dst.ContactId, opt => opt.Ignore())
-                .ForMember(dst => dst.Country, opt => opt.MapFrom(src => src.LandIsoCode))
-                .ForMember(dst => dst.LocationTypeId, opt => opt.Ignore())
-                .ForMember(dst => dst.Id, opt => opt.Ignore())
-                .ForMember(dst => dst.IsBilling, opt => opt.Ignore())
-                .ForMember(dst => dst.IsPrimary, opt => opt.Ignore())
-                .ForMember(dst => dst.PostalCode, opt => opt.MapFrom(src => src.PostNr))
-                .ForMember(dst => dst.PostalCodeSuffix, opt => opt.MapFrom(src => src.PostCode))
-                .ForMember(dst => dst.StateProvinceId, opt => opt.MapFrom(src => ProvincieIDBepalen(src)))
-                .ForMember(dst => dst.StreetAddress, opt => opt.MapFrom(StraatNrFormatteren));
-
-            Mapper.AssertConfigurationIsValid();
-        }
-
-        private static string StraatNrFormatteren(Adres src)
+        public static string StraatNrFormatteren(Adres src)
         {
             if (!String.IsNullOrEmpty(src.Bus))
             {
@@ -62,7 +33,7 @@ namespace Chiro.CiviSync.Services
             return String.Format("{0} {1}", src.Straat, src.HuisNr);
         }
 
-        private static int ProvincieIDBepalen(Adres src)
+        public static int ProvincieIDBepalen(Adres src)
         {
             if (!String.IsNullOrEmpty(src.Land) &&
                 !src.Land.StartsWith("Belgi", StringComparison.InvariantCultureIgnoreCase))
