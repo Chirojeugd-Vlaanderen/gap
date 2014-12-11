@@ -459,40 +459,6 @@ namespace Chiro.Gap.Services.Test
         }
 
         ///<summary>
-        /// Controleert of de service verhindert dat een Civi-ID wordt toegekend bij het maken van een nieuwe persoon.
-        ///</summary>
-        [TestMethod()]
-        [ExpectedFoutNummer(typeof(FaultException<FoutNummerFault>), FoutNummer.AlgemeneFout)]
-        public void ToekennenCiviIdTest()
-        {
-            // ARRANGE
-
-            // model
-
-            var groep = new ChiroGroep { ID = 1 };
-
-            // mocks
-            var repositoryProviderMock = new Mock<IRepositoryProvider>();
-            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
-                                  .Returns(new DummyRepo<Groep>(new List<Groep> { groep }));
-            Factory.InstantieRegistreren(repositoryProviderMock.Object);
-
-            // ACT
-
-            var target = Factory.Maak<GelieerdePersonenService>();
-
-            target.Nieuw
-            (
-                new NieuwePersoonDetails
-                {
-                    PersoonInfo = new PersoonInfo { CiviID = 39198 }
-                }, groep.ID, false
-            );
-
-            Assert.IsTrue(false);
-        }
-
-        ///<summary>
         /// Controleert of de service verhindert dat een GelieerdePersoonID wordt toegekend bij het maken van een 
         /// nieuwe persoon.
         ///</summary>

@@ -29,14 +29,14 @@ namespace Chiro.Gap.UpdateApi
                     return String.Format("You requested {0}", id);
                 };
             // You can test this with curl:
-            // curl -X PUT -d PersoonId=2 -d CiviId=3 localhost:50673/persoon
+            // curl -X PUT -d PersoonId=2 -d AdNummer=3 localhost:50673/persoon
             Put["/persoon"] = _ => {
                 Models.Persoon model = this.Bind();
-                if (model.CiviId > 0)
+                if (model.AdNummer > 0)
                 {
                     try
                     {
-                        _persoonUpdater.CiviIdToekennen(model.PersoonId, model.CiviId, true);
+                        _persoonUpdater.AdNummerToekennen(model.PersoonId, model.AdNummer);
                     }
                     catch (FoutNummerException ex)
                     {

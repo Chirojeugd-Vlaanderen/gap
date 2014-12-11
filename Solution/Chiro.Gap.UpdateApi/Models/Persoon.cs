@@ -14,6 +14,6 @@ namespace Chiro.Gap.UpdateApi.Models
     public class Persoon
     {
         public int PersoonId { get; set; }
-        public int CiviId { get; set; }
+        public int AdNummer { get; set; }
     }
 }

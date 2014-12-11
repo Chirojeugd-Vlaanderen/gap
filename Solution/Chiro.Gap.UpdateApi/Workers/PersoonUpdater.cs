@@ -82,7 +82,9 @@ namespace Chiro.Gap.UpdateApi.Workers
         #endregion
 
         /// <summary>
-        /// Stelt het AD-nummer van de persoon met Id <paramref name="persoonId"/> in.  
+        /// Stelt het AD-nummer van de persoon met Id <paramref name="persoonId"/> in. 
+        /// Als er al een persoon bestaat met hetzelfde AD-nummer, dan wordt die persoon
+        /// gemerged met de bestaande persoon.
         /// </summary>
         /// <param name="persoonId">
         /// Id van de persoon
@@ -95,6 +97,8 @@ namespace Chiro.Gap.UpdateApi.Workers
             var persoon = _personenRepo.ByID(persoonId);
             if (persoon == null)
             {
+                throw new InvalidOperationException(
+                    String.Format("Onbekend persoon (ID {0}) voor AD-nummer {1} genegeerd.", persoonId, adNummer));
                 return;
             }
 
@@ -429,55 +433,6 @@ namespace Chiro.Gap.UpdateApi.Workers
             }
 
             Console.WriteLine(stopDatum == null ? "Groep opnieuw geactiveerd: {0}" : "Groep gedesactiveerd: {0}", stamNr);
-        }
-
-        /// <summary>
-        /// Kent gegeven <paramref name="civiID"/> toe aan de persoon met gegeven
-        /// <paramref name="persoonID"/>.
-        /// </summary>
-        /// <param name="persoonID">ID van persoon met toe te kennen Civi-ID</param>
-        /// <param name="civiID">toe te kennen Civi-ID</param>
-        /// <param name="dupesMergen">Als <c>true</c>, dan wordt de persoon gemerged met
-        /// eventuele bestaande andere personen met datzelfde <paramref name="civiIC"/>.</param>
-        public void CiviIdToekennen(int persoonID, int civiID, bool dupesMergen)
-        {
-            var persoon = _personenRepo.ByID(persoonID);
-            if (persoon == null)
-            {
-                throw new FoutNummerException(FoutNummer.PersoonNietGevonden, Properties.Resources.PersoonNietGevonden);
-            }
-
-            CiviIdToekennen(persoon, civiID, dupesMergen); // PERSISTEERT
-
-            Console.WriteLine("Civi-ID {0} toegekend aan {1}. (persoon-ID {2})", civiID, persoon.VolledigeNaam, persoon.ID);
-        }
-
-        /// <summary>
-        /// Kent gegeven <paramref name="civiID"/> toe aan de gegeven <paramref name="persoon"/>.
-        /// </summary>
-        /// <param name="persoon">persoon met toe te kennen Civi-ID</param>
-        /// <param name="civiID">toe te kennen Civi-ID</param>
-        /// <param name="dupesMergen">Als <c>true</c>, dan wordt de persoon gemerged met
-        /// eventuele bestaande andere personen met datzelfde <paramref name="civiIC"/>.</param>
-        private void CiviIdToekennen(Persoon persoon, int civiID, bool dupesMergen)
-        {
-            // Wie heeft het gegeven AD-nummer al?
-            var personenAlBestaand = (from g in _personenRepo.Select() where g.CiviID == civiID select g);
-
-            foreach (var p in personenAlBestaand.Where(prs => prs.ID != persoon.ID).ToList())
-            {
-                if (dupesMergen)
-                {
-                    DubbelVerwijderen(persoon, p);
-                }
-                else
-                {
-                    p.CiviID = null;
-                }
-            }
-
-            persoon.CiviID = civiID;
-            _personenRepo.SaveChanges();
         }
     }
 }

@@ -33,7 +33,7 @@
         <tr>
             <th>
                 <%=Html.CheckBox("checkall") %></th>
-            <th>Civi-ID</th>
+            <th>AD-nummer</th>
             <th>
                 Naam
             </th>
@@ -61,7 +61,7 @@
             <%=Html.CheckBoxList("GekozenGelieerdePersoonIDs", info[j]) %><% j++; %>
         </td>
         <td>
-            <%=p.CiviID %>
+            <%=p.AdNummer %>
         </td>
         <td>
             <%=Html.PersoonsLink(p.GelieerdePersoonID, p.VoorNaam, p.Naam)%>

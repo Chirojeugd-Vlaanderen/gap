@@ -160,15 +160,6 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Je mag geen Civi-ID&apos;s wijzigen..
-        /// </summary>
-        internal static string CiviIdNietWijzigen {
-            get {
-                return ResourceManager.GetString("CiviIdNietWijzigen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Een e-mailadres is verplicht.
         /// </summary>
         internal static string EmailOntbreekt {
@@ -250,7 +241,7 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Civi-ID, GelieerdePersoonID en AD-nummer mag je niet zelf kiezen..
+        ///   Looks up a localized string similar to GelieerdePersoonID en AD-nummer mag je niet zelf kiezen..
         /// </summary>
         internal static string IdsNietWijzigen {
             get {

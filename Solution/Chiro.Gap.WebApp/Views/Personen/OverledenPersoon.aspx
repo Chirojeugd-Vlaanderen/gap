@@ -30,10 +30,10 @@
         <%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VolledigeNaam) %>
         (<%=Html.Geslacht(Model.PersoonLidInfo.PersoonDetail.Geslacht) %>)
         <br />
-        <%if (Model.PersoonLidInfo.PersoonDetail.CiviID != null)
+        <%if (Model.PersoonLidInfo.PersoonDetail.AdNummer != null)
           {%>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.CiviID) %>&nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Civi-ID", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een Civi-ID?" } ) %>:
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.CiviID) %><br />
+        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %>&nbsp;<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "AD-nummer", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een Civi-ID?" } ) %>:
+        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><br />
         <%
             }%>
         <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>:

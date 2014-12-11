@@ -5,7 +5,6 @@ namespace Chiro.Gap.UpdateApi.Workers
     {
         void AdNummerToekennen(int persoonId, int adNummer);
         void AdNummerVervangen(int oudAd, int nieuwAd);
-        void CiviIdToekennen(int persoonID, int civiID, bool dupesMergen);
         void GroepDesactiveren(string stamNr, DateTime? stopDatum);
     }
 }

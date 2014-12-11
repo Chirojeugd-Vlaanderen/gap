@@ -231,11 +231,8 @@
   <data name="LidInactief" xml:space="preserve">
     <value>Het lid met gegeven LidID is niet meer actief</value>
   </data>
-  <data name="CiviIdNietWijzigen" xml:space="preserve">
-    <value>Je mag geen Civi-ID's wijzigen.</value>
-  </data>
   <data name="IdsNietWijzigen" xml:space="preserve">
-    <value>Civi-ID, GelieerdePersoonID en AD-nummer mag je niet zelf kiezen.</value>
+    <value>GelieerdePersoonID en AD-nummer mag je niet zelf kiezen.</value>
   </data>
   <data name="AdresOntbreekt" xml:space="preserve">
     <value>We vragen een adres voor ieder ingeschreven lid.</value>

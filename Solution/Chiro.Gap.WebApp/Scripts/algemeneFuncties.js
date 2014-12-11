@@ -49,10 +49,10 @@ $(function () {
         toonInfo('#CLINFO', "Chiroleeftijd", "#extraInfoDialog");
     });
 
-    // extra info over civi-ID
-    $('#Cid-Info').click(function () {
+    // extra info over AD-nummer
+    $('#AD-Info').click(function () {
         $('#extraInfoDialog').dialog();
-        toonInfo('#CIDINFO', 'Civi-ID', '#extraInfoDialog');
+        toonInfo('#ADINFO', 'AD-nummer', '#extraInfoDialog');
     });
 
     $('#instapperiodeInfo').click(function () {

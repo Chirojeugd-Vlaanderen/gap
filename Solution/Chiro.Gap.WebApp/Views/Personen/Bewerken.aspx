@@ -245,12 +245,12 @@
         <hr/>
 
         <table class="chiroGegevens">
-        <% if (Model.PersoonLidInfo.PersoonDetail.CiviID != null)
+        <% if (Model.PersoonLidInfo.PersoonDetail.AdNummer != null)
            { %>
            <tr>
-                <td ><%= Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.CiviID) %><%= Html.InfoLink("Cid-Info") %></td>
-                <td id="civiIdInfo"><%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.CiviID) %></td>
-                <td id="cid"></td>
+                <td ><%= Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><%= Html.InfoLink("AD-Info") %></td>
+                <td id="adNrInfo"><%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %></td>
+                <td id="ad"></td>
            </tr>
         <% } %>
         <% if ((Model.GroepsNiveau & Niveau.Groep) != 0) { // Chiroleeftijd is enkel relevant voor plaatselijke groepen 
