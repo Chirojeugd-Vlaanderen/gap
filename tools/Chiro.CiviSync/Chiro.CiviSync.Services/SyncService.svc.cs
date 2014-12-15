@@ -102,12 +102,12 @@ namespace Chiro.CiviSync.Services
 
         public void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar)
         {
-            throw new NotImplementedException();
+            return; // geen exceptions in staging
         }
 
         public void GroepUpdaten(Groep g)
         {
-            throw new NotImplementedException();
+            return; // geen exceptions in staging
         }
 
         /// <summary>
