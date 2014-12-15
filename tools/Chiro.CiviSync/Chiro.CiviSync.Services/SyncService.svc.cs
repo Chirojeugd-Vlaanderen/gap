@@ -37,12 +37,6 @@ namespace Chiro.CiviSync.Services
 
         public SyncService(ICiviCrmClient civiCrmClient)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile<MappingProfile>(); 
-                cfg.AddProfile<CiviToNetProfile>();
-                cfg.AddProfile<NetToCiviProfile>();
-            });
             _civiCrmClient = civiCrmClient;
         }
 

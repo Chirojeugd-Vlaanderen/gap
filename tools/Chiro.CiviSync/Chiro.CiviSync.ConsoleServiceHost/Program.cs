@@ -31,6 +31,7 @@ namespace Chiro.CiviSync.ConsoleServiceHost
         static void Main(string[] args)
         {
             // Initialiseer dependency injection en automapper
+            MappingHelper.MappingsDefinieren();
             Factory.ContainerInit();
 
             // Creeer en open service host.
