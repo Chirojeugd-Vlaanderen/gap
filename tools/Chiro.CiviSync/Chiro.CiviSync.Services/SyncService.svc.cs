@@ -48,13 +48,16 @@ namespace Chiro.CiviSync.Services
         public void PersoonUpdaten(Persoon persoon)
         {
             // TODO: personen met AD-nummer in aanvraag
+            // TODO: GAP-ID bewaren
 
             var contact = persoon.AdNummer == null
                 ? new Contact()
                 : _civiCrmClient.ContactGetSingle(new ExternalIdentifierRequest(persoon.AdNummer.ToString())) ?? new Contact();
 
             Mapper.Map(persoon, contact);
-            _civiCrmClient.ContactSave(contact);
+            var result = _civiCrmClient.ContactSave(contact, new ApiOptions { Match = "external_identifier" });
+
+            Console.WriteLine("Contact {0} {1} bewaard (Civi-ID {3}, AD {2}).", persoon.VoorNaam, persoon.Naam, persoon.AdNummer, result.Id);
         }
 
         /// <summary>
@@ -114,7 +117,7 @@ namespace Chiro.CiviSync.Services
                             break;
                     }
 
-                    _civiCrmClient.AddressSave(nieuwAdres);
+                    _civiCrmClient.AddressSave(nieuwAdres, null);
                     // Verwijder oude voorkeuradres.
 
                     var teVerwijderenAdressen = (from adr in adressen
