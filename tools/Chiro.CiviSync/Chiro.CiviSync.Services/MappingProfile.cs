@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Chiro.CiviCrm.Domain;
+using Chiro.CiviCrm.Model;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using System;
 using System.Collections.Generic;

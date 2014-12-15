@@ -23,14 +23,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviCrm.BehaviorExten
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviCrm.Api", "..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.ServiceContracts\Chiro.CiviCrm.Api.csproj", "{C27C0FB3-740A-4705-98DF-3B237984C44F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviCrm.Domain", "..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Domain\Chiro.CiviCrm.Domain.csproj", "{7C6F2810-20BE-4DC8-A7D1-92999BE67D61}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A5218517-7DA2-4970-ACDA-72E422246FFB}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviCrm.Model", "..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Model\Chiro.CiviCrm.Model.csproj", "{7C6F2810-20BE-4DC8-A7D1-92999BE67D61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

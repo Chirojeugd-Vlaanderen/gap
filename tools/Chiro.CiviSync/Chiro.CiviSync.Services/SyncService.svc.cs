@@ -22,9 +22,10 @@ using Chiro.CiviCrm.ClientInterfaces;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Chiro.CiviCrm.Domain;
+using Chiro.CiviCrm.Model;
 using System.ServiceModel;
 using Chiro.CiviCrm.Client;
+using Chiro.CiviCrm.Model.Requests;
 
 namespace Chiro.CiviSync.Services
 {
@@ -53,9 +54,10 @@ namespace Chiro.CiviSync.Services
         public void PersoonUpdaten(Persoon persoon)
         {
             // TODO: personen met AD-nummer in aanvraag
-            var contact = (persoon.AdNummer == null
+
+            var contact = persoon.AdNummer == null
                 ? new Contact()
-                : _civiCrmClient.ContactFind(persoon.AdNummer.ToString())) ?? new Contact();
+                : _civiCrmClient.ContactGetSingle(new ExternalIdentifierRequest(persoon.AdNummer.ToString())) ?? new Contact();
 
             Mapper.Map(persoon, contact);
             _civiCrmClient.ContactSave(contact);
@@ -78,10 +80,15 @@ namespace Chiro.CiviSync.Services
             {
                 if (bewoner.Persoon.AdNummer != null)
                 {
-                    // Even lelijke workaround
-                    int civiId = _civiCrmClient.ContactFind(bewoner.Persoon.AdNummer.ToString()).Id.Value;
+                    // Adressen ophalen via chaining :-)
+                    var civiContact = _civiCrmClient.ContactGetSingle(new ExternalIdentifierRequest
+                    {
+                        ExternalIdentifier = bewoner.Persoon.AdNummer.ToString(),
+                        ReturnFields = "id",
+                        ChainedEntities = new[] { CiviEntity.Address }
+                    });
 
-                    var adressen = _civiCrmClient.ContactAddressesGet(civiId);
+                    var adressen = civiContact.ChainedAddresses;
 
                     // Als het adres al bestaat, dan kunnen we het overschrijven om casing te veranderen,
                     // voorkeursadres te zetten, en adrestype te bewaren.
@@ -94,8 +101,8 @@ namespace Chiro.CiviSync.Services
                         // Neem het ID van het bestaande adres over, zodanig dat we het bestaande
                         // overschrijven.
                     }
-                    
-                    nieuwAdres.ContactId = civiId;
+
+                    nieuwAdres.ContactId = civiContact.Id;
                     nieuwAdres.IsBilling = true;
                     nieuwAdres.IsPrimary = true;
 
@@ -124,7 +131,7 @@ namespace Chiro.CiviSync.Services
                         _civiCrmClient.AddressDelete(tvAdres.Id.Value);
                         Console.WriteLine(String.Format(
                             "Oud voorkeursadres voor {0} {1} verwijderd (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
-                            bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, civiId,
+                            bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, civiContact.Id,
                             tvAdres.StreetAddress, tvAdres.PostalCode, tvAdres.PostalCodeSuffix, tvAdres.City, tvAdres.Country));
                     }
                 }

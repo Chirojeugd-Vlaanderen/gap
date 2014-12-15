@@ -104,9 +104,9 @@
       <Project>{b0f99afc-7cd5-4c06-b362-840f0dfb560c}</Project>
       <Name>Chiro.CiviCrm.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Domain\Chiro.CiviCrm.Domain.csproj">
+    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Model\Chiro.CiviCrm.Model.csproj">
       <Project>{7c6f2810-20be-4dc8-a7d1-92999be67d61}</Project>
-      <Name>Chiro.CiviCrm.Domain</Name>
+      <Name>Chiro.CiviCrm.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.ServiceContracts\Chiro.CiviCrm.Api.csproj">
       <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
