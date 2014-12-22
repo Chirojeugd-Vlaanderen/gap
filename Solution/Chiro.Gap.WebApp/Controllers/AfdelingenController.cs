@@ -199,7 +199,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 var l = new List<String> {"gelukt"};
                 return Json(l, JsonRequestBehavior.AllowGet);
             }
-            catch (FaultException ex)
+            catch (FaultException)
             {
                 var l = new List<String> {"fail"};
                 return Json(l, JsonRequestBehavior.AllowGet);
@@ -223,7 +223,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 var l = new List<String> {"gelukt"};
                 return Json(l, JsonRequestBehavior.AllowGet);
             }
-            catch (FaultException ex)
+            catch (FaultException)
             {
                 var l = new List<String> {"fail"};
                 return Json(l, JsonRequestBehavior.AllowGet);

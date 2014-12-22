@@ -174,7 +174,7 @@ namespace Chiro.Gap.Services
                                  src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.TelefoonNummer)))
                   .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
                   .ForMember(dst => dst.Functies, opt => opt.MapFrom(src => src.Functie))
-                  .ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(AfdelingsJaren))
+                  .ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(src => AfdelingsJaren(src)))
                   .ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd))
                   .ForMember(dst => dst.LidID, opt => opt.MapFrom(src => src.ID))
                   .ForMember(dst => dst.EindeInstapPeriode,
@@ -241,7 +241,7 @@ namespace Chiro.Gap.Services
                                 ? null
                                 : src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaatsGet()))
                 .ForMember(dst => dst.Functies, opt => opt.MapFrom(src => src.Functie))
-                .ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(AfdelingsJaren))
+                .ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(src => AfdelingsJaren(src)))
                 .ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd))
                 .ForMember(dst => dst.LidID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.EindeInstapPeriode,
@@ -537,7 +537,7 @@ namespace Chiro.Gap.Services
                     opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VolledigeNaam))
                 .ForMember(
                     dst => dst.FoutNummer,
-                    opt => opt.MapFrom(src => null));
+                    opt => opt.UseValue(null));
 
             Mapper.CreateMap<Chiro.Gap.Poco.Model.GebruikersRecht, GebruikersDetail>()
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsVerlengbaar))
