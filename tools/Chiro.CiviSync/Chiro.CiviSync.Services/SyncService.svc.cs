@@ -18,27 +18,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Chiro.CiviCrm.ClientInterfaces;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Chiro.CiviCrm.Model;
 using System.ServiceModel;
-using Chiro.CiviCrm.Client;
-using Chiro.CiviCrm.Model.Requests;
+using Chiro.Cdf.ServiceHelper;
+using Chiro.CiviCrm.Api;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 
 namespace Chiro.CiviSync.Services
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "SyncService" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select SyncService.svc or SyncService.svc.cs at the Solution Explorer and start debugging.
-    public class SyncService : ISyncPersoonService, IDisposable
+    public class SyncService : ISyncPersoonService
     {
-        private readonly ICiviCrmClient _civiCrmClient;
-
-        public SyncService(ICiviCrmClient civiCrmClient)
-        {
-            _civiCrmClient = civiCrmClient;
-        }
+        private readonly string _siteKey = Properties.Settings.Default.SiteKey;
+        private readonly string _apiKey = Properties.Settings.Default.ApiKey;
 
         /// <summary>
         /// Updatet de persoonsgegevens van <paramref name="persoon"/> in CiviCRM
@@ -52,12 +47,34 @@ namespace Chiro.CiviSync.Services
 
             var contact = persoon.AdNummer == null
                 ? new Contact()
-                : _civiCrmClient.ContactGetSingle(new ExternalIdentifierRequest(persoon.AdNummer.ToString())) ?? new Contact();
+                : ServiceHelper.CallService<ICiviCrmApi, Contact>(svc => svc.ContactGetSingle(
+                    _apiKey,
+                    _siteKey,
+                    new ExternalIdentifierRequest(persoon.AdNummer.ToString()))) ?? new Contact();
 
             Mapper.Map(persoon, contact);
-            var result = _civiCrmClient.ContactSave(contact, new ApiOptions { Match = "external_identifier" });
+
+            contact.ApiOptions = new ApiOptions { Match = "external_identifier" };
+            var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.ContactSave(
+                _apiKey,
+                _siteKey,
+                contact));
+
+            AssertValid(result);
 
             Console.WriteLine("Contact {0} {1} bewaard (Civi-ID {3}, AD {2}).", persoon.VoorNaam, persoon.Naam, persoon.AdNummer, result.Id);
+        }
+
+        /// <summary>
+        /// Throws an exception of the API <paramref name="result"/> is an error.
+        /// </summary>
+        /// <param name="result">A result of the CiviCRM API</param>
+        private void AssertValid(ApiResult result)
+        {
+            if (result.IsError > 0)
+            {
+                throw new InvalidOperationException(result.ErrorMessage);
+            }
         }
 
         /// <summary>
@@ -78,14 +95,17 @@ namespace Chiro.CiviSync.Services
                 if (bewoner.Persoon.AdNummer != null)
                 {
                     // Adressen ophalen via chaining :-)
-                    var civiContact = _civiCrmClient.ContactGetSingle(new ExternalIdentifierRequest
-                    {
-                        ExternalIdentifier = bewoner.Persoon.AdNummer.ToString(),
-                        ReturnFields = "id",
-                        ChainedEntities = new[] { CiviEntity.Address }
-                    });
+                    var civiContact = ServiceHelper.CallService<ICiviCrmApi, Contact>(svc => svc.ContactGetSingle(
+                        _apiKey,
+                        _siteKey,
+                        new ExternalIdentifierRequest
+                        {
+                            ExternalIdentifier = bewoner.Persoon.AdNummer.ToString(),
+                            ReturnFields = "id",
+                            ChainedEntities = new[] { CiviEntity.Address }
+                        }));
 
-                    var adressen = civiContact.ChainedAddresses;
+                    var adressen = civiContact.ChainedAddresses.Values;
 
                     // Als het adres al bestaat, dan kunnen we het overschrijven om casing te veranderen,
                     // voorkeursadres te zetten, en adrestype te bewaren.
@@ -117,7 +137,9 @@ namespace Chiro.CiviSync.Services
                             break;
                     }
 
-                    _civiCrmClient.AddressSave(nieuwAdres, null);
+                    var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressSave(_apiKey, _siteKey, nieuwAdres));
+                    AssertValid(result);
+
                     // Verwijder oude voorkeuradres.
 
                     var teVerwijderenAdressen = (from adr in adressen
@@ -125,7 +147,8 @@ namespace Chiro.CiviSync.Services
                                                  select adr).ToList();
                     foreach (var tvAdres in teVerwijderenAdressen)
                     {
-                        _civiCrmClient.AddressDelete(tvAdres.Id.Value);
+                        result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressDelete(_apiKey, _siteKey, new IdRequest(tvAdres.Id.Value)));
+                        AssertValid(result);
                         Console.WriteLine(String.Format(
                             "Oud voorkeursadres voor {0} {1} verwijderd (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
                             bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, civiContact.Id,
@@ -237,11 +260,6 @@ namespace Chiro.CiviSync.Services
         public void GroepUpdaten(Groep g)
         {
             throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            _civiCrmClient.Dispose();
         }
     }
 }

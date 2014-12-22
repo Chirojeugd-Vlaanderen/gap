@@ -18,7 +18,6 @@ using System;
 using AutoMapper;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Chiro.CiviCrm.Model;
 
 namespace Chiro.CiviSync.Services
 {
@@ -32,7 +31,7 @@ namespace Chiro.CiviSync.Services
                 .ForMember(dst => dst.DeceasedDate, opt => opt.MapFrom(src => src.SterfDatum))
                 .ForMember(dst => dst.ExternalIdentifier, opt => opt.MapFrom(src => src.AdNummer))
                 .ForMember(dst => dst.FirstName, opt => opt.MapFrom(src => src.VoorNaam))
-                .ForMember(dst => dst.GenderId, opt => opt.MapFrom(src => (Gender)(3 - (int)src.Geslacht)))
+                .ForMember(dst => dst.Gender, opt => opt.MapFrom(src => (Gender)(3 - (int)src.Geslacht)))
                 .ForMember(dst => dst.IsDeceased, opt => opt.MapFrom(src => src.SterfDatum != null))
                 .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Naam))
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
@@ -50,10 +49,9 @@ namespace Chiro.CiviSync.Services
                 .ForMember(dst => dst.LegalName, opt => opt.Ignore())
                 .ForMember(dst => dst.ImageUrl, opt => opt.Ignore())
                 .ForMember(dst => dst.PreferredLanguage, opt => opt.Ignore())
-                .ForMember(dst => dst.PreferredMailFormat, opt => opt.Ignore())
                 .ForMember(dst => dst.MiddleName, opt => opt.Ignore())
                 .ForMember(dst => dst.FormalTitle, opt => opt.Ignore())
-                .ForMember(dst => dst.CommunicationStyleId, opt => opt.Ignore())
+                .ForMember(dst => dst.CommunicationStyle, opt => opt.Ignore())
                 .ForMember(dst => dst.JobTitle, opt => opt.Ignore())
                 .ForMember(dst => dst.HouseholdName, opt => opt.Ignore())
                 .ForMember(dst => dst.OrganizationName, opt => opt.Ignore())
@@ -70,20 +68,21 @@ namespace Chiro.CiviSync.Services
                 .ForMember(dst => dst.GeoCode1, opt => opt.Ignore())
                 .ForMember(dst => dst.GeoCode2, opt => opt.Ignore())
                 .ForMember(dst => dst.PhoneId, opt => opt.Ignore())
-                .ForMember(dst => dst.PhoneTypeId, opt => opt.Ignore())
+                .ForMember(dst => dst.PhoneType, opt => opt.Ignore())
                 .ForMember(dst => dst.Phone, opt => opt.Ignore())
                 .ForMember(dst => dst.EmailId, opt => opt.Ignore())
                 .ForMember(dst => dst.Email, opt => opt.Ignore())
                 .ForMember(dst => dst.OnHold, opt => opt.Ignore())
                 .ForMember(dst => dst.ImId, opt => opt.Ignore())
-                .ForMember(dst => dst.ProviderId, opt => opt.Ignore())
+                .ForMember(dst => dst.Provider, opt => opt.Ignore())
                 .ForMember(dst => dst.Im, opt => opt.Ignore())
                 .ForMember(dst => dst.WorldRegion, opt => opt.Ignore())
                 .ForMember(dst => dst.IndividualPrefix, opt => opt.Ignore())
                 .ForMember(dst => dst.IndividualSuffix, opt => opt.Ignore())
                 .ForMember(dst => dst.StateProvinceName, opt => opt.Ignore())
                 .ForMember(dst => dst.Country, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainedAddresses, opt => opt.Ignore());
+                .ForMember(dst => dst.ChainedAddresses, opt => opt.Ignore())
+                .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
 
             Mapper.CreateMap<Adres, Address>()
                             .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))
@@ -97,7 +96,8 @@ namespace Chiro.CiviSync.Services
                             .ForMember(dst => dst.PostalCodeSuffix, opt => opt.MapFrom(src => src.PostCode))
                             .ForMember(dst => dst.StateProvinceId, opt => opt.MapFrom(src => MappingHelper.ProvincieIDBepalen(src)))
                             .ForMember(dst => dst.StreetAddress, opt => opt.MapFrom(src => MappingHelper.StraatNrFormatteren(src)))
-                            .ForMember(dst => dst.CountryId, opt => opt.Ignore());
+                            .ForMember(dst => dst.CountryId, opt => opt.Ignore())
+                            .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
 
             Mapper.AssertConfigurationIsValid();
         }
