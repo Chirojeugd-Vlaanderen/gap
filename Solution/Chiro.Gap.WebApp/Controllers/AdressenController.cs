@@ -41,7 +41,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
 		/// service</param>
-		public AdressenController(IVeelGebruikt veelGebruikt) : base(veelGebruikt)
+        public AdressenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper)
+            : base(veelGebruikt, serviceHelper)
 		{
 		}
 

@@ -142,6 +142,7 @@
     <Compile Include="Models\GroepModel.cs" />
     <Compile Include="Models\PersoonModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnityControllerFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -166,6 +167,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
+      <Project>{c100e957-cee2-4707-bf13-c64553c28c7b}</Project>
+      <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
       <Project>{cdea3723-7d66-44bf-93d0-913881918330}</Project>
       <Name>Chiro.Cdf.Poco</Name>

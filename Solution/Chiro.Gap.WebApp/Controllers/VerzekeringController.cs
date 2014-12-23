@@ -30,7 +30,7 @@ namespace Chiro.Gap.WebApp.Controllers
     /// </summary>
     public class VerzekeringController : BaseController
     {
-        public VerzekeringController(IVeelGebruikt veelGebruikt) : base(veelGebruikt)
+        public VerzekeringController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper)
         {
         }
 

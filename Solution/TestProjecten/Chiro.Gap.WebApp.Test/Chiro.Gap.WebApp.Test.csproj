@@ -109,6 +109,10 @@
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
       <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
       <Name>Chiro.Cdf.Validation</Name>

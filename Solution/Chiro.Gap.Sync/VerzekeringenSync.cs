@@ -29,8 +29,18 @@ namespace Chiro.Gap.Sync
     /// <summary>
     /// Deze klasse staat in voor het overzetten van verzekeringsgegevens naar Kipadmin.
     /// </summary>
-    public class VerzekeringenSync : IVerzekeringenSync
+    public class VerzekeringenSync : BaseSync, IVerzekeringenSync
     {
+        /// <summary>
+        /// Constructor.
+        /// 
+        /// De ServiceHelper wordt geïnjecteerd door de dependency injection container. Wat de
+        /// ServiceHelper precies zal opleveren, hangt af van welke IServiceProvider geregistreerd
+        /// is bij de container.
+        /// </summary>
+        /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
+        public VerzekeringenSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
+
         /// <summary>
         /// Zet de gegeven <paramref name="persoonsVerzekering"/> over naar Kipadmin.
         /// </summary>

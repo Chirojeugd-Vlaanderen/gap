@@ -1,6 +1,6 @@
 /*
  * Copyright 2008 Capgemini - Accelerated Delivery Framework - http://www.be.capgemini.com/
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -37,14 +37,6 @@ namespace Chiro.Cdf.ServiceHelper
 		I GetService<I>() where I : class;
 
 		/// <summary>
-		/// Gets the configure service implementation for the specified interface.
-		/// </summary>
-		/// <typeparam name="I"></typeparam>
-		/// <param name="arguments">.ctor arguments</param>
-		/// <returns></returns>
-		I GetService<I>(object arguments) where I : class;
-
-		/// <summary>
 		/// Gets the configured service implementation instance with the specified name.
 		/// </summary>
 		/// <typeparam name="I">The interface or type to get the service for.</typeparam>
@@ -53,59 +45,11 @@ namespace Chiro.Cdf.ServiceHelper
 		I GetService<I>(string instanceName) where I : class;
 
         /// <summary>
-        /// Gets the service.
-        /// </summary>
-        /// <typeparam name="I"></typeparam>
-        /// <param name="instanceName">Name of the instance.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-		I GetService<I>(string instanceName, object arguments) where I : class;
-		
-		/// <summary>
-		/// Gets all configured service instances of the specified interface type.
-		/// </summary>
-		/// <typeparam name="I"></typeparam>
-		/// <returns></returns>
-		IEnumerable<I> GetServices<I>() where I : class;
-		
-		/// <summary>
-		/// Gets the configured service implementation for the specified interface.
-		/// </summary>
-		/// <param name="serviceType">The interface, type to get the service for</param>
-		/// <returns></returns>
-		object GetService(Type serviceType);
-
-		/// <summary>
-		/// Gets the configured service implementation for the specified interface and instance name.
-		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="instanceName"></param>
-		/// <returns></returns>
-		object GetService(Type type, string instanceName);
-
-		/// <summary>
-		/// Gets all service instances for the specified interface.
-		/// </summary>
-		/// <param name="serviceType"></param>
-		/// <returns></returns>
-		IEnumerable GetServices(Type serviceType);
-
-		/// <summary>
 		/// Try and get the requested service
 		/// </summary>
 		/// <typeparam name="I"></typeparam>
 		/// <param name="service"></param>
 		/// <returns></returns>
 		bool TryGetService<I>(out I service) where I : class;
-
-        /// <summary>
-        /// Tries the get service.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="service">The service.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-		bool TryGetService(Type type, out object service);
 	}
 }

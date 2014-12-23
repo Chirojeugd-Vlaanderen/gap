@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chiro.Cdf.Ioc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,11 +15,25 @@ namespace Chiro.Gap.WebApi
     {
         protected void Application_Start()
         {
+            InitializeContainer();
+
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+        }
+
+        /// <summary>
+        /// Use the unity dependency injection container to generate controllers.
+        /// </summary>
+        private static void InitializeContainer()
+        {
+            Factory.ContainerInit();
+
+            IControllerFactory controllerFactory = new UnityControllerFactory();
+
+            ControllerBuilder.Current.SetControllerFactory(controllerFactory);
         }
     }
 }

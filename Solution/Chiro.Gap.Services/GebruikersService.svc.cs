@@ -72,6 +72,8 @@ namespace Chiro.Gap.Services
 
         #endregion
 
+        private readonly ServiceHelper _serviceHelper;
+        public ServiceHelper ServiceHelper { get { return _serviceHelper; } }
 
         // Repositories, verantwoordelijk voor data access.
         private readonly IRepositoryProvider _repositoryProvider;
@@ -99,13 +101,15 @@ namespace Chiro.Gap.Services
         /// <param name="groepsWerkJarenManager">Businesslogica m.b.t. de groepswerkjaren.</param>
         /// <param name="gelieerdePersonenManager">Businesslogica i.f.v. gelieerde personen</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
+        /// <param name="serviceHelper">Service helper die gebruikt zal worden om de active-directory-service aan te spreken.</param>
         public GebruikersService(IAutorisatieManager autorisatieMgr,
                                  IGebruikersRechtenManager gebruikersRechtenMgr,
                                  IAuthenticatieManager authenticatieManager,
                                  ILedenManager ledenManager,
                                  IGroepsWerkJarenManager groepsWerkJarenManager,
                                  IGelieerdePersonenManager gelieerdePersonenManager,
-                                 IRepositoryProvider repositoryProvider): base(ledenManager, groepsWerkJarenManager)
+                                 IRepositoryProvider repositoryProvider,
+                                 ServiceHelper serviceHelper): base(ledenManager, groepsWerkJarenManager)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -120,6 +124,8 @@ namespace Chiro.Gap.Services
             _gelieerdePersonenMgr = gelieerdePersonenManager;
 
             _gav = new GavChecker(_autorisatieMgr);
+
+            _serviceHelper = serviceHelper;
         }
 
         public GavChecker Gav

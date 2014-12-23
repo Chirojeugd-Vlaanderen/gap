@@ -42,7 +42,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
 		/// service</param>
-		public GroepController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
+        public GroepController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
 
 		/// <summary>
 		/// Genereert een view met algemene gegevens over de groep

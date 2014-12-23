@@ -33,8 +33,18 @@ namespace Chiro.Gap.Sync
     /// <summary>
     /// Regelt de synchronisatie van adresgegevens naar Kipadmin
     /// </summary>
-    public class AdressenSync : IAdressenSync
+    public class AdressenSync : BaseSync, IAdressenSync
     {
+        /// <summary>
+        /// Constructor.
+        /// 
+        /// De ServiceHelper wordt geïnjecteerd door de dependency injection container. Wat de
+        /// ServiceHelper precies zal opleveren, hangt af van welke IServiceProvider geregistreerd
+        /// is bij de container.
+        /// </summary>
+        /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
+        public AdressenSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
+
         /// <summary>
         /// Stelt de gegeven persoonsadressen in als standaardadressen in Kipadmin
         /// </summary>
