@@ -33,6 +33,7 @@ using Moq;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using Chiro.Gap.WebApp;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Test
 {
@@ -115,7 +116,10 @@ namespace Chiro.Gap.WebApp.Test
             var groepenServiceMock = new Mock<IGroepenService>();
             groepenServiceMock.Setup(svc => svc.AlleAfdelingenOphalen(GROEP_ID)).Returns(new List<AfdelingInfo>
                 {new AfdelingInfo {ID = AFDELING_ID, Naam = AFDELING_NAAM}});
-            Factory.InstantieRegistreren(groepenServiceMock.Object);
+            var channelProviderMock = new Mock<IChannelProvider>();
+            channelProviderMock.Setup(mock => mock.GetChannel<IGroepenService>()).Returns(groepenServiceMock.Object);
+
+            Factory.InstantieRegistreren(channelProviderMock.Object);
 
             var target = Factory.Maak<JaarOvergangController>();
 

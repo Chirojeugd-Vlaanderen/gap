@@ -26,6 +26,7 @@ using Chiro.Gap.WebApp.Controllers;
 using Chiro.Gap.WebApp.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Test
 {
@@ -76,9 +77,12 @@ namespace Chiro.Gap.WebApp.Test
                     BivakAangifteStatus.NogNietVanBelang
             });
 
+            var channelProviderMock = new Mock<IChannelProvider>();
+            channelProviderMock.Setup(mock => mock.GetChannel<ILedenService>()).Returns(new FakeLedenService());
+
 
             Factory.InstantieRegistreren(veelGebruiktMock.Object);
-            Factory.InstantieRegistreren<ILedenService>(new FakeLedenService());
+            Factory.InstantieRegistreren(channelProviderMock.Object);
 
             // we doen het volgende:
             // We roepen LedenMaken aan met een model waarbij '0' geselecteerd is als enige afdeling voor

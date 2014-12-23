@@ -86,11 +86,13 @@ namespace Chiro.Gap.WebApp.Test
 
 			var groepenServiceMock = new Mock<IGroepenService>();
 			groepenServiceMock.Setup(mock=>mock.CategorieVerwijderen(It.IsAny<int>(), It.IsAny<bool>()));
-
             var channelProviderMock = new Mock<IChannelProvider>();
             channelProviderMock.Setup(mock => mock.GetChannel<IGroepenService>()).Returns(groepenServiceMock.Object);
 
+            var veelGebruiktMock = new Mock<IVeelGebruikt>();
+
             Factory.InstantieRegistreren(channelProviderMock.Object);
+            Factory.InstantieRegistreren(veelGebruiktMock.Object);
 
             var target = Factory.Maak<CategorieenController>();
 
