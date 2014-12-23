@@ -11,16 +11,16 @@ namespace Chiro.Gap.Sync.Test
     /// <summary>
     /// Voor deze tests hebben we geen echte service providers nodig.
     /// </summary>
-    public class DummyServiceProvider: IServiceProvider
+    public class DummyChannelProvider: IChannelProvider
     {
         private readonly ISyncPersoonService _syncPersoonService;
 
-        public DummyServiceProvider(ISyncPersoonService syncPersoonService)
+        public DummyChannelProvider(ISyncPersoonService syncPersoonService)
         {
             _syncPersoonService = syncPersoonService;
         }
 
-        public I GetService<I>() where I : class
+        public I GetChannel<I>() where I : class
         {
             if (typeof(I) == typeof(ISyncPersoonService))
             {
@@ -29,14 +29,14 @@ namespace Chiro.Gap.Sync.Test
             else throw new System.NotImplementedException();
         }
 
-        public I GetService<I>(string instanceName) where I : class
+        public I GetChannel<I>(string instanceName) where I : class
         {
-            return GetService<I>();
+            return GetChannel<I>();
         }
 
-        public bool TryGetService<I>(out I service) where I : class
+        public bool TryGetChannel<I>(out I service) where I : class
         {
-            service = GetService<I>();
+            service = GetChannel<I>();
             return (service != null);
         }
     }

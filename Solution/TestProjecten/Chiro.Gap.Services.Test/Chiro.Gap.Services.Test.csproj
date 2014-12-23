@@ -110,10 +110,6 @@
       <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
-      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
-      <Name>Chiro.Cdf.ServiceHelper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
@@ -121,6 +117,10 @@
     <ProjectReference Include="..\..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
       <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
       <Name>Chiro.Cdf.Poco</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Sso\Chiro.Cdf.Sso.csproj">
       <Project>{89FE1EDE-4B44-406A-9CF8-0E8697582838}</Project>
@@ -145,6 +145,10 @@
     <ProjectReference Include="..\..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
       <Name>Chiro.Gap.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.Services.Dev\Chiro.Gap.Services.Dev.csproj">
+      <Project>{df253c73-7632-476e-b760-deba6d306e69}</Project>
+      <Name>Chiro.Gap.Services.Dev</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.Services\Chiro.Gap.Services.csproj">
       <Project>{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}</Project>
@@ -187,7 +191,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="App.config.example" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

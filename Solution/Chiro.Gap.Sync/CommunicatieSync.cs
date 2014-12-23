@@ -39,7 +39,7 @@ namespace Chiro.Gap.Sync
         /// Constructor.
         /// 
         /// De ServiceHelper wordt geïnjecteerd door de dependency injection container. Wat de
-        /// ServiceHelper precies zal opleveren, hangt af van welke IServiceProvider geregistreerd
+        /// ServiceHelper precies zal opleveren, hangt af van welke IChannelProvider geregistreerd
         /// is bij de container.
         /// </summary>
         /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>

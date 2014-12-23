@@ -27,15 +27,15 @@ namespace Chiro.Cdf.ServiceHelper
 	/// </summary>
 	public class ServiceHelper
 	{
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IChannelProvider _channelProvider;
 
         /// <summary>
         /// Creates a new ServiceHelper.
         /// </summary>
-        /// <param name="serviceProvider">A service provider that creates service channels.</param>
-        public ServiceHelper(IServiceProvider serviceProvider)
+        /// <param name="channelProvider">A service provider that creates service channels.</param>
+        public ServiceHelper(IChannelProvider channelProvider)
         {
-            _serviceProvider = serviceProvider;
+            _channelProvider = channelProvider;
         }
 
 		/// <summary>
@@ -147,7 +147,7 @@ namespace Chiro.Cdf.ServiceHelper
 		public void CallService<I>(Action<I> operation) where I : class
 		// ReSharper restore InconsistentNaming
 		{
-			Call(_serviceProvider.GetService<I>(), operation);
+			Call(_channelProvider.GetChannel<I>(), operation);
 		}
 
 		/// <summary>
@@ -166,7 +166,7 @@ namespace Chiro.Cdf.ServiceHelper
 		public T CallService<I, T>(Func<I, T> operation) where I : class
 		// ReSharper restore InconsistentNaming
 		{
-			return Call(_serviceProvider.GetService<I>(), operation);
+			return Call(_channelProvider.GetChannel<I>(), operation);
 		}
 
 		private void DisposeServiceInstance(object instance)

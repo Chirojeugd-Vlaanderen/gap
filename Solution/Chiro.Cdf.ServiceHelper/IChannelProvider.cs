@@ -26,30 +26,32 @@ namespace Chiro.Cdf.ServiceHelper
 	/// <summary>
 	/// Defines methods to obtain configuration-based instances of interface implementations.
 	/// </summary>
-	public interface IServiceProvider
+	public interface IChannelProvider
 	{
 		/// <summary>
-		/// Lever een service-implementatie op voor servicecontract <typeparamref name="I"/>.
+		/// Lever een channel op voor het servicecontract <typeparamref name="I"/>.
 		/// </summary>
 		/// <typeparam name="I">Servicecontract</typeparam>
-		/// <returns>Implementatie van het gevraagde service-contract, of <c>null</c> als er geen implementatie
+		/// <returns>Channel voor het gevraagde service-contract, of <c>null</c> als er geen implementatie
 		/// beschikbaar is.</returns>
-		I GetService<I>() where I : class;
-
-		/// <summary>
-		/// Gets the configured service implementation instance with the specified name.
-		/// </summary>
-		/// <typeparam name="I">The interface or type to get the service for.</typeparam>
-		/// <param name="instanceName">The name of the service instance.</param>
-		/// <returns></returns>
-		I GetService<I>(string instanceName) where I : class;
+		I GetChannel<I>() where I : class;
 
         /// <summary>
-		/// Try and get the requested service
-		/// </summary>
-		/// <typeparam name="I"></typeparam>
-		/// <param name="service"></param>
-		/// <returns></returns>
-		bool TryGetService<I>(out I service) where I : class;
+        /// Lever een channel op voor het servicecontract <typeparamref name="I"/>.
+        /// </summary>
+        /// <typeparam name="I">Servicecontract</typeparam>
+        /// <param name="instanceName">Instance name, wat van belang is als er meerdere endpoints gedefinieerd zijn
+        /// in de config file.</param>
+        /// <returns>Channel voor het gevraagde service-contract, of <c>null</c> als er geen implementatie
+        /// beschikbaar is.</returns>
+        I GetChannel<I>(string instanceName) where I : class;
+
+        /// <summary>
+        /// Lever een channel op voor het servicecontract <typeparamref name="I"/>.
+        /// </summary>
+        /// <typeparam name="I">Servicecontract</typeparam>
+        /// <param name="channel">Hier wordt het channel bewaard.</param>
+        /// <returns><c>true</c> als een channel gevonden is, anders <c>false</c>.</returns>
+        bool TryGetChannel<I>(out I channel) where I : class;
 	}
 }

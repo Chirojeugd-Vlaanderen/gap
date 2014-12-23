@@ -16,9 +16,10 @@
  * limitations under the License.
  */
 
+using Chiro.Ad.ServiceContracts;
 using System;
 
-namespace Chiro.Ad.ServiceContracts
+namespace Chiro.Gap.Services.Dev
 {
     /// <summary>
     /// Dummy-implementatie van de AdService, voor gebruik bij testen.

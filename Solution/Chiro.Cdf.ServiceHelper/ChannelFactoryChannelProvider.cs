@@ -27,16 +27,16 @@ namespace Chiro.Cdf.ServiceHelper
 	/// <summary>
 	/// Resolves WCF service implementations.
 	/// </summary>
-	public class ChannelFactoryServiceProvider : IServiceProvider
+	public class ChannelFactoryChannelProvider : IChannelProvider
 	{
 		/// <summary>
 		/// Creates the service proxy for the default endpoint of interface I.
 		/// </summary>
 		/// <typeparam name="I"></typeparam>
 		/// <returns></returns>
-		public I GetService<I>() where I : class
+		public I GetChannel<I>() where I : class
 		{
-			return GetService<I>(string.Empty); // Use the default endpoint from the config (emtpy string, not null!)
+			return GetChannel<I>(string.Empty); // Use the default endpoint from the config (emtpy string, not null!)
 		}
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Chiro.Cdf.ServiceHelper
         /// <returns>Een instantie van <typeparamref name="I"/>.  Als die niet geresolved kon worden, dan <c>null</c></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         // Disposen gebeurt in Chiro.Cdf.ServiceHelper.ServiceHelper
-        public I GetService<I>(string instanceName) where I : class
+        public I GetChannel<I>(string instanceName) where I : class
 		{
 			if (typeof(I).IsDefined(typeof(ServiceContractAttribute), true))
 			{
@@ -64,11 +64,11 @@ namespace Chiro.Cdf.ServiceHelper
         /// <typeparam name="I"></typeparam>
         /// <param name="service"></param>
         /// <returns><c>true</c> if a service was found, <c>false</c> otherwise.</returns>
-		public bool TryGetService<I>(out I service) where I : class
+		public bool TryGetChannel<I>(out I service) where I : class
 		{
             try
             {
-                service = GetService<I>();
+                service = GetChannel<I>();
             }
             catch (InvalidOperationException)
             {

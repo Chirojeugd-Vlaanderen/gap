@@ -28,7 +28,7 @@ namespace Chiro.Cdf.ServiceHelper
     /// Service provider die IOC gebruikt om implementaties van de service-interface te genereren.
     /// </summary>
     /// <remarks></remarks>
-    public class IocServiceProvider: IServiceProvider
+    public class UnityChannelProvider: IChannelProvider
     {
         /// <summary>
         /// Gebruikt IoC om de service met interface I te instantieren.
@@ -36,7 +36,7 @@ namespace Chiro.Cdf.ServiceHelper
         /// <typeparam name="I">Service interface</typeparam>
         /// <returns>Een instantie van <typeparamref name="I"/>.  Als die niet geresolved kon worden, dan <c>null</c></returns>
         /// <remarks></remarks>
-        public I GetService<I>() where I : class
+        public I GetChannel<I>() where I : class
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Chiro.Cdf.ServiceHelper
         /// <param name="instanceName">The name of the service instance.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public I GetService<I>(string instanceName) where I : class
+        public I GetChannel<I>(string instanceName) where I : class
         {
             throw new NotImplementedException();
         }
@@ -67,7 +67,7 @@ namespace Chiro.Cdf.ServiceHelper
         /// <param name="service">The service.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public bool TryGetService<I>(out I service) where I : class
+        public bool TryGetChannel<I>(out I service) where I : class
         {
             throw new NotImplementedException();
         }
