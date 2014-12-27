@@ -95,7 +95,7 @@ namespace Chiro.Gap.Sync.Test
 
             // ACT
 
-            var target = new LedenSync();
+            var target = Factory.Maak<LedenSync>();
             target.AfdelingenUpdaten(lid);
 
             // ASSERT
@@ -128,7 +128,7 @@ namespace Chiro.Gap.Sync.Test
 
             // ACT
 
-            var target = new LedenSync();
+            var target = Factory.Maak<LedenSync>();
             target.Bewaren(lid);
 
             // ASSERT

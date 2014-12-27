@@ -31,7 +31,8 @@ namespace Chiro.Gap.WebApp.Controllers
     /// </summary>
     public class GebruikersRechtController : BaseController
     {
-        public GebruikersRechtController(IVeelGebruikt veelGebruikt) : base(veelGebruikt)
+        public GebruikersRechtController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper)
+            : base(veelGebruikt, serviceHelper)
         {
         }
 

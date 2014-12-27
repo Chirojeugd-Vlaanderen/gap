@@ -35,8 +35,18 @@ namespace Chiro.Gap.Sync
     /// <summary>
     /// Interface voor synchronisatie van lidinfo naar Kipadmin
     /// </summary>
-    public class LedenSync : ILedenSync
+    public class LedenSync : BaseSync,ILedenSync
     {
+        /// <summary>
+        /// Constructor.
+        /// 
+        /// De ServiceHelper wordt geïnjecteerd door de dependency injection container. Wat de
+        /// ServiceHelper precies zal opleveren, hangt af van welke IChannelProvider geregistreerd
+        /// is bij de container.
+        /// </summary>
+        /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
+        public LedenSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
+
         // TODO (#1058): Dit gaat waarschijnlijk ook met AutoMapper
         private readonly Dictionary<NationaleFunctie, FunctieEnum> _functieVertaling =
             new Dictionary<NationaleFunctie, FunctieEnum>

@@ -34,7 +34,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-		protected PersonenEnLedenController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
+        protected PersonenEnLedenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
 
 		[HandleError]
 		public abstract override ActionResult Index(int groepID);

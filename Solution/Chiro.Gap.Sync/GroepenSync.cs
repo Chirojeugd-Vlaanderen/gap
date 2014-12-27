@@ -23,8 +23,18 @@ using Chiro.Kip.ServiceContracts;
 
 namespace Chiro.Gap.Sync
 {
-    public class GroepenSync: IGroepenSync
+    public class GroepenSync: BaseSync, IGroepenSync
     {
+        /// <summary>
+        /// Constructor.
+        /// 
+        /// De ServiceHelper wordt geïnjecteerd door de dependency injection container. Wat de
+        /// ServiceHelper precies zal opleveren, hangt af van welke IChannelProvider geregistreerd
+        /// is bij de container.
+        /// </summary>
+        /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
+        public GroepenSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
+
         /// <summary>
         /// Updatet de gegevens van groep <paramref name="g"/> in Kipadmin. Het stamnummer van <paramref name="g"/>
         /// bepaalt de groep waarover het gaat.

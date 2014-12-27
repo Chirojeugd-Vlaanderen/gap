@@ -93,7 +93,7 @@ namespace Chiro.Gap.Sync.Test
             
             // ACT
 
-            var target = new BivakSync(); // TODO: Initialize to an appropriate value
+            var target = Factory.Maak<BivakSync>();
             target.Bewaren(uitstap);
 
             // ASSERT 
@@ -124,7 +124,7 @@ namespace Chiro.Gap.Sync.Test
 
             // ACT
 
-            var target = new BivakSync();
+            var target = Factory.Maak<BivakSync>();
             target.Bewaren(uitstap);
 
             // ASSERT 

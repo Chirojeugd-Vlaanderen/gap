@@ -9,9 +9,22 @@ using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApi.Helpers
 {
-    public static class ApiHelper
+    public class ApiHelper
     {
-        public static GroepsWerkJaar GetGroepsWerkJaar(ChiroGroepEntities context)
+        private readonly ServiceHelper _serviceHelper;
+        protected ServiceHelper ServiceHelper { get { return _serviceHelper; } }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="serviceHelper">De servicehelper die het groepwerkjaar zal
+        /// opleveren.</param>
+        public ApiHelper(ServiceHelper serviceHelper)
+        {
+            _serviceHelper = serviceHelper;
+        }
+
+        public GroepsWerkJaar GetGroepsWerkJaar(ChiroGroepEntities context)
         {
             Debug.Assert(HttpContext.Current.Request.LogonUserIdentity != null);
 

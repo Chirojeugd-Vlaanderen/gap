@@ -107,7 +107,7 @@ namespace Chiro.Gap.Sync.Test
             
             // ACT
 
-            var target = new AdressenSync(); 
+            var target = Factory.Maak<AdressenSync>(); 
             target.StandaardAdressenBewaren(new List<PersoonsAdres>{persoonsAdres1});
 
             // ASSERT

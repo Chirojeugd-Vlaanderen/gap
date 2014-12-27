@@ -52,6 +52,18 @@ namespace Chiro.Gap.WebApp
         #endregion
 
         private readonly Cache _cache = HttpRuntime.Cache;	// misschien hier ook DI voor gebruiken?
+        private readonly ServiceHelper _serviceHelper;
+
+        protected ServiceHelper ServiceHelper { get { return _serviceHelper; } }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="serviceHelper">ServiceHelper voor service calls.</param>
+        public VeelGebruikt(ServiceHelper serviceHelper)
+        {
+            _serviceHelper = serviceHelper;
+        }
 
         // TODO (#1038): deze klasse kan gemakkelijk opgesplitst worden in partial classes per 'thema' 
             

@@ -25,6 +25,7 @@ using Moq;
 
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WebApp.Controllers;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Test
 {
@@ -84,13 +85,16 @@ namespace Chiro.Gap.WebApp.Test
 			const int DUMMYGROEPID = 1;
 
 			var groepenServiceMock = new Mock<IGroepenService>();
-
-			// Verwacht dat de groepenservice aangeroepen wordt.
 			groepenServiceMock.Setup(mock=>mock.CategorieVerwijderen(It.IsAny<int>(), It.IsAny<bool>()));
+            var channelProviderMock = new Mock<IChannelProvider>();
+            channelProviderMock.Setup(mock => mock.GetChannel<IGroepenService>()).Returns(groepenServiceMock.Object);
 
-		    Factory.InstantieRegistreren(groepenServiceMock.Object);
+            var veelGebruiktMock = new Mock<IVeelGebruikt>();
 
-			var target = new CategorieenController(new VeelGebruikt());
+            Factory.InstantieRegistreren(channelProviderMock.Object);
+            Factory.InstantieRegistreren(veelGebruiktMock.Object);
+
+            var target = Factory.Maak<CategorieenController>();
 
 			var actual = target.CategorieVerwijderen(DUMMYGROEPID, DUMMYCATID) as RedirectToRouteResult;
 

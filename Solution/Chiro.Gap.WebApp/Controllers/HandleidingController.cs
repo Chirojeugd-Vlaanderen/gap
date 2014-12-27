@@ -19,6 +19,7 @@
 using System.Web.Mvc;
 
 using Chiro.Gap.WebApp.Models;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -34,7 +35,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-        public HandleidingController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
+        public HandleidingController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
 
         [HandleError]
         public override ActionResult Index(int groepID)

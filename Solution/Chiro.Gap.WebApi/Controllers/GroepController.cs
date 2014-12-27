@@ -34,8 +34,12 @@ namespace Chiro.Gap.WebApi.Controllers
         private readonly ChiroGroepEntities _context = new ChiroGroepEntities();
         private readonly GroepsWerkJaar _groepsWerkJaar;
 
-        public GroepController()
+        private readonly ApiHelper _apiHelper;
+        protected ApiHelper ApiHelper { get { return _apiHelper; } }
+
+        public GroepController(ApiHelper apiHelper)
         {
+            _apiHelper = apiHelper;
             _groepsWerkJaar = ApiHelper.GetGroepsWerkJaar(_context);
         }
 

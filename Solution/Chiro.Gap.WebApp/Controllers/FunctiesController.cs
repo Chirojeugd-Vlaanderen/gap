@@ -42,7 +42,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-        public FunctiesController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
+        public FunctiesController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
 
         /// <summary>
         /// Genereert een view met een lijstje van alle beschikbare functies en geeft de mogelijkheid om er één nieuwe toe te voegen.

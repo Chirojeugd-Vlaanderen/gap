@@ -43,7 +43,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-        public JaarOvergangController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
+        public JaarOvergangController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
 
         public override ActionResult Index(int groepID)
         {

@@ -24,6 +24,7 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 using Moq;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Test
 {
@@ -69,9 +70,13 @@ namespace Chiro.Gap.WebApp.Test
 
 		    var groepenServiceMock = new Mock<IGroepenService>();
 		    groepenServiceMock.Setup(mock => mock.LandenOphalen()).Returns(new List<LandInfo>());
-            Factory.InstantieRegistreren(groepenServiceMock.Object);
 
-			var veelGebruikt = new VeelGebruikt();
+            var channelProviderMock = new Mock<IChannelProvider>();
+            channelProviderMock.Setup(mock => mock.GetChannel<IGroepenService>()).Returns(groepenServiceMock.Object);
+
+            Factory.InstantieRegistreren(channelProviderMock.Object);
+
+            var veelGebruikt = Factory.Maak<VeelGebruikt>();
 
 			// Act
 

@@ -73,7 +73,6 @@
     <Compile Include="DataContracts\Persoon.cs" />
     <Compile Include="DataContracts\PersoonDetails.cs" />
     <Compile Include="ISyncPersoonService.cs" />
-    <Compile Include="KipSyncMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

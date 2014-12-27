@@ -37,7 +37,8 @@ namespace Chiro.Gap.WebApp.Controllers
     /// </summary>
     public class UitstappenController : BaseController
     {
-        public UitstappenController(IVeelGebruikt veelGebruikt) : base(veelGebruikt)
+        public UitstappenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper)
+            : base(veelGebruikt, serviceHelper)
         {
         }
 
