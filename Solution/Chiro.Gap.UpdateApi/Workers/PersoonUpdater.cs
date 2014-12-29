@@ -99,7 +99,6 @@ namespace Chiro.Gap.UpdateApi.Workers
             {
                 throw new InvalidOperationException(
                     String.Format("Onbekend persoon (ID {0}) voor AD-nummer {1} genegeerd.", persoonId, adNummer));
-                return;
             }
 
             AdNummerToekennen(persoon, adNummer); // PERSISTEERT

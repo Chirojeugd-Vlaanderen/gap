@@ -25,6 +25,7 @@ using Chiro.Gap.WebApp.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Moq;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Test
 {
@@ -175,12 +176,13 @@ namespace Chiro.Gap.WebApp.Test
 
             var veelGebruiktMock = new Mock<IVeelGebruikt>();
             veelGebruiktMock.Setup(src => src.LedenProblemenResetten(GROEPID));
+
             var ledenServiceMock = new Mock<ILedenService>();
+            var channelProviderMock = new Mock<IChannelProvider>();
+            channelProviderMock.Setup(mock => mock.GetChannel<ILedenService>()).Returns(ledenServiceMock.Object);
 
             Factory.InstantieRegistreren(veelGebruiktMock.Object);
-
-
-            Factory.InstantieRegistreren(ledenServiceMock.Object);
+            Factory.InstantieRegistreren(channelProviderMock.Object);
 
             // Ik maak een PersonenController, omdat PersonenEnLedenController abstract is, en dus 
             // niet als dusdanig kan worden geïnstantieerd.

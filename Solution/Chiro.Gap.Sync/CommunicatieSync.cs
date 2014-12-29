@@ -33,8 +33,18 @@ namespace Chiro.Gap.Sync
 	/// <summary>
 	/// Regelt de synchronisatie van communicatiemiddelen naar Kipadmin
 	/// </summary>
-	public class CommunicatieSync : ICommunicatieSync
+	public class CommunicatieSync : BaseSync, ICommunicatieSync
 	{
+        /// <summary>
+        /// Constructor.
+        /// 
+        /// De ServiceHelper wordt geïnjecteerd door de dependency injection container. Wat de
+        /// ServiceHelper precies zal opleveren, hangt af van welke IChannelProvider geregistreerd
+        /// is bij de container.
+        /// </summary>
+        /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
+        public CommunicatieSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
+
 		/// <summary>
 		/// Verwijdert een communicatievorm uit Kipadmin
 		/// </summary>

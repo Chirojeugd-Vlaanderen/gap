@@ -45,7 +45,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-        public LedenController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
+        public LedenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
 
         /// <summary>
         /// Sorteert een rij records van type LidOverzicht

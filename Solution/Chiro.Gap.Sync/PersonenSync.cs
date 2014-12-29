@@ -34,8 +34,18 @@ namespace Chiro.Gap.Sync
 	/// <summary>
 	/// Klasse die de synchronisatie van persoonsgegevens naar Kipadmin regelt
 	/// </summary>
-	public class PersonenSync : IPersonenSync
+	public class PersonenSync : BaseSync, IPersonenSync
 	{
+        /// <summary>
+        /// Constructor.
+        /// 
+        /// De ServiceHelper wordt geïnjecteerd door de dependency injection container. Wat de
+        /// ServiceHelper precies zal opleveren, hangt af van welke IChannelProvider geregistreerd
+        /// is bij de container.
+        /// </summary>
+        /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
+        public PersonenSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
+
 		/// <summary>
 		/// Stuurt de persoonsgegevens, samen met eventueel adressen en/of communicatie, naar Kipadmin
 		/// </summary>

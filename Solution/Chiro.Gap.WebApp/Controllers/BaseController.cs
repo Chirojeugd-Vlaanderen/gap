@@ -25,6 +25,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -42,17 +43,21 @@ namespace Chiro.Gap.WebApp.Controllers
     public abstract class BaseController : Controller
     {
         private readonly IVeelGebruikt _veelGebruikt;
+        private readonly ServiceHelper _serviceHelper;
+
         protected IVeelGebruikt VeelGebruikt { get { return _veelGebruikt; } }
+        protected ServiceHelper ServiceHelper { get { return _serviceHelper; } }
 
         /// <summary>
-        /// Standaardconstructor.  <paramref name="veelGebruikt"/> wordt
-        /// best toegewezen via inversion of control.
+        /// Standaardconstructor.
         /// </summary>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-        protected BaseController(IVeelGebruikt veelGebruikt)
+        /// <param name="serviceHelper">Helper class voor service calls.</param>
+        protected BaseController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper)
         {
             _veelGebruikt = veelGebruikt;
+            _serviceHelper = serviceHelper;
         }
 
         /// <summary>

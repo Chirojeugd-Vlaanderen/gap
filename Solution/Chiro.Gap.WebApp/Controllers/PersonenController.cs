@@ -52,8 +52,8 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
         /// service</param>
-        public PersonenController(IVeelGebruikt veelGebruikt)
-            : base(veelGebruikt)
+        public PersonenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper)
+            : base(veelGebruikt, serviceHelper)
         {
         }
         // TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id

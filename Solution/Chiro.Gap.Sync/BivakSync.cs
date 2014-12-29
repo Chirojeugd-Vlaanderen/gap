@@ -29,8 +29,18 @@ namespace Chiro.Gap.Sync
     /// <summary>
     /// Synchronisatie van bivakaangifte naar Kipadmin
     /// </summary>
-    public class BivakSync : IBivakSync
+    public class BivakSync : BaseSync, IBivakSync
     {
+        /// <summary>
+        /// Constructor.
+        /// 
+        /// De ServiceHelper wordt geïnjecteerd door de dependency injection container. Wat de
+        /// ServiceHelper precies zal opleveren, hangt af van welke IChannelProvider geregistreerd
+        /// is bij de container.
+        /// </summary>
+        /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
+        public BivakSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
+
         /// <summary>
         /// Bewaart de uitstap <paramref name="uitstap"/> in Kipadmin als bivak.  Zonder contactpersoon
         /// of plaats.

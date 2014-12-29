@@ -62,13 +62,14 @@ namespace Chiro.Cdf.Ioc
 
                 if (section != null)
                 {
-                    // Als je hier een IoException of zoiets krijgt, dan mis je waarschijnlijk referenties
-                    // naar assemblies die in je untiy-configuratie voorkomen.
-                    // Typisch voor services: Chiro.Cdf.DependencyInjectionBehavior.
-                    // Kijk ook eens na of alle assembly's in de types van de unity-configuratie
-                    // bij de 'References' van je project staan.
-                    // Ook een mogelijke bron van problemen, is als interfaces van assembly zijn veranderd,
-                    // maar als dat niet is aangepast in de configuratiefile :)
+                    // Als de toepassing hierop crasht, kijk dan je config file na:
+                    // * Heb je bij je types ook de assembly's vermeld waarin ze gedefinieerd zijn?
+                    // * Bevat je project referenties naar al die assemblies?
+                    // * Hernoemde je onlangs interfaces of implementaties?
+
+                    // Wat ook kan helpen, is de ongebruikte referenties uit je project verwijderen,
+                    // alsook de referenties nodig voor dependency injection, en die dan allemaal
+                    // terugleggen.
                     
                     section.Configure(_container);
                 }

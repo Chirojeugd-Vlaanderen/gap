@@ -45,7 +45,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="veelGebruikt">Haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
 		/// service</param>
-		public AfdelingenController(IVeelGebruikt veelGebruikt) : base(veelGebruikt) { }
+        public AfdelingenController(IVeelGebruikt veelGebruikt, ServiceHelper serviceHelper) : base(veelGebruikt, serviceHelper) { }
 
 		/// <summary>
         /// Toont het afdelingsoverzicht voor het huidge groepswerkjaar: de actieve afdelingen, 
@@ -199,7 +199,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 var l = new List<String> {"gelukt"};
                 return Json(l, JsonRequestBehavior.AllowGet);
             }
-            catch (FaultException ex)
+            catch (FaultException)
             {
                 var l = new List<String> {"fail"};
                 return Json(l, JsonRequestBehavior.AllowGet);
@@ -223,7 +223,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 var l = new List<String> {"gelukt"};
                 return Json(l, JsonRequestBehavior.AllowGet);
             }
-            catch (FaultException ex)
+            catch (FaultException)
             {
                 var l = new List<String> {"fail"};
                 return Json(l, JsonRequestBehavior.AllowGet);

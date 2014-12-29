@@ -164,7 +164,7 @@
       <Name>Chiro.Cdf.Sso</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj">
-      <Project>{268708CB-F3E8-4AFA-9E61-824CFA27BE0E}</Project>
+      <Project>{268708cb-f3e8-4afa-9e61-824cfa27be0e}</Project>
       <Name>Chiro.Cdf.UnityWcfExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
@@ -182,6 +182,10 @@
     <ProjectReference Include="..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
       <Name>Chiro.Gap.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Services.Dev\Chiro.Gap.Services.Dev.csproj">
+      <Project>{df253c73-7632-476e-b760-deba6d306e69}</Project>
+      <Name>Chiro.Gap.Services.Dev</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
       <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
@@ -224,6 +228,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

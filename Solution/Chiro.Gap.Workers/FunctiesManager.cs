@@ -24,7 +24,6 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Properties;
-using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Chiro.Gap.Workers
 {

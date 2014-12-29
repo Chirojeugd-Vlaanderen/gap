@@ -101,7 +101,7 @@ namespace Chiro.Gap.Sync.Test
 
             // ACT
 
-            var target = new PersonenSync();
+            var target = Factory.Maak<PersonenSync>();
             target.Bewaren(gelieerdePersoon, false, true);
 
             // ASSERT

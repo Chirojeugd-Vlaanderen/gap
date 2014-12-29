@@ -36,6 +36,17 @@ namespace Chiro.Kip.Services
 {
 	public partial class SyncPersoonService
 	{
+	    private readonly ServiceHelper _serviceHelper;
+
+	    protected ServiceHelper ServiceHelper
+	    {
+	        get { return _serviceHelper; }
+	    }
+
+	    public SyncPersoonService(ServiceHelper serviceHelper)
+	    {
+	        _serviceHelper = serviceHelper;
+	    }
 		/// <summary>
 		/// Probeert een persoon te vinden op basis van persoonsgegevens, adressen en communicatie.
 		/// Als dat lukt, worden de meegegeven persoonsgegevens, adressen, communicatie overgenomen in de

@@ -101,7 +101,7 @@ namespace Chiro.Gap.Sync.Test
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             // ACT
-            var target = new VerzekeringenSync(); // TODO: Initialize to an appropriate value
+            var target = Factory.Maak<VerzekeringenSync>();
             target.Bewaren(persoonsVerzekering, groepsWerkJaar);
 
             // ASSERT
