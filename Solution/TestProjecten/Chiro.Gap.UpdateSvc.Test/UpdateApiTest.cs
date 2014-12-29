@@ -1,16 +1,30 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * Copyright 2014 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * top-level directory of this distribution, and at
+ * https://develop.chiro.be/gap/wiki/copyright
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System;
+using System.Collections.Generic;
 using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.UpdateApi;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.SyncInterfaces;
-using Chiro.Cdf.Poco;
-using Moq;
 using Chiro.Gap.UpdateApi.Workers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Chiro.Gap.UpdateSvc.Test
 {
