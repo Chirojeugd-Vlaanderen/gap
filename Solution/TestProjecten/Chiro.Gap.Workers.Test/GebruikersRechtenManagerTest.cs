@@ -2,7 +2,6 @@
 using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Chiro.Cdf.Mailer;
 using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.Workers.Test

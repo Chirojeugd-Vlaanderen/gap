@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
@@ -15,15 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System.Collections.ObjectModel;
-using Chiro.Gap.Domain;
-using Chiro.Gap.Poco.Model;
-using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.SyncInterfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using System.Data.Objects.DataClasses;
 using Chiro.Cdf.Ioc;
-using Moq;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.ServiceContracts.DataContracts;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Workers.Test
 {

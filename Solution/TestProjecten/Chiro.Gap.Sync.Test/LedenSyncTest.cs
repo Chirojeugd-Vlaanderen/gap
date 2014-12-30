@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.Sync;
 using Chiro.Gap.TestAttributes;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Chiro.Gap.Poco.Model;
 using Moq;
-using Persoon = Chiro.Gap.Poco.Model.Persoon;
+using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
 
 namespace Chiro.Gap.Sync.Test
 {
@@ -83,14 +82,14 @@ namespace Chiro.Gap.Sync.Test
             // ARRANGE
 
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Kip.ServiceContracts.DataContracts.Persoon>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<IEnumerable<AfdelingEnum>>())).Verifiable();
+            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Persoon>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<IEnumerable<AfdelingEnum>>())).Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             var lid = new Kind
                           {
                               AfdelingsJaar = new AfdelingsJaar {OfficieleAfdeling = new OfficieleAfdeling {ID = 1}},
                               GroepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()},
-                              GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
+                              GelieerdePersoon = new GelieerdePersoon {Persoon = new Poco.Model.Persoon()}
                           };
 
             // ACT
@@ -120,7 +119,7 @@ namespace Chiro.Gap.Sync.Test
             {
                 AfdelingsJaar = new AfdelingsJaar { OfficieleAfdeling = new OfficieleAfdeling { ID = 1 } },
                 GroepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep() },
-                GelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon {AdNummer = 2} },
+                GelieerdePersoon = new GelieerdePersoon { Persoon = new Poco.Model.Persoon {AdNummer = 2} },
                 NonActief = true,
                 UitschrijfDatum = DateTime.Now,
                 EindeInstapPeriode = DateTime.Now.AddMonths(-6)

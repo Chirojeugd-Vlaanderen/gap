@@ -17,7 +17,6 @@
  */
 using System;
 using System.Linq;
-using Chiro.Cdf.Mailer;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;

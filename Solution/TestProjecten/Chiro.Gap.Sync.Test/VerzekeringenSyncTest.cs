@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.Sync;
+﻿using Chiro.Cdf.Ioc;
+using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Chiro.Gap.Poco.Model;
 using Moq;
 using Persoon = Chiro.Gap.Poco.Model.Persoon;
 

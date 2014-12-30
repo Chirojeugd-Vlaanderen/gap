@@ -34,6 +34,17 @@ namespace Chiro.CiviSync.Services
     {
         private readonly string _siteKey = Properties.Settings.Default.SiteKey;
         private readonly string _apiKey = Properties.Settings.Default.ApiKey;
+        private readonly ServiceHelper _serviceHelper;
+
+        protected ServiceHelper ServiceHelper
+        {
+            get { return _serviceHelper; }
+        }
+
+        public SyncService(ServiceHelper serviceHelper)
+        {
+            _serviceHelper = serviceHelper;
+        }
 
         /// <summary>
         /// Updatet de persoonsgegevens van <paramref name="persoon"/> in CiviCRM

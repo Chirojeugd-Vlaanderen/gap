@@ -82,22 +82,23 @@ namespace Chiro.CiviSync.Services
                 .ForMember(dst => dst.StateProvinceName, opt => opt.Ignore())
                 .ForMember(dst => dst.Country, opt => opt.Ignore())
                 .ForMember(dst => dst.ChainedAddresses, opt => opt.Ignore())
-                .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
+                .ForMember(dst => dst.ApiOptions, opt => opt.Ignore())
+                .ForMember(dst => dst.PreferredMailFormat, opt => opt.Ignore());
 
             Mapper.CreateMap<Adres, Address>()
-                            .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))
-                            .ForMember(dst => dst.ContactId, opt => opt.Ignore())
-                            .ForMember(dst => dst.Country, opt => opt.MapFrom(src => src.LandIsoCode))
-                            .ForMember(dst => dst.LocationTypeId, opt => opt.Ignore())
-                            .ForMember(dst => dst.Id, opt => opt.Ignore())
-                            .ForMember(dst => dst.IsBilling, opt => opt.Ignore())
-                            .ForMember(dst => dst.IsPrimary, opt => opt.Ignore())
-                            .ForMember(dst => dst.PostalCode, opt => opt.MapFrom(src => src.PostNr))
-                            .ForMember(dst => dst.PostalCodeSuffix, opt => opt.MapFrom(src => src.PostCode))
-                            .ForMember(dst => dst.StateProvinceId, opt => opt.MapFrom(src => MappingHelper.ProvincieIDBepalen(src)))
-                            .ForMember(dst => dst.StreetAddress, opt => opt.MapFrom(src => MappingHelper.StraatNrFormatteren(src)))
-                            .ForMember(dst => dst.CountryId, opt => opt.Ignore())
-                            .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
+                .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))
+                .ForMember(dst => dst.ContactId, opt => opt.Ignore())
+                .ForMember(dst => dst.Country, opt => opt.MapFrom(src => src.LandIsoCode))
+                .ForMember(dst => dst.LocationTypeId, opt => opt.Ignore())
+                .ForMember(dst => dst.Id, opt => opt.Ignore())
+                .ForMember(dst => dst.IsBilling, opt => opt.Ignore())
+                .ForMember(dst => dst.IsPrimary, opt => opt.Ignore())
+                .ForMember(dst => dst.PostalCode, opt => opt.MapFrom(src => src.PostNr))
+                .ForMember(dst => dst.PostalCodeSuffix, opt => opt.MapFrom(src => src.PostCode))
+                .ForMember(dst => dst.StateProvinceId, opt => opt.MapFrom(src => MappingHelper.ProvincieIDBepalen(src)))
+                .ForMember(dst => dst.StreetAddress, opt => opt.MapFrom(src => MappingHelper.StraatNrFormatteren(src)))
+                .ForMember(dst => dst.CountryId, opt => opt.Ignore())
+                .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
 
             Mapper.AssertConfigurationIsValid();
         }

@@ -4,7 +4,6 @@ using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using System.Linq;
