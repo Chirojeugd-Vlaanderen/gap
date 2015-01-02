@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System.Collections.Generic;
 using System.Linq;
 using Chiro.Cdf.Poco;
@@ -23,10 +24,6 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Properties;
-
-using Adres = Chiro.Gap.Poco.Model.Adres;
-using AdresTypeEnum = Chiro.Gap.Domain.AdresTypeEnum;
-using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Workers
 {

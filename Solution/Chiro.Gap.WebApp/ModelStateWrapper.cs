@@ -17,7 +17,6 @@
  */
 
 using System.Web.Mvc;
-
 using Chiro.Gap.Validatie;
 
 namespace Chiro.Gap.WebApp

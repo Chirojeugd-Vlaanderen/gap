@@ -1,8 +1,8 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Fout.Master" Inherits="ViewPage<HandleErrorInfo>" %>
-<%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.FaultContracts" %>
 <%@ Import Namespace="System.Net" %>
 <%@ Import Namespace="System.ServiceModel" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="errorContent" ContentPlaceHolderID="MainContent" runat="server">
 <%
 /*

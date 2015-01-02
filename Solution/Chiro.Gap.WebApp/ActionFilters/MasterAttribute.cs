@@ -17,7 +17,6 @@
  */
 
 using System.Web.Mvc;
-
 using Chiro.Gap.WebApp.Controllers;
 using Chiro.Gap.WebApp.Models;
 

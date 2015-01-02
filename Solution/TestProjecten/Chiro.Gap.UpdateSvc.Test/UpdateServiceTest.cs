@@ -6,8 +6,6 @@ using Chiro.Gap.UpdateSvc.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.SyncInterfaces;
 using Chiro.Cdf.Poco;
 using Moq;
 

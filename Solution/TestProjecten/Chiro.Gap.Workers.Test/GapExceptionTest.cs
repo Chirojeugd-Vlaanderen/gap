@@ -15,13 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System.Linq;
-using Chiro.Gap.Poco.Model.Exceptions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model.Exceptions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Workers.Test
 {

@@ -16,24 +16,3 @@ Contributions for Chirojeugd-Vlaanderen vzw by
   * Mattias Michaux
   * Tim Mallezie
 
-Gap uses the following 3rd party projects:
-
-Automapper, an open source mapping library by Jimmy Bogard, 
-see http://automapper.org/.
-
-The Open XML SDK for Microsoft Office. 
-(http://www.microsoft.com/en-us/download/details.aspx?id=5124)
-
-Moq, a BSD-licensed mocking framework, by Clarius Consulting, Manas
-Technology Solutions, InSTEDD, see http://code.google.com/p/moq.
-
-ASP.NET MVC, an open source implementation of the model-view-controller
-design pattern by Microsoft Open Technologies, Inc., under Apache
-license. (See http://www.asp.net/mvc)
-
-Unity, an open source library for dependency injection, by Microsoft,
-under Microsoft Public License. (http://unity.codeplex.com/)
-
-Entity Framework, Microsoft's object relational mapper.
-(http://msdn.microsoft.com/en-us/data/ef.aspx)
-

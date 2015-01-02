@@ -18,12 +18,12 @@
 
 using System;
 using System.Diagnostics;
-
 using AutoMapper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts.DataContracts;
-
 using Adres = Chiro.Gap.Poco.Model.Adres;
+using CommunicatieType = Chiro.Kip.ServiceContracts.DataContracts.CommunicatieType;
+using Groep = Chiro.Gap.Poco.Model.Groep;
 using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync
@@ -98,7 +98,7 @@ namespace Chiro.Gap.Sync
 
             Mapper.CreateMap<CommunicatieVorm, CommunicatieMiddel>()
                 .ForMember(dst => dst.GeenMailings, opt => opt.MapFrom(src => !src.IsVoorOptIn))
-                .ForMember(dst => dst.Type, opt => opt.MapFrom(src => (Kip.ServiceContracts.DataContracts.CommunicatieType)src.CommunicatieType.ID))
+                .ForMember(dst => dst.Type, opt => opt.MapFrom(src => (CommunicatieType)src.CommunicatieType.ID))
                 .ForMember(dst => dst.Waarde, opt => opt.MapFrom(src => src.Nummer));
 
             Mapper.CreateMap<GelieerdePersoon, PersoonDetails>()
@@ -118,7 +118,7 @@ namespace Chiro.Gap.Sync
                 .ForMember(dst => dst.UitstapID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar));
 
-            Mapper.CreateMap<Poco.Model.Groep, Kip.ServiceContracts.DataContracts.Groep>();
+            Mapper.CreateMap<Groep, Kip.ServiceContracts.DataContracts.Groep>();
 
             Mapper.AssertConfigurationIsValid();
         }

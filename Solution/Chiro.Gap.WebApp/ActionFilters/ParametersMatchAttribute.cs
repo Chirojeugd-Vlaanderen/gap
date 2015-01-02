@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
@@ -18,10 +18,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-using System.Diagnostics;
 
 // Code overgenomen en verbeterd van http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/
 // Opgelet: in onze coding style gebruiken we automatische model binding, met als gevolg dat

@@ -18,7 +18,6 @@
 
 using System;
 using System.Web.Mvc;
-
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.HtmlHelpers

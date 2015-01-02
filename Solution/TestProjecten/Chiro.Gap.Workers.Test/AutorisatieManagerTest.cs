@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-using Chiro.Cdf.Ioc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Chiro.Gap.WorkerInterfaces;
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.WorkerInterfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Chiro.Gap.Workers.Test

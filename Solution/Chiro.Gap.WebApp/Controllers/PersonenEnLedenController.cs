@@ -15,14 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
-using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {

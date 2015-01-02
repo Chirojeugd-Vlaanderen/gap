@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts

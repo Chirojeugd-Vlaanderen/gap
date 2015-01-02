@@ -15,15 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
-﻿using System.Linq;
-﻿using Chiro.Cdf.Ioc;
-﻿using Chiro.Gap.Domain;
-﻿using Chiro.Gap.Dummies;
-﻿using Chiro.Gap.Poco.Model;
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.ServiceContracts.DataContracts;
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
+using Chiro.Gap.Dummies;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.ServiceContracts.DataContracts;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Workers.Test
 {

@@ -18,14 +18,13 @@
 ﻿// Met dank aan "Pro ASP.NET MVC Framework", het Apress-handboek van Steven Sanderson
 
 using System.Collections.Generic;
-
-using Moq;
-using System.Web;
-using System.Web.Routing;
-using System.Web.Mvc;
 using System.Collections.Specialized;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using Moq;
 
-namespace MvcWebApp2.Tests
+namespace Chiro.Gap.WebApp.Test
 {
     /// <summary>
     /// Hulpklasse die een HttpContext mockt, om controllers mee te testen.

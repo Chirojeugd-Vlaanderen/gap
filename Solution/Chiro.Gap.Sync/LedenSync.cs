@@ -24,10 +24,10 @@ using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.Sync.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-
 using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync
@@ -163,7 +163,7 @@ namespace Chiro.Gap.Sync
             }
             else
             {
-                throw new FoutNummerException(FoutNummer.LidUitgeschreven, Properties.Resources.UitgeschrevenLidSyncen);
+                throw new FoutNummerException(FoutNummer.LidUitgeschreven, Resources.UitgeschrevenLidSyncen);
             }
         }
 

@@ -1,7 +1,6 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<AdresModel>"  %>
-
-<%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
 /*

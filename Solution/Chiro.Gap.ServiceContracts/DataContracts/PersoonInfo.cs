@@ -21,7 +21,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Properties;
 using System.Runtime.Serialization;
-
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts

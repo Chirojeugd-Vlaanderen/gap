@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
@@ -19,7 +19,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.HtmlHelpers;
 

@@ -17,7 +17,6 @@
  */
 
 using System.Web.Mvc;
-
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.WebApp.HtmlHelpers

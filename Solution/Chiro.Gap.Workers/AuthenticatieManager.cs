@@ -15,8 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System.ServiceModel;
 
+using System.ServiceModel;
 using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Workers

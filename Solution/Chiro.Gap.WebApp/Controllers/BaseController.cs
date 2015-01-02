@@ -20,12 +20,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
-
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
-using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Controllers
 {

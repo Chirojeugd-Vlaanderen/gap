@@ -1,4 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.LidInfoModel>" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
+<%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <%
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
@@ -18,8 +20,6 @@
  * limitations under the License.
  */
 %>
-<%@ Import Namespace="Chiro.Gap.Domain" %>
-<%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <% // TODO: onderstaand script moet naar 'head'. %>
 
 <table style="width: 100%" id="ledenOverzichtsTabel" class="overzicht">

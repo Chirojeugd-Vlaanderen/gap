@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System.Reflection;
 using System.Web.Mvc;
 
 namespace Chiro.Gap.WebApp.ActionFilters
@@ -51,7 +52,7 @@ namespace Chiro.Gap.WebApp.ActionFilters
 		/// <param name="controllerContext"></param>
 		/// <param name="methodInfo"></param>
 		/// <returns><c>True</c> indien deze controlleractie uitgevoerd mag worden, anders <c>false</c>.</returns>
-		public override bool IsValidForRequest(ControllerContext controllerContext, System.Reflection.MethodInfo methodInfo)
+		public override bool IsValidForRequest(ControllerContext controllerContext, MethodInfo methodInfo)
 		{
 			var req = controllerContext.RequestContext.HttpContext.Request;
 			return req.Form[Naam] == Waarde;

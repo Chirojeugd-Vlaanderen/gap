@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -128,7 +129,7 @@ namespace Chiro.Gap.Workers
             // Je moet oud genoeg zijn
             if (fout == FoutNummer.LidTeJong)
             {
-                throw new FoutNummerException(FoutNummer.LidTeJong, Properties.Resources.MinimumLeeftijd);
+                throw new FoutNummerException(FoutNummer.LidTeJong, Resources.MinimumLeeftijd);
             }
 
             // en nog leven ook
@@ -153,7 +154,7 @@ namespace Chiro.Gap.Workers
             if (origineelLid.GroepsWerkJaar.Groep.StopDatum != null &&
                 origineelLid.GroepsWerkJaar.Groep.StopDatum < DateTime.Now)
             {
-                throw new FoutNummerException(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+                throw new FoutNummerException(FoutNummer.GroepInactief, Resources.GroepInactief);
             }
 
             DateTime? eindeInstap = origineelLid.EindeInstapPeriode;
@@ -170,7 +171,7 @@ namespace Chiro.Gap.Workers
 
             if (!groepsWerkJaar.Groep.Niveau.HasFlag(Niveau.Groep))
             {
-                throw new FoutNummerException(FoutNummer.LidTypeVerkeerd, Properties.Resources.FoutiefLidTypeFunctie);
+                throw new FoutNummerException(FoutNummer.LidTypeVerkeerd, Resources.FoutiefLidTypeFunctie);
             }
 
             // Behoud bestaande functies die straks nog van 
@@ -264,7 +265,7 @@ namespace Chiro.Gap.Workers
             if (gwj.AfdelingsJaar.Count == 0)
             {
                 throw new FoutNummerException(FoutNummer.AfdelingKindVerplicht,
-                    Properties.Resources.InschrijvenZonderAfdelingen);
+                    Resources.InschrijvenZonderAfdelingen);
             }
 
             // allemaal om resharper blij tehouden:
@@ -401,7 +402,7 @@ namespace Chiro.Gap.Workers
             // Gooi exception als groepswerkjaar van andere groep als gelieerde persoon.
             if (!gp.Groep.Equals(gwj.Groep))
             {
-                throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietVanGroep, Properties.Resources.GroepsWerkJaarNietVanGroep);
+                throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietVanGroep, Resources.GroepsWerkJaarNietVanGroep);
             }
 
             Debug.Assert(gp.GebDatumMetChiroLeefTijd != null, "gp.GebDatumMetChiroLeefTijd != null");
@@ -712,7 +713,7 @@ namespace Chiro.Gap.Workers
             // Gooi exception als groepswerkjaar van andere groep als gelieerde persoon.
             if (!gelieerdePersoon.Groep.Equals(groepsWerkJaar.Groep))
             {
-                throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietVanGroep, Properties.Resources.GroepsWerkJaarNietVanGroep);
+                throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietVanGroep, Resources.GroepsWerkJaarNietVanGroep);
             }
 
             if (gelieerdePersoon.Persoon.GeboorteDatum == null || gelieerdePersoon.Persoon.SterfDatum != null)
@@ -739,7 +740,7 @@ namespace Chiro.Gap.Workers
         {
             if (lid.GroepsWerkJaar.Groep.StopDatum != null && lid.GroepsWerkJaar.Groep.StopDatum < DateTime.Now)
             {
-                throw new FoutNummerException(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+                throw new FoutNummerException(FoutNummer.GroepInactief, Resources.GroepInactief);
             }
 
             var query = from aj in afdelingsJaren
@@ -758,7 +759,7 @@ namespace Chiro.Gap.Workers
                 if (afdelingsJaren.Count != 1)
                 {
                     throw new FoutNummerException(FoutNummer.AlgemeneKindFout,
-                                                          Properties.Resources.AfdelingKindVerplicht);
+                                                          Resources.AfdelingKindVerplicht);
                 }
                 kind.AfdelingsJaar = afdelingsJaren.First();
             }

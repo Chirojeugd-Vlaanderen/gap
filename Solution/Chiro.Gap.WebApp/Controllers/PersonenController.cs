@@ -34,6 +34,7 @@ using Chiro.Gap.Validatie;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.HtmlHelpers;
 using Chiro.Gap.WebApp.Models;
+using Chiro.Gap.WebApp.Properties;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -572,8 +573,8 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.KanVerzekerenLoonVerlies = model.PersoonLidInfo.PersoonDetail.GeboorteDatum != null &&
                                                  DateTime.Today.Year -
                                                  ((DateTime)model.PersoonLidInfo.PersoonDetail.GeboorteDatum).Year >=
-                                                 Properties.Settings.Default.LoonVerliesVanafLeeftijd;
-                model.PrijsVerzekeringLoonVerlies = Properties.Settings.Default.PrijsVerzekeringLoonVerlies;
+                                                 Settings.Default.LoonVerliesVanafLeeftijd;
+                model.PrijsVerzekeringLoonVerlies = Settings.Default.PrijsVerzekeringLoonVerlies;
                 model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam;
 
                 return View("Bewerken", model);

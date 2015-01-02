@@ -16,15 +16,15 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.TestAttributes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using Chiro.Gap.WorkerInterfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Workers.Test
 {

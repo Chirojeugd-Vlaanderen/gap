@@ -18,7 +18,7 @@
 
 using System;
 using System.Web.Mvc;
-
+using System.Web.Routing;
 using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.WebApp
@@ -29,7 +29,7 @@ namespace Chiro.Gap.WebApp
     /// </summary>
     public class UnityControllerFactory : DefaultControllerFactory
 	{
-		protected override IController GetControllerInstance(System.Web.Routing.RequestContext requestContext, Type controllerType)
+		protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
 		{
 			if (controllerType == null)
 			{

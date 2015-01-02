@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,8 +29,6 @@ using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Properties;
-
-using CommunicatieType = Chiro.Gap.Poco.Model.CommunicatieType;
 
 namespace Chiro.Gap.Workers
 {
