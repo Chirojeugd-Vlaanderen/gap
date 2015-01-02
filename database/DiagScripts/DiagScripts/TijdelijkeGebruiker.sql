@@ -2,4 +2,4 @@
 
 use gap
 
-exec auth.spTijdelijkeGebruiker 'wg /0203','chiropublic\johan4'
+exec auth.spTijdelijkeGebruiker 'wj /1303','chiropublic\johan4'

@@ -27,6 +27,18 @@
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
           <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
         </ConnectionNode>
+        <ConnectionNode Name="kip-sql02.chiro.lokaal\sql2012:sa">
+          <Created>2014-12-29T15:14:11.662642+01:00</Created>
+          <Type>SQL</Type>
+          <Server>kip-sql02.chiro.lokaal\sql2012</Server>
+          <UserName>sa</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
         <ConnectionNode Name="kip-sql02\sql2012:sa">
           <Created>2014-07-04T11:51:59.9551243+02:00</Created>
           <Type>SQL</Type>
@@ -139,11 +151,17 @@
           <AssociatedConnUserName />
           <FullPath>NietDoorgekomenAbonnement.sql</FullPath>
         </FileNode>
+        <FileNode Name="NietDoorgekomenAfdelingen.sql">
+          <FullPath>NietDoorgekomenAfdelingen.sql</FullPath>
+        </FileNode>
         <FileNode Name="NietDoorgekomenLeden.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02\sql2012:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kip-sql02\sql2012</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>NietDoorgekomenLeden.sql</FullPath>
+        </FileNode>
+        <FileNode Name="NietDoorgekomenTelefoonNr.sql">
+          <FullPath>NietDoorgekomenTelefoonNr.sql</FullPath>
         </FileNode>
         <FileNode Name="NietVerwijderdeLeden.sql">
           <AssociatedConnectionMoniker />
