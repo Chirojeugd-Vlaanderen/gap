@@ -18,7 +18,7 @@
 
 using System;
 using System.Web.Mvc;
-
+using System.Web.Routing;
 using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.WebApi
@@ -29,14 +29,15 @@ namespace Chiro.Gap.WebApi
     /// </summary>
     public class UnityControllerFactory : DefaultControllerFactory
 	{
-		protected override IController GetControllerInstance(System.Web.Routing.RequestContext requestContext, Type controllerType)
+       
+		protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
 		{
 			if (controllerType == null)
 			{
 				// throw new ArgumentNullException("controllerType");
 
-				// Misschien werkt het wel als ik dan null teruggeef.
-				return null;
+				// Laat base het maar oplossen.
+				return base.GetControllerInstance(requestContext, null);
 			}
 
 			if (!typeof(IController).IsAssignableFrom(controllerType))
