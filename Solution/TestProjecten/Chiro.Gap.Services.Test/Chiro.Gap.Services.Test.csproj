@@ -85,7 +85,7 @@
       <Name>Chiro.Cdf.Poco</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
-      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
       <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">

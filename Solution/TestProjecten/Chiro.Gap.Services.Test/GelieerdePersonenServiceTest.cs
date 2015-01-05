@@ -87,6 +87,11 @@ namespace Chiro.Gap.Services.Test
             // de configuratiefile.)
 
             Factory.ContainerInit();
+
+            // Als ik onderstaande niet een keertje instantieer, dan werken mijn tests niet.
+            // Geen idee hoe dat komt.
+
+            Chiro.Gap.Services.Dev.DevChannelProvider bla;
         }
 
         /// <summary>
