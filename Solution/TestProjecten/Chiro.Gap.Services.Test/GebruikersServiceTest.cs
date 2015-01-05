@@ -1,18 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Chiro.Gap.WorkerInterfaces;
-using Chiro.Cdf.Poco;
 using Moq;
-using GebruikersRecht = Chiro.Gap.ServiceContracts.DataContracts.GebruikersRecht;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -146,7 +141,7 @@ namespace Chiro.Gap.Services.Test
                                    };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             gav.Persoon.Add(gelieerdePersoon.Persoon);
-            var gebruikersrecht = new Poco.Model.GebruikersRecht {Gav = gav, Groep = gelieerdePersoon.Groep};
+            var gebruikersrecht = new GebruikersRecht {Gav = gav, Groep = gelieerdePersoon.Groep};
             gav.GebruikersRecht.Add(gebruikersrecht);
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();

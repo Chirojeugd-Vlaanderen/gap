@@ -15,11 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System.Diagnostics;
+
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {

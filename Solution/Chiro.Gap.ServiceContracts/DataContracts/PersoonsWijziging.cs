@@ -16,14 +16,12 @@
  * limitations under the License.
  */
 
-using Chiro.Gap.Domain;
-using Chiro.Gap.ServiceContracts.Properties;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-using System.Text;
+using Chiro.Gap.Domain;
+using Chiro.Gap.ServiceContracts.Properties;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {

@@ -117,14 +117,14 @@ namespace Chiro.Gap.Workers
 
                     if (!mailAdressen.Any())
                     {
-                        throw new FoutNummerException(FoutNummer.EMailVerplicht, Properties.Resources.EMailVerplicht);
+                        throw new FoutNummerException(FoutNummer.EMailVerplicht, Resources.EMailVerplicht);
                     }
 
                     // Schrijft de persoon zich in voor de nieuwsbrief?
 
                     if (!mailAdressen.Any(ma => ma.IsVoorOptIn))
                     {
-                        throw new FoutNummerException(FoutNummer.ContactMoetNieuwsBriefKrijgen, Properties.Resources.ContactMoetNieuwsBriefKrijgen);
+                        throw new FoutNummerException(FoutNummer.ContactMoetNieuwsBriefKrijgen, Resources.ContactMoetNieuwsBriefKrijgen);
                     }
                 }
 
@@ -171,7 +171,7 @@ namespace Chiro.Gap.Workers
 
             if (functie.Groep == null)
             {
-                throw new FoutNummerException(FoutNummer.FunctieNietBeschikbaar, Properties.Resources.NationaleFunctieVerwijderen);
+                throw new FoutNummerException(FoutNummer.FunctieNietBeschikbaar, Resources.NationaleFunctieVerwijderen);
             }
 
             var huidigGwj = functie.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();

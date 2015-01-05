@@ -17,7 +17,6 @@
  */
 
 using System.Collections.Generic;
-
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.WebApp.Models

@@ -26,6 +26,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -68,7 +69,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				}
 				else
 				{
-					var model = new Models.GavModel();
+					var model = new GavModel();
 					BaseModelInit(model, 0);    // 0: nog geen groep gekozen
 
 					model.Titel = "Kies je Chirogroep";

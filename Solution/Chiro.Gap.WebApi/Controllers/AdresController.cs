@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.OData;
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WebApi.Helpers;
@@ -36,9 +37,9 @@ namespace Chiro.Gap.WebApi.Controllers
         protected ApiHelper ApiHelper { get { return _apiHelper; } }
 
 
-        public AdresController(ApiHelper apiHelper): base()
+        public AdresController(): base()
         {
-            _apiHelper = apiHelper;
+            _apiHelper = Factory.Maak<ApiHelper>();
             _groepsWerkJaar = ApiHelper.GetGroepsWerkJaar(_context);
         }
 

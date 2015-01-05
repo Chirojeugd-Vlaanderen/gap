@@ -18,7 +18,6 @@
 
 using System.ComponentModel;
 using System.Runtime.Serialization;
-
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts

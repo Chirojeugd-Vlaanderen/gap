@@ -17,14 +17,12 @@
  */
 
 using System.Diagnostics;
-
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-
 using CommunicatieType = Chiro.Kip.ServiceContracts.DataContracts.CommunicatieType;
 using Persoon = Chiro.Gap.Poco.Model.Persoon;
 

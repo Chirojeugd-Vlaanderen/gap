@@ -30,6 +30,7 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
+using Chiro.Gap.WebApp.Properties;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -648,7 +649,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.LidID = id;
             model.GelieerdePersoonID = info.GelieerdePersoonID;
             model.VolledigeNaam = string.Format("{0} {1}", info.VoorNaam, info.Naam);
-            model.Prijs = Properties.Settings.Default.PrijsVerzekeringLoonVerlies;
+            model.Prijs = Settings.Default.PrijsVerzekeringLoonVerlies;
             model.Titel = String.Format("{0} verzekeren tegen loonverlies", model.VolledigeNaam);
 
             return View(model);

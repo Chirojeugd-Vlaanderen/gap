@@ -145,7 +145,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     // BestaatAlException maar 1 object oplevert.
 
 				    var possible = false;
-					if (System.String.Compare(ex.Detail.Bestaande.Afkorting, model.Info.Afkorting, System.StringComparison.OrdinalIgnoreCase) == 0)
+					if (String.Compare(ex.Detail.Bestaande.Afkorting, model.Info.Afkorting, StringComparison.OrdinalIgnoreCase) == 0)
 					{
                         possible = true;
                         ModelState.AddModelError(
@@ -155,7 +155,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								ex.Detail.Bestaande.Afkorting,
 								ex.Detail.Bestaande.Naam));
 					}
-					if (System.String.Compare(ex.Detail.Bestaande.Naam, model.Info.Naam, System.StringComparison.OrdinalIgnoreCase) == 0)
+					if (String.Compare(ex.Detail.Bestaande.Naam, model.Info.Naam, StringComparison.OrdinalIgnoreCase) == 0)
 					{
                         possible = true;
                         ModelState.AddModelError(
@@ -345,8 +345,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		    catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
 		    {
 		        if (
-		            System.String.Compare(ex.Detail.Bestaande.Afkorting, model.Afdeling.Afkorting,
-		                                  System.StringComparison.OrdinalIgnoreCase) == 0)
+		            String.Compare(ex.Detail.Bestaande.Afkorting, model.Afdeling.Afkorting,
+		                                  StringComparison.OrdinalIgnoreCase) == 0)
 		        {
 		            ModelState.AddModelError(
                         // De key Afdeling.Afkorting geeft aan dat de fout zit in
@@ -359,8 +359,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		                    ex.Detail.Bestaande.Naam));
 		        }
 		        else if (
-		            System.String.Compare(ex.Detail.Bestaande.Naam, model.Afdeling.Naam,
-		                                  System.StringComparison.OrdinalIgnoreCase) == 0)
+		            String.Compare(ex.Detail.Bestaande.Naam, model.Afdeling.Naam,
+		                                  StringComparison.OrdinalIgnoreCase) == 0)
 		        {
 		            ModelState.AddModelError(
 		                "Afdeling.Naam",

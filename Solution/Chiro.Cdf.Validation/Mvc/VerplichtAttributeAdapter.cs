@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System.Collections.Generic;
+ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace System.Web.Mvc

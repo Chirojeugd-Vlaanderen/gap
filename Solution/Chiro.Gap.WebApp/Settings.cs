@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+using System.ComponentModel;
+using System.Configuration;
+
 namespace Chiro.Gap.WebApp.Properties
 {
 	// This class allows you to handle specific events on the settings class:
@@ -25,12 +28,12 @@ namespace Chiro.Gap.WebApp.Properties
 	//  The SettingsSaving event is raised before the setting values are saved.
 	internal sealed partial class Settings
 	{
-		private void SettingChangingEventHandler(object sender, System.Configuration.SettingChangingEventArgs e)
+		private void SettingChangingEventHandler(object sender, SettingChangingEventArgs e)
 		{
 			// Add code to handle the SettingChangingEvent event here.
 		}
 
-		private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e)
+		private void SettingsSavingEventHandler(object sender, CancelEventArgs e)
 		{
 			// Add code to handle the SettingsSaving event here.
 		}

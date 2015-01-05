@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.HtmlHelpers

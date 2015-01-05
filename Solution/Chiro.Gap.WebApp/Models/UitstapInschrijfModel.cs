@@ -18,7 +18,6 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models

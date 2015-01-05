@@ -19,7 +19,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models
@@ -53,7 +52,7 @@ namespace Chiro.Gap.WebApp.Models
         [StringLength(80)]
 		string StraatNaamNaam { get; set; }
 
-		[Range(0, int.MaxValue, ErrorMessageResourceType = typeof(System.ComponentModel.DataAnnotations.Properties.Resources), ErrorMessageResourceName = "RangeError")]
+		[Range(0, int.MaxValue, ErrorMessageResourceType = typeof(Properties.Resources), ErrorMessageResourceName = "RangeError")]
 		[DisplayName(@"Nr.")]
 		int? HuisNr { get; set; }
 

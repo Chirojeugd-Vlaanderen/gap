@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
@@ -138,7 +138,7 @@ namespace Chiro.Gap.Workers
                 // geboortejaren en geslacht gewoon default values, passen we zo nodig
                 // straks nog aan.
 
-                var afdelingsJaar = new Poco.Model.AfdelingsJaar
+                var afdelingsJaar = new AfdelingsJaar
                                         {
                                             Afdeling = afdeling,
                                             GeboorteJaarVan = 0,

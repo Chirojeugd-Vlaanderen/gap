@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.OData;
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WebApi.Helpers;
@@ -37,9 +36,9 @@ namespace Chiro.Gap.WebApi.Controllers
         private readonly ApiHelper _apiHelper;
         protected ApiHelper ApiHelper { get { return _apiHelper; } }
 
-        public GroepController(ApiHelper apiHelper)
+        public GroepController()
         {
-            _apiHelper = apiHelper;
+            _apiHelper = Factory.Maak<ApiHelper>();
             _groepsWerkJaar = ApiHelper.GetGroepsWerkJaar(_context);
         }
 

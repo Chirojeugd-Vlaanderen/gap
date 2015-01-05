@@ -15,12 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using Chiro.Gap.Poco.Model;
+
+using ﻿Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.WorkerInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Workers.Test
 {

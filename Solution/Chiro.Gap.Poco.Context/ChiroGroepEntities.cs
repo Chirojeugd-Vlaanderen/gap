@@ -15,10 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Model;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace Chiro.Gap.Poco.Context
 {

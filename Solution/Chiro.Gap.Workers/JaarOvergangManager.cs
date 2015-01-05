@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,6 +26,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WorkerInterfaces;
+using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
@@ -91,7 +93,7 @@ namespace Chiro.Gap.Workers
 
             if (!_groepsWerkJaarManager.OvergangMogelijk(DateTime.Today, voriggwj.WerkJaar))
             {
-                throw new GapException(Properties.Resources.JaarovergangTeVroeg);
+                throw new GapException(Resources.JaarovergangTeVroeg);
             }
 
             var gwj = _groepsWerkJaarManager.VolgendGroepsWerkJaarMaken(groep);
@@ -110,7 +112,7 @@ namespace Chiro.Gap.Workers
                 if (afd == null)
                 {
                     throw new FoutNummerException(FoutNummer.ValidatieFout,
-                                                  Properties.Resources.OngeldigeAfdelingBinnenGroep);
+                                                  Resources.OngeldigeAfdelingBinnenGroep);
                 }
 
                 // Zoek de officiële afdeling dat overeenkomt met de geselecteerde ID
@@ -120,7 +122,7 @@ namespace Chiro.Gap.Workers
                 if (offafd == null)
                 {
                     throw new FoutNummerException(FoutNummer.ValidatieFout,
-                                                  Properties.Resources.OngeldigeAfdelingNationaal);
+                                                  Resources.OngeldigeAfdelingNationaal);
                 }
 
                 // Maak het afdelingsjaar aan en voegt het toe aan het nieuwe groepswerkjaar 

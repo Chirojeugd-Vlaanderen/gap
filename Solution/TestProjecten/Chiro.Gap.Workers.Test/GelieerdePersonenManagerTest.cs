@@ -1,11 +1,8 @@
-﻿using System.Linq;
-using Chiro.Gap.Workers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Poco.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Workers.Test
 {

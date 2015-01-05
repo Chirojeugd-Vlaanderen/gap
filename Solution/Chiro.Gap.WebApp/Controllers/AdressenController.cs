@@ -23,6 +23,7 @@ using System.Web.Mvc;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.WebApp.Properties;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -57,7 +58,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			if (limit == 0)
 			{
-				limit = Properties.Settings.Default.AutoSuggestieStandaardLimiet;
+				limit = Settings.Default.AutoSuggestieStandaardLimiet;
 			}
 
 			var gemeenteLijst = VeelGebruikt.WoonPlaatsenOphalen();

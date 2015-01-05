@@ -17,7 +17,6 @@
  */
 
 using System;
-
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models

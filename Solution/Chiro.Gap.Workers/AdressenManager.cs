@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
@@ -15,17 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers.Properties;
-
-using Adres = Chiro.Gap.Poco.Model.Adres;
 
 namespace Chiro.Gap.Workers
 {
@@ -109,7 +107,7 @@ namespace Chiro.Gap.Workers
             Adres adr;
 
             if (string.IsNullOrEmpty(adresInfo.LandNaam) ||
-                System.String.Compare(adresInfo.LandNaam, Resources.Belgie, System.StringComparison.OrdinalIgnoreCase) == 0)
+                String.Compare(adresInfo.LandNaam, Resources.Belgie, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 // Belgisch adres.  Zoek en koppel straat en gemeente
                 adr = new BelgischAdres();

@@ -17,9 +17,8 @@
  */
 
 using System.Web.Mvc;
-
-using Chiro.Gap.WebApp.Models;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {

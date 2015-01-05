@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#"%>
+<%@ Import Namespace="Chiro.Gap.WebApp" %>
 <%
 /*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
@@ -23,9 +24,9 @@
     <% 
     //  De link om terug te keren naar de laatste lijst moet alleen getoond worden als we effectief van een lijst komen. 
     //  Welke lijst dat is, wordt door de controllers in de ClientState opgeslagen.
-    if (Chiro.Gap.WebApp.ClientState.VorigeLijst != null) %>
+    if (ClientState.VorigeLijst != null) %>
     <%  { %>
     <%//=Html.("Terug naar vorig overzicht", Chiro.Gap.WebApp.ClientState.VorigeLijst)%>
-    <a href="<%=Chiro.Gap.WebApp.ClientState.VorigeLijst%>">Terug naar vorig overzicht</a>
+    <a href="<%=ClientState.VorigeLijst%>">Terug naar vorig overzicht</a>
     <%  } %>
 </div>
