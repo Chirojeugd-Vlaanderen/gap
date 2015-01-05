@@ -27,10 +27,6 @@ namespace Chiro.Gap.WebApi
         private static void InitializeContainer()
         {
             Factory.ContainerInit();
-
-            IControllerFactory controllerFactory = new UnityControllerFactory();
-
-            ControllerBuilder.Current.SetControllerFactory(controllerFactory);
         }
     }
 }

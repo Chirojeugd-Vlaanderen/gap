@@ -16,6 +16,7 @@
 
 using System.Web.Http;
 using System.Web.Http.OData.Builder;
+using System.Web.Http.OData.Extensions;
 using Chiro.Gap.WebApi.Models;
 using Microsoft.Data.Edm;
 
@@ -35,12 +36,12 @@ namespace Chiro.Gap.WebApi
             modelBuilder.EntitySet<AdresModel>("Adres");
 
             IEdmModel model = modelBuilder.GetEdmModel();
-            config.Routes.MapODataRoute("ODataRoute", "api", model);
+            config.Routes.MapODataServiceRoute("ODataRoute", "api", model);
 
             // default routes for apicontrollers
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{controller}/{id}", 
                 defaults: new {id = RouteParameter.Optional}
                 );
         }

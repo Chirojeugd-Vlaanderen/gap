@@ -113,7 +113,6 @@
     <Compile Include="Models\GroepModel.cs" />
     <Compile Include="Models\PersoonModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnityControllerFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
