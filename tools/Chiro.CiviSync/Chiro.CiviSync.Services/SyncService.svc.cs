@@ -23,6 +23,7 @@ using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using System.ServiceModel;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 
@@ -56,20 +57,31 @@ namespace Chiro.CiviSync.Services
             // TODO: personen met AD-nummer in aanvraag
             // TODO: GAP-ID bewaren
 
-            var contact = persoon.AdNummer == null
+            // CiviCrm.net is generiek, en kent onze custom fields niet. Als ik de CiviCRM-API
+            // aanspreek, krijg ik een gewoon contact.
+            Contact civiContact = persoon.AdNummer == null
                 ? new Contact()
                 : ServiceHelper.CallService<ICiviCrmApi, Contact>(svc => svc.ContactGetSingle(
                     _apiKey,
                     _siteKey,
                     new ExternalIdentifierRequest(persoon.AdNummer.ToString()))) ?? new Contact();
 
-            Mapper.Map(persoon, contact);
+            // Ik map dat naar een ChiroContact. Een ChiroContact heeft een GapID; dat is een custom
+            // field. Onderstaande mapping laat dat GapID null.
+            ChiroContact chiroContact = Mapper.Map<Contact, ChiroContact>(civiContact);
 
-            contact.ApiOptions = new ApiOptions { Match = "external_identifier" };
+            // De mapping van persoon naar chiroContact overschrijft wat er al was met nieuwe
+            // informatie. Hier krijgt het chiroContact ook zijn GapID, namelijk het ID van de
+            // persoon.
+            Mapper.Map(persoon, chiroContact);
+
+            chiroContact.ApiOptions = new ApiOptions { Match = "external_identifier" };
+
+            // Custom fields worden wel meegenomen met een save-operatie.
             var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.ContactSave(
                 _apiKey,
                 _siteKey,
-                contact));
+                chiroContact));
 
             AssertValid(result);
 

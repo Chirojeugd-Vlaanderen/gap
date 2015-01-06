@@ -120,6 +120,10 @@
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.ChiroCivi.ServiceContracts\Chiro.ChiroCivi.ServiceContracts.csproj">
+      <Project>{DC3A00B0-8368-4F7F-86B0-2E906E9E27DF}</Project>
+      <Name>Chiro.ChiroCivi.ServiceContracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

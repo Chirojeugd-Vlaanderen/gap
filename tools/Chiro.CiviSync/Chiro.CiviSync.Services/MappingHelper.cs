@@ -16,6 +16,7 @@
 
 using System;
 using AutoMapper;
+using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -25,7 +26,14 @@ namespace Chiro.CiviSync.Services
     {
         public static void MappingsDefinieren()
         {
-            Mapper.CreateMap<Persoon, Contact>()
+            // Mappings van vanilla CiviCRM naar ChiroCivi (met custom fields)
+
+            Mapper.CreateMap<Contact, ChiroContact>()
+                .ForMember(dst => dst.GapId, opt => opt.Ignore());
+
+            // Mappings van oude Kipadminobjecten naar ChiroCivi
+            Mapper.CreateMap<Persoon, ChiroContact>()
+                .ForMember(dst => dst.GapId, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.BirthDate, opt => opt.MapFrom(src => src.GeboorteDatum))
                 .ForMember(dst => dst.ContactType, opt => opt.MapFrom(src => ContactType.Individual))
                 .ForMember(dst => dst.DeceasedDate, opt => opt.MapFrom(src => src.SterfDatum))

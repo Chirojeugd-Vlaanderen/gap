@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceHelper", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.SyncServiceHost", "Chiro.CiviSync.ServiceHost\Chiro.CiviSync.SyncServiceHost.csproj", "{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.ChiroCivi.ServiceContracts", "Chiro.ChiroCivi.ServiceContracts\Chiro.ChiroCivi.ServiceContracts.csproj", "{DC3A00B0-8368-4F7F-86B0-2E906E9E27DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,10 @@ Global
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC3A00B0-8368-4F7F-86B0-2E906E9E27DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC3A00B0-8368-4F7F-86B0-2E906E9E27DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC3A00B0-8368-4F7F-86B0-2E906E9E27DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC3A00B0-8368-4F7F-86B0-2E906E9E27DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
