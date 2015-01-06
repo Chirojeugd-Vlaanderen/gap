@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.SyncServiceH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.ChiroCivi.ServiceContracts", "Chiro.ChiroCivi.ServiceContracts\Chiro.ChiroCivi.ServiceContracts.csproj", "{DC3A00B0-8368-4F7F-86B0-2E906E9E27DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Log", "Chiro.Gap.Log\Chiro.Gap.Log.csproj", "{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,10 @@ Global
 		{DC3A00B0-8368-4F7F-86B0-2E906E9E27DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC3A00B0-8368-4F7F-86B0-2E906E9E27DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC3A00B0-8368-4F7F-86B0-2E906E9E27DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

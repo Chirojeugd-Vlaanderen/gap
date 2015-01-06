@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2013, 2014 Chirojeugd-Vlaanderen vzw
+   Copyright 2013-2015 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ using Chiro.Cdf.ServiceHelper;
 using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.Gap.Log;
 
 namespace Chiro.CiviSync.Services
 {
@@ -35,6 +36,7 @@ namespace Chiro.CiviSync.Services
     {
         private readonly string _siteKey = Properties.Settings.Default.SiteKey;
         private readonly string _apiKey = Properties.Settings.Default.ApiKey;
+        private readonly IMiniLog _log;
         private readonly ServiceHelper _serviceHelper;
 
         protected ServiceHelper ServiceHelper
@@ -42,9 +44,15 @@ namespace Chiro.CiviSync.Services
             get { return _serviceHelper; }
         }
 
-        public SyncService(ServiceHelper serviceHelper)
+        /// <summary>
+        /// Creates a new service instance.
+        /// </summary>
+        /// <param name="serviceHelper">Servicehelper that will connect to the CiviCRM API</param>
+        /// <param name="log">Logger</param>
+        public SyncService(ServiceHelper serviceHelper, IMiniLog log)
         {
             _serviceHelper = serviceHelper;
+            _log = log;
         }
 
         /// <summary>
@@ -85,7 +93,13 @@ namespace Chiro.CiviSync.Services
 
             AssertValid(result);
 
-            Console.WriteLine("Contact {0} {1} bewaard (Civi-ID {3}, AD {2}).", persoon.VoorNaam, persoon.Naam, persoon.AdNummer, result.Id);
+            _log.Loggen(
+                Niveau.Info,
+                String.Format("Contact {0} {1} bewaard (gid {3}, AD {2}).", persoon.VoorNaam, persoon.Naam,
+                    persoon.AdNummer, result.Id),
+                null,
+                persoon.AdNummer,
+                persoon.ID);
         }
 
         /// <summary>
@@ -162,6 +176,17 @@ namespace Chiro.CiviSync.Services
 
                     var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressSave(_apiKey, _siteKey, nieuwAdres));
                     AssertValid(result);
+                    _log.Loggen(
+                        Niveau.Info,
+                        String.Format(
+                            "Nieuw adres voor {0} {1} (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
+                            bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, civiContact.Id,
+                            nieuwAdres.StreetAddress, nieuwAdres.PostalCode, nieuwAdres.PostalCodeSuffix, nieuwAdres.City,
+                            nieuwAdres.Country),
+                        null,
+                        bewoner.Persoon.AdNummer,
+                        bewoner.Persoon.ID);
+
 
                     // Verwijder oude voorkeuradres.
 
@@ -172,10 +197,16 @@ namespace Chiro.CiviSync.Services
                     {
                         result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressDelete(_apiKey, _siteKey, new IdRequest(tvAdres.Id.Value)));
                         AssertValid(result);
-                        Console.WriteLine(String.Format(
-                            "Oud voorkeursadres voor {0} {1} verwijderd (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
-                            bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, civiContact.Id,
-                            tvAdres.StreetAddress, tvAdres.PostalCode, tvAdres.PostalCodeSuffix, tvAdres.City, tvAdres.Country));
+                        _log.Loggen(
+                            Niveau.Info,
+                            String.Format(
+                                "Oud voorkeursadres voor {0} {1} verwijderd (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
+                                bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, civiContact.Id,
+                                tvAdres.StreetAddress, tvAdres.PostalCode, tvAdres.PostalCodeSuffix, tvAdres.City,
+                                tvAdres.Country),
+                            null,
+                            bewoner.Persoon.AdNummer,
+                            bewoner.Persoon.ID);
                     }
                 }
             }
@@ -215,6 +246,11 @@ namespace Chiro.CiviSync.Services
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Creeer lidrelatie (geen membership) voor een persoon waarvan we geen AD-nummer kennen.
+        /// </summary>
+        /// <param name="details">Details van de persoon waarvoor een lidrelatie gemaakt moet worden.</param>
+        /// <param name="lidGedoe">Informatie over de lidrelatie.</param>
         public void NieuwLidBewaren(PersoonDetails details, LidGedoe lidGedoe)
         {
             throw new NotImplementedException();
