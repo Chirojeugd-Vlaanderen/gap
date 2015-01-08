@@ -32,7 +32,7 @@ namespace Chiro.CiviSync.Services
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "SyncService" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select SyncService.svc or SyncService.svc.cs at the Solution Explorer and start debugging.
-    public class SyncService : ISyncPersoonService
+    public partial class SyncService : ISyncPersoonService
     {
         private readonly string _siteKey = Properties.Settings.Default.SiteKey;
         private readonly string _apiKey = Properties.Settings.Default.ApiKey;
@@ -242,16 +242,6 @@ namespace Chiro.CiviSync.Services
         }
 
         public void LidBewaren(int adNummer, LidGedoe gedoe)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Creeer lidrelatie (geen membership) voor een persoon waarvan we geen AD-nummer kennen.
-        /// </summary>
-        /// <param name="details">Details van de persoon waarvoor een lidrelatie gemaakt moet worden.</param>
-        /// <param name="lidGedoe">Informatie over de lidrelatie.</param>
-        public void NieuwLidBewaren(PersoonDetails details, LidGedoe lidGedoe)
         {
             throw new NotImplementedException();
         }

@@ -40,5 +40,15 @@ namespace Chiro.CiviSync.Services.Properties {
                 return ((string)(this["ApiKey"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("^0[0-9]{1,2}\\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^04[0-9]{2}\\-[0-9]{2,3} ?[0-9]{2} ?" +
+            "[0-9]{2}$|^[+][0-9]*$")]
+        public string TelefoonRegex {
+            get {
+                return ((string)(this["TelefoonRegex"]));
+            }
+        }
     }
 }

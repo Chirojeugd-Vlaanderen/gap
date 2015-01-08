@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Chiro.CiviSync.Services")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCopyright("Copyright ©  2013-2015 Chirojeugd-Vlaanderen vzw")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
