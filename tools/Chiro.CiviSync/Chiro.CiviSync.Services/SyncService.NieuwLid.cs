@@ -15,17 +15,12 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
-using AutoMapper;
-using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.ChiroCivi.ServiceContracts.DataContracts.Requests;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
-using Chiro.CiviSync.Services.Properties;
+using Chiro.CiviSync.Services.Helpers;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -33,10 +28,6 @@ namespace Chiro.CiviSync.Services
 {
     public partial class SyncService
     {
-        private static readonly Regex GeldigTelefoonNummer = new Regex(Settings.Default.TelefoonRegex);
-        private static readonly Regex Alfanumeriek = new Regex(@"[^\d]");
-        private static readonly Regex Protocol = new Regex(@"^https?://");
-
         /// <summary>
         /// Creeer lidrelatie (geen membership) voor een persoon waarvan we geen AD-nummer kennen.
         /// </summary>
@@ -161,12 +152,12 @@ namespace Chiro.CiviSync.Services
                     contactResult.Values
                     where
                         c.ChainedPhones.Values.Any(nr =>
-                            GeldigNummer(nr.PhoneNumber) &&
-                            StandaardNummer(
+                            CommunicatieHelper.GeldigNummer(nr.PhoneNumber) &&
+                            CommunicatieHelper.StandaardNummer(
                                 details.Communicatie.Where(
                                     cm => cm.Type == CommunicatieType.TelefoonNummer || cm.Type == CommunicatieType.Fax)
                                     .Select(cm => cm.Waarde))
-                                .Contains(StandaardNummer(nr.PhoneNumber)))
+                                .Contains(CommunicatieHelper.StandaardNummer(nr.PhoneNumber)))
                     select c).FirstOrDefault();
             if (gevondenViaTelefoonNr != null)
             {
@@ -192,12 +183,12 @@ namespace Chiro.CiviSync.Services
                 where
                     c.ChainedWebsites.Values.Any(
                         ws =>
-                            StandaardUrl(details.Communicatie.Where(
+                            CommunicatieHelper.StandaardUrl(details.Communicatie.Where(
                                 cm =>
                                     cm.Type == CommunicatieType.WebSite || cm.Type == CommunicatieType.Twitter ||
                                     cm.Type == CommunicatieType.StatusNet)
                                 .Select(cm => cm.Waarde))
-                                .Contains(StandaardUrl(ws.Url)))
+                                .Contains(CommunicatieHelper.StandaardUrl(ws.Url)))
                 select c).FirstOrDefault();
             if (gevondenViaWebsite != null)
             {
@@ -230,89 +221,6 @@ namespace Chiro.CiviSync.Services
 
             // We vermoeden dat de persoon nog niet bestaat.
             return null;
-        }
-
-        /// <summary>
-        /// Bekijkt <paramref name="url"/>. Stript eventueel http(s)://-prefix, en zet zaken die beginnen met @ om naar
-        /// een twitter-url.
-        /// </summary>
-        /// <param name="url">url of twitter handle</param>
-        /// <returns>Url's zonder http(s).</returns>
-        private string StandaardUrl(string url)
-        {
-            return StandaardUrl(new[] {url}).First();
-        }
-
-        /// <summary>
-        /// Bekijkt <paramref name="urls"/>. Stript eventuele http(s)://-prefixes, en zet zaken die beginnen met @ om naar
-        /// een twitter-url.
-        /// </summary>
-        /// <param name="urls">Te behandelen lijst url's en twitter handles</param>
-        /// <returns>Url's zonder http(s).</returns>
-        private List<string> StandaardUrl(IEnumerable<string> urls)
-        {
-            var results = new List<string>();
-
-            foreach (var url in urls)
-            {
-                if (url.StartsWith("@"))
-                {
-                    results.Add("twitter.com/" + url.Substring(1));
-                }
-                else
-                {
-                    results.Add(Protocol.Replace(url, String.Empty));
-                }
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Converteert gegeven <paramref name="telefoonNummer" /> naar internationaal formaat
-        /// beginnend met + en zonder spaties. Bijv +3232310795.
-        /// </summary>
-        /// <param name="telefoonNummer">Om te zetten telefoonnummer</param>
-        /// <returns>`Het omgezette telefoonnummer</returns>
-        private string StandaardNummer(string telefoonNummer)
-        {
-            return StandaardNummer(new [] {telefoonNummer}).First();
-        }
-
-        /// <summary>
-        /// Converteert de gegeven <paramref name="telefoonNummers" /> naar internationaal formaat
-        /// beginnend met + en zonder spaties. Bijv +3232310795.
-        /// </summary>
-        /// <param name="telefoonNummers">Om te zetten telefoonnummers</param>
-        /// <returns>Een lijst omgezette telefoonnummers</returns>
-        private List<string> StandaardNummer(IEnumerable<string> telefoonNummers)
-        {
-            var result = new List<string>();
-
-            foreach (string nr in telefoonNummers)
-            {
-                string omgezet = Alfanumeriek.Replace(nr, String.Empty);
-                if (omgezet.StartsWith("0") && !omgezet.StartsWith("00"))
-                {
-                    omgezet = "32" + omgezet.Substring(1);
-                }
-                else if (omgezet.StartsWith("00"))
-                {
-                    omgezet = omgezet.Substring(2);
-                }
-                result.Add("+" + omgezet);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Controleert of een telefoonnr <paramref name="nr"/> een geldig telefoonnummer is.
-        /// </summary>
-        /// <param name="nr">Te controleren telefoonnummer</param>
-        /// <returns><c>true</c> als <paramref name="nr"/> geldig is, <c>false</c> als <paramref name="nr"/> ongeldig is.</returns>
-        private bool GeldigNummer(string nr)
-        {
-            return GeldigTelefoonNummer.IsMatch(nr);
         }
     }
 }

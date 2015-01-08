@@ -20,7 +20,7 @@ using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
-namespace Chiro.CiviSync.Services
+namespace Chiro.CiviSync.Services.Helpers
 {
     public static class MappingHelper
     {

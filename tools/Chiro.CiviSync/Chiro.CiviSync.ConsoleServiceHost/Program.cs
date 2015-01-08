@@ -18,6 +18,7 @@ using System;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceModel;
 using Chiro.CiviSync.Services;
+using Chiro.CiviSync.Services.Helpers;
 
 namespace Chiro.CiviSync.ConsoleServiceHost
 {
