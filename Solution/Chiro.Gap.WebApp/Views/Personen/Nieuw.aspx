@@ -55,8 +55,8 @@
 
     
     $(function() {
-        $("#EMail_Nummer").rules("add", { regex: "<%=Model.EMailType.Validatie %>" });
-        $("#TelefoonNummer_Nummer").rules("add", { regex: "<%=Model.TelefoonNummerType.Validatie %>" });
+        //$("#EMail_Nummer").rules("add", { regex: "<%=Model.EMailType.Validatie %>" });
+        //$("#TelefoonNummer_Nummer").rules("add", { regex: "<%=Model.TelefoonNummerType.Validatie %>" });
     });
 </script>    
     
