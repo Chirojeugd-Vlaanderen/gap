@@ -19,7 +19,7 @@ using System.Linq;
 using Chiro.ChiroCivi.ServiceContracts.DataContracts.Requests;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
-using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviSync.Services.Helpers;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -106,7 +106,7 @@ namespace Chiro.CiviSync.Services
                     ReturnFields = "external_identifier"
                 };
                 var result =
-                    ServiceHelper.CallService<ICiviCrmApi, ApiResultValue<Contact>>(
+                    ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                         svc => svc.ContactGet(_apiKey, _siteKey, request));
                 if (result.Count >= 1)
                 {
@@ -124,7 +124,7 @@ namespace Chiro.CiviSync.Services
                     ReturnFields = "external_identifier"
                 };
                 var result =
-                    ServiceHelper.CallService<ICiviCrmApi, ApiResultValue<Contact>>(
+                    ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                         svc => svc.ContactGet(_apiKey, _siteKey, request));
                 if (result.Count >= 1)
                 {
@@ -139,11 +139,11 @@ namespace Chiro.CiviSync.Services
                 FirstName = details.Persoon.VoorNaam,
                 LastName = details.Persoon.Naam,
                 Gender = (Gender) (2 - (int) details.Persoon.Geslacht),
-                ChainedEntities = new[] {CiviEntity.Address, CiviEntity.Email, CiviEntity.Phone, CiviEntity.Im}
+                ChainedGet = new[] {CiviEntity.Address, CiviEntity.Email, CiviEntity.Phone, CiviEntity.Im}
             };
 
             var contactResult  =
-                ServiceHelper.CallService<ICiviCrmApi, ApiResultValue<Contact>>(
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                     svc => svc.ContactGet(_apiKey, _siteKey, nameGenderRequest));
 
             // Zoek op telefoonnummer of fax.

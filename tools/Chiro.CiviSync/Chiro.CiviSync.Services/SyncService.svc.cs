@@ -17,16 +17,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
-using Chiro.CiviCrm.Api.DataContracts;
-using Chiro.Kip.ServiceContracts;
-using Chiro.Kip.ServiceContracts.DataContracts;
 using System.ServiceModel;
+using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api;
-using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviSync.Services.Properties;
 using Chiro.Gap.Log;
+using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.CiviSync.Services
 {
@@ -34,8 +35,8 @@ namespace Chiro.CiviSync.Services
     // NOTE: In order to launch WCF Test Client for testing this service, please select SyncService.svc or SyncService.svc.cs at the Solution Explorer and start debugging.
     public partial class SyncService : ISyncPersoonService
     {
-        private readonly string _siteKey = Properties.Settings.Default.SiteKey;
-        private readonly string _apiKey = Properties.Settings.Default.ApiKey;
+        private readonly string _siteKey = Settings.Default.SiteKey;
+        private readonly string _apiKey = Settings.Default.ApiKey;
         private readonly IMiniLog _log;
         private readonly ServiceHelper _serviceHelper;
 
@@ -139,7 +140,7 @@ namespace Chiro.CiviSync.Services
                         {
                             ExternalIdentifier = bewoner.Persoon.AdNummer.ToString(),
                             ReturnFields = "id",
-                            ChainedEntities = new[] { CiviEntity.Address }
+                            ChainedGet = new[] { CiviEntity.Address }
                         }));
 
                     var adressen = civiContact.ChainedAddresses.Values;

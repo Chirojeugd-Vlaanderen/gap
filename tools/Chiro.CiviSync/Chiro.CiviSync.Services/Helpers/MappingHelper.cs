@@ -18,6 +18,7 @@ using System;
 using AutoMapper;
 using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.CiviSync.Services.Helpers
