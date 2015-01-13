@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2013 Chirojeugd-Vlaanderen vzw
+   Copyright 2013, 2015 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using AutoMapper;
 using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -25,6 +28,8 @@ namespace Chiro.CiviSync.Services.Helpers
 {
     public static class MappingHelper
     {
+        public static readonly Regex GsmNummerExpression = new Regex("^(0|\\+32)4[6-9]");
+
         public static void MappingsDefinieren()
         {
             // Mappings van vanilla CiviCRM naar ChiroCivi (met custom fields)
@@ -40,7 +45,7 @@ namespace Chiro.CiviSync.Services.Helpers
                 .ForMember(dst => dst.DeceasedDate, opt => opt.MapFrom(src => src.SterfDatum))
                 .ForMember(dst => dst.ExternalIdentifier, opt => opt.MapFrom(src => src.AdNummer))
                 .ForMember(dst => dst.FirstName, opt => opt.MapFrom(src => src.VoorNaam))
-                .ForMember(dst => dst.Gender, opt => opt.MapFrom(src => (Gender)(3 - (int)src.Geslacht)))
+                .ForMember(dst => dst.Gender, opt => opt.MapFrom(src => (Gender) (3 - (int) src.Geslacht)))
                 .ForMember(dst => dst.IsDeceased, opt => opt.MapFrom(src => src.SterfDatum != null))
                 .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Naam))
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
@@ -91,8 +96,16 @@ namespace Chiro.CiviSync.Services.Helpers
                 .ForMember(dst => dst.StateProvinceName, opt => opt.Ignore())
                 .ForMember(dst => dst.Country, opt => opt.Ignore())
                 .ForMember(dst => dst.ChainedAddresses, opt => opt.Ignore())
+                .ForMember(dst => dst.ChainedPhones, opt => opt.Ignore())
+                .ForMember(dst => dst.ChainedEmails, opt => opt.Ignore())
+                .ForMember(dst => dst.ChainedWebsites, opt => opt.Ignore())
+                .ForMember(dst => dst.ChainedIms, opt => opt.Ignore())
                 .ForMember(dst => dst.ApiOptions, opt => opt.Ignore())
-                .ForMember(dst => dst.PreferredMailFormat, opt => opt.Ignore());
+                .ForMember(dst => dst.PreferredMailFormat, opt => opt.Ignore())
+                .ForMember(dst => dst.ChainedGet, opt => opt.Ignore())
+                .ForMember(dst => dst.ChainedCreate, opt => opt.Ignore())
+                .ForMember(dst => dst.ChainsPlaceholder, opt => opt.Ignore())
+                .ForMember(dst => dst.ReturnFields, opt => opt.Ignore());
 
             Mapper.CreateMap<Adres, Address>()
                 .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))
@@ -104,10 +117,14 @@ namespace Chiro.CiviSync.Services.Helpers
                 .ForMember(dst => dst.IsPrimary, opt => opt.Ignore())
                 .ForMember(dst => dst.PostalCode, opt => opt.MapFrom(src => src.PostNr))
                 .ForMember(dst => dst.PostalCodeSuffix, opt => opt.MapFrom(src => src.PostCode))
-                .ForMember(dst => dst.StateProvinceId, opt => opt.MapFrom(src => MappingHelper.ProvincieIDBepalen(src)))
-                .ForMember(dst => dst.StreetAddress, opt => opt.MapFrom(src => MappingHelper.StraatNrFormatteren(src)))
+                .ForMember(dst => dst.StateProvinceId, opt => opt.MapFrom(src => ProvincieIDBepalen(src)))
+                .ForMember(dst => dst.StreetAddress, opt => opt.MapFrom(src => StraatNrFormatteren(src)))
                 .ForMember(dst => dst.CountryId, opt => opt.Ignore())
-                .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
+                .ForMember(dst => dst.ApiOptions, opt => opt.Ignore())
+                .ForMember(dst => dst.ChainedGet, opt => opt.Ignore())
+                .ForMember(dst => dst.ChainedCreate, opt => opt.Ignore())
+                .ForMember(dst => dst.ChainsPlaceholder, opt => opt.Ignore())
+                .ForMember(dst => dst.ReturnFields, opt => opt.Ignore());
 
             Mapper.AssertConfigurationIsValid();
         }
@@ -145,6 +162,77 @@ namespace Chiro.CiviSync.Services.Helpers
             if (nr < 8000) return 1787;    // Ook 2 ranges voor Henegouwen
             if (nr < 9000) return 1794;    // West-Vlaanderen
             return 1792;                   // Oost-Vlaanderen
+        }
+
+        /// <summary>
+        /// Zet een lijst communicatievormen van GAP om naar een lijst entities voor CiviCRM
+        /// (van de types Email, Phone, Website, Im).
+        /// </summary>
+        /// <param name="communicatie">Lijst communicatievormen</param>
+        /// <param name="contactId">Te gebruiken contact-ID voor civi-entities. Mag <c>null</c> zijn.</param>
+        /// <returns>Lijst IEntities met e-mailadressen, telefoonnummers, websites, im.</returns>
+        public static IEntity[] CiviCommunicatie(IList<CommunicatieMiddel> communicatie, int? contactId)
+        {
+            var telefoonNummers = from c in communicatie
+                where c.Type == CommunicatieType.TelefoonNummer || c.Type == CommunicatieType.Fax
+                select new Phone
+                {
+                    ContactId = contactId,
+                    PhoneNumber = c.Waarde,
+                    PhoneType =
+                        c.Type == CommunicatieType.Fax
+                            ? PhoneType.Fax
+                            : GsmNummerExpression.IsMatch(c.Waarde) ? PhoneType.Mobile : PhoneType.Phone
+                };
+            var eMailAdressen = from c in communicatie
+                where c.Type == CommunicatieType.Email
+                select new Email
+                {
+                    ContactId = contactId,
+                    EmailAddress = c.Waarde,
+                    IsBulkMail = !c.GeenMailings
+                };
+            // wat betreft websites ondersteunt GAP enkel twitter en 'iets anders'
+            var websites = from c in communicatie
+                where
+                    c.Type == CommunicatieType.WebSite || c.Type == CommunicatieType.Twitter ||
+                    c.Type == CommunicatieType.StatusNet
+                select new Website
+                {
+                    ContactId = contactId,
+                    Url = c.Type == CommunicatieType.Twitter ? c.Waarde.Replace("@", "https://twitter.com/") : c.Waarde,
+                    WebsiteType = c.Type == CommunicatieType.Twitter ? WebsiteType.Twitter : WebsiteType.Main
+                };
+            // wat betreft IM kent GAP enkel MSN en XMPP.
+            var im = from c in communicatie
+                where c.Type == CommunicatieType.Msn || c.Type == CommunicatieType.Xmpp
+                select new Im
+                {
+                    ContactId = contactId,
+                    Name = c.Waarde,
+                    Provider = c.Type == CommunicatieType.Msn ? Provider.Msn : Provider.Jabber
+                };
+            return telefoonNummers.Union<IEntity>(eMailAdressen).Union(websites).Union(im).ToArray();
+        }
+
+        /// <summary>
+        /// Zet een GAP-<paramref name="adrestype"/> om naar een CiviCRM location type.
+        /// </summary>
+        /// <param name="adrestype">Adrestype van GAP.</param>
+        /// <returns>CiviCRM location type.</returns>
+        public static int CiviLocationTypeId(AdresTypeEnum adrestype)
+        {
+            switch (adrestype)
+            {
+                case AdresTypeEnum.Thuis:
+                    return 1;
+                case AdresTypeEnum.Werk:
+                    return 2;
+                case AdresTypeEnum.Kot:
+                    return 3;
+                default:
+                    return 4;
+            }
         }
     }
 }

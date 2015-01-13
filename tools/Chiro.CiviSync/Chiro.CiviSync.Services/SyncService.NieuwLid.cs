@@ -15,7 +15,10 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.ChiroCivi.ServiceContracts.DataContracts.Requests;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -72,12 +75,35 @@ namespace Chiro.CiviSync.Services
 
             if (adNummer != null)
             {
+                _log.Loggen(Niveau.Debug,
+                    String.Format("Persoonsgegevens {0} {1} (gid {2}) matchten met bestaande persoon (ad {3})",
+                        details.Persoon.VoorNaam, details.Persoon.Naam, details.Persoon.ID, adNummer), null, adNummer,
+                    details.Persoon.ID);
                 return adNummer.Value;
             }
 
-            throw new NotImplementedException();
+            var contact = Mapper.Map<Persoon, ChiroContact>(details.Persoon);
+            var chainedEntities = new List<IEntity>();
 
-            // TODO: aanmaken van nieuw contact, en AD-nummer opleveren.
+            var address = Mapper.Map<Adres, Address>(details.Adres);
+            address.LocationTypeId = MappingHelper.CiviLocationTypeId(details.AdresType);
+
+            chainedEntities.Add(address);
+            chainedEntities.AddRange(MappingHelper.CiviCommunicatie(details.Communicatie.ToList(), null));
+            contact.ChainedCreate = chainedEntities;
+
+            var result =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
+                    svc => svc.ContactSave(_apiKey, _siteKey, contact));
+
+            adNummer = int.Parse(result.Values.First().ExternalIdentifier);
+
+            _log.Loggen(Niveau.Debug,
+                String.Format("Nieuwe persoon gemaakt: {0} {1} (gid {2} ad {3})",
+                    details.Persoon.VoorNaam, details.Persoon.Naam, details.Persoon.ID, adNummer), null, adNummer,
+                details.Persoon.ID);
+
+            return adNummer.Value;
         }
 
         /// <summary>

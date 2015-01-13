@@ -66,6 +66,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SyncService.Lid.cs" />
     <Compile Include="SyncService.NieuwLid.cs" />
     <Compile Include="SyncService.svc.cs">
       <DependentUpon>SyncService.svc</DependentUpon>
