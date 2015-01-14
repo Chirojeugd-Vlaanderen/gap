@@ -91,7 +91,7 @@ namespace Chiro.Gap.Services.Test
             // Als ik onderstaande niet een keertje instantieer, dan werken mijn tests niet.
             // Geen idee hoe dat komt.
 
-            Chiro.Gap.Services.Dev.DevChannelProvider bla;
+            Dev.DevChannelProvider bla;
         }
 
         /// <summary>
