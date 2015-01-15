@@ -25,7 +25,7 @@ namespace Chiro.CiviSync.Services.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("db6e195598dd726898355844744b7537")]
+        [global::System.Configuration.DefaultSettingValueAttribute("462e033f1b3495d094f401d89772ba5b")]
         public string SiteKey {
             get {
                 return ((string)(this["SiteKey"]));
@@ -34,7 +34,7 @@ namespace Chiro.CiviSync.Services.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("mijnapikey")]
+        [global::System.Configuration.DefaultSettingValueAttribute("blablablapi")]
         public string ApiKey {
             get {
                 return ((string)(this["ApiKey"]));

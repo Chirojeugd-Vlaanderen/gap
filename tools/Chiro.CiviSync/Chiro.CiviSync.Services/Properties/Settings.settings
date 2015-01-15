@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="SiteKey" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">db6e195598dd726898355844744b7537</Value>
+      <Value Profile="(Default)">462e033f1b3495d094f401d89772ba5b</Value>
     </Setting>
     <Setting Name="ApiKey" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">mijnapikey</Value>
+      <Value Profile="(Default)">blablablapi</Value>
     </Setting>
     <Setting Name="TelefoonRegex" Type="System.String" Scope="Application">
       <Value Profile="(Default)">^0[0-9]{1,2}\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^[+][0-9]*$</Value>
