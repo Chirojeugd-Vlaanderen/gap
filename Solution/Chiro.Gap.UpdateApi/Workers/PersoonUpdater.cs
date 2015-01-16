@@ -389,6 +389,16 @@ namespace Chiro.Gap.UpdateApi.Workers
                 }
             }
 
+            foreach (var b in dubbel.BerichtGebruiker)
+            {
+                b.Gebruiker = null;
+            }
+
+            foreach (var b in dubbel.BerichtPersoon)
+            {
+                b.Persoon = null;
+            }
+
             _personenRepo.Delete(dubbel);
         }
 

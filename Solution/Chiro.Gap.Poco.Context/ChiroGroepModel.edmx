@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ChiroGroepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ChiroGroepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Abonnement">
           <Key>
             <PropertyRef Name="AbonnementID" />
@@ -297,6 +297,19 @@
           <Property Name="LeefTijdTot" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="Bericht">
+          <Key>
+            <PropertyRef Name="BerichtID" />
+          </Key>
+          <Property Name="BerichtID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tijd" Type="datetime" Nullable="false" />
+          <Property Name="Niveau" Type="int" Nullable="false" />
+          <Property Name="Boodschap" Type="varchar(max)" />
+          <Property Name="StamNummer" Type="char" MaxLength="10" />
+          <Property Name="AdNummer" Type="int" />
+          <Property Name="PersoonID" Type="int" />
+          <Property Name="GebruikerID" Type="int" />
+        </EntityType>
         <EntityType Name="CommunicatieType">
           <Key>
             <PropertyRef Name="CommunicatieTypeID" />
@@ -507,6 +520,30 @@
             </Principal>
             <Dependent Role="BelgischAdres">
               <PropertyRef Name="WoonPlaatsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bericht_Gebruiker">
+          <End Role="Persoon" Type="Self.Persoon" Multiplicity="0..1" />
+          <End Role="Bericht" Type="Self.Bericht" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persoon">
+              <PropertyRef Name="PersoonID" />
+            </Principal>
+            <Dependent Role="Bericht">
+              <PropertyRef Name="GebruikerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bericht_Persoon_Id">
+          <End Role="Persoon" Type="Self.Persoon" Multiplicity="0..1" />
+          <End Role="Bericht" Type="Self.Bericht" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persoon">
+              <PropertyRef Name="PersoonID" />
+            </Principal>
+            <Dependent Role="Bericht">
+              <PropertyRef Name="PersoonID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1018,42 +1055,43 @@
           <Parameter Name="tekst" Type="varchar(max)" Mode="In" />
         </Function>
         <EntityContainer Name="ChiroGroepModelStoreContainer">
-          <EntitySet Name="Abonnement" EntityType="Self.Abonnement" Schema="abo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Publicatie" EntityType="Self.Publicatie" Schema="abo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Adres" EntityType="Self.Adres" Schema="adr" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="BelgischAdres" EntityType="Self.BelgischAdres" Schema="adr" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="BuitenLandsAdres" EntityType="Self.BuitenLandsAdres" Schema="adr" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Land" EntityType="Self.Land" Schema="adr" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="StraatNaam" EntityType="Self.StraatNaam" Schema="adr" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="WoonPlaats" EntityType="Self.WoonPlaats" Schema="adr" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Gav" EntityType="Self.Gav" Schema="auth" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="GavSchap" EntityType="Self.GavSchap" Schema="auth" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="GebruikersRecht" EntityType="Self.GebruikersRecht" Schema="auth" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Deelnemer" EntityType="Self.Deelnemer" Schema="biv" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Plaats" EntityType="Self.Plaats" Schema="biv" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Uitstap" EntityType="Self.Uitstap" Schema="biv" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Categorie" EntityType="Self.Categorie" Schema="core" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="ChiroGroep" EntityType="Self.ChiroGroep" Schema="grp" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Groep" EntityType="Self.Groep" Schema="grp" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="GroepsWerkJaar" EntityType="Self.GroepsWerkJaar" Schema="grp" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="KaderGroep" EntityType="Self.KaderGroep" Schema="grp" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Afdeling" EntityType="Self.Afdeling" Schema="lid" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="AfdelingsJaar" EntityType="Self.AfdelingsJaar" Schema="lid" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Functie" EntityType="Self.Functie" Schema="lid" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Kind" EntityType="Self.Kind" Schema="lid" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Leiding" EntityType="Self.Leiding" Schema="lid" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="LeidingInAfdelingsJaar" EntityType="Self.LeidingInAfdelingsJaar" Schema="lid" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Lid" EntityType="Self.Lid" Schema="lid" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="LidFunctie" EntityType="Self.LidFunctie" Schema="lid" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="OfficieleAfdeling" EntityType="Self.OfficieleAfdeling" Schema="lid" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="CommunicatieType" EntityType="Self.CommunicatieType" Schema="pers" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="CommunicatieVorm" EntityType="Self.CommunicatieVorm" Schema="pers" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="GelieerdePersoon" EntityType="Self.GelieerdePersoon" Schema="pers" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Persoon" EntityType="Self.Persoon" Schema="pers" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="PersoonsAdres" EntityType="Self.PersoonsAdres" Schema="pers" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="PersoonsCategorie" EntityType="Self.PersoonsCategorie" Schema="pers" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="PersoonsVerzekering" EntityType="Self.PersoonsVerzekering" Schema="verz" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="VerzekeringsType" EntityType="Self.VerzekeringsType" Schema="verz" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Abonnement" EntityType="Self.Abonnement" Schema="abo" store:Type="Tables" />
+          <EntitySet Name="Publicatie" EntityType="Self.Publicatie" Schema="abo" store:Type="Tables" />
+          <EntitySet Name="Adres" EntityType="Self.Adres" Schema="adr" store:Type="Tables" />
+          <EntitySet Name="BelgischAdres" EntityType="Self.BelgischAdres" Schema="adr" store:Type="Tables" />
+          <EntitySet Name="BuitenLandsAdres" EntityType="Self.BuitenLandsAdres" Schema="adr" store:Type="Tables" />
+          <EntitySet Name="Land" EntityType="Self.Land" Schema="adr" store:Type="Tables" />
+          <EntitySet Name="StraatNaam" EntityType="Self.StraatNaam" Schema="adr" store:Type="Tables" />
+          <EntitySet Name="WoonPlaats" EntityType="Self.WoonPlaats" Schema="adr" store:Type="Tables" />
+          <EntitySet Name="Gav" EntityType="Self.Gav" Schema="auth" store:Type="Tables" />
+          <EntitySet Name="GavSchap" EntityType="Self.GavSchap" Schema="auth" store:Type="Tables" />
+          <EntitySet Name="GebruikersRecht" EntityType="Self.GebruikersRecht" Schema="auth" store:Type="Tables" />
+          <EntitySet Name="Deelnemer" EntityType="Self.Deelnemer" Schema="biv" store:Type="Tables" />
+          <EntitySet Name="Plaats" EntityType="Self.Plaats" Schema="biv" store:Type="Tables" />
+          <EntitySet Name="Uitstap" EntityType="Self.Uitstap" Schema="biv" store:Type="Tables" />
+          <EntitySet Name="Categorie" EntityType="Self.Categorie" Schema="core" store:Type="Tables" />
+          <EntitySet Name="ChiroGroep" EntityType="Self.ChiroGroep" Schema="grp" store:Type="Tables" />
+          <EntitySet Name="Groep" EntityType="Self.Groep" Schema="grp" store:Type="Tables" />
+          <EntitySet Name="GroepsWerkJaar" EntityType="Self.GroepsWerkJaar" Schema="grp" store:Type="Tables" />
+          <EntitySet Name="KaderGroep" EntityType="Self.KaderGroep" Schema="grp" store:Type="Tables" />
+          <EntitySet Name="Afdeling" EntityType="Self.Afdeling" Schema="lid" store:Type="Tables" />
+          <EntitySet Name="AfdelingsJaar" EntityType="Self.AfdelingsJaar" Schema="lid" store:Type="Tables" />
+          <EntitySet Name="Functie" EntityType="Self.Functie" Schema="lid" store:Type="Tables" />
+          <EntitySet Name="Kind" EntityType="Self.Kind" Schema="lid" store:Type="Tables" />
+          <EntitySet Name="Leiding" EntityType="Self.Leiding" Schema="lid" store:Type="Tables" />
+          <EntitySet Name="LeidingInAfdelingsJaar" EntityType="Self.LeidingInAfdelingsJaar" Schema="lid" store:Type="Tables" />
+          <EntitySet Name="Lid" EntityType="Self.Lid" Schema="lid" store:Type="Tables" />
+          <EntitySet Name="LidFunctie" EntityType="Self.LidFunctie" Schema="lid" store:Type="Tables" />
+          <EntitySet Name="OfficieleAfdeling" EntityType="Self.OfficieleAfdeling" Schema="lid" store:Type="Tables" />
+          <EntitySet Name="Bericht" EntityType="Self.Bericht" Schema="logging" store:Type="Tables" />
+          <EntitySet Name="CommunicatieType" EntityType="Self.CommunicatieType" Schema="pers" store:Type="Tables" />
+          <EntitySet Name="CommunicatieVorm" EntityType="Self.CommunicatieVorm" Schema="pers" store:Type="Tables" />
+          <EntitySet Name="GelieerdePersoon" EntityType="Self.GelieerdePersoon" Schema="pers" store:Type="Tables" />
+          <EntitySet Name="Persoon" EntityType="Self.Persoon" Schema="pers" store:Type="Tables" />
+          <EntitySet Name="PersoonsAdres" EntityType="Self.PersoonsAdres" Schema="pers" store:Type="Tables" />
+          <EntitySet Name="PersoonsCategorie" EntityType="Self.PersoonsCategorie" Schema="pers" store:Type="Tables" />
+          <EntitySet Name="PersoonsVerzekering" EntityType="Self.PersoonsVerzekering" Schema="verz" store:Type="Tables" />
+          <EntitySet Name="VerzekeringsType" EntityType="Self.VerzekeringsType" Schema="verz" store:Type="Tables" />
           <AssociationSet Name="FK_Abonnement_GelieerdePersoon" Association="Self.FK_Abonnement_GelieerdePersoon">
             <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
             <End Role="Abonnement" EntitySet="Abonnement" />
@@ -1093,6 +1131,14 @@
           <AssociationSet Name="FK_BelgischAdres_WoonPlaats" Association="Self.FK_BelgischAdres_WoonPlaats">
             <End Role="WoonPlaats" EntitySet="WoonPlaats" />
             <End Role="BelgischAdres" EntitySet="BelgischAdres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bericht_Gebruiker" Association="Self.FK_Bericht_Gebruiker">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="Bericht" EntitySet="Bericht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bericht_Persoon_Id" Association="Self.FK_Bericht_Persoon_Id">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="Bericht" EntitySet="Bericht" />
           </AssociationSet>
           <AssociationSet Name="FK_BuitenlandsAdres_Adres" Association="Self.FK_BuitenlandsAdres_Adres">
             <End Role="Adres" EntitySet="Adres" />
@@ -1462,6 +1508,15 @@
             <End Role="Adres" EntitySet="Adres" />
             <End Role="Groep" EntitySet="Groep" />
           </AssociationSet>
+          <EntitySet Name="Bericht" EntityType="ChiroGroepModel.Bericht" />
+          <AssociationSet Name="FK_Bericht_Gebruiker" Association="ChiroGroepModel.FK_Bericht_Gebruiker">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="Bericht" EntitySet="Bericht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bericht_Persoon_Id" Association="ChiroGroepModel.FK_Bericht_Persoon_Id">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="Bericht" EntitySet="Bericht" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
           <Property Name="Plaats" Type="String" MaxLength="60" FixedLength="false" Nullable="true" Unicode="false" />
@@ -1507,6 +1562,8 @@
           <NavigationProperty Name="Gav" Relationship="ChiroGroepModel.GavSchap" FromRole="Persoon" ToRole="Gav" />
           <Property Type="String" Name="SeNaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="SeVoornaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <NavigationProperty Name="BerichtGebruiker" Relationship="ChiroGroepModel.FK_Bericht_Gebruiker" FromRole="Persoon" ToRole="Bericht" />
+          <NavigationProperty Name="BerichtPersoon" Relationship="ChiroGroepModel.FK_Bericht_Persoon_Id" FromRole="Persoon" ToRole="Bericht" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -2006,6 +2063,27 @@
         <Association Name="FK_Groep_Adres">
           <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="0..1" />
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Bericht">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tijd" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Niveau" Type="Int32" Nullable="false" />
+          <Property Name="Boodschap" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StamNummer" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="AdNummer" Type="Int32" />
+          <NavigationProperty Name="Gebruiker" Relationship="ChiroGroepModel.FK_Bericht_Gebruiker" FromRole="Bericht" ToRole="Persoon" />
+          <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_Bericht_Persoon_Id" FromRole="Bericht" ToRole="Persoon" />
+        </EntityType>
+        <Association Name="FK_Bericht_Gebruiker">
+          <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="0..1" />
+          <End Type="ChiroGroepModel.Bericht" Role="Bericht" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Bericht_Persoon_Id">
+          <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="0..1" />
+          <End Type="ChiroGroepModel.Bericht" Role="Bericht" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -2690,6 +2768,36 @@
             </EndProperty>
             <Condition ColumnName="AdresID" IsNull="false" />
           </AssociationSetMapping>
+          <EntitySetMapping Name="Bericht">
+            <EntityTypeMapping TypeName="ChiroGroepModel.Bericht">
+              <MappingFragment StoreEntitySet="Bericht">
+                <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+                <ScalarProperty Name="StamNummer" ColumnName="StamNummer" />
+                <ScalarProperty Name="Boodschap" ColumnName="Boodschap" />
+                <ScalarProperty Name="Niveau" ColumnName="Niveau" />
+                <ScalarProperty Name="Tijd" ColumnName="Tijd" />
+                <ScalarProperty Name="ID" ColumnName="BerichtID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_Bericht_Gebruiker" TypeName="ChiroGroepModel.FK_Bericht_Gebruiker" StoreEntitySet="Bericht">
+            <EndProperty Name="Bericht">
+              <ScalarProperty Name="ID" ColumnName="BerichtID" />
+            </EndProperty>
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="ID" ColumnName="GebruikerID" />
+            </EndProperty>
+            <Condition ColumnName="GebruikerID" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Bericht_Persoon_Id" TypeName="ChiroGroepModel.FK_Bericht_Persoon_Id" StoreEntitySet="Bericht">
+            <EndProperty Name="Bericht">
+              <ScalarProperty Name="ID" ColumnName="BerichtID" />
+            </EndProperty>
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="ID" ColumnName="PersoonID" />
+            </EndProperty>
+            <Condition ColumnName="PersoonID" IsNull="false" />
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -3225,6 +3333,9 @@
           <edmx:ConnectorPoint PointX="10.5" PointY="6.8651432291666694" />
         </edmx:AssociationConnector>
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Groep_Adres" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Bericht" Width="1.5" PointX="11.25" PointY="8.75" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Gebruiker" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Persoon_Id" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

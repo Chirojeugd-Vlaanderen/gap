@@ -88,10 +88,12 @@ namespace Chiro.Gap.Services.Test
 
             Factory.ContainerInit();
 
+#pragma warning disable 168
             // Als ik onderstaande niet een keertje instantieer, dan werken mijn tests niet.
             // Geen idee hoe dat komt.
 
             Dev.DevChannelProvider bla;
+#pragma warning restore 168
         }
 
         /// <summary>
