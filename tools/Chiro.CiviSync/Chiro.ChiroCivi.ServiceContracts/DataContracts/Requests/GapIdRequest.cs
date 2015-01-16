@@ -17,6 +17,7 @@
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.BehaviorExtension;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Chiro.ChiroCivi.ServiceContracts.DataContracts.Requests
 {
@@ -25,6 +26,16 @@ namespace Chiro.ChiroCivi.ServiceContracts.DataContracts.Requests
     {
         [JsonProperty("custom_10")]
         public int GapId { get; set; }
+
+        [JsonProperty("external_identifier", NullValueHandling = NullValueHandling.Ignore)]
+        public string ExternalIdentifier { get; set; }
+
+        [JsonConverter(typeof (StringEnumConverter))]
+        [JsonProperty("contact_type", NullValueHandling = NullValueHandling.Ignore)]
+        public ContactType ContactType
+        {
+            get { return ContactType.Individual; }
+        }
 
         public GapIdRequest() : base()
         {

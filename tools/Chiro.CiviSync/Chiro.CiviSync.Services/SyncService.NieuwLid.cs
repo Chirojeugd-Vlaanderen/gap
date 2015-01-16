@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.ChiroCivi.ServiceContracts.DataContracts.Requests;
 using Chiro.CiviCrm.Api;
@@ -79,6 +80,17 @@ namespace Chiro.CiviSync.Services
                     String.Format("Persoonsgegevens {0} {1} (gid {2}) matchten met bestaande persoon (ad {3})",
                         details.Persoon.VoorNaam, details.Persoon.Naam, details.Persoon.ID, adNummer), null, adNummer,
                     details.Persoon.ID);
+
+                var request = new GapIdRequest
+                {
+                    ExternalIdentifier = adNummer.ToString(),
+                    GapId = details.Persoon.ID,
+                    ApiOptions = new ApiOptions {Match = "external_identifier"}
+                };
+
+                ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                    svc => svc.GenericCall(_apiKey, _siteKey, CiviEntity.Contact, ApiAction.Create, request));
+
                 return adNummer.Value;
             }
 
