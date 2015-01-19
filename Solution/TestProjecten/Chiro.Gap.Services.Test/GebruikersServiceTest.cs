@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Chiro.Ad.ServiceContracts;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.WorkerInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Chiro.Ad.ServiceContracts;
 
 namespace Chiro.Gap.Services.Test
 {

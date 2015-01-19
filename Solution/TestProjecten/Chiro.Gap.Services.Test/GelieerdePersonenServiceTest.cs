@@ -20,13 +20,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
-using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Moq;
-
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
@@ -35,10 +30,10 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.SyncInterfaces;
-using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Services;
 using Chiro.Gap.TestAttributes;
-using Chiro.Ad.ServiceContracts;
+using Chiro.Gap.WorkerInterfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -87,6 +82,9 @@ namespace Chiro.Gap.Services.Test
             // de configuratiefile.)
 
             Factory.ContainerInit();
+
+            // Vreemd. Als ik deze niet instantieer, dan vindt Unity deze klasse niet.
+            Chiro.Gap.Services.Dev.DevChannelProvider dummy;
         }
 
         /// <summary>
@@ -233,7 +231,7 @@ namespace Chiro.Gap.Services.Test
             const int TESTCVID = 2345;      // en van een communicatievorm
             const int TESTCTID = 3;         // en diens communicatietype
 
-            var testCommunicatieType = new Poco.Model.CommunicatieType { ID = TESTCTID, Validatie = ".*" };
+            var testCommunicatieType = new CommunicatieType { ID = TESTCTID, Validatie = ".*" };
             var testCommunicatieVorm = new CommunicatieVorm
                                            {
                                                ID = TESTCVID,
@@ -246,7 +244,7 @@ namespace Chiro.Gap.Services.Test
             var testGelieerdePersoon = new GelieerdePersoon
                                            {
                                                ID = TESTGPID,
-                                               Persoon = new Poco.Model.Persoon(),
+                                               Persoon = new Persoon(),
                                                Communicatie =
                                                    new EntityCollection<CommunicatieVorm>
                                                        {

@@ -586,11 +586,11 @@ namespace Chiro.Gap.Services
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)))
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.GebruikersRechtV2.Any(gr => gr.IsVerlengbaar)))
                 .ForMember(dst => dst.Permissies, opt => opt.MapFrom(src => Permissies.Geen))
-                .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => null))
+                .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => (DateTime?)null))
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.VoorNaam))
                 .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.ID))
-                .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => null));
+                .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => (int?)null));
 
             Mapper.CreateMap<Persoon, GebruikersInfo>()
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)))

@@ -21,10 +21,10 @@ using System;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
-using Chiro.Gap.Poco.Model;
-using Chiro.Gap.WorkerInterfaces;
 using Chiro.Ad.ServiceContracts;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Poco.Model;
+using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Workers
 {
@@ -39,15 +39,23 @@ namespace Chiro.Gap.Workers
         private const string UserNameCacheKey = "{0}_user";
 
         private readonly Cache _cache = HttpRuntime.Cache;
+        private readonly ServiceHelper _serviceHelper;
         private readonly IAdService _adService;
+
+        protected ServiceHelper ServiceHelper
+        {
+            get { return _serviceHelper; }
+        }
 
         /// <summary>
         /// Constructor voor dependency injection.
         /// </summary>
         /// <param name="adService">Service voor toegang tot Active Directory.</param>
-        public VeelGebruikt(IAdService adService)
+        /// <param name="serviceHelper">Interface om webservices aan te roepen</param>
+        public VeelGebruikt(IAdService adService, ServiceHelper serviceHelper)
         {
             _adService = adService;
+            _serviceHelper = serviceHelper;
         }
 
         /// <summary>
