@@ -40,7 +40,6 @@ namespace Chiro.Gap.Workers
 
         private readonly Cache _cache = HttpRuntime.Cache;
         private readonly ServiceHelper _serviceHelper;
-        private readonly IAdService _adService;
 
         protected ServiceHelper ServiceHelper
         {
@@ -50,11 +49,9 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Constructor voor dependency injection.
         /// </summary>
-        /// <param name="adService">Service voor toegang tot Active Directory.</param>
         /// <param name="serviceHelper">Interface om webservices aan te roepen</param>
-        public VeelGebruikt(IAdService adService, ServiceHelper serviceHelper)
+        public VeelGebruikt(ServiceHelper serviceHelper)
         {
-            _adService = adService;
             _serviceHelper = serviceHelper;
         }
 
