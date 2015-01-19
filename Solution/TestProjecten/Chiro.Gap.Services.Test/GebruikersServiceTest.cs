@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Chiro.Ad.ServiceContracts;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.Poco;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
@@ -121,7 +122,11 @@ namespace Chiro.Gap.Services.Test
             // Mock AD-service
             var adServiceMock = new Mock<IAdService>();
             adServiceMock.Setup(src => src.GapLoginAanvragen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
-            Factory.InstantieRegistreren(adServiceMock.Object);
+
+            var channelProviderMock = new Mock<IChannelProvider>();
+            channelProviderMock.Setup(src => src.GetChannel<IAdService>()).Returns(adServiceMock.Object);
+
+            Factory.InstantieRegistreren(channelProviderMock.Object);
 
             // ACT
 
