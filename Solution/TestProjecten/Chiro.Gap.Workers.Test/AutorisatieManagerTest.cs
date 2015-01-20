@@ -475,6 +475,104 @@ namespace Chiro.Gap.Workers.Test
         }
 
         /// <summary>
+        /// Ook als je niet gelieerd bent aan dezelfde groep als een andere gelieerde persoon, kun je permissies hebben
+        /// op die gelieerde persoon.
+        /// </summary>
+        [TestMethod()]
+        public void RechtenOpGelieerdePersoonAndereGroepTest()
+        {
+            // ARRANGE
+
+            var ik = new Persoon { AdNummer = 1234 };
+            var gp = new GelieerdePersoon { Persoon = new Persoon() };
+
+            var groep = new ChiroGroep
+            {
+                GebruikersRechtV2 = new[]
+                {
+                    new GebruikersRechtV2
+                    {
+                        Persoon = ik,
+                        VervalDatum = DateTime.Today.AddDays(1),
+                        IedereenPermissies = Permissies.Lezen
+                    }
+                },
+                GelieerdePersoon = new[]
+                {
+                    gp
+                }
+            };
+
+            gp.Groep = groep;
+
+            // Zet mock op voor het opleveren van gebruikersnaam
+            var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
+            authenticatieManagerMock.Setup(src => src.AdNummerGet()).Returns(ik.AdNummer);
+            Factory.InstantieRegistreren(authenticatieManagerMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<AutorisatieManager>();
+            var actual = target.PermissiesOphalen(gp);
+
+            // ASSERT
+
+            Assert.IsTrue(actual.HasFlag(Permissies.Lezen));
+        }
+
+        /// <summary>
+        /// Ook als je niet gelieerd bent aan dezelfde groep als een lid, kun je permissies hebben
+        /// op dat lid
+        /// </summary>
+        [TestMethod()]
+        public void RechtenOpLidAndereGroepTest()
+        {
+            // ARRANGE
+
+            var ik = new Persoon { AdNummer = 1234 };
+            var gp = new GelieerdePersoon { Persoon = new Persoon() };
+
+            var groep = new ChiroGroep
+            {
+                GebruikersRechtV2 = new[]
+                {
+                    new GebruikersRechtV2
+                    {
+                        Persoon = ik,
+                        VervalDatum = DateTime.Today.AddDays(1),
+                        IedereenPermissies = Permissies.Lezen
+                    }
+                },
+                GelieerdePersoon = new[]
+                {
+                    gp
+                }
+            };
+
+            gp.Groep = groep;
+
+            var leiding = new Leiding
+            {
+                GelieerdePersoon = gp,
+                GroepsWerkJaar = new GroepsWerkJaar {Groep = groep}
+            };
+
+            // Zet mock op voor het opleveren van gebruikersnaam
+            var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
+            authenticatieManagerMock.Setup(src => src.AdNummerGet()).Returns(ik.AdNummer);
+            Factory.InstantieRegistreren(authenticatieManagerMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<AutorisatieManager>();
+            var actual = target.PermissiesOphalen(leiding);
+
+            // ASSERT
+
+            Assert.IsTrue(actual.HasFlag(Permissies.Lezen));
+        }
+
+        /// <summary>
         /// Zelfs om te testen zijn we geen super-GAV
         /// </summary>
         [TestMethod()]
