@@ -248,8 +248,8 @@
         <% if (Model.PersoonLidGebruikersInfo.PersoonDetail.AdNummer != null)
            { %>
            <tr>
-                <td ><%= Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><%= Html.InfoLink("AD-Info") %></td>
-                <td id="adNrInfo"><%= Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %></td>
+                <td ><%= Html.LabelFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.AdNummer) %><%= Html.InfoLink("AD-Info") %></td>
+                <td id="adNrInfo"><%= Html.DisplayFor(s => s.PersoonLidGebruikersInfo.PersoonDetail.AdNummer) %></td>
                 <td id="ad"></td>
            </tr>
         <% } %>
@@ -442,7 +442,7 @@
         <hr/>
         <h3>GAP-account</h3>
             <%
-                if (String.IsNullOrEmpty(Model.PersoonLidGebruikersInfo.GebruikersInfo.Login))
+                if (Model.PersoonLidGebruikersInfo.GebruikersInfo == null)
                 {
                     // Geen account
                     %>
@@ -450,16 +450,18 @@
                     <p><%: Html.ActionLink("Chirologin maken", "LoginMaken", new {Controller = "GebruikersRecht", id = Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID}) %></p>
                     <%
                 }
-                else if (Model.PersoonLidGebruikersInfo.GebruikersInfo.VervalDatum < DateTime.Now || Model.PersoonLidGebruikersInfo.GebruikersInfo.Permissies == Permissies.Geen)
+                else if (Model.PersoonLidGebruikersInfo.GebruikersInfo.VervalDatum < DateTime.Now 
+                || Model.PersoonLidGebruikersInfo.GebruikersInfo.GebruikersRecht.GroepsPermissies == Permissies.Geen 
+                || Model.PersoonLidGebruikersInfo.GebruikersInfo.GebruikersRecht.IedereenPermissies == Permissies.Geen)
                 {
-                    // Account zonder gebruikersrecht
+                    // Account zonder (gav-)gebruikersrecht
                     %>
                     <p><b>Chirologin: </b><%: Model.PersoonLidGebruikersInfo.GebruikersInfo.Login %></p>
                     <p>
                         Geen toegang tot de gegevens van jouw groep. <br />
-                    <%: Html.ActionLink("Gebruikersrecht toekennen", "AanGpToekennen", new { Controller = "GebruikersRecht", id = Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID })%>
+                    <%: Html.ActionLink("Gebruikersrecht toekennen", "AanGpToekennen", new {Controller = "GebruikersRecht", id = Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID}) %>
                     </p>
-                    <%                
+                    <%
                 }
                 else
                 {
@@ -468,22 +470,22 @@
                     %>
                     <ul>
                     <li>Chirologin: <%: Model.PersoonLidGebruikersInfo.GebruikersInfo.Login %></li>
-                    <li>Vervaldatum gebruikersrecht: <%: Html.DisplayFor(src => src.PersoonLidGebruikersInfo.GebruikersInfo.VervalDatum)%></li>
-                    <% 
+                    <li>Vervaldatum gebruikersrecht: <%: Html.DisplayFor(src => src.PersoonLidGebruikersInfo.GebruikersInfo.VervalDatum) %></li>
+                    <%
                         if (Model.PersoonLidGebruikersInfo.GebruikersInfo.IsVerlengbaar)
                         {
                             // gebruikersrecht toekennen/verlengen is onderliggend dezelfde controller action
-                        %>
-                        <!--<button id="Button1">Gebruikersrecht toekennen</button>-->
-                        <li><%: Html.ActionLink("Gebruikersrecht verlengen", "AanGpToekennen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID }) %></li>
-                        <%                
-                        }
                     %>
-                    <li><%: Html.ActionLink("Gebruikersrecht afnemen", "VanGpAfnemen", new { Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID }) %></li>
+                        <!--<button id="Button1">Gebruikersrecht toekennen</button>-->
+                        <li><%: Html.ActionLink("Gebruikersrecht verlengen", "AanGpToekennen", new {Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID}) %></li>
+                        <%
+                        }
+                        %>
+                    <li><%: Html.ActionLink("Gebruikersrecht afnemen", "VanGpAfnemen", new {Controller = "GebruikersRecht", id = ViewData.Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID}) %></li>
                     </ul>
-                    <%                              
+                    <%
                 }
-            %>
+                    %>
         
         <h3>Toegevoegd aan de volgende categorie&euml;n:</h3>
         <table>
