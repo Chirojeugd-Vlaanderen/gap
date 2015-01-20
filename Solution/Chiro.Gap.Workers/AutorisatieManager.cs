@@ -285,8 +285,6 @@ namespace Chiro.Gap.Workers
         /// <paramref name="persoon2"/> mag lezen. Anders <c>false</c>.</returns>
         public bool MagLezen(Persoon ik, Persoon persoon2)
         {
-            var mijnRechten = ik.GelieerdePersoon.SelectMany(gp => gp.Groep.GebruikersRechtV2);
-
             // Als ik mijn eigen info mag lezen, en ik ben persoon2, dan is het ok.
             if (Equals(ik, persoon2) && MagZichzelfLezen(ik))
             {
@@ -394,20 +392,13 @@ namespace Chiro.Gap.Workers
                 }
             }
 
-            // Zoek mezelf in groep van gelieerdePersoon.
+            // Heb ik rechten op de groep van de gelieerde persoon?
+            var relevantGebruikersRecht = (from gr in gelieerdePersoon.Groep.GebruikersRechtV2
+                where gr.Persoon.AdNummer == mijnAdNummer && gr.VervalDatum != null && gr.VervalDatum > DateTime.Now
+                select gr).FirstOrDefault();
 
-            var ik = (from gp in gelieerdePersoon.Groep.GelieerdePersoon
-                where gp.Persoon.AdNummer == mijnAdNummer
-                select gp).FirstOrDefault();
-
-            // Als ik niet in die groep zit, dan zijn we klaar.
-            if (ik == null)
-            {
-                return result;
-            }
-
-            var relevantGebruikersRecht = GebruikersRechtOpEigenGroep(ik);
-            if (relevantGebruikersRecht.VervalDatum == null || relevantGebruikersRecht.VervalDatum < DateTime.Now)
+            // Nee? Dan zijn we klaar.
+            if (relevantGebruikersRecht == null)
             {
                 return result;
             }
@@ -425,9 +416,18 @@ namespace Chiro.Gap.Workers
 
             // Als gelieerdePersoon in dezelfde afdeling zit als ik, en die afdeling is van het huidige werkjaar, 
             // dan zijn ook mijn afdelingspermissies relevant.
+            var mijnGelieerdePersoon = (from gp in relevantGebruikersRecht.Persoon.GelieerdePersoon
+                where gp.Groep.Equals(relevantGebruikersRecht.Groep)
+                select gp).FirstOrDefault();
+            if (mijnGelieerdePersoon == null)
+            {
+                // Ik ben niet gelieerd aan de groep, dus zit ik zeker niet in de juiste afdeling.
+                return result;
+            }
+
             var huidigWerkjaar = gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
             var mijnAfdelingsIds =
-                ik.Lid.Where(l => Equals(l.GroepsWerkJaar, huidigWerkjaar)).SelectMany(l => l.AfdelingIds);
+                mijnGelieerdePersoon.Lid.Where(l => Equals(l.GroepsWerkJaar, huidigWerkjaar)).SelectMany(l => l.AfdelingIds);
             var zijnAfdelingsIds =
                 gelieerdePersoon.Lid.Where(l => Equals(l.GroepsWerkJaar, huidigWerkjaar)).SelectMany(l => l.AfdelingIds);
             if (mijnAfdelingsIds.Any(afdid => zijnAfdelingsIds.Contains(afdid)))
@@ -460,24 +460,18 @@ namespace Chiro.Gap.Workers
                 }
             }
 
-            // Zoek mezelf in groep van het lid
-            var ik = (from gp in lid.GelieerdePersoon.Groep.GelieerdePersoon
-                      where gp.Persoon.AdNummer == mijnAdNummer
-                      select gp).FirstOrDefault();
+            // Heb ik rechten op de groep van het lid?
+            var relevantGebruikersRecht = (from gr in lid.GelieerdePersoon.Groep.GebruikersRechtV2
+                      where gr.Persoon.AdNummer == mijnAdNummer && gr.VervalDatum != null && gr.VervalDatum > DateTime.Now
+                      select gr).FirstOrDefault();
 
-            // Als ik niet in die groep zit, dan zijn we klaar.
-            if (ik == null)
+            // Nee? Klaar!
+            if (relevantGebruikersRecht == null)
             {
                 return result;
             }
 
-            var relevantGebruikersRecht = GebruikersRechtOpEigenGroep(ik);
-            if (relevantGebruikersRecht.VervalDatum == null || relevantGebruikersRecht.VervalDatum < DateTime.Now)
-            {
-                return result;
-            }
-
-            // Ik zit in de juiste groep. Ik krijg ook de permissies die ik op iedereen
+            // Ik heb rechten op de juiste groep. Ik krijg ook de permissies die ik op iedereen
             // in de groep heb.
             result |= relevantGebruikersRecht.IedereenPermissies;
 
@@ -497,9 +491,17 @@ namespace Chiro.Gap.Workers
             {
                 return result;
             }
+            var mijnGelieerdePersoon = (from gp in relevantGebruikersRecht.Persoon.GelieerdePersoon
+                                        where gp.Groep.Equals(relevantGebruikersRecht.Groep)
+                                        select gp).FirstOrDefault();
+            if (mijnGelieerdePersoon == null)
+            {
+                // Ik ben niet gelieerd aan de groep, dus zit ik zeker niet in de juiste afdeling.
+                return result;
+            }
 
             var mijnAfdelingsIds =
-                ik.Lid.Where(l => Equals(l.GroepsWerkJaar, huidigWerkjaar)).SelectMany(l => l.AfdelingIds);
+                mijnGelieerdePersoon.Lid.Where(l => Equals(l.GroepsWerkJaar, huidigWerkjaar)).SelectMany(l => l.AfdelingIds);
 
             if (mijnAfdelingsIds.Any(afdid => lid.AfdelingIds.Contains(afdid)))
             {
