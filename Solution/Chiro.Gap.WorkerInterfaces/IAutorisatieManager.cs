@@ -127,7 +127,36 @@ namespace Chiro.Gap.WorkerInterfaces
 
         #endregion
 
-        #region Nieuw gebruikersbeheer
+        #region Nieuw gebruikersbeheer: Welke permissies heb ik op entity...
+        /// <summary>
+        /// Levert de permissies op die de aangelogde gebruiker heeft op de gegeven 
+        /// <paramref name="gelieerdePersoon"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Gelieerde persoon met te checken permissies.</param>
+        /// <returns>de permissies die de aangelogde gebruiker heeft op de gegeven 
+        /// <paramref name="gelieerdePersoon"/>.</returns>
+        Permissies PermissiesOphalen(GelieerdePersoon gelieerdePersoon);
+
+        /// <summary>
+        /// Levert de permissies op die de aangelogde gebruiker heeft op het gegeven
+        /// <paramref name="lid"/>.
+        /// </summary>
+        /// <param name="lid">Lid waarvoor de permissies gecontroleerd moeten worden.</param>
+        /// <returns>De permissies op die de aangelogde gebruiker heeft op het gegeven
+        /// <paramref name="lid"/>.</returns>
+        Permissies PermissiesOphalen(Lid lid);
+
+        /// <summary>
+        /// Levert de permissies die de aangelogde gebruiker heeft op de gegeven
+        /// <paramref name="functie"/>.
+        /// </summary>
+        /// <param name="functie">Functie waarvan de permissies te checken zijn.</param>
+        /// <returns>De permissies die de aangelogde gebruiker heeft op de gegeven
+        /// <paramref name="functie"/>.</returns>
+        Permissies PermissiesOphalen(Functie functie);
+        #endregion
+
+        #region Nieuw gebruikersbeheer: mag persoon X ...
         /// <summary>
         /// Geeft <c>true</c> als <paramref name="ik"/> de gegevens van
         /// <paramref name="persoon2"/> mag lezen. Anders <c>false</c>.
@@ -138,8 +167,17 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <paramref name="persoon2"/> mag lezen. Anders <c>false</c>.</returns>
         bool MagLezen(Persoon ik, Persoon persoon2);
 
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="persoon"/> rechten heeft om zijn persoonlijke
+        /// informatie te lezen.
+        /// </summary>
+        /// <param name="persoon">Persoon waarvan de rechten gecontroleerd moeten worden.</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="persoon"/> rechten heeft om zijn persoonlijke
+        /// informatie te lezen.</returns>
+        bool MagZichzelfLezen(Persoon persoon);
         #endregion
 
+        #region Nog te bekijken of we deze moeten behouden in de interface.
         /// <summary>
         /// Geeft weer welke permissie de aangelogde gebruiker heeft op de gegeven
         /// <paramref name="aspecten"/> van de gegeven <paramref name="groep"/>.
@@ -153,23 +191,12 @@ namespace Chiro.Gap.WorkerInterfaces
         Permissies PermissiesOphalen(Groep groep, SecurityAspect aspecten);
 
         /// <summary>
-        /// Geeft <c>true</c> als de gegeven <paramref name="persoon"/> rechten heeft om zijn persoonlijke
-        /// informatie te lezen.
+        /// Levert de permiessies op die een gegeven <paramref name="persoon"/> heeft op zijn
+        /// eigen gegevens.
         /// </summary>
-        /// <param name="persoon">Persoon waarvan de rechten gecontroleerd moeten worden.</param>
-        /// <returns><c>true</c> als de gegeven <paramref name="persoon"/> rechten heeft om zijn persoonlijke
-        /// informatie te lezen.</returns>
-        bool MagZichzelfLezen(Persoon persoon);
-
-        /// <summary>
-        /// Levert de permissies op die de aangelogde gebruiker heeft op de gegeven 
-        /// <paramref name="gelieerdePersoon"/>.
-        /// </summary>
-        /// <param name="gelieerdePersoon">Gelieerde persoon met te checken permissies.</param>
-        /// <returns>de permissies die de aangelogde gebruiker heeft op de gegeven 
-        /// <paramref name="gelieerdePersoon"/>.</returns>
-        Permissies PermissiesOphalen(GelieerdePersoon gelieerdePersoon);
-
+        /// <param name="persoon">Een persoon.</param>
+        /// <returns>De permiessies op die de gegeven <paramref name="persoon"/> heeft op zijn
+        /// eigen gegevens.</returns>
         Permissies EigenPermissies(Persoon persoon);
 
         /// <summary>
@@ -180,5 +207,6 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns>Het gebruikersrecht op dat de gelieerde persoon <paramref name="gp"/> heeft op zijn
         /// eigen groep.</returns>
         GebruikersRechtV2 GebruikersRechtOpEigenGroep(GelieerdePersoon gp);
+        #endregion
     }
 }

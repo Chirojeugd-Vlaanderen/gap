@@ -143,20 +143,25 @@ namespace Chiro.Gap.Services.Test
 
             // testdata genereren
 
+            var ik = new Persoon {AdNummer = 12345};
             var gwj = new GroepsWerkJaar();
             var groep = new ChiroGroep
                             {
+                                ID = 5,
                                 GroepsWerkJaar = new List<GroepsWerkJaar> {gwj}
                             };
             gwj.Groep = groep;
 
-            groep.GebruikersRechtV2.Add(new GebruikersRechtV2
+            var gebruikersrRecht = new GebruikersRechtV2
             {
                 Groep = groep,
-                Persoon = new Persoon { AdNummer = 12345 },
+                Persoon = ik,
                 VervalDatum = DateTime.Now.AddDays(1),
                 IedereenPermissies = Permissies.Bewerken,
-            });
+                GroepsPermissies = Permissies.Lezen
+            };
+            ik.GebruikersRechtV2.Add(gebruikersrRecht);
+            groep.GebruikersRechtV2.Add(gebruikersrRecht);
 
             var contactPersoon = new Functie
                                      {
@@ -192,12 +197,15 @@ namespace Chiro.Gap.Services.Test
                                    Groep = groep
                                };
             var leiding = new Leiding
-                              {
-                                  ID = 100,
-                                  GroepsWerkJaar = gwj,
-                                  Functie = new List<Functie> {contactPersoon, redactie},
-                                  GelieerdePersoon = new GelieerdePersoon {Groep = groep}
-                              };
+            {
+                ID = 100,
+                GroepsWerkJaar = gwj,
+                Functie = new List<Functie> {contactPersoon, redactie},
+                GelieerdePersoon = new GelieerdePersoon {Groep = groep, Persoon = new Persoon()}
+            };
+
+            groep.GelieerdePersoon.Add(leiding.GelieerdePersoon);
+            groep.GelieerdePersoon.Add(new GelieerdePersoon {Groep = groep, Persoon = ik});
 
             // repositories maken die de testdata opleveren
 

@@ -434,6 +434,92 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Levert de permissies op die de aangelogde gebruiker heeft op het gegeven
+        /// <paramref name="lid"/>.
+        /// </summary>
+        /// <param name="lid">Lid waarvoor de permissies gecontroleerd moeten worden.</param>
+        /// <returns>De permissies op die de aangelogde gebruiker heeft op het gegeven
+        /// <paramref name="lid"/>.</returns>
+        public Permissies PermissiesOphalen(Lid lid)
+        {
+            var result = Permissies.Geen;
+            int? mijnAdNummer = _authenticatieMgr.AdNummerGet();
+            Debug.Assert(mijnAdNummer.HasValue);
+
+            // Gaat het over mezelf?
+            if (lid.GelieerdePersoon.Persoon.AdNummer == mijnAdNummer)
+            {
+                result = EigenPermissies(lid.GelieerdePersoon.Persoon);
+                if (result == Permissies.Bewerken)
+                {
+                    return result;
+                }
+            }
+
+            // Zoek mezelf in groep van het lid
+            var ik = (from gp in lid.GelieerdePersoon.Groep.GelieerdePersoon
+                      where gp.Persoon.AdNummer == mijnAdNummer
+                      select gp).FirstOrDefault();
+
+            // Als ik niet in die groep zit, dan zijn we klaar.
+            if (ik == null)
+            {
+                return result;
+            }
+
+            var relevantGebruikersRecht = GebruikersRechtOpEigenGroep(ik);
+            if (relevantGebruikersRecht.VervalDatum == null || relevantGebruikersRecht.VervalDatum < DateTime.Now)
+            {
+                return result;
+            }
+
+            // Ik zit in de juiste groep. Ik krijg ook de permissies die ik op iedereen
+            // in de groep heb.
+            result |= relevantGebruikersRecht.IedereenPermissies;
+
+            // Als ik al alle mogelijke permissies heb, of mijn permissies op mijn afdeling kunnen niets meer
+            // veranderen, dan zijn we klaar.
+            if (result == Permissies.Bewerken || (result | relevantGebruikersRecht.AfdelingsPermissies) == result)
+            {
+                return result;
+            }
+
+            // Als het lid in dezelfde afdeling zit als ik, en die afdeling is van het huidige werkjaar, 
+            // dan zijn ook mijn afdelingspermissies relevant.
+
+            var huidigWerkjaar = lid.GelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
+
+            if (!lid.GroepsWerkJaar.Equals(huidigWerkjaar))
+            {
+                return result;
+            }
+
+            var mijnAfdelingsIds =
+                ik.Lid.Where(l => Equals(l.GroepsWerkJaar, huidigWerkjaar)).SelectMany(l => l.AfdelingIds);
+
+            if (mijnAfdelingsIds.Any(afdid => lid.AfdelingIds.Contains(afdid)))
+            {
+                result |= relevantGebruikersRecht.AfdelingsPermissies;
+            }
+            return result;
+        }
+
+
+        /// <summary>
+        /// Levert de permissies die de aangelogde gebruiker heeft op de gegeven
+        /// <paramref name="functie"/>.
+        /// </summary>
+        /// <param name="functie">Functie waarvan de permissies te checken zijn.</param>
+        /// <returns>De permissies die de aangelogde gebruiker heeft op de gegeven
+        /// <paramref name="functie"/>.</returns>
+        public Permissies PermissiesOphalen(Functie functie)
+        {
+            return functie.IsNationaal
+                ? Permissies.Lezen
+                : PermissiesOphalen(functie.Groep, SecurityAspect.GroepsGegevens);
+        }
+
+        /// <summary>
         /// Levert de permissies op die een <paramref name="persoon"/> op dit moment heeft op zichzelf.
         /// </summary>
         /// <param name="persoon">Een persoon</param>

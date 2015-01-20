@@ -493,7 +493,10 @@ namespace Chiro.Gap.Services
         public void FunctiesVervangen(int lidId, IEnumerable<int> functieIds)
         {
             var lid = _ledenRepo.ByID(lidId);
-            Gav.Check(lid);
+            if (_autorisatieMgr.PermissiesOphalen(lid) != Permissies.Bewerken)
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
 
             var functies = _functiesRepo.ByIDs(functieIds);
 
@@ -502,9 +505,9 @@ namespace Chiro.Gap.Services
             // In dat geval volstaat het om 1 check te doen, ipv een check per functie.
             // TIP: controleer GAV-schap functies.SelectMany(fn=>fn.Groep).Distinct().
 
-            foreach (var functie in functies)
+            if (functies.Any(functie => !_autorisatieMgr.PermissiesOphalen(functie).HasFlag(Permissies.Lezen)))
             {
-                Gav.Check(functie);
+                throw FaultExceptionHelper.GeenGav();
             }
 
             try

@@ -149,7 +149,17 @@ namespace Chiro.Gap.Dummies
             return false;
         }
 
-        public bool MagLezen(Persoon ik, Persoon persoon2)
+	    public Permissies PermissiesOphalen(Lid lid)
+	    {
+	        return Permissies.Geen;
+	    }
+
+	    public Permissies PermissiesOphalen(Functie functie)
+	    {
+	        return functie.IsNationaal ? Permissies.Lezen : Permissies.Geen;
+	    }
+
+	    public bool MagLezen(Persoon ik, Persoon persoon2)
         {
             return false;
         }
