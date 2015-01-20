@@ -76,15 +76,19 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Geeft weer welke permissie de aangelogde gebruiker heeft op de gegeven
+        /// Geeft weer welke effectieve permissie de aangelogde gebruiker heeft op de gegeven
         /// <paramref name="aspecten"/> van de gegeven <paramref name="groep"/>.
         /// </summary>
         /// <param name="groep">Groep waarvoor de permissies opgehaald moeten worden.</param>
         /// <param name="aspecten">Aspecten waarvoor permissies opgehaald moeten worden.</param>
         /// <returns>Permissies die de aangelogde gebruiker heeft op de gegeven
         /// <paramref name="aspecten"/> van de gegeven <paramref name="groep"/>.</returns>
-        /// <remarks>Als je meerdere aspecten combineert, krijg je de bitwise and van de permissies als
-        /// resultaat. D.w.z.: de permissies die je hebt op àlle meegegeven aspecten.</remarks>
+        /// <remarks>
+        /// (1) Als je meerdere aspecten combineert, krijg je de bitwise and van de permissies als
+        ///     resultaat. D.w.z.: de permissies die je hebt op àlle meegegeven aspecten.
+        /// (2) Als je rechten hebt op iedereen van je groep, dan heb je voor je afdeling minstens
+        ///     diezelfde rechten.
+        /// </remarks>
         public Permissies PermissiesOphalen(Groep groep, SecurityAspect aspecten)
         {
             int? adNummer = _authenticatieMgr.AdNummerGet();
@@ -113,7 +117,7 @@ namespace Chiro.Gap.Workers
             }
             if (aspecten.HasFlag(SecurityAspect.PersonenInAfdeling))
             {
-                permissies.Add(gebruikersRecht.AfdelingsPermissies);
+                permissies.Add(gebruikersRecht.AfdelingsPermissies|gebruikersRecht.GroepsPermissies);
             }
             if (aspecten.HasFlag(SecurityAspect.PersonenInGroep))
             {
