@@ -64,7 +64,6 @@ namespace Chiro.Gap.Services
 
         // Managers voor niet-triviale businesslogica
 
-        private readonly IAutorisatieManager _autorisatieMgr;
         private readonly ICommunicatieVormenManager _communicatieVormenMgr;
         private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
         private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
@@ -113,7 +112,7 @@ namespace Chiro.Gap.Services
             ICommunicatieSync communicatieSync,
             IPersonenSync personenSync,
             IAdressenSync adressenSync,
-            ILedenSync ledenSync): base(ledenManager, groepsWerkJarenManager, authenticatieManager)
+            ILedenSync ledenSync): base(ledenManager, groepsWerkJarenManager, authenticatieManager, autorisatieMgr)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -131,7 +130,6 @@ namespace Chiro.Gap.Services
             _landenRepo = repositoryProvider.RepositoryGet<Land>();
             _afdelingsJarenRepo = repositoryProvider.RepositoryGet<AfdelingsJaar>();
 
-            _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
             _gebruikersRechtenMgr = gebruikersRechtenMgr;
             _gelieerdePersonenMgr = gelieerdePersonenMgr;
@@ -349,7 +347,7 @@ namespace Chiro.Gap.Services
         {
             var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
 
-            if (gelieerdePersoon == null || !_autorisatieMgr.IsGav(gelieerdePersoon))
+            if (gelieerdePersoon == null || !_autorisatieMgr.PermissiesOphalen(gelieerdePersoon).HasFlag(Permissies.Lezen))
             {
                 throw FaultExceptionHelper.GeenGav();
             }

@@ -163,5 +163,20 @@ namespace Chiro.Gap.Dummies
 	    {
 	        return false;
 	    }
+
+	    public Permissies PermissiesOphalen(GelieerdePersoon gelieerdePersoon)
+	    {
+	        return Permissies.Geen;
+	    }
+
+	    public Permissies EigenPermissies(Persoon persoon)
+	    {
+	        return Permissies.Geen;
+	    }
+
+	    public GebruikersRechtV2 GebruikersRechtOpEigenGroep(GelieerdePersoon gp)
+	    {
+	        return null;
+	    }
 	}
 }

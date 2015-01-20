@@ -68,7 +68,6 @@ namespace Chiro.Gap.Services
 
         // Managers voor niet-triviale businesslogica
 
-        private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IVerzekeringenManager _verzekeringenMgr;
         private readonly IGroepenManager _groepenMgr;
         private readonly IFunctiesManager _functiesMgr;
@@ -99,7 +98,7 @@ namespace Chiro.Gap.Services
                             IGroepenManager groepenMgr, IFunctiesManager functiesMgr,
                             IAuthenticatieManager authenticatieMgr,
                             IRepositoryProvider repositoryProvider, ILedenSync ledenSync,
-                            IVerzekeringenSync verzekeringenSync): base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr)
+                            IVerzekeringenSync verzekeringenSync): base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr, autorisatieMgr)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -117,7 +116,6 @@ namespace Chiro.Gap.Services
             _afdelingenRepo = repositoryProvider.RepositoryGet<Afdeling>();
 
             _verzekeringenMgr = verzekeringenMgr;
-            _autorisatieMgr = autorisatieMgr;
             _groepenMgr = groepenMgr;
             _functiesMgr = functiesMgr;
 

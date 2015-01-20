@@ -160,5 +160,25 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns><c>true</c> als de gegeven <paramref name="persoon"/> rechten heeft om zijn persoonlijke
         /// informatie te lezen.</returns>
         bool MagZichzelfLezen(Persoon persoon);
+
+        /// <summary>
+        /// Levert de permissies op die de aangelogde gebruiker heeft op de gegeven 
+        /// <paramref name="gelieerdePersoon"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Gelieerde persoon met te checken permissies.</param>
+        /// <returns>de permissies die de aangelogde gebruiker heeft op de gegeven 
+        /// <paramref name="gelieerdePersoon"/>.</returns>
+        Permissies PermissiesOphalen(GelieerdePersoon gelieerdePersoon);
+
+        Permissies EigenPermissies(Persoon persoon);
+
+        /// <summary>
+        /// Levert het gebruikersrecht op dat de gelieerde persoon <paramref name="gp"/> heeft op zijn
+        /// eigen groep.
+        /// </summary>
+        /// <param name="gp">Een gelieerde persoon.</param>
+        /// <returns>Het gebruikersrecht op dat de gelieerde persoon <paramref name="gp"/> heeft op zijn
+        /// eigen groep.</returns>
+        GebruikersRechtV2 GebruikersRechtOpEigenGroep(GelieerdePersoon gp);
     }
 }

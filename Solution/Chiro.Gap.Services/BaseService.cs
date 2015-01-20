@@ -41,6 +41,7 @@ namespace Chiro.Gap.Services
         protected readonly ILedenManager _ledenMgr;
         protected readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
         protected readonly IAuthenticatieManager _authenticatieMgr;
+        protected readonly IAutorisatieManager _autorisatieMgr;
 
         /// <summary>
         /// Constructor.
@@ -48,14 +49,17 @@ namespace Chiro.Gap.Services
         /// <param name="ledenManager">LedenManager.</param>
         /// <param name="groepsWerkJarenManager">GroepsWerkJarenManager.</param>
         /// <param name="authenticatieManager">AuthenticatieManager.</param>
+        /// <param name="autorisatieManager">AutorisatieManager.</param>
         public BaseService(
             ILedenManager ledenManager, 
             IGroepsWerkJarenManager groepsWerkJarenManager,
-            IAuthenticatieManager authenticatieManager)
+            IAuthenticatieManager authenticatieManager,
+            IAutorisatieManager autorisatieManager)
         {
             _ledenMgr = ledenManager;
             _groepsWerkJarenMgr = groepsWerkJarenManager;
             _authenticatieMgr = authenticatieManager;
+            _autorisatieMgr = autorisatieManager;
             MappingsDefinieren();
         }
 
@@ -540,7 +544,7 @@ namespace Chiro.Gap.Services
                     opt => opt.MapFrom(src => _ledenMgr.HuidigLidGet(src)))
                 .ForMember(
                     dst => dst.GebruikersInfo,
-                    opt => opt.MapFrom(src => src.GebruikersRechtOpEigenGroep()));
+                    opt => opt.MapFrom(src => _autorisatieMgr.GebruikersRechtOpEigenGroep(src)));
 
             Mapper.CreateMap<Lid, InschrijvingsVoorstel>()
                 .ForMember(
@@ -580,7 +584,7 @@ namespace Chiro.Gap.Services
             Mapper.CreateMap<GelieerdePersoon, GebruikersInfo>()
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)))
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsGebuikersRechtVerlengbaar()))
-                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => src.GebruikersRechtOpEigenGroep()))
+                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => _autorisatieMgr.GebruikersRechtOpEigenGroep(src)))
                 .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => src.VervalDatumEigenGebruikersRecht()));
 
             // Een persoon mappen naar GebruikersInfo mapt geen gebruikersrechten, omdat er maar rechten van 1
@@ -929,11 +933,6 @@ namespace Chiro.Gap.Services
             }
             Debug.Assert(a is BuitenLandsAdres);
             return ((BuitenLandsAdres)a).PostNummer;
-        }
-
-        public static GebruikersRechtV2 GebruikersRechtOpEigenGroep(this GelieerdePersoon gp)
-        {
-            return (from gr in gp.Persoon.GebruikersRechtV2 where Equals(gr.Groep, gp.Groep) select gr).FirstOrDefault();
         }
     }
 

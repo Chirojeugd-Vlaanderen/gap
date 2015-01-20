@@ -20,6 +20,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
@@ -302,23 +303,21 @@ namespace Chiro.Gap.Workers
 
             // als ik de personen van mijn afdeling mag lezen, is het in orde als persoon2 in mijn 
             // afdeling zit.
-            foreach (var g in ToegestaneGroepenOphalen(ik, SecurityAspect.PersonenInAfdeling))
-            {
-                var huidigWerkJaar = g.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
-                var mijnLid = (from l in ik.GelieerdePersoon.SelectMany(gp => gp.Lid)
-                               where Equals(l.GroepsWerkJaar, huidigWerkJaar)
-                               select l).FirstOrDefault();
-                var persoon2Lid = (from l in persoon2.GelieerdePersoon.SelectMany(gp => gp.Lid)
-                                   where Equals(l.GroepsWerkJaar, huidigWerkJaar)
-                                   select l).FirstOrDefault();
-                if (mijnLid != null && persoon2Lid != null && mijnLid.AfdelingsJaarIDs.Any(ajid => persoon2Lid.AfdelingsJaarIDs.Contains(ajid)))
-                {
-                    return true;
-                }
-            }
-
-            // Ik geef op.
-            return false;
+            return (from g in ToegestaneGroepenOphalen(ik, SecurityAspect.PersonenInAfdeling)
+                select g.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First()
+                into huidigWerkJaar
+                let mijnLid =
+                    (from l in ik.GelieerdePersoon.SelectMany(gp => gp.Lid)
+                        where Equals(l.GroepsWerkJaar, huidigWerkJaar)
+                        select l).FirstOrDefault()
+                let persoon2Lid =
+                    (from l in persoon2.GelieerdePersoon.SelectMany(gp => gp.Lid)
+                        where Equals(l.GroepsWerkJaar, huidigWerkJaar)
+                        select l).FirstOrDefault()
+                where
+                    mijnLid != null && persoon2Lid != null &&
+                    mijnLid.AfdelingsJaarIDs.Any(ajid => persoon2Lid.AfdelingsJaarIDs.Contains(ajid))
+                select mijnLid).Any();
         }
 
         /// <summary>
@@ -367,6 +366,96 @@ namespace Chiro.Gap.Workers
                     gr =>
                         gr.VervalDatum != null && gr.VervalDatum > DateTime.Now &&
                         gr.PersoonsPermissies.HasFlag(Permissies.Lezen));
+        }
+
+        /// <summary>
+        /// Levert de permissies op die de aangelogde gebruiker heeft op de gegeven 
+        /// <paramref name="gelieerdePersoon"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Gelieerde persoon met te checken permissies.</param>
+        /// <returns>de permissies die de aangelogde gebruiker heeft op de gegeven 
+        /// <paramref name="gelieerdePersoon"/>.</returns>
+        public Permissies PermissiesOphalen(GelieerdePersoon gelieerdePersoon)
+        {
+            Permissies result = Permissies.Geen;
+            int? mijnAdNummer = _authenticatieMgr.AdNummerGet();
+            Debug.Assert(mijnAdNummer.HasValue);
+
+            if (gelieerdePersoon.Persoon.AdNummer == mijnAdNummer)
+            {
+                result = EigenPermissies(gelieerdePersoon.Persoon);
+                if (result == Permissies.Bewerken)
+                {
+                    return result;
+                }
+            }
+
+            // Zoek mezelf in groep van gelieerdePersoon.
+
+            var ik = (from gp in gelieerdePersoon.Groep.GelieerdePersoon
+                where gp.Persoon.AdNummer == mijnAdNummer
+                select gp).FirstOrDefault();
+
+            // Als ik niet in die groep zit, dan zijn we klaar.
+            if (ik == null)
+            {
+                return result;
+            }
+
+            var relevantGebruikersRecht = GebruikersRechtOpEigenGroep(ik);
+            if (relevantGebruikersRecht.VervalDatum == null || relevantGebruikersRecht.VervalDatum < DateTime.Now)
+            {
+                return result;
+            }
+
+            // Ik zit in de juiste groep. Ik krijg ook de permissies die ik op iedereen
+            // in de groep heb.
+            result |= relevantGebruikersRecht.IedereenPermissies;
+
+            // Als ik al alle mogelijke permissies heb, of mijn permissies op mijn afdeling kunnen niets meer
+            // veranderen, dan zijn we klaar.
+            if (result == Permissies.Bewerken || (result | relevantGebruikersRecht.AfdelingsPermissies) == result)
+            {
+                return result;
+            }
+
+            // Als gelieerdePersoon in dezelfde afdeling zit als ik, en die afdeling is van het huidige werkjaar, 
+            // dan zijn ook mijn afdelingspermissies relevant.
+            var huidigWerkjaar = gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
+            var mijnAfdelingsIds =
+                ik.Lid.Where(l => Equals(l.GroepsWerkJaar, huidigWerkjaar)).SelectMany(l => l.AfdelingIds);
+            var zijnAfdelingsIds =
+                gelieerdePersoon.Lid.Where(l => Equals(l.GroepsWerkJaar, huidigWerkjaar)).SelectMany(l => l.AfdelingIds);
+            if (mijnAfdelingsIds.Any(afdid => zijnAfdelingsIds.Contains(afdid)))
+            {
+                result |= relevantGebruikersRecht.AfdelingsPermissies;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Levert de permissies op die een <paramref name="persoon"/> op dit moment heeft op zichzelf.
+        /// </summary>
+        /// <param name="persoon">Een persoon</param>
+        /// <returns>De permissies die de <paramref name="persoon"/> op dit moment heeft op zichzelf.</returns>
+        public Permissies EigenPermissies(Persoon persoon)
+        {
+            return
+                persoon.GebruikersRechtV2.Where(gr => gr.VervalDatum != null || gr.VervalDatum > DateTime.Now)
+                    .Select(gr => gr.PersoonsPermissies)
+                    .Aggregate((a, b) => a | b);
+        }
+
+        /// <summary>
+        /// Levert het gebruikersrecht op dat de gelieerde persoon <paramref name="gp"/> heeft op zijn
+        /// eigen groep.
+        /// </summary>
+        /// <param name="gp">Een gelieerde persoon.</param>
+        /// <returns>Het gebruikersrecht op dat de gelieerde persoon <paramref name="gp"/> heeft op zijn
+        /// eigen groep.</returns>
+        public GebruikersRechtV2 GebruikersRechtOpEigenGroep(GelieerdePersoon gp)
+        {
+            return (from gr in gp.Persoon.GebruikersRechtV2 where Equals(gr.Groep, gp.Groep) select gr).FirstOrDefault();
         }
     }
 }

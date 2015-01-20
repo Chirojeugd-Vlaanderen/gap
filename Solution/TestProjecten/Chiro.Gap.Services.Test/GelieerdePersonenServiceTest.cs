@@ -997,16 +997,6 @@ namespace Chiro.Gap.Services.Test
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             groepsWerkJaar.Groep = gelieerdePersoon.Groep;
 
-            var gebruikersRecht = new GebruikersRechtV2
-                                      {
-                                          Groep = gelieerdePersoon.Groep,
-                                          VervalDatum =
-                                              DateTime.Today.AddMonths(1),
-                                          Persoon = gelieerdePersoon.Persoon
-                                      };
-            gelieerdePersoon.Groep.GebruikersRechtV2.Add(gebruikersRecht);
-            gelieerdePersoon.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
-
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
@@ -1019,7 +1009,9 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
-            Assert.AreEqual(actual.GebruikersInfo.VervalDatum, gebruikersRecht.VervalDatum);
+            // We gebruiken hier de AltijdGav-autorisatiemanager, dus we mogen verwachten dat we iedereen in onze
+            // groep mogen bewerken.
+            Assert.AreEqual(actual.GebruikersInfo.GebruikersRecht.IedereenPermissies, Permissies.Bewerken);
         }
 
         /// <summary>

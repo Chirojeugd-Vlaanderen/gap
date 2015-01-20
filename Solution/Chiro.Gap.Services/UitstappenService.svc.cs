@@ -55,7 +55,6 @@ namespace Chiro.Gap.Services
 
         // Managers voor niet-triviale businesslogica
 
-        private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IUitstappenManager _uitstappenMgr;
         private readonly IAdressenManager _adressenMgr;
 
@@ -85,7 +84,7 @@ namespace Chiro.Gap.Services
                                  ILedenManager ledenManager,
                                  IGroepsWerkJarenManager groepsWerkJarenManager,
                                  IAuthenticatieManager authenticatieManager,
-                                 IBivakSync bivakSync): base(ledenManager, groepsWerkJarenManager, authenticatieManager)
+                                 IBivakSync bivakSync): base(ledenManager, groepsWerkJarenManager, authenticatieManager, autorisatieManager)
         {
             _repositoryProvider = repositoryProvider;
             _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
@@ -98,7 +97,6 @@ namespace Chiro.Gap.Services
             _woonPlaatsenRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
             _landenRepo = repositoryProvider.RepositoryGet<Land>();
 
-            _autorisatieMgr = autorisatieManager;
             _uitstappenMgr = uitstappenManager;
             _adressenMgr = adressenManager;
 

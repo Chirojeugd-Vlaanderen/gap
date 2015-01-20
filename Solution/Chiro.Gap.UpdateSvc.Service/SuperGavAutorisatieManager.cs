@@ -223,5 +223,20 @@ namespace Chiro.Gap.UpdateSvc.Service
         {
             throw new NotImplementedException();
         }
+
+        public Permissies PermissiesOphalen(GelieerdePersoon gelieerdePersoon)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Permissies EigenPermissies(Persoon persoon)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GebruikersRechtV2 GebruikersRechtOpEigenGroep(GelieerdePersoon gp)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

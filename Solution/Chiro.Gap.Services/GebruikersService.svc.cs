@@ -88,7 +88,6 @@ namespace Chiro.Gap.Services
         // Managers voor niet-triviale businesslogica
 
         private readonly IGebruikersRechtenManager _gebruikersRechtenMgr;
-        private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IGelieerdePersonenManager _gelieerdePersonenMgr;
 
         private readonly GavChecker _gav;
@@ -111,7 +110,7 @@ namespace Chiro.Gap.Services
                                  IGroepsWerkJarenManager groepsWerkJarenManager,
                                  IGelieerdePersonenManager gelieerdePersonenManager,
                                  IRepositoryProvider repositoryProvider,
-                                 ServiceHelper serviceHelper): base(ledenManager, groepsWerkJarenManager, authenticatieManager)
+                                 ServiceHelper serviceHelper): base(ledenManager, groepsWerkJarenManager, authenticatieManager, autorisatieMgr)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -121,7 +120,6 @@ namespace Chiro.Gap.Services
             _personenRepo = repositoryProvider.RepositoryGet<Persoon>();
 
             _gebruikersRechtenMgr = gebruikersRechtenMgr;
-            _autorisatieMgr = autorisatieMgr;
             _gelieerdePersonenMgr = gelieerdePersonenManager;
 
             _gav = new GavChecker(_autorisatieMgr);

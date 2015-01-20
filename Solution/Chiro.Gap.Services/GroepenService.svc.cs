@@ -66,7 +66,6 @@ namespace Chiro.Gap.Services
         // Managers voor niet-triviale businesslogica
 
         private readonly IAfdelingsJaarManager _afdelingsJaarMgr;
-        private readonly IAutorisatieManager _autorisatieMgr;
         private readonly IGroepenManager _groepenMgr;
         private readonly IChiroGroepenManager _chiroGroepenMgr;
         private readonly IAdressenManager _adressenMgr;
@@ -95,6 +94,7 @@ namespace Chiro.Gap.Services
         /// <param name="functiesMgr">Businesslogica aangaande functies</param>
         /// <param name="jaarOvergangMgr">Businesslogica aangaande de jaarovergang</param>
         /// <param name="adressenMgr">Businesslogica wat betreft adressen</param>
+        /// <param name="ledenMgr">Businesslogica m.b.t. de leden</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         /// <param name="groepenSync">Synchronisatie met Kipadmin</param>
         /// <param name="veelGebruikt">Cache</param>
@@ -103,7 +103,8 @@ namespace Chiro.Gap.Services
             IGroepenManager groepenMgr, IJaarOvergangManager jaarOvergangMgr,
             IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
             IFunctiesManager functiesMgr, IAdressenManager adressenMgr, ILedenManager ledenMgr,
-            IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IVeelGebruikt veelGebruikt): base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr)
+            IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IVeelGebruikt veelGebruikt)
+            : base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr, autorisatieMgr)
         {
             _repositoryProvider = repositoryProvider;
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
@@ -130,7 +131,6 @@ namespace Chiro.Gap.Services
             _functiesMgr = functiesMgr;
             _afdelingsJaarMgr = afdelingsJaarMgr;
             _adressenMgr = adressenMgr;
-            _autorisatieMgr = autorisatieMgr;
             _groepenSync = groepenSync;
 
             _veelGebruikt = veelGebruikt;
