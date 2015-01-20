@@ -45,8 +45,7 @@ namespace Chiro.Gap.WorkerInterfaces
         // heb je permissies. Deze functies moeten vervangen worden door
         // MagLezen(entity) en MagSchrijven(entity) of iets dergelijks.
 
-        [Obsolete]
-        bool IsGav(Groep groep);    // gebruik liever HeeftPermissies
+        bool IsGav(Groep groep);
         bool IsGav(CommunicatieVorm communicatie);
         bool IsGav(GroepsWerkJaar g);
         bool IsGav(GelieerdePersoon gelieerdePersoon);
@@ -130,15 +129,6 @@ namespace Chiro.Gap.WorkerInterfaces
 
         #region Nieuw gebruikersbeheer
         /// <summary>
-        /// Controleert of de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft
-        /// op de gegeven <paramref name="groep"/>.
-        /// </summary>
-        /// <param name="groep">Groep waarvoor permissies te controleren.</param>
-        /// <param name="permissies">Permissies waarop te controleren.</param>
-        /// <returns><c>true</c> als de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft.</returns>
-        bool HeeftPermissies(Groep groep, Permissies permissies);
-
-        /// <summary>
         /// Geeft <c>true</c> als <paramref name="ik"/> de gegevens van
         /// <paramref name="persoon2"/> mag lezen. Anders <c>false</c>.
         /// </summary> 
@@ -149,5 +139,26 @@ namespace Chiro.Gap.WorkerInterfaces
         bool MagLezen(Persoon ik, Persoon persoon2);
 
         #endregion
+
+        /// <summary>
+        /// Geeft weer welke permissie de aangelogde gebruiker heeft op de gegeven
+        /// <paramref name="aspecten"/> van de gegeven <paramref name="groep"/>.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor de permissies opgehaald moeten worden.</param>
+        /// <param name="aspecten">Aspecten waarvoor permissies opgehaald moeten worden.</param>
+        /// <returns>Permissies die de aangelogde gebruiker heeft op de gegeven
+        /// <paramref name="aspecten"/> van de gegeven <paramref name="groep"/>.</returns>
+        /// <remarks>Als je meerdere aspecten combineert, krijg je de bitwise and van de permissies als
+        /// resultaat. D.w.z.: de permissies die je hebt op àlle meegegeven aspecten.</remarks>
+        Permissies PermissiesOphalen(Groep groep, SecurityAspect aspecten);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="persoon"/> rechten heeft om zijn persoonlijke
+        /// informatie te lezen.
+        /// </summary>
+        /// <param name="persoon">Persoon waarvan de rechten gecontroleerd moeten worden.</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="persoon"/> rechten heeft om zijn persoonlijke
+        /// informatie te lezen.</returns>
+        bool MagZichzelfLezen(Persoon persoon);
     }
 }

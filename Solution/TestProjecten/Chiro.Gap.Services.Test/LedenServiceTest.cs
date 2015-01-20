@@ -155,7 +155,7 @@ namespace Chiro.Gap.Services.Test
                 Groep = groep,
                 Persoon = new Persoon { AdNummer = 12345 },
                 VervalDatum = DateTime.Now.AddDays(1),
-                Permissies = Permissies.Gav
+                PersonenInGroep = Permissies.Bewerken,
             });
 
             var contactPersoon = new Functie

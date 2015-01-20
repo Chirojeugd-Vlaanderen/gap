@@ -16,29 +16,32 @@
  * limitations under the License.
  */
 
+using System;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Chiro.Gap.Poco.Model.Properties;
 
 namespace Chiro.Gap.Poco.Model
 {
     /// <summary>
     /// Gebruikersrecht koppelt een persoon aan een groep.
     /// </summary>
-    public class GebruikersRechtV2: BasisEntiteit
+    public class GebruikersRechtV2 : BasisEntiteit
     {
         public override int ID { get; set; }
         public DateTime? VervalDatum { get; set; }
         public override byte[] Versie { get; set; }
 
-        // virtual for lazy loading
+        public Permissies PersoonlijkeGegevens { get; set; }
+        public Permissies GroepsGegevens { get; set; }
+        public Permissies PersonenInAfdeling { get; set; }
+        public Permissies PersonenInGroep { get; set; }
+        public bool SuperGav { get; set; }
+
+    // virtual for lazy loading
 
         public virtual Persoon Persoon { get; set; }
         public virtual Groep Groep { get; set; }
-        internal int PermissiesInt { get; set; }
 
         /// <summary>
         /// Geeft weer of de vervaldatum verlengbaar is. Dit is eigenlijk business, dus dat
@@ -50,19 +53,7 @@ namespace Chiro.Gap.Poco.Model
             get
             {
                 return VervalDatum != null && ((DateTime)VervalDatum) < DateTime.Now.AddMonths(
-                    Properties.Settings.Default.MaandenGebruikersRechtVerlengbaar);
-            }
-        }
-
-        public Permissies Permissies
-        {
-            get
-            {
-                return (Permissies)PermissiesInt;
-            }
-            set
-            {
-                PermissiesInt = (int)value;
+                    Settings.Default.MaandenGebruikersRechtVerlengbaar);
             }
         }
     }

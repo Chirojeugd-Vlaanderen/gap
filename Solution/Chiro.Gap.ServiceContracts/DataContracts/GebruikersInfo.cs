@@ -33,10 +33,8 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// <summary>
         /// Rol van de gebruiker
         /// </summary>
-        /// <remarks>In praktijk heeft een niet-vervallen gebruiker voorlopig altijd
-        /// de rol GAV. Zie ook #844</remarks>
         [DataMember]
-        public Permissies Permissies { get; set; }
+        public GebruikersRecht GebruikersRecht { get; set; }
 
         /// <summary>
         /// Vervaldatum gebruikersrecht

@@ -22,21 +22,21 @@ using Chiro.Gap.Domain;
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
     /// <summary>
-    /// Een gebruikersrecht is niet veel meer dan een combinatie van rollen voor een groep.
+    /// Een gebruikersrecht is niet veel meer dan een combinatie van rollen.
     /// </summary>
     [DataContract]
     public class GebruikersRecht
     {
-        /// <summary>
-        /// ID van een groep
-        /// </summary>
         [DataMember]
-        public int GroepID { get; set; }
+        public Permissies PersoonlijkeGegevens { get; set; }
 
-        /// <summary>
-        /// Permissies op de groep
-        /// </summary>
         [DataMember]
-        public Permissies Permissies { get; set; }
+        public Permissies GroepsGegevens { get; set; }
+
+        [DataMember]
+        public Permissies PersonenInAfdeling { get; set; }
+
+        [DataMember]
+        public Permissies PersonenInGroep { get; set; }
     }
 }

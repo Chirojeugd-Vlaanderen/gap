@@ -35,35 +35,19 @@ namespace Chiro.Gap.ServiceContracts
     {
         /// <summary>
         /// Als de persoon met gegeven <paramref name="gelieerdePersoonID"/> nog geen account heeft, wordt er een
-        /// account voor gemaakt. Aan die account worden dan de meegegeven <paramref name="gebruikersRechten"/>
+        /// account voor gemaakt. Aan die account worden dan de meegegeven <paramref name="gebruikersRecht"/>
         /// gekoppeld.  Gebruikersrechten zijn standaard 14 maanden geldig.
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van gelieerde persoon die rechten moet krijgen</param>
-        /// <param name="gebruikersRechten">Rechten die de account moet krijgen. Mag leeg zijn. Bestaande 
-        /// gebruikersrechten worden zo mogelijk verlengd als ze in <paramref name="gebruikersRechten"/> 
-        /// voorkomen, eventuele bestaande rechten niet in <paramref name="gebruikersRechten"/> blijven
+        /// <param name="gebruikersRecht">Rechten die de account moet krijgen. Mag leeg zijn. Bestaande 
+        /// gebruikersrechten worden zo mogelijk verlengd als ze in <paramref name="gebruikersRecht"/> 
+        /// voorkomen, eventuele bestaande rechten niet in <paramref name="gebruikersRecht"/> blijven
         /// onaangeroerd.
         /// </param>
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
-        void RechtenToekennen(int gelieerdePersoonID, GebruikersRecht[] gebruikersRechten);
-
-        /// <summary>
-        /// Geeft de persoon met gegeven <paramref name="gelieerdePersoonID"/> de gegeven
-        /// <paramref name="gebruikersRechten"/>.  
-        /// </summary>
-        /// <param name="gelieerdePersoonID">GelieerdePersoonID van een persoon die rechten
-        /// moet krijgen.</param>
-        /// <param name="gebruikersRechten">Rechten die de account moet krijgen.
-        /// Bestaande gebruikersrechten worden zo mogelijk verlengd als ze in 
-        /// <paramref name="gebruikersRechten"/> voorkomen, eventuele bestaande rechten niet in 
-        /// <paramref name="gebruikersRechten"/> blijven onaangeroerd.
-        /// </param>
-        [OperationContract]
-        [FaultContract(typeof(GapFault))]
-        [FaultContract(typeof(FoutNummerFault))]
-        void RechtenToekennenGelieerdePersoon(int gelieerdePersoonID, GebruikersRecht[] gebruikersRechten);
+        void RechtenToekennen(int gelieerdePersoonID, GebruikersRecht gebruikersRecht);
 
         /// <summary>
         /// Neemt de alle gebruikersrechten van de gelieerde persoon met gegeven

@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
 
@@ -209,6 +210,16 @@ namespace Chiro.Gap.UpdateSvc.Service
         }
 
         public bool MagLezen(Persoon ik, Persoon persoon2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Permissies PermissiesOphalen(Groep groep, SecurityAspect aspecten)
+        {
+            throw new NotImplementedException();         
+        }
+
+        public bool MagZichzelfLezen(Persoon persoon)
         {
             throw new NotImplementedException();
         }

@@ -52,17 +52,6 @@ namespace Chiro.Gap.WorkerInterfaces
         void Intrekken(GebruikersRechtV2[] gebruikersRechten);
 
         /// <summary>
-        /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="persoon"/>.
-        /// De vervaldatum wordt enkel verlaat als het gebruikersrecht verlengbaar is.
-        /// </summary>
-        /// <param name="persoon">Account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
-        /// <param name="groep">Groep waarvoor <paramref name="persoon"/> gebruikersrecht moet krijgen</param>
-        /// <param name="permissies">Toe te kennen permissies.</param>
-        /// <returns>Het gebruikersrecht</returns>
-        /// <remarks>Persisteert niet.</remarks>
-        GebruikersRechtV2 ToekennenOfWijzigen(Persoon persoon, Groep groep, Permissies permissies);
-
-        /// <summary>
         /// Levert het gebruikersrecht op dat een <paramref name="gelieerdePersoon"/> heeft op zijn eigen groep. 
         /// If any.  Als <paramref name="gelieerdePersoon"/> geen gebruikersrechten heeft op zijn groep, wordt 
         /// <c>null</c> opgeleverd.
@@ -74,5 +63,17 @@ namespace Chiro.Gap.WorkerInterfaces
         /// opgeleverd.
         /// </returns>
         GebruikersRechtV2 GebruikersRechtGet(GelieerdePersoon gelieerdePersoon);
+
+        /// <summary>
+        /// Zoekt het gebruikersrecht op van <paramref name="persoon"/> op <paramref name="groep"/>. Als dat nog niet
+        /// bestaat, maak er een aan. Voeg de gevraagde permissies toe.
+        /// </summary>
+        /// <param name="persoon">Persoon die gebruikersrechten moet krijgen.</param>
+        /// <param name="groep">Groep waarvoor de persoon gebruikersrechten moet krijgen.</param>
+        /// <param name="persoonlijkeGegevens">Permissies op persoonlijke gegevens.</param>
+        /// <param name="groepsGegevens">Permissies op de gegevens van de groep.</param>
+        /// <param name="personenInAfdeling">Permissies op de leden in de eigen afdeling.</param>
+        /// <param name="personenInGroep">Permissies op alle personen van de eigen groep.</param>
+        void ToekennenOfWijzigen(Persoon persoon, Groep groep, Permissies persoonlijkeGegevens, Permissies groepsGegevens, Permissies personenInAfdeling, Permissies personenInGroep);
     }
 }

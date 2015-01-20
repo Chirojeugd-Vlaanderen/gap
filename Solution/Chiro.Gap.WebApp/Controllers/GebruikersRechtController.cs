@@ -37,7 +37,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Kent een gebruikersrecht voor 14 maanden toe aan de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>.
+        /// Kent een GAV-gebruikersrecht voor 14 maanden toe aan de gelieerde persoon met GelieerdePersoonID <paramref name="id"/>.
         /// Als het gebruikersrecht al bestaat, dan wordt het indien mogelijk verlengd tot 14 maanden vanaf vandaag.
         /// </summary>
         /// <param name="groepID">ID van de groep waarvoor gebruikersrecht toegekend moet worden</param>
@@ -46,7 +46,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult AanGpToekennen(int groepID, int id)
         {
             ServiceHelper.CallService<IGebruikersService>(
-                svc => svc.RechtenToekennen(id, new[] {new GebruikersRecht {GroepID = groepID, Permissies = Permissies.Gav}}));
+                svc => svc.RechtenToekennen(id, new GebruikersRecht {GroepsGegevens = Permissies.Bewerken, PersonenInGroep = Permissies.Bewerken}));
             return RedirectToAction("Bewerken", new { Controller = "Personen", id });
         }
 
@@ -90,8 +90,12 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             ServiceHelper.CallService<IGebruikersService>(
                 gs =>
-                gs.RechtenToekennenGelieerdePersoon(id,
-                                             new[] {new GebruikersRecht {GroepID = groepID, Permissies = Permissies.Gav}}));
+                    gs.RechtenToekennen(id,
+                        new GebruikersRecht
+                        {
+                            GroepsGegevens = Permissies.Bewerken,
+                            PersonenInGroep = Permissies.Bewerken
+                        }));
 
             return RedirectToAction("Index");
         }

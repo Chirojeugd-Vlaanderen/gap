@@ -60,7 +60,19 @@ GO
 DROP TABLE auth.Gav;
 GO
 
+-- Aanpassingen van na de vergadering in december. Ik voeg de gevraagde kolommen toe.
+-- De kolom 'Permissies' verwijder ik later nog, zodat ik deze database nog een tijd kan
+-- gebruiken voor de demo van het originele idee.
 
+ALTER TABLE auth.GebruikersrechtV2 ADD PersoonlijkeGegevens INT NOT NULL DEFAULT 0;
+GO
+ALTER TABLE auth.GebruikersrechtV2 ADD GroepsGegevens INT NOT NULL DEFAULT 0;
+GO
+ALTER TABLE auth.GebruikersrechtV2 ADD PersonenInAfdeling INT NOT NULL DEFAULT 0;
+GO
+ALTER TABLE auth.GebruikersrechtV2 ADD PersonenInGroep INT NOT NULL DEFAULT 0;
+GO
+ALTER TABLE auth.GebruikersrechtV2 ADD SuperGav BIT NOT NULL DEFAULT 0;
 GO
 
-
+UPDATE auth.GebruikersRechtv2 SET GroepsGegevens = 3, PersonenInGroep = 3 WHERE Permissies > 0;

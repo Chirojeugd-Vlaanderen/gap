@@ -100,71 +100,6 @@ namespace Chiro.Gap.Workers
                 gr.VervalDatum = DateTime.Now.AddDays(-1);
             }
         }
-        
-        /// <summary>
-        /// Koppelt de <paramref name="persoon"/> aan de <paramref name="groep"/> met gegeven 
-        /// <paramref name="vervalDatum"/>.  PERSISTEERT NIET.
-        /// </summary>
-        /// <param name="persoon">
-        /// Te koppelen persoon
-        /// </param>
-        /// <param name="groep">
-        /// Groep waaraan te koppelen
-        /// </param>
-        /// <param name="vervalDatum">
-        /// Vervaldatum gebruikersrecht
-        /// </param>
-        /// <param name="permissies">
-        /// Toe te kennen permissies
-        /// </param>
-        /// <returns>
-        /// Deze method is PRIVATE en moet dat ook blijven, want er wordt niet gecheckt
-        /// op fouten, en er worden geen notificatiemails gestuurd.  Deze method mag enkel
-        /// onrechtstreeks gebruikt worden, via de publieke methods <see name="ToekennenOfVerlengen"/>
-        /// </returns>
-        private GebruikersRechtV2 ToekennenOfWijzigen(Persoon persoon, Groep groep, Permissies permissies, DateTime vervalDatum)
-        {
-            // Eerst controleren of de groep nog niet aan de gebruiker is/was gekoppeld
-            var gebruikersrecht = (from gr in persoon.GebruikersRechtV2
-                                   where gr.Groep.ID == groep.ID
-                                   select gr).FirstOrDefault();
-
-            if (gebruikersrecht == null)
-            {
-                // Nog geen gebruikersrecht.  Maak aan.
-                gebruikersrecht = new GebruikersRechtV2 { ID = 0, Persoon = persoon, Groep = groep, VervalDatum = vervalDatum };
-                persoon.GebruikersRechtV2.Add(gebruikersrecht);
-                groep.GebruikersRechtV2.Add(gebruikersrecht);
-            }
-            else if (gebruikersrecht.VervalDatum > vervalDatum || gebruikersrecht.IsVerlengbaar)
-            {
-                // Gebruikersrecht vroeger laten vervallen kan altijd. Verlengen enkel
-                // als IsVerlengbaar is gezet.
-                gebruikersrecht.VervalDatum = vervalDatum;
-            }
-
-            // Gebruikersrecht kan altijd gewijzigd worden
-            gebruikersrecht.Permissies = permissies;
-
-            return gebruikersrecht;
-        }
-
-
-        /// <summary>
-        /// Kent gebruikersrechten toe voor gegeven <paramref name="groep"/> aan gegeven <paramref name="persoon"/>.
-        /// De vervaldatum wordt enkel verlaat als het gebruikersrecht verlengbaar is.
-        /// </summary>
-        /// <param name="persoon">Account die gebruikersrecht moet krijgen op <paramref name="groep"/></param>
-        /// <param name="groep">Groep waarvoor <paramref name="persoon"/> gebruikersrecht moet krijgen</param>
-        /// <param name="permissies">Toe te kennen permissies.</param>
-        /// <returns>Het gebruikersrecht</returns>
-        /// <remarks>Persisteert niet.</remarks>
-        public GebruikersRechtV2 ToekennenOfWijzigen(Persoon persoon, Groep groep, Permissies permissies)
-        {
-            DateTime vervaldatum = NieuweVervalDatum();
-
-            return ToekennenOfWijzigen(persoon, groep, permissies, vervaldatum);
-        }
 
         /// <summary>
         /// Levert het gebruikersrecht op dat een <paramref name="gelieerdePersoon"/> heeft op zijn eigen groep. 
@@ -182,6 +117,29 @@ namespace Chiro.Gap.Workers
             return
                 gelieerdePersoon.Groep.GebruikersRechtV2.FirstOrDefault(
                     gr => gr.Persoon.ID == gelieerdePersoon.Persoon.ID);
+        }
+
+        /// <summary>
+        /// Zoekt het gebruikersrecht op van <paramref name="persoon"/> op <paramref name="groep"/>. Als dat nog niet
+        /// bestaat, maak er een aan. Voeg de gevraagde permissies toe. De vervaldatum wordt vervangen door de
+        /// standaardvervaldatum op dit moment.
+        /// </summary>
+        /// <param name="persoon">Persoon die gebruikersrechten moet krijgen.</param>
+        /// <param name="groep">Groep waarvoor de persoon gebruikersrechten moet krijgen.</param>
+        /// <param name="persoonlijkeGegevens">Permissies op persoonlijke gegevens.</param>
+        /// <param name="groepsGegevens">Permissies op de gegevens van de groep.</param>
+        /// <param name="personenInAfdeling">Permissies op de leden in de eigen afdeling.</param>
+        /// <param name="personenInGroep">Permissies op alle personen van de eigen groep.</param>
+        public void ToekennenOfWijzigen(Persoon persoon, Groep groep, Permissies persoonlijkeGegevens, Permissies groepsGegevens,
+            Permissies personenInAfdeling, Permissies personenInGroep)
+        {
+            var gebruikersRecht = persoon.GebruikersRechtV2.FirstOrDefault(gr => gr.Groep.Equals(groep)) ??
+                                  new GebruikersRechtV2 {Groep = groep, Persoon = persoon};
+            gebruikersRecht.PersoonlijkeGegevens |= persoonlijkeGegevens;
+            gebruikersRecht.GroepsGegevens |= groepsGegevens;
+            gebruikersRecht.PersonenInAfdeling |= personenInAfdeling;
+            gebruikersRecht.PersonenInGroep |= personenInGroep;
+            gebruikersRecht.VervalDatum = NieuweVervalDatum();
         }
     }
 }

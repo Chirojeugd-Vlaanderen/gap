@@ -57,8 +57,6 @@ namespace Chiro.Gap.Poco.Model
                 return Persoon.GeboorteDatum.HasValue ? Persoon.GeboorteDatum.Value.AddYears(-ChiroLeefTijd) : Persoon.GeboorteDatum;
             }
         }
-
-
     }
     
 }

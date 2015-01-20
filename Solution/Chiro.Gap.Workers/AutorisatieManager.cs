@@ -18,6 +18,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Chiro.Gap.Poco.Model;
@@ -61,21 +62,6 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Controleert of de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft
-        /// op de gegeven <paramref name="groep"/>.
-        /// </summary>
-        /// <param name="groep">Groep waarvoor permissies te controleren.</param>
-        /// <param name="permissies">Permissies waarop te controleren.</param>
-        /// <returns><c>true</c> als de aangelogde gebruiker de gegeven <paramref name="permissies"/> heeft.</returns>
-        public bool HeeftPermissies(Groep groep, Permissies permissies)
-        {
-            int? adNummer = _authenticatieMgr.AdNummerGet();
-            return groep != null && adNummer != null &&
-                groep.GebruikersRechtV2.Any(gr => gr.Persoon.AdNummer == adNummer && gr.Test(permissies));
-
-        }
-
-        /// <summary>
         /// Geeft <c>true</c> als de momenteel aangelogde gebruiker beheerder is van de gegeven persoon <paramref name="p"/>.
         /// </summary>
         /// <param name="p">Persoon waarvoor gebruikersrecht nagekeken moet worden</param>
@@ -85,8 +71,57 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public bool IsGav(Groep groep)
         {
-            return HeeftPermissies(groep, Permissies.Gav);
+            return PermissiesOphalen(groep, SecurityAspect.AllesVanGroep) == Permissies.Bewerken;
         }
+
+        /// <summary>
+        /// Geeft weer welke permissie de aangelogde gebruiker heeft op de gegeven
+        /// <paramref name="aspecten"/> van de gegeven <paramref name="groep"/>.
+        /// </summary>
+        /// <param name="groep">Groep waarvoor de permissies opgehaald moeten worden.</param>
+        /// <param name="aspecten">Aspecten waarvoor permissies opgehaald moeten worden.</param>
+        /// <returns>Permissies die de aangelogde gebruiker heeft op de gegeven
+        /// <paramref name="aspecten"/> van de gegeven <paramref name="groep"/>.</returns>
+        /// <remarks>Als je meerdere aspecten combineert, krijg je de bitwise and van de permissies als
+        /// resultaat. D.w.z.: de permissies die je hebt op àlle meegegeven aspecten.</remarks>
+        public Permissies PermissiesOphalen(Groep groep, SecurityAspect aspecten)
+        {
+            int? adNummer = _authenticatieMgr.AdNummerGet();
+            var gebruikersRecht =
+                groep.GebruikersRechtV2.FirstOrDefault(
+                    gr => gr.Persoon.AdNummer == adNummer && gr.VervalDatum != null && gr.VervalDatum > DateTime.Now);
+
+            if (gebruikersRecht == null)
+            {
+                return Permissies.Geen;
+            }
+
+            var permissies = new List<Permissies>();
+
+            // Dit is een tamelijk omslachtige procedure:
+            // Voeg de permissies op ieder aspect uit 'aspecten' toe aan de lijst
+            // 'permissies', en lever de bitwise and op.
+
+            if (aspecten.HasFlag(SecurityAspect.PersoonlijkeGegevens))
+            {
+                permissies.Add(gebruikersRecht.PersoonlijkeGegevens);
+            }
+            if (aspecten.HasFlag(SecurityAspect.GroepsGegevens))
+            {
+                permissies.Add(gebruikersRecht.GroepsGegevens);
+            }
+            if (aspecten.HasFlag(SecurityAspect.PersonenInAfdeling))
+            {
+                permissies.Add(gebruikersRecht.PersonenInAfdeling);
+            }
+            if (aspecten.HasFlag(SecurityAspect.PersonenInGroep))
+            {
+                permissies.Add(gebruikersRecht.PersonenInGroep);
+            }
+
+            return permissies.Aggregate((x, y) => x & y);
+        }
+
         public bool IsGav(Persoon p)
         {
             return p.GelieerdePersoon.Any(gp => IsGav(gp.Groep));
@@ -145,16 +180,10 @@ namespace Chiro.Gap.Workers
         /// </returns>
         public bool IsGav(IList<GelieerdePersoon> gelieerdePersonen)
         {
-            // Als er een gelieerde persoon is waarvoor alle GAV's een AD-nummer hebben
-            // verschillend van het mijne, dan ben ik geen GAV voor alle gegeven personen.
-
-            int? adNummer = _authenticatieMgr.AdNummerGet();
-            return (from gp in gelieerdePersonen
-                    where
-                        gp.Groep.GebruikersRechtV2.All(
-                            gr => gr.Persoon.AdNummer != adNummer ||
-                            (!gr.Test(Permissies.Gav)))
-                    select gp).FirstOrDefault() == null;
+            return
+                gelieerdePersonen.Select(gp => gp.Groep)
+                    .Distinct()
+                    .All(g => PermissiesOphalen(g, SecurityAspect.AllesVanGroep).HasFlag(Permissies.Bewerken));
         }
 
         /// <summary>
@@ -190,16 +219,12 @@ namespace Chiro.Gap.Workers
         /// <paramref name="persoonsAdressen"/>, <c>false</c> in het andere geval</returns>
         public bool IsGav(IList<PersoonsAdres> persoonsAdressen)
         {
-            int? adNummer = _authenticatieMgr.AdNummerGet();
-
-            return adNummer != null &&
-                persoonsAdressen.All(
-                    pa =>
-                    pa.Persoon.GelieerdePersoon.Any(
-                        gp =>
-                        gp.Groep.GebruikersRechtV2.Any(
-                            gr => gr.Persoon.AdNummer == adNummer && 
-                                (gr.Test(Permissies.Gav)))));
+            return persoonsAdressen.All(
+                       pa =>
+                           pa.Persoon.GelieerdePersoon.Any(
+                               gp =>
+                                   PermissiesOphalen(gp.Groep, SecurityAspect.AllesVanGroep)
+                                       .HasFlag(Permissies.Bewerken)));
         }
 
         /// <summary>
@@ -211,15 +236,11 @@ namespace Chiro.Gap.Workers
         /// <paramref name="personen"/>, <c>false</c> in het andere geval</returns>
         public bool IsGav(IList<Persoon> personen)
         {
-            int? adNummer = _authenticatieMgr.AdNummerGet();
-
-            return adNummer != null && personen.All(
+            return personen.All(
                 p =>
-                p.GelieerdePersoon.Any(
-                    gp =>
-                    gp.Groep.GebruikersRechtV2.Any(
-                        gr => gr.Persoon.AdNummer == adNummer && 
-                            (gr.Test(Permissies.Gav)))));
+                    p.GelieerdePersoon.Any(
+                        gp =>
+                            PermissiesOphalen(gp.Groep, SecurityAspect.AllesVanGroep).HasFlag(Permissies.Bewerken)));
 
         }
 
@@ -232,11 +253,9 @@ namespace Chiro.Gap.Workers
         /// <paramref name="leden"/>, <c>false</c> in het andere geval</returns>
         public bool IsGav(IList<Lid> leden)
         {
-            int? adNummer = _authenticatieMgr.AdNummerGet();
-
-            return adNummer != null && leden.Select(ld => ld.GroepsWerkJaar.Groep).Distinct().All(g => g.GebruikersRechtV2.Any(
-                gr => gr.Persoon.AdNummer == adNummer
-                    && (gr.Test(Permissies.Gav))));
+            return leden.Select(ld => ld.GroepsWerkJaar.Groep)
+                       .Distinct()
+                       .All(g => PermissiesOphalen(g, SecurityAspect.AllesVanGroep).HasFlag(Permissies.Bewerken));
         }
 
         /// <summary>
@@ -248,11 +267,7 @@ namespace Chiro.Gap.Workers
         /// <paramref name="groepen"/>, <c>false</c> in het andere geval</returns>
         public bool IsGav(IList<Groep> groepen)
         {
-            int? adNummer = _authenticatieMgr.AdNummerGet();
-
-            return adNummer != null && groepen.All(g => g.GebruikersRechtV2.Any(
-                gr => gr.Persoon.AdNummer == adNummer
-                    && (gr.Test(Permissies.Gav))));
+            return groepen.All(g => PermissiesOphalen(g, SecurityAspect.AllesVanGroep).HasFlag(Permissies.Bewerken));
         }
 
         /// <summary>
@@ -268,33 +283,35 @@ namespace Chiro.Gap.Workers
             var mijnRechten = ik.GelieerdePersoon.SelectMany(gp => gp.Groep.GebruikersRechtV2);
 
             // Als ik mijn eigen info mag lezen, en ik ben persoon2, dan is het ok.
-            if (Equals(ik, persoon2) && mijnRechten.Any(gr => gr.Test(Permissies.EigenInfoLezen)))
+            if (Equals(ik, persoon2) && MagZichzelfLezen(ik))
             {
                 return true;
             }
 
-            // Als ik alles mag lezen van mijn groep, en persoon2 is gelieerd aan mijn groep, dan
-            // is het ok.
-            foreach (var gr in mijnRechten.Where(gr2 => gr2.Test(Permissies.AllesLezen)))
+            // Als ik alles mag lezen van een groep waar persoon2 aan gelieerd is, is het ok.
+            if (
+                persoon2.GelieerdePersoon.Any(
+                    gp => PermissiesOphalen(gp.Groep, SecurityAspect.PersonenInGroep).HasFlag(Permissies.Lezen)))
             {
-                if (persoon2.GelieerdePersoon.Any(gp => Equals(gp.Groep, gr.Groep)))
-                {
-                    return true;
-                }
+                return true;
             }
+
+            // Als persoon2 in dezelfde afdeling zit als ik, en die afdeling is van het huidige werkjaar, en
+            // ik mag personen van mijn afdeling lezen, dan is het OK.
+
 
             // als ik de personen van mijn afdeling mag lezen, is het in orde als persoon2 in mijn 
             // afdeling zit.
-            foreach (var gr in mijnRechten.Where(gr2 => gr2.Test(Permissies.AfdelingLezen)))
+            foreach (var g in ToegestaneGroepenOphalen(ik, SecurityAspect.PersonenInAfdeling))
             {
-                var huidigWerkJaar = gr.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
+                var huidigWerkJaar = g.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).First();
                 var mijnLid = (from l in ik.GelieerdePersoon.SelectMany(gp => gp.Lid)
                                where Equals(l.GroepsWerkJaar, huidigWerkJaar)
                                select l).FirstOrDefault();
                 var persoon2Lid = (from l in persoon2.GelieerdePersoon.SelectMany(gp => gp.Lid)
                                    where Equals(l.GroepsWerkJaar, huidigWerkJaar)
                                    select l).FirstOrDefault();
-                if (mijnLid.AfdelingsJaarIDs.Any(ajid => persoon2Lid.AfdelingsJaarIDs.Contains(ajid)))
+                if (mijnLid != null && persoon2Lid != null && mijnLid.AfdelingsJaarIDs.Any(ajid => persoon2Lid.AfdelingsJaarIDs.Contains(ajid)))
                 {
                     return true;
                 }
@@ -303,25 +320,53 @@ namespace Chiro.Gap.Workers
             // Ik geef op.
             return false;
         }
-    }
 
-    /// <summary>
-    /// Extension method voor Permissies
-    /// </summary>
-    internal static class PermissieExtensions
-    {
         /// <summary>
-        /// Controleert of het gegeven <paramref name="gebruikersRecht"/> niet vervallen is,
-        /// en de gegeven permissies <paramref name="teTesten"/> heeft.
+        /// Haalt alle groepen op waarvoor <paramref name="ik"/> leesrechten heb op de gegeven
+        /// <paramref name="aspecten"/>.
         /// </summary>
-        /// <param name="gebruikersRecht">Een gebruikresrecht</param>
-        /// <param name="teTesten">Te testen permissies</param>
-        /// <returns><c>true</c> als de gegeven <paramref name="permissies"/> van toepassing
-        /// en nog niet vervallen zijn.</returns>
-        public static bool Test(this GebruikersRechtV2 gebruikersRecht, Permissies teTesten)
+        /// <param name="ik">Persoon waarvoor de groepen opgehaald moeten worden.</param>
+        /// <param name="aspecten">Aspecten waarvoor de persoon leesrechten moet hebben.</param>
+        /// <returns>alle groepen op waarvoor <paramref name="ik"/> leesrechten heb op de gegeven
+        /// <paramref name="aspecten"/>.</returns>
+        public IEnumerable<Groep> ToegestaneGroepenOphalen(Persoon ik, SecurityAspect aspecten)
         {
-            return (gebruikersRecht.VervalDatum.HasValue && gebruikersRecht.VervalDatum > DateTime.Now)
-                && (gebruikersRecht.Permissies & teTesten) == teTesten;
+            var gebruikersrechten =
+                ik.GebruikersRechtV2.Where(gr => gr.VervalDatum != null & gr.VervalDatum > DateTime.Now);
+
+            if (aspecten.HasFlag(SecurityAspect.PersoonlijkeGegevens))
+            {
+                gebruikersrechten = gebruikersrechten.Where(gr => gr.PersoonlijkeGegevens.HasFlag(Permissies.Lezen));
+            }
+            if (aspecten.HasFlag(SecurityAspect.GroepsGegevens))
+            {
+                gebruikersrechten = gebruikersrechten.Where(gr => gr.GroepsGegevens.HasFlag(Permissies.Lezen));
+            }
+            if (aspecten.HasFlag(SecurityAspect.PersonenInAfdeling))
+            {
+                gebruikersrechten = gebruikersrechten.Where(gr => gr.PersonenInAfdeling.HasFlag(Permissies.Lezen));
+            }
+            if (aspecten.HasFlag(SecurityAspect.PersonenInGroep))
+            {
+                gebruikersrechten = gebruikersrechten.Where(gr => gr.PersonenInGroep.HasFlag(Permissies.Lezen));
+            }
+            return gebruikersrechten.Select(gr => gr.Groep).Distinct();
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de gegeven <paramref name="persoon"/> rechten heeft om zijn persoonlijke
+        /// informatie te lezen.
+        /// </summary>
+        /// <param name="persoon">Persoon waarvan de rechten gecontroleerd moeten worden.</param>
+        /// <returns><c>true</c> als de gegeven <paramref name="persoon"/> rechten heeft om zijn persoonlijke
+        /// informatie te lezen.</returns>
+        public bool MagZichzelfLezen(Persoon persoon)
+        {
+            return
+                persoon.GebruikersRechtV2.Any(
+                    gr =>
+                        gr.VervalDatum != null && gr.VervalDatum > DateTime.Now &&
+                        gr.PersoonlijkeGegevens.HasFlag(Permissies.Lezen));
         }
     }
 }

@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
 
@@ -152,5 +153,15 @@ namespace Chiro.Gap.Dummies
         {
             return true;
         }
-    }
+
+	    public Permissies PermissiesOphalen(Groep groep, SecurityAspect aspecten)
+	    {
+	        return Permissies.Bewerken;
+	    }
+
+	    public bool MagZichzelfLezen(Persoon persoon)
+	    {
+	        return true;
+	    }
+	}
 }

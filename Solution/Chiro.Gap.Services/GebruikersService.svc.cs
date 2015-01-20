@@ -135,26 +135,26 @@ namespace Chiro.Gap.Services
         }
 
         /// <summary>
-        /// Als de persoon met gegeven <paramref name="gelieerdePersoonId"/> nog geen account heeft, wordt er een
-        /// account voor gemaakt. Aan die account worden dan de meegegeven <paramref name="gebruikersRechten"/>
-        /// gekoppeld.  Gebruikersrechten zijn standaard 14 maanden geldig.
+        /// Als de persoon met gegeven <paramref name="gelieerdePersoonId"/> nog geen account heeft, krijgt
+        /// hij een account voor zijn eigen groep. Aan die account worden dan de meegegeven 
+        /// <paramref name="gebruikersRecht"/> gekoppeld.
         /// </summary>
         /// <param name="gelieerdePersoonId">Id van gelieerde persoon die rechten moet krijgen</param>
-        /// <param name="gebruikersRechten">Rechten die de account moet krijgen. Mag leeg zijn. Bestaande 
-        /// gebruikersrechten worden zo mogelijk verlengd als ze in <paramref name="gebruikersRechten"/> 
-        /// voorkomen, eventuele bestaande rechten niet in <paramref name="gebruikersRechten"/> blijven
+        /// <param name="gebruikersRecht">Rechten die de account moet krijgen. Mag leeg zijn. Bestaande 
+        /// gebruikersrechten worden zo mogelijk verlengd als ze in <paramref name="gebruikersRecht"/> 
+        /// voorkomen, eventuele bestaande rechten niet in <paramref name="gebruikersRecht"/> blijven
         /// onaangeroerd.
         /// </param>
-        public void RechtenToekennen(int gelieerdePersoonId, GebruikersRecht[] gebruikersRechten)
+        public void RechtenToekennen(int gelieerdePersoonId, GebruikersRecht gebruikersRecht)
         {
             var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonId);
             Gav.Check(gelieerdePersoon);
 
-            if (gebruikersRechten == null)
+            if (gebruikersRecht == null)
             {
                 // Als er geen gebruikersrechten meegegeven zijn, dan geven we de gelieerde persoon
                 // rechten 'geen' op zijn eigen groep.
-                gebruikersRechten = new[] { new GebruikersRecht { GroepID = gelieerdePersoon.Groep.ID, Permissies = Permissies.Geen } };
+                gebruikersRecht = new GebruikersRecht();
             }
 
             var p = gelieerdePersoon.Persoon;
@@ -162,73 +162,35 @@ namespace Chiro.Gap.Services
             if (p.AdNummer == null)
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.AdNummerVerplicht,
-                                                        Properties.Resources.AdNummerVerplicht);
+                    Properties.Resources.AdNummerVerplicht);
             }
             if (string.IsNullOrEmpty(_gelieerdePersonenMgr.ContactEmail(gelieerdePersoon)))
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.EMailVerplicht, Properties.Resources.EmailOntbreekt);
             }
 
-            RechtenToekennen(gelieerdePersoon.Persoon, gebruikersRechten);
+            _gebruikersRechtenMgr.ToekennenOfWijzigen(gelieerdePersoon.Persoon, gelieerdePersoon.Groep,
+                gebruikersRecht.PersoonlijkeGegevens, gebruikersRecht.GroepsGegevens, gebruikersRecht.PersonenInAfdeling,
+                gebruikersRecht.PersonenInGroep);
+
 
 #if KIPDORP
             using (var tx = new TransactionScope())
             {
 #endif
-                // Zoekt de gegeven gebruiker in active directory. Maakt die gebruiker aan als die nog
-                // niet bestaat. En voegt hem/haar toe aan de groep GapGebruikers.
+            _rechtenRepo.SaveChanges();
 
-                string username =
-                    ServiceHelper.CallService<IAdService, string>(
-                        svc =>
-                        svc.GapLoginAanvragen(p.AdNummer.Value, p.VoorNaam, p.Naam,
-                                                _gelieerdePersonenMgr.ContactEmail(gelieerdePersoon)));
+            // Zoekt de gegeven gebruiker in active directory. Maakt die gebruiker aan als die nog
+            // niet bestaat. En voegt hem/haar toe aan de groep GapGebruikers.
+
+            ServiceHelper.CallService<IAdService, string>(
+                svc =>
+                    svc.GapLoginAanvragen(p.AdNummer.Value, p.VoorNaam, p.Naam,
+                        _gelieerdePersonenMgr.ContactEmail(gelieerdePersoon)));
 #if KIPDORP
                 tx.Complete();
             }
 #endif
-        }
-
-        /// <summary>
-        /// Geeft de persoon met gegeven <paramref name="gelieerdePersoonID"/> de gegeven
-        /// <paramref name="gebruikersRechten"/>.  
-        /// </summary>
-        /// <param name="gelieerdePersoonID">GelieerdePersoonID van een persoon die rechten
-        /// moet krijgen.</param>
-        /// <param name="gebruikersRechten">Rechten die de account moet krijgen.
-        /// Bestaande gebruikersrechten worden zo mogelijk verlengd als ze in 
-        /// <paramref name="gebruikersRechten"/> voorkomen, eventuele bestaande rechten niet in 
-        /// <paramref name="gebruikersRechten"/> blijven onaangeroerd.
-        /// </param>
-        public void RechtenToekennenGelieerdePersoon(int gelieerdePersoonID, GebruikersRecht[] gebruikersRechten)
-        {
-            var persoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID).Persoon;
-
-            RechtenToekennen(persoon, gebruikersRechten);
-        }
-
-        private void RechtenToekennen(Persoon persoon, GebruikersRecht[] gebruikersRechten)
-        {
-            // TODO: Deze method staat hier zo wat verloren.
-            // In principe zou ze beter naar de workers gaan. Maar daar hebben we geen toegang
-            // tot _groepenRepo.
-            // Beter zou zijn dat de groepen al opgehaald zijn, en er een structuurtje is
-            // {Groep, Recht}, maar dat is dan weer nog niet helemaal afgestemd op de database.
-            // (zie #1357)
-
-            if (gebruikersRechten == null)
-            {
-                return;
-            }
-
-            foreach (var gr in gebruikersRechten)
-            {
-                var groep = _groepenRepo.ByID(gr.GroepID);
-                Gav.Check(groep);
-                _gebruikersRechtenMgr.ToekennenOfWijzigen(persoon, groep, gr.Permissies);
-            }
-
-            _rechtenRepo.SaveChanges();
         }
 
         /// <summary>

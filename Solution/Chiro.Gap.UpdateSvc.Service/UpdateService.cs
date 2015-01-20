@@ -404,7 +404,10 @@ namespace Chiro.Gap.UpdateSvc.Service
                 {
                     origineelGebruikersRecht.VervalDatum = dubbelGebruikersRecht.VervalDatum;
                 }
-                origineelGebruikersRecht.Permissies |= dubbelGebruikersRecht.Permissies;
+                origineelGebruikersRecht.PersoonlijkeGegevens |= dubbelGebruikersRecht.PersoonlijkeGegevens;
+                origineelGebruikersRecht.GroepsGegevens |= dubbelGebruikersRecht.GroepsGegevens;
+                origineelGebruikersRecht.PersonenInAfdeling |= dubbelGebruikersRecht.PersonenInAfdeling;
+                origineelGebruikersRecht.PersonenInGroep |= dubbelGebruikersRecht.PersonenInGroep;
                 _gebruikersRechtenRepo.Delete(dubbelGebruikersRecht);
             }
 

@@ -111,7 +111,8 @@ namespace Chiro.Gap.Workers.Test
             // ACT
 
             var target = new GebruikersRechtenManager();
-            var actual = target.ToekennenOfWijzigen(gelieerdePersoon.Persoon, gelieerdePersoon.Groep, Permissies.Gav);
+            target.ToekennenOfWijzigen(gelieerdePersoon.Persoon, gelieerdePersoon.Groep, Permissies.Bewerken,
+                Permissies.Bewerken, Permissies.Bewerken, Permissies.Bewerken);
 
             // ASSERT
 

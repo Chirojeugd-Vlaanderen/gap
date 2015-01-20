@@ -140,7 +140,6 @@ namespace Chiro.Gap.Workers.Test
             {
                 Persoon = new Persoon { ID = 1, AdNummer = 2 },
                 Groep = new ChiroGroep { ID = 3 },
-                Permissies = Domain.Permissies.Geen,
                 VervalDatum = DateTime.Now.AddDays(1)       // geldig tot morgen.
             };
             gebruikersRecht.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
@@ -173,7 +172,6 @@ namespace Chiro.Gap.Workers.Test
             {
                 Persoon = new Persoon { ID = 1, AdNummer = 2 },
                 Groep = new ChiroGroep { ID = 3 },
-                Permissies = Domain.Permissies.Geen,
                 VervalDatum = DateTime.Now.AddDays(1)       // geldig tot morgen.
             };
             gebruikersRecht.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
@@ -183,7 +181,6 @@ namespace Chiro.Gap.Workers.Test
             {
                 Persoon = new Persoon { ID = 1, AdNummer = 2 },
                 Groep = new ChiroGroep { ID = 4 },
-                Permissies = Domain.Permissies.Geen,
                 VervalDatum = DateTime.Now.AddDays(1)       // geldig tot morgen.
             };
             gebruikersRecht2.Persoon.GebruikersRechtV2.Add(gebruikersRecht2);
@@ -218,7 +215,6 @@ namespace Chiro.Gap.Workers.Test
             {
                 Persoon = new Persoon { ID = 1, AdNummer = 2 },
                 Groep = new ChiroGroep { ID = 3 },
-                Permissies = Domain.Permissies.Geen,
                 VervalDatum = DateTime.Now.AddDays(1)       // geldig tot morgen.
             };
             gebruikersRecht.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
@@ -260,7 +256,6 @@ namespace Chiro.Gap.Workers.Test
             {
                 Persoon = new Persoon { ID = 1, AdNummer = 2 },
                 Groep = new ChiroGroep { ID = 3 },
-                Permissies = Domain.Permissies.Geen,
                 VervalDatum = DateTime.Now.AddDays(1)       // geldig tot morgen.
             };
             gebruikersRecht.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
@@ -315,7 +310,6 @@ namespace Chiro.Gap.Workers.Test
             {
                 Persoon = new Persoon { ID = 1, AdNummer = 2 },
                 Groep = new ChiroGroep { ID = 3 },
-                Permissies = Domain.Permissies.Geen,
                 VervalDatum = DateTime.Now.AddDays(1)       // geldig tot morgen.
             };
             gebruikersRecht.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
@@ -354,7 +348,6 @@ namespace Chiro.Gap.Workers.Test
             {
                 Persoon = new Persoon { ID = 1, AdNummer = 2 },
                 Groep = new ChiroGroep { ID = 3 },
-                Permissies = Domain.Permissies.Geen,
                 VervalDatum = DateTime.Now.AddDays(1)       // geldig tot morgen.
             };
             gebruikersRecht.Persoon.GebruikersRechtV2.Add(gebruikersRecht);
