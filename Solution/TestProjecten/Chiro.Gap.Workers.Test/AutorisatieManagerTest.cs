@@ -19,6 +19,7 @@
 
 using System;
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -91,7 +92,7 @@ namespace Chiro.Gap.Workers.Test
         ///Controleert of de GAV-check van een groep rekening houdt met de vervaldatum van gebruikersrechten.
         ///</summary>
         [TestMethod()]
-        public void IsGavGroepTest()
+        public void IsGavGroepVervallenTest()
         {
             // ARRANGE
 
@@ -101,13 +102,13 @@ namespace Chiro.Gap.Workers.Test
             Groep groep = new ChiroGroep
             {
                 GebruikersRechtV2 = new[]
-                                                        {
-                                                            new GebruikersRechtV2
-                                                                {
-                                                                    Persoon = new Persoon {AdNummer = mijnAdNummer},
-                                                                    VervalDatum = DateTime.Today // net vervallen
-                                                                }
-                                                        }
+                {
+                    new GebruikersRechtV2
+                    {
+                        Persoon = new Persoon {AdNummer = mijnAdNummer},
+                        VervalDatum = DateTime.Today // net vervallen
+                    }
+                }
             };
 
             // Zet mock op voor het opleveren van gebruikersnaam
@@ -125,6 +126,46 @@ namespace Chiro.Gap.Workers.Test
             // ASSERT
 
             Assert.IsFalse(actual);
+        }
+
+        /// <summary>
+        /// Als je rechten hebt op iedereen van je groep, moet je ook rechten hebben op iedereen van je afdeling.
+        /// </summary>
+        [TestMethod()]
+        public void GroepsRechtImpliceertAfdelingsRechtTest()
+        {
+            // ARRANGE
+
+            // testgroep; toegang voor deze persoon net vervallen.
+            const int mijnAdNummer = 12345;
+
+            Groep groep = new ChiroGroep
+            {
+                GebruikersRechtV2 = new[]
+                {
+                    new GebruikersRechtV2
+                    {
+                        Persoon = new Persoon {AdNummer = mijnAdNummer},
+                        VervalDatum = DateTime.Today.AddDays(1),
+                        GroepsPermissies = Permissies.Bewerken
+                    }
+                }
+            };
+
+            // Zet mock op voor het opleveren van gebruikersnaam
+            var authenticatieManagerMock = new Mock<IAuthenticatieManager>();
+            authenticatieManagerMock.Setup(src => src.AdNummerGet()).Returns(mijnAdNummer);
+            Factory.InstantieRegistreren(authenticatieManagerMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<AutorisatieManager>();
+            var actual = target.PermissiesOphalen(groep, SecurityAspect.PersonenInAfdeling);
+
+
+            // ASSERT
+
+            Assert.IsTrue(actual.HasFlag(Permissies.Bewerken));
         }
 
         /// <summary>
