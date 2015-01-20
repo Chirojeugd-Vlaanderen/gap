@@ -32,10 +32,31 @@ namespace Chiro.Gap.Poco.Model
         public DateTime? VervalDatum { get; set; }
         public override byte[] Versie { get; set; }
 
-        public Permissies PersoonsPermissies { get; set; }
-        public Permissies GroepsPermissies { get; set; }
-        public Permissies AfdelingsPermissies { get; set; }
-        public Permissies IedereenPermissies { get; set; }
+        internal int PersoonsPermissiesInt { get; set; }
+        internal int GroepsPermissiesInt { get; set; }
+        internal int AfdelingsPermissiesInt { get; set; }
+        internal int IedereenPermissiesInt { get; set; }
+
+        public Permissies PersoonsPermissies {
+            get { return (Permissies) PersoonsPermissiesInt; }
+            set { PersoonsPermissiesInt = (int)value; }
+        }
+        public Permissies GroepsPermissies
+        {
+            get { return (Permissies)GroepsPermissiesInt; }
+            set { GroepsPermissiesInt = (int)value; }
+        }
+        public Permissies AfdelingsPermissies
+        {
+            get { return (Permissies)AfdelingsPermissiesInt; }
+            set { AfdelingsPermissiesInt = (int)value; }
+        }
+        public Permissies IedereenPermissies
+        {
+            get { return (Permissies)IedereenPermissiesInt; }
+            set { IedereenPermissiesInt = (int)value; }
+        }
+
         public bool SuperGav { get; set; }
 
     // virtual for lazy loading

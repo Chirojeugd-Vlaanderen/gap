@@ -1934,10 +1934,10 @@
           <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Groep" FromRole="GebruikersRechtv2" ToRole="Groep" />
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" FromRole="GebruikersRechtv2" ToRole="Persoon" />
-          <Property Name="PersoonsPermissies" Type="Int32" Nullable="false" />
-          <Property Name="GroepsPermissies" Type="Int32" Nullable="false" />
-          <Property Name="AfdelingsPermissies" Type="Int32" Nullable="false" />
-          <Property Name="IedereenPermissies" Type="Int32" Nullable="false" />
+          <Property Name="PersoonsPermissiesInt" Type="Int32" Nullable="false" />
+          <Property Name="GroepsPermissiesInt" Type="Int32" Nullable="false" />
+          <Property Name="AfdelingsPermissiesInt" Type="Int32" Nullable="false" />
+          <Property Name="IedereenPermissiesInt" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_GebruikersRechtV2_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
@@ -2591,10 +2591,10 @@
           <EntitySetMapping Name="GebruikersRechtv2">
             <EntityTypeMapping TypeName="ChiroGroepModel.GebruikersRechtV2">
               <MappingFragment StoreEntitySet="GebruikersRechtv2">
-                <ScalarProperty Name="IedereenPermissies" ColumnName="IedereenPermissies" />
-                <ScalarProperty Name="AfdelingsPermissies" ColumnName="AfdelingsPermissies" />
-                <ScalarProperty Name="GroepsPermissies" ColumnName="GroepsPermissies" />
-                <ScalarProperty Name="PersoonsPermissies" ColumnName="PersoonsPermissies" />
+                <ScalarProperty Name="IedereenPermissiesInt" ColumnName="IedereenPermissies" />
+                <ScalarProperty Name="AfdelingsPermissiesInt" ColumnName="AfdelingsPermissies" />
+                <ScalarProperty Name="GroepsPermissiesInt" ColumnName="GroepsPermissies" />
+                <ScalarProperty Name="PersoonsPermissiesInt" ColumnName="PersoonsPermissies" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="VervalDatum" ColumnName="VervalDatum" />
                 <ScalarProperty Name="ID" ColumnName="GebruikersRechtV2ID" />
@@ -3117,7 +3117,7 @@
           <edmx:ConnectorPoint PointX="13.75" PointY="28.348294901041676" />
         </edmx:AssociationConnector>
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_Groep_Adres" />
-        <edmx:EntityTypeShape EntityType="ChiroGroepModel.GebruikersRechtV2" Width="1.5" PointX="11.25" PointY="16" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.GebruikersRechtV2" Width="1.5" PointX="11.625" PointY="16.125" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_GebruikersRechtV2_Groep" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" />
       </edmx:Diagram>
