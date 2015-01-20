@@ -35,7 +35,7 @@
         {
             %>
     <tr>
-        <td><%:gebr.GavLogin %></td>
+        <td><%:gebr.Login %></td>
         <td><%=gebr.PersoonID > 0 ? Html.ActionLink(String.Format("{0} {1}", gebr.VoorNaam, gebr.FamilieNaam), "Bewerken", new { Controller = "Personen", id = gebr.GelieerdePersoonID}).ToHtmlString() : "(onbekend)" %></td>
         <td><%:gebr.VervalDatum == null ? "nooit" : ((DateTime)gebr.VervalDatum).ToString("d") %></td>
         <td>
@@ -49,7 +49,7 @@
                 if (Model.GebruikersDetails.Count() > 1)
                 {
 %>
-              <%= Html.ActionLink("Afnemen", "Intrekken", new { gebruikersNaam = gebr.GelieerdePersoonIDs })%>
+              <%= Html.ActionLink("Afnemen", "Intrekken", new { gebruikersNaam = gebr.GelieerdePersoonID })%>
             <% } %>
         </td>
     </tr>
