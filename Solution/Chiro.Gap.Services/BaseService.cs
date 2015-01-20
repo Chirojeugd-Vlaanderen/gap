@@ -540,7 +540,7 @@ namespace Chiro.Gap.Services
                     opt => opt.MapFrom(src => _ledenMgr.HuidigLidGet(src)))
                 .ForMember(
                     dst => dst.GebruikersInfo,
-                    opt => opt.MapFrom(src => src));
+                    opt => opt.MapFrom(src => src.GebruikersRechtOpEigenGroep()));
 
             Mapper.CreateMap<Lid, InschrijvingsVoorstel>()
                 .ForMember(
@@ -568,10 +568,14 @@ namespace Chiro.Gap.Services
                 .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Persoon.ID))
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Persoon.Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
-                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)));
+                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)))
+                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => src));
 
             Mapper.CreateMap<GebruikersRechtV2, GebruikersInfo>()
-                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)));
+                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)))
+                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => src));
+
+            Mapper.CreateMap<GebruikersRechtV2, GebruikersRecht>();
 
             Mapper.CreateMap<GelieerdePersoon, GebruikersInfo>()
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)))
@@ -585,7 +589,7 @@ namespace Chiro.Gap.Services
             Mapper.CreateMap<Persoon, GebruikersDetail>()
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)))
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.GebruikersRechtV2.Any(gr => gr.IsVerlengbaar)))
-                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => Permissies.Geen))
+                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => (GebruikersRecht)null))
                 .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => (DateTime?)null))
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.VoorNaam))
@@ -595,7 +599,7 @@ namespace Chiro.Gap.Services
             Mapper.CreateMap<Persoon, GebruikersInfo>()
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src)))
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => false))
-                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => Permissies.Geen))
+                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => (GebruikersRecht)null))
                 .ForMember(dst => dst.VervalDatum, opt => opt.MapFrom(src => DateTime.Now.AddDays(-1)));
 
             #region mapping van datacontracts naar entity's
