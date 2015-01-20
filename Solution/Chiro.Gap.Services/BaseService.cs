@@ -573,7 +573,8 @@ namespace Chiro.Gap.Services
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Persoon.Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)))
-                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => src));
+                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => src))
+                .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer));
 
             Mapper.CreateMap<GebruikersRechtV2, GebruikersInfo>()
                 .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)))

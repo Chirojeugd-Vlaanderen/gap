@@ -49,5 +49,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public int? GelieerdePersoonID { get; set; }
+
+        /// <summary>
+        /// AD-nummer
+        /// </summary>
+        [DataMember]
+        public int AdNummer { get; set; }
     }
 }
