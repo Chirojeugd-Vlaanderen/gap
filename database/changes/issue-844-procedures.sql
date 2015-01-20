@@ -26,22 +26,7 @@ AS
 -- Doel: Geeft login gebruikersrecht op gegeven groep
 -- Als de persoon ooit gebruikersrecht had, wordt dit gewoon verlengd.
 BEGIN
-
-	INSERT INTO auth.GebruikersRechtV2(PersoonID, GroepID, VervalDatum, Permissies)
-	SELECT
-			-- voor de vervaldatum doen we maar iets; die wordt straks overschreven.
-			-- de permissies overigens ook.
-			p.PersoonID, g.GroepID, DateAdd(year, 1, getDate()), 0x7f7f
-	FROM
-			pers.Persoon p
-			, grp.Groep g
-	WHERE
-			p.AdNummer=@adNr
-			AND g.Code=@stamnr
-			AND NOT EXISTS (SELECT 1 FROM auth.GebruikersRechtV2 gr
-							WHERE gr.PersoonID = p.PersoonID AND gr.GroepID = g.GroepID)
-
-	-- nu de echte vervaldatum.
+	-- bepaal de vervaldatum.
 	declare @datum datetime
 			, @jaar varchar(4)
 
@@ -54,14 +39,18 @@ BEGIN
 
 	set @datum =  @jaar + '-11-01';
 
-	-- BELANGRIJK! Permissie 0x7f7f is GAV! Alle rechten in de groep.
+	INSERT INTO auth.GebruikersRechtV2(PersoonID, GroepID, VervalDatum, GroepsPermissies, IedereenPermissies)
+	SELECT
+			p.PersoonID, g.GroepID, @datum, 3, 3
+	FROM
+			pers.Persoon p
+			, grp.Groep g
+	WHERE
+			p.AdNummer=@adNr
+			AND g.Code=@stamnr
+			AND NOT EXISTS (SELECT 1 FROM auth.GebruikersRechtV2 gr
+							WHERE gr.PersoonID = p.PersoonID AND gr.GroepID = g.GroepID)
 
-	UPDATE gr
-	SET gr.VervalDatum = @datum, gr.Permissies=0x7f7f
-	FROM auth.GebruikersRechtV2 gr JOIN grp.Groep g on gr.GroepID = g.GroepID
-	JOIN pers.Persoon p on gr.PersoonID = p.PersoonID
-	WHERE p.AdNummer=@adNr AND g.Code=@stamnr
-	
 	IF @@ROWCOUNT <= 0
 	BEGIN
 		RAISERROR('Dat StamNr is niet gevonden in de tabel Groep', 16, 1)
@@ -91,7 +80,7 @@ CREATE procedure auth.spGebruikersRechtenOphalenAd
 	@adNr INT
 )
 AS
--- Doel: gegevens ophalen van de groepen waar de persoon als user aan gekoppeld is
+-- Doel: gegevens ophalen van de groepen waar de persoon als GAV aan gekoppeld is
 BEGIN
 	SET NOCOUNT ON;
 
@@ -111,7 +100,7 @@ BEGIN
 				ON gr.PersoonID = gav.PersoonID
 	WHERE
 			gav.AdNummer = @adNr
-			AND (gr.Permissies & 0x7f7f) = 0x7f7f
+			AND gr.GroepsPermissies = 3 AND gr.IedereenPermissies = 3
 END
 
 GO
@@ -138,7 +127,7 @@ BEGIN
 	WHERE
 			Code = @stamnr
 			AND gr.Vervaldatum > dateadd(month, -3, getdate())
-			AND (gr.Permissies & 0x7f7f) = 0x7f7f
+			AND gr.GroepsPermissies = 3 AND gr.IedereenPermissies = 3
 END
 GO
 

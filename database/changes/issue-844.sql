@@ -21,7 +21,10 @@ CREATE TABLE auth.GebruikersRechtv2(
 	PersoonID INT NOT NULL,
 	GroepID INT NOT NULL,
 	VervalDatum DATETIME NULL,
-	Permissies INT NOT NULL,
+	PersoonsPermissies INT NOT NULL DEFAULT 0,
+	GroepsPermissies INT NOT NULL DEFAULT 0,
+	AfdelingsPermissies INT NOT NULL DEFAULT 0,
+	IedereenPermissies INT NOT NULL DEFAULT 0,
 	Versie TIMESTAMP NULL,
  CONSTRAINT PK_GebruikersrechtV2 PRIMARY KEY(GebruikersRechtV2ID)
 );
@@ -38,18 +41,18 @@ GO
 CREATE UNIQUE INDEX AK_GebruikersRechtV2_PersoonID_GroepID ON auth.GebruikersRechtV2(PersoonID, GroepID);
 GO
 
-INSERT INTO auth.GebruikersRechtV2(PersoonID, GroepID, VervalDatum, Permissies)
-SELECT gs.PersoonID, gr.GroepID, max(gr.VervalDatum) AS VervalDatum, 0x7F7F AS Permissies
+INSERT INTO auth.GebruikersRechtV2(PersoonID, GroepID, VervalDatum, GroepsPermissies, IedereenPermissies)
+SELECT gs.PersoonID, gr.GroepID, max(gr.VervalDatum) AS VervalDatum, 3 as GroepsPermissies, 3 as IedereenPermissies
 FROM auth.GebruikersRecht gr
 JOIN auth.Gav gav on gr.GavID = gav.GavID
 JOIN auth.GavSchap gs on gav.GavID = gs.GavID
 GROUP BY gs.PersoonID, gr.GroepID
 GO
 
-CREATE INDEX IDX_GebruikersRechtV2_GroepID ON auth.GebruikersRechtV2(GroepID) INCLUDE(PersoonID, VervalDatum, Permissies);
+CREATE INDEX IDX_GebruikersRechtV2_GroepID ON auth.GebruikersRechtV2(GroepID, VervalDatum) INCLUDE(PersoonID);
 GO
 
-CREATE INDEX IDX_GebruikersRechtV2_PersoonID ON auth.GebruikersRechtV2(PersoonID) INCLUDE(GroepID, VervalDatum, Permissies);
+CREATE INDEX IDX_GebruikersRechtV2_PersoonID ON auth.GebruikersRechtV2(PersoonID, VervalDatum) INCLUDE(GroepID);
 GO
 
 
@@ -60,19 +63,3 @@ GO
 DROP TABLE auth.Gav;
 GO
 
--- Aanpassingen van na de vergadering in december. Ik voeg de gevraagde kolommen toe.
--- De kolom 'Permissies' verwijder ik later nog, zodat ik deze database nog een tijd kan
--- gebruiken voor de demo van het originele idee.
-
-ALTER TABLE auth.GebruikersrechtV2 ADD PersoonlijkeGegevens INT NOT NULL DEFAULT 0;
-GO
-ALTER TABLE auth.GebruikersrechtV2 ADD GroepsGegevens INT NOT NULL DEFAULT 0;
-GO
-ALTER TABLE auth.GebruikersrechtV2 ADD PersonenInAfdeling INT NOT NULL DEFAULT 0;
-GO
-ALTER TABLE auth.GebruikersrechtV2 ADD PersonenInGroep INT NOT NULL DEFAULT 0;
-GO
-ALTER TABLE auth.GebruikersrechtV2 ADD SuperGav BIT NOT NULL DEFAULT 0;
-GO
-
-UPDATE auth.GebruikersRechtv2 SET GroepsGegevens = 3, PersonenInGroep = 3 WHERE Permissies > 0;

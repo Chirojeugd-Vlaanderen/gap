@@ -189,7 +189,7 @@ namespace Chiro.Gap.Services.Test
             {
                 Persoon = new Persoon { ID = 2, AdNummer = mijnAdNr },
                 Groep = new ChiroGroep { ID = 3 },
-                PersoonlijkeGegevens = Permissies.Lezen,
+                PersoonsPermissies = Permissies.Lezen,
                 VervalDatum = DateTime.Now.AddDays(1)
             };
             gebruikersRecht.Persoon.GebruikersRechtV2.Add(gebruikersRecht);

@@ -104,19 +104,19 @@ namespace Chiro.Gap.Workers
 
             if (aspecten.HasFlag(SecurityAspect.PersoonlijkeGegevens))
             {
-                permissies.Add(gebruikersRecht.PersoonlijkeGegevens);
+                permissies.Add(gebruikersRecht.PersoonsPermissies);
             }
             if (aspecten.HasFlag(SecurityAspect.GroepsGegevens))
             {
-                permissies.Add(gebruikersRecht.GroepsGegevens);
+                permissies.Add(gebruikersRecht.GroepsPermissies);
             }
             if (aspecten.HasFlag(SecurityAspect.PersonenInAfdeling))
             {
-                permissies.Add(gebruikersRecht.PersonenInAfdeling);
+                permissies.Add(gebruikersRecht.AfdelingsPermissies);
             }
             if (aspecten.HasFlag(SecurityAspect.PersonenInGroep))
             {
-                permissies.Add(gebruikersRecht.PersonenInGroep);
+                permissies.Add(gebruikersRecht.IedereenPermissies);
             }
 
             return permissies.Aggregate((x, y) => x & y);
@@ -336,19 +336,19 @@ namespace Chiro.Gap.Workers
 
             if (aspecten.HasFlag(SecurityAspect.PersoonlijkeGegevens))
             {
-                gebruikersrechten = gebruikersrechten.Where(gr => gr.PersoonlijkeGegevens.HasFlag(Permissies.Lezen));
+                gebruikersrechten = gebruikersrechten.Where(gr => gr.PersoonsPermissies.HasFlag(Permissies.Lezen));
             }
             if (aspecten.HasFlag(SecurityAspect.GroepsGegevens))
             {
-                gebruikersrechten = gebruikersrechten.Where(gr => gr.GroepsGegevens.HasFlag(Permissies.Lezen));
+                gebruikersrechten = gebruikersrechten.Where(gr => gr.GroepsPermissies.HasFlag(Permissies.Lezen));
             }
             if (aspecten.HasFlag(SecurityAspect.PersonenInAfdeling))
             {
-                gebruikersrechten = gebruikersrechten.Where(gr => gr.PersonenInAfdeling.HasFlag(Permissies.Lezen));
+                gebruikersrechten = gebruikersrechten.Where(gr => gr.AfdelingsPermissies.HasFlag(Permissies.Lezen));
             }
             if (aspecten.HasFlag(SecurityAspect.PersonenInGroep))
             {
-                gebruikersrechten = gebruikersrechten.Where(gr => gr.PersonenInGroep.HasFlag(Permissies.Lezen));
+                gebruikersrechten = gebruikersrechten.Where(gr => gr.IedereenPermissies.HasFlag(Permissies.Lezen));
             }
             return gebruikersrechten.Select(gr => gr.Groep).Distinct();
         }
@@ -366,7 +366,7 @@ namespace Chiro.Gap.Workers
                 persoon.GebruikersRechtV2.Any(
                     gr =>
                         gr.VervalDatum != null && gr.VervalDatum > DateTime.Now &&
-                        gr.PersoonlijkeGegevens.HasFlag(Permissies.Lezen));
+                        gr.PersoonsPermissies.HasFlag(Permissies.Lezen));
         }
     }
 }

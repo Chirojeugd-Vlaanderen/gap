@@ -92,7 +92,10 @@
           <Property Name="PersoonID" Type="int" Nullable="false" />
           <Property Name="GroepID" Type="int" Nullable="false" />
           <Property Name="VervalDatum" Type="datetime" />
-          <Property Name="Permissies" Type="int" Nullable="false" />
+          <Property Name="PersoonsPermissies" Type="int" Nullable="false" />
+          <Property Name="GroepsPermissies" Type="int" Nullable="false" />
+          <Property Name="AfdelingsPermissies" Type="int" Nullable="false" />
+          <Property Name="IedereenPermissies" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Deelnemer">
@@ -1928,10 +1931,13 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="VervalDatum" Type="DateTime" Precision="3" />
-          <Property Name="PermissiesInt" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Groep" FromRole="GebruikersRechtv2" ToRole="Groep" />
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" FromRole="GebruikersRechtv2" ToRole="Persoon" />
+          <Property Name="PersoonsPermissies" Type="Int32" Nullable="false" />
+          <Property Name="GroepsPermissies" Type="Int32" Nullable="false" />
+          <Property Name="AfdelingsPermissies" Type="Int32" Nullable="false" />
+          <Property Name="IedereenPermissies" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_GebruikersRechtV2_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
@@ -2585,8 +2591,11 @@
           <EntitySetMapping Name="GebruikersRechtv2">
             <EntityTypeMapping TypeName="ChiroGroepModel.GebruikersRechtV2">
               <MappingFragment StoreEntitySet="GebruikersRechtv2">
+                <ScalarProperty Name="IedereenPermissies" ColumnName="IedereenPermissies" />
+                <ScalarProperty Name="AfdelingsPermissies" ColumnName="AfdelingsPermissies" />
+                <ScalarProperty Name="GroepsPermissies" ColumnName="GroepsPermissies" />
+                <ScalarProperty Name="PersoonsPermissies" ColumnName="PersoonsPermissies" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
-                <ScalarProperty Name="PermissiesInt" ColumnName="Permissies" />
                 <ScalarProperty Name="VervalDatum" ColumnName="VervalDatum" />
                 <ScalarProperty Name="ID" ColumnName="GebruikersRechtV2ID" />
               </MappingFragment>

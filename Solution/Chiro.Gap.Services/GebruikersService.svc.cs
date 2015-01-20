@@ -170,8 +170,8 @@ namespace Chiro.Gap.Services
             }
 
             _gebruikersRechtenMgr.ToekennenOfWijzigen(gelieerdePersoon.Persoon, gelieerdePersoon.Groep,
-                gebruikersRecht.PersoonlijkeGegevens, gebruikersRecht.GroepsGegevens, gebruikersRecht.PersonenInAfdeling,
-                gebruikersRecht.PersonenInGroep);
+                gebruikersRecht.PersoonsPermissies, gebruikersRecht.GroepsPermissies, gebruikersRecht.AfdelingsPermissies,
+                gebruikersRecht.IedereenPermissies);
 
 
 #if KIPDORP

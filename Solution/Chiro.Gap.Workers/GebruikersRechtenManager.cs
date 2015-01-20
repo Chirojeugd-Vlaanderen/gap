@@ -135,10 +135,10 @@ namespace Chiro.Gap.Workers
         {
             var gebruikersRecht = persoon.GebruikersRechtV2.FirstOrDefault(gr => gr.Groep.Equals(groep)) ??
                                   new GebruikersRechtV2 {Groep = groep, Persoon = persoon};
-            gebruikersRecht.PersoonlijkeGegevens |= persoonlijkeGegevens;
-            gebruikersRecht.GroepsGegevens |= groepsGegevens;
-            gebruikersRecht.PersonenInAfdeling |= personenInAfdeling;
-            gebruikersRecht.PersonenInGroep |= personenInGroep;
+            gebruikersRecht.PersoonsPermissies |= persoonlijkeGegevens;
+            gebruikersRecht.GroepsPermissies |= groepsGegevens;
+            gebruikersRecht.AfdelingsPermissies |= personenInAfdeling;
+            gebruikersRecht.IedereenPermissies |= personenInGroep;
             gebruikersRecht.VervalDatum = NieuweVervalDatum();
         }
     }

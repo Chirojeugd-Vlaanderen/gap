@@ -28,15 +28,15 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
     public class GebruikersRecht
     {
         [DataMember]
-        public Permissies PersoonlijkeGegevens { get; set; }
+        public Permissies PersoonsPermissies { get; set; }
 
         [DataMember]
-        public Permissies GroepsGegevens { get; set; }
+        public Permissies GroepsPermissies { get; set; }
 
         [DataMember]
-        public Permissies PersonenInAfdeling { get; set; }
+        public Permissies AfdelingsPermissies { get; set; }
 
         [DataMember]
-        public Permissies PersonenInGroep { get; set; }
+        public Permissies IedereenPermissies { get; set; }
     }
 }
