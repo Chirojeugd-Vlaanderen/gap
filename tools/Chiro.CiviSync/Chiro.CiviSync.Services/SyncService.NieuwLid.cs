@@ -18,12 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Chiro.Cdf.ServiceHelper;
 using Chiro.ChiroCivi.ServiceContracts.DataContracts;
-using Chiro.ChiroCivi.ServiceContracts.DataContracts.Requests;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Services.Helpers;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -81,7 +80,7 @@ namespace Chiro.CiviSync.Services
                         details.Persoon.VoorNaam, details.Persoon.Naam, details.Persoon.ID, adNummer), null, adNummer,
                     details.Persoon.ID);
 
-                var request = new GapIdRequest
+                var request = new ChiroContactRequest
                 {
                     ExternalIdentifier = adNummer.ToString(),
                     GapId = details.Persoon.ID,
@@ -94,15 +93,19 @@ namespace Chiro.CiviSync.Services
                 return adNummer.Value;
             }
 
-            var contact = Mapper.Map<Persoon, ChiroContact>(details.Persoon);
+            var contact = Mapper.Map<Persoon, ChiroContactRequest>(details.Persoon);
             var chainedEntities = new List<IEntity>();
 
             var address = Mapper.Map<Adres, Address>(details.Adres);
             address.LocationTypeId = MappingHelper.CiviLocationTypeId(details.AdresType);
 
-            chainedEntities.Add(address);
-            chainedEntities.AddRange(MappingHelper.CiviCommunicatie(details.Communicatie.ToList(), null));
-            contact.ChainedCreate = chainedEntities;
+            var civiCommunicatie = MappingHelper.CiviCommunicatie(details.Communicatie.ToList(), null);
+
+            contact.AddressSaveRequest = new List<BaseRequest> {address};
+            contact.PhoneSaveRequest = civiCommunicatie.OfType<Phone>();
+            contact.EmailSaveRequest = civiCommunicatie.OfType<Email>();
+            contact.WebsiteSaveRequest = civiCommunicatie.OfType<Website>();
+            contact.ImSaveRequest = civiCommunicatie.OfType<Im>();
 
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
@@ -138,7 +141,7 @@ namespace Chiro.CiviSync.Services
                 // iemand waarvan je het AD-nummer al hebt, maar dit vangt het geval op
                 // dat het AD-nummer niet (meer) bestaat in Civi.
 
-                var request = new ExternalIdentifierRequest
+                var request = new ContactRequest
                 {
                     ExternalIdentifier = details.Persoon.AdNummer.ToString(),
                     ReturnFields = "external_identifier"
@@ -156,7 +159,7 @@ namespace Chiro.CiviSync.Services
 
             if (details.Persoon.ID > 0)
             {
-                var request = new GapIdRequest
+                var request = new ChiroContactRequest
                 {
                     GapId = details.Persoon.ID,
                     ReturnFields = "external_identifier"
@@ -172,12 +175,15 @@ namespace Chiro.CiviSync.Services
 
             // Haal eens iedereen op met hetzelfde geslacht en dezelfde naam.
 
-            var nameGenderRequest = new NameGenderRequest
+            var nameGenderRequest = new ContactRequest
             {
                 FirstName = details.Persoon.VoorNaam,
                 LastName = details.Persoon.Naam,
                 Gender = (Gender) (2 - (int) details.Persoon.Geslacht),
-                ChainedGet = new[] {CiviEntity.Address, CiviEntity.Email, CiviEntity.Phone, CiviEntity.Im}
+                AddressGetRequest = new BaseRequest(),
+                EmailGetRequest = new BaseRequest(),
+                PhoneGetRequest = new BaseRequest(),
+                ImGetRequest = new BaseRequest()
             };
 
             var contactResult  =
@@ -189,7 +195,7 @@ namespace Chiro.CiviSync.Services
                 (from c in
                     contactResult.Values
                     where
-                        c.ChainedPhones.Values.Any(nr =>
+                        c.PhoneResult.Values.Any(nr =>
                             CommunicatieHelper.GeldigNummer(nr.PhoneNumber) &&
                             CommunicatieHelper.StandaardNummer(
                                 details.Communicatie.Where(
@@ -205,7 +211,7 @@ namespace Chiro.CiviSync.Services
             // Zoek op e-mail
             var gevondenViaEmail = (from c in contactResult.Values
                 where
-                    c.ChainedEmails.Values.Any(
+                    c.EmailResult.Values.Any(
                         em =>
                             details.Communicatie.Where(cm => cm.Type == CommunicatieType.Email)
                                 .Select(cm => cm.Waarde.ToLower())
@@ -219,7 +225,7 @@ namespace Chiro.CiviSync.Services
             // Zoek op website
             var gevondenViaWebsite = (from c in contactResult.Values
                 where
-                    c.ChainedWebsites.Values.Any(
+                    c.WebsiteResult.Values.Any(
                         ws =>
                             CommunicatieHelper.StandaardUrl(details.Communicatie.Where(
                                 cm =>
@@ -236,7 +242,7 @@ namespace Chiro.CiviSync.Services
             // Zoek op IM
             var gevondenViaIm = (from c in contactResult.Values
                 where
-                    c.ChainedIms.Values.Any(
+                    c.ImResult.Values.Any(
                         im =>
                             details.Communicatie.Where(
                                 cm => cm.Type == CommunicatieType.Msn || cm.Type == CommunicatieType.Xmpp)

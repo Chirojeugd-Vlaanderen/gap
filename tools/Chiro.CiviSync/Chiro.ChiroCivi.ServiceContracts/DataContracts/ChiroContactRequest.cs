@@ -14,8 +14,8 @@
    limitations under the License.
  */
 
-using System.Runtime.Serialization;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviCrm.BehaviorExtension;
 using Newtonsoft.Json;
 
@@ -24,21 +24,20 @@ namespace Chiro.ChiroCivi.ServiceContracts.DataContracts
     /// <summary>
     /// Een CiviCRM-contact met de custom fields van ChiroCivi.
     /// </summary>
-    [JsonConvertible]
-    [DataContract]
-    public class ChiroContact : Contact
+    [CiviRequest]
+    public class ChiroContactRequest : ContactRequest
     {
         /// <summary>
         /// Bind the member 'GapId' to the custom field custom_1.
         /// </summary>
-        [DataMember(Name = "custom_10"), JsonProperty]
+        [JsonProperty("custom_10", NullValueHandling = NullValueHandling.Ignore)]
         public int? GapId { get; set; }
 
-        public ChiroContact() : base()
+        public ChiroContactRequest() : base()
         {
         }
 
-        public ChiroContact(Contact c) : base()
+        public ChiroContactRequest(Contact c) : base()
         {
             
         }

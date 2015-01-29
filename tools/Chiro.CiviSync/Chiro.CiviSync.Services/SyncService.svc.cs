@@ -24,6 +24,7 @@ using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Services.Properties;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts;
@@ -73,11 +74,11 @@ namespace Chiro.CiviSync.Services
                 : ServiceHelper.CallService<ICiviCrmApi, Contact>(svc => svc.ContactGetSingle(
                     _apiKey,
                     _siteKey,
-                    new ExternalIdentifierRequest(persoon.AdNummer.ToString()))) ?? new Contact();
+                    new ContactRequest {ExternalIdentifier = persoon.AdNummer.ToString()})) ?? new Contact();
 
             // Ik map dat naar een ChiroContact. Een ChiroContact heeft een GapID; dat is een custom
             // field. Onderstaande mapping laat dat GapID null.
-            ChiroContact chiroContact = Mapper.Map<Contact, ChiroContact>(civiContact);
+            var chiroContact = Mapper.Map<Contact, ChiroContactRequest>(civiContact);
 
             // De mapping van persoon naar chiroContact overschrijft wat er al was met nieuwe
             // informatie. Hier krijgt het chiroContact ook zijn GapID, namelijk het ID van de
@@ -130,85 +131,84 @@ namespace Chiro.CiviSync.Services
             // TODO: personen met civi-ID in aanvraag
             foreach (var bewoner in bewoners)
             {
-                if (bewoner.Persoon.AdNummer != null)
+                if (bewoner.Persoon.AdNummer == null) continue;
+                // Adressen ophalen via chaining :-)
+                var adNummer = bewoner.Persoon.AdNummer;
+                var civiContact = ServiceHelper.CallService<ICiviCrmApi, Contact>(svc => svc.ContactGetSingle(
+                    _apiKey,
+                    _siteKey,
+                    new ContactRequest
+                    {
+                        ExternalIdentifier = adNummer.ToString(),
+                        ReturnFields = "id",
+                        AddressGetRequest = new BaseRequest()
+                    }));
+
+                var adressen = civiContact.AddressResult.Values;
+
+                // Als het adres al bestaat, dan kunnen we het overschrijven om casing te veranderen,
+                // voorkeursadres te zetten, en adrestype te bewaren.
+
+                var bestaande = (from a in adressen where IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
+
+                if (bestaande != null)
                 {
-                    // Adressen ophalen via chaining :-)
-                    var civiContact = ServiceHelper.CallService<ICiviCrmApi, Contact>(svc => svc.ContactGetSingle(
-                        _apiKey,
-                        _siteKey,
-                        new ExternalIdentifierRequest
-                        {
-                            ExternalIdentifier = bewoner.Persoon.AdNummer.ToString(),
-                            ReturnFields = "id",
-                            ChainedGet = new[] { CiviEntity.Address }
-                        }));
+                    nieuwAdres.Id = bestaande.Id;
+                    // Neem het ID van het bestaande adres over, zodanig dat we het bestaande
+                    // overschrijven.
+                }
 
-                    var adressen = civiContact.ChainedAddresses.Values;
+                nieuwAdres.ContactId = civiContact.Id;
+                nieuwAdres.IsBilling = true;
+                nieuwAdres.IsPrimary = true;
 
-                    // Als het adres al bestaat, dan kunnen we het overschrijven om casing te veranderen,
-                    // voorkeursadres te zetten, en adrestype te bewaren.
+                switch (bewoner.AdresType)
+                {
+                    case AdresTypeEnum.Thuis:
+                        nieuwAdres.LocationTypeId = 1;
+                        break;
+                    case AdresTypeEnum.Werk:
+                        nieuwAdres.LocationTypeId = 2;
+                        break;
+                    default:
+                        nieuwAdres.LocationTypeId = 4; // (other)
+                        // TODO: kot (type moet uit de database gehaald worden)
+                        break;
+                }
 
-                    var bestaande = (from a in adressen where IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
+                var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressSave(_apiKey, _siteKey, nieuwAdres));
+                AssertValid(result);
+                _log.Loggen(
+                    Niveau.Info,
+                    String.Format(
+                        "Nieuw adres voor {0} {1} (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
+                        bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, civiContact.Id,
+                        nieuwAdres.StreetAddress, nieuwAdres.PostalCode, nieuwAdres.PostalCodeSuffix, nieuwAdres.City,
+                        nieuwAdres.Country),
+                    null,
+                    bewoner.Persoon.AdNummer,
+                    bewoner.Persoon.ID);
 
-                    if (bestaande != null)
-                    {
-                        nieuwAdres.Id = bestaande.Id;
-                        // Neem het ID van het bestaande adres over, zodanig dat we het bestaande
-                        // overschrijven.
-                    }
 
-                    nieuwAdres.ContactId = civiContact.Id;
-                    nieuwAdres.IsBilling = true;
-                    nieuwAdres.IsPrimary = true;
+                // Verwijder oude voorkeuradres.
 
-                    switch (bewoner.AdresType)
-                    {
-                        case AdresTypeEnum.Thuis:
-                            nieuwAdres.LocationTypeId = 1;
-                            break;
-                        case AdresTypeEnum.Werk:
-                            nieuwAdres.LocationTypeId = 2;
-                            break;
-                        default:
-                            nieuwAdres.LocationTypeId = 4; // (other)
-                            // TODO: kot (type moet uit de database gehaald worden)
-                            break;
-                    }
-
-                    var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressSave(_apiKey, _siteKey, nieuwAdres));
+                var teVerwijderenAdressen = (from adr in adressen
+                    where adr.IsPrimary && adr.Id != nieuwAdres.Id
+                    select adr).ToList();
+                foreach (var tvAdres in teVerwijderenAdressen)
+                {
+                    result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressDelete(_apiKey, _siteKey, new IdRequest(tvAdres.Id.Value)));
                     AssertValid(result);
                     _log.Loggen(
                         Niveau.Info,
                         String.Format(
-                            "Nieuw adres voor {0} {1} (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
+                            "Oud voorkeursadres voor {0} {1} verwijderd (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
                             bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, civiContact.Id,
-                            nieuwAdres.StreetAddress, nieuwAdres.PostalCode, nieuwAdres.PostalCodeSuffix, nieuwAdres.City,
-                            nieuwAdres.Country),
+                            tvAdres.StreetAddress, tvAdres.PostalCode, tvAdres.PostalCodeSuffix, tvAdres.City,
+                            tvAdres.Country),
                         null,
                         bewoner.Persoon.AdNummer,
                         bewoner.Persoon.ID);
-
-
-                    // Verwijder oude voorkeuradres.
-
-                    var teVerwijderenAdressen = (from adr in adressen
-                                                 where adr.IsPrimary && adr.Id != nieuwAdres.Id
-                                                 select adr).ToList();
-                    foreach (var tvAdres in teVerwijderenAdressen)
-                    {
-                        result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressDelete(_apiKey, _siteKey, new IdRequest(tvAdres.Id.Value)));
-                        AssertValid(result);
-                        _log.Loggen(
-                            Niveau.Info,
-                            String.Format(
-                                "Oud voorkeursadres voor {0} {1} verwijderd (gid {2} cid {3}): {4}, {5} {6} {7}. {8}",
-                                bewoner.Persoon.VoorNaam, bewoner.Persoon.Naam, bewoner.Persoon.ID, civiContact.Id,
-                                tvAdres.StreetAddress, tvAdres.PostalCode, tvAdres.PostalCodeSuffix, tvAdres.City,
-                                tvAdres.Country),
-                            null,
-                            bewoner.Persoon.AdNummer,
-                            bewoner.Persoon.ID);
-                    }
                 }
             }
         }

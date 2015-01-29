@@ -22,6 +22,7 @@ using AutoMapper;
 using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.CiviSync.Services.Helpers
@@ -34,78 +35,38 @@ namespace Chiro.CiviSync.Services.Helpers
         {
             // Mappings van vanilla CiviCRM naar ChiroCivi (met custom fields)
 
-            Mapper.CreateMap<Contact, ChiroContact>()
+            Mapper.CreateMap<ContactRequest, ChiroContactRequest>()
                 .ForMember(dst => dst.GapId, opt => opt.Ignore());
 
             // Mappings van oude Kipadminobjecten naar ChiroCivi
-            Mapper.CreateMap<Persoon, ChiroContact>()
+            Mapper.CreateMap<Persoon, ChiroContactRequest>()
                 .ForMember(dst => dst.GapId, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.BirthDate, opt => opt.MapFrom(src => src.GeboorteDatum))
                 .ForMember(dst => dst.ContactType, opt => opt.MapFrom(src => ContactType.Individual))
                 .ForMember(dst => dst.DeceasedDate, opt => opt.MapFrom(src => src.SterfDatum))
                 .ForMember(dst => dst.ExternalIdentifier, opt => opt.MapFrom(src => src.AdNummer))
                 .ForMember(dst => dst.FirstName, opt => opt.MapFrom(src => src.VoorNaam))
+                .ForMember(dst => dst.MiddleName, opt => opt.Ignore())
+                .ForMember(dst => dst.OrganizationName, opt => opt.Ignore())
                 .ForMember(dst => dst.Gender, opt => opt.MapFrom(src => (Gender) (3 - (int) src.Geslacht)))
+                // IsDeceased komt niet direct mee met DeceasedDate, zie
+                // http://forum.civicrm.org/index.php/topic,35553.0.html
                 .ForMember(dst => dst.IsDeceased, opt => opt.MapFrom(src => src.SterfDatum != null))
                 .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Naam))
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
-                // Ondrstaande voor het gemak maar automatisch gegenereerd :-)
-                .ForMember(dst => dst.ContactSubType, opt => opt.Ignore())
-                .ForMember(dst => dst.SortName, opt => opt.Ignore())
-                .ForMember(dst => dst.DisplayName, opt => opt.Ignore())
-                .ForMember(dst => dst.DoNotEmail, opt => opt.Ignore())
-                .ForMember(dst => dst.DoNotPhone, opt => opt.Ignore())
-                .ForMember(dst => dst.DoNotSms, opt => opt.Ignore())
-                .ForMember(dst => dst.DoNotTrade, opt => opt.Ignore())
-                .ForMember(dst => dst.IsOptOut, opt => opt.Ignore())
-                .ForMember(dst => dst.LegalIdentifier, opt => opt.Ignore())
-                .ForMember(dst => dst.NickName, opt => opt.Ignore())
-                .ForMember(dst => dst.LegalName, opt => opt.Ignore())
-                .ForMember(dst => dst.ImageUrl, opt => opt.Ignore())
-                .ForMember(dst => dst.PreferredLanguage, opt => opt.Ignore())
-                .ForMember(dst => dst.MiddleName, opt => opt.Ignore())
-                .ForMember(dst => dst.FormalTitle, opt => opt.Ignore())
-                .ForMember(dst => dst.CommunicationStyle, opt => opt.Ignore())
-                .ForMember(dst => dst.JobTitle, opt => opt.Ignore())
-                .ForMember(dst => dst.HouseholdName, opt => opt.Ignore())
-                .ForMember(dst => dst.OrganizationName, opt => opt.Ignore())
-                .ForMember(dst => dst.SicCode, opt => opt.Ignore())
-                .ForMember(dst => dst.ContactIsDeleted, opt => opt.Ignore())
-                .ForMember(dst => dst.CurrentEmployer, opt => opt.Ignore())
-                .ForMember(dst => dst.AddressId, opt => opt.Ignore())
-                .ForMember(dst => dst.StreetAddress, opt => opt.Ignore())
-                .ForMember(dst => dst.SupplementalAddress1, opt => opt.Ignore())
-                .ForMember(dst => dst.SupplementalAddress2, opt => opt.Ignore())
-                .ForMember(dst => dst.City, opt => opt.Ignore())
-                .ForMember(dst => dst.PostalCodeSuffix, opt => opt.Ignore())
-                .ForMember(dst => dst.PostalCode, opt => opt.Ignore())
-                .ForMember(dst => dst.GeoCode1, opt => opt.Ignore())
-                .ForMember(dst => dst.GeoCode2, opt => opt.Ignore())
-                .ForMember(dst => dst.PhoneId, opt => opt.Ignore())
-                .ForMember(dst => dst.PhoneType, opt => opt.Ignore())
-                .ForMember(dst => dst.Phone, opt => opt.Ignore())
-                .ForMember(dst => dst.EmailId, opt => opt.Ignore())
-                .ForMember(dst => dst.Email, opt => opt.Ignore())
-                .ForMember(dst => dst.OnHold, opt => opt.Ignore())
-                .ForMember(dst => dst.ImId, opt => opt.Ignore())
-                .ForMember(dst => dst.Provider, opt => opt.Ignore())
-                .ForMember(dst => dst.Im, opt => opt.Ignore())
-                .ForMember(dst => dst.WorldRegion, opt => opt.Ignore())
-                .ForMember(dst => dst.IndividualPrefix, opt => opt.Ignore())
-                .ForMember(dst => dst.IndividualSuffix, opt => opt.Ignore())
-                .ForMember(dst => dst.StateProvinceName, opt => opt.Ignore())
-                .ForMember(dst => dst.Country, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainedAddresses, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainedPhones, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainedEmails, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainedWebsites, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainedIms, opt => opt.Ignore())
-                .ForMember(dst => dst.ApiOptions, opt => opt.Ignore())
                 .ForMember(dst => dst.PreferredMailFormat, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainedGet, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainedCreate, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainsPlaceholder, opt => opt.Ignore())
-                .ForMember(dst => dst.ReturnFields, opt => opt.Ignore());
+                .ForMember(dst => dst.AddressGetRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.AddressSaveRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.PhoneGetRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.PhoneSaveRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.EmailGetRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.EmailSaveRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.WebsiteGetRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.WebsiteSaveRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.ImGetRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.ImSaveRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.ReturnFields, opt => opt.Ignore())
+                .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
 
             Mapper.CreateMap<Adres, Address>()
                 .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))
@@ -121,9 +82,6 @@ namespace Chiro.CiviSync.Services.Helpers
                 .ForMember(dst => dst.StreetAddress, opt => opt.MapFrom(src => StraatNrFormatteren(src)))
                 .ForMember(dst => dst.CountryId, opt => opt.Ignore())
                 .ForMember(dst => dst.ApiOptions, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainedGet, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainedCreate, opt => opt.Ignore())
-                .ForMember(dst => dst.ChainsPlaceholder, opt => opt.Ignore())
                 .ForMember(dst => dst.ReturnFields, opt => opt.Ignore());
 
             Mapper.AssertConfigurationIsValid();

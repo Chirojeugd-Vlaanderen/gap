@@ -44,8 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContracts\ChiroContact.cs" />
-    <Compile Include="DataContracts\Requests\GapIdRequest.cs" />
+    <Compile Include="DataContracts\ChiroContactRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
