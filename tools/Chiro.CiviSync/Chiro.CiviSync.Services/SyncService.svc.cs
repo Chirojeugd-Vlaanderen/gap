@@ -20,10 +20,10 @@ using System.Linq;
 using System.ServiceModel;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
-using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Services.Properties;
 using Chiro.Gap.Log;
@@ -78,7 +78,7 @@ namespace Chiro.CiviSync.Services
 
             // Ik map dat naar een ChiroContact. Een ChiroContact heeft een GapID; dat is een custom
             // field. Onderstaande mapping laat dat GapID null.
-            var chiroContact = Mapper.Map<Contact, ChiroContactRequest>(civiContact);
+            var chiroContact = Mapper.Map<Contact, ContactRequest>(civiContact);
 
             // De mapping van persoon naar chiroContact overschrijft wat er al was met nieuwe
             // informatie. Hier krijgt het chiroContact ook zijn GapID, namelijk het ID van de

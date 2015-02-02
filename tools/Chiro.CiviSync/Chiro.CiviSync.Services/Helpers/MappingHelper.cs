@@ -19,9 +19,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using AutoMapper;
-using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts;
-using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -33,13 +32,8 @@ namespace Chiro.CiviSync.Services.Helpers
 
         public static void MappingsDefinieren()
         {
-            // Mappings van vanilla CiviCRM naar ChiroCivi (met custom fields)
-
-            Mapper.CreateMap<ContactRequest, ChiroContactRequest>()
-                .ForMember(dst => dst.GapId, opt => opt.Ignore());
-
             // Mappings van oude Kipadminobjecten naar ChiroCivi
-            Mapper.CreateMap<Persoon, ChiroContactRequest>()
+            Mapper.CreateMap<Persoon, ContactRequest>()
                 .ForMember(dst => dst.GapId, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.BirthDate, opt => opt.MapFrom(src => src.GeboorteDatum))
                 .ForMember(dst => dst.ContactType, opt => opt.MapFrom(src => ContactType.Individual))
@@ -128,8 +122,8 @@ namespace Chiro.CiviSync.Services.Helpers
         /// </summary>
         /// <param name="communicatie">Lijst communicatievormen</param>
         /// <param name="contactId">Te gebruiken contact-ID voor civi-entities. Mag <c>null</c> zijn.</param>
-        /// <returns>Lijst IEntities met e-mailadressen, telefoonnummers, websites, im.</returns>
-        public static IEntity[] CiviCommunicatie(IList<CommunicatieMiddel> communicatie, int? contactId)
+        /// <returns>Lijst met e-mailadressen, telefoonnummers, websites, im (als Object).</returns>
+        public static Object[] CiviCommunicatie(IList<CommunicatieMiddel> communicatie, int? contactId)
         {
             var telefoonNummers = from c in communicatie
                 where c.Type == CommunicatieType.TelefoonNummer || c.Type == CommunicatieType.Fax
@@ -170,7 +164,7 @@ namespace Chiro.CiviSync.Services.Helpers
                     Name = c.Waarde,
                     Provider = c.Type == CommunicatieType.Msn ? Provider.Msn : Provider.Jabber
                 };
-            return telefoonNummers.Union<IEntity>(eMailAdressen).Union(websites).Union(im).ToArray();
+            return telefoonNummers.Union<Object>(eMailAdressen).Union(websites).Union(im).ToArray();
         }
 
         /// <summary>

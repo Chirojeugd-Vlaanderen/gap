@@ -97,17 +97,13 @@
       <Project>{f39a9e29-95e9-4304-a42d-1266f81b5ecf}</Project>
       <Name>Chiro.CiviCrm.BehaviorExtension</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.ServiceContracts\Chiro.CiviCrm.Api.csproj">
+    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Api\Chiro.CiviCrm.Api.csproj">
       <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
       <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.ChiroCivi.ServiceContracts\Chiro.ChiroCivi.ServiceContracts.csproj">
-      <Project>{DC3A00B0-8368-4F7F-86B0-2E906E9E27DF}</Project>
-      <Name>Chiro.ChiroCivi.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Log\Chiro.Gap.Log.csproj">
       <Project>{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}</Project>

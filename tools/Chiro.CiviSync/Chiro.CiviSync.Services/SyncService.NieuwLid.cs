@@ -18,10 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Chiro.ChiroCivi.ServiceContracts.DataContracts;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Services.Helpers;
 using Chiro.Gap.Log;
@@ -80,7 +80,7 @@ namespace Chiro.CiviSync.Services
                         details.Persoon.VoorNaam, details.Persoon.Naam, details.Persoon.ID, adNummer), null, adNummer,
                     details.Persoon.ID);
 
-                var request = new ChiroContactRequest
+                var request = new ContactRequest
                 {
                     ExternalIdentifier = adNummer.ToString(),
                     GapId = details.Persoon.ID,
@@ -93,8 +93,8 @@ namespace Chiro.CiviSync.Services
                 return adNummer.Value;
             }
 
-            var contact = Mapper.Map<Persoon, ChiroContactRequest>(details.Persoon);
-            var chainedEntities = new List<IEntity>();
+            var contact = Mapper.Map<Persoon, ContactRequest>(details.Persoon);
+            var chainedEntities = new List<Object>();
 
             var address = Mapper.Map<Adres, Address>(details.Adres);
             address.LocationTypeId = MappingHelper.CiviLocationTypeId(details.AdresType);
@@ -159,7 +159,7 @@ namespace Chiro.CiviSync.Services
 
             if (details.Persoon.ID > 0)
             {
-                var request = new ChiroContactRequest
+                var request = new ContactRequest
                 {
                     GapId = details.Persoon.ID,
                     ReturnFields = "external_identifier"
