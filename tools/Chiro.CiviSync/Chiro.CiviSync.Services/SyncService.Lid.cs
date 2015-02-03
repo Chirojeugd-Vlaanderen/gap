@@ -14,6 +14,15 @@
    limitations under the License.
  */
 
+using System;
+using System.Linq;
+using Chiro.CiviCrm.Api;
+using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Helpers;
+using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.CiviSync.Services
@@ -31,8 +40,48 @@ namespace Chiro.CiviSync.Services
         /// </param>
         public void LidBewaren(int adNummer, LidGedoe gedoe)
         {
-            // TODO (#1767): Implementeren
-            // Ik gooi even geen NotImplemented, zodat ik al wel wat kan testen.
+            RelationshipRequest relationshipRequest;
+
+            int? civiGroepId = _contactHelper.ContactIdGet(gedoe.StamNummer);
+            if (civiGroepId == null)
+            {
+                _log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - lid niet bewaard.", gedoe.StamNummer),
+                    gedoe.StamNummer, adNummer, null);
+                return;
+            }
+
+            // Haal de persoon op met gegeven AD-nummer en zijn recentste lidrelatie in de gevraagde groep.
+            var contactRequest = new ContactRequest
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                RelationshipGetRequest = new RelationshipRequest
+                {
+                    RelationshipTypeId = (int)RelatieType.LidVan,
+                    ContactIdAValueExpression = "$value.id",
+                    ContactIdB = civiGroepId,
+                    ApiOptions = new ApiOptions{Sort = "start_date DESC", Limit = 1}
+                }
+            };
+
+            var contact =
+                ServiceHelper.CallService<ICiviCrmApi, Contact>(
+                    svc => svc.ContactGetSingle(_apiKey, _siteKey, contactRequest));
+
+            if (contact == null)
+            {
+                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} - lid niet bewaard.", adNummer),
+                    gedoe.StamNummer, adNummer, null);
+                return;
+            }
+
+            if (contact.RelationshipResult.Count == 1)
+            {
+                var bestaandeRelatie = contact.RelationshipResult.Values.First();
+                if (_relationshipHelper.WerkjaarGet(bestaandeRelatie) == gedoe.WerkJaar)
+                {
+                    // Recupereer (vooral ID) van bestaande relatie.
+                }
+            }
         }
     }
 }

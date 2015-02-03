@@ -25,6 +25,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Helpers;
 using Chiro.CiviSync.Services.Properties;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts;
@@ -40,6 +41,8 @@ namespace Chiro.CiviSync.Services
         private readonly string _apiKey = Settings.Default.ApiKey;
         private readonly IMiniLog _log;
         private readonly ServiceHelper _serviceHelper;
+        private readonly ContactHelper _contactHelper;
+        private readonly RelationshipHelper _relationshipHelper;
 
         protected ServiceHelper ServiceHelper
         {
@@ -55,6 +58,10 @@ namespace Chiro.CiviSync.Services
         {
             _serviceHelper = serviceHelper;
             _log = log;
+
+            // Voor de helpers gebruik ik (voorlopig?) geen dependency injection.
+            _contactHelper = new ContactHelper(_serviceHelper, _apiKey, _siteKey);
+            _relationshipHelper = new RelationshipHelper();
         }
 
         /// <summary>
