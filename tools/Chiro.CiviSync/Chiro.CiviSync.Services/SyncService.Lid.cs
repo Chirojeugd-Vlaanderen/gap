@@ -16,6 +16,7 @@
 
 using System;
 using System.Linq;
+using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -38,10 +39,9 @@ namespace Chiro.CiviSync.Services
         /// <param name="gedoe">
         /// De nodige info voor het lid.
         /// </param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void LidBewaren(int adNummer, LidGedoe gedoe)
         {
-            RelationshipRequest relationshipRequest;
-
             int? civiGroepId = _contactHelper.ContactIdGet(gedoe.StamNummer);
             if (civiGroepId == null)
             {
@@ -74,14 +74,47 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
+            // Request voor lidrelatie: eerst een standaardrequest voor dit werkjaar, we passen dat zo nodig
+            // aan.
+            var relationshipRequest = _relationshipHelper.VanWerkjaar(RelatieType.LidVan, contact.Id, civiGroepId.Value,
+                gedoe.WerkJaar);
+
             if (contact.RelationshipResult.Count == 1)
             {
                 var bestaandeRelatie = contact.RelationshipResult.Values.First();
                 if (_relationshipHelper.WerkjaarGet(bestaandeRelatie) == gedoe.WerkJaar)
                 {
-                    // Recupereer (vooral ID) van bestaande relatie.
+                    // Neem van bestaande relatie het ID en de begindatum over.
+                    relationshipRequest.Id = bestaandeRelatie.Id;
+                    relationshipRequest.EndDate = bestaandeRelatie.EndDate;
+                    if (_relationshipHelper.IsActief(bestaandeRelatie))
+                    {
+                        _log.Loggen(Niveau.Warning,
+                            String.Format(
+                                "{0} {1} (AD {3}) was al lid voor groep {2} in werkjaar {4}. Bestaand lidobject wordt geupdatet.",
+                                contact.FirstName, contact.LastName, gedoe.StamNummer, contact.ExternalIdentifier, gedoe.WerkJaar),
+                            gedoe.StamNummer, adNummer, contact.GapId);
+                    }
+                    else
+                    {
+                        _log.Loggen(Niveau.Info,
+                            String.Format(
+                                "Inactieve lidrelatie van {0} {1} (AD {2}) voor groep {3} in werkjaar {4} wordt opnieuw geactiveerd.",
+                                contact.FirstName, contact.LastName, adNummer, gedoe.StamNummer, gedoe.WerkJaar),
+                            gedoe.StamNummer, adNummer, contact.GapId);
+                    }
                 }
             }
+
+            var result =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
+                    svc => svc.RelationshipSave(_apiKey, _siteKey, relationshipRequest));
+
+            _log.Loggen(Niveau.Info,
+                String.Format(
+                    "Nieuwe lidrelatie van {0} {1} (AD {2}) voor groep {3} in werkjaar {4} werd bewaard. RelationshipId: {5}",
+                    contact.FirstName, contact.LastName, adNummer, gedoe.StamNummer, gedoe.WerkJaar, result.Id),
+                gedoe.StamNummer, adNummer, contact.GapId);
         }
     }
 }

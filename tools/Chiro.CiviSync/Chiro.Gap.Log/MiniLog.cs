@@ -51,7 +51,7 @@ namespace Chiro.Gap.Log
 	            command.Parameters.AddWithValue("@boodschap", boodschap);
 	            command.Parameters.AddWithValue("@stamNummer", (Object)stamNummer ?? DBNull.Value);
 	            command.Parameters.AddWithValue("@adNummer", adNummer);
-	            command.Parameters.AddWithValue("@persoonId", persoonId);
+	            command.Parameters.AddWithValue("@persoonId", (Object)persoonId ?? DBNull.Value);
 
                 connection.Open();
 	            command.ExecuteNonQuery();

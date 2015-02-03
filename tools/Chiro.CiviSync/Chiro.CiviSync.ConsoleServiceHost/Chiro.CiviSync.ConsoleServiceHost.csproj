@@ -82,6 +82,10 @@
       <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
       <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Behavior\Chiro.CiviCrm.BehaviorExtension.csproj">
+      <Project>{f39a9e29-95e9-4304-a42d-1266f81b5ecf}</Project>
+      <Name>Chiro.CiviCrm.BehaviorExtension</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>

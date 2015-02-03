@@ -15,7 +15,9 @@
  */
 
 using System;
+using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers.Properties;
 
 namespace Chiro.CiviSync.Helpers
@@ -43,5 +45,79 @@ namespace Chiro.CiviSync.Helpers
             }
             return overgangDitJaar.Year - 1;
         }
+
+        /// <summary>
+        /// Creeert een relationshiprequest van het gegeven <paramref name="type"/> voor een relatie tussen
+        /// de contacten met ID's <paramref name="contact1Id"/> en <paramref name="contact2Id"/> voor het 
+        /// gegeven <paramref name="werkJaar"/>.
+        /// </summary>
+        /// <param name="type">Relatietype</param>
+        /// <param name="contact1Id">Civi-ID van het eerste contact.</param>
+        /// <param name="contact2Id">Civi-ID van het tweede contact.</param>
+        /// <param name="werkJaar">Werkjaar voor de relatie.</param>
+        /// <returns>Een relationshiprequest van het gegeven <paramref name="type"/> voor een relatie tussen
+        /// de contacten met ID's <paramref name="contact1Id"/> en <paramref name="contact2Id"/> voor het 
+        /// gegeven <paramref name="werkJaar"/>.</returns>
+        public RelationshipRequest VanWerkjaar(RelatieType type, int contact1Id, int contact2Id, int werkJaar)
+        {
+            // We bekijken de datums zonder uren, dus discrete dagen. De EndDate valt volledig binnen de
+            // relationship.
+
+            DateTime overgangDatum = Settings.Default.WerkjaarStart;
+            DateTime beginWerkjaar = new DateTime(werkJaar, overgangDatum.Month, overgangDatum.Day);
+            DateTime eindeWerkJaar = new DateTime(werkJaar + 1, overgangDatum.Month, overgangDatum.Day).AddDays(-1);
+            DateTime vandaag = DateTime.Now.Date;
+
+            var result = new RelationshipRequest
+            {
+                ContactIdA = contact1Id,
+                ContactIdB = contact2Id,
+                StartDate = vandaag,
+                EndDate = new DateTime(werkJaar + 1, overgangDatum.Month, overgangDatum.Day).AddDays(-1),
+                RelationshipTypeId = (int)type,
+            };
+            // Als een inschrijving gebeurde voor het werkjaar begon, wordt de startdatum de eerste dag van het
+            // werkjaar
+            if (result.StartDate < beginWerkjaar)
+            {
+                result.StartDate = beginWerkjaar;
+            }
+            // Als een inschrijving gebeurde wanneer het werkjaar al voorbij was, wordt de startdatum de laatste
+            // dag van het werkjaar.
+            if (result.StartDate > eindeWerkJaar)
+            {
+                result.StartDate = eindeWerkJaar;
+            }
+
+            result.IsActive = IsActief(result);
+            return result;
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als (afgaande op start- en einddatum) de gegeven relatie
+        /// <paramref name="r"/> op dit moment actief is.
+        /// </summary>
+        /// <param name="r">relatie</param>
+        /// <returns><c>true</c> als (afgaande op start- en einddatum) de gegeven relatie
+        /// <paramref name="r"/> op dit moment actief is.</returns>
+        public bool IsActief(Relationship r)
+        {
+            DateTime vandaag = DateTime.Now.Date;
+            return r.StartDate <= vandaag && r.EndDate >= vandaag;
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als (afgaande op start- en einddatum) gegeven realtionship request
+        /// <paramref name="r"/> op dit moment actief is.
+        /// </summary>
+        /// <param name="r">relationship request</param>
+        /// <returns><c>true</c> als (afgaande op start- en einddatum) gegeven relationship request
+        /// <paramref name="r"/> op dit moment actief is.</returns>
+        public bool IsActief(RelationshipRequest r)
+        {
+            DateTime vandaag = DateTime.Now.Date;
+            return r.StartDate <= vandaag && r.EndDate >= vandaag;
+        }
+
     }
 }
