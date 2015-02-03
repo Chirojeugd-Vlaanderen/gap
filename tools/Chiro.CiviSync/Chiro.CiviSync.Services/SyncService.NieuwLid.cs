@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -36,6 +37,7 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="details">Details van de persoon waarvoor een lidrelatie gemaakt moet worden.</param>
         /// <param name="lidGedoe">Informatie over de lidrelatie.</param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void NieuwLidBewaren(PersoonDetails details, LidGedoe lidGedoe)
         {
             if (details.Persoon.AdNummer != null)
@@ -82,20 +84,19 @@ namespace Chiro.CiviSync.Services
 
                 var request = new ContactRequest
                 {
+                    ContactType = ContactType.Individual,
                     ExternalIdentifier = adNummer.ToString(),
                     GapId = details.Persoon.ID,
                     ApiOptions = new ApiOptions {Match = "external_identifier"}
                 };
 
                 ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
-                    svc => svc.GenericCall(_apiKey, _siteKey, CiviEntity.Contact, ApiAction.Create, request));
+                    svc => svc.ContactSave(_apiKey, _siteKey, request));
 
                 return adNummer.Value;
             }
 
             var contact = Mapper.Map<Persoon, ContactRequest>(details.Persoon);
-            var chainedEntities = new List<Object>();
-
             var address = Mapper.Map<Adres, Address>(details.Adres);
             address.LocationTypeId = MappingHelper.CiviLocationTypeId(details.AdresType);
 
@@ -179,10 +180,11 @@ namespace Chiro.CiviSync.Services
             {
                 FirstName = details.Persoon.VoorNaam,
                 LastName = details.Persoon.Naam,
-                Gender = (Gender) (2 - (int) details.Persoon.Geslacht),
+                Gender = (Gender) (3 - (int) details.Persoon.Geslacht),
                 AddressGetRequest = new BaseRequest(),
                 EmailGetRequest = new BaseRequest(),
                 PhoneGetRequest = new BaseRequest(),
+                WebsiteGetRequest = new BaseRequest(),
                 ImGetRequest = new BaseRequest()
             };
 
