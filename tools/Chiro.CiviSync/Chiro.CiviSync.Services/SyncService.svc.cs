@@ -53,15 +53,16 @@ namespace Chiro.CiviSync.Services
         /// Creates a new service instance.
         /// </summary>
         /// <param name="serviceHelper">Servicehelper that will connect to the CiviCRM API</param>
+        /// <param name="relationshipHelper">Zorgt vooral voor start- en einddata van relaties.</param>
         /// <param name="log">Logger</param>
-        public SyncService(ServiceHelper serviceHelper, IMiniLog log)
+        public SyncService(ServiceHelper serviceHelper, RelationshipHelper relationshipHelper, IMiniLog log)
         {
             _serviceHelper = serviceHelper;
+            _relationshipHelper = relationshipHelper;
             _log = log;
 
-            // Voor de helpers gebruik ik (voorlopig?) geen dependency injection.
+            // Voor contacthelper gebruik ik (voorlopig?) geen dependency injection.
             _contactHelper = new ContactHelper(_serviceHelper, _apiKey, _siteKey);
-            _relationshipHelper = new RelationshipHelper();
         }
 
         /// <summary>

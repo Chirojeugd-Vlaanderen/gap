@@ -82,6 +82,10 @@
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.CiviSync.Helpers\Chiro.CiviSync.Helpers.csproj">
+      <Project>{60559DC6-EE2A-4974-8C75-34729181EA29}</Project>
+      <Name>Chiro.CiviSync.Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.CiviSync.Services\Chiro.CiviSync.Services.csproj">
       <Project>{30215F07-A682-4E89-8FF9-D33F705E9842}</Project>
       <Name>Chiro.CiviSync.Services</Name>

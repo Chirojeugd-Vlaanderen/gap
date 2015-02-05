@@ -24,6 +24,18 @@ namespace Chiro.CiviSync.Helpers
 {
     public class RelationshipHelper
     {
+        private IDatumHelper _datumHelper;
+
+        /// <summary>
+        /// Constructor voor RelationshipHelper.
+        /// </summary>
+        /// <param name="datumHelper">Datumhelper die gebruikt zal worden om te kijken welke datum het
+        /// vandaag is.</param>
+        public RelationshipHelper(IDatumHelper datumHelper)
+        {
+            _datumHelper = datumHelper;
+        }
+
         /// <summary>
         /// Levert het werkjaar van de gegeven relatie <paramref name="r"/> op. We bepalen
         /// een werkjaar aan de hand van het jaar waarin het start.
@@ -66,7 +78,7 @@ namespace Chiro.CiviSync.Helpers
             DateTime overgangDatum = Settings.Default.WerkjaarStart;
             DateTime beginWerkjaar = new DateTime(werkJaar, overgangDatum.Month, overgangDatum.Day);
             DateTime eindeWerkJaar = new DateTime(werkJaar + 1, overgangDatum.Month, overgangDatum.Day).AddDays(-1);
-            DateTime vandaag = DateTime.Now.Date;
+            DateTime vandaag = _datumHelper.Vandaag();
 
             var result = new RelationshipRequest
             {
@@ -102,7 +114,7 @@ namespace Chiro.CiviSync.Helpers
         /// <paramref name="r"/> op dit moment actief is.</returns>
         public bool IsActief(Relationship r)
         {
-            DateTime vandaag = DateTime.Now.Date;
+            DateTime vandaag = _datumHelper.Vandaag();
             return r.StartDate <= vandaag && r.EndDate >= vandaag;
         }
 
@@ -115,9 +127,8 @@ namespace Chiro.CiviSync.Helpers
         /// <paramref name="r"/> op dit moment actief is.</returns>
         public bool IsActief(RelationshipRequest r)
         {
-            DateTime vandaag = DateTime.Now.Date;
+            DateTime vandaag = _datumHelper.Vandaag();
             return r.StartDate <= vandaag && r.EndDate >= vandaag;
         }
-
     }
 }

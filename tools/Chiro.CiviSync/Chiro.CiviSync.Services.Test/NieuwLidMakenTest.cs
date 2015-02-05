@@ -23,6 +23,7 @@ using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Helpers;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -64,14 +65,18 @@ namespace Chiro.CiviSync.Services.Test
 
             Factory.ContainerInit();
 
+            // We gebruiken een mock voor de CiviCrm API.
             _civiApiMock = new Mock<ICiviCrmApi>();
-
             var channelProviderMock = new Mock<IChannelProvider>();
             channelProviderMock.Setup(src => src.GetChannel<ICiviCrmApi>()).Returns(_civiApiMock.Object);
-
-            // Laat ons hopen dat deze tests niet in parallel lopen :-)
             Factory.InstantieRegistreren(channelProviderMock.Object);
 
+            // Deze tests spelen zich af in februari 2015 :-)
+            var datumHelperMock = new Mock<IDatumHelper>();
+            datumHelperMock.Setup(src => src.Vandaag()).Returns(new DateTime(2015, 02, 05));
+            Factory.InstantieRegistreren(datumHelperMock.Object);
+
+            // Loggen doen we niet.
             var logMock = new Mock<IMiniLog>();
             Factory.InstantieRegistreren(logMock.Object);
         }
