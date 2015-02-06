@@ -20,9 +20,7 @@ using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
-using Chiro.CiviSync.Helpers;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -86,7 +84,7 @@ namespace Chiro.CiviSync.Services
                 {
                     // Neem van bestaande relatie het ID en de begindatum over.
                     relationshipRequest.Id = bestaandeRelatie.Id;
-                    relationshipRequest.EndDate = bestaandeRelatie.EndDate;
+                    relationshipRequest.StartDate = bestaandeRelatie.StartDate;
                     if (_relationshipHelper.IsActief(bestaandeRelatie))
                     {
                         _log.Loggen(Niveau.Warning,
