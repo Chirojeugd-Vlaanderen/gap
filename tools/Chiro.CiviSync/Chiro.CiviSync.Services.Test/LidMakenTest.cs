@@ -29,10 +29,13 @@ using Moq;
 namespace Chiro.CiviSync.Services.Test
 {
     [TestClass]
-    public class NieuwLidMakenTest
+    public class LidMakenTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
         private static int _nextId = 1;
+
+        private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
+        private const int VolgendWerkjaar = 2015;
 
         [ClassInitialize]
         public static void InitialilzeTestClass(TestContext c)
@@ -43,21 +46,19 @@ namespace Chiro.CiviSync.Services.Test
         [TestInitialize]
         public void InitializeTest()
         {
-            _civiApiMock = TestHelper.IocOpzetten(new DateTime(2015, 02, 05));
+            _civiApiMock = TestHelper.IocOpzetten(_vandaagZogezegd);
         }
 
-        /// <summary>
-        /// Als een nieuwe persoon al gevonden is in de CiviCRM-database, dan wordt het GAP-ID
-        /// van die persoon aangepast. Voor die call verwacht CiviCRM een ContactType.
-        /// </summary>
         [TestMethod]
-        public void ContactTypeBijGematchtLid()
+        public void TestMethod1()
         {
             // ARRANGE
 
+            const int adNummer = 2;
+
             // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
-            var ploeg = new Contact {ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization};
-            var persoon = new Contact {ExternalIdentifier = "2", FirstName = "Kees", LastName = "Flodder", GapId = 3};
+            var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
+            var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
 
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
             // dezelfde persoon en dezelfde ploeg.
@@ -91,82 +92,39 @@ namespace Chiro.CiviSync.Services.Test
                         {
                             Count = 1,
                             IsError = 0,
-                            Values = new[] {_civiApiMock.Object.ContactGetSingle(key1, key2, r)}
+                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
                         };
                         result.Id = result.Values.First().Id;
                         return result;
                     });
 
-            // RelationshipSave moet gewoon doen of het werkt.
             _civiApiMock.Setup(
+                // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
+                // LidMaken moet de startdatum dan op 1 september zetten.
                 src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
                 .Returns((string key1, string key2, RelationshipRequest r) =>
-                    Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r));
-
-            // Voor deze test moet elke 'ContactSave' een individual aanmaken.
-            _civiApiMock.Setup(src => src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
-                It.IsAny<ContactRequest>())).Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        Assert.AreEqual(ContactType.Individual, r.ContactType);
-                        return SomeSaveResult(r);
-                    });
+                {
+                    DateTime beginVolgendWerkjaar = new DateTime(VolgendWerkjaar, 9, 1);
+                    Assert.AreEqual(beginVolgendWerkjaar, r.StartDate);
+                    return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
+                });
 
             var service = Factory.Maak<SyncService>();
 
             // ACT
 
-            service.NieuwLidBewaren(
-                new PersoonDetails
-                {
-                    Adres = new Adres {Straat = "Kipdorp", HuisNr = 30, PostNr = 2000, WoonPlaats = "Antwerpen"},
-                    AdresType = AdresTypeEnum.Thuis,
-                    Communicatie =
-                        new[]
-                        {
-                            new CommunicatieMiddel
-                            {
-                                GeenMailings = true,
-                                Type = CommunicatieType.TelefoonNummer,
-                                Waarde = "03-231 07 95"
-                            }
-                        },
-                    Persoon =
-                        new Persoon
-                        {
-                            AdNummer = null,
-                            GeboorteDatum = new DateTime(2003, 11, 8),
-                            Geslacht = GeslachtsEnum.Vrouw,
-                            ID = persoon.GapId ?? 0,
-                            Naam = persoon.LastName,
-                            VoorNaam = persoon.FirstName
-                        }
-                },
-                new LidGedoe
-                {
-                    EindeInstapPeriode = new DateTime(2015, 02, 27),
-                    LidType = LidTypeEnum.Kind,
-                    OfficieleAfdelingen = new[] {AfdelingEnum.Rakwis},
-                    StamNummer = ploeg.ExternalIdentifier,
-                    WerkJaar = 2014
-                });
-
-            // ASSERT
-
-            // Als we hier geraken zonder assertion failure, dan is het gelukt.
-            Assert.IsTrue(true);
-        }
-
-        private ApiResultValues<Contact> SomeSaveResult(ContactRequest contactRequest)
-        {
-            return new ApiResultValues<Contact>
+            service.LidBewaren(adNummer, new LidGedoe
             {
-                Count = 1,
-                ErrorMessage = String.Empty,
-                Id = _nextId++,
-                IsError = 0,
-                Values = new Contact[] {Mapper.Map<ContactRequest, Contact>(contactRequest)}
-            };
+                EindeInstapPeriode = new DateTime(2015, 02, 28),
+                LidType = LidTypeEnum.Kind,
+                OfficieleAfdelingen = new[] {AfdelingEnum.Rakwis},
+                StamNummer = ploeg.ExternalIdentifier,
+                WerkJaar = VolgendWerkjaar
+            });
+
+            // ASSERT:
+            // Als er niets crasht, is het altijd goed, want kipsync geeft geen feedback.
+            Assert.IsTrue(true);
         }
     }
 }

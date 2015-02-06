@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="NieuwLidMakenTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LidMakenTest.cs" />
+    <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
