@@ -21,6 +21,7 @@ using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -147,6 +148,138 @@ namespace Chiro.CiviSync.Services.Test
                     EindeInstapPeriode = new DateTime(2015, 02, 27),
                     LidType = LidTypeEnum.Kind,
                     OfficieleAfdelingen = new[] {AfdelingEnum.Rakwis},
+                    StamNummer = ploeg.ExternalIdentifier,
+                    WerkJaar = 2014
+                });
+
+            // ASSERT
+
+            // Als we hier geraken zonder assertion failure, dan is het gelukt.
+            Assert.IsTrue(true);
+        }
+
+        /// <summary>
+        /// Als CiviSync persoonsgegevens krijgt zonder AD-nummer of GAP-ID, dan probeert CiviSync zelf
+        /// te matchen. We checken even of CiviSync op zoek gaat naar een persoon van het juiste geslacht
+        /// (want dat deden we al wel eens mis.)
+        /// </summary>
+        [TestMethod]
+        public void CorrectGeslachtBijTeMatchenLid()
+        {
+            // ARRANGE
+
+            // We zullen straks de persoon kunnen matchen op zijn telefoonnummer.
+            const string somePhoneNumber = "03-231 07 95";
+
+            // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
+            var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
+            var persoon = new Contact
+            {
+                ExternalIdentifier = "2",
+                FirstName = "Kees",
+                LastName = "Flodder",
+                Gender = Gender.Female,
+                Id = 3,
+                RelationshipResult = new ApiResultValues<Relationship>
+                {
+                    Count = 0,
+                    IsError = 0
+                },
+                PhoneResult =
+                    new ApiResultValues<Phone>
+                    {
+                        Count = 1,
+                        IsError = 0,
+                        Values = new[] {new Phone {PhoneNumber = somePhoneNumber}}
+                    }
+            };
+
+            // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
+            // dezelfde persoon en dezelfde ploeg.
+
+            _civiApiMock.Setup(
+                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(
+                    (string key1, string key2, ContactRequest r) =>
+                    {
+                        Contact contact = null;
+
+                        if (r.Gender != null)
+                        {
+                            // Van zodra er op gender gezocht wordt, verwachten we dat het het juiste gender is.
+                            Assert.AreEqual(persoon.Gender, r.Gender);
+                            // Verwacht dat we dan ook op een persoon aan het zoeken zijn.
+                            Assert.AreEqual(ContactType.Individual, r.ContactType);
+                            // En dan leveren we onze persoon op.
+                            contact = persoon;
+                        }
+                        else if (r.ContactType == ContactType.Organization)
+                        {
+                            // Voor eender welke organisatie leveren we de ploeg op.
+                            contact = ploeg;
+                        }
+                        else
+                        {
+                            contact = persoon;
+                        }
+                        return new ApiResultValues<Contact>
+                        {
+                            Count =1,
+                            IsError = 0,
+                            Values = new [] {contact}
+                        };
+                    });
+
+            // RelationshipSave moet gewoon doen of het werkt.
+            _civiApiMock.Setup(
+                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
+                .Returns((string key1, string key2, RelationshipRequest r) =>
+                    Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r));
+
+            // Voor deze test moet elke 'ContactSave' een individual aanmaken.
+            _civiApiMock.Setup(src => src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+                It.IsAny<ContactRequest>())).Returns(
+                    (string key1, string key2, ContactRequest r) =>
+                    {
+                        Assert.AreEqual(ContactType.Individual, r.ContactType);
+                        return SomeSaveResult(r);
+                    });
+
+            var service = Factory.Maak<SyncService>();
+
+            // ACT
+
+            service.NieuwLidBewaren(
+                new PersoonDetails
+                {
+                    Adres = new Adres { Straat = "Kipdorp", HuisNr = 30, PostNr = 2000, WoonPlaats = "Antwerpen" },
+                    AdresType = AdresTypeEnum.Thuis,
+                    Communicatie =
+                        new[]
+                        {
+                            new CommunicatieMiddel
+                            {
+                                GeenMailings = true,
+                                Type = CommunicatieType.TelefoonNummer,
+                                Waarde = somePhoneNumber
+                            }
+                        },
+                    Persoon =
+                        new Persoon
+                        {
+                            AdNummer = null,
+                            GeboorteDatum = new DateTime(2003, 11, 8),
+                            Geslacht = GeslachtsEnum.Vrouw,
+                            ID = persoon.GapId ?? 0,
+                            Naam = persoon.LastName,
+                            VoorNaam = persoon.FirstName
+                        }
+                },
+                new LidGedoe
+                {
+                    EindeInstapPeriode = new DateTime(2015, 02, 27),
+                    LidType = LidTypeEnum.Kind,
+                    OfficieleAfdelingen = new[] { AfdelingEnum.Rakwis },
                     StamNummer = ploeg.ExternalIdentifier,
                     WerkJaar = 2014
                 });
