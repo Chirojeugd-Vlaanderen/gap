@@ -180,6 +180,7 @@ namespace Chiro.CiviSync.Services
             {
                 FirstName = details.Persoon.VoorNaam,
                 LastName = details.Persoon.Naam,
+                ContactType = ContactType.Individual,
                 Gender = (Gender) (3 - (int) details.Persoon.Geslacht),
                 AddressGetRequest = new BaseRequest(),
                 EmailGetRequest = new BaseRequest(),
