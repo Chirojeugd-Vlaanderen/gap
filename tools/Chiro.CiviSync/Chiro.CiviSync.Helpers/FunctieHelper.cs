@@ -57,7 +57,7 @@ namespace Chiro.CiviSync.Helpers
         /// <returns>Functiecodes uit ChiroCivi.</returns>
         public string[] KipCodes(IEnumerable<FunctieEnum> functies)
         {
-            return (from f in functies select KipCode[f]).ToArray();
+            return functies == null ? null : (from f in functies select KipCode[f]).ToArray();
         }
     }
 }

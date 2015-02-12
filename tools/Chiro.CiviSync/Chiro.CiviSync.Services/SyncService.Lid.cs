@@ -124,6 +124,7 @@ namespace Chiro.CiviSync.Services
                     relationshipRequest.LeidingVan == null
                         ? "n/a"
                         : String.Join(",", relationshipRequest.LeidingVan.Select(afd => afd.ToString())),
+                        relationshipRequest.Functies == null ? "(geen)" :
                     String.Join(",", relationshipRequest.Functies)),
                 gedoe.StamNummer, adNummer, contact.GapId);
 
