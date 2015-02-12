@@ -404,5 +404,170 @@ namespace Chiro.CiviSync.Services.Test
             // Als er niets crasht, is het altijd goed, want kipsync geeft geen feedback.
             Assert.IsTrue(true);
         }
+
+        /// <summary>
+        /// Controleer omzetting afdelingen leden.
+        /// </summary>
+        [TestMethod]
+        public void AfdelingLidHuidigWerkjaar()
+        {
+            // ARRANGE
+
+            const int adNummer = 2;
+
+            // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
+            var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
+            var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
+
+            // We gaan inschrijven bij de rakwi's, en nakijken of de juiste afdeling naar CiviCRM gaat.
+            AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
+            Afdeling civiAfdeling = Afdeling.Rakwis;
+
+            // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
+            // dezelfde persoon en dezelfde ploeg.
+
+            _civiApiMock.Setup(
+                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(
+                    (string key1, string key2, ContactRequest r) =>
+                    {
+                        var result = r.ContactType == ContactType.Organization
+                            ? ploeg
+                            : persoon;
+                        // Als relaties gevraagd zijn, lever dan gewoon een lege lijst op.
+                        if (r.RelationshipGetRequest != null)
+                        {
+                            result.RelationshipResult = new ApiResultValues<Relationship>
+                            {
+                                Count = 0,
+                                IsError = 0
+                            };
+                        }
+                        return result;
+                    });
+
+            _civiApiMock.Setup(
+                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(
+                    (string key1, string key2, ContactRequest r) =>
+                    {
+                        var result = new ApiResultValues<Contact>
+                        {
+                            Count = 1,
+                            IsError = 0,
+                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
+                        };
+                        result.Id = result.Values.First().Id;
+                        return result;
+                    });
+
+            _civiApiMock.Setup(
+                // LidMaken moet de startdatum dan op 1 september zetten.
+                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
+                .Returns((string key1, string key2, RelationshipRequest r) =>
+                {
+                    Assert.AreEqual(civiAfdeling, r.Afdeling);
+                    return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
+                });
+
+            var service = Factory.Maak<SyncService>();
+
+            // ACT
+
+            service.LidBewaren(adNummer, new LidGedoe
+            {
+                LidType = LidTypeEnum.Kind,
+                OfficieleAfdelingen = new[] { gapAfdeling },
+                StamNummer = ploeg.ExternalIdentifier,
+                WerkJaar = HuidigWerkJaar
+            });
+
+            // ASSERT:
+            // Als er niets crasht, is het altijd goed, want kipsync geeft geen feedback.
+            Assert.IsTrue(true);
+        }
+
+        /// <summary>
+        /// Controleer omzetting afdelingen leiding
+        /// </summary>
+        [TestMethod]
+        public void AfdelingenLeidingHuidigWerkjaar()
+        {
+            // ARRANGE
+
+            const int adNummer = 2;
+
+            // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
+            var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
+            var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
+
+            // We gaan inschrijven bij de rakwi's, en nakijken of de juiste afdeling naar CiviCRM gaat.
+            AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
+            Afdeling civiAfdeling = Afdeling.Rakwis;
+
+            // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
+            // dezelfde persoon en dezelfde ploeg.
+
+            _civiApiMock.Setup(
+                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(
+                    (string key1, string key2, ContactRequest r) =>
+                    {
+                        var result = r.ContactType == ContactType.Organization
+                            ? ploeg
+                            : persoon;
+                        // Als relaties gevraagd zijn, lever dan gewoon een lege lijst op.
+                        if (r.RelationshipGetRequest != null)
+                        {
+                            result.RelationshipResult = new ApiResultValues<Relationship>
+                            {
+                                Count = 0,
+                                IsError = 0
+                            };
+                        }
+                        return result;
+                    });
+
+            _civiApiMock.Setup(
+                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(
+                    (string key1, string key2, ContactRequest r) =>
+                    {
+                        var result = new ApiResultValues<Contact>
+                        {
+                            Count = 1,
+                            IsError = 0,
+                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
+                        };
+                        result.Id = result.Values.First().Id;
+                        return result;
+                    });
+
+            _civiApiMock.Setup(
+                // LidMaken moet de startdatum dan op 1 september zetten.
+                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
+                .Returns((string key1, string key2, RelationshipRequest r) =>
+                {
+                    Assert.AreEqual(Afdeling.Leiding, r.Afdeling);
+                    Assert.AreEqual(civiAfdeling, r.LeidingVan.First());
+                    return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
+                });
+
+            var service = Factory.Maak<SyncService>();
+
+            // ACT
+
+            service.LidBewaren(adNummer, new LidGedoe
+            {
+                LidType = LidTypeEnum.Leiding,
+                OfficieleAfdelingen = new[] { gapAfdeling },
+                StamNummer = ploeg.ExternalIdentifier,
+                WerkJaar = HuidigWerkJaar
+            });
+
+            // ASSERT:
+            // Als er niets crasht, is het altijd goed, want kipsync geeft geen feedback.
+            Assert.IsTrue(true);
+        }
     }
 }
