@@ -114,6 +114,8 @@ namespace Chiro.CiviSync.Services.Test
                     DateTime eindeVolgendWerkJaar = new DateTime(VolgendWerkjaar + 1, 8, 31);
                     Assert.AreEqual(beginVolgendWerkjaar, r.StartDate);
                     Assert.AreEqual(eindeVolgendWerkJaar, r.EndDate);
+                    // Future relationships shoud be inactive, see http://forum.civicrm.org/index.php?topic=21327.0
+                    Assert.AreEqual(false, r.IsActive);
                     return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
                 });
 
@@ -196,6 +198,7 @@ namespace Chiro.CiviSync.Services.Test
                     DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
                     Assert.AreEqual(_vandaagZogezegd, r.StartDate);
                     Assert.AreEqual(eindeDitWerkJaar, r.EndDate);
+                    Assert.AreEqual(true, r.IsActive);
                     return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
                 });
 
@@ -380,6 +383,8 @@ namespace Chiro.CiviSync.Services.Test
                     DateTime eindeVorigWerkJaar = new DateTime(VorigWerkJaar + 1, 8, 31);
                     Assert.AreEqual(eindeVorigWerkJaar, r.StartDate);
                     Assert.AreEqual(eindeVorigWerkJaar, r.EndDate);
+                    // Een relatie uit vorig werkjaar is niet meer actief.
+                    Assert.AreEqual(false, r.IsActive);
                     return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
                 });
 

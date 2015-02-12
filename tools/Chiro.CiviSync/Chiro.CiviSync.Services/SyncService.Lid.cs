@@ -100,9 +100,11 @@ namespace Chiro.CiviSync.Services
                     {
                         _log.Loggen(Niveau.Info,
                             String.Format(
-                                "Inactieve lidrelatie van {0} {1} (AD {2}) voor groep {3} in werkjaar {4} wordt opnieuw geactiveerd.",
+                                "Inactieve lidrelatie van {0} {1} (AD {2}) voor groep {3} in werkjaar {4} wordt bijgewerkt.",
                                 contact.FirstName, contact.LastName, adNummer, gedoe.StamNummer, gedoe.WerkJaar),
                             gedoe.StamNummer, adNummer, contact.GapId);
+                        // Het kan best zijn dat na het bijwerken de relatie nog steeds in actief is, i.h.b. als de groep nog
+                        // geen jaarovergang deed voor het huidige werkjaar.
                     }
                 }
             }
