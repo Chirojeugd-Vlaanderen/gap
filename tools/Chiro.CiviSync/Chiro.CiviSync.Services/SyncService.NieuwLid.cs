@@ -69,8 +69,8 @@ namespace Chiro.CiviSync.Services
         /// Als dat lukt, worden de meegegeven persoonsgegevens, adressen en communicatie overgenomen 
         /// in de CiviCRM. Als er niemand gevonden is, dan wordt een nieuwe persoon aangemaakt.
         /// </summary>
-        /// <param name="details"></param>
-        /// <returns></returns>
+        /// <param name="details">details voor te updaten/maken persoon</param>
+        /// <returns>AD-nummer van die persoon</returns>
         private int UpdatenOfMaken(PersoonDetails details)
         {
             int? adNummer = AdNummerZoeken(details);
@@ -154,6 +154,12 @@ namespace Chiro.CiviSync.Services
                 {
                     return int.Parse(result.Values.First().ExternalIdentifier);
                 }
+                
+                // AD-nummer niet gevonden in Civi. Doe er iets mee.
+                _log.Loggen(Niveau.Error,
+                    String.Format("AD-nummer {0} van {1} {2} niet gevonden.", details.Persoon.AdNummer,
+                        details.Persoon.VoorNaam, details.Persoon.Naam), null, details.Persoon.AdNummer,
+                    details.Persoon.ID);
             }
 
             // Probeer op GAP-ID

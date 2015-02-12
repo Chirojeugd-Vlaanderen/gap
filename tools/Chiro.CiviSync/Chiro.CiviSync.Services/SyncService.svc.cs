@@ -43,6 +43,7 @@ namespace Chiro.CiviSync.Services
         private readonly ServiceHelper _serviceHelper;
         private readonly ContactHelper _contactHelper;
         private readonly RelationshipHelper _relationshipHelper;
+        private readonly FunctieHelper _functieHelper;
 
         protected ServiceHelper ServiceHelper
         {
@@ -61,8 +62,10 @@ namespace Chiro.CiviSync.Services
             _relationshipHelper = relationshipHelper;
             _log = log;
 
-            // Voor contacthelper gebruik ik (voorlopig?) geen dependency injection.
+            // Voor contacthelper en functiehelper gebruik ik (voorlopig?) geen 
+            // dependency injection.
             _contactHelper = new ContactHelper(_serviceHelper, _apiKey, _siteKey);
+            _functieHelper = new FunctieHelper();
         }
 
         /// <summary>

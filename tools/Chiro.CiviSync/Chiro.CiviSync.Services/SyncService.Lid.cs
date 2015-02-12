@@ -15,8 +15,10 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -72,8 +74,9 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            // Request voor lidrelatie: eerst een standaardrequest voor dit werkjaar, we passen dat zo nodig
-            // aan.
+            // Request voor te bewaren (nieuwe) lidrelatie: eerst een standaardrequest voor dit werkjaar.
+            // Als het contact al zo'n relatie had (contact.RelationshipResult), dan nemen we van die bestaande
+            // de relevante zaken over.
             var relationshipRequest = _relationshipHelper.VanWerkjaar(RelatieType.LidVan, contact.Id, civiGroepId.Value,
                 gedoe.WerkJaar);
 
@@ -103,6 +106,24 @@ namespace Chiro.CiviSync.Services
                     }
                 }
             }
+
+            // We vervangen functies en afdelingen.
+            relationshipRequest.Afdeling = gedoe.LidType == LidTypeEnum.Kind
+                ? Mapper.Map<AfdelingEnum, Afdeling>(gedoe.OfficieleAfdelingen.First()) : Afdeling.Leiding;
+            relationshipRequest.LeidingVan = gedoe.LidType == LidTypeEnum.Leiding
+                ? Mapper.Map<IEnumerable<AfdelingEnum>, Afdeling[]>(gedoe.OfficieleAfdelingen)
+                : null;
+            relationshipRequest.Functies = _functieHelper.KipCodes(gedoe.NationaleFuncties);
+
+            _log.Loggen(Niveau.Info,
+                String.Format(
+                    "AD {0} stamnr {1} werkjaar {2} - afd {3}, lafd {4}, func {5}",
+                    adNummer, gedoe.StamNummer, gedoe.WerkJaar, relationshipRequest.Afdeling,
+                    relationshipRequest.LeidingVan == null
+                        ? "n/a"
+                        : String.Join(",", relationshipRequest.LeidingVan.Select(afd => afd.ToString())),
+                    String.Join(",", relationshipRequest.Functies)),
+                gedoe.StamNummer, adNummer, contact.GapId);
 
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
