@@ -64,6 +64,12 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         public DateTime? EindeInstapPeriode { get; set; }
 
         /// <summary>
+        /// Als het lid uitgeschreven is: een uitschrijfdatum.
+        /// </summary>
+        [DataMember]
+        public DateTime? UitschrijfDatum { get; set; }
+
+        /// <summary>
         /// Returns a System.String that represents the current LidGedoe
         /// </summary>
         /// <returns>System.String that represents the current LidGedoe</returns>
