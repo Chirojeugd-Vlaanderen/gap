@@ -414,7 +414,8 @@ namespace Chiro.Gap.Services
         {
             // Deze code is tamelijk rommelig; gebruik ze niet als referentie-implementatie
             // (Ik ben er ook niet van overtuigd of het werken met 'foutBerichten' wel in orde is.)
-            var teSyncen = new List<Lid>();
+            var teVerwijderen = new List<Lid>();
+            var stopDatumBewaren = new List<Lid>();
 
             var foutBerichtenBuilder = new StringBuilder();
 
@@ -462,7 +463,11 @@ namespace Chiro.Gap.Services
 
                     if (lid.EindeInstapPeriode > lid.UitschrijfDatum || lid.Niveau > Niveau.Groep)
                     {
-                        teSyncen.Add(lid);
+                        teVerwijderen.Add(lid);
+                    }
+                    else
+                    {
+                        stopDatumBewaren.Add(lid);
                     }
                 }
             }
@@ -474,9 +479,13 @@ namespace Chiro.Gap.Services
 			{
 #endif
                 _gelieerdePersonenRepo.SaveChanges();
-                foreach (var l in teSyncen)
+                foreach (var l in teVerwijderen)
                 {
-                    _ledenSync.Verwijderen(l);
+                    _ledenSync.Verwijderen  (l);
+                }
+                foreach (var l in stopDatumBewaren)
+                {
+                    _ledenSync.Bewaren(l);
                 }
 #if KIPDORP
 				tx.Complete();
