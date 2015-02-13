@@ -29,7 +29,7 @@ using Moq;
 namespace Chiro.CiviSync.Services.Test
 {
     [TestClass]
-    public class LidMakenTest
+    public class LidBewarenTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
         private static int _nextId = 1;
@@ -66,6 +66,9 @@ namespace Chiro.CiviSync.Services.Test
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
             var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
 
+            DateTime beginVolgendWerkjaar = new DateTime(VolgendWerkjaar, 9, 1);
+            DateTime eindeVolgendWerkJaar = new DateTime(VolgendWerkjaar + 1, 8, 31);
+
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
             // dezelfde persoon en dezelfde ploeg.
 
@@ -107,17 +110,16 @@ namespace Chiro.CiviSync.Services.Test
             _civiApiMock.Setup(
                 // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
                 // LidMaken moet de startdatum dan op 1 september zetten.
-                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
-                .Returns((string key1, string key2, RelationshipRequest r) =>
-                {
-                    DateTime beginVolgendWerkjaar = new DateTime(VolgendWerkjaar, 9, 1);
-                    DateTime eindeVolgendWerkJaar = new DateTime(VolgendWerkjaar + 1, 8, 31);
-                    Assert.AreEqual(beginVolgendWerkjaar, r.StartDate);
-                    Assert.AreEqual(eindeVolgendWerkJaar, r.EndDate);
-                    // Future relationships shoud be inactive, see http://forum.civicrm.org/index.php?topic=21327.0
-                    Assert.AreEqual(false, r.IsActive);
-                    return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
-                });
+                // Future relationships shoud be inactive, see http://forum.civicrm.org/index.php?topic=21327.0
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(
+                            r =>
+                                r.StartDate == beginVolgendWerkjaar && r.EndDate == eindeVolgendWerkJaar &&
+                                r.IsActive == false)))
+                .Returns(
+                    (string key1, string key2, RelationshipRequest r) =>
+                        Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
 
             var service = Factory.Maak<SyncService>();
 
@@ -132,8 +134,17 @@ namespace Chiro.CiviSync.Services.Test
             });
 
             // ASSERT:
-            // Als er niets crasht, is het altijd goed, want kipsync geeft geen feedback.
-            Assert.IsTrue(true);
+
+            _civiApiMock.Verify(
+                // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
+                // LidMaken moet de startdatum dan op 1 september zetten.
+                // Future relationships shoud be inactive, see http://forum.civicrm.org/index.php?topic=21327.0
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(
+                            r =>
+                                r.StartDate == beginVolgendWerkjaar && r.EndDate == eindeVolgendWerkJaar &&
+                                r.IsActive == false)), Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -151,6 +162,8 @@ namespace Chiro.CiviSync.Services.Test
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
             var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
 
+            DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
+
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
             // dezelfde persoon en dezelfde ploeg.
 
@@ -190,17 +203,13 @@ namespace Chiro.CiviSync.Services.Test
                     });
 
             _civiApiMock.Setup(
-                // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
-                // LidMaken moet de startdatum dan op 1 september zetten.
-                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
-                .Returns((string key1, string key2, RelationshipRequest r) =>
-                {
-                    DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
-                    Assert.AreEqual(_vandaagZogezegd, r.StartDate);
-                    Assert.AreEqual(eindeDitWerkJaar, r.EndDate);
-                    Assert.AreEqual(true, r.IsActive);
-                    return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
-                });
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(
+                            r => r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar && r.IsActive == true)))
+                .Returns(
+                    (string key1, string key2, RelationshipRequest r) =>
+                        Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
 
             var service = Factory.Maak<SyncService>();
 
@@ -214,9 +223,14 @@ namespace Chiro.CiviSync.Services.Test
                 WerkJaar = HuidigWerkJaar
             });
 
-            // ASSERT:
-            // Als er niets crasht, is het altijd goed, want kipsync geeft geen feedback.
-            Assert.IsTrue(true);
+            // ASSERT
+
+            _civiApiMock.Verify(
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(
+                            r => r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar && r.IsActive == true)),
+                Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -250,6 +264,7 @@ namespace Chiro.CiviSync.Services.Test
                 EndDate = new DateTime(HuidigWerkJaar, 11, 25),
                 IsActive = false
             };
+            DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
             
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
             // dezelfde persoon en dezelfde ploeg.
@@ -293,16 +308,15 @@ namespace Chiro.CiviSync.Services.Test
             _civiApiMock.Setup(
                 // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
                 // LidMaken moet de startdatum dan op 1 september zetten.
-                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
-                .Returns((string key1, string key2, RelationshipRequest r) =>
-                {
-                    DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
-                    Assert.AreEqual(relatie.StartDate, r.StartDate);
-                    Assert.AreEqual(eindeDitWerkJaar, r.EndDate);
-                    Assert.AreEqual(relatie.Id, r.Id);
-                    Assert.AreEqual(true, r.IsActive);
-                    return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
-                });
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(
+                            r =>
+                                r.StartDate == relatie.StartDate && r.EndDate == eindeDitWerkJaar && r.Id == relatie.Id &&
+                                r.IsActive == true)))
+                .Returns(
+                    (string key1, string key2, RelationshipRequest r) =>
+                        Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
 
             var service = Factory.Maak<SyncService>();
 
@@ -318,7 +332,15 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT:
             // Als er niets crasht, is het altijd goed, want kipsync geeft geen feedback.
-            Assert.IsTrue(true);
+            _civiApiMock.Verify(
+                // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
+                // LidMaken moet de startdatum dan op 1 september zetten.
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(
+                            r =>
+                                r.StartDate == relatie.StartDate && r.EndDate == eindeDitWerkJaar && r.Id == relatie.Id &&
+                                r.IsActive == true)), Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -335,6 +357,7 @@ namespace Chiro.CiviSync.Services.Test
             // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
             var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
+            DateTime eindeVorigWerkJaar = new DateTime(VorigWerkJaar + 1, 8, 31);
 
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
             // dezelfde persoon en dezelfde ploeg.
@@ -375,18 +398,17 @@ namespace Chiro.CiviSync.Services.Test
                     });
 
             _civiApiMock.Setup(
-                // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
-                // LidMaken moet de startdatum dan op 1 september zetten.
-                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
-                .Returns((string key1, string key2, RelationshipRequest r) =>
-                {
-                    DateTime eindeVorigWerkJaar = new DateTime(VorigWerkJaar + 1, 8, 31);
-                    Assert.AreEqual(eindeVorigWerkJaar, r.StartDate);
-                    Assert.AreEqual(eindeVorigWerkJaar, r.EndDate);
-                    // Een relatie uit vorig werkjaar is niet meer actief.
-                    Assert.AreEqual(false, r.IsActive);
-                    return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
-                });
+                // We zullen een lid maken voor een werkjaar dat al voorbij is.
+                // We verwachten dat start- en einddatum 31 autustus zullen zijn.
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(
+                            r =>
+                                r.StartDate == eindeVorigWerkJaar && r.EndDate == eindeVorigWerkJaar &&
+                                r.IsActive == false)))
+                .Returns(
+                    (string key1, string key2, RelationshipRequest r) =>
+                        Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
 
             var service = Factory.Maak<SyncService>();
 
@@ -401,8 +423,16 @@ namespace Chiro.CiviSync.Services.Test
             });
 
             // ASSERT:
-            // Als er niets crasht, is het altijd goed, want kipsync geeft geen feedback.
-            Assert.IsTrue(true);
+
+            _civiApiMock.Verify(
+                // We zullen een lid maken voor een werkjaar dat al voorbij is.
+                // We verwachten dat start- en einddatum 31 autustus zullen zijn.
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(
+                            r =>
+                                r.StartDate == eindeVorigWerkJaar && r.EndDate == eindeVorigWerkJaar &&
+                                r.IsActive == false)), Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -462,13 +492,12 @@ namespace Chiro.CiviSync.Services.Test
                     });
 
             _civiApiMock.Setup(
-                // LidMaken moet de startdatum dan op 1 september zetten.
-                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
-                .Returns((string key1, string key2, RelationshipRequest r) =>
-                {
-                    Assert.AreEqual(civiAfdeling, r.Afdeling);
-                    return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
-                });
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(r => r.Afdeling == civiAfdeling)))
+                .Returns(
+                    (string key1, string key2, RelationshipRequest r) =>
+                        Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
 
             var service = Factory.Maak<SyncService>();
 
@@ -482,9 +511,12 @@ namespace Chiro.CiviSync.Services.Test
                 WerkJaar = HuidigWerkJaar
             });
 
-            // ASSERT:
-            // Als er niets crasht, is het altijd goed, want kipsync geeft geen feedback.
-            Assert.IsTrue(true);
+            // ASSERT
+
+            _civiApiMock.Verify(
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(r => r.Afdeling == civiAfdeling)), Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -544,14 +576,13 @@ namespace Chiro.CiviSync.Services.Test
                     });
 
             _civiApiMock.Setup(
-                // LidMaken moet de startdatum dan op 1 september zetten.
-                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
-                .Returns((string key1, string key2, RelationshipRequest r) =>
-                {
-                    Assert.AreEqual(Afdeling.Leiding, r.Afdeling);
-                    Assert.AreEqual(civiAfdeling, r.LeidingVan.First());
-                    return Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r);
-                });
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(
+                            r => r.Afdeling == Afdeling.Leiding && r.LeidingVan.First() == civiAfdeling)))
+                .Returns(
+                    (string key1, string key2, RelationshipRequest r) =>
+                        Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
 
             var service = Factory.Maak<SyncService>();
 
@@ -565,9 +596,16 @@ namespace Chiro.CiviSync.Services.Test
                 WerkJaar = HuidigWerkJaar
             });
 
-            // ASSERT:
-            // Als er niets crasht, is het altijd goed, want kipsync geeft geen feedback.
-            Assert.IsTrue(true);
+            // ASSERT
+
+            _civiApiMock.Verify(
+                // LidMaken moet de startdatum dan op 1 september zetten.
+                src =>
+                    src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(
+                            r => r.Afdeling == Afdeling.Leiding && r.LeidingVan.First() == civiAfdeling)),
+                Times.AtLeastOnce);
         }
+
     }
 }

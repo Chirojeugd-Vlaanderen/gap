@@ -59,9 +59,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="NieuwLidMakenTest.cs" />
+    <Compile Include="NieuwLidBewarenTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LidMakenTest.cs" />
+    <Compile Include="LidBewarenTest.cs" />
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>

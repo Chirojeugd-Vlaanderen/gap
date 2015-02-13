@@ -30,7 +30,7 @@ using Moq;
 namespace Chiro.CiviSync.Services.Test
 {
     [TestClass]
-    public class NieuwLidMakenTest
+    public class NieuwLidBewarenTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
         private static int _nextId = 1;
@@ -106,12 +106,8 @@ namespace Chiro.CiviSync.Services.Test
 
             // Voor deze test moet elke 'ContactSave' een individual aanmaken.
             _civiApiMock.Setup(src => src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
-                It.IsAny<ContactRequest>())).Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        Assert.AreEqual(ContactType.Individual, r.ContactType);
-                        return SomeSaveResult(r);
-                    });
+                It.Is<ContactRequest>(r => r.ContactType == ContactType.Individual))).Returns(
+                    (string key1, string key2, ContactRequest r) => SomeSaveResult(r)).Verifiable();
 
             var service = Factory.Maak<SyncService>();
 
@@ -154,8 +150,8 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            // Als we hier geraken zonder assertion failure, dan is het gelukt.
-            Assert.IsTrue(true);
+            _civiApiMock.Verify(src => src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+                It.Is<ContactRequest>(r => r.ContactType == ContactType.Individual)), Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -197,38 +193,19 @@ namespace Chiro.CiviSync.Services.Test
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
             // dezelfde persoon en dezelfde ploeg.
 
+            // Verwacht dat er zeker op gender gezocht wordt. Lever persoon op.
             _civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                src =>
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.Gender == persoon.Gender && r.ContactType == ContactType.Individual)))
                 .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        Contact contact = null;
-
-                        if (r.Gender != null)
-                        {
-                            // Van zodra er op gender gezocht wordt, verwachten we dat het het juiste gender is.
-                            Assert.AreEqual(persoon.Gender, r.Gender);
-                            // Verwacht dat we dan ook op een persoon aan het zoeken zijn.
-                            Assert.AreEqual(ContactType.Individual, r.ContactType);
-                            // En dan leveren we onze persoon op.
-                            contact = persoon;
-                        }
-                        else if (r.ContactType == ContactType.Organization)
-                        {
-                            // Voor eender welke organisatie leveren we de ploeg op.
-                            contact = ploeg;
-                        }
-                        else
-                        {
-                            contact = persoon;
-                        }
-                        return new ApiResultValues<Contact>
-                        {
-                            Count =1,
-                            IsError = 0,
-                            Values = new [] {contact}
-                        };
-                    });
+                    new ApiResultValues<Contact> {Count = 1, IsError = 0, Values = new[] {persoon}}).Verifiable();
+            // Zoeken op eender welke organisatie levert de ploeg op.
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ContactType == ContactType.Organization))).Returns(
+                            new ApiResultValues<Contact> {Count = 1, IsError = 0, Values = new[] {ploeg}});
 
             // RelationshipSave moet gewoon doen of het werkt.
             _civiApiMock.Setup(
@@ -286,8 +263,11 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            // Als we hier geraken zonder assertion failure, dan is het gelukt.
-            Assert.IsTrue(true);
+            _civiApiMock.Verify(
+                src =>
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.Gender == persoon.Gender && r.ContactType == ContactType.Individual)),
+                Times.AtLeastOnce);
         }
 
         private ApiResultValues<Contact> SomeSaveResult(ContactRequest contactRequest)
