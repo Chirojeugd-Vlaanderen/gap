@@ -78,7 +78,7 @@ namespace Chiro.CiviSync.Services
             // Als het contact al zo'n relatie had (contact.RelationshipResult), dan nemen we van die bestaande
             // de relevante zaken over.
             var relationshipRequest = _relationshipHelper.VanWerkjaar(RelatieType.LidVan, contact.Id, civiGroepId.Value,
-                gedoe.WerkJaar);
+                gedoe.WerkJaar, gedoe.UitschrijfDatum);
 
             if (contact.RelationshipResult.Count == 1)
             {
@@ -119,13 +119,15 @@ namespace Chiro.CiviSync.Services
 
             _log.Loggen(Niveau.Info,
                 String.Format(
-                    "AD {0} stamnr {1} werkjaar {2} - afd {3}, lafd {4}, func {5}",
+                    "{6}: AD {0} stamnr {1} werkjaar {2} - afd {3}, lafd {4}, func {5}",
                     adNummer, gedoe.StamNummer, gedoe.WerkJaar, relationshipRequest.Afdeling,
                     relationshipRequest.LeidingVan == null
                         ? "n/a"
                         : String.Join(",", relationshipRequest.LeidingVan.Select(afd => afd.ToString())),
-                        relationshipRequest.Functies == null ? "(geen)" :
-                    String.Join(",", relationshipRequest.Functies)),
+                    relationshipRequest.Functies == null
+                        ? "(geen)"
+                        : String.Join(",", relationshipRequest.Functies),
+                    gedoe.UitschrijfDatum == null ? "Inschrijving" : "Uitschrijving"),
                 gedoe.StamNummer, adNummer, contact.GapId);
 
             var result =

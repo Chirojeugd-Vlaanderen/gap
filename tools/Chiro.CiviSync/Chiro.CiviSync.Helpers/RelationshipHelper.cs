@@ -67,10 +67,11 @@ namespace Chiro.CiviSync.Helpers
         /// <param name="contact1Id">Civi-ID van het eerste contact.</param>
         /// <param name="contact2Id">Civi-ID van het tweede contact.</param>
         /// <param name="werkJaar">Werkjaar voor de relatie.</param>
+        /// <param name="uitschrijfDatum">Als het om een inactieve relatie gaat: de uitschrijfdatum.</param>
         /// <returns>Een relationshiprequest van het gegeven <paramref name="type"/> voor een relatie tussen
         /// de contacten met ID's <paramref name="contact1Id"/> en <paramref name="contact2Id"/> voor het 
         /// gegeven <paramref name="werkJaar"/>.</returns>
-        public RelationshipRequest VanWerkjaar(RelatieType type, int contact1Id, int contact2Id, int werkJaar)
+        public RelationshipRequest VanWerkjaar(RelatieType type, int contact1Id, int contact2Id, int werkJaar, DateTime? uitschrijfDatum)
         {
             // We bekijken de datums zonder uren, dus discrete dagen. De EndDate valt volledig binnen de
             // relationship.
@@ -99,6 +100,11 @@ namespace Chiro.CiviSync.Helpers
             if (result.StartDate > eindeWerkJaar)
             {
                 result.StartDate = eindeWerkJaar;
+            }
+            if (uitschrijfDatum != null && uitschrijfDatum < result.EndDate)
+            {
+                // Het gaat om een uitschrijving voor het einde van het werkjaar.
+                result.EndDate = uitschrijfDatum;
             }
 
             result.IsActive = IsActief(result);
