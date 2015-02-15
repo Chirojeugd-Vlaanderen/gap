@@ -700,11 +700,10 @@ namespace Chiro.CiviSync.Services.Test
                 LidType = LidTypeEnum.Kind,
                 OfficieleAfdelingen = new[] { AfdelingEnum.Rakwis },
                 StamNummer = ploeg.ExternalIdentifier,
-                WerkJaar = HuidigWerkJaar
+                WerkJaar = HuidigWerkJaar,
+                UitschrijfDatum = uitschrijfDatum
             });
 
-            // ASSERT:
-            // Als er niets crasht, is het altijd goed, want kipsync geeft geen feedback.
             _civiApiMock.Verify(
                 // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
                 // LidMaken moet de startdatum dan op 1 september zetten.
