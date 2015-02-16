@@ -21,13 +21,14 @@ using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Chiro.CiviSync.Services.Test
 {
     [TestClass]
-    public class LidVerwijderenTest
+    public class NieuwLidVerwijderenTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
 
@@ -47,10 +48,10 @@ namespace Chiro.CiviSync.Services.Test
         }
 
         /// <summary>
-        /// Roept LidVerwijderen de CiviCRM API aan?
+        /// Roept NieuwLidVerwijderen (van een lid zonder AD-nummer) de CiviCRM API aan?
         /// </summary>
         [TestMethod]
-        public void LidVerwijderen()
+        public void NieuwLidVerwijderen()
         {
             // ARRANGE
 
@@ -130,7 +131,19 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.LidVerwijderen(adNummer, ploeg.ExternalIdentifier, HuidigWerkJaar, uitschrijfDatum);
+            var details = new PersoonDetails
+            {
+                Persoon = new Persoon
+                {
+                    VoorNaam = persoon.FirstName,
+                    Naam = persoon.LastName,
+                    Geslacht = GeslachtsEnum.Vrouw,
+                    GeboorteDatum = persoon.BirthDate,
+                    ID = persoon.GapId ?? 0
+                }
+            };
+
+            service.NieuwLidVerwijderen(details, ploeg.ExternalIdentifier, HuidigWerkJaar, uitschrijfDatum);
 
             _civiApiMock.Verify(
                 // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
