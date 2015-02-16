@@ -17,7 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.ServiceModel;
+using System.Text;
 using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -40,7 +43,7 @@ namespace Chiro.CiviSync.Services
         /// De nodige info voor het lid.
         /// </param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void LidBewaren(int adNummer, LidGedoe gedoe)
+        public async void LidBewaren(int adNummer, LidGedoe gedoe)
         {
             int? civiGroepId = _contactHelper.ContactIdGet(gedoe.StamNummer);
             if (civiGroepId == null)
@@ -67,10 +70,28 @@ namespace Chiro.CiviSync.Services
                 ServiceHelper.CallService<ICiviCrmApi, Contact>(
                     svc => svc.ContactGetSingle(_apiKey, _siteKey, contactRequest));
 
-            if (contact == null)
+            if (contact.ExternalIdentifier == null)
             {
-                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} - lid niet bewaard.", adNummer),
+                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} - als dusdanig terug naar GAP.", adNummer),
                     gedoe.StamNummer, adNummer, null);
+
+                // TODO: ServiceHelper gebruiken.
+                using (var client = new HttpClient())
+                {
+                    string username = Properties.Settings.Default.GapUpdateUser;
+                    string password = Properties.Settings.Default.GapUpdatePass;
+
+                    if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
+                    {
+                        // TODO: Dit kan ook properder met een HttpClientHandler class.
+                        var byteArray = Encoding.ASCII.GetBytes(String.Join(":", username, password));
+                        var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                        client.DefaultRequestHeaders.Authorization = header;
+                    }
+                    client.BaseAddress = new Uri(Properties.Settings.Default.GapUpdateUrl);
+                    await client.PostAsJsonAsync(Properties.Settings.Default.GapUpdateFoutAd,
+                        new Gap.UpdateApi.Models.FoutAd {AdNummer = adNummer});
+                }
                 return;
             }
 
