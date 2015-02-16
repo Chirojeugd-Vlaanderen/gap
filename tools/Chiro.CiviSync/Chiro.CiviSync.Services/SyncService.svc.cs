@@ -253,11 +253,6 @@ namespace Chiro.CiviSync.Services
             throw new NotImplementedException();
         }
 
-        public void LidVerwijderen(int adNummer, string stamNummer, int werkjaar, DateTime uitschrijfDatum)
-        {
-            throw new NotImplementedException();
-        }
-
         public void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkjaar, DateTime uitschrijfDatum)
         {
             throw new NotImplementedException();

@@ -170,7 +170,7 @@ namespace Chiro.Kip.ServiceContracts
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void LidVerwijderen(int adNummer, string stamNummer, int werkjaar, DateTime uitschrijfDatum);
+        void LidVerwijderen(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
 
         /// <summary>
         /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
@@ -190,7 +190,7 @@ namespace Chiro.Kip.ServiceContracts
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkjaar, DateTime uitschrijfDatum);
+        void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
 
         /// <summary>
         /// Updatet de functies van een lid.

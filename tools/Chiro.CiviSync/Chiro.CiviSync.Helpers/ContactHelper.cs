@@ -67,28 +67,22 @@ namespace Chiro.CiviSync.Helpers
         {
             int? cid = (int?) _cache[String.Format(ContactIdCacheKey, externalIdentifier)];
 
-            if (cid == null)
+            if (cid != null) return cid;
+            var result =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
+                    svc =>
+                        svc.ContactGet(_apiKey, _siteKey,
+                            new ContactRequest {ExternalIdentifier = externalIdentifier, ReturnFields = "id"}));
+
+            if (result == null || result.Count != 1)
             {
-                var result =
-                    ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
-                        svc =>
-                            svc.ContactGet(_apiKey, _siteKey,
-                                new ContactRequest {ExternalIdentifier = externalIdentifier, ReturnFields = "id"}));
-
-                if (result == null || result.Count != 1)
-                {
-                    return null;
-                }
-
-                cid = result.Values.First().Id;
-                if (cid == null)
-                {
-                    return null;
-                }
-
-                _cache.Set(String.Format(ContactIdCacheKey, externalIdentifier), cid,
-                    new CacheItemPolicy {SlidingExpiration = new TimeSpan(2, 0, 0, 0)});
+                return null;
             }
+
+            cid = result.Values.First().Id;
+
+            _cache.Set(String.Format(ContactIdCacheKey, externalIdentifier), cid,
+                new CacheItemPolicy {SlidingExpiration = new TimeSpan(2, 0, 0, 0)});
             return cid;
         }
     }
