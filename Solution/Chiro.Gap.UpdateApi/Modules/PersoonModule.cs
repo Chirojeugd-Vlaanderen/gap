@@ -1,19 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Nancy.ModelBinding;
+﻿/*
+ * Copyright 2014-2015 the GAP developers. See the NOTICE file at the 
+ * top-level directory of this distribution, and at
+ * https://develop.chiro.be/gap/wiki/copyright
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+using System;
+using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.UpdateApi.Models;
 using Chiro.Gap.UpdateApi.Workers;
 using Nancy;
-using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.Domain;
+using Nancy.ModelBinding;
 
-namespace Chiro.Gap.UpdateApi
+namespace Chiro.Gap.UpdateApi.Modules
 {
-    public class PersoonModule: Nancy.NancyModule, IDisposable
+    public class PersoonModule: NancyModule, IDisposable
     {
-        private IPersoonUpdater _persoonUpdater;
+        private readonly IPersoonUpdater _persoonUpdater;
 
         public PersoonModule(IPersoonUpdater persoonUpdater)
         {
@@ -30,31 +45,23 @@ namespace Chiro.Gap.UpdateApi
                 };
             // You can test this with curl:
             // curl -X PUT -d PersoonId=2 -d AdNummer=3 localhost:50673/persoon
-            Put["/persoon"] = _ => {
-                Models.Persoon model = this.Bind();
-                if (model.AdNummer > 0)
+            Put["/persoon"] = _ =>
+            {
+                Persoon model = this.Bind();
+                if (model.AdNummer <= 0) return HttpStatusCode.NotImplemented;
+                try
                 {
-                    try
+                    _persoonUpdater.AdNummerToekennen(model.PersoonId, model.AdNummer);
+                }
+                catch (FoutNummerException ex)
+                {
+                    if (ex.FoutNummer == FoutNummer.PersoonNietGevonden)
                     {
-                        _persoonUpdater.AdNummerToekennen(model.PersoonId, model.AdNummer);
+                        return HttpStatusCode.NotFound;
                     }
-                    catch (FoutNummerException ex)
-                    {
-                        if (ex.FoutNummer == FoutNummer.PersoonNietGevonden)
-                        {
-                            return HttpStatusCode.NotFound;
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    };
-                    return HttpStatusCode.OK;
+                    throw;
                 }
-                else
-                {
-                    return HttpStatusCode.NotImplemented;
-                }
+                return HttpStatusCode.OK;
             };
         }
 
@@ -63,7 +70,7 @@ namespace Chiro.Gap.UpdateApi
         // Ik heb die constructie met 'disposed' en 'disposing' nooit begrepen.
         // Maar ze zeggen dat dat zo moet :-)
 
-        private bool disposed;
+        private bool _disposed;
 
         public void Dispose()
         {
@@ -73,14 +80,12 @@ namespace Chiro.Gap.UpdateApi
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (this._disposed) return;
+            if (disposing)
             {
-                if (disposing)
-                {
-                    _persoonUpdater.Dispose();
-                }
-                disposed = true;
+                _persoonUpdater.Dispose();
             }
+            _disposed = true;
         }
 
         ~PersoonModule()
