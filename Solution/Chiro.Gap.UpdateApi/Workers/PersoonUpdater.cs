@@ -19,7 +19,9 @@
 using System;
 using System.Linq;
 using Chiro.Cdf.Poco;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Poco.Model.Exceptions;
 
 
 namespace Chiro.Gap.UpdateApi.Workers
@@ -111,7 +113,8 @@ namespace Chiro.Gap.UpdateApi.Workers
             var persoon = _personenRepo.ByID(persoonId);
             if (persoon == null)
             {
-                throw new InvalidOperationException(
+                throw new FoutNummerException(
+                    FoutNummer.PersoonNietGevonden,
                     String.Format("Onbekend persoon (ID {0}) voor AD-nummer {1} genegeerd.", persoonId, adNummer));
             }
 
@@ -135,7 +138,6 @@ namespace Chiro.Gap.UpdateApi.Workers
                 AdNummerToekennen(p, nieuwAd); // PERSISTEERT!
                 Console.WriteLine("Ad-nummer {0} vervangen door {1}. ({2}, ID {3})", oudAd, nieuwAd, p.VolledigeNaam, p.ID);
             }
-
         }
 
         /// <summary>
@@ -456,6 +458,35 @@ namespace Chiro.Gap.UpdateApi.Workers
             }
 
             Console.WriteLine(stopDatum == null ? "Groep opnieuw geactiveerd: {0}" : "Groep gedesactiveerd: {0}", stamNr);
+        }
+
+        /// <summary>
+        /// Verwijdert het ad-nummer van de persoon met gegeven <paramref name="adNummer"/>.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer dat verwijderd moet worden</param>
+        /// <returns>PersoonId van de persoon met het verwijderde AD-nummer.</returns>
+        public int AdNummerVerwijderen(int adNummer)
+        {
+            int persoonId = 0;
+            var personen = (from p in _personenRepo.Select() where p.AdNummer == adNummer select p).ToArray();
+
+            if (!personen.Any())
+            {
+                throw new FoutNummerException(
+                    FoutNummer.PersoonNietGevonden,
+                    String.Format("Kan AD-nummer {0} niet verwijderen; persoon niet gevonden.", adNummer));                
+            }
+
+            // In principe is er hoogstens 1 persoon met gegeven AD-nummer.
+            // Maar voor de zekerheid overlopen we alle resultaten.
+            foreach (var p in personen)
+            {
+                p.AdNummer = null;
+                persoonId = p.ID;
+                _personenRepo.SaveChanges();
+                Console.WriteLine("Ad-nummer {0} van {1} verwijderd. (ID {2})", adNummer, p.VolledigeNaam, p.ID);
+            }
+            return persoonId;
         }
     }
 }

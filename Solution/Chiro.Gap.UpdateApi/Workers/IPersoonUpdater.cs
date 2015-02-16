@@ -50,5 +50,12 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// <param name="stopDatum">Datum vanaf wanneer gestopt, <c>null</c> om de groep opnieuw te activeren.</param>
         /// <remarks>Als <paramref name="stopDatum"/> <c>null</c> is, wordt de groep opnieuw actief.</remarks>
         void GroepDesactiveren(string stamNr, DateTime? stopDatum);
+
+        /// <summary>
+        /// Verwijdert het ad-nummer van de persoon met gegeven <paramref name="adNummer"/>.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer dat verwijderd moet worden</param>
+        /// <returns>PersoonId van de persoon met het verwijderde AD-nummer.</returns>
+        int AdNummerVerwijderen(int adNummer);
     }
 }
