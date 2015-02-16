@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.ServiceModel;
+using Chiro.Cdf.ServiceHelper;
+using Chiro.CiviCrm.Api;
+using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.Log;
 
 namespace Chiro.CiviSync.Services
@@ -24,7 +29,7 @@ namespace Chiro.CiviSync.Services
         /// in GAP.
         /// </remarks>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void LidVerwijderen(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum)
+        public async void LidVerwijderen(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum)
         {
             int? civiGroepId = _contactHelper.ContactIdGet(stamNummer);
             if (civiGroepId == null)
@@ -40,8 +45,31 @@ namespace Chiro.CiviSync.Services
             {
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te verwijderen lid - als dusdanig terug naar GAP.", adNummer),
                     stamNummer, adNummer, null);
+                await _gapUpdateHelper.OngeldigAdNaarGap(adNummer);
+                return;
             }
-            throw new NotImplementedException();
+
+            if (contact.RelationshipResult.Count == 1 &&
+                _relationshipHelper.WerkjaarGet(contact.RelationshipResult.Values.First()) == werkJaar)
+            {
+                _log.Loggen(Niveau.Info,
+                    String.Format(
+                        "{0} {1} (AD {2}) uitscrhijven voor groep {3} in werkjaar {4}.",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer, werkJaar),
+                    stamNummer, adNummer, contact.GapId);
+                ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                    svc =>
+                        svc.RelationshipDelete(_apiKey, _siteKey,
+                            new IdRequest(contact.RelationshipResult.Values.First().Id)));
+            }
+            else
+            {
+                _log.Loggen(Niveau.Warning,
+                    String.Format(
+                        "{0} {1} (AD {2}) niet uitgeschreven voor groep {3} in werkjaar {4} - lidrelatie niet gevonden.",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer, werkJaar),
+                    stamNummer, adNummer, contact.GapId);
+            }
         }
     }
 }
