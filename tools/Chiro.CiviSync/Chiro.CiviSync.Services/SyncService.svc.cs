@@ -39,11 +39,17 @@ namespace Chiro.CiviSync.Services
     {
         private readonly string _siteKey = Settings.Default.SiteKey;
         private readonly string _apiKey = Settings.Default.ApiKey;
+        private readonly string _gapUpdateUrl = Settings.Default.GapUpdateUrl;
+        private readonly string _gapUpdateUser = Settings.Default.GapUpdateUser;
+        private readonly string _gapUpdatePass = Settings.Default.GapUpdatePass;
+
         private readonly IMiniLog _log;
         private readonly ServiceHelper _serviceHelper;
+        private readonly GapUpdateHelper _gapUpdateHelper;
         private readonly ContactHelper _contactHelper;
         private readonly RelationshipHelper _relationshipHelper;
         private readonly FunctieHelper _functieHelper;
+
 
         protected ServiceHelper ServiceHelper
         {
@@ -62,9 +68,10 @@ namespace Chiro.CiviSync.Services
             _relationshipHelper = relationshipHelper;
             _log = log;
 
-            // Voor contacthelper en functiehelper gebruik ik (voorlopig?) geen 
-            // dependency injection.
+            // Er zijn nog heel wat helpers waarvoor we (momenteel?) nog geen
+            // dependency injectino gebruiken.
             _contactHelper = new ContactHelper(_serviceHelper, _apiKey, _siteKey);
+            _gapUpdateHelper = new GapUpdateHelper(_gapUpdateUrl, _gapUpdateUser, _gapUpdatePass);
             _functieHelper = new FunctieHelper();
         }
 

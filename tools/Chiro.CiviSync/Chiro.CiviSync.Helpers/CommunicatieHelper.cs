@@ -18,9 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Chiro.CiviSync.Services.Properties;
+using Chiro.CiviSync.Helpers.Properties;
 
-namespace Chiro.CiviSync.Services.Helpers
+namespace Chiro.CiviSync.Helpers
 {
     public static class CommunicatieHelper
     {

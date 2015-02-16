@@ -21,11 +21,12 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.ServiceModel;
 using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Services.Properties;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -53,45 +54,14 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            // Haal de persoon op met gegeven AD-nummer en zijn recentste lidrelatie in de gevraagde groep.
-            var contactRequest = new ContactRequest
-            {
-                ExternalIdentifier = adNummer.ToString(),
-                RelationshipGetRequest = new RelationshipRequest
-                {
-                    RelationshipTypeId = (int)RelatieType.LidVan,
-                    ContactIdAValueExpression = "$value.id",
-                    ContactIdB = civiGroepId,
-                    ApiOptions = new ApiOptions{Sort = "start_date DESC", Limit = 1}
-                }
-            };
-
-            var contact =
-                ServiceHelper.CallService<ICiviCrmApi, Contact>(
-                    svc => svc.ContactGetSingle(_apiKey, _siteKey, contactRequest));
+            var contact = _contactHelper.PersoonMetRecentsteLid(adNummer, civiGroepId);
 
             if (contact.ExternalIdentifier == null)
             {
-                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} - als dusdanig terug naar GAP.", adNummer),
+                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren lid - als dusdanig terug naar GAP.", adNummer),
                     gedoe.StamNummer, adNummer, null);
 
-                // TODO: ServiceHelper gebruiken.
-                using (var client = new HttpClient())
-                {
-                    string username = Properties.Settings.Default.GapUpdateUser;
-                    string password = Properties.Settings.Default.GapUpdatePass;
-
-                    if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
-                    {
-                        // TODO: Dit kan ook properder met een HttpClientHandler class.
-                        var byteArray = Encoding.ASCII.GetBytes(String.Join(":", username, password));
-                        var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                        client.DefaultRequestHeaders.Authorization = header;
-                    }
-                    client.BaseAddress = new Uri(Properties.Settings.Default.GapUpdateUrl);
-                    await client.PostAsJsonAsync(Properties.Settings.Default.GapUpdateFoutAd,
-                        new Gap.UpdateApi.Models.FoutAd {AdNummer = adNummer});
-                }
+               await _gapUpdateHelper.OngeldigAdNaarGap(adNummer);
                 return;
             }
 

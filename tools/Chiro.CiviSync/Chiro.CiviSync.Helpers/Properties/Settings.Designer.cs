@@ -34,5 +34,18 @@ namespace Chiro.CiviSync.Helpers.Properties {
                 this["WerkjaarStart"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("^0[0-9]{1,2}\\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^04[0-9]{2}\\-[0-9]{2,3} ?[0-9]{2} ?" +
+            "[0-9]{2}$|^[+][0-9]*$")]
+        public string TelefoonRegex {
+            get {
+                return ((string)(this["TelefoonRegex"]));
+            }
+            set {
+                this["TelefoonRegex"] = value;
+            }
+        }
     }
 }

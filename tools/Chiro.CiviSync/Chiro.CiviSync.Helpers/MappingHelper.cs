@@ -24,7 +24,7 @@ using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
-namespace Chiro.CiviSync.Services.Helpers
+namespace Chiro.CiviSync.Helpers
 {
     public static class MappingHelper
     {

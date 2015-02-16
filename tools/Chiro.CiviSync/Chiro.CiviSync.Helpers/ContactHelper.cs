@@ -85,5 +85,34 @@ namespace Chiro.CiviSync.Helpers
                 new CacheItemPolicy {SlidingExpiration = new TimeSpan(2, 0, 0, 0)});
             return cid;
         }
+
+        /// <summary>
+        /// Haalt de persoon met gegeven <paramref name="adNummer"/> op, samen met zijn recentste
+        /// lidrelatie in de groep met <paramref name="civiGroepId"/>.
+        /// </summary>
+        /// <param name="adNummer"></param>
+        /// <param name="civiGroepId"></param>
+        /// <returns>De persoon met gegeven <paramref name="adNummer"/> op, samen met zijn recentste
+        /// lidrelatie in de groep met <paramref name="civiGroepId"/>.</returns>
+        public Contact PersoonMetRecentsteLid(int adNummer, int? civiGroepId)
+        {
+            // Haal de persoon op met gegeven AD-nummer en zijn recentste lidrelatie in de gevraagde groep.
+            var contactRequest = new ContactRequest
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                RelationshipGetRequest = new RelationshipRequest
+                {
+                    RelationshipTypeId = (int)RelatieType.LidVan,
+                    ContactIdAValueExpression = "$value.id",
+                    ContactIdB = civiGroepId,
+                    ApiOptions = new ApiOptions { Sort = "start_date DESC", Limit = 1 }
+                }
+            };
+
+            var contact =
+                ServiceHelper.CallService<ICiviCrmApi, Contact>(
+                    svc => svc.ContactGetSingle(_apiKey, _siteKey, contactRequest));
+            return contact;
+        }
     }
 }

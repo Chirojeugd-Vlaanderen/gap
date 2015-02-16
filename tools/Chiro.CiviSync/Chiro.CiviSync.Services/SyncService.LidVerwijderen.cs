@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Web;
+using Chiro.Gap.Log;
 
 namespace Chiro.CiviSync.Services
 {
@@ -28,6 +26,21 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void LidVerwijderen(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum)
         {
+            int? civiGroepId = _contactHelper.ContactIdGet(stamNummer);
+            if (civiGroepId == null)
+            {
+                _log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - lid niet verwijderd.", stamNummer),
+                    stamNummer, adNummer, null);
+                return;
+            }
+
+            var contact = _contactHelper.PersoonMetRecentsteLid(adNummer, civiGroepId);
+
+            if (contact.ExternalIdentifier == null)
+            {
+                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te verwijderen lid - als dusdanig terug naar GAP.", adNummer),
+                    stamNummer, adNummer, null);
+            }
             throw new NotImplementedException();
         }
     }

@@ -43,29 +43,10 @@ namespace Chiro.CiviSync.Services.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("^0[0-9]{1,2}\\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^04[0-9]{2}\\-[0-9]{2,3} ?[0-9]{2} ?" +
-            "[0-9]{2}$|^[+][0-9]*$")]
-        public string TelefoonRegex {
-            get {
-                return ((string)(this["TelefoonRegex"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:50673")]
         public string GapUpdateUrl {
             get {
                 return ((string)(this["GapUpdateUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("foutad")]
-        public string GapUpdateFoutAd {
-            get {
-                return ((string)(this["GapUpdateFoutAd"]));
             }
         }
         
