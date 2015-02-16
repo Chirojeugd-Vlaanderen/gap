@@ -90,8 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Models\FoutAd.cs" />
-    <Compile Include="Models\Persoon.cs" />
     <Compile Include="Modules\FoutAdModule.cs" />
     <Compile Include="Modules\PersoonModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -126,6 +124,10 @@
     <ProjectReference Include="..\Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj">
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.UpdateApi.Models\Chiro.Gap.UpdateApi.Models.csproj">
+      <Project>{71fdd616-e12e-474e-a996-575a187824e2}</Project>
+      <Name>Chiro.Gap.UpdateApi.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
       <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
