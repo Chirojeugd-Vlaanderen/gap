@@ -63,6 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LidBewarenTest.cs" />
     <Compile Include="TestHelper.cs" />
+    <Compile Include="LidVerwijderenTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
