@@ -65,6 +65,7 @@
     <Compile Include="TestHelper.cs" />
     <Compile Include="LidVerwijderenTest.cs" />
     <Compile Include="NieuwLidVerwijderenTest.cs" />
+    <Compile Include="PersoonUpdatenTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
