@@ -348,7 +348,6 @@
           <Property Name="AdInAanvraag" Type="bit" Nullable="false" />
           <Property Name="SeNaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
           <Property Name="SeVoornaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
-          <Property Name="CiviID" Type="int" />
         </EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
