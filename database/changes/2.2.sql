@@ -1,9 +1,25 @@
--- tabel voor logberichten
-
 -- OPGELET: De user van het CiviSync process moet schrijfrechten hebben op de logging.Bericht tabel.
 
 use gap_local;
 go
+
+declare @laatsteMembershipsGemaakt as datetime; set @laatsteMembershipsGemaakt = getdate();
+
+alter table pers.Persoon add LaatsteMembership int null;
+
+update p
+set p.LaatsteMembership = tmp.LaatsteMembership
+from pers.persoon p join
+(
+select p.persoonid,max(gwj.werkjaar) as LaatsteMembership from lid.lid l 
+join pers.gelieerdepersoon gp on l.gelieerdepersoonid = gp.GelieerdePersoonID
+join pers.persoon p on gp.persoonid = p.persoonid
+join grp.groepswerkjaar gwj on l.groepswerkjaarid=gwj.groepswerkjaarid
+where l.EindeInstapPeriode < @laatsteMembershipsGemaakt
+group by p.persoonid
+) tmp on p.persoonid=tmp.persoonid
+
+-- tabel voor logberichten
 
 create schema logging;
 go
@@ -30,3 +46,7 @@ create index IX_Bericht_StamNummer on logging.Bericht(StamNummer);
 create index IX_Bericht_AdNummer on logging.Bericht(AdNummer);
 create index IX_Bericht_PersoonID on logging.Bericht(PersoonID);
 
+
+
+
+-- Geen idee wat het onderstaande doet.
