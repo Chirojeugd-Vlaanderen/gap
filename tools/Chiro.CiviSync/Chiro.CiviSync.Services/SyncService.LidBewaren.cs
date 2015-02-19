@@ -108,9 +108,13 @@ namespace Chiro.CiviSync.Services
                 : null;
             relationshipRequest.Functies = _functieHelper.KipCodes(gedoe.NationaleFuncties);
 
+            var result =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
+                    svc => svc.RelationshipSave(_apiKey, _siteKey, relationshipRequest));
+
             _log.Loggen(Niveau.Info,
                 String.Format(
-                    "{6}: AD {0} stamnr {1} werkjaar {2} - afd {3}, lafd {4}, func {5}",
+                    "{6} {7} {8}: AD {0} stamnr {1} werkjaar {2} - afd {3}, lafd {4}, func {5} relID {9}",
                     adNummer, gedoe.StamNummer, gedoe.WerkJaar, relationshipRequest.Afdeling,
                     relationshipRequest.LeidingVan == null
                         ? "n/a"
@@ -118,17 +122,8 @@ namespace Chiro.CiviSync.Services
                     relationshipRequest.Functies == null
                         ? "(geen)"
                         : String.Join(",", relationshipRequest.Functies),
-                    gedoe.UitschrijfDatum == null ? "Inschrijving" : "Uitschrijving"),
-                gedoe.StamNummer, adNummer, contact.GapId);
-
-            var result =
-                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
-                    svc => svc.RelationshipSave(_apiKey, _siteKey, relationshipRequest));
-
-            _log.Loggen(Niveau.Info,
-                String.Format(
-                    "Nieuwe lidrelatie van {0} {1} (AD {2}) voor groep {3} in werkjaar {4} werd bewaard. RelationshipId: {5}",
-                    contact.FirstName, contact.LastName, adNummer, gedoe.StamNummer, gedoe.WerkJaar, result.Id),
+                    gedoe.UitschrijfDatum == null ? "Inschrijving" : "Uitschrijving", contact.FirstName,
+                    contact.LastName, result.Id),
                 gedoe.StamNummer, adNummer, contact.GapId);
         }
     }
