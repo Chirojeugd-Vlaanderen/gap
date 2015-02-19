@@ -565,6 +565,7 @@ namespace Chiro.Gap.Services
                   .ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
                   .ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
                   .ForMember(dst => dst.InSync, opt => opt.MapFrom(src => src.AdNummer.HasValue))
+                  .ForMember(dst => dst.LaatsteMembership, opt => opt.Ignore())
                   .ForMember(dst => dst.Gav, opt => opt.Ignore())
                   .ForMember(dst => dst.BerichtGebruiker, opt => opt.Ignore())
                   .ForMember(dst => dst.BerichtPersoon, opt => opt.Ignore())
