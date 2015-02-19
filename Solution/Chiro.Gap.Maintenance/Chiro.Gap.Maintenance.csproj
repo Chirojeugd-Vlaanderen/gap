@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{02217AE2-239B-414E-84F5-F32BB1C751F8}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Chiro.Gap.Maintenance</RootNamespace>
+    <AssemblyName>Chiro.Gap.Maintenance</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MembershipMaintenance.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
+      <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
+      <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
+      <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
+      <Name>Chiro.Cdf.Poco</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Poco.Context\Chiro.Gap.Poco.Context.csproj">
+      <Project>{c83b2df6-4352-4fad-a09e-9c59dc335b05}</Project>
+      <Name>Chiro.Gap.Poco.Context</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj">
+      <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
+      <Name>Chiro.Gap.Poco.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
+      <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
+      <Name>Chiro.Gap.SyncInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Sync\Chiro.Gap.Sync.csproj">
+      <Project>{c934c8ce-39c8-45b7-ac38-f487cea9b2d5}</Project>
+      <Name>Chiro.Gap.Sync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
+      <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
+      <Name>Chiro.Gap.WorkerInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
+      <Project>{35e2aed7-7c0a-4b30-b7c8-24f9078ac32e}</Project>
+      <Name>Chiro.Gap.Workers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -33,5 +33,13 @@ namespace Chiro.Gap.SyncInterfaces
 		/// communicatie-info opgehaald, omdat de workers typisch niet toestaan dat de gebruiker alle
 		/// communicatie ophaalt.</param>
 		void Bewaren(GelieerdePersoon gp, bool metStandaardAdres, bool metCommunicatie);
+
+        /// <summary>
+        /// Registreert een membership in de Chirocivi voor de gegeven <paramref name="persoon"/> in het
+        /// gegeven <paramref name="werkJaar"/>.
+        /// </summary>
+        /// <param name="persoon">Persoon waarvoor membership geregistreerd moet worden</param>
+        /// <param name="werkJaar">Werkjaar voor het membership</param>
+	    void MembershipRegistreren(Persoon persoon, int werkJaar);
 	}
 }

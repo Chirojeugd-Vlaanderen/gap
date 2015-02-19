@@ -88,5 +88,36 @@ namespace Chiro.Gap.Sync
 			    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie));
 			}
 		}
+
+        /// <summary>
+        /// Registreert een membership in de Chirocivi voor de gegeven <paramref name="persoon"/> in het
+        /// gegeven <paramref name="werkJaar"/>.
+        /// </summary>
+        /// <param name="persoon">Persoon waarvoor membership geregistreerd moet worden</param>
+        /// <param name="werkJaar">Werkjaar voor het membership</param>
+	    public void MembershipRegistreren(Persoon persoon, int werkJaar)
+	    {
+            if (persoon.AdNummer != null)
+            {
+                ServiceHelper.CallService<ISyncPersoonService>(
+                    svc => svc.MembershipBewaren(persoon.AdNummer, werkJaar));
+            }
+            else
+            {
+                // mappen via een gelieerde persoon, want dan hebben we e-mailadressen.
+                var gelieerdePersoon = (from gp in persoon.GelieerdePersoon
+                    where gp.Lid.Any(l => l.GroepsWerkJaar.WerkJaar == werkJaar)
+                    select gp).FirstOrDefault();
+
+                // We verwachten wel dat er een gelieerde persoon is die lid is in het
+                // gegeven werkjaar.
+                Debug.Assert(gelieerdePersoon != null);
+
+                var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon);
+
+                ServiceHelper.CallService<ISyncPersoonService>(
+                    svc => svc.MembershipNieuwePersoonBewaren(details, werkJaar));
+            }
+	    }
 	}
 }
