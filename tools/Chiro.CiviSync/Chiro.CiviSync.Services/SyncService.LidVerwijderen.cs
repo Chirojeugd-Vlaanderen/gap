@@ -57,10 +57,11 @@ namespace Chiro.CiviSync.Services
                         "{0} {1} (AD {2}) uitscrhijven voor groep {3} in werkjaar {4}.",
                         contact.FirstName, contact.LastName, contact.ExternalIdentifier, stamNummer, werkJaar),
                     stamNummer, adNummer, contact.GapId);
-                ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
                     svc =>
                         svc.RelationshipDelete(_apiKey, _siteKey,
                             new IdRequest(contact.RelationshipResult.Values.First().Id)));
+                AssertValid(result);
             }
             else
             {

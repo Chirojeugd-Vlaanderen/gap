@@ -111,6 +111,7 @@ namespace Chiro.CiviSync.Services
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
                     svc => svc.RelationshipSave(_apiKey, _siteKey, relationshipRequest));
+            AssertValid(result);
 
             _log.Loggen(Niveau.Info,
                 String.Format(
