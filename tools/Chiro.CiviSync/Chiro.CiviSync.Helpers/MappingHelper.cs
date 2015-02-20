@@ -61,6 +61,8 @@ namespace Chiro.CiviSync.Helpers
                 .ForMember(dst => dst.ImSaveRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.RelationshipGetRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.RelationshipSaveRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.MembershipGetRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.MembershipSaveRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.ReturnFields, opt => opt.Ignore())
                 .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
 

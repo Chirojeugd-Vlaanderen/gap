@@ -48,6 +48,7 @@ namespace Chiro.CiviSync.Services
         private readonly GapUpdateHelper _gapUpdateHelper;
         private readonly ContactHelper _contactHelper;
         private readonly RelationshipHelper _relationshipHelper;
+        private readonly MembershipHelper _membershipHelper;
         private readonly FunctieHelper _functieHelper;
 
 
@@ -61,11 +62,13 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="serviceHelper">Servicehelper that will connect to the CiviCRM API</param>
         /// <param name="relationshipHelper">Zorgt vooral voor start- en einddata van relaties.</param>
+        /// <param name="membershipHelper">Logica voor memberships. Ook vooral start- en einddata.</param>
         /// <param name="log">Logger</param>
-        public SyncService(ServiceHelper serviceHelper, RelationshipHelper relationshipHelper, IMiniLog log)
+        public SyncService(ServiceHelper serviceHelper, RelationshipHelper relationshipHelper, MembershipHelper membershipHelper, IMiniLog log)
         {
             _serviceHelper = serviceHelper;
             _relationshipHelper = relationshipHelper;
+            _membershipHelper = membershipHelper;
             _log = log;
 
             // Er zijn nog heel wat helpers waarvoor we (momenteel?) nog geen

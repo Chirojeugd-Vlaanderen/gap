@@ -374,7 +374,7 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="adNummer">AD-nummer van persoon met te bewaren membership.</param>
         /// <param name="werkJaar">Werkjaar waarvoor membership bewaard moet worden.</param>
         [OperationContract(IsOneWay = true)]
-        void MembershipBewaren(int? adNummer, int werkJaar);
+        void MembershipBewaren(int adNummer, int werkJaar);
 
         /// <summary>
         /// Bewaart een membership voor de persoon met gegeven <paramref name="details"/> in het gegeven <paramref name="werkJaar"/>

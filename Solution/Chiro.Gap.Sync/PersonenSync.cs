@@ -100,7 +100,7 @@ namespace Chiro.Gap.Sync
             if (persoon.AdNummer != null)
             {
                 ServiceHelper.CallService<ISyncPersoonService>(
-                    svc => svc.MembershipBewaren(persoon.AdNummer, werkJaar));
+                    svc => svc.MembershipBewaren(persoon.AdNummer.Value, werkJaar));
             }
             else
             {

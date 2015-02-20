@@ -122,5 +122,33 @@ namespace Chiro.CiviSync.Helpers
             contact.RelationshipResult.Count = 1;
             return contact;
         }
+
+        /// <summary>
+        /// Haalt de persoon met gegeven <paramref name="adNummer"/> op, samen met zijn recentste
+        /// membership van het gegeven <paramref name="type"/>.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer van op te halen persoon</param>
+        /// <param name="type">gevraagde membership type</param>
+        /// <returns>De persoon met gegeven <paramref name="adNummer"/> op, samen met zijn recentste
+        /// membership van het gegeven <paramref name="type"/>.</returns>
+        public Contact PersoonMetRecentsteMembership(int adNummer, MembershipType type)
+        {
+            // Haal de persoon op met gegeven AD-nummer en zijn recentste lidrelatie in de gevraagde groep.
+            var contactRequest = new ContactRequest
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                MembershipGetRequest = new MembershipRequest
+                {
+                    MembershipTypeId = (int)type,
+                    ApiOptions = new ApiOptions { Sort = "start_date DESC", Limit = 1 }
+                }
+            };
+
+            var contact =
+                ServiceHelper.CallService<ICiviCrmApi, Contact>(
+                    svc => svc.ContactGetSingle(_apiKey, _siteKey, contactRequest));
+
+            return contact;
+        }
     }
 }
