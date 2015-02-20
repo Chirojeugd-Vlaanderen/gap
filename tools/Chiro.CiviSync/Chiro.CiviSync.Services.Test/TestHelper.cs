@@ -83,6 +83,7 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.EmailResult, opt => opt.Ignore())
                 .ForMember(dst => dst.WebsiteResult, opt => opt.Ignore())
                 .ForMember(dst => dst.ImResult, opt => opt.Ignore())
+                .ForMember(dst => dst.MembershipResult, opt => opt.Ignore())
                 .ForMember(dst => dst.RelationshipResult, opt => opt.Ignore());
             Mapper.CreateMap<RelationshipRequest, Relationship>();
             Mapper.CreateMap<ContactRequest, ApiResultValues<Contact>>()
