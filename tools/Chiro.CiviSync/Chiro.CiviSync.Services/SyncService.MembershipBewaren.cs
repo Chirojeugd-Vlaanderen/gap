@@ -87,7 +87,19 @@ namespace Chiro.CiviSync.Services
         /// <param name="werkJaar">Werkjaar waarvoor het membership bewaard moet worden.</param>
         public void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar)
         {
-            throw new NotImplementedException();
+            if (details.Persoon.AdNummer.HasValue)
+            {
+                _log.Loggen(Niveau.Warning,
+                    String.Format(
+                        "NieuwLidBewaren aangeroepen voor persoon {0} {1} (gid {3}) met bestaand AD-Nummer {2}."
+                        , details.Persoon.VoorNaam, details.Persoon.Naam, details.Persoon.AdNummer, details.Persoon.ID),
+                    null, details.Persoon.AdNummer, details.Persoon.ID);
+            }
+
+            // Update of maak de persoon, en vind zijn AD-nummer
+            int adNr = UpdatenOfMaken(details);
+
+            MembershipBewaren(adNr, werkJaar);
         }
     }
 }
