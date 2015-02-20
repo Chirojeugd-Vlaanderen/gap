@@ -43,15 +43,18 @@ namespace Chiro.Gap.UpdateApi.Modules
                     int id = parameters.id;
                     return String.Format("You requested {0}", id);
                 };
+
             // You can test this with curl:
             // curl -X PUT -d PersoonId=2 -d AdNummer=3 localhost:50673/persoon
             Put["/persoon"] = _ =>
             {
-                Persoon model = this.Bind();
-                if (model.AdNummer <= 0) return HttpStatusCode.NotImplemented;
+                // PersoonId is hier de key.
+
+                PersoonModel model = this.Bind();
+
                 try
                 {
-                    _persoonUpdater.AdNummerToekennen(model.PersoonId, model.AdNummer);
+                    _persoonUpdater.Bijwerken(model);
                 }
                 catch (FoutNummerException ex)
                 {
@@ -61,6 +64,7 @@ namespace Chiro.Gap.UpdateApi.Modules
                     }
                     throw;
                 }
+                
                 return HttpStatusCode.OK;
             };
         }

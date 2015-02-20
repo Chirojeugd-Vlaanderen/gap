@@ -42,7 +42,7 @@ namespace Chiro.Gap.UpdateApi.Modules
             Post["/foutad"] = _ =>
             {
                 int persoonId;
-                FoutAd model = this.Bind();
+                FoutAdModel model = this.Bind();
                 try
                 {
                     persoonId = _persoonUpdater.AdNummerVerwijderen(model.AdNummer);

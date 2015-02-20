@@ -22,6 +22,7 @@ using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.UpdateApi.Models;
 
 
 namespace Chiro.Gap.UpdateApi.Workers
@@ -101,6 +102,8 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// Stelt het AD-nummer van de persoon met Id <paramref name="persoonId"/> in. 
         /// Als er al een persoon bestaat met hetzelfde AD-nummer, dan wordt die persoon
         /// gemerged met de bestaande persoon.
+        /// Als <paramref name="adNummer"/> <c>null</c> is, dan wordt het AD-nummer van
+        /// de persoon gewoon verwijderd.
         /// </summary>
         /// <param name="persoonId">
         /// Id van de persoon
@@ -108,7 +111,7 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// <param name="adNummer">
         /// Nieuw AD-nummer
         /// </param>
-        public void AdNummerToekennen(int persoonId, int adNummer)
+        public void AdNummerToekennen(int persoonId, int? adNummer)
         {
             var persoon = _personenRepo.ByID(persoonId);
             if (persoon == null)
@@ -144,12 +147,18 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// Kent gegeven <paramref name="adNummer"/> toe aan de gegeven
         /// <paramref name="persoon"/>. Als er al iemand bestaat met hetzelfde
         /// AD-nr, dan worden de personen gemerged.
+        /// Als <paramref name="adNummer"/> <c>null</c> is, dan wordt het gewoon
+        /// verwijderd.
         /// </summary>
         /// <param name="persoon"></param>
         /// <param name="adNummer"></param>
         /// <remarks>PERSISTEERT!</remarks>
-        private void AdNummerToekennen(Persoon persoon, int adNummer)
+        private void AdNummerToekennen(Persoon persoon, int? adNummer)
         {
+            // Voor een niet-null AD-nummer, moeten we mogelijk mergen.
+
+            if (adNummer.HasValue)
+            {
                 // Wie heeft het gegeven AD-nummer al?
                 var personenAlBestaand = (from g in _personenRepo.Select() where g.AdNummer == adNummer select g);
 
@@ -157,9 +166,10 @@ namespace Chiro.Gap.UpdateApi.Workers
                 {
                     DubbelVerwijderen(persoon, p);
                 }
+            }
 
-                persoon.AdNummer = adNummer;
-                _personenRepo.SaveChanges();
+            persoon.AdNummer = adNummer;
+            _personenRepo.SaveChanges();
 
         }
 
@@ -487,6 +497,38 @@ namespace Chiro.Gap.UpdateApi.Workers
                 Console.WriteLine("Ad-nummer {0} van {1} verwijderd. (ID {2})", adNummer, p.VolledigeNaam, p.ID);
             }
             return persoonId;
+        }
+
+        /// <summary>
+        /// Werkt een persoon bij op basis van gegevens in <paramref name="model"/>.
+        /// Het PersoonID bepaalt welke persoon bijgwerkt moet worden.
+        /// </summary>
+        /// <param name="model">Gegevens bij te werken persoon.</param>
+        public void Bijwerken(PersoonModel model)
+        {
+            var persoon = _personenRepo.ByID(model.PersoonId);
+
+            if (persoon == null)
+            {
+                throw new FoutNummerException(
+                    FoutNummer.PersoonNietGevonden,
+                    String.Format("Onbekend persoon (ID {0}) genegeerd (AD {1})", model.PersoonId, model.AdNummer));
+            }
+
+            if (persoon.AdNummer != model.AdNummer)
+            {
+                // AD-nummer aanpassen enkel indien nodig.
+                // Onderstaande method persisteert.
+                AdNummerToekennen(persoon, model.AdNummer);
+
+                Console.WriteLine("Ad-nummer {0} toegekend aan {1}. (ID {2})", model.AdNummer, persoon.VolledigeNaam, persoon.ID);
+            }
+
+            if (persoon.LaatsteMembership == model.LaatsteMembership) return;
+
+            persoon.LaatsteMembership = model.LaatsteMembership;
+            _personenRepo.SaveChanges();
+            Console.WriteLine("LaatsteMembership {0} toegekend aan {1}. (ID {2})", model.LaatsteMembership, persoon.VolledigeNaam, persoon.ID);
         }
     }
 }

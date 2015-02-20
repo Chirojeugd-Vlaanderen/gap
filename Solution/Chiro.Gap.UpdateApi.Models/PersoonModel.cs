@@ -24,9 +24,13 @@ namespace Chiro.Gap.UpdateApi.Models
     /// Op termijn kan de echte api gebruikt worden om updates van Chirocivi
     /// naar GAP te sturen.
     /// </summary>
-    public class Persoon
+    public class PersoonModel
     {
+        /// <summary>
+        /// Een persoon wordt altijd opgezocht op basis van zijn ID.
+        /// </summary>
         public int PersoonId { get; set; }
-        public int AdNummer { get; set; }
+        public int? AdNummer { get; set; }
+        public int? LaatsteMembership { get; set; }
     }
 }

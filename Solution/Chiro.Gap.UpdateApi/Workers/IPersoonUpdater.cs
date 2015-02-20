@@ -17,6 +17,8 @@
  */
 
 using System;
+using Chiro.Gap.UpdateApi.Models;
+
 namespace Chiro.Gap.UpdateApi.Workers
 {
     public interface IPersoonUpdater: IDisposable
@@ -24,7 +26,8 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// <summary>
         /// Stelt het AD-nummer van de persoon met Id <paramref name="persoonId"/> in. 
         /// Als er al een persoon bestaat met hetzelfde AD-nummer, dan wordt die persoon
-        /// gemerged met de bestaande persoon.
+        /// gemerged met de bestaande persoon. Als <paramref name="adNummer"/>
+        /// <c>null</c> is, dan wordt het AD-nummer gewoon verwijderd.
         /// </summary>
         /// <param name="persoonId">
         /// Id van de persoon
@@ -32,7 +35,7 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// <param name="adNummer">
         /// Nieuw AD-nummer
         /// </param>
-        void AdNummerToekennen(int persoonId, int adNummer);
+        void AdNummerToekennen(int persoonId, int? adNummer);
 
         /// <summary>
         /// Vervangt het AD-nummer van de persoon met AD-nummer <paramref name="oudAd"/>
@@ -57,5 +60,12 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// <param name="adNummer">AD-nummer dat verwijderd moet worden</param>
         /// <returns>PersoonId van de persoon met het verwijderde AD-nummer.</returns>
         int AdNummerVerwijderen(int adNummer);
+
+        /// <summary>
+        /// Werkt een persoon bij op basis van gegevens in <paramref name="model"/>.
+        /// Het PersoonID bepaalt welke persoon bijgwerkt moet worden.
+        /// </summary>
+        /// <param name="model">Gegevens bij te werken persoon.</param>
+        void Bijwerken(PersoonModel model);
     }
 }

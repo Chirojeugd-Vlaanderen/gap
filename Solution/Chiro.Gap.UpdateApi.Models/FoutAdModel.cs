@@ -21,7 +21,7 @@ namespace Chiro.Gap.UpdateApi.Models
     /// <summary>
     /// Een dom model voor een fout AD-nummer.
     /// </summary>
-    public class FoutAd
+    public class FoutAdModel
     {
         public int AdNummer { get; set; }
     }
