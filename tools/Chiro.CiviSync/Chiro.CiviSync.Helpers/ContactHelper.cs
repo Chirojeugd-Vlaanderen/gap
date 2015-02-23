@@ -93,7 +93,8 @@ namespace Chiro.CiviSync.Helpers
         /// <param name="adNummer"></param>
         /// <param name="civiGroepId"></param>
         /// <returns>De persoon met gegeven <paramref name="adNummer"/> op, samen met zijn recentste
-        /// lidrelatie in de groep met <paramref name="civiGroepId"/>.</returns>
+        /// lidrelatie in de groep met <paramref name="civiGroepId"/>. Als de persoon niet werd gevonden,
+        /// wordt <c>null</c> opgeleverd.</returns>
         public Contact PersoonMetRecentsteLid(int adNummer, int? civiGroepId)
         {
             // Haal de persoon op met gegeven AD-nummer en zijn recentste lidrelatie in de gevraagde groep.
@@ -112,6 +113,14 @@ namespace Chiro.CiviSync.Helpers
             var contact =
                 ServiceHelper.CallService<ICiviCrmApi, Contact>(
                     svc => svc.ContactGetSingle(_apiKey, _siteKey, contactRequest));
+
+            // Elk contact heeft een ID verschillend van 0. 
+            // Als het opgeleverd ID 0 is, wil dat zeggen
+            // dat het contact niet gevonden is.
+            if (contact.Id == 0)
+            {
+                return null;
+            }
 
             // Van zodra CRM-15983 upstream gefixt is, is onderstaande code niet meer nodig,
             // en mag gewoon contact opgeleverd worden. (Zie #3396)
