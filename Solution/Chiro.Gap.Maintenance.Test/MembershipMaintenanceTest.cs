@@ -109,5 +109,72 @@ namespace Chiro.Gap.Maintenance.Test
                 src => src.MembershipRegistreren(It.Is<Persoon>(p => p.ID == leidster.GelieerdePersoon.Persoon.ID),
                     It.IsAny<int>()), Times.Never);
         }
+
+        /// <summary>
+        /// Als de property 'LaatsteMembership' van een persoon <c>null</c> is, mag dat niet
+        /// verhinderen dat er memberships worden gemaakt.
+        /// </summary>
+        [TestMethod]
+        public void NooitGesyncteLedenSyncen()
+        {
+            // ARRANGE
+
+            // Gebruik de echte groepswerkjarenmanager.
+            var gwjm = new GroepsWerkJarenManager(new VeelGebruikt());
+            Factory.InstantieRegistreren<IGroepsWerkJarenManager>(gwjm);
+
+
+            // We hebben 1 leidster; haar probeerperiode is voorbij.
+            var leidster = new Leiding
+            {
+                ID = 1,
+                EindeInstapPeriode = DateTime.Now.AddDays(-1),
+                GelieerdePersoon = new GelieerdePersoon
+                {
+                    ID = 2,
+                    Persoon = new Persoon
+                    {
+                        ID = 3,
+                        VoorNaam = "Kelly",
+                        Naam = "Pfaff"
+                    }
+                },
+                GroepsWerkJaar = new GroepsWerkJaar
+                {
+                    ID = 4,
+                    WerkJaar = gwjm.HuidigWerkJaarNationaal()
+                }
+            };
+
+            // De repository bevat enkel deze leidster.
+            var ledenRepo = new DummyRepo<Lid>(new List<Lid> { leidster });
+
+            // Repositoryprovidermock opzetten
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(ledenRepo);
+
+            // Mock voor personenSync
+            var personenSyncMock = new Mock<IPersonenSync>();
+            personenSyncMock.Setup(
+                src =>
+                    src.MembershipRegistreren(It.Is<Persoon>(p => p.ID == leidster.GelieerdePersoon.Persoon.ID),
+                        It.IsAny<int>())).Verifiable();
+
+            // Mocks registeren
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+            Factory.InstantieRegistreren(personenSyncMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<MembershipMaintenance>();
+            target.MembershipsMaken();
+
+            // ASSERT
+
+            personenSyncMock.Verify(
+                src => src.MembershipRegistreren(It.Is<Persoon>(p => p.ID == leidster.GelieerdePersoon.Persoon.ID),
+                    It.IsAny<int>()), Times.AtLeastOnce);
+        }
+
     }
 }
