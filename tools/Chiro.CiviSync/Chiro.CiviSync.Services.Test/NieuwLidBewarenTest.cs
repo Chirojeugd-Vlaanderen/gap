@@ -23,6 +23,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Helpers;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -33,6 +34,8 @@ namespace Chiro.CiviSync.Services.Test
     public class NieuwLidBewarenTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
+        private Mock<IGapUpdateHelper> _updateHelperMock;
+
         private static int _nextId = 1;
 
         [ClassInitialize]
@@ -44,7 +47,7 @@ namespace Chiro.CiviSync.Services.Test
         [TestInitialize]
         public void InitializeTest()
         {
-            _civiApiMock = TestHelper.IocOpzetten(new DateTime(2015, 02, 05));
+            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out _civiApiMock, out _updateHelperMock);
         }
 
         /// <summary>

@@ -19,18 +19,17 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Chiro.CiviSync.Helpers.Properties;
 using Chiro.Gap.UpdateApi.Models;
 
 namespace Chiro.CiviSync.Helpers
 {
-    public class GapUpdateHelper
+    public class GapUpdateHelper : IGapUpdateHelper
     {
-        private readonly string _username;
-        private readonly string _password;
-        private readonly string _url;
+        private string _username = null;
+        private string _password = null;
+        private string _url = null;
 
-        public GapUpdateHelper(string url, string username, string password)
+        public void Configureren(string url, string username, string password)
         {
             _url = url;
             _username = username;
@@ -43,6 +42,11 @@ namespace Chiro.CiviSync.Helpers
         /// <param name="adNummer">Als ongeldig te rapporteren AD-nummer</param>
         public async Task OngeldigAdNaarGap(int adNummer)
         {
+            if (_username == null && _password == null && _url == null)
+            {
+                throw new ApplicationException("GapUpdate niet geconfigureerd.");
+            }
+
             // TODO: ServiceHelper gebruiken.
             using (var client = new HttpClient())
             {

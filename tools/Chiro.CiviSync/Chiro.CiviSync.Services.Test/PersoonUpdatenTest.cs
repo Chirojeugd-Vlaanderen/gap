@@ -32,6 +32,7 @@ namespace Chiro.CiviSync.Services.Test
     public class PersoonUpdatenTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
+        private Mock<IGapUpdateHelper> _updateHelperMock;
 
         [ClassInitialize]
         public static void InitializeTestClass(TestContext c)
@@ -45,7 +46,7 @@ namespace Chiro.CiviSync.Services.Test
         [TestInitialize]
         public void InitializeTest()
         {
-            _civiApiMock = TestHelper.IocOpzetten();
+            TestHelper.IocOpzetten(DateTime.Now, out _civiApiMock, out _updateHelperMock);
         }
 
         [TestMethod]

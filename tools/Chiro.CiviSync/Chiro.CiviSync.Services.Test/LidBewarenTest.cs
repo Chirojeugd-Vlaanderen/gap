@@ -22,6 +22,7 @@ using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Helpers;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -32,6 +33,7 @@ namespace Chiro.CiviSync.Services.Test
     public class LidBewarenTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
+        private Mock<IGapUpdateHelper> _updateHelperMock;
 
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int VorigWerkJaar = 2013;
@@ -47,7 +49,7 @@ namespace Chiro.CiviSync.Services.Test
         [TestInitialize]
         public void InitializeTest()
         {
-            _civiApiMock = TestHelper.IocOpzetten(_vandaagZogezegd);
+            TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _updateHelperMock);
         }
 
         /// <summary>

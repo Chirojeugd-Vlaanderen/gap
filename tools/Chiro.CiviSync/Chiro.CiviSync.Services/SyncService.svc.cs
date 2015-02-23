@@ -45,7 +45,7 @@ namespace Chiro.CiviSync.Services
 
         private readonly IMiniLog _log;
         private readonly ServiceHelper _serviceHelper;
-        private readonly GapUpdateHelper _gapUpdateHelper;
+        private readonly IGapUpdateHelper _gapUpdateHelper;
         private readonly ContactHelper _contactHelper;
         private readonly RelationshipHelper _relationshipHelper;
         private readonly MembershipHelper _membershipHelper;
@@ -61,20 +61,23 @@ namespace Chiro.CiviSync.Services
         /// Creates a new service instance.
         /// </summary>
         /// <param name="serviceHelper">Servicehelper that will connect to the CiviCRM API</param>
+        /// <param name="gapUpdateHelper">Wrapper rond de UpdateApi.</param>
         /// <param name="relationshipHelper">Zorgt vooral voor start- en einddata van relaties.</param>
         /// <param name="membershipHelper">Logica voor memberships. Ook vooral start- en einddata.</param>
         /// <param name="log">Logger</param>
-        public SyncService(ServiceHelper serviceHelper, RelationshipHelper relationshipHelper, MembershipHelper membershipHelper, IMiniLog log)
+        public SyncService(ServiceHelper serviceHelper, IGapUpdateHelper gapUpdateHelper, RelationshipHelper relationshipHelper, MembershipHelper membershipHelper, IMiniLog log)
         {
             _serviceHelper = serviceHelper;
+            _gapUpdateHelper = gapUpdateHelper;
             _relationshipHelper = relationshipHelper;
             _membershipHelper = membershipHelper;
             _log = log;
 
-            // Er zijn nog heel wat helpers waarvoor we (momenteel?) nog geen
+            _gapUpdateHelper.Configureren(_gapUpdateUrl, _gapUpdateUser, _gapUpdatePass);
+
+            // Er zijn nog wat helpers waarvoor we (momenteel?) nog geen
             // dependency injectino gebruiken.
             _contactHelper = new ContactHelper(_serviceHelper, _apiKey, _siteKey);
-            _gapUpdateHelper = new GapUpdateHelper(_gapUpdateUrl, _gapUpdateUser, _gapUpdatePass);
             _functieHelper = new FunctieHelper();
         }
 

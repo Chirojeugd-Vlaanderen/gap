@@ -107,12 +107,13 @@ namespace Chiro.CiviSync.Services.Test
         /// 
         /// * Geen logging
         /// * De tests gedragen zich alsof het vandaag de gegeven datum is.
-        /// * Er wordt een mock gebruikt i.p.v. de echte CiviCRM-API
+        /// * Er wordt een mock gebruikt i.p.v. de echte API's voor Civi en GAP.
         /// </summary>
         /// <param name="zogezegdeDatum">De datum die gebruikt moet worden als
         /// zijnde de huidige datum.</param>
-        /// <returns>De gegenereerde mock, die je nog kunt configureren.</returns>
-        public static Mock<ICiviCrmApi> IocOpzetten(DateTime zogezegdeDatum)
+        /// <param name="civiApiMock">Mock-object voor de CiviCRM-API</param>
+        /// <param name="updateHelperMock">Mock-object voor UpdateApi</param>
+        public static void IocOpzetten(DateTime zogezegdeDatum, out Mock<ICiviCrmApi> civiApiMock, out Mock<IGapUpdateHelper> updateHelperMock)
         {
             // Dependency injection opzetten om geen echte CiviCRM te moeten
             // aanroepen. (De binding CiviCRM-.NET heeft aparte unit tests)
@@ -120,10 +121,14 @@ namespace Chiro.CiviSync.Services.Test
             Factory.ContainerInit();
 
             // We gebruiken een mock voor de CiviCrm API.
-            var civiApiMock = new Mock<ICiviCrmApi>();
+            civiApiMock = new Mock<ICiviCrmApi>();
             var channelProviderMock = new Mock<IChannelProvider>();
             channelProviderMock.Setup(src => src.GetChannel<ICiviCrmApi>()).Returns(civiApiMock.Object);
             Factory.InstantieRegistreren(channelProviderMock.Object);
+
+            // Voor UpdateApi ook.
+            updateHelperMock = new Mock<IGapUpdateHelper>();
+            Factory.InstantieRegistreren(updateHelperMock.Object);
 
             // Doe alsof het vandaag de zogezegde datum is.
             var datumHelperMock = new Mock<IDatumHelper>();
@@ -133,20 +138,6 @@ namespace Chiro.CiviSync.Services.Test
             // Loggen doen we niet.
             var logMock = new Mock<IMiniLog>();
             Factory.InstantieRegistreren(logMock.Object);
-
-            return civiApiMock;
-        }
-
-        /// <summary>
-        /// Zet wat standaarddingen op voor dependency injection:
-        /// 
-        /// * Geen logging
-        /// * Er wordt een mock gebruikt i.p.v. de echte CiviCRM-API
-        /// </summary>
-        /// <returns>De gegenereerde mock, die je nog kunt configureren.</returns>
-        internal static Mock<ICiviCrmApi> IocOpzetten()
-        {
-            return IocOpzetten(DateTime.Now);
         }
     }
 }

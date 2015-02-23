@@ -30,12 +30,14 @@ namespace Chiro.CiviSync.Helpers.Test
     public class ContactHelperTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
+        private Mock<IGapUpdateHelper> _updateHelperMock;
+
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
 
         [TestInitialize]
         public void InitializeTest()
         {
-            _civiApiMock = TestHelper.IocOpzetten(_vandaagZogezegd);
+            TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _updateHelperMock);
         }
 
         /// <summary>
