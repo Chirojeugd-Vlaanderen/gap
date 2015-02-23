@@ -63,7 +63,14 @@ namespace Chiro.CiviSync.Services.Test
 
             // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
-            var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
+            var persoon = new Contact
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3,
+                Id = 4
+            };
 
             DateTime beginVolgendWerkjaar = new DateTime(VolgendWerkjaar, 9, 1);
             DateTime eindeVolgendWerkJaar = new DateTime(VolgendWerkjaar + 1, 8, 31);
@@ -92,21 +99,6 @@ namespace Chiro.CiviSync.Services.Test
                     });
 
             _civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        var result = new ApiResultValues<Contact>
-                        {
-                            Count = 1,
-                            IsError = 0,
-                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
-                        };
-                        result.Id = result.Values.First().Id;
-                        return result;
-                    });
-
-            _civiApiMock.Setup(
                 // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
                 // LidMaken moet de startdatum dan op 1 september zetten.
                 // Future relationships shoud be inactive, see http://forum.civicrm.org/index.php?topic=21327.0
@@ -115,7 +107,7 @@ namespace Chiro.CiviSync.Services.Test
                         It.Is<RelationshipRequest>(
                             r =>
                                 r.StartDate == beginVolgendWerkjaar && r.EndDate == eindeVolgendWerkJaar &&
-                                r.IsActive == false)))
+                                r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
                         Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
@@ -143,7 +135,8 @@ namespace Chiro.CiviSync.Services.Test
                         It.Is<RelationshipRequest>(
                             r =>
                                 r.StartDate == beginVolgendWerkjaar && r.EndDate == eindeVolgendWerkJaar &&
-                                r.IsActive == false)), Times.AtLeastOnce);
+                                r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)),
+                Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -159,7 +152,14 @@ namespace Chiro.CiviSync.Services.Test
 
             // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
-            var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
+            var persoon = new Contact
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3,
+                Id = 4
+            };
 
             DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
 
@@ -187,25 +187,12 @@ namespace Chiro.CiviSync.Services.Test
                     });
 
             _civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        var result = new ApiResultValues<Contact>
-                        {
-                            Count = 1,
-                            IsError = 0,
-                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
-                        };
-                        result.Id = result.Values.First().Id;
-                        return result;
-                    });
-
-            _civiApiMock.Setup(
                 src =>
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
-                            r => r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar && r.IsActive == true)))
+                            r =>
+                                r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar && r.IsActive == true &&
+                                r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
                         Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
@@ -228,7 +215,9 @@ namespace Chiro.CiviSync.Services.Test
                 src =>
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
-                            r => r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar && r.IsActive == true)),
+                            r =>
+                                r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar && r.IsActive == true &&
+                                r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)),
                 Times.AtLeastOnce);
         }
 
@@ -290,21 +279,6 @@ namespace Chiro.CiviSync.Services.Test
                     });
 
             _civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        var result = new ApiResultValues<Contact>
-                        {
-                            Count = 1,
-                            IsError = 0,
-                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
-                        };
-                        result.Id = result.Values.First().Id;
-                        return result;
-                    });
-
-            _civiApiMock.Setup(
                 // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
                 // LidMaken moet de startdatum dan op 1 september zetten.
                 src =>
@@ -312,7 +286,7 @@ namespace Chiro.CiviSync.Services.Test
                         It.Is<RelationshipRequest>(
                             r =>
                                 r.StartDate == relatie.StartDate && r.EndDate == eindeDitWerkJaar && r.Id == relatie.Id &&
-                                r.IsActive == true)))
+                                r.IsActive == true && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
                         Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
@@ -339,7 +313,7 @@ namespace Chiro.CiviSync.Services.Test
                         It.Is<RelationshipRequest>(
                             r =>
                                 r.StartDate == relatie.StartDate && r.EndDate == eindeDitWerkJaar && r.Id == relatie.Id &&
-                                r.IsActive == true)), Times.AtLeastOnce);
+                                r.IsActive == true && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)), Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -355,7 +329,14 @@ namespace Chiro.CiviSync.Services.Test
 
             // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
-            var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
+            var persoon = new Contact
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3,
+                Id = 4
+            };
             DateTime eindeVorigWerkJaar = new DateTime(VorigWerkJaar + 1, 8, 31);
 
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
@@ -382,21 +363,6 @@ namespace Chiro.CiviSync.Services.Test
                     });
 
             _civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        var result = new ApiResultValues<Contact>
-                        {
-                            Count = 1,
-                            IsError = 0,
-                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
-                        };
-                        result.Id = result.Values.First().Id;
-                        return result;
-                    });
-
-            _civiApiMock.Setup(
                 // We zullen een lid maken voor een werkjaar dat al voorbij is.
                 // We verwachten dat start- en einddatum 31 autustus zullen zijn.
                 src =>
@@ -404,7 +370,7 @@ namespace Chiro.CiviSync.Services.Test
                         It.Is<RelationshipRequest>(
                             r =>
                                 r.StartDate == eindeVorigWerkJaar && r.EndDate == eindeVorigWerkJaar &&
-                                r.IsActive == false)))
+                                r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
                         Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
@@ -431,7 +397,7 @@ namespace Chiro.CiviSync.Services.Test
                         It.Is<RelationshipRequest>(
                             r =>
                                 r.StartDate == eindeVorigWerkJaar && r.EndDate == eindeVorigWerkJaar &&
-                                r.IsActive == false)), Times.AtLeastOnce);
+                                r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)), Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -446,7 +412,14 @@ namespace Chiro.CiviSync.Services.Test
 
             // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
-            var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
+            var persoon = new Contact
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3,
+                Id = 4
+            };
 
             // We gaan inschrijven bij de rakwi's, en nakijken of de juiste afdeling naar CiviCRM gaat.
             AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
@@ -476,24 +449,10 @@ namespace Chiro.CiviSync.Services.Test
                     });
 
             _civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        var result = new ApiResultValues<Contact>
-                        {
-                            Count = 1,
-                            IsError = 0,
-                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
-                        };
-                        result.Id = result.Values.First().Id;
-                        return result;
-                    });
-
-            _civiApiMock.Setup(
                 src =>
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<RelationshipRequest>(r => r.Afdeling == civiAfdeling)))
+                        It.Is<RelationshipRequest>(
+                            r => r.Afdeling == civiAfdeling && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
                         Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
@@ -515,7 +474,9 @@ namespace Chiro.CiviSync.Services.Test
             _civiApiMock.Verify(
                 src =>
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<RelationshipRequest>(r => r.Afdeling == civiAfdeling)), Times.AtLeastOnce);
+                        It.Is<RelationshipRequest>(
+                            r => r.Afdeling == civiAfdeling && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)),
+                Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -530,7 +491,14 @@ namespace Chiro.CiviSync.Services.Test
 
             // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
-            var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
+            var persoon = new Contact
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3,
+                Id = 4
+            };
 
             // We gaan inschrijven bij de rakwi's, en nakijken of de juiste afdeling naar CiviCRM gaat.
             AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
@@ -560,25 +528,12 @@ namespace Chiro.CiviSync.Services.Test
                     });
 
             _civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        var result = new ApiResultValues<Contact>
-                        {
-                            Count = 1,
-                            IsError = 0,
-                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
-                        };
-                        result.Id = result.Values.First().Id;
-                        return result;
-                    });
-
-            _civiApiMock.Setup(
                 src =>
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
-                            r => r.Afdeling == Afdeling.Leiding && r.LeidingVan.First() == civiAfdeling)))
+                            r =>
+                                r.Afdeling == Afdeling.Leiding && r.LeidingVan.First() == civiAfdeling &&
+                                r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
                         Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
@@ -602,7 +557,9 @@ namespace Chiro.CiviSync.Services.Test
                 src =>
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
-                            r => r.Afdeling == Afdeling.Leiding && r.LeidingVan.First() == civiAfdeling)),
+                            r =>
+                                r.Afdeling == Afdeling.Leiding && r.LeidingVan.First() == civiAfdeling &&
+                                r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)),
                 Times.AtLeastOnce);
         }
 
@@ -665,27 +622,12 @@ namespace Chiro.CiviSync.Services.Test
                     });
 
             _civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        var result = new ApiResultValues<Contact>
-                        {
-                            Count = 1,
-                            IsError = 0,
-                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
-                        };
-                        result.Id = result.Values.First().Id;
-                        return result;
-                    });
-
-            _civiApiMock.Setup(
                 src =>
                     src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
                             r =>
                                 r.StartDate == relatie.StartDate && r.EndDate == uitschrijfDatum && r.Id == relatie.Id &&
-                                r.IsActive == false)))
+                                r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)))
                 .Returns(
                     (string key1, string key2, RelationshipRequest r) =>
                         Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r)).Verifiable();
@@ -711,7 +653,9 @@ namespace Chiro.CiviSync.Services.Test
                         It.Is<RelationshipRequest>(
                             r =>
                                 r.StartDate == relatie.StartDate && r.EndDate == uitschrijfDatum && r.Id == relatie.Id &&
-                                r.IsActive == false)), Times.AtLeastOnce);
+                                r.IsActive == false && r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id)), Times.AtLeastOnce);
         }
+
+
     }
 }

@@ -69,17 +69,20 @@ namespace Chiro.CiviSync.Helpers
 
             if (cid != null) return cid;
             var result =
-                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
+                ServiceHelper.CallService<ICiviCrmApi, Contact>(
                     svc =>
-                        svc.ContactGet(_apiKey, _siteKey,
+                        svc.ContactGetSingle(_apiKey, _siteKey,
                             new ContactRequest {ExternalIdentifier = externalIdentifier, ReturnFields = "id"}));
 
-            if (result == null || result.Count != 1)
+            // GetSingle levert een 'leeg' contact-object als er niemand
+            // wordt gevonden. In dat geval (en normaal gezien enkel dan)
+            // is het ID 0.
+            if (result == null || result.Id == 0)
             {
                 return null;
             }
 
-            cid = result.Values.First().Id;
+            cid = result.Id;
 
             _cache.Set(String.Format(ContactIdCacheKey, externalIdentifier), cid,
                 new CacheItemPolicy {SlidingExpiration = new TimeSpan(2, 0, 0, 0)});
