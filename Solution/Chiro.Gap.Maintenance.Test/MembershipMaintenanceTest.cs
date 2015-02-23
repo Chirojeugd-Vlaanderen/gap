@@ -24,7 +24,6 @@ using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -51,18 +50,14 @@ namespace Chiro.Gap.Maintenance.Test
         {
             // ARRANGE
 
-            // Gebruik de echte groepswerkjarenmanager en ledenmanager.
-            var gwjm = new GroepsWerkJarenManager(new VeelGebruikt());
-            Factory.InstantieRegistreren<IGroepsWerkJarenManager>(gwjm);
-            var lm = new LedenManager();
-            Factory.InstantieRegistreren<ILedenManager>(lm);
-
+            const int huidigWerkjaar = 2014;
+            DateTime vandaagZoGezegd = new DateTime(2015, 02, 23);
 
             // We hebben 1 leidster, die nog in haar probeerperiode zit.
             var leidster = new Leiding
             {
                 ID = 1,
-                EindeInstapPeriode = DateTime.Now.AddDays(7),
+                EindeInstapPeriode = vandaagZoGezegd.AddDays(7),
                 GelieerdePersoon = new GelieerdePersoon
                 {
                     ID = 2,
@@ -76,7 +71,7 @@ namespace Chiro.Gap.Maintenance.Test
                 GroepsWerkJaar = new GroepsWerkJaar
                 {
                     ID = 4,
-                    WerkJaar = gwjm.HuidigWerkJaarNationaal()
+                    WerkJaar = huidigWerkjaar
                 }
             };
 
@@ -94,9 +89,15 @@ namespace Chiro.Gap.Maintenance.Test
                     src.MembershipRegistreren(It.Is<Persoon>(p => p.ID == leidster.GelieerdePersoon.Persoon.ID),
                         It.IsAny<int>())).Verifiable();
 
+            // Meer mocks.
+            var groepsWerkJaarManagerMock = new Mock<IGroepsWerkJarenManager>();
+            groepsWerkJaarManagerMock.Setup(src => src.HuidigWerkJaarNationaal()).Returns(huidigWerkjaar);
+            groepsWerkJaarManagerMock.Setup(src => src.Vandaag()).Returns(vandaagZoGezegd);
+
             // Mocks registeren
             Factory.InstantieRegistreren(repoProviderMock.Object);
             Factory.InstantieRegistreren(personenSyncMock.Object);
+            Factory.InstantieRegistreren(groepsWerkJaarManagerMock.Object);
 
             // ACT
 
@@ -119,17 +120,14 @@ namespace Chiro.Gap.Maintenance.Test
         {
             // ARRANGE
 
-            // Gebruik de echte groepswerkjarenmanager en ledenmanager.
-            var gwjm = new GroepsWerkJarenManager(new VeelGebruikt());
-            Factory.InstantieRegistreren<IGroepsWerkJarenManager>(gwjm);
-            var lm = new LedenManager();
-            Factory.InstantieRegistreren<ILedenManager>(lm);
+            const int huidigWerkjaar = 2014;
+            DateTime vandaagZoGezegd = new DateTime(2015, 02, 23);
 
-            // We hebben 1 leidster; haar probeerperiode is voorbij.
+            // We hebben 1 leidster, die nog in haar probeerperiode zit.
             var leidster = new Leiding
             {
                 ID = 1,
-                EindeInstapPeriode = DateTime.Now.AddDays(-1),
+                EindeInstapPeriode = vandaagZoGezegd.AddDays(-7),
                 GelieerdePersoon = new GelieerdePersoon
                 {
                     ID = 2,
@@ -143,7 +141,7 @@ namespace Chiro.Gap.Maintenance.Test
                 GroepsWerkJaar = new GroepsWerkJaar
                 {
                     ID = 4,
-                    WerkJaar = gwjm.HuidigWerkJaarNationaal()
+                    WerkJaar = huidigWerkjaar
                 }
             };
 
@@ -161,9 +159,15 @@ namespace Chiro.Gap.Maintenance.Test
                     src.MembershipRegistreren(It.Is<Persoon>(p => p.ID == leidster.GelieerdePersoon.Persoon.ID),
                         It.IsAny<int>())).Verifiable();
 
+            // Meer mocks.
+            var groepsWerkJaarManagerMock = new Mock<IGroepsWerkJarenManager>();
+            groepsWerkJaarManagerMock.Setup(src => src.HuidigWerkJaarNationaal()).Returns(huidigWerkjaar);
+            groepsWerkJaarManagerMock.Setup(src => src.Vandaag()).Returns(vandaagZoGezegd);
+
             // Mocks registeren
             Factory.InstantieRegistreren(repoProviderMock.Object);
             Factory.InstantieRegistreren(personenSyncMock.Object);
+            Factory.InstantieRegistreren(groepsWerkJaarManagerMock.Object);
 
             // ACT
 

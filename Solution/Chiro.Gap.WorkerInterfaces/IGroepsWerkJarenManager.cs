@@ -119,5 +119,15 @@ namespace Chiro.Gap.WorkerInterfaces
         /// </summary>
         /// <returns>Het jaartal waarin het huidige werkjaar begon</returns>
         int HuidigWerkJaarNationaal();
+
+        /// <summary>
+        /// Levert de datum van vandaag op.
+        /// </summary>
+        /// <returns>De datum van vandaag.</returns>
+        /// <remarks>
+        /// Dit is een tamelijk domme functie. Maar ze is er om met de datum te kunnen
+        /// foefelen in de unit tests.
+        /// </remarks>
+        DateTime Vandaag();
 	}
 }

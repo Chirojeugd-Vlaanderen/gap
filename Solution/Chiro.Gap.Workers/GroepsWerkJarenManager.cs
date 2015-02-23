@@ -203,6 +203,19 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Levert de datum van vandaag op.
+        /// </summary>
+        /// <returns>De datum van vandaag.</returns>
+        /// <remarks>
+        /// Dit is een tamelijk domme functie. Maar ze is er om met de datum te kunnen
+        /// foefelen in de unit tests.
+        /// </remarks>
+        public DateTime Vandaag()
+        {
+            return DateTime.Now.Date;
+        }
+
+        /// <summary>
         /// Bepaalt of in het gegeven <paramref name='werkJaar' /> op
 	    /// het gegeven <paramref name='tijdstip' /> de jaarovergang al
 	    /// kan doorgaan.

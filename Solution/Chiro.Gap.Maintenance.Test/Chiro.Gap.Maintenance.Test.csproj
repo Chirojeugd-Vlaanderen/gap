@@ -81,10 +81,6 @@
       <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
       <Name>Chiro.Gap.WorkerInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
-      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
-      <Name>Chiro.Gap.Workers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TestProjecten\Chiro.Gap.Dummies\Chiro.Gap.Dummies.csproj">
       <Project>{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}</Project>
       <Name>Chiro.Gap.Dummies</Name>
