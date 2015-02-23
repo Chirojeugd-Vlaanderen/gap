@@ -37,16 +37,18 @@ namespace Chiro.Gap.Maintenance
 
         // Businesslogica
         private readonly IGroepsWerkJarenManager _groepsWerkJarenManager;
+        private readonly ILedenManager _ledenManager;
 
         // Synchronisatie
         private readonly IPersonenSync _personenSync;
 
-        public MembershipMaintenance(IRepositoryProvider repositoryProvider, IGroepsWerkJarenManager groepsWerkJarenManager,
+        public MembershipMaintenance(IRepositoryProvider repositoryProvider, IGroepsWerkJarenManager groepsWerkJarenManager, ILedenManager ledenManager,
             IPersonenSync personenSync)
         {
             _repositoryProvider = repositoryProvider;
             _ledenRepo = _repositoryProvider.RepositoryGet<Lid>();
             _groepsWerkJarenManager = groepsWerkJarenManager;
+            _ledenManager = ledenManager;
             _personenSync = personenSync;
         }
 
@@ -65,7 +67,8 @@ namespace Chiro.Gap.Maintenance
                 where
                     (l.GelieerdePersoon.Persoon.LaatsteMembership < huidigWerkJaar ||
                      l.GelieerdePersoon.Persoon.LaatsteMembership == null) &&
-                    l.GroepsWerkJaar.WerkJaar == huidigWerkJaar
+                    l.GroepsWerkJaar.WerkJaar == huidigWerkJaar &&
+                    _ledenManager.ProbeerPeriodeVoorbij(l)
                 select l.GelieerdePersoon.Persoon).ToArray();
 
             foreach (var p in teSyncen)

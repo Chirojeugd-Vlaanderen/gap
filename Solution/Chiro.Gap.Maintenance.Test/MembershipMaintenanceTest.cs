@@ -119,10 +119,11 @@ namespace Chiro.Gap.Maintenance.Test
         {
             // ARRANGE
 
-            // Gebruik de echte groepswerkjarenmanager.
+            // Gebruik de echte groepswerkjarenmanager en ledenmanager.
             var gwjm = new GroepsWerkJarenManager(new VeelGebruikt());
             Factory.InstantieRegistreren<IGroepsWerkJarenManager>(gwjm);
-
+            var lm = new LedenManager();
+            Factory.InstantieRegistreren<ILedenManager>(lm);
 
             // We hebben 1 leidster; haar probeerperiode is voorbij.
             var leidster = new Leiding

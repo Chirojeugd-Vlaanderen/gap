@@ -795,6 +795,18 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Geeft <c>true</c> als de probeerperiode van het gegeven <paramref name="lid"/> voorbij is,
+        /// anders <c>false</c>.
+        /// </summary>
+        /// <param name="lid">Een lid waarvan de probeerperiode getest moet worden.</param>
+        /// <returns><c>true</c> als de probeerperiode van het gegeven <paramref name="lid"/> voorbij is,
+        /// anders <c>false</c>.</returns>
+        public bool ProbeerPeriodeVoorbij(Lid lid)
+        {
+            return (lid.EindeInstapPeriode < DateTime.Now);
+        }
+
+        /// <summary>
         /// Zoekt een afdelingsjaar uit het gegeven <paramref name="groepsWerkJaar"/>, waarin een persoon
         /// met gegeven <paramref name="geslacht"/> en <paramref name="geboorteDatum"/> lid zou kunnen worden,
         /// of <c>null</c> als er zo geen bestaat.
