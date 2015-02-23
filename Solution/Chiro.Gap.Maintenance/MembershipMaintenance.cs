@@ -63,7 +63,8 @@ namespace Chiro.Gap.Maintenance
 
             var teSyncen = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon", "GroepsWerkJaar")
                 where
-                    l.GelieerdePersoon.Persoon.LaatsteMembership < huidigWerkJaar &&
+                    (l.GelieerdePersoon.Persoon.LaatsteMembership < huidigWerkJaar ||
+                     l.GelieerdePersoon.Persoon.LaatsteMembership == null) &&
                     l.GroepsWerkJaar.WerkJaar == huidigWerkJaar
                 select l.GelieerdePersoon.Persoon).ToArray();
 
