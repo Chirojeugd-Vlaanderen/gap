@@ -55,7 +55,7 @@ namespace Chiro.CiviSync.Helpers
                 }
                 client.BaseAddress = new Uri(_url);
                 await client.PostAsJsonAsync("foutad",
-                    new FoutAd { AdNummer = adNummer });
+                    new FoutAdModel { AdNummer = adNummer });
             }
         }
     }

@@ -32,7 +32,6 @@ namespace Chiro.CiviSync.Services.Test
     public class LidBewarenTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
-        private static int _nextId = 1;
 
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int VorigWerkJaar = 2013;
