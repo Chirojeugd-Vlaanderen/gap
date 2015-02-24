@@ -28,6 +28,9 @@ namespace Chiro.Gap.Maintenance
             Factory.ContainerInit();
             MappingHelper.MappingsDefinieren();
             var membershipMaintenance = Factory.Maak<MembershipMaintenance>();
+            var relationshipMaintenance = Factory.Maak<RelationshipMaintenance>();
+
+            relationshipMaintenance.LedenZonderAdOpnieuwSyncen();
             membershipMaintenance.MembershipsMaken();
         }
     }
