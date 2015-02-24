@@ -112,9 +112,30 @@ namespace Chiro.CiviSync.Services
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                     svc => svc.ContactSave(_apiKey, _siteKey, contact));
-            AssertValid(result);
 
-            adNummer = int.Parse(result.Values.First().ExternalIdentifier);
+            if (result.IsError == 0)
+            {
+                // Normaalgezien krijgen we het AD-nummer mee terug als external identifier.
+                adNummer = int.Parse(result.Values.First().ExternalIdentifier);
+            }
+            else
+            {
+                // Workaround CRM-15815, zie #3405.
+                ServiceHelper.CallService<ICiviCrmApi, EmptyResult>(
+                    svc => svc.ContactSaveWorkaroundCrm15815(_apiKey, _siteKey, contact));
+
+                // Haal AD-nummer op door nieuwe call.
+                var result2 = ServiceHelper.CallService<ICiviCrmApi, Contact>(
+                    svc =>
+                        svc.ContactGetSingle(_apiKey, _siteKey,
+                            new ContactRequest
+                            {
+                                ContactType = ContactType.Individual,
+                                GapId = details.Persoon.ID,
+                                ReturnFields = "external_identifier"
+                            }));
+                adNummer = int.Parse(result2.ExternalIdentifier);
+            }
 
             _log.Loggen(Niveau.Debug,
                 String.Format("Nieuwe persoon gemaakt: {0} {1} (gid {2} ad {3})",
