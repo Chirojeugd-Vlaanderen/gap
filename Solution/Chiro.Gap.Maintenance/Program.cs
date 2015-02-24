@@ -17,21 +17,35 @@
  */
 
 using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Mailer;
 using Chiro.Gap.Sync;
 
 namespace Chiro.Gap.Maintenance
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Factory.ContainerInit();
             MappingHelper.MappingsDefinieren();
+
             var membershipMaintenance = Factory.Maak<MembershipMaintenance>();
             var relationshipMaintenance = Factory.Maak<RelationshipMaintenance>();
+            var queueMonitor = new QueueMonitor();
 
-            relationshipMaintenance.LedenZonderAdOpnieuwSyncen();
-            membershipMaintenance.MembershipsMaken();
+            var mailer = Factory.Maak<IMailer>();
+
+            if (queueMonitor.AantalBerichten(Properties.Settings.Default.QueueNaam) >
+                Properties.Settings.Default.MaxBerichten)
+            {
+                mailer.Verzenden(Properties.Settings.Default.Afzender, Properties.Settings.Default.Ontvanger,
+                    Properties.Settings.Default.Onderwerp, Properties.Settings.Default.Inhoud);
+            }
+            else
+            {
+                relationshipMaintenance.LedenZonderAdOpnieuwSyncen();
+                membershipMaintenance.MembershipsMaken();
+            }
         }
     }
 }
