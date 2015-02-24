@@ -29,7 +29,17 @@ namespace Chiro.Cdf.Mailer
         /// <param name="ontvanger">E-mailadres van de geadresseerde</param>
         /// <param name="onderwerp">Onderwerp van de mail</param>
         /// <param name="body">Inhoud van de mail</param>
+        void Verzenden(string ontvanger, string onderwerp, string body);
+
+        /// <summary>
+        /// Verstuurt een mail naar <paramref name="ontvanger"/>, met gegeven <paramref name="onderwerp"/> en
+        /// <paramref name="ontvanger"/>
+        /// </summary>
+        /// <param name="afzender">E-mailadres van de afzender.</param>
+        /// <param name="ontvanger">E-mailadres van de geadresseerde</param>
+        /// <param name="onderwerp">Onderwerp van de mail</param>
+        /// <param name="body">Inhoud van de mail</param>
         /// <returns><c>True</c> als het bericht verstuurd is, anders <c>false</c>.</returns>
-        bool Verzenden(string ontvanger, string onderwerp, string body);
+        void Verzenden(string afzender, string ontvanger, string onderwerp, string body);
     }
 }
