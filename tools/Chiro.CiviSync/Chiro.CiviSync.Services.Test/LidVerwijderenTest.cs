@@ -142,5 +142,45 @@ namespace Chiro.CiviSync.Services.Test
                         It.Is<IdRequest>(
                             r => r.Id == relatie.Id)), Times.AtLeastOnce);
         }
+
+        /// <summary>
+        /// Als CiviSync een lid moet verwijderen met een ongeldig AD-nummer, dan moet dat AD-nummer als ongeldig
+        /// terug naar het GAP.
+        /// </summary>
+        [TestMethod]
+        public void LidVerwijderenOngeldigAdNummer()
+        {
+            // ARRANGE
+
+            const int adNummer = 2;
+
+            // Onze nepdatabase bevat 1 organisatie (TST/0000)
+            var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
+
+            // We mocken ook GapUpdateHelper.
+
+            _updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
+
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(ploeg);
+
+            // Imiteer het gedrag van de CiviCRM-API bij een niet-gevonden contact:
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == adNummer.ToString()))).Returns(new Contact());
+
+            var service = Factory.Maak<SyncService>();
+
+            // ACT
+
+            service.LidVerwijderen(adNummer, ploeg.ExternalIdentifier, HuidigWerkJaar, _vandaagZogezegd);
+
+            // ASSERT
+
+            _updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
+        }
     }
 }
