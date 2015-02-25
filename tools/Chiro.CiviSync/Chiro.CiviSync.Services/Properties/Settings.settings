@@ -8,14 +8,17 @@
     <Setting Name="ApiKey" Type="System.String" Scope="Application">
       <Value Profile="(Default)">blablablapi</Value>
     </Setting>
-    <Setting Name="GapUpdateUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://localhost:50673</Value>
+    <Setting Name="GapUpdatePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="GapUpdateUser" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="GapUpdatePass" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="GapUpdateServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:50673/</Value>
     </Setting>
   </Settings>
 </SettingsFile>

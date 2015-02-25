@@ -27,11 +27,13 @@ namespace Chiro.CiviSync.Helpers
     {
         private string _username = null;
         private string _password = null;
-        private string _url = null;
+        private string _server = null;
+        private string _path = null;
 
-        public void Configureren(string url, string username, string password)
+        public void Configureren(string server, string path, string username, string password)
         {
-            _url = url;
+            _server = server;
+            _path = path;
             _username = username;
             _password = password;
         }
@@ -42,7 +44,7 @@ namespace Chiro.CiviSync.Helpers
         /// <param name="adNummer">Als ongeldig te rapporteren AD-nummer</param>
         public async Task OngeldigAdNaarGap(int adNummer)
         {
-            if (_username == null && _password == null && _url == null)
+            if (_username == null && _password == null && _server == null)
             {
                 throw new ApplicationException("GapUpdate niet geconfigureerd.");
             }
@@ -57,8 +59,8 @@ namespace Chiro.CiviSync.Helpers
                     var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
                     client.DefaultRequestHeaders.Authorization = header;
                 }
-                client.BaseAddress = new Uri(_url);
-                await client.PostAsJsonAsync("foutad",
+                client.BaseAddress = new Uri(_server);
+                await client.PostAsJsonAsync(String.Format("{0}foutad", _path),
                     new FoutAdModel { AdNummer = adNummer });
             }
         }

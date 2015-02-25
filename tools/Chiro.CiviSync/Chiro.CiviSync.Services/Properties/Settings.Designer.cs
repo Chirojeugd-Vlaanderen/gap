@@ -43,10 +43,10 @@ namespace Chiro.CiviSync.Services.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:50673")]
-        public string GapUpdateUrl {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GapUpdatePath {
             get {
-                return ((string)(this["GapUpdateUrl"]));
+                return ((string)(this["GapUpdatePath"]));
             }
         }
         
@@ -65,6 +65,15 @@ namespace Chiro.CiviSync.Services.Properties {
         public string GapUpdatePass {
             get {
                 return ((string)(this["GapUpdatePass"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:50673/")]
+        public string GapUpdateServer {
+            get {
+                return ((string)(this["GapUpdateServer"]));
             }
         }
     }

@@ -39,9 +39,6 @@ namespace Chiro.CiviSync.Services
     {
         private readonly string _siteKey = Settings.Default.SiteKey;
         private readonly string _apiKey = Settings.Default.ApiKey;
-        private readonly string _gapUpdateUrl = Settings.Default.GapUpdateUrl;
-        private readonly string _gapUpdateUser = Settings.Default.GapUpdateUser;
-        private readonly string _gapUpdatePass = Settings.Default.GapUpdatePass;
 
         private readonly IMiniLog _log;
         private readonly ServiceHelper _serviceHelper;
@@ -73,7 +70,7 @@ namespace Chiro.CiviSync.Services
             _membershipHelper = membershipHelper;
             _log = log;
 
-            _gapUpdateHelper.Configureren(_gapUpdateUrl, _gapUpdateUser, _gapUpdatePass);
+            _gapUpdateHelper.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath, Settings.Default.GapUpdateUser, Settings.Default.GapUpdatePass);
 
             // Er zijn nog wat helpers waarvoor we (momenteel?) nog geen
             // dependency injectino gebruiken.

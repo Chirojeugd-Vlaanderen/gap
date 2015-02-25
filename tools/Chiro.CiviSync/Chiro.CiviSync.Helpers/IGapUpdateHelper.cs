@@ -7,10 +7,11 @@ namespace Chiro.CiviSync.Helpers
         /// <summary>
         /// Configureert GapUpdate.
         /// </summary>
-        /// <param name="url"></param>
+        /// <param name="server"></param>
+        /// <param name="path"></param>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        void Configureren(string url, string username, string password);
+        void Configureren(string server, string path, string username, string password);
 
         /// <summary>
         /// Rapporteer het gegeven <paramref name="adNummer"/> als ongeldig bij GAP.
