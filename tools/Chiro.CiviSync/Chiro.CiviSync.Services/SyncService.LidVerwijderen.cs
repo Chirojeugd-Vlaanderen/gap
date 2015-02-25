@@ -41,7 +41,7 @@ namespace Chiro.CiviSync.Services
 
             var contact = _contactHelper.PersoonMetRecentsteLid(adNummer, civiGroepId);
 
-            if (contact.ExternalIdentifier == null)
+            if (contact == null || contact.ExternalIdentifier == null)
             {
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te verwijderen lid - als dusdanig terug naar GAP.", adNummer),
                     stamNummer, adNummer, null);
