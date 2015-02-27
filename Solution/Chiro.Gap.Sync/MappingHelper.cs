@@ -114,7 +114,7 @@ namespace Chiro.Gap.Sync
                 .ForMember(dst => dst.Communicatie, opt => opt.MapFrom(src => src.Communicatie));
 
             Mapper.CreateMap<Uitstap, Bivak>()
-                .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.GroepsWerkJaar.Groep.Code))
+                .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.GroepsWerkJaar.Groep.Code.Trim()))
                 .ForMember(dst => dst.UitstapID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar));
 

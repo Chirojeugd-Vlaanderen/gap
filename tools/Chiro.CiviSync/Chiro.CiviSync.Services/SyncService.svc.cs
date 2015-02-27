@@ -270,11 +270,6 @@ namespace Chiro.CiviSync.Services
             throw new NotImplementedException();
         }
 
-        public void BivakBewaren(Bivak bivak)
-        {
-            throw new NotImplementedException();
-        }
-
         public void BivakPlaatsBewaren(int uitstapID, string plaatsNaam, Adres adres)
         {
             throw new NotImplementedException();

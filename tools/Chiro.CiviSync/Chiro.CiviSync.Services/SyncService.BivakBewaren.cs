@@ -1,0 +1,96 @@
+﻿/*
+   Copyright 2015 Chirojeugd-Vlaanderen vzw
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.ServiceModel;
+using System.Web;
+using AutoMapper;
+using Chiro.CiviCrm.Api;
+using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.Gap.Log;
+using Chiro.Kip.ServiceContracts.DataContracts;
+
+namespace Chiro.CiviSync.Services
+{
+    public partial class SyncService
+    {
+        /// <summary>
+        /// Bewaart een bivak, zonder contactpersoon of adres
+        /// </summary>
+        /// <param name="bivak">
+        /// Gegevens voor de bivakaangifte
+        /// </param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void BivakBewaren(Bivak bivak)
+        {
+            var ploeg = _contactHelper.PloegEnBivakOphalen(bivak.StamNummer, bivak.UitstapID);
+
+            if (ploeg == null)
+            {
+                _log.Loggen(Niveau.Error,
+                    String.Format("Onbestaand stamnummer {0} voor te bewaren bivak.", bivak.StamNummer),
+                    bivak.StamNummer, null, null);
+                return;
+            }
+
+            var eventRequest = new EventRequest
+            {
+                OrganiserendePersoon1Id = _contactHelper.ContactIdGet(bivak.StamNummer)
+            };
+
+            Mapper.Map(bivak, eventRequest);
+
+            if (ploeg.EventResult.Count != 0)
+            {
+                // Er mag hoogstens 1 event bestaan met een gegeven GapUitstapId.
+                Debug.Assert(ploeg.EventResult.Count == 1);
+
+                // Een stamnummer van een bivakaangifte mag niet veranderen.
+                Debug.Assert(
+                    String.Compare(ploeg.ExternalIdentifier, bivak.StamNummer,
+                        StringComparison.OrdinalIgnoreCase) == 0);
+                
+                // Als er al een event bestond, dan nemen we het ID over. De API-call overschrijft
+                // straks enkel wat gegeven is in 'bivak'.
+
+                eventRequest.Id = ploeg.EventResult.Values.First().Id;
+
+                _log.Loggen(Niveau.Info,
+                    String.Format("Bestaande bivakaangifte bijwerken voor {0}: {1}. Gap-ID {2}, Civi-ID {3}.",
+                        bivak.StamNummer, bivak.Naam,
+                        bivak.UitstapID, eventRequest.Id), bivak.StamNummer,
+                    null, null);
+            }
+            // Overschrijf nieuwe/bestaande met aangeleverde informatie.
+
+            var result =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
+                    svc => svc.EventSave(_apiKey, _siteKey, eventRequest));
+            AssertValid(result);
+
+            _log.Loggen(Niveau.Info,
+                String.Format("Bivakaangifte maken voor {0}: {1} bewaard. Gap-ID {2}, Civi-ID {3}.", bivak.StamNummer,
+                    bivak.Naam,
+                    bivak.UitstapID, result.Id), bivak.StamNummer,
+                null, null);
+        }
+    }
+}
