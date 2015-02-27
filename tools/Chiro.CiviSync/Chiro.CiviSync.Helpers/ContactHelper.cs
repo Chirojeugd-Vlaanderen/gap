@@ -162,46 +162,5 @@ namespace Chiro.CiviSync.Helpers
 
             return contact;
         }
-
-        /// <summary>
-        /// Haalt de ploeg op met gegeven <paramref name="stamNummer"/>, met daaraan
-        /// gekoppeld het bivak met gegeeven <paramref name="gapUitstapId"/>. (Op
-        /// voorwaarde dat de ploeg de organisator van dat bivak was.)
-        /// 
-        /// Op die manier kun je makkelijk controleren of ploeg en bivak bestaan, en
-        /// of ze wel aan elkaar gekoppeld zijn.
-        /// </summary>
-        /// <param name="stamNummer">Stamnummer van de ploeg</param>
-        /// <param name="gapUitstapId">GapUitstapId van het bivak.</param>
-        /// <returns>De ploeg op met gegeven <paramref name="stamNummer"/>, met daaraan
-        /// gekoppeld het bivak met gegeeven <paramref name="gapUitstapId"/>. (Op
-        /// voorwaarde dat de ploeg de organisator van dat bivak was.)</returns>
-        public Contact PloegEnBivakOphalen(string stamNummer, int gapUitstapId)
-        {
-            // Zoek de groep, en koppel daaraan een eventueel bestaande uitstap met
-            // hetzelfde GapUitstapId als dit bivak.
-            var request = new ContactRequest
-            {
-                ContactType = ContactType.Organization,
-                ExternalIdentifier = stamNummer,
-                EventGetRequest = new EventRequest
-                {
-                    // Op dit moment heeft in het GAP een uitstap slechts 1 organiserende
-                    // ploeg. Dus ik moet enkel in OrganiserendePloeg1 zoeken.
-                    OrganiserendePloeg1IdValueExpression = "$value.id",
-                    GapUitstapId = gapUitstapId
-                }
-            };
-
-            var contact =
-                ServiceHelper.CallService<ICiviCrmApi, Contact>(
-                    svc => svc.ContactGetSingle(_apiKey, _siteKey, request));
-
-            if (contact == null || contact.Id == 0)
-            {
-                return null;
-            }
-            return contact;
-        }
     }
 }

@@ -63,8 +63,6 @@ namespace Chiro.CiviSync.Helpers
                 .ForMember(dst => dst.RelationshipSaveRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.MembershipGetRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.MembershipSaveRequest, opt => opt.Ignore())
-                .ForMember(dst => dst.EventGetRequest, opt => opt.Ignore())
-                .ForMember(dst => dst.EventSaveRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.ReturnFields, opt => opt.Ignore())
                 .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
 
@@ -124,7 +122,7 @@ namespace Chiro.CiviSync.Helpers
                 .ForMember(dst => dst.OrganiserendePersoon1Id, opt => opt.Ignore())
                 .ForMember(dst => dst.OrganiserendePersoon2Id, opt => opt.Ignore())
                 .ForMember(dst => dst.OrganiserendePersoon3Id, opt => opt.Ignore())
-                .ForMember(dst => dst.OrganiserendePloeg1IdValueExpression, opt => opt.Ignore())
+                .ForMember(dst => dst.OrganiserendePloeg1Id, opt => opt.Ignore())
                 .ForMember(dst => dst.OrganiserendePloeg2Id, opt => opt.Ignore())
                 .ForMember(dst => dst.OrganiserendePloeg3Id, opt => opt.Ignore())
                 .ForMember(dst => dst.AantalVormingsUren, opt => opt.Ignore())

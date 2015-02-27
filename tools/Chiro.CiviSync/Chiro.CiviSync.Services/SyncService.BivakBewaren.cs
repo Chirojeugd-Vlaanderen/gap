@@ -41,15 +41,18 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void BivakBewaren(Bivak bivak)
         {
-            var ploeg = _contactHelper.PloegEnBivakOphalen(bivak.StamNummer, bivak.UitstapID);
+            int? contactIdPloeg = _contactHelper.ContactIdGet(bivak.StamNummer);
 
-            if (ploeg == null)
+            if (contactIdPloeg == null)
             {
                 _log.Loggen(Niveau.Error,
                     String.Format("Onbestaand stamnummer {0} voor te bewaren bivak.", bivak.StamNummer),
                     bivak.StamNummer, null, null);
                 return;
             }
+
+            var oudEvent = ServiceHelper.CallService<ICiviCrmApi, Event>(
+                svc => svc.EventGetSingle(_apiKey, _siteKey, new EventRequest {GapUitstapId = bivak.UitstapID}));
 
             var eventRequest = new EventRequest
             {
@@ -58,20 +61,14 @@ namespace Chiro.CiviSync.Services
 
             Mapper.Map(bivak, eventRequest);
 
-            if (ploeg.EventResult.Count != 0)
+            if (oudEvent.Id != 0)
             {
-                // Er mag hoogstens 1 event bestaan met een gegeven GapUitstapId.
-                Debug.Assert(ploeg.EventResult.Count == 1);
-
                 // Een stamnummer van een bivakaangifte mag niet veranderen.
-                Debug.Assert(
-                    String.Compare(ploeg.ExternalIdentifier, bivak.StamNummer,
-                        StringComparison.OrdinalIgnoreCase) == 0);
+                Debug.Assert(oudEvent.OrganiserendePloeg1Id == contactIdPloeg);
                 
                 // Als er al een event bestond, dan nemen we het ID over. De API-call overschrijft
                 // straks enkel wat gegeven is in 'bivak'.
-
-                eventRequest.Id = ploeg.EventResult.Values.First().Id;
+                eventRequest.Id = oudEvent.Id;
 
                 _log.Loggen(Niveau.Info,
                     String.Format("Bestaande bivakaangifte bijwerken voor {0}: {1}. Gap-ID {2}, Civi-ID {3}.",
