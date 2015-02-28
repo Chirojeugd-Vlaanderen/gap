@@ -86,6 +86,7 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.MembershipResult, opt => opt.Ignore())
                 .ForMember(dst => dst.RelationshipResult, opt => opt.Ignore());
             Mapper.CreateMap<RelationshipRequest, Relationship>();
+            Mapper.CreateMap<EventRequest, Event>();
             Mapper.CreateMap<ContactRequest, ApiResultValues<Contact>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))
@@ -99,7 +100,14 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
-                .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] { src }));            
+                .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] { src }));
+            Mapper.CreateMap<EventRequest, ApiResultValues<Event>>()
+                .ForMember(dst => dst.Version, opt => opt.UseValue(3))
+                .ForMember(dst => dst.Count, opt => opt.UseValue(1))
+                .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
+                .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
+                .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] {src}));
         }
 
         /// <summary>
