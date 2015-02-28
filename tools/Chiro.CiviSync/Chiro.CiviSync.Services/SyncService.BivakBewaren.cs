@@ -61,7 +61,7 @@ namespace Chiro.CiviSync.Services
 
             Mapper.Map(bivak, eventRequest);
 
-            if (oudEvent.Id != 0)
+            if (oudEvent != null && oudEvent.Id != 0)
             {
                 // Een stamnummer van een bivakaangifte mag niet veranderen.
                 Debug.Assert(oudEvent.OrganiserendePloeg1Id == contactIdPloeg);

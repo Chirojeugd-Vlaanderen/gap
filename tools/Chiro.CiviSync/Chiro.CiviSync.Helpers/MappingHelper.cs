@@ -90,6 +90,7 @@ namespace Chiro.CiviSync.Helpers
                 // Het contact-ID van de organisator moet je zelf nog berekenen!
                 .ForMember(dst => dst.OrganiserendePloeg1Id, opt => opt.Ignore())
                 .ForMember(dst => dst.GapUitstapId, opt => opt.MapFrom(src => src.UitstapID))
+                .ForMember(dst => dst.EventTypeId, opt => opt.UseValue((int)EvenementType.Bivak))
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
                 .ForMember(dst => dst.ParticipantListingId, opt => opt.Ignore())
                 .ForMember(dst => dst.IsPublic, opt => opt.Ignore())
