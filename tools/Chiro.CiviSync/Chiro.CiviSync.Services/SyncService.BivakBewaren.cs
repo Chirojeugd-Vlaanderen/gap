@@ -75,7 +75,7 @@ namespace Chiro.CiviSync.Services
 
             var eventRequest = new EventRequest
             {
-                OrganiserendePersoon1Id = _contactHelper.ContactIdGet(bivak.StamNummer)
+                OrganiserendePloeg1Id = _contactHelper.ContactIdGet(bivak.StamNummer)
             };
 
             Mapper.Map(bivak, eventRequest);
