@@ -113,6 +113,10 @@ namespace Chiro.CiviSync.Services
         /// <param name="result">A result of the CiviCRM API</param>
         private void AssertValid(ApiResult result)
         {
+            if (result == null)
+            {
+                throw new ArgumentNullException("result");
+            }
             if (result.IsError > 0)
             {
                 throw new InvalidOperationException(result.ErrorMessage);
