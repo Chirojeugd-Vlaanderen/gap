@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -331,6 +331,8 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
+                _groepsWerkJaarRepo.SaveChanges();
+
                 if (uitstap.IsBivak)
                 {
                     _bivakSync.Bewaren(uitstap);
@@ -340,7 +342,6 @@ namespace Chiro.Gap.Services
                     _bivakSync.Verwijderen(uitstap.ID);
                 }
 
-                _groepsWerkJaarRepo.SaveChanges();
 #if KIPDORP
                 tx.Complete();
             }
