@@ -54,6 +54,7 @@ namespace Chiro.CiviSync.Services
 
             var apiResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
                 svc => svc.EventGet(_apiKey, _siteKey, new EventRequest {GapUitstapId = bivak.UitstapID}));
+            AssertValid(apiResult);
 
             if (apiResult.Count == 0)
             {
