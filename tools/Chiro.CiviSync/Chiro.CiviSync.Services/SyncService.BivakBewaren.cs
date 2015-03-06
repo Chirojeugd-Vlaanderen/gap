@@ -41,6 +41,7 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void BivakBewaren(Bivak bivak)
         {
+            Event oudEvent;
             int? contactIdPloeg = _contactHelper.ContactIdGet(bivak.StamNummer);
 
             if (contactIdPloeg == null)
@@ -51,8 +52,25 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            var oudEvent = ServiceHelper.CallService<ICiviCrmApi, Event>(
-                svc => svc.EventGetSingle(_apiKey, _siteKey, new EventRequest {GapUitstapId = bivak.UitstapID}));
+            var apiResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
+                svc => svc.EventGet(_apiKey, _siteKey, new EventRequest {GapUitstapId = bivak.UitstapID}));
+
+            if (apiResult.Count == 0)
+            {
+                oudEvent = null;
+            }
+            else
+            {
+                if (apiResult.Count > 1)
+                {
+                    _log.Loggen(Niveau.Error,
+                        String.Format(
+                            "Meerdere bivakken met zelfde GAP-uitstapID {1} (stamnr {0}). We doen maar iets.",
+                            bivak.StamNummer, bivak.UitstapID),
+                        bivak.StamNummer, null, null);
+                }
+                oudEvent = apiResult.Values.First();
+            }
 
             var eventRequest = new EventRequest
             {
