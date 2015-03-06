@@ -54,7 +54,7 @@ namespace Chiro.CiviSync.Services.Test
             // ARRANGE
 
             const int adNummer = 2;
-            var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3 };
+            var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3, Id = 4 };
             DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
             DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
 

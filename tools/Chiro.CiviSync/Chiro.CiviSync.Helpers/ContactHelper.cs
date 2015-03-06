@@ -160,7 +160,7 @@ namespace Chiro.CiviSync.Helpers
                 ServiceHelper.CallService<ICiviCrmApi, Contact>(
                     svc => svc.ContactGetSingle(_apiKey, _siteKey, contactRequest));
 
-            return contact;
+            return (contact == null || contact.Id == 0) ? null : contact;
         }
     }
 }

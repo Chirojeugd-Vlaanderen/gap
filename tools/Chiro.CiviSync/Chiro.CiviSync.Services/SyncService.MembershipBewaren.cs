@@ -37,7 +37,7 @@ namespace Chiro.CiviSync.Services
         {
             var contact = _contactHelper.PersoonMetRecentsteMembership(adNummer, MembershipType.Aansluiting);
 
-            if (contact.ExternalIdentifier == null)
+            if (contact == null)
             {
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren membership - als dusdanig terug naar GAP.", adNummer),
                     null, adNummer, null);
