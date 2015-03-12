@@ -52,39 +52,6 @@ namespace Chiro.Gap.Services.Test
         {
         }
 
-
-        #region Additional test attributes
-
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-
-        #endregion
-
-
-
-        [ClassInitialize]
-        public static void InitialiseerTests(TestContext tc)
-        {
-            Factory.ContainerInit();
-        }
-
         [ClassCleanup]
         public static void AfsluitenTests()
         {
@@ -99,6 +66,7 @@ namespace Chiro.Gap.Services.Test
         [TestInitialize]
         public void VoorElkeTest()
         {
+            Factory.ContainerInit();
             var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
             var roles = new[] {Properties.Settings.Default.TestSecurityGroep};
             var principal = new GenericPrincipal(identity, roles);
