@@ -111,7 +111,7 @@ namespace Chiro.CiviSync.Services.Test
             _civiApiMock.Verify(
                 src =>
                     src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<EventRequest>(r => r.EventTypeId == (int) EvenementType.Bivak)), Times.AtLeastOnce);
+                        It.Is<EventRequest>(r => r.EventTypeId == (int)EvenementType.Bivak && r.OrganiserendePloeg1Id == ploeg.Id)), Times.AtLeastOnce);
         }
 
         /// <summary>
