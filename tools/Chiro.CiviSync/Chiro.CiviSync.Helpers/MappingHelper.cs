@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using AutoMapper;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
+using Chiro.CiviCrm.Api.DataContracts.Filters;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -36,7 +37,8 @@ namespace Chiro.CiviSync.Helpers
             Mapper.CreateMap<Persoon, ContactRequest>()
                 .ForMember(dst => dst.GapId, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.BirthDate, opt => opt.MapFrom(src => src.GeboorteDatum))
-                .ForMember(dst => dst.ContactType, opt => opt.MapFrom(src => ContactType.Individual))
+                .ForMember(dst => dst.ContactType, opt => opt.UseValue(ContactType.Individual))
+                .ForMember(dst => dst.ContactSubType, opt => opt.UseValue(String.Empty))
                 .ForMember(dst => dst.DeceasedDate, opt => opt.MapFrom(src => src.SterfDatum))
                 .ForMember(dst => dst.ExternalIdentifier, opt => opt.MapFrom(src => src.AdNummer))
                 .ForMember(dst => dst.FirstName, opt => opt.MapFrom(src => src.VoorNaam))
@@ -48,6 +50,7 @@ namespace Chiro.CiviSync.Helpers
                 .ForMember(dst => dst.IsDeceased, opt => opt.MapFrom(src => src.SterfDatum != null))
                 .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Naam))
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
+                .ForMember(dst => dst.IdValueExpression, opt => opt.Ignore())
                 .ForMember(dst => dst.PreferredMailFormat, opt => opt.Ignore())
                 .ForMember(dst => dst.AddressGetRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.AddressSaveRequest, opt => opt.Ignore())
@@ -66,7 +69,7 @@ namespace Chiro.CiviSync.Helpers
                 .ForMember(dst => dst.ReturnFields, opt => opt.Ignore())
                 .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
 
-            Mapper.CreateMap<Adres, Address>()
+            Mapper.CreateMap<Adres, AddressRequest>()
                 .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))
                 .ForMember(dst => dst.ContactId, opt => opt.Ignore())
                 .ForMember(dst => dst.Country, opt => opt.MapFrom(src => src.LandIsoCode))
@@ -78,13 +81,16 @@ namespace Chiro.CiviSync.Helpers
                 .ForMember(dst => dst.PostalCodeSuffix, opt => opt.MapFrom(src => src.PostCode))
                 .ForMember(dst => dst.StateProvinceId, opt => opt.MapFrom(src => ProvincieIDBepalen(src)))
                 .ForMember(dst => dst.StreetAddress, opt => opt.MapFrom(src => StraatNrFormatteren(src)))
+                .ForMember(dst => dst.IdValueExpression, opt => opt.Ignore())
                 .ForMember(dst => dst.CountryId, opt => opt.Ignore())
+                .ForMember(dst => dst.LocBlockGetRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.LocBlockSaveRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.ApiOptions, opt => opt.Ignore())
                 .ForMember(dst => dst.ReturnFields, opt => opt.Ignore());
 
             Mapper.CreateMap<Bivak, EventRequest>()
-                .ForMember(dst => dst.StartDate, opt => opt.MapFrom(src => src.DatumVan))
-                .ForMember(dst => dst.EndDate, opt => opt.MapFrom(src => src.DatumTot))
+                .ForMember(dst => dst.StartDate, opt => opt.MapFrom(src => new Filter<DateTime?>(src.DatumVan)))
+                .ForMember(dst => dst.EndDate, opt => opt.MapFrom(src => new Filter<DateTime?>(src.DatumTot)))
                 .ForMember(dst => dst.Title, opt => opt.MapFrom(src => src.Naam))
                 .ForMember(dst => dst.Description, opt => opt.MapFrom(src => src.Opmerkingen))
                 // Het contact-ID van de organisator moet je zelf nog berekenen!
@@ -92,6 +98,8 @@ namespace Chiro.CiviSync.Helpers
                 .ForMember(dst => dst.GapUitstapId, opt => opt.MapFrom(src => src.UitstapID))
                 .ForMember(dst => dst.EventTypeId, opt => opt.UseValue((int)EvenementType.Bivak))
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
+                // Bivakplaats moet je ook zelf in orde brengen.
+                .ForMember(dst => dst.LocBlockId, opt => opt.Ignore())
                 .ForMember(dst => dst.ParticipantListingId, opt => opt.Ignore())
                 .ForMember(dst => dst.IsPublic, opt => opt.Ignore())
                 .ForMember(dst => dst.IsOnlineRegistration, opt => opt.Ignore())
@@ -128,6 +136,10 @@ namespace Chiro.CiviSync.Helpers
                 .ForMember(dst => dst.OrganiserendePloeg3Id, opt => opt.Ignore())
                 .ForMember(dst => dst.AantalVormingsUren, opt => opt.Ignore())
                 .ForMember(dst => dst.OfficieelCursusNummer, opt => opt.Ignore())
+                .ForMember(dst => dst.LocBlockGetRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.LocBlockSaveRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.ContactGetRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.ContactSaveRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.ReturnFields, opt => opt.Ignore())
                 .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
 

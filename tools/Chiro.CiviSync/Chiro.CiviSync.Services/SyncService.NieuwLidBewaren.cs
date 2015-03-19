@@ -98,12 +98,12 @@ namespace Chiro.CiviSync.Services
             }
 
             var contact = Mapper.Map<Persoon, ContactRequest>(details.Persoon);
-            var address = Mapper.Map<Adres, Address>(details.Adres);
+            var address = Mapper.Map<Adres, AddressRequest>(details.Adres);
             address.LocationTypeId = MappingHelper.CiviLocationTypeId(details.AdresType);
 
             var civiCommunicatie = MappingHelper.CiviCommunicatie(details.Communicatie.ToList(), null);
 
-            contact.AddressSaveRequest = new List<BaseRequest> {address};
+            contact.AddressSaveRequest = new List<AddressRequest> {address};
             contact.PhoneSaveRequest = civiCommunicatie.OfType<Phone>();
             contact.EmailSaveRequest = civiCommunicatie.OfType<Email>();
             contact.WebsiteSaveRequest = civiCommunicatie.OfType<Website>();
@@ -213,7 +213,7 @@ namespace Chiro.CiviSync.Services
                 LastName = details.Persoon.Naam,
                 ContactType = ContactType.Individual,
                 Gender = (Gender) (3 - (int) details.Persoon.Geslacht),
-                AddressGetRequest = new BaseRequest(),
+                AddressGetRequest = new AddressRequest(),
                 EmailGetRequest = new BaseRequest(),
                 PhoneGetRequest = new BaseRequest(),
                 WebsiteGetRequest = new BaseRequest(),

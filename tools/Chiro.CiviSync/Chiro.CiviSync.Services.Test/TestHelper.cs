@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Linq;
 using AutoMapper;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceHelper;
@@ -85,8 +86,18 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.ImResult, opt => opt.Ignore())
                 .ForMember(dst => dst.MembershipResult, opt => opt.Ignore())
                 .ForMember(dst => dst.RelationshipResult, opt => opt.Ignore());
-            Mapper.CreateMap<RelationshipRequest, Relationship>();
-            Mapper.CreateMap<EventRequest, Event>();
+            Mapper.CreateMap<RelationshipRequest, Relationship>()
+                .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
+
+            // Onderstaande mapping wordt in de tests gebruikt om een resultaat op
+            // te leveren als er een event gecreerd wordt. We gaan er dan van uit dat
+            // er geen filtering op de start- of einddatum staat.
+            Mapper.CreateMap<EventRequest, Event>()
+                .ForMember(dst => dst.StartDate, opt => opt.MapFrom(src => src.StartDate.Values.FirstOrDefault()))
+                .ForMember(dst => dst.EndDate, opt => opt.MapFrom(src => src.EndDate.Values.FirstOrDefault()))
+                .ForMember(dst => dst.LocBlockResult, opt => opt.Ignore())
+                .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
+
             Mapper.CreateMap<ContactRequest, ApiResultValues<Contact>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))
@@ -108,6 +119,8 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] {src}));
+
+            Mapper.AssertConfigurationIsValid();
         }
 
         /// <summary>

@@ -133,7 +133,7 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners)
         {
-            var nieuwAdres = Mapper.Map<Adres, Address>(adres);
+            var nieuwAdres = Mapper.Map<Adres, AddressRequest>(adres);
 
             // TODO: personen met civi-ID in aanvraag
             foreach (var bewoner in bewoners)
@@ -148,7 +148,7 @@ namespace Chiro.CiviSync.Services
                     {
                         ExternalIdentifier = adNummer.ToString(),
                         ReturnFields = "id",
-                        AddressGetRequest = new BaseRequest()
+                        AddressGetRequest = new AddressRequest()
                     }));
 
                 var adressen = civiContact.AddressResult.Values;
@@ -204,7 +204,8 @@ namespace Chiro.CiviSync.Services
                     select adr).ToList();
                 foreach (var tvAdres in teVerwijderenAdressen)
                 {
-                    result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressDelete(_apiKey, _siteKey, new IdRequest(tvAdres.Id.Value)));
+                    int adresId = tvAdres.Id;
+                    result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressDelete(_apiKey, _siteKey, new IdRequest(adresId)));
                     AssertValid(result);
                     _log.Loggen(
                         Niveau.Info,
@@ -220,13 +221,21 @@ namespace Chiro.CiviSync.Services
             }
         }
 
-        private bool IsHetzelfde(Address a1, Address a2)
+        /// <summary>
+        /// Vergelijkt een <paramref name="address"/> met een <paramref name="addressRequest"/>, en geeft <c>true</c>
+        /// als ze naar hetzelfde adres verwijzen.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="addressRequest"></param>
+        /// <returns><c>true</c> als <paramref name="address"/> en <paramref name="addressRequest"/> naar hetzelfde
+        /// adres verwijzen.</returns>
+        private bool IsHetzelfde(Address address, AddressRequest addressRequest)
         {
-            return (String.Equals(a1.City, a2.City, StringComparison.InvariantCultureIgnoreCase) &&
-                    String.Equals(a1.Country, a2.Country, StringComparison.InvariantCultureIgnoreCase) && a1.PostalCode == a2.PostalCode &&
-                    String.Equals(a1.PostalCodeSuffix, a2.PostalCodeSuffix, StringComparison.InvariantCultureIgnoreCase) &&
-                    a1.StateProvinceId == a2.StateProvinceId &&
-                    String.Equals(a1.StreetAddress, a2.StreetAddress, StringComparison.InvariantCultureIgnoreCase));
+            return (String.Equals(address.City, addressRequest.City, StringComparison.InvariantCultureIgnoreCase) &&
+                    String.Equals(address.Country, addressRequest.Country, StringComparison.InvariantCultureIgnoreCase) && address.PostalCode == addressRequest.PostalCode &&
+                    String.Equals(address.PostalCodeSuffix, addressRequest.PostalCodeSuffix, StringComparison.InvariantCultureIgnoreCase) &&
+                    address.StateProvinceId == addressRequest.StateProvinceId &&
+                    String.Equals(address.StreetAddress, addressRequest.StreetAddress, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public void CommunicatieToevoegen(Persoon persoon, CommunicatieMiddel communicatieMiddel)
