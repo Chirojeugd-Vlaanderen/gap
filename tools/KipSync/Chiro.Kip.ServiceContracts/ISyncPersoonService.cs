@@ -316,16 +316,16 @@ namespace Chiro.Kip.ServiceContracts
 
         /// <summary>
         /// Stelt de persoon met gegeven <paramref name="adNummer"/> in als contactpersoon voor
-        /// het bivak met gegeven <paramref name="uitstapID"/>
+        /// het bivak met gegeven <paramref name="uitstapId"/>
         /// </summary>
-        /// <param name="uitstapID">
+        /// <param name="uitstapId">
         /// UitstapID (GAP) voor het bivak
         /// </param>
         /// <param name="adNummer">
         /// AD-nummer contactpersoon bivak
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void BivakContactBewaren(int uitstapID, int adNummer);
+        void BivakContactBewaren(int uitstapId, int adNummer);
 
         /// <summary>
         /// Stelt de persoon met gegeven <paramref name="details"/> in als contactpersoon voor

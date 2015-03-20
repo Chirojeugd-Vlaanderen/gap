@@ -63,6 +63,19 @@ namespace Chiro.CiviSync.Helpers
         /// <returns>The contact-ID of the contact with given <paramref name="externalIdentifier"/>, or
         /// <c>null</c> if no such contact is found.</returns>
         /// <remarks>This method uses caching to speed up things.</remarks>
+        public int? ContactIdGet(int externalIdentifier)
+        {
+            return ContactIdGet(externalIdentifier.ToString());
+        }
+
+
+        /// <summary>
+        /// Returns the contact-ID of the contact with given <paramref name="externalIdentifier"/>.
+        /// </summary>
+        /// <param name="externalIdentifier">Value to look for.</param>
+        /// <returns>The contact-ID of the contact with given <paramref name="externalIdentifier"/>, or
+        /// <c>null</c> if no such contact is found.</returns>
+        /// <remarks>This method uses caching to speed up things.</remarks>
         public int? ContactIdGet(string externalIdentifier)
         {
             int? cid = (int?) _cache[String.Format(ContactIdCacheKey, externalIdentifier)];
