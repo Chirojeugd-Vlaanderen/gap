@@ -288,11 +288,6 @@ namespace Chiro.CiviSync.Services
             throw new NotImplementedException();
         }
 
-        public void BivakContactBewarenAdOnbekend(int uitstapID, PersoonDetails details)
-        {
-            throw new NotImplementedException();
-        }
-
         public void BivakVerwijderen(int uitstapID)
         {
             throw new NotImplementedException();

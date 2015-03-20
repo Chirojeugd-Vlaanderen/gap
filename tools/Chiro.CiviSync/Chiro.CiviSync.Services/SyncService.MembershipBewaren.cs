@@ -88,15 +88,6 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar)
         {
-            if (details.Persoon.AdNummer.HasValue)
-            {
-                _log.Loggen(Niveau.Warning,
-                    String.Format(
-                        "NieuwLidBewaren aangeroepen voor persoon {0} {1} (gid {3}) met bestaand AD-Nummer {2}."
-                        , details.Persoon.VoorNaam, details.Persoon.Naam, details.Persoon.AdNummer, details.Persoon.ID),
-                    null, details.Persoon.AdNummer, details.Persoon.ID);
-            }
-
             // Update of maak de persoon, en vind zijn AD-nummer
             int adNr = UpdatenOfMaken(details);
 

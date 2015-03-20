@@ -38,8 +38,29 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="details">details voor te updaten/maken persoon</param>
         /// <returns>AD-nummer van die persoon</returns>
+        /// <remarks>
+        /// UpdatenOfMaken logt rariteiten zoals een AD-nummer dat al bestaat
+        /// of een persoon zonder voornaam.
+        /// </remarks>
         private int UpdatenOfMaken(PersoonDetails details)
         {
+            if (details.Persoon.AdNummer != null)
+            {
+                _log.Loggen(Niveau.Warning,
+                    String.Format(
+                        "UpdatenOfMaken aangeroepen voor persoon {0} {1} (gid {3}) met bestaand AD-Nummer {2}."
+                        , details.Persoon.VoorNaam, details.Persoon.Naam, details.Persoon.AdNummer, details.Persoon.ID),
+                    null, details.Persoon.AdNummer, details.Persoon.ID);
+            }
+            if (String.IsNullOrEmpty(details.Persoon.VoorNaam))
+            {
+                _log.Loggen(Niveau.Warning,
+                    String.Format(
+                        "NieuwLidBewaren voor persoon zonder voornaam: {0} (gid {1} ad {2})."
+                        , details.Persoon.Naam, details.Persoon.ID, details.Persoon.AdNummer),
+                    null, details.Persoon.AdNummer, details.Persoon.ID);
+            }
+
             int? adNummer = AdNummerZoeken(details);
 
             if (adNummer != null)

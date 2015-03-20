@@ -329,9 +329,9 @@ namespace Chiro.Kip.ServiceContracts
 
         /// <summary>
         /// Stelt de persoon met gegeven <paramref name="details"/> in als contactpersoon voor
-        /// het bivak met gegeven <paramref name="uitstapID"/>
+        /// het bivak met gegeven <paramref name="uitstapId"/>
         /// </summary>
-        /// <param name="uitstapID">
+        /// <param name="uitstapId">
         /// UitstapID (GAP) voor het bivak
         /// </param>
         /// <param name="details">
@@ -342,7 +342,7 @@ namespace Chiro.Kip.ServiceContracts
         /// persoon onbestaand of onbekend is.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void BivakContactBewarenAdOnbekend(int uitstapID, PersoonDetails details);
+        void BivakContactBewarenAdOnbekend(int uitstapId, PersoonDetails details);
 
         /// <summary>
         /// Verwijdert een bivak uit kipadmin.

@@ -16,11 +16,13 @@
 
 using System;
 using System.Linq;
+using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.Log;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.CiviSync.Services
 {
@@ -36,6 +38,7 @@ namespace Chiro.CiviSync.Services
         /// <param name="adNummer">
         /// AD-nummer contactpersoon bivak
         /// </param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public async void BivakContactBewaren(int uitstapId, int adNummer)
         {
             var apiResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
@@ -44,7 +47,7 @@ namespace Chiro.CiviSync.Services
                         new EventRequest
                         {
                             GapUitstapId = uitstapId,
-                            ReturnFields = "id,custom_53,custom_56",
+                            ReturnFields = "id,custom_53,custom_56,custom_61",
 							// Haal ook organiserende ploeg op, zodat we het stamnummer
 							// hebben om te loggen.
                             ContactGetRequest = new ContactRequest
@@ -113,7 +116,7 @@ namespace Chiro.CiviSync.Services
                 _log.Loggen(Niveau.Info,
                     String.Format("Contact voor bivak van {0}: AD {1} bewaard. Gap-ID {2}, Civi-ID {3}.", stamNr,
                         adNummer,
-                        bivak.GapUitstapId, bivak.Id), stamNr,
+                        uitstapId, bivak.Id), stamNr,
                     adNummer, null);
             }
             else
@@ -122,9 +125,29 @@ namespace Chiro.CiviSync.Services
                     String.Format("Contact voor bivak van {0} (AD {1}) bleef ongewijzigd. Gap-ID {2}, Civi-ID {3}.",
                         stamNr,
                         adNummer,
-                        bivak.GapUitstapId, bivak.Id), stamNr,
+                        uitstapId, bivak.Id), stamNr,
                     adNummer, null);
             }
+        }
+
+        /// <summary>
+        /// Stelt de persoon met gegeven <paramref name="details"/> in als contactpersoon voor
+        /// het bivak met gegeven <paramref name="uitstapId"/>
+        /// </summary>
+        /// <param name="uitstapId">
+        /// UitstapID (GAP) voor het bivak
+        /// </param>
+        /// <param name="details">
+        /// Gegevens van de persoon
+        /// </param>
+        /// <remarks>
+        /// Deze method mag enkel gebruikt worden als het ad-nummer van de
+        /// persoon onbestaand of onbekend is.
+        /// </remarks>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void BivakContactBewarenAdOnbekend(int uitstapId, PersoonDetails details)
+        {
+            BivakContactBewaren(uitstapId, UpdatenOfMaken(details));
         }
 	}
 }
