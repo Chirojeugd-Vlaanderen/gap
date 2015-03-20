@@ -85,6 +85,7 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="details">Details van persoon met te bewaren membership.</param>
         /// <param name="werkJaar">Werkjaar waarvoor het membership bewaard moet worden.</param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar)
         {
             if (details.Persoon.AdNummer.HasValue)
