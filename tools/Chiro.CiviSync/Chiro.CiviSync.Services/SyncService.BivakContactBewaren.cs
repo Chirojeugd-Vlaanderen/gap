@@ -110,7 +110,7 @@ namespace Chiro.CiviSync.Services
                     OrganiserendePersoon1Id = contactIdPersoon
                 };
                 var saveResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
-                    svc => svc.EventSave(_siteKey, _apiKey, request));
+                    svc => svc.EventSave(_apiKey, _siteKey, request));
                 AssertValid(saveResult);
 
                 _log.Loggen(Niveau.Info,
