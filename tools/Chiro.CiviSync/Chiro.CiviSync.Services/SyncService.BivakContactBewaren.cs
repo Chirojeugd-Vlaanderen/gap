@@ -36,7 +36,7 @@ namespace Chiro.CiviSync.Services
         /// <param name="adNummer">
         /// AD-nummer contactpersoon bivak
         /// </param>
-        public void BivakContactBewaren(int uitstapId, int adNummer)
+        public async void BivakContactBewaren(int uitstapId, int adNummer)
         {
             var apiResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
                 svc =>
@@ -91,8 +91,11 @@ namespace Chiro.CiviSync.Services
 			if (contactIdPersoon == null)
 			{
 			    _log.Loggen(Niveau.Error,
-			        String.Format("Kan contact voor bivak met GAP-uitstapID {1} van {2} niet vastleggen: onbestaand AD-nummer {0}.", adNummer, uitstapId, stamNr),
-                    stamNr, null, null);
+			        String.Format(
+			            "Kan contact voor bivak met GAP-uitstapID {1} van {2} niet vastleggen: onbestaand AD-nummer {0} terug naar GAP.",
+			            adNummer, uitstapId, stamNr),
+			        stamNr, null, null);
+                await _gapUpdateHelper.OngeldigAdNaarGap(adNummer);
                 return;
             }
 
