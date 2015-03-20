@@ -120,6 +120,22 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] {src}));
 
+            Mapper.CreateMap<Contact, ApiResultValues<Contact>>()
+                .ForMember(dst => dst.Version, opt => opt.UseValue(3))
+                .ForMember(dst => dst.Count, opt => opt.UseValue(1))
+                .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
+                .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
+                .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] {src}));
+            Mapper.CreateMap<Event, ApiResultValues<Event>>()
+                .ForMember(dst => dst.Version, opt => opt.UseValue(3))
+                .ForMember(dst => dst.Count, opt => opt.UseValue(1))
+                .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
+                .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
+                .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] {src}));
+
+
             Mapper.AssertConfigurationIsValid();
         }
 

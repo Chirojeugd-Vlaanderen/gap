@@ -66,6 +66,7 @@
     <Compile Include="LidVerwijderenTest.cs" />
     <Compile Include="MembershipBewarenTest.cs" />
     <Compile Include="BivakBewarenTest.cs" />
+    <Compile Include="BivakContactBewarenTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
