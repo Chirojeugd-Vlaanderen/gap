@@ -31,7 +31,7 @@ using Moq;
 namespace Chiro.CiviSync.Services.Test
 {
     [TestClass]
-    public class NieuwLidBewarenTest
+    public class PersonenBewarenTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
         private Mock<IGapUpdateHelper> _updateHelperMock;
@@ -41,6 +41,9 @@ namespace Chiro.CiviSync.Services.Test
         [ClassInitialize]
         public static void InitialilzeTestClass(TestContext c)
         {
+            // creer mappings voor de service
+            MappingHelper.MappingsDefinieren();
+            // creer mappings voor de tests
             TestHelper.MappingsCreeren();
         }
 
@@ -270,6 +273,52 @@ namespace Chiro.CiviSync.Services.Test
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.Gender == persoon.Gender && r.ContactType == ContactType.Individual)),
+                Times.AtLeastOnce);
+        }
+
+
+        [TestMethod]
+        public void PersoonUpdaten()
+        {
+            // ARRANGE
+
+            const int adNummer = 2;
+            var persoon = new Contact
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3
+            };
+
+            _civiApiMock.Setup(
+                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(persoon);
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
+                .Returns(
+                    (string key1, string key2, ContactRequest request) =>
+                        Mapper.Map<ContactRequest, ApiResultValues<Contact>>(request))
+                .Verifiable();
+
+            var service = Factory.Maak<SyncService>();
+
+            // ACT
+
+            service.PersoonUpdaten(new Persoon
+            {
+                AdNummer = adNummer,
+                GeboorteDatum = new DateTime(1977, 03, 08)
+            });
+
+            // ASSERT
+
+            _civiApiMock.Verify(
+                src =>
+                    src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)),
                 Times.AtLeastOnce);
         }
 

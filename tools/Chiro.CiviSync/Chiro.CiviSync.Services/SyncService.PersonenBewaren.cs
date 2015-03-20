@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel;
 using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -32,38 +31,6 @@ namespace Chiro.CiviSync.Services
 {
     public partial class SyncService
     {
-        /// <summary>
-        /// Creeer lidrelatie (geen membership) voor een persoon waarvan we geen AD-nummer kennen.
-        /// </summary>
-        /// <param name="details">Details van de persoon waarvoor een lidrelatie gemaakt moet worden.</param>
-        /// <param name="lidGedoe">Informatie over de lidrelatie.</param>
-        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void NieuwLidBewaren(PersoonDetails details, LidGedoe lidGedoe)
-        {
-            if (details.Persoon.AdNummer != null)
-            {
-                _log.Loggen(Niveau.Warning,
-                    String.Format(
-                        "NieuwLidBewaren aangeroepen voor persoon {0} {1} (gid {3}) met bestaand AD-Nummer {2}."
-                        , details.Persoon.VoorNaam, details.Persoon.Naam, details.Persoon.AdNummer, details.Persoon.ID),
-                    lidGedoe.StamNummer, details.Persoon.AdNummer, details.Persoon.ID);
-            }
-            if (String.IsNullOrEmpty(details.Persoon.VoorNaam))
-            {
-                _log.Loggen(Niveau.Warning,
-                    String.Format(
-                        "NieuwLidBewaren voor persoon zonder voornaam: {0} (gid {1} ad {2})."
-                        , details.Persoon.Naam, details.Persoon.ID, details.Persoon.AdNummer),
-                    lidGedoe.StamNummer, details.Persoon.AdNummer, details.Persoon.ID);
-            }
-
-            // Update of maak de persoon, en vind zijn AD-nummer
-            int adNr = UpdatenOfMaken(details);
-
-            // Bewaar de lidrelatie op basis van het AD-nummer.
-            LidBewaren(adNr, lidGedoe);
-        }
-
         /// <summary>
         /// Probeert een persoon te vinden op basis van persoonsgegevens, adressen en communicatie.
         /// Als dat lukt, worden de meegegeven persoonsgegevens, adressen en communicatie overgenomen 

@@ -72,8 +72,7 @@
     <Compile Include="SyncService.LidBewaren.cs" />
     <Compile Include="SyncService.LidVerwijderen.cs" />
     <Compile Include="SyncService.MembershipBewaren.cs" />
-    <Compile Include="SyncService.NieuwLidBewaren.cs" />
-    <Compile Include="SyncService.NieuwLidVerwijderen.cs" />
+    <Compile Include="SyncService.PersonenBewaren.cs" />
     <Compile Include="SyncService.svc.cs">
       <DependentUpon>SyncService.svc</DependentUpon>
     </Compile>

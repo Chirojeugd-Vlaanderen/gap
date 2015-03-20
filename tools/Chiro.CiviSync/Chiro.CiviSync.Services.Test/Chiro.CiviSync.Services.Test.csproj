@@ -59,13 +59,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="NieuwLidBewarenTest.cs" />
+    <Compile Include="PersonenBewarenTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LidBewarenTest.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="LidVerwijderenTest.cs" />
-    <Compile Include="NieuwLidVerwijderenTest.cs" />
-    <Compile Include="PersoonUpdatenTest.cs" />
     <Compile Include="MembershipBewarenTest.cs" />
     <Compile Include="BivakBewarenTest.cs" />
   </ItemGroup>
