@@ -107,7 +107,7 @@ namespace Chiro.CiviSync.Services
                 var request = new EventRequest
                 {
                     Id = bivak.Id,
-                    OrganiserendePersoon1Id = adNummer
+                    OrganiserendePersoon1Id = contactIdPersoon
                 };
                 var saveResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
                     svc => svc.EventSave(_siteKey, _apiKey, request));
