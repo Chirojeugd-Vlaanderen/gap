@@ -23,7 +23,6 @@ using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers;
 using Chiro.CiviSync.Services.Properties;
@@ -47,7 +46,8 @@ namespace Chiro.CiviSync.Services
         private readonly RelationshipHelper _relationshipHelper;
         private readonly MembershipHelper _membershipHelper;
         private readonly FunctieHelper _functieHelper;
-
+        private readonly BivakHelper _bivakHelper;
+        private readonly AdresHelper _adresHelper;
 
         protected ServiceHelper ServiceHelper
         {
@@ -73,9 +73,11 @@ namespace Chiro.CiviSync.Services
             _gapUpdateHelper.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath, Settings.Default.GapUpdateUser, Settings.Default.GapUpdatePass);
 
             // Er zijn nog wat helpers waarvoor we (momenteel?) nog geen
-            // dependency injectino gebruiken.
+            // dependency injection gebruiken.
             _contactHelper = new ContactHelper(_serviceHelper, _apiKey, _siteKey);
+            _bivakHelper = new BivakHelper(_serviceHelper, _apiKey, _siteKey);
             _functieHelper = new FunctieHelper();
+            _adresHelper = new AdresHelper();
         }
 
         /// <summary>
@@ -96,7 +98,7 @@ namespace Chiro.CiviSync.Services
                 _siteKey,
                 request));
 
-            AssertValid(result);
+            result.AssertValid();
 
             _log.Loggen(
                 Niveau.Info,
@@ -105,22 +107,6 @@ namespace Chiro.CiviSync.Services
                 null,
                 persoon.AdNummer,
                 persoon.ID);
-        }
-
-        /// <summary>
-        /// Throws an exception of the API <paramref name="result"/> is an error.
-        /// </summary>
-        /// <param name="result">A result of the CiviCRM API</param>
-        private void AssertValid(ApiResult result)
-        {
-            if (result == null)
-            {
-                throw new ArgumentNullException("result");
-            }
-            if (result.IsError > 0)
-            {
-                throw new InvalidOperationException(result.ErrorMessage);
-            }
         }
 
         /// <summary>
@@ -156,7 +142,8 @@ namespace Chiro.CiviSync.Services
                 // Als het adres al bestaat, dan kunnen we het overschrijven om casing te veranderen,
                 // voorkeursadres te zetten, en adrestype te bewaren.
 
-                var bestaande = (from a in adressen where IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
+                var bestaande =
+                    (from a in adressen where _adresHelper.IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
 
                 if (bestaande != null)
                 {
@@ -184,7 +171,7 @@ namespace Chiro.CiviSync.Services
                 }
 
                 var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressSave(_apiKey, _siteKey, nieuwAdres));
-                AssertValid(result);
+                result.AssertValid();
                 _log.Loggen(
                     Niveau.Info,
                     String.Format(
@@ -206,7 +193,7 @@ namespace Chiro.CiviSync.Services
                 {
                     int adresId = tvAdres.Id;
                     result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressDelete(_apiKey, _siteKey, new IdRequest(adresId)));
-                    AssertValid(result);
+                    result.AssertValid();
                     _log.Loggen(
                         Niveau.Info,
                         String.Format(
@@ -219,23 +206,6 @@ namespace Chiro.CiviSync.Services
                         bewoner.Persoon.ID);
                 }
             }
-        }
-
-        /// <summary>
-        /// Vergelijkt een <paramref name="address"/> met een <paramref name="addressRequest"/>, en geeft <c>true</c>
-        /// als ze naar hetzelfde adres verwijzen.
-        /// </summary>
-        /// <param name="address"></param>
-        /// <param name="addressRequest"></param>
-        /// <returns><c>true</c> als <paramref name="address"/> en <paramref name="addressRequest"/> naar hetzelfde
-        /// adres verwijzen.</returns>
-        private bool IsHetzelfde(Address address, AddressRequest addressRequest)
-        {
-            return (String.Equals(address.City, addressRequest.City, StringComparison.InvariantCultureIgnoreCase) &&
-                    String.Equals(address.Country, addressRequest.Country, StringComparison.InvariantCultureIgnoreCase) && address.PostalCode == addressRequest.PostalCode &&
-                    String.Equals(address.PostalCodeSuffix, addressRequest.PostalCodeSuffix, StringComparison.InvariantCultureIgnoreCase) &&
-                    address.StateProvinceId == addressRequest.StateProvinceId &&
-                    String.Equals(address.StreetAddress, addressRequest.StreetAddress, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public void CommunicatieToevoegen(Persoon persoon, CommunicatieMiddel communicatieMiddel)
@@ -279,11 +249,6 @@ namespace Chiro.CiviSync.Services
         }
 
         public void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void BivakPlaatsBewaren(int uitstapID, string plaatsNaam, Adres adres)
         {
             throw new NotImplementedException();
         }

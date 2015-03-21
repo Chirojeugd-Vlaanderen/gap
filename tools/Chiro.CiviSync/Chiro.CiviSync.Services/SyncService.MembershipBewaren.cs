@@ -20,6 +20,7 @@ using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviSync.Helpers;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -71,7 +72,7 @@ namespace Chiro.CiviSync.Services
 
             var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
                 svc => svc.MembershipSave(_apiKey, _siteKey, membershipRequest));
-            AssertValid(result);
+            result.AssertValid();
 
             _log.Loggen(Niveau.Info,
                 String.Format(

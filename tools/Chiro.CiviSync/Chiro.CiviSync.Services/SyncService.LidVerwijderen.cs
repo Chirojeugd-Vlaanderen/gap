@@ -4,6 +4,7 @@ using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Helpers;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -61,7 +62,7 @@ namespace Chiro.CiviSync.Services
                     svc =>
                         svc.RelationshipDelete(_apiKey, _siteKey,
                             new IdRequest(contact.RelationshipResult.Values.First().Id)));
-                AssertValid(result);
+                result.AssertValid();
             }
             else
             {

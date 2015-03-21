@@ -23,6 +23,7 @@ using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Helpers;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -54,7 +55,7 @@ namespace Chiro.CiviSync.Services
                 svc =>
                     svc.EventGet(_apiKey, _siteKey,
                         new EventRequest {GapUitstapId = bivak.UitstapID, ReturnFields = "id,custom_56"}));
-            AssertValid(apiResult);
+            apiResult.AssertValid();
 
             if (apiResult.Count == 0)
             {
@@ -100,7 +101,7 @@ namespace Chiro.CiviSync.Services
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
                     svc => svc.EventSave(_apiKey, _siteKey, eventRequest));
-            AssertValid(result);
+            result.AssertValid();
 
             _log.Loggen(Niveau.Info,
                 String.Format("Bivakaangifte maken voor {0}: {1} bewaard. Gap-ID {2}, Civi-ID {3}.", bivak.StamNummer,

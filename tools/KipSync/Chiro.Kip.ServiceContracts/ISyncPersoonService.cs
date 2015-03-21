@@ -302,7 +302,7 @@ namespace Chiro.Kip.ServiceContracts
         /// Bewaart <paramref name="plaatsNaam"/> en <paramref name="adres"/> voor een bivak
         /// in Kipadmin.
         /// </summary>
-        /// <param name="uitstapID">
+        /// <param name="uitstapId">
         /// ID van de uitstap in GAP
         /// </param>
         /// <param name="plaatsNaam">
@@ -312,7 +312,7 @@ namespace Chiro.Kip.ServiceContracts
         /// Adres van de bivakplaats
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void BivakPlaatsBewaren(int uitstapID, string plaatsNaam, Adres adres);
+        void BivakPlaatsBewaren(int uitstapId, string plaatsNaam, Adres adres);
 
         /// <summary>
         /// Stelt de persoon met gegeven <paramref name="adNummer"/> in als contactpersoon voor

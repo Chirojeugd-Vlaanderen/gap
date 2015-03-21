@@ -80,7 +80,7 @@ namespace Chiro.CiviSync.Services
 
                 var saveResult = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
                     svc => svc.ContactSave(_apiKey, _siteKey, request));
-                AssertValid(saveResult);
+                saveResult.AssertValid();;
 
                 return adNummer.Value;
             }
@@ -161,7 +161,7 @@ namespace Chiro.CiviSync.Services
                 var result =
                     ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                         svc => svc.ContactGet(_apiKey, _siteKey, request));
-                AssertValid(result);
+                result.AssertValid();
                 if (result.Count >= 1)
                 {
                     return int.Parse(result.Values.First().ExternalIdentifier);
@@ -186,7 +186,7 @@ namespace Chiro.CiviSync.Services
                 var result =
                     ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                         svc => svc.ContactGet(_apiKey, _siteKey, request));
-                AssertValid(result);
+                result.AssertValid();
                 if (result.Count >= 1)
                 {
                     return int.Parse(result.Values.First().ExternalIdentifier);

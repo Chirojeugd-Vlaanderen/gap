@@ -22,6 +22,7 @@ using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviSync.Helpers;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -106,7 +107,7 @@ namespace Chiro.CiviSync.Services
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
                     svc => svc.RelationshipSave(_apiKey, _siteKey, relationshipRequest));
-            AssertValid(result);
+            result.AssertValid();
 
             _log.Loggen(Niveau.Info,
                 String.Format(
