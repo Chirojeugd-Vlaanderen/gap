@@ -137,14 +137,6 @@ namespace Chiro.CiviSync.Helpers
             {
                 return null;
             }
-
-            // Van zodra CRM-15983 upstream gefixt is, is onderstaande code niet meer nodig,
-            // en mag gewoon contact opgeleverd worden. (Zie #3396)
-            if (contact.RelationshipResult.Count <= 1) return contact;
-
-            contact.RelationshipResult.Values =
-                contact.RelationshipResult.Values.OrderByDescending(r => r.StartDate).Take(1).ToArray();
-            contact.RelationshipResult.Count = 1;
             return contact;
         }
 
