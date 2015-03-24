@@ -253,11 +253,6 @@ namespace Chiro.CiviSync.Services
             throw new NotImplementedException();
         }
 
-        public void BivakVerwijderen(int uitstapID)
-        {
-            throw new NotImplementedException();
-        }
-
         public void GroepUpdaten(Groep g)
         {
             throw new NotImplementedException();

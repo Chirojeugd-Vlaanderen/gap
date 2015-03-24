@@ -347,11 +347,11 @@ namespace Chiro.Kip.ServiceContracts
         /// <summary>
         /// Verwijdert een bivak uit kipadmin.
         /// </summary>
-        /// <param name="uitstapID">
+        /// <param name="uitstapId">
         /// UitstapID (GAP) van het te verwijderen bivak
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void BivakVerwijderen(int uitstapID);
+        void BivakVerwijderen(int uitstapId);
 
         #endregion
 

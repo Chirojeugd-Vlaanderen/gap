@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="SyncService.BivakBewaren.cs" />
     <Compile Include="SyncService.BivakPlaatsBewaren.cs" />
+    <Compile Include="SyncService.BivakVerwijderen.cs" />
     <Compile Include="SyncService.LidBewaren.cs" />
     <Compile Include="SyncService.LidVerwijderen.cs" />
     <Compile Include="SyncService.MembershipBewaren.cs" />
