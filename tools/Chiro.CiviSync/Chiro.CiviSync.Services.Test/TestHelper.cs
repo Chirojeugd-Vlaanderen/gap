@@ -88,6 +88,9 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.RelationshipResult, opt => opt.Ignore());
             Mapper.CreateMap<RelationshipRequest, Relationship>()
                 .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
+            Mapper.CreateMap<LocBlockRequest, LocBlock>()
+                .ForMember(dst => dst.AddressResult, opt => opt.Ignore())
+                .ForMember(dst => dst.EventResult, opt => opt.Ignore());
 
             // Onderstaande mapping wordt in de tests gebruikt om een resultaat op
             // te leveren als er een event gecreerd wordt. We gaan er dan van uit dat
@@ -119,6 +122,13 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] {src}));
+            Mapper.CreateMap<LocBlockRequest, ApiResultValues<LocBlock>>()
+                .ForMember(dst => dst.Version, opt => opt.UseValue(3))
+                .ForMember(dst => dst.Count, opt => opt.UseValue(1))
+                .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
+                .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
+                .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] { src }));
 
             Mapper.CreateMap<Contact, ApiResultValues<Contact>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
