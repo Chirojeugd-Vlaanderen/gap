@@ -42,13 +42,13 @@ namespace Chiro.Gap.Sync
         public BivakSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
 
         /// <summary>
-        /// Bewaart de uitstap <paramref name="uitstap"/> in Kipadmin als bivak.  Zonder contactpersoon
-        /// of plaats.
+        /// Bewaart de uitstap <paramref name="uitstap"/> in Kipadmin als bivak.  Met contactpersoon
+        /// en plaats.
         /// </summary>
         /// <param name="uitstap">Te bewaren uitstap</param>
         public void Bewaren(Uitstap uitstap)
         {
-            // TODO (#1057): Dit zijn waarschijnlijk te veel databasecalls
+            // TODO (#1057): Verfijnen van sync bivakgegevens van GAP naar Kipadmin/CiviCRM
 
             var teSyncen = Mapper.Map<Uitstap, Bivak>(uitstap);
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.BivakBewaren(teSyncen));
