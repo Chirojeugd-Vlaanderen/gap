@@ -43,7 +43,7 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public async void LidBewaren(int adNummer, LidGedoe gedoe)
         {
-            int? civiGroepId = _contactHelper.ContactIdGet(gedoe.StamNummer);
+            int? civiGroepId = _contactWorker.ContactIdGet(gedoe.StamNummer);
             if (civiGroepId == null)
             {
                 _log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - lid niet bewaard.", gedoe.StamNummer),
@@ -51,7 +51,7 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            var contact = _contactHelper.PersoonMetRecentsteLid(adNummer, civiGroepId);
+            var contact = _contactWorker.PersoonMetRecentsteLid(adNummer, civiGroepId);
 
             if (contact == null || contact.ExternalIdentifier == null)
             {

@@ -52,7 +52,7 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            int? contactIdPersoon = _contactHelper.ContactIdGet(adNummer);
+            int? contactIdPersoon = _contactWorker.ContactIdGet(adNummer);
 			if (contactIdPersoon == null)
 			{
 			    _log.Loggen(Niveau.Error,

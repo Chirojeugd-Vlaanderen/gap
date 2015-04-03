@@ -44,7 +44,7 @@ namespace Chiro.CiviSync.Services
         private readonly IMiniLog _log;
         private readonly ServiceHelper _serviceHelper;
         private readonly IGapUpdateHelper _gapUpdateHelper;
-        private readonly ContactHelper _contactHelper;
+        private readonly ContactWorker _contactWorker;
         private readonly RelationshipHelper _relationshipHelper;
         private readonly MembershipHelper _membershipHelper;
         private readonly FunctieHelper _functieHelper;
@@ -63,9 +63,11 @@ namespace Chiro.CiviSync.Services
         /// <param name="relationshipHelper">Zorgt vooral voor start- en einddata van relaties.</param>
         /// <param name="membershipHelper">Logica voor memberships. Ook vooral start- en einddata.</param>
         /// <param name="bivakWorker">Bivak goodies.</param>
+        /// <param name="contactWorker">Contact goodies.</param>
         /// <param name="log">Logger</param>
         public SyncService(ServiceHelper serviceHelper, IGapUpdateHelper gapUpdateHelper,
             RelationshipHelper relationshipHelper, MembershipHelper membershipHelper, BivakWorker bivakWorker,
+            ContactWorker contactWorker,
             IMiniLog log)
         {
             // Het is op dit moment nog niet zo duidelijk waarvoor de helpers worden gebruikt.
@@ -76,15 +78,16 @@ namespace Chiro.CiviSync.Services
             _relationshipHelper = relationshipHelper;
             _membershipHelper = membershipHelper;
             _bivakWorker = bivakWorker;
+            _contactWorker = contactWorker;
             _log = log;
 
             _gapUpdateHelper.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath,
                 Settings.Default.GapUpdateUser, Settings.Default.GapUpdatePass);
-            _bivakWorker.Configureer(Settings.Default.ApiKey, Settings.Default.SiteKey);
+            _bivakWorker.Configureren(Settings.Default.ApiKey, Settings.Default.SiteKey);
+            _contactWorker.Configureren(_apiKey, _siteKey);
 
             // FIMXE: injecteren
 
-            _contactHelper = new ContactHelper(_serviceHelper, _apiKey, _siteKey);
             _functieHelper = new FunctieHelper();
         }
 

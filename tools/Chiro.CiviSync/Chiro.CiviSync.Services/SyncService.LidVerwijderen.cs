@@ -33,7 +33,7 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public async void LidVerwijderen(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum)
         {
-            int? civiGroepId = _contactHelper.ContactIdGet(stamNummer);
+            int? civiGroepId = _contactWorker.ContactIdGet(stamNummer);
             if (civiGroepId == null)
             {
                 _log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - lid niet verwijderd.", stamNummer),
@@ -41,7 +41,7 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            var contact = _contactHelper.PersoonMetRecentsteLid(adNummer, civiGroepId);
+            var contact = _contactWorker.PersoonMetRecentsteLid(adNummer, civiGroepId);
 
             if (contact == null || contact.ExternalIdentifier == null)
             {

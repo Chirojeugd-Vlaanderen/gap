@@ -37,7 +37,7 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public async void MembershipBewaren(int adNummer, int werkJaar)
         {
-            var contact = _contactHelper.PersoonMetRecentsteMembership(adNummer, MembershipType.Aansluiting);
+            var contact = _contactWorker.PersoonMetRecentsteMembership(adNummer, MembershipType.Aansluiting);
 
             if (contact == null)
             {

@@ -42,7 +42,7 @@ namespace Chiro.CiviSync.Services
         public void BivakBewaren(Bivak bivak)
         {
             Event oudEvent;
-            int? contactIdPloeg = _contactHelper.ContactIdGet(bivak.StamNummer);
+            int? contactIdPloeg = _contactWorker.ContactIdGet(bivak.StamNummer);
 
             if (contactIdPloeg == null)
             {
@@ -77,7 +77,7 @@ namespace Chiro.CiviSync.Services
 
             var eventRequest = new EventRequest
             {
-                OrganiserendePloeg1Id = _contactHelper.ContactIdGet(bivak.StamNummer)
+                OrganiserendePloeg1Id = _contactWorker.ContactIdGet(bivak.StamNummer)
             };
 
             Mapper.Map(bivak, eventRequest);

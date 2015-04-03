@@ -49,7 +49,7 @@ namespace Chiro.CiviSync.Workers
         /// </summary>
         /// <param name="apiKey"></param>
         /// <param name="siteKey"></param>
-        public void Configureer(string apiKey, string siteKey)
+        public void Configureren(string apiKey, string siteKey)
         {
             _apiKey = apiKey;
             _siteKey = siteKey;

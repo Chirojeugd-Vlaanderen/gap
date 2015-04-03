@@ -90,6 +90,10 @@
       <Project>{20CFA748-66F5-4DF3-AB3B-8F949D58A004}</Project>
       <Name>Chiro.CiviSync.Services.Test</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.CiviSync.Workers\Chiro.CiviSync.Workers.csproj">
+      <Project>{9B8B6ADD-3963-440B-B00C-54F476ED353A}</Project>
+      <Name>Chiro.CiviSync.Workers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

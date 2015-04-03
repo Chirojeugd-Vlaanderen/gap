@@ -55,7 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContactHelper.cs" />
     <Compile Include="DatumHelper.cs" />
     <Compile Include="FunctieHelper.cs" />
     <Compile Include="GapUpdateHelper.cs" />

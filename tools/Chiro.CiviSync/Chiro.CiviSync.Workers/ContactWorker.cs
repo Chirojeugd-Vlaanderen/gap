@@ -22,20 +22,20 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 
-namespace Chiro.CiviSync.Helpers
+namespace Chiro.CiviSync.Workers
 {
     /// <summary>
     /// Contactgerelateerde methods die hopelijk interessant zijn voor de gebruikers
     /// van de CiviCRM-API.
     /// </summary>
-    public class ContactHelper
+    public class ContactWorker
     {
         private const string ContactIdCacheKey = "cid{0}";
 
         private readonly ObjectCache _cache = new MemoryCache("HelperCache");
         private readonly ServiceHelper _serviceHelper;
-        private readonly string _apiKey;
-        private readonly string _siteKey;
+        private string _apiKey;
+        private string _siteKey;
 
         protected ServiceHelper ServiceHelper
         {
@@ -46,11 +46,18 @@ namespace Chiro.CiviSync.Helpers
         /// Constructor
         /// </summary>
         /// <param name="serviceHelper">Helper to be used for WCF service calls</param>
-        /// <param name="apiKey">Key of the API-user</param>
-        /// <param name="siteKey">Key of the CiviCRM-instance you want to access</param>
-        public ContactHelper(ServiceHelper serviceHelper, string apiKey, string siteKey)
+        public ContactWorker(ServiceHelper serviceHelper)
         {
             _serviceHelper = serviceHelper;
+        }
+
+        /// <summary>
+        /// Configureer de keys voor API access.
+        /// </summary>
+        /// <param name="apiKey"></param>
+        /// <param name="siteKey"></param>
+        public void Configureren(string apiKey, string siteKey)
+        {
             _apiKey = apiKey;
             _siteKey = siteKey;
         }

@@ -55,7 +55,7 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            int? contactId = _contactHelper.ContactIdGet(persoon.AdNummer.Value);
+            int? contactId = _contactWorker.ContactIdGet(persoon.AdNummer.Value);
 
             if (contactId == null)
             {
