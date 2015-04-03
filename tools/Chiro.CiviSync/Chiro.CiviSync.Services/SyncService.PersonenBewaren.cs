@@ -24,6 +24,7 @@ using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers;
+using Chiro.CiviSync.Logic;
 using Chiro.CiviSync.Mapping;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -88,7 +89,7 @@ namespace Chiro.CiviSync.Services
 
             var contact = Mapper.Map<Persoon, ContactRequest>(details.Persoon);
             var address = Mapper.Map<Adres, AddressRequest>(details.Adres);
-            address.LocationTypeId = MappingHelper.CiviLocationTypeId(details.AdresType);
+            address.LocationTypeId = AdresLogic.CiviLocationTypeId(details.AdresType);
 
             var civiCommunicatie = MappingHelper.CiviCommunicatie(details.Communicatie.ToList(), null);
 

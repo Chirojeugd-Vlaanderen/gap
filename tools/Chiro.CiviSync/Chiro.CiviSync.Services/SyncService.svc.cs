@@ -25,6 +25,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers;
+using Chiro.CiviSync.Logic;
 using Chiro.CiviSync.Services.Properties;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts;
@@ -47,7 +48,6 @@ namespace Chiro.CiviSync.Services
         private readonly MembershipHelper _membershipHelper;
         private readonly FunctieHelper _functieHelper;
         private readonly BivakHelper _bivakHelper;
-        private readonly AdresHelper _adresHelper;
 
         protected ServiceHelper ServiceHelper
         {
@@ -82,9 +82,6 @@ namespace Chiro.CiviSync.Services
             _contactHelper = new ContactHelper(_serviceHelper, _apiKey, _siteKey);
             _bivakHelper = new BivakHelper(_serviceHelper, _apiKey, _siteKey);
             _functieHelper = new FunctieHelper();
-            _adresHelper = new AdresHelper();
-
-            // En dan hebben we er nog statische, voor de mappings, de *MappingHelpers.
         }
 
         /// <summary>
@@ -150,7 +147,7 @@ namespace Chiro.CiviSync.Services
                 // voorkeursadres te zetten, en adrestype te bewaren.
 
                 var bestaande =
-                    (from a in adressen where _adresHelper.IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
+                    (from a in adressen where AdresLogic.IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
 
                 if (bestaande != null)
                 {

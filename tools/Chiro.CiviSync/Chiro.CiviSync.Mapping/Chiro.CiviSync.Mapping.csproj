@@ -54,6 +54,10 @@
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.CiviSync.Logic\Chiro.CiviSync.Logic.csproj">
+      <Project>{3ccd93c2-0cb6-4562-b017-e2df3f9ab0a4}</Project>
+      <Name>Chiro.CiviSync.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

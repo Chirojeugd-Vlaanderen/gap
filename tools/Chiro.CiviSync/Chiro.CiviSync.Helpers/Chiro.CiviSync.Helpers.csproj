@@ -55,7 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdresHelper.cs" />
     <Compile Include="ApiResultExtensions.cs" />
     <Compile Include="BivakHelper.cs" />
     <Compile Include="CommunicatieHelper.cs" />

@@ -23,6 +23,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers;
+using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -79,7 +80,7 @@ namespace Chiro.CiviSync.Services
             // er iets gegeven is, kies ik billing (5).
             nieuwAdres.LocationTypeId = 5;
             nieuwAdres.Name = plaatsNaam;
-            if (_adresHelper.IsHetzelfde(oudAdres, nieuwAdres))
+            if (AdresLogic.IsHetzelfde(oudAdres, nieuwAdres))
             {
                 _log.Loggen(Niveau.Info,
                     String.Format("Locblock {4} niet gewijzigd voor bivak van {0}, GAP-ID {1}: {2}, {3}", stamNr,
