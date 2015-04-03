@@ -104,6 +104,10 @@
       <Project>{60559DC6-EE2A-4974-8C75-34729181EA29}</Project>
       <Name>Chiro.CiviSync.Helpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.CiviSync.Mapping\Chiro.CiviSync.Mapping.csproj">
+      <Project>{601725A8-680D-4E67-8C02-C987AF4EFF0B}</Project>
+      <Name>Chiro.CiviSync.Mapping</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.CiviSync.Services\Chiro.CiviSync.Services.csproj">
       <Project>{30215f07-a682-4e89-8ff9-d33f705e9842}</Project>
       <Name>Chiro.CiviSync.Services</Name>

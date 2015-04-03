@@ -25,7 +25,7 @@ using Chiro.CiviCrm.Api.DataContracts.Filters;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
-namespace Chiro.CiviSync.Helpers
+namespace Chiro.CiviSync.Mapping
 {
     public static class MappingHelper
     {
