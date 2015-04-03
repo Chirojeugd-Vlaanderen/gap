@@ -44,7 +44,7 @@ namespace Chiro.CiviSync.Services
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren membership - als dusdanig terug naar GAP.", adNummer),
                     null, adNummer, null);
 
-                await _gapUpdateHelper.OngeldigAdNaarGap(adNummer);
+                await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
                 return;
             }
 

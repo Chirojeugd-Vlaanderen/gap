@@ -21,9 +21,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Chiro.Gap.UpdateApi.Models;
 
-namespace Chiro.CiviSync.Helpers
+namespace Chiro.Gap.UpdateApi.Client
 {
-    public class GapUpdateHelper : IGapUpdateHelper
+    public class GapUpdateClient : IGapUpdateClient
     {
         private string _username = null;
         private string _password = null;

@@ -94,6 +94,10 @@
       <Project>{9B8B6ADD-3963-440B-B00C-54F476ED353A}</Project>
       <Name>Chiro.CiviSync.Workers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.UpdateApi.Client\Chiro.Gap.UpdateApi.Client.csproj">
+      <Project>{F1E20ACB-E9F6-4E25-8327-FA2AB35B86C8}</Project>
+      <Name>Chiro.Gap.UpdateApi.Client</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

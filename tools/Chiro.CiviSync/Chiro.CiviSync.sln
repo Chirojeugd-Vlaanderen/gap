@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.Mapping", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.Workers", "Chiro.CiviSync.Workers\Chiro.CiviSync.Workers.csproj", "{9B8B6ADD-3963-440B-B00C-54F476ED353A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateApi.Client", "Chiro.Gap.UpdateApi.Client\Chiro.Gap.UpdateApi.Client.csproj", "{F1E20ACB-E9F6-4E25-8327-FA2AB35B86C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,6 +126,10 @@ Global
 		{9B8B6ADD-3963-440B-B00C-54F476ED353A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B8B6ADD-3963-440B-B00C-54F476ED353A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B8B6ADD-3963-440B-B00C-54F476ED353A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1E20ACB-E9F6-4E25-8327-FA2AB35B86C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1E20ACB-E9F6-4E25-8327-FA2AB35B86C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1E20ACB-E9F6-4E25-8327-FA2AB35B86C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1E20ACB-E9F6-4E25-8327-FA2AB35B86C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -26,6 +26,7 @@ using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
+using Chiro.Gap.UpdateApi.Client;
 using Moq;
 
 namespace Chiro.CiviSync.Services.Test
@@ -161,7 +162,7 @@ namespace Chiro.CiviSync.Services.Test
         /// zijnde de huidige datum.</param>
         /// <param name="civiApiMock">Mock-object voor de CiviCRM-API</param>
         /// <param name="updateHelperMock">Mock-object voor UpdateApi</param>
-        public static void IocOpzetten(DateTime zogezegdeDatum, out Mock<ICiviCrmApi> civiApiMock, out Mock<IGapUpdateHelper> updateHelperMock)
+        public static void IocOpzetten(DateTime zogezegdeDatum, out Mock<ICiviCrmApi> civiApiMock, out Mock<IGapUpdateClient> updateHelperMock)
         {
             // Dependency injection opzetten om geen echte CiviCRM te moeten
             // aanroepen. (De binding CiviCRM-.NET heeft aparte unit tests)
@@ -175,7 +176,7 @@ namespace Chiro.CiviSync.Services.Test
             Factory.InstantieRegistreren(channelProviderMock.Object);
 
             // Voor UpdateApi ook.
-            updateHelperMock = new Mock<IGapUpdateHelper>();
+            updateHelperMock = new Mock<IGapUpdateClient>();
             Factory.InstantieRegistreren(updateHelperMock.Object);
 
             // Doe alsof het vandaag de zogezegde datum is.

@@ -22,6 +22,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers;
+using Chiro.Gap.UpdateApi.Client;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -32,7 +33,7 @@ namespace Chiro.CiviSync.Services.Test
     public class LidVerwijderenTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateHelper> _updateHelperMock;
+        private Mock<IGapUpdateClient> _updateHelperMock;
 
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int HuidigWerkJaar = 2014;
@@ -158,7 +159,7 @@ namespace Chiro.CiviSync.Services.Test
             // Onze nepdatabase bevat 1 organisatie (TST/0000)
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
 
-            // We mocken ook GapUpdateHelper.
+            // We mocken ook GapUpdateClient.
 
             _updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
 

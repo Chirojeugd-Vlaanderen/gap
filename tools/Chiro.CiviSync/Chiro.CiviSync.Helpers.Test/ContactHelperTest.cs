@@ -22,6 +22,7 @@ using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Services.Test;
 using Chiro.CiviSync.Workers;
+using Chiro.Gap.UpdateApi.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -31,7 +32,7 @@ namespace Chiro.CiviSync.Helpers.Test
     public class ContactHelperTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateHelper> _updateHelperMock;
+        private Mock<IGapUpdateClient> _updateHelperMock;
 
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
 

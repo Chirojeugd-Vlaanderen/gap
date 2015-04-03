@@ -29,6 +29,7 @@ using Chiro.CiviSync.Logic;
 using Chiro.CiviSync.Services.Properties;
 using Chiro.CiviSync.Workers;
 using Chiro.Gap.Log;
+using Chiro.Gap.UpdateApi.Client;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -43,7 +44,7 @@ namespace Chiro.CiviSync.Services
 
         private readonly IMiniLog _log;
         private readonly ServiceHelper _serviceHelper;
-        private readonly IGapUpdateHelper _gapUpdateHelper;
+        private readonly IGapUpdateClient _gapUpdateClient;
         private readonly ContactWorker _contactWorker;
         private readonly RelationshipHelper _relationshipHelper;
         private readonly MembershipHelper _membershipHelper;
@@ -58,13 +59,13 @@ namespace Chiro.CiviSync.Services
         /// Creates a new service instance.
         /// </summary>
         /// <param name="serviceHelper">Servicehelper that will connect to the CiviCRM API</param>
-        /// <param name="gapUpdateHelper">Wrapper rond de UpdateApi.</param>
+        /// <param name="gapUpdateClient">Wrapper rond de UpdateApi.</param>
         /// <param name="relationshipHelper">Zorgt vooral voor start- en einddata van relaties.</param>
         /// <param name="membershipHelper">Logica voor memberships. Ook vooral start- en einddata.</param>
         /// <param name="bivakWorker">Bivak goodies.</param>
         /// <param name="contactWorker">Contact goodies.</param>
         /// <param name="log">Logger</param>
-        public SyncService(ServiceHelper serviceHelper, IGapUpdateHelper gapUpdateHelper,
+        public SyncService(ServiceHelper serviceHelper, IGapUpdateClient gapUpdateClient,
             RelationshipHelper relationshipHelper, MembershipHelper membershipHelper, BivakWorker bivakWorker,
             ContactWorker contactWorker,
             IMiniLog log)
@@ -73,14 +74,14 @@ namespace Chiro.CiviSync.Services
             // Sommige zijn onafhankelijk van de CiviCRM-API. Die injecteren we op dit moment.
 
             _serviceHelper = serviceHelper;
-            _gapUpdateHelper = gapUpdateHelper;
+            _gapUpdateClient = gapUpdateClient;
             _relationshipHelper = relationshipHelper;
             _membershipHelper = membershipHelper;
             _bivakWorker = bivakWorker;
             _contactWorker = contactWorker;
             _log = log;
 
-            _gapUpdateHelper.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath,
+            _gapUpdateClient.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath,
                 Settings.Default.GapUpdateUser, Settings.Default.GapUpdatePass);
             _bivakWorker.Configureren(Settings.Default.ApiKey, Settings.Default.SiteKey);
             _contactWorker.Configureren(_apiKey, _siteKey);

@@ -60,7 +60,7 @@ namespace Chiro.CiviSync.Services
 			            "Kan contact voor bivak met GAP-uitstapID {1} van {2} niet vastleggen: onbestaand AD-nummer {0} terug naar GAP.",
 			            adNummer, uitstapId, stamNr),
 			        stamNr, null, null);
-                await _gapUpdateHelper.OngeldigAdNaarGap(adNummer);
+                await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
                 return;
             }
 
