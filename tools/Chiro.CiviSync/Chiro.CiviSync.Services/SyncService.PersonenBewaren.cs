@@ -91,7 +91,7 @@ namespace Chiro.CiviSync.Services
             var address = Mapper.Map<Adres, AddressRequest>(details.Adres);
             address.LocationTypeId = AdresLogic.CiviLocationTypeId(details.AdresType);
 
-            var civiCommunicatie = MappingHelper.CiviCommunicatie(details.Communicatie.ToList(), null);
+            var civiCommunicatie = CommunicatieLogic.CiviCommunicatie(details.Communicatie.ToList(), null);
 
             contact.AddressSaveRequest = new List<AddressRequest> {address};
             contact.PhoneSaveRequest = civiCommunicatie.OfType<Phone>();

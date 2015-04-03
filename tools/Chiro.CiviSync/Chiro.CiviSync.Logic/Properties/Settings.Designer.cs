@@ -35,5 +35,17 @@ namespace Chiro.CiviSync.Logic.Properties {
                 this["TelefoonRegex"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("^(0|\\\\+32)4[6-9]")]
+        public string GsmRegex {
+            get {
+                return ((string)(this["GsmRegex"]));
+            }
+            set {
+                this["GsmRegex"] = value;
+            }
+        }
     }
 }

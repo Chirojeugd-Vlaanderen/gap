@@ -18,13 +18,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviSync.Logic.Properties;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.CiviSync.Logic
 {
     public static class CommunicatieLogic
     {
         private static readonly Regex GeldigTelefoonNummer = new Regex(Settings.Default.TelefoonRegex);
+        private static readonly Regex GsmNummerExpression = new Regex(Settings.Default.GsmRegex);
         private static readonly Regex Alfanumeriek = new Regex(@"[^\d]");
         private static readonly Regex Protocol = new Regex(@"^https?://");
 
@@ -109,6 +113,69 @@ namespace Chiro.CiviSync.Logic
         public static bool GeldigNummer(string nr)
         {
             return GeldigTelefoonNummer.IsMatch(nr);
+        }
+
+        /// <summary>
+        /// Zet een lijst communicatievormen van GAP om naar een lijst entities voor CiviCRM
+        /// (van de types Email, Phone, Website, Im).
+        /// </summary>
+        /// <param name="communicatie">Lijst communicatievormen</param>
+        /// <param name="contactId">Te gebruiken contact-ID voor civi-entities. Mag <c>null</c> zijn.</param>
+        /// <returns>Lijst met e-mailadressen, telefoonnummers, websites, im (als Object).</returns>
+        public static Object[] CiviCommunicatie(IList<CommunicatieMiddel> communicatie, int? contactId)
+        {
+            var telefoonNummers = from c in communicatie
+                                  where c.Type == CommunicatieType.TelefoonNummer || c.Type == CommunicatieType.Fax
+                                  select new Phone
+                                  {
+                                      ContactId = contactId,
+                                      PhoneNumber = c.Waarde,
+                                      PhoneType =
+                                          c.Type == CommunicatieType.Fax
+                                              ? PhoneType.Fax
+                                              : GsmNummerExpression.IsMatch(c.Waarde) ? PhoneType.Mobile : PhoneType.Phone
+                                  };
+            var eMailAdressen = from c in communicatie
+                                where c.Type == CommunicatieType.Email
+                                select new Email
+                                {
+                                    ContactId = contactId,
+                                    EmailAddress = c.Waarde,
+                                    IsBulkMail = !c.GeenMailings
+                                };
+            // wat betreft websites ondersteunt GAP enkel twitter en 'iets anders'
+            var websites = from c in communicatie
+                           where
+                               c.Type == CommunicatieType.WebSite || c.Type == CommunicatieType.Twitter ||
+                               c.Type == CommunicatieType.StatusNet
+                           select new Website
+                           {
+                               ContactId = contactId,
+                               Url = c.Type == CommunicatieType.Twitter ? c.Waarde.Replace("@", "https://twitter.com/") : c.Waarde,
+                               WebsiteType = c.Type == CommunicatieType.Twitter ? WebsiteType.Twitter : WebsiteType.Main
+                           };
+            // wat betreft IM kent GAP enkel MSN en XMPP.
+            var im = from c in communicatie
+                     where c.Type == CommunicatieType.Msn || c.Type == CommunicatieType.Xmpp
+                     select new Im
+                     {
+                         ContactId = contactId,
+                         Name = c.Waarde,
+                         Provider = c.Type == CommunicatieType.Msn ? Provider.Msn : Provider.Jabber
+                     };
+            return telefoonNummers.Union<Object>(eMailAdressen).Union(websites).Union(im).ToArray();
+        }
+
+        /// <summary>
+        /// Zet een communicatievorm van GAP om naar een communicatierequest voor CiviCRM
+        /// (van het type Email, Phone, Website of Im).
+        /// </summary>
+        /// <param name="communicatie">Communicatievorm</param>
+        /// <param name="contactId">Te gebruiken contact-ID voor de requests. Mag <c>null</c> zijn.</param>
+        /// <returns>het gevraagde request als Object.</returns>
+        public static Object CiviCommunicatie(CommunicatieMiddel communicatie, int? contactId)
+        {
+            return CiviCommunicatie(new[] { communicatie }, contactId).First();
         }
     }
 }
