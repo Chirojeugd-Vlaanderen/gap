@@ -235,6 +235,18 @@ namespace Chiro.CiviSync.Helpers
         }
 
         /// <summary>
+        /// Zet een communicatievorm van GAP om naar een communicatierequest voor CiviCRM
+        /// (van het type Email, Phone, Website of Im).
+        /// </summary>
+        /// <param name="communicatie">Communicatievorm</param>
+        /// <param name="contactId">Te gebruiken contact-ID voor de requests. Mag <c>null</c> zijn.</param>
+        /// <returns>het gevraagde request als Object.</returns>
+        public static Object CiviCommunicatie(CommunicatieMiddel communicatie, int? contactId)
+        {
+            return CiviCommunicatie(new[] {communicatie}, contactId).First();
+        }
+
+        /// <summary>
         /// Zet een GAP-<paramref name="adrestype"/> om naar een CiviCRM location type.
         /// </summary>
         /// <param name="adrestype">Adrestype van GAP.</param>
