@@ -19,16 +19,17 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers.Properties;
+using Chiro.CiviSync.Logic;
 
 namespace Chiro.CiviSync.Helpers
 {
     public class MembershipHelper
     {
-        private readonly IDatumHelper _datumHelper;
+        private readonly IDatumProvider _datumProvider;
 
-        public MembershipHelper(IDatumHelper datumHelper)
+        public MembershipHelper(IDatumProvider datumProvider)
         {
-            _datumHelper = datumHelper;
+            _datumProvider = datumProvider;
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace Chiro.CiviSync.Helpers
             DateTime overgangDatum = Settings.Default.WerkjaarStart;
             DateTime beginWerkjaar = new DateTime(werkJaar, overgangDatum.Month, overgangDatum.Day);
             DateTime eindeWerkJaar = new DateTime(werkJaar + 1, overgangDatum.Month, overgangDatum.Day).AddDays(-1);
-            DateTime vandaag = _datumHelper.Vandaag();
+            DateTime vandaag = _datumProvider.Vandaag();
 
             var result = new MembershipRequest
             {

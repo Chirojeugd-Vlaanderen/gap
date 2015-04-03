@@ -16,13 +16,13 @@
 
 using System;
 
-namespace Chiro.CiviSync.Helpers
+namespace Chiro.CiviSync.Logic
 {
     /// <summary>
     /// Een helper om de datum van vandaag op te vragen. Door deze te gebruiken i.p.v. DateTime.Now(), kunnen we
     /// die datum vervangen bij het testen.
     /// </summary>
-    public interface IDatumHelper
+    public interface IDatumProvider
     {
         /// <summary>
         /// Levert de datum van vandaag op (zonder tijdscomponent)

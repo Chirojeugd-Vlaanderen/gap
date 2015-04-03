@@ -19,21 +19,22 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers.Properties;
+using Chiro.CiviSync.Logic;
 
 namespace Chiro.CiviSync.Helpers
 {
     public class RelationshipHelper
     {
-        private IDatumHelper _datumHelper;
+        private IDatumProvider _datumProvider;
 
         /// <summary>
         /// Constructor voor RelationshipHelper.
         /// </summary>
-        /// <param name="datumHelper">Datumhelper die gebruikt zal worden om te kijken welke datum het
+        /// <param name="datumProvider">Datumprovider die gebruikt zal worden om te kijken welke datum het
         /// vandaag is.</param>
-        public RelationshipHelper(IDatumHelper datumHelper)
+        public RelationshipHelper(IDatumProvider datumProvider)
         {
-            _datumHelper = datumHelper;
+            _datumProvider = datumProvider;
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace Chiro.CiviSync.Helpers
             DateTime overgangDatum = Settings.Default.WerkjaarStart;
             DateTime beginWerkjaar = new DateTime(werkJaar, overgangDatum.Month, overgangDatum.Day);
             DateTime eindeWerkJaar = new DateTime(werkJaar + 1, overgangDatum.Month, overgangDatum.Day).AddDays(-1);
-            DateTime vandaag = _datumHelper.Vandaag();
+            DateTime vandaag = _datumProvider.Vandaag();
 
             var result = new RelationshipRequest
             {
@@ -120,7 +121,7 @@ namespace Chiro.CiviSync.Helpers
         /// <paramref name="r"/> op dit moment actief is.</returns>
         public bool IsActief(Relationship r)
         {
-            DateTime vandaag = _datumHelper.Vandaag();
+            DateTime vandaag = _datumProvider.Vandaag();
             return r.StartDate <= vandaag && r.EndDate >= vandaag;
         }
 
@@ -133,7 +134,7 @@ namespace Chiro.CiviSync.Helpers
         /// <paramref name="r"/> op dit moment actief is.</returns>
         public bool IsActief(RelationshipRequest r)
         {
-            DateTime vandaag = _datumHelper.Vandaag();
+            DateTime vandaag = _datumProvider.Vandaag();
             return r.StartDate <= vandaag && r.EndDate >= vandaag;
         }
     }

@@ -55,10 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatumHelper.cs" />
     <Compile Include="FunctieHelper.cs" />
     <Compile Include="GapUpdateHelper.cs" />
-    <Compile Include="IDatumHelper.cs" />
     <Compile Include="IGapUpdateHelper.cs" />
     <Compile Include="MembershipHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

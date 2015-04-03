@@ -24,6 +24,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers;
+using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Moq;
 
@@ -178,9 +179,9 @@ namespace Chiro.CiviSync.Services.Test
             Factory.InstantieRegistreren(updateHelperMock.Object);
 
             // Doe alsof het vandaag de zogezegde datum is.
-            var datumHelperMock = new Mock<IDatumHelper>();
-            datumHelperMock.Setup(src => src.Vandaag()).Returns(zogezegdeDatum);
-            Factory.InstantieRegistreren(datumHelperMock.Object);
+            var datumProviderMock = new Mock<IDatumProvider>();
+            datumProviderMock.Setup(src => src.Vandaag()).Returns(zogezegdeDatum);
+            Factory.InstantieRegistreren(datumProviderMock.Object);
 
             // Loggen doen we niet.
             var logMock = new Mock<IMiniLog>();
