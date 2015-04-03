@@ -55,7 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiResultExtensions.cs" />
     <Compile Include="BivakHelper.cs" />
     <Compile Include="CommunicatieHelper.cs" />
     <Compile Include="ContactHelper.cs" />
@@ -89,6 +88,10 @@
     <ProjectReference Include="..\..\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.CiviSync.Logic\Chiro.CiviSync.Logic.csproj">
+      <Project>{3CCD93C2-0CB6-4562-B017-E2DF3F9AB0A4}</Project>
+      <Name>Chiro.CiviSync.Logic</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

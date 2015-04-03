@@ -17,9 +17,9 @@
 using System;
 using Chiro.CiviCrm.Api.DataContracts;
 
-namespace Chiro.CiviSync.Helpers
+namespace Chiro.CiviSync.Logic
 {
-    public static class ApiResultExtensions
+    public static class ApiResultLogic
     {
         /// <summary>
         /// Throws an exception of the API <paramref name="result"/> is an error.

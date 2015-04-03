@@ -20,6 +20,7 @@ using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Logic;
 
 namespace Chiro.CiviSync.Helpers
 {
