@@ -64,6 +64,9 @@ namespace Chiro.CiviSync.Services
         /// <param name="log">Logger</param>
         public SyncService(ServiceHelper serviceHelper, IGapUpdateHelper gapUpdateHelper, RelationshipHelper relationshipHelper, MembershipHelper membershipHelper, IMiniLog log)
         {
+            // Het is op dit moment nog niet zo duidelijk waarvoor de helpers worden gebruikt.
+            // Sommige zijn onafhankelijk van de CiviCRM-API. Die injecteren we op dit moment.
+
             _serviceHelper = serviceHelper;
             _gapUpdateHelper = gapUpdateHelper;
             _relationshipHelper = relationshipHelper;
@@ -72,12 +75,16 @@ namespace Chiro.CiviSync.Services
 
             _gapUpdateHelper.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath, Settings.Default.GapUpdateUser, Settings.Default.GapUpdatePass);
 
-            // Er zijn nog wat helpers waarvoor we (momenteel?) nog geen
-            // dependency injection gebruiken.
+            // Andere bevatten query-functionaliteit. Dat maakt injecteren wat moeilijker omdat we met die
+            // servicehelper zitten.
+            // Misschien moet ik die ook configureren, zoals hierboven voor gapupdatehelper.
+
             _contactHelper = new ContactHelper(_serviceHelper, _apiKey, _siteKey);
             _bivakHelper = new BivakHelper(_serviceHelper, _apiKey, _siteKey);
             _functieHelper = new FunctieHelper();
             _adresHelper = new AdresHelper();
+
+            // En dan hebben we er nog statische, voor de mappings, de *MappingHelpers.
         }
 
         /// <summary>

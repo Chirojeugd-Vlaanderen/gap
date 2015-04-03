@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Chiro.CiviSync.Helpers.Properties {
+namespace Chiro.CiviSync.Logic.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,13 +25,14 @@ namespace Chiro.CiviSync.Helpers.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2000-09-01")]
-        public global::System.DateTime WerkjaarStart {
+        [global::System.Configuration.DefaultSettingValueAttribute("^0[0-9]{1,2}\\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^04[0-9]{2}\\-[0-9]{2,3} ?[0-9]{2} ?" +
+            "[0-9]{2}$|^[+][0-9]*$")]
+        public string TelefoonRegex {
             get {
-                return ((global::System.DateTime)(this["WerkjaarStart"]));
+                return ((string)(this["TelefoonRegex"]));
             }
             set {
-                this["WerkjaarStart"] = value;
+                this["TelefoonRegex"] = value;
             }
         }
     }

@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Linq;
 using System.Runtime.Caching;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;

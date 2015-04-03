@@ -21,6 +21,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers;
+using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -115,12 +116,12 @@ namespace Chiro.CiviSync.Services
                      contactResult.Values
                  where
                      c.PhoneResult.Values.Any(nr =>
-                         CommunicatieHelper.GeldigNummer(nr.PhoneNumber) &&
-                         CommunicatieHelper.StandaardNummer(
+                         CommunicatieLogic.GeldigNummer(nr.PhoneNumber) &&
+                         CommunicatieLogic.StandaardNummer(
                              details.Communicatie.Where(
                                  cm => cm.Type == CommunicatieType.TelefoonNummer || cm.Type == CommunicatieType.Fax)
                                  .Select(cm => cm.Waarde))
-                             .Contains(CommunicatieHelper.StandaardNummer(nr.PhoneNumber)))
+                             .Contains(CommunicatieLogic.StandaardNummer(nr.PhoneNumber)))
                  select c).FirstOrDefault();
             if (gevondenViaTelefoonNr != null)
             {
@@ -146,12 +147,12 @@ namespace Chiro.CiviSync.Services
                                       where
                                           c.WebsiteResult.Values.Any(
                                               ws =>
-                                                  CommunicatieHelper.StandaardUrl(details.Communicatie.Where(
+                                                  CommunicatieLogic.StandaardUrl(details.Communicatie.Where(
                                                       cm =>
                                                           cm.Type == CommunicatieType.WebSite || cm.Type == CommunicatieType.Twitter ||
                                                           cm.Type == CommunicatieType.StatusNet)
                                                       .Select(cm => cm.Waarde))
-                                                      .Contains(CommunicatieHelper.StandaardUrl(ws.Url)))
+                                                      .Contains(CommunicatieLogic.StandaardUrl(ws.Url)))
                                       select c).FirstOrDefault();
             if (gevondenViaWebsite != null)
             {
