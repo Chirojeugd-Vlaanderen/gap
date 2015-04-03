@@ -47,7 +47,6 @@ namespace Chiro.CiviSync.Services
         private readonly ContactWorker _contactWorker;
         private readonly RelationshipHelper _relationshipHelper;
         private readonly MembershipHelper _membershipHelper;
-        private readonly FunctieHelper _functieHelper;
         private readonly BivakWorker _bivakWorker;
 
         protected ServiceHelper ServiceHelper
@@ -85,10 +84,6 @@ namespace Chiro.CiviSync.Services
                 Settings.Default.GapUpdateUser, Settings.Default.GapUpdatePass);
             _bivakWorker.Configureren(Settings.Default.ApiKey, Settings.Default.SiteKey);
             _contactWorker.Configureren(_apiKey, _siteKey);
-
-            // FIMXE: injecteren
-
-            _functieHelper = new FunctieHelper();
         }
 
         /// <summary>

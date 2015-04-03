@@ -18,9 +18,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
-namespace Chiro.CiviSync.Helpers
+namespace Chiro.CiviSync.Logic
 {
-    public class FunctieHelper
+    public static class FunctieLogic
     {
         public static readonly IDictionary<FunctieEnum, string> KipCode = new Dictionary<FunctieEnum, string>
         {
@@ -55,7 +55,7 @@ namespace Chiro.CiviSync.Helpers
         /// </summary>
         /// <param name="functies">Om te zetten functies.</param>
         /// <returns>Functiecodes uit ChiroCivi.</returns>
-        public string[] KipCodes(IEnumerable<FunctieEnum> functies)
+        public static string[] KipCodes(IEnumerable<FunctieEnum> functies)
         {
             return functies == null ? null : (from f in functies select KipCode[f]).ToArray();
         }

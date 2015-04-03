@@ -55,7 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FunctieHelper.cs" />
     <Compile Include="GapUpdateHelper.cs" />
     <Compile Include="IGapUpdateHelper.cs" />
     <Compile Include="MembershipHelper.cs" />

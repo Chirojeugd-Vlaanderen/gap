@@ -103,7 +103,7 @@ namespace Chiro.CiviSync.Services
             relationshipRequest.LeidingVan = gedoe.LidType == LidTypeEnum.Leiding
                 ? Mapper.Map<IEnumerable<AfdelingEnum>, Afdeling[]>(gedoe.OfficieleAfdelingen)
                 : null;
-            relationshipRequest.Functies = _functieHelper.KipCodes(gedoe.NationaleFuncties);
+            relationshipRequest.Functies = FunctieLogic.KipCodes(gedoe.NationaleFuncties);
 
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Relationship>>(
