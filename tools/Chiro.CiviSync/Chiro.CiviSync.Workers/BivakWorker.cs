@@ -22,13 +22,13 @@ using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 
-namespace Chiro.CiviSync.Helpers
+namespace Chiro.CiviSync.Workers
 {
-    public class BivakHelper
+    public class BivakWorker
     {
         private readonly ServiceHelper _serviceHelper;
-        private readonly string _apiKey;
-        private readonly string _siteKey;
+        private string _apiKey;
+        private string _siteKey;
 
         protected ServiceHelper ServiceHelper
         {
@@ -39,11 +39,18 @@ namespace Chiro.CiviSync.Helpers
         /// Constructor
         /// </summary>
         /// <param name="serviceHelper">Helper to be used for WCF service calls</param>
-        /// <param name="apiKey">Key of the API-user</param>
-        /// <param name="siteKey">Key of the CiviCRM-instance you want to access</param>
-        public BivakHelper(ServiceHelper serviceHelper, string apiKey, string siteKey)
+        public BivakWorker(ServiceHelper serviceHelper)
         {
             _serviceHelper = serviceHelper;
+        }
+
+        /// <summary>
+        /// Configureer de keys voor API access.
+        /// </summary>
+        /// <param name="apiKey"></param>
+        /// <param name="siteKey"></param>
+        public void Configureer(string apiKey, string siteKey)
+        {
             _apiKey = apiKey;
             _siteKey = siteKey;
         }

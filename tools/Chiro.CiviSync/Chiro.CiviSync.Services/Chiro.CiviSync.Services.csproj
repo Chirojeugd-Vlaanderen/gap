@@ -123,6 +123,10 @@
       <Project>{601725A8-680D-4E67-8C02-C987AF4EFF0B}</Project>
       <Name>Chiro.CiviSync.Mapping</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.CiviSync.Workers\Chiro.CiviSync.Workers.csproj">
+      <Project>{9B8B6ADD-3963-440B-B00C-54F476ED353A}</Project>
+      <Name>Chiro.CiviSync.Workers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Log\Chiro.Gap.Log.csproj">
       <Project>{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}</Project>
       <Name>Chiro.Gap.Log</Name>

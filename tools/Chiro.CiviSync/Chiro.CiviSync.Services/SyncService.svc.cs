@@ -27,6 +27,7 @@ using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Helpers;
 using Chiro.CiviSync.Logic;
 using Chiro.CiviSync.Services.Properties;
+using Chiro.CiviSync.Workers;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -47,7 +48,7 @@ namespace Chiro.CiviSync.Services
         private readonly RelationshipHelper _relationshipHelper;
         private readonly MembershipHelper _membershipHelper;
         private readonly FunctieHelper _functieHelper;
-        private readonly BivakHelper _bivakHelper;
+        private readonly BivakWorker _bivakWorker;
 
         protected ServiceHelper ServiceHelper
         {
@@ -61,8 +62,11 @@ namespace Chiro.CiviSync.Services
         /// <param name="gapUpdateHelper">Wrapper rond de UpdateApi.</param>
         /// <param name="relationshipHelper">Zorgt vooral voor start- en einddata van relaties.</param>
         /// <param name="membershipHelper">Logica voor memberships. Ook vooral start- en einddata.</param>
+        /// <param name="bivakWorker">Bivak goodies.</param>
         /// <param name="log">Logger</param>
-        public SyncService(ServiceHelper serviceHelper, IGapUpdateHelper gapUpdateHelper, RelationshipHelper relationshipHelper, MembershipHelper membershipHelper, IMiniLog log)
+        public SyncService(ServiceHelper serviceHelper, IGapUpdateHelper gapUpdateHelper,
+            RelationshipHelper relationshipHelper, MembershipHelper membershipHelper, BivakWorker bivakWorker,
+            IMiniLog log)
         {
             // Het is op dit moment nog niet zo duidelijk waarvoor de helpers worden gebruikt.
             // Sommige zijn onafhankelijk van de CiviCRM-API. Die injecteren we op dit moment.
@@ -71,16 +75,16 @@ namespace Chiro.CiviSync.Services
             _gapUpdateHelper = gapUpdateHelper;
             _relationshipHelper = relationshipHelper;
             _membershipHelper = membershipHelper;
+            _bivakWorker = bivakWorker;
             _log = log;
 
-            _gapUpdateHelper.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath, Settings.Default.GapUpdateUser, Settings.Default.GapUpdatePass);
+            _gapUpdateHelper.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath,
+                Settings.Default.GapUpdateUser, Settings.Default.GapUpdatePass);
+            _bivakWorker.Configureer(Settings.Default.ApiKey, Settings.Default.SiteKey);
 
-            // Andere bevatten query-functionaliteit. Dat maakt injecteren wat moeilijker omdat we met die
-            // servicehelper zitten.
-            // Misschien moet ik die ook configureren, zoals hierboven voor gapupdatehelper.
+            // FIMXE: injecteren
 
             _contactHelper = new ContactHelper(_serviceHelper, _apiKey, _siteKey);
-            _bivakHelper = new BivakHelper(_serviceHelper, _apiKey, _siteKey);
             _functieHelper = new FunctieHelper();
         }
 

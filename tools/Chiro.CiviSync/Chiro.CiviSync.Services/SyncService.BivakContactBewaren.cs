@@ -106,7 +106,7 @@ namespace Chiro.CiviSync.Services
         /// <param name="stamNr">out-parameter voor stamnummer van organisator</param>
 	    private void ValideerBivak(int uitstapId, out Event bivak, out string stamNr)
         {
-            bivak = _bivakHelper.BivakDetailsOphalen(uitstapId);
+            bivak = _bivakWorker.BivakDetailsOphalen(uitstapId);
 
             if (bivak == null)
 	        {

@@ -55,7 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BivakHelper.cs" />
     <Compile Include="CommunicatieHelper.cs" />
     <Compile Include="ContactHelper.cs" />
     <Compile Include="DatumHelper.cs" />
