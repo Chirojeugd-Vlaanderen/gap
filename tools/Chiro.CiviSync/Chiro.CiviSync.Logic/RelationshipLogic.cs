@@ -18,21 +18,20 @@ using System;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
-using Chiro.CiviSync.Helpers.Properties;
-using Chiro.CiviSync.Logic;
+using Chiro.CiviSync.Logic.Properties;
 
-namespace Chiro.CiviSync.Helpers
+namespace Chiro.CiviSync.Logic
 {
-    public class RelationshipHelper
+    public class RelationshipLogic
     {
-        private IDatumProvider _datumProvider;
+        private readonly IDatumProvider _datumProvider;
 
         /// <summary>
-        /// Constructor voor RelationshipHelper.
+        /// Constructor.
         /// </summary>
         /// <param name="datumProvider">Datumprovider die gebruikt zal worden om te kijken welke datum het
         /// vandaag is.</param>
-        public RelationshipHelper(IDatumProvider datumProvider)
+        public RelationshipLogic(IDatumProvider datumProvider)
         {
             _datumProvider = datumProvider;
         }

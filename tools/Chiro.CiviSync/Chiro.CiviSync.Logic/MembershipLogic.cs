@@ -18,16 +18,20 @@ using System;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
-using Chiro.CiviSync.Helpers.Properties;
-using Chiro.CiviSync.Logic;
+using Chiro.CiviSync.Logic.Properties;
 
-namespace Chiro.CiviSync.Helpers
+namespace Chiro.CiviSync.Logic
 {
-    public class MembershipHelper
+    /// <summary>
+    /// Voornamelijk datums bepalen voor lidmaatschappen.
+    /// 
+    /// Dit is geen statische klasse, want we heben een datumprovider nodig.
+    /// </summary>
+    public class MembershipLogic
     {
         private readonly IDatumProvider _datumProvider;
 
-        public MembershipHelper(IDatumProvider datumProvider)
+        public MembershipLogic(IDatumProvider datumProvider)
         {
             _datumProvider = datumProvider;
         }

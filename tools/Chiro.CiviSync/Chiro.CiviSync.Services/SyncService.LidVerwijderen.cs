@@ -4,7 +4,6 @@ using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
-using Chiro.CiviSync.Helpers;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -52,7 +51,7 @@ namespace Chiro.CiviSync.Services
             }
 
             if (contact.RelationshipResult.Count == 1 &&
-                _relationshipHelper.WerkjaarGet(contact.RelationshipResult.Values.First()) == werkJaar)
+                _relationshipLogic.WerkjaarGet(contact.RelationshipResult.Values.First()) == werkJaar)
             {
                 _log.Loggen(Niveau.Info,
                     String.Format(

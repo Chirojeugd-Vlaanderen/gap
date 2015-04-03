@@ -47,5 +47,17 @@ namespace Chiro.CiviSync.Logic.Properties {
                 this["GsmRegex"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2000-09-01")]
+        public global::System.DateTime WerkjaarStart {
+            get {
+                return ((global::System.DateTime)(this["WerkjaarStart"]));
+            }
+            set {
+                this["WerkjaarStart"] = value;
+            }
+        }
     }
 }

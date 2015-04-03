@@ -22,7 +22,6 @@ using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviSync.Helpers;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -65,18 +64,18 @@ namespace Chiro.CiviSync.Services
             // Request voor te bewaren (nieuwe) lidrelatie: eerst een standaardrequest voor dit werkjaar.
             // Als het contact al zo'n relatie had (contact.RelationshipResult), dan nemen we van die bestaande
             // de relevante zaken over.
-            var relationshipRequest = _relationshipHelper.VanWerkjaar(RelatieType.LidVan, contact.Id, civiGroepId.Value,
+            var relationshipRequest = _relationshipLogic.VanWerkjaar(RelatieType.LidVan, contact.Id, civiGroepId.Value,
                 gedoe.WerkJaar, gedoe.UitschrijfDatum);
 
             if (contact.RelationshipResult.Count == 1)
             {
                 var bestaandeRelatie = contact.RelationshipResult.Values.First();
-                if (_relationshipHelper.WerkjaarGet(bestaandeRelatie) == gedoe.WerkJaar)
+                if (_relationshipLogic.WerkjaarGet(bestaandeRelatie) == gedoe.WerkJaar)
                 {
                     // Neem van bestaande relatie het ID en de begindatum over.
                     relationshipRequest.Id = bestaandeRelatie.Id;
                     relationshipRequest.StartDate = bestaandeRelatie.StartDate;
-                    if (_relationshipHelper.IsActief(bestaandeRelatie))
+                    if (_relationshipLogic.IsActief(bestaandeRelatie))
                     {
                         _log.Loggen(Niveau.Warning,
                             String.Format(

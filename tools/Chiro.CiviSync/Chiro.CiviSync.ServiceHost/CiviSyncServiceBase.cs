@@ -20,7 +20,6 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceModel;
-using Chiro.CiviSync.Helpers;
 using Chiro.CiviSync.Mapping;
 using Chiro.CiviSync.Services;
 

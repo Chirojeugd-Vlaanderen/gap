@@ -20,7 +20,6 @@ using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviSync.Helpers;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -49,12 +48,12 @@ namespace Chiro.CiviSync.Services
             }
 
             // request dat we als het nodig is naar de API zullen sturen.
-            var membershipRequest = _membershipHelper.VanWerkjaar(MembershipType.Aansluiting, contact.Id, werkJaar);
+            var membershipRequest = _membershipLogic.VanWerkjaar(MembershipType.Aansluiting, contact.Id, werkJaar);
 
             if (contact.MembershipResult.Count == 1)
             {
                 var bestaandMembership = contact.MembershipResult.Values.First();
-                if (_membershipHelper.WerkjaarGet(bestaandMembership) == werkJaar)
+                if (_membershipLogic.WerkjaarGet(bestaandMembership) == werkJaar)
                 {
                     // We hebben al een membership dit jaar.
                     _log.Loggen(Niveau.Info,
