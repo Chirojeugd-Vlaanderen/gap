@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Chiro.CiviSync.Helpers.Test")]
+[assembly: AssemblyTitle("Chiro.CiviSync.Mapping.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Chiro.CiviSync.Helpers.Test")]
+[assembly: AssemblyProduct("Chiro.CiviSync.Mapping.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5d6dbca4-b544-451a-b046-1f58fe07af7f")]
+[assembly: Guid("4a0a5e43-643b-4b44-91ec-a9344fa2dd2d")]
 
 // Version information for an assembly consists of the following four values:
 //

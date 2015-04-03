@@ -15,14 +15,12 @@
  */
 
 using System;
-using System.IO.MemoryMappedFiles;
 using AutoMapper;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
-using Chiro.CiviSync.Mapping;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Chiro.CiviSync.Helpers.Test
+namespace Chiro.CiviSync.Mapping.Test
 {
     [TestClass]
     public class MappingHelperTest

@@ -21,15 +21,14 @@ using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Services.Test;
-using Chiro.CiviSync.Workers;
 using Chiro.Gap.UpdateApi.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Chiro.CiviSync.Helpers.Test
+namespace Chiro.CiviSync.Workers.Test
 {
     [TestClass]
-    public class ContactHelperTest
+    public class ContactWorkerTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
         private Mock<IGapUpdateClient> _updateHelperMock;
