@@ -21,10 +21,8 @@ using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
-using Chiro.CiviSync.Mapping;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -93,10 +91,10 @@ namespace Chiro.CiviSync.Services
             var civiCommunicatie = CommunicatieLogic.CiviCommunicatie(details.Communicatie.ToList(), null);
 
             contact.AddressSaveRequest = new List<AddressRequest> {address};
-            contact.PhoneSaveRequest = civiCommunicatie.OfType<Phone>();
-            contact.EmailSaveRequest = civiCommunicatie.OfType<Email>();
-            contact.WebsiteSaveRequest = civiCommunicatie.OfType<Website>();
-            contact.ImSaveRequest = civiCommunicatie.OfType<Im>();
+            contact.PhoneSaveRequest = civiCommunicatie.OfType<PhoneRequest>();
+            contact.EmailSaveRequest = civiCommunicatie.OfType<EmailRequest>();
+            contact.WebsiteSaveRequest = civiCommunicatie.OfType<WebsiteRequest>();
+            contact.ImSaveRequest = civiCommunicatie.OfType<ImRequest>();
 
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(

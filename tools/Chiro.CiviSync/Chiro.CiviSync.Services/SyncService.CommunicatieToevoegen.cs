@@ -15,12 +15,7 @@
  */
 
 using System;
-using System.Diagnostics;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using Chiro.CiviCrm.Api.DataContracts;
-using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
-using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 

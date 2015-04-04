@@ -21,7 +21,6 @@ using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Mapping;
 using Chiro.Gap.UpdateApi.Client;

@@ -99,10 +99,10 @@ namespace Chiro.CiviSync.Services
                 ContactType = ContactType.Individual,
                 Gender = (Gender)(3 - (int)details.Persoon.Geslacht),
                 AddressGetRequest = new AddressRequest(),
-                EmailGetRequest = new BaseRequest(),
-                PhoneGetRequest = new BaseRequest(),
-                WebsiteGetRequest = new BaseRequest(),
-                ImGetRequest = new BaseRequest()
+                EmailGetRequest = new EmailRequest(),
+                PhoneGetRequest = new PhoneRequest(),
+                WebsiteGetRequest = new WebsiteRequest(),
+                ImGetRequest = new ImRequest()
             };
 
             var contactResult =

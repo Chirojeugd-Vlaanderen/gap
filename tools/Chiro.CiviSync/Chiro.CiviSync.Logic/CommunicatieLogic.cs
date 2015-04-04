@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Chiro.CiviCrm.Api.DataContracts;
-using Chiro.CiviCrm.Api.DataContracts.EntityRequests;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic.Properties;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -126,7 +126,7 @@ namespace Chiro.CiviSync.Logic
         {
             var telefoonNummers = from c in communicatie
                                   where c.Type == CommunicatieType.TelefoonNummer || c.Type == CommunicatieType.Fax
-                                  select new Phone
+                                  select new PhoneRequest
                                   {
                                       ContactId = contactId,
                                       PhoneNumber = c.Waarde,
@@ -137,7 +137,7 @@ namespace Chiro.CiviSync.Logic
                                   };
             var eMailAdressen = from c in communicatie
                                 where c.Type == CommunicatieType.Email
-                                select new Email
+                                select new EmailRequest
                                 {
                                     ContactId = contactId,
                                     EmailAddress = c.Waarde,
@@ -148,7 +148,7 @@ namespace Chiro.CiviSync.Logic
                            where
                                c.Type == CommunicatieType.WebSite || c.Type == CommunicatieType.Twitter ||
                                c.Type == CommunicatieType.StatusNet
-                           select new Website
+                           select new WebsiteRequest
                            {
                                ContactId = contactId,
                                Url = c.Type == CommunicatieType.Twitter ? c.Waarde.Replace("@", "https://twitter.com/") : c.Waarde,
@@ -157,7 +157,7 @@ namespace Chiro.CiviSync.Logic
             // wat betreft IM kent GAP enkel MSN en XMPP.
             var im = from c in communicatie
                      where c.Type == CommunicatieType.Msn || c.Type == CommunicatieType.Xmpp
-                     select new Im
+                     select new ImRequest
                      {
                          ContactId = contactId,
                          Name = c.Waarde,
