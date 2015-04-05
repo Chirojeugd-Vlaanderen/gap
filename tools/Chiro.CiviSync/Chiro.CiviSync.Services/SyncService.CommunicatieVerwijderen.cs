@@ -15,9 +15,11 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -27,16 +29,16 @@ namespace Chiro.CiviSync.Services
     public partial class SyncService
     {
         /// <summary>
-        /// Voegt 1 communicatiemiddel toe aan de communicatiemiddelen van een persoon
+        /// Verwijdert een communicatiemiddel uit ChiroCivi.
         /// </summary>
         /// <param name="persoon">
-        /// Persoon die het nieuwe communicatiemiddel krijgt
+        /// Persoonsgegevens van de persoon waarvan het communicatiemiddel moet verdwijnen.
         /// </param>
         /// <param name="communicatieMiddel">
-        /// Het nieuwe communicatiemiddel
+        /// Gegevens over het te verwijderen communicatiemiddel
         /// </param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void CommunicatieToevoegen(Persoon persoon, CommunicatieMiddel communicatieMiddel)
+        public async void CommunicatieVerwijderen(Persoon persoon, CommunicatieMiddel communicatieMiddel)
         {
             if (persoon.AdNummer == null)
             {
@@ -46,7 +48,7 @@ namespace Chiro.CiviSync.Services
             if (persoon.AdNummer == null)
             {
                 _log.Loggen(Niveau.Error,
-                    String.Format("Kan {0} {1} voor {2} niet bewaren; persoon niet gevonden.", communicatieMiddel.Type,
+                    String.Format("Kan {0} {1} voor {2} niet verwijderen; persoon niet gevonden.", communicatieMiddel.Type,
                         communicatieMiddel.Waarde, persoon),
                     null, null, null);
                 return;
@@ -56,7 +58,7 @@ namespace Chiro.CiviSync.Services
 
             if (contactId == null)
             {
-                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren communicatie - als dusdanig terug naar GAP.", persoon.AdNummer),
+                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te verwijderen communicatie - als dusdanig terug naar GAP.", persoon.AdNummer),
                     null, persoon.AdNummer, null);
 
                 await _gapUpdateClient.OngeldigAdNaarGap(persoon.AdNummer.Value);
@@ -64,6 +66,9 @@ namespace Chiro.CiviSync.Services
             }
 
             var communicatieRequest = CommunicatieLogic.RequestMaken(communicatieMiddel, contactId, true);
+
+            // Zoek er hoogstens 1. Dan hebben we een een Id in het result.
+            communicatieRequest.ApiOptions = new ApiOptions {Limit = 1};
             var bestaandeCommunicatie =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
                     svc =>
@@ -71,27 +76,27 @@ namespace Chiro.CiviSync.Services
                             communicatieRequest));
 
             bestaandeCommunicatie.AssertValid();
-            if (bestaandeCommunicatie.Count != 0)
+            if (bestaandeCommunicatie.Count == 0)
             {
                 _log.Loggen(Niveau.Info,
-                    String.Format("Nieuwe communicatievorm ({0}) {1} voor {2} {3} (AD {4}) bestond al.",
+                    String.Format("Kon niet-gevonden communicatievorm ({0}) {1} voor {2} {3} (AD {4}) niet verwijderen.",
                         communicatieMiddel.Type, communicatieMiddel.Waarde, persoon.VoorNaam, persoon.Naam,
                         persoon.AdNummer), null, persoon.AdNummer, persoon.ID);
                 return;
             }
+            Debug.Assert(bestaandeCommunicatie.Id.HasValue);
 
-            // Maak alleen aan als communicatievorm nog niet bestond.
+            // Verwijder de communicatievorm
             var createResult = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
                 svc =>
-                    svc.GenericCall(_apiKey, _siteKey, communicatieRequest.EntityType, ApiAction.Create,
-                        communicatieRequest));
+                    svc.GenericCall(_apiKey, _siteKey, communicatieRequest.EntityType, ApiAction.Delete,
+                        new IdRequest(bestaandeCommunicatie.Id.Value)));
             createResult.AssertValid();
 
             _log.Loggen(Niveau.Info,
-                String.Format("Nieuwe communicatievorm ({0}) {1} bewaard voor {2} {3} (AD {4}).",
+                String.Format("Communicatievorm ({0}) {1} verwijderd voor {2} {3} (AD {4}).",
                     communicatieMiddel.Type, communicatieMiddel.Waarde, persoon.VoorNaam, persoon.Naam,
                     persoon.AdNummer), null, persoon.AdNummer, persoon.ID);
-
         }
     }
 }

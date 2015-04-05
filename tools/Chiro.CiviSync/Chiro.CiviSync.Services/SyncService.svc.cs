@@ -224,11 +224,6 @@ namespace Chiro.CiviSync.Services
             throw new NotImplementedException();
         }
 
-        public void CommunicatieVerwijderen(Persoon persoon, CommunicatieMiddel communicatieMiddel)
-        {
-            throw new NotImplementedException();
-        }
-
         public void FunctiesUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<FunctieEnum> functies)
         {
             throw new NotImplementedException();

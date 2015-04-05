@@ -74,7 +74,6 @@ namespace Chiro.CiviSync.Workers
             return ContactIdGet(externalIdentifier.ToString());
         }
 
-
         /// <summary>
         /// Returns the contact-ID of the contact with given <paramref name="externalIdentifier"/>.
         /// </summary>
