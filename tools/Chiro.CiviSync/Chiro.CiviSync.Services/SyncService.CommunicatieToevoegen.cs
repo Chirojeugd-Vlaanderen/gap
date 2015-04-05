@@ -16,6 +16,9 @@
 
 using System;
 using System.ServiceModel;
+using Chiro.CiviCrm.Api;
+using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -60,11 +63,35 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            // Zoek op of de communicatievorm nog niet bestaat.
-            // .. wat nog niet zo simpel zal zijn.
-            
+            var communicatieRequest = CommunicatieLogic.RequestMaken(communicatieMiddel, contactId, true);
+            var bestaandeCommunicatie =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                    svc =>
+                        svc.GenericCall(_apiKey, _siteKey, communicatieRequest.EntityType, ApiAction.Get,
+                            communicatieRequest));
 
-            throw new NotImplementedException();
+            bestaandeCommunicatie.AssertValid();
+            if (bestaandeCommunicatie.Count != 0)
+            {
+                _log.Loggen(Niveau.Info,
+                    String.Format("Nieuwe communicatievorm ({0}) {1} voor {2} {3} (AD {4}) bestond al.",
+                        communicatieMiddel.Type, communicatieMiddel.Waarde, persoon.VoorNaam, persoon.Naam,
+                        persoon.AdNummer), null, persoon.AdNummer, persoon.ID);
+                return;
+            }
+
+            // Maak alleen aan als communicatievorm nog niet bestond.
+            var createResult = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                svc =>
+                    svc.GenericCall(_apiKey, _siteKey, communicatieRequest.EntityType, ApiAction.Create,
+                        communicatieRequest));
+            createResult.AssertValid();
+
+            _log.Loggen(Niveau.Info,
+                String.Format("Nieuwe communicatievorm ({0}) {1} bewaard voor {2} {3} (AD {4}).",
+                    communicatieMiddel.Type, communicatieMiddel.Waarde, persoon.VoorNaam, persoon.Naam,
+                    persoon.AdNummer), null, persoon.AdNummer, persoon.ID);
+
         }
     }
 }

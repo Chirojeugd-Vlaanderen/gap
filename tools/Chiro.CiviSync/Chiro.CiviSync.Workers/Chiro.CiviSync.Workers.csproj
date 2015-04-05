@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BivakWorker.cs" />
+    <Compile Include="CommunicatieWorker.cs" />
     <Compile Include="ContactWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

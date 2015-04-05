@@ -121,8 +121,10 @@ namespace Chiro.CiviSync.Logic
         /// </summary>
         /// <param name="communicatie">Lijst communicatievormen</param>
         /// <param name="contactId">Te gebruiken contact-ID voor civi-entities. Mag <c>null</c> zijn.</param>
+        /// <param name="enkelZoeken">Als deze <c>true</c> is, worden enkel de relevante velden meegenomen om de
+        /// communicatievorm te kunnen zoeken (dus geen IsBulk).</param>
         /// <returns>Lijst met e-mailadressen, telefoonnummers, websites, im (als Object).</returns>
-        public static Object[] CiviCommunicatie(IList<CommunicatieMiddel> communicatie, int? contactId)
+        public static BaseRequest[] RequestMaken(IList<CommunicatieMiddel> communicatie, int? contactId, bool enkelZoeken)
         {
             var telefoonNummers = from c in communicatie
                                   where c.Type == CommunicatieType.TelefoonNummer || c.Type == CommunicatieType.Fax
@@ -141,7 +143,7 @@ namespace Chiro.CiviSync.Logic
                                 {
                                     ContactId = contactId,
                                     EmailAddress = c.Waarde,
-                                    IsBulkMail = !c.GeenMailings
+                                    IsBulkMail = enkelZoeken ? (bool?)null : !c.GeenMailings
                                 };
             // wat betreft websites ondersteunt GAP enkel twitter en 'iets anders'
             var websites = from c in communicatie
@@ -163,7 +165,7 @@ namespace Chiro.CiviSync.Logic
                          Name = c.Waarde,
                          Provider = c.Type == CommunicatieType.Msn ? Provider.Msn : Provider.Jabber
                      };
-            return telefoonNummers.Union<Object>(eMailAdressen).Union(websites).Union(im).ToArray();
+            return telefoonNummers.Union<BaseRequest>(eMailAdressen).Union(websites).Union(im).ToArray();
         }
 
         /// <summary>
@@ -172,10 +174,24 @@ namespace Chiro.CiviSync.Logic
         /// </summary>
         /// <param name="communicatie">Communicatievorm</param>
         /// <param name="contactId">Te gebruiken contact-ID voor de requests. Mag <c>null</c> zijn.</param>
+        /// <param name="enkelZoeken">Als deze <c>true</c> is, worden enkel de relevante velden meegenomen om de
+        /// communicatievorm te kunnen zoeken (dus geen IsBulk of zo).</param>
         /// <returns>het gevraagde request als Object.</returns>
-        public static Object CiviCommunicatie(CommunicatieMiddel communicatie, int? contactId)
+        public static BaseRequest RequestMaken(CommunicatieMiddel communicatie, int? contactId, bool enkelZoeken)
         {
-            return CiviCommunicatie(new[] { communicatie }, contactId).First();
+            return RequestMaken(new[] { communicatie }, contactId, enkelZoeken).First();
+        }
+
+        /// <summary>
+        /// Zet een lijst communicatievormen van GAP om naar een lijst entities voor CiviCRM
+        /// (van de types Email, Phone, Website, Im).
+        /// </summary>
+        /// <param name="communicatie">Lijst communicatievormen</param>
+        /// <param name="contactId">Te gebruiken contact-ID voor civi-entities. Mag <c>null</c> zijn.</param>
+        /// <returns>Lijst met e-mailadressen, telefoonnummers, websites, im (als Object).</returns>
+        public static BaseRequest[] RequestMaken(List<CommunicatieMiddel> communicatie, int? contactId)
+        {
+            return RequestMaken(communicatie, contactId, false);
         }
     }
 }
