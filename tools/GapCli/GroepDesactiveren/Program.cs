@@ -15,12 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
-using System.Collections.Generic;
+
+using System;
 using System.Linq;
-using System.Text;
-using Chiro.Adf.ServiceModel;
-using Chiro.Gap.UpdateSvc.Contracts;
+using Chiro.Gap.UpdateApi.Client;
+using GroepDesactiveren.Properties;
 
 namespace GroepDesactiveren
 {
@@ -30,11 +29,16 @@ namespace GroepDesactiveren
         {
             if (!args.Any())
             {
-                Console.Error.WriteLine(Properties.Resources.Gebruik, Environment.CommandLine);
+                Console.Error.WriteLine(Resources.Gebruik, Environment.CommandLine);
             }
             else
             {
-                ServiceHelper.CallService<IUpdateService>(svc => svc.GroepDesactiveren(args[0], DateTime.Now));
+                var client = new GapUpdateClient();
+                client.Configureren(Settings.Default.Server, Settings.Default.Path,
+                    Settings.Default.UserName, Settings.Default.Password);
+
+                throw new NotImplementedException();
+                //client.GroepDesactiveren(args[0], DateTime.Now);
             }
         }
     }
