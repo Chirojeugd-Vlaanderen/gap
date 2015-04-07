@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -547,6 +547,21 @@ namespace Chiro.Gap.WebApp.Controllers
             // zodat je bij een 'refresh' niet de vraag krijgt
             // of je de gegevens opnieuw wil posten.)
             return RedirectToAction("Bewerken", new { id = model.Wijziging.GelieerdePersoonID, groepID });
+        }
+
+        /// <summary>
+        /// Zorgt ervoor dat de persoon met gelieerdePersoonID <paramref name="id"/> opnieuw gesynct
+        /// wordt naar ChiroCivi.
+        /// </summary>
+        /// <param name="id">GelieerdePersoonID van de te syncen gelieerde persoon.</param>
+        /// <param name="groepID">ID van de groep waarin wordt gewerkt.</param>
+        /// <returns>Redirect naar de pagina om de persoon te bewerken.</returns>
+        /// <remarks>Naar deze actie wordt nergens expliciet verwezen. Maar het is handig dat ze er is,
+        /// om fouten in de sync makkelijk te kunnen rechtzetten.</remarks>
+        public ActionResult OpnieuwSyncen(int id, int groepID)
+        {
+            ServiceHelper.CallService<IGelieerdePersonenService>(svc => svc.OpnieuwSyncen(id));
+            return RedirectToAction("Bewerken", new { id, groepID });
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -1156,6 +1156,29 @@ namespace Chiro.Gap.Services
             }
 #endif
             return gp.ID;
+        }
+
+        /// <summary>
+        /// Synct alle gegevens van de gelieerde persoon met gegeven
+        /// <paramref name="gelieerdePersoonID"/> opnieuw naar de Chirocivi.
+        /// </summary>
+        /// <param name="gelieerdePersoonID"></param>
+        /// <remarks>Dit is groepsoverschrijdend. Communicatievormen die aan dezelfde
+        /// persoon hangen, maar via een andere groep, gaan ook opnieuw mee.
+        /// 
+        /// Deze method heeft als voornaamste use case het rechtzetten van zaken die
+        /// vroeger niet goed waren gesynct. Het is niet zeker of ze hier helemaal op
+        /// zijn plaats staat.</remarks>
+        public void OpnieuwSyncen(int gelieerdePersoonID)
+        {
+            var gp = _gelieerdePersonenRepo.ByID(gelieerdePersoonID);
+
+            if (gp == null || !_autorisatieMgr.IsGav(gp))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            _personenSync.Bewaren(gp, true, true);
         }
 
         /// <summary>
