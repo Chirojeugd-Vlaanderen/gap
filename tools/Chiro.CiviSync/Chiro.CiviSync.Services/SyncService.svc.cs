@@ -214,11 +214,6 @@ namespace Chiro.CiviSync.Services
             }
         }
 
-        public void CommunicatieBijwerken(Persoon persoon, string nummerBijTeWerken, CommunicatieMiddel communicatieMiddel)
-        {
-            throw new NotImplementedException();
-        }
-
         public void AlleCommunicatieBewaren(Persoon persoon, IEnumerable<CommunicatieMiddel> communicatieMiddelen)
         {
             throw new NotImplementedException();

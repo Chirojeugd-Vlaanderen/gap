@@ -193,5 +193,34 @@ namespace Chiro.CiviSync.Logic
         {
             return RequestMaken(communicatie, contactId, false);
         }
+
+        /// <summary>
+        /// Tamelijk hacky functie om een id te zetten van een communicatierequest.
+        /// </summary>
+        /// <param name="communicatieRequest">Request om ID van te zetten</param>
+        /// <param name="id">nieuw ID</param>
+        public static void RequestIdZetten(BaseRequest communicatieRequest, int id)
+        {
+            if (communicatieRequest.GetType() == typeof (EmailRequest))
+            {
+                ((EmailRequest)communicatieRequest).Id = id;
+            }
+            else if (communicatieRequest.GetType() == typeof (PhoneRequest))
+            {
+                ((PhoneRequest) communicatieRequest).Id = id;
+            }
+            else if (communicatieRequest.GetType() == typeof (WebsiteRequest))
+            {
+                ((WebsiteRequest)communicatieRequest).Id = id;
+            }
+            else if (communicatieRequest.GetType() == typeof (ImRequest))
+            {
+                ((WebsiteRequest) communicatieRequest).Id = id;
+            }
+            else
+            {
+                throw new NotSupportedException("Onbekend communicatierequest.");
+            }
+        }
     }
 }
