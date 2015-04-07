@@ -69,6 +69,7 @@ namespace Chiro.CiviSync.Services
                         details.Persoon.VoorNaam, details.Persoon.Naam, details.Persoon.ID, adNummer), null, adNummer,
                     details.Persoon.ID);
 
+                // Bewaar GAP-ID
                 var request = new ContactRequest
                 {
                     ContactType = ContactType.Individual,
@@ -79,26 +80,21 @@ namespace Chiro.CiviSync.Services
 
                 var saveResult = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
                     svc => svc.ContactSave(_apiKey, _siteKey, request));
-                saveResult.AssertValid();;
-
+                saveResult.AssertValid();
                 return adNummer.Value;
             }
 
-            var contact = Mapper.Map<Persoon, ContactRequest>(details.Persoon);
+            var contactRequest = Mapper.Map<Persoon, ContactRequest>(details.Persoon);
+
+            CommunicatieLogic.RequestsChainen(contactRequest, details.Communicatie);
+
             var address = Mapper.Map<Adres, AddressRequest>(details.Adres);
             address.LocationTypeId = AdresLogic.CiviLocationTypeId(details.AdresType);
-
-            var civiCommunicatie = CommunicatieLogic.RequestMaken(details.Communicatie.ToList(), null);
-
-            contact.AddressSaveRequest = new List<AddressRequest> {address};
-            contact.PhoneSaveRequest = civiCommunicatie.OfType<PhoneRequest>();
-            contact.EmailSaveRequest = civiCommunicatie.OfType<EmailRequest>();
-            contact.WebsiteSaveRequest = civiCommunicatie.OfType<WebsiteRequest>();
-            contact.ImSaveRequest = civiCommunicatie.OfType<ImRequest>();
+            contactRequest.AddressSaveRequest = new List<AddressRequest> { address };
 
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
-                    svc => svc.ContactSave(_apiKey, _siteKey, contact));
+                    svc => svc.ContactSave(_apiKey, _siteKey, contactRequest));
 
             if (result.IsError == 0)
             {
@@ -109,7 +105,7 @@ namespace Chiro.CiviSync.Services
             {
                 // Workaround CRM-15815, zie #3405.
                 ServiceHelper.CallService<ICiviCrmApi, EmptyResult>(
-                    svc => svc.ContactSaveWorkaroundCrm15815(_apiKey, _siteKey, contact));
+                    svc => svc.ContactSaveWorkaroundCrm15815(_apiKey, _siteKey, contactRequest));
 
                 // Haal AD-nummer op door nieuwe call.
                 var result2 = ServiceHelper.CallService<ICiviCrmApi, Contact>(

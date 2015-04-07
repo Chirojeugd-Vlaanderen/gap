@@ -109,6 +109,10 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="communicatieMiddelen">
         /// Te updaten contactinfo
         /// </param>
+        /// <remarks>
+        /// Dit wordt niet (meer) door GAP gebruikt, maar we zullen het behouden. Lijkt me wel nuttig om
+        /// zaken te fixen als er iets misgelopen is met de communicatiesync.
+        /// </remarks>
         [OperationContract(IsOneWay = true)]
         void AlleCommunicatieBewaren(Persoon persoon, IEnumerable<CommunicatieMiddel> communicatieMiddelen);
 

@@ -222,5 +222,21 @@ namespace Chiro.CiviSync.Logic
                 throw new NotSupportedException("Onbekend communicatierequest.");
             }
         }
+
+
+        /// <summary>
+        /// Maakt save-requests voor de gegeven <paramref name="communicatieMiddelen"/>, en chaint ze aan het
+        /// gegeven <paramref name="contactRequest"/>.
+        /// </summary>
+        /// <param name="contactRequest"></param>
+        /// <param name="communicatieMiddelen"></param>
+        public static void RequestsChainen(ContactRequest contactRequest, IEnumerable<CommunicatieMiddel> communicatieMiddelen)
+        {
+            var civiCommunicatie = RequestMaken(communicatieMiddelen.ToList(), null);
+            contactRequest.PhoneSaveRequest = civiCommunicatie.OfType<PhoneRequest>();
+            contactRequest.EmailSaveRequest = civiCommunicatie.OfType<EmailRequest>();
+            contactRequest.WebsiteSaveRequest = civiCommunicatie.OfType<WebsiteRequest>();
+            contactRequest.ImSaveRequest = civiCommunicatie.OfType<ImRequest>();
+        }
     }
 }

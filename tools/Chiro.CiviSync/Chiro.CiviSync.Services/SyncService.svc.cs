@@ -44,10 +44,11 @@ namespace Chiro.CiviSync.Services
         private readonly IMiniLog _log;
         private readonly ServiceHelper _serviceHelper;
         private readonly IGapUpdateClient _gapUpdateClient;
-        private readonly ContactWorker _contactWorker;
         private readonly RelationshipLogic _relationshipLogic;
         private readonly MembershipLogic _membershipLogic;
+        private readonly ContactWorker _contactWorker;
         private readonly BivakWorker _bivakWorker;
+        private readonly CommunicatieWorker _communicatieWorker;
 
         protected ServiceHelper ServiceHelper
         {
@@ -63,10 +64,11 @@ namespace Chiro.CiviSync.Services
         /// <param name="membershipLogic">Logica voor memberships. Ook vooral start- en einddata.</param>
         /// <param name="bivakWorker">Bivak goodies.</param>
         /// <param name="contactWorker">Contact goodies.</param>
+        /// <param name="communicatieWorker">Communicatie goodies.</param>
         /// <param name="log">Logger</param>
         public SyncService(ServiceHelper serviceHelper, IGapUpdateClient gapUpdateClient,
             RelationshipLogic relationshipLogic, MembershipLogic membershipLogic, BivakWorker bivakWorker,
-            ContactWorker contactWorker,
+            ContactWorker contactWorker, CommunicatieWorker communicatieWorker,
             IMiniLog log)
         {
             // Het is op dit moment nog niet zo duidelijk waarvoor de helpers worden gebruikt.
@@ -78,12 +80,15 @@ namespace Chiro.CiviSync.Services
             _membershipLogic = membershipLogic;
             _bivakWorker = bivakWorker;
             _contactWorker = contactWorker;
+            _communicatieWorker = communicatieWorker;
             _log = log;
 
+            // Configureer externe API's van GapUpdate en workers.
             _gapUpdateClient.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath,
                 Settings.Default.GapUpdateUser, Settings.Default.GapUpdatePass);
             _bivakWorker.Configureren(Settings.Default.ApiKey, Settings.Default.SiteKey);
             _contactWorker.Configureren(_apiKey, _siteKey);
+            _communicatieWorker.Configureren(_apiKey, _siteKey);
         }
 
         /// <summary>
@@ -212,11 +217,6 @@ namespace Chiro.CiviSync.Services
                         bewoner.Persoon.ID);
                 }
             }
-        }
-
-        public void AlleCommunicatieBewaren(Persoon persoon, IEnumerable<CommunicatieMiddel> communicatieMiddelen)
-        {
-            throw new NotImplementedException();
         }
 
         public void FunctiesUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<FunctieEnum> functies)
