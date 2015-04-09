@@ -192,15 +192,14 @@ namespace Chiro.Gap.Services
 
         /// <summary>
         /// Neemt de alle gebruikersrechten van de gelieerde persoon met gegeven
-        /// <paramref name="gelieerdePersoonId"/> af voor de groepen met gegeven <paramref name="groepIds"/>
+        /// <paramref name="persoonID"/> af voor de groepen met gegeven <paramref name="groepIDs"/>
         /// </summary>
-        /// <param name="gelieerdePersoonId">Id van gelieerde persoon met af te nemen gebruikersrechten</param>
-        /// <param name="groepIds">Id's van groepen waarvoor gebruikersrecht afgenomen moet worden.</param>
+        /// <param name="persoonID">Id van persoon met af te nemen gebruikersrechten</param>
+        /// <param name="groepIDs">Id's van groepen waarvoor gebruikersrecht afgenomen moet worden.</param>
         /// <remarks>In praktijk gebeurt dit door de vervaldatum in het verleden te leggen.</remarks>
-        public void RechtenAfnemen(int gelieerdePersoonId, int[] groepIds)
+        public void RechtenAfnemen(int persoonID, int[] groepIDs)
         {
-            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonId);
-            var persoon = gelieerdePersoon.Persoon;
+            var persoon = _personenRepo.ByID(persoonID);
             Gav.Check(persoon);
 
             if (persoon == null)
@@ -210,7 +209,7 @@ namespace Chiro.Gap.Services
 
             var teExpirenRechten =
                 (from g in persoon.GebruikersRechtV2
-                    where (g.VervalDatum == null || g.VervalDatum >= DateTime.Today) && groepIds.Contains(g.Groep.ID)
+                    where (g.VervalDatum == null || g.VervalDatum >= DateTime.Today) && groepIDs.Contains(g.Groep.ID)
                     select g).ToList();
 
             foreach (var gr in teExpirenRechten)

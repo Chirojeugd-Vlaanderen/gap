@@ -57,8 +57,8 @@
                 if (Model.GebruikersDetails.Count() > 1)
                 {
 %>
-              <%= Html.ActionLink("Afnemen", "Intrekken", new { id = gebr.GelieerdePersoonID })%>
-              <%= Html.ActionLink("Bewerken", "Bewerken", new { id = gebr.GelieerdePersoonID })%>
+              <%= Html.ActionLink("Afnemen", "Intrekken", new { id = gebr.PersoonID })%>
+              <%= Html.ActionLink("Bewerken", "Bewerken", new { id = gebr.PersoonID })%>
             <% } %>
         </td>
     </tr>

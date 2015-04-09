@@ -51,15 +51,15 @@ namespace Chiro.Gap.ServiceContracts
 
         /// <summary>
         /// Neemt de alle gebruikersrechten van de gelieerde persoon met gegeven
-        /// <paramref name="gelieerdePersoonID"/> af voor de groepen met gegeven <paramref name="groepIDs"/>
+        /// <paramref name="persoonID"/> af voor de groepen met gegeven <paramref name="groepIds"/>
         /// </summary>
-        /// <param name="gelieerdePersoonID">ID van gelieerde persoon met af te nemen gebruikersrechten</param>
-        /// <param name="groepIDs">ID's van groepen waarvoor gebruikersrecht afgenomen moet worden.</param>
+        /// <param name="persoonID">Id van persoon met af te nemen gebruikersrechten</param>
+        /// <param name="groepIDs">Id's van groepen waarvoor gebruikersrecht afgenomen moet worden.</param>
         /// <remarks>In praktijk gebeurt dit door de vervaldatum in het verleden te leggen.</remarks>
         [OperationContract]
         [FaultContract(typeof (GapFault))]
         [FaultContract(typeof (FoutNummerFault))]
-        void RechtenAfnemen(int gelieerdePersoonID, int[] groepIDs);
+        void RechtenAfnemen(int persoonID, int[] groepIDs);
 
         /// <summary>
         /// Levert een redirection-url op naar de site van de verzekeraar

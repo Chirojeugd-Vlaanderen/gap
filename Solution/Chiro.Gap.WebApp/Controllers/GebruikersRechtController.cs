@@ -61,7 +61,10 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <returns>Redirect naar personenfiche</returns>
         public ActionResult VanGpAfnemen(int groepID, int id)
         {
-            ServiceHelper.CallService<IGebruikersService>(svc => svc.RechtenAfnemen(id, new[] {groepID}));
+            // Bepaal PersoonID.
+            var persoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.PersoonIDGet(id));
+
+            ServiceHelper.CallService<IGebruikersService>(svc => svc.RechtenAfnemen(persoonID, new[] {groepID}));
             return RedirectToAction("Bewerken", new { Controller = "Personen", id });
         }
 
@@ -103,11 +106,11 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
-        /// Ontneemt de user met GelieerdePersoonID <paramref name="id"/> alle rechten op de groep met
+        /// Ontneemt de user met PersoonID <paramref name="id"/> alle rechten op de groep met
         /// gegeven <paramref name="groepID"/>
         /// </summary>
         /// <param name="groepID">groepID van groep waarop de user geen gebruikersrechten meer mag hebben</param>
-        /// <param name="id">GelieerdePersoonID van user die geen gebruikersrechten meer mag hebben op
+        /// <param name="id">PersoonID van user die geen gebruikersrechten meer mag hebben op
         /// gegeven groep</param>
         /// <returns>Een redirect naar het gebruikersrechtenoverzicht</returns>
         public ActionResult Intrekken(int groepID, int id)

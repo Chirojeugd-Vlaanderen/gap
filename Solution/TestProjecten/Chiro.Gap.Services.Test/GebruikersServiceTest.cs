@@ -178,8 +178,8 @@ namespace Chiro.Gap.Services.Test
             gelieerdePersoon.Persoon.GebruikersRechtV2.Add(gr);
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
-            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Persoon>())
+                .Returns(new DummyRepo<Persoon>(new List<Persoon> { gelieerdePersoon.Persoon }));
             repositoryProviderMock.Setup(src => src.RepositoryGet<GebruikersRechtV2>())
                 .Returns(new DummyRepo<GebruikersRechtV2>(new List<GebruikersRechtV2> { gr }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
@@ -187,7 +187,46 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<GebruikersService>();
-            target.RechtenAfnemen(gelieerdePersoon.ID, new[] {gelieerdePersoon.Groep.ID});
+            target.RechtenAfnemen(gelieerdePersoon.Persoon.ID, new[] {gelieerdePersoon.Groep.ID});
+
+            // ASSERT
+
+            Assert.IsTrue(gr.VervalDatum <= DateTime.Now);
+        }
+
+        /// <summary>
+        ///A test for RechtenAfnemen
+        ///</summary>
+        [TestMethod()]
+        public void RechtenAfnemenPermissiesTest()
+        {
+            // ARRANGE
+
+            var gr = new GebruikersRechtV2();
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Groep = new ChiroGroep { ID = 3 },
+                Persoon = new Persoon { ID = 2, GebruikersRechtV2 = new List<GebruikersRechtV2> { gr } }
+            };
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+
+            gr.Groep = gelieerdePersoon.Groep;
+            gr.Persoon = gelieerdePersoon.Persoon;
+            gelieerdePersoon.Persoon.GebruikersRechtV2.Add(gr);
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Persoon>())
+                .Returns(new DummyRepo<Persoon>(new List<Persoon> { gelieerdePersoon.Persoon }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GebruikersRechtV2>())
+                .Returns(new DummyRepo<GebruikersRechtV2>(new List<GebruikersRechtV2> { gr }));
+
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GebruikersService>();
+            target.RechtenAfnemen(gelieerdePersoon.Persoon.ID, new[] { gelieerdePersoon.Groep.ID });
 
             // ASSERT
 
