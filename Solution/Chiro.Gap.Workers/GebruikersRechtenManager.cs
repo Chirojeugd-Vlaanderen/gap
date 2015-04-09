@@ -134,8 +134,15 @@ namespace Chiro.Gap.Workers
         public void ToekennenOfWijzigen(Persoon persoon, Groep groep, Permissies persoonlijkeGegevens, Permissies groepsGegevens,
             Permissies personenInAfdeling, Permissies personenInGroep)
         {
-            var gebruikersRecht = persoon.GebruikersRechtV2.FirstOrDefault(gr => gr.Groep.Equals(groep)) ??
-                                  new GebruikersRechtV2 {Groep = groep, Persoon = persoon};
+            var gebruikersRecht = persoon.GebruikersRechtV2.FirstOrDefault(gr => gr.Groep.Equals(groep));
+
+            if (gebruikersRecht == null)
+            {
+                gebruikersRecht = new GebruikersRechtV2 { Groep = groep, Persoon = persoon };
+                groep.GebruikersRechtV2.Add(gebruikersRecht);
+                persoon.GebruikersRechtV2.Add(gebruikersRecht);
+            }
+
             gebruikersRecht.PersoonsPermissies |= persoonlijkeGegevens;
             gebruikersRecht.GroepsPermissies |= groepsGegevens;
             gebruikersRecht.AfdelingsPermissies |= personenInAfdeling;
