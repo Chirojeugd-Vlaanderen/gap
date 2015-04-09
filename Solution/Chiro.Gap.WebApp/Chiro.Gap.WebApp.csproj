@@ -141,6 +141,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HtmlHelpers\InfoLinkHelper.cs" />
+    <Compile Include="HtmlHelpers\PermissieHelper.cs" />
     <Compile Include="HtmlHelpers\RadioButtonListHelper.cs" />
     <Compile Include="HtmlHelpers\PersoonsLinkHelper.cs" />
     <Compile Include="HtmlHelpers\PrintLijstHelper.cs" />
