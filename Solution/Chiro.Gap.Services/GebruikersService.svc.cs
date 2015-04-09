@@ -200,40 +200,22 @@ namespace Chiro.Gap.Services
         public void RechtenAfnemen(int gelieerdePersoonId, int[] groepIds)
         {
             var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonId);
-            Gav.Check(gelieerdePersoon);
-
             var persoon = gelieerdePersoon.Persoon;
-            RechtenAfnemen(persoon, groepIds);
-        }
-
-        /// <summary>
-        /// Neemt de alle gebruikersrechten van de gelieerde persoon met gegeven
-        /// <paramref name="gelieerdePeroonID"/> af voor de groepen met gegeven <paramref name="groepIds"/>
-        /// </summary>
-        /// <param name="gelieerdePersoonID">GelieerdePersoonID van gelieerde persoon met af te nemen gebruikersrechten</param>
-        /// <param name="groepIds">Id's van groepen waarvoor gebruikersrecht afgenomen moet worden.</param>
-        /// <remarks>In praktijk gebeurt dit door de vervaldatum in het verleden te leggen.</remarks>
-        public void RechtenAfnemenGelieerdePersoon(int gelieerdePersoonID, int[] groepIds)
-        {
-            var persoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID).Persoon;
-            // RechtenAfnemen controleert de rechten.
-            RechtenAfnemen(persoon, groepIds);
-        }
-
-        private void RechtenAfnemen(Persoon persoon, IEnumerable<int> groepIds)
-        {
             Gav.Check(persoon);
+
             if (persoon == null)
             {
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            var vervallenrechten =
-                (from g in persoon.GebruikersRechtV2 where groepIds.Contains(g.Groep.ID) select g).ToList();
+            var teExpirenRechten =
+                (from g in persoon.GebruikersRechtV2
+                    where (g.VervalDatum == null || g.VervalDatum >= DateTime.Today) && groepIds.Contains(g.Groep.ID)
+                    select g).ToList();
 
-            foreach (var vervallenrecht in vervallenrechten)
+            foreach (var gr in teExpirenRechten)
             {
-                vervallenrecht.VervalDatum = DateTime.Today.AddDays(-1);
+                gr.VervalDatum = DateTime.Today.AddDays(-1);
             }
 
             _rechtenRepo.SaveChanges();

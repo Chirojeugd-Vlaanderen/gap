@@ -112,7 +112,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Intrekken(int groepID, int id)
         {
             ServiceHelper.CallService<IGebruikersService>(
-                gs => gs.RechtenAfnemenGelieerdePersoon(id, new[] {groepID}));
+                gs => gs.RechtenAfnemen(id, new[] {groepID}));
             return RedirectToAction("Index");
         }
 
