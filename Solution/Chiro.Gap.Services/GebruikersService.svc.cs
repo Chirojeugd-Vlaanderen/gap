@@ -293,7 +293,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="login">Login van een gebruiker.</param>
         /// <returns>Details van de gebruiker met gegeven <paramref name="login"/>.</returns>
-        public GebruikersDetail GebruikerOphalen(string login)
+        public GebruikersDetail GebruikerOphalenViaLogin(string login)
         {
             int? adNummer = _authenticatieMgr.AdNummerGet();
             if (adNummer == null)

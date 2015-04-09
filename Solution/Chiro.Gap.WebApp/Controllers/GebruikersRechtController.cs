@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Chiro.Cdf.ServiceHelper;
@@ -127,6 +128,23 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             ServiceHelper.CallService<IGebruikersService>(svc => svc.RechtenToekennen(id, null));
             return RedirectToAction("Bewerken", "Personen", new { groepID, id });
+        }
+
+        /// <summary>
+        /// Toont de view om de gebruikersrechten van de gelieerde persoon met gegeven gelieerdePersoonID
+        /// <paramref name="id"/> aan te passen.
+        /// </summary>
+        /// <param name="groepID">ID van de actieve groep in het GAP.</param>
+        /// <param name="id">GelieerdePersoonID van de gelieerde persoon waarvan de gebruikersrechten
+        /// aangepast moeten worden.</param>
+        /// <returns>Een view die toelaat om die gebruikersrechten aan te passen.</returns>
+        public ActionResult Bewerken(int groepID, int id)
+        {
+            var model = new GebruikersDetailModel();
+            BaseModelInit(model, groepID);
+
+            throw new NotImplementedException();
+            //model.Detail = ServiceHelper.CallService<IGebruikersService, GebruikersDetail>(svc => svc.GebruikerOphalen)
         }
     }
 }

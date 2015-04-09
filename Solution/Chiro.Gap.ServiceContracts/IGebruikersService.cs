@@ -78,6 +78,6 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
-        GebruikersDetail GebruikerOphalen(string login);
+        GebruikersDetail GebruikerOphalenViaLogin(string login);
     }
 }

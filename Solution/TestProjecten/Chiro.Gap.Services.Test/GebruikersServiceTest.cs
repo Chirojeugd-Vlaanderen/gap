@@ -228,7 +228,7 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<GebruikersService>();
-            target.GebruikerOphalen(mijnLogin);
+            target.GebruikerOphalenViaLogin(mijnLogin);
 
             // ASSERT
 
