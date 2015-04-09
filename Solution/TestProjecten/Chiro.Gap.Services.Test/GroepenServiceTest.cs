@@ -46,57 +46,19 @@ namespace Chiro.Gap.Services.Test
     [TestClass]
     public class GroepenServiceTest
     {
-        public GroepenServiceTest()
-        {
-        }
-
-
-        #region Additional test attributes
-
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-
-        #endregion
-
-
-
-        [ClassInitialize]
-        public static void InitialiseerTests(TestContext tc)
-        {
-            Factory.ContainerInit();
-        }
-
-        [ClassCleanup]
-        public static void AfsluitenTests()
-        {
-        }
-
-
         /// <summary>
         /// Deze functie zorgt ervoor dat de PrincipalPermissionAttributes op de service methods
         /// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
-        /// security
+        /// security.
+        /// 
+        /// Bovendien herinitialiseren we iedere keer de IOC-container, want daar wordt in
+        /// verschillende tests deftig mee geprutst.
         /// </summary>
         [TestInitialize]
         public void VoorElkeTest()
         {
+            Factory.ContainerInit();
+
             var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
             var roles = new[] {Properties.Settings.Default.TestSecurityGroep};
             var principal = new GenericPrincipal(identity, roles);
