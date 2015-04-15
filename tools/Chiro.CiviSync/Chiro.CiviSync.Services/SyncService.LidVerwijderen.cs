@@ -103,7 +103,7 @@ namespace Chiro.CiviSync.Services
                     stamNummer, details.Persoon.AdNummer, details.Persoon.ID);
             }
 
-            int? adNummer = AdNummerZoeken(details);
+            int? adNummer = _contactWorker.AdNummerZoeken(details);
 
             if (adNummer == null)
             {

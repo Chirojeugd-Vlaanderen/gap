@@ -21,6 +21,7 @@ using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Services.Test;
+using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -59,7 +60,7 @@ namespace Chiro.CiviSync.Workers.Test
             // zo'n goed idee. Maar voorlopig doe ik het zo dus ook in deze test.
 
             var serviceHelper = Factory.Maak<ServiceHelper>();
-            var contactHelper = new ContactWorker(serviceHelper);
+            var contactHelper = new ContactWorker(serviceHelper, new Mock<IMiniLog>().Object);
 
             // ACT
 

@@ -77,6 +77,10 @@
       <Project>{9B8B6ADD-3963-440B-B00C-54F476ED353A}</Project>
       <Name>Chiro.CiviSync.Workers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Log\Chiro.Gap.Log.csproj">
+      <Project>{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}</Project>
+      <Name>Chiro.Gap.Log</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.UpdateApi.Client\Chiro.Gap.UpdateApi.Client.csproj">
       <Project>{F1E20ACB-E9F6-4E25-8327-FA2AB35B86C8}</Project>
       <Name>Chiro.Gap.UpdateApi.Client</Name>

@@ -72,9 +72,6 @@ namespace Chiro.CiviSync.Services
             ContactWorker contactWorker, CommunicatieWorker communicatieWorker,
             IMiniLog log)
         {
-            // Het is op dit moment nog niet zo duidelijk waarvoor de helpers worden gebruikt.
-            // Sommige zijn onafhankelijk van de CiviCRM-API. Die injecteren we op dit moment.
-
             _serviceHelper = serviceHelper;
             _gapUpdateClient = gapUpdateClient;
             _relationshipLogic = relationshipLogic;

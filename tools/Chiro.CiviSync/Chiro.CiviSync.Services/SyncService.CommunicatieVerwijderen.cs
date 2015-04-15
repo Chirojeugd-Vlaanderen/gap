@@ -42,7 +42,7 @@ namespace Chiro.CiviSync.Services
         {
             if (persoon.AdNummer == null)
             {
-                persoon.AdNummer = AdNummerZoeken(persoon);
+                persoon.AdNummer = _contactWorker.AdNummerZoeken(persoon);
             }
 
             if (persoon.AdNummer == null)

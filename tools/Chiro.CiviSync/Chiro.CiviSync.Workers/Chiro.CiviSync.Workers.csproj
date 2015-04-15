@@ -62,6 +62,10 @@
       <Project>{3CCD93C2-0CB6-4562-B017-E2DF3F9AB0A4}</Project>
       <Name>Chiro.CiviSync.Logic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Log\Chiro.Gap.Log.csproj">
+      <Project>{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}</Project>
+      <Name>Chiro.Gap.Log</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

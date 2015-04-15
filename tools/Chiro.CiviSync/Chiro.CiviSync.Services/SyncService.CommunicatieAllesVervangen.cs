@@ -49,7 +49,7 @@ namespace Chiro.CiviSync.Services
             // één voor één moet gebeuren.
             if (persoon.AdNummer == null)
             {
-                persoon.AdNummer = AdNummerZoeken(persoon);
+                persoon.AdNummer = _contactWorker.AdNummerZoeken(persoon);
             }
 
             if (persoon.AdNummer == null)

@@ -32,7 +32,7 @@ namespace Chiro.CiviSync.Services.Test
     public class BivakContactBewarenTest
     {
         private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateClient> _updateHelperMock;
+        private Mock<IGapUpdateClient> _gapUpdateClientMock;
 
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int HuidigWerkJaar = 2014;
@@ -49,7 +49,7 @@ namespace Chiro.CiviSync.Services.Test
         [TestInitialize]
         public void InitializeTest()
         {
-            TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _updateHelperMock);
+            TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _gapUpdateClientMock);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Chiro.CiviSync.Services.Test
                 .Returns(Mapper.Map<Event, ApiResultValues<Event>>(bivak));
 
             // Verwacht dat het foute AD-nummer terug naar GAP gaat.
-            _updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
+            _gapUpdateClientMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
 
             // ACT
 
@@ -152,7 +152,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
+            _gapUpdateClientMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
         }
     }
 }

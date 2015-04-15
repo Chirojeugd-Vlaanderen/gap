@@ -68,7 +68,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SyncService.AdNummerZoeken.cs" />
     <Compile Include="SyncService.BivakBewaren.cs" />
     <Compile Include="SyncService.BivakPlaatsBewaren.cs" />
     <Compile Include="SyncService.BivakVerwijderen.cs" />
