@@ -32,7 +32,7 @@ namespace Chiro.CiviSync.Workers
     {
         private const string ContactIdCacheKey = "cid{0}";
 
-        private readonly ObjectCache _cache = new MemoryCache("HelperCache");
+        private static readonly ObjectCache Cache = new MemoryCache("HelperCache");
         private readonly ServiceHelper _serviceHelper;
         private string _apiKey;
         private string _siteKey;
@@ -83,7 +83,7 @@ namespace Chiro.CiviSync.Workers
         /// <remarks>This method uses caching to speed up things.</remarks>
         public int? ContactIdGet(string externalIdentifier)
         {
-            int? cid = (int?) _cache[String.Format(ContactIdCacheKey, externalIdentifier)];
+            int? cid = (int?) Cache[String.Format(ContactIdCacheKey, externalIdentifier)];
 
             if (cid != null) return cid;
             var result =
@@ -102,7 +102,7 @@ namespace Chiro.CiviSync.Workers
 
             cid = result.Id;
 
-            _cache.Set(String.Format(ContactIdCacheKey, externalIdentifier), cid,
+            Cache.Set(String.Format(ContactIdCacheKey, externalIdentifier), cid,
                 new CacheItemPolicy {SlidingExpiration = new TimeSpan(2, 0, 0, 0)});
             return cid;
         }
