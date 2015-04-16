@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using AutoMapper;
@@ -89,6 +90,8 @@ namespace Chiro.CiviSync.Services
             _bivakWorker.Configureren(Settings.Default.ApiKey, Settings.Default.SiteKey);
             _contactWorker.Configureren(_apiKey, _siteKey);
             _communicatieWorker.Configureren(_apiKey, _siteKey);
+
+            Debug.Assert(_gapUpdateClient != null);
         }
 
         /// <summary>
@@ -247,6 +250,14 @@ namespace Chiro.CiviSync.Services
         public void GroepUpdaten(Groep g)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Invalideer gecachete data.
+        /// </summary>
+        public void CacheInvalideren()
+        {
+            _contactWorker.CacheInvalideren();
         }
     }
 }

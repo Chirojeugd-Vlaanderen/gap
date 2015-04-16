@@ -172,5 +172,18 @@ namespace Chiro.CiviSync.Workers
 
             return (contact == null || contact.Id == 0) ? null : contact;
         }
+
+        /// <summary>
+        /// Invalideer alle gecachete data.
+        /// </summary>
+        public void CacheInvalideren()
+        {
+            // Dit is tamelijk omslachtig
+
+            foreach (var element in Cache)
+            {
+                Cache.Remove(element.Key);
+            }
+        }
     }
 }

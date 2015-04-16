@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using Chiro.CiviCrm.Api;
@@ -44,7 +45,7 @@ namespace Chiro.CiviSync.Services
         {
             Event bivak;
             string stamNr;
-            
+
             ValideerBivak(uitstapId, out bivak, out stamNr);
             if (bivak == null)
             {
@@ -59,6 +60,12 @@ namespace Chiro.CiviSync.Services
 			            "Kan contact voor bivak met GAP-uitstapID {1} van {2} niet vastleggen: onbestaand AD-nummer {0} terug naar GAP.",
 			            adNummer, uitstapId, stamNr),
 			        stamNr, null, null);
+
+                Debug.Assert(_gapUpdateClient != null);
+                // Bij het debuggen van de ContactBewarenOngeldigAdNummer unit test krijg je 
+                // hieronder wel eens een null-dink-exception. Maar ik denk dat dat eerder
+                // een issue met Visual Studio is, aangezien de assert hierboven waarschijnlijk
+                // geen problemen gaf.
                 await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
                 return;
             }

@@ -147,6 +147,7 @@ namespace Chiro.CiviSync.Services.Test
             // ACT
 
             var service = Factory.Maak<SyncService>();
+            service.CacheInvalideren();
             service.BivakContactBewaren(uitstapId, adNummer);
 
             // ASSERT
