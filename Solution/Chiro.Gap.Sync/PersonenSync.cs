@@ -46,13 +46,15 @@ namespace Chiro.Gap.Sync
         public PersonenSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
 
 		/// <summary>
-		/// Stuurt de persoonsgegevens, samen met eventueel adressen en/of communicatie, naar Kipadmin
+		/// Updatet een bestaand persoon in Kipadmin: persoonsgegevens, en eventueel ook adressen en/of communicatie.
+		/// 
 		/// </summary>
 		/// <param name="gp">Gelieerde persoon, persoonsinfo</param>
 		/// <param name="metStandaardAdres">Stuurt ook het standaardadres mee (moet dan wel gekoppeld zijn)</param>
 		/// <param name="metCommunicatie">Stuurt ook communicatie mee.  Hiervoor wordt expliciet alle
 		/// communicatie-info opgehaald, omdat de workers typisch niet toestaan dat de gebruiker alle
 		/// communicatie ophaalt.</param>
+		/// <remarks>Enkel voor het wijzigen van bestaande personen!</remarks>
 		public void Bewaren(GelieerdePersoon gp, bool metStandaardAdres, bool metCommunicatie)
 		{
 			// Wijzigingen van personen met ad-nummer worden doorgesluisd

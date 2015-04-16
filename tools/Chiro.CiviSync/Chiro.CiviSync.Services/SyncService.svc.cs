@@ -92,35 +92,6 @@ namespace Chiro.CiviSync.Services
         }
 
         /// <summary>
-        /// Updatet de persoonsgegevens van <paramref name="persoon"/> in CiviCRM
-        /// </summary>
-        /// <param name="persoon">Persoon wiens gegevens te updaten zijn</param>
-        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void PersoonUpdaten(Persoon persoon)
-        {
-            // TODO: personen met AD-nummer in aanvraag
-
-            // Ik map de persoon naar een ContactRequest.
-            var request = Mapper.Map<Persoon, ContactRequest>(persoon);
-            request.ApiOptions = new ApiOptions { Match = "external_identifier" };
-
-            var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.ContactSave(
-                _apiKey,
-                _siteKey,
-                request));
-
-            result.AssertValid();
-
-            _log.Loggen(
-                Niveau.Info,
-                String.Format("Contact {0} {1} bewaard (gid {3}, AD {2}).", persoon.VoorNaam, persoon.Naam,
-                    persoon.AdNummer, result.Id),
-                null,
-                persoon.AdNummer,
-                persoon.ID);
-        }
-
-        /// <summary>
         /// Maakt het gegeven <paramref name="adres"/> het standaardadres van de gegeven <paramref name="bewoners"/>.
         /// Als het adres al bestond voor de gegeven bewoner, dan wordt het bestaande adres het standaardadres.
         /// Zo niet, wordt een nieuw adres als standaardadres gekoppeld, en het oude voorkeursadres verwijderd.
