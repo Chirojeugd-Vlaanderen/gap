@@ -277,6 +277,9 @@ namespace Chiro.CiviSync.Services.Test
         }
 
 
+        /// <summary>
+        /// Doet 'PersoonUpdaten' een ContactSave op de API?
+        /// </summary>
         [TestMethod]
         public void PersoonUpdaten()
         {
@@ -310,6 +313,61 @@ namespace Chiro.CiviSync.Services.Test
             service.PersoonUpdaten(new Persoon
             {
                 AdNummer = adNummer,
+                GeboorteDatum = new DateTime(1977, 03, 08)
+            });
+
+            // ASSERT
+
+            _civiApiMock.Verify(
+                src =>
+                    src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)),
+                Times.AtLeastOnce);
+        }
+
+        /// <summary>
+        /// Werkt PersoonUpdaten ook als het GAP geen AD-nummer kent? (#3684)
+        /// </summary>
+        [TestMethod]
+        public void PersoonUpdatenZonderAd()
+        {
+            // ARRANGE
+
+            const int adNummer = 2;
+            var persoon = new Contact
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3
+            };
+
+            _civiApiMock.Setup(
+                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.Is<ContactRequest>(r => r.GapId == persoon.GapId)))
+                .Returns(persoon);
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.GapId == persoon.GapId)))
+                .Returns(Mapper.Map<Contact, ApiResultValues<Contact>>(persoon));
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
+                .Returns(
+                    (string key1, string key2, ContactRequest request) =>
+                        Mapper.Map<ContactRequest, ApiResultValues<Contact>>(request))
+                .Verifiable();
+
+            var service = Factory.Maak<SyncService>();
+
+            // ACT
+
+            Assert.IsNotNull(persoon.GapId);
+            service.PersoonUpdaten(new Persoon
+            {
+                AdNummer = null,
+                ID = persoon.GapId.Value,
                 GeboorteDatum = new DateTime(1977, 03, 08)
             });
 
