@@ -69,5 +69,44 @@ namespace Chiro.CiviSync.Workers.Test
 
             Assert.IsNull(result);
         }
+
+        /// <summary>
+        /// Workers worden per call opnieuw geinstantieerd. Als er een nieuwe ContactWorker
+        /// wordt gemaakt, dan is het de bedoeling dat dezelfde cache blijft gebruiken.
+        /// </summary>
+        [TestMethod]
+        public void AdNrCiviIdCacheTest()
+        {
+            // ARRANGE
+
+            var myContact = new Contact
+            {
+                Id = 1,
+                FirstName = "Johan",
+                LastName = "Vervloet",
+                ExternalIdentifier = "2"
+            };
+
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == myContact.ExternalIdentifier)))
+                .Returns(myContact).Verifiable();
+
+            var contactWorker1 = Factory.Maak<ContactWorker>(); 
+            var contactWorker2 = Factory.Maak<ContactWorker>();
+
+            // ACT
+
+            // vraag twee keer op, via aparte worker
+            int? civiId1 = contactWorker1.ContactIdGet(myContact.ExternalIdentifier);
+            int? civiId2 = contactWorker2.ContactIdGet(myContact.ExternalIdentifier);
+
+            // ASSERT
+
+            _civiApiMock.Verify(src =>
+                src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                    It.Is<ContactRequest>(r => r.ExternalIdentifier == myContact.ExternalIdentifier)), Times.Exactly(1));
+        }
     }
 }
