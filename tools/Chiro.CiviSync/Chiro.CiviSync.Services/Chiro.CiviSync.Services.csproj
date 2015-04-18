@@ -80,6 +80,7 @@
     <Compile Include="SyncService.MembershipBewaren.cs" />
     <Compile Include="SyncService.PersoonBewaren.cs" />
     <Compile Include="SyncService.PersoonUpdaten.cs" />
+    <Compile Include="SyncService.StandaardAdresBewaren.cs" />
     <Compile Include="SyncService.svc.cs">
       <DependentUpon>SyncService.svc</DependentUpon>
     </Compile>
