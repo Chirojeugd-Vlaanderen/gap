@@ -38,6 +38,14 @@ namespace Chiro.CiviSync.Services
             if (persoon.AdNummer == null)
             {
                 persoon.AdNummer = _contactWorker.AdNummerZoeken(persoon);
+
+                if (persoon.AdNummer == null)
+                {
+                    _log.Loggen(Niveau.Error,
+                        String.Format("Update voor onbekend persoon {0} (id {1}) genegeerd.", persoon, persoon.ID), null, null,
+                        persoon.ID);
+                    return;
+                }
             }
 
             // Ik map de persoon naar een ContactRequest.
