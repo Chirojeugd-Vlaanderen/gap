@@ -23,6 +23,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Mapping;
+using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -378,6 +379,54 @@ namespace Chiro.CiviSync.Services.Test
                     src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)),
                 Times.AtLeastOnce);
+        }
+
+        /// <summary>
+        /// PersoonUpdaten voor een onbekend persoon moet een error loggen. (#3684)
+        /// </summary>
+        [TestMethod]
+        public void PersoonUpdatenOnbekend()
+        {
+            // ARRANGE
+
+            // De API levert niets op:
+            _civiApiMock.Setup(
+                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(new Contact());
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.IsAny<ContactRequest>()))
+                .Returns(new ApiResultValues<Contact>());
+
+            // Bewaren verifiable maken, zodat we kunnen controleren dat het niet gebeurt.
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.IsAny<ContactRequest>()))
+                .Returns(
+                    (string key1, string key2, ContactRequest request) =>
+                        Mapper.Map<ContactRequest, ApiResultValues<Contact>>(request))
+                .Verifiable();
+
+            var service = Factory.Maak<SyncService>();
+
+            // ACT
+
+            service.PersoonUpdaten(new Persoon
+            {
+                AdNummer = null,
+                ID = 1,
+                GeboorteDatum = new DateTime(1977, 03, 08)
+            });
+
+            // ASSERT
+
+            _civiApiMock.Verify(
+                src =>
+                    src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.IsAny<ContactRequest>()),
+                Times.Never);
         }
 
         private ApiResultValues<Contact> SomeSaveResult(ContactRequest contactRequest)
