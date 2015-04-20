@@ -85,7 +85,7 @@
             <div id="settingsmenu">
                 <ul>
                     <li>Aangemeld als <% =HttpContext.Current.User.Identity.Name %></li>
-                    <li>[<a href="https://extranet.chiro.be/Gebruiker" title="Je wachtwoord veranderen">Wachtwoord wijzigen</a>]</li>
+                    <li>[<a href="https://login.chiro.be/" title="Je wachtwoord veranderen">Wachtwoord wijzigen</a>]</li>
                     <asp:ContentPlaceHolder ID="settingsitems" runat="server" />
                 </ul>
             </div>

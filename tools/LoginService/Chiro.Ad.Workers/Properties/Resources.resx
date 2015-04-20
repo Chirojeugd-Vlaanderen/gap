@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountMailAfsluiting" xml:space="preserve">
-    <value>Op https://extranet.chiro.be/gebruiker kun je je wachtwoord veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen, en je ziet er tot welke online diensten van Chirojeugd Vlaanderen je toegang hebt.
+    <value>Op https://login.chiro.be/ kun je je wachtwoord veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen.
 
 Groeten
 De Chirohelpdesk (Helpdesk@chiro.be)</value>
@@ -126,14 +126,14 @@ De Chirohelpdesk (Helpdesk@chiro.be)</value>
   <data name="AccountUitbreidingMailAanhef" xml:space="preserve">
     <value>Dag {0}
 
-Je had al een login voor het extranet van de Chiro. Vanaf nu kun je er nog iets meer mee doen. Ben je je loginnaam en/of wachtwoord vergeten? Die gegevens kun je opvragen op https://extranet.chiro.be/wachtwoordvergeten.</value>
+Je had al een login voor het extranet van de Chiro. Vanaf nu kun je er nog iets meer mee doen. Ben je je loginnaam en/of wachtwoord vergeten? Die gegevens kun je opvragen op https://login.chiro.be/.</value>
   </data>
   <data name="GapAccountInfoMail" xml:space="preserve">
     <value>Dag {0}
 
 Je account voor de groepsadministratie (GAP) is aangemaakt. Je vindt dat op https://gap.chiro.be/ (vergeet de 's' niet in 'https'!).
 
-Hieronder vind je een voorlopig wachtwoord. Op https://extranet.chiro.be/Gebruiker kun je dat veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen, en je ziet er tot welke online diensten van Chirojeugd Vlaanderen je toegang hebt.
+Hieronder vind je een voorlopig wachtwoord. Op https://login.chiro.be/ kun je dat veranderen in iets dat makkelijker te onthouden is. Je kunt er ook je mailadres aanpassen.
 
   Login: {1}
   Wachtwoord: {2}
