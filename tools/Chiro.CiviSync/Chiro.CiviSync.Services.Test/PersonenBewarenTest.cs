@@ -429,6 +429,46 @@ namespace Chiro.CiviSync.Services.Test
                 Times.Never);
         }
 
+        /// <summary>
+        /// PersoonUpdaten voor een persoon met fout AD-nummer (#3688)
+        /// </summary>
+        [TestMethod]
+        public void PersoonUpdatenFoutAd()
+        {
+            // ARRANGE
+
+            // Zo gezegd ongeldig AD-nummer
+            const int adNummer = 1;
+
+            // De API levert niets op:
+            _civiApiMock.Setup(
+                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(new Contact());
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.IsAny<ContactRequest>()))
+                .Returns(new ApiResultValues<Contact>());
+
+            // We mocken ook GapUpdateClient.
+            _updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
+
+            var service = Factory.Maak<SyncService>();
+
+            // ACT
+
+            service.PersoonUpdaten(new Persoon
+            {
+                AdNummer = adNummer,
+                ID = 1,
+                GeboorteDatum = new DateTime(1977, 03, 08)
+            });
+
+            // ASSERT
+
+            _updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
+        }
+
         private ApiResultValues<Contact> SomeSaveResult(ContactRequest contactRequest)
         {
             return new ApiResultValues<Contact>
