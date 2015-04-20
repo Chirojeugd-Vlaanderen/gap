@@ -15,19 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
-using Chiro.Cdf.Ioc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Cdf.Mailer;
 
+using System;
+using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Mailer;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // Unit tests zonder veel structuur.  Achteraf op te kuisen.
+// Makkelijkste is om de loginservice te runnen vanuit 1 Visual Studio instance, en deze tests vanuit
+// een andere.
 
-
-namespace DommeTests.cs
+namespace Chiro.Ad.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class MailTest
     {
         [TestMethod]
         public void MailNaarGmail()
@@ -36,7 +37,7 @@ namespace DommeTests.cs
 
             IMailer mailer = Factory.Maak<IMailer>();
 
-            var resultaat = mailer.Verzenden("woordje.nederlands@gmail.com", "unit test " + DateTime.Now, "unit test");
+            var resultaat = mailer.Verzenden("johan.vervloet@chiro.be", "unit test " + DateTime.Now, "unit test");
 
             Assert.IsTrue(resultaat);
         }
@@ -48,7 +49,7 @@ namespace DommeTests.cs
 
             IMailer mailer = Factory.Maak<IMailer>();
 
-            var resultaat = mailer.Verzenden("woordje.nederlands@gmail.com", "unit test " + DateTime.Now, "unit test");
+            var resultaat = mailer.Verzenden("johan.vervloet@gmail.com", "unit test " + DateTime.Now, "unit test");
 
             Assert.IsTrue(resultaat);
         }
