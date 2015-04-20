@@ -83,7 +83,6 @@ namespace Chiro.CiviSync.Logic
             {
                 ContactId = contactId,
                 JoinDate = vandaag,
-                StartDate = beginWerkjaar,
                 EndDate = eindeWerkJaar,
                 MembershipTypeId = (int) type,
             };
@@ -91,10 +90,18 @@ namespace Chiro.CiviSync.Logic
             if (vandaag < result.StartDate)
             {
                 result.Status = MembershipStatus.Pending;
+                result.StartDate = beginWerkjaar;
             }
-            if (vandaag > result.EndDate)
+            else if (vandaag > result.EndDate)
             {
                 result.Status = MembershipStatus.Expired;
+                result.StartDate = eindeWerkJaar;
+            }
+            else
+            {
+                // We bewaren hier enkel de datum (geen tijd), om rariteiten te vermijden als de
+                // startdatum op de laatste dag van het werkjaar is.
+                result.StartDate = vandaag.Date;
             }
 
             return result;

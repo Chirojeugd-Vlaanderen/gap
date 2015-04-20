@@ -45,5 +45,16 @@ namespace Chiro.CiviSync.Logic.Test
             var result = target.VanWerkjaar(MembershipType.Aansluiting, 4, 2014);
             Assert.AreEqual(result.StartDate, VandaagZogezegd);
         }
+
+        /// <summary>
+        /// Controleert de begindatum van een membership van een werkjaar dat al voorbij is. (Zie #3417)
+        /// </summary>
+        [TestMethod]
+        public void MembershipVanVorigWerkjaarBeginDatum()
+        {
+            var target = Factory.Maak<MembershipLogic>();
+            var result = target.VanWerkjaar(MembershipType.Aansluiting, 4, 2013);
+            Assert.AreEqual(result.StartDate, result.EndDate);
+        }
     }
 }
