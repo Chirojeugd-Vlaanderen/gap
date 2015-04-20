@@ -60,12 +60,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Solution\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
-      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
-      <Name>Chiro.Adf.ServiceModel</Name>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.ServiceModel\Chiro.Cdf.ServiceModel.csproj">
+      <Project>{174890f3-1f4c-4cfc-83a1-aa88f5748a67}</Project>
+      <Name>Chiro.Cdf.ServiceModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
-      <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
+      <Project>{d1e7bbdd-d833-4dc1-af39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>
   </ItemGroup>

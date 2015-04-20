@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -36,7 +36,7 @@ namespace DommeTests.cs
 
             IMailer mailer = Factory.Maak<IMailer>();
 
-            var resultaat = mailer.Verzenden("johan.vervloet@gmail.com", "unit test " + DateTime.Now.ToString(), "unit test");
+            var resultaat = mailer.Verzenden("woordje.nederlands@gmail.com", "unit test " + DateTime.Now, "unit test");
 
             Assert.IsTrue(resultaat);
         }
@@ -48,7 +48,7 @@ namespace DommeTests.cs
 
             IMailer mailer = Factory.Maak<IMailer>();
 
-            var resultaat = mailer.Verzenden("johan.vervloet@chiro.be", "unit test " + DateTime.Now.ToString(), "unit test");
+            var resultaat = mailer.Verzenden("woordje.nederlands@gmail.com", "unit test " + DateTime.Now, "unit test");
 
             Assert.IsTrue(resultaat);
         }

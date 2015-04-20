@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -15,11 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using Chiro.Adf.ServiceModel;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ServiceModel;
 
 using Chiro.Ad.ServiceContracts;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Ad.Test
 {
@@ -36,7 +37,8 @@ namespace Chiro.Ad.Test
         [ExpectedException(typeof(FaultException))]
         public void ServiceAanroepTest()
         {
-            ServiceHelper.CallService<IAdService, string>(client => client.GapLoginAanvragen(39198, "Johan", "Vervloet", "johan.vervloet@chiro"));
+            var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
+            serviceHelper.CallService<IAdService, string>(client => client.GapLoginAanvragen(39198, "Johan", "Vervloet", "johan.vervloet@chiro"));
         }
     }
 }
