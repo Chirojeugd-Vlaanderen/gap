@@ -49,6 +49,14 @@ namespace Chiro.CiviSync.Services
                 {
                     bewoner.Persoon.AdNummer = _contactWorker.AdNummerZoeken(bewoner.Persoon);
                 }
+                if (bewoner.Persoon.AdNummer == null)
+                {
+                    _log.Loggen(Niveau.Error,
+                        String.Format("Update voor onbekend persoon {0} (id {1}) genegeerd.", bewoner.Persoon,
+                            bewoner.Persoon.ID), null, null,
+                        bewoner.Persoon.ID);
+                    continue;
+                }
                 // Adressen ophalen via chaining :-)
                 var adNummer = bewoner.Persoon.AdNummer;
                 var civiContact = ServiceHelper.CallService<ICiviCrmApi, Contact>(svc => svc.ContactGetSingle(
