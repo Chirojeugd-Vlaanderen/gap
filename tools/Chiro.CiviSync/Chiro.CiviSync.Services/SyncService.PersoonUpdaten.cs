@@ -54,7 +54,7 @@ namespace Chiro.CiviSync.Services
 
             if (contactId == null)
             {
-                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor vervangen van communicatie - als dusdanig terug naar GAP.", persoon.AdNummer),
+                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor updaten persoonsinfo - als dusdanig terug naar GAP.", persoon.AdNummer),
                     null, persoon.AdNummer, null);
 
                 await _gapUpdateClient.OngeldigAdNaarGap(persoon.AdNummer.Value);

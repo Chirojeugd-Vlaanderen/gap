@@ -39,7 +39,7 @@ namespace Chiro.CiviSync.Services
         /// <param name="adres">Nieuw standaardadres van de gegeven <paramref name="bewoners"/></param>
         /// <param name="bewoners">Bewoners die het nieuw <paramref name="adres"/> krijgen</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners)
+        public async void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners)
         {
             var nieuwAdres = Mapper.Map<Adres, AddressRequest>(adres);
 
@@ -57,6 +57,21 @@ namespace Chiro.CiviSync.Services
                         bewoner.Persoon.ID);
                     continue;
                 }
+                // Controleer geldigheid van AD-nummer (#3688)
+                int? contactId = _contactWorker.ContactIdGet(bewoner.Persoon.AdNummer.Value);
+
+                if (contactId == null)
+                {
+                    _log.Loggen(Niveau.Error,
+                        String.Format(
+                            "Onbestaand AD-nummer {0} voor vervangen van adres - als dusdanig terug naar GAP.",
+                            bewoner.Persoon.AdNummer),
+                        null, bewoner.Persoon.AdNummer, null);
+
+                    await _gapUpdateClient.OngeldigAdNaarGap(bewoner.Persoon.AdNummer.Value);
+                    continue;
+                }
+
                 // Adressen ophalen via chaining :-)
                 var adNummer = bewoner.Persoon.AdNummer;
                 var civiContact = ServiceHelper.CallService<ICiviCrmApi, Contact>(svc => svc.ContactGetSingle(
