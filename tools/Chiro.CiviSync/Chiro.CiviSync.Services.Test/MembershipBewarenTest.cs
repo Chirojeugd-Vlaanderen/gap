@@ -100,7 +100,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(
                             r =>
-                                r.StartDate == beginDitWerkJaar && r.EndDate == eindeDitWerkJaar &&
+                                r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
                                 r.MembershipTypeId == (int) MembershipType.Aansluiting)), Times.AtLeastOnce);
         }
 
@@ -168,7 +168,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(
                             r =>
-                                r.StartDate == beginDitWerkJaar && r.EndDate == eindeDitWerkJaar &&
+                                r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
                                 r.JoinDate == oudMembership.JoinDate &&
                                 r.MembershipTypeId == (int)MembershipType.Aansluiting)), Times.AtLeastOnce);
         }
