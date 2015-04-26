@@ -101,11 +101,6 @@ namespace Chiro.CiviSync.Services
             throw new NotImplementedException();
         }
 
-        public void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<AfdelingEnum> afdelingen)
-        {
-            throw new NotImplementedException();
-        }
-
         public void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar)
         {
             throw new NotImplementedException();
@@ -127,6 +122,54 @@ namespace Chiro.CiviSync.Services
         public void CacheInvalideren()
         {
             _contactWorker.CacheInvalideren();
+        }
+
+        /// <summary>
+        /// Zoekt het Civi-ID (contact-ID) op op basis van de gegevens in <paramref name="persoon"/>.
+        /// </summary>
+        /// <param name="persoon">Persoon waarvoor we het Civi-ID zoeken.</param>
+        /// <param name="waarvoorNodig">Korte uitleg waarvoor het Civi-ID nodig is;
+        /// wordt gebruikt als er fouten gelogd moeten worden.</param>
+        /// <returns>Civi-ID van de opgegeven <paramref name="persoon"/>, of
+        /// <c>null</c> als dat niet gevonden werd.</returns>
+        /// <remarks>
+        /// Persoon is een beperkt datacontract. We hopen stiekem dat er een
+        /// AD-nummer of een GAP-ID is, op basis waarvan we de persoon makkelijk
+        /// kunnen vinden.
+        /// 
+        /// Deze functie staat wat raar in de SyncService, ik zou ze eerder in de
+        /// ContactWorker zetten. Maar dat vraagt dan wat geknoei om die updateClient
+        /// goed te krijgen.
+        /// 
+        /// Deze methode wordt enkel gebruikt voor methods waarvoor er geen aparte
+        /// variant bestaat met en zonder AD-nummer. Misschien kan ze dus op termijn
+        /// weg (zie #3711).
+        /// </remarks>
+        private int? CiviIdGet(Persoon persoon, string waarvoorNodig)
+        {
+            if (persoon.AdNummer == null)
+            {
+                persoon.AdNummer = _contactWorker.AdNummerZoeken(persoon);
+            }
+
+            if (persoon.AdNummer == null)
+            {
+                _log.Loggen(Niveau.Error,
+                    String.Format("{0}: persoon {1} niet gevonden.", waarvoorNodig, persoon),
+                    null, null, null);
+                return null;
+            }
+
+            int? contactId = _contactWorker.ContactIdGet(persoon.AdNummer.Value);
+
+            if (contactId != null) return contactId;
+
+            // Ongeldig AD moet terug naar GAP.
+            _log.Loggen(Niveau.Error, String.Format("{0}: Onbestaand AD-nummer {1} terug naar GAP.", waarvoorNodig, persoon),
+                null, persoon.AdNummer, null);
+
+            _gapUpdateClient.OngeldigAdNaarGap(persoon.AdNummer.Value);
+            return null;
         }
     }
 }

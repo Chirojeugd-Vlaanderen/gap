@@ -47,29 +47,9 @@ namespace Chiro.CiviSync.Services
         {
             // Verwijder eerst alle bestaande communicatie. Ik vermoed dat dat
             // één voor één moet gebeuren.
-            if (persoon.AdNummer == null)
-            {
-                persoon.AdNummer = _contactWorker.AdNummerZoeken(persoon);
-            }
 
-            if (persoon.AdNummer == null)
-            {
-                _log.Loggen(Niveau.Error,
-                    String.Format("Kan communicatie voor {0} niet bewaren; persoon niet gevonden.", persoon),
-                    null, null, null);
-                return;
-            }
-
-            int? contactId = _contactWorker.ContactIdGet(persoon.AdNummer.Value);
-
-            if (contactId == null)
-            {
-                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor vervangen van communicatie - als dusdanig terug naar GAP.", persoon.AdNummer),
-                    null, persoon.AdNummer, null);
-
-                await _gapUpdateClient.OngeldigAdNaarGap(persoon.AdNummer.Value);
-                return;
-            }
+            int? contactId = CiviIdGet(persoon, "Alle communicatie overnemen.");
+            if (contactId == null) return;
 
             _communicatieWorker.AlleTelefoonEnFaxVerwijderen(contactId.Value);
             _communicatieWorker.AlleEmailVerwijderen(contactId.Value);

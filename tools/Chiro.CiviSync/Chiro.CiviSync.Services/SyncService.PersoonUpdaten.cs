@@ -35,31 +35,8 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public async void PersoonUpdaten(Persoon persoon)
         {
-            if (persoon.AdNummer == null)
-            {
-                persoon.AdNummer = _contactWorker.AdNummerZoeken(persoon);
-
-                if (persoon.AdNummer == null)
-                {
-                    _log.Loggen(Niveau.Error,
-                        String.Format("Update voor onbekend persoon {0} (id {1}) genegeerd.", persoon, persoon.ID), null, null,
-                        persoon.ID);
-                    return;
-                }
-            }
-
-            // Controleer de geldigheid van het AD-nummer door het contact-ID op te vragen.
-            // (Dat is wat overkill, maar nodig voor #3688)
-            int? contactId = _contactWorker.ContactIdGet(persoon.AdNummer.Value);
-
-            if (contactId == null)
-            {
-                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor updaten persoonsinfo - als dusdanig terug naar GAP.", persoon.AdNummer),
-                    null, persoon.AdNummer, null);
-
-                await _gapUpdateClient.OngeldigAdNaarGap(persoon.AdNummer.Value);
-                return;
-            }
+            int? contactId = CiviIdGet(persoon, "Persoon updaten.");
+            if (contactId == null) return;
 
             // Ik map de persoon naar een ContactRequest.
             var request = Mapper.Map<Persoon, ContactRequest>(persoon);

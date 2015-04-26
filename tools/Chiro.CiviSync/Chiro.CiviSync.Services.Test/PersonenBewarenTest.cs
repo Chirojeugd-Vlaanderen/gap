@@ -289,6 +289,7 @@ namespace Chiro.CiviSync.Services.Test
             const int adNummer = 2;
             var persoon = new Contact
             {
+                Id = 4,
                 ExternalIdentifier = adNummer.ToString(),
                 FirstName = "Kees",
                 LastName = "Flodder",

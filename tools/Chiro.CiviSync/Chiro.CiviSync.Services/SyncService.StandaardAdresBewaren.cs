@@ -45,32 +45,8 @@ namespace Chiro.CiviSync.Services
 
             foreach (var bewoner in bewoners)
             {
-                if (bewoner.Persoon.AdNummer == null)
-                {
-                    bewoner.Persoon.AdNummer = _contactWorker.AdNummerZoeken(bewoner.Persoon);
-                }
-                if (bewoner.Persoon.AdNummer == null)
-                {
-                    _log.Loggen(Niveau.Error,
-                        String.Format("Update voor onbekend persoon {0} (id {1}) genegeerd.", bewoner.Persoon,
-                            bewoner.Persoon.ID), null, null,
-                        bewoner.Persoon.ID);
-                    continue;
-                }
-                // Controleer geldigheid van AD-nummer (#3688)
-                int? contactId = _contactWorker.ContactIdGet(bewoner.Persoon.AdNummer.Value);
-
-                if (contactId == null)
-                {
-                    _log.Loggen(Niveau.Error,
-                        String.Format(
-                            "Onbestaand AD-nummer {0} voor vervangen van adres - als dusdanig terug naar GAP.",
-                            bewoner.Persoon.AdNummer),
-                        null, bewoner.Persoon.AdNummer, null);
-
-                    await _gapUpdateClient.OngeldigAdNaarGap(bewoner.Persoon.AdNummer.Value);
-                    continue;
-                }
+                int? contactId = CiviIdGet(bewoner.Persoon, "Adres bewaren.");
+                if (contactId == null) continue;
 
                 // Adressen ophalen via chaining :-)
                 var adNummer = bewoner.Persoon.AdNummer;

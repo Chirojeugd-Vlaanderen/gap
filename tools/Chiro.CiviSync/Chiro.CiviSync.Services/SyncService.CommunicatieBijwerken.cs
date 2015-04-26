@@ -38,30 +38,8 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public async void CommunicatieBijwerken(Persoon persoon, string nummerBijTeWerken, CommunicatieMiddel communicatieMiddel)
         {
-            if (persoon.AdNummer == null)
-            {
-                persoon.AdNummer = _contactWorker.AdNummerZoeken(persoon);
-            }
-
-            if (persoon.AdNummer == null)
-            {
-                _log.Loggen(Niveau.Error,
-                    String.Format("Kan {0} {1} voor {2} niet bijwerken; persoon niet gevonden.", communicatieMiddel.Type,
-                        nummerBijTeWerken, persoon),
-                    null, null, null);
-                return;
-            }
-
-            int? contactId = _contactWorker.ContactIdGet(persoon.AdNummer.Value);
-
-            if (contactId == null)
-            {
-                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor bij te werken communicatie - als dusdanig terug naar GAP.", persoon.AdNummer),
-                    null, persoon.AdNummer, null);
-
-                await _gapUpdateClient.OngeldigAdNaarGap(persoon.AdNummer.Value);
-                return;
-            }
+            int? contactId = CiviIdGet(persoon, "Communicatie bijwerken.");
+            if (contactId == null) return;
 
             var teVervangen = new CommunicatieMiddel
             {
