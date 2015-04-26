@@ -95,6 +95,7 @@ namespace Chiro.CiviSync.Services
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                     svc => svc.ContactSave(_apiKey, _siteKey, contactRequest));
+            result.AssertValid();
 
             if (result.IsError == 0)
             {
