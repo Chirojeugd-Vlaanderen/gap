@@ -37,6 +37,30 @@ namespace Chiro.CiviSync.Logic
         }
 
         /// <summary>
+        /// Berekent de startdatum van het gegeven <paramref name="werkJaar"/>.
+        /// </summary>
+        /// <param name="werkJaar"></param>
+        /// <returns>De startdatum van het gegeven <paramref name="werkJaar"/>.</returns>
+        /// <remarks>Dit hoort mogelijk beter thuis in een aparte WerkJaarWorker.</remarks>
+        public DateTime WerkJaarStart(int werkJaar)
+        {
+            DateTime overgangDatum = Settings.Default.WerkjaarStart;
+            return new DateTime(werkJaar, overgangDatum.Month, overgangDatum.Day);
+        }
+
+        /// <summary>
+        /// Berekent de einddatum van het gegeven <paramref name="werkJaar"/>.
+        /// </summary>
+        /// <param name="werkJaar"></param>
+        /// <returns>Einddatum van het gegeven <paramref name="werkJaar"/></returns>
+        /// <remarks>Dit hoort mogelijk beter thuis in een aparte WerkJaarWorker.</remarks>
+        public DateTime WerkJaarEinde(int werkJaar)
+        {
+            DateTime overgangDatum = Settings.Default.WerkjaarStart;
+            return new DateTime(werkJaar + 1, overgangDatum.Month, overgangDatum.Day).AddDays(-1);
+        }
+
+        /// <summary>
         /// Levert het werkjaar van de gegeven relatie <paramref name="r"/> op. We bepalen
         /// een werkjaar aan de hand van het jaar waarin het start.
         /// </summary>
@@ -76,9 +100,8 @@ namespace Chiro.CiviSync.Logic
             // We bekijken de datums zonder uren, dus discrete dagen. De EndDate valt volledig binnen de
             // relationship.
 
-            DateTime overgangDatum = Settings.Default.WerkjaarStart;
-            DateTime beginWerkjaar = new DateTime(werkJaar, overgangDatum.Month, overgangDatum.Day);
-            DateTime eindeWerkJaar = new DateTime(werkJaar + 1, overgangDatum.Month, overgangDatum.Day).AddDays(-1);
+            DateTime beginWerkjaar = WerkJaarStart(werkJaar);
+            DateTime eindeWerkJaar = WerkJaarEinde(werkJaar);
             DateTime vandaag = _datumProvider.Vandaag();
 
             var result = new RelationshipRequest
@@ -86,7 +109,7 @@ namespace Chiro.CiviSync.Logic
                 ContactIdA = contact1Id,
                 ContactIdB = contact2Id,
                 StartDate = vandaag,
-                EndDate = new DateTime(werkJaar + 1, overgangDatum.Month, overgangDatum.Day).AddDays(-1),
+                EndDate = eindeWerkJaar,
                 RelationshipTypeId = (int)type,
             };
             // Als een inschrijving gebeurde voor het werkjaar begon, wordt de startdatum de eerste dag van het

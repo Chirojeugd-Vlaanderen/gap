@@ -252,7 +252,7 @@ namespace Chiro.Kip.ServiceContracts
         /// Er is in Kipadmin maar plaats voor 2 afdelingen/lid
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<AfdelingEnum> afdelingen);
+        void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, AfdelingEnum[] afdelingen);
 
         #endregion
 

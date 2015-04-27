@@ -196,11 +196,11 @@ namespace Chiro.Gap.Sync
             // TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
 
             Debug.Assert(chiroGroep != null);
-            List<AfdelingEnum> kipAfdelingen;
+            AfdelingEnum[] kipAfdelingen;
 
             if (lid is Kind)
             {
-                kipAfdelingen = new List<AfdelingEnum>
+                kipAfdelingen = new[]
                                     {
                                         _afdelingVertaling[
                                             (NationaleAfdeling)
@@ -213,7 +213,7 @@ namespace Chiro.Gap.Sync
                 Debug.Assert(leiding != null);
 
                 kipAfdelingen = (from aj in leiding.AfdelingsJaar
-                                 select _afdelingVertaling[(NationaleAfdeling)(aj.OfficieleAfdeling.ID)]).ToList();
+                                 select _afdelingVertaling[(NationaleAfdeling)(aj.OfficieleAfdeling.ID)]).ToArray();
             }
 
             ServiceHelper.CallService<ISyncPersoonService>(

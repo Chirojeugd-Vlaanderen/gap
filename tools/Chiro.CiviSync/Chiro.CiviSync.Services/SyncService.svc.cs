@@ -47,7 +47,9 @@ namespace Chiro.CiviSync.Services
         private readonly IGapUpdateClient _gapUpdateClient;
         private readonly RelationshipLogic _relationshipLogic;
         private readonly MembershipLogic _membershipLogic;
+
         private readonly ContactWorker _contactWorker;
+        private readonly LidWorker _lidWorker;
         private readonly BivakWorker _bivakWorker;
         private readonly CommunicatieWorker _communicatieWorker;
 
@@ -69,7 +71,7 @@ namespace Chiro.CiviSync.Services
         /// <param name="log">Logger</param>
         public SyncService(ServiceHelper serviceHelper, IGapUpdateClient gapUpdateClient,
             RelationshipLogic relationshipLogic, MembershipLogic membershipLogic, BivakWorker bivakWorker,
-            ContactWorker contactWorker, CommunicatieWorker communicatieWorker,
+            ContactWorker contactWorker, CommunicatieWorker communicatieWorker, LidWorker lidWorker,
             IMiniLog log)
         {
             _serviceHelper = serviceHelper;
@@ -79,6 +81,7 @@ namespace Chiro.CiviSync.Services
             _bivakWorker = bivakWorker;
             _contactWorker = contactWorker;
             _communicatieWorker = communicatieWorker;
+            _lidWorker = lidWorker;
             _log = log;
 
             // Configureer externe API's van GapUpdate en workers.
@@ -88,6 +91,7 @@ namespace Chiro.CiviSync.Services
             _bivakWorker.Configureren(_apiKey, _siteKey);
             _contactWorker.Configureren(_apiKey, _siteKey);
             _communicatieWorker.Configureren(_apiKey, _siteKey);
+            _lidWorker.Configureren(_apiKey, _siteKey);
 
             Debug.Assert(_gapUpdateClient != null);
         }

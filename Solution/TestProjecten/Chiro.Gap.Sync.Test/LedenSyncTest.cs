@@ -82,7 +82,7 @@ namespace Chiro.Gap.Sync.Test
             // ARRANGE
 
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Persoon>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<IEnumerable<AfdelingEnum>>())).Verifiable();
+            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Persoon>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<AfdelingEnum[]>())).Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             var lid = new Kind
