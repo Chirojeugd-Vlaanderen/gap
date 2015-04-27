@@ -32,41 +32,18 @@ namespace Chiro.CiviSync.Workers
     /// Contactgerelateerde methods die hopelijk interessant zijn voor de gebruikers
     /// van de CiviCRM-API.
     /// </summary>
-    public class ContactWorker
+    public class ContactWorker: BaseWorker
     {
         private const string ContactIdCacheKey = "cid{0}";
-
         private static readonly ObjectCache Cache = new MemoryCache("ContactWorkerCache");
-        private readonly ServiceHelper _serviceHelper;
-        private readonly IMiniLog _log;
-        private string _apiKey;
-        private string _siteKey;
-
-        protected ServiceHelper ServiceHelper
-        {
-            get { return _serviceHelper; }
-        }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serviceHelper">Helper to be used for WCF service calls</param>
         /// <param name="log">Logger</param>
-        public ContactWorker(ServiceHelper serviceHelper, IMiniLog log)
+        public ContactWorker(ServiceHelper serviceHelper, IMiniLog log): base(serviceHelper, log)
         {
-            _serviceHelper = serviceHelper;
-            _log = log;
-        }
-
-        /// <summary>
-        /// Configureer de keys voor API access.
-        /// </summary>
-        /// <param name="apiKey"></param>
-        /// <param name="siteKey"></param>
-        public void Configureren(string apiKey, string siteKey)
-        {
-            _apiKey = apiKey;
-            _siteKey = siteKey;
         }
 
         /// <summary>
@@ -96,7 +73,7 @@ namespace Chiro.CiviSync.Workers
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, Contact>(
                     svc =>
-                        svc.ContactGetSingle(_apiKey, _siteKey,
+                        svc.ContactGetSingle(ApiKey, SiteKey,
                             new ContactRequest {ExternalIdentifier = externalIdentifier, ReturnFields = "id"}));
 
             // GetSingle levert een 'leeg' contact-object als er niemand
@@ -123,6 +100,7 @@ namespace Chiro.CiviSync.Workers
         /// <returns>De persoon met gegeven <paramref name="adNummer"/> op, samen met zijn recentste
         /// lidrelatie in de groep met <paramref name="civiGroepId"/>. Als de persoon niet werd gevonden,
         /// wordt <c>null</c> opgeleverd.</returns>
+        /// <remarks>Dit zou beter werken op contact-ID ipv op adNummer. Zie #3717.</remarks>
         public Contact PersoonMetRecentsteLid(int adNummer, int? civiGroepId)
         {
             // Haal de persoon op met gegeven AD-nummer en zijn recentste lidrelatie in de gevraagde groep.
@@ -140,16 +118,12 @@ namespace Chiro.CiviSync.Workers
 
             var contact =
                 ServiceHelper.CallService<ICiviCrmApi, Contact>(
-                    svc => svc.ContactGetSingle(_apiKey, _siteKey, contactRequest));
+                    svc => svc.ContactGetSingle(ApiKey, SiteKey, contactRequest));
 
             // Elk contact heeft een ID verschillend van 0. 
             // Als het opgeleverd ID 0 is, wil dat zeggen
             // dat het contact niet gevonden is.
-            if (contact.Id == 0)
-            {
-                return null;
-            }
-            return contact;
+            return contact.Id == 0 ? null : contact;
         }
 
         /// <summary>
@@ -160,6 +134,7 @@ namespace Chiro.CiviSync.Workers
         /// <param name="type">gevraagde membership type</param>
         /// <returns>De persoon met gegeven <paramref name="adNummer"/> op, samen met zijn recentste
         /// membership van het gegeven <paramref name="type"/>.</returns>
+        /// <remarks>Dit zou beter werken op contact-ID ipv op adNummer. Zie #3717.</remarks>
         public Contact PersoonMetRecentsteMembership(int adNummer, MembershipType type)
         {
             // Haal de persoon op met gegeven AD-nummer en zijn recentste lidrelatie in de gevraagde groep.
@@ -175,7 +150,7 @@ namespace Chiro.CiviSync.Workers
 
             var contact =
                 ServiceHelper.CallService<ICiviCrmApi, Contact>(
-                    svc => svc.ContactGetSingle(_apiKey, _siteKey, contactRequest));
+                    svc => svc.ContactGetSingle(ApiKey, SiteKey, contactRequest));
 
             return (contact == null || contact.Id == 0) ? null : contact;
         }
@@ -193,6 +168,7 @@ namespace Chiro.CiviSync.Workers
             }
         }
         
+        /// <summary>
         /// Zoek het AD-nummer van een persoon die lijkt op een persoon met gegeven <paramref name="details"/>.
         /// De bedoeling is dat dit enkel wordt aangeroepen als het AD-nummer nog niet gekend of mogelijk
         /// ongeldig is.
@@ -221,7 +197,7 @@ namespace Chiro.CiviSync.Workers
                 };
                 var result =
                     ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
-                        svc => svc.ContactGet(_apiKey, _siteKey, request));
+                        svc => svc.ContactGet(ApiKey, SiteKey, request));
                 result.AssertValid();
                 if (result.Count >= 1)
                 {
@@ -229,7 +205,7 @@ namespace Chiro.CiviSync.Workers
                 }
 
                 // AD-nummer niet gevonden in Civi. Doe er iets mee.
-                _log.Loggen(Niveau.Error,
+                Log.Loggen(Niveau.Error,
                     String.Format("AD-nummer {0} van {1} {2} niet gevonden.", details.Persoon.AdNummer,
                         details.Persoon.VoorNaam, details.Persoon.Naam), null, details.Persoon.AdNummer,
                     details.Persoon.ID);
@@ -246,7 +222,7 @@ namespace Chiro.CiviSync.Workers
                 };
                 var result =
                     ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
-                        svc => svc.ContactGet(_apiKey, _siteKey, request));
+                        svc => svc.ContactGet(ApiKey, SiteKey, request));
                 result.AssertValid();
                 if (result.Count >= 1)
                 {
@@ -271,7 +247,7 @@ namespace Chiro.CiviSync.Workers
 
             var contactResult =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
-                    svc => svc.ContactGet(_apiKey, _siteKey, nameGenderRequest));
+                    svc => svc.ContactGet(ApiKey, SiteKey, nameGenderRequest));
 
             // Zoek op telefoonnummer of fax.
             var gevondenViaTelefoonNr =
@@ -375,7 +351,7 @@ namespace Chiro.CiviSync.Workers
                 };
                 var result =
                     ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
-                        svc => svc.ContactGet(_apiKey, _siteKey, request));
+                        svc => svc.ContactGet(ApiKey, SiteKey, request));
                 result.AssertValid();
                 if (result.Count >= 1)
                 {
@@ -383,7 +359,7 @@ namespace Chiro.CiviSync.Workers
                 }
 
                 // AD-nummer niet gevonden in Civi. Doe er iets mee.
-                _log.Loggen(Niveau.Error,
+                Log.Loggen(Niveau.Error,
                     String.Format("AD-nummer {0} van {1} {2} niet gevonden.", persoon.AdNummer,
                         persoon.VoorNaam, persoon.Naam), null, persoon.AdNummer,
                     persoon.ID);
@@ -400,7 +376,7 @@ namespace Chiro.CiviSync.Workers
                 };
                 var result =
                     ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
-                        svc => svc.ContactGet(_apiKey, _siteKey, request));
+                        svc => svc.ContactGet(ApiKey, SiteKey, request));
                 result.AssertValid();
                 if (result.Count >= 1)
                 {
@@ -421,7 +397,7 @@ namespace Chiro.CiviSync.Workers
 
             var contactResult =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
-                    svc => svc.ContactGet(_apiKey, _siteKey, nameGenderRequest));
+                    svc => svc.ContactGet(ApiKey, SiteKey, nameGenderRequest));
 
             contactResult.AssertValid();
             if (contactResult.Count == 0)
@@ -433,7 +409,7 @@ namespace Chiro.CiviSync.Workers
 
             if (contactResult.Count > 1)
             {
-                _log.Loggen(Niveau.Warning,
+                Log.Loggen(Niveau.Warning,
                     String.Format("Geen uniek AD-nummer gevonden voor {1} {2}, gebdat {3}. {0} gekozen.", adNr,
                         persoon.VoorNaam, persoon.Naam, persoon.GeboorteDatum), null, persoon.AdNummer,
                     persoon.ID);

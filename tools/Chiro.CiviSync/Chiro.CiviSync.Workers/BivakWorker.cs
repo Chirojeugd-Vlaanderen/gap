@@ -21,38 +21,19 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
+using Chiro.Gap.Log;
 
 namespace Chiro.CiviSync.Workers
 {
-    public class BivakWorker
+    public class BivakWorker: BaseWorker
     {
-        private readonly ServiceHelper _serviceHelper;
-        private string _apiKey;
-        private string _siteKey;
-
-        protected ServiceHelper ServiceHelper
-        {
-            get { return _serviceHelper; }
-        }
-
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serviceHelper">Helper to be used for WCF service calls</param>
-        public BivakWorker(ServiceHelper serviceHelper)
+        public BivakWorker(ServiceHelper serviceHelper, IMiniLog log)
+            : base(serviceHelper, log)
         {
-            _serviceHelper = serviceHelper;
-        }
-
-        /// <summary>
-        /// Configureer de keys voor API access.
-        /// </summary>
-        /// <param name="apiKey"></param>
-        /// <param name="siteKey"></param>
-        public void Configureren(string apiKey, string siteKey)
-        {
-            _apiKey = apiKey;
-            _siteKey = siteKey;
         }
 
         /// <summary>
@@ -65,7 +46,7 @@ namespace Chiro.CiviSync.Workers
         {
             var apiResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
                 svc =>
-                    svc.EventGet(_apiKey, _siteKey,
+                    svc.EventGet(ApiKey, SiteKey,
                         new EventRequest
                         {
                             EventTypeId = (int)EvenementType.Bivak,

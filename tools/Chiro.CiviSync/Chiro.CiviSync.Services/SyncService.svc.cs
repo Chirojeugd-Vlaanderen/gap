@@ -84,7 +84,8 @@ namespace Chiro.CiviSync.Services
             // Configureer externe API's van GapUpdate en workers.
             _gapUpdateClient.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath,
                 Settings.Default.GapUpdateUser, Settings.Default.GapUpdatePass);
-            _bivakWorker.Configureren(Settings.Default.ApiKey, Settings.Default.SiteKey);
+
+            _bivakWorker.Configureren(_apiKey, _siteKey);
             _contactWorker.Configureren(_apiKey, _siteKey);
             _communicatieWorker.Configureren(_apiKey, _siteKey);
 

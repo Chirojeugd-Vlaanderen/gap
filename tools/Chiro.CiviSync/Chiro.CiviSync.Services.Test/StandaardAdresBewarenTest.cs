@@ -40,8 +40,6 @@ namespace Chiro.CiviSync.Services.Test
         private Mock<ICiviCrmApi> _civiApiMock;
         private Mock<IGapUpdateClient> _updateHelperMock;
 
-        private static int _nextId = 1;
-
         [ClassInitialize]
         public static void InitialilzeTestClass(TestContext c)
         {

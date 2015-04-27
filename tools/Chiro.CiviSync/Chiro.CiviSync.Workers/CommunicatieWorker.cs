@@ -14,49 +14,26 @@
    limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
+using Chiro.Gap.Log;
 
 namespace Chiro.CiviSync.Workers
 {
-    public class CommunicatieWorker
+    public class CommunicatieWorker: BaseWorker
     {
-        private readonly ServiceHelper _serviceHelper;
-        private string _apiKey;
-        private string _siteKey;
-
-        protected ServiceHelper ServiceHelper
-        {
-            get { return _serviceHelper; }
-        }
-
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serviceHelper">Helper to be used for WCF service calls</param>
-        public CommunicatieWorker(ServiceHelper serviceHelper)
+        /// <param name="log">logger object</param>
+        public CommunicatieWorker(ServiceHelper serviceHelper, IMiniLog log) : base(serviceHelper, log)
         {
-            _serviceHelper = serviceHelper;
-        }
-
-        /// <summary>
-        /// Configureer de keys voor API access.
-        /// </summary>
-        /// <param name="apiKey"></param>
-        /// <param name="siteKey"></param>
-        public void Configureren(string apiKey, string siteKey)
-        {
-            _apiKey = apiKey;
-            _siteKey = siteKey;
         }
 
         /// <summary>
@@ -67,16 +44,13 @@ namespace Chiro.CiviSync.Workers
         {
             var alleEmail =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Email>>(
-                    svc => svc.EmailGet(_apiKey, _siteKey, new EmailRequest {ContactId = contactId}));
+                    svc => svc.EmailGet(ApiKey, SiteKey, new EmailRequest {ContactId = contactId}));
             alleEmail.AssertValid();
 
             // Verwijderen moet één voor één, denk ik.
-            foreach (var email in alleEmail.Values)
+            foreach (var deleteResult in alleEmail.Values.Select(email => email.Id).Select(emailId => ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                svc => svc.EmailDelete(ApiKey, SiteKey, new IdRequest(emailId)))))
             {
-                int emailId = email.Id;
-                var deleteResult =
-                    ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
-                        svc => svc.EmailDelete(_apiKey, _siteKey, new IdRequest(emailId)));
                 deleteResult.AssertValid();
             }
         }
@@ -89,16 +63,13 @@ namespace Chiro.CiviSync.Workers
         {
             var alles =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Phone>>(
-                    svc => svc.PhoneGet(_apiKey, _siteKey, new PhoneRequest { ContactId = contactId }));
+                    svc => svc.PhoneGet(ApiKey, SiteKey, new PhoneRequest { ContactId = contactId }));
             alles.AssertValid();
 
             // Verwijderen moet één voor één, denk ik.
-            foreach (var teVerwijderen in alles.Values)
+            foreach (var deleteResult in alles.Values.Select(teVerwijderen => teVerwijderen.Id).Select(id => ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                svc => svc.PhoneDelete(ApiKey, SiteKey, new IdRequest(id)))))
             {
-                int id = teVerwijderen.Id;
-                var deleteResult =
-                    ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
-                        svc => svc.PhoneDelete(_apiKey, _siteKey, new IdRequest(id)));
                 deleteResult.AssertValid();
             }
         }
@@ -111,16 +82,13 @@ namespace Chiro.CiviSync.Workers
         {
             var alles =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Website>>(
-                    svc => svc.WebsiteGet(_apiKey, _siteKey, new WebsiteRequest { ContactId = contactId }));
+                    svc => svc.WebsiteGet(ApiKey, SiteKey, new WebsiteRequest { ContactId = contactId }));
             alles.AssertValid();
 
             // Verwijderen moet één voor één, denk ik.
-            foreach (var teVerwijderen in alles.Values)
+            foreach (var deleteResult in alles.Values.Select(teVerwijderen => teVerwijderen.Id).Select(id => ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                svc => svc.WebsiteDelete(ApiKey, SiteKey, new IdRequest(id)))))
             {
-                int id = teVerwijderen.Id;
-                var deleteResult =
-                    ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
-                        svc => svc.WebsiteDelete(_apiKey, _siteKey, new IdRequest(id)));
                 deleteResult.AssertValid();
             }
         }
@@ -133,16 +101,13 @@ namespace Chiro.CiviSync.Workers
         {
             var alles =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Im>>(
-                    svc => svc.ImGet(_apiKey, _siteKey, new ImRequest { ContactId = contactId }));
+                    svc => svc.ImGet(ApiKey, SiteKey, new ImRequest { ContactId = contactId }));
             alles.AssertValid();
 
             // Verwijderen moet één voor één, denk ik.
-            foreach (var teVerwijderen in alles.Values)
+            foreach (var deleteResult in alles.Values.Select(teVerwijderen => teVerwijderen.Id).Select(id => ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                svc => svc.ImDelete(ApiKey, SiteKey, new IdRequest(id)))))
             {
-                int id = teVerwijderen.Id;
-                var deleteResult =
-                    ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
-                        svc => svc.ImDelete(_apiKey, _siteKey, new IdRequest(id)));
                 deleteResult.AssertValid();
             }
         }

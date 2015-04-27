@@ -40,9 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseWorker.cs" />
     <Compile Include="BivakWorker.cs" />
     <Compile Include="CommunicatieWorker.cs" />
     <Compile Include="ContactWorker.cs" />
+    <Compile Include="LidWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

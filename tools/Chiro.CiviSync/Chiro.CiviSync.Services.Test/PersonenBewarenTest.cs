@@ -338,6 +338,7 @@ namespace Chiro.CiviSync.Services.Test
             const int adNummer = 2;
             var persoon = new Contact
             {
+                Id = 4,
                 ExternalIdentifier = adNummer.ToString(),
                 FirstName = "Kees",
                 LastName = "Flodder",
@@ -345,7 +346,9 @@ namespace Chiro.CiviSync.Services.Test
             };
 
             _civiApiMock.Setup(
-                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.Is<ContactRequest>(r => r.GapId == persoon.GapId)))
+                src =>
+                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
                 .Returns(persoon);
             _civiApiMock.Setup(
                 src =>
