@@ -101,11 +101,6 @@ namespace Chiro.CiviSync.Services
             throw new NotImplementedException();
         }
 
-        public void LidTypeUpdaten(Persoon persoon, string stamNummer, int werkJaar, LidTypeEnum lidType)
-        {
-            throw new NotImplementedException();
-        }
-
         public void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar)
         {
             throw new NotImplementedException();
