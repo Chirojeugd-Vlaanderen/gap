@@ -94,9 +94,11 @@ namespace Chiro.CiviSync.Services.Test
                     src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<EventRequest>(r => r.OrganiserendePersoon1Id == persoonContactId))).Verifiable();
 
+            var service = Factory.Maak<SyncService>();
+            service.CacheInvalideren();
+
             // ACT
 
-            var service = Factory.Maak<SyncService>();
             service.BivakContactBewaren(uitstapId, adNummer);
 
             // ASSERT
