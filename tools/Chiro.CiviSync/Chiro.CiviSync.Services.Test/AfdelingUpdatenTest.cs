@@ -6,6 +6,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Mapping;
+using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -119,6 +120,87 @@ namespace Chiro.CiviSync.Services.Test
             _civiApiMock.Verify(
                 src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.Is<RelationshipRequest>(
                     r => r.Id == bestaandLid.Id && r.Afdeling == civiAfdeling)), Times.AtLeastOnce);
+        }
+
+        /// <summary>
+        /// Als het lid onbestaand is, mag het niet crashen (#3721).
+        /// </summary>
+        [TestMethod]
+        public void AfdelingenBijwerkenOnbestaandLidTest()
+        {
+            // ARRANGE
+
+            const int adNummer = 2;
+            const int werkJaar = 2014;
+
+            // Mock ook log
+            var logMock = new Mock<IMiniLog>();
+            logMock.Setup(
+                src =>
+                    src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>()))
+                .Verifiable();
+            Factory.InstantieRegistreren(logMock.Object);
+
+            // Dummy gegevens voor test:
+
+            var kipPersoon = new Persoon
+            {
+                AdNummer = adNummer
+            };
+
+            var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
+            var persoon = new Contact
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3,
+                Id = 4,
+            };
+            const AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
+
+            // External ID's omzetten naar ID's gebeurt via
+            // een GetSingle. Let's mock that.
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(ploeg);
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
+                .Returns(persoon);
+            // Api vindt geen relatie
+            _civiApiMock.Setup(
+                src =>
+                    src.RelationshipGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<RelationshipRequest>(
+                            r =>
+                                r.ContactIdA == persoon.Id && r.ContactIdB == ploeg.Id &&
+                                r.RelationshipTypeId == (int)RelatieType.LidVan)))
+                .Returns(new ApiResultValues<Relationship>());
+            // We verwachten dat de relatie niet opnieuw bewaard wordt. We zetten een mock op
+            // om dat te verifieren.
+            _civiApiMock.Setup(
+                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
+                .Returns(new ApiResultValues<Relationship>())
+                .Verifiable();
+
+            var service = Factory.Maak<SyncService>();
+
+            // ACT
+
+            service.AfdelingenUpdaten(kipPersoon, ploeg.ExternalIdentifier, werkJaar,
+                new[] { gapAfdeling });
+
+            // ASSERT
+
+            _civiApiMock.Verify(
+                src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()), Times.Never);
+            logMock.Verify(
+                src =>
+                    src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>()),
+                Times.AtLeastOnce);
         }
     }
 }
