@@ -39,7 +39,7 @@ namespace Chiro.CiviSync.Services
         /// <param name="adres">Nieuw standaardadres van de gegeven <paramref name="bewoners"/></param>
         /// <param name="bewoners">Bewoners die het nieuw <paramref name="adres"/> krijgen</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners)
+        public void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners)
         {
             var nieuwAdres = Mapper.Map<Adres, AddressRequest>(adres);
 

@@ -43,7 +43,7 @@ namespace Chiro.CiviSync.Services
         /// zaken te fixen als er iets misgelopen is met de communicatiesync.
         /// </remarks>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void AlleCommunicatieBewaren(Persoon persoon, IEnumerable<CommunicatieMiddel> communicatieMiddelen)
+        public void AlleCommunicatieBewaren(Persoon persoon, IEnumerable<CommunicatieMiddel> communicatieMiddelen)
         {
             // Verwijder eerst alle bestaande communicatie. Ik vermoed dat dat
             // één voor één moet gebeuren.

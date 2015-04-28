@@ -33,7 +33,7 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="persoon">Persoon wiens gegevens te updaten zijn</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void PersoonUpdaten(Persoon persoon)
+        public void PersoonUpdaten(Persoon persoon)
         {
             int? contactId = CiviIdGet(persoon, "Persoon updaten.");
             if (contactId == null) return;

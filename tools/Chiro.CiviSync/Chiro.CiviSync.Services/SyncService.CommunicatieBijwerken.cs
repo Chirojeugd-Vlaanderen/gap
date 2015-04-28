@@ -36,7 +36,7 @@ namespace Chiro.CiviSync.Services
         /// <param name="nummerBijTeWerken">huidig nummer van te vervangen communicatiemiddel</param>
         /// <param name="communicatieMiddel">nieuwe info voor te vervangen communicatiemiddel</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void CommunicatieBijwerken(Persoon persoon, string nummerBijTeWerken, CommunicatieMiddel communicatieMiddel)
+        public void CommunicatieBijwerken(Persoon persoon, string nummerBijTeWerken, CommunicatieMiddel communicatieMiddel)
         {
             int? contactId = CiviIdGet(persoon, "Communicatie bijwerken.");
             if (contactId == null) return;

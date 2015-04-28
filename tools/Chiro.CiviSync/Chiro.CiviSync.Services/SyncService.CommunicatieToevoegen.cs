@@ -36,7 +36,7 @@ namespace Chiro.CiviSync.Services
         /// Het nieuwe communicatiemiddel
         /// </param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void CommunicatieToevoegen(Persoon persoon, CommunicatieMiddel communicatieMiddel)
+        public void CommunicatieToevoegen(Persoon persoon, CommunicatieMiddel communicatieMiddel)
         {
             int? contactId = CiviIdGet(persoon, "Communicatie toevoegen.");
             if (contactId == null) return;

@@ -38,7 +38,7 @@ namespace Chiro.CiviSync.Services
         /// Gegevens over het te verwijderen communicatiemiddel
         /// </param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void CommunicatieVerwijderen(Persoon persoon, CommunicatieMiddel communicatieMiddel)
+        public void CommunicatieVerwijderen(Persoon persoon, CommunicatieMiddel communicatieMiddel)
         {
             int? contactId = CiviIdGet(persoon, "Communicatie verwijderen.");
             if (contactId == null) return;
