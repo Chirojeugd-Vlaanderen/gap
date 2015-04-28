@@ -50,7 +50,7 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void LidTypeUpdaten(Persoon persoon, string stamNummer, int werkJaar, LidTypeEnum lidType)
         {
-            int? contactIdPersoon = CiviIdGet(persoon, "Afdeling updaten");
+            int? contactIdPersoon = CiviIdGet(persoon, "LidType updaten");
             if (contactIdPersoon == null) return;
 
             int? contactIdGroep = _contactWorker.ContactIdGet(stamNummer);
