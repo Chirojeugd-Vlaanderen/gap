@@ -212,7 +212,7 @@ namespace Chiro.Kip.ServiceContracts
         /// Toe te kennen functies.  Eventuele andere reeds toegekende functies worden verwijderd.
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void FunctiesUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<FunctieEnum> functies);
+        void FunctiesUpdaten(Persoon persoon, string stamNummer, int werkJaar, FunctieEnum[] functies);
 
         /// <summary>
         /// Stelt het lidtype van het lid in, bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>

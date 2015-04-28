@@ -174,7 +174,7 @@ namespace Chiro.Gap.Sync
 
             var kipFunctieIDs = (from f in lid.Functie
                                  where f.IsNationaal
-                                 select _functieVertaling[(NationaleFunctie)f.ID]).ToList();
+                                 select _functieVertaling[(NationaleFunctie)f.ID]).ToArray();
 
             ServiceHelper.CallService<ISyncPersoonService>(
                 svc => svc.FunctiesUpdaten(Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(

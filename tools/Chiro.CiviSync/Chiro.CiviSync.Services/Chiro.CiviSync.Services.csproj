@@ -76,6 +76,7 @@
     <Compile Include="SyncService.CommunicatieBijwerken.cs" />
     <Compile Include="SyncService.CommunicatieToevoegen.cs" />
     <Compile Include="SyncService.CommunicatieVerwijderen.cs" />
+    <Compile Include="SyncService.FunctiesUpdaten.cs" />
     <Compile Include="SyncService.LidBewaren.cs" />
     <Compile Include="SyncService.LidTypeUpdaten.cs" />
     <Compile Include="SyncService.LidVerwijderen.cs" />
