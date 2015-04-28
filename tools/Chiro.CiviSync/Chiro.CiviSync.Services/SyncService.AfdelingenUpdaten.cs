@@ -79,11 +79,11 @@ namespace Chiro.CiviSync.Services
 
             if (lid.Afdeling == Afdeling.Leiding)
             {
-                lid.LeidingVan = Mapper.Map<IEnumerable<AfdelingEnum>, Afdeling[]>(afdelingen);
+                request.LeidingVan = Mapper.Map<IEnumerable<AfdelingEnum>, Afdeling[]>(afdelingen);
             }
             else
             {
-                lid.Afdeling = Mapper.Map<AfdelingEnum, Afdeling>(afdelingen.First());
+                request.Afdeling = Mapper.Map<AfdelingEnum, Afdeling>(afdelingen.First());
             }
 
             var result =

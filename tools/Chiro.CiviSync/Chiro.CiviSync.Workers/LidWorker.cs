@@ -69,7 +69,7 @@ namespace Chiro.CiviSync.Workers
                     svc => svc.RelationshipGet(ApiKey, SiteKey, request));
             result.AssertValid();
             // Hoogstens 1 keer lid van dezelfde ploeg in hetzelfde werkjaar.
-            Debug.Assert(result.Count > 1);
+            Debug.Assert(result.Count == 1);
 
             return result.Count == 0 ? null : result.Values.First();
         }
