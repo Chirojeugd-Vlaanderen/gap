@@ -65,6 +65,14 @@ namespace Chiro.CiviSync.Services
             }
 
             var lid = _lidWorker.LidOphalen(contactIdPersoon, contactIdGroep, werkJaar);
+            if (lid == null)
+            {
+                _log.Loggen(Niveau.Error,
+                    String.Format("Lid {1} niet gevonden in groep {0}, werkjaar {2}. Kon afdelingen niet updaten.",
+                        stamNummer, persoon, werkJaar),
+                    stamNummer, persoon.AdNummer, null);
+                return;                
+            }
 
             // Nieuw request
             var request = new RelationshipRequest
