@@ -6,7 +6,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * Cleanup en refactoring met module pattern: Copyright 2015 Sam Segers
@@ -236,8 +236,7 @@
               </tr>
                 <% } %>
             
-            <% } %>
-                
+            <% } %>                
         </table>
         <br />
 
@@ -262,6 +261,18 @@
                 <td><div class="ui-icon ui-icon-pencil" id="bewerkCl"title="Bewerken" style="cursor: pointer"></div></td>
             </tr>
         <% } %>
+        <tr>
+            <td>Dubbelpunt</td>
+            <td>
+                <a  id="dpInfo" data-type="select">
+                <%:Html.ValueFor(mdl => mdl.PersoonLidInfo.DubbelpuntAbonnement) %>
+                </a>
+            </td>
+            <td>
+                <div class="ui-icon ui-icon-pencil" id="bewerkDp" title="Bewerken" style="cursor: pointer"></div>
+            </td>
+        </tr>
+
 
         <% // controleert of de persoon ingeschreven is %>
         <%if ((Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding) &&
