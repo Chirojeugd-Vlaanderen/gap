@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -76,6 +76,7 @@ namespace Chiro.Gap.Services
         /// <param name="adressenManager">Businesslogica m.b.t. adressen</param>
         /// <param name="ledenManager">Businesslogica m.b.t. leden</param>
         /// <param name="groepsWerkJarenManager">Businesslogica m.b.t. groepswerkjaren</param>
+        /// <param name="abonnementenManager">Businesslogica m.b.t. abonnementen</param>
         /// <param name="bivakSync"></param>
         public UitstappenService(IRepositoryProvider repositoryProvider,
                                  IAutorisatieManager autorisatieManager,
@@ -83,7 +84,8 @@ namespace Chiro.Gap.Services
                                  IAdressenManager adressenManager,
                                  ILedenManager ledenManager,
                                  IGroepsWerkJarenManager groepsWerkJarenManager,
-                                 IBivakSync bivakSync): base(ledenManager, groepsWerkJarenManager)
+                                 IAbonnementenManager abonnementenManager,
+                                 IBivakSync bivakSync): base(ledenManager, groepsWerkJarenManager, abonnementenManager)
         {
             _repositoryProvider = repositoryProvider;
             _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();

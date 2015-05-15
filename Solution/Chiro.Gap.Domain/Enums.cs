@@ -79,6 +79,18 @@ namespace Chiro.Gap.Domain
     }
 
     /// <summary>
+    /// Soorten abonnement
+    /// </summary>
+    [DataContract]
+    public enum AbonnementType
+    {
+        [EnumMember]
+        Digitaal = 1,
+        [EnumMember]
+        Papier = 2,
+    }
+
+    /// <summary>
     /// Niveau van een lid/groep/functie
     /// </summary>
     [DataContract]

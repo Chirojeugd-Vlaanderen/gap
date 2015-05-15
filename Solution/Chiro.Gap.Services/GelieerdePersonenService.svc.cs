@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -92,6 +92,7 @@ namespace Chiro.Gap.Services
         /// <param name="groepenManager">Logica m.b.t. groepen</param>
         /// <param name="ledenManager">Logica m.b.t. leden</param>
         /// <param name="groepsWerkJarenManager">Logica m.b.t. groepswerkjaren</param>
+        /// <param name="abonnementenManager">Logica m.b.t. abonnementen.</param>
         /// <param name="communicatieSync">Voor synchronisatie van communicatie met Kipadmin</param>
         /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         /// <param name="adressenSync">Voor synchronisatie van adressen naar Kipadmin</param>
@@ -105,10 +106,11 @@ namespace Chiro.Gap.Services
             IGroepenManager groepenManager,
             ILedenManager ledenManager,
             IGroepsWerkJarenManager groepsWerkJarenManager,
+            IAbonnementenManager abonnementenManager,
             ICommunicatieSync communicatieSync,
             IPersonenSync personenSync,
             IAdressenSync adressenSync,
-            ILedenSync ledenSync): base(ledenManager, groepsWerkJarenManager)
+            ILedenSync ledenSync): base(ledenManager, groepsWerkJarenManager, abonnementenManager)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -338,7 +340,7 @@ namespace Chiro.Gap.Services
         /// <returns>
         /// Gelieerde persoon met ALLE nodige info om het persoons-bewerken scherm te vullen:
         /// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
-        /// functies
+        /// functies, abonnementen.
         /// </returns>
         public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID)
         {

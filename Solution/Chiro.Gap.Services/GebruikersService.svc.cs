@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -100,6 +100,7 @@ namespace Chiro.Gap.Services
         /// <param name="ledenManager">Businesslogica m.b.t. de leden</param>
         /// <param name="groepsWerkJarenManager">Businesslogica m.b.t. de groepswerkjaren.</param>
         /// <param name="gelieerdePersonenManager">Businesslogica i.f.v. gelieerde personen</param>
+        /// <param name="abonnementenManager">Businesslogica i.f.v. abonnementen.</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         /// <param name="serviceHelper">Service helper die gebruikt zal worden om de active-directory-service aan te spreken.</param>
         public GebruikersService(IAutorisatieManager autorisatieMgr,
@@ -108,8 +109,10 @@ namespace Chiro.Gap.Services
                                  ILedenManager ledenManager,
                                  IGroepsWerkJarenManager groepsWerkJarenManager,
                                  IGelieerdePersonenManager gelieerdePersonenManager,
+                                 IAbonnementenManager abonnementenManager,
                                  IRepositoryProvider repositoryProvider,
-                                 ServiceHelper serviceHelper): base(ledenManager, groepsWerkJarenManager)
+                                 ServiceHelper serviceHelper)
+            : base(ledenManager, groepsWerkJarenManager, abonnementenManager)
         {
             _repositoryProvider = repositoryProvider;
 

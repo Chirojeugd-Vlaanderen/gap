@@ -124,7 +124,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Haalt gelieerde persoon op met ALLE nodige info om het persoons-bewerken scherm te vullen:
 		/// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
-		/// functies
+		/// functies, abonnementen.
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
 		/// <returns>

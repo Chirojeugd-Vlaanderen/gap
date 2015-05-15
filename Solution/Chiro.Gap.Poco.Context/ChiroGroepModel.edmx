@@ -1015,9 +1015,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="ufnSoundEx" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="core" ReturnType="varchar">
-          <Parameter Name="tekst" Type="varchar(max)" Mode="In" />
-        </Function>
         <EntityContainer Name="ChiroGroepModelStoreContainer">
           <EntitySet Name="Abonnement" EntityType="Self.Abonnement" Schema="abo" store:Type="Tables" />
           <EntitySet Name="Publicatie" EntityType="Self.Publicatie" Schema="abo" store:Type="Tables" />
@@ -1977,7 +1974,7 @@
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Abonnement_GelieerdePersoon" FromRole="Abonnement" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar" FromRole="Abonnement" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="Publicatie" Relationship="ChiroGroepModel.FK_Abonnement_Publicatie" FromRole="Abonnement" ToRole="Publicatie" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="TypeInt" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Publicatie">
           <Key>
@@ -2635,7 +2632,7 @@
           <EntitySetMapping Name="Abonnement">
             <EntityTypeMapping TypeName="ChiroGroepModel.Abonnement">
               <MappingFragment StoreEntitySet="Abonnement">
-                <ScalarProperty Name="Type" ColumnName="type" />
+                <ScalarProperty Name="TypeInt" ColumnName="type" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="AanvraagDatum" ColumnName="AanvraagDatum" />
                 <ScalarProperty Name="ID" ColumnName="AbonnementID" />

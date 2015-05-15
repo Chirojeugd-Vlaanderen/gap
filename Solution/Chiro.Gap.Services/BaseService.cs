@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2014,2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -16,18 +16,19 @@
  * limitations under the License.
  */
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using AutoMapper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Services.Properties;
 using Chiro.Gap.WorkerInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Web;
+using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 
 namespace Chiro.Gap.Services
 {
@@ -40,16 +41,20 @@ namespace Chiro.Gap.Services
     {
         protected readonly ILedenManager _ledenMgr;
         protected readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
+        protected readonly IAbonnementenManager _abonnementenMgr;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="ledenManager">LedenManager.</param>
         /// <param name="groepsWerkJarenManager">GroepsWerkJarenManager.</param>
-        public BaseService(ILedenManager ledenManager, IGroepsWerkJarenManager groepsWerkJarenManager)
+        /// <param name="abonnementenManager">AbonnementenManager.</param>
+        public BaseService(ILedenManager ledenManager, IGroepsWerkJarenManager groepsWerkJarenManager,
+            IAbonnementenManager abonnementenManager)
         {
             _ledenMgr = ledenManager;
             _groepsWerkJarenMgr = groepsWerkJarenManager;
+            _abonnementenMgr = abonnementenManager;
             MappingsDefinieren();
         }
 
@@ -325,6 +330,9 @@ namespace Chiro.Gap.Services
                     dst => dst.CommunicatieInfo,
                     opt => opt.MapFrom(src => src.GelieerdePersoon.Communicatie))
                 .ForMember(
+                    dst => dst.DubbelpuntAbonnement,
+                    opt => opt.MapFrom(src => _abonnementenMgr.HuidigAbonnementGet(src.GelieerdePersoon, 1)))
+                .ForMember(
                     dst => dst.GebruikersInfo,
                     opt => opt.Ignore()); // niet relevant, denk ik :-P
 
@@ -443,7 +451,7 @@ namespace Chiro.Gap.Services
 
             Mapper.CreateMap<Groep, GroepInfo>()
                 .ForMember(dst => dst.Plaats, opt => opt.MapFrom(
-                    src => src is ChiroGroep ? (src as ChiroGroep).Plaats : Properties.Resources.NietVanToepassing))
+                    src => src is ChiroGroep ? (src as ChiroGroep).Plaats : Resources.NietVanToepassing))
                 .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
                     src => src.Code == null ? String.Empty : src.Code.ToUpper()));
 
@@ -452,7 +460,7 @@ namespace Chiro.Gap.Services
                 .ForMember(dst => dst.WerkJaarID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.GroepPlaats,
                            opt => opt.MapFrom(
-                            src => src.Groep is ChiroGroep ? (src.Groep as ChiroGroep).Plaats : Properties.Resources.NietVanToepassing));
+                            src => src.Groep is ChiroGroep ? (src.Groep as ChiroGroep).Plaats : Resources.NietVanToepassing));
 
             Mapper.CreateMap<CommunicatieInfo, CommunicatieVorm>()
                 .ForMember(dst => dst.Versie, opt => opt.Ignore())
@@ -511,6 +519,10 @@ namespace Chiro.Gap.Services
                     dst => dst.LidInfo,
                     opt => opt.MapFrom(src => _ledenMgr.HuidigLidGet(src)))
                 .ForMember(
+                    dst => dst.DubbelpuntAbonnement,
+                    // Voorlopig hebben we enkel Dubbelpunt als publicatie.
+                    opt => opt.MapFrom(src => _abonnementenMgr.HuidigAbonnementGet(src, 1)))
+                .ForMember(
                     dst => dst.GebruikersInfo,
                     opt => opt.Ignore());
 
@@ -534,14 +546,14 @@ namespace Chiro.Gap.Services
                     dst => dst.FoutNummer,
                     opt => opt.UseValue(null));
 
-            Mapper.CreateMap<Chiro.Gap.Poco.Model.GebruikersRecht, GebruikersDetail>()
+            Mapper.CreateMap<GebruikersRecht, GebruikersDetail>()
                 .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsVerlengbaar))
                 .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => GelieerdePersoonIDGet(src)))
                 .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? 0 : src.Gav.Persoon.First().ID))
                 .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? String.Empty : src.Gav.Persoon.First().Naam))
                 .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Gav.Persoon.FirstOrDefault() == null ? String.Empty : src.Gav.Persoon.First().VoorNaam));
 
-            Mapper.CreateMap<Chiro.Gap.Poco.Model.GebruikersRecht, GebruikersInfo>();
+            Mapper.CreateMap<GebruikersRecht, GebruikersInfo>();
 
             // Een gebruiker mappen naar GebruikersInfo mapt geen gebruikersrechten, omdat er maar rechten van 1
             // groep gemapt kunnen worden.
@@ -590,14 +602,14 @@ namespace Chiro.Gap.Services
                     BlokkerendeObjectenFault<PersoonDetail>>()
                 .ForMember(
                     dst => dst.Objecten,
-                    opt => opt.MapFrom(src => src.Objecten.Take(Properties.Settings.Default.KleinAantal)));
+                    opt => opt.MapFrom(src => src.Objecten.Take(Settings.Default.KleinAantal)));
             Mapper.CreateMap<BlokkerendeObjectenException<PersoonsAdres>,
                     BlokkerendeObjectenFault<PersoonsAdresInfo2>>();
             Mapper.CreateMap<BlokkerendeObjectenException<Lid>,
                 BlokkerendeObjectenFault<PersoonLidInfo>>()
                 .ForMember(
                     dst => dst.Objecten,
-                    opt => opt.MapFrom(src => src.Objecten.Take(Properties.Settings.Default.KleinAantal)));
+                    opt => opt.MapFrom(src => src.Objecten.Take(Settings.Default.KleinAantal)));
             Mapper.CreateMap<BestaatAlException<Afdeling>,
                     BestaatAlFault<AfdelingInfo>>();
             #endregion
@@ -623,8 +635,8 @@ namespace Chiro.Gap.Services
         private DeelnemerType DeelnemerTypeBepalen(GelieerdePersoon gelieerdePersoon, DateTime datum)
         {
             int werkJaar = datum.Year;
-            DateTime nieuwWerkJaarDatum = new DateTime(werkJaar, Properties.Settings.Default.NieuwWerkJaarMaand,
-                Properties.Settings.Default.NieuwWerkJaarDag);
+            DateTime nieuwWerkJaarDatum = new DateTime(werkJaar, Settings.Default.NieuwWerkJaarMaand,
+                Settings.Default.NieuwWerkJaarDag);
 
             if (datum < nieuwWerkJaarDatum)
             {
@@ -737,7 +749,7 @@ namespace Chiro.Gap.Services
         /// <param name="gebruikersRecht">Gebruikersrecht waarvan we het corresponderende GelieerdePersoonID zoeken</param>
         /// <returns>GelieerdePersoonID van de gelieerde persoon die hoort bij het gebruikersrecht
         /// <paramref name="gebruikersRecht"/>.  <c>null</c> indien onbekend.</returns>
-        private int? GelieerdePersoonIDGet(Chiro.Gap.Poco.Model.GebruikersRecht gebruikersRecht)
+        private int? GelieerdePersoonIDGet(GebruikersRecht gebruikersRecht)
         {
             if (!gebruikersRecht.Gav.Persoon.Any())
             {
@@ -801,7 +813,7 @@ namespace Chiro.Gap.Services
         {
             if (a is BelgischAdres)
             {
-                return Properties.Resources.Belgie;
+                return Resources.Belgie;
             }
             Debug.Assert(a is BuitenLandsAdres);
             return ((BuitenLandsAdres)a).Land.Naam;
