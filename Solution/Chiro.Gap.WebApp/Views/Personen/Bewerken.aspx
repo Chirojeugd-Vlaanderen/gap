@@ -264,12 +264,17 @@
         <tr>
             <td>Dubbelpunt</td>
             <td>
-                <a  id="dpInfo" data-type="select">
-                <%:Html.ValueFor(mdl => mdl.PersoonLidInfo.DubbelpuntAbonnement) %>
+                <a  id="dubbelpuntInfo" data-type="select">
+                <%= Html.DisplayFor(mdl =>mdl.PersoonLidInfo.DubbelpuntAbonnement) %>
                 </a>
             </td>
             <td>
-                <div class="ui-icon ui-icon-pencil" id="bewerkDp" title="Bewerken" style="cursor: pointer"></div>
+                 <% // Omdat ik die JQuery-toestanden in zijn huidige vorm zodanig
+                    // moeilijk te onderhouden vind, maak ik gewoon een saaie actionlink
+                    // om het abonnement te bewerken. Dat werkt ook.
+                    // Van zodra we een framework gebruiken voor JQuery, klappen we
+                    // nog eens :) %>
+                 <%:Html.ActionLink("Wijzig", "Dubbelpunt", new {id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
             </td>
         </tr>
 

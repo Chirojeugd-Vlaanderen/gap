@@ -156,6 +156,7 @@
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingsJaarModel.cs" />
     <Compile Include="Models\DeelnemerBewerkenModel.cs" />
+    <Compile Include="Models\DubbelpuntModel.cs" />
     <Compile Include="Models\FunctieModel.cs" />
     <Compile Include="Models\GavOverzichtModel.cs" />
     <Compile Include="Models\GroepInfoModel.cs" />
@@ -343,6 +344,7 @@
     <Content Include="Views\Leden\AfdelingenBewerken.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\Bewerken.aspx" />
+    <Content Include="Views\Personen\Dubbelpunt.aspx" />
     <Content Include="Views\Personen\OverledenPersoon.aspx" />
     <Content Include="Views\Shared\NavigatieBeperktControl.ascx" />
     <Content Include="Views\Shared\NavigatieBeperktControl.ascx" />
@@ -610,6 +612,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Dubbelpunt\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

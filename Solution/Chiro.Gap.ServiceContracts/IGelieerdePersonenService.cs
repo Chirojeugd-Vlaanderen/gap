@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -448,5 +449,25 @@ namespace Chiro.Gap.ServiceContracts
 		void UitCategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
 
 		#endregion categorieën
-	}
+
+        #region abonnementen
+        /// <summary>
+        /// Haalt type abonnement op voor de persoon met gegeven
+        /// <paramref name="gelieerdePersoonID"/> in groepswerkjaar met gegeven
+        /// <paramref name="groepsWerkJaarID"/>, voor publicatie met gegeven
+        /// <paramref name="publicatieID"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoonID"></param>
+        /// <param name="groepsWerkJaarID"></param>
+        /// <param name="publicatieID"></param>
+        /// <returns>Het type abonnement op voor de persoon met gegeven
+        /// <paramref name="gelieerdePersoonID"/> in groepswerkjaar met gegeven
+        /// <paramref name="groepsWerkJaarID"/>, voor publicatie met gegeven
+        /// <paramref name="publicatieID"/></returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+	    AbonnementType AbonnementOphalen(int gelieerdePersoonID, int groepsWerkJaarID, int publicatieID);
+        #endregion
+    }
 }

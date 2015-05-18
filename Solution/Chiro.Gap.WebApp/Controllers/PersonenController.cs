@@ -1563,6 +1563,31 @@ namespace Chiro.Gap.WebApp.Controllers
 
         #endregion categorieën
 
+        #region dubbelpunt
+        /// <summary>
+        /// Formulier voor beheer Dubbelpuntabonnement van persoon met GelieerdePersoonID
+        /// <paramref name="id"/>.
+        /// </summary>
+        /// <param name="groepID">groep waarin wordt gewerkt.</param>
+        /// <param name="id">GelieerdePersoonID om Dubbelpuntabonnement te beheren.</param>
+        /// <returns>Het Dubbelpuntabonnementformulier</returns>
+        [HandleError]
+        public ActionResult Dubbelpunt(int id, int groepID)
+        {
+            var model = new DubbelpuntModel();
+            BaseModelInit(model, groepID);
+            model.Titel = "Dubbelpuntabonnement";
+
+            model.PersoonInfo =
+                ServiceHelper.CallService<IGelieerdePersonenService, PersoonInfo>(svc => svc.InfoOphalen(id));
+            model.AbonnementType =
+                ServiceHelper.CallService<IGelieerdePersonenService, AbonnementType?>(
+                    svc => svc.AbonnementOphalen(id, VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID, 1));
+
+            return View(model);
+        }
+        #endregion
+
         #region uitstappen
         /// <summary>
         /// Toont een view die de gebruiker toelaat om een bivak te kiezen waarvoor de gelieerde personen

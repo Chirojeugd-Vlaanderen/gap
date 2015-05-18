@@ -84,6 +84,13 @@ namespace Chiro.Gap.Domain
     [DataContract]
     public enum AbonnementType
     {
+        /// <summary>
+        /// <c>AbonnementType.Geen</c> mag niet in de database bewaard worden; in dat geval
+        /// moet het abonnement gewoon verdwijnen. <c>Geen</c> is enkel van toepassing
+        /// in een webform.
+        /// </summary>
+        [EnumMember]
+        Geen = 0,
         [EnumMember]
         Digitaal = 1,
         [EnumMember]

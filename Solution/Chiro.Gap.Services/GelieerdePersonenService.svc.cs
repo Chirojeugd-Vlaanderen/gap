@@ -1093,7 +1093,34 @@ namespace Chiro.Gap.Services
 
             _categorieenRepo.SaveChanges();
         }
+        #endregion
 
+        #region abonnementen
+        /// <summary>
+        /// Haalt type abonnement op voor de persoon met gegeven
+        /// <paramref name="gelieerdePersoonID"/> in groepswerkjaar met gegeven
+        /// <paramref name="groepsWerkJaarID"/>, voor publicatie met gegeven
+        /// <paramref name="publicatieID"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoonID"></param>
+        /// <param name="groepsWerkJaarID"></param>
+        /// <param name="publicatieID"></param>
+        /// <returns>Het type abonnement op voor de persoon met gegeven
+        /// <paramref name="gelieerdePersoonID"/> in groepswerkjaar met gegeven
+        /// <paramref name="groepsWerkJaarID"/>, voor publicatie met gegeven
+        /// <paramref name="publicatieID"/></returns>
+        public AbonnementType AbonnementOphalen(int gelieerdePersoonID, int groepsWerkJaarID, int publicatieID)
+        {
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID, "Abonnement");
+            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+            var abonnement = (from ab in gelieerdePersoon.Abonnement
+                where ab.GroepsWerkJaar.ID == groepsWerkJaarID
+                select ab).FirstOrDefault();
+            return abonnement == null ? AbonnementType.Geen : abonnement.Type;
+        }
         #endregion
 
         #region te syncen updates
