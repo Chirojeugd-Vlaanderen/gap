@@ -1117,7 +1117,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
             var abonnement = (from ab in gelieerdePersoon.Abonnement
-                where ab.GroepsWerkJaar.ID == groepsWerkJaarID
+                where ab.GroepsWerkJaar.ID == groepsWerkJaarID && ab.Publicatie.ID == publicatieID
                 select ab).FirstOrDefault();
             return abonnement == null ? AbonnementType.Geen : abonnement.Type;
         }
