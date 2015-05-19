@@ -59,7 +59,9 @@ namespace Chiro.Gap.Services
         private readonly IRepository<StraatNaam> _straatNamenRepo;
         private readonly IRepository<WoonPlaats> _woonPlaatsenRepo;
         private readonly IRepository<Land> _landenRepo;
-        private readonly IRepository<AfdelingsJaar> _afdelingsJarenRepo; 
+        private readonly IRepository<AfdelingsJaar> _afdelingsJarenRepo;
+        private readonly IRepository<Abonnement> _abonnementenRepo;
+        private readonly IRepository<Publicatie> _publicatieRepo;
 
         // Managers voor niet-triviale businesslogica
 
@@ -127,6 +129,8 @@ namespace Chiro.Gap.Services
             _woonPlaatsenRepo = repositoryProvider.RepositoryGet<WoonPlaats>();
             _landenRepo = repositoryProvider.RepositoryGet<Land>();
             _afdelingsJarenRepo = repositoryProvider.RepositoryGet<AfdelingsJaar>();
+            _abonnementenRepo = repositoryProvider.RepositoryGet<Abonnement>();
+            _publicatieRepo = repositoryProvider.RepositoryGet<Publicatie>();
 
             _autorisatieMgr = autorisatieMgr;
             _communicatieVormenMgr = communicatieVormenMgr;
@@ -1121,6 +1125,76 @@ namespace Chiro.Gap.Services
                 select ab).FirstOrDefault();
             return abonnement == null ? AbonnementType.Geen : abonnement.Type;
         }
+
+        /// <summary>
+        /// Legt het abonnement van de gelieerde persoon met gegeven 
+        /// <paramref name="gelieerdePersoonID"/> voor het groepswerkjaar met gegeven
+        /// <paramref name="groepsWerkJaarID"/> vast als zijnde van het type 
+        /// <paramref name="abonnementType"/>. Als <paramref name="abonnementType"/>
+        /// <c>AbonnementType.Geen</c> is, wordt het abonnement verwijderd.
+        /// </summary>
+        /// <param name="gelieerdePersoonID"></param>
+        /// <param name="groepsWerkJaarID"></param>
+        /// <param name="abonnementType"></param>
+        /// <param name="publicatieID"></param>
+        public void AbonnementBewaren(int gelieerdePersoonID, int groepsWerkJaarID, AbonnementType? abonnementType, int publicatieID)
+        {
+            // TODO: meer in workers.
+            var bestaand = (from ab in _abonnementenRepo.Select()
+                            where
+                                ab.GelieerdePersoon.ID == gelieerdePersoonID && ab.GroepsWerkJaar.ID == groepsWerkJaarID &&
+                                ab.Publicatie.ID == publicatieID
+                            select ab).FirstOrDefault();
+
+            if (bestaand != null && !_autorisatieMgr.IsGav(bestaand))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            if (abonnementType == AbonnementType.Geen || abonnementType == null)
+            {
+                if (bestaand == null) return;
+                // Verwijder bestaand abonnement, if any
+                _abonnementenRepo.Delete(bestaand);
+                _abonnementenRepo.SaveChanges();
+            }
+            else
+            {
+                if (bestaand != null)
+                {
+                    // Update bestaand abonnement.
+                    bestaand.Type = abonnementType.Value;
+                    _abonnementenRepo.SaveChanges();
+                }
+                else
+                {
+                    // Nieuw abonnement
+                    var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID, "Groep.GroepsWerkJaar");
+                    var groepsWerkJaar = (from gwj in gelieerdePersoon.Groep.GroepsWerkJaar
+                        where gwj.ID == groepsWerkJaarID
+                        select gwj).FirstOrDefault();
+                    if (groepsWerkJaar == null)
+                    {
+                        // Prutsers :-)
+                        throw FaultExceptionHelper.GeenGav();
+                    }
+                    var publicatie = _publicatieRepo.ByID(publicatieID);
+
+                    // TODO: DateTime.Now is niet goed, want dat gaat problemen geven met de unit tests.
+                    publicatie.Abonnement.Add(new Abonnement
+                    {
+                        AanvraagDatum = DateTime.Now,
+                        GroepsWerkJaar = groepsWerkJaar,
+                        GelieerdePersoon = gelieerdePersoon,
+                        Publicatie = publicatie,
+                        Type = abonnementType.Value
+                    });
+
+                    _publicatieRepo.SaveChanges();
+                }
+            }
+        }
+
         #endregion
 
         #region te syncen updates

@@ -1586,6 +1586,23 @@ namespace Chiro.Gap.WebApp.Controllers
 
             return View(model);
         }
+
+        /// <summary>
+        /// Afhandeling van het <paramref name="model"/> dat de user meegaf via het
+        /// Dubbelpuntabonnementformulier.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="groepID"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Dubbelpunt(int id, int groepID, DubbelpuntModel model)
+        {
+            ServiceHelper.CallService<IGelieerdePersonenService>(
+                svc => svc.AbonnementBewaren(id, VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID, model.AbonnementType, 1));
+
+            return RedirectToAction("Bewerken", new {id});
+        }
         #endregion
 
         #region uitstappen

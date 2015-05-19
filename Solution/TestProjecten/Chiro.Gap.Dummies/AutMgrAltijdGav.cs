@@ -134,6 +134,11 @@ namespace Chiro.Gap.Dummies
 	        return true;
 	    }
 
+	    public bool IsGav(Abonnement abonnement)
+	    {
+	        return true;
+	    }
+
 	    public bool IsGav(IList<Groep> groepen)
 	    {
 	        return true;

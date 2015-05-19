@@ -468,6 +468,22 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
 	    AbonnementType AbonnementOphalen(int gelieerdePersoonID, int groepsWerkJaarID, int publicatieID);
+
+	    /// <summary>
+	    /// Legt het abonnement van de gelieerde persoon met gegeven 
+	    /// <paramref name="gelieerdePersoonID"/> voor het groepswerkjaar met gegeven
+	    /// <paramref name="groepsWerkJaarID"/> vast als zijnde van het type 
+	    /// <paramref name="abonnementType"/>. Als <paramref name="abonnementType"/>
+	    /// <c>AbonnementType.Geen</c> is, wordt het abonnement verwijderd.
+	    /// </summary>
+	    /// <param name="gelieerdePersoonID"></param>
+	    /// <param name="groepsWerkJaarID"></param>
+	    /// <param name="abonnementType"></param>
+	    /// <param name="publicatieID"></param>
+	    [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+	    void AbonnementBewaren(int gelieerdePersoonID, int groepsWerkJaarID, AbonnementType? abonnementType, int publicatieID);
         #endregion
     }
 }
