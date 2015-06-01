@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -365,6 +365,15 @@ namespace Chiro.Kip.ServiceContracts
         [OperationContract(IsOneWay = true)]
         void GroepUpdaten(Groep g);
 
+        #endregion
+
+        #region dubbelpunt
+        /// <summary>
+        /// Werkt een dubbelpuntabonnement bij in Mailchimp. Spannend.
+        /// </summary>
+        /// <param name="abonnementInfo">Alle informatie over het abonnement.</param>
+        [OperationContract(IsOneWay = true)]
+        void AbonnementNaarMailchimp(AbonnementInfo abonnementInfo);
         #endregion
 
     }
