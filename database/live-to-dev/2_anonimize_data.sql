@@ -1,6 +1,6 @@
 -- STAP 2: anonimize data
 
-USE gap_dev;
+USE gap_local;
 
 update cv
 set nummer = cast(communicatievormid as varchar(50)) + '@example.org'

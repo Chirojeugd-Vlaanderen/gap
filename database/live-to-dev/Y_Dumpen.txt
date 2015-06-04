@@ -1,0 +1,60 @@
+Om een mysqldump-achtige dump te maken van de dev-database:
+
+* Gebruik SqlServerDump (http://sqlserverdump.codeplex.com/) -> zelf compileren!
+* Ik paste deze patch toe:
+
+diff --git a/Program.cs b/Program.cs
+index 1eb3a5e..f010309 100644
+--- a/Program.cs
++++ b/Program.cs
+@@ -243,6 +243,7 @@ namespace Helvartis.SQLServerDump
+         }
+         private void Output(SmoCollectionBase coll, TextWriter tw ,Scripter scrp, String header = null)
+         {
++            tw.WriteLine("GO");
+             LinkedList<string> tableAlterings = new LinkedList<string>();
+             foreach (ScriptSchemaObjectBase o in coll)
+             {
+
+* Dump zonder views of stored procedure:
+
+.\sqlserverdump.exe --result-file=gap_local.sql --no-views --no-stored-procedure gap_local 
+
+* LET OP! Gebruik --result-file, en geen output redirection, anders gaat het
+  gegarandeerd mis met accentjes.
+
+* Zet een 'go' voor het use-statement van de nieuwe database.
+
+* Voeg toe na het use statement:
+
+CREATE SCHEMA abo;
+GO
+CREATE SCHEMA adr;
+GO
+CREATE SCHEMA auth;
+GO
+CREATE SCHEMA biv;
+GO
+CREATE SCHEMA core;
+GO
+CREATE SCHEMA grp;
+GO
+CREATE SCHEMA lid;
+GO
+CREATE SCHEMA pers;
+GO
+CREATE SCHEMA verz;
+GO
+
+* Zoek [fk_kind_lid], knip dit weg:
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[lid].[FK_Kind_Lid]') AND parent_object_id = OBJECT_ID(N'[lid].[Kind]'))
+ALTER TABLE [lid].[Kind]  WITH CHECK ADD  CONSTRAINT [FK_Kind_Lid] FOREIGN KEY([kindID])
+REFERENCES [lid].[Lid] ([LidID]);
+
+* .. en zet dat voor de definitie van PK_Kind
+
+* Script deze stored procedures, en voeg ze achteraan toe
+  * auth.spGebruikersRechtToekennen
+  * auth.spTijdelijkeGebruiker
+

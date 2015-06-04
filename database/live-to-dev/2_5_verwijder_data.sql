@@ -1,9 +1,9 @@
 -- verwijder heel wat data, om de dump kleiner te krijgen
 -- we gaan dat doen na het shuffelen, omdat shuffelen beter zal werken op veel data
 
-use gap_local2;
+use gap_local;
 
-declare @bijhoudenvanaf as integer; set @bijhoudenvanaf=2011;
+declare @bijhoudenvanaf as integer; set @bijhoudenvanaf=2012;
 
 
 -- een willekeurig gewest om alle behouden groepen aan te koppelen
@@ -245,6 +245,10 @@ join lid.functie f on g.groepid=f.groepid
 left outer join @groepids ids on g.GroepID=ids.groepID
 where ids.GroepID is null;
 
+delete gr
+from auth.GebruikersRecht gr
+left outer join @groepids ids on gr.GroepID = ids.GroepID
+where ids.GroepID is null;
 
 delete g
 from grp.Groep g
@@ -253,6 +257,8 @@ where ids.GroepID is null;
 
 
 -- verwijder overbodige adresgegevens
+
+update grp.Groep set adresID = null;
 
 delete a
 from adr.BelgischAdres a
