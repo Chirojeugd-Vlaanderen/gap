@@ -256,7 +256,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new NieuwePersoonModel();
             BaseModelInit(model, groepID);
 
-            // zeken ophalen voor het model
+            // zaken ophalen voor het model
 
             var groepsWerkJaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
             model.GroepsWerkJaarID = groepsWerkJaar.WerkJaarID;
@@ -282,7 +282,6 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Forceer = false;
 
             model.Titel = Properties.Resources.NieuwePersoonTitel;
-
 
             return View(model);
         }

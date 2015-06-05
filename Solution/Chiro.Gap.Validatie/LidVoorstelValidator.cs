@@ -63,7 +63,7 @@ namespace Chiro.Gap.Validatie
             }
 
             // Geslacht is verplicht; kipadmin kan geen onzijdige mensen aan.
-            if (gp.Persoon.Geslacht != GeslachtsType.Man && gp.Persoon.Geslacht != GeslachtsType.Vrouw)
+            if (gp.Persoon.Geslacht != GeslachtsType.Man && gp.Persoon.Geslacht != GeslachtsType.Vrouw && gp.Persoon.Geslacht != GeslachtsType.X)
             {
                 return Domain.FoutNummer.OnbekendGeslacht;
             }

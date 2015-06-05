@@ -234,6 +234,8 @@ $(function () {
         var g = $('#geslachtsInfo').text().trim();
         if (g == 'Man') {
             $('#geslachtsInfo').text('Vrouw');
+        } else if (g == 'Vrouw') {
+            $('#geslachtsInfo').text('X');
         } else {
             $('#geslachtsInfo').text('Man');
         }

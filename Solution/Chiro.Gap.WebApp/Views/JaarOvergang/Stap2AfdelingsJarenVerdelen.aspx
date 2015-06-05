@@ -69,14 +69,17 @@
             <td>
                 <%
                     var geslachtsLijstItems =
-                        Enum.GetValues(typeof (GeslachtsType)).OfType<GeslachtsType>().ToList().Select(
-                            e =>
-                            new SelectListItem
-                            {
-                               Selected = (Model.Afdelingen[j].Geslacht == e),
-                               Value = ((int) e).ToString(),
-                               Text = e.ToString()
-                            });%>
+                        Enum.GetValues(typeof (GeslachtsType))
+                            .OfType<GeslachtsType>()
+                            .Where(e => e != GeslachtsType.X) // Voor het derde geslacht moet/mag er geen aparte afdeling zijn.
+                            .ToList().Select(
+                                                e =>
+                                                new SelectListItem
+                                                {
+                                                   Selected = (Model.Afdelingen[j].Geslacht == e),
+                                                   Value = ((int) e).ToString(),
+                                                   Text = e.ToString()
+                                                });%>
                 <%: Html.DropDownListFor(mdl=>mdl.Afdelingen[j].Geslacht, geslachtsLijstItems) %>
             </td>
         </tr>

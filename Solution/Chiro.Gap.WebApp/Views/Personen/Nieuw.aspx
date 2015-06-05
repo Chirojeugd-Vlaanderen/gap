@@ -174,6 +174,7 @@
 			<td>
 				<%=Html.RadioButtonFor(mdl => mdl.NieuwePersoon.Geslacht, GeslachtsType.Man) %> <%=Html.Geslacht(GeslachtsType.Man) %>
 				<%=Html.RadioButtonFor(mdl => mdl.NieuwePersoon.Geslacht, GeslachtsType.Vrouw) %> <%=Html.Geslacht(GeslachtsType.Vrouw) %>
+                <%=Html.RadioButtonFor(mdl => mdl.NieuwePersoon.Geslacht, GeslachtsType.X) %> <%=Html.Geslacht(GeslachtsType.X) %>
 				<%=Html.ValidationMessageFor(s => s.NieuwePersoon.Geslacht)%>
 			</td>
 		</tr>

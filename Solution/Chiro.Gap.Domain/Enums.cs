@@ -73,7 +73,9 @@ namespace Chiro.Gap.Domain
         [EnumMember]
         Vrouw = 0x02,
         [EnumMember]
-        Gemengd = Man | Vrouw	// interessant voor gemengde groepen/afdelingen
+        Gemengd = Man | Vrouw,	// interessant voor gemengde groepen/afdelingen
+        [EnumMember]
+        X = 0x04               // het derde geslacht
     }
 
     /// <summary>
