@@ -36,7 +36,16 @@ namespace Chiro.Mailchimp.Sync.Test
                 EmailAdres = "helpdesk@chiro.be",
                 AbonnementType = 1,
                 Naam = "Help",
-                VoorNaam = "Desk"
+                VoorNaam = "Desk",
+                StamNr = "MG /0113",
+                Adres = new Adres
+                {
+                    Straat = "Kipdorp",
+                    HuisNr = 30,
+                    PostNr = 2000,
+                    WoonPlaats = "Antwerpen",
+                    Land = "Belgie"
+                }
             };
             target.AbonnementSyncen(info);
         }

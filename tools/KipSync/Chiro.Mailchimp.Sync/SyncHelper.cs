@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Chiro.Mailchimp.Sync.Models;
 using Chiro.Mailchimp.Sync.Properties;
@@ -37,32 +38,67 @@ namespace Chiro.Mailchimp.Sync
             request.AddUrlSegment("listid", Settings.Default.ListId);
             request.AddUrlSegment("memberid", member.id);
 
-            IRestResponse<Member> response = client.Execute<Member>(request);
+            var response = client.Execute<Member>(request);
             var bestaande = response.Data;
 
-            if (bestaande == null && abonnementInfo.AbonnementType != 0)
-            {
-                member.merge_fields = new MergeFields
-                {
-                    FNAME = abonnementInfo.VoorNaam,
-                    LNAME = abonnementInfo.Naam,
-                    STAMNUMMER = abonnementInfo.StamNr,
-                    //STRAAT_NUM = abonnementInfo.Adres.ToString(),
-                    //POSTCODE = abonnementInfo.Adres.PostNr.ToString(),
-                    //GEMEENTE = abonnementInfo.Adres.WoonPlaats,
-                    //LAND = abonnementInfo.Adres.Land
-                };
+            var adres = string.IsNullOrEmpty(abonnementInfo.Adres.Bus)
+                ? String.Format("{0} {1}", abonnementInfo.Adres.Straat, abonnementInfo.Adres.HuisNr)
+                : String.Format("{0} {1} bus {2}", abonnementInfo.Adres.Straat, abonnementInfo.Adres.HuisNr,
+                    abonnementInfo.Adres.Bus);
 
-                var request2 = new RestRequest("3.0/lists/{listid}/members/", Method.POST)
+            var postcode = string.IsNullOrEmpty(abonnementInfo.Adres.PostCode)
+                ? abonnementInfo.Adres.PostNr.ToString()
+                : String.Format("{0} {1}", abonnementInfo.Adres.PostNr, abonnementInfo.Adres.PostCode);
+
+            member.merge_fields = new MergeFields
+            {
+                FNAME = abonnementInfo.VoorNaam,
+                LNAME = abonnementInfo.Naam,
+                STAMNUMMER = abonnementInfo.StamNr,
+                HOE = abonnementInfo.AbonnementType == 1 ? "Digitaal graag": "Papier hier",
+                STRAAT_NUM = adres,
+                POSTCODE = postcode,
+                GEMEENTE = abonnementInfo.Adres.WoonPlaats,
+                LAND = abonnementInfo.Adres.Land
+            };
+
+            if (abonnementInfo.AbonnementType != 0)
+            {
+                member.status = "subscribed";
+                if (bestaande == null)
                 {
-                    RequestFormat = DataFormat.Json
+                    var request2 = new RestRequest("3.0/lists/{listid}/members/")
+                    {
+                        RequestFormat = DataFormat.Json,
+                        Method = Method.POST
+                    };
+                    request2.AddUrlSegment("listid", Settings.Default.ListId);
+                    request2.AddBody(member);
+                    var result = client.Execute(request2);
+                }
+                else
+                {
+                    var request2 = new RestRequest("3.0/lists/{listid}/members/{memberid}")
+                    {
+                        RequestFormat = DataFormat.Json,
+                        Method = Method.PATCH
+                    };
+                    request2.AddUrlSegment("listid", Settings.Default.ListId);
+                    request2.AddUrlSegment("memberid", member.id);
+                    request2.AddBody(member);
+                    var result = client.Execute(request2);
+                }
+            }
+            else
+            {
+                var request2 = new RestRequest("3.0/lists/{listid}/members/{memberid}")
+                {
+                    RequestFormat = DataFormat.Json,
+                    Method = Method.DELETE
                 };
                 request2.AddUrlSegment("listid", Settings.Default.ListId);
-                request2.AddBody(member);
+                request2.AddUrlSegment("memberid", member.id);
                 var result = client.Execute(request2);
-
-                // Hier krijg je nu een foutmelding van verplichte velden die niet goed zijn, zoals 
-                // bijv. die keuzevakjes waar je er eentje uit moet kiezen.
             }
         }
     }

@@ -43,5 +43,6 @@ namespace Chiro.Mailchimp.Sync.Models
         }
         public string email_address { get; set; }
         public MergeFields merge_fields { get; set; }
+        public string status { get; set; }
     }
 }
