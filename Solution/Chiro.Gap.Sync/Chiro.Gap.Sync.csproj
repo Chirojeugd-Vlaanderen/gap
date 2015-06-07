@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="AdressenSync.cs" />
     <Compile Include="BaseSync.cs" />
+    <Compile Include="AbonnementenSync.cs" />
     <Compile Include="BivakSync.cs" />
     <Compile Include="CommunicatieSync.cs" />
     <Compile Include="GroepenSync.cs" />

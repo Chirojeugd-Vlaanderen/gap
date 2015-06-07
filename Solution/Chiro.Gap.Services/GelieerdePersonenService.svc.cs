@@ -79,6 +79,7 @@ namespace Chiro.Gap.Services
         private readonly IAdressenSync _adressenSync;
         private readonly IPersonenSync _personenSync;
         private readonly ILedenSync _ledenSync;
+        private readonly IAbonnementenSync _abonnementenSync;
 
         /// <summary>
         /// Constructor
@@ -99,6 +100,7 @@ namespace Chiro.Gap.Services
         /// <param name="personenSync">Voor synchronisatie van personen naar Kipadmin</param>
         /// <param name="adressenSync">Voor synchronisatie van adressen naar Kipadmin</param>
         /// <param name="ledenSync">Voor synchronisatie lidgegevens naar Kipadmin</param>
+        /// <param name="abonnementenSync">Voor synchronisatie abonnementen naar MAILCHIMP</param>
         public GelieerdePersonenService(IRepositoryProvider repositoryProvider, IAutorisatieManager autorisatieMgr,
             ICommunicatieVormenManager communicatieVormenMgr,
             IGebruikersRechtenManager gebruikersRechtenMgr,
@@ -112,7 +114,8 @@ namespace Chiro.Gap.Services
             ICommunicatieSync communicatieSync,
             IPersonenSync personenSync,
             IAdressenSync adressenSync,
-            ILedenSync ledenSync): base(ledenManager, groepsWerkJarenManager, abonnementenManager)
+            ILedenSync ledenSync,
+            IAbonnementenSync abonnementenSync): base(ledenManager, groepsWerkJarenManager, abonnementenManager)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -144,6 +147,7 @@ namespace Chiro.Gap.Services
             _adressenSync = adressenSync;
             _personenSync = personenSync;
             _ledenSync = ledenSync;
+            _abonnementenSync = abonnementenSync;
         }
 
         #region Disposable etc
@@ -1139,6 +1143,8 @@ namespace Chiro.Gap.Services
         /// <param name="publicatieID"></param>
         public void AbonnementBewaren(int gelieerdePersoonID, int groepsWerkJaarID, AbonnementType? abonnementType, int publicatieID)
         {
+            Abonnement teSyncenAbonnement;
+
             // TODO: meer in workers.
             var bestaand = (from ab in _abonnementenRepo.Select()
                             where
@@ -1156,7 +1162,7 @@ namespace Chiro.Gap.Services
                 if (bestaand == null) return;
                 // Verwijder bestaand abonnement, if any
                 _abonnementenRepo.Delete(bestaand);
-                _abonnementenRepo.SaveChanges();
+                teSyncenAbonnement = bestaand;
             }
             else
             {
@@ -1164,7 +1170,7 @@ namespace Chiro.Gap.Services
                 {
                     // Update bestaand abonnement.
                     bestaand.Type = abonnementType.Value;
-                    _abonnementenRepo.SaveChanges();
+                    teSyncenAbonnement = bestaand;
                 }
                 else
                 {
@@ -1181,20 +1187,36 @@ namespace Chiro.Gap.Services
                     var publicatie = _publicatieRepo.ByID(publicatieID);
 
                     // TODO: DateTime.Now is niet goed, want dat gaat problemen geven met de unit tests.
-                    publicatie.Abonnement.Add(new Abonnement
+                    teSyncenAbonnement = new Abonnement
                     {
                         AanvraagDatum = DateTime.Now,
                         GroepsWerkJaar = groepsWerkJaar,
                         GelieerdePersoon = gelieerdePersoon,
                         Publicatie = publicatie,
                         Type = abonnementType.Value
-                    });
+                    };
 
-                    _publicatieRepo.SaveChanges();
+                    publicatie.Abonnement.Add(teSyncenAbonnement);
                 }
             }
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                if (abonnementType != AbonnementType.Geen)
+                {
+                    _abonnementenRepo.SaveChanges();
+                    _abonnementenSync.AbonnementBewaren(teSyncenAbonnement);
+                }
+                else
+                {
+                    _abonnementenSync.AbonnementVerwijderen(teSyncenAbonnement);
+                    _abonnementenRepo.SaveChanges();
+                }
+#if KIPDORP
+            }
+#endif
         }
-
         #endregion
 
         #region te syncen updates

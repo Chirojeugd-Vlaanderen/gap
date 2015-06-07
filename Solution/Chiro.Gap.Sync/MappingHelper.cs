@@ -18,6 +18,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using AutoMapper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -120,7 +121,23 @@ namespace Chiro.Gap.Sync
 
             Mapper.CreateMap<Groep, Kip.ServiceContracts.DataContracts.Groep>();
 
+            Mapper.CreateMap<Abonnement, AbonnementInfo>()
+                .ForMember(dst => dst.EmailAdres, opt => opt.MapFrom(src => VoorkeursMail(src.GelieerdePersoon)))
+                .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
+                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
+                .ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.GelieerdePersoon.PersoonsAdres.Adres))
+                .ForMember(dst => dst.AbonnementType, opt => opt.MapFrom(src => (int) src.Type))
+                .ForMember(dst => dst.StamNr, opt => opt.MapFrom(src => src.GelieerdePersoon.Groep.Code));
+
             Mapper.AssertConfigurationIsValid();
+        }
+
+        private static string VoorkeursMail(GelieerdePersoon gelieerdePersoon)
+        {
+            return (from a in gelieerdePersoon.Communicatie
+                where a.CommunicatieType.ID == 3
+                orderby a.Voorkeur descending
+                select a.Nummer).FirstOrDefault();
         }
     }
 }
