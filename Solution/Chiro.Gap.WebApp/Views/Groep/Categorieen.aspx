@@ -22,10 +22,10 @@
  * limitations under the License.
  */
 %>
-    <script src="<%= ResolveUrl("~/Scripts/jquery-groep.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/Modules/GroepModule.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
-            $('#groep_Menu').menu();
+            GroepModule.InitVoorCategorieen();
         });
     </script>
 </asp:Content>

@@ -22,10 +22,16 @@
  * limitations under the License.
  */
 %>
-    <script src="<%= ResolveUrl("~/Scripts/jquery-groep.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/Modules/GroepModule.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/Modules/AdresModule.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
-            $('#groep_Menu').menu();
+            GroepModule.InitVoorAlgemeen();
+            //Adres Bewerken
+            $('.bewerkAdres').click(function () {
+                url = link("Groep", "AdresBewerken") + "/" + <%= Model.Detail.ID %> + " #main";
+                AdresModule.OpenDialog(url, "Adres wijzigen");
+            });
         });
     </script>
 </asp:Content>
@@ -81,12 +87,7 @@
                         <% } %>
                     </td>
                     <td>
-                        <% // Omdat ik die JQuery-toestanden in zijn huidige vorm zodanig
-                           // moeilijk te onderhouden vind, maak ik gewoon een saaie actionlink
-                           // om het adres te bewerken. Dat werkt ook.
-                           // Van zodra we een framework gebruiken voor JQuery, klappen we
-                           // nog eens :) %>
-                        <%:Html.ActionLink("Wijzig", "AdresBewerken") %>
+                        <div class="bewerkAdres ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>
                     </td>
                 </tr>
             </tbody>

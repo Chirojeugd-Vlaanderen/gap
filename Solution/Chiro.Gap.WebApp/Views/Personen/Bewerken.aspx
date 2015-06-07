@@ -26,7 +26,7 @@
     <link href="<%= ResolveUrl("~/Content/print.css") %>" media="print" rel="stylesheet" type="text/css" />
     
     <script src="<%= ResolveUrl("~/Scripts/jquery-persoons-fiche.js") %>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/AdresBewerken.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/Modules/AdresModule.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/moment.js") %>" type="text/javascript"></script>
 </asp:Content>
 
@@ -50,7 +50,7 @@
            <input id="gwJaar" value="geenGwJaar" hidden readonly/>
            <input id="lidType" value="geenType" hidden readonly/>
       <% }%>
-   <input id="werkjaar" value="<%= Model.HuidigWerkJaar %>"hidden readonly/>
+   <input id="werkjaar" value="<%= Model.HuidigWerkJaar %>" hidden readonly/>
     <input id="GPid" value="<%=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID  %>" hidden readonly/>
     <input id="versieString" value="<%=Model.PersoonLidInfo.PersoonDetail.VersieString %>" hidden readonly/> 
      

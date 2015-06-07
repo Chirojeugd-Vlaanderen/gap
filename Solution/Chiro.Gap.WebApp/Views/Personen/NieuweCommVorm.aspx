@@ -21,10 +21,8 @@
  * limitations under the License.
  */
 %>
-	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
-
-    <script src="<%=ResolveUrl("~/Scripts/jquery-ui-1.10.2.custom.min.js")%>" type="text/javascript"></script>
-    <script src="<%=ResolveUrl("~/Scripts/jqueryui-editable.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jquery/jquery-ui-1.10.2.custom.min.js")%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("~/Scripts/jquery/jqueryui-editable.js")%>" type="text/javascript"></script>
 
     <% // CSS files %>
 	<link href="<%=ResolveUrl("~/Content/Site.css")%>" rel="stylesheet" type="text/css" />

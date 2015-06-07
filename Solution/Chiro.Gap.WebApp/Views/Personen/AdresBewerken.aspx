@@ -22,72 +22,74 @@
  */
 %>
 
+<script src="<%= ResolveUrl("~/Scripts/Modules/AdresModule.js") %>" type="text/javascript"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		AdresModule.Init();
+	});
+</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<% 
 // ReSharper disable Asp.NotResolved
-		using (Html.BeginForm())	// ReSharper geeft een foutmelding omdat er geen action bestaat die AdresBewerken heet,
-									// maar de view wordt in andere actions opgeroepen
-// ReSharper restore Asp.NotResolved
+		using (Html.BeginForm())	
+			// ReSharper geeft een foutmelding omdat er geen action bestaat die AdresBewerken heet,
+			// maar de view wordt in andere actions opgeroepen
+			// ReSharper restore Asp.NotResolved
 		{ %>
-	<ul id="acties">
-		<li>
-			<input type="submit" name="action" value="Bewaren" id="bewaarAdres" />
-        </li>
-	</ul>
-	<fieldset>
-		<legend>Toepassen op:</legend>
-		<%=Html.CheckBoxList("GelieerdePersoonIDs", Model.Bewoners)%>
-	</fieldset>
-    <% =Html.ValidationSummary()  %>
-    <% var values = from AdresTypeEnum e in Enum.GetValues(typeof(AdresTypeEnum))
-				  select new { value = e, text = e.ToString() }; 
-		%>
-
-	<fieldset>
-		<legend>Adresgegevens</legend>
-    <table>
-        <tr>
-			<td><%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.AdresType) %></td>
-			<td><%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.AdresType, new SelectList(values, "value", "text"))%></td>
-		</tr>
-    </table>
-
-    <p id="uitlegBinnenland">
-			<strong>Opgelet:</strong> voor binnenlandse adressen wordt alleen de officiële spelling van de straatnaam geaccepteerd.<br />
-			Ben je zeker van de straatnaam maar wordt ze geweigerd? Lees in
-			<%=Html.ActionLink("de handleiding", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweStraatnaam"})%>
-			hoe we daar een mouw aan kunnen passen.
-    </p>
-		
-        <p id="uitlegBuitenland" hidden>
-    Voor een buitenlands adres kun je behalve een postnummer ook een postcode invullen:
-    dat is bijvoorbeeld de lettercode die in Nederlandse adressen na het postnummer
-    komt (bv. 1216 RA Hilversum).</p>
-
-        <table id="tabel">
-        <%
-			Html.RenderPartial("AdresBewerkenControl", Model);
-         %>
-        
-        <!-- Rap hier iets tussen zetten, om te vermijden dat resharper vervelend doet -->
-
+			<ul id="acties">
+				<li>
+					<input type="submit" name="action" value="Bewaren" id="bewaarAdres" />
+				</li>
+			</ul>
+			<fieldset>
+				<legend>Toepassen op:</legend>
+				<%=Html.CheckBoxList("GelieerdePersoonIDs", Model.Bewoners)%>
+			</fieldset>
+			<% =Html.ValidationSummary()  %>
+			<% var values = from AdresTypeEnum e in Enum.GetValues(typeof(AdresTypeEnum))
+						  select new { value = e, text = e.ToString() }; 
+				%>
+			<fieldset>
+				<legend>Adresgegevens</legend>
+				<table>
+					<tr>
+						<td><%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.AdresType) %></td>
+						<td><%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.AdresType, new SelectList(values, "value", "text"))%></td>
+					</tr>
+				</table>
+				<p id="uitlegBinnenland">
+						<strong>Opgelet:</strong> voor binnenlandse adressen wordt alleen de officiële spelling van de straatnaam geaccepteerd.<br />
+						Ben je zeker van de straatnaam maar wordt ze geweigerd? Lees in
+						<%=Html.ActionLink("de handleiding", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweStraatnaam"})%>
+						hoe we daar een mouw aan kunnen passen.
+				</p>
+				<p id="uitlegBuitenland" hidden>
+					Voor een buitenlands adres kun je behalve een postnummer ook een postcode invullen:
+					dat is bijvoorbeeld de lettercode die in Nederlandse adressen na het postnummer
+					komt (bv. 1216 RA Hilversum).
+				</p>
+				<table id="adrestabel">
+				<%
+					Html.RenderPartial("AdresBewerkenControl", Model);
+					%>
+				<!-- Rap hier iets tussen zetten, om te vermijden dat resharper vervelend doet -->
 		<%
-			if (Model.OudAdresID == 0)
-			{
-				// De mogelijkheid om aan te kruisen of het nieuwe adres het voorkeursadres wordt, krijg je alleen bij een nieuw
-				// adres, en niet bij een verhuis.  I.e. als OudAdresID == 0.
+					if (Model.OudAdresID == 0)
+					{
+						// De mogelijkheid om aan te kruisen of het nieuwe adres het voorkeursadres wordt, krijg je alleen bij een nieuw
+						// adres, en niet bij een verhuis.  I.e. als OudAdresID == 0.
 		%>
-		<tr>
-			<td><%=Html.LabelFor(mdl=>mdl.Voorkeur) %></td>
-			<td><%=Html.EditorFor(mdl => mdl.Voorkeur)%></td>
-		</tr>
+						<tr>
+							<td><%=Html.LabelFor(mdl=>mdl.Voorkeur) %></td>
+							<td><%=Html.EditorFor(mdl => mdl.Voorkeur)%></td>
+						</tr>
 		<%
-			}
+					}
 		%>
-		<%=Html.HiddenFor(mdl=>mdl.AanvragerID) %>
-		<%=Html.HiddenFor(mdl=>mdl.OudAdresID) %>
-        </table>
-	</fieldset>
-	<%} %>
+					<%=Html.HiddenFor(mdl=>mdl.AanvragerID) %>
+					<%=Html.HiddenFor(mdl=>mdl.OudAdresID) %>
+				</table>
+			</fieldset>
+	<%  } %>
 </asp:Content>

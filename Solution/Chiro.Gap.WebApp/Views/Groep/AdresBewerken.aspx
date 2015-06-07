@@ -20,43 +20,36 @@
  * limitations under the License.
  */
 %>
-<script src="<%= ResolveUrl("~/Scripts/AdresBewerken.js") %>" type="text/javascript"></script>
+<script src="<%= ResolveUrl("~/Scripts/Modules/AdresModule.js") %>" type="text/javascript"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-
-        // Ehh...
-        
-        $('#tabel').show();
-        $('#postCode').hide();
-        $('#woonplaatsBuitenland').hide();
-
-       AdresBewerken();
-    });
+	$(document).ready(function () {
+		AdresModule.Init();
+	});
 </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="kaderke">
-        <div class="kadertitel">Adres van de lokalen</div>
-        <% 
-            using (Html.BeginForm())
-            {%>
-        <ul id="acties">
-            <li>
-                <input type="submit" name="action" value="Bewaren" /></li>
-        </ul>
-        <p>
-			<strong>Opgelet:</strong> voor binnenlandse adressen wordt alleen de officiële spelling van de straatnaam geaccepteerd.<br />
-			Ben je zeker van de straatnaam maar wordt ze geweigerd? Lees in
-			<%=Html.ActionLink("de handleiding", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweStraatnaam"})%>
-			hoe we daar een mouw aan kunnen passen.</p>
-            <% =Html.ValidationSummary() %>
-            
-            <table>
-            <% Html.RenderPartial("AdresBewerkenControl", Model); %>
-            </table>
-        <%
-}%>
-    </div>
+	<div class="kaderke">
+		<div class="kadertitel">Adres van de lokalen</div>
+		<% 
+			using (Html.BeginForm())
+			{ %>
+				<ul id="acties">
+					<li>
+                        <input type="submit" name="action" value="Bewaren" id="bewaarAdres" />
+					</li>
+				</ul>
+				<p>
+					<strong>Opgelet:</strong> voor binnenlandse adressen wordt alleen de officiële spelling van de straatnaam geaccepteerd.<br />
+					Ben je zeker van de straatnaam maar wordt ze geweigerd? Lees in
+					<%=Html.ActionLink("de handleiding", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweStraatnaam"})%>
+					hoe we daar een mouw aan kunnen passen.
+				</p>
+				<% =Html.ValidationSummary() %>			
+				<table id="adrestabel">
+					<% Html.RenderPartial("AdresBewerkenControl", Model); %>
+				</table>
+		<% } %>
+	</div>
 </asp:Content>
 
 

@@ -208,26 +208,6 @@ function gedeeltelijkTonen(container) {
     $(container + ' fieldset').css({ 'width': '350px' });
 }
 //-------------------------------------------------------------------------
-//functie om de gemeente op te zoeken
-
-function toonGemeenten(postcode, veld) {
-    //Groep ID wordt uit een verborgen veld op de pagina gehaald
-    url = link("Adressen", "WoonPlaatsenOphalen");
-    var options = '';
-    $.getJSON(url, { postNummer: postcode }, function (data) {
-        if (data == '') {
-            options = '<option>Geen resultaten gevonden</option>';
-        } else {
-            for (var i = 0; i < data.length; i++) {
-                options += '<option value="' + data[i].Naam + '">' + data[i].Naam + '</option>';
-            }
-        }
-
-        $(veld).html(options);
-    });
-
-}
-//-------------------------------------------------------------------------
 // email valideren
 function controleerEmail(email) {
     var emailReg = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
@@ -268,4 +248,14 @@ function getParameterByName(name) {
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+//Disable per ongeluk te vroeg submitten door 'enter' te drukken
+var preventSubmitOnEnter = function () {
+    $(this).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
 }

@@ -27,8 +27,8 @@
 	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>	
 
      <%//jQuery scripts (algemeen en Datatables) %>
-    <script src="<%= ResolveUrl("~/Scripts/jquery.dataTables.min.js")%>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/datestringsort.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/jquery/jquery.dataTables.min.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/Utility/datestringsort.js")%>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/jquery-overzicht-leden.js")%>" type="text/javascript"></script>
     
     <%//CSS bestanden voor opmaak DataTables %>
