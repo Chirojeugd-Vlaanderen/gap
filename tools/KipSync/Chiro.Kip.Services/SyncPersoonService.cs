@@ -77,13 +77,5 @@ namespace Chiro.Kip.Services
 
 		    return resultaat;
         }
-
-		/// <summary>
-		/// Standaardconstructor
-		/// </summary>
-		public SyncPersoonService()
-		{
-			_log = new MiniLog();
-		}
 	}
 }

@@ -31,6 +31,7 @@ using Adres = Chiro.Kip.ServiceContracts.DataContracts.Adres;
 using KipPersoon = Chiro.Kip.Data.Persoon;
 using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
 using Chiro.Cdf.ServiceHelper;
+﻿using Chiro.Kip.Log;
 
 namespace Chiro.Kip.Services
 {
@@ -43,9 +44,10 @@ namespace Chiro.Kip.Services
 	        get { return _serviceHelper; }
 	    }
 
-	    public SyncPersoonService(ServiceHelper serviceHelper)
+	    public SyncPersoonService(ServiceHelper serviceHelper, IMiniLog log)
 	    {
 	        _serviceHelper = serviceHelper;
+	        _log = log;
 	    }
 		/// <summary>
 		/// Probeert een persoon te vinden op basis van persoonsgegevens, adressen en communicatie.
