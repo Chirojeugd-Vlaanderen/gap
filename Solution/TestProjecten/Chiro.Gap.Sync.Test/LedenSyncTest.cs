@@ -1,16 +1,31 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * Copyright 2010-2015, Chirojeugd-Vlaanderen vzw.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System;
+using System.Collections.Generic;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.Sync;
 using Chiro.Gap.TestAttributes;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Chiro.Gap.Poco.Model;
 using Moq;
-using Persoon = Chiro.Gap.Poco.Model.Persoon;
+using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
 
 namespace Chiro.Gap.Sync.Test
 {
@@ -83,14 +98,14 @@ namespace Chiro.Gap.Sync.Test
             // ARRANGE
 
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Kip.ServiceContracts.DataContracts.Persoon>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<IEnumerable<AfdelingEnum>>())).Verifiable();
+            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Persoon>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<IEnumerable<AfdelingEnum>>())).Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             var lid = new Kind
                           {
                               AfdelingsJaar = new AfdelingsJaar {OfficieleAfdeling = new OfficieleAfdeling {ID = 1}},
                               GroepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()},
-                              GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
+                              GelieerdePersoon = new GelieerdePersoon {Persoon = new Poco.Model.Persoon()}
                           };
 
             // ACT
@@ -108,7 +123,7 @@ namespace Chiro.Gap.Sync.Test
         ///</summary>
         [TestMethod()]
         [ExpectedFoutNummer(typeof(FoutNummerException), FoutNummer.LidUitgeschreven)]
-        public void BewarenTest()
+        public void BewarenNietGebruikenOmTeVerwijderenTest()
         {
             // ARRANGE
 
@@ -120,7 +135,7 @@ namespace Chiro.Gap.Sync.Test
             {
                 AfdelingsJaar = new AfdelingsJaar { OfficieleAfdeling = new OfficieleAfdeling { ID = 1 } },
                 GroepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep() },
-                GelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon {AdNummer = 2} },
+                GelieerdePersoon = new GelieerdePersoon { Persoon = new Poco.Model.Persoon {AdNummer = 2} },
                 NonActief = true,
                 UitschrijfDatum = DateTime.Now,
                 EindeInstapPeriode = DateTime.Now.AddMonths(-6)
@@ -136,6 +151,39 @@ namespace Chiro.Gap.Sync.Test
             kipSyncMock.Verify(
                 src => src.LidVerwijderen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime>()),
                 Times.Never());
+        }
+
+        /// <summary>
+        /// Test voor bewaren persoon met geslacht x.
+        ///</summary>
+        [TestMethod()]
+        public void BewarenPersoonGeslachtXTest()
+        {
+            // ARRANGE
+
+            var kipSyncMock = new Mock<ISyncPersoonService>();
+            kipSyncMock.Setup(src => src.NieuwLidBewaren(It.IsAny<PersoonDetails>(), It.IsAny<LidGedoe>())).Verifiable();
+            Factory.InstantieRegistreren(kipSyncMock.Object);
+
+            var lid = new Kind
+            {
+                AfdelingsJaar = new AfdelingsJaar {OfficieleAfdeling = new OfficieleAfdeling {ID = 1}},
+                GroepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()},
+                GelieerdePersoon = new GelieerdePersoon {Persoon = new Poco.Model.Persoon {ID = 2, Geslacht = GeslachtsType.X}},
+                NonActief = false,
+                UitschrijfDatum = null,
+                EindeInstapPeriode = DateTime.Now.AddMonths(-6)
+            };
+
+            // ACT
+
+            var target = Factory.Maak<LedenSync>();
+            target.Bewaren(lid);
+
+            // ASSERT
+
+            kipSyncMock.Verify(src => src.NieuwLidBewaren(It.IsAny<PersoonDetails>(), It.IsAny<LidGedoe>()),
+                Times.AtLeastOnce);
         }
     }
 }
