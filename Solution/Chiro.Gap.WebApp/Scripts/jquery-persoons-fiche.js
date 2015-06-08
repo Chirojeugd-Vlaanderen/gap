@@ -4,6 +4,7 @@
  * Copyright 2014, the GAP developers. See the NOTICE file at the
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Cleanup en refactoring met module pattern: Copyright 2015 Sam Segers
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

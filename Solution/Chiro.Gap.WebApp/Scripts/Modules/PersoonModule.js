@@ -1,4 +1,7 @@
-﻿/* _____                         _          
+﻿/*
+ * Copyright 2013, Arno Soontjens
+ * Cleanup en refactoring met module pattern: Copyright 2015 Sam Segers
+   _____                         _          
   / ____|                       (_)         
  | (___   __ _ _ __ _____      ___ ___  ___ 
   \___ \ / _` | '_ ` _ \ \ /\ / / / __|/ _ \
