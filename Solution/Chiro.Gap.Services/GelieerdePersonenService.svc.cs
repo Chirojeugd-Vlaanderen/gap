@@ -1144,6 +1144,7 @@ namespace Chiro.Gap.Services
         public void AbonnementBewaren(int gelieerdePersoonID, int groepsWerkJaarID, AbonnementType? abonnementType, int publicatieID)
         {
             Abonnement teSyncenAbonnement;
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID, "Groep.GroepsWerkJaar"); 
 
             // TODO: meer in workers.
             var bestaand = (from ab in _abonnementenRepo.Select()
@@ -1175,7 +1176,7 @@ namespace Chiro.Gap.Services
                 else
                 {
                     // Nieuw abonnement
-                    var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID, "Groep.GroepsWerkJaar");
+                    
                     var groepsWerkJaar = (from gwj in gelieerdePersoon.Groep.GroepsWerkJaar
                         where gwj.ID == groepsWerkJaarID
                         select gwj).FirstOrDefault();
@@ -1210,7 +1211,7 @@ namespace Chiro.Gap.Services
                 }
                 else
                 {
-                    _abonnementenSync.AbonnementVerwijderen(teSyncenAbonnement);
+                    _abonnementenSync.AlleAbonnementenVerwijderen(gelieerdePersoon);
                     _abonnementenRepo.SaveChanges();
                 }
 #if KIPDORP

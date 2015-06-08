@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -120,6 +120,14 @@ namespace Chiro.Gap.Sync
                 .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar));
 
             Mapper.CreateMap<Groep, Kip.ServiceContracts.DataContracts.Groep>();
+
+            Mapper.CreateMap<GelieerdePersoon, AbonnementInfo>()
+                .ForMember(dst => dst.EmailAdres, opt => opt.MapFrom(src => VoorkeursMail(src)))
+                .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Persoon.Naam))
+                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
+                .ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.PersoonsAdres.Adres))
+                .ForMember(dst => dst.AbonnementType, opt => opt.Ignore())
+                .ForMember(dst => dst.StamNr, opt => opt.MapFrom(src => src.Groep.Code));
 
             Mapper.CreateMap<Abonnement, AbonnementInfo>()
                 .ForMember(dst => dst.EmailAdres, opt => opt.MapFrom(src => VoorkeursMail(src.GelieerdePersoon)))

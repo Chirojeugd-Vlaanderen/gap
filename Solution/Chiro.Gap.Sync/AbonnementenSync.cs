@@ -48,9 +48,9 @@ namespace Chiro.Gap.Sync
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementNaarMailchimp(info));
         }
 
-        public void AbonnementVerwijderen(Abonnement teSyncenAbonnement)
+        public void AlleAbonnementenVerwijderen(GelieerdePersoon gelieerdePersoon)
         {
-            var info = Mapper.Map<Abonnement, AbonnementInfo>(teSyncenAbonnement);
+            var info = Mapper.Map<GelieerdePersoon, AbonnementInfo>(gelieerdePersoon);
             info.AbonnementType = 0;
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementNaarMailchimp(info));
         }
