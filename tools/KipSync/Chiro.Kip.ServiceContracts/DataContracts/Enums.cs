@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -254,6 +254,13 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// <summary>
         /// Aanduiding voor iemand van het vrouwelijke geslacht
         /// </summary>
-        [EnumMember] Vrouw = 2
+        [EnumMember] Vrouw = 2,
+
+        /// <summary>
+        /// Het derde geslacht nemen we gewoon over uit GAP. Het kan op die
+        /// manier in de database worden bewaart. Wat de kipadmin-app er dan
+        /// verder nog mee doet, zullen we wel zien ;-)
+        /// </summary>
+        [EnumMember] X = 4,
     }
 }
