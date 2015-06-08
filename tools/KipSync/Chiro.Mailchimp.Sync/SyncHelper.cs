@@ -28,7 +28,11 @@ namespace Chiro.Mailchimp.Sync
     {
         public void AbonnementSyncen(AbonnementInfo abonnementInfo)
         {
-            var member = new Member {email_address = abonnementInfo.EmailAdres};
+            var member = new Member
+            {
+                // Maak een dummy adres als er geen adres gegeven is.
+                email_address = abonnementInfo.EmailAdres ?? string.Format("g{0}@chiro.be", abonnementInfo.GapPersoonId)
+            };
 
             var client = new RestClient(Settings.Default.ApiServer)
             {
@@ -59,7 +63,7 @@ namespace Chiro.Mailchimp.Sync
                 STRAAT_NUM = adres,
                 POSTCODE = postcode,
                 GEMEENTE = abonnementInfo.Adres.WoonPlaats,
-                LAND = abonnementInfo.Adres.Land
+                LAND = abonnementInfo.Adres.Land ?? "België"
             };
 
             if (abonnementInfo.AbonnementType != 0)

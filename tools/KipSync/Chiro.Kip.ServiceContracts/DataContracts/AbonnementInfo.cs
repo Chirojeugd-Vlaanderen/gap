@@ -27,6 +27,8 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
     public class AbonnementInfo
     {
         [DataMember]
+        public int GapPersoonId { get; set; }
+        [DataMember]
         public string EmailAdres { get; set; }
         [DataMember]
         public string VoorNaam { get; set; }

@@ -16,13 +16,13 @@
  * limitations under the License.
  */
 
+using System;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Adres = Chiro.Gap.Poco.Model.Adres;
 
 namespace Chiro.Gap.Sync
 {
@@ -38,13 +38,6 @@ namespace Chiro.Gap.Sync
         public void AbonnementBewaren(Abonnement teSyncenAbonnement)
         {
             var info = Mapper.Map<Abonnement, AbonnementInfo>(teSyncenAbonnement);
-
-            if (info.Adres.Land == null)
-            {
-                // Mailchimp wil altijd een land.
-                info.Adres.Land = "België";
-            }
-
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementNaarMailchimp(info));
         }
 
