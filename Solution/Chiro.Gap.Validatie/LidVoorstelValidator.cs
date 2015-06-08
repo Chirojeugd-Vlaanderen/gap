@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Chirojeugd-Vlaanderen. See the NOTICE file at the 
+ * Copyright 2014, 2015 Chirojeugd-Vlaanderen. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
