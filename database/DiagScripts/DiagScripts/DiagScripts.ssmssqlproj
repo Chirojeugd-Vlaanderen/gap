@@ -152,15 +152,21 @@
           <FullPath>NietDoorgekomenAbonnement.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenAfdelingen.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>NietDoorgekomenAfdelingen.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenLeden.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02\sql2012:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kip-sql02\sql2012</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>NietDoorgekomenLeden.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenTelefoonNr.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>NietDoorgekomenTelefoonNr.sql</FullPath>
         </FileNode>
         <FileNode Name="NietVerwijderdeLeden.sql">
@@ -206,8 +212,8 @@
           <FullPath>vAdresInfo.sql</FullPath>
         </FileNode>
         <FileNode Name="TijdelijkeGebruiker.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02\sql2012:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kip-sql02\sql2012</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>TijdelijkeGebruiker.sql</FullPath>
         </FileNode>
