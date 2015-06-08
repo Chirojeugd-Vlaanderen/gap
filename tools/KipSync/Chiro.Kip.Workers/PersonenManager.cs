@@ -15,13 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-﻿using Chiro.Kip.Data;
-﻿using Chiro.Kip.ServiceContracts.DataContracts;
-﻿using Persoon = Chiro.Kip.Data.Persoon;
+using Chiro.Kip.Data;
+using Chiro.Kip.ServiceContracts.DataContracts;
+using Chiro.Kip.Workers.Properties;
+using Persoon = Chiro.Kip.Data.Persoon;
 
 namespace Chiro.Kip.Workers
 {
@@ -78,7 +80,7 @@ namespace Chiro.Kip.Workers
 
 			if (String.IsNullOrEmpty(zoekInfo.Naam) || String.IsNullOrEmpty(zoekInfo.VoorNaam))
 			{
-				throw new InvalidOperationException(Properties.Resources.OnvoldoendePersoonsInfo);
+				throw new InvalidOperationException(Resources.OnvoldoendePersoonsInfo);
 			}
 
 			// Zoeken bij naamgenoten.
@@ -132,7 +134,7 @@ namespace Chiro.Kip.Workers
 
 			resultaat = new Persoon();
 			Mapper.Map(zoekInfo, resultaat);
-			resultaat.BurgerlijkeStandId = Properties.Settings.Default.StandaardBurgerlijkeStaat;
+			resultaat.BurgerlijkeStandId = Settings.Default.StandaardBurgerlijkeStaat;
 			resultaat.Stempel = DateTime.Now;
 			db.AddToPersoonSet(resultaat);
 
