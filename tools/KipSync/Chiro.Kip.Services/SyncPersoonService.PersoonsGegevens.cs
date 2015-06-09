@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -15,38 +15,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using AutoMapper;
-using Chiro.Cdf.ServiceModel;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.UpdateSvc.Contracts;
 using Chiro.Kip.Data;
+using Chiro.Kip.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using Chiro.Kip.Services.Properties;
 using Chiro.Kip.Workers;
+using Chiro.Mailchimp.Sync;
 using Adres = Chiro.Kip.ServiceContracts.DataContracts.Adres;
 using KipPersoon = Chiro.Kip.Data.Persoon;
 using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
-using Chiro.Cdf.ServiceHelper;
-﻿using Chiro.Kip.Log;
 
 namespace Chiro.Kip.Services
 {
 	public partial class SyncPersoonService
 	{
 	    private readonly ServiceHelper _serviceHelper;
+	    private readonly IChimpSyncHelper _chimpSyncHelper;
 
 	    protected ServiceHelper ServiceHelper
 	    {
 	        get { return _serviceHelper; }
 	    }
 
-	    public SyncPersoonService(ServiceHelper serviceHelper, IMiniLog log)
+	    public SyncPersoonService(ServiceHelper serviceHelper, IMiniLog log, IChimpSyncHelper chimpSyncHelper)
 	    {
 	        _serviceHelper = serviceHelper;
+	        _chimpSyncHelper = chimpSyncHelper;
 	        _log = log;
 	    }
 		/// <summary>
@@ -72,7 +76,7 @@ namespace Chiro.Kip.Services
 			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
 			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
 
-			Chiro.Kip.Data.Persoon gevonden;
+			KipPersoon gevonden;
 
 			// Doe eigenlijk hetzelfde als bij PersoonUpdaten, maar in dit geval hebben we meer info
 			// om bestaande personen op te zoeken.
@@ -218,11 +222,11 @@ namespace Chiro.Kip.Services
 
 					if (b.Persoon == null)
 					{
-						_log.FoutLoggen(0, String.Format(Properties.Resources.AdresZonderPersoon, adres.Straat, adres.HuisNr, adres.Bus, adres.PostNr, adres.WoonPlaats));
+						_log.FoutLoggen(0, String.Format(Resources.AdresZonderPersoon, adres.Straat, adres.HuisNr, adres.Bus, adres.PostNr, adres.WoonPlaats));
 					}
 					else if (String.IsNullOrEmpty(b.Persoon.Naam) || String.IsNullOrEmpty(b.Persoon.VoorNaam))
 					{
-						_log.FoutLoggen(0, String.Format(Properties.Resources.NegeerPersoonOnvolledigeNaam, b.Persoon.VoorNaam, b.Persoon.Naam, b.Persoon.AdNummer));
+						_log.FoutLoggen(0, String.Format(Resources.NegeerPersoonOnvolledigeNaam, b.Persoon.VoorNaam, b.Persoon.Naam, b.Persoon.AdNummer));
 					}
 					else
 					{
@@ -361,7 +365,7 @@ namespace Chiro.Kip.Services
 
 			if (adresInDb == null)
 			{
-				adresInDb = new Chiro.Kip.Data.Adres
+				adresInDb = new Data.Adres
 				            	{
 				            		ID = 0,
 				            		Straat = adres.Straat,
@@ -444,7 +448,7 @@ namespace Chiro.Kip.Services
 
                 if (persoon == null)
                 {
-                    _log.FoutLoggen(0, String.Format(Properties.Resources.CommAanpassenOnbekendePersoon,
+                    _log.FoutLoggen(0, String.Format(Resources.CommAanpassenOnbekendePersoon,
                                                      persoonsGegevens.VoorNaam, persoonsGegevens.Naam, nummerBijTeWerken));
                     return;
                 }
@@ -459,14 +463,14 @@ namespace Chiro.Kip.Services
 
                 if (aanTePassen == null)
                 {
-                    feedback = String.Format(Properties.Resources.TeWijzigenCommunicatieNietGevonden,
+                    feedback = String.Format(Resources.TeWijzigenCommunicatieNietGevonden,
                                              persoonsGegevens.VoorNaam, persoonsGegevens.Naam, nummerBijTeWerken,
                                              communicatieMiddel.Waarde);
                     mgr.CommunicatieToevoegen(communicatieMiddel, persoon, db);
                 }
                 else
                 {
-                    feedback = String.Format(Properties.Resources.CommVormGewijzigd, persoonsGegevens.VoorNaam,
+                    feedback = String.Format(Resources.CommVormGewijzigd, persoonsGegevens.VoorNaam,
                                              persoonsGegevens.Naam, nummerBijTeWerken, communicatieMiddel.Waarde);
                     aanTePassen.GeenMailings = communicatieMiddel.GeenMailings;
                     aanTePassen.Info = communicatieMiddel.Waarde;
@@ -509,7 +513,7 @@ namespace Chiro.Kip.Services
 				if (persoon == null)
 				{
 					_log.FoutLoggen(0, String.Format(
-						Properties.Resources.CommunicatieOnbekendePersoon,
+						Resources.CommunicatieOnbekendePersoon,
 						zoekInfo.VoorNaam,
 						zoekInfo.Naam,
 						String.Concat(
@@ -606,7 +610,7 @@ namespace Chiro.Kip.Services
 					//        pers.VoorNaam,
 					//        pers.Naam));
 					_log.FoutLoggen(0,
-						String.Format(Properties.Resources.CommunicatieOnbekendePersoon,
+						String.Format(Resources.CommunicatieOnbekendePersoon,
 						pers.VoorNaam,
 						pers.Naam,
 						communicatie.Waarde));
@@ -653,7 +657,7 @@ namespace Chiro.Kip.Services
 				if (persoon == null)
 				{
 					_log.FoutLoggen(0, String.Format(
-						Properties.Resources.CommVerwijderenOnbekendePersoon,
+						Resources.CommVerwijderenOnbekendePersoon,
 						pers.VoorNaam,
 						pers.Naam,
 						communicatie.Waarde));

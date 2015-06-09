@@ -374,6 +374,13 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="abonnementInfo">Alle informatie over het abonnement.</param>
         [OperationContract(IsOneWay = true)]
         void AbonnementNaarMailchimp(AbonnementInfo abonnementInfo);
+
+        /// <summary>
+        /// Verwijdert Dubbelpuntabonnement voor persoon met gegeven <paramref name="eMail"/>.
+        /// </summary>
+        /// <param name="eMail">E-mailadres (of dummy-e-mailadres) van te verwijderen abonnement.</param>
+        [OperationContract(IsOneWay = true)]
+        void AbonnementVerwijderen(string eMail);
         #endregion
 
     }

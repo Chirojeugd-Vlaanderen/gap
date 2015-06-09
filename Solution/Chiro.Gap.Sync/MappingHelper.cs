@@ -144,10 +144,12 @@ namespace Chiro.Gap.Sync
 
         private static string VoorkeursMail(GelieerdePersoon gelieerdePersoon)
         {
-            return (from a in gelieerdePersoon.Communicatie
+            string result = (from a in gelieerdePersoon.Communicatie
                 where a.CommunicatieType.ID == 3
                 orderby a.Voorkeur descending
                 select a.Nummer).FirstOrDefault();
+
+            return result;
         }
     }
 }

@@ -24,8 +24,15 @@ using RestSharp;
 
 namespace Chiro.Mailchimp.Sync
 {
-    public class SyncHelper
+    /// <summary>
+    /// Deze klasse zorgt voor de communicatie met Mailchimp.
+    /// </summary>
+    public class ChimpSyncHelper : IChimpSyncHelper
     {
+        /// <summary>
+        /// Maakt of updatet het mailchimpabonnement met gegeven <paramref name="abonnementInfo"/>.
+        /// </summary>
+        /// <param name="abonnementInfo">Info over te maken/updaten abonnement.</param>
         public void AbonnementSyncen(AbonnementInfo abonnementInfo)
         {
             var member = new Member
@@ -33,6 +40,12 @@ namespace Chiro.Mailchimp.Sync
                 // Maak een dummy adres als er geen adres gegeven is.
                 email_address = abonnementInfo.EmailAdres ?? string.Format("g{0}@chiro.be", abonnementInfo.GapPersoonId)
             };
+
+            if (abonnementInfo.AbonnementType == 0)
+            {
+                AbonnementVerwijderen(abonnementInfo.EmailAdres);
+                return;
+            }
 
             var client = new RestClient(Settings.Default.ApiServer)
             {
@@ -59,51 +72,63 @@ namespace Chiro.Mailchimp.Sync
                 FNAME = abonnementInfo.VoorNaam,
                 LNAME = abonnementInfo.Naam,
                 STAMNUMMER = abonnementInfo.StamNr,
-                HOE = abonnementInfo.AbonnementType == 1 ? "Digitaal graag": "Papier hier",
+                HOE = abonnementInfo.AbonnementType == 1 ? "Digitaal graag" : "Papier hier",
                 STRAAT_NUM = adres,
                 POSTCODE = postcode,
                 GEMEENTE = abonnementInfo.Adres.WoonPlaats,
                 LAND = abonnementInfo.Adres.Land ?? "België"
             };
 
-            if (abonnementInfo.AbonnementType != 0)
+            member.status = "subscribed";
+            if (bestaande == null)
             {
-                member.status = "subscribed";
-                if (bestaande == null)
+                var request2 = new RestRequest("3.0/lists/{listid}/members/")
                 {
-                    var request2 = new RestRequest("3.0/lists/{listid}/members/")
-                    {
-                        RequestFormat = DataFormat.Json,
-                        Method = Method.POST
-                    };
-                    request2.AddUrlSegment("listid", Settings.Default.ListId);
-                    request2.AddBody(member);
-                    var result = client.Execute(request2);
-                }
-                else
-                {
-                    var request2 = new RestRequest("3.0/lists/{listid}/members/{memberid}")
-                    {
-                        RequestFormat = DataFormat.Json,
-                        Method = Method.PATCH
-                    };
-                    request2.AddUrlSegment("listid", Settings.Default.ListId);
-                    request2.AddUrlSegment("memberid", member.id);
-                    request2.AddBody(member);
-                    var result = client.Execute(request2);
-                }
+                    RequestFormat = DataFormat.Json,
+                    Method = Method.POST
+                };
+                request2.AddUrlSegment("listid", Settings.Default.ListId);
+                request2.AddBody(member);
+                var result = client.Execute(request2);
             }
             else
             {
                 var request2 = new RestRequest("3.0/lists/{listid}/members/{memberid}")
                 {
                     RequestFormat = DataFormat.Json,
-                    Method = Method.DELETE
+                    Method = Method.PATCH
                 };
                 request2.AddUrlSegment("listid", Settings.Default.ListId);
                 request2.AddUrlSegment("memberid", member.id);
+                request2.AddBody(member);
                 var result = client.Execute(request2);
             }
+        }
+
+        /// <summary>
+        /// Verwijdert het mailchimpabonnement voor het gegeven <paramref name="eMailAdres"/>
+        /// </summary>
+        /// <param name="eMailAdres">E-mailadres dat van Mailchimp verwijderd moet worden.</param>
+        public void AbonnementVerwijderen(string eMailAdres)
+        {
+            var member = new Member
+            {
+                email_address = eMailAdres
+            };
+            // ID wordt berekend op basis van e-mailadres.
+            var request = new RestRequest("3.0/lists/{listid}/members/{memberid}")
+            {
+                RequestFormat = DataFormat.Json,
+                Method = Method.DELETE
+            };
+            request.AddUrlSegment("listid", Settings.Default.ListId);
+            request.AddUrlSegment("memberid", member.id);
+
+            var client = new RestClient(Settings.Default.ApiServer)
+            {
+                Authenticator = new HttpBasicAuthenticator("apikey", Settings.Default.ApiKey)
+            };
+            var result = client.Execute(request);
         }
     }
 }

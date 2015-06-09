@@ -30,7 +30,7 @@ namespace Chiro.Mailchimp.Sync.Test
         [TestMethod]
         public void AbonnementSyncenTest()
         {
-            var target = new SyncHelper();
+            var target = new ChimpSyncHelper();
             var info = new AbonnementInfo
             {
                 EmailAdres = "helpdesk@chiro.be",

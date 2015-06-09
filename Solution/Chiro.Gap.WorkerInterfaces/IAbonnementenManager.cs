@@ -24,12 +24,21 @@ namespace Chiro.Gap.WorkerInterfaces
     public interface IAbonnementenManager
     {
         /// <summary>
-        /// Levert voor de gegeven <paramref name="gelieerdePersoon"/> het type van het huidige abonnement op
+        /// Levert voor de gegeven <paramref name="gelieerdePersoon"/> het huidige abonnement op
         /// de publicatie met gegeven <paramref name="publicatieID"/>, als er zo'n abonnement is voor dit jaar.
         /// </summary>
         /// <param name="gelieerdePersoon"></param>
         /// <param name="publicatieID"></param>
-        /// <returns>Type van het abonnement, of <c>null</c> als er geen abonnement is.</returns>
-        AbonnementType? HuidigAbonnementGet(GelieerdePersoon gelieerdePersoon, int publicatieID);
+        /// <returns>Abonnement, of <c>null</c> als er geen abonnement is.</returns>
+        Abonnement HuidigAbonnementGet(GelieerdePersoon gelieerdePersoon, int publicatieID);
+
+        /// <summary>
+        /// Levert voor de gegeven <paramref name="gelieerdePersoon"/> het type van het huidige abonnement van
+        /// de publicatie met gegeven <paramref name="publicatieID"/>, als er zo'n abonnement is voor dit jaar.
+        /// </summary>
+        /// <param name="gelieerdePersoon"></param>
+        /// <param name="publicatieID"></param>
+        /// <returns>Abonnement, of <c>null</c> als er geen abonnement is.</returns>
+        AbonnementType? HuidigAbonnementTypeGet(GelieerdePersoon gelieerdePersoon, int publicatieID);
     }
 }

@@ -1619,7 +1619,9 @@ namespace Chiro.Gap.Services
         public int CommunicatieVormVerwijderen(int commvormID)
         {
             var communicatieVorm = _communicatieVormRepo.ByID(commvormID);
-            int gelieerdePersoonID = communicatieVorm.GelieerdePersoon.ID;
+            var gelieerdePersoon = communicatieVorm.GelieerdePersoon;
+            string teVerwijderenNummer = communicatieVorm.Nummer;
+            bool abonnementCheckNodig = false;
 
             if (!_autorisatieMgr.IsGav(communicatieVorm))
             {
@@ -1637,9 +1639,10 @@ namespace Chiro.Gap.Services
                 if (nieuweVoorkeur != null)
                 {
                     nieuweVoorkeur.Voorkeur = true;
-                    // TODO: syncen naar Kipadmin
                 }
-
+                abonnementCheckNodig = (communicatieVorm.CommunicatieType.ID == 3);
+                // Vermijd dat het verkeerde adres naar Mailchimp gestuurd zou worden:
+                communicatieVorm.Voorkeur = false;
             }
 
 #if KIPDORP
@@ -1651,13 +1654,25 @@ namespace Chiro.Gap.Services
                     _communicatieSync.Verwijderen(communicatieVorm);
                 }
                 _communicatieVormRepo.Delete(communicatieVorm);
+
+                if (abonnementCheckNodig)
+                {
+                    var abonnement = _abonnementenMgr.HuidigAbonnementGet(gelieerdePersoon, 1);
+
+                    if (abonnement != null)
+                    {
+                        // haal oud adres weg, en bewaar opnieuw met nieuwe voorkeur (evt. dummy)
+                        _abonnementenSync.AlleAbonnementenVerwijderen(teVerwijderenNummer);
+                        _abonnementenSync.AbonnementBewaren(abonnement);
+                    }
+                }
                 _communicatieVormRepo.SaveChanges();
 #if KIPDORP
                 tx.Complete();
             }
 #endif
 
-            return gelieerdePersoonID;
+            return gelieerdePersoon.ID;
         }
 
         /// <summary>

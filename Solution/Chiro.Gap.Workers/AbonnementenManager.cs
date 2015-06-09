@@ -16,11 +16,7 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.WorkerInterfaces;
@@ -33,13 +29,13 @@ namespace Chiro.Gap.Workers
     public class AbonnementenManager: IAbonnementenManager
     {
         /// <summary>
-        /// Levert voor de gegeven <paramref name="gelieerdePersoon"/> het type van het huidige abonnement op
+        /// Levert voor de gegeven <paramref name="gelieerdePersoon"/> het huidige abonnement op
         /// de publicatie met gegeven <paramref name="publicatieID"/>, als er zo'n abonnement is voor dit jaar.
         /// </summary>
         /// <param name="gelieerdePersoon"></param>
         /// <param name="publicatieID"></param>
-        /// <returns>Type van het abonnement, of <c>null</c> als er geen abonnement is.</returns>
-        public AbonnementType? HuidigAbonnementGet(GelieerdePersoon gelieerdePersoon, int publicatieID)
+        /// <returns>Abonnement, of <c>null</c> als er geen abonnement is.</returns>
+        public Abonnement HuidigAbonnementGet(GelieerdePersoon gelieerdePersoon, int publicatieID)
         {
             var groepsWerkjaar =
                 gelieerdePersoon.Groep.GroepsWerkJaar.OrderByDescending(gwj => gwj.WerkJaar).FirstOrDefault();
@@ -48,7 +44,20 @@ namespace Chiro.Gap.Workers
                 return null;
             }
             var abonnement = gelieerdePersoon.Abonnement.FirstOrDefault(ab => ab.GroepsWerkJaar.ID == groepsWerkjaar.ID && ab.Publicatie.ID == publicatieID);
-            return abonnement == null ? (AbonnementType?)null : abonnement.Type;
+            return abonnement;
+        }
+
+        /// <summary>
+        /// Levert voor de gegeven <paramref name="gelieerdePersoon"/> het type van het huidige abonnement van
+        /// de publicatie met gegeven <paramref name="publicatieID"/>, als er zo'n abonnement is voor dit jaar.
+        /// </summary>
+        /// <param name="gelieerdePersoon"></param>
+        /// <param name="publicatieID"></param>
+        /// <returns>Abonnement, of <c>null</c> als er geen abonnement is.</returns>
+        public AbonnementType? HuidigAbonnementTypeGet(GelieerdePersoon gelieerdePersoon, int publicatieID)
+        {
+            var abonnement = HuidigAbonnementGet(gelieerdePersoon, publicatieID);
+            return abonnement == null ? (AbonnementType?) null : abonnement.Type;
         }
     }
 }

@@ -19,7 +19,6 @@
 using System;
 using System.ServiceModel;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Chiro.Mailchimp.Sync;
 
 namespace Chiro.Kip.Services
 {
@@ -32,12 +31,24 @@ namespace Chiro.Kip.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void AbonnementNaarMailchimp(AbonnementInfo abonnementInfo)
         {
-            var syncHelper = new SyncHelper();
-            syncHelper.AbonnementSyncen(abonnementInfo);
+            _chimpSyncHelper.AbonnementSyncen(abonnementInfo);
             _log.BerichtLoggen(0,
                 String.Format("DubbelpuntAbonnement voor {0} {1} ({2}, {3}) bijgewerkt. Type {4}.",
                     abonnementInfo.VoorNaam, abonnementInfo.Naam, abonnementInfo.EmailAdres, abonnementInfo.Adres,
                     abonnementInfo.AbonnementType));
+        }
+
+        /// <summary>
+        /// Verwijdert Dubbelpuntabonnement voor persoon met gegeven <paramref name="eMail"/>.
+        /// </summary>
+        /// <param name="eMail">E-mailadres (of dummy-e-mailadres) van te verwijderen abonnement.</param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void AbonnementVerwijderen(string eMail)
+        {
+            _chimpSyncHelper.AbonnementVerwijderen(eMail);
+            _log.BerichtLoggen(0,
+                string.Format("DubbelpuntAbonnement verwijderd: {0}.",
+                    eMail));
         }
     }
 }

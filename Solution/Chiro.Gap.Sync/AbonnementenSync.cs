@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-using System;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
@@ -45,7 +44,12 @@ namespace Chiro.Gap.Sync
         {
             var info = Mapper.Map<GelieerdePersoon, AbonnementInfo>(gelieerdePersoon);
             info.AbonnementType = 0;
-            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementNaarMailchimp(info));
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementVerwijderen(info.EmailAdres));
+        }
+
+        public void AlleAbonnementenVerwijderen(string eMail)
+        {
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementVerwijderen(eMail));
         }
     }
 }

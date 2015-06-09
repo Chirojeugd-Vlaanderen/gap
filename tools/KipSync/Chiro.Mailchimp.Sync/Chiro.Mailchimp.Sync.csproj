@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IChimpSyncHelper.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\MergeFields.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -53,7 +54,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SyncHelper.cs" />
+    <Compile Include="ChimpSyncHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
