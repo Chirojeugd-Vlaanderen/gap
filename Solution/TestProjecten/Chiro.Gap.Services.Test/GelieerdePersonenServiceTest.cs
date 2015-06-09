@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -787,19 +787,20 @@ namespace Chiro.Gap.Services.Test
             // ARRANGE
 
             var communicatieVorm = new CommunicatieVorm
-                                       {
-                                           ID = 1,
-                                           GelieerdePersoon =
-                                               new GelieerdePersoon
-                                                   {
-                                                       Persoon =
-                                                           new Persoon
-                                                               {
-                                                                   InSync =
-                                                                       true
-                                                               }
-                                                   }
-                                       };
+            {
+                ID = 1,
+                GelieerdePersoon =
+                    new GelieerdePersoon
+                    {
+                        Persoon =
+                            new Persoon
+                            {
+                                InSync =
+                                    true
+                            },
+                        Groep = new ChiroGroep {GroepsWerkJaar = new[] {new GroepsWerkJaar()}}
+                    }
+            };
 
             // Dependency injection: synchronisatie
 
@@ -825,6 +826,91 @@ namespace Chiro.Gap.Services.Test
 
             communicatieSyncMock.Verify(src => src.Verwijderen(It.IsAny<CommunicatieVorm>()),
                                         Times.AtLeastOnce());
+        }
+
+        /// <summary>
+        /// Verwijderen voorkeursmailadres moet syncen met mailchimp als persoon DP-abonnement heeft.
+        ///</summary>
+        [TestMethod()]
+        public void VoorkeursmailVerwijderenChimpSyncTest()
+        {
+            // ARRANGE
+
+            var mailAdres = new CommunicatieVorm
+            {
+                ID = 1,
+                CommunicatieType = new CommunicatieType {ID = 3},
+                Nummer = "oudevoorkeur@chiro.be",
+                Voorkeur = true,
+                GelieerdePersoon =
+                    new GelieerdePersoon
+                    {
+                        Persoon =
+                            new Persoon
+                            {
+                                InSync =
+                                    true
+                            },
+                        Groep = new ChiroGroep()
+                    }
+            };
+            mailAdres.GelieerdePersoon.Communicatie.Add(mailAdres);
+            var groepswerkjaar = new GroepsWerkJaar {Groep = mailAdres.GelieerdePersoon.Groep, WerkJaar = 2014};
+            mailAdres.GelieerdePersoon.Groep.GroepsWerkJaar.Add(groepswerkjaar);
+            var abonnement = new Abonnement
+            {
+                GelieerdePersoon = mailAdres.GelieerdePersoon,
+                GroepsWerkJaar = groepswerkjaar,
+                Publicatie = new Publicatie {ID = 1}
+            };
+            groepswerkjaar.Abonnement.Add(abonnement);
+            mailAdres.GelieerdePersoon.Abonnement.Add(abonnement);
+            var anderMailAdres = new CommunicatieVorm
+            {
+                ID = 2,
+                CommunicatieType = new CommunicatieType {ID = 3},
+                GelieerdePersoon = mailAdres.GelieerdePersoon,
+                Voorkeur = false,
+                Nummer = "2deadres@chiro.be"
+            };
+            mailAdres.GelieerdePersoon.Communicatie.Add(anderMailAdres);
+
+            // Dependency injection: synchronisatie
+
+            var abonnementenSyncMock = new Mock<IAbonnementenSync>();
+            abonnementenSyncMock.Setup(
+                src =>
+                    src.AbonnementBewaren(
+                        It.Is<Abonnement>(
+                            ab =>
+                                Equals(
+                                    ab.GelieerdePersoon.Communicatie.First(
+                                        cm => cm.Voorkeur && cm.CommunicatieType.ID == 3), anderMailAdres))))
+                .Verifiable();
+            Factory.InstantieRegistreren(abonnementenSyncMock.Object);
+
+            // Dependency injection: data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieVorm>())
+                                  .Returns(new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> { mailAdres }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.CommunicatieVormVerwijderen(mailAdres.ID);
+
+            // ASSERT
+
+            abonnementenSyncMock.Verify(src =>
+                src.AbonnementBewaren(
+                    It.Is<Abonnement>(
+                        ab =>
+                            Equals(
+                                ab.GelieerdePersoon.Communicatie.First(
+                                    cm => cm.Voorkeur && cm.CommunicatieType.ID == 3), anderMailAdres))),
+                Times.AtLeastOnce());
         }
 
         /// <summary>
