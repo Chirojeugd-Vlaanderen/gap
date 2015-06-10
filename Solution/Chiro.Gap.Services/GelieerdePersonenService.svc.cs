@@ -625,6 +625,9 @@ namespace Chiro.Gap.Services
         /// </summary>
         /// <param name="ID">CommunicatieVormID</param>
         /// <param name="waarde">Nieuw nummer</param>
+        /// <remarks>
+        /// Ik twijfel er sterk aan of dit nog gebruikt wordt.
+        /// </remarks>
         public void NummerCommunicatieVormWijzigen(int ID, string waarde)
         {
             var communicatieVorm = _communicatieVormRepo.ByID(ID);
@@ -652,6 +655,15 @@ namespace Chiro.Gap.Services
                 if (communicatieVorm.GelieerdePersoon.Persoon.InSync)
                 {
                     _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
+                }
+                if (communicatieVorm.Voorkeur)
+                {
+                    var abonnement = _abonnementenMgr.HuidigAbonnementGet(communicatieVorm.GelieerdePersoon, 1);
+                    if (abonnement != null)
+                    {
+                        _abonnementenSync.AlleAbonnementenVerwijderen(origineelNummer);
+                        _abonnementenSync.AbonnementBewaren(abonnement);
+                    }
                 }
 #if KIPDORP
                 tx.Complete();
@@ -1733,9 +1745,8 @@ namespace Chiro.Gap.Services
                                     where cv.ID == c.ID
                                     select cv).FirstOrDefault();
 
-            // TODO: Ik weet eigenlijk nog niet of lazy loading werkt.
-            // Mag ik er vanuitgaan dat eender wat ik achteraf nodig heb, bijgeladen
-            // wordt?
+            // Lazy loading zal ervoor zorgen dat achteraf al wat nodig is
+            // bij opgehaald wordt uit de database.
 
             // Autorisatie:
 
@@ -1761,6 +1772,15 @@ namespace Chiro.Gap.Services
                 if (communicatieVorm.GelieerdePersoon.Persoon.InSync)
                 {
                     _communicatieSync.Bijwerken(communicatieVorm, origineelNummer);
+                }
+                if (communicatieVorm.Voorkeur)
+                {
+                    var abonnement = _abonnementenMgr.HuidigAbonnementGet(communicatieVorm.GelieerdePersoon, 1);
+                    if (abonnement != null)
+                    {
+                        _abonnementenSync.AlleAbonnementenVerwijderen(origineelNummer);
+                        _abonnementenSync.AbonnementBewaren(abonnement);
+                    }
                 }
 #if KIPDORP
             tx.Complete();
