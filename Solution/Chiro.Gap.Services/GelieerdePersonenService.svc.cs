@@ -1375,7 +1375,7 @@ namespace Chiro.Gap.Services
                 // Dit kan nog wel wat verfijnd worden.
             }
 
-            // de persoonsadressen gekoppeld aan een gelieerde persoon, zijn de voorkeursadresen van die gelieerde persoon.
+            // de persoonsadressen gekoppeld aan een gelieerde persoon, zijn ENKEL DE VOORKEURSADRESSEN van die gelieerde persoon.
             var teSyncen = (from pa in persoonsAdressen
                             where pa.GelieerdePersoon.Any(gp => gp.Persoon.InSync)
                             select pa).ToList();
@@ -1387,6 +1387,20 @@ namespace Chiro.Gap.Services
 #endif
             _adressenSync.StandaardAdressenBewaren(teSyncen);
 
+            foreach (var pa in persoonsAdressen.Where(pa => pa.GelieerdePersoon.Any()))
+            {
+                // Persoonsadres gekoppeld aan gelieerde persoon (ipv persoon), wil zeggen dat dat persoonsadres het
+                // VOORKEURSADRES is van die gelieerde persoon. Nu is het nog uit te vinden of die persoon een abonnement.
+                // heeft.
+                // Het volstaat dat 1 van de gelieerde personen een abonnement heeft.
+                var abonnement = (from gp in pa.GelieerdePersoon
+                    where _abonnementenMgr.HuidigAbonnementGet(gp, 1) != null
+                    select _abonnementenMgr.HuidigAbonnementGet(gp, 1)).FirstOrDefault();
+                if (abonnement != null)
+                {
+                    _abonnementenSync.AbonnementBewaren(abonnement);
+                }
+            }
             _adressenRepo.SaveChanges();
 
 #if KIPDORP
