@@ -615,6 +615,120 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
+        /// Controleert of een nieuw niet-voorkeursadres van een gekende gelieerde persoon niet wordt gesynct
+        /// met Kipadmin
+        /// </summary>
+        [TestMethod()]
+        public void GelieerdePersonenVerhuizenNietVoorkeurSyncTest()
+        {
+            // ARRANGE.
+
+            #region testdata
+
+            var adres = new BelgischAdres
+            {
+                ID = 2,
+                StraatNaam = new StraatNaam {ID = 3, Naam = "Langstraat", PostNummer = 2140}
+            };
+
+
+            // GelierdePersoon1 heeft het adres niet als voorkeursadres, gelieerdePersoon2 wel.
+            var gelieerdePersoon1 = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon
+                {
+                    ID = 4,
+                    InSync = true,
+                },
+                PersoonsAdres = new PersoonsAdres {ID = 3, Adres = new BelgischAdres{ID = 8}}
+            };
+            gelieerdePersoon1.Persoon.PersoonsAdres.Add(new PersoonsAdres { ID = 6, Adres = adres, Persoon = gelieerdePersoon1.Persoon });
+            gelieerdePersoon1.Persoon.PersoonsAdres.Add(gelieerdePersoon1.PersoonsAdres);
+
+            var gelieerdePersoon2 = new GelieerdePersoon
+            {
+                ID = 2,
+                Persoon = new Persoon
+                {
+                    ID = 5,
+                    InSync = false,
+                    PersoonsAdres = new List<PersoonsAdres>
+                    {
+                        new PersoonsAdres
+                        {
+                            ID = 7,
+                            Adres = adres
+                        }
+                    }
+                }
+            };
+
+            gelieerdePersoon1.Persoon.GelieerdePersoon.Add(gelieerdePersoon1);
+            gelieerdePersoon1.PersoonsAdres.Persoon = gelieerdePersoon1.Persoon;
+
+            gelieerdePersoon2.Persoon.GelieerdePersoon.Add(gelieerdePersoon2);
+            gelieerdePersoon2.PersoonsAdres = gelieerdePersoon2.Persoon.PersoonsAdres.First();
+            gelieerdePersoon2.PersoonsAdres.Persoon = gelieerdePersoon2.Persoon;
+            gelieerdePersoon2.PersoonsAdres.GelieerdePersoon.Add(gelieerdePersoon2);
+            adres.PersoonsAdres.Add(gelieerdePersoon2.PersoonsAdres);
+            adres.PersoonsAdres.Add(gelieerdePersoon1.PersoonsAdres);
+
+            var infoNieuwAdres = new PersoonsAdresInfo
+            {
+                StraatNaamNaam = "Kipdorp",
+                HuisNr = 30,
+                PostNr = 2000,
+                WoonPlaatsNaam = "Antwerpen",
+                AdresType = AdresTypeEnum.Thuis
+            };
+            #endregion
+
+            #region Dependency injection
+
+            // mocks voor data access
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
+                                  .Returns(new DummyRepo<Adres>(new List<Adres> { adres }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<StraatNaam>())
+                .Returns(
+                    new DummyRepo<StraatNaam>(new List<StraatNaam>
+                    {
+                        ((BelgischAdres) adres).StraatNaam,
+                        new StraatNaam {PostNummer = infoNieuwAdres.PostNr, Naam = infoNieuwAdres.StraatNaamNaam}
+                    }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<WoonPlaats>())
+                .Returns(
+                    new DummyRepo<WoonPlaats>(new List<WoonPlaats>
+                    {
+                        new WoonPlaats {PostNummer = infoNieuwAdres.PostNr, Naam = infoNieuwAdres.WoonPlaatsNaam}
+                    }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Land>())
+                                  .Returns(new DummyRepo<Land>(new List<Land>()));
+
+
+            // mock voor sync
+            var adressenSyncMock = new Mock<IAdressenSync>();
+            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.Is<IList<PersoonsAdres>>(l => !l.Any()))).Verifiable();
+
+            // mocks registreren bij dependency-injectioncontainer
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+            Factory.InstantieRegistreren(adressenSyncMock.Object);
+
+            #endregion
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.GelieerdePersonenVerhuizen(new[] { gelieerdePersoon1.ID }, infoNieuwAdres,
+                                              adres.ID);
+
+            // ASSERT
+
+            adressenSyncMock.VerifyAll();
+        }
+
+        /// <summary>
         /// Controleert of een nieuw voorkeursadres van een gekende gelieerde persoon wordt gesynct.
         ///</summary>
         [TestMethod()]
