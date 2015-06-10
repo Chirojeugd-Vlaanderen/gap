@@ -111,5 +111,10 @@ namespace Chiro.Gap.Dummies
         public void AlleAbonnementenVerwijderen(string eMail)
         {
         }
+
+        public string DummyEmailAdresMaken(Persoon persoon)
+        {
+            return string.Format("g{0}@chiro.be", persoon.ID);
+        }
     }
 }

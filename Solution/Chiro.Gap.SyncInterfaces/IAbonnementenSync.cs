@@ -30,5 +30,6 @@ namespace Chiro.Gap.SyncInterfaces
 	    void AbonnementBewaren(Abonnement teSyncenAbonnement);
 	    void AlleAbonnementenVerwijderen(GelieerdePersoon gelieerdePersoon);
 	    void AlleAbonnementenVerwijderen(string eMail);
+	    string DummyEmailAdresMaken(Persoon persoon);
 	}
 }

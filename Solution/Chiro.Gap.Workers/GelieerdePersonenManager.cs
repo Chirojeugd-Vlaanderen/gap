@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -76,6 +76,21 @@ namespace Chiro.Gap.Workers
                     where cv.CommunicatieType.ID == (int) (CommunicatieTypeEnum.Email)
                     orderby cv.Voorkeur
                     select cv.Nummer).LastOrDefault();
+        }
+
+        /// <summary>
+        /// Levert alle gelieerde personen op uit dezelfde persoon als <paramref name="gelieerdePersoon"/>, die minstens
+        /// een adres gemeenschappelijk hebben met die <paramref name="gelieerdePersoon"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Eem gelieerde persoon</param>
+        /// <returns>Alle gelieerde personen uit dezelfde persoon als <paramref name="gelieerdePersoon"/>, die minstens
+        /// een adres gemeenschappelijk hebben met die <paramref name="gelieerdePersoon"/>.</returns>
+        public GelieerdePersoon[] AdresGenotenUitZelfdeGroep(GelieerdePersoon gelieerdePersoon)
+        {
+            // We trekken het wat uit elkaar om makkelijker te kunnen debuggen.
+            var persoonsAdressen = gelieerdePersoon.Persoon.PersoonsAdres.SelectMany(pa => pa.Adres.PersoonsAdres);
+            var gelieerdePersonen = persoonsAdressen.SelectMany(pa => pa.Persoon.GelieerdePersoon);
+            return gelieerdePersonen.Where(gp => Equals(gp.Groep, gelieerdePersoon.Groep)).ToArray();
         }
 
         /// <summary>

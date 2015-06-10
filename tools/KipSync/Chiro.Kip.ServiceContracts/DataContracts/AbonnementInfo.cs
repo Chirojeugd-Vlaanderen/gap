@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Runtime.Serialization;
 
 namespace Chiro.Kip.ServiceContracts.DataContracts
@@ -43,5 +44,17 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public int AbonnementType { get; set; }
+
+        /// <summary>
+        /// E-mailadres voor mailchimp.
+        /// </summary>
+        /// <remarks>
+        /// Mailchimp verwacht altijd een e-mailadres. Als er geen gegeven is, dan genereren we
+        /// er een dummy op basis van het GAP-PersoonID.
+        /// </remarks>
+        public string MailChimpAdres
+        {
+            get { return string.IsNullOrEmpty(EmailAdres) ? string.Format("g{0}@chiro.be", GapPersoonId) : EmailAdres; }
+        }
     }
 }

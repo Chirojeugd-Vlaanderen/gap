@@ -22,6 +22,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync
 {
@@ -44,12 +45,20 @@ namespace Chiro.Gap.Sync
         {
             var info = Mapper.Map<GelieerdePersoon, AbonnementInfo>(gelieerdePersoon);
             info.AbonnementType = 0;
-            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementVerwijderen(info.EmailAdres));
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementVerwijderen(info.MailChimpAdres));
         }
 
         public void AlleAbonnementenVerwijderen(string eMail)
         {
             ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AbonnementVerwijderen(eMail));
+        }
+
+        public string DummyEmailAdresMaken(Persoon persoon)
+        {
+            // Ik geef toe dat dit hacky is. Maar het was een makkelijke manier om de
+            // functionaliteit 'dummy e-mailadres' te delen tussen GAP en KipSync.
+            var temp = new AbonnementInfo {GapPersoonId = persoon.ID};
+            return temp.MailChimpAdres;
         }
     }
 }

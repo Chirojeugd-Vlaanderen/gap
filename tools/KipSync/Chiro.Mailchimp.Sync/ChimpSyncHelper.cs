@@ -37,8 +37,7 @@ namespace Chiro.Mailchimp.Sync
         {
             var member = new Member
             {
-                // Maak een dummy adres als er geen adres gegeven is.
-                email_address = abonnementInfo.EmailAdres ?? string.Format("g{0}@chiro.be", abonnementInfo.GapPersoonId)
+                email_address = abonnementInfo.MailChimpAdres
             };
 
             if (abonnementInfo.AbonnementType == 0)

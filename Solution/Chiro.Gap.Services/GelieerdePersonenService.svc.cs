@@ -1562,6 +1562,46 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
+            // administratie mailchimp:
+            IEnumerable<GelieerdePersoon> relevantePersonen;
+            var uitTeSchrijvenAdressen = new List<string>();
+            var teSyncenAbonnementen = new List<Abonnement>();
+
+            if (commInfo.CommunicatieTypeID == 3)
+            {
+                relevantePersonen = !commInfo.IsGezinsGebonden
+                    ? new[] {gelieerdePersoon}
+                    : _gelieerdePersonenMgr.AdresGenotenUitZelfdeGroep(gelieerdePersoon);
+            }
+            else
+            {
+                relevantePersonen = new GelieerdePersoon[0];
+            }
+
+            // relevantePersonen bevat nu alle personen waarvan bekeken moet worden of ze een abonnement
+            // hebben. Houd enkel diegenen bij met een abonnement.
+            relevantePersonen = (from gp in relevantePersonen
+                where _abonnementenMgr.HuidigAbonnementGet(gp, 1) != null
+                select gp).ToList();
+            foreach (var gp in relevantePersonen)
+            {
+                var voorkeursEmail = _gelieerdePersonenMgr.ContactEmail(gp);
+                if (voorkeursEmail == null || commInfo.Voorkeur)
+                {
+                    string adres;
+                    if (voorkeursEmail != null)
+                    {
+                        adres = voorkeursEmail;
+                    }
+                    else
+                    {
+                        adres = _abonnementenSync.DummyEmailAdresMaken(gp.Persoon);
+                    }
+                    uitTeSchrijvenAdressen.Add(adres);
+                    teSyncenAbonnementen.Add(_abonnementenMgr.HuidigAbonnementGet(gp, 1));
+                }
+            }
+
             var communicatieVorm = new CommunicatieVorm();
 
             Mapper.Map(commInfo, communicatieVorm);
@@ -1588,10 +1628,10 @@ namespace Chiro.Gap.Services
                 // Eender welke andere exception throwen we opnieuw.
                 throw;
             }
-            var tesyncen = (from cv in gekoppeld
-                            where
-                                cv.GelieerdePersoon.Persoon.InSync
-                            select cv).ToList();
+            var syncenNaarKip = (from cv in gekoppeld
+                where
+                    cv.GelieerdePersoon.Persoon.InSync
+                select cv).ToList();
 
 #if KIPDORP
             using (var tx = new TransactionScope())
@@ -1600,9 +1640,17 @@ namespace Chiro.Gap.Services
                     _gelieerdePersonenRepo.SaveChanges();
                     // TODO (#1409): welke communicatievorm de voorkeur heeft, gaat verloren bij de sync
                     // naar Kipadmin. 
-                    foreach (var cv in tesyncen)
+                    foreach (var cv in syncenNaarKip)
                     {
                         _communicatieSync.Toevoegen(cv);
+                    }
+                    foreach (string adr in uitTeSchrijvenAdressen)
+                    {
+                        _abonnementenSync.AlleAbonnementenVerwijderen(adr);
+                    }
+                    foreach (var ab in teSyncenAbonnementen)
+                    {
+                        _abonnementenSync.AbonnementBewaren(ab);
                     }
 #if KIPDORP   
                     tx.Complete();
