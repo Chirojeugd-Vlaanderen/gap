@@ -184,6 +184,9 @@ namespace Chiro.Gap.Workers
                 }
                 else if (voorkeur)
                 {
+                    // Onderstaande vreemde lange lijn is een fix voor #3844:
+                    // verwijder link persoonsadres-gelieerdepersoon voor oude voorkeursadres.
+                    gelieerdePersoon.PersoonsAdres.GelieerdePersoon.Remove(gelieerdePersoon);
                     gelieerdePersoon.PersoonsAdres = pa;
                     pa.GelieerdePersoon.Add(gelieerdePersoon);
                 }
