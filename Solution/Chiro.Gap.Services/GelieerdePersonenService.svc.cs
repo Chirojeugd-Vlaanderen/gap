@@ -1493,7 +1493,12 @@ namespace Chiro.Gap.Services
         public void AdresVerwijderenVanPersonen(IList<int> personenIDs, int adresID)
         {
             var adres = _adressenRepo.ByID(adresID);
-            var teSyncen = new List<PersoonsAdres>();
+
+            // adressen die naar kipadmin/chirocivi moeten:
+            var teSyncenKip = new List<PersoonsAdres>();
+
+            // abonnementen die opnieuw naar mailchimp moeten
+            var teSyncenChimp = new List<Abonnement>();
 
             var teVerwijderen = (from pa in adres.PersoonsAdres
                                  where personenIDs.Contains(pa.Persoon.ID)
@@ -1517,11 +1522,18 @@ namespace Chiro.Gap.Services
                                           select pa).FirstOrDefault();
 
                 gp.PersoonsAdres = nieuwVoorkeurAdres;
+
+                var abonnement = _abonnementenMgr.HuidigAbonnementGet(gp, 1);
+                if (abonnement != null)
+                {
+                    teSyncenChimp.Add(abonnement);
+                }
+
                 if (gp.Persoon.InSync)
                 {
                     if (nieuwVoorkeurAdres != null)
                     {
-                        teSyncen.Add(nieuwVoorkeurAdres);
+                        teSyncenKip.Add(nieuwVoorkeurAdres);
                     }
                     else
                     {
@@ -1534,9 +1546,13 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
-                if (teSyncen.Any())
+                if (teSyncenKip.Any())
                 {
-                    _adressenSync.StandaardAdressenBewaren(teSyncen);
+                    _adressenSync.StandaardAdressenBewaren(teSyncenKip);
+                }
+                foreach (var abonnement in teSyncenChimp)
+                {
+                    _abonnementenSync.AbonnementBewaren(abonnement);
                 }
                 _persoonsAdressenRepo.Delete(teVerwijderen);
                 _persoonsAdressenRepo.SaveChanges();
