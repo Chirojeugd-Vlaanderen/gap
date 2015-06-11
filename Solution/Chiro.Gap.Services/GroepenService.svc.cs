@@ -80,6 +80,7 @@ namespace Chiro.Gap.Services
         // Sync
 
         private readonly IGroepenSync _groepenSync;
+        private readonly IAbonnementenSync _abonnementenSync;
 
         // Cache
 
@@ -101,6 +102,7 @@ namespace Chiro.Gap.Services
         /// <param name="abonnementenMgr">Businesslogica wat betreft abonnementen.</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         /// <param name="groepenSync">Synchronisatie met Kipadmin</param>
+        /// <param name="abonnementenSync">Abonnementensync met Mailchimp.</param>
         /// <param name="veelGebruikt">Cache</param>
         public GroepenService(IAfdelingsJaarManager afdelingsJaarMgr, IAuthenticatieManager authenticatieMgr,
             IAutorisatieManager autorisatieMgr,
@@ -108,7 +110,8 @@ namespace Chiro.Gap.Services
             IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
             IFunctiesManager functiesMgr, IAdressenManager adressenMgr, ILedenManager ledenMgr,
             IAbonnementenManager abonnementenMgr,
-            IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IVeelGebruikt veelGebruikt): base(ledenMgr, groepsWerkJarenMgr, abonnementenMgr)
+            IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IAbonnementenSync abonnementenSync,
+            IVeelGebruikt veelGebruikt) : base(ledenMgr, groepsWerkJarenMgr, abonnementenMgr)
         {
             _repositoryProvider = repositoryProvider;
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
@@ -138,6 +141,7 @@ namespace Chiro.Gap.Services
             _authenticatieMgr = authenticatieMgr;
             _autorisatieMgr = autorisatieMgr;
             _groepenSync = groepenSync;
+            _abonnementenSync = abonnementenSync;
 
             _veelGebruikt = veelGebruikt;
 
@@ -1354,7 +1358,22 @@ namespace Chiro.Gap.Services
                 nieuwGwj.AfdelingsJaar.Add(nieuwAfdelingsJaar);
             }
 
-            _groepenRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _groepenRepo.SaveChanges();
+                foreach (var ab in vorigGwj.Abonnement)
+                {
+                    // In GAP mogen de oude abonnementen blijven staan, want
+                    // die zijn daar aan het werkjaar gekoppeld. Voor Mailchimp
+                    _abonnementenSync.AlleAbonnementenVerwijderen(ab.GelieerdePersoon);
+                }
+
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
             _veelGebruikt.WerkJaarInvalideren(groep);
         }
 
