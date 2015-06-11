@@ -97,7 +97,7 @@ namespace Chiro.Gap.Workers.Test
         /// niet actief was.
         ///</summary>
         [TestMethod()]
-        public void AfdelingsJarenVoorstellenTest1()
+        public void AfdelingsJarenVoorstellenOfficieleAfdelingTest()
         {
             // -- Arrange --
 
@@ -129,6 +129,55 @@ namespace Chiro.Gap.Workers.Test
 
             Assert.IsNotNull(afdelingsJaar);
             Assert.IsNotNull(afdelingsJaar.OfficieleAfdeling);
+        }
+
+        /// <summary>
+        /// Als een afdelingsjaar vroeger gemengd m/v was, dan moet er nu gemengd m/v/x
+        /// voorgesteld worden.
+        ///</summary>
+        [TestMethod()]
+        public void AfdelingsJarenVoorstellenMvxGemengdTest()
+        {
+            // -- Arrange --
+
+            // Testsituatie opzetten
+
+            var ribbels = new OfficieleAfdeling
+            {
+                ID = (int)NationaleAfdeling.Ribbels,
+                LeefTijdVan = 6,
+                LeefTijdTot = 7
+            };
+
+            // Een Chirogroep met een oud groepswerkjaar.
+            var groep = new ChiroGroep ();
+            var sloebers = new Afdeling {ID = 1, ChiroGroep = groep};
+            var oudGroepsWerkJaar = new GroepsWerkJaar {Groep = groep};
+            groep.GroepsWerkJaar.Add(oudGroepsWerkJaar);
+            oudGroepsWerkJaar.AfdelingsJaar.Add(new AfdelingsJaar
+            {
+                Afdeling = sloebers,
+                GroepsWerkJaar = oudGroepsWerkJaar,
+                OfficieleAfdeling = ribbels,
+                // Geslacht uit de oude doos:
+                Geslacht = (GeslachtsType.Man | GeslachtsType.Vrouw)
+            });
+
+            // Dit jaar willen we een groep met 1 afdeling.
+            var afdelingen = new List<Afdeling> { sloebers };
+
+            const int NIEUW_WERKJAAR = 2012; // Jaartal is eigenlijk irrelevant voor deze test.
+
+            // -- Act -- 
+            var target = Factory.Maak<GroepsWerkJarenManager>();
+
+            var actual = target.AfdelingsJarenVoorstellen(groep, afdelingen, NIEUW_WERKJAAR, ribbels);
+            var afdelingsJaar = actual.FirstOrDefault();
+
+            // -- Assert --
+
+            Assert.IsNotNull(afdelingsJaar);
+            Assert.AreEqual(afdelingsJaar.Geslacht, GeslachtsType.Gemengd);
         }
     }
 }
