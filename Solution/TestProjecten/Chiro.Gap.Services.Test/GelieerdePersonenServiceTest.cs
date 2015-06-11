@@ -504,37 +504,25 @@ namespace Chiro.Gap.Services.Test
             #region testdata
 
             var gelieerdePersoon = new GelieerdePersoon
-                                       {
-                                           ID = 1,
-                                           Persoon = new Persoon
-                                                         {
-                                                             InSync = true,
-                                                             PersoonsAdres = new List<PersoonsAdres>
-                                                                                 {
-                                                                                     new PersoonsAdres
-                                                                                         {
-                                                                                             Adres = new BelgischAdres
-                                                                                                         {
-                                                                                                             ID = 2,
-                                                                                                             StraatNaam
-                                                                                                                 =
-                                                                                                                 new StraatNaam
-                                                                                                                     {
-                                                                                                                         ID
-                                                                                                                             =
-                                                                                                                             3,
-                                                                                                                         Naam
-                                                                                                                             =
-                                                                                                                             "Langstraat",
-                                                                                                                         PostNummer
-                                                                                                                             =
-                                                                                                                             2140
-                                                                                                                     }
-                                                                                                         }
-                                                                                         }
-                                                                                 }
-                                                         }
-                                       };
+            {
+                ID = 1,
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}},
+                Persoon = new Persoon
+                {
+                    InSync = true,
+                    PersoonsAdres = new List<PersoonsAdres>
+                    {
+                        new PersoonsAdres
+                        {
+                            Adres = new BelgischAdres
+                            {
+                                ID = 2,
+                                StraatNaam = new StraatNaam {ID = 3, Naam = "Langstraat", PostNummer = 2140}
+                            }
+                        }
+                    }
+                }
+            };
 
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             gelieerdePersoon.PersoonsAdres = gelieerdePersoon.Persoon.PersoonsAdres.First();
@@ -738,7 +726,12 @@ namespace Chiro.Gap.Services.Test
 
             // testdata
 
-            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon { InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon {InSync = true},
+                Groep = new ChiroGroep()
+            };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
 
             var nederland = new Land { Naam = "Nederland" };
@@ -797,7 +790,11 @@ namespace Chiro.Gap.Services.Test
             var voorkeursAdres = new BelgischAdres { ID = 2 };
             var anderAdres = new BelgischAdres { ID = 3 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Persoon = new Persoon {ID = 1, InSync = true},
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}}
+            };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
             var anderPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = anderAdres };
@@ -851,7 +848,11 @@ namespace Chiro.Gap.Services.Test
             var voorkeursAdres = new BelgischAdres { ID = 2 };
             var anderAdres = new BelgischAdres { ID = 3 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Persoon = new Persoon {ID = 1, InSync = true},
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}}
+            };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
             var anderPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = anderAdres };
@@ -1249,7 +1250,11 @@ namespace Chiro.Gap.Services.Test
 
             var voorkeursAdres = new BelgischAdres { ID = 2 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Persoon = new Persoon {ID = 1, InSync = true},
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}}
+            };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
 
@@ -1482,33 +1487,29 @@ namespace Chiro.Gap.Services.Test
             #region testdata
 
             var gelieerdePersoon = new GelieerdePersoon
-                                   {
-                                       ID = 1,
-                                       Persoon = new Persoon
-                                                 {
-                                                     InSync = true,
-                                                     PersoonsAdres = new List<PersoonsAdres>
-                                                                     {
-                                                                         new PersoonsAdres
-                                                                         {
-                                                                             Adres = new BuitenLandsAdres()
-                                                                                     {
-                                                                                         ID = 2,
-                                                                                         Straat = "Rue Nouvelle",
-                                                                                         PostNummer = 12345,
-                                                                                         HuisNr = 77,
-                                                                                         WoonPlaats = "Nilin",
-                                                                                         Land =
-                                                                                             new Land
-                                                                                             {
-                                                                                                 Naam =
-                                                                                                     "Frankrijk"
-                                                                                             }
-                                                                                     }
-                                                                         }
-                                                                     }
-                                                 }
-                                   };
+            {
+                ID = 1,
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}},
+                Persoon = new Persoon
+                {
+                    InSync = true,
+                    PersoonsAdres = new List<PersoonsAdres>
+                    {
+                        new PersoonsAdres
+                        {
+                            Adres = new BuitenLandsAdres()
+                            {
+                                ID = 2,
+                                Straat = "Rue Nouvelle",
+                                PostNummer = 12345,
+                                HuisNr = 77,
+                                WoonPlaats = "Nilin",
+                                Land = new Land {Naam = "Frankrijk"}
+                            }
+                        }
+                    }
+                }
+            };
 
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             gelieerdePersoon.PersoonsAdres = gelieerdePersoon.Persoon.PersoonsAdres.First();
