@@ -1599,6 +1599,11 @@ namespace Chiro.Gap.Services
                 {
                     _adressenSync.StandaardAdressenBewaren(new List<PersoonsAdres>{persoonsAdres});
                 }
+                var abonnement = _abonnementenMgr.HuidigAbonnementGet(gelieerdePersoon, 1);
+                if (abonnement != null)
+                {
+                    _abonnementenSync.AbonnementBewaren(abonnement);
+                }
                 _gelieerdePersonenRepo.SaveChanges();
 #if KIPDORP
                 tx.Complete();
