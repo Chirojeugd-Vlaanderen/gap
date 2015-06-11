@@ -1463,6 +1463,21 @@ namespace Chiro.Gap.Services
                 {
                     _adressenSync.StandaardAdressenBewaren(teSyncen);
                 }
+
+                foreach (var pa in nieuwePersoonsAdressen.Where(pa => pa.GelieerdePersoon.Any()))
+                {
+                    // Persoonsadres gekoppeld aan gelieerde persoon (ipv persoon), wil zeggen dat dat persoonsadres het
+                    // VOORKEURSADRES is van die gelieerde persoon. Nu is het nog uit te vinden of die persoon een abonnement.
+                    // heeft.
+                    // Het volstaat dat 1 van de gelieerde personen een abonnement heeft.
+                    var abonnement = (from gp in pa.GelieerdePersoon
+                                      where _abonnementenMgr.HuidigAbonnementGet(gp, 1) != null
+                                      select _abonnementenMgr.HuidigAbonnementGet(gp, 1)).FirstOrDefault();
+                    if (abonnement != null)
+                    {
+                        _abonnementenSync.AbonnementBewaren(abonnement);
+                    }
+                }
                 _gelieerdePersonenRepo.SaveChanges();
 #if KIPDORP
                 tx.Complete();
