@@ -57,26 +57,34 @@ namespace Chiro.Mailchimp.Sync
             var response = client.Execute<Member>(request);
             var bestaande = response.Data;
 
-            var adres = string.IsNullOrEmpty(abonnementInfo.Adres.Bus)
-                ? String.Format("{0} {1}", abonnementInfo.Adres.Straat, abonnementInfo.Adres.HuisNr)
-                : String.Format("{0} {1} bus {2}", abonnementInfo.Adres.Straat, abonnementInfo.Adres.HuisNr,
-                    abonnementInfo.Adres.Bus);
-
-            var postcode = string.IsNullOrEmpty(abonnementInfo.Adres.PostCode)
-                ? abonnementInfo.Adres.PostNr.ToString()
-                : String.Format("{0} {1}", abonnementInfo.Adres.PostNr, abonnementInfo.Adres.PostCode);
-
             member.merge_fields = new MergeFields
             {
                 FNAME = abonnementInfo.VoorNaam,
                 LNAME = abonnementInfo.Naam,
                 STAMNUMMER = abonnementInfo.StamNr,
                 HOE = abonnementInfo.AbonnementType == 1 ? "Digitaal graag" : "Papier hier",
-                STRAAT_NUM = adres,
-                POSTCODE = postcode,
-                GEMEENTE = abonnementInfo.Adres.WoonPlaats,
-                LAND = abonnementInfo.Adres.Land ?? "België"
+                STRAAT_NUM = string.Empty,
+                POSTCODE = string.Empty,
+                GEMEENTE = string.Empty,
+                LAND = string.Empty
             };
+
+            if (abonnementInfo.Adres != null)
+            {
+                member.merge_fields.STRAAT_NUM = string.IsNullOrEmpty(abonnementInfo.Adres.Bus)
+                    ? String.Format("{0} {1}", abonnementInfo.Adres.Straat, abonnementInfo.Adres.HuisNr)
+                    : String.Format("{0} {1} bus {2}", abonnementInfo.Adres.Straat, abonnementInfo.Adres.HuisNr,
+                        abonnementInfo.Adres.Bus);
+
+                member.merge_fields.POSTCODE = string.IsNullOrEmpty(abonnementInfo.Adres.PostCode)
+                    ? abonnementInfo.Adres.PostNr.ToString()
+                    : String.Format("{0} {1}", abonnementInfo.Adres.PostNr, abonnementInfo.Adres.PostCode);
+
+                member.merge_fields.GEMEENTE = abonnementInfo.Adres.WoonPlaats;
+                member.merge_fields.LAND = string.IsNullOrEmpty(abonnementInfo.Adres.Land)
+                    ? "België"
+                    : abonnementInfo.Adres.Land;
+            }
 
             member.status = "subscribed";
             if (bestaande == null)
