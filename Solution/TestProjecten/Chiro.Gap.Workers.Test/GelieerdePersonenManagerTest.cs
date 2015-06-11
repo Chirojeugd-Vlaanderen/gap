@@ -108,6 +108,43 @@ namespace Chiro.Gap.Workers.Test
         }
 
         /// <summary>
+        /// Als een glieerde persoon een nieuw voorkeursadres krijgt, dan moet de link van het oude
+        /// 'voorkeurspersoonsadres' naar de gelieerde persoon verdwijnen. Een test. :-)
+        ///</summary>
+        [TestMethod()]
+        public void AdresToevoegenOudeVoorkeurTest()
+        {
+            // ARRANGE
+
+            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon() };
+            gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
+
+            var oudVoorkeursAdres = new BelgischAdres {ID = 1};
+            var oudPersoonsAdres = new PersoonsAdres
+            {
+                Persoon = gelieerdePersoon.Persoon,
+                Adres = oudVoorkeursAdres,
+                GelieerdePersoon = new List<GelieerdePersoon>{gelieerdePersoon}
+            };
+            // Het voorkeursadres is gekoppeld aan gelieerde persoon, alle adressen aan persoon.
+            gelieerdePersoon.PersoonsAdres = oudPersoonsAdres;
+            gelieerdePersoon.Persoon.PersoonsAdres.Add(oudPersoonsAdres);
+
+            var nieuwVoorkeursAdres = new BelgischAdres {ID = 2};
+
+            // ACT
+
+            var target = new GelieerdePersonenManager();
+            target.AdresToevoegen(new List<GelieerdePersoon> { gelieerdePersoon }, nieuwVoorkeursAdres, AdresTypeEnum.Thuis, true);
+
+            // ASSERT
+
+            // het oude voorkeursadres mag niet meer aan gelieerdePersoon gekoppeld zijn.
+            // (wel nog aan persoon, natuurlijk)
+            Assert.IsFalse(oudPersoonsAdres.GelieerdePersoon.Any());
+        }
+
+        /// <summary>
         /// Een test voor AdresGenotenUitZelfdeGroep
         ///</summary>
         [TestMethod()]
