@@ -43,6 +43,10 @@ namespace Chiro.Gap.Workers
             {
                 return null;
             }
+
+            // Als je toepassing hierop crasht, dan is de abonnemententabel nog niet bijgewerkt voor issue
+            // #1537. Je kunt dat doen met deze query:
+            // alter table abo.Abonnement add Type int not null default 1;
             var abonnement = gelieerdePersoon.Abonnement.FirstOrDefault(ab => ab.GroepsWerkJaar.ID == groepsWerkjaar.ID && ab.Publicatie.ID == publicatieID);
             return abonnement;
         }
