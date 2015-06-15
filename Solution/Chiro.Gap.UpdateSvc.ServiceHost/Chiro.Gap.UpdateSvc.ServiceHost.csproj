@@ -121,6 +121,14 @@
       <Project>{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}</Project>
       <Name>Chiro.Cdf.ServiceModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj">
+      <Project>{268708cb-f3e8-4afa-9e61-824cfa27be0e}</Project>
+      <Name>Chiro.Cdf.UnityWcfExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Poco.Context\Chiro.Gap.Poco.Context.csproj">
+      <Project>{c83b2df6-4352-4fad-a09e-9c59dc335b05}</Project>
+      <Name>Chiro.Gap.Poco.Context</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.UpdateSvc.Contracts\Chiro.Gap.UpdateSvc.Contracts.csproj">
       <Project>{EFA70FDE-2295-4A91-9553-847C272E7FA4}</Project>
       <Name>Chiro.Gap.UpdateSvc.Contracts</Name>
@@ -128,6 +136,10 @@
     <ProjectReference Include="..\Chiro.Gap.UpdateSvc.Service\Chiro.Gap.UpdateSvc.Service.csproj">
       <Project>{B2E725F5-E3F8-4511-99AB-2EB84124F302}</Project>
       <Name>Chiro.Gap.UpdateSvc.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
+      <Project>{35e2aed7-7c0a-4b30-b7c8-24f9078ac32e}</Project>
+      <Name>Chiro.Gap.Workers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
