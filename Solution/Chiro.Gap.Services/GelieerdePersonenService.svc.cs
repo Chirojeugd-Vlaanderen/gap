@@ -1227,6 +1227,7 @@ namespace Chiro.Gap.Services
                     _abonnementenRepo.SaveChanges();
                 }
 #if KIPDORP
+                tx.Complete();
             }
 #endif
         }
