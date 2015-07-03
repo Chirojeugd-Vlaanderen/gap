@@ -42,13 +42,24 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper">
+    <Reference Include="AutoMapper, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -83,6 +94,7 @@
     </Compile>
     <Compile Include="SyncPersoonService.Bivak.cs" />
     <Compile Include="SyncPersoonService.cs" />
+    <Compile Include="SyncPersoonService.Dubbelpunt.cs" />
     <Compile Include="SyncPersoonService.GroepsGegevens.cs" />
     <Compile Include="SyncPersoonService.LidGegevens.cs" />
     <Compile Include="SyncPersoonService.PersoonsGegevens.cs" />
@@ -120,6 +132,10 @@
     <ProjectReference Include="..\Chiro.Kip.Workers\Chiro.Kip.Workers.csproj">
       <Project>{9DD68140-0958-4C53-A32F-518BC225B417}</Project>
       <Name>Chiro.Kip.Workers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Mailchimp.Sync\Chiro.Mailchimp.Sync.csproj">
+      <Project>{4C2D492F-8C94-43F3-BF61-1FF21D0B74CE}</Project>
+      <Name>Chiro.Mailchimp.Sync</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

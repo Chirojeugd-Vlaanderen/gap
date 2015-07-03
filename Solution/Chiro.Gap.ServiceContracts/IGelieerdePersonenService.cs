@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -124,7 +125,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Haalt gelieerde persoon op met ALLE nodige info om het persoons-bewerken scherm te vullen:
 		/// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
-		/// functies
+		/// functies, abonnementen.
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
 		/// <returns>
@@ -464,5 +465,41 @@ namespace Chiro.Gap.ServiceContracts
 		void UitCategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
 
 		#endregion categorieën
-	}
+
+        #region abonnementen
+        /// <summary>
+        /// Haalt type abonnement op voor de persoon met gegeven
+        /// <paramref name="gelieerdePersoonID"/> in groepswerkjaar met gegeven
+        /// <paramref name="groepsWerkJaarID"/>, voor publicatie met gegeven
+        /// <paramref name="publicatieID"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoonID"></param>
+        /// <param name="groepsWerkJaarID"></param>
+        /// <param name="publicatieID"></param>
+        /// <returns>Het type abonnement op voor de persoon met gegeven
+        /// <paramref name="gelieerdePersoonID"/> in groepswerkjaar met gegeven
+        /// <paramref name="groepsWerkJaarID"/>, voor publicatie met gegeven
+        /// <paramref name="publicatieID"/></returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+	    AbonnementType AbonnementOphalen(int gelieerdePersoonID, int groepsWerkJaarID, int publicatieID);
+
+	    /// <summary>
+	    /// Legt het abonnement van de gelieerde persoon met gegeven 
+	    /// <paramref name="gelieerdePersoonID"/> voor het groepswerkjaar met gegeven
+	    /// <paramref name="groepsWerkJaarID"/> vast als zijnde van het type 
+	    /// <paramref name="abonnementType"/>. Als <paramref name="abonnementType"/>
+	    /// <c>AbonnementType.Geen</c> is, wordt het abonnement verwijderd.
+	    /// </summary>
+	    /// <param name="gelieerdePersoonID"></param>
+	    /// <param name="groepsWerkJaarID"></param>
+	    /// <param name="abonnementType"></param>
+	    /// <param name="publicatieID"></param>
+	    [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+	    void AbonnementBewaren(int gelieerdePersoonID, int groepsWerkJaarID, AbonnementType? abonnementType, int publicatieID);
+        #endregion
+    }
 }

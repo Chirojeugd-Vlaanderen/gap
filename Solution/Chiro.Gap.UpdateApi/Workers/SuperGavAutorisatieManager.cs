@@ -175,6 +175,11 @@ namespace Chiro.Gap.UpdateApi.Workers
             throw new NotImplementedException();
         }
 
+        public bool IsGav(Abonnement abonnement)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gebruikerses the recht gelieerde persoon.
         /// </summary>

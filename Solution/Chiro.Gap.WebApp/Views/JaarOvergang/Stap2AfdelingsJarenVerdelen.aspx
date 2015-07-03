@@ -5,7 +5,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -69,14 +69,17 @@
             <td>
                 <%
                     var geslachtsLijstItems =
-                        Enum.GetValues(typeof (GeslachtsType)).OfType<GeslachtsType>().ToList().Select(
-                            e =>
-                            new SelectListItem
-                            {
-                               Selected = (Model.Afdelingen[j].Geslacht == e),
-                               Value = ((int) e).ToString(),
-                               Text = e.ToString()
-                            });%>
+                        Enum.GetValues(typeof (GeslachtsType))
+                            .OfType<GeslachtsType>() // hackje om de array queryable te maken
+                            .Where(e => e != GeslachtsType.X && e != GeslachtsType.Onbekend) // Voor het derde geslacht moet/mag er geen aparte afdeling zijn.
+                            .Select(
+                                e =>
+                                    new SelectListItem
+                                    {
+                                        Selected = (Model.Afdelingen[j].Geslacht == e),
+                                        Value = ((int) e).ToString(),
+                                        Text = e.ToString()
+                                    }).ToArray();%>
                 <%: Html.DropDownListFor(mdl=>mdl.Afdelingen[j].Geslacht, geslachtsLijstItems) %>
             </td>
         </tr>

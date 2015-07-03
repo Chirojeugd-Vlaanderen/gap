@@ -161,6 +161,13 @@ namespace Chiro.Gap.Workers
                     afdelingsJaar.Geslacht = bestaandAfdelingsJaar.Geslacht;
                     afdelingsJaar.GeboorteJaarTot = bestaandAfdelingsJaar.GeboorteJaarTot + werkJarenVerschil;
                     afdelingsJaar.GeboorteJaarVan = bestaandAfdelingsJaar.GeboorteJaarVan + werkJarenVerschil;
+
+                    // 'Gemengd' werd geherdefinieerd sinds het gap het derde geslacht ondersteunt (#3814).
+                    // De 'oude' interpretatie van gemengd moet nu vertaald worden naar M|V|X. (zie #3849).
+                    if (afdelingsJaar.Geslacht == (GeslachtsType.Man | GeslachtsType.Vrouw))
+                    {
+                        afdelingsJaar.Geslacht = GeslachtsType.Gemengd;
+                    }
                 }
                 else
                 {

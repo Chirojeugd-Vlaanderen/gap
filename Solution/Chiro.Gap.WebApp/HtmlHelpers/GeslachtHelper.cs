@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -28,7 +28,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	{
 		public static string Geslacht(this HtmlHelper htmlHelper, GeslachtsType g)
 		{
-			return g == GeslachtsType.Man ? "&#9794;" : g == GeslachtsType.Vrouw ? "&#9792;" : "??";
+			return g == GeslachtsType.Man ? "&#9794;" : g == GeslachtsType.Vrouw ? "&#9792;" : g == GeslachtsType.X ? "X" : "??";
 		}
 	}
 }

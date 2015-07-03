@@ -6,9 +6,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Cleanup en refactoring met module pattern: Copyright 2015 Sam Segers
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +27,7 @@
     <link href="<%= ResolveUrl("~/Content/print.css") %>" media="print" rel="stylesheet" type="text/css" />
     
     <script src="<%= ResolveUrl("~/Scripts/jquery-persoons-fiche.js") %>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/AdresBewerken.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/Modules/AdresModule.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/moment.js") %>" type="text/javascript"></script>
 </asp:Content>
 
@@ -50,7 +51,7 @@
            <input id="gwJaar" value="geenGwJaar" hidden readonly/>
            <input id="lidType" value="geenType" hidden readonly/>
       <% }%>
-   <input id="werkjaar" value="<%= Model.HuidigWerkJaar %>"hidden readonly/>
+   <input id="werkjaar" value="<%= Model.HuidigWerkJaar %>" hidden readonly/>
     <input id="GPid" value="<%=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID  %>" hidden readonly/>
     <input id="versieString" value="<%=Model.PersoonLidInfo.PersoonDetail.VersieString %>" hidden readonly/> 
      
@@ -235,8 +236,7 @@
               </tr>
                 <% } %>
             
-            <% } %>
-                
+            <% } %>                
         </table>
         <br />
 
@@ -261,6 +261,23 @@
                 <td><div class="ui-icon ui-icon-pencil" id="bewerkCl"title="Bewerken" style="cursor: pointer"></div></td>
             </tr>
         <% } %>
+        <tr>
+            <td>Dubbelpunt</td>
+            <td>
+                <a  id="dubbelpuntInfo" data-type="select">
+                <%= Html.DisplayFor(mdl =>mdl.PersoonLidInfo.DubbelpuntAbonnement) %>
+                </a>
+            </td>
+            <td>
+                 <% // Omdat ik die JQuery-toestanden in zijn huidige vorm zodanig
+                    // moeilijk te onderhouden vind, maak ik gewoon een saaie actionlink
+                    // om het abonnement te bewerken. Dat werkt ook.
+                    // Van zodra we een framework gebruiken voor JQuery, klappen we
+                    // nog eens :) %>
+                 <%:Html.ActionLink("Wijzig", "Dubbelpunt", new {id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
+            </td>
+        </tr>
+
 
         <% // controleert of de persoon ingeschreven is %>
         <%if ((Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding) &&

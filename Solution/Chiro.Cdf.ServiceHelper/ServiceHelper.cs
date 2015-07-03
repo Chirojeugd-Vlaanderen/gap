@@ -38,7 +38,7 @@ namespace Chiro.Cdf.ServiceHelper
             _channelProvider = channelProvider;
         }
 
-		/// <summary>
+	    /// <summary>
 		/// Calls the specified operation on a service instance and safely disposes or aborts the service 
 		/// (proxy) in case of Timeout or communication exceptions.
 		/// </summary>

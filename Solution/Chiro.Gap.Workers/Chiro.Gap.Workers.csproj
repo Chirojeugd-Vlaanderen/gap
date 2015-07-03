@@ -55,6 +55,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbonnementenManager.cs" />
     <Compile Include="AdressenManager.cs" />
     <Compile Include="AuthenticatieManager.cs" />
     <Compile Include="AutorisatieManager.cs" />

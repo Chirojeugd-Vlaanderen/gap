@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -20,7 +20,6 @@ using System;
 using System.Security.Permissions;
 using System.ServiceModel;
 using System.Text.RegularExpressions;
-using System.Threading;
 using Chiro.Ad.Domain;
 using Chiro.Ad.ServiceContracts;
 using Chiro.Ad.Workers;
@@ -85,7 +84,7 @@ namespace Chiro.Ad.LoginService
         ///   </code>
         /// </example>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        [PrincipalPermission(SecurityAction.Demand, Name = @"KIPDORP\LoginSvcUser")]
+        //[PrincipalPermission(SecurityAction.Demand, Name = @"KIPDORP\LoginSvcUser")]
         public string GapLoginAanvragen(int adNr, string voornaam, string familienaam, string mailadres)
         {
             // Validatie
@@ -95,11 +94,10 @@ namespace Chiro.Ad.LoginService
             }
 
             // Verwerking
-            GapLogin gebruiker;
 
             try
             {
-                gebruiker = new GapLogin(adNr, voornaam, familienaam);
+                var gebruiker = new GapLogin(adNr, voornaam, familienaam);
 
                 // We controleren of het mailadres hetzelfde is als hier opgegeven.
                 if (gebruiker.Mailadres != string.Empty && gebruiker.Mailadres != mailadres)
@@ -118,6 +116,7 @@ namespace Chiro.Ad.LoginService
                     gebruiker.Opslaan();
                     _loginManager.ActiverenEnMailen(gebruiker);
                 }
+
                 return gebruiker.Login;
             }
             catch (FormatException ex)

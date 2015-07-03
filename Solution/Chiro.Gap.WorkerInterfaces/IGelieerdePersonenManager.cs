@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -88,5 +88,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <remarks>Als er geen e-mailadres de voorkeur heeft, wordt gewoon een willekeurig opgeleverd. Of 
         /// <c>null</c>, als er geen e-mailadressen zijn</remarks>
         string ContactEmail(GelieerdePersoon gelieerdePersoon);
+
+        /// <summary>
+        /// Levert alle gelieerde personen op uit dezelfde persoon als <paramref name="gelieerdePersoon"/>, die minstens
+        /// een adres gemeenschappelijk hebben met die <paramref name="gelieerdePersoon"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoon">Eem gelieerde persoon</param>
+        /// <returns>Alle gelieerde personen uit dezelfde persoon als <paramref name="gelieerdePersoon"/>, die minstens
+        /// een adres gemeenschappelijk hebben met die <paramref name="gelieerdePersoon"/>.</returns>
+        GelieerdePersoon[] AdresGenotenUitZelfdeGroep(GelieerdePersoon gelieerdePersoon);
     }
 }

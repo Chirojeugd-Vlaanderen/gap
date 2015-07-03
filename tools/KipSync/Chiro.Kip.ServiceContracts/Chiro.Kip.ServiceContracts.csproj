@@ -48,6 +48,7 @@
     <Reference Include="System.ServiceModel, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataContracts\AbonnementInfo.cs" />
     <Compile Include="DataContracts\Bivak.cs" />
     <Compile Include="DataContracts\Adres.cs" />
     <Compile Include="DataContracts\Bewoner.cs" />

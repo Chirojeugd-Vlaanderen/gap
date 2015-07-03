@@ -1,9 +1,9 @@
 ﻿/*
  * Copyright 2013, Arno Soontjens
- * Copyright 2013, Chirojeugd-Vlaanderen (hergebruik adressenscripts)
- * Copyright 2014, the GAP developers. See the NOTICE file at the
+ * Copyright 2013-2015, the GAP developers. See the NOTICE file at the
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
+ * Copyright 2015, Sam Segers (Cleanup en refactoring met module pattern)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ $(function () {
 
     // 'Verwijderen' iconen
     $('#adressen td:last-child')
-        .append("<div class=\"adresverw ui-icon ui-icon-circle-minus \" title=\"Verwijderen\" id=\"adrVerw\" style=\"cursor: pointer\"></div>");
+        .append("<div class=\"adresverw ui-icon ui-icon-circle-minus \" title=\"Verwijderen\" style=\"cursor: pointer\"></div>");
     $('#tel td:last-child')
-        .append("<div class=\"telverw ui-icon ui-icon-circle-minus \" title=\"Verwijderen\" id=\"telVerw\" style=\"cursor: pointer\"></div>");
+        .append("<div class=\"telverw ui-icon ui-icon-circle-minus \" title=\"Verwijderen\" style=\"cursor: pointer\"></div>");
     $('#email td:last-child')
-        .append("<div class=\"emailverw ui-icon ui-icon-circle-minus\" title=\"Verwijderen\" id=\"emailVerw\" style=\"cursor: pointer\"></div>");
+        .append("<div class=\"emailverw ui-icon ui-icon-circle-minus\" title=\"Verwijderen\" style=\"cursor: pointer\"></div>");
 
     //'toevoegen' iconen
     $('#adressen td:last-child, #adressenLeeg td:last-child')
@@ -233,6 +233,8 @@ $(function () {
         var g = $('#geslachtsInfo').text().trim();
         if (g == 'Man') {
             $('#geslachtsInfo').text('Vrouw');
+        } else if (g == 'Vrouw') {
+            $('#geslachtsInfo').text('X');
         } else {
             $('#geslachtsInfo').text('Man');
         }
@@ -500,107 +502,37 @@ $(function () {
     //Adres bewerken
     //--------------------------------------------------------------------
     $('.bewerkAdres').click(function (e) {
-        $('#extraInfoDialog').dialog();
-
         // FIXME: dit lijkt me allemaal erg moeilijk te onderhouden, omdat
         // we sterk afhankelijk zijn van hoe alle controller acties heten, e.d.
 
         // zouden we die url niet ergens gewoon bij in de html kunnen steken, en hem
         // daar oppikken met JQuery? Dat lijkt me ook noodzakelijk moesten we de javascript
         // opnieuw inobtrusive maken.
-
         var adresID = parseInt($(this).parent().parent().find('td input#persoonsAdresID').val());
         url = link("Personen", "Verhuizen") + "/" + adresID + '?aanvragerID=' + GPid + " #main";
-
-        $('#extraInfoDialog').load(url, function () {
-            gedeeltelijkTonen('#extraInfoDialog');
-            $('#tabel').show();
-
-            // Door deze code kunnen users de form niet submitten met 'enter' (gaf een fout over de postcode)
-            $(this).keydown(function (event) {
-                if (event.keyCode == 13) {
-                    event.preventDefault();
-                    return false;
-                }
-                return true;
-            });
-
-            AdresBewerken();
-
-            success:
-            {
-                $('#extraInfoDialog fieldset').css('width', '600px');
-                $(this).dialog({
-                    title: "Verhuizen",
-                    modal: true,
-                    width: 700,
-                    height: 600,
-                    resizable: true,
-                    buttons: {
-                        'Bewaren': function () {
-                            $('#extraInfoDialog #bewaarAdres').click();
-                            $(this).dialog('close');
-                        },
-                        'Annuleren': function () {
-                            $(this).dialog('close');
-                        }
-                    }
-                });
-            }
-
-        });
+        AdresModule.OpenDialog(url, "Verhuizen");
     });
 
     //Adres verwijderen
     $('.adresverw').click(function (e) {
         e.preventDefault();
         var adresID = $(this).parent().parent().find('td input').val();
-        $('#extraInfoDialog').dialog();
-
         url = link("Personen", "Adresverwijderen");
         url += "/" + adresID + "?gelieerdePersoonId=" + GPid + ' #main';
-        $('#extraInfoDialog').load(url, function () {
-            gedeeltelijkTonen('#extraInfoDialog');
-            success:
-            {
-                $("#extraInfoDialog").dialog({
-                    modal: true,
-                    title: "Adres verwijderen",
-                    height: 250,
-                    buttons: {
-                        'Verwijderen': function () {
-                            $('#extraInfoDialog #verwijderAdres').click();
-                            $(this).dialog('close');
-                        },
-                        'Annuleren': function () {
-                            $(this).dialog('close');
-                        }
-                    },
-                    width: 500
-                });
-            }
-        });
-        clearDialog();
+        AdresModule.OpenDialogVerwijderen(url);
     });
 
     //Adres Toevoegen
     $('.adrToev').click(function () {
-        adresToevoegenPersoon();
+        url = link("Personen", "NieuwAdres");
+        url = url + "/" + GPid + " #main";
+        AdresModule.OpenDialog(url, "Adres Toevoegen");
     });
 
     //voorkeursadres maken
     $('.voorkeursAdresMaken').click(function () {
-        $('#extraInfoDialog').dialog();
         var voorkeursadresID = $(this).parent().parent().find('td input#voorkeursadresID').val();
-        url = link("Personen", "VoorkeurAdresMaken");
-        bezig();
-        $.get(url, { persoonsAdresID: voorkeursadresID, gelieerdePersoonID: GPid }, function () {
-            success:
-            {
-                location.reload();
-            }
-        });
-        clearDialog();
+        AdresModule.OpenDialogVoorkeurAdres(voorkeursadresID, GPid);
     });
 
     //------------------------------------------------------------------------------------------
@@ -999,57 +931,6 @@ $(function () {
                         "ID": cvid
                     });
     }
-
-    //-------------------------------------------------------------------------
-    // Toont het adressenformulier, en zorgt ervoor dat de user het kan
-    // gebruiken om een adres aan de persoon toe te voegen.
-    //-------------------------------------------------------------------------
-    function adresToevoegenPersoon() {
-        $('#extraInfoDialog').dialog();
-
-        url = link("Personen", "NieuwAdres");
-        url = url + "/" + GPid + " #main";
-
-        $('#extraInfoDialog').load(url, function () {
-            gedeeltelijkTonen('#extraInfoDialog');
-            $('#tabel').show();
-
-            // Door deze code kunnen users de form niet submitten met 'enter' (gaf een fout over de postcode)
-            $(this).keydown(function (event) {
-                if (event.keyCode == 13) {
-                    event.preventDefault();
-                    return false;
-                }
-                return true;
-            });
-
-            AdresBewerken();
-
-            success:
-            {
-                $('#extraInfoDialog fieldset').css('width', '600px');
-                $(this).dialog({
-                    title: "Adres Toevoegen",
-                    modal: true,
-                    width: 700,
-                    height: 600,
-                    resizable: true,
-                    buttons: {
-                        'Bewaren': function () {
-                            $('#extraInfoDialog #bewaarAdres').click();
-                            $(this).dialog('close');
-                        },
-                        'Annuleren': function () {
-                            $(this).dialog('close');
-                        }
-                    }
-                });
-            }
-        });
-        clearDialog();
-    }
-
-    //gedeeltelijkTonen("#johan_dialog");
 });  
 //------------------------------------------------------------------------------------------
 // EINDE EIGEN FUNCTIES

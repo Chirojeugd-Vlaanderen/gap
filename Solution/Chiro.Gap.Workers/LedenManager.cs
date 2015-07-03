@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -89,7 +89,7 @@ namespace Chiro.Gap.Workers
             gwj.Lid.Add(lid);
 
             var stdProbeerPeriode = DateTime.Today.AddDays(Settings.Default.LengteProbeerPeriode);
-            
+
             var eindeJaarOvergang = Settings.Default.WerkjaarVerplichteOvergang;
             eindeJaarOvergang = new DateTime(gwj.WerkJaar, eindeJaarOvergang.Month, eindeJaarOvergang.Day);
 
@@ -123,7 +123,7 @@ namespace Chiro.Gap.Workers
             // Geboortedatum is verplicht als je lid wilt worden
             if (fout == FoutNummer.GeboorteDatumOntbreekt)
             {
-                throw new  FoutNummerException(FoutNummer.GeboorteDatumOntbreekt, Resources.GeboorteDatumOntbreekt);
+                throw new FoutNummerException(FoutNummer.GeboorteDatumOntbreekt, Resources.GeboorteDatumOntbreekt);
             }
 
             // Je moet oud genoeg zijn
@@ -281,7 +281,7 @@ namespace Chiro.Gap.Workers
             }
             else
             {
-                var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;               
+                var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
                 // Relevante afdelingsjaren opzoeken.  Afdelingen met speciale officiele afdeling
                 // worden in eerste instantie uitgesloten van de automatische verdeling.
@@ -448,7 +448,7 @@ namespace Chiro.Gap.Workers
         /// </remarks>
         public LidVoorstel InschrijvingVoorstellen(GelieerdePersoon gp, GroepsWerkJaar gwj, bool leidingIndienMogelijk)
         {
-            var resultaat = new LidVoorstel {GelieerdePersoon = gp, GroepsWerkJaar = gwj};
+            var resultaat = new LidVoorstel { GelieerdePersoon = gp, GroepsWerkJaar = gwj };
 
             if (!gp.GebDatumMetChiroLeefTijd.HasValue)
             {
@@ -467,7 +467,7 @@ namespace Chiro.Gap.Workers
             // overenkomst geslacht)
 
             var mogelijkeAfdelingsJaren =
-                gwj.AfdelingsJaar.Where(a => a.OfficieleAfdeling.ID != (int) NationaleAfdeling.Speciaal &&
+                gwj.AfdelingsJaar.Where(a => a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal &&
                                              geboortejaar <= a.GeboorteJaarTot &&
                                              a.GeboorteJaarVan <= geboortejaar).OrderByDescending(
                                                  a => (gp.Persoon.Geslacht & a.Geslacht)).ToArray();
@@ -476,7 +476,7 @@ namespace Chiro.Gap.Workers
             {
                 // Als we lid kunnen maken: doen.
                 // Een lid heeft steeds maar 1 afdeling, vandaar: 'First'.
-                resultaat.AfdelingsJaren = new List<AfdelingsJaar> {mogelijkeAfdelingsJaren.First()};
+                resultaat.AfdelingsJaren = new List<AfdelingsJaar> { mogelijkeAfdelingsJaren.First() };
                 resultaat.LeidingMaken = false;
             }
             else if (leidingIndienMogelijk && KanLeidingWorden(gp, gwj))
@@ -493,12 +493,12 @@ namespace Chiro.Gap.Workers
                 var geschiktsteAfdelingsjaar =
                     gwj.AfdelingsJaar.OrderByDescending(a => (gp.Persoon.Geslacht & a.Geslacht)).ThenBy(
                         aj => (Math.Abs(geboortejaar - aj.GeboorteJaarTot))).FirstOrDefault() ??
-                        // als bovenstaande expressie null is, proberen we onderstaande. Onderstaande houdt
-                        // geen rekening met geslacht.
+                    // als bovenstaande expressie null is, proberen we onderstaande. Onderstaande houdt
+                    // geen rekening met geslacht.
                     gwj.AfdelingsJaar.OrderBy(
                             aj => (Math.Abs(geboortejaar - aj.GeboorteJaarTot))).FirstOrDefault();
 
-                resultaat.AfdelingsJaren = new List<AfdelingsJaar> {geschiktsteAfdelingsjaar};
+                resultaat.AfdelingsJaren = new List<AfdelingsJaar> { geschiktsteAfdelingsjaar };
                 resultaat.LeidingMaken = false;
             }
 
@@ -534,7 +534,16 @@ namespace Chiro.Gap.Workers
 
             if (foutNummer != null)
             {
-                throw new FoutNummerException(foutNummer.Value, Resources.LidProbleem);
+                if (foutNummer.Value == FoutNummer.OnbekendGeslacht)
+                {
+                    // Al de rest zit in client side validation, maar dit is een complex geval. Geslacht is verplicht, 
+                    // maar als het niet ingevuld wordt, krijg je standaard 'Onbekend', waardoor het toch ingevuld is.
+                    throw new FoutNummerException(foutNummer.Value, Resources.GeslachtVerplicht);
+                }
+                else
+                {
+                    throw new FoutNummerException(foutNummer.Value, Resources.LidProbleem);
+                }
             }
 
             if (voorstelLid.AfdelingsJarenIrrelevant && !voorstelLid.LeidingMaken)
@@ -578,7 +587,7 @@ namespace Chiro.Gap.Workers
             {
                 return false;
             }
-            
+
         }
 
         /// <summary>

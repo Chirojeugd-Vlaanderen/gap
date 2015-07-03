@@ -152,6 +152,9 @@
           <FullPath>NietDoorgekomenAbonnement.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenAfdelingen.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>NietDoorgekomenAfdelingen.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenEmail.sql">
@@ -167,6 +170,9 @@
           <FullPath>NietDoorgekomenLeden.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenTelefoonNr.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>NietDoorgekomenTelefoonNr.sql</FullPath>
         </FileNode>
         <FileNode Name="NietVerwijderdeLeden.sql">

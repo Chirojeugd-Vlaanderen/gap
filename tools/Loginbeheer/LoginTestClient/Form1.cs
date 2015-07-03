@@ -18,9 +18,9 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Windows.Forms;
-using Chiro.Ad.ServiceContracts;
-using Chiro.Adf.ServiceModel;
-using LoginTestClient.Properties;
+﻿using Chiro.Ad.ServiceContracts;
+﻿using Chiro.Cdf.ServiceHelper;
+﻿using LoginTestClient.Properties;
 
 namespace LoginTestClient
 {
@@ -48,7 +48,8 @@ namespace LoginTestClient
 
             try
             {
-                string login = ServiceHelper.CallService<IAdService, string>(client => client.GapLoginAanvragen(Int32.Parse(AdNrTextBox.Text), VoornaamTextBox.Text, NaamTextBox.Text, MailadresTextBox.Text));
+                var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
+                string login = serviceHelper.CallService<IAdService, string>(client => client.GapLoginAanvragen(Int32.Parse(AdNrTextBox.Text), VoornaamTextBox.Text, NaamTextBox.Text, MailadresTextBox.Text));
                 LoginLabel.Text = string.Concat("Login: ", login);
             }
             catch (FaultException<ArgumentException> fault)
@@ -74,6 +75,11 @@ namespace LoginTestClient
         private static void FoutboodschapTonen(string boodschap)
         {
             MessageBox.Show(boodschap, Resources.Foutje_Venstertitel, MessageBoxButtons.OK, MessageBoxIcon.Error);   
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

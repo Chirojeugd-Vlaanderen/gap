@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -15,28 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using Chiro.Adf.ServiceModel;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ServiceModel;
 
 using Chiro.Ad.ServiceContracts;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Ad.Test
 {
-    // Testmogelijkheden zijn momenteel beperkt, omdat er nog geen IOC ondersteund wordt.
+    // Makkelijkste is om de loginservice te runnen vanuit 1 Visual Studio instance, en deze tests vanuit
+    // een andere.
 
     [TestClass]
-    public class UnitTest1
+    public class LoginMakenTest
     {
         /// <summary>
-        /// Een zeer domme test om te kijken of de WCF-service iets doet.
+        /// Een zeer domme test om te kijken of de LoginService iets doet.
         /// Probeer een account aan te maken met een ongeldig adres, en verwacht een exception.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FaultException))]
         public void ServiceAanroepTest()
         {
-            ServiceHelper.CallService<IAdService, string>(client => client.GapLoginAanvragen(39198, "Johan", "Vervloet", "johan.vervloet@chiro"));
+            var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
+            serviceHelper.CallService<IAdService, string>(client => client.GapLoginAanvragen(39198, "Johan", "Vervloet", "johan.vervloet_chiro"));
         }
     }
 }

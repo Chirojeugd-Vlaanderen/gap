@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -186,7 +186,12 @@ namespace Chiro.Gap.Services.Test
         {
             // ARRANGE
 
-            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon { InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon {InSync = true},
+                Groep = new ChiroGroep()
+            };
             var email = new CommunicatieType { ID = 3, Validatie = ".*" };
 
             var commDetail = new CommunicatieInfo
@@ -507,37 +512,25 @@ namespace Chiro.Gap.Services.Test
             #region testdata
 
             var gelieerdePersoon = new GelieerdePersoon
-                                       {
-                                           ID = 1,
-                                           Persoon = new Persoon
-                                                         {
-                                                             InSync = true,
-                                                             PersoonsAdres = new List<PersoonsAdres>
-                                                                                 {
-                                                                                     new PersoonsAdres
-                                                                                         {
-                                                                                             Adres = new BelgischAdres
-                                                                                                         {
-                                                                                                             ID = 2,
-                                                                                                             StraatNaam
-                                                                                                                 =
-                                                                                                                 new StraatNaam
-                                                                                                                     {
-                                                                                                                         ID
-                                                                                                                             =
-                                                                                                                             3,
-                                                                                                                         Naam
-                                                                                                                             =
-                                                                                                                             "Langstraat",
-                                                                                                                         PostNummer
-                                                                                                                             =
-                                                                                                                             2140
-                                                                                                                     }
-                                                                                                         }
-                                                                                         }
-                                                                                 }
-                                                         }
-                                       };
+            {
+                ID = 1,
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}},
+                Persoon = new Persoon
+                {
+                    InSync = true,
+                    PersoonsAdres = new List<PersoonsAdres>
+                    {
+                        new PersoonsAdres
+                        {
+                            Adres = new BelgischAdres
+                            {
+                                ID = 2,
+                                StraatNaam = new StraatNaam {ID = 3, Naam = "Langstraat", PostNummer = 2140}
+                            }
+                        }
+                    }
+                }
+            };
 
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             gelieerdePersoon.PersoonsAdres = gelieerdePersoon.Persoon.PersoonsAdres.First();
@@ -618,6 +611,120 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
+        /// Controleert of een nieuw niet-voorkeursadres van een gekende gelieerde persoon niet wordt gesynct
+        /// met Kipadmin
+        /// </summary>
+        [TestMethod()]
+        public void GelieerdePersonenVerhuizenNietVoorkeurSyncTest()
+        {
+            // ARRANGE.
+
+            #region testdata
+
+            var adres = new BelgischAdres
+            {
+                ID = 2,
+                StraatNaam = new StraatNaam {ID = 3, Naam = "Langstraat", PostNummer = 2140}
+            };
+
+
+            // GelierdePersoon1 heeft het adres niet als voorkeursadres, gelieerdePersoon2 wel.
+            var gelieerdePersoon1 = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon
+                {
+                    ID = 4,
+                    InSync = true,
+                },
+                PersoonsAdres = new PersoonsAdres {ID = 3, Adres = new BelgischAdres{ID = 8}}
+            };
+            gelieerdePersoon1.Persoon.PersoonsAdres.Add(new PersoonsAdres { ID = 6, Adres = adres, Persoon = gelieerdePersoon1.Persoon });
+            gelieerdePersoon1.Persoon.PersoonsAdres.Add(gelieerdePersoon1.PersoonsAdres);
+
+            var gelieerdePersoon2 = new GelieerdePersoon
+            {
+                ID = 2,
+                Persoon = new Persoon
+                {
+                    ID = 5,
+                    InSync = false,
+                    PersoonsAdres = new List<PersoonsAdres>
+                    {
+                        new PersoonsAdres
+                        {
+                            ID = 7,
+                            Adres = adres
+                        }
+                    }
+                }
+            };
+
+            gelieerdePersoon1.Persoon.GelieerdePersoon.Add(gelieerdePersoon1);
+            gelieerdePersoon1.PersoonsAdres.Persoon = gelieerdePersoon1.Persoon;
+
+            gelieerdePersoon2.Persoon.GelieerdePersoon.Add(gelieerdePersoon2);
+            gelieerdePersoon2.PersoonsAdres = gelieerdePersoon2.Persoon.PersoonsAdres.First();
+            gelieerdePersoon2.PersoonsAdres.Persoon = gelieerdePersoon2.Persoon;
+            gelieerdePersoon2.PersoonsAdres.GelieerdePersoon.Add(gelieerdePersoon2);
+            adres.PersoonsAdres.Add(gelieerdePersoon2.PersoonsAdres);
+            adres.PersoonsAdres.Add(gelieerdePersoon1.PersoonsAdres);
+
+            var infoNieuwAdres = new PersoonsAdresInfo
+            {
+                StraatNaamNaam = "Kipdorp",
+                HuisNr = 30,
+                PostNr = 2000,
+                WoonPlaatsNaam = "Antwerpen",
+                AdresType = AdresTypeEnum.Thuis
+            };
+            #endregion
+
+            #region Dependency injection
+
+            // mocks voor data access
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
+                                  .Returns(new DummyRepo<Adres>(new List<Adres> { adres }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<StraatNaam>())
+                .Returns(
+                    new DummyRepo<StraatNaam>(new List<StraatNaam>
+                    {
+                        ((BelgischAdres) adres).StraatNaam,
+                        new StraatNaam {PostNummer = infoNieuwAdres.PostNr, Naam = infoNieuwAdres.StraatNaamNaam}
+                    }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<WoonPlaats>())
+                .Returns(
+                    new DummyRepo<WoonPlaats>(new List<WoonPlaats>
+                    {
+                        new WoonPlaats {PostNummer = infoNieuwAdres.PostNr, Naam = infoNieuwAdres.WoonPlaatsNaam}
+                    }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Land>())
+                                  .Returns(new DummyRepo<Land>(new List<Land>()));
+
+
+            // mock voor sync
+            var adressenSyncMock = new Mock<IAdressenSync>();
+            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.Is<IList<PersoonsAdres>>(l => !l.Any()))).Verifiable();
+
+            // mocks registreren bij dependency-injectioncontainer
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+            Factory.InstantieRegistreren(adressenSyncMock.Object);
+
+            #endregion
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.GelieerdePersonenVerhuizen(new[] { gelieerdePersoon1.ID }, infoNieuwAdres,
+                                              adres.ID);
+
+            // ASSERT
+
+            adressenSyncMock.VerifyAll();
+        }
+
+        /// <summary>
         /// Controleert of een nieuw voorkeursadres van een gekende gelieerde persoon wordt gesynct.
         ///</summary>
         [TestMethod()]
@@ -627,7 +734,12 @@ namespace Chiro.Gap.Services.Test
 
             // testdata
 
-            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon { InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon {InSync = true},
+                Groep = new ChiroGroep()
+            };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
 
             var nederland = new Land { Naam = "Nederland" };
@@ -686,7 +798,11 @@ namespace Chiro.Gap.Services.Test
             var voorkeursAdres = new BelgischAdres { ID = 2 };
             var anderAdres = new BelgischAdres { ID = 3 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Persoon = new Persoon {ID = 1, InSync = true},
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}}
+            };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
             var anderPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = anderAdres };
@@ -740,7 +856,11 @@ namespace Chiro.Gap.Services.Test
             var voorkeursAdres = new BelgischAdres { ID = 2 };
             var anderAdres = new BelgischAdres { ID = 3 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Persoon = new Persoon {ID = 1, InSync = true},
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}}
+            };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
             var anderPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = anderAdres };
@@ -790,19 +910,20 @@ namespace Chiro.Gap.Services.Test
             // ARRANGE
 
             var communicatieVorm = new CommunicatieVorm
-                                       {
-                                           ID = 1,
-                                           GelieerdePersoon =
-                                               new GelieerdePersoon
-                                                   {
-                                                       Persoon =
-                                                           new Persoon
-                                                               {
-                                                                   InSync =
-                                                                       true
-                                                               }
-                                                   }
-                                       };
+            {
+                ID = 1,
+                GelieerdePersoon =
+                    new GelieerdePersoon
+                    {
+                        Persoon =
+                            new Persoon
+                            {
+                                InSync =
+                                    true
+                            },
+                        Groep = new ChiroGroep {GroepsWerkJaar = new[] {new GroepsWerkJaar()}}
+                    }
+            };
 
             // Dependency injection: synchronisatie
 
@@ -828,6 +949,91 @@ namespace Chiro.Gap.Services.Test
 
             communicatieSyncMock.Verify(src => src.Verwijderen(It.IsAny<CommunicatieVorm>()),
                                         Times.AtLeastOnce());
+        }
+
+        /// <summary>
+        /// Verwijderen voorkeursmailadres moet syncen met mailchimp als persoon DP-abonnement heeft.
+        ///</summary>
+        [TestMethod()]
+        public void VoorkeursmailVerwijderenChimpSyncTest()
+        {
+            // ARRANGE
+
+            var mailAdres = new CommunicatieVorm
+            {
+                ID = 1,
+                CommunicatieType = new CommunicatieType {ID = 3},
+                Nummer = "oudevoorkeur@chiro.be",
+                Voorkeur = true,
+                GelieerdePersoon =
+                    new GelieerdePersoon
+                    {
+                        Persoon =
+                            new Persoon
+                            {
+                                InSync =
+                                    true
+                            },
+                        Groep = new ChiroGroep()
+                    }
+            };
+            mailAdres.GelieerdePersoon.Communicatie.Add(mailAdres);
+            var groepswerkjaar = new GroepsWerkJaar {Groep = mailAdres.GelieerdePersoon.Groep, WerkJaar = 2014};
+            mailAdres.GelieerdePersoon.Groep.GroepsWerkJaar.Add(groepswerkjaar);
+            var abonnement = new Abonnement
+            {
+                GelieerdePersoon = mailAdres.GelieerdePersoon,
+                GroepsWerkJaar = groepswerkjaar,
+                Publicatie = new Publicatie {ID = 1}
+            };
+            groepswerkjaar.Abonnement.Add(abonnement);
+            mailAdres.GelieerdePersoon.Abonnement.Add(abonnement);
+            var anderMailAdres = new CommunicatieVorm
+            {
+                ID = 2,
+                CommunicatieType = new CommunicatieType {ID = 3},
+                GelieerdePersoon = mailAdres.GelieerdePersoon,
+                Voorkeur = false,
+                Nummer = "2deadres@chiro.be"
+            };
+            mailAdres.GelieerdePersoon.Communicatie.Add(anderMailAdres);
+
+            // Dependency injection: synchronisatie
+
+            var abonnementenSyncMock = new Mock<IAbonnementenSync>();
+            abonnementenSyncMock.Setup(
+                src =>
+                    src.AbonnementBewaren(
+                        It.Is<Abonnement>(
+                            ab =>
+                                Equals(
+                                    ab.GelieerdePersoon.Communicatie.First(
+                                        cm => cm.Voorkeur && cm.CommunicatieType.ID == 3), anderMailAdres))))
+                .Verifiable();
+            Factory.InstantieRegistreren(abonnementenSyncMock.Object);
+
+            // Dependency injection: data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieVorm>())
+                                  .Returns(new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> { mailAdres }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.CommunicatieVormVerwijderen(mailAdres.ID);
+
+            // ASSERT
+
+            abonnementenSyncMock.Verify(src =>
+                src.AbonnementBewaren(
+                    It.Is<Abonnement>(
+                        ab =>
+                            Equals(
+                                ab.GelieerdePersoon.Communicatie.First(
+                                    cm => cm.Voorkeur && cm.CommunicatieType.ID == 3), anderMailAdres))),
+                Times.AtLeastOnce());
         }
 
         /// <summary>
@@ -1052,7 +1258,11 @@ namespace Chiro.Gap.Services.Test
 
             var voorkeursAdres = new BelgischAdres { ID = 2 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Persoon = new Persoon {ID = 1, InSync = true},
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}}
+            };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
 
@@ -1285,33 +1495,29 @@ namespace Chiro.Gap.Services.Test
             #region testdata
 
             var gelieerdePersoon = new GelieerdePersoon
-                                   {
-                                       ID = 1,
-                                       Persoon = new Persoon
-                                                 {
-                                                     InSync = true,
-                                                     PersoonsAdres = new List<PersoonsAdres>
-                                                                     {
-                                                                         new PersoonsAdres
-                                                                         {
-                                                                             Adres = new BuitenLandsAdres()
-                                                                                     {
-                                                                                         ID = 2,
-                                                                                         Straat = "Rue Nouvelle",
-                                                                                         PostNummer = 12345,
-                                                                                         HuisNr = 77,
-                                                                                         WoonPlaats = "Nilin",
-                                                                                         Land =
-                                                                                             new Land
-                                                                                             {
-                                                                                                 Naam =
-                                                                                                     "Frankrijk"
-                                                                                             }
-                                                                                     }
-                                                                         }
-                                                                     }
-                                                 }
-                                   };
+            {
+                ID = 1,
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}},
+                Persoon = new Persoon
+                {
+                    InSync = true,
+                    PersoonsAdres = new List<PersoonsAdres>
+                    {
+                        new PersoonsAdres
+                        {
+                            Adres = new BuitenLandsAdres()
+                            {
+                                ID = 2,
+                                Straat = "Rue Nouvelle",
+                                PostNummer = 12345,
+                                HuisNr = 77,
+                                WoonPlaats = "Nilin",
+                                Land = new Land {Naam = "Frankrijk"}
+                            }
+                        }
+                    }
+                }
+            };
 
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             gelieerdePersoon.PersoonsAdres = gelieerdePersoon.Persoon.PersoonsAdres.First();

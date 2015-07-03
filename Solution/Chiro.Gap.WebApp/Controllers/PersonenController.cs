@@ -256,7 +256,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new NieuwePersoonModel();
             BaseModelInit(model, groepID);
 
-            // zeken ophalen voor het model
+            // zaken ophalen voor het model
 
             var groepsWerkJaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
             model.GroepsWerkJaarID = groepsWerkJaar.WerkJaarID;
@@ -282,7 +282,6 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Forceer = false;
 
             model.Titel = Properties.Resources.NieuwePersoonTitel;
-
 
             return View(model);
         }
@@ -1578,6 +1577,48 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         #endregion categorieën
+
+        #region dubbelpunt
+        /// <summary>
+        /// Formulier voor beheer Dubbelpuntabonnement van persoon met GelieerdePersoonID
+        /// <paramref name="id"/>.
+        /// </summary>
+        /// <param name="groepID">groep waarin wordt gewerkt.</param>
+        /// <param name="id">GelieerdePersoonID om Dubbelpuntabonnement te beheren.</param>
+        /// <returns>Het Dubbelpuntabonnementformulier</returns>
+        [HandleError]
+        public ActionResult Dubbelpunt(int id, int groepID)
+        {
+            var model = new DubbelpuntModel();
+            BaseModelInit(model, groepID);
+            model.Titel = "Dubbelpuntabonnement";
+
+            model.PersoonInfo =
+                ServiceHelper.CallService<IGelieerdePersonenService, PersoonInfo>(svc => svc.InfoOphalen(id));
+            model.AbonnementType =
+                ServiceHelper.CallService<IGelieerdePersonenService, AbonnementType?>(
+                    svc => svc.AbonnementOphalen(id, VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID, 1));
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Afhandeling van het <paramref name="model"/> dat de user meegaf via het
+        /// Dubbelpuntabonnementformulier.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="groepID"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Dubbelpunt(int id, int groepID, DubbelpuntModel model)
+        {
+            ServiceHelper.CallService<IGelieerdePersonenService>(
+                svc => svc.AbonnementBewaren(id, VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID, model.AbonnementType, 1));
+
+            return RedirectToAction("Bewerken", new {id});
+        }
+        #endregion
 
         #region uitstappen
         /// <summary>
