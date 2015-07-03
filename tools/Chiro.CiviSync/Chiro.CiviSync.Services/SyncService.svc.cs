@@ -15,16 +15,8 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.ServiceModel;
-using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
-using Chiro.CiviCrm.Api;
-using Chiro.CiviCrm.Api.DataContracts;
-using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.CiviSync.Services.Properties;
 using Chiro.CiviSync.Workers;
@@ -32,6 +24,7 @@ using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using Chiro.Mailchimp.Sync;
 
 namespace Chiro.CiviSync.Services
 {
@@ -53,6 +46,8 @@ namespace Chiro.CiviSync.Services
         private readonly BivakWorker _bivakWorker;
         private readonly CommunicatieWorker _communicatieWorker;
 
+        private readonly IChimpSyncHelper _chimpSyncHelper;
+
         protected ServiceHelper ServiceHelper
         {
             get { return _serviceHelper; }
@@ -68,10 +63,13 @@ namespace Chiro.CiviSync.Services
         /// <param name="bivakWorker">Bivak goodies.</param>
         /// <param name="contactWorker">Contact goodies.</param>
         /// <param name="communicatieWorker">Communicatie goodies.</param>
+        /// <param name="lidWorker">Lid goodies.</param>
+        /// <param name="chimpSyncHelper">Communicatie met Mailchimp.</param>
         /// <param name="log">Logger</param>
         public SyncService(ServiceHelper serviceHelper, IGapUpdateClient gapUpdateClient,
             RelationshipLogic relationshipLogic, MembershipLogic membershipLogic, BivakWorker bivakWorker,
             ContactWorker contactWorker, CommunicatieWorker communicatieWorker, LidWorker lidWorker,
+            IChimpSyncHelper chimpSyncHelper,
             IMiniLog log)
         {
             _serviceHelper = serviceHelper;
@@ -82,6 +80,7 @@ namespace Chiro.CiviSync.Services
             _contactWorker = contactWorker;
             _communicatieWorker = communicatieWorker;
             _lidWorker = lidWorker;
+            _chimpSyncHelper = chimpSyncHelper;
             _log = log;
 
             // Configureer externe API's van GapUpdate en workers.
