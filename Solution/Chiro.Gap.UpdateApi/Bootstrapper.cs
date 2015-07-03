@@ -1,16 +1,9 @@
-﻿using Nancy.Bootstrappers.Unity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Nancy.Bootstrapper;
-
+﻿using System.Configuration;
 using Microsoft.Practices.Unity;
-using Nancy;
 using Microsoft.Practices.Unity.Configuration;
-using System.Configuration;
-
-using System.Diagnostics;
+using Nancy;
+using Nancy.Bootstrapper;
+using Nancy.Bootstrappers.Unity;
 
 namespace Chiro.Gap.UpdateApi
 {

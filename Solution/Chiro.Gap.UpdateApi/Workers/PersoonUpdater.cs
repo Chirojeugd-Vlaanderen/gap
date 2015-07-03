@@ -24,7 +24,6 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.UpdateApi.Models;
 
-
 namespace Chiro.Gap.UpdateApi.Workers
 {
     public class PersoonUpdater : IPersoonUpdater
