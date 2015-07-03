@@ -3,10 +3,9 @@
 use gap_local;
 go
 
-declare @laatsteMembershipsGemaakt as datetime; set @laatsteMembershipsGemaakt = getdate();
-
 alter table pers.Persoon add LaatsteMembership int null;
-
+go
+declare @laatsteMembershipsGemaakt as datetime; set @laatsteMembershipsGemaakt = getdate();
 update p
 set p.LaatsteMembership = tmp.LaatsteMembership
 from pers.persoon p join
@@ -20,7 +19,7 @@ group by p.persoonid
 ) tmp on p.persoonid=tmp.persoonid
 
 -- tabel voor logberichten
-
+go
 create schema logging;
 go
 
