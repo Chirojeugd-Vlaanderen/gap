@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="SiteKey" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">462e033f1b3495d094f401d89772ba5b</Value>
+      <Value Profile="(Default)">02fc822daac60d80fde5270362ef65eb</Value>
     </Setting>
     <Setting Name="ApiKey" Type="System.String" Scope="Application">
       <Value Profile="(Default)">blablablapi</Value>

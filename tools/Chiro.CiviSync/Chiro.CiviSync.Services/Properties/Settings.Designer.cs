@@ -25,7 +25,7 @@ namespace Chiro.CiviSync.Services.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("462e033f1b3495d094f401d89772ba5b")]
+        [global::System.Configuration.DefaultSettingValueAttribute("02fc822daac60d80fde5270362ef65eb")]
         public string SiteKey {
             get {
                 return ((string)(this["SiteKey"]));

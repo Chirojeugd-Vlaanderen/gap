@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.Services", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ServiceContracts", "..\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj", "{6E81A10A-AD85-47A0-8B5D-70361F393CDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.ConsoleServiceHost", "Chiro.CiviSync.ConsoleServiceHost\Chiro.CiviSync.ConsoleServiceHost.csproj", "{62E4DF52-639E-4CFE-AD0F-2850604B280A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc", "..\..\Solution\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj", "{C100E957-CEE2-4707-BF13-C64553C28C7B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceModel", "..\..\Solution\Chiro.Cdf.ServiceModel\Chiro.Cdf.ServiceModel.csproj", "{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}"
@@ -50,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.Workers.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.Logic.Test", "Chiro.CiviSync.Logic.Test\Chiro.CiviSync.Logic.Test.csproj", "{EE70AAF1-CF25-42F6-9048-057526D555DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.ConsoleServiceHost", "Chiro.CiviSync.ConsoleServiceHost\Chiro.CiviSync.ConsoleServiceHost.csproj", "{62E4DF52-639E-4CFE-AD0F-2850604B280A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,10 +64,6 @@ Global
 		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62E4DF52-639E-4CFE-AD0F-2850604B280A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62E4DF52-639E-4CFE-AD0F-2850604B280A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62E4DF52-639E-4CFE-AD0F-2850604B280A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62E4DF52-639E-4CFE-AD0F-2850604B280A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -136,6 +132,10 @@ Global
 		{EE70AAF1-CF25-42F6-9048-057526D555DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE70AAF1-CF25-42F6-9048-057526D555DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE70AAF1-CF25-42F6-9048-057526D555DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62E4DF52-639E-4CFE-AD0F-2850604B280A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62E4DF52-639E-4CFE-AD0F-2850604B280A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62E4DF52-639E-4CFE-AD0F-2850604B280A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62E4DF52-639E-4CFE-AD0F-2850604B280A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
