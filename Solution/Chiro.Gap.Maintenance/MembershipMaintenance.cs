@@ -68,7 +68,7 @@ namespace Chiro.Gap.Maintenance
                      l.GelieerdePersoon.Persoon.LaatsteMembership == null) &&
                     l.GroepsWerkJaar.WerkJaar == huidigWerkJaar &&
                     l.EindeInstapPeriode < vandaag
-                select l.GelieerdePersoon.Persoon).ToArray();
+                select l.GelieerdePersoon.Persoon).Take(Properties.Settings.Default.LimitMembershipQuery).ToArray();
 
             foreach (var p in teSyncen)
             {
