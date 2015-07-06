@@ -337,7 +337,7 @@ namespace Chiro.Gap.Workers.Test
 
             // Nu proberen we uit te zoeken welke leden er nog aangesloten moeten worden in 2016-2017.
             var result = target.AanTeSluitenLedenOphalen(groep.GroepsWerkJaar.SelectMany(gwj => gwj.Lid).AsQueryable(),
-                2016, datum);
+                2016, datum, null);
 
             Assert.IsEmpty(result);
         }
@@ -380,7 +380,7 @@ namespace Chiro.Gap.Workers.Test
             // ACT
             var target = new LedenManager();
             var result = target.AanTeSluitenLedenOphalen((new List<Lid> {leidster}).AsQueryable(), huidigWerkjaar,
-                vandaagZoGezegd);
+                vandaagZoGezegd, null);
 
             // ASSERT
             Assert.IsNotEmpty(result);
@@ -443,7 +443,7 @@ namespace Chiro.Gap.Workers.Test
             // ACT
             var target = new LedenManager();
             var result = target.AanTeSluitenLedenOphalen((new List<Lid> {leidster}).AsQueryable(), huidigWerkjaar,
-                vandaagZoGezegd);
+                vandaagZoGezegd, null);
 
             // ASSERT
             Assert.IsNotEmpty(result);

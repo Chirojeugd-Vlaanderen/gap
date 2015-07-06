@@ -69,10 +69,6 @@ namespace Chiro.Gap.Maintenance
             int huidigWerkJaar = _groepsWerkJarenManager.HuidigWerkJaarNationaal();
             DateTime vandaag = _groepsWerkJarenManager.Vandaag();
             int overgezetTeller = 0;
-            int totaalTeller = 0;
-
-            // TODO: Het bepalen van de aan te vragen memberships, is eigenlijk business logic,
-            // en moet in de workers. Maar soit.
 
             // Zoek eerst de leden waarvan IsAangesloten nog niet gezet is.
             // Persoonsverzekering moet eager geload worden, zodat een eventuele verzekering straks
@@ -80,7 +76,7 @@ namespace Chiro.Gap.Maintenance
             var aanTeSluiten =
                 _ledenManager.AanTeSluitenLedenOphalen(
                     _ledenRepo.Select("GelieerdePersoon.Persoon.PersoonsVerzekering", "GroepsWerkJaar"), huidigWerkJaar,
-                    vandaag);
+                    vandaag, Properties.Settings.Default.LimitMembershipQuery);
 
             foreach (var lid in aanTeSluiten)
             {

@@ -929,10 +929,11 @@ namespace Chiro.Gap.Workers
         /// <param name="lidQueryable">Queryable om leden in te zoeken.</param>
         /// <param name="werkjaar">Werkjaar waarvoor leden te zoeken.</param>
         /// <param name="vandaag">De datum van vandaag.</param>
+        /// <param name="limit">Begrens het aantal leden tot de gegeven limiet.</param>
         /// <returns>Een array met leden.</returns>
-        public Lid[] AanTeSluitenLedenOphalen(IQueryable<Lid> lidQueryable, int werkjaar, DateTime vandaag)
+        public Lid[] AanTeSluitenLedenOphalen(IQueryable<Lid> lidQueryable, int werkjaar, DateTime vandaag, int? limit)
         {
-            var nietAangeslotenLeden = (from l in lidQueryable
+            var query = (from l in lidQueryable
                 where
                     // maak memberships voor niet-aangesloten leden
                     !l.IsAangesloten &&
@@ -942,10 +943,16 @@ namespace Chiro.Gap.Workers
                     l.EindeInstapPeriode < vandaag && !l.NonActief &&
                     // enkel als de groep nog actief was wanneer instapperiode verviel (#4528)
                     (l.GroepsWerkJaar.Groep.StopDatum == null || l.GroepsWerkJaar.Groep.StopDatum > l.EindeInstapPeriode)
-                select l).ToArray();
+                select l);
+            if (limit.HasValue)
+            {
+                query = query.Take(limit.Value);
+            }
+            var nietAangeslotenLeden = query.ToArray();
 
             // Overloop de gevonden leden, en kijk na in hoeverre ze naar de Civi moeten.
-            // Ik weet niet meer waarom ik twee aparte linq query's gebruikt.
+            // Ik weet niet meer waarom ik twee aparte linq query's gebruikt. Misschien om al
+            // op tijd die limit toe te kunnen passen?
 
             // TODO: In de 'continue'-gevallen van onderstaande loop, kunnen we de leden markeren
             // met IsAangesloten = true. Dan worden ze in de toekomst niet iedere keer opnieuw bekeken.
