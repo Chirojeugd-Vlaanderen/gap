@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -32,6 +32,8 @@ namespace Chiro.Gap.Poco.Model
             this.PersoonsAdres = new HashSet<PersoonsAdres>();
             this.PersoonsVerzekering = new HashSet<PersoonsVerzekering>();
             this.Gav = new HashSet<Gav>();
+            this.BerichtPersoon = new HashSet<Bericht>();
+            this.BerichtGebruiker = new HashSet<Bericht>();
         }
     
         public int? AdNummer { get; set; }
@@ -40,6 +42,7 @@ namespace Chiro.Gap.Poco.Model
         public DateTime? GeboorteDatum { get; set; }
         internal int GeslachtsInt { get; set; }
         public DateTime? SterfDatum { get; set; }
+        public int? LaatsteMembership { get; set; }
         public override int ID { get; set; }
         public override byte[] Versie { get; set; }
         public bool InSync
@@ -61,6 +64,8 @@ namespace Chiro.Gap.Poco.Model
         public virtual ICollection<PersoonsAdres> PersoonsAdres { get; set; }
         public virtual ICollection<PersoonsVerzekering> PersoonsVerzekering { get; set; }
         public virtual ICollection<Gav> Gav { get; set; }
+        public virtual ICollection<Bericht> BerichtPersoon { get; set; }
+        public virtual ICollection<Bericht> BerichtGebruiker { get; set; }
 
         /// <summary>
         /// Een enumwaarde voor het geslacht van de persoon

@@ -670,7 +670,8 @@ namespace Chiro.Gap.Services.Test
 
             // synchronisatie mocken
             var ledenSyncMock = new Mock<ILedenSync>();
-            ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>())).Verifiable();   // verwacht dat ledensync een lid moet bewaren
+            ledenSyncMock.Setup(snc => snc.Verwijderen(It.IsAny<Lid>())).Verifiable();   // verwacht dat ledensync geen lid moet verwijderen...
+            ledenSyncMock.Setup(snc => snc.Bewaren(It.Is<Lid>(ld => ld.UitschrijfDatum != null))).Verifiable();       // maar wel bewaren.
             Factory.InstantieRegistreren(ledenSyncMock.Object);
 
             var target = Factory.Maak<LedenService>();
@@ -680,9 +681,11 @@ namespace Chiro.Gap.Services.Test
             string foutbericht;
             target.Uitschrijven(new[] { leiding.GelieerdePersoon.ID }, out foutbericht);
 
-            // ASSERT: controleer dat de ledensync NIET werd aangeroepen
+            // ASSERT: controleer dat ledensync.Verwijderen NIET werd aangeroepen,
+            // maar ledensync.Bewaren wel.
 
             ledenSyncMock.Verify(src=>src.Verwijderen(leiding), Times.Never());
+            ledenSyncMock.Verify(src => src.Bewaren(leiding), Times.AtLeastOnce);
         }
 
         ///<summary>

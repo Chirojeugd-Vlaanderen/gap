@@ -80,9 +80,9 @@
           <FullPath>DubbelAd.sql</FullPath>
         </FileNode>
         <FileNode Name="DubbelVerwijderen.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>DubbelVerwijderen.sql</FullPath>
         </FileNode>
         <FileNode Name="FixContactType.sql">
@@ -157,6 +157,12 @@
           <AssociatedConnUserName />
           <FullPath>NietDoorgekomenAfdelingen.sql</FullPath>
         </FileNode>
+        <FileNode Name="NietDoorgekomenEmail.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>NietDoorgekomenEmail.sql</FullPath>
+        </FileNode>
         <FileNode Name="NietDoorgekomenLeden.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
@@ -176,9 +182,9 @@
           <FullPath>NietVerwijderdeLeden.sql</FullPath>
         </FileNode>
         <FileNode Name="PersoonOpAd.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>PersoonOpAd.sql</FullPath>
         </FileNode>
         <FileNode Name="ProbleemFacturen.sql">
@@ -248,8 +254,8 @@
           <FullPath>vVerlorenBivakken.sql</FullPath>
         </FileNode>
         <FileNode Name="ZoekLogs.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02\sql2012:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kip-sql02\sql2012</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>ZoekLogs.sql</FullPath>
         </FileNode>

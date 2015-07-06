@@ -333,6 +333,8 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
+                _groepsWerkJaarRepo.SaveChanges();
+
                 if (uitstap.IsBivak)
                 {
                     _bivakSync.Bewaren(uitstap);
@@ -342,7 +344,6 @@ namespace Chiro.Gap.Services
                     _bivakSync.Verwijderen(uitstap.ID);
                 }
 
-                _groepsWerkJaarRepo.SaveChanges();
 #if KIPDORP
                 tx.Complete();
             }

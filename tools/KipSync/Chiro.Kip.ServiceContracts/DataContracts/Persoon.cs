@@ -34,7 +34,7 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
 
         /// <summary>
         /// Het administratief identificatienummer dat aan die persoon toegekend werd
-        /// door het administratieprogramma van Chirojeugd Vlaanderen.
+        /// door het oude administratieprogramma van Chirojeugd Vlaanderen (Kipadmin).
         /// </summary>
         /// <remarks>
         /// Wordt toegekend op het moment dat er een reden is om de persoon te registreren in de

@@ -86,8 +86,8 @@ namespace Chiro.Gap.Sync.Test
 
             var adres = new BuitenLandsAdres {Land = new Land()};
 
-            var persoonsAdres1 = new PersoonsAdres {Adres = adres, Persoon = new Persoon()};
-            var persoonsAdres2 = new PersoonsAdres {Adres = adres, Persoon = new Persoon()};
+            var persoonsAdres1 = new PersoonsAdres {Adres = adres, Persoon = new Persoon{InSync = true}};
+            var persoonsAdres2 = new PersoonsAdres { Adres = adres, Persoon = new Persoon{InSync = true}};
 
             adres.PersoonsAdres.Add(persoonsAdres1);
             adres.PersoonsAdres.Add(persoonsAdres2);

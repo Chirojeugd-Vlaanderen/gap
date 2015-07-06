@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chiro.Gap.Maintenance.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="QueueNaam" Type="System.String" Scope="User">
+      <Value Profile="(Default)">lap-jve-8\private$\civisyncdev</Value>
+    </Setting>
+    <Setting Name="MaxBerichten" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">25</Value>
+    </Setting>
+    <Setting Name="Afzender" Type="System.String" Scope="User">
+      <Value Profile="(Default)">civisync@chiro.be</Value>
+    </Setting>
+    <Setting Name="Ontvanger" Type="System.String" Scope="User">
+      <Value Profile="(Default)">helpdesk@chiro.be</Value>
+    </Setting>
+    <Setting Name="Onderwerp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Verdacht veel berichten in civisync-queue</Value>
+    </Setting>
+    <Setting Name="Inhoud" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dag helpdesker,
+
+De message queue voor CiviSync loopt vol. Kun je dit
+eens nakijken aub?
+
+Meer info op de adminwiki:
+https://adminwiki.chiro.be/devel:civisyncissues</Value>
+    </Setting>
+    <Setting Name="Setting" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>

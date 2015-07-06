@@ -20,6 +20,7 @@ using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Model;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Poco.Context
 {
@@ -61,5 +62,6 @@ namespace Chiro.Gap.Poco.Context
         public DbSet<Deelnemer> Deelnemer { get; set; }
         public DbSet<Abonnement> Abonnement { get; set; }
         public DbSet<Publicatie> Publicatie { get; set; }
+        public DbSet<Bericht> Bericht { get; set;  }
     }
 }

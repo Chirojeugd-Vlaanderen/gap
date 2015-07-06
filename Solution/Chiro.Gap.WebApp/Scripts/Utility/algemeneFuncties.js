@@ -44,7 +44,6 @@ $(function () {
     // op exact dezelfde manier voorkomen. De ID's op de links en de <div> tag 
     // waarin de info geladen wordt moeten dan wel op alle pagina's dezelfde naam hebben.
     //--------------------------------------------------------------------------------
-    // extra info over AD-nummer
     //TODO: Volgens mij moet dit efficienter kunnen
     $('#clInfo').click(function () {
         $('#extraInfoDialog').dialog();

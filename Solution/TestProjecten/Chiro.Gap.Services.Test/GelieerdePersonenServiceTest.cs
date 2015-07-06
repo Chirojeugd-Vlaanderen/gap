@@ -28,6 +28,7 @@ using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Services.Dev;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.TestAttributes;
 using Chiro.Gap.WorkerInterfaces;
@@ -82,6 +83,13 @@ namespace Chiro.Gap.Services.Test
             // de configuratiefile.)
 
             Factory.ContainerInit();
+
+#pragma warning disable 168
+            // Als ik onderstaande niet een keertje instantieer, dan werken mijn tests niet.
+            // Geen idee hoe dat komt.
+
+            DevChannelProvider bla;
+#pragma warning restore 168
         }
 
         /// <summary>

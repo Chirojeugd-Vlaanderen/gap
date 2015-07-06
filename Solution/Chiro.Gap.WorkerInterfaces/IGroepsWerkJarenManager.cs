@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -114,5 +114,20 @@ namespace Chiro.Gap.WorkerInterfaces
         IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, IList<Afdeling> afdelingen,
                                                        int nieuwWerkJaar,
                                                        OfficieleAfdeling standaardOfficieleAfdeling);
+        /// <summary>
+        /// Levert het huidige werkjaar op, volgens 'nationaal'.
+        /// </summary>
+        /// <returns>Het jaartal waarin het huidige werkjaar begon</returns>
+        int HuidigWerkJaarNationaal();
+
+        /// <summary>
+        /// Levert de datum van vandaag op.
+        /// </summary>
+        /// <returns>De datum van vandaag.</returns>
+        /// <remarks>
+        /// Dit is een tamelijk domme functie. Maar ze is er om met de datum te kunnen
+        /// foefelen in de unit tests.
+        /// </remarks>
+        DateTime Vandaag();
 	}
 }

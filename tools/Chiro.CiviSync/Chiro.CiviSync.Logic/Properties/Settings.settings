@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chiro.CiviSync.Logic.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TelefoonRegex" Type="System.String" Scope="User">
+      <Value Profile="(Default)">^0[0-9]{1,2}\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3} ?[0-9]{2} ?[0-9]{2}$|^[+][0-9]*$</Value>
+    </Setting>
+    <Setting Name="GsmRegex" Type="System.String" Scope="User">
+      <Value Profile="(Default)">^(0|\\+32)4[6-9]</Value>
+    </Setting>
+    <Setting Name="WerkjaarStart" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2000-09-01</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

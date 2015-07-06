@@ -236,6 +236,22 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		IDPersEnGP AanmakenForceer(PersoonInfo info, int groepID, bool forceer);
 
+        /// <summary>
+        /// Synct alle gegevens van de gelieerde persoon met gegeven
+        /// <paramref name="gelieerdePersoonID"/> opnieuw naar de Chirocivi.
+        /// </summary>
+        /// <param name="gelieerdePersoonID"></param>
+        /// <remarks>Dit is groepsoverschrijdend. Communicatievormen die aan dezelfde
+        /// persoon hangen, maar via een andere groep, gaan ook opnieuw mee.
+        /// 
+        /// Deze method heeft als voornaamste use case het rechtzetten van zaken die
+        /// vroeger niet goed waren gesynct. Het is niet zeker of ze hier helemaal op
+        /// zijn plaats staat.</remarks>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        void OpnieuwSyncen(int gelieerdePersoonID);
+
 		/// <summary>
 		/// Haalt PersoonID op van een gelieerde persoon
 		/// </summary>

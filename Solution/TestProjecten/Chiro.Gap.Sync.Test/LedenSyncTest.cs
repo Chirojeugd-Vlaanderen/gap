@@ -98,7 +98,7 @@ namespace Chiro.Gap.Sync.Test
             // ARRANGE
 
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Persoon>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<IEnumerable<AfdelingEnum>>())).Verifiable();
+            kipSyncMock.Setup(src => src.AfdelingenUpdaten(It.IsAny<Persoon>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<AfdelingEnum[]>())).Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             var lid = new Kind
@@ -119,16 +119,20 @@ namespace Chiro.Gap.Sync.Test
         }
 
         /// <summary>
-        /// Bewaren moet bewaren, en niet verwijderen. Om een inactief lid te verwijderen, bestaat de method 'Verwijderen'.
+        /// Bewaren moet bewaren, en niet verwijderen. Als het lid inactief is, moet de stopdatum naar Civi.
         ///</summary>
         [TestMethod()]
-        [ExpectedFoutNummer(typeof(FoutNummerException), FoutNummer.LidUitgeschreven)]
         public void BewarenNietGebruikenOmTeVerwijderenTest()
         {
             // ARRANGE
 
+            DateTime uitschrijfDatum = DateTime.Now;
             var kipSyncMock = new Mock<ISyncPersoonService>();
             kipSyncMock.Setup(src => src.LidVerwijderen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime>())).Verifiable();
+            // Die assert staat hieronder op een gekke plaats.
+            kipSyncMock.Setup(
+                src => src.LidBewaren(It.IsAny<int>(), It.Is<LidGedoe>(lg => lg.UitschrijfDatum == uitschrijfDatum)))
+                .Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             var lid = new Kind
@@ -137,7 +141,7 @@ namespace Chiro.Gap.Sync.Test
                 GroepsWerkJaar = new GroepsWerkJaar { Groep = new ChiroGroep() },
                 GelieerdePersoon = new GelieerdePersoon { Persoon = new Poco.Model.Persoon {AdNummer = 2} },
                 NonActief = true,
-                UitschrijfDatum = DateTime.Now,
+                UitschrijfDatum = uitschrijfDatum,
                 EindeInstapPeriode = DateTime.Now.AddMonths(-6)
             };
 
@@ -151,6 +155,9 @@ namespace Chiro.Gap.Sync.Test
             kipSyncMock.Verify(
                 src => src.LidVerwijderen(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime>()),
                 Times.Never());
+            kipSyncMock.Verify(
+                src => src.LidBewaren(It.IsAny<int>(), It.Is<LidGedoe>(lg => lg.UitschrijfDatum == uitschrijfDatum)),
+                Times.AtLeastOnce());
         }
 
         /// <summary>

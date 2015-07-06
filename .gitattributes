@@ -14,6 +14,7 @@
 *.config diff=html text
 *.css    diff text
 *.aspx   diff text
+*.ascx   diff text
 *.edmx   diff text
 
 ###############################################################################

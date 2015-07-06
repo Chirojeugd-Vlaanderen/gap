@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Chiro.CiviSync.Services.SyncService" CodeBehind="SyncService.svc.cs" %>

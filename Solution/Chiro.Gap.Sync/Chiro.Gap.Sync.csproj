@@ -44,6 +44,10 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Chiro.Cdf.ServiceHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Chiro.Cdf.ServiceHelper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -79,10 +83,6 @@
     <ProjectReference Include="..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
       <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
       <Name>Chiro.Cdf.Poco</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
-      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
-      <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
       <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>

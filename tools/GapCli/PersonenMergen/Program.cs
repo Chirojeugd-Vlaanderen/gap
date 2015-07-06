@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
+
+using System;
 using System.Linq;
-using Chiro.Adf.ServiceModel;
-using Chiro.Gap.UpdateSvc.Contracts;
+using Chiro.Gap.UpdateApi.Client;
 using PersonenMergen.Properties;
 
 namespace PersonenMergen
@@ -34,7 +34,12 @@ namespace PersonenMergen
 			}
 			else
 			{
-			    ServiceHelper.CallService<IUpdateService>(svc => svc.AdNummerVervangen(int.Parse(args[0]), int.Parse(args[1])));
+			    var client = new GapUpdateClient();
+			    client.Configureren(Settings.Default.Server, Settings.Default.Path,
+			        Settings.Default.UserName, Settings.Default.Password);
+
+			    throw new NotImplementedException();
+                //client.AdNummerVervangen(int.Parse(args[0]), int.Parse(args[1])));
 			}
 		}
 	}

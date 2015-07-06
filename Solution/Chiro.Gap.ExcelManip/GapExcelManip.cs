@@ -70,7 +70,7 @@ namespace Chiro.Gap.ExcelManip
             // Bouw koppen op
             
             Insert(ledenBlad, "Type", 1, 1);
-            Insert(ledenBlad, "AD-nr.", 2, 1);
+            Insert(ledenBlad, "AD-nummer", 2, 1);
             Insert(ledenBlad, "Voornaam", 3, 1);
             Insert(ledenBlad, "Naam", 4, 1);
             Insert(ledenBlad, "Afdelingen", 5, 1);

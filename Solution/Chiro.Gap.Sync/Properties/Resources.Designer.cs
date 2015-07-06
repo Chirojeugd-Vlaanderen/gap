@@ -17,6 +17,9 @@ using System.Resources;
 using System.Runtime.CompilerServices;
 
 namespace Chiro.Gap.Sync.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

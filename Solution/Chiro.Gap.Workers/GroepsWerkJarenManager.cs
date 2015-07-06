@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -189,6 +189,37 @@ namespace Chiro.Gap.Workers
                              orderby a.GeboorteJaarTot == 0 descending
                              select a).ToArray();
             return resultaat;
+        }
+
+        /// <summary>
+        /// Levert het huidige werkjaar op, volgens 'nationaal'.
+        /// </summary>
+        /// <returns>Het jaartal waarin het huidige werkjaar begon</returns>
+        public int HuidigWerkJaarNationaal()
+        {
+            var overgang = new DateTime(
+                DateTime.Today.Year,
+                Settings.Default.WerkjaarStartNationaal.Month,
+                Settings.Default.WerkjaarStartNationaal.Day);
+
+            if (overgang <= DateTime.Today)
+            {
+                return overgang.Year;
+            }
+            return overgang.Year - 1;
+        }
+
+        /// <summary>
+        /// Levert de datum van vandaag op.
+        /// </summary>
+        /// <returns>De datum van vandaag.</returns>
+        /// <remarks>
+        /// Dit is een tamelijk domme functie. Maar ze is er om met de datum te kunnen
+        /// foefelen in de unit tests.
+        /// </remarks>
+        public DateTime Vandaag()
+        {
+            return DateTime.Now.Date;
         }
 
         /// <summary>

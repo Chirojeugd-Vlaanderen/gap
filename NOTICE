@@ -16,3 +16,9 @@ Contributions for Chirojeugd-Vlaanderen vzw by
   * Mattias Michaux
   * Tim Mallezie
 
+GAP uses Chiro.Cdf.ServiceHelper, by the GAP-developers,
+which is released under the Apache 2.0 license. See:
+
+  * https://websites.chiro.be/projects/servicehelper (login required)
+  * https://develop.chiro.be:3000/projects/servicehelper
+    (documents unavailable; download source code using git)

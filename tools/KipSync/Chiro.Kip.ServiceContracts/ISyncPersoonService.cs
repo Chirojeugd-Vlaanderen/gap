@@ -109,6 +109,10 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="communicatieMiddelen">
         /// Te updaten contactinfo
         /// </param>
+        /// <remarks>
+        /// Dit wordt niet (meer) door GAP gebruikt, maar we zullen het behouden. Lijkt me wel nuttig om
+        /// zaken te fixen als er iets misgelopen is met de communicatiesync.
+        /// </remarks>
         [OperationContract(IsOneWay = true)]
         void AlleCommunicatieBewaren(Persoon persoon, IEnumerable<CommunicatieMiddel> communicatieMiddelen);
 
@@ -170,7 +174,7 @@ namespace Chiro.Kip.ServiceContracts
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void LidVerwijderen(int adNummer, string stamNummer, int werkjaar, DateTime uitschrijfDatum);
+        void LidVerwijderen(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
 
         /// <summary>
         /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.
@@ -190,7 +194,7 @@ namespace Chiro.Kip.ServiceContracts
         /// in GAP.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkjaar, DateTime uitschrijfDatum);
+        void NieuwLidVerwijderen(PersoonDetails details, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
 
         /// <summary>
         /// Updatet de functies van een lid.
@@ -208,7 +212,7 @@ namespace Chiro.Kip.ServiceContracts
         /// Toe te kennen functies.  Eventuele andere reeds toegekende functies worden verwijderd.
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void FunctiesUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<FunctieEnum> functies);
+        void FunctiesUpdaten(Persoon persoon, string stamNummer, int werkJaar, FunctieEnum[] functies);
 
         /// <summary>
         /// Stelt het lidtype van het lid in, bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>
@@ -248,7 +252,7 @@ namespace Chiro.Kip.ServiceContracts
         /// Er is in Kipadmin maar plaats voor 2 afdelingen/lid
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<AfdelingEnum> afdelingen);
+        void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, AfdelingEnum[] afdelingen);
 
         #endregion
 
@@ -302,7 +306,7 @@ namespace Chiro.Kip.ServiceContracts
         /// Bewaart <paramref name="plaatsNaam"/> en <paramref name="adres"/> voor een bivak
         /// in Kipadmin.
         /// </summary>
-        /// <param name="uitstapID">
+        /// <param name="uitstapId">
         /// ID van de uitstap in GAP
         /// </param>
         /// <param name="plaatsNaam">
@@ -312,26 +316,26 @@ namespace Chiro.Kip.ServiceContracts
         /// Adres van de bivakplaats
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void BivakPlaatsBewaren(int uitstapID, string plaatsNaam, Adres adres);
+        void BivakPlaatsBewaren(int uitstapId, string plaatsNaam, Adres adres);
 
         /// <summary>
         /// Stelt de persoon met gegeven <paramref name="adNummer"/> in als contactpersoon voor
-        /// het bivak met gegeven <paramref name="uitstapID"/>
+        /// het bivak met gegeven <paramref name="uitstapId"/>
         /// </summary>
-        /// <param name="uitstapID">
+        /// <param name="uitstapId">
         /// UitstapID (GAP) voor het bivak
         /// </param>
         /// <param name="adNummer">
         /// AD-nummer contactpersoon bivak
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void BivakContactBewaren(int uitstapID, int adNummer);
+        void BivakContactBewaren(int uitstapId, int adNummer);
 
         /// <summary>
         /// Stelt de persoon met gegeven <paramref name="details"/> in als contactpersoon voor
-        /// het bivak met gegeven <paramref name="uitstapID"/>
+        /// het bivak met gegeven <paramref name="uitstapId"/>
         /// </summary>
-        /// <param name="uitstapID">
+        /// <param name="uitstapId">
         /// UitstapID (GAP) voor het bivak
         /// </param>
         /// <param name="details">
@@ -342,16 +346,16 @@ namespace Chiro.Kip.ServiceContracts
         /// persoon onbestaand of onbekend is.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        void BivakContactBewarenAdOnbekend(int uitstapID, PersoonDetails details);
+        void BivakContactBewarenAdOnbekend(int uitstapId, PersoonDetails details);
 
         /// <summary>
         /// Verwijdert een bivak uit kipadmin.
         /// </summary>
-        /// <param name="uitstapID">
+        /// <param name="uitstapId">
         /// UitstapID (GAP) van het te verwijderen bivak
         /// </param>
         [OperationContract(IsOneWay = true)]
-        void BivakVerwijderen(int uitstapID);
+        void BivakVerwijderen(int uitstapId);
 
         #endregion
 
@@ -382,6 +386,23 @@ namespace Chiro.Kip.ServiceContracts
         [OperationContract(IsOneWay = true)]
         void AbonnementVerwijderen(string eMail);
         #endregion
+        
+        #region memberships
+        /// <summary>
+        /// Bewaart een membership voor de persoon met gegeven <paramref name="adNummer"/> in het gegeven <paramref name="werkJaar"/>.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer van persoon met te bewaren membership.</param>
+        /// <param name="werkJaar">Werkjaar waarvoor membership bewaard moet worden.</param>
+        [OperationContract(IsOneWay = true)]
+        void MembershipBewaren(int adNummer, int werkJaar);
 
+        /// <summary>
+        /// Bewaart een membership voor de persoon met gegeven <paramref name="details"/> in het gegeven <paramref name="werkJaar"/>
+        /// </summary>
+        /// <param name="details">Details van persoon met te bewaren membership.</param>
+        /// <param name="werkJaar">Werkjaar waarvoor het membership bewaard moet worden.</param>
+        [OperationContract(IsOneWay = true)]
+        void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar);
+        #endregion        
     }
 }

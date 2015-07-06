@@ -166,5 +166,14 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <remarks>als <paramref name="lid"/> een kindlid is, dan moet <paramref name="afdelingsJaren"/>
         /// precies 1 afdelingsjaar bevatten.</remarks>
         void AfdelingsJarenVervangen(Lid lid, IList<AfdelingsJaar> afdelingsJaren);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de probeerperiode van het gegeven <paramref name="lid"/> voorbij is,
+        /// anders <c>false</c>.
+        /// </summary>
+        /// <param name="lid">Een lid waarvan de probeerperiode getest moet worden.</param>
+        /// <returns><c>true</c> als de probeerperiode van het gegeven <paramref name="lid"/> voorbij is,
+        /// anders <c>false</c>.</returns>
+        bool ProbeerPeriodeVoorbij(Lid lid);
     }
 }

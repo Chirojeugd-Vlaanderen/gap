@@ -44,7 +44,15 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Chiro.Cdf.ServiceHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\References\Chiro.Cdf.ServiceHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -55,6 +63,10 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -83,10 +95,6 @@
     <ProjectReference Include="..\..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
       <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
       <Name>Chiro.Cdf.Poco</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
-      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
-      <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
       <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>

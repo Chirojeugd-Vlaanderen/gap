@@ -23,11 +23,11 @@ USE [gap_local]
 GO
 
 
-CREATE USER [KIPDORP\gapservice_tst] FOR LOGIN [KIPDORP\gapservice_tst]
+CREATE USER [tst-jve-7\johan] FOR LOGIN [tst-jve-7\johan]
 GO
-EXEC sp_addrolemember N'db_datareader', N'KIPDORP\gapservice_tst'
+EXEC sp_addrolemember N'db_datareader', N'tst-jve-7\johan'
 GO
-EXEC sp_addrolemember N'GapRole', N'KIPDORP\gapservice_tst'
+EXEC sp_addrolemember N'GapRole', N'tst-jve-7\johan'
 GO
 
 

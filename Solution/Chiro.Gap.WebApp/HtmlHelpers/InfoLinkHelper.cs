@@ -10,8 +10,8 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
     /// die tag te vinden is. In de helper geef je dit id mee.
     /// Deze retourneert html, het oproepen van de info uit de dd-tag gebeurt dmv een Ajax call in JQuery
     /// Zoiets:
-    ///$('#Ad-info').click(function () {
-    ///    toonInfo('#ADINFO', "AD-nummer", "#extraInfoDialog");
+    ///$('#Cid-info').click(function () {
+    ///    toonInfo('#CIDINFO', "Civi-ID", "#extraInfoDialog");
     ///});
     /// de opgeroepen functie zit in het bestand 'algemeneFuncties.js'
     /// </summary>
