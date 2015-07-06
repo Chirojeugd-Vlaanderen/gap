@@ -411,7 +411,7 @@
       <Name>Chiro.Gap.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.TestHacks\Chiro.Gap.TestHacks.csproj">
-      <Project>{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}</Project>
+      <Project>{c3e92f5a-82f6-4079-9b9e-066ca7ecf017}</Project>
       <Name>Chiro.Gap.TestHacks</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj">

@@ -45,6 +45,18 @@ create index IX_Bericht_StamNummer on logging.Bericht(StamNummer);
 create index IX_Bericht_AdNummer on logging.Bericht(AdNummer);
 create index IX_Bericht_PersoonID on logging.Bericht(PersoonID);
 
+go
+
+CREATE ROLE GapLogRole
+GO
+
+GRANT INSERT ON logging.Bericht TO GapLogRole
+GO
+
+CREATE USER [KIPDORP\kipsync_tst] FOR LOGIN [KIPDORP\kipsync_tst]
+ALTER ROLE [GapLogRole] ADD MEMBER [KIPDORP\kipsync_tst]
+GO
+
 
 
 

@@ -41,13 +41,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
@@ -85,12 +85,24 @@
       <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.ServiceModel\Chiro.Cdf.ServiceModel.csproj">
-      <Project>{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}</Project>
+      <Project>{e25a11ab-b2eb-4579-9df5-d1761c464bae}</Project>
       <Name>Chiro.Cdf.ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.UnityWcfExtensions\Chiro.Cdf.UnityWcfExtensions.csproj">
+      <Project>{268708cb-f3e8-4afa-9e61-824cfa27be0e}</Project>
+      <Name>Chiro.Cdf.UnityWcfExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Behavior\Chiro.CiviCrm.BehaviorExtension.csproj">
       <Project>{f39a9e29-95e9-4304-a42d-1266f81b5ecf}</Project>
       <Name>Chiro.CiviCrm.BehaviorExtension</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Behavior\Chiro.CiviCrm.BehaviorExtension.csproj">
+      <Project>{f39a9e29-95e9-4304-a42d-1266f81b5ecf}</Project>
+      <Name>Chiro.CiviCrm.BehaviorExtension</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Api\Chiro.CiviCrm.Api.csproj">
+      <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
+      <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Api\Chiro.CiviCrm.Api.csproj">
       <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
