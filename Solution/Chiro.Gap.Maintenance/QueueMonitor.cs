@@ -25,7 +25,7 @@ namespace Chiro.Gap.Maintenance
         /// <summary>
         /// Levert het aantal berichten in de message queue.
         /// </summary>
-        /// <returns><c>true</c> als alles in orde lijkt. Anders <c>false</c>.</returns>
+        /// <returns>Het aantal berichten in de message queue :-).</returns>
         public int AantalBerichten(string queueName)
         {
             var queueCounter = new PerformanceCounter("MSMQ queue", "Messages in Queue", queueName);
