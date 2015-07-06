@@ -41,6 +41,14 @@
            
 			}
 		%>
+        <%
+			if (!Model.IsLive)
+			{
+        %>
+        <li><%= Html.ActionLink("Testgroep toevoegen", "TestGroepToevoegen", new {Controller = "Gav", groepID = 0}) %></li>
+        <%
+			} 
+        %>
 	</ul>
 	<%
         if (Model.GroepenLijst.FirstOrDefault() == null)

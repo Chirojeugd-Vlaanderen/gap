@@ -93,5 +93,13 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			return r;
 		}
+
+        public ActionResult TestGroepToevoegen()
+        {
+            string userName = HttpContext.User.Identity.Name;
+
+            TestHacks.TestHacks.TestGroepToevoegen(userName);
+            return RedirectToAction("Index");
+        }
 	}
 }
