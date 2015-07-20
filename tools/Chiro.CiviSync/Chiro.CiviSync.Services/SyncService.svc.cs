@@ -95,16 +95,6 @@ namespace Chiro.CiviSync.Services
             Debug.Assert(_gapUpdateClient != null);
         }
 
-        public void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar)
-        {
-            throw new NotImplementedException();
-        }
-
         public void GroepUpdaten(Groep g)
         {
             throw new NotImplementedException();
