@@ -26,6 +26,7 @@ using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
+using Chiro.Mailchimp.Sync;
 using Moq;
 
 namespace Chiro.CiviSync.Services.Test
@@ -177,6 +178,10 @@ namespace Chiro.CiviSync.Services.Test
             // Voor UpdateApi ook.
             updateHelperMock = new Mock<IGapUpdateClient>();
             Factory.InstantieRegistreren(updateHelperMock.Object);
+
+            // Don't bother about mailchimp.
+            var mailchimpMock = new Mock<IChimpSyncHelper>();
+            Factory.InstantieRegistreren(mailchimpMock.Object);
 
             // Doe alsof het vandaag de zogezegde datum is.
             var datumProviderMock = new Mock<IDatumProvider>();
