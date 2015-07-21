@@ -91,7 +91,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.MembershipBewaren(adNummer, HuidigWerkJaar);
+            service.MembershipBewaren(adNummer, HuidigWerkJaar, false);
 
             // ASSERT
 
@@ -159,7 +159,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.MembershipBewaren(adNummer, HuidigWerkJaar);
+            service.MembershipBewaren(adNummer, HuidigWerkJaar, false);
 
             // ASSERT
 

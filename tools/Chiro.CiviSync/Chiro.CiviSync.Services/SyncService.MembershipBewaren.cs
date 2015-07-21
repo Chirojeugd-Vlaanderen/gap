@@ -20,6 +20,7 @@ using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -33,8 +34,9 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="adNummer">AD-nummer van persoon met te bewaren membership.</param>
         /// <param name="werkJaar">Werkjaar waarvoor membership bewaard moet worden.</param>
+        /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void MembershipBewaren(int adNummer, int werkJaar)
+        public async void MembershipBewaren(int adNummer, int werkJaar, bool metLoonVerlies)
         {
             var contact = _contactWorker.PersoonMetRecentsteMembership(adNummer, MembershipType.Aansluiting);
 
@@ -49,25 +51,49 @@ namespace Chiro.CiviSync.Services
 
             // request dat we als het nodig is naar de API zullen sturen.
             var membershipRequest = _membershipLogic.VanWerkjaar(MembershipType.Aansluiting, contact.Id, werkJaar);
+            membershipRequest.VerzekeringLoonverlies = metLoonVerlies;
 
             if (contact.MembershipResult.Count == 1)
             {
                 var bestaandMembership = contact.MembershipResult.Values.First();
                 if (_membershipLogic.WerkjaarGet(bestaandMembership) == werkJaar)
                 {
-                    // We hebben al een membership dit jaar.
-                    _log.Loggen(Niveau.Info,
-                        String.Format(
-                            "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Nieuwe aansluiting genegeerd.",
-                            contact.FirstName, contact.LastName, contact.GapId, contact.ExternalIdentifier, werkJaar),
-                        null, adNummer, contact.GapId);
+                    // We hebben al een membership dit jaar. Maar het kan zijn dat we dat moeten 'upgraden' met
+                    // een verzekering loonverlies. (#3973)
+                    // Dit is vooral relevant als ploeg A een persoon lid maakt, en ploeg B diezelfde persoon
+                    // lid maakt met verzekering loonverlies.
+
+                    if (metLoonVerlies && !bestaandMembership.VerzekeringLoonverlies)
+                    {
+                        membershipRequest = new MembershipRequest
+                        {
+                            Id = bestaandMembership.Id,
+                            VerzekeringLoonverlies = true
+                        };
+
+                        var updateResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
+                            svc => svc.MembershipSave(_apiKey, _siteKey, membershipRequest));
+                        updateResult.AssertValid();
+                        _log.Loggen(Niveau.Info,
+                            String.Format(
+                                "Membership met ID {5} bijgewerkt voor {0} {1} (AD {2}, ID {3}) met verzekering loonverlies voor werkjaar {4}.",
+                                contact.FirstName, contact.LastName, contact.ExternalIdentifier, contact.GapId,
+                                werkJaar, updateResult.Id), null, adNummer, contact.GapId);
+                    }
+                    else
+                    {
+
+                        _log.Loggen(Niveau.Info,
+                            String.Format(
+                                "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Nieuwe aansluiting genegeerd.",
+                                contact.FirstName, contact.LastName, contact.GapId, contact.ExternalIdentifier, werkJaar),
+                            null, adNummer, contact.GapId);
+                    }
                     return;
                 }
-                else
-                {
-                    // Er was al een membership vorig jaar. Neem join date over.
-                    membershipRequest.JoinDate = bestaandMembership.JoinDate;
-                }
+
+                // Het recentste membership was van een vorig werkjaar. Neem join date over.
+                membershipRequest.JoinDate = bestaandMembership.JoinDate;
             }
 
             var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
@@ -76,8 +102,9 @@ namespace Chiro.CiviSync.Services
 
             _log.Loggen(Niveau.Info,
                 String.Format(
-                    "Membership (aansluiting) {3} {4}: AD {0} werkjaar {2} - memID {1}",
-                    adNummer, result.Id, werkJaar, contact.FirstName, contact.LastName),
+                    "Membership (aansluiting) {5} {3} {4}: AD {0} werkjaar {2} - memID {1}",
+                    adNummer, result.Id, werkJaar, contact.FirstName, contact.LastName,
+                    metLoonVerlies ? "met loonverlies" : String.Empty),
                 null, adNummer, contact.GapId);
         }
 
@@ -86,13 +113,14 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="details">Details van persoon met te bewaren membership.</param>
         /// <param name="werkJaar">Werkjaar waarvoor het membership bewaard moet worden.</param>
+        /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar)
+        public void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar, bool metLoonVerlies)
         {
             // Update of maak de persoon, en vind zijn AD-nummer
             int adNr = UpdatenOfMaken(details);
 
-            MembershipBewaren(adNr, werkJaar);
+            MembershipBewaren(adNr, werkJaar, metLoonVerlies);
         }
     }
 }

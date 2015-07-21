@@ -15,10 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-using System.Collections.Generic;
 
-using Chiro.Gap.Domain;
+using System.Collections.Generic;
 using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WorkerInterfaces

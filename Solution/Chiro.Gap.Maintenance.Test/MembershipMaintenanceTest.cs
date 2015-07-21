@@ -86,8 +86,7 @@ namespace Chiro.Gap.Maintenance.Test
             var personenSyncMock = new Mock<IPersonenSync>();
             personenSyncMock.Setup(
                 src =>
-                    src.MembershipRegistreren(It.Is<Persoon>(p => p.ID == leidster.GelieerdePersoon.Persoon.ID),
-                        It.IsAny<int>())).Verifiable();
+                    src.MembershipRegistreren(It.Is<Lid>(l => l.ID == leidster.ID))).Verifiable();
 
             // Meer mocks.
             var groepsWerkJaarManagerMock = new Mock<IGroepsWerkJarenManager>();
@@ -107,8 +106,7 @@ namespace Chiro.Gap.Maintenance.Test
             // ASSERT
 
             personenSyncMock.Verify(
-                src => src.MembershipRegistreren(It.Is<Persoon>(p => p.ID == leidster.GelieerdePersoon.Persoon.ID),
-                    It.IsAny<int>()), Times.Never);
+                src => src.MembershipRegistreren(It.Is<Lid>(l => l.ID == leidster.ID)), Times.Never);
         }
 
         /// <summary>
@@ -156,8 +154,7 @@ namespace Chiro.Gap.Maintenance.Test
             var personenSyncMock = new Mock<IPersonenSync>();
             personenSyncMock.Setup(
                 src =>
-                    src.MembershipRegistreren(It.Is<Persoon>(p => p.ID == leidster.GelieerdePersoon.Persoon.ID),
-                        It.IsAny<int>())).Verifiable();
+                    src.MembershipRegistreren(It.Is<Lid>(l => l.ID == leidster.ID))).Verifiable();
 
             // Meer mocks.
             var groepsWerkJaarManagerMock = new Mock<IGroepsWerkJarenManager>();
@@ -177,8 +174,7 @@ namespace Chiro.Gap.Maintenance.Test
             // ASSERT
 
             personenSyncMock.Verify(
-                src => src.MembershipRegistreren(It.Is<Persoon>(p => p.ID == leidster.GelieerdePersoon.Persoon.ID),
-                    It.IsAny<int>()), Times.AtLeastOnce);
+                src => src.MembershipRegistreren(It.Is<Lid>(l => l.ID == leidster.ID)), Times.AtLeastOnce);
         }
 
     }

@@ -17,6 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WorkerInterfaces
@@ -53,6 +54,15 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden
         /// </returns>
         bool OvergangMogelijk(DateTime tijdstip, int werkJaar);
+
+        /// <summary>
+        /// Controleert of een lid <paramref name="src"/>in zijn werkJaar verzekerd is wat betreft de verzekering gegeven
+        /// door <paramref name="verzekering"/>.
+        /// </summary>
+        /// <param name="src">Lid van wie moet nagekeken worden of het verzekerd is</param>
+        /// <param name="verzekering">Type verzekering waarop gecontroleerd moet worden</param>
+        /// <returns><c>True</c> alss het lid een verzekering loonverlies heeft.</returns>
+        bool IsVerzekerd(Lid src, Verzekering verzekering);
 
         /// <summary>
         /// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.

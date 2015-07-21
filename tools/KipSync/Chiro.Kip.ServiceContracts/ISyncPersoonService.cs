@@ -393,16 +393,18 @@ namespace Chiro.Kip.ServiceContracts
         /// </summary>
         /// <param name="adNummer">AD-nummer van persoon met te bewaren membership.</param>
         /// <param name="werkJaar">Werkjaar waarvoor membership bewaard moet worden.</param>
+        /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
         [OperationContract(IsOneWay = true)]
-        void MembershipBewaren(int adNummer, int werkJaar);
+        void MembershipBewaren(int adNummer, int werkJaar, bool metLoonVerlies);
 
         /// <summary>
         /// Bewaart een membership voor de persoon met gegeven <paramref name="details"/> in het gegeven <paramref name="werkJaar"/>
         /// </summary>
         /// <param name="details">Details van persoon met te bewaren membership.</param>
         /// <param name="werkJaar">Werkjaar waarvoor het membership bewaard moet worden.</param>
+        /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
         [OperationContract(IsOneWay = true)]
-        void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar);
+        void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar, bool metLoonVerlies);
         #endregion        
     }
 }

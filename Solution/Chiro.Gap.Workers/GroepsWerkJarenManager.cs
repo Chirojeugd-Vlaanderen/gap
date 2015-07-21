@@ -243,6 +243,30 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Controleert of een lid <paramref name="src"/>in zijn werkJaar verzekerd is wat betreft de verzekering gegeven
+        /// door <paramref name="verzekering"/>.
+        /// </summary>
+        /// <param name="src">Lid van wie moet nagekeken worden of het verzekerd is</param>
+        /// <param name="verzekering">Type verzekering waarop gecontroleerd moet worden</param>
+        /// <returns><c>True</c> alss het lid een verzekering loonverlies heeft.</returns>
+        public bool IsVerzekerd(Lid src, Verzekering verzekering)
+        {
+            if (src.GelieerdePersoon == null)
+            {
+                return false;
+            }
+
+            var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
+                                        where v.VerzekeringsType.ID == (int)verzekering &&
+                                          (DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
+                                           DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
+                                        select v;
+
+            return persoonsverzekeringen.FirstOrDefault() != null;
+        }
+
+
+        /// <summary>
         /// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
         /// </summary>
         /// <returns>
