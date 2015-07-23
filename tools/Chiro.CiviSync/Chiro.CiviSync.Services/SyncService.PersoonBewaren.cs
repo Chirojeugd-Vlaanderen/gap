@@ -95,7 +95,9 @@ namespace Chiro.CiviSync.Services
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                     svc => svc.ContactSave(_apiKey, _siteKey, contactRequest));
-            result.AssertValid();
+            // Geen AssertValid op dit resultaat, omdat CRM-15815 een onterechte error kan
+            // opleveren. Als we hier een error tegenkomen, proberen we opnieuw via een
+            // workaround.
 
             if (result.IsError == 0)
             {
@@ -109,16 +111,17 @@ namespace Chiro.CiviSync.Services
                     svc => svc.ContactSaveWorkaroundCrm15815(_apiKey, _siteKey, contactRequest));
 
                 // Haal AD-nummer op door nieuwe call.
-                var result2 = ServiceHelper.CallService<ICiviCrmApi, Contact>(
+                var result2 = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                     svc =>
-                        svc.ContactGetSingle(_apiKey, _siteKey,
+                        svc.ContactGet(_apiKey, _siteKey,
                             new ContactRequest
                             {
                                 ContactType = ContactType.Individual,
                                 GapId = details.Persoon.ID,
                                 ReturnFields = "external_identifier"
                             }));
-                adNummer = int.Parse(result2.ExternalIdentifier);
+                result2.AssertValid();
+                adNummer = int.Parse(result2.Values.First().ExternalIdentifier);
             }
 
             _log.Loggen(Niveau.Debug,

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -21,11 +21,14 @@ using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Adres = Chiro.Gap.Poco.Model.Adres;
+using AdresTypeEnum = Chiro.Kip.ServiceContracts.DataContracts.AdresTypeEnum;
 using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync
@@ -35,15 +38,23 @@ namespace Chiro.Gap.Sync
 	/// </summary>
 	public class PersonenSync : BaseSync, IPersonenSync
 	{
-        /// <summary>
-        /// Constructor.
-        /// 
-        /// De ServiceHelper wordt geïnjecteerd door de dependency injection container. Wat de
-        /// ServiceHelper precies zal opleveren, hangt af van welke IChannelProvider geregistreerd
-        /// is bij de container.
-        /// </summary>
-        /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
-        public PersonenSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
+	    private readonly IGroepsWerkJarenManager _groepsWerkJarenManager;
+
+	    /// <summary>
+	    /// Constructor.
+	    /// 
+	    /// De ServiceHelper wordt geïnjecteerd door de dependency injection container. Wat de
+	    /// ServiceHelper precies zal opleveren, hangt af van welke IChannelProvider geregistreerd
+	    /// is bij de container.
+	    /// </summary>
+	    /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
+	    /// <param name="groepsWerkJarenManager">GroepsWerkJarenManager; wordt gebruikt om te kijken of iemand
+	    /// verzekerd is tegen loonverlies.</param>
+	    public PersonenSync(ServiceHelper serviceHelper, IGroepsWerkJarenManager groepsWerkJarenManager)
+	        : base(serviceHelper)
+	    {
+	        _groepsWerkJarenManager = groepsWerkJarenManager;
+	    }
 
 		/// <summary>
 		/// Updatet een bestaand persoon in Kipadmin: persoonsgegevens, en eventueel ook adressen en/of communicatie.
@@ -92,33 +103,27 @@ namespace Chiro.Gap.Sync
 		}
 
         /// <summary>
-        /// Registreert een membership in de Chirocivi voor de gegeven <paramref name="persoon"/> in het
-        /// gegeven <paramref name="werkJaar"/>.
+        /// Registreert een membership in de Chirocivi voor het gegeven <paramref name="lid"/>
         /// </summary>
-        /// <param name="persoon">Persoon waarvoor membership geregistreerd moet worden</param>
-        /// <param name="werkJaar">Werkjaar voor het membership</param>
-	    public void MembershipRegistreren(Persoon persoon, int werkJaar)
-	    {
+        /// <param name="lid">Lid waarvoor membership geregistreerd moet worden</param>
+	    public void MembershipRegistreren(Lid lid)
+        {
+            var persoon = lid.GelieerdePersoon.Persoon;
+            int werkJaar = lid.GroepsWerkJaar.WerkJaar;
             if (persoon.AdNummer != null)
             {
                 ServiceHelper.CallService<ISyncPersoonService>(
-                    svc => svc.MembershipBewaren(persoon.AdNummer.Value, werkJaar));
+                    svc => svc.MembershipBewaren(persoon.AdNummer.Value, werkJaar, _groepsWerkJarenManager.IsVerzekerd(lid, Verzekering.LoonVerlies)));
             }
             else
             {
-                // mappen via een gelieerde persoon, want dan hebben we e-mailadressen.
-                var gelieerdePersoon = (from gp in persoon.GelieerdePersoon
-                    where gp.Lid.Any(l => l.GroepsWerkJaar.WerkJaar == werkJaar)
-                    select gp).FirstOrDefault();
-
-                // We verwachten wel dat er een gelieerde persoon is die lid is in het
-                // gegeven werkjaar.
-                Debug.Assert(gelieerdePersoon != null);
+                var gelieerdePersoon = lid.GelieerdePersoon;
 
                 var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon);
+                bool isVerzekerd = _groepsWerkJarenManager.IsVerzekerd(lid, Verzekering.LoonVerlies);
 
                 ServiceHelper.CallService<ISyncPersoonService>(
-                    svc => svc.MembershipNieuwePersoonBewaren(details, werkJaar));
+                    svc => svc.MembershipNieuwePersoonBewaren(details, werkJaar, isVerzekerd));
             }
 	    }
 	}

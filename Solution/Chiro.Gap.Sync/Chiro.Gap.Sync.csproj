@@ -96,6 +96,14 @@
       <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
       <Name>Chiro.Gap.SyncInterfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
+      <Project>{bdaf9a9d-49e3-48ac-869d-e17e8a3d9203}</Project>
+      <Name>Chiro.Gap.WorkerInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
+      <Project>{35e2aed7-7c0a-4b30-b7c8-24f9078ac32e}</Project>
+      <Name>Chiro.Gap.Workers</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

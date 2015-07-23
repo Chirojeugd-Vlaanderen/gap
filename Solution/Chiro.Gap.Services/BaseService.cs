@@ -311,7 +311,7 @@ namespace Chiro.Gap.Services
                     opt => opt.MapFrom(src => src.GroepsWerkJaar != null ? src.GroepsWerkJaar.ID : 0))
                 .ForMember(
                     dst => dst.VerzekeringLoonVerlies,
-                    opt => opt.MapFrom(src => IsVerzekerd(
+                    opt => opt.MapFrom(src => _groepsWerkJarenMgr.IsVerzekerd(
                         src,
                         Verzekering.LoonVerlies)));
 
@@ -652,29 +652,6 @@ namespace Chiro.Gap.Services
             return (lid == null
                 ? DeelnemerType.Onbekend
                 : lid is Kind ? DeelnemerType.Deelnemer : DeelnemerType.Begeleiding);
-        }
-
-        /// <summary>
-        /// Controleert of een lid <paramref name="src"/>in zijn werkJaar verzekerd is wat betreft de verzekering gegeven
-        /// door <paramref name="verzekering"/>.
-        /// </summary>
-        /// <param name="src">Lid van wie moet nagekeken worden of het verzekerd is</param>
-        /// <param name="verzekering">Type verzekering waarop gecontroleerd moet worden</param>
-        /// <returns><c>True</c> alss het lid een verzekering loonverlies heeft.</returns>
-        private bool IsVerzekerd(Lid src, Verzekering verzekering)
-        {
-            if (src.GelieerdePersoon == null)
-            {
-                return false;
-            }
-
-            var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
-                                        where v.VerzekeringsType.ID == (int)verzekering &&
-                                          (_groepsWerkJarenMgr.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
-                                           _groepsWerkJarenMgr.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
-                                        select v;
-
-            return persoonsverzekeringen.FirstOrDefault() != null;
         }
 
         /// <summary>
