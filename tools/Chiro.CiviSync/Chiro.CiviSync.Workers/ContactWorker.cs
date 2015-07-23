@@ -237,7 +237,7 @@ namespace Chiro.CiviSync.Workers
                 FirstName = details.Persoon.VoorNaam,
                 LastName = details.Persoon.Naam,
                 ContactType = ContactType.Individual,
-                Gender = (Gender)(3 - (int)details.Persoon.Geslacht),
+                Gender = PersoonLogic.GeslachtNaarGender(details.Persoon.Geslacht),
                 AddressGetRequest = new AddressRequest(),
                 EmailGetRequest = new EmailRequest(),
                 PhoneGetRequest = new PhoneRequest(),
@@ -391,7 +391,7 @@ namespace Chiro.CiviSync.Workers
                 FirstName = persoon.VoorNaam,
                 LastName = persoon.Naam,
                 ContactType = ContactType.Individual,
-                Gender = (Gender)(3 - (int)persoon.Geslacht),
+                Gender = PersoonLogic.GeslachtNaarGender(persoon.Geslacht),
                 BirthDate = persoon.GeboorteDatum
             };
 
