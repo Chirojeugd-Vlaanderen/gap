@@ -65,11 +65,12 @@ namespace Chiro.CiviSync.Logic
         /// </summary>
         /// <param name="type">Type membership.</param>
         /// <param name="contactId">ID van het contact dat het membership krijgt.</param>
+        /// <param name="civiPloegId">ID van de ploeg die het membership aanvraagt.</param>
         /// <param name="werkJaar">Werkjaar waarin het contact het membership krijgt.</param>
         /// <returns>Membershiprequest van het gegeven <paramref name="type"/> voor de
         /// contact met gegeven <paramref name="contactId"/> in het gegeven
         /// <paramref name="werkJaar"/>.</returns>
-        public MembershipRequest VanWerkjaar(MembershipType type, int contactId, int werkJaar)
+        public MembershipRequest VanWerkjaar(MembershipType type, int contactId, int civiPloegId, int werkJaar)
         {
             // We bekijken de datums zonder uren, dus discrete dagen. De EndDate valt volledig binnen de
             // relationship.
@@ -82,6 +83,7 @@ namespace Chiro.CiviSync.Logic
             var result = new MembershipRequest
             {
                 ContactId = contactId,
+                AangemaaktDoorPloegId = civiPloegId,
                 JoinDate = vandaag,
                 EndDate = eindeWerkJaar,
                 MembershipTypeId = (int) type,

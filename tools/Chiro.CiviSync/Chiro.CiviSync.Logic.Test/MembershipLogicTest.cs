@@ -25,6 +25,7 @@ namespace Chiro.CiviSync.Logic.Test
     public class MembershipLogicTest
     {
         private static readonly DateTime VandaagZogezegd = new DateTime(2015, 04, 20);
+        private static readonly int DummyGroepId = 1;
 
         [TestInitialize]
         public void InitializeTest()
@@ -42,7 +43,7 @@ namespace Chiro.CiviSync.Logic.Test
         public void MembershipVanWerkjaarBeginDatum()
         {
             var target = Factory.Maak<MembershipLogic>();
-            var result = target.VanWerkjaar(MembershipType.Aansluiting, 4, 2014);
+            var result = target.VanWerkjaar(MembershipType.Aansluiting, 4, DummyGroepId, 2014);
             Assert.AreEqual(result.StartDate, VandaagZogezegd);
         }
 
@@ -53,7 +54,7 @@ namespace Chiro.CiviSync.Logic.Test
         public void MembershipVanVorigWerkjaarBeginDatum()
         {
             var target = Factory.Maak<MembershipLogic>();
-            var result = target.VanWerkjaar(MembershipType.Aansluiting, 4, 2013);
+            var result = target.VanWerkjaar(MembershipType.Aansluiting, 4, DummyGroepId, 2013);
             Assert.AreEqual(result.StartDate, result.EndDate);
         }
     }

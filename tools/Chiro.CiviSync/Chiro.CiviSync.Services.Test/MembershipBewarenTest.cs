@@ -54,7 +54,9 @@ namespace Chiro.CiviSync.Services.Test
             // ARRANGE
 
             const int adNummer = 2;
+
             var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3, Id = 4 };
+            var groep = new Contact {ExternalIdentifier = "BLA/0000", Id = 5};
             DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
             DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
 
@@ -63,7 +65,15 @@ namespace Chiro.CiviSync.Services.Test
                 .Returns(
                     (string key1, string key2, ContactRequest r) =>
                     {
-                        var result = persoon;
+                        Contact result;
+                        if (r.ExternalIdentifier == groep.ExternalIdentifier || r.Id == groep.Id)
+                        {
+                            result = groep;
+                        }
+                        else
+                        {
+                            result = persoon;
+                        }
                         // Als relaties gevraagd zijn, lever dan gewoon een lege lijst op.
                         if (r.MembershipGetRequest != null)
                         {
@@ -91,7 +101,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.MembershipBewaren(adNummer, HuidigWerkJaar, false);
+            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
 
             // ASSERT
 
@@ -137,11 +147,13 @@ namespace Chiro.CiviSync.Services.Test
                 MembershipResult =
                     new ApiResultValues<Membership> {Count = 1, IsError = 0, Values = new[] {oudMembership}}
             };
+            var groep = new Contact { ExternalIdentifier = "BLA/0000", Id = 5 };
 
             _civiApiMock.Setup(
                 src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(
-                    (string key1, string key2, ContactRequest r) => persoon);
+                    (string key1, string key2, ContactRequest r) =>
+                        r.ExternalIdentifier == groep.ExternalIdentifier || r.Id == groep.Id ? groep : persoon);
 
             _civiApiMock.Setup(
                 src =>
@@ -159,7 +171,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.MembershipBewaren(adNummer, HuidigWerkJaar, false);
+            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
 
             // ASSERT
 
