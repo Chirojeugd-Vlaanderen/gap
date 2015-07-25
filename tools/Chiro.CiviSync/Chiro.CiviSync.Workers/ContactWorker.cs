@@ -148,9 +148,12 @@ namespace Chiro.CiviSync.Workers
                 }
             };
 
-            var contact =
-                ServiceHelper.CallService<ICiviCrmApi, Contact>(
-                    svc => svc.ContactGetSingle(ApiKey, SiteKey, contactRequest));
+            var contactResult =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
+                    svc => svc.ContactGet(ApiKey, SiteKey, contactRequest));
+
+            contactResult.AssertValid();
+            var contact = contactResult.Values.First();
 
             return (contact == null || contact.Id == 0) ? null : contact;
         }
