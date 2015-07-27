@@ -72,7 +72,7 @@ namespace Chiro.Gap.Maintenance
 
             foreach (var p in teSyncen)
             {
-                _personenSync.MembershipRegistreren(p);
+                    _personenSync.MembershipRegistreren(p);
             }
         }
 

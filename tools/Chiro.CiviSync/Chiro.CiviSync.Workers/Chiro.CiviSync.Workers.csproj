@@ -45,6 +45,7 @@
     <Compile Include="CommunicatieWorker.cs" />
     <Compile Include="ContactWorker.cs" />
     <Compile Include="LidWorker.cs" />
+    <Compile Include="MembershipWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

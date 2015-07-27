@@ -67,43 +67,14 @@ namespace Chiro.CiviSync.Services
                 var bestaandMembership = contact.MembershipResult.Values.First();
                 if (_membershipLogic.WerkjaarGet(bestaandMembership) == werkJaar)
                 {
-                    // We hebben al een membership dit jaar. Maar het kan zijn dat we dat moeten 'upgraden' met
-                    // een verzekering loonverlies. (#3973)
-                    // Dit is vooral relevant als ploeg A een persoon lid maakt, en ploeg B diezelfde persoon
-                    // lid maakt met verzekering loonverlies.
-
-                    if (metLoonVerlies && !bestaandMembership.VerzekeringLoonverlies)
-                    {
-                        membershipRequest = new MembershipRequest
-                        {
-                            Id = bestaandMembership.Id,
-                            VerzekeringLoonverlies = true
-                        };
-
-                        var updateResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
-                            svc => svc.MembershipSave(_apiKey, _siteKey, membershipRequest));
-                        updateResult.AssertValid();
-                        _log.Loggen(Niveau.Info,
-                            String.Format(
-                                "Membership met ID {5} bijgewerkt voor {0} {1} (AD {2}, ID {3}) met verzekering loonverlies voor werkjaar {4}.",
-                                contact.FirstName, contact.LastName, contact.ExternalIdentifier, contact.GapId,
-                                werkJaar, updateResult.Id), null, adNummer, contact.GapId);
-                    }
-                    else
-                    {
-
-                        _log.Loggen(Niveau.Info,
-                            String.Format(
-                                "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Nieuwe aansluiting genegeerd.",
-                                contact.FirstName, contact.LastName, contact.GapId, contact.ExternalIdentifier, werkJaar),
-                            null, adNummer, contact.GapId);
-                    }
+                    _membershipWorker.BestaandeBijwerken(bestaandMembership, stamNummer, metLoonVerlies);
                     return;
                 }
 
                 // Het recentste membership was van een vorig werkjaar. Neem join date over.
                 membershipRequest.JoinDate = bestaandMembership.JoinDate;
             }
+            membershipRequest.FactuurStatus = FactuurStatus.VolledigTeFactureren;
 
             var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
                 svc => svc.MembershipSave(_apiKey, _siteKey, membershipRequest));

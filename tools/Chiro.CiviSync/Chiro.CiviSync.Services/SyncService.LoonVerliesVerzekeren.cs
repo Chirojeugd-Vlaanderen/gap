@@ -66,22 +66,7 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            // Update membership: zet 'verzekering loonverlies.'
-
-            var membershipRequest = new MembershipRequest
-            {
-                Id = contact.MembershipResult.Values.First().Id,
-                VerzekeringLoonverlies = true
-            };
-
-            var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
-                svc => svc.MembershipSave(_apiKey, _siteKey, membershipRequest));
-            result.AssertValid();
-            _log.Loggen(Niveau.Info,
-                String.Format(
-                    "Membership met ID {6} bijgewerkt voor {0} {1} (AD {2}, ID {3}) met verzekering loonverlies op vraag van {4} voor werkjaar {5}.",
-                    contact.FirstName, contact.LastName, contact.ExternalIdentifier, contact.GapId, stamNummer,
-                    werkJaar, result.Id), stamNummer, adNummer, contact.GapId);
+            _membershipWorker.BestaandeBijwerken(contact.MembershipResult.Values.First(), stamNummer, true);
         }
 
         /// <summary>

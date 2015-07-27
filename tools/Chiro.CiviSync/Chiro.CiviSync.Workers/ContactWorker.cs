@@ -34,9 +34,6 @@ namespace Chiro.CiviSync.Workers
     /// </summary>
     public class ContactWorker: BaseWorker
     {
-        private const string ContactIdCacheKey = "cid{0}";
-        private static readonly ObjectCache Cache = new MemoryCache("ContactWorkerCache");
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,49 +41,6 @@ namespace Chiro.CiviSync.Workers
         /// <param name="log">Logger</param>
         public ContactWorker(ServiceHelper serviceHelper, IMiniLog log): base(serviceHelper, log)
         {
-        }
-
-        /// <summary>
-        /// Returns the contact-ID of the contact with given <paramref name="externalIdentifier"/>.
-        /// </summary>
-        /// <param name="externalIdentifier">Value to look for.</param>
-        /// <returns>The contact-ID of the contact with given <paramref name="externalIdentifier"/>, or
-        /// <c>null</c> if no such contact is found.</returns>
-        /// <remarks>This method uses caching to speed up things.</remarks>
-        public int? ContactIdGet(int externalIdentifier)
-        {
-            return ContactIdGet(externalIdentifier.ToString());
-        }
-
-        /// <summary>
-        /// Returns the contact-ID of the contact with given <paramref name="externalIdentifier"/>.
-        /// </summary>
-        /// <param name="externalIdentifier">Value to look for.</param>
-        /// <returns>The contact-ID of the contact with given <paramref name="externalIdentifier"/>, or
-        /// <c>null</c> if no such contact is found.</returns>
-        /// <remarks>This method uses caching to speed up things.</remarks>
-        public int? ContactIdGet(string externalIdentifier)
-        {
-            int? cid = (int?) Cache[String.Format(ContactIdCacheKey, externalIdentifier)];
-
-            if (cid != null) return cid;
-            var result =
-                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
-                    svc =>
-                        svc.ContactGet(ApiKey, SiteKey,
-                            new ContactRequest {ExternalIdentifier = externalIdentifier, ReturnFields = "id"}));
-            result.AssertValid();
-
-            if (result.Count == 0)
-            {
-                return null;
-            }
-            var contact = result.Values.First();
-            cid = contact.Id;
-
-            Cache.Set(String.Format(ContactIdCacheKey, externalIdentifier), cid,
-                new CacheItemPolicy {SlidingExpiration = new TimeSpan(2, 0, 0, 0)});
-            return cid;
         }
 
         /// <summary>
@@ -153,20 +107,7 @@ namespace Chiro.CiviSync.Workers
 
             return (contact == null || contact.Id == 0) ? null : contact;
         }
-
-        /// <summary>
-        /// Invalideer alle gecachete data.
-        /// </summary>
-        public void CacheInvalideren()
-        {
-            // Dit is tamelijk omslachtig
-
-            foreach (var element in Cache)
-            {
-                Cache.Remove(element.Key);
-            }
-        }
-        
+      
         /// <summary>
         /// Zoek het AD-nummer van een persoon die lijkt op een persoon met gegeven <paramref name="details"/>.
         /// De bedoeling is dat dit enkel wordt aangeroepen als het AD-nummer nog niet gekend of mogelijk

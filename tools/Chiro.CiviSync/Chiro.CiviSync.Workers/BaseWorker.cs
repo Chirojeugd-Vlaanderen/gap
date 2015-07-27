@@ -14,7 +14,15 @@
    limitations under the License.
  */
 
+using System;
+using System.Linq;
+using System.Runtime.Caching;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.CiviCrm.Api;
+using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 
 namespace Chiro.CiviSync.Workers
@@ -26,6 +34,9 @@ namespace Chiro.CiviSync.Workers
 
         private readonly ServiceHelper _serviceHelper;
         private readonly IMiniLog _log;
+
+        private const string ContactIdCacheKey = "cid{0}";
+        private static readonly ObjectCache Cache = new MemoryCache("ContactWorkerCache");
 
         protected IMiniLog Log
         {
@@ -57,6 +68,65 @@ namespace Chiro.CiviSync.Workers
         {
             ApiKey = apiKey;
             SiteKey = siteKey;
+        }
+
+        // Contact-ID's omzetten van GAP naar Civi is overal nuttig, dus
+        // dat zetten we in de base worker.
+
+        /// <summary>
+        /// Returns the contact-ID of the contact with given <paramref name="externalIdentifier"/>.
+        /// </summary>
+        /// <param name="externalIdentifier">Value to look for.</param>
+        /// <returns>The contact-ID of the contact with given <paramref name="externalIdentifier"/>, or
+        /// <c>null</c> if no such contact is found.</returns>
+        /// <remarks>This method uses caching to speed up things.</remarks>
+        public int? ContactIdGet(int externalIdentifier)
+        {
+            return ContactIdGet(externalIdentifier.ToString());
+        }
+
+        /// <summary>
+        /// Returns the contact-ID of the contact with given <paramref name="externalIdentifier"/>.
+        /// </summary>
+        /// <param name="externalIdentifier">Value to look for.</param>
+        /// <returns>The contact-ID of the contact with given <paramref name="externalIdentifier"/>, or
+        /// <c>null</c> if no such contact is found.</returns>
+        /// <remarks>This method uses caching to speed up things.</remarks>
+        public int? ContactIdGet(string externalIdentifier)
+        {
+            int? cid = (int?)Cache[String.Format(ContactIdCacheKey, externalIdentifier)];
+
+            if (cid != null) return cid;
+            var result =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
+                    svc =>
+                        svc.ContactGet(ApiKey, SiteKey,
+                            new ContactRequest { ExternalIdentifier = externalIdentifier, ReturnFields = "id" }));
+            result.AssertValid();
+
+            if (result.Count == 0)
+            {
+                return null;
+            }
+            var contact = result.Values.First();
+            cid = contact.Id;
+
+            Cache.Set(String.Format(ContactIdCacheKey, externalIdentifier), cid,
+                new CacheItemPolicy { SlidingExpiration = new TimeSpan(2, 0, 0, 0) });
+            return cid;
+        }
+
+        /// <summary>
+        /// Invalideer alle gecachete data.
+        /// </summary>
+        public void CacheInvalideren()
+        {
+            // Dit is tamelijk omslachtig
+
+            foreach (var element in Cache)
+            {
+                Cache.Remove(element.Key);
+            }
         }
     }
 }
