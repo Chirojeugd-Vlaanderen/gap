@@ -187,5 +187,77 @@ namespace Chiro.CiviSync.Services.Test
                                 r.JoinDate == oudMembership.JoinDate &&
                                 r.MembershipTypeId == (int)MembershipType.Aansluiting)), Times.AtLeastOnce);
         }
+
+        /// <summary>
+        /// Stel dat een persoon al member is in civi, maar dat dat membership nog niet is gefactureerd. Als
+        /// dat membership dan geüpgradet wordt met een verzekering loonverlies, dan moet de status van het
+        /// bijgewerkte membership nog steeds 'niet gefactureerd' zijn.
+        /// </summary>
+        [TestMethod]
+        public void TeFacturerenMembershipUpgradenMetLoonverlies()
+        {
+            // ARRANGE
+
+            const int adNummer = 2;
+            const int contactId = 4;
+            DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
+            DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
+
+            var bestaandMembership = new Membership
+            {
+                ContactId = contactId,
+                MembershipTypeId = (int)MembershipType.Aansluiting,
+                StartDate = beginDitWerkJaar,
+                EndDate = eindeDitWerkJaar,
+                JoinDate = beginDitWerkJaar.AddMonths(1),
+                VerzekeringLoonverlies = false,
+                FactuurStatus = FactuurStatus.VolledigTeFactureren
+            };
+
+            var persoon = new Contact
+            {
+                Id = contactId,
+                ExternalIdentifier = adNummer.ToString(),
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3,
+                MembershipResult =
+                    new ApiResultValues<Membership> { Count = 1, IsError = 0, Values = new[] { bestaandMembership } }
+            };
+            var groep = new Contact { ExternalIdentifier = "BLA/0000", Id = 5 };
+
+            _civiApiMock.Setup(
+                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(
+                    (string key1, string key2, ContactRequest r) =>
+                        new ApiResultValues<Contact>(r.ExternalIdentifier == groep.ExternalIdentifier ||
+                                                     r.Id == groep.Id
+                            ? groep
+                            : persoon));
+
+            _civiApiMock.Setup(
+                src =>
+                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<MembershipRequest>(r => r.FactuurStatus == FactuurStatus.VolledigTeFactureren)))
+                .Returns(
+                    (string key1, string key2, MembershipRequest r) =>
+                        Mapper.Map<MembershipRequest, ApiResultValues<Membership>>(r))
+                .Verifiable();
+
+            var service = Factory.Maak<SyncService>();
+
+            // ACT
+
+            // pas membership aan met loonverlies.
+            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, true);
+
+            // ASSERT
+
+            _civiApiMock.Verify(
+                src =>
+                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<MembershipRequest>(r => r.FactuurStatus == FactuurStatus.VolledigTeFactureren)),
+                Times.AtLeastOnce);
+        }
     }
 }

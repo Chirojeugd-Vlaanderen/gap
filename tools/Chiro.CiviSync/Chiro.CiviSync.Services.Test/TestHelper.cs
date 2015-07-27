@@ -93,6 +93,7 @@ namespace Chiro.CiviSync.Services.Test
             Mapper.CreateMap<LocBlockRequest, LocBlock>()
                 .ForMember(dst => dst.AddressResult, opt => opt.Ignore())
                 .ForMember(dst => dst.EventResult, opt => opt.Ignore());
+            Mapper.CreateMap<MembershipRequest, Membership>();
 
             // Onderstaande mapping wordt in de tests gebruikt om een resultaat op
             // te leveren als er een event gecreerd wordt. We gaan er dan van uit dat
@@ -102,7 +103,6 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.EndDate, opt => opt.MapFrom(src => src.EndDate.Values.FirstOrDefault()))
                 .ForMember(dst => dst.LocBlockResult, opt => opt.Ignore())
                 .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
-
             Mapper.CreateMap<ContactRequest, ApiResultValues<Contact>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))
@@ -131,6 +131,15 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] { src }));
+            Mapper.CreateMap<MembershipRequest, ApiResultValues<Membership>>()
+                .ForMember(dst => dst.Version, opt => opt.UseValue(3))
+                .ForMember(dst => dst.Count, opt => opt.UseValue(1))
+                .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
+                .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
+                .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] { src }));
+
+            // Hierboven requests, hieronder entities. :-)
 
             Mapper.CreateMap<Contact, ApiResultValues<Contact>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
@@ -146,7 +155,6 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] {src}));
-
 
             Mapper.AssertConfigurationIsValid();
         }
