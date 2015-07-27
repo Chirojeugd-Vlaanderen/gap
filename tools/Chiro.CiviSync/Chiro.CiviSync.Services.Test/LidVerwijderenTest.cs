@@ -164,14 +164,16 @@ namespace Chiro.CiviSync.Services.Test
 
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(ploeg);
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
+                .Returns(new ApiResultValues<Contact>(ploeg));
 
-            // Imiteer het gedrag van de CiviCRM-API bij een niet-gevonden contact:
+            // Mock niet-gevonden contact:
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == adNummer.ToString()))).Returns(new Contact());
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == adNummer.ToString())))
+                .Returns(new ApiResultValues<Contact>());
 
             var service = Factory.Maak<SyncService>();
 

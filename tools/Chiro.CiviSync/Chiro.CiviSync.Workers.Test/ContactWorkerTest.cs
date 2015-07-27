@@ -18,6 +18,7 @@ using System;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
+using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Services.Test;
@@ -51,10 +52,9 @@ namespace Chiro.CiviSync.Workers.Test
         {
             // ARRANGE
 
-            // Als de API niets vindt, levert GetSingle een leeg object.
             _civiApiMock.Setup(
-                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(new Contact());
+                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(new ApiResultValues<Contact>());
 
             // ContactHelper vraagt de API-keys bij constructie. Dat is misschien niet
             // zo'n goed idee. Maar voorlopig doe ik het zo dus ook in deze test.
@@ -90,9 +90,9 @@ namespace Chiro.CiviSync.Workers.Test
 
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == myContact.ExternalIdentifier)))
-                .Returns(myContact).Verifiable();
+                .Returns(new ApiResultValues<Contact>(myContact)).Verifiable();
 
             var contactWorker1 = Factory.Maak<ContactWorker>(); 
             var contactWorker2 = Factory.Maak<ContactWorker>();
@@ -106,7 +106,7 @@ namespace Chiro.CiviSync.Workers.Test
             // ASSERT
 
             _civiApiMock.Verify(src =>
-                src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                     It.Is<ContactRequest>(r => r.ExternalIdentifier == myContact.ExternalIdentifier)), Times.Exactly(1));
         }
     }

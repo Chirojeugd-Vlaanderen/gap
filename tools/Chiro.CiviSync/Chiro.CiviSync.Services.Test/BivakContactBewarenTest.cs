@@ -75,14 +75,12 @@ namespace Chiro.CiviSync.Services.Test
                 ContactResult = Mapper.Map<Contact, ApiResultValues<Contact>>(ploeg)
             };
 
-            // De persoon wordt opgeroepen met GetSingle, het bivak met Get. Het is omdat we
-            // dat weten, dat we dat kunnen faken. Niet zo proper, maar het kan ermee door.
-
             // Lever persoon of groep op als dat wordt gevraagd.
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == adNummer.ToString()))).Returns(persoon);
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == adNummer.ToString())))
+                .Returns(new ApiResultValues<Contact>(persoon));
             _civiApiMock.Setup(
                 src => src.EventGet(It.IsAny<string>(), It.IsAny<string>(),
                     It.Is<EventRequest>(r => r.GapUitstapId == bivak.GapUitstapId)))
@@ -128,14 +126,10 @@ namespace Chiro.CiviSync.Services.Test
                 ContactResult = Mapper.Map<Contact, ApiResultValues<Contact>>(ploeg)
             };
 
-            // De persoon wordt opgeroepen met GetSingle, het bivak met Get. Het is omdat we
-            // dat weten, dat we dat kunnen faken. Niet zo proper, maar het kan ermee door.
-
-            // Imiteer het gedrag van de CiviCRM-API bij een niet-gevonden persoon:
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == adNummer.ToString()))).Returns(new Contact());
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == adNummer.ToString()))).Returns(new ApiResultValues<Contact>());
 
             // Lever braaf het bivak op als het gevraagd wordt.
             _civiApiMock.Setup(

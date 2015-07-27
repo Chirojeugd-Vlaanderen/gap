@@ -71,20 +71,18 @@ namespace Chiro.CiviSync.Workers
 
             if (cid != null) return cid;
             var result =
-                ServiceHelper.CallService<ICiviCrmApi, Contact>(
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                     svc =>
-                        svc.ContactGetSingle(ApiKey, SiteKey,
+                        svc.ContactGet(ApiKey, SiteKey,
                             new ContactRequest {ExternalIdentifier = externalIdentifier, ReturnFields = "id"}));
+            result.AssertValid();
 
-            // GetSingle levert een 'leeg' contact-object als er niemand
-            // wordt gevonden. In dat geval (en normaal gezien enkel dan)
-            // is het ID 0.
-            if (result == null || result.Id == 0)
+            if (result.Count == 0)
             {
                 return null;
             }
-
-            cid = result.Id;
+            var contact = result.Values.First();
+            cid = contact.Id;
 
             Cache.Set(String.Format(ContactIdCacheKey, externalIdentifier), cid,
                 new CacheItemPolicy {SlidingExpiration = new TimeSpan(2, 0, 0, 0)});
@@ -116,14 +114,12 @@ namespace Chiro.CiviSync.Workers
                 }
             };
 
-            var contact =
-                ServiceHelper.CallService<ICiviCrmApi, Contact>(
-                    svc => svc.ContactGetSingle(ApiKey, SiteKey, contactRequest));
+            var result =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
+                    svc => svc.ContactGet(ApiKey, SiteKey, contactRequest));
+            result.AssertValid();
 
-            // Elk contact heeft een ID verschillend van 0. 
-            // Als het opgeleverd ID 0 is, wil dat zeggen
-            // dat het contact niet gevonden is.
-            return contact.Id == 0 ? null : contact;
+            return result.Count == 0 ? null : result.Values.First();
         }
 
         /// <summary>

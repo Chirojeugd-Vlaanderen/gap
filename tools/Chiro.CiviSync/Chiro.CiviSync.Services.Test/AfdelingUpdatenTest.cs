@@ -1,5 +1,20 @@
-﻿using System;
-using AutoMapper;
+﻿/*
+   Copyright 2015 Chirojeugd-Vlaanderen vzw
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
+
+using System;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -80,17 +95,16 @@ namespace Chiro.CiviSync.Services.Test
             const AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
             const Afdeling civiAfdeling = Afdeling.Rakwis;
 
-            // External ID's omzetten naar ID's gebeurt via
-            // een GetSingle. Let's mock that.
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(ploeg);
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
+                .Returns(new ApiResultValues<Contact>(ploeg));
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
-                .Returns(persoon);
+                .Returns(new ApiResultValues<Contact>(persoon));
             // Relatie wordt normaal gezien gezocht op basis van de contact-ID's
             _civiApiMock.Setup(
                 src =>
@@ -159,17 +173,16 @@ namespace Chiro.CiviSync.Services.Test
             };
             const AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
 
-            // External ID's omzetten naar ID's gebeurt via
-            // een GetSingle. Let's mock that.
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(ploeg);
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
+                .Returns(new ApiResultValues<Contact>(ploeg));
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
-                .Returns(persoon);
+                .Returns(new ApiResultValues<Contact>(persoon));
             // Api vindt geen relatie
             _civiApiMock.Setup(
                 src =>

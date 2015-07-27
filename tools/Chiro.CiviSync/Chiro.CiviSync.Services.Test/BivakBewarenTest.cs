@@ -75,8 +75,9 @@ namespace Chiro.CiviSync.Services.Test
 
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(ploeg);
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
+                .Returns(new ApiResultValues<Contact>(ploeg));
 
             _civiApiMock.Setup(
                 src =>

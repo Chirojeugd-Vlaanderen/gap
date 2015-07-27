@@ -61,7 +61,7 @@ namespace Chiro.CiviSync.Services.Test
             DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
 
             _civiApiMock.Setup(
-                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(
                     (string key1, string key2, ContactRequest r) =>
                     {
@@ -83,7 +83,7 @@ namespace Chiro.CiviSync.Services.Test
                                 IsError = 0
                             };
                         }
-                        return result;
+                        return new ApiResultValues<Contact>(result);
                     });
 
             _civiApiMock.Setup(
@@ -150,10 +150,13 @@ namespace Chiro.CiviSync.Services.Test
             var groep = new Contact { ExternalIdentifier = "BLA/0000", Id = 5 };
 
             _civiApiMock.Setup(
-                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(
                     (string key1, string key2, ContactRequest r) =>
-                        r.ExternalIdentifier == groep.ExternalIdentifier || r.Id == groep.Id ? groep : persoon);
+                        new ApiResultValues<Contact>(r.ExternalIdentifier == groep.ExternalIdentifier ||
+                                                     r.Id == groep.Id
+                            ? groep
+                            : persoon));
 
             _civiApiMock.Setup(
                 src =>
