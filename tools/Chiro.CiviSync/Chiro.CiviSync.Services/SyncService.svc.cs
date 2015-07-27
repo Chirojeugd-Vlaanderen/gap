@@ -79,13 +79,16 @@ namespace Chiro.CiviSync.Services
             _gapUpdateClient = gapUpdateClient;
             _relationshipLogic = relationshipLogic;
             _membershipLogic = membershipLogic;
+            _chimpSyncHelper = chimpSyncHelper;
+            _log = log;
+
+            // LET OP! De workers hieronder moeten ook geconfigureerd worden!
+            // (zie verderop in deze method)
             _bivakWorker = bivakWorker;
             _contactWorker = contactWorker;
             _communicatieWorker = communicatieWorker;
             _lidWorker = lidWorker;
             _membershipWorker = membershipWorker;
-            _chimpSyncHelper = chimpSyncHelper;
-            _log = log;
 
             // Configureer externe API's van GapUpdate en workers.
             _gapUpdateClient.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath,
@@ -95,6 +98,7 @@ namespace Chiro.CiviSync.Services
             _contactWorker.Configureren(_apiKey, _siteKey);
             _communicatieWorker.Configureren(_apiKey, _siteKey);
             _lidWorker.Configureren(_apiKey, _siteKey);
+            _membershipWorker.Configureren(_apiKey, _siteKey);
 
             Debug.Assert(_gapUpdateClient != null);
         }
