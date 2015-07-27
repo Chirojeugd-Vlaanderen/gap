@@ -113,7 +113,7 @@ namespace Chiro.Gap.Sync
             if (persoon.AdNummer != null)
             {
                 ServiceHelper.CallService<ISyncPersoonService>(
-                    svc => svc.MembershipBewaren(persoon.AdNummer.Value, werkJaar, _groepsWerkJarenManager.IsVerzekerd(lid, Verzekering.LoonVerlies)));
+                    svc => svc.MembershipBewaren(persoon.AdNummer.Value, lid.GroepsWerkJaar.Groep.Code, werkJaar, _groepsWerkJarenManager.IsVerzekerd(lid, Verzekering.LoonVerlies)));
             }
             else
             {
@@ -123,7 +123,7 @@ namespace Chiro.Gap.Sync
                 bool isVerzekerd = _groepsWerkJarenManager.IsVerzekerd(lid, Verzekering.LoonVerlies);
 
                 ServiceHelper.CallService<ISyncPersoonService>(
-                    svc => svc.MembershipNieuwePersoonBewaren(details, werkJaar, isVerzekerd));
+                    svc => svc.MembershipNieuwePersoonBewaren(details, lid.GroepsWerkJaar.Groep.Code, werkJaar, isVerzekerd));
             }
 	    }
 	}

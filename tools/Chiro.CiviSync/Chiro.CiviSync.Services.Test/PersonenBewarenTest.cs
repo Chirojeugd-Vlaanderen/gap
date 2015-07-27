@@ -297,8 +297,8 @@ namespace Chiro.CiviSync.Services.Test
             };
 
             _civiApiMock.Setup(
-                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(persoon);
+                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(new ApiResultValues<Contact>(persoon));
             _civiApiMock.Setup(
                 src =>
                     src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
@@ -347,9 +347,9 @@ namespace Chiro.CiviSync.Services.Test
 
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
-                .Returns(persoon);
+                .Returns(new ApiResultValues<Contact>(persoon));
             _civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),

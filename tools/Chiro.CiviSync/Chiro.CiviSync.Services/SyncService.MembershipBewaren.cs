@@ -33,13 +33,21 @@ namespace Chiro.CiviSync.Services
         /// Bewaart een membership voor de persoon met gegeven <paramref name="adNummer"/> in het gegeven <paramref name="werkJaar"/>.
         /// </summary>
         /// <param name="adNummer">AD-nummer van persoon met te bewaren membership.</param>
+        /// <param name="stamNummer">Stamnummer van ploeg die het membership aanmaakt.</param>
         /// <param name="werkJaar">Werkjaar waarvoor membership bewaard moet worden.</param>
         /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void MembershipBewaren(int adNummer, int werkJaar, bool metLoonVerlies)
+        public async void MembershipBewaren(int adNummer, string stamNummer, int werkJaar, bool metLoonVerlies)
         {
-            var contact = _contactWorker.PersoonMetRecentsteMembership(adNummer, MembershipType.Aansluiting);
+            int? civiGroepId = _contactWorker.ContactIdGet(stamNummer);
+            if (civiGroepId == null)
+            {
+                _log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - lid niet bewaard.", stamNummer),
+                    stamNummer, adNummer, null);
+                return;
+            }
 
+            var contact = _contactWorker.PersoonMetRecentsteMembership(adNummer, MembershipType.Aansluiting);
             if (contact == null)
             {
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren membership - als dusdanig terug naar GAP.", adNummer),
@@ -50,7 +58,8 @@ namespace Chiro.CiviSync.Services
             }
 
             // request dat we als het nodig is naar de API zullen sturen.
-            var membershipRequest = _membershipLogic.VanWerkjaar(MembershipType.Aansluiting, contact.Id, werkJaar);
+            var membershipRequest = _membershipLogic.VanWerkjaar(MembershipType.Aansluiting, contact.Id,
+                civiGroepId.Value, werkJaar);
             membershipRequest.VerzekeringLoonverlies = metLoonVerlies;
 
             if (contact.MembershipResult.Count == 1)
@@ -58,43 +67,14 @@ namespace Chiro.CiviSync.Services
                 var bestaandMembership = contact.MembershipResult.Values.First();
                 if (_membershipLogic.WerkjaarGet(bestaandMembership) == werkJaar)
                 {
-                    // We hebben al een membership dit jaar. Maar het kan zijn dat we dat moeten 'upgraden' met
-                    // een verzekering loonverlies. (#3973)
-                    // Dit is vooral relevant als ploeg A een persoon lid maakt, en ploeg B diezelfde persoon
-                    // lid maakt met verzekering loonverlies.
-
-                    if (metLoonVerlies && !bestaandMembership.VerzekeringLoonverlies)
-                    {
-                        membershipRequest = new MembershipRequest
-                        {
-                            Id = bestaandMembership.Id,
-                            VerzekeringLoonverlies = true
-                        };
-
-                        var updateResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
-                            svc => svc.MembershipSave(_apiKey, _siteKey, membershipRequest));
-                        updateResult.AssertValid();
-                        _log.Loggen(Niveau.Info,
-                            String.Format(
-                                "Membership met ID {5} bijgewerkt voor {0} {1} (AD {2}, ID {3}) met verzekering loonverlies voor werkjaar {4}.",
-                                contact.FirstName, contact.LastName, contact.ExternalIdentifier, contact.GapId,
-                                werkJaar, updateResult.Id), null, adNummer, contact.GapId);
-                    }
-                    else
-                    {
-
-                        _log.Loggen(Niveau.Info,
-                            String.Format(
-                                "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Nieuwe aansluiting genegeerd.",
-                                contact.FirstName, contact.LastName, contact.GapId, contact.ExternalIdentifier, werkJaar),
-                            null, adNummer, contact.GapId);
-                    }
+                    _membershipWorker.BestaandeBijwerken(bestaandMembership, stamNummer, metLoonVerlies);
                     return;
                 }
 
                 // Het recentste membership was van een vorig werkjaar. Neem join date over.
                 membershipRequest.JoinDate = bestaandMembership.JoinDate;
             }
+            membershipRequest.FactuurStatus = FactuurStatus.VolledigTeFactureren;
 
             var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
                 svc => svc.MembershipSave(_apiKey, _siteKey, membershipRequest));
@@ -112,15 +92,16 @@ namespace Chiro.CiviSync.Services
         /// Bewaart een membership voor de persoon met gegeven <paramref name="details"/> in het gegeven <paramref name="werkJaar"/>
         /// </summary>
         /// <param name="details">Details van persoon met te bewaren membership.</param>
+        /// <param name="stamNummer">Stamnummer van ploeg die het membership aanmaakt.</param>
         /// <param name="werkJaar">Werkjaar waarvoor het membership bewaard moet worden.</param>
         /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar, bool metLoonVerlies)
+        public void MembershipNieuwePersoonBewaren(PersoonDetails details, string stamNummer, int werkJaar, bool metLoonVerlies)
         {
             // Update of maak de persoon, en vind zijn AD-nummer
             int adNr = UpdatenOfMaken(details);
 
-            MembershipBewaren(adNr, werkJaar, metLoonVerlies);
+            MembershipBewaren(adNr, stamNummer, werkJaar, metLoonVerlies);
         }
     }
 }

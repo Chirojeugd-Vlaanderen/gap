@@ -70,6 +70,7 @@
     <Compile Include="BivakContactBewarenTest.cs" />
     <Compile Include="BivakPlaatsBewarenTest.cs" />
     <Compile Include="AfdelingUpdatenTest.cs" />
+    <Compile Include="LoonVerliesVerzerkerenTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
