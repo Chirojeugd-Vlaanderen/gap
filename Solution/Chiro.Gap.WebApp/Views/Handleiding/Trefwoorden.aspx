@@ -98,6 +98,15 @@
             Groepsadministratieverantwoordelijke. Aangezien jij deze website gebruikt, ben je
             een GAV van jouw groep. Een groep kan zoveel GAV's hebben als je zelf wilt. Ze moeten
             wel allemaal een eigen login hebben voor deze website.</dd>
+		<dt><strong><a class="anchor" id="MVX">Geslacht</a></strong>:</dt>
+		<dd id="MVXINFO">
+			De Chiro erkent het derde geslacht. Naast man en vrouw kun je dus ook voor X kiezen.
+			Dat wordt bijvoorbeeld toegekend aan baby's van wie niet direct duidelijk is wat het geboortegeslacht is.
+			Dat kan later dan nog aangepast worden, bijvoorbeeld wanneer door de puberteit de secundaire geslachtskenmerken 
+			meer duidelijkheid geven. Mensen die zich noch man noch vrouw voelen, of beide, kunnen zelf voor dat derde geslacht 
+			kiezen. Iemand die een operatie of behandeling ondergaat om zijn of haar uiterlijk in overeenstemming te brengen 
+			met zijn of haar genderidentiteit zal waarschijnlijk niet voor X kiezen maar voor man of vrouw. Laat het aan de 
+			mensen in kwestie (of hun ouders) over om dat label te kiezen, en respecteer die keuze. Meer info: <a href="http://genderklik.be/Levenslooplijn/Welkomopdeplaneetrozeblauw.aspx">genderklik.be</a>.
         <dt><strong><a class="anchor" id="GezinsgebondenCommunicatievorm">Gezinsgebonden communicatievormen</a></strong>:</dt>
         <dd id="GB-COMINFO">
             Een communicatievorm is bijvoorbeeld een telefoonnummer of een mailadres. Je kunt
