@@ -178,6 +178,7 @@ namespace Chiro.CiviSync.Services.Test
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
             var persoon = new Contact
             {
+                // De persoon in civi heeft uiteraard wel een AD-nummer
                 ExternalIdentifier = "2",
                 FirstName = "Kees",
                 LastName = "Flodder",
@@ -200,6 +201,21 @@ namespace Chiro.CiviSync.Services.Test
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
             // dezelfde persoon en dezelfde ploeg.
 
+            // Zoeken op het gevraagde stamnummer levert de ploeg op.
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(
+                            new ApiResultValues<Contact> { Count = 1, IsError = 0, Values = new[] { ploeg } });
+
+            // Als er gezocht wordt op AD-nummer, vinden we de persoon:
+            _civiApiMock.Setup(
+                src =>
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
+                .Returns(
+                    new ApiResultValues<Contact> { Count = 1, IsError = 0, Values = new[] { persoon } }).Verifiable();
+
             // Verwacht dat er zeker op gender gezocht wordt. Lever persoon op.
             _civiApiMock.Setup(
                 src =>
@@ -207,12 +223,6 @@ namespace Chiro.CiviSync.Services.Test
                         It.Is<ContactRequest>(r => r.Gender == persoon.Gender && r.ContactType == ContactType.Individual)))
                 .Returns(
                     new ApiResultValues<Contact> {Count = 1, IsError = 0, Values = new[] {persoon}}).Verifiable();
-            // Zoeken op eender welke organisatie levert de ploeg op.
-            _civiApiMock.Setup(
-                src =>
-                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ContactType == ContactType.Organization))).Returns(
-                            new ApiResultValues<Contact> {Count = 1, IsError = 0, Values = new[] {ploeg}});
 
             // RelationshipSave moet gewoon doen of het werkt.
             _civiApiMock.Setup(

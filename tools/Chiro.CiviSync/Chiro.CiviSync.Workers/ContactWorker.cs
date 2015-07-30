@@ -59,6 +59,7 @@ namespace Chiro.CiviSync.Workers
             var contactRequest = new ContactRequest
             {
                 ExternalIdentifier = adNummer.ToString(),
+                ContactType = ContactType.Individual,
                 RelationshipGetRequest = new RelationshipRequest
                 {
                     RelationshipTypeId = (int)RelatieType.LidVan,

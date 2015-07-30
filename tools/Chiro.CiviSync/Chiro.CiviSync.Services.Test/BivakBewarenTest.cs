@@ -148,11 +148,12 @@ namespace Chiro.CiviSync.Services.Test
             var event2 = Mapper.Map<EventRequest, Event>(Mapper.Map<Bivak, EventRequest>(bivak1));
             event2.Id = 4;
             event1.OrganiserendePloeg2Id = ploeg.Id;
-          
+
             _civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(ploeg);
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
+                .Returns(new ApiResultValues<Contact>(ploeg));
 
             // getsingle levert een leeg event op als er meerdere bestaan. Zo doet civi dat alleszins.
             _civiApiMock.Setup(
