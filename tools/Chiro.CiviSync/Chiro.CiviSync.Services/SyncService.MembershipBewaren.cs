@@ -36,8 +36,9 @@ namespace Chiro.CiviSync.Services
         /// <param name="stamNummer">Stamnummer van ploeg die het membership aanmaakt.</param>
         /// <param name="werkJaar">Werkjaar waarvoor membership bewaard moet worden.</param>
         /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
+        /// <param name="gratis"><c>true</c> als het membership niet gefactureerd moet worden.</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void MembershipBewaren(int adNummer, string stamNummer, int werkJaar, bool metLoonVerlies)
+        public async void MembershipBewaren(int adNummer, string stamNummer, int werkJaar, bool metLoonVerlies, bool gratis)
         {
             int? civiGroepId = _contactWorker.ContactIdGet(stamNummer);
             if (civiGroepId == null)
@@ -95,13 +96,14 @@ namespace Chiro.CiviSync.Services
         /// <param name="stamNummer">Stamnummer van ploeg die het membership aanmaakt.</param>
         /// <param name="werkJaar">Werkjaar waarvoor het membership bewaard moet worden.</param>
         /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
+        /// <param name="gratis"></param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void MembershipNieuwePersoonBewaren(PersoonDetails details, string stamNummer, int werkJaar, bool metLoonVerlies)
+        public void MembershipNieuwePersoonBewaren(PersoonDetails details, string stamNummer, int werkJaar, bool metLoonVerlies, bool gratis)
         {
             // Update of maak de persoon, en vind zijn AD-nummer
             int adNr = UpdatenOfMaken(details);
 
-            MembershipBewaren(adNr, stamNummer, werkJaar, metLoonVerlies);
+            MembershipBewaren(adNr, stamNummer, werkJaar, metLoonVerlies, gratis);
         }
     }
 }

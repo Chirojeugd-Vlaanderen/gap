@@ -388,6 +388,7 @@ namespace Chiro.Kip.ServiceContracts
         #endregion
         
         #region memberships
+
         /// <summary>
         /// Bewaart een membership voor de persoon met gegeven <paramref name="adNummer"/> in het gegeven <paramref name="werkJaar"/>.
         /// </summary>
@@ -395,8 +396,9 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">Stamnummer van ploeg die het membership aanmaakt.</param>
         /// <param name="werkJaar">Werkjaar waarvoor membership bewaard moet worden.</param>
         /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
+        /// <param name="gratis"></param>
         [OperationContract(IsOneWay = true)]
-        void MembershipBewaren(int adNummer, string stamNummer, int werkJaar, bool metLoonVerlies);
+        void MembershipBewaren(int adNummer, string stamNummer, int werkJaar, bool metLoonVerlies, bool gratis);
 
         /// <summary>
         /// Bewaart een membership voor de persoon met gegeven <paramref name="details"/> in het gegeven <paramref name="werkJaar"/>
@@ -405,8 +407,9 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="stamNummer">Stamnummer van ploeg die het membership aanmaakt.</param>
         /// <param name="werkJaar">Werkjaar waarvoor het membership bewaard moet worden.</param>
         /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
+        /// <param name="gratis"></param>
         [OperationContract(IsOneWay = true)]
-        void MembershipNieuwePersoonBewaren(PersoonDetails details, string stamNummer, int werkJaar, bool metLoonVerlies);
+        void MembershipNieuwePersoonBewaren(PersoonDetails details, string stamNummer, int werkJaar, bool metLoonVerlies, bool gratis);
         #endregion        
     }
 }

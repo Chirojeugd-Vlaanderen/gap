@@ -104,7 +104,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
+            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false, false);
 
             // ASSERT
 
@@ -177,7 +177,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
+            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false, false);
 
             // ASSERT
 
@@ -252,7 +252,7 @@ namespace Chiro.CiviSync.Services.Test
             // ACT
 
             // pas membership aan met loonverlies.
-            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, true);
+            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, true, false);
 
             // ASSERT
 
@@ -327,7 +327,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
+            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false, true);
 
             // ASSERT
 
