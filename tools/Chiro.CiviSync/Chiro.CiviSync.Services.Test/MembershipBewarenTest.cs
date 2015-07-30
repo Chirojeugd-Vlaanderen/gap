@@ -48,6 +48,9 @@ namespace Chiro.CiviSync.Services.Test
             TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _updateHelperMock);
         }
 
+        /// <summary>
+        /// Deze test controleert voornamelijk de datums.
+        /// </summary>
         [TestMethod]
         public void MembershipBewaren()
         {
@@ -258,6 +261,84 @@ namespace Chiro.CiviSync.Services.Test
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(r => r.FactuurStatus == FactuurStatus.VolledigTeFactureren)),
                 Times.AtLeastOnce);
+        }
+
+        /// <summary>
+        /// Kaderleden krijgen geen factuur. Een test.
+        /// </summary>
+        [TestMethod]
+        public void MembershipBewarenKader()
+        {
+            // ARRANGE
+
+            const int adNummer = 2;
+
+            var persoon = new Contact
+            {
+                ExternalIdentifier = adNummer.ToString(),
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3,
+                Id = 4
+            };
+            var groep = new Contact {ExternalIdentifier = "BLA/0000", Id = 5, KaderNiveau = KaderNiveau.Gewest};
+            DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
+            DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
+
+            _civiApiMock.Setup(
+                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(
+                    (string key1, string key2, ContactRequest r) =>
+                    {
+                        Contact result;
+                        if (r.ExternalIdentifier == groep.ExternalIdentifier || r.Id == groep.Id)
+                        {
+                            result = groep;
+                        }
+                        else
+                        {
+                            result = persoon;
+                        }
+                        // Als relaties gevraagd zijn, lever dan gewoon een lege lijst op.
+                        if (r.MembershipGetRequest != null)
+                        {
+                            result.MembershipResult = new ApiResultValues<Membership>
+                            {
+                                Count = 0,
+                                IsError = 0
+                            };
+                        }
+                        return new ApiResultValues<Contact>(result);
+                    });
+
+            _civiApiMock.Setup(
+                src =>
+                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<MembershipRequest>(
+                            r =>
+                                r.StartDate == beginDitWerkJaar && r.EndDate == eindeDitWerkJaar &&
+                                r.MembershipTypeId == (int) MembershipType.Aansluiting &&
+                                r.FactuurStatus == FactuurStatus.FactuurOk)))
+                .Returns(
+                    (string key1, string key2, MembershipRequest r) =>
+                        Mapper.Map<MembershipRequest, ApiResultValues<Membership>>(r)).Verifiable();
+
+            var service = Factory.Maak<SyncService>();
+
+            // ACT
+
+            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
+
+            // ASSERT
+
+            _civiApiMock.Verify(
+                src =>
+                    src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<MembershipRequest>(
+                            r =>
+                                r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
+                                r.MembershipTypeId == (int) MembershipType.Aansluiting &&
+                                r.FactuurStatus == FactuurStatus.FactuurOk)), Times.AtLeastOnce);
         }
     }
 }
