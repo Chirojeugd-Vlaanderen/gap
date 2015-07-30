@@ -22,6 +22,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.UpdateApi.Client;
+using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -104,7 +105,8 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false, false);
+            service.MembershipBewaren(adNummer, HuidigWerkJaar,
+                new MembershipGedoe {Gratis = false, MetLoonVerlies = false, StamNummer = groep.ExternalIdentifier});
 
             // ASSERT
 
@@ -177,7 +179,8 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false, false);
+            service.MembershipBewaren(adNummer, HuidigWerkJaar,
+                new MembershipGedoe {Gratis = false, MetLoonVerlies = false, StamNummer = groep.ExternalIdentifier});
 
             // ASSERT
 
@@ -252,7 +255,7 @@ namespace Chiro.CiviSync.Services.Test
             // ACT
 
             // pas membership aan met loonverlies.
-            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, true, false);
+            service.MembershipBewaren(adNummer, HuidigWerkJaar, new MembershipGedoe { Gratis = false, MetLoonVerlies = true, StamNummer = groep.ExternalIdentifier });
 
             // ASSERT
 
@@ -327,7 +330,8 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.MembershipBewaren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false, true);
+            service.MembershipBewaren(adNummer, HuidigWerkJaar,
+                new MembershipGedoe {Gratis = true, MetLoonVerlies = false, StamNummer = groep.ExternalIdentifier});
 
             // ASSERT
 

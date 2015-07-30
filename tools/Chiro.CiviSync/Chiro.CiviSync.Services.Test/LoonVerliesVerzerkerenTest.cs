@@ -110,7 +110,7 @@ namespace Chiro.CiviSync.Services.Test
             // ACT
 
             // loonverlies verzekeren.
-            service.LoonVerliesVerzekeren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar);
+            service.LoonVerliesVerzekeren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
 
             // ASSERT
 
@@ -182,7 +182,7 @@ namespace Chiro.CiviSync.Services.Test
             // ACT
 
             // loonverlies verzekeren.
-            service.LoonVerliesVerzekeren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar);
+            service.LoonVerliesVerzekeren(adNummer, groep.ExternalIdentifier, HuidigWerkJaar, false);
 
             // ASSERT
 

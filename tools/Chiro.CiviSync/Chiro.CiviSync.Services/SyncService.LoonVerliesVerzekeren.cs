@@ -37,10 +37,11 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="adNummer">AD-nummer van te verzekeren persoon</param>
         /// <param name="stamNummer">Stamnummer van de groep die de verzekering aanvraagt. Wordt enkel
-        /// gebruikt om te loggen.</param>
+        ///     gebruikt om te loggen.</param>
         /// <param name="werkJaar">Werkjaar voor de verzekering</param>
+        /// <param name="gratis"></param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar)
+        public async void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar, bool gratis)
         {
             // Vind contact met zijn recentste membership.
 
@@ -66,7 +67,8 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
-            _membershipWorker.BestaandeBijwerken(contact.MembershipResult.Values.First(), stamNummer, true);
+            _membershipWorker.BestaandeBijwerken(contact.MembershipResult.Values.First(),
+                new MembershipGedoe {Gratis = gratis, MetLoonVerlies = true, StamNummer = stamNummer});
         }
 
         /// <summary>
@@ -77,15 +79,16 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="details">details van te verzekeren persoon</param>
         /// <param name="stamNummer">Stamnummer van de groep die de verzekering aanvraagt. Wordt enkel
-        /// gebruikt om te loggen.</param>
+        ///     gebruikt om te loggen.</param>
         /// <param name="werkJaar">Werkjaar voor de verzekering</param>
+        /// <param name="gratis"></param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar)
+        public void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar, bool gratis)
         {
             // Update of maak de persoon, en vind zijn AD-nummer
             int adNr = UpdatenOfMaken(details); 
             
-            LoonVerliesVerzekeren(adNr, stamNummer, werkJaar);
+            LoonVerliesVerzekeren(adNr, stamNummer, werkJaar, gratis);
         }
     }
 }
