@@ -39,6 +39,7 @@ namespace Chiro.Gap.Sync
 	public class PersonenSync : BaseSync, IPersonenSync
 	{
 	    private readonly IGroepsWerkJarenManager _groepsWerkJarenManager;
+	    private readonly ILedenManager _ledenManager;
 
 	    /// <summary>
 	    /// Constructor.
@@ -50,10 +51,12 @@ namespace Chiro.Gap.Sync
 	    /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
 	    /// <param name="groepsWerkJarenManager">GroepsWerkJarenManager; wordt gebruikt om te kijken of iemand
 	    /// verzekerd is tegen loonverlies.</param>
-	    public PersonenSync(ServiceHelper serviceHelper, IGroepsWerkJarenManager groepsWerkJarenManager)
+	    /// <param name="ledenManager">Ledenlogica.</param>
+	    public PersonenSync(ServiceHelper serviceHelper, IGroepsWerkJarenManager groepsWerkJarenManager, ILedenManager ledenManager)
 	        : base(serviceHelper)
 	    {
 	        _groepsWerkJarenManager = groepsWerkJarenManager;
+	        _ledenManager = ledenManager;
 	    }
 
 		/// <summary>
@@ -112,8 +115,14 @@ namespace Chiro.Gap.Sync
             int werkJaar = lid.GroepsWerkJaar.WerkJaar;
             if (persoon.AdNummer != null)
             {
+                var gedoe = new MembershipGedoe
+                {
+                    Gratis = _ledenManager.GratisAansluiting(lid),
+                    MetLoonVerlies = _groepsWerkJarenManager.IsVerzekerd(lid, Verzekering.LoonVerlies),
+                    StamNummer = _ledenManager.StamNummer(lid)
+                };
                 ServiceHelper.CallService<ISyncPersoonService>(
-                    svc => svc.MembershipBewaren(persoon.AdNummer.Value, lid.GroepsWerkJaar.Groep.Code, werkJaar, _groepsWerkJarenManager.IsVerzekerd(lid, Verzekering.LoonVerlies)));
+                    svc => svc.MembershipBewaren(persoon.AdNummer.Value, werkJaar, gedoe));
             }
             else
             {
@@ -122,8 +131,14 @@ namespace Chiro.Gap.Sync
                 var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon);
                 bool isVerzekerd = _groepsWerkJarenManager.IsVerzekerd(lid, Verzekering.LoonVerlies);
 
+                var gedoe = new MembershipGedoe
+                {
+                    Gratis = _ledenManager.GratisAansluiting(lid),
+                    MetLoonVerlies = isVerzekerd,
+                    StamNummer = _ledenManager.StamNummer(lid)
+                };
                 ServiceHelper.CallService<ISyncPersoonService>(
-                    svc => svc.MembershipNieuwePersoonBewaren(details, lid.GroepsWerkJaar.Groep.Code, werkJaar, isVerzekerd));
+                    svc => svc.MembershipNieuwePersoonBewaren(details, werkJaar, gedoe));
             }
 	    }
 	}

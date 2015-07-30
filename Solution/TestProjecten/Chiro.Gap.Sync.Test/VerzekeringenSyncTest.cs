@@ -94,7 +94,7 @@ namespace Chiro.Gap.Sync.Test
             var kipSyncMock = new Mock<ISyncPersoonService>();
             kipSyncMock.Setup(
                 src =>
-                src.LoonVerliesVerzekerenAdOnbekend(It.IsAny<PersoonDetails>(), It.IsAny<string>(), It.IsAny<int>())).Verifiable();
+                src.LoonVerliesVerzekerenAdOnbekend(It.IsAny<PersoonDetails>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             // ACT
