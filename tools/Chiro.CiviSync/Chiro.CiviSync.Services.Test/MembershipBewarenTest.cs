@@ -42,6 +42,10 @@ namespace Chiro.CiviSync.Services.Test
 
         /// <summary>
         /// Deze test controleert voornamelijk de datums.
+        /// 
+        /// Als een membership gesynct wordt, dan is de begindatum van dat membership
+        /// de huidige datum (tenminste als het werkjaar al bezig is).
+        /// Zie #3417.
         /// </summary>
         [TestMethod]
         public void MembershipBewaren()
@@ -57,7 +61,7 @@ namespace Chiro.CiviSync.Services.Test
 
             var persoon = new Contact { ExternalIdentifier = adNummer.ToString(), FirstName = "Kees", LastName = "Flodder", GapId = 3, Id = 4 };
             var groep = new Contact {ExternalIdentifier = "BLA/0000", Id = 5};
-            DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
+            new DateTime(HuidigWerkJaar, 9, 1);
             DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
 
             civiApiMock.Setup(
@@ -91,7 +95,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(
                             r =>
-                                r.StartDate == beginDitWerkJaar && r.EndDate == eindeDitWerkJaar &&
+                                r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
                                 r.MembershipTypeId == (int) MembershipType.Aansluiting)))
                 .Returns(
                     (string key1, string key2, MembershipRequest r) =>
@@ -169,7 +173,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(
                             r =>
-                                r.StartDate == beginDitWerkJaar && r.EndDate == eindeDitWerkJaar &&
+                                r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
                                 r.JoinDate == oudMembership.JoinDate &&
                                 r.MembershipTypeId == (int)MembershipType.Aansluiting)))
                 .Returns(
@@ -330,7 +334,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(
                             r =>
-                                r.StartDate == beginDitWerkJaar && r.EndDate == eindeDitWerkJaar &&
+                                r.StartDate == _vandaagZogezegd && r.EndDate == eindeDitWerkJaar &&
                                 r.MembershipTypeId == (int) MembershipType.Aansluiting &&
                                 r.FactuurStatus == FactuurStatus.FactuurOk)))
                 .Returns(
