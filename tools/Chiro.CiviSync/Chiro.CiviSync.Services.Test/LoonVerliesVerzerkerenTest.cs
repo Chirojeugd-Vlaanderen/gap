@@ -16,7 +16,7 @@
 
 using System;
 using AutoMapper;
-using Chiro.Cdf.Ioc.Factory;
+using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -30,9 +30,6 @@ namespace Chiro.CiviSync.Services.Test
     [TestClass]
     public class LoonVerliesVerzerkerenTest
     {
-        private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateClient> _updateHelperMock;
-
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int HuidigWerkJaar = 2014;
 
@@ -41,12 +38,6 @@ namespace Chiro.CiviSync.Services.Test
         {
             // creer mappings voor de tests
             TestHelper.MappingsCreeren();
-        }
-
-        [TestInitialize]
-        public void InitializeTest()
-        {
-            TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _updateHelperMock);
         }
 
         /// <summary>
@@ -58,6 +49,11 @@ namespace Chiro.CiviSync.Services.Test
         public void GefactureerdMembershipUpgradenMetLoonverlies()
         {
             // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
 
             const int adNummer = 2;
             const int contactId = 4;
@@ -87,7 +83,7 @@ namespace Chiro.CiviSync.Services.Test
             };
             var groep = new Contact { ExternalIdentifier = "BLA/0000", Id = 5 };
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(
                     (string key1, string key2, ContactRequest r) =>
@@ -96,7 +92,7 @@ namespace Chiro.CiviSync.Services.Test
                             ? groep
                             : persoon));
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(r => r.FactuurStatus == FactuurStatus.ExtraVerzekeringTeFactureren)))
@@ -105,7 +101,7 @@ namespace Chiro.CiviSync.Services.Test
                         Mapper.Map<MembershipRequest, ApiResultValues<Membership>>(r))
                 .Verifiable();
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -114,7 +110,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 src =>
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(r => r.FactuurStatus == FactuurStatus.ExtraVerzekeringTeFactureren)),
@@ -130,6 +126,11 @@ namespace Chiro.CiviSync.Services.Test
         public void LoonverliesNegerenAlsNogGeenMemberDitWerkjaar()
         {
             // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
 
             const int adNummer = 2;
             const int contactId = 4;
@@ -159,7 +160,7 @@ namespace Chiro.CiviSync.Services.Test
             };
             var groep = new Contact { ExternalIdentifier = "BLA/0000", Id = 5 };
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(
                     (string key1, string key2, ContactRequest r) =>
@@ -168,7 +169,7 @@ namespace Chiro.CiviSync.Services.Test
                             ? groep
                             : persoon));
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.IsAny<MembershipRequest>()))
@@ -177,7 +178,7 @@ namespace Chiro.CiviSync.Services.Test
                         Mapper.Map<MembershipRequest, ApiResultValues<Membership>>(r))
                 .Verifiable();
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -186,7 +187,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 src =>
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.IsAny<MembershipRequest>()),

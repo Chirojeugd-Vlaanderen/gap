@@ -15,7 +15,7 @@
  */
 
 using System;
-using Chiro.Cdf.Ioc.Factory;
+using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -32,16 +32,7 @@ namespace Chiro.CiviSync.Workers.Test
     [TestClass]
     public class ContactWorkerTest
     {
-        private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateClient> _updateHelperMock;
-
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
-
-        [TestInitialize]
-        public void InitializeTest()
-        {
-            TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _updateHelperMock);
-        }
 
         /// <summary>
         /// Persoon met recentste lid mag niet crashen als de API geen persoon
@@ -52,14 +43,19 @@ namespace Chiro.CiviSync.Workers.Test
         {
             // ARRANGE
 
-            _civiApiMock.Setup(
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
+
+            civiApiMock.Setup(
                 src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(new ApiResultValues<Contact>());
 
             // ContactHelper vraagt de API-keys bij constructie. Dat is misschien niet
             // zo'n goed idee. Maar voorlopig doe ik het zo dus ook in deze test.
 
-            var serviceHelper = Factory.Maak<ServiceHelper>();
+            var serviceHelper = factory.Maak<ServiceHelper>();
             var contactHelper = new ContactWorker(serviceHelper, new Mock<IMiniLog>().Object);
 
             // ACT
@@ -80,6 +76,11 @@ namespace Chiro.CiviSync.Workers.Test
         {
             // ARRANGE
 
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
+
             var myContact = new Contact
             {
                 Id = 1,
@@ -88,14 +89,14 @@ namespace Chiro.CiviSync.Workers.Test
                 ExternalIdentifier = "2"
             };
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == myContact.ExternalIdentifier)))
                 .Returns(new ApiResultValues<Contact>(myContact)).Verifiable();
 
-            var contactWorker1 = Factory.Maak<ContactWorker>(); 
-            var contactWorker2 = Factory.Maak<ContactWorker>();
+            var contactWorker1 = factory.Maak<ContactWorker>(); 
+            var contactWorker2 = factory.Maak<ContactWorker>();
 
             // ACT
 
@@ -105,7 +106,7 @@ namespace Chiro.CiviSync.Workers.Test
 
             // ASSERT
 
-            _civiApiMock.Verify(src =>
+            civiApiMock.Verify(src =>
                 src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                     It.Is<ContactRequest>(r => r.ExternalIdentifier == myContact.ExternalIdentifier)), Times.Exactly(1));
         }

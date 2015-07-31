@@ -17,7 +17,7 @@
 using System;
 using System.Linq;
 using AutoMapper;
-using Chiro.Cdf.Ioc.Factory;
+using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
@@ -33,9 +33,6 @@ namespace Chiro.CiviSync.Services.Test
     [TestClass]
     public class PersonenBewarenTest
     {
-        private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateClient> _updateHelperMock;
-
         private static int _nextId = 1;
 
         [ClassInitialize]
@@ -47,12 +44,6 @@ namespace Chiro.CiviSync.Services.Test
             TestHelper.MappingsCreeren();
         }
 
-        [TestInitialize]
-        public void InitializeTest()
-        {
-            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out _civiApiMock, out _updateHelperMock);
-        }
-
         /// <summary>
         /// Als een nieuwe persoon al gevonden is in de CiviCRM-database, dan wordt het GAP-ID
         /// van die persoon aangepast. Voor die call verwacht CiviCRM een ContactType.
@@ -62,6 +53,11 @@ namespace Chiro.CiviSync.Services.Test
         {
             // ARRANGE
 
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out factory, out civiApiMock, out updateHelperMock);
+
             // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
             var ploeg = new Contact {ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization};
             var persoon = new Contact {ExternalIdentifier = "2", FirstName = "Kees", LastName = "Flodder", GapId = 3};
@@ -69,7 +65,7 @@ namespace Chiro.CiviSync.Services.Test
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
             // dezelfde persoon en dezelfde ploeg.
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(
                     (string key1, string key2, ContactRequest r) =>
@@ -89,7 +85,7 @@ namespace Chiro.CiviSync.Services.Test
                         return result;
                     });
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(
                     (string key1, string key2, ContactRequest r) =>
@@ -98,24 +94,24 @@ namespace Chiro.CiviSync.Services.Test
                         {
                             Count = 1,
                             IsError = 0,
-                            Values = new[] {_civiApiMock.Object.ContactGetSingle(key1, key2, r)}
+                            Values = new[] {civiApiMock.Object.ContactGetSingle(key1, key2, r)}
                         };
                         result.Id = result.Values.First().Id;
                         return result;
                     });
 
             // RelationshipSave moet gewoon doen of het werkt.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
                 .Returns((string key1, string key2, RelationshipRequest r) =>
                     Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r));
 
             // Voor deze test moet elke 'ContactSave' een individual aanmaken.
-            _civiApiMock.Setup(src => src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+            civiApiMock.Setup(src => src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
                 It.Is<ContactRequest>(r => r.ContactType == ContactType.Individual))).Returns(
                     (string key1, string key2, ContactRequest r) => SomeSaveResult(r)).Verifiable();
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -156,7 +152,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _civiApiMock.Verify(src => src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+            civiApiMock.Verify(src => src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
                 It.Is<ContactRequest>(r => r.ContactType == ContactType.Individual)), Times.AtLeastOnce);
         }
 
@@ -169,6 +165,11 @@ namespace Chiro.CiviSync.Services.Test
         public void CorrectGeslachtBijTeMatchenLid()
         {
             // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out factory, out civiApiMock, out updateHelperMock);
 
             // We zullen straks de persoon kunnen matchen op zijn telefoonnummer.
             const string somePhoneNumber = "03-231 07 95";
@@ -201,14 +202,14 @@ namespace Chiro.CiviSync.Services.Test
             // dezelfde persoon en dezelfde ploeg.
 
             // Zoeken op het gevraagde stamnummer levert de ploeg op.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(
                             new ApiResultValues<Contact> { Count = 1, IsError = 0, Values = new[] { ploeg } });
 
             // Als er gezocht wordt op AD-nummer, vinden we de persoon:
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
@@ -216,7 +217,7 @@ namespace Chiro.CiviSync.Services.Test
                     new ApiResultValues<Contact> { Count = 1, IsError = 0, Values = new[] { persoon } }).Verifiable();
 
             // Verwacht dat er zeker op gender gezocht wordt. Lever persoon op.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.Gender == persoon.Gender && r.ContactType == ContactType.Individual)))
@@ -224,13 +225,13 @@ namespace Chiro.CiviSync.Services.Test
                     new ApiResultValues<Contact> {Count = 1, IsError = 0, Values = new[] {persoon}}).Verifiable();
 
             // RelationshipSave moet gewoon doen of het werkt.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
                 .Returns((string key1, string key2, RelationshipRequest r) =>
                     Mapper.Map<RelationshipRequest, ApiResultValues<Relationship>>(r));
 
             // Voor deze test moet elke 'ContactSave' een individual aanmaken.
-            _civiApiMock.Setup(src => src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+            civiApiMock.Setup(src => src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<ContactRequest>())).Returns(
                     (string key1, string key2, ContactRequest r) =>
                     {
@@ -238,7 +239,7 @@ namespace Chiro.CiviSync.Services.Test
                         return SomeSaveResult(r);
                     });
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -279,7 +280,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.Gender == persoon.Gender && r.ContactType == ContactType.Individual)),
@@ -295,6 +296,11 @@ namespace Chiro.CiviSync.Services.Test
         {
             // ARRANGE
 
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out factory, out civiApiMock, out updateHelperMock);
+
             const int adNummer = 2;
             var persoon = new Contact
             {
@@ -305,10 +311,10 @@ namespace Chiro.CiviSync.Services.Test
                 GapId = 3
             };
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(new ApiResultValues<Contact>(persoon));
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
@@ -317,7 +323,7 @@ namespace Chiro.CiviSync.Services.Test
                         Mapper.Map<ContactRequest, ApiResultValues<Contact>>(request))
                 .Verifiable();
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -329,7 +335,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 src =>
                     src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)),
@@ -344,6 +350,11 @@ namespace Chiro.CiviSync.Services.Test
         {
             // ARRANGE
 
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out factory, out civiApiMock, out updateHelperMock);
+
             const int adNummer = 2;
             var persoon = new Contact
             {
@@ -354,17 +365,17 @@ namespace Chiro.CiviSync.Services.Test
                 GapId = 3
             };
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
                 .Returns(new ApiResultValues<Contact>(persoon));
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.GapId == persoon.GapId)))
                 .Returns(Mapper.Map<Contact, ApiResultValues<Contact>>(persoon));
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
@@ -373,7 +384,7 @@ namespace Chiro.CiviSync.Services.Test
                         Mapper.Map<ContactRequest, ApiResultValues<Contact>>(request))
                 .Verifiable();
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -387,7 +398,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 src =>
                     src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)),
@@ -402,18 +413,23 @@ namespace Chiro.CiviSync.Services.Test
         {
             // ARRANGE
 
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out factory, out civiApiMock, out updateHelperMock);
+
             // De API levert niets op:
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(new Contact());
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.IsAny<ContactRequest>()))
                 .Returns(new ApiResultValues<Contact>());
 
             // Bewaren verifiable maken, zodat we kunnen controleren dat het niet gebeurt.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.IsAny<ContactRequest>()))
@@ -422,7 +438,7 @@ namespace Chiro.CiviSync.Services.Test
                         Mapper.Map<ContactRequest, ApiResultValues<Contact>>(request))
                 .Verifiable();
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -435,7 +451,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 src =>
                     src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.IsAny<ContactRequest>()),
@@ -450,23 +466,28 @@ namespace Chiro.CiviSync.Services.Test
         {
             // ARRANGE
 
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out factory, out civiApiMock, out updateHelperMock);
+
             // Zo gezegd ongeldig AD-nummer
             const int adNummer = 1;
 
             // De API levert niets op:
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(new Contact());
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.IsAny<ContactRequest>()))
                 .Returns(new ApiResultValues<Contact>());
 
             // We mocken ook GapUpdateClient.
-            _updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
+            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -479,7 +500,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
+            updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
         }
 
         private ApiResultValues<Contact> SomeSaveResult(ContactRequest contactRequest)
