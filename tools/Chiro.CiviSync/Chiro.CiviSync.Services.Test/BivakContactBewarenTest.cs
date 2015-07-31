@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
@@ -86,7 +87,9 @@ namespace Chiro.CiviSync.Services.Test
             civiApiMock.Setup(
                 src =>
                     src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<EventRequest>(r => r.OrganiserendePersoon1Id == persoonContactId))).Verifiable();
+                        It.Is<EventRequest>(r => r.OrganiserendePersoon1Id == persoonContactId)))
+                .Returns(new ApiResultValues<Event>(bivak))
+                .Verifiable();
 
             var service = factory.Maak<SyncService>();
             service.CacheInvalideren();
@@ -139,7 +142,7 @@ namespace Chiro.CiviSync.Services.Test
                 .Returns(Mapper.Map<Event, ApiResultValues<Event>>(bivak));
 
             // Verwacht dat het foute AD-nummer terug naar GAP gaat.
-            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
+            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<int>(ad => ad == adNummer))).Returns(Task.Delay(0)).Verifiable();
 
             // ACT
 

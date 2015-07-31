@@ -16,6 +16,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -161,7 +162,9 @@ namespace Chiro.CiviSync.Services.Test
 
             // We mocken ook GapUpdateClient.
 
-            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
+            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<int>(ad => ad == adNummer)))
+                .Returns(Task.Delay(0))
+                .Verifiable();
 
             civiApiMock.Setup(
                 src =>
