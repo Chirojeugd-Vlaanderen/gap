@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

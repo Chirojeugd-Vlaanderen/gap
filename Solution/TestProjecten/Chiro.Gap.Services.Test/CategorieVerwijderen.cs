@@ -16,20 +16,16 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
 using System.ServiceModel;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Chiro.Gap.Services.Test
 {

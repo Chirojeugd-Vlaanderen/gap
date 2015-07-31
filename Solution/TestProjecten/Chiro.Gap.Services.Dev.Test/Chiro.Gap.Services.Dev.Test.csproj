@@ -61,6 +61,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
+      <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
+      <Name>Chiro.Cdf.Ioc.Factory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{c100e957-cee2-4707-bf13-c64553c28c7b}</Project>
       <Name>Chiro.Cdf.Ioc</Name>

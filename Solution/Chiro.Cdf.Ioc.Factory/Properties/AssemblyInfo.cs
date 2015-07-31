@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Chiro.Gap.Validatie.Test")]
+[assembly: AssemblyTitle("Chiro.Cdf.Ioc.Factory")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Chiro.Gap.Validatie.Test")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2009")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Chiro.Cdf.Ioc.Factory")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4445f373-40f6-4ff3-99b9-a70dfb35b269")]
+[assembly: Guid("66147f76-9d76-46a6-8fce-1bbe317a6093")]
 
 // Version information for an assembly consists of the following four values:
 //

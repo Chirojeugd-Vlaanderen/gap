@@ -1,4 +1,4 @@
-﻿using Chiro.Cdf.Ioc;
+﻿using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;

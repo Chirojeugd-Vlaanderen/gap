@@ -15,26 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
+
+using System;
 using System.Collections.Generic;
-﻿using System.Diagnostics;
-﻿using System.Linq;
+using System.Diagnostics;
+using System.Linq;
 using System.ServiceModel;
 using System.Web;
-﻿using Chiro.Ad.ServiceContracts;
-﻿using Chiro.Cdf.Poco;
-﻿using Chiro.Cdf.ServiceHelper;
-﻿using Chiro.Cdf.Sso;
+using Chiro.Ad.ServiceContracts;
+using Chiro.Cdf.Poco;
+using Chiro.Cdf.ServiceHelper;
+using Chiro.Cdf.Sso;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Services.Properties;
 using Chiro.Gap.WorkerInterfaces;
+using GebruikersRecht = Chiro.Gap.ServiceContracts.DataContracts.GebruikersRecht;
 #if KIPDORP
 using System.Transactions;
 #endif
-
-using GebruikersRecht = Chiro.Gap.ServiceContracts.DataContracts.GebruikersRecht;
 
 namespace Chiro.Gap.Services
 {
@@ -160,11 +161,11 @@ namespace Chiro.Gap.Services
                 if (p.AdNummer == null)
                 {
                     throw FaultExceptionHelper.FoutNummer(FoutNummer.AdNummerVerplicht,
-                                                          Properties.Resources.AdNummerVerplicht);
+                                                          Resources.AdNummerVerplicht);
                 }
                 if (string.IsNullOrEmpty(_gelieerdePersonenMgr.ContactEmail(gelieerdePersoon)))
                 {
-                    throw FaultExceptionHelper.FoutNummer(FoutNummer.EMailVerplicht, Properties.Resources.EmailOntbreekt);
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.EMailVerplicht, Resources.EmailOntbreekt);
                 }
 
                 account = new Gav();
@@ -236,7 +237,7 @@ namespace Chiro.Gap.Services
                                    select gr).FirstOrDefault();
             if (nietOndersteund != null)
             {
-                throw new NotSupportedException(String.Format(Properties.Resources.RolNietOndersteund,
+                throw new NotSupportedException(String.Format(Resources.RolNietOndersteund,
                                                               nietOndersteund.Rol));
             }
 
@@ -316,7 +317,7 @@ namespace Chiro.Gap.Services
             {
                 throw new FaultException<FoutNummerFault>(new FoutNummerFault
                 {
-                    Bericht = Properties.Resources.KoppelingGavPersoonOntbreekt,
+                    Bericht = Resources.KoppelingGavPersoonOntbreekt,
                     FoutNummer = FoutNummer.KoppelingGavPersoonOntbreekt
                 });
             }
@@ -339,19 +340,19 @@ namespace Chiro.Gap.Services
             {
                 throw new FaultException<FoutNummerFault>(new FoutNummerFault
                                                               {
-                                                                  Bericht = Properties.Resources.EmailOntbreekt,
+                                                                  Bericht = Resources.EmailOntbreekt,
                                                                   FoutNummer = FoutNummer.EMailVerplicht
                                                               });
             }
 
             email = email.Replace(';', ',');
 
-            var cp = new CredentialsProvider(Properties.Settings.Default.EncryptieSleutel,
-                                             Properties.Settings.Default.HashSleutel);
+            var cp = new CredentialsProvider(Settings.Default.EncryptieSleutel,
+                                             Settings.Default.HashSleutel);
 
             var credentials = cp.Genereren(String.Format("{0};{1};{2};{3:dd/MM/yyyy H:mm:ss zzz}", naam, stamnr, email, DateTime.Now));
 
-            return String.Format(Properties.Settings.Default.UrlVerzekeraar,
+            return String.Format(Settings.Default.UrlVerzekeraar,
                                  HttpUtility.UrlEncode(credentials.GeencrypteerdeUserInfo),
                                  HttpUtility.UrlEncode(credentials.Hash));
         }

@@ -15,29 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel;
 using System.Security.Principal;
+using System.ServiceModel;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-﻿
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.ServiceContracts.FaultContracts;
-﻿using Chiro.Gap.SyncInterfaces;
-﻿using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Services.Test.Properties;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 
-﻿
 namespace Chiro.Gap.Services.Test
 {
     /// <summary>
@@ -67,8 +66,8 @@ namespace Chiro.Gap.Services.Test
         public void VoorElkeTest()
         {
             Factory.ContainerInit();
-            var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
-            var roles = new[] {Properties.Settings.Default.TestSecurityGroep};
+            var identity = new GenericIdentity(Settings.Default.TestUser);
+            var roles = new[] {Settings.Default.TestSecurityGroep};
             var principal = new GenericPrincipal(identity, roles);
             Thread.CurrentPrincipal = principal;
         }
