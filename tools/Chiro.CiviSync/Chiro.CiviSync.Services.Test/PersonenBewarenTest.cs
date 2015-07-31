@@ -60,45 +60,38 @@ namespace Chiro.CiviSync.Services.Test
 
             // Onze nepdatabase bevat 1 organisatie (TST/0000) en 1 contact (Kees Flodder)
             var ploeg = new Contact {ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization};
-            var persoon = new Contact {ExternalIdentifier = "2", FirstName = "Kees", LastName = "Flodder", GapId = 3};
+            var persoon = new Contact
+            {
+                ExternalIdentifier = "2",
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3,
+                Id = 5,
+                // Voor het gemak heeft ons contact nog geen bestaande releationships.
+                RelationshipResult = new ApiResultValues<Relationship>(),
+            };
 
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
             // dezelfde persoon en dezelfde ploeg.
 
             civiApiMock.Setup(
-                src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        var result = r.ContactType == ContactType.Organization
-                            ? ploeg
-                            : persoon;
-                        // Als relaties gevraagd zijn, lever dan gewoon een lege lijst op.
-                        if (r.RelationshipGetRequest != null)
-                        {
-                            result.RelationshipResult = new ApiResultValues<Relationship>
-                            {
-                                Count = 0,
-                                IsError = 0
-                            };
-                        }
-                        return result;
-                    });
+                src =>
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(
+                            cr =>
+                                cr.ExternalIdentifier == ploeg.ExternalIdentifier ||
+                                cr.ContactType == ContactType.Organization)))
+                .Returns(new ApiResultValues<Contact>(ploeg));
 
             civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                    {
-                        var result = new ApiResultValues<Contact>
-                        {
-                            Count = 1,
-                            IsError = 0,
-                            Values = new[] {civiApiMock.Object.ContactGetSingle(key1, key2, r)}
-                        };
-                        result.Id = result.Values.First().Id;
-                        return result;
-                    });
+                src =>
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(
+                            cr =>
+                                cr.ExternalIdentifier == persoon.ExternalIdentifier ||
+                                cr.ContactType == ContactType.Individual || cr.GapId == persoon.GapId)))
+                .Returns(new ApiResultValues<Contact>(persoon));
+
 
             // RelationshipSave moet gewoon doen of het werkt.
             civiApiMock.Setup(
