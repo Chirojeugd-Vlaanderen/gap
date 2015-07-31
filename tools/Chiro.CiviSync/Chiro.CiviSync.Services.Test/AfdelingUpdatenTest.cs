@@ -15,7 +15,7 @@
  */
 
 using System;
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;

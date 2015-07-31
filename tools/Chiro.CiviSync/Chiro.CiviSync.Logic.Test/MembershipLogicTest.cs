@@ -13,8 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
 using System;
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.CiviCrm.Api.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

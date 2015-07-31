@@ -17,7 +17,7 @@
 using System;
 using System.Linq;
 using AutoMapper;
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
