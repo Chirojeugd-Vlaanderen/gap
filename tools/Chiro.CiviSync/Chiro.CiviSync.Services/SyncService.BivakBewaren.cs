@@ -51,10 +51,11 @@ namespace Chiro.CiviSync.Services
                 return;
             }
 
+            // Haal bivak op, met OrganiserendePloeg1Id.
             var apiResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Event>>(
                 svc =>
                     svc.EventGet(_apiKey, _siteKey,
-                        new EventRequest {GapUitstapId = bivak.UitstapID, ReturnFields = "id,custom_56"}));
+                        new EventRequest {GapUitstapId = bivak.UitstapID, ReturnFields = "id,custom_47"}));
             apiResult.AssertValid();
 
             if (apiResult.Count == 0)
