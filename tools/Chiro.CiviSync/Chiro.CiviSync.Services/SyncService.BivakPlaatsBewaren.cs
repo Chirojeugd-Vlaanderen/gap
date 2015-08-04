@@ -79,7 +79,7 @@ namespace Chiro.CiviSync.Services
             // er iets gegeven is, kies ik billing (5).
             nieuwAdres.LocationTypeId = 5;
             nieuwAdres.Name = plaatsNaam;
-            if (AdresLogic.IsHetzelfde(oudAdres, nieuwAdres))
+            if (_adresWorker.IsHetzelfde(oudAdres, nieuwAdres))
             {
                 _log.Loggen(Niveau.Info,
                     String.Format("Locblock {4} niet gewijzigd voor bivak van {0}, GAP-ID {1}: {2}, {3}", stamNr,

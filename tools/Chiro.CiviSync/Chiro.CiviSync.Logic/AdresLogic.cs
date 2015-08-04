@@ -26,31 +26,6 @@ namespace Chiro.CiviSync.Logic
     public static class AdresLogic
     {
         /// <summary>
-        /// Vergelijkt een <paramref name="address1"/> met een <paramref name="address2"/>, en geeft <c>true</c>
-        /// als ze naar hetzelfde adres verwijzen.
-        /// </summary>
-        /// <param name="address1"></param>
-        /// <param name="address2"></param>
-        /// <returns><c>true</c> als <paramref name="address1"/> en <paramref name="address2"/> naar hetzelfde
-        /// adres verwijzen.</returns>
-        public static bool IsHetzelfde(IAddress address1, IAddress address2)
-        {
-            if (address1 == null || address2 == null)
-            {
-                return false;
-            }
-            return (String.Equals(address1.City, address2.City, StringComparison.InvariantCultureIgnoreCase) &&
-                    String.Equals(address1.Country, address2.Country, StringComparison.InvariantCultureIgnoreCase) &&
-                    address1.PostalCode == address2.PostalCode &&
-                    String.Equals(address1.PostalCodeSuffix, address2.PostalCodeSuffix,
-                        StringComparison.InvariantCultureIgnoreCase) &&
-                    address1.StateProvinceId == address2.StateProvinceId &&
-                    String.Equals(address1.StreetAddress, address2.StreetAddress,
-                        StringComparison.InvariantCultureIgnoreCase)) &&
-                   String.Equals(address1.Name, address2.Name, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        /// <summary>
         /// Zet straat, nummer en bus om naar 1 string.
         /// </summary>
         /// <param name="src">Adres</param>
@@ -111,6 +86,14 @@ namespace Chiro.CiviSync.Logic
                 default:
                     return 4;
             }
+        }
+
+        /// <summary>
+        /// ISO-code van het standaardland.
+        /// </summary>
+        public static string StandaardLandCode
+        {
+            get { return Properties.Settings.Default.StandaardLandCode; }
         }
     }
 }

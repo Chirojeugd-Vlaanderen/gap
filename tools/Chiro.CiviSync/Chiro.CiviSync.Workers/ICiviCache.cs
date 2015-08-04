@@ -43,5 +43,21 @@ namespace Chiro.CiviSync.Workers
         /// Invalideer alle gecachete data.
         /// </summary>
         void Invalideren();
+
+        /// <summary>
+        /// Haalt de ISO-code op van het land met gegeven
+        /// <paramref name="countryId"/>, aangenomen dat het gecachet is.
+        /// </summary>
+        /// <param name="countryId">Civi-identifier van een land.</param>
+        /// <returns>De gecachete ISO-code van dat contact, of <c>null</c> als ze
+        /// niet gecachet is.</returns>
+        string LandCodeGet(int? countryId);
+
+        /// <summary>
+        /// Bewaart de ISO-code van een land in de cache.
+        /// </summary>
+        /// <param name="countryId">Civi-ID van het land waarvan je de ISO-code wilt bewaren.</param>
+        /// <param name="isoCode">Te bewaren ISO-code.</param>
+        void LandCodeSet(int? countryId, string isoCode);
     }
 }

@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdresWorker.cs" />
     <Compile Include="BaseWorker.cs" />
     <Compile Include="BivakWorker.cs" />
     <Compile Include="CiviCache.cs" />

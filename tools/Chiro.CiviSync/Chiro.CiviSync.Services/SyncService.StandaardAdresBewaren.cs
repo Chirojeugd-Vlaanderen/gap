@@ -66,7 +66,7 @@ namespace Chiro.CiviSync.Services
                 // voorkeursadres te zetten, en adrestype te bewaren.
 
                 var bestaande =
-                    (from a in adressen where AdresLogic.IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
+                    (from a in adressen where _adresWorker.IsHetzelfde(a, nieuwAdres) select a).FirstOrDefault();
 
                 if (bestaande != null)
                 {

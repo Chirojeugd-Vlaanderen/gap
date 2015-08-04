@@ -30,8 +30,7 @@ namespace Chiro.CiviSync.Workers
         protected string ApiKey { get; private set; }
         protected string SiteKey { get; private set; }
 
-        private readonly ICiviCache _cache;
-
+        protected ICiviCache Cache { get; }
         protected IMiniLog Log { get; }
         protected ServiceHelper ServiceHelper { get; }
 
@@ -45,7 +44,7 @@ namespace Chiro.CiviSync.Workers
         {
             ServiceHelper = serviceHelper;
             Log = log;
-            _cache = cache;
+            Cache = cache;
         }
 
         /// <summary>
@@ -83,7 +82,7 @@ namespace Chiro.CiviSync.Workers
         /// <remarks>This method uses caching to speed up things.</remarks>
         public int? ContactIdGet(string externalIdentifier)
         {
-            int? cid = _cache.ContactIdGet(externalIdentifier);
+            int? cid = Cache.ContactIdGet(externalIdentifier);
 
             if (cid != null) return cid;
             var result =
@@ -100,7 +99,7 @@ namespace Chiro.CiviSync.Workers
             var contact = result.Values.First();
             cid = contact.Id;
 
-            _cache.ContactIdSet(externalIdentifier, cid.Value);
+            Cache.ContactIdSet(externalIdentifier, cid.Value);
             return cid;
         }
     }

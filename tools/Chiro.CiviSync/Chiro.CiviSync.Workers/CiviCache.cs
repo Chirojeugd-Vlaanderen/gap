@@ -26,6 +26,8 @@ namespace Chiro.CiviSync.Workers
     public class CiviCache : ICiviCache
     {
         private const string ContactIdCacheKey = "cid{0}";
+        private const string LandCodeCacheKey = "iso{0}";
+
         private static readonly ObjectCache Cache = new MemoryCache("CiviSyncCache");
 
         /// <summary>
@@ -63,6 +65,29 @@ namespace Chiro.CiviSync.Workers
             {
                 Cache.Remove(element.Key);
             }
+        }
+
+        /// <summary>
+        /// Haalt de ISO-code op van het land met gegeven
+        /// <paramref name="countryId"/>, aangenomen dat het gecachet is.
+        /// </summary>
+        /// <param name="countryId">Civi-identifier van een land.</param>
+        /// <returns>De gecachete ISO-code van dat contact, of <c>null</c> als ze
+        /// niet gecachet is.</returns>
+        public string LandCodeGet(int? countryId)
+        {
+            return (string)Cache[string.Format(LandCodeCacheKey, countryId)];
+        }
+
+        /// <summary>
+        /// Bewaart de ISO-code van een land in de cache.
+        /// </summary>
+        /// <param name="countryId">Civi-ID van het land waarvan je de ISO-code wilt bewaren.</param>
+        /// <param name="isoCode">Te bewaren ISO-code.</param>
+        public void LandCodeSet(int? countryId, string isoCode)
+        {
+            Cache.Set(string.Format(LandCodeCacheKey, countryId), isoCode,
+                new CacheItemPolicy {SlidingExpiration = new TimeSpan(2, 0, 0, 0)});
         }
     }
 }
