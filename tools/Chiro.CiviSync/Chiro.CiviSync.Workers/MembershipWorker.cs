@@ -37,8 +37,8 @@ namespace Chiro.CiviSync.Workers
     {
         private readonly MembershipLogic _membershipLogic;
 
-        public MembershipWorker(ServiceHelper serviceHelper, IMiniLog log, MembershipLogic membershipLogic)
-            : base(serviceHelper, log)
+        public MembershipWorker(ServiceHelper serviceHelper, IMiniLog log, MembershipLogic membershipLogic, ICiviCache cache)
+            : base(serviceHelper, log, cache)
         {
             _membershipLogic = membershipLogic;
         }

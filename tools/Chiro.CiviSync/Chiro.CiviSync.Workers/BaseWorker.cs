@@ -14,9 +14,7 @@
    limitations under the License.
  */
 
-using System;
 using System.Linq;
-using System.Runtime.Caching;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -32,31 +30,22 @@ namespace Chiro.CiviSync.Workers
         protected string ApiKey { get; private set; }
         protected string SiteKey { get; private set; }
 
-        private readonly ServiceHelper _serviceHelper;
-        private readonly IMiniLog _log;
+        private readonly ICiviCache _cache;
 
-        private const string ContactIdCacheKey = "cid{0}";
-        private static readonly ObjectCache Cache = new MemoryCache("ContactWorkerCache");
-
-        protected IMiniLog Log
-        {
-            get { return _log; }
-        }
-
-        protected ServiceHelper ServiceHelper
-        {
-            get { return _serviceHelper; }
-        }
+        protected IMiniLog Log { get; }
+        protected ServiceHelper ServiceHelper { get; }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serviceHelper">Helper to be used for WCF service calls</param>
         /// <param name="log">Logger</param>
-        public BaseWorker(ServiceHelper serviceHelper, IMiniLog log)
+        /// <param name="cache">Te gebruiken cache</param>
+        public BaseWorker(ServiceHelper serviceHelper, IMiniLog log, ICiviCache cache)
         {
-            _serviceHelper = serviceHelper;
-            _log = log;            
+            ServiceHelper = serviceHelper;
+            Log = log;
+            _cache = cache;
         }
 
         /// <summary>
@@ -94,7 +83,7 @@ namespace Chiro.CiviSync.Workers
         /// <remarks>This method uses caching to speed up things.</remarks>
         public int? ContactIdGet(string externalIdentifier)
         {
-            int? cid = (int?)Cache[String.Format(ContactIdCacheKey, externalIdentifier)];
+            int? cid = _cache.ContactIdGet(externalIdentifier);
 
             if (cid != null) return cid;
             var result =
@@ -111,22 +100,8 @@ namespace Chiro.CiviSync.Workers
             var contact = result.Values.First();
             cid = contact.Id;
 
-            Cache.Set(String.Format(ContactIdCacheKey, externalIdentifier), cid,
-                new CacheItemPolicy { SlidingExpiration = new TimeSpan(2, 0, 0, 0) });
+            _cache.ContactIdSet(externalIdentifier, cid.Value);
             return cid;
-        }
-
-        /// <summary>
-        /// Invalideer alle gecachete data.
-        /// </summary>
-        public void CacheInvalideren()
-        {
-            // Dit is tamelijk omslachtig
-
-            foreach (var element in Cache)
-            {
-                Cache.Remove(element.Key);
-            }
         }
     }
 }

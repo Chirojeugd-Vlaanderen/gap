@@ -24,6 +24,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
+using Chiro.CiviSync.Workers;
 using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
 using Chiro.Mailchimp.Sync;
@@ -163,6 +164,7 @@ namespace Chiro.CiviSync.Services.Test
         /// Creeert een dependency-injection container voor unit tests.
         /// 
         /// * Geen logging
+        /// * Geen caching
         /// * De tests gedragen zich alsof het vandaag de gegeven datum is.
         /// * Er wordt een mock gebruikt i.p.v. de echte API's voor Civi en GAP.
         /// </summary>
@@ -202,6 +204,10 @@ namespace Chiro.CiviSync.Services.Test
             // Loggen doen we niet.
             var logMock = new Mock<IMiniLog>();
             container.InstantieRegistreren(logMock.Object);
+
+            // Cachen evenmin.
+            var cacheMock = new Mock<ICiviCache>();
+            container.InstantieRegistreren(cacheMock.Object);
         }
     }
 }

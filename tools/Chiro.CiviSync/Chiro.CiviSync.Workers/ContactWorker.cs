@@ -39,7 +39,8 @@ namespace Chiro.CiviSync.Workers
         /// </summary>
         /// <param name="serviceHelper">Helper to be used for WCF service calls</param>
         /// <param name="log">Logger</param>
-        public ContactWorker(ServiceHelper serviceHelper, IMiniLog log): base(serviceHelper, log)
+        public ContactWorker(ServiceHelper serviceHelper, IMiniLog log, ICiviCache cache)
+            : base(serviceHelper, log, cache)
         {
         }
 

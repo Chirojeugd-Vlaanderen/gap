@@ -92,7 +92,6 @@ namespace Chiro.CiviSync.Services.Test
                 .Verifiable();
 
             var service = factory.Maak<SyncService>();
-            service.CacheInvalideren();
 
             // ACT
 
@@ -147,7 +146,6 @@ namespace Chiro.CiviSync.Services.Test
             // ACT
 
             var service = factory.Maak<SyncService>();
-            service.CacheInvalideren();
             service.BivakContactBewaren(uitstapId, adNummer);
 
             // ASSERT

@@ -31,8 +31,8 @@ namespace Chiro.CiviSync.Workers
         /// Constructor
         /// </summary>
         /// <param name="serviceHelper">Helper to be used for WCF service calls</param>
-        public BivakWorker(ServiceHelper serviceHelper, IMiniLog log)
-            : base(serviceHelper, log)
+        public BivakWorker(ServiceHelper serviceHelper, IMiniLog log, ICiviCache cache)
+            : base(serviceHelper, log, cache)
         {
         }
 

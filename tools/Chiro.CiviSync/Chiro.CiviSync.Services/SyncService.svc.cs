@@ -109,14 +109,6 @@ namespace Chiro.CiviSync.Services
         }
 
         /// <summary>
-        /// Invalideer gecachete data.
-        /// </summary>
-        public void CacheInvalideren()
-        {
-            _contactWorker.CacheInvalideren();
-        }
-
-        /// <summary>
         /// Zoekt het Civi-ID (contact-ID) op op basis van de gegevens in <paramref name="persoon"/>.
         /// </summary>
         /// <param name="persoon">Persoon waarvoor we het Civi-ID zoeken.</param>

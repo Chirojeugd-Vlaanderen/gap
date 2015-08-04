@@ -16,13 +16,11 @@
 
 using System;
 using Chiro.Cdf.Ioc;
-using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Services.Test;
-using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -55,12 +53,11 @@ namespace Chiro.CiviSync.Workers.Test
             // ContactHelper vraagt de API-keys bij constructie. Dat is misschien niet
             // zo'n goed idee. Maar voorlopig doe ik het zo dus ook in deze test.
 
-            var serviceHelper = factory.Maak<ServiceHelper>();
-            var contactHelper = new ContactWorker(serviceHelper, new Mock<IMiniLog>().Object);
+            var contactWorker = factory.Maak<ContactWorker>();
 
             // ACT
 
-            var result = contactHelper.PersoonMetRecentsteLid(2, 3);
+            var result = contactWorker.PersoonMetRecentsteLid(2, 3);
 
             // ASSERT
 
@@ -74,12 +71,19 @@ namespace Chiro.CiviSync.Workers.Test
         [TestMethod]
         public void AdNrCiviIdCacheTest()
         {
+            // In principe is deze unit test niet helemaal juist, omdat het 2 dingen door elkaar
+            // test: het aanroepen van de cache, en de werking van de cache. Ze zou dus beter
+            // opgesplitst worden.
+
             // ARRANGE
 
             Mock<ICiviCrmApi> civiApiMock;
             Mock<IGapUpdateClient> updateHelperMock;
             IDiContainer factory;
             TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
+
+            // Vervang de gemockte cache (uit IocOpzetten) opnieuw door de echte cache.
+            factory.InstantieRegistreren<ICiviCache>(new CiviCache());
 
             var myContact = new Contact
             {
