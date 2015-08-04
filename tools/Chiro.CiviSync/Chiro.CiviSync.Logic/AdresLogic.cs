@@ -15,8 +15,7 @@
  */
 
 using System;
-using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.CiviSync.Logic
@@ -27,28 +26,28 @@ namespace Chiro.CiviSync.Logic
     public static class AdresLogic
     {
         /// <summary>
-        /// Vergelijkt een <paramref name="address"/> met een <paramref name="addressRequest"/>, en geeft <c>true</c>
+        /// Vergelijkt een <paramref name="address1"/> met een <paramref name="address2"/>, en geeft <c>true</c>
         /// als ze naar hetzelfde adres verwijzen.
         /// </summary>
-        /// <param name="address"></param>
-        /// <param name="addressRequest"></param>
-        /// <returns><c>true</c> als <paramref name="address"/> en <paramref name="addressRequest"/> naar hetzelfde
+        /// <param name="address1"></param>
+        /// <param name="address2"></param>
+        /// <returns><c>true</c> als <paramref name="address1"/> en <paramref name="address2"/> naar hetzelfde
         /// adres verwijzen.</returns>
-        public static bool IsHetzelfde(Address address, AddressRequest addressRequest)
+        public static bool IsHetzelfde(IAddress address1, IAddress address2)
         {
-            if (address == null || addressRequest == null)
+            if (address1 == null || address2 == null)
             {
                 return false;
             }
-            return (String.Equals(address.City, addressRequest.City, StringComparison.InvariantCultureIgnoreCase) &&
-                    String.Equals(address.Country, addressRequest.Country, StringComparison.InvariantCultureIgnoreCase) &&
-                    address.PostalCode == addressRequest.PostalCode &&
-                    String.Equals(address.PostalCodeSuffix, addressRequest.PostalCodeSuffix,
+            return (String.Equals(address1.City, address2.City, StringComparison.InvariantCultureIgnoreCase) &&
+                    String.Equals(address1.Country, address2.Country, StringComparison.InvariantCultureIgnoreCase) &&
+                    address1.PostalCode == address2.PostalCode &&
+                    String.Equals(address1.PostalCodeSuffix, address2.PostalCodeSuffix,
                         StringComparison.InvariantCultureIgnoreCase) &&
-                    address.StateProvinceId == addressRequest.StateProvinceId &&
-                    String.Equals(address.StreetAddress, addressRequest.StreetAddress,
+                    address1.StateProvinceId == address2.StateProvinceId &&
+                    String.Equals(address1.StreetAddress, address2.StreetAddress,
                         StringComparison.InvariantCultureIgnoreCase)) &&
-                   String.Equals(address.Name, addressRequest.Name, StringComparison.InvariantCultureIgnoreCase);
+                   String.Equals(address1.Name, address2.Name, StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
