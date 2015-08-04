@@ -16,6 +16,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -31,9 +32,6 @@ namespace Chiro.CiviSync.Services.Test
     [TestClass]
     public class LidVerwijderenTest
     {
-        private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateClient> _updateHelperMock;
-
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int HuidigWerkJaar = 2014;
 
@@ -43,12 +41,6 @@ namespace Chiro.CiviSync.Services.Test
             TestHelper.MappingsCreeren();
         }
 
-        [TestInitialize]
-        public void InitializeTest()
-        {
-            TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _updateHelperMock);
-        }
-
         /// <summary>
         /// Roept LidVerwijderen de CiviCRM API aan?
         /// </summary>
@@ -56,6 +48,11 @@ namespace Chiro.CiviSync.Services.Test
         public void LidVerwijderen()
         {
             // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
 
             const int adNummer = 2;
 
@@ -86,7 +83,7 @@ namespace Chiro.CiviSync.Services.Test
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
             // dezelfde persoon en dezelfde ploeg.
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(
                     (string key1, string key2, ContactRequest r) =>
@@ -107,7 +104,7 @@ namespace Chiro.CiviSync.Services.Test
                         return result;
                     });
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(
                     (string key1, string key2, ContactRequest r) =>
@@ -116,26 +113,26 @@ namespace Chiro.CiviSync.Services.Test
                         {
                             Count = 1,
                             IsError = 0,
-                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
+                            Values = new[] { civiApiMock.Object.ContactGetSingle(key1, key2, r) }
                         };
                         result.Id = result.Values.First().Id;
                         return result;
                     });
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.RelationshipDelete(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<IdRequest>(
                             r => r.Id == relatie.Id)))
                 .Returns(new ApiResult()).Verifiable();
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
             service.LidVerwijderen(adNummer, ploeg.ExternalIdentifier, HuidigWerkJaar, uitschrijfDatum);
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
                 // LidMaken moet de startdatum dan op 1 september zetten.
                 src =>
@@ -153,6 +150,11 @@ namespace Chiro.CiviSync.Services.Test
         {
             // ARRANGE
 
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
+
             const int adNummer = 2;
 
             // Onze nepdatabase bevat 1 organisatie (TST/0000)
@@ -160,22 +162,24 @@ namespace Chiro.CiviSync.Services.Test
 
             // We mocken ook GapUpdateClient.
 
-            _updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
+            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<int>(ad => ad == adNummer)))
+                .Returns(Task.Delay(0))
+                .Verifiable();
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
                 .Returns(new ApiResultValues<Contact>(ploeg));
 
             // Mock niet-gevonden contact:
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == adNummer.ToString())))
                 .Returns(new ApiResultValues<Contact>());
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -183,7 +187,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
+            updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -193,6 +197,11 @@ namespace Chiro.CiviSync.Services.Test
         public void NieuwLidVerwijderen()
         {
             // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
 
             const int adNummer = 2;
 
@@ -223,7 +232,7 @@ namespace Chiro.CiviSync.Services.Test
             // Een request om 1 of meerdere contacts op te leveren, levert voor het gemak altijd
             // dezelfde persoon en dezelfde ploeg.
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(
                     (string key1, string key2, ContactRequest r) =>
@@ -244,7 +253,7 @@ namespace Chiro.CiviSync.Services.Test
                         return result;
                     });
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(
                     (string key1, string key2, ContactRequest r) =>
@@ -253,20 +262,20 @@ namespace Chiro.CiviSync.Services.Test
                         {
                             Count = 1,
                             IsError = 0,
-                            Values = new[] { _civiApiMock.Object.ContactGetSingle(key1, key2, r) }
+                            Values = new[] { civiApiMock.Object.ContactGetSingle(key1, key2, r) }
                         };
                         result.Id = result.Values.First().Id;
                         return result;
                     });
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.RelationshipDelete(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<IdRequest>(
                             r => r.Id == relatie.Id)))
                 .Returns(new ApiResult()).Verifiable();
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -284,7 +293,7 @@ namespace Chiro.CiviSync.Services.Test
 
             service.NieuwLidVerwijderen(details, ploeg.ExternalIdentifier, HuidigWerkJaar, uitschrijfDatum);
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 // We zullen een lid maken voor een werkjaar dat nog niet begonnen is.
                 // LidMaken moet de startdatum dan op 1 september zetten.
                 src =>

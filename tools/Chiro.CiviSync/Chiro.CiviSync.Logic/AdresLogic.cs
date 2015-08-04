@@ -15,8 +15,7 @@
  */
 
 using System;
-using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviCrm.Api.DataContracts.Requests;
+using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.CiviSync.Logic
@@ -26,31 +25,6 @@ namespace Chiro.CiviSync.Logic
     /// </summary>
     public static class AdresLogic
     {
-        /// <summary>
-        /// Vergelijkt een <paramref name="address"/> met een <paramref name="addressRequest"/>, en geeft <c>true</c>
-        /// als ze naar hetzelfde adres verwijzen.
-        /// </summary>
-        /// <param name="address"></param>
-        /// <param name="addressRequest"></param>
-        /// <returns><c>true</c> als <paramref name="address"/> en <paramref name="addressRequest"/> naar hetzelfde
-        /// adres verwijzen.</returns>
-        public static bool IsHetzelfde(Address address, AddressRequest addressRequest)
-        {
-            if (address == null || addressRequest == null)
-            {
-                return false;
-            }
-            return (String.Equals(address.City, addressRequest.City, StringComparison.InvariantCultureIgnoreCase) &&
-                    String.Equals(address.Country, addressRequest.Country, StringComparison.InvariantCultureIgnoreCase) &&
-                    address.PostalCode == addressRequest.PostalCode &&
-                    String.Equals(address.PostalCodeSuffix, addressRequest.PostalCodeSuffix,
-                        StringComparison.InvariantCultureIgnoreCase) &&
-                    address.StateProvinceId == addressRequest.StateProvinceId &&
-                    String.Equals(address.StreetAddress, addressRequest.StreetAddress,
-                        StringComparison.InvariantCultureIgnoreCase)) &&
-                   String.Equals(address.Name, addressRequest.Name, StringComparison.InvariantCultureIgnoreCase);
-        }
-
         /// <summary>
         /// Zet straat, nummer en bus om naar 1 string.
         /// </summary>
@@ -112,6 +86,14 @@ namespace Chiro.CiviSync.Logic
                 default:
                     return 4;
             }
+        }
+
+        /// <summary>
+        /// ISO-code van het standaardland.
+        /// </summary>
+        public static string StandaardLandCode
+        {
+            get { return Properties.Settings.Default.StandaardLandCode; }
         }
     }
 }

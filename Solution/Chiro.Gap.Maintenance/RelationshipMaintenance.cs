@@ -17,10 +17,7 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;

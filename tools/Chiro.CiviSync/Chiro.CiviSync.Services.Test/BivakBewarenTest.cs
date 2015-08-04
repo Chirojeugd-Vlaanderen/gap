@@ -32,9 +32,6 @@ namespace Chiro.CiviSync.Services.Test
     [TestClass]
     public class BivakBewarenTest
     {
-        private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateClient> _updateHelperMock;
-
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int HuidigWerkJaar = 2014;
 
@@ -47,11 +44,6 @@ namespace Chiro.CiviSync.Services.Test
             TestHelper.MappingsCreeren();
         }
 
-        [TestInitialize]
-        public void InitializeTest()
-        {
-            TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _updateHelperMock);
-        }
 
         /// <summary>
         /// Test of event type en organiserende ploeg goed gesynct worden.
@@ -60,6 +52,11 @@ namespace Chiro.CiviSync.Services.Test
         public void DetailsBivak()
         {
             // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
 
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
             var teBewarenBivak = new Bivak
@@ -73,13 +70,13 @@ namespace Chiro.CiviSync.Services.Test
                 WerkJaar = HuidigWerkJaar
             };
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
                 .Returns(new ApiResultValues<Contact>(ploeg));
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.EventGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<EventRequest>(
@@ -94,7 +91,7 @@ namespace Chiro.CiviSync.Services.Test
                     Version = 3
                 });
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<EventRequest>(
@@ -105,12 +102,12 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
             service.BivakBewaren(teBewarenBivak);
 
             // ASSERT
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 src =>
                     src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<EventRequest>(r => r.EventTypeId == (int)EvenementType.Bivak && r.OrganiserendePloeg1Id == ploeg.Id)), Times.AtLeastOnce);
@@ -127,6 +124,11 @@ namespace Chiro.CiviSync.Services.Test
         public void MeerdereBivakkenZelfdeGapId()
         {
             // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
 
             var ploeg = new Contact { ExternalIdentifier = "TST/0001", Id = 1, ContactType = ContactType.Organization };
 
@@ -148,18 +150,19 @@ namespace Chiro.CiviSync.Services.Test
             var event2 = Mapper.Map<EventRequest, Event>(Mapper.Map<Bivak, EventRequest>(bivak1));
             event2.Id = 4;
             event1.OrganiserendePloeg2Id = ploeg.Id;
-          
-            _civiApiMock.Setup(
+
+            civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(ploeg);
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
+                .Returns(new ApiResultValues<Contact>(ploeg));
 
             // getsingle levert een leeg event op als er meerdere bestaan. Zo doet civi dat alleszins.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.EventGetSingle(It.IsAny<string>(), It.IsAny<string>(),
                     It.Is<EventRequest>(r => r.GapUitstapId == bivak1.UitstapID))).Returns(new Event());
             // met get krijg je ze allebei
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.EventGet(It.IsAny<string>(), It.IsAny<string>(),
                     It.Is<EventRequest>(r => r.GapUitstapId == bivak1.UitstapID)))
                 .Returns(new ApiResultValues<Event>
@@ -172,7 +175,7 @@ namespace Chiro.CiviSync.Services.Test
                     Version = 3
                 });
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<EventRequest>(r => r.Id == event1.Id || r.Id == event2.Id)))
@@ -181,12 +184,12 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
             service.BivakBewaren(bivak1);
 
             // ASSERT
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 src =>
                     src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<EventRequest>(r => r.EventTypeId == (int)EvenementType.Bivak)), Times.AtLeastOnce);

@@ -33,17 +33,16 @@ namespace Chiro.CiviSync.Services
         /// Bewaart een membership voor de persoon met gegeven <paramref name="adNummer"/> in het gegeven <paramref name="werkJaar"/>.
         /// </summary>
         /// <param name="adNummer">AD-nummer van persoon met te bewaren membership.</param>
-        /// <param name="stamNummer">Stamnummer van ploeg die het membership aanmaakt.</param>
         /// <param name="werkJaar">Werkjaar waarvoor membership bewaard moet worden.</param>
-        /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
+        /// <param name="gedoe">Membershipdetails</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void MembershipBewaren(int adNummer, string stamNummer, int werkJaar, bool metLoonVerlies)
+        public async void MembershipBewaren(int adNummer, int werkJaar, MembershipGedoe gedoe)
         {
-            int? civiGroepId = _contactWorker.ContactIdGet(stamNummer);
+            int? civiGroepId = _contactWorker.ContactIdGet(gedoe.StamNummer);
             if (civiGroepId == null)
             {
-                _log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - lid niet bewaard.", stamNummer),
-                    stamNummer, adNummer, null);
+                _log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - lid niet bewaard.", gedoe.StamNummer),
+                    gedoe.StamNummer, adNummer, null);
                 return;
             }
 
@@ -60,21 +59,21 @@ namespace Chiro.CiviSync.Services
             // request dat we als het nodig is naar de API zullen sturen.
             var membershipRequest = _membershipLogic.VanWerkjaar(MembershipType.Aansluiting, contact.Id,
                 civiGroepId.Value, werkJaar);
-            membershipRequest.VerzekeringLoonverlies = metLoonVerlies;
+            membershipRequest.VerzekeringLoonverlies = gedoe.MetLoonVerlies;
 
             if (contact.MembershipResult.Count == 1)
             {
                 var bestaandMembership = contact.MembershipResult.Values.First();
                 if (_membershipLogic.WerkjaarGet(bestaandMembership) == werkJaar)
                 {
-                    _membershipWorker.BestaandeBijwerken(bestaandMembership, stamNummer, metLoonVerlies);
+                    _membershipWorker.BestaandeBijwerken(bestaandMembership, gedoe);
                     return;
                 }
 
                 // Het recentste membership was van een vorig werkjaar. Neem join date over.
                 membershipRequest.JoinDate = bestaandMembership.JoinDate;
             }
-            membershipRequest.FactuurStatus = FactuurStatus.VolledigTeFactureren;
+            membershipRequest.FactuurStatus = gedoe.Gratis ? FactuurStatus.FactuurOk : FactuurStatus.VolledigTeFactureren;
 
             var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
                 svc => svc.MembershipSave(_apiKey, _siteKey, membershipRequest));
@@ -84,7 +83,7 @@ namespace Chiro.CiviSync.Services
                 String.Format(
                     "Membership (aansluiting) {5} {3} {4}: AD {0} werkjaar {2} - memID {1}",
                     adNummer, result.Id, werkJaar, contact.FirstName, contact.LastName,
-                    metLoonVerlies ? "met loonverlies" : String.Empty),
+                    gedoe.MetLoonVerlies ? "met loonverlies" : String.Empty),
                 null, adNummer, contact.GapId);
         }
 
@@ -92,16 +91,15 @@ namespace Chiro.CiviSync.Services
         /// Bewaart een membership voor de persoon met gegeven <paramref name="details"/> in het gegeven <paramref name="werkJaar"/>
         /// </summary>
         /// <param name="details">Details van persoon met te bewaren membership.</param>
-        /// <param name="stamNummer">Stamnummer van ploeg die het membership aanmaakt.</param>
         /// <param name="werkJaar">Werkjaar waarvoor het membership bewaard moet worden.</param>
-        /// <param name="metLoonVerlies">Geeft aan of er een verzekering loonverlies nodig is.</param>
+        /// <param name="gedoe"></param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void MembershipNieuwePersoonBewaren(PersoonDetails details, string stamNummer, int werkJaar, bool metLoonVerlies)
+        public void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar, MembershipGedoe gedoe)
         {
             // Update of maak de persoon, en vind zijn AD-nummer
             int adNr = UpdatenOfMaken(details);
 
-            MembershipBewaren(adNr, stamNummer, werkJaar, metLoonVerlies);
+            MembershipBewaren(adNr, werkJaar, gedoe);
         }
     }
 }

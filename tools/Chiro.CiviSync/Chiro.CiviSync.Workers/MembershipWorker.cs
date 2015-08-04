@@ -26,6 +26,7 @@ using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.CiviSync.Workers
 {
@@ -36,8 +37,8 @@ namespace Chiro.CiviSync.Workers
     {
         private readonly MembershipLogic _membershipLogic;
 
-        public MembershipWorker(ServiceHelper serviceHelper, IMiniLog log, MembershipLogic membershipLogic)
-            : base(serviceHelper, log)
+        public MembershipWorker(ServiceHelper serviceHelper, IMiniLog log, MembershipLogic membershipLogic, ICiviCache cache)
+            : base(serviceHelper, log, cache)
         {
             _membershipLogic = membershipLogic;
         }
@@ -46,14 +47,8 @@ namespace Chiro.CiviSync.Workers
         /// Werkt een bestaand membership bij.
         /// </summary>
         /// <param name="bestaandMembership">Bestaand membership.</param>
-        /// <param name="metLoonVerlies">Als dit <c>true</c> is, en het huidige membership heeft
-        /// nog geen verzekering loonverlies, dan krijgt het bestaande membership een verzekering
-        /// loonverlies, en wordt zo nodig de factuurstatus aangepast (zie #3973 en #3995).
-        /// Is dit <c>calse</c>, dan gebeurt er niets mee.</param>
-        /// <param name="stamNummer">Stamnummer van de aanvrager. Als er iets wijzigt aan het
-        /// mebership, wordt ook de aanvrager geupdatet. Als het membership ongewijzigd blijft,
-        /// dan gebeurt er niets met dit stamnummer.</param>
-        public void BestaandeBijwerken(Membership bestaandMembership, string stamNummer, bool metLoonVerlies)
+        /// <param name="gedoe">Membershipdetails</param>
+        public void BestaandeBijwerken(Membership bestaandMembership, MembershipGedoe gedoe)
         {
             int werkJaar = _membershipLogic.WerkjaarGet(bestaandMembership);
             // We halen de persoon opnieuw op. Wat een beetje overkill is, aangezien
@@ -72,29 +67,30 @@ namespace Chiro.CiviSync.Workers
                     String.Format(
                         "Onbestaand contact {0} voor te verlengen menbership (id {1}, werkjaar {2}). Genegeerd. WTF.",
                         bestaandMembership.ContactId, bestaandMembership.Id, werkJaar),
-                    stamNummer, null, null);
+                    gedoe.StamNummer, null, null);
                 return;                
             }
             var contact = result.Values.First();
             int adNummer = int.Parse(contact.ExternalIdentifier);
 
-            int? civiGroepId = ContactIdGet(stamNummer);
+            int? civiGroepId = ContactIdGet(gedoe.StamNummer);
             if (civiGroepId == null)
             {
-                Log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - lid niet bewaard.", stamNummer),
-                    stamNummer, adNummer, null);
+                Log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - lid niet bewaard.", gedoe.StamNummer),
+                    gedoe.StamNummer, adNummer, null);
                 return;
             }
 
-            if (metLoonVerlies && !bestaandMembership.VerzekeringLoonverlies)
+            if (gedoe.MetLoonVerlies && !bestaandMembership.VerzekeringLoonverlies)
             {
                 var membershipRequest = new MembershipRequest
                 {
                     Id = bestaandMembership.Id,
                     VerzekeringLoonverlies = true,
                     AangemaaktDoorPloegId = civiGroepId,
-                    FactuurStatus =
-                        bestaandMembership.FactuurStatus == FactuurStatus.FactuurOk
+                    FactuurStatus = gedoe.Gratis
+                        ? FactuurStatus.FactuurOk
+                        : bestaandMembership.FactuurStatus == FactuurStatus.FactuurOk
                             ? FactuurStatus.ExtraVerzekeringTeFactureren
                             : bestaandMembership.FactuurStatus
                 };
@@ -106,7 +102,7 @@ namespace Chiro.CiviSync.Workers
                     String.Format(
                         "Membership met ID {5} door {6} bijgewerkt voor {0} {1} (AD {2}, ID {3}) met verzekering loonverlies voor werkjaar {4}.",
                         contact.FirstName, contact.LastName, contact.ExternalIdentifier, contact.GapId,
-                        werkJaar, updateResult.Id, stamNummer), stamNummer, adNummer, contact.GapId);
+                        werkJaar, updateResult.Id, gedoe.StamNummer), gedoe.StamNummer, adNummer, contact.GapId);
             }
             else
             {

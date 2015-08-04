@@ -35,9 +35,6 @@ namespace Chiro.CiviSync.Services
         private readonly string _siteKey = Settings.Default.SiteKey;
         private readonly string _apiKey = Settings.Default.ApiKey;
 
-        private readonly IMiniLog _log;
-        private readonly ServiceHelper _serviceHelper;
-        private readonly IGapUpdateClient _gapUpdateClient;
         private readonly RelationshipLogic _relationshipLogic;
         private readonly MembershipLogic _membershipLogic;
 
@@ -46,19 +43,18 @@ namespace Chiro.CiviSync.Services
         private readonly BivakWorker _bivakWorker;
         private readonly CommunicatieWorker _communicatieWorker;
         private readonly MembershipWorker _membershipWorker;
+        private readonly AdresWorker _adresWorker;
 
+        private readonly IMiniLog _log;
+        private readonly IGapUpdateClient _gapUpdateClient;
         private readonly IChimpSyncHelper _chimpSyncHelper;
 
-        protected ServiceHelper ServiceHelper
-        {
-            get { return _serviceHelper; }
-        }
+        protected ServiceHelper ServiceHelper { get; }
 
         /// <summary>
         /// Creates a new service instance.
         /// </summary>
         /// <param name="serviceHelper">Servicehelper that will connect to the CiviCRM API</param>
-        /// <param name="gapUpdateClient">Wrapper rond de UpdateApi.</param>
         /// <param name="relationshipLogic">Zorgt vooral voor start- en einddata van relaties.</param>
         /// <param name="membershipLogic">Logica voor memberships. Ook vooral start- en einddata.</param>
         /// <param name="bivakWorker">Bivak goodies.</param>
@@ -66,16 +62,13 @@ namespace Chiro.CiviSync.Services
         /// <param name="communicatieWorker">Communicatie goodies.</param>
         /// <param name="lidWorker">Lid goodies.</param>
         /// <param name="membershipWorker">Membership goodies.</param>
+        /// <param name="adresWorker">Adres goodies.</param>
+        /// <param name="gapUpdateClient">Wrapper rond de UpdateApi.</param>
         /// <param name="chimpSyncHelper">Communicatie met Mailchimp.</param>
         /// <param name="log">Logger</param>
-        public SyncService(ServiceHelper serviceHelper, IGapUpdateClient gapUpdateClient,
-            RelationshipLogic relationshipLogic, MembershipLogic membershipLogic, BivakWorker bivakWorker,
-            ContactWorker contactWorker, CommunicatieWorker communicatieWorker, LidWorker lidWorker,
-            MembershipWorker membershipWorker,
-            IChimpSyncHelper chimpSyncHelper,
-            IMiniLog log)
+        public SyncService(ServiceHelper serviceHelper, RelationshipLogic relationshipLogic, MembershipLogic membershipLogic, BivakWorker bivakWorker, ContactWorker contactWorker, CommunicatieWorker communicatieWorker, LidWorker lidWorker, MembershipWorker membershipWorker, AdresWorker adresWorker, IGapUpdateClient gapUpdateClient, IChimpSyncHelper chimpSyncHelper, IMiniLog log)
         {
-            _serviceHelper = serviceHelper;
+            ServiceHelper = serviceHelper;
             _gapUpdateClient = gapUpdateClient;
             _relationshipLogic = relationshipLogic;
             _membershipLogic = membershipLogic;
@@ -89,6 +82,7 @@ namespace Chiro.CiviSync.Services
             _communicatieWorker = communicatieWorker;
             _lidWorker = lidWorker;
             _membershipWorker = membershipWorker;
+            _adresWorker = adresWorker;
 
             // Configureer externe API's van GapUpdate en workers.
             _gapUpdateClient.Configureren(Settings.Default.GapUpdateServer, Settings.Default.GapUpdatePath,
@@ -99,6 +93,7 @@ namespace Chiro.CiviSync.Services
             _communicatieWorker.Configureren(_apiKey, _siteKey);
             _lidWorker.Configureren(_apiKey, _siteKey);
             _membershipWorker.Configureren(_apiKey, _siteKey);
+            _adresWorker.Configureren(_apiKey, _siteKey);
 
             Debug.Assert(_gapUpdateClient != null);
         }
@@ -106,14 +101,6 @@ namespace Chiro.CiviSync.Services
         public void GroepUpdaten(Groep g)
         {
             return; // geen exceptions in staging
-        }
-
-        /// <summary>
-        /// Invalideer gecachete data.
-        /// </summary>
-        public void CacheInvalideren()
-        {
-            _contactWorker.CacheInvalideren();
         }
 
         /// <summary>

@@ -15,12 +15,9 @@
  */
 
 using System;
-using System.Collections.Generic;
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.TestAttributes;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -18,15 +18,16 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-
-using Chiro.Cdf.Ioc;
+using System.Web;
+using Chiro.Cdf.Ioc.Factory;
+using Chiro.Gap.Sync;
 
 namespace Chiro.Gap.Services
 {
     /// <summary>
     /// Klasse die op de scope van de service een aantal zaken regelt
     /// </summary>
-    public class Global : System.Web.HttpApplication
+    public class Global : HttpApplication
     {
         /// <summary>
         /// Acties die uitgevoerd moeten worden wanneer de applicatie start
@@ -36,7 +37,7 @@ namespace Chiro.Gap.Services
         protected void Application_Start(object sender, EventArgs e)
         {
             Factory.ContainerInit();
-            Sync.MappingHelper.MappingsDefinieren(); // mappings voor sync
+            MappingHelper.MappingsDefinieren(); // mappings voor sync
 
             // De mappings voor de servicecontracts worden hier niet meer gedefinieerd,
             // maar expliciet in de constructor van de services. Op die manier konden

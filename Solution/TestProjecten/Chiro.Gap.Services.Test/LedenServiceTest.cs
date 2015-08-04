@@ -17,27 +17,22 @@
  */
 
 using System;
-using System.ServiceModel;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Moq;
-
-using Chiro.Cdf.Ioc;
+using System.ServiceModel;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
-using Chiro.Gap.Dummies;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.Services;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.TestAttributes;
 using Chiro.Gap.WorkerInterfaces;
 using Chiro.Gap.Workers;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
 
 namespace Chiro.Gap.Services.Test

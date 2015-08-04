@@ -22,6 +22,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 
 namespace Chiro.Gap.WebApp
 {

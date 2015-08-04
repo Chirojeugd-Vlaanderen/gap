@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
@@ -31,9 +32,6 @@ namespace Chiro.CiviSync.Services.Test
     [TestClass]
     public class BivakContactBewarenTest
     {
-        private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateClient> _gapUpdateClientMock;
-
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int HuidigWerkJaar = 2014;
 
@@ -46,12 +44,6 @@ namespace Chiro.CiviSync.Services.Test
             TestHelper.MappingsCreeren();
         }
 
-        [TestInitialize]
-        public void InitializeTest()
-        {
-            TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _gapUpdateClientMock);
-        }
-
         /// <summary>
         /// Bij het bewaren van een contact moet het goede contact-ID naar CiviCRM gestuurd worden.
         /// </summary>
@@ -59,6 +51,11 @@ namespace Chiro.CiviSync.Services.Test
         public void ContactBewaren()
         {
             // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
 
             const int adNummer = 2;
             const int persoonContactId = 5;
@@ -76,24 +73,25 @@ namespace Chiro.CiviSync.Services.Test
             };
 
             // Lever persoon of groep op als dat wordt gevraagd.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == adNummer.ToString())))
                 .Returns(new ApiResultValues<Contact>(persoon));
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.EventGet(It.IsAny<string>(), It.IsAny<string>(),
                     It.Is<EventRequest>(r => r.GapUitstapId == bivak.GapUitstapId)))
                 .Returns(Mapper.Map<Event, ApiResultValues<Event>>(bivak));
 
             // Verwacht dat het juiste ContactID naar CiviCRM gaat.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<EventRequest>(r => r.OrganiserendePersoon1Id == persoonContactId))).Verifiable();
+                        It.Is<EventRequest>(r => r.OrganiserendePersoon1Id == persoonContactId)))
+                .Returns(new ApiResultValues<Event>(bivak))
+                .Verifiable();
 
-            var service = Factory.Maak<SyncService>();
-            service.CacheInvalideren();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -101,7 +99,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _civiApiMock.Verify(src => src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
+            civiApiMock.Verify(src => src.EventSave(It.IsAny<string>(), It.IsAny<string>(),
                 It.Is<EventRequest>(r => r.OrganiserendePersoon1Id == persoonContactId)), Times.AtLeastOnce);
         }
 
@@ -113,6 +111,11 @@ namespace Chiro.CiviSync.Services.Test
         public void ContactBewarenOngeldigAdNummer()
         {
             // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
 
             const int adNummer = 2;
             const int uitstapId = 4;
@@ -126,29 +129,28 @@ namespace Chiro.CiviSync.Services.Test
                 ContactResult = Mapper.Map<Contact, ApiResultValues<Contact>>(ploeg)
             };
 
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == adNummer.ToString()))).Returns(new ApiResultValues<Contact>());
 
             // Lever braaf het bivak op als het gevraagd wordt.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.EventGet(It.IsAny<string>(), It.IsAny<string>(),
                     It.Is<EventRequest>(r => r.GapUitstapId == bivak.GapUitstapId)))
                 .Returns(Mapper.Map<Event, ApiResultValues<Event>>(bivak));
 
             // Verwacht dat het foute AD-nummer terug naar GAP gaat.
-            _gapUpdateClientMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
+            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<int>(ad => ad == adNummer))).Returns(Task.Delay(0)).Verifiable();
 
             // ACT
 
-            var service = Factory.Maak<SyncService>();
-            service.CacheInvalideren();
+            var service = factory.Maak<SyncService>();
             service.BivakContactBewaren(uitstapId, adNummer);
 
             // ASSERT
 
-            _gapUpdateClientMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
+            updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -173,5 +173,19 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns><c>true</c> als de probeerperiode van het gegeven <paramref name="lid"/> voorbij is,
         /// anders <c>false</c>.</returns>
         bool ProbeerPeriodeVoorbij(Lid lid);
+
+        /// <summary>
+        /// Bepaalt of een lid gratis kan aansluiten.
+        /// </summary>
+        /// <param name="lid">Een lid.</param>
+        /// <returns><c>true</c> als dat lid gratis aangesloten kan worden.</returns>
+        bool GratisAansluiting(Lid lid);
+
+        /// <summary>
+        /// Levert het stamnummer van een lid op.
+        /// </summary>
+        /// <param name="lid">Lid waarvan we het stamnummer willen weten.</param>
+        /// <returns>Het stamnummer van dat lid.</returns>
+        string StamNummer(Lid lid);
     }
 }

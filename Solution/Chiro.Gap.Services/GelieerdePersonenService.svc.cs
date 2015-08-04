@@ -19,10 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if KIPDORP
-using System.Transactions;
-#endif
-
 using AutoMapper;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
@@ -33,6 +29,10 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Services.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
+using GebruikersRecht = Chiro.Gap.Poco.Model.GebruikersRecht;
+#if KIPDORP
+using System.Transactions;
+#endif
 
 namespace Chiro.Gap.Services
 {
@@ -370,7 +370,7 @@ namespace Chiro.Gap.Services
 
             if (gebruikersRecht != null)
             {
-                result.GebruikersInfo = Mapper.Map<Poco.Model.GebruikersRecht, GebruikersInfo>(gebruikersRecht);
+                result.GebruikersInfo = Mapper.Map<GebruikersRecht, GebruikersInfo>(gebruikersRecht);
             }
             else if (gelieerdePersoon.Persoon.Gav.Any())
             {
@@ -924,15 +924,15 @@ namespace Chiro.Gap.Services
                                 lid = null;
                                 break;
                             case FoutNummer.AdresOntbreekt:
-                                problemen.Add("PostNr", new FoutBericht {Bericht = Properties.Resources.AdresOntbreekt});
+                                problemen.Add("PostNr", new FoutBericht {Bericht = Resources.AdresOntbreekt});
                                 lid = null;
                                 break;
                             case FoutNummer.TelefoonNummerOntbreekt:
-                                problemen.Add("TelefoonNummer.Nummer", new FoutBericht {Bericht = Properties.Resources.WaaromTelefoonNummer});
+                                problemen.Add("TelefoonNummer.Nummer", new FoutBericht {Bericht = Resources.WaaromTelefoonNummer});
                                 lid = null;
                                 break;
                             case FoutNummer.EMailVerplicht:
-                                problemen.Add("Email.Nummer", new FoutBericht {Bericht = Properties.Resources.WaaromEmail});
+                                problemen.Add("Email.Nummer", new FoutBericht {Bericht = Resources.WaaromEmail});
                                 lid = null;
                                 break;
                             default:
@@ -1057,7 +1057,7 @@ namespace Chiro.Gap.Services
                 // dan is er zeker een persoon waaraan de categorie niet gekoppeld kan worden.
                 // (pigeon hole princplie)
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietVanGroep,
-                                                      Properties.Resources.FouteCategorieVoorGroep);
+                                                      Resources.FouteCategorieVoorGroep);
             }
 
             var categorieen = (from c in groepen.First().Categorie
@@ -1068,7 +1068,7 @@ namespace Chiro.Gap.Services
             {
                 // Categorie niet gevonden -> vermoedelijk niet gekoppeld aan groep
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietVanGroep,
-                                                      Properties.Resources.FouteCategorieVoorGroep);
+                                                      Resources.FouteCategorieVoorGroep);
             }
 
             foreach (var c in categorieen)
@@ -1103,7 +1103,7 @@ namespace Chiro.Gap.Services
             if (gelieerdePersonen.Count != gelieerdepersonenIDs.Count)
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.CategorieNietGekoppeld,
-                                                      Properties.Resources.CategorieNietGekoppeld);
+                                                      Resources.CategorieNietGekoppeld);
             }
 
             foreach (var gp in gelieerdePersonen)

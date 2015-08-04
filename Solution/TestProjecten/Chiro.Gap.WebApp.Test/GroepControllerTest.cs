@@ -15,17 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using Chiro.Cdf.Ioc;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System.Web.Mvc;
-
-using Moq;
-
+using Chiro.Cdf.Ioc.Factory;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WebApp.Controllers;
-using Chiro.Cdf.ServiceHelper;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Chiro.Gap.WebApp.Test
 {

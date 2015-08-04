@@ -17,15 +17,14 @@
  */
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 using AutoMapper;
-
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.Domain;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Services.Test
 {

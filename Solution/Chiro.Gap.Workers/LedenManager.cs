@@ -816,6 +816,26 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Bepaalt of een lid gratis kan aansluiten.
+        /// </summary>
+        /// <param name="lid">Een lid.</param>
+        /// <returns><c>true</c> als dat lid gratis aangesloten kan worden.</returns>
+        public bool GratisAansluiting(Lid lid)
+        {
+            return lid.GroepsWerkJaar.Groep is KaderGroep;
+        }
+
+        /// <summary>
+        /// Levert het stamnummer van een lid op.
+        /// </summary>
+        /// <param name="lid">Lid waarvan we het stamnummer willen weten.</param>
+        /// <returns>Het stamnummer van dat lid.</returns>
+        public string StamNummer(Lid lid)
+        {
+            return lid.GroepsWerkJaar.Groep.Code;
+        }
+
+        /// <summary>
         /// Zoekt een afdelingsjaar uit het gegeven <paramref name="groepsWerkJaar"/>, waarin een persoon
         /// met gegeven <paramref name="geslacht"/> en <paramref name="geboorteDatum"/> lid zou kunnen worden,
         /// of <c>null</c> als er zo geen bestaat.

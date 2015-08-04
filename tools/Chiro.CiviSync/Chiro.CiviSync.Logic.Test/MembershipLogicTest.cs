@@ -13,6 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
 using System;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -27,13 +28,11 @@ namespace Chiro.CiviSync.Logic.Test
         private static readonly DateTime VandaagZogezegd = new DateTime(2015, 04, 20);
         private static readonly int DummyGroepId = 1;
 
-        [TestInitialize]
-        public void InitializeTest()
+        public void MockDatum(IDiContainer container)
         {
-            Factory.ContainerInit();
             var datumProviderMock = new Mock<IDatumProvider>();
             datumProviderMock.Setup(src => src.Vandaag()).Returns(VandaagZogezegd);
-            Factory.InstantieRegistreren(datumProviderMock.Object);
+            container.InstantieRegistreren(datumProviderMock.Object);
         }
 
         /// <summary>
@@ -42,7 +41,10 @@ namespace Chiro.CiviSync.Logic.Test
         [TestMethod]
         public void MembershipVanWerkjaarBeginDatum()
         {
-            var target = Factory.Maak<MembershipLogic>();
+            var factory = new UnityDiContainer();
+            MockDatum(factory);
+
+            var target = factory.Maak<MembershipLogic>();
             var result = target.VanWerkjaar(MembershipType.Aansluiting, 4, DummyGroepId, 2014);
             Assert.AreEqual(result.StartDate, VandaagZogezegd);
         }
@@ -53,7 +55,10 @@ namespace Chiro.CiviSync.Logic.Test
         [TestMethod]
         public void MembershipVanVorigWerkjaarBeginDatum()
         {
-            var target = Factory.Maak<MembershipLogic>();
+            var factory = new UnityDiContainer();
+            MockDatum(factory);
+
+            var target = factory.Maak<MembershipLogic>();
             var result = target.VanWerkjaar(MembershipType.Aansluiting, 4, DummyGroepId, 2013);
             Assert.AreEqual(result.StartDate, result.EndDate);
         }

@@ -41,6 +41,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -56,6 +57,7 @@
     <Compile Include="DataContracts\Enums.cs" />
     <Compile Include="DataContracts\Groep.cs" />
     <Compile Include="DataContracts\LidGedoe.cs" />
+    <Compile Include="DataContracts\MembershipGedoe.cs" />
     <Compile Include="DataContracts\Persoon.cs" />
     <Compile Include="DataContracts\PersoonDetails.cs" />
     <Compile Include="ISyncPersoonService.cs" />

@@ -11,5 +11,8 @@
     <Setting Name="WerkjaarStart" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)">2000-09-01</Value>
     </Setting>
+    <Setting Name="StandaardLandCode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">BE</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

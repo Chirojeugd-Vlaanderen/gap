@@ -15,25 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System.Collections.Generic;
-using System.Linq;
 
-using Chiro.Cdf.Ioc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Chiro.Cdf.Ioc.Factory;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using System.Web.Mvc;
-
 using Chiro.Gap.WebApp.Models;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Chiro.Gap.WebApp;
-using Chiro.Cdf.ServiceHelper;
+using Resources = Chiro.Gap.WebApp.Properties.Resources;
 
 namespace Chiro.Gap.WebApp.Test
 {

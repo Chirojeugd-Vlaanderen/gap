@@ -27,62 +27,54 @@ using Microsoft.Practices.Unity.Configuration;
 namespace Chiro.Cdf.Ioc
 {
     /// <summary>
-    /// Factory is verantwoordelijk voor de dependency injection
+    /// Eigenlijk gewoon een wrapper rond een unity container.
     /// </summary>
-	public static class Factory
-	{
-		private static readonly object ThreadLock = new object();
+	public class UnityDiContainer: IDiContainer
+    {
+		private readonly IUnityContainer _container;
 
-		private static IUnityContainer _container;
+        public UnityDiContainer()
+        {
+            _container = new UnityContainer();
+        }
 
-		/// <summary>
-		/// Initialiseert de unity container voor de factory.
-		/// </summary>
-		public static void ContainerInit()
-		{
-            // Kunnen we dit niet gewoon in de constructor doen, en zo een 
-            // singleton implementeren?
+        public void Dispose()
+        {
+            _container.Dispose();
+        }
 
-            lock (ThreadLock)
+        /// <summary>
+        /// Initialiseert de unity container voor de factory.
+        /// </summary>
+        public void InitVolgensConfigFile()
+        {
+            var section = (UnityConfigurationSection) ConfigurationManager.GetSection("unity");
+
+            // Als section null is, is er geen unity-configuratie in app.config of web.config.
+            // Op zich geen probleem, want de configuratie kan ook at runtime
+
+            if (section != null)
             {
-                if (_container != null)
-                {
-                    // Andere container in gebruik: geef eerst vrij.
+                // Als de toepassing hierop crasht, kijk dan je config file na:
+                // * Heb je bij je types ook de assembly's vermeld waarin ze gedefinieerd zijn?
+                // * Bevat je project referenties naar al die assemblies?
+                // * Hernoemde je onlangs interfaces of implementaties?
 
-                    _container.Dispose();
-                    _container = null;
-                }
+                // Wat ook kan helpen, is de ongebruikte referenties uit je project verwijderen,
+                // alsook de referenties nodig voor dependency injection, en die dan allemaal
+                // terugleggen.
 
-                _container = new UnityContainer();
-
-                var section = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
-
-                // Als section null is, is er geen unity-configuratie in app.config of web.config.
-                // Op zich geen probleem, want de configuratie kan ook at runtime
-
-                if (section != null)
-                {
-                    // Als de toepassing hierop crasht, kijk dan je config file na:
-                    // * Heb je bij je types ook de assembly's vermeld waarin ze gedefinieerd zijn?
-                    // * Bevat je project referenties naar al die assemblies?
-                    // * Hernoemde je onlangs interfaces of implementaties?
-
-                    // Wat ook kan helpen, is de ongebruikte referenties uit je project verwijderen,
-                    // alsook de referenties nodig voor dependency injection, en die dan allemaal
-                    // terugleggen.
-                    
-                    section.Configure(_container);
-                }
+                section.Configure(_container);
             }
-		}
+        }
 
-		/// <summary>
+        /// <summary>
 		/// Gebruik Unity om een instantie van type/interface T
 		/// te creëren.
 		/// </summary>
         /// <typeparam name="T">Van welk type het object moet zijn</typeparam>
 		/// <returns>Het type</returns>
-		public static T Maak<T>()
+		public  T Maak<T>()
 		{
 			Debug.Assert(_container != null);
 
@@ -94,7 +86,7 @@ namespace Chiro.Cdf.Ioc
 		/// </summary>
 		/// <param name="t">Van welk type het object moet zijn</param>
 		/// <returns>Het geïnstantieerde object</returns>
-		public static object Maak(Type t)
+		public  object Maak(Type t)
 		{
 			Debug.Assert(_container != null);
 
@@ -107,23 +99,11 @@ namespace Chiro.Cdf.Ioc
 		/// </summary>
 		/// <typeparam name="T">Type van de interface</typeparam>
 		/// <param name="instantie">Te gebruiken object</param>
-		public static void InstantieRegistreren<T>(T instantie)
+		public  void InstantieRegistreren<T>(T instantie)
 		{
             Debug.Assert(_container != null);   // als deze assert failt, vergat je de container te initialiseren.
 
-			// Als de debugger hieronder een Exception genereert bij het unittesten, dan is
-			// dat mogelijk geen probleem:
-			// http://unity.codeplex.com/WorkItem/View.aspx?WorkItemId=7019
-			// Maar ik ben daar toch niet zo zeker van :-/
-
-			try
-			{
-				_container.RegisterInstance(instantie);
-			}
-			catch (SynchronizationLockException)
-			{
-				// Doe niets. :-/
-			}	
+		    _container.RegisterInstance(instantie);
 		}
 
         /// <summary>
@@ -133,7 +113,7 @@ namespace Chiro.Cdf.Ioc
         /// </summary>
         /// <typeparam name="T">Gevraagde type</typeparam>
         /// <param name="type">Type van opgeleverd object</param>
-        public static void TypeRegistreren<T>(Type type)
+        public  void TypeRegistreren<T>(Type type)
         {
             _container.RegisterType(type);
         }

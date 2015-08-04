@@ -31,8 +31,8 @@ namespace Chiro.CiviSync.Workers
         /// Constructor
         /// </summary>
         /// <param name="serviceHelper">Helper to be used for WCF service calls</param>
-        public BivakWorker(ServiceHelper serviceHelper, IMiniLog log)
-            : base(serviceHelper, log)
+        public BivakWorker(ServiceHelper serviceHelper, IMiniLog log, ICiviCache cache)
+            : base(serviceHelper, log, cache)
         {
         }
 
@@ -55,7 +55,7 @@ namespace Chiro.CiviSync.Workers
                             // hebben om te loggen.
                             ContactGetRequest = new ContactRequest
                             {
-                                IdValueExpression = "$value.custom_56_id",
+                                IdValueExpression = "$value.custom_47_id",
                                 ReturnFields = "external_identifier"
                             },
                             LocBlockGetRequest = new LocBlockRequest
