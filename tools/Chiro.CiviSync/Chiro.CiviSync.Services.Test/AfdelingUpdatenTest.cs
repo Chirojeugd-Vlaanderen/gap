@@ -1,5 +1,20 @@
-﻿using System;
-using AutoMapper;
+﻿/*
+   Copyright 2015 Chirojeugd-Vlaanderen vzw
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
+
+using System;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -17,9 +32,6 @@ namespace Chiro.CiviSync.Services.Test
     [TestClass]
     public class AfdelingUpdatenTest
     {
-        private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateClient> _updateHelperMock;
-
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int HuidigWerkJaar = 2014;
 
@@ -32,12 +44,6 @@ namespace Chiro.CiviSync.Services.Test
             TestHelper.MappingsCreeren();
         }
 
-        [TestInitialize]
-        public void InitializeTest()
-        {
-            TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _updateHelperMock);
-        }
-
         /// <summary>
         /// Controleer of de nieuwe afdelingen wel mee naar de API gaan.
         /// </summary>
@@ -45,6 +51,12 @@ namespace Chiro.CiviSync.Services.Test
         public void AfdelingenInRequestTest()
         {
             // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
 
             const int adNummer = 2;
             const int werkJaar = 2014;
@@ -80,19 +92,18 @@ namespace Chiro.CiviSync.Services.Test
             const AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
             const Afdeling civiAfdeling = Afdeling.Rakwis;
 
-            // External ID's omzetten naar ID's gebeurt via
-            // een GetSingle. Let's mock that.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(ploeg);
-            _civiApiMock.Setup(
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
+                .Returns(new ApiResultValues<Contact>(ploeg));
+            civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
-                .Returns(persoon);
+                .Returns(new ApiResultValues<Contact>(persoon));
             // Relatie wordt normaal gezien gezocht op basis van de contact-ID's
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.RelationshipGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
@@ -102,13 +113,13 @@ namespace Chiro.CiviSync.Services.Test
                 .Returns(new ApiResultValues<Relationship>(bestaandLid));
             // We verwachten dat de relatie opnieuw bewaard wordt met de juiste afdeling
             // (de return value van  deze mock is niet helemaal juist, maar zeis hier ook niet zo relevant.)
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.Is<RelationshipRequest>(
                     r => r.Id == bestaandLid.Id && r.Afdeling == civiAfdeling)))
                 .Returns(new ApiResultValues<Relationship>(bestaandLid))
                 .Verifiable();
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -117,7 +128,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.Is<RelationshipRequest>(
                     r => r.Id == bestaandLid.Id && r.Afdeling == civiAfdeling)), Times.AtLeastOnce);
         }
@@ -130,6 +141,13 @@ namespace Chiro.CiviSync.Services.Test
         {
             // ARRANGE
 
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
+
+
             const int adNummer = 2;
             const int werkJaar = 2014;
 
@@ -139,7 +157,7 @@ namespace Chiro.CiviSync.Services.Test
                 src =>
                     src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>()))
                 .Verifiable();
-            Factory.InstantieRegistreren(logMock.Object);
+            factory.InstantieRegistreren(logMock.Object);
 
             // Dummy gegevens voor test:
 
@@ -159,19 +177,18 @@ namespace Chiro.CiviSync.Services.Test
             };
             const AfdelingEnum gapAfdeling = AfdelingEnum.Rakwis;
 
-            // External ID's omzetten naar ID's gebeurt via
-            // een GetSingle. Let's mock that.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier))).Returns(ploeg);
-            _civiApiMock.Setup(
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<ContactRequest>(r => r.ExternalIdentifier == ploeg.ExternalIdentifier)))
+                .Returns(new ApiResultValues<Contact>(ploeg));
+            civiApiMock.Setup(
                 src =>
-                    src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(),
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<ContactRequest>(r => r.ExternalIdentifier == persoon.ExternalIdentifier)))
-                .Returns(persoon);
+                .Returns(new ApiResultValues<Contact>(persoon));
             // Api vindt geen relatie
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.RelationshipGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<RelationshipRequest>(
@@ -181,12 +198,12 @@ namespace Chiro.CiviSync.Services.Test
                 .Returns(new ApiResultValues<Relationship>());
             // We verwachten dat de relatie niet opnieuw bewaard wordt. We zetten een mock op
             // om dat te verifieren.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()))
                 .Returns(new ApiResultValues<Relationship>())
                 .Verifiable();
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -195,7 +212,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 src => src.RelationshipSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RelationshipRequest>()), Times.Never);
             logMock.Verify(
                 src =>

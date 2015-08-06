@@ -42,11 +42,12 @@ namespace Chiro.CiviSync.Mapping
                 .ForMember(dst => dst.FirstName, opt => opt.MapFrom(src => src.VoorNaam))
                 .ForMember(dst => dst.MiddleName, opt => opt.Ignore())
                 .ForMember(dst => dst.OrganizationName, opt => opt.Ignore())
-                .ForMember(dst => dst.Gender, opt => opt.MapFrom(src => (Gender) (3 - (int) src.Geslacht)))
+                .ForMember(dst => dst.Gender, opt => opt.MapFrom(src => PersoonLogic.GeslachtNaarGender(src.Geslacht)))
                 // IsDeceased komt niet direct mee met DeceasedDate, zie
                 // http://forum.civicrm.org/index.php/topic,35553.0.html
                 .ForMember(dst => dst.IsDeceased, opt => opt.MapFrom(src => src.SterfDatum != null))
                 .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Naam))
+                .ForMember(dst => dst.KaderNiveau, opt => opt.UseValue(null))
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
                 .ForMember(dst => dst.IdValueExpression, opt => opt.Ignore())
                 .ForMember(dst => dst.PreferredMailFormat, opt => opt.Ignore())

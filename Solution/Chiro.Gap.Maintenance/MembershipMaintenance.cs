@@ -62,17 +62,17 @@ namespace Chiro.Gap.Maintenance
             int huidigWerkJaar = _groepsWerkJarenManager.HuidigWerkJaarNationaal();
             DateTime vandaag = _groepsWerkJarenManager.Vandaag();
 
-            var teSyncen = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon", "GroepsWerkJaar")
+            var teSyncen = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon.PersoonsVerzekering", "GroepsWerkJaar")
                 where
                     (l.GelieerdePersoon.Persoon.LaatsteMembership < huidigWerkJaar ||
                      l.GelieerdePersoon.Persoon.LaatsteMembership == null) &&
                     l.GroepsWerkJaar.WerkJaar == huidigWerkJaar &&
                     l.EindeInstapPeriode < vandaag
-                select l.GelieerdePersoon.Persoon).ToArray();
+                select l).Take(Properties.Settings.Default.LimitMembershipQuery).ToArray();
 
             foreach (var p in teSyncen)
             {
-                _personenSync.MembershipRegistreren(p, huidigWerkJaar);
+                    _personenSync.MembershipRegistreren(p);
             }
         }
 

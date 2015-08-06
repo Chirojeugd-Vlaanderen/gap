@@ -70,6 +70,7 @@
     <Compile Include="BivakContactBewarenTest.cs" />
     <Compile Include="BivakPlaatsBewarenTest.cs" />
     <Compile Include="AfdelingUpdatenTest.cs" />
+    <Compile Include="LoonVerliesVerzerkerenTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -91,6 +92,10 @@
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\KipSync\Chiro.Mailchimp.Sync\Chiro.Mailchimp.Sync.csproj">
+      <Project>{4C2D492F-8C94-43F3-BF61-1FF21D0B74CE}</Project>
+      <Name>Chiro.Mailchimp.Sync</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.CiviSync.Logic\Chiro.CiviSync.Logic.csproj">
       <Project>{3CCD93C2-0CB6-4562-B017-E2DF3F9AB0A4}</Project>
       <Name>Chiro.CiviSync.Logic</Name>
@@ -102,6 +107,10 @@
     <ProjectReference Include="..\Chiro.CiviSync.Services\Chiro.CiviSync.Services.csproj">
       <Project>{30215F07-A682-4E89-8FF9-D33F705E9842}</Project>
       <Name>Chiro.CiviSync.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.CiviSync.Workers\Chiro.CiviSync.Workers.csproj">
+      <Project>{9B8B6ADD-3963-440B-B00C-54F476ED353A}</Project>
+      <Name>Chiro.CiviSync.Workers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Log\Chiro.Gap.Log.csproj">
       <Project>{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}</Project>

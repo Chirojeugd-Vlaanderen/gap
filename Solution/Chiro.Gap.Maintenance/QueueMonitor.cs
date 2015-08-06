@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Diagnostics;
 
 namespace Chiro.Gap.Maintenance
@@ -28,8 +29,20 @@ namespace Chiro.Gap.Maintenance
         /// <returns>Het aantal berichten in de message queue :-).</returns>
         public int AantalBerichten(string queueName)
         {
-            var queueCounter = new PerformanceCounter("MSMQ queue", "Messages in Queue", queueName);
-            return (int)queueCounter.NextValue();
+            int result;
+            try
+            {
+                var queueCounter = new PerformanceCounter("MSMQ Queue", "Messages in Queue", queueName);
+                result = (int)queueCounter.NextValue();
+            }
+            catch (InvalidOperationException)
+            {
+                // In sommige gevallen wordt bij een lege queue een exception gegooid.
+                // Maar niet altijd. Het is me niet helemaal duidelijk wanneer wel en wanneer
+                // niet, maar voor de zekerheid catch ik deze exception dus maar.
+                result = 0;
+            }
+            return result;
         }
     }
 }

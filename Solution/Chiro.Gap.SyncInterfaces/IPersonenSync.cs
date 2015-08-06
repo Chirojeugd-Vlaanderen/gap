@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -35,11 +35,9 @@ namespace Chiro.Gap.SyncInterfaces
 		void Bewaren(GelieerdePersoon gp, bool metStandaardAdres, bool metCommunicatie);
 
         /// <summary>
-        /// Registreert een membership in de Chirocivi voor de gegeven <paramref name="persoon"/> in het
-        /// gegeven <paramref name="werkJaar"/>.
+        /// Registreert een membership in de Chirocivi voor het gegeven <paramref name="lid"/>
         /// </summary>
-        /// <param name="persoon">Persoon waarvoor membership geregistreerd moet worden</param>
-        /// <param name="werkJaar">Werkjaar voor het membership</param>
-	    void MembershipRegistreren(Persoon persoon, int werkJaar);
+        /// <param name="lid">Lid waarvoor membership geregistreerd moet worden</param>
+	    void MembershipRegistreren(Lid lid);
 	}
 }

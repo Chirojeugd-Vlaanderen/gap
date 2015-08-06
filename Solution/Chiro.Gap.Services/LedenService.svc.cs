@@ -20,22 +20,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-#if KIPDORP
-using System.Transactions; // NIET VERWIJDEREN!!
-#endif
-
 using AutoMapper;
 using Chiro.Cdf.Poco;
-
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Services.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
+#if KIPDORP
+using System.Transactions; // NIET VERWIJDEREN!!
+#endif
 
 namespace Chiro.Gap.Services
 {
@@ -434,7 +432,7 @@ namespace Chiro.Gap.Services
             {
                 if (g.StopDatum != null && g.StopDatum < DateTime.Now)
                 {
-                    throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Resources.GroepInactief);
                 }
 
                 var gwj = _groepenMgr.HuidigWerkJaar(g);
@@ -449,13 +447,13 @@ namespace Chiro.Gap.Services
 
                     if (lid == null)
                     {
-                        foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogNietIngeschreven,
+                        foutBerichtenBuilder.AppendLine(String.Format(Resources.IsNogNietIngeschreven,
                                                                       gp.Persoon.VolledigeNaam));
                         continue;
                     }
                     if (lid.NonActief)
                     {
-                        foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsAlUitgeschreven,
+                        foutBerichtenBuilder.AppendLine(String.Format(Resources.IsAlUitgeschreven,
                                                                       gp.Persoon.VolledigeNaam));
                         continue;
                     }
@@ -597,7 +595,7 @@ namespace Chiro.Gap.Services
                     // nooit gekoppeld zijn aan het groepswerkjaar van elk lid. 
                     // (pigeon hole principle)
                     throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietVanGroep,
-                                                          Properties.Resources.OngelidgeAfdelingVoorLid);
+                                                          Resources.OngelidgeAfdelingVoorLid);
                 }
                 afdelingsJaren = (from aj in gwjs.First().AfdelingsJaar
                                   where afdelingsJaarIds.Contains(aj.ID)
@@ -607,7 +605,7 @@ namespace Chiro.Gap.Services
                 {
                     // Niet alle afdelingsjaren zijn gevonden in het groepswerkjaar van de leden.
                     throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietVanGroep,
-                                      Properties.Resources.OngelidgeAfdelingVoorLid);
+                                      Resources.OngelidgeAfdelingVoorLid);
 
                 }
             }
@@ -631,7 +629,7 @@ namespace Chiro.Gap.Services
                 {
                     if (ex.FoutNummer == FoutNummer.AlgemeneKindFout)
                     {
-                        throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingKindVerplicht, Properties.Resources.KindInEenAfdelingsJaar);
+                        throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingKindVerplicht, Resources.KindInEenAfdelingsJaar);
                     }
                     else
                     {
@@ -673,7 +671,7 @@ namespace Chiro.Gap.Services
 
             if (lid.GroepsWerkJaar.Groep.StopDatum != null && lid.GroepsWerkJaar.Groep.StopDatum < DateTime.Now)
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Resources.GroepInactief);
             }
 
             var verzekeringstype = (from g in _verzekerRepo.Select() where g.ID == (int)Verzekering.LoonVerlies select g).First();
@@ -771,7 +769,7 @@ namespace Chiro.Gap.Services
             Gav.Check(lid);
             if (lid.NonActief)
             {
-                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Properties.Resources.LidInactief);
+                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Resources.LidInactief);
             }
             return Mapper.Map<Lid, PersoonLidInfo>(lid);
         }
@@ -787,7 +785,7 @@ namespace Chiro.Gap.Services
             Gav.Check(lid);
             if (lid.NonActief)
             {
-                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Properties.Resources.LidInactief);
+                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Resources.LidInactief);
             }
             return Mapper.Map<GelieerdePersoon, PersoonInfo>(lid.GelieerdePersoon);
         }
@@ -803,7 +801,7 @@ namespace Chiro.Gap.Services
             Gav.Check(lid);
             if (lid.NonActief)
             {
-                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Properties.Resources.LidInactief);
+                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Resources.LidInactief);
             }
             return Mapper.Map<Lid, LidInfo>(lid);
         }

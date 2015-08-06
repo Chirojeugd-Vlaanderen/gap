@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Services.Properties;
 
 namespace Chiro.Gap.Services
 {
@@ -35,7 +36,7 @@ namespace Chiro.Gap.Services
         public static FaultException<FoutNummerFault> GeenGav()
         {
             return new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = Domain.FoutNummer.GeenGav },
-                                                       new FaultReason(Properties.Resources.GeenGav));
+                                                       new FaultReason(Resources.GeenGav));
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace Chiro.Gap.Services
             // Hier kan misschien best een overload van gemaakt worden, zodat je een reason kunt
             // meegeven.
             return new FaultException<BestaatAlFault<TInfo>>(new BestaatAlFault<TInfo> { Bestaande = bestaande },
-                                                             new FaultReason(Properties.Resources.EntiteitBestondAl));
+                                                             new FaultReason(Resources.EntiteitBestondAl));
         }
 
         public static FaultException<FoutNummerFault> FoutNummer(FoutNummer nummer, string reason)

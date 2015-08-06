@@ -39,7 +39,8 @@ namespace Chiro.CiviSync.Workers
         /// <param name="serviceHelper"></param>
         /// <param name="log"></param>
         /// <param name="relationshipLogic"></param>
-        public LidWorker(ServiceHelper serviceHelper, IMiniLog log, RelationshipLogic relationshipLogic) : base(serviceHelper, log)
+        public LidWorker(ServiceHelper serviceHelper, IMiniLog log, RelationshipLogic relationshipLogic,
+            ICiviCache cache) : base(serviceHelper, log, cache)
         {
             _relationshipLogic = relationshipLogic;
         }

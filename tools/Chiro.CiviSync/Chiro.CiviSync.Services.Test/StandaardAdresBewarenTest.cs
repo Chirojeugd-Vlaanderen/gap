@@ -15,11 +15,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -37,9 +32,6 @@ namespace Chiro.CiviSync.Services.Test
     [TestClass]
     public class StandaardAdresBewarenTest
     {
-        private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateClient> _updateHelperMock;
-
         [ClassInitialize]
         public static void InitialilzeTestClass(TestContext c)
         {
@@ -47,12 +39,6 @@ namespace Chiro.CiviSync.Services.Test
             MappingHelper.MappingsDefinieren();
             // creer mappings voor de tests
             TestHelper.MappingsCreeren();
-        }
-
-        [TestInitialize]
-        public void InitializeTest()
-        {
-            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out _civiApiMock, out _updateHelperMock);
         }
 
         /// <summary>
@@ -63,11 +49,16 @@ namespace Chiro.CiviSync.Services.Test
         {
             // ARRANGE
 
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out factory, out civiApiMock, out updateHelperMock);
+
             // De API levert niets op:
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(new Contact());
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.IsAny<ContactRequest>()))
@@ -78,9 +69,9 @@ namespace Chiro.CiviSync.Services.Test
                 src =>
                     src.Loggen(Niveau.Error, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>()))
                 .Verifiable();
-            Factory.InstantieRegistreren(logger.Object);
+            factory.InstantieRegistreren(logger.Object);
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -115,24 +106,29 @@ namespace Chiro.CiviSync.Services.Test
         {
             // ARRANGE
 
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out factory, out civiApiMock, out updateHelperMock);
+
             // Zo gezegd ongeldig AD-nummer
             const int adNummer = 1;
 
             // De API levert niets op:
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.ContactGetSingle(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(new Contact());
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src =>
                     src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
                         It.IsAny<ContactRequest>()))
                 .Returns(new ApiResultValues<Contact>());
 
             // verwacht aanroep van GapUpdateClient
-            _updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
+            updateHelperMock.Setup(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer))).Verifiable();
 
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
 
             // ACT
 
@@ -153,7 +149,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ASSERT
 
-            _updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
+            updateHelperMock.Verify(src => src.OngeldigAdNaarGap(It.Is<Int32>(ad => ad == adNummer)), Times.AtLeastOnce);
         }
     }
 }

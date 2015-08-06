@@ -16,16 +16,16 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using Moq;
-using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Test
 {

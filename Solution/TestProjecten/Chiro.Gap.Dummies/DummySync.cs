@@ -52,7 +52,7 @@ namespace Chiro.Gap.Dummies
             }
         }
 
-        public void MembershipRegistreren(Persoon persoon, int werkJaar)
+        public void MembershipRegistreren(Lid lid)
         {
         }
 

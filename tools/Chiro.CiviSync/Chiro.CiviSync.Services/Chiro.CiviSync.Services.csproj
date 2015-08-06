@@ -81,6 +81,7 @@
     <Compile Include="SyncService.LidBewaren.cs" />
     <Compile Include="SyncService.LidTypeUpdaten.cs" />
     <Compile Include="SyncService.LidVerwijderen.cs" />
+    <Compile Include="SyncService.LoonVerliesVerzekeren.cs" />
     <Compile Include="SyncService.MembershipBewaren.cs" />
     <Compile Include="SyncService.PersoonBewaren.cs" />
     <Compile Include="SyncService.PersoonUpdaten.cs" />

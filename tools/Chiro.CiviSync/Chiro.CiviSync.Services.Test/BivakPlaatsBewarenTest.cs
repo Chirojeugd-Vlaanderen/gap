@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Security;
 using AutoMapper;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
@@ -33,9 +32,6 @@ namespace Chiro.CiviSync.Services.Test
     [TestClass]
     public class BivakPlaatsBewarenTest
     {
-        private Mock<ICiviCrmApi> _civiApiMock;
-        private Mock<IGapUpdateClient> _updateHelperMock;
-
         private readonly DateTime _vandaagZogezegd = new DateTime(2015, 2, 6);
         private const int HuidigWerkJaar = 2014;
 
@@ -48,16 +44,15 @@ namespace Chiro.CiviSync.Services.Test
             TestHelper.MappingsCreeren();
         }
 
-        [TestInitialize]
-        public void InitializeTest()
-        {
-            TestHelper.IocOpzetten(_vandaagZogezegd, out _civiApiMock, out _updateHelperMock);
-        }
-
         [TestMethod]
         public void BivakPlaatsBewarenNieuwLocBlock()
         {
             // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
 
             // bestaande gegevens
             const int uitstapId = 4;
@@ -79,16 +74,16 @@ namespace Chiro.CiviSync.Services.Test
                 WoonPlaats = "Antwerpen"
             };
             // mock
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.EventGet(It.IsAny<string>(), It.IsAny<string>(),
                     It.Is<EventRequest>(r => r.GapUitstapId == bivak.GapUitstapId)))
                 .Returns(Mapper.Map<Event, ApiResultValues<Event>>(bivak));
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.AddressGet(It.IsAny<string>(), It.IsAny<string>(),
                     It.IsAny<AddressRequest>())).Returns(new ApiResultValues<Address> {Count = 0, Values = new Address[0]});
             // controleer of het bewaarde adres het type 'billing' heeft, en of
             // de plaatsnaam mee wordt bewaard.
-            _civiApiMock.Setup(
+            civiApiMock.Setup(
                 src => src.LocBlockSave(It.IsAny<string>(), It.IsAny<string>(),
                     It.Is<LocBlockRequest>(r => r.Address.LocationTypeId == 5 && r.Address.Name == plaatsnaam)))
                 .Returns(
@@ -98,12 +93,12 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            var service = Factory.Maak<SyncService>();
+            var service = factory.Maak<SyncService>();
             service.BivakPlaatsBewaren(uitstapId, plaatsnaam, adres);
 
             // ASSERT
 
-            _civiApiMock.Verify(
+            civiApiMock.Verify(
                 src => src.LocBlockSave(It.IsAny<string>(), It.IsAny<string>(),
                     It.Is<LocBlockRequest>(r => r.Address.LocationTypeId == 5 && r.Address.Name == plaatsnaam)),
                 Times.AtLeastOnce);

@@ -17,8 +17,7 @@
  */
 
 using System.Collections.Generic;
-using System.Diagnostics;
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;

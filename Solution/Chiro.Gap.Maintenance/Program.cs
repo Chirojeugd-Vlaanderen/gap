@@ -16,8 +16,9 @@
  * limitations under the License.
  */
 
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Mailer;
+using Chiro.Gap.Maintenance.Properties;
 using Chiro.Gap.Sync;
 
 namespace Chiro.Gap.Maintenance
@@ -35,11 +36,11 @@ namespace Chiro.Gap.Maintenance
 
             var mailer = Factory.Maak<IMailer>();
 
-            if (queueMonitor.AantalBerichten(Properties.Settings.Default.QueueNaam) >
-                Properties.Settings.Default.MaxBerichten)
+            if (queueMonitor.AantalBerichten(Settings.Default.QueueNaam) >
+                Settings.Default.MaxBerichten)
             {
-                mailer.Verzenden(Properties.Settings.Default.Afzender, Properties.Settings.Default.Ontvanger,
-                    Properties.Settings.Default.Onderwerp, Properties.Settings.Default.Inhoud);
+                mailer.Verzenden(Settings.Default.Afzender, Settings.Default.Ontvanger,
+                    Settings.Default.Onderwerp, Settings.Default.Inhoud);
             }
             else
             {

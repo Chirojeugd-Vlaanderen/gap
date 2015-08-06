@@ -17,7 +17,7 @@
  */
 
 using System.Data.Objects.DataClasses;
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

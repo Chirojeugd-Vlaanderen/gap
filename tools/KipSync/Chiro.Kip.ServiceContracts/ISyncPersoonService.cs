@@ -262,32 +262,22 @@ namespace Chiro.Kip.ServiceContracts
         /// Verzekert de gegeven persoon in het gegeven groepswerkjaar tegen loonverlies, gegeven dat de persoon
         /// een AD-nummer heeft
         /// </summary>
-        /// <param name="adNummer">
-        /// AD-nummer van te verzekeren persoon
-        /// </param>
-        /// <param name="stamNummer">
-        /// Stamnummer van betalende groep
-        /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar voor de verzekering
-        /// </param>
+        /// <param name="adNummer">AD-nummer van te verzekeren persoon</param>
+        /// <param name="stamNummer">Stamnummer van betalende groep</param>
+        /// <param name="werkJaar">Werkjaar voor de verzekering</param>
+        /// <param name="gratis">Geeft aan of de verzekering gratis is; typisch is dat zo voor kaderploegen.</param>
         [OperationContract(IsOneWay = true)]
-        void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar);
+        void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar, bool gratis);
 
         /// <summary>
         /// Verzekert een persoon waarvan we het AD-nummer nog niet kennen tegen loonverlies
         /// </summary>
-        /// <param name="details">
-        /// Details van de te verzekeren persoon
-        /// </param>
-        /// <param name="stamNummer">
-        /// Stamnummer van betalende groep
-        /// </param>
-        /// <param name="werkJaar">
-        /// Werkjaar voor de verzekering
-        /// </param>
+        /// <param name="details">Details van de te verzekeren persoon</param>
+        /// <param name="stamNummer">Stamnummer van betalende groep</param>
+        /// <param name="werkJaar">Werkjaar voor de verzekering</param>
+        /// <param name="gratis">Geeft aan of de verzekering gratis is; typisch is dat zo voor kaderploegen.</param>
         [OperationContract(IsOneWay = true)]
-        void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar);
+        void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar, bool gratis);
 
         #endregion
 
@@ -388,21 +378,24 @@ namespace Chiro.Kip.ServiceContracts
         #endregion
         
         #region memberships
+
         /// <summary>
         /// Bewaart een membership voor de persoon met gegeven <paramref name="adNummer"/> in het gegeven <paramref name="werkJaar"/>.
         /// </summary>
         /// <param name="adNummer">AD-nummer van persoon met te bewaren membership.</param>
         /// <param name="werkJaar">Werkjaar waarvoor membership bewaard moet worden.</param>
+        /// <param name="gedoe">Membershipdetails</param>
         [OperationContract(IsOneWay = true)]
-        void MembershipBewaren(int adNummer, int werkJaar);
+        void MembershipBewaren(int adNummer, int werkJaar, MembershipGedoe gedoe);
 
         /// <summary>
         /// Bewaart een membership voor de persoon met gegeven <paramref name="details"/> in het gegeven <paramref name="werkJaar"/>
         /// </summary>
         /// <param name="details">Details van persoon met te bewaren membership.</param>
         /// <param name="werkJaar">Werkjaar waarvoor het membership bewaard moet worden.</param>
+        /// <param name="gedoe">Membershipdetails</param>
         [OperationContract(IsOneWay = true)]
-        void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar);
+        void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar, MembershipGedoe gedoe);
         #endregion        
     }
 }

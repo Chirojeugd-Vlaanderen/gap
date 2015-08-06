@@ -15,12 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿
+
 using System.Web;
 using System.Web.Routing;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
 
 namespace Chiro.Gap.WebApp.Test

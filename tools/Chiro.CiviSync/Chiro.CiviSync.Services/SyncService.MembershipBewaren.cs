@@ -20,6 +20,7 @@ using System.ServiceModel;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -33,11 +34,19 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="adNummer">AD-nummer van persoon met te bewaren membership.</param>
         /// <param name="werkJaar">Werkjaar waarvoor membership bewaard moet worden.</param>
+        /// <param name="gedoe">Membershipdetails</param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public async void MembershipBewaren(int adNummer, int werkJaar)
+        public async void MembershipBewaren(int adNummer, int werkJaar, MembershipGedoe gedoe)
         {
-            var contact = _contactWorker.PersoonMetRecentsteMembership(adNummer, MembershipType.Aansluiting);
+            int? civiGroepId = _contactWorker.ContactIdGet(gedoe.StamNummer);
+            if (civiGroepId == null)
+            {
+                _log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - lid niet bewaard.", gedoe.StamNummer),
+                    gedoe.StamNummer, adNummer, null);
+                return;
+            }
 
+            var contact = _contactWorker.PersoonMetRecentsteMembership(adNummer, MembershipType.Aansluiting);
             if (contact == null)
             {
                 _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren membership - als dusdanig terug naar GAP.", adNummer),
@@ -48,27 +57,23 @@ namespace Chiro.CiviSync.Services
             }
 
             // request dat we als het nodig is naar de API zullen sturen.
-            var membershipRequest = _membershipLogic.VanWerkjaar(MembershipType.Aansluiting, contact.Id, werkJaar);
+            var membershipRequest = _membershipLogic.VanWerkjaar(MembershipType.Aansluiting, contact.Id,
+                civiGroepId.Value, werkJaar);
+            membershipRequest.VerzekeringLoonverlies = gedoe.MetLoonVerlies;
 
             if (contact.MembershipResult.Count == 1)
             {
                 var bestaandMembership = contact.MembershipResult.Values.First();
                 if (_membershipLogic.WerkjaarGet(bestaandMembership) == werkJaar)
                 {
-                    // We hebben al een membership dit jaar.
-                    _log.Loggen(Niveau.Info,
-                        String.Format(
-                            "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Nieuwe aansluiting genegeerd.",
-                            contact.FirstName, contact.LastName, contact.GapId, contact.ExternalIdentifier, werkJaar),
-                        null, adNummer, contact.GapId);
+                    _membershipWorker.BestaandeBijwerken(bestaandMembership, gedoe);
                     return;
                 }
-                else
-                {
-                    // Er was al een membership vorig jaar. Neem join date over.
-                    membershipRequest.JoinDate = bestaandMembership.JoinDate;
-                }
+
+                // Het recentste membership was van een vorig werkjaar. Neem join date over.
+                membershipRequest.JoinDate = bestaandMembership.JoinDate;
             }
+            membershipRequest.FactuurStatus = gedoe.Gratis ? FactuurStatus.FactuurOk : FactuurStatus.VolledigTeFactureren;
 
             var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
                 svc => svc.MembershipSave(_apiKey, _siteKey, membershipRequest));
@@ -76,8 +81,9 @@ namespace Chiro.CiviSync.Services
 
             _log.Loggen(Niveau.Info,
                 String.Format(
-                    "Membership (aansluiting) {3} {4}: AD {0} werkjaar {2} - memID {1}",
-                    adNummer, result.Id, werkJaar, contact.FirstName, contact.LastName),
+                    "Membership (aansluiting) {5} {3} {4}: AD {0} werkjaar {2} - memID {1}",
+                    adNummer, result.Id, werkJaar, contact.FirstName, contact.LastName,
+                    gedoe.MetLoonVerlies ? "met loonverlies" : String.Empty),
                 null, adNummer, contact.GapId);
         }
 
@@ -86,13 +92,14 @@ namespace Chiro.CiviSync.Services
         /// </summary>
         /// <param name="details">Details van persoon met te bewaren membership.</param>
         /// <param name="werkJaar">Werkjaar waarvoor het membership bewaard moet worden.</param>
+        /// <param name="gedoe"></param>
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
-        public void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar)
+        public void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar, MembershipGedoe gedoe)
         {
             // Update of maak de persoon, en vind zijn AD-nummer
             int adNr = UpdatenOfMaken(details);
 
-            MembershipBewaren(adNr, werkJaar);
+            MembershipBewaren(adNr, werkJaar, gedoe);
         }
     }
 }

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.ServiceHelper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

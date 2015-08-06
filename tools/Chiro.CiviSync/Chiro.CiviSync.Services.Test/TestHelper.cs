@@ -24,8 +24,10 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
+using Chiro.CiviSync.Workers;
 using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
+using Chiro.Mailchimp.Sync;
 using Moq;
 
 namespace Chiro.CiviSync.Services.Test
@@ -92,6 +94,7 @@ namespace Chiro.CiviSync.Services.Test
             Mapper.CreateMap<LocBlockRequest, LocBlock>()
                 .ForMember(dst => dst.AddressResult, opt => opt.Ignore())
                 .ForMember(dst => dst.EventResult, opt => opt.Ignore());
+            Mapper.CreateMap<MembershipRequest, Membership>();
 
             // Onderstaande mapping wordt in de tests gebruikt om een resultaat op
             // te leveren als er een event gecreerd wordt. We gaan er dan van uit dat
@@ -101,7 +104,6 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.EndDate, opt => opt.MapFrom(src => src.EndDate.Values.FirstOrDefault()))
                 .ForMember(dst => dst.LocBlockResult, opt => opt.Ignore())
                 .ForMember(dst => dst.ContactResult, opt => opt.Ignore());
-
             Mapper.CreateMap<ContactRequest, ApiResultValues<Contact>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
                 .ForMember(dst => dst.Count, opt => opt.UseValue(1))
@@ -130,6 +132,15 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] { src }));
+            Mapper.CreateMap<MembershipRequest, ApiResultValues<Membership>>()
+                .ForMember(dst => dst.Version, opt => opt.UseValue(3))
+                .ForMember(dst => dst.Count, opt => opt.UseValue(1))
+                .ForMember(dst => dst.ErrorMessage, opt => opt.UseValue(String.Empty))
+                .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
+                .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] { src }));
+
+            // Hierboven requests, hieronder entities. :-)
 
             Mapper.CreateMap<Contact, ApiResultValues<Contact>>()
                 .ForMember(dst => dst.Version, opt => opt.UseValue(3))
@@ -146,46 +157,57 @@ namespace Chiro.CiviSync.Services.Test
                 .ForMember(dst => dst.IsError, opt => opt.UseValue(0))
                 .ForMember(dst => dst.Values, opt => opt.MapFrom(src => new[] {src}));
 
-
             Mapper.AssertConfigurationIsValid();
         }
 
         /// <summary>
-        /// Zet wat standaarddingen op voor dependency injection:
+        /// Creeert een dependency-injection container voor unit tests.
         /// 
         /// * Geen logging
+        /// * Geen caching
         /// * De tests gedragen zich alsof het vandaag de gegeven datum is.
         /// * Er wordt een mock gebruikt i.p.v. de echte API's voor Civi en GAP.
         /// </summary>
         /// <param name="zogezegdeDatum">De datum die gebruikt moet worden als
-        /// zijnde de huidige datum.</param>
+        ///     zijnde de huidige datum.</param>
+        /// <param name="container">De dependency injection container.</param>
         /// <param name="civiApiMock">Mock-object voor de CiviCRM-API</param>
         /// <param name="updateHelperMock">Mock-object voor UpdateApi</param>
-        public static void IocOpzetten(DateTime zogezegdeDatum, out Mock<ICiviCrmApi> civiApiMock, out Mock<IGapUpdateClient> updateHelperMock)
+        public static void IocOpzetten(DateTime zogezegdeDatum, out IDiContainer container, out Mock<ICiviCrmApi> civiApiMock, out Mock<IGapUpdateClient> updateHelperMock)
         {
             // Dependency injection opzetten om geen echte CiviCRM te moeten
             // aanroepen. (De binding CiviCRM-.NET heeft aparte unit tests)
 
-            Factory.ContainerInit();
+            container = new UnityDiContainer();
+
+            container.InitVolgensConfigFile();
 
             // We gebruiken een mock voor de CiviCrm API.
             civiApiMock = new Mock<ICiviCrmApi>();
             var channelProviderMock = new Mock<IChannelProvider>();
             channelProviderMock.Setup(src => src.GetChannel<ICiviCrmApi>()).Returns(civiApiMock.Object);
-            Factory.InstantieRegistreren(channelProviderMock.Object);
+            container.InstantieRegistreren(channelProviderMock.Object);
 
             // Voor UpdateApi ook.
             updateHelperMock = new Mock<IGapUpdateClient>();
-            Factory.InstantieRegistreren(updateHelperMock.Object);
+            container.InstantieRegistreren(updateHelperMock.Object);
+
+            // Don't bother about mailchimp.
+            var mailchimpMock = new Mock<IChimpSyncHelper>();
+            container.InstantieRegistreren(mailchimpMock.Object);
 
             // Doe alsof het vandaag de zogezegde datum is.
             var datumProviderMock = new Mock<IDatumProvider>();
             datumProviderMock.Setup(src => src.Vandaag()).Returns(zogezegdeDatum);
-            Factory.InstantieRegistreren(datumProviderMock.Object);
+            container.InstantieRegistreren(datumProviderMock.Object);
 
             // Loggen doen we niet.
             var logMock = new Mock<IMiniLog>();
-            Factory.InstantieRegistreren(logMock.Object);
+            container.InstantieRegistreren(logMock.Object);
+
+            // Cachen evenmin.
+            var cacheMock = new Mock<ICiviCache>();
+            container.InstantieRegistreren(cacheMock.Object);
         }
     }
 }
