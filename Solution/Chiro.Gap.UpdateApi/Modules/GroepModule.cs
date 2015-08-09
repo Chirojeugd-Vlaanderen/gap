@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -26,45 +26,34 @@ using Nancy.ModelBinding;
 
 namespace Chiro.Gap.UpdateApi.Modules
 {
-    public class PersoonModule: NancyModule, IDisposable
+    public class GroepModule: NancyModule, IDisposable
     {
         private readonly IGapUpdater _gapUpdater;
 
-        public PersoonModule(IGapUpdater gapUpdater)
+        public GroepModule(IGapUpdater gapUpdater)
         {
             // gapUpdater, aangeleverd door de dependency injection container, is disposable,
             // en moet achteraf vrijgegeven worden. Dat doen we in Dispose() van deze module.
 
             _gapUpdater = gapUpdater;
 
-            Get["/"] = _ => "Hello World!";
-            Get["/persoon/{id}"] = parameters =>
-                {
-                    int id = parameters.id;
-                    return String.Format("You requested {0}", id);
-                };
-
-            // You can test this with curl:
-            // curl -X PUT -d PersoonId=2 -d AdNummer=3 localhost:50673/persoon
-            Put["/persoon"] = _ =>
+            // curl -X PUT -d StamNummer=AG\ /0711 -d StopDatum=2012-08-21 localhost:50673/groep
+            // (laat -d StopDatum=... weg om stopdatum te clearen.)
+            Put["/groep"] = _ =>
             {
-                // PersoonId is hier de key.
-
-                PersoonModel model = this.Bind();
-
+                GroepModel model = this.Bind();
                 try
                 {
-                    _gapUpdater.Bijwerken(model);
+                    _gapUpdater.GroepDesactiveren(model.StamNummer, model.StopDatum);
                 }
                 catch (FoutNummerException ex)
                 {
-                    if (ex.FoutNummer == FoutNummer.PersoonNietGevonden)
+                    if (ex.FoutNummer == FoutNummer.GroepNietGevonden)
                     {
                         return HttpStatusCode.NotFound;
                     }
                     throw;
                 }
-                
                 return HttpStatusCode.OK;
             };
         }
@@ -92,7 +81,7 @@ namespace Chiro.Gap.UpdateApi.Modules
             _disposed = true;
         }
 
-        ~PersoonModule()
+        ~GroepModule()
         {
             Dispose(false);
         }
