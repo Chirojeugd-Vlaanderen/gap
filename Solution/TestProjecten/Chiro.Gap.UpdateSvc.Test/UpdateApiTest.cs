@@ -106,7 +106,7 @@ namespace Chiro.Gap.UpdateSvc.Test
 
             // ACT
 
-            var target = Factory.Maak<PersoonUpdater>();
+            var target = Factory.Maak<GapUpdater>();
             target.GroepDesactiveren(groep.Code, DateTime.Now);
 
             // ASSERT
@@ -134,7 +134,7 @@ namespace Chiro.Gap.UpdateSvc.Test
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
-            var target = Factory.Maak<PersoonUpdater>();
+            var target = Factory.Maak<GapUpdater>();
             target.DubbelVerwijderen(origineel, dubbel);
 
             // ASSERT
@@ -182,7 +182,7 @@ namespace Chiro.Gap.UpdateSvc.Test
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
-            var target = Factory.Maak<PersoonUpdater>();
+            var target = Factory.Maak<GapUpdater>();
             target.DubbelVerwijderen(origineel, dubbel);
 
             // ASSERT
@@ -245,7 +245,7 @@ namespace Chiro.Gap.UpdateSvc.Test
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
-            var target = Factory.Maak<PersoonUpdater>();
+            var target = Factory.Maak<GapUpdater>();
             target.DubbelVerwijderen(origineel, dubbel);
 
             // ASSERT

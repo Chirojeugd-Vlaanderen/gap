@@ -67,6 +67,7 @@ namespace Chiro.Gap.Domain
         AfdelingNietVanGroep,
         GroepsWerkJaarNietVanGroep,
         UitstapNietVanGroep,
+        GroepNietGevonden,
         #endregion
 
         #region niet beschikbaar in werkJaar
@@ -98,7 +99,7 @@ namespace Chiro.Gap.Domain
         GebruikersRechtWasAlVervallen,
         CategorieNietGekoppeld,
         OvergangTeVroeg,
-        KoppelingGavPersoonOntbreekt,
+        KoppelingGavPersoonOntbreekt
         #endregion
     }
 }
