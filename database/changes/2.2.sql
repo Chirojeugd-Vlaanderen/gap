@@ -1,6 +1,6 @@
 -- OPGELET: De user van het CiviSync process moet schrijfrechten hebben op de logging.Bericht tabel.
 
-use gap_stg;
+use gap;
 go
 
 alter table pers.Persoon add LaatsteMembership int null;
@@ -11,9 +11,9 @@ set p.LaatsteMembership = tmp.LaatsteMembership
 from pers.persoon p join
 (
 select  l.adnr, max(l.werkjaar) as LaatsteMembership
-from kip_stg.lid.lid l
-join kip_stg.lid.aansluiting a on l.groepid=a.groepid and l.werkjaar=a.werkjaar and l.aansl_nr=a.VolgNummer
-join kip_stg.dbo.rekening r on a.rekeningid = r.nr
+from kipadmin.lid.lid l
+join kipadmin.lid.aansluiting a on l.groepid=a.groepid and l.werkjaar=a.werkjaar and l.aansl_nr=a.VolgNummer
+join kipadmin.dbo.rekening r on a.rekeningid = r.nr
 where l.aansl_nr > 0
 and r.DOORGEBOE='j'
 group by l.adnr
