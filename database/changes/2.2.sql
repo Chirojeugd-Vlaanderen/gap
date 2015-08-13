@@ -1,22 +1,23 @@
 -- OPGELET: De user van het CiviSync process moet schrijfrechten hebben op de logging.Bericht tabel.
 
-use gap_local;
+use gap_stg;
 go
 
 alter table pers.Persoon add LaatsteMembership int null;
 go
-declare @laatsteMembershipsGemaakt as datetime; set @laatsteMembershipsGemaakt = getdate();
+
 update p
 set p.LaatsteMembership = tmp.LaatsteMembership
 from pers.persoon p join
 (
-select p.persoonid,max(gwj.werkjaar) as LaatsteMembership from lid.lid l 
-join pers.gelieerdepersoon gp on l.gelieerdepersoonid = gp.GelieerdePersoonID
-join pers.persoon p on gp.persoonid = p.persoonid
-join grp.groepswerkjaar gwj on l.groepswerkjaarid=gwj.groepswerkjaarid
-where l.EindeInstapPeriode < @laatsteMembershipsGemaakt
-group by p.persoonid
-) tmp on p.persoonid=tmp.persoonid
+select  l.adnr, max(l.werkjaar) as LaatsteMembership
+from kip_stg.lid.lid l
+join kip_stg.lid.aansluiting a on l.groepid=a.groepid and l.werkjaar=a.werkjaar and l.aansl_nr=a.VolgNummer
+join kip_stg.dbo.rekening r on a.rekeningid = r.nr
+where l.aansl_nr > 0
+and r.DOORGEBOE='j'
+group by l.adnr
+) tmp on p.AdNummer=tmp.ADNR
 
 -- tabel voor logberichten
 go
