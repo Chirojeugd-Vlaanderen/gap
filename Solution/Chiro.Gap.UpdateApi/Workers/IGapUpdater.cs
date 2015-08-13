@@ -21,7 +21,7 @@ using Chiro.Gap.UpdateApi.Models;
 
 namespace Chiro.Gap.UpdateApi.Workers
 {
-    public interface IPersoonUpdater: IDisposable
+    public interface IGapUpdater: IDisposable
     {
         /// <summary>
         /// Stelt het AD-nummer van de persoon met Id <paramref name="persoonId"/> in. 

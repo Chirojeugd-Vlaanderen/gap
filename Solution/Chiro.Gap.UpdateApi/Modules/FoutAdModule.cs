@@ -30,11 +30,11 @@ namespace Chiro.Gap.UpdateApi.Modules
     {
         // disposable, maar wordt gemaakt door DI-container.
         // moet gedisposet worden in Dispose() van deze module.
-        private readonly IPersoonUpdater _persoonUpdater;
+        private readonly IGapUpdater _gapUpdater;
 
-        public FoutAdModule(IPersoonUpdater persoonUpdater)
+        public FoutAdModule(IGapUpdater gapUpdater)
         {
-            _persoonUpdater = persoonUpdater;
+            _gapUpdater = gapUpdater;
 
             Post["/foutad"] = _ =>
             {
@@ -42,7 +42,7 @@ namespace Chiro.Gap.UpdateApi.Modules
                 FoutAdModel model = this.Bind();
                 try
                 {
-                    persoonId = _persoonUpdater.AdNummerVerwijderen(model.AdNummer);
+                    persoonId = _gapUpdater.AdNummerVerwijderen(model.AdNummer);
                 }
                 catch (FoutNummerException ex)
                 {
@@ -79,7 +79,7 @@ namespace Chiro.Gap.UpdateApi.Modules
             if (this._disposed) return;
             if (disposing)
             {
-                _persoonUpdater.Dispose();
+                _gapUpdater.Dispose();
             }
             _disposed = true;
         }

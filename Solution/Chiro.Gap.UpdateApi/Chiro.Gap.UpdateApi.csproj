@@ -21,6 +21,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -93,6 +94,7 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Modules\FoutAdModule.cs" />
+    <Compile Include="Modules\GroepModule.cs" />
     <Compile Include="Modules\PersoonModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -100,8 +102,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Workers\IPersoonUpdater.cs" />
-    <Compile Include="Workers\PersoonUpdater.cs" />
+    <Compile Include="Workers\IGapUpdater.cs" />
+    <Compile Include="Workers\GapUpdater.cs" />
     <Compile Include="Workers\SuperGavAutorisatieManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +167,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-<Target Name="GatherAllFilesToPublish">
-</Target>
+  <Target Name="GatherAllFilesToPublish">
+  </Target>
 </Project>

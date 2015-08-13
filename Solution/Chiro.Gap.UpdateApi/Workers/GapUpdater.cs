@@ -26,7 +26,7 @@ using Chiro.Gap.UpdateApi.Models;
 
 namespace Chiro.Gap.UpdateApi.Workers
 {
-    public class PersoonUpdater : IPersoonUpdater
+    public class GapUpdater : IGapUpdater
     {
         private readonly IRepositoryProvider _repositoryProvider;
         private readonly IRepository<Groep> _groepenRepo;
@@ -40,7 +40,7 @@ namespace Chiro.Gap.UpdateApi.Workers
         private readonly IRepository<PersoonsVerzekering> _persoonsVerzekeringenRepo;
         private readonly IRepository<GebruikersRecht> _gebruikersRechtenRepo;
 
-        public PersoonUpdater(IRepositoryProvider repositoryProvider)
+        public GapUpdater(IRepositoryProvider repositoryProvider)
         {
             _repositoryProvider = repositoryProvider;
             // De repositoryprovider maakt een context, en die is disposable. De context
@@ -90,7 +90,7 @@ namespace Chiro.Gap.UpdateApi.Workers
             }
         }
 
-        ~PersoonUpdater()
+        ~GapUpdater()
         {
             Dispose(false);
         }
@@ -464,9 +464,14 @@ namespace Chiro.Gap.UpdateApi.Workers
             {
                 groep.StopDatum = stopDatum;
                 _groepenRepo.SaveChanges();
+                Console.WriteLine(stopDatum == null ? "Groep opnieuw geactiveerd: {0}" : "Groep gedesactiveerd: {0}", stamNr);
             }
-
-            Console.WriteLine(stopDatum == null ? "Groep opnieuw geactiveerd: {0}" : "Groep gedesactiveerd: {0}", stamNr);
+            else
+            {
+                throw new FoutNummerException(
+                    FoutNummer.GroepNietGevonden,
+                    string.Format("Kan groep met stamnummer {0} niet vinden. Stopdatum niet aangepast."));
+            }
         }
 
         /// <summary>
