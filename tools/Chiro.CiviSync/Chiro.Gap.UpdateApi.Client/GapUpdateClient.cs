@@ -52,16 +52,43 @@ namespace Chiro.Gap.UpdateApi.Client
             // TODO: ServiceHelper gebruiken.
             using (var client = new HttpClient())
             {
-                if (!String.IsNullOrEmpty(_username) && !String.IsNullOrEmpty(_password))
+                if (!string.IsNullOrEmpty(_username) && !string.IsNullOrEmpty(_password))
                 {
                     // TODO: Dit kan ook properder met een HttpClientHandler class.
-                    var byteArray = Encoding.ASCII.GetBytes(String.Join(":", _username, _password));
+                    var byteArray = Encoding.ASCII.GetBytes(string.Join(":", _username, _password));
                     var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
                     client.DefaultRequestHeaders.Authorization = header;
                 }
                 client.BaseAddress = new Uri(_server);
-                await client.PostAsJsonAsync(String.Format("{0}foutad", _path),
+                await client.PostAsJsonAsync(string.Format("{0}foutad", _path),
                     new FoutAdModel { AdNummer = adNummer });
+            }
+        }
+
+        /// <summary>
+        /// Stuurt de persoonsinformatie in <paramref name="model"/> terug naar het GAP.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task PersoonInfoNaarGap(PersoonModel model)
+        {
+            if (_username == null && _password == null && _server == null)
+            {
+                throw new ApplicationException("GapUpdate niet geconfigureerd.");
+            }
+
+            // TODO: ServiceHelper gebruiken.
+            using (var client = new HttpClient())
+            {
+                if (!string.IsNullOrEmpty(_username) && !string.IsNullOrEmpty(_password))
+                {
+                    // TODO: Dit kan ook properder met een HttpClientHandler class.
+                    var byteArray = Encoding.ASCII.GetBytes(string.Join(":", _username, _password));
+                    var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                    client.DefaultRequestHeaders.Authorization = header;
+                }
+                client.BaseAddress = new Uri(_server);
+                await client.PostAsJsonAsync(string.Format("{0}persoon", _path), model);
             }
         }
     }
