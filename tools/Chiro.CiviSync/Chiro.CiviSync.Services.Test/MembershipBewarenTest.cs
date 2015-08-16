@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Threading.Tasks;
 using AutoMapper;
 using Chiro.Cdf.Ioc;
 using Chiro.CiviCrm.Api;
@@ -23,7 +22,6 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.UpdateApi.Client;
-using Chiro.Gap.UpdateApi.Models;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -276,83 +274,6 @@ namespace Chiro.CiviSync.Services.Test
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(r => r.FactuurStatus == FactuurStatus.VolledigTeFactureren)),
                 Times.AtLeastOnce);
-        }
-
-        /// <summary>
-        /// Als je een membership wilt maken, maar dat membership bestaat al, dan moet het GAP
-        /// dat weten.
-        /// </summary>
-        [TestMethod]
-        public void BestaandMembershipTerugNaarGap()
-        {
-            // ARRANGE
-
-            Mock<ICiviCrmApi> civiApiMock;
-            Mock<IGapUpdateClient> updateHelperMock;
-            IDiContainer factory;
-            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
-
-            const int adNummer = 2;
-            const int contactId = 4;
-            DateTime beginDitWerkJaar = new DateTime(HuidigWerkJaar, 9, 1);
-            DateTime eindeDitWerkJaar = new DateTime(HuidigWerkJaar + 1, 8, 31);
-
-            var bestaandMembership = new Membership
-            {
-                ContactId = contactId,
-                MembershipTypeId = (int)MembershipType.Aansluiting,
-                StartDate = beginDitWerkJaar,
-                EndDate = eindeDitWerkJaar,
-                JoinDate = beginDitWerkJaar.AddMonths(1),
-                VerzekeringLoonverlies = false,
-                FactuurStatus = FactuurStatus.VolledigTeFactureren
-            };
-
-            var persoon = new Contact
-            {
-                Id = contactId,
-                ExternalIdentifier = adNummer.ToString(),
-                FirstName = "Kees",
-                LastName = "Flodder",
-                GapId = 3,
-                MembershipResult =
-                    new ApiResultValues<Membership> { Count = 1, IsError = 0, Values = new[] { bestaandMembership } }
-            };
-            var groep = new Contact { ExternalIdentifier = "BLA/0000", Id = 5 };
-
-            civiApiMock.Setup(
-                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
-                .Returns(
-                    (string key1, string key2, ContactRequest r) =>
-                        new ApiResultValues<Contact>(r.ExternalIdentifier == groep.ExternalIdentifier ||
-                                                     r.Id == groep.Id
-                            ? groep
-                            : persoon));
-
-            updateHelperMock.Setup(
-                src =>
-                    src.PersoonInfoNaarGap(
-                        It.Is<PersoonModel>(
-                            p =>
-                                p.AdNummer == adNummer && p.PersoonId == contactId &&
-                                p.LaatsteMembership == HuidigWerkJaar))).Returns(Task.Delay(0)).Verifiable();
-
-            var service = factory.Maak<SyncService>();
-
-            // ACT
-
-            // bewaar het membership nog een keer.
-            service.MembershipBewaren(adNummer, HuidigWerkJaar, new MembershipGedoe { Gratis = false, MetLoonVerlies = false, StamNummer = groep.ExternalIdentifier });
-
-            // ASSERT
-
-            updateHelperMock.Verify(
-                src =>
-                    src.PersoonInfoNaarGap(
-                        It.Is<PersoonModel>(
-                            p =>
-                                p.AdNummer == adNummer && p.PersoonId == contactId &&
-                                p.LaatsteMembership == HuidigWerkJaar)), Times.AtLeastOnce);
         }
 
         /// <summary>

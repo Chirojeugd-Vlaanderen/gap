@@ -84,10 +84,6 @@
       <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
       <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Solution\Chiro.Gap.UpdateApi.Models\Chiro.Gap.UpdateApi.Models.csproj">
-      <Project>{71FDD616-E12E-474E-A996-575A187824E2}</Project>
-      <Name>Chiro.Gap.UpdateApi.Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Api\Chiro.CiviCrm.Api.csproj">
       <Project>{C27C0FB3-740A-4705-98DF-3B237984C44F}</Project>
       <Name>Chiro.CiviCrm.Api</Name>
