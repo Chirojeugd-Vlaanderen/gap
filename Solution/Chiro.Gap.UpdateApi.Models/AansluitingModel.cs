@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2015 the Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -18,18 +18,9 @@
 
 namespace Chiro.Gap.UpdateApi.Models
 {
-    /// <summary>
-    /// Dit is een erg beperkt model voor een persoon.
-    /// 
-    /// Op termijn kan de echte api gebruikt worden om updates van Chirocivi
-    /// naar GAP te sturen.
-    /// </summary>
-    public class PersoonModel
+    public class AansluitingModel
     {
-        /// <summary>
-        /// Een persoon wordt altijd opgezocht op basis van zijn ID.
-        /// </summary>
-        public int PersoonId { get; set; }
-        public int? AdNummer { get; set; }
+        public int AdNummer { get; set; }
+        public int? RecentsteWerkJaar { get; set; }
     }
 }
