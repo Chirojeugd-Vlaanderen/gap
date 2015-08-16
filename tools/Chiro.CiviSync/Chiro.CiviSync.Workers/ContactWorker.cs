@@ -105,9 +105,8 @@ namespace Chiro.CiviSync.Workers
                     svc => svc.ContactGet(ApiKey, SiteKey, contactRequest));
 
             contactResult.AssertValid();
-            var contact = contactResult.Values.First();
 
-            return (contact == null || contact.Id == 0) ? null : contact;
+            return contactResult.Count == 0 ? null : contactResult.Values.First();
         }
       
         /// <summary>
