@@ -23,7 +23,6 @@ using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
-using Chiro.Gap.UpdateApi.Models;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.CiviSync.Services
@@ -67,17 +66,7 @@ namespace Chiro.CiviSync.Services
                 var bestaandMembership = contact.MembershipResult.Values.First();
                 if (_membershipLogic.WerkjaarGet(bestaandMembership) == werkJaar)
                 {
-                    if (!_membershipWorker.BestaandeBijwerken(bestaandMembership, gedoe))
-                    {
-                        // We hadden dat membership al. Laat dat zo weten aan GAP.
-                        await
-                            _gapUpdateClient.PersoonInfoNaarGap(new PersoonModel
-                            {
-                                AdNummer = adNummer,
-                                LaatsteMembership = werkJaar,
-                                PersoonId = contact.Id
-                            });
-                    }
+                    _membershipWorker.BestaandeBijwerken(bestaandMembership, gedoe);
                     return;
                 }
 

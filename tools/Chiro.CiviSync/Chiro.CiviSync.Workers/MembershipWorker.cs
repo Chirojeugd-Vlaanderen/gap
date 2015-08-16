@@ -48,9 +48,7 @@ namespace Chiro.CiviSync.Workers
         /// </summary>
         /// <param name="bestaandMembership">Bestaand membership.</param>
         /// <param name="gedoe">Membershipdetails</param>
-        /// <returns><c>false</c> als dit membership al bestond en er niets meer moest gebeuren.
-        /// Anders <c>true</c>.</returns>
-        public bool BestaandeBijwerken(Membership bestaandMembership, MembershipGedoe gedoe)
+        public void BestaandeBijwerken(Membership bestaandMembership, MembershipGedoe gedoe)
         {
             int werkJaar = _membershipLogic.WerkjaarGet(bestaandMembership);
             // We halen de persoon opnieuw op. Wat een beetje overkill is, aangezien
@@ -70,7 +68,7 @@ namespace Chiro.CiviSync.Workers
                         "Onbestaand contact {0} voor te verlengen menbership (id {1}, werkjaar {2}). Genegeerd. WTF.",
                         bestaandMembership.ContactId, bestaandMembership.Id, werkJaar),
                     gedoe.StamNummer, null, null);
-                return true;                
+                return;                
             }
             var contact = result.Values.First();
             int adNummer = int.Parse(contact.ExternalIdentifier);
@@ -80,7 +78,7 @@ namespace Chiro.CiviSync.Workers
             {
                 Log.Loggen(Niveau.Error, String.Format("Onbestaande groep {0} - lid niet bewaard.", gedoe.StamNummer),
                     gedoe.StamNummer, adNummer, null);
-                return true;
+                return;
             }
 
             if (gedoe.MetLoonVerlies && !bestaandMembership.VerzekeringLoonverlies)
@@ -105,7 +103,6 @@ namespace Chiro.CiviSync.Workers
                         "Membership met ID {5} door {6} bijgewerkt voor {0} {1} (AD {2}, ID {3}) met verzekering loonverlies voor werkjaar {4}.",
                         contact.FirstName, contact.LastName, contact.ExternalIdentifier, contact.GapId,
                         werkJaar, updateResult.Id, gedoe.StamNummer), gedoe.StamNummer, adNummer, contact.GapId);
-                return true;
             }
             else
             {
@@ -114,7 +111,6 @@ namespace Chiro.CiviSync.Workers
                         "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Nieuwe aansluiting genegeerd.",
                         contact.FirstName, contact.LastName, contact.GapId, contact.ExternalIdentifier, werkJaar),
                     null, adNummer, contact.GapId);
-                return false;
             }
         }
     }

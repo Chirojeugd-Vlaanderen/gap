@@ -14,7 +14,6 @@
    limitations under the License.
  */
 using System.Threading.Tasks;
-using Chiro.Gap.UpdateApi.Models;
 
 namespace Chiro.Gap.UpdateApi.Client
 {
@@ -34,12 +33,5 @@ namespace Chiro.Gap.UpdateApi.Client
         /// </summary>
         /// <param name="adNummer">Als ongeldig te rapporteren AD-nummer</param>
         Task OngeldigAdNaarGap(int adNummer);
-
-        /// <summary>
-        /// Stuurt de persoonsinformatie in <paramref name="model"/> terug naar het GAP.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        Task PersoonInfoNaarGap(PersoonModel model);
     }
 }

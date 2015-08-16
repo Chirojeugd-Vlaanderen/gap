@@ -23,7 +23,6 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <TargetFrameworkProfile />
     <RestorePackages>true</RestorePackages>
-    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -112,10 +111,6 @@
     <ProjectReference Include="..\..\..\Solution\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
       <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
       <Name>Chiro.Cdf.ServiceHelper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Solution\Chiro.Gap.UpdateApi.Models\Chiro.Gap.UpdateApi.Models.csproj">
-      <Project>{71FDD616-E12E-474E-A996-575A187824E2}</Project>
-      <Name>Chiro.Gap.UpdateApi.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.CiviCrm.Wcf\Chiro.CiviCrm.Api\Chiro.CiviCrm.Api.csproj">
       <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
