@@ -5,6 +5,11 @@ go
 
 alter table pers.Persoon add LaatsteMembership int null;
 go
+
+-- Hier vul ik het laatste membership op basis van de probeerperiode.
+-- In staging wordt er ook gekeken naar de kipadmin, met name of er voor plaatselijke
+-- groepen een factuur is doorgeboekt.
+
 declare @laatsteMembershipsGemaakt as datetime; set @laatsteMembershipsGemaakt = getdate();
 update p
 set p.LaatsteMembership = tmp.LaatsteMembership
