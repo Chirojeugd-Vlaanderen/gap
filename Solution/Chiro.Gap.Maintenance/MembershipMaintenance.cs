@@ -70,9 +70,11 @@ namespace Chiro.Gap.Maintenance
                     l.EindeInstapPeriode < vandaag
                 select l).ToArray();
 
+            Console.WriteLine("Syncen van {0} memberships.", teSyncen.Count());
             foreach (var p in teSyncen)
             {
-                    _personenSync.MembershipRegistreren(p);
+                _personenSync.MembershipRegistreren(p);
+                Console.Write(".");
             }
         }
 
