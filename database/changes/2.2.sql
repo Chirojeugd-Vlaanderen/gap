@@ -12,10 +12,9 @@ from pers.persoon p join
 (
 select  l.adnr, max(l.werkjaar) as LaatsteMembership
 from kip_stg.lid.lid l
-join kip_stg.lid.aansluiting a on l.groepid=a.groepid and l.werkjaar=a.werkjaar and l.aansl_nr=a.VolgNummer
-join kip_stg.dbo.rekening r on a.rekeningid = r.nr
-where l.aansl_nr > 0
-and r.DOORGEBOE='j'
+left outer join kip_stg.lid.aansluiting a on l.groepid=a.groepid and l.werkjaar=a.werkjaar and l.aansl_nr=a.VolgNummer
+left outer join kip_stg.dbo.rekening r on a.rekeningid = r.nr
+where  l.soort = 'KA' or (l.aansl_nr > 0 and r.DOORGEBOE='j')
 group by l.adnr
 ) tmp on p.AdNummer=tmp.ADNR
 
