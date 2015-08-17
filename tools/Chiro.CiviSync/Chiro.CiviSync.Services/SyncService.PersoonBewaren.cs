@@ -41,7 +41,7 @@ namespace Chiro.CiviSync.Services
         /// UpdatenOfMaken logt rariteiten zoals een AD-nummer dat al bestaat
         /// of een persoon zonder voornaam.
         /// </remarks>
-        private int UpdatenOfMaken(PersoonDetails details)
+        public int UpdatenOfMaken(PersoonDetails details)
         {
             if (details.Persoon.AdNummer != null)
             {
