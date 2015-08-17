@@ -67,5 +67,12 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// </summary>
         /// <param name="model">Gegevens bij te werken persoon.</param>
         void Bijwerken(PersoonModel model);
+
+        /// <summary>
+        /// Werkt het werkjaar van laatste aansluiting bij van de persoon met
+        /// AD-nummer gegeven in het model.
+        /// </summary>
+        /// <param name="model">Gegevens over bij te werken werkjaar.</param>
+        void Bijwerken(AansluitingModel model);
     }
 }

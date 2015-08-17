@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="FoutAdModel.cs" />
     <Compile Include="GroepModel.cs" />
+    <Compile Include="AansluitingModel.cs" />
     <Compile Include="PersoonModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
