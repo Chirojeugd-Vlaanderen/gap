@@ -67,7 +67,7 @@ namespace Chiro.Gap.Maintenance
                     (l.GelieerdePersoon.Persoon.LaatsteMembership < huidigWerkJaar ||
                      l.GelieerdePersoon.Persoon.LaatsteMembership == null) &&
                     l.GroepsWerkJaar.WerkJaar == huidigWerkJaar &&
-                    l.EindeInstapPeriode < vandaag
+                    l.EindeInstapPeriode < vandaag && !l.NonActief
                 select l).ToArray();
 
             Console.WriteLine("Syncen van {0} memberships.", teSyncen.Count());
