@@ -12,7 +12,7 @@ join kipadmin.grp.chirogroep kcg2 on kcg2.Stamnr=g.code collate latin1_general_c
 join kipadmin.grp.Groep kg2 on kg2.GroepID=kcg2.groepid
 left outer join kipadmin.lid.lid kl on kl.adnr = p.adnummer and kl.werkjaar=gwj.werkjaar and kl.aansl_nr > 0 and kl.GroepID=kcg2.groepid
 left outer join kipadmin.dbo.kippersoon kp on p.adnummer = kp.adnr
-where l.NonActief=0 and  gwj.werkjaar=2014 and kl.adnr is null and kg2.StopDatum is null
+where l.NonActief=0 and  gwj.werkjaar=2015 and kl.adnr is null and kg2.StopDatum is null
 order by g.Code 
 
 ----alles
