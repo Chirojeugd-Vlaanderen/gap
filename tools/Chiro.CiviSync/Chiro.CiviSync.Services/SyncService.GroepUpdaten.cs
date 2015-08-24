@@ -20,8 +20,10 @@ using System.Linq;
 using System.ServiceModel;
 using System.Web;
 using AutoMapper;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
+using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
@@ -38,7 +40,21 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void GroepUpdaten(Groep g)
         {
-            int? civiContactId = _contactWorker.ContactIdGet(g.Code);
+            // Haal groep op met alle adressen. Die zijn in theorie enkel nodig als we een adres moeten vervangen.
+            // Maar omdat het wijzigen van groepsgegevens niet zo frequent voorkomt, kan dat niet zo'n kwaad.
+
+            var getRequest = new ContactRequest
+            {
+                ExternalIdentifier = g.Code,
+                ContactType = ContactType.Organization,
+                AddressGetRequest = new AddressRequest()
+            };
+            var getResult =
+                ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
+                    svc => svc.ContactGet(_apiKey, _siteKey, getRequest));
+
+            int? civiContactId = getResult.Id;
+
             if (civiContactId == null)
             {
                 _log.Loggen(Niveau.Error, string.Format("Onbestaande groep {0} - gegevens niet aangepast.", g.Code),
@@ -55,6 +71,12 @@ namespace Chiro.CiviSync.Services
             };
             if (g.Adres != null)
             {
+                foreach (var addres in getResult.Values.First().AddressResult.Values)
+                {
+                    // Ik had dit liever met 1 chained call gedaan, maar dat ondersteunt Chiro.CiviCrm.Wcf niet.
+                    ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                        svc => svc.AddressDelete(_apiKey, _siteKey, new IdRequest(addres.Id)));
+                }
                 request.AddressSaveRequest = new[] {Mapper.Map<Adres, AddressRequest>(g.Adres)};
             }
             var result =
