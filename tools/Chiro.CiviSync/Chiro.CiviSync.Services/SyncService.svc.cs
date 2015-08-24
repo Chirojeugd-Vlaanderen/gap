@@ -98,11 +98,6 @@ namespace Chiro.CiviSync.Services
             Debug.Assert(_gapUpdateClient != null);
         }
 
-        public void GroepUpdaten(Groep g)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Zoekt het Civi-ID (contact-ID) op op basis van de gegevens in <paramref name="persoon"/>.
         /// </summary>

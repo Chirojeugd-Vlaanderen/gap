@@ -23,6 +23,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <TargetFrameworkProfile />
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -78,6 +79,7 @@
     <Compile Include="SyncService.CommunicatieVerwijderen.cs" />
     <Compile Include="SyncService.Dubbelpunt.cs" />
     <Compile Include="SyncService.FunctiesUpdaten.cs" />
+    <Compile Include="SyncService.GroepUpdaten.cs" />
     <Compile Include="SyncService.LidBewaren.cs" />
     <Compile Include="SyncService.LidTypeUpdaten.cs" />
     <Compile Include="SyncService.LidVerwijderen.cs" />
