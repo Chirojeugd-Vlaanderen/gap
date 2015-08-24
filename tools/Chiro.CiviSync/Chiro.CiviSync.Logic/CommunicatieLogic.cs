@@ -232,11 +232,15 @@ namespace Chiro.CiviSync.Logic
         /// <param name="communicatieMiddelen"></param>
         public static void RequestsChainen(ContactRequest contactRequest, IEnumerable<CommunicatieMiddel> communicatieMiddelen)
         {
-            var civiCommunicatie = RequestMaken(communicatieMiddelen.ToList(), null);
-            contactRequest.PhoneSaveRequest = civiCommunicatie.OfType<PhoneRequest>();
-            contactRequest.EmailSaveRequest = civiCommunicatie.OfType<EmailRequest>();
-            contactRequest.WebsiteSaveRequest = civiCommunicatie.OfType<WebsiteRequest>();
-            contactRequest.ImSaveRequest = civiCommunicatie.OfType<ImRequest>();
+            if (communicatieMiddelen != null)
+            {
+                // Doe enkel iets als er communicatiemiddelen gegeven zijn.
+                var civiCommunicatie = RequestMaken(communicatieMiddelen.ToList(), null);
+                contactRequest.PhoneSaveRequest = civiCommunicatie.OfType<PhoneRequest>();
+                contactRequest.EmailSaveRequest = civiCommunicatie.OfType<EmailRequest>();
+                contactRequest.WebsiteSaveRequest = civiCommunicatie.OfType<WebsiteRequest>();
+                contactRequest.ImSaveRequest = civiCommunicatie.OfType<ImRequest>();
+            }
         }
     }
 }

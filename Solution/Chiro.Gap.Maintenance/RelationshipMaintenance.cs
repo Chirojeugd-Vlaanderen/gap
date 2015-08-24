@@ -73,6 +73,8 @@ namespace Chiro.Gap.Maintenance
                 where l.GelieerdePersoon.Persoon.AdNummer == null && l.GroepsWerkJaar.WerkJaar == huidigWerkJaar
                 select l).ToArray();
 
+            Console.WriteLine("Aanvragen van {0} AD-nummers", teSyncen.Count());
+
             _ledenSync.Bewaren(teSyncen);
         }
 

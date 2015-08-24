@@ -399,6 +399,59 @@ namespace Chiro.CiviSync.Services.Test
         }
 
         /// <summary>
+        /// UpdatenOfMaken moet kunnen maken als er geen adres is. (#4111)
+        /// </summary>
+        [TestMethod]
+        public void UpdatenOfMakenZonderAdres()
+        {
+            // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(new DateTime(2015, 02, 05), out factory, out civiApiMock, out updateHelperMock);
+
+            var persoon = new PersoonDetails
+            {
+                Persoon = new Persoon
+                {
+                   Naam = "Flodder",
+                   VoorNaam = "Kees",
+                   GeboorteDatum = new DateTime(1977, 03, 08)
+                }
+            };
+
+            // Zorg ervoor dat de persoon niet gevonden wordt.
+            civiApiMock.Setup(
+                src =>
+                    src.ContactGet(It.IsAny<string>(), It.IsAny<string>(),
+                        It.IsAny<ContactRequest>()))
+                .Returns(new ApiResultValues<Contact>());
+
+            // Zet dummy save op.
+            civiApiMock.Setup(
+                src =>
+                    src.ContactSave(It.IsAny<string>(), It.IsAny<string>(),
+                        It.IsAny<ContactRequest>()))
+                .Returns(
+                    (string key1, string key2, ContactRequest request) =>
+                        Mapper.Map<ContactRequest, ApiResultValues<Contact>>(request))
+                .Verifiable();
+
+            var service = factory.Maak<SyncService>();
+
+            // ACT
+
+            service.UpdatenOfMaken(persoon);
+
+            // ASSERT
+
+            civiApiMock.Verify(
+                src => src.ContactSave(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()),
+                Times.AtLeastOnce);
+        }
+
+        /// <summary>
         /// PersoonUpdaten voor een onbekend persoon moet een error loggen. (#3684)
         /// </summary>
         [TestMethod]

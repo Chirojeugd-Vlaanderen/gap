@@ -41,7 +41,7 @@ namespace Chiro.CiviSync.Services
         /// UpdatenOfMaken logt rariteiten zoals een AD-nummer dat al bestaat
         /// of een persoon zonder voornaam.
         /// </remarks>
-        private int UpdatenOfMaken(PersoonDetails details)
+        public int UpdatenOfMaken(PersoonDetails details)
         {
             if (details.Persoon.AdNummer != null)
             {
@@ -88,9 +88,12 @@ namespace Chiro.CiviSync.Services
 
             CommunicatieLogic.RequestsChainen(contactRequest, details.Communicatie);
 
-            var address = Mapper.Map<Adres, AddressRequest>(details.Adres);
-            address.LocationTypeId = AdresLogic.CiviLocationTypeId(details.AdresType);
-            contactRequest.AddressSaveRequest = new List<AddressRequest> { address };
+            if (details.Adres != null)
+            {
+                var address = Mapper.Map<Adres, AddressRequest>(details.Adres);
+                address.LocationTypeId = AdresLogic.CiviLocationTypeId(details.AdresType);
+                contactRequest.AddressSaveRequest = new List<AddressRequest> {address};
+            }
 
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
@@ -102,7 +105,12 @@ namespace Chiro.CiviSync.Services
             if (result.IsError == 0)
             {
                 // Normaalgezien krijgen we het AD-nummer mee terug als external identifier.
-                adNummer = int.Parse(result.Values.First().ExternalIdentifier);
+                // Maar je weet maar nooit.
+                int adInt;
+                if (int.TryParse(result.Values.First().ExternalIdentifier, out adInt))
+                {
+                    adNummer = adInt;
+                }
             }
             else
             {
@@ -129,7 +137,10 @@ namespace Chiro.CiviSync.Services
                     details.Persoon.VoorNaam, details.Persoon.Naam, details.Persoon.ID, adNummer), null, adNummer,
                 details.Persoon.ID);
 
-            return adNummer.Value;
+            // Normaal gezien hebben we hier altijd een AD-nummer. Maar voor het geval
+            // dat toch niet zo zou zijn (bijv. in een unit test), kunnen we nog altijd
+            // 0 opleveren.
+            return adNummer ?? 0;
         }
     }
 }
