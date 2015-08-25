@@ -23,16 +23,13 @@ namespace Chiro.Gap.TestHacks.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=gap_local;Integrated Security=SSPI;Multi" +
             "pleActiveResultSets=True;Application Name=gap_hack")]
         public string ConnectionString {
             get {
                 return ((string)(this["ConnectionString"]));
-            }
-            set {
-                this["ConnectionString"] = value;
             }
         }
     }
