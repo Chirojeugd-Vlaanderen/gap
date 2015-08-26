@@ -65,6 +65,34 @@ namespace Chiro.CiviSync.Workers.Test
         }
 
         /// <summary>
+        /// Persoon met recentste membership mag niet crashen als de API geen persoon
+        /// oplevert.
+        /// </summary>
+        [TestMethod]
+        public void PersoonMetRecentsteMembershipOngeldigAd()
+        {
+            // ARRANGE
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
+
+            civiApiMock.Setup(
+                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(new ApiResultValues<Contact>());
+
+            // ContactHelper vraagt de API-keys bij constructie. Dat is misschien niet
+            // zo'n goed idee. Maar voorlopig doe ik het zo dus ook in deze test.
+            var contactWorker = factory.Maak<ContactWorker>();
+
+            // ACT
+            var result = contactWorker.PersoonMetRecentsteMembership(2, MembershipType.Aansluiting);
+
+            // ASSERT
+            Assert.IsNull(result);
+        }
+
+        /// <summary>
         /// Workers worden per call opnieuw geinstantieerd. Als er een nieuwe ContactWorker
         /// wordt gemaakt, dan is het de bedoeling dat dezelfde cache blijft gebruiken.
         /// </summary>

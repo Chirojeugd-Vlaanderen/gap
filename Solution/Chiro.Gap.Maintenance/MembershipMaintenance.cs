@@ -67,12 +67,14 @@ namespace Chiro.Gap.Maintenance
                     (l.GelieerdePersoon.Persoon.LaatsteMembership < huidigWerkJaar ||
                      l.GelieerdePersoon.Persoon.LaatsteMembership == null) &&
                     l.GroepsWerkJaar.WerkJaar == huidigWerkJaar &&
-                    l.EindeInstapPeriode < vandaag
+                    l.EindeInstapPeriode < vandaag && !l.NonActief
                 select l).Take(Properties.Settings.Default.LimitMembershipQuery).ToArray();
 
+            Console.WriteLine("Syncen van {0} memberships.", teSyncen.Count());
             foreach (var p in teSyncen)
             {
-                    _personenSync.MembershipRegistreren(p);
+                _personenSync.MembershipRegistreren(p);
+                Console.Write(".");
             }
         }
 

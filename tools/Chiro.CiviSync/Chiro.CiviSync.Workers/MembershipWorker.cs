@@ -106,9 +106,24 @@ namespace Chiro.CiviSync.Workers
             }
             else
             {
+                // Membership bestond eigenlijk al. Maar we sturen het toch opnieuw naar de civi,
+                // zodat die aan GAP het juiste werkjaar kan afleveren (#3581)
+
+                var membershipRequest = new MembershipRequest
+                {
+                    Id = bestaandMembership.Id,
+                    VerzekeringLoonverlies = true,
+                    AangemaaktDoorPloegId = civiGroepId,
+                    FactuurStatus = bestaandMembership.FactuurStatus
+                };
+
+                var updateResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
+                    svc => svc.MembershipSave(ApiKey, SiteKey, membershipRequest));
+                updateResult.AssertValid();
+
                 Log.Loggen(Niveau.Info,
                     String.Format(
-                        "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Nieuwe aansluiting genegeerd.",
+                        "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Opnieuw naar Civi om sync te herstellen.",
                         contact.FirstName, contact.LastName, contact.GapId, contact.ExternalIdentifier, werkJaar),
                     null, adNummer, contact.GapId);
             }

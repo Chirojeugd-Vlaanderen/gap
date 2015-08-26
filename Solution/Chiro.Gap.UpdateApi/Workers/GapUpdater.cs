@@ -117,7 +117,7 @@ namespace Chiro.Gap.UpdateApi.Workers
             {
                 throw new FoutNummerException(
                     FoutNummer.PersoonNietGevonden,
-                    String.Format("Onbekend persoon (ID {0}) voor AD-nummer {1} genegeerd.", persoonId, adNummer));
+                    string.Format("Onbekend persoon (ID {0}) voor AD-nummer {1} genegeerd.", persoonId, adNummer));
             }
 
             AdNummerToekennen(persoon, adNummer); // PERSISTEERT
@@ -256,7 +256,7 @@ namespace Chiro.Gap.UpdateApi.Workers
                     var origineleCommunicatie = (from c in origineleGp.Communicatie
                                                  where
                                                      Equals(c.CommunicatieType, dubbeleCommunicatie.CommunicatieType) &&
-                                                     String.Compare(c.Nummer, dubbeleCommunicatie.Nummer,
+                                                     string.Compare(c.Nummer, dubbeleCommunicatie.Nummer,
                                                                     StringComparison.OrdinalIgnoreCase) == 0
                                                  select c).FirstOrDefault();
                     if (origineleCommunicatie != null)
@@ -457,7 +457,7 @@ namespace Chiro.Gap.UpdateApi.Workers
         public void GroepDesactiveren(string stamNr, DateTime? stopDatum)
         {
             var groep = (from g in _groepenRepo.Select()
-                         where String.Compare(g.Code, stamNr, StringComparison.OrdinalIgnoreCase) == 0
+                         where string.Compare(g.Code, stamNr, StringComparison.OrdinalIgnoreCase) == 0
                          select g).FirstOrDefault();
 
             if (groep != null)
@@ -488,7 +488,7 @@ namespace Chiro.Gap.UpdateApi.Workers
             {
                 throw new FoutNummerException(
                     FoutNummer.PersoonNietGevonden,
-                    String.Format("Kan AD-nummer {0} niet verwijderen; persoon niet gevonden.", adNummer));                
+                    string.Format("Kan AD-nummer {0} niet verwijderen; persoon niet gevonden.", adNummer));                
             }
 
             // In principe is er hoogstens 1 persoon met gegeven AD-nummer.
@@ -516,7 +516,7 @@ namespace Chiro.Gap.UpdateApi.Workers
             {
                 throw new FoutNummerException(
                     FoutNummer.PersoonNietGevonden,
-                    String.Format("Onbekend persoon (ID {0}) genegeerd (AD {1})", model.PersoonId, model.AdNummer));
+                    string.Format("Onbekend persoon (ID {0}) genegeerd (AD {1})", model.PersoonId, model.AdNummer));
             }
 
             if (persoon.AdNummer != model.AdNummer)
@@ -527,12 +527,29 @@ namespace Chiro.Gap.UpdateApi.Workers
 
                 Console.WriteLine("Ad-nummer {0} toegekend aan {1}. (ID {2})", model.AdNummer, persoon.VolledigeNaam, persoon.ID);
             }
+        }
 
-            if (persoon.LaatsteMembership == model.LaatsteMembership) return;
+        /// <summary>
+        /// Werkt het werkjaar van laatste aansluiting bij van de persoon met
+        /// AD-nummer gegeven in het model.
+        /// </summary>
+        /// <param name="model">Gegevens over bij te werken werkjaar.</param>
+        public void Bijwerken(AansluitingModel model)
+        {
+            var persoon = _personenRepo.Select().FirstOrDefault(p => p.AdNummer == model.AdNummer);
 
-            persoon.LaatsteMembership = model.LaatsteMembership;
+            if (persoon == null)
+            {
+                throw new FoutNummerException(
+                    FoutNummer.PersoonNietGevonden,
+                    string.Format("Onbekend persoon (AD {0}) genegeerd.", model.AdNummer));
+            }
+
+            if (persoon.LaatsteMembership == model.RecentsteWerkJaar) return;
+
+            persoon.LaatsteMembership = model.RecentsteWerkJaar;
             _personenRepo.SaveChanges();
-            Console.WriteLine("LaatsteMembership {0} toegekend aan {1}. (ID {2})", model.LaatsteMembership, persoon.VolledigeNaam, persoon.ID);
+            Console.WriteLine("LaatsteMembership {0} toegekend aan {1}. (ID {2})", model.RecentsteWerkJaar, persoon.VolledigeNaam, persoon.ID);
         }
     }
 }

@@ -42,6 +42,7 @@ namespace Chiro.CiviSync.Mapping
                 .ForMember(dst => dst.FirstName, opt => opt.MapFrom(src => src.VoorNaam))
                 .ForMember(dst => dst.MiddleName, opt => opt.Ignore())
                 .ForMember(dst => dst.OrganizationName, opt => opt.Ignore())
+                .ForMember(dst => dst.LegalName, opt => opt.Ignore())
                 .ForMember(dst => dst.Gender, opt => opt.MapFrom(src => PersoonLogic.GeslachtNaarGender(src.Geslacht)))
                 // IsDeceased komt niet direct mee met DeceasedDate, zie
                 // http://forum.civicrm.org/index.php/topic,35553.0.html
@@ -72,7 +73,8 @@ namespace Chiro.CiviSync.Mapping
                 .ForMember(dst => dst.City, opt => opt.MapFrom(src => src.WoonPlaats))
                 .ForMember(dst => dst.ContactId, opt => opt.Ignore())
                 .ForMember(dst => dst.Country, opt => opt.MapFrom(src => src.LandIsoCode))
-                .ForMember(dst => dst.LocationTypeId, opt => opt.Ignore())
+                // Default mappen we naar een thuisadres.
+                .ForMember(dst => dst.LocationTypeId, opt => opt.UseValue(1))
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
                 .ForMember(dst => dst.IsBilling, opt => opt.Ignore())
                 .ForMember(dst => dst.IsPrimary, opt => opt.Ignore())

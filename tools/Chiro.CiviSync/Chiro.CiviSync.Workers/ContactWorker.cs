@@ -105,9 +105,8 @@ namespace Chiro.CiviSync.Workers
                     svc => svc.ContactGet(ApiKey, SiteKey, contactRequest));
 
             contactResult.AssertValid();
-            var contact = contactResult.Values.First();
 
-            return (contact == null || contact.Id == 0) ? null : contact;
+            return contactResult.Count == 0 ? null : contactResult.Values.First();
         }
       
         /// <summary>
@@ -190,6 +189,14 @@ namespace Chiro.CiviSync.Workers
             var contactResult =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                     svc => svc.ContactGet(ApiKey, SiteKey, nameGenderRequest));
+            contactResult.AssertValid();
+
+            if (contactResult.Count == 0)
+            {
+                // Als we niemand vinden met zelfde geslacht en zelfde naam, dan mogen we
+                // veronderstellen dat de persoon nog niet bestaat.
+                return null;
+            }
 
             // Zoek op telefoonnummer of fax.
             var gevondenViaTelefoonNr =
