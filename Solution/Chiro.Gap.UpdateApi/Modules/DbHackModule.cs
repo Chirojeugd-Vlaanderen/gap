@@ -34,6 +34,11 @@ namespace Chiro.Gap.UpdateApi.Modules
                 TestHacks.TestHacks.KipadminRestoren();
                 return HttpStatusCode.NoContent;
             };
+            Post["/dbhack/restoregap"] = _ =>
+            {
+                TestHacks.TestHacks.GapRestoren();
+                return HttpStatusCode.NoContent;
+            };
         }
     }
 }
