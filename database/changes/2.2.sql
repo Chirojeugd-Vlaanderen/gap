@@ -30,6 +30,21 @@ go
 alter table pers.CommunicatieType drop column IsOptIn
 go
 
+-- Fix primary key op CommunicatieVorm
+-- Toen ik een clustered index maakte op deze tabel, verwijderde
+-- ik per ongeluk de primary key. Oeps.
+DROP INDEX [PK_CommunicatieVorm] ON [pers].[CommunicatieVorm]
+GO
+
+ALTER TABLE pers.CommunicatieVorm ADD CONSTRAINT
+	PK_CommunicatieVorm PRIMARY KEY NONCLUSTERED 
+	(
+	CommunicatieVormID
+	)
+GO
+
+
+
 -- Wijzigingen voor #3140. Regel instapperiode via GAP.
 
 go
