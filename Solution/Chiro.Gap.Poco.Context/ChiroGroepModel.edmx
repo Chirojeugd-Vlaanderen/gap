@@ -14,7 +14,7 @@
           <Property Name="GroepsWerkJaarID" Type="int" Nullable="false" />
           <Property Name="AanvraagDatum" Type="datetime" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
-          <Property Name="type" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Publicatie">
           <Key>
@@ -315,7 +315,6 @@
             <PropertyRef Name="CommunicatieTypeID" />
           </Key>
           <Property Name="Omschrijving" Type="varchar" MaxLength="80" />
-          <Property Name="IsOptIn" Type="bit" Nullable="false" />
           <Property Name="Validatie" Type="varchar" MaxLength="160" />
           <Property Name="CommunicatieTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Voorbeeld" Type="varchar" MaxLength="160" />
@@ -329,7 +328,6 @@
           <Property Name="Nummer" Type="varchar" MaxLength="160" Nullable="false" />
           <Property Name="CommunicatieVormID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CommunicatieTypeID" Type="int" Nullable="false" />
-          <Property Name="IsVoorOptIn" Type="bit" Nullable="false" />
           <Property Name="IsGezinsgebonden" Type="bit" Nullable="false" />
           <Property Name="Voorkeur" Type="bit" Nullable="false" />
           <Property Name="GelieerdePersoonID" Type="int" />
@@ -362,6 +360,7 @@
           <Property Name="SeNaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
           <Property Name="SeVoornaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
           <Property Name="LaatsteMembership" Type="int" />
+          <Property Name="Nieuwsbrief" Type="bit" />
         </EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
@@ -536,6 +535,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_Bericht_Groep" />-->
         <Association Name="FK_Bericht_Persoon_Id">
           <End Role="Persoon" Type="Self.Persoon" Multiplicity="0..1" />
           <End Role="Bericht" Type="Self.Bericht" Multiplicity="*" />
@@ -1563,6 +1565,7 @@
           <NavigationProperty Name="BerichtGebruiker" Relationship="ChiroGroepModel.FK_Bericht_Gebruiker" FromRole="Persoon" ToRole="Bericht" />
           <NavigationProperty Name="BerichtPersoon" Relationship="ChiroGroepModel.FK_Bericht_Persoon_Id" FromRole="Persoon" ToRole="Bericht" />
           <Property Name="LaatsteMembership" Type="Int32" />
+          <Property Name="Nieuwsbrief" Type="Boolean" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -2033,6 +2036,7 @@
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar" FromRole="Abonnement" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="Publicatie" Relationship="ChiroGroepModel.FK_Abonnement_Publicatie" FromRole="Abonnement" ToRole="Publicatie" />
           <Property Name="TypeInt" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Publicatie">
           <Key>
@@ -2120,6 +2124,7 @@
           <EntitySetMapping Name="Persoon">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Persoon)">
               <MappingFragment StoreEntitySet="Persoon">
+                <ScalarProperty Name="Nieuwsbrief" ColumnName="Nieuwsbrief" />
                 <ScalarProperty Name="LaatsteMembership" ColumnName="LaatsteMembership" />
                 <ScalarProperty Name="SeVoornaam" ColumnName="SeVoornaam" />
                 <ScalarProperty Name="SeNaam" ColumnName="SeNaam" />
@@ -2138,7 +2143,6 @@
           <EntitySetMapping Name="CommunicatieVorm">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieVorm)">
               <MappingFragment StoreEntitySet="CommunicatieVorm">
-                <ScalarProperty Name="IsVoorOptIn" ColumnName="IsVoorOptIn" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="Voorkeur" ColumnName="Voorkeur" />
                 <ScalarProperty Name="IsGezinsgebonden" ColumnName="IsGezinsgebonden" />
@@ -2427,7 +2431,6 @@
           <EntitySetMapping Name="CommunicatieType">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieType)">
               <MappingFragment StoreEntitySet="CommunicatieType">
-                <ScalarProperty Name="IsOptIn" ColumnName="IsOptIn" />
                 <ScalarProperty Name="Voorbeeld" ColumnName="Voorbeeld" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="ID" ColumnName="CommunicatieTypeID" />
@@ -2712,7 +2715,7 @@
           <EntitySetMapping Name="Abonnement">
             <EntityTypeMapping TypeName="ChiroGroepModel.Abonnement">
               <MappingFragment StoreEntitySet="Abonnement">
-                <ScalarProperty Name="TypeInt" ColumnName="type" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="AanvraagDatum" ColumnName="AanvraagDatum" />
                 <ScalarProperty Name="ID" ColumnName="AbonnementID" />
