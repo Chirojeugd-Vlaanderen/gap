@@ -3,6 +3,37 @@
 use gap_local;
 go
 
+-- Wijzigingen voor #3392 - nieuwe bulk-mail dingen.
+
+alter table pers.Persoon add Nieuwsbrief bit default 0;
+go
+
+update p
+set p.Nieuwsbrief = q.nieuwsbrief
+from
+pers.persoon p join
+(
+select persoonId, max(cast(isvooroptin as integer)) as nieuwsbrief from pers.gelieerdepersoon gp
+left outer join pers.communicatievorm cv on cv.gelieerdepersoonid=gp.gelieerdepersoonid
+where communicatietypeid=3
+group by gp.persoonid
+) q on p.persoonid = q.persoonid
+
+go
+
+alter table pers.CommunicatieVorm drop column IsVoorOptIn
+go
+
+alter table pers.CommunicatieType drop DF__Communica__IsOpt__51300E55
+go
+
+alter table pers.CommunicatieType drop column IsOptIn
+go
+
+-- Wijzigingen voor #3140. Regel instapperiode via GAP.
+
+go
+
 alter table pers.Persoon add LaatsteMembership int null;
 go
 
