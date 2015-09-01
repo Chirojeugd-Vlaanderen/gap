@@ -82,7 +82,7 @@ namespace Chiro.Gap.Sync
 		                {
 		                    Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,
 		                    Waarde = communicatieVorm.Nummer,
-		                    GeenMailings = !communicatieVorm.IsVoorOptIn
+		                    IsBulk = communicatieVorm.Voorkeur
 		                }));
 		}
 
@@ -110,7 +110,7 @@ namespace Chiro.Gap.Sync
                         {
                             Type = (CommunicatieType) communicatieVorm.CommunicatieType.ID,
                             Waarde = communicatieVorm.Nummer,
-                            GeenMailings = !communicatieVorm.IsVoorOptIn
+                            IsBulk = communicatieVorm.Voorkeur
                         }));
 	    }
 	}

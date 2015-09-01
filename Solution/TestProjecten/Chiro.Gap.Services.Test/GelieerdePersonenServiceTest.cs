@@ -143,7 +143,6 @@ namespace Chiro.Gap.Services.Test
             var telefoonNr = new CommunicatieType
                                  {
                                      ID = 1,
-                                     IsOptIn = false,
                                      Omschrijving = "Telefoonnummer",
                                      Validatie =
                                          @"(^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$)|^\+[0-9]*$"

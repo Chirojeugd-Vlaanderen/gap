@@ -671,36 +671,6 @@ namespace Chiro.Gap.Services
 #endif
         }
 
-        /// <summary>
-        /// Schrijft een communicatievorm in of uit voor de snelleberichtgenlijsten
-        /// </summary>
-        /// <param name="communicatieVormID">ID in/uit te schrijven communicatievorm</param>
-        /// <param name="inschrijven"><c>true</c> voor inschrijven, <c>false</c> voor uitschrijven.</param>
-        public void SnelleBerichtenInschrijven(int communicatieVormID, bool inschrijven)
-        {
-            var communicatieVorm = _communicatieVormRepo.ByID(communicatieVormID);
-            if (!_autorisatieMgr.IsGav(communicatieVorm))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            communicatieVorm.IsVoorOptIn = inschrijven;
-#if KIPDORP
-            using (var tx = new TransactionScope())
-            {
-#endif
-                _communicatieVormRepo.SaveChanges();
-                if (communicatieVorm.GelieerdePersoon.Persoon.InSync)
-                {
-                    // het nummer veranderde niet.
-                    _communicatieSync.Bijwerken(communicatieVorm, communicatieVorm.Nummer);
-                }
-#if KIPDORP
-            tx.Complete();
-            }
-#endif
-        }
-
         #endregion
 
         #region aanmaken (wordt niet gesynct)
@@ -771,7 +741,6 @@ namespace Chiro.Gap.Services
                                 ID = 0, // nieuw e-mailadres
                                 CommunicatieType = _communicatieTypesRepo.ByID((int) CommunicatieTypeEnum.Email),
                                 IsGezinsgebonden = details.EMail.IsGezinsGebonden,
-                                IsVoorOptIn = details.EMail.IsVoorOptIn,
                                 Nota = details.EMail.Nota,
                                 Nummer = details.EMail.Nummer,
                                 Voorkeur = details.EMail.Voorkeur
@@ -812,7 +781,6 @@ namespace Chiro.Gap.Services
                                          CommunicatieType =
                                              _communicatieTypesRepo.ByID((int) CommunicatieTypeEnum.TelefoonNummer),
                                          IsGezinsgebonden = details.TelefoonNummer.IsGezinsGebonden,
-                                         IsVoorOptIn = details.TelefoonNummer.IsVoorOptIn,
                                          Nota = details.TelefoonNummer.Nota,
                                          Nummer = details.TelefoonNummer.Nummer,
                                          Voorkeur = details.TelefoonNummer.Voorkeur

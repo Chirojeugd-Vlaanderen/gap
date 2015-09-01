@@ -221,11 +221,6 @@
                 <td><%= commType.Key.Omschrijving + " " + teller %> </td>
                 <td title="<%= Html.Encode(cv.Nota) %>">
                     <<%:tag %> id="<%:cvID %>" class="contact"><%=ctTekst %></<%:tag %>>
-                    <% if (cv.CommunicatieTypeIsOptIn)
-                       { %>
-                    <br />
-                    Nieuwsbrief ontvangen<%= Html.InfoLink("snelBerichtInfo")%>: <a class="sblink" href="#" id="sb<%: cvID %>"><%= cv.IsVoorOptIn ? "ja" : "nee" %></a>
-                    <% } %>
                 </td>
                 <td>
                     <div class="contactBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>

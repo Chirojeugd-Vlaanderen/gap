@@ -47,9 +47,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         {
             ID = detail.ID;
             CommunicatieTypeID = detail.CommunicatieTypeID;
-            CommunicatieTypeIsOptIn = detail.CommunicatieTypeIsOptIn;
             IsGezinsGebonden = detail.IsGezinsGebonden;
-            IsVoorOptIn = detail.IsVoorOptIn;
             Nota = detail.Nota;
             Nummer = detail.Nummer;
             VersieString = detail.VersieString;
@@ -70,18 +68,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         [DataMember]
         [StringLength(160)]
         public string Nummer { get; set; }
-
-        /// <summary>
-        /// Geeft aan of de gebruiker toestemming geeft aan Chirojeugd Vlaanderen
-        /// om communicatievorm te gebruiken als dat voor het communicatietype 
-        /// van toepassing is
-        /// </summary>
-        /// <remarks>Voorlopig is dat alleen voor e-mailadressen van belang, voor de 
-        /// Snelleberichtenlijsten. Bij <c>true</c> geeft de gebruiker aan dat het adres
-        /// ingeschreven mag worden op de Snelleberichtenlijst.</remarks>
-        [DataMember]
-        [DisplayName(@"Stuur de maandelijkse nieuwsbrief")]
-        public bool IsVoorOptIn { get; set; }
 
         /// <summary>
         /// Geeft aan of deze communicatievorm de voorkeur krijgt als de persoon
@@ -123,13 +109,5 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         [DataMember]
         [Verplicht]
         public int CommunicatieTypeID { get; set; }
-
-        /// <summary>
-        /// Geeft aan of iemand toestemming moet geven voor Chirojeugd Vlaanderen
-        /// waarden voor dit communicatietype mag gebruiken
-        /// </summary>
-        /// <remarks>Overgenomen van geassocieerde CommunicatieType</remarks>
-        [DataMember]
-        public bool CommunicatieTypeIsOptIn { get; set; }
     }
 }

@@ -431,15 +431,6 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         void NummerCommunicatieVormWijzigen(int ID, string waarde);
 
-        /// <summary>
-        /// Schrijft een communicatievorm in of uit voor de snelleberichtgenlijsten
-        /// </summary>
-        /// <param name="communicatieVormID">ID in/uit te schrijven communicatievorm</param>
-        /// <param name="inschrijven"><c>true</c> voor inschrijven, <c>false</c> voor uitschrijven.</param>
-        [OperationContract]
-        void SnelleBerichtenInschrijven(int communicatieVormID, bool inschrijven);
-
-
 		#endregion commvormen
 
 		#region categorieën

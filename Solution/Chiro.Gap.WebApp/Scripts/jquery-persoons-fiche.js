@@ -274,34 +274,6 @@ $(function () {
             wijzigCommunicatieNr(cvID, params.newValue);
         });
 
-    $('.sblink').click(function(e) {
-        e.preventDefault(); // vermijdt dat een klik op de link de pagina gaat herladen
-        var linkID = $(this).attr('id');
-        // extraheer communicatievormID
-        var pattern = /([0-9]*)$/;
-        var cvID = pattern.exec(linkID)[0];
-        var waarde;
-
-
-        // quick and dirty hack
-
-        if ($(this).text() == 'ja') {
-            $(this).html('nee');
-            waarde = null;
-        } else {
-            $(this).html('ja');
-            waarde = "true";
-        }
-
-        url = link("Personen", "SnelleBerichtenInschrijven");
-        $.post(url,
-            {
-                "Waarde": waarde,
-                "ID": cvID
-            });
-
-    });
-
     $('.contactBewerken').click(function (e) {
         e.stopPropagation();
         e.preventDefault();

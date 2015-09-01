@@ -582,7 +582,8 @@ namespace Chiro.Gap.Services
                   .ForMember(dst => dst.BerichtGebruiker, opt => opt.Ignore())
                   .ForMember(dst => dst.BerichtPersoon, opt => opt.Ignore())
                   .ForMember(dst => dst.SeNaam, opt => opt.Ignore())
-                  .ForMember(dst => dst.SeVoornaam, opt => opt.Ignore());
+                  .ForMember(dst => dst.SeVoornaam, opt => opt.Ignore())
+                  .ForMember(dst => dst.NieuwsBrief, opt => opt.Ignore());
 
             Mapper.CreateMap<UitstapInfo, Uitstap>()
                 .ForMember(dst => dst.GroepsWerkJaar, opt => opt.Ignore())

@@ -199,7 +199,6 @@ namespace Chiro.Gap.Workers
             // het stuk 'voorkeur' speciaal.
 
             communicatieVorm.IsGezinsgebonden = communicatieInfo.IsGezinsGebonden;
-            communicatieVorm.IsVoorOptIn = communicatieInfo.IsVoorOptIn;
             communicatieVorm.Nota = communicatieInfo.Nota;
             communicatieVorm.Nummer = communicatieInfo.Nummer;
             communicatieVorm.VersieString = communicatieInfo.VersieString;
