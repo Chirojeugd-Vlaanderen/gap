@@ -5,7 +5,7 @@ go
 
 -- Wijzigingen voor #3392 - nieuwe bulk-mail dingen.
 
-alter table pers.Persoon add Nieuwsbrief bit default 0;
+alter table pers.Persoon add NieuwsBrief bit not null default 0;
 go
 
 update p
