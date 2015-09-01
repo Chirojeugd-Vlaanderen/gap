@@ -1565,7 +1565,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <NavigationProperty Name="BerichtGebruiker" Relationship="ChiroGroepModel.FK_Bericht_Gebruiker" FromRole="Persoon" ToRole="Bericht" />
           <NavigationProperty Name="BerichtPersoon" Relationship="ChiroGroepModel.FK_Bericht_Persoon_Id" FromRole="Persoon" ToRole="Bericht" />
           <Property Name="LaatsteMembership" Type="Int32" />
-          <Property Name="Nieuwsbrief" Type="Boolean" />
+          <Property Name="NieuwsBrief" Type="Boolean" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -1579,7 +1579,6 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="CommunicatieVorm" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="CommunicatieType" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieVorm" ToRole="CommunicatieType" />
-          <Property Name="IsVoorOptIn" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="GelieerdePersoon">
           <Key>
@@ -1805,7 +1804,6 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
           <NavigationProperty Name="CommunicatieVorm" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieType" ToRole="CommunicatieVorm" />
           <Property Name="Voorbeeld" Type="String" Nullable="true" MaxLength="160" Unicode="false" FixedLength="false" />
-          <Property Name="IsOptIn" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_CommunicatieVorm_CommunicatieType">
           <End Type="ChiroGroepModel.CommunicatieType" Role="CommunicatieType" Multiplicity="1" />
@@ -2036,7 +2034,6 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar" FromRole="Abonnement" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="Publicatie" Relationship="ChiroGroepModel.FK_Abonnement_Publicatie" FromRole="Abonnement" ToRole="Publicatie" />
           <Property Name="TypeInt" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Publicatie">
           <Key>
@@ -2124,7 +2121,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <EntitySetMapping Name="Persoon">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Persoon)">
               <MappingFragment StoreEntitySet="Persoon">
-                <ScalarProperty Name="Nieuwsbrief" ColumnName="Nieuwsbrief" />
+                <ScalarProperty Name="NieuwsBrief" ColumnName="Nieuwsbrief" />
                 <ScalarProperty Name="LaatsteMembership" ColumnName="LaatsteMembership" />
                 <ScalarProperty Name="SeVoornaam" ColumnName="SeVoornaam" />
                 <ScalarProperty Name="SeNaam" ColumnName="SeNaam" />
@@ -2715,7 +2712,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <EntitySetMapping Name="Abonnement">
             <EntityTypeMapping TypeName="ChiroGroepModel.Abonnement">
               <MappingFragment StoreEntitySet="Abonnement">
-                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="TypeInt" ColumnName="Type" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="AanvraagDatum" ColumnName="AanvraagDatum" />
                 <ScalarProperty Name="ID" ColumnName="AbonnementID" />
@@ -2826,7 +2823,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <edmx:Diagram Name="ChiroGroepModel" ZoomLevel="86">
+      <edmx:Diagram Name="ChiroGroepModel" ZoomLevel="93">
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.ChiroGroep" Width="1.5" PointX="1" PointY="32.125" Height="1.5956835937500102" IsExpanded="true" />
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.Groep" Width="1.5" PointX="1" PointY="25.375" Height="3.5186979166666674" IsExpanded="true" />
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.Persoon" Width="1.5" PointX="9" PointY="4.875" Height="4.0956022135416656" IsExpanded="true" />
