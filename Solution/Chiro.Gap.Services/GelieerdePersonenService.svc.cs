@@ -1257,7 +1257,17 @@ namespace Chiro.Gap.Services
             {
 #endif
                 _gelieerdePersonenRepo.SaveChanges();
-                _personenSync.Bewaren(gelieerdePersoon, false, false);
+                if (gelieerdePersoon.Persoon.InSync)
+                {
+                    // Als we de persoon al kenden, moeten we gewoon de inschrijving registreren.
+                    _personenSync.Bewaren(gelieerdePersoon, false, false);
+                }
+                else
+                {
+                    // Als we hem nog niet kenden, dan moet e-mail en communicatie mee.
+                    gelieerdePersoon.Persoon.InSync = true;
+                    _personenSync.Bewaren(gelieerdePersoon, true, true);
+                }
 #if KIPDORP   
             tx.Complete();
             }
