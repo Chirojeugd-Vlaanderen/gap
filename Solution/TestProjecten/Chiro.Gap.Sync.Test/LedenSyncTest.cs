@@ -99,11 +99,11 @@ namespace Chiro.Gap.Sync.Test
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             var lid = new Kind
-                          {
-                              AfdelingsJaar = new AfdelingsJaar {OfficieleAfdeling = new OfficieleAfdeling {ID = 1}},
-                              GroepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()},
-                              GelieerdePersoon = new GelieerdePersoon {Persoon = new Poco.Model.Persoon()}
-                          };
+            {
+                AfdelingsJaar = new AfdelingsJaar {OfficieleAfdeling = new OfficieleAfdeling {ID = 1}},
+                GroepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()},
+                GelieerdePersoon = new GelieerdePersoon {Persoon = new Poco.Model.Persoon {InSync = true}}
+            };
 
             // ACT
 
@@ -173,7 +173,11 @@ namespace Chiro.Gap.Sync.Test
             {
                 AfdelingsJaar = new AfdelingsJaar {OfficieleAfdeling = new OfficieleAfdeling {ID = 1}},
                 GroepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()},
-                GelieerdePersoon = new GelieerdePersoon {Persoon = new Poco.Model.Persoon {ID = 2, Geslacht = GeslachtsType.X}},
+                GelieerdePersoon =
+                    new GelieerdePersoon
+                    {
+                        Persoon = new Poco.Model.Persoon {ID = 2, Geslacht = GeslachtsType.X, InSync = true}
+                    },
                 NonActief = false,
                 UitschrijfDatum = null,
                 EindeInstapPeriode = DateTime.Now.AddMonths(-6)

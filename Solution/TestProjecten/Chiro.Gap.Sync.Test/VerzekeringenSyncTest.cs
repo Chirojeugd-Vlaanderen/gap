@@ -79,10 +79,15 @@ namespace Chiro.Gap.Sync.Test
             // ARRANGE
 
             var groepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()};
-            var gelieerdePersoon = new GelieerdePersoon {Groep = groepsWerkJaar.Groep, Persoon = new Persoon
-                                                      {
-                                                          AdNummer = null,
-                                                      }};
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Groep = groepsWerkJaar.Groep,
+                Persoon = new Persoon
+                {
+                    AdNummer = null,
+                    InSync = true,
+                }
+            };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             groepsWerkJaar.Groep.GelieerdePersoon.Add(gelieerdePersoon);
                                                                                                           
