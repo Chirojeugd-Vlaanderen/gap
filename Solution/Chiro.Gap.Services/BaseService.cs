@@ -448,6 +448,7 @@ namespace Chiro.Gap.Services
             Mapper.CreateMap<CommunicatieType, CommunicatieTypeInfo>();
             Mapper.CreateMap<Categorie, CategorieInfo>();
             Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();
+            Mapper.CreateMap<CommunicatieVorm, CommunicatieInfo>();
             Mapper.CreateMap<CommunicatieVorm, CommunicatieDetail>();
             Mapper.CreateMap<Uitstap, UitstapInfo>();
 

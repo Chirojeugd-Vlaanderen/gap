@@ -1223,7 +1223,8 @@ namespace Chiro.Gap.Services
             if (inschrijven && !string.IsNullOrEmpty(emailAdres))
             {
                 var email = (from a in gelieerdePersoon.Communicatie
-                    where a.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email
+                    where
+                        a.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email && string.Equals(a.Nummer, emailAdres)
                     select a).FirstOrDefault();
 
                 // Geval 1: maak nieuw e-mailadres aan, en stel in als voorkeur.
