@@ -1617,6 +1617,10 @@ namespace Chiro.Gap.WebApp.Controllers
             // Toegegeven, dit is wat overkill:
             model.PersoonLidInfo =
                 ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(svc => svc.AlleDetailsOphalen(id));
+
+            // Pas vinkje voor nieuwsbrief meteen aan.
+            model.PersoonLidInfo.NieuwsBrief = !model.PersoonLidInfo.NieuwsBrief;
+
             model.EmailAdres = (from a in model.PersoonLidInfo.CommunicatieInfo
                 where a.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email && a.Voorkeur
                 select a.Nummer).FirstOrDefault();
