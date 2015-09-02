@@ -492,10 +492,22 @@ namespace Chiro.Gap.Services.Test
             Factory.InstantieRegistreren(personenSyncMock.Object);
 
             // dependency injection voor data access
+            // voor gelieerde-personenrepo doen we iets speciaals, zodat we bij savechanges
+            // kunnen nakijken of de persoon al in sync is.
+
+            var gelieerdePersonenRepoMock = new Mock<IRepository<GelieerdePersoon>>();
+            gelieerdePersonenRepoMock.Setup(src => src.ByID(gelieerdePersoon.ID, It.IsAny<string[]>()))
+                .Returns(gelieerdePersoon);
+            gelieerdePersonenRepoMock.Setup(src => src.SaveChanges()).Callback(() =>
+            {
+                // Op het moment dat de nieuwsbriefinschrijving wordt geregistreerd,
+                // moet de persoon al in sync zijn.
+                Debug.Assert(gelieerdePersoon.Persoon.InSync);
+            });
 
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
-                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+                                  .Returns(gelieerdePersonenRepoMock.Object);
             repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
                                   .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { emailType }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
