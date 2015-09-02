@@ -1578,7 +1578,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
         #endregion categorieën
 
-        #region dubbelpunt
+        #region abonnementen
         /// <summary>
         /// Formulier voor beheer Dubbelpuntabonnement van persoon met GelieerdePersoonID
         /// <paramref name="id"/>.
@@ -1603,6 +1603,29 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         /// <summary>
+        /// Formulier voor het beheer van nieuwsbriefabonnement van persoon met gegeven gelieerdePersoonID
+        /// <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id">GelieerdePersoonID van de persoon die de nieuwsbrief wil krijgen.</param>
+        /// <param name="groepID">ID van de groep waarin wordt gewerkt.</param>
+        /// <returns>Het nieuwsbriefinschrijvingsformulier.</returns>
+        public ActionResult NieuwsBrief(int id, int groepID)
+        {
+            var model = new VoorkeursMailModel();
+            BaseModelInit(model, groepID);
+            model.Titel = "Nieuwsbrief";
+
+            // Toegegeven, dit is wat overkill:
+            model.PersoonLidInfo =
+                ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(svc => svc.AlleDetailsOphalen(id));
+            model.EmailAdres = (from a in model.PersoonLidInfo.CommunicatieInfo
+                where a.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email && a.Voorkeur
+                select a.Nummer).FirstOrDefault();
+
+            return View(model);
+        }
+
+        /// <summary>
         /// Afhandeling van het <paramref name="model"/> dat de user meegaf via het
         /// Dubbelpuntabonnementformulier.
         /// </summary>
@@ -1617,6 +1640,22 @@ namespace Chiro.Gap.WebApp.Controllers
                 svc => svc.AbonnementBewaren(id, VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID, model.AbonnementType, 1));
 
             return RedirectToAction("Bewerken", new {id});
+        }
+
+        /// <summary>
+        /// Afhandelen van de input <paramref name="model"/> van het nieuwsbriefformulier.
+        /// </summary>
+        /// <param name="id">Gelieerde persoon die een nieuwsbrief wil krijgen.</param>
+        /// <param name="groepID">Groep waarin wordt gewerkt.</param>
+        /// <param name="model">Voornamelijk e-mailadres en nieuwsbriefboolean.</param>
+        /// <returns>Als alles goed is, redirect naar bewerkenformulier.</returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult NieuwsBrief(int id, int groepID, VoorkeursMailModel model)
+        {
+            ServiceHelper.CallService<IGelieerdePersonenService>(
+                svc => svc.InschrijvenNieuwsBrief(id, model.EmailAdres, model.PersoonLidInfo.NieuwsBrief));
+
+            return RedirectToAction("Bewerken", new { id });
         }
         #endregion
 
@@ -1713,6 +1752,5 @@ namespace Chiro.Gap.WebApp.Controllers
             return Json(null);
         }
         #endregion
-
     }
 }

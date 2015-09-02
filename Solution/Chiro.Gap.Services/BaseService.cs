@@ -333,6 +333,11 @@ namespace Chiro.Gap.Services
                     dst => dst.DubbelpuntAbonnement,
                     opt => opt.MapFrom(src => _abonnementenMgr.HuidigAbonnementTypeGet(src.GelieerdePersoon, 1)))
                 .ForMember(
+                    dst => dst.NieuwsBrief,
+                    // TODO: Ik had NieuwsBrief waarschijnlijk beter aan PersoonDetail gekoppeld,
+                    // dan werd het automatisch gemapt.
+                    opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.NieuwsBrief))
+                .ForMember(
                     dst => dst.GebruikersInfo,
                     opt => opt.Ignore()); // niet relevant, denk ik :-P
 
@@ -522,6 +527,11 @@ namespace Chiro.Gap.Services
                     dst => dst.DubbelpuntAbonnement,
                     // Voorlopig hebben we enkel Dubbelpunt als publicatie.
                     opt => opt.MapFrom(src => _abonnementenMgr.HuidigAbonnementTypeGet(src, 1)))
+                .ForMember(
+                    dst => dst.NieuwsBrief,
+                    // TODO: Ik had NieuwsBrief waarschijnlijk beter aan PersoonDetail gekoppeld,
+                    // dan werd het automatisch gemapt.
+                    opt => opt.MapFrom(src => src.Persoon.NieuwsBrief))
                 .ForMember(
                     dst => dst.GebruikersInfo,
                     opt => opt.Ignore());

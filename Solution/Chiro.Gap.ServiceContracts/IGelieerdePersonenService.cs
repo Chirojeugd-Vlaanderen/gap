@@ -491,6 +491,20 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
 	    void AbonnementBewaren(int gelieerdePersoonID, int groepsWerkJaarID, AbonnementType? abonnementType, int publicatieID);
+
+        /// <summary>
+        /// Schrijft de gelieerde persoon met gegeven <paramref name="gelieerdePersoonID"/> in of uit
+        /// voor de nieuwsbrief. Als <paramref name="emailAdres"/> is gegeven, dan wordt dat het nieuwe voorkeursadres van
+        /// de gelieerde persoon; zo nodig wordt het toegevoegd.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van gelieerde persoon die in- of uitgeschreven moet worden.</param>
+        /// <param name="emailAdres">Als gegeven, en <paramref name="inschrijven"/> is <c>true</c>, dan wordt dit 
+        /// het nieuwe voorkeursadres van de persoon.</param>
+        /// <param name="inschrijven">Als <c>true</c>, dan wordt de persoon ingeschreven, anders uitgeschreven.</param>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        void InschrijvenNieuwsBrief(int gelieerdePersoonID, string emailAdres, bool inschrijven);
         #endregion
     }
 }

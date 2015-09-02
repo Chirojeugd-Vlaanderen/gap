@@ -1199,6 +1199,71 @@ namespace Chiro.Gap.Services
             }
 #endif
         }
+
+        /// <summary>
+        /// Schrijft de gelieerde persoon met gegeven <paramref name="gelieerdePersoonID"/> in of uit
+        /// voor de nieuwsbrief. Als <paramref name="emailAdres"/> is gegeven, dan wordt dat het nieuwe voorkeursadres van
+        /// de gelieerde persoon; zo nodig wordt het toegevoegd.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van gelieerde persoon die in- of uitgeschreven moet worden.</param>
+        /// <param name="emailAdres">Als gegeven, en <paramref name="inschrijven"/> is <c>true</c>, dan wordt dit 
+        /// het nieuwe voorkeursadres van de persoon.</param>
+        /// <param name="inschrijven">Als <c>true</c>, dan wordt de persoon ingeschreven, anders uitgeschreven.</param>
+        public void InschrijvenNieuwsBrief(int gelieerdePersoonID, string emailAdres, bool inschrijven)
+        {
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID, "Communicatie");
+            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            // Als er ingeschreven moet worden, dan moeten we zien dat het
+            // e-mailadres bestaat.
+            // TODO: Cleanup verwerking e-mailadres.
+            if (inschrijven && !string.IsNullOrEmpty(emailAdres))
+            {
+                var email = (from a in gelieerdePersoon.Communicatie
+                    where a.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email
+                    select a).FirstOrDefault();
+
+                // Geval 1: maak nieuw e-mailadres aan, en stel in als voorkeur.
+                if (email == null)
+                {
+                    // We hergebruiken dit, zodat de communicatievorm wordt gevalideerd,
+                    // en eventuele dubbelpuntabonnementen worden aangepast.
+                    CommunicatieVormToevoegen(gelieerdePersoonID, new CommunicatieInfo
+                    {
+                        Nummer = emailAdres,
+                        CommunicatieTypeID = (int) CommunicatieTypeEnum.Email,
+                        Voorkeur = true,
+                    });
+                }
+                // Geval 2: e-mailadres bestond al, maar was nog geen voorkeursmailadres.
+                else if (!email.Voorkeur)
+                {
+                    // Het feit dat we telkens terug moeten mappen naar een
+                    // datacontract, maakt het rommelig en omslachtig.
+                    var info = Mapper.Map<CommunicatieVorm, CommunicatieInfo>(email);
+                    info.Voorkeur = true;
+                    CommunicatieVormAanpassen(info);
+                }
+                // Geval 3: e-mailadres bestond al, en had al voorkeur.
+                // Dan moeten we niets doen.
+            }
+            gelieerdePersoon.Persoon.NieuwsBrief = inschrijven;
+
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _gelieerdePersonenRepo.SaveChanges();
+                _personenSync.Bewaren(gelieerdePersoon, false, false);
+#if KIPDORP   
+            tx.Complete();
+            }
+#endif
+        }
+
         #endregion
 
         #region te syncen updates

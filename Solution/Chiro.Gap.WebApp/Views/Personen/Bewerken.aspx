@@ -79,10 +79,6 @@
                         <td>Voorkeur:</td>
                         <td><input id="voorkeurCheck" type="checkbox"/></td>
                     </tr>
-                    <tr id="sb" hidden>
-                        <td>Nieuwsbrief ontvangen:</td>
-                        <td><input id="snelCheck" type="checkbox" /></td>
-                    </tr>
                     <tr id="gezin">
                         <td>Voor heel het gezin:</td>
                         <td><input id="gezinCheck" type="checkbox"/></td>
@@ -256,20 +252,30 @@
                 <td><div class="ui-icon ui-icon-pencil" id="bewerkCl"title="Bewerken" style="cursor: pointer"></div></td>
             </tr>
         <% } %>
+
+        <% 
+        // Omdat ik die JQuery-toestanden in zijn huidige vorm zodanig
+        // moeilijk te onderhouden vind, maak ik gewoon saaie actionlinks
+        // om abonnementen te bewerken. Dat werkt ook.
+        // Van zodra we een framework gebruiken voor JQuery, klappen we
+        // nog eens :) %>
+
         <tr>
             <td>Dubbelpunt</td>
             <td>
-                <a  id="dubbelpuntInfo" data-type="select">
                 <%= Html.DisplayFor(mdl =>mdl.PersoonLidInfo.DubbelpuntAbonnement) %>
-                </a>
             </td>
             <td>
-                 <% // Omdat ik die JQuery-toestanden in zijn huidige vorm zodanig
-                    // moeilijk te onderhouden vind, maak ik gewoon een saaie actionlink
-                    // om het abonnement te bewerken. Dat werkt ook.
-                    // Van zodra we een framework gebruiken voor JQuery, klappen we
-                    // nog eens :) %>
-                 <%:Html.ActionLink("Wijzig", "Dubbelpunt", new {id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
+                 <%:Html.ActionLink("[Wijzig]", "Dubbelpunt", new {id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
+            </td>
+        </tr>
+        <tr>
+            <td><%= Html.LabelFor(mdl => mdl.PersoonLidInfo.NieuwsBrief) %> <%= Html.InfoLink("snelBerichtInfo")%></td>
+            <td>
+                <%: Model.PersoonLidInfo.NieuwsBrief ? "ja" : "nee" %>
+            </td>
+            <td>
+                 <%:Html.ActionLink("[Wijzig]", "NieuwsBrief", new {id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
             </td>
         </tr>
 
