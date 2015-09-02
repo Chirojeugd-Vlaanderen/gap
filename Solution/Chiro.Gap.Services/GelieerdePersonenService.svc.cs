@@ -1257,7 +1257,6 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
-                _gelieerdePersonenRepo.SaveChanges();
                 if (gelieerdePersoon.Persoon.InSync)
                 {
                     // Als we de persoon al kenden, moeten we gewoon de inschrijving registreren.
@@ -1269,6 +1268,7 @@ namespace Chiro.Gap.Services
                     gelieerdePersoon.Persoon.InSync = true;
                     _personenSync.Bewaren(gelieerdePersoon, true, true);
                 }
+            _gelieerdePersonenRepo.SaveChanges();
 #if KIPDORP   
             tx.Complete();
             }
