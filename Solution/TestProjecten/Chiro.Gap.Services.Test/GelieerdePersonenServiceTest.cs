@@ -354,6 +354,67 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
+        /// Als er voor een nieuwsbriefabonnement een e-mailadres gekozen wordt
+        /// dat al wel bestond, maar geen voorkeursadres was, dan moet dat
+        /// e-mailadres het voorkeursadres worden. Zie #3392.
+        /// </summary>
+        [TestMethod]
+        public void NieuwsBriefNieuwVoorkeursAdresTest()
+        {
+            // ARRANGE
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon {InSync = true},
+                Groep = new ChiroGroep()
+            };
+
+            // Voor deze test liggen we niet wakker van het formaat van een e-mailadres:
+            var emailType = new CommunicatieType { ID = 3, Validatie = ".*" };
+
+            var oudVoorkeursAdres = new CommunicatieVorm
+            {
+                GelieerdePersoon = gelieerdePersoon,
+                CommunicatieType = emailType,
+                ID = 2,
+                Nummer = "johan@linux.be",
+                Voorkeur = true
+            };
+
+            var adresVoorNieuwsBrief = new CommunicatieVorm
+            {
+                GelieerdePersoon = gelieerdePersoon,
+                CommunicatieType = emailType,
+                ID = 3,
+                Nummer = "commissie.linux@chiro.be",
+                Voorkeur = false
+            };
+
+            gelieerdePersoon.Communicatie = new List<CommunicatieVorm> { oudVoorkeursAdres, adresVoorNieuwsBrief };
+
+            // dependency injection voor data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> {emailType}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieVorm>())
+                .Returns(
+                    new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> {oudVoorkeursAdres, adresVoorNieuwsBrief}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.InschrijvenNieuwsBrief(gelieerdePersoon.ID, adresVoorNieuwsBrief.Nummer, true);
+
+            // ASSERT
+            Assert.IsTrue(adresVoorNieuwsBrief.Voorkeur);
+        }
+
+        /// <summary>
         /// Als er voor een nieuwsbriefabonnement een nieuw e-mailadres wordt meegegeven,
         /// dan moet dat e-mailadres gekoppeld worden aan de gelieerde persoon.  
         /// </summary>
@@ -367,7 +428,7 @@ namespace Chiro.Gap.Services.Test
             var gelieerdePersoon = new GelieerdePersoon
             {
                 ID = 1,
-                Persoon = new Persoon {InSync = true},
+                Persoon = new Persoon { InSync = true },
                 Groep = new ChiroGroep()
             };
 
@@ -380,7 +441,7 @@ namespace Chiro.Gap.Services.Test
             repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
                                   .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
             repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
-                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> {emailType}));
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { emailType }));
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
@@ -391,6 +452,7 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
             Debug.Assert(gelieerdePersoon.Communicatie.Any(cm => cm.Nummer == mailAdres));
         }
+
 
         /// <summary>
         /// Als er een niet-in-sync persoon wordt ingeschreven voor de nieuwsbrief, dan moet die persoon
