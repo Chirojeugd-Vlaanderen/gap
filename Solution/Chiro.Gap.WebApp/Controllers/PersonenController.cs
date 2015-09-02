@@ -1613,7 +1613,6 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             var model = new VoorkeursMailModel();
             BaseModelInit(model, groepID);
-            model.Titel = "Nieuwsbrief";
 
             // Toegegeven, dit is wat overkill:
             model.PersoonLidInfo =
@@ -1621,6 +1620,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.EmailAdres = (from a in model.PersoonLidInfo.CommunicatieInfo
                 where a.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email && a.Voorkeur
                 select a.Nummer).FirstOrDefault();
+            model.Titel = String.Format("Nieuwsbrief voor {0}", model.PersoonLidInfo.PersoonDetail.VolledigeNaam);
 
             return View(model);
         }
@@ -1652,8 +1652,28 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NieuwsBrief(int id, int groepID, VoorkeursMailModel model)
         {
-            ServiceHelper.CallService<IGelieerdePersonenService>(
-                svc => svc.InschrijvenNieuwsBrief(id, model.EmailAdres, model.PersoonLidInfo.NieuwsBrief));
+            try
+            {
+                ServiceHelper.CallService<IGelieerdePersonenService>(
+                    svc => svc.InschrijvenNieuwsBrief(id, model.EmailAdres, model.PersoonLidInfo.NieuwsBrief));
+            }
+            catch (FaultException<FoutNummerFault> ex)
+            {
+                if (ex.Detail.FoutNummer != FoutNummer.ValidatieFout)
+                {
+                    throw;
+                }
+                BaseModelInit(model, groepID);
+
+                new ModelStateWrapper(ModelState).BerichtToevoegen("EmailAdres", Properties.Resources.OngeldigEmailAdres);
+                model.PersoonLidInfo =
+                    ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(
+                        svc => svc.AlleDetailsOphalen(id));
+
+                model.Titel = String.Format("Nieuwsbrief voor {0}", model.PersoonLidInfo.PersoonDetail.VolledigeNaam);
+
+                return View("NieuwsBrief", model);
+            }
 
             return RedirectToAction("Bewerken", new { id });
         }
