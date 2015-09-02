@@ -397,6 +397,63 @@ namespace Chiro.Gap.Services.Test
             communicatieSyncMock.Verify(snc => snc.Toevoegen(It.IsAny<CommunicatieVorm>()), Times.Once());
         }
 
+        /// <summary>
+        /// Als er een niet-in-sync persoon wordt ingeschreven voor de nieuwsbrief, dan moet die persoon
+        /// achteraf in sync zijn.  
+        /// </summary>
+        [TestMethod]
+        public void NieuwsBriefPersoonInSyncTest()
+        {
+            // ARRANGE
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon { InSync = false },
+                Groep = new ChiroGroep()
+            };
+
+            // Voor deze test liggen we niet wakker van het formaat van een e-mailadres:
+            var emailType = new CommunicatieType { ID = 3, Validatie = ".*" };
+
+            var email = new CommunicatieVorm
+            {
+                GelieerdePersoon = gelieerdePersoon,
+                CommunicatieType = emailType,
+                ID = 2,
+                Nummer = "johan@linux.be",
+                Voorkeur = true
+            };
+
+            gelieerdePersoon.Communicatie = new List<CommunicatieVorm> {email};
+
+            // dependency injection voor synchronisatie:
+            // verwacht syc van alle persoonsinfo
+
+            var personenSyncMock = new Mock<IPersonenSync>();
+            personenSyncMock.Setup(snc => snc.Bewaren(gelieerdePersoon, true, true)).Verifiable();
+            Factory.InstantieRegistreren(personenSyncMock.Object);
+
+            // dependency injection voor data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { emailType }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.InschrijvenNieuwsBrief(gelieerdePersoon.ID, email.Nummer, true);
+
+            // ASSERT
+            Assert.IsTrue(gelieerdePersoon.Persoon.InSync);
+            personenSyncMock.Verify(snc => snc.Bewaren(gelieerdePersoon, true, true), Times.AtLeastOnce);
+        }
+
+
         // Tests die nagingen of gewijzigde entiteiten wel bewaard werden, moeten we niet meer doen, want voor
         // change tracking gebruiken we entity framework. We kunnen ervan uitgaan dat dat wel fatsoenlijk
         // werkt.
