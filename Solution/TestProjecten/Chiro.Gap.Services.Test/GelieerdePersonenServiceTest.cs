@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using Chiro.Cdf.Ioc.Factory;
@@ -361,6 +362,8 @@ namespace Chiro.Gap.Services.Test
         {
             // ARRANGE
 
+            const string mailAdres = "johan@linux.be";
+
             var gelieerdePersoon = new GelieerdePersoon
             {
                 ID = 1,
@@ -370,14 +373,6 @@ namespace Chiro.Gap.Services.Test
 
             // Voor deze test liggen we niet wakker van het formaat van een e-mailadres:
             var emailType = new CommunicatieType { ID = 3, Validatie = ".*" };
-
-            // dependency injection voor synchronisatie:
-            // verwacht dat CommunicatieSync.Toevoegen wordt aangeroepen.
-
-            var communicatieSyncMock = new Mock<ICommunicatieSync>();
-            communicatieSyncMock.Setup(snc => snc.Toevoegen(It.IsAny<CommunicatieVorm>())).Verifiable();
-
-            Factory.InstantieRegistreren(communicatieSyncMock.Object);
 
             // dependency injection voor data access
 
@@ -391,10 +386,10 @@ namespace Chiro.Gap.Services.Test
             // ACT
 
             var target = Factory.Maak<GelieerdePersonenService>();
-            target.InschrijvenNieuwsBrief(gelieerdePersoon.ID, "johan@linux.be", true);
+            target.InschrijvenNieuwsBrief(gelieerdePersoon.ID, mailAdres, true);
 
             // ASSERT
-            communicatieSyncMock.Verify(snc => snc.Toevoegen(It.IsAny<CommunicatieVorm>()), Times.Once());
+            Debug.Assert(gelieerdePersoon.Communicatie.Any(cm => cm.Nummer == mailAdres));
         }
 
         /// <summary>
