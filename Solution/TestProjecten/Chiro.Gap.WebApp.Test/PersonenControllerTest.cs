@@ -102,6 +102,64 @@ namespace Chiro.Gap.WebApp.Test
             Assert.AreEqual(((ViewResult)result).ViewName, "NieuwsBrief");
         }
 
+        /// <summary>
+        /// Als je de nieuwsbriefinstellingen wilt wijzigen, dan is het handig dat op het
+        /// formulier dat je krijgt, nieuwsbrief krijgen is aangevinkt als dat nog niet
+        /// het geval was, en uitgevinkt als dat wel het geval was.
+        /// </summary>
+        [TestMethod]
+        public void NieuwsbriefWijzigenVinkjeOpVoorhandGewijzigdTest()
+        {
+            const int groepid = 426;            // arbitrair
+            const int werkjaar = 2011;          // werkJaar 2011-2012, om iets te doen
+            const int groepswerkjaarid = 2971;  // arbitrair
+            const int gelieerdePersoonId = 1;   // arbitrair.
+
+            // setup mocks
+            // (dit is nogal hetzelfde in veel tests.  Best eens afsplitsen)
+
+            var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            veelGebruiktMock.Setup(vg => vg.GroepsWerkJaarOphalen(groepid)).Returns(new GroepsWerkJaarDetail
+            {
+                GroepID = groepid,
+                WerkJaar = werkjaar,
+                WerkJaarID =
+                    groepswerkjaarid
+            });
+            veelGebruiktMock.Setup(vg => vg.BivakStatusHuidigWerkjaarOphalen(groepid)).Returns(new BivakAangifteLijstInfo
+            {
+                AlgemeneStatus =
+                    BivakAangifteStatus.NogNietVanBelang
+            });
+
+            var gelieerdePersonenServiceMock = new Mock<IGelieerdePersonenService>();
+            gelieerdePersonenServiceMock.Setup(svc => svc.AlleDetailsOphalen(gelieerdePersoonId))
+                .Returns(new PersoonLidInfo
+                {
+                    NieuwsBrief = false,
+                    CommunicatieInfo = new List<CommunicatieDetail>(),
+                    PersoonDetail = new PersoonDetail()
+                });
+
+            var channelProviderMock = new Mock<IChannelProvider>();
+            channelProviderMock.Setup(mock => mock.GetChannel<IGelieerdePersonenService>()).Returns(gelieerdePersonenServiceMock.Object);
+
+            Factory.InstantieRegistreren(veelGebruiktMock.Object);
+            Factory.InstantieRegistreren(channelProviderMock.Object);
+
+            var target = Factory.Maak<PersonenController>();
+
+            // act
+
+            var result = target.NieuwsBrief(gelieerdePersoonId, groepid);
+
+            // assert
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            Assert.IsInstanceOfType(((ViewResult) result).Model, typeof (VoorkeursMailModel));
+            Assert.IsTrue(((VoorkeursMailModel)((ViewResult)result).Model).PersoonLidInfo.NieuwsBrief);
+        }
+
         ///<summary>
         ///Test of je met de webinterface leiding kunt maken zonder afdeling
         ///</summary>
