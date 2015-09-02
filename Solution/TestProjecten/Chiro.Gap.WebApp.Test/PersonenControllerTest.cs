@@ -76,6 +76,13 @@ namespace Chiro.Gap.WebApp.Test
             });
 
             var gelieerdePersonenServiceMock = new Mock<IGelieerdePersonenService>();
+            gelieerdePersonenServiceMock.Setup(svc => svc.AlleDetailsOphalen(gelieerdePersoonId))
+                .Returns(new PersoonLidInfo
+                {
+                    NieuwsBrief = false,
+                    CommunicatieInfo = new List<CommunicatieDetail>(),
+                    PersoonDetail = new PersoonDetail()
+                });
             gelieerdePersonenServiceMock.Setup(svc => svc.InschrijvenNieuwsBrief(gelieerdePersoonId, It.IsAny<string>(), true))
                 .Throws(new FaultException<FoutNummerFault>(new FoutNummerFault {FoutNummer = FoutNummer.ValidatieFout}));
 
@@ -89,7 +96,12 @@ namespace Chiro.Gap.WebApp.Test
             var model = new VoorkeursMailModel
             {
                 PersoonLidInfo =
-                    new PersoonLidInfo {CommunicatieInfo = new List<CommunicatieDetail>(), NieuwsBrief = true}
+                    new PersoonLidInfo
+                    {
+                        CommunicatieInfo = new List<CommunicatieDetail>(),
+                        NieuwsBrief = true,
+                        PersoonDetail = new PersoonDetail()
+                    }
             };
 
             // act
