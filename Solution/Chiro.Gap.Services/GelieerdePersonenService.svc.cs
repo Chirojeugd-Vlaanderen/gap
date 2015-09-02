@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
 using Chiro.Cdf.Poco;
@@ -1317,6 +1318,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
+            Debug.Assert(gp.Persoon.InSync);
             _personenSync.Bewaren(gp, true, true);
         }
 

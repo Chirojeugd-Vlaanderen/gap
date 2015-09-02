@@ -130,12 +130,12 @@ namespace Chiro.Gap.Sync.Test
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             var uitstap = new Uitstap
-                              {
-                                  IsBivak = true,
-                                  GroepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()},
-                                  ContactDeelnemer =
-                                      new Deelnemer {GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}}
-                              };
+            {
+                IsBivak = true,
+                GroepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep()},
+                ContactDeelnemer =
+                    new Deelnemer {GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon {InSync = true}}}
+            };
 
             // ACT
 
@@ -145,7 +145,6 @@ namespace Chiro.Gap.Sync.Test
             // ASSERT 
 
             kipSyncMock.VerifyAll();
-            Assert.IsTrue(uitstap.ContactDeelnemer.GelieerdePersoon.Persoon.InSync);
         }
     }
 }

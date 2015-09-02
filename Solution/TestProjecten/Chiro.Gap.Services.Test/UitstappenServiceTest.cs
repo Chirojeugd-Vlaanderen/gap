@@ -479,7 +479,12 @@ namespace Chiro.Gap.Services.Test
                 IsBivak = true,
                 GroepsWerkJaar = groepsWerkJaar,
             };
-            var deelnemer = new Deelnemer { ID = 3, Uitstap = bivak };
+            var deelnemer = new Deelnemer
+            {
+                ID = 3,
+                Uitstap = bivak,
+                GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
+            };
 
             groepsWerkJaar.Uitstap.Add(bivak);
 
