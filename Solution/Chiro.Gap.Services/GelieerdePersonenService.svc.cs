@@ -1692,6 +1692,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
+            #region Mailchimptoestanden
             // administratie mailchimp:
             IEnumerable<GelieerdePersoon> relevantePersonen;
             var uitTeSchrijvenAdressen = new List<string>();
@@ -1731,6 +1732,7 @@ namespace Chiro.Gap.Services
                     teSyncenAbonnementen.Add(_abonnementenMgr.HuidigAbonnementGet(gp, 1));
                 }
             }
+            #endregion
 
             var communicatieVorm = new CommunicatieVorm();
 
@@ -1758,10 +1760,6 @@ namespace Chiro.Gap.Services
                 // Eender welke andere exception throwen we opnieuw.
                 throw;
             }
-            var syncenNaarKip = (from cv in gekoppeld
-                where
-                    cv.GelieerdePersoon.Persoon.InSync
-                select cv).ToList();
 
 #if KIPDORP
             using (var tx = new TransactionScope())
@@ -1769,10 +1767,13 @@ namespace Chiro.Gap.Services
 #endif
                     _gelieerdePersonenRepo.SaveChanges();
                     // TODO (#1409): welke communicatievorm de voorkeur heeft, gaat verloren bij de sync
-                    // naar Kipadmin. 
-                    foreach (var cv in syncenNaarKip)
+                    // naar Kipadmin.
+                    if (gelieerdePersoon.Persoon.InSync)
                     {
-                        _communicatieSync.Toevoegen(cv);
+                        foreach (var cv in gekoppeld)
+                        {
+                            _communicatieSync.Toevoegen(cv);
+                        }
                     }
                     foreach (string adr in uitTeSchrijvenAdressen)
                     {

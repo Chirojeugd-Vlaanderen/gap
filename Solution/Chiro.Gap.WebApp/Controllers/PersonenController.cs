@@ -1322,21 +1322,13 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult NieuweCommVorm(NieuweCommVormModel model, int groepID, int id)
         {
+            var communicatieDetail = model.NieuweCommVorm;
+
             // Eerst een hoop gedoe om de CommunicatieInfo uit het model in een
             // CommunicatieDetail te krijgen, zodat de validatie kan gebeuren.
 
             var communicatieType = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieTypeInfo>
                 (svc => svc.CommunicatieTypeOphalen(model.NieuweCommVorm.CommunicatieTypeID));
-
-            // Ik begrijp onderstaande code niet.  Wordt automapper hier gebruikt om te klonen?
-            // En zo ja: wat is de meerwaarde?
-
-            Mapper.CreateMap<CommunicatieDetail, CommunicatieDetail>()
-                .ForMember(dst => dst.CommunicatieTypeValidatie, opt => opt.Ignore());
-
-            var communicatieDetail = Mapper.Map<CommunicatieDetail, CommunicatieDetail>(
-                model.NieuweCommVorm);
-
             communicatieDetail.CommunicatieTypeOmschrijving = communicatieType.Omschrijving;
             communicatieDetail.CommunicatieTypeValidatie = communicatieType.Validatie;
             communicatieDetail.CommunicatieTypeVoorbeeld = communicatieType.Voorbeeld;
@@ -1372,7 +1364,9 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             else
             {
-                // vermijd bloat van te veel over de lijn te sturen
+                // We sturen niet heel CommunicatieDetail terug naar de service,
+                // want dat bevat veel te veel informatie. Daarom mappen
+                // we eerst naar het (beperktere) CommunicatieInfo
 
                 var commInfo = new CommunicatieInfo();
                 Mapper.CreateMap<CommunicatieDetail, CommunicatieInfo>();
@@ -1656,6 +1650,9 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NieuwsBrief(int id, int groepID, VoorkeursMailModel model)
         {
+            // TODO: validatie e-mailadres in de frontend, gelijkaardig aan NieuweCommVorm.
+            // Maar hier mag het e-mailadres wel leeg zijn.
+
             try
             {
                 ServiceHelper.CallService<IGelieerdePersonenService>(
