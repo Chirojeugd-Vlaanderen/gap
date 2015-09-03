@@ -79,9 +79,8 @@ namespace Chiro.Gap.WebApp.Test
             gelieerdePersonenServiceMock.Setup(svc => svc.AlleDetailsOphalen(gelieerdePersoonId))
                 .Returns(new PersoonLidInfo
                 {
-                    NieuwsBrief = false,
                     CommunicatieInfo = new List<CommunicatieDetail>(),
-                    PersoonDetail = new PersoonDetail()
+                    PersoonDetail = new PersoonDetail {NieuwsBrief = false}
                 });
             gelieerdePersonenServiceMock.Setup(svc => svc.InschrijvenNieuwsBrief(gelieerdePersoonId, It.IsAny<string>(), true))
                 .Throws(new FaultException<FoutNummerFault>(new FoutNummerFault {FoutNummer = FoutNummer.ValidatieFout}));
@@ -99,8 +98,7 @@ namespace Chiro.Gap.WebApp.Test
                     new PersoonLidInfo
                     {
                         CommunicatieInfo = new List<CommunicatieDetail>(),
-                        NieuwsBrief = true,
-                        PersoonDetail = new PersoonDetail()
+                        PersoonDetail = new PersoonDetail { NieuwsBrief = true }
                     }
             };
 
@@ -148,9 +146,8 @@ namespace Chiro.Gap.WebApp.Test
             gelieerdePersonenServiceMock.Setup(svc => svc.AlleDetailsOphalen(gelieerdePersoonId))
                 .Returns(new PersoonLidInfo
                 {
-                    NieuwsBrief = false,
                     CommunicatieInfo = new List<CommunicatieDetail>(),
-                    PersoonDetail = new PersoonDetail()
+                    PersoonDetail = new PersoonDetail { NieuwsBrief = false }
                 });
 
             var channelProviderMock = new Mock<IChannelProvider>();
@@ -169,7 +166,7 @@ namespace Chiro.Gap.WebApp.Test
 
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             Assert.IsInstanceOfType(((ViewResult) result).Model, typeof (VoorkeursMailModel));
-            Assert.IsTrue(((VoorkeursMailModel)((ViewResult)result).Model).PersoonLidInfo.NieuwsBrief);
+            Assert.IsTrue(((VoorkeursMailModel)((ViewResult)result).Model).PersoonLidInfo.PersoonDetail.NieuwsBrief);
         }
 
         ///<summary>

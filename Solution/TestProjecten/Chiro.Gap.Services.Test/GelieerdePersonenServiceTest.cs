@@ -519,7 +519,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
             Assert.IsTrue(gelieerdePersoon.Persoon.InSync);
-            personenSyncMock.Verify(snc => snc.Updaten(gelieerdePersoon), Times.AtLeastOnce);
+            personenSyncMock.Verify(snc => snc.UpdatenOfMaken(gelieerdePersoon), Times.AtLeastOnce);
         }
 
 

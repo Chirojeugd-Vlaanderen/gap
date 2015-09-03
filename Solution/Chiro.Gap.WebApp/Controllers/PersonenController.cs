@@ -1619,7 +1619,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(svc => svc.AlleDetailsOphalen(id));
 
             // Pas vinkje voor nieuwsbrief meteen aan.
-            model.PersoonLidInfo.NieuwsBrief = !model.PersoonLidInfo.NieuwsBrief;
+            model.PersoonLidInfo.PersoonDetail.NieuwsBrief = !model.PersoonLidInfo.PersoonDetail.NieuwsBrief;
 
             model.EmailAdres = (from a in model.PersoonLidInfo.CommunicatieInfo
                 where a.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email && a.Voorkeur
@@ -1659,7 +1659,7 @@ namespace Chiro.Gap.WebApp.Controllers
             try
             {
                 ServiceHelper.CallService<IGelieerdePersonenService>(
-                    svc => svc.InschrijvenNieuwsBrief(id, model.EmailAdres, model.PersoonLidInfo.NieuwsBrief));
+                    svc => svc.InschrijvenNieuwsBrief(id, model.EmailAdres, model.PersoonLidInfo.PersoonDetail.NieuwsBrief));
             }
             catch (FaultException<FoutNummerFault> ex)
             {

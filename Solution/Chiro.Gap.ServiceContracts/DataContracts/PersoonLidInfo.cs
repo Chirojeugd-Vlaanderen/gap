@@ -17,7 +17,6 @@
  */
 
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Runtime.Serialization;
 using Chiro.Gap.Domain;
 
@@ -68,12 +67,5 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public AbonnementType? DubbelpuntAbonnement { get; set; }
-
-        /// <summary>
-        /// Nieuwsbrief (eigenlijk: bulk mail)
-        /// </summary>
-        [DataMember]
-        [DisplayName(@"Nieuwsbrief ontvangen")]
-        public bool NieuwsBrief { get; set; }
     }
 }

@@ -270,9 +270,9 @@
             </td>
         </tr>
         <tr>
-            <td><%= Html.LabelFor(mdl => mdl.PersoonLidInfo.NieuwsBrief) %> <%= Html.InfoLink("snelBerichtInfo")%></td>
+            <td><%= Html.LabelFor(mdl => mdl.PersoonLidInfo.PersoonDetail.NieuwsBrief) %> <%= Html.InfoLink("snelBerichtInfo")%></td>
             <td>
-                <%: Model.PersoonLidInfo.NieuwsBrief ? "ja" : "nee" %>
+                <%: Model.PersoonLidInfo.PersoonDetail.NieuwsBrief ? "ja" : "nee" %>
             </td>
             <td>
                  <%:Html.ActionLink("[Wijzig]", "NieuwsBrief", new {id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>

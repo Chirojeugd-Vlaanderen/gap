@@ -38,7 +38,7 @@
         </li>
     </ul>
     
-    <%= Html.CheckBoxFor(mdl => mdl.PersoonLidInfo.NieuwsBrief) %> Stuur <%:Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> de nieuwsbrief op <%=Html.EditorFor(mdl => mdl.EmailAdres) %>.
+    <%= Html.CheckBoxFor(mdl => mdl.PersoonLidInfo.PersoonDetail.NieuwsBrief) %> Stuur <%:Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> de nieuwsbrief op <%=Html.EditorFor(mdl => mdl.EmailAdres) %>.
         <br/>
     <%= Html.ValidationMessageFor(mdl => mdl.EmailAdres) %>
 
