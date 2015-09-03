@@ -143,6 +143,7 @@ namespace Chiro.CiviSync.Mapping
                 .ForMember(dst => dst.LocBlockSaveRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.ContactGetRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.ContactSaveRequest, opt => opt.Ignore())
+                .ForMember(dst => dst.IdValueExpression, opt => opt.Ignore())
                 .ForMember(dst => dst.ReturnFields, opt => opt.Ignore())
                 .ForMember(dst => dst.ApiOptions, opt => opt.Ignore());
 

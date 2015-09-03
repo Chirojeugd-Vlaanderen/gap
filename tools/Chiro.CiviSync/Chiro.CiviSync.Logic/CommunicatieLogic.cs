@@ -131,6 +131,8 @@ namespace Chiro.CiviSync.Logic
                                   select new PhoneRequest
                                   {
                                       ContactId = contactId,
+                                      // TODO: onderscheid primary en bulk in GAP
+                                      IsPrimary = enkelZoeken ? (bool?)null : c.IsBulk,
                                       PhoneNumber = c.Waarde,
                                       PhoneType =
                                           c.Type == CommunicatieType.Fax
@@ -142,6 +144,8 @@ namespace Chiro.CiviSync.Logic
                                 select new EmailRequest
                                 {
                                     ContactId = contactId,
+                                    // TODO: onderscheid primary en bulk in GAP
+                                    IsPrimary = enkelZoeken ? (bool?)null : c.IsBulk,
                                     EmailAddress = c.Waarde,
                                     IsBulkMail = enkelZoeken ? (bool?)null : c.IsBulk
                                 };
@@ -162,6 +166,8 @@ namespace Chiro.CiviSync.Logic
                      select new ImRequest
                      {
                          ContactId = contactId,
+                         // TODO: onderscheid primary en bulk in GAP
+                         IsPrimary = enkelZoeken ? (bool?)null : c.IsBulk,
                          Name = c.Waarde,
                          Provider = c.Type == CommunicatieType.Msn ? Provider.Msn : Provider.Jabber
                      };

@@ -61,7 +61,7 @@ namespace Chiro.CiviSync.Services
                 var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
                     svc =>
                         svc.RelationshipDelete(_apiKey, _siteKey,
-                            new IdRequest(contact.RelationshipResult.Values.First().Id)));
+                            new DeleteRequest(contact.RelationshipResult.Values.First().Id)));
                 result.AssertValid();
             }
             else
