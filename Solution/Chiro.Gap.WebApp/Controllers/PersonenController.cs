@@ -1294,22 +1294,22 @@ namespace Chiro.Gap.WebApp.Controllers
                            where String.Compare(gav.GavLogin, mijnUser, StringComparison.OrdinalIgnoreCase) == 0
                            select gav).First();
 
-            return RedirectToAction("NieuweCommVorm", new { groepID, gelieerdePersoonID = mijnGav.GelieerdePersoonID });
+            return RedirectToAction("NieuweCommVorm", new { groepID, id = mijnGav.GelieerdePersoonID });
         }
 
 
         /// <summary>
         /// Toont het formulier waarmee een nieuwe communicatievorm toegevoegd kan worden
         /// </summary>
-        /// <param name="gelieerdePersoonID">ID van de gelieerde persoon voor wie we een nieuwe 
+        /// <param name="id">ID van de gelieerde persoon voor wie we een nieuwe 
         /// communicatievorm toevoegen</param>
         /// <param name="groepID">ID van de groep die de communicatievorm toevoegt</param>
         /// <returns></returns>
         /// <!-- GET: /Personen/NieuweCommVorm/gelieerdePersoonID -->
         [HandleError]
-        public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
+        public ActionResult NieuweCommVorm(int id, int groepID)
         {
-            var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonID));
+            var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(id));
             var types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieTypeInfo>>(l => l.CommunicatieTypesOphalen());
             var model = new NieuweCommVormModel(persoonDetail, types);
             BaseModelInit(model, groepID);
@@ -1320,7 +1320,7 @@ namespace Chiro.Gap.WebApp.Controllers
         // post: /Personen/NieuweCommVorm
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
-        public ActionResult NieuweCommVorm(NieuweCommVormModel model, int groepID, int gelieerdePersoonID)
+        public ActionResult NieuweCommVorm(NieuweCommVormModel model, int groepID, int id)
         {
             // Eerst een hoop gedoe om de CommunicatieInfo uit het model in een
             // CommunicatieDetail te krijgen, zodat de validatie kan gebeuren.
@@ -1364,7 +1364,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 BaseModelInit(model, groepID);
 
                 // info voor model herstellen
-                model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonID));
+                model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(id));
                 model.Types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieTypeInfo>>(l => l.CommunicatieTypesOphalen());
                 model.Titel = "Tel./mail/enz. toevoegen";
 
@@ -1378,10 +1378,10 @@ namespace Chiro.Gap.WebApp.Controllers
                 Mapper.CreateMap<CommunicatieDetail, CommunicatieInfo>();
                 Mapper.Map(model.NieuweCommVorm, commInfo);
 
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo));
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(id, commInfo));
                 VeelGebruikt.LedenProblemenResetten(groepID);
 
-                return RedirectToAction("Bewerken", new { id = gelieerdePersoonID });
+                return RedirectToAction("Bewerken", new { id = id });
             }
         }
 

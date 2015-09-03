@@ -303,7 +303,7 @@ $(function () {
         $('#extraInfoDialog').dialog();
 
         url = link("Personen", "NieuweCommVorm");
-        url += "?gelieerdePersoonID=" + GPid + " #main";
+        url += "/" + GPid + " #main";
         $('#extraInfoDialog').load(url, function () {
 
             gedeeltelijkTonen('#extraInfoDialog');
@@ -392,14 +392,12 @@ $(function () {
         var cId = $(this).parent().parent().attr('id');
         var nummer;
         var voorkeur;
-        var snelleber;
         var gezincom;
         var nota;
         var gaVerder = true;
         var type;
-        var antwoord
+        var antwoord;
 
-        $('#commDialog #voorkeur, #commDialog #snel').attr('checked', false);
         $('#commDialog #adresNota').val('');
         if (cId == 'email') {
             $('#commDialog select').html('<option>Email</option>');
@@ -413,7 +411,7 @@ $(function () {
         }
 
         url = link("Personen", "NieuweCommVorm");
-        url += "?gelieerdePersoonID=" + GPid;
+        url += "/" + GPid;
         $('#commDialog').dialog({
             modal: true,
             width: 510,
@@ -440,7 +438,6 @@ $(function () {
                     }
 
                     $('#voorkeurCheck').is(':checked') ? voorkeur = true : voorkeur = false;
-                    $('#snelCheck').is(':checked') ? snelleber = true : snelleber = false;
                     $('#gezinCheck').is(':checked') ? gezincom = true : gezincom = false;
                     nota = $('#adresNota').val();
                     if (gaVerder) {
@@ -451,7 +448,6 @@ $(function () {
                             data: {
                                 "NieuweCommVorm.CommunicatieTypeID": type,
                                 "NieuweCommVorm.Nummer": nummer,
-                                "NieuweCommVorm.IsVoorOptIn": snelleber,
                                 "NieuweCommVorm.Voorkeur": voorkeur,
                                 "NieuweCommVorm.IsGezinsGebonden": gezincom,
                                 "NieuweCommVorm.Nota": nota
