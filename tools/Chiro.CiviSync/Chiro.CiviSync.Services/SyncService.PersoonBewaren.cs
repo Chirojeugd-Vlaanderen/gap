@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -41,7 +42,8 @@ namespace Chiro.CiviSync.Services
         /// UpdatenOfMaken logt rariteiten zoals een AD-nummer dat al bestaat
         /// of een persoon zonder voornaam.
         /// </remarks>
-        public int UpdatenOfMaken(PersoonDetails details)
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public int PersoonUpdatenOfMaken(PersoonDetails details)
         {
             if (details.Persoon.AdNummer != null)
             {

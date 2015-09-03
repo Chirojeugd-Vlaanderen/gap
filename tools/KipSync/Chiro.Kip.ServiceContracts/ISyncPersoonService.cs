@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
@@ -63,6 +63,20 @@ namespace Chiro.Kip.ServiceContracts
         /// </remarks>
         [OperationContract(IsOneWay = true)]
         void PersoonUpdaten(Persoon persoon);
+
+        /// <summary>
+        /// Probeert een persoon te vinden op basis van persoonsgegevens, adressen en communicatie.
+        /// Als dat lukt, worden de meegegeven persoonsgegevens, adressen en communicatie overgenomen 
+        /// in de CiviCRM. Als er niemand gevonden is, dan wordt een nieuwe persoon aangemaakt.
+        /// </summary>
+        /// <param name="details">details voor te updaten/maken persoon</param>
+        /// <returns>AD-nummer van die persoon</returns>
+        /// <remarks>
+        /// UpdatenOfMaken logt rariteiten zoals een AD-nummer dat al bestaat
+        /// of een persoon zonder voornaam.
+        /// </remarks>
+        [OperationContract(IsOneWay = true)]
+        int PersoonUpdatenOfMaken(PersoonDetails details);
 
         /// <summary>
         /// Aan te roepen als een voorkeursadres gewijzigd moet worden.
@@ -396,6 +410,6 @@ namespace Chiro.Kip.ServiceContracts
         /// <param name="gedoe">Membershipdetails</param>
         [OperationContract(IsOneWay = true)]
         void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar, MembershipGedoe gedoe);
-        #endregion        
+        #endregion
     }
 }

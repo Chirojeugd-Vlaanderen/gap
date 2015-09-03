@@ -442,7 +442,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // ACT
 
-            service.UpdatenOfMaken(persoon);
+            service.PersoonUpdatenOfMaken(persoon);
 
             // ASSERT
 
