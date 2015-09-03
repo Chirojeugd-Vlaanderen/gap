@@ -76,7 +76,7 @@ namespace Chiro.Kip.ServiceContracts
         /// of een persoon zonder voornaam.
         /// </remarks>
         [OperationContract(IsOneWay = true)]
-        int PersoonUpdatenOfMaken(PersoonDetails details);
+        void PersoonUpdatenOfMaken(PersoonDetails details);
 
         /// <summary>
         /// Aan te roepen als een voorkeursadres gewijzigd moet worden.
