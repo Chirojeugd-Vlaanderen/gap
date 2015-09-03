@@ -1,3 +1,4 @@
+using Chiro.Gap.Services;
 /*
  * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
@@ -175,6 +176,81 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.IsTrue(true);	// al blij als er geen exception optreedt
+        }
+
+        /// <summary>
+        /// Als je een communicatievorm voor heel het gezin toevoegt, maar niet heel het gezin is
+        /// 'in sync', dan mag die communicatievorm enkel gesynct worden voor de personen die
+        /// in sync zijn.
+        /// </summary>
+        [TestMethod]
+        public void CommunicatieVormToevoegenHeelGezinTest()
+        {
+            // ARRANGE
+
+            // modelletje
+
+            var gelieerdePersoonInSync = new GelieerdePersoon {ID = 1, Persoon = new Persoon {InSync = true} };
+            var gelieerdePersoonNietInSync = new GelieerdePersoon {ID = 2, Persoon = new Persoon()};
+
+            gelieerdePersoonInSync.Persoon.GelieerdePersoon = new List<GelieerdePersoon> {gelieerdePersoonInSync};
+            gelieerdePersoonNietInSync.Persoon.GelieerdePersoon = new List<GelieerdePersoon>
+            {
+                gelieerdePersoonNietInSync
+            };
+
+            var adres = new BuitenLandsAdres();
+
+            var pa1 = new PersoonsAdres {Persoon = gelieerdePersoonInSync.Persoon, Adres = adres};
+            var pa2 = new PersoonsAdres {Persoon = gelieerdePersoonNietInSync.Persoon, Adres = adres};
+
+            gelieerdePersoonInSync.Persoon.PersoonsAdres = new List<PersoonsAdres> {pa1};
+            gelieerdePersoonNietInSync.Persoon.PersoonsAdres = new List<PersoonsAdres> {pa2};
+            adres.PersoonsAdres = new List<PersoonsAdres> {pa1, pa2};
+
+            var telefoonNr = new CommunicatieType
+            {
+                ID = 1,
+                Omschrijving = "Telefoonnummer",
+                Validatie =
+                                         @"(^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$)|^\+[0-9]*$",
+            };
+
+            // mocking opzetten
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoonInSync, gelieerdePersoonNietInSync }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { telefoonNr }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // dependency injection voor synchronisatie:
+            // verwacht dat CommunicatieSync.Toevoegen niet wordt aangeroepen voor de persoon niet in sync.
+            var communicatieSyncMock = new Mock<ICommunicatieSync>();
+            communicatieSyncMock.Setup(snc => snc.Toevoegen(It.Is<CommunicatieVorm>(cv => Equals(cv.GelieerdePersoon, gelieerdePersoonNietInSync)))).Verifiable();
+            Factory.InstantieRegistreren(communicatieSyncMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            var commInfo = new CommunicatieDetail()
+            {
+                CommunicatieTypeID = telefoonNr.ID,
+                Voorkeur = true,
+                IsGezinsGebonden = true,
+                Nummer = "03-484 53 32" // geldig nummer
+            };
+
+            target.CommunicatieVormToevoegen(gelieerdePersoonInSync.ID, commInfo);
+
+            // ASSERT
+
+            communicatieSyncMock.Verify(
+                snc =>
+                    snc.Toevoegen(It.Is<CommunicatieVorm>(cv => Equals(cv.GelieerdePersoon, gelieerdePersoonNietInSync))),
+                Times.Never());
         }
 
         /// <summary>
