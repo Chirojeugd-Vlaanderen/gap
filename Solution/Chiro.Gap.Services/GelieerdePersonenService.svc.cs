@@ -1260,13 +1260,13 @@ namespace Chiro.Gap.Services
                 if (gelieerdePersoon.Persoon.InSync)
                 {
                     // Als we de persoon al kenden, moeten we gewoon de inschrijving registreren.
-                    _personenSync.Bewaren(gelieerdePersoon, false, false);
+                    _personenSync.Updaten(gelieerdePersoon);
                 }
                 else
                 {
                     // Als we hem nog niet kenden, dan moet e-mail en communicatie mee.
                     gelieerdePersoon.Persoon.InSync = true;
-                    _personenSync.Bewaren(gelieerdePersoon, true, true);
+                    _personenSync.UpdatenOfMaken(gelieerdePersoon);
                 }
             _gelieerdePersonenRepo.SaveChanges();
 #if KIPDORP   
@@ -1332,7 +1332,7 @@ namespace Chiro.Gap.Services
             _gelieerdePersonenRepo.SaveChanges();
             if (gp.Persoon.InSync)
             {
-                _personenSync.Bewaren(gp, false, false);
+                _personenSync.Updaten(gp);
             }
 #if KIPDORP   
             tx.Complete();
@@ -1361,7 +1361,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            _personenSync.Bewaren(gp, true, true);
+            _personenSync.UpdatenOfMaken(gp);
         }
 
         /// <summary>

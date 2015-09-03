@@ -488,7 +488,7 @@ namespace Chiro.Gap.Services.Test
             // verwacht syc van alle persoonsinfo
 
             var personenSyncMock = new Mock<IPersonenSync>();
-            personenSyncMock.Setup(snc => snc.Bewaren(gelieerdePersoon, true, true)).Verifiable();
+            personenSyncMock.Setup(snc => snc.UpdatenOfMaken(gelieerdePersoon)).Verifiable();
             Factory.InstantieRegistreren(personenSyncMock.Object);
 
             // dependency injection voor data access
@@ -519,7 +519,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
             Assert.IsTrue(gelieerdePersoon.Persoon.InSync);
-            personenSyncMock.Verify(snc => snc.Bewaren(gelieerdePersoon, true, true), Times.AtLeastOnce);
+            personenSyncMock.Verify(snc => snc.Updaten(gelieerdePersoon), Times.AtLeastOnce);
         }
 
 
