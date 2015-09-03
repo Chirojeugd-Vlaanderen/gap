@@ -86,7 +86,7 @@ namespace Chiro.CiviSync.Services
         public void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar, bool gratis)
         {
             // Update of maak de persoon, en vind zijn AD-nummer
-            int adNr = UpdatenOfMaken(details); 
+            int adNr = PersoonUpdatenOfMaken(details); 
             
             LoonVerliesVerzekeren(adNr, stamNummer, werkJaar, gratis);
         }

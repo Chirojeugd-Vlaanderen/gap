@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -24,6 +25,7 @@ using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
+using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
 namespace Chiro.CiviSync.Services
@@ -41,7 +43,7 @@ namespace Chiro.CiviSync.Services
         /// UpdatenOfMaken logt rariteiten zoals een AD-nummer dat al bestaat
         /// of een persoon zonder voornaam.
         /// </remarks>
-        public int UpdatenOfMaken(PersoonDetails details)
+        public int PersoonUpdatenOfMaken(PersoonDetails details)
         {
             if (details.Persoon.AdNummer != null)
             {
@@ -75,6 +77,7 @@ namespace Chiro.CiviSync.Services
                     ContactType = ContactType.Individual,
                     ExternalIdentifier = adNummer.ToString(),
                     GapId = details.Persoon.ID,
+                    IsOptOut = !details.Persoon.NieuwsBrief,
                     ApiOptions = new ApiOptions {Match = "external_identifier"}
                 };
 
@@ -142,5 +145,26 @@ namespace Chiro.CiviSync.Services
             // 0 opleveren.
             return adNummer ?? 0;
         }
+
+        /// <summary>
+        /// Probeert een persoon te vinden op basis van persoonsgegevens, adressen en communicatie.
+        /// Als dat lukt, worden de meegegeven persoonsgegevens, adressen en communicatie overgenomen 
+        /// in de CiviCRM. Als er niemand gevonden is, dan wordt een nieuwe persoon aangemaakt.
+        /// </summary>
+        /// <param name="details">details voor te updaten/maken persoon</param>
+        /// <returns>AD-nummer van die persoon</returns>
+        /// <remarks>
+        /// UpdatenOfMaken logt rariteiten zoals een AD-nummer dat al bestaat
+        /// of een persoon zonder voornaam.
+        /// </remarks>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        void ISyncPersoonService.PersoonUpdatenOfMaken(PersoonDetails details)
+        {
+            // Het operation contract moet void returnen. Vandaar dat ik het
+            // expliciet implementeer, en dan de echte method aanroep die
+            // int oplevert.
+            PersoonUpdatenOfMaken(details);
+        }
+
     }
 }

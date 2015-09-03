@@ -98,7 +98,7 @@ namespace Chiro.Gap.Sync
                                 : src is BuitenLandsAdres ? (src as BuitenLandsAdres).WoonPlaats : String.Empty));
 
             Mapper.CreateMap<CommunicatieVorm, CommunicatieMiddel>()
-                .ForMember(dst => dst.GeenMailings, opt => opt.MapFrom(src => !src.IsVoorOptIn))
+                .ForMember(dst => dst.IsBulk, opt => opt.MapFrom(src => src.Voorkeur))
                 .ForMember(dst => dst.Type, opt => opt.MapFrom(src => (CommunicatieType)src.CommunicatieType.ID))
                 .ForMember(dst => dst.Waarde, opt => opt.MapFrom(src => src.Nummer));
 

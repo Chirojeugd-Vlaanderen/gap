@@ -106,6 +106,7 @@ namespace Chiro.Gap.Sync
         {
             Debug.Assert(l.GelieerdePersoon != null);
             Debug.Assert(l.GelieerdePersoon.Persoon != null);
+            Debug.Assert(l.GelieerdePersoon.Persoon.InSync);
             Debug.Assert(l.GroepsWerkJaar != null);
             Debug.Assert(l.GroepsWerkJaar.Groep != null);
             var nationaleFuncties = (from f in l.Functie
@@ -169,6 +170,7 @@ namespace Chiro.Gap.Sync
         {
             Debug.Assert(lid.GroepsWerkJaar != null);
             Debug.Assert(lid.GroepsWerkJaar.Groep != null);
+            Debug.Assert(lid.GelieerdePersoon.Persoon.InSync);
 
             // TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
 
@@ -196,6 +198,7 @@ namespace Chiro.Gap.Sync
             // TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
 
             Debug.Assert(chiroGroep != null);
+            Debug.Assert(lid.GelieerdePersoon.Persoon.InSync);
             AfdelingEnum[] kipAfdelingen;
 
             if (lid is Kind)

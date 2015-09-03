@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
@@ -55,6 +56,7 @@ namespace Chiro.Gap.Sync
         /// <param name="gwj">Bepaalt werkJaar en groep die factuur zal krijgen</param>
         public void Bewaren(PersoonsVerzekering persoonsVerzekering, GroepsWerkJaar gwj)
         {
+            Debug.Assert(persoonsVerzekering.Persoon.InSync);
             if (persoonsVerzekering.Persoon.AdNummer.HasValue)
             {
                 bool gratis = persoonsVerzekering.Persoon.GelieerdePersoon.Any(

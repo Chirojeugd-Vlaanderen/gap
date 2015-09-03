@@ -293,6 +293,8 @@ namespace Chiro.Gap.Services
         /// <param name="info">Details over de uitstap.  Als <c>uitstap.ID</c> <c>0</c> is,
         ///  dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
         /// <returns>ID van de uitstap</returns>
+        /// <remark>De contactdeelnemer zit niet bij in <paramref name="info"/>, daar wordt dus
+        /// niets mee gedaan.</remark>
         public int Bewaren(int groepId, UitstapInfo info)
         {
             // Als de uitstap een ID heeft, moet een bestaande uitstap opgehaald worden.
@@ -467,6 +469,7 @@ namespace Chiro.Gap.Services
 
                 if (deelnemer.Uitstap.IsBivak)
                 {
+                    deelnemer.GelieerdePersoon.Persoon.InSync = true;
                     _bivakSync.Bewaren(deelnemer.Uitstap);
                 }
                 _deelnemersRepo.SaveChanges();

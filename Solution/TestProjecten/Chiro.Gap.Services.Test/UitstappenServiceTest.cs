@@ -17,6 +17,7 @@
  */
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
@@ -478,7 +479,12 @@ namespace Chiro.Gap.Services.Test
                 IsBivak = true,
                 GroepsWerkJaar = groepsWerkJaar,
             };
-            var deelnemer = new Deelnemer { ID = 3, Uitstap = bivak };
+            var deelnemer = new Deelnemer
+            {
+                ID = 3,
+                Uitstap = bivak,
+                GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
+            };
 
             groepsWerkJaar.Uitstap.Add(bivak);
 
@@ -517,7 +523,12 @@ namespace Chiro.Gap.Services.Test
                                 IsBivak = true,
                                 GroepsWerkJaar = groepsWerkJaar,
                             };
-            var deelnemer = new Deelnemer {ID = 3, Uitstap = bivak};
+            var deelnemer = new Deelnemer
+            {
+                ID = 3,
+                Uitstap = bivak,
+                GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
+            };
 
             groepsWerkJaar.Uitstap.Add(bivak);
 
@@ -540,6 +551,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
+            Assert.IsTrue(deelnemer.GelieerdePersoon.Persoon.InSync);
             bivakSyncMock.Verify(src => src.Bewaren(bivak), Times.AtLeastOnce());
         }
 

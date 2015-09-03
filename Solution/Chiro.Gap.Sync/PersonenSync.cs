@@ -59,17 +59,27 @@ namespace Chiro.Gap.Sync
 	        _ledenManager = ledenManager;
 	    }
 
-		/// <summary>
-		/// Updatet een bestaand persoon in Kipadmin: persoonsgegevens, en eventueel ook adressen en/of communicatie.
-		/// 
-		/// </summary>
-		/// <param name="gp">Gelieerde persoon, persoonsinfo</param>
-		/// <param name="metStandaardAdres">Stuurt ook het standaardadres mee (moet dan wel gekoppeld zijn)</param>
-		/// <param name="metCommunicatie">Stuurt ook communicatie mee.  Hiervoor wordt expliciet alle
-		/// communicatie-info opgehaald, omdat de workers typisch niet toestaan dat de gebruiker alle
-		/// communicatie ophaalt.</param>
-		/// <remarks>Enkel voor het wijzigen van bestaande personen!</remarks>
-		public void Bewaren(GelieerdePersoon gp, bool metStandaardAdres, bool metCommunicatie)
+        /// <summary>
+        /// Probeert de gegeven gelieerde persoon in de Chirocivi te vinden, en updatet
+        /// hem als dat lukt. Wordt de persoon niet gevonden, dan wordt er een
+        /// nieuwe aangemaakt.
+        /// </summary>
+        /// <param name="gp">Te bewaren gelieerde persoon</param>
+	    public void UpdatenOfMaken(GelieerdePersoon gp)
+        {
+            Debug.Assert(gp.Persoon.InSync);
+
+            var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(gp);
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.PersoonUpdatenOfMaken(details));
+        }
+
+	    /// <summary>
+	    /// Updatet een bestaand persoon in Kipadmin: persoonsgegevens, en eventueel ook adressen en/of communicatie.
+	    /// 
+	    /// </summary>
+	    /// <param name="gp">Gelieerde persoon, persoonsinfo</param>
+	    /// <remarks>Enkel voor het wijzigen van bestaande personen!</remarks>
+	    public void Updaten(GelieerdePersoon gp)
 		{
 			// Wijzigingen van personen met ad-nummer worden doorgesluisd
 			// naar Kipadmin.
@@ -78,31 +88,6 @@ namespace Chiro.Gap.Sync
 
             var syncPersoon = Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon);
 			ServiceHelper.CallService<ISyncPersoonService>(svc => svc.PersoonUpdaten(syncPersoon));
-
-			if (metStandaardAdres && gp.PersoonsAdres != null)
-			{
-				// Adressen worden mee bewaard.  Update standaardadres, als dat er is
-				// (standaardadres is gelieerdePersoon.PersoonsAdres;
-				// alle adressen in gelieerdePersoon.Persoon.PersoonsAdres).
-
-				// TODO (#238): Buitenlandse adressen!
-                var syncAdres = Mapper.Map<Adres, Kip.ServiceContracts.DataContracts.Adres>(gp.PersoonsAdres.Adres);
-
-				var syncBewoner = new Bewoner
-				{
-                    Persoon = Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(gp.Persoon),
-					AdresType = (AdresTypeEnum)gp.PersoonsAdres.AdresType
-				};
-
-				ServiceHelper.CallService<ISyncPersoonService>(svc => svc.StandaardAdresBewaren(syncAdres, new List<Bewoner> { syncBewoner }));
-			}
-			if (metCommunicatie)
-			{
-			    var syncCommunicatie =
-			        Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(
-			            gp.Persoon.GelieerdePersoon.SelectMany(gp2 => gp2.Communicatie));
-			    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie));
-			}
 		}
 
         /// <summary>

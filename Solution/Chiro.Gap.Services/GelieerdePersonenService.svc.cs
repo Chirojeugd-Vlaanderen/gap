@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
 using Chiro.Cdf.Poco;
@@ -671,36 +672,6 @@ namespace Chiro.Gap.Services
 #endif
         }
 
-        /// <summary>
-        /// Schrijft een communicatievorm in of uit voor de snelleberichtgenlijsten
-        /// </summary>
-        /// <param name="communicatieVormID">ID in/uit te schrijven communicatievorm</param>
-        /// <param name="inschrijven"><c>true</c> voor inschrijven, <c>false</c> voor uitschrijven.</param>
-        public void SnelleBerichtenInschrijven(int communicatieVormID, bool inschrijven)
-        {
-            var communicatieVorm = _communicatieVormRepo.ByID(communicatieVormID);
-            if (!_autorisatieMgr.IsGav(communicatieVorm))
-            {
-                throw FaultExceptionHelper.GeenGav();
-            }
-
-            communicatieVorm.IsVoorOptIn = inschrijven;
-#if KIPDORP
-            using (var tx = new TransactionScope())
-            {
-#endif
-                _communicatieVormRepo.SaveChanges();
-                if (communicatieVorm.GelieerdePersoon.Persoon.InSync)
-                {
-                    // het nummer veranderde niet.
-                    _communicatieSync.Bijwerken(communicatieVorm, communicatieVorm.Nummer);
-                }
-#if KIPDORP
-            tx.Complete();
-            }
-#endif
-        }
-
         #endregion
 
         #region aanmaken (wordt niet gesynct)
@@ -771,7 +742,6 @@ namespace Chiro.Gap.Services
                                 ID = 0, // nieuw e-mailadres
                                 CommunicatieType = _communicatieTypesRepo.ByID((int) CommunicatieTypeEnum.Email),
                                 IsGezinsgebonden = details.EMail.IsGezinsGebonden,
-                                IsVoorOptIn = details.EMail.IsVoorOptIn,
                                 Nota = details.EMail.Nota,
                                 Nummer = details.EMail.Nummer,
                                 Voorkeur = details.EMail.Voorkeur
@@ -812,7 +782,6 @@ namespace Chiro.Gap.Services
                                          CommunicatieType =
                                              _communicatieTypesRepo.ByID((int) CommunicatieTypeEnum.TelefoonNummer),
                                          IsGezinsgebonden = details.TelefoonNummer.IsGezinsGebonden,
-                                         IsVoorOptIn = details.TelefoonNummer.IsVoorOptIn,
                                          Nota = details.TelefoonNummer.Nota,
                                          Nummer = details.TelefoonNummer.Nummer,
                                          Voorkeur = details.TelefoonNummer.Voorkeur
@@ -1231,6 +1200,82 @@ namespace Chiro.Gap.Services
             }
 #endif
         }
+
+        /// <summary>
+        /// Schrijft de gelieerde persoon met gegeven <paramref name="gelieerdePersoonID"/> in of uit
+        /// voor de nieuwsbrief. Als <paramref name="emailAdres"/> is gegeven, dan wordt dat het nieuwe voorkeursadres van
+        /// de gelieerde persoon; zo nodig wordt het toegevoegd.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van gelieerde persoon die in- of uitgeschreven moet worden.</param>
+        /// <param name="emailAdres">Als gegeven, en <paramref name="inschrijven"/> is <c>true</c>, dan wordt dit 
+        /// het nieuwe voorkeursadres van de persoon.</param>
+        /// <param name="inschrijven">Als <c>true</c>, dan wordt de persoon ingeschreven, anders uitgeschreven.</param>
+        public void InschrijvenNieuwsBrief(int gelieerdePersoonID, string emailAdres, bool inschrijven)
+        {
+            var gelieerdePersoon = _gelieerdePersonenRepo.ByID(gelieerdePersoonID, "Communicatie");
+            if (!_autorisatieMgr.IsGav(gelieerdePersoon))
+            {
+                throw FaultExceptionHelper.GeenGav();
+            }
+
+            // Als er ingeschreven moet worden, dan moeten we zien dat het
+            // e-mailadres bestaat.
+            // TODO: Cleanup verwerking e-mailadres.
+            if (inschrijven && !string.IsNullOrEmpty(emailAdres))
+            {
+                var email = (from a in gelieerdePersoon.Communicatie
+                    where
+                        a.CommunicatieType.ID == (int) CommunicatieTypeEnum.Email && string.Equals(a.Nummer, emailAdres)
+                    select a).FirstOrDefault();
+
+                // Geval 1: maak nieuw e-mailadres aan, en stel in als voorkeur.
+                if (email == null)
+                {
+                    // We hergebruiken dit, zodat de communicatievorm wordt gevalideerd,
+                    // en eventuele dubbelpuntabonnementen worden aangepast.
+                    CommunicatieVormToevoegen(gelieerdePersoonID, new CommunicatieInfo
+                    {
+                        Nummer = emailAdres,
+                        CommunicatieTypeID = (int) CommunicatieTypeEnum.Email,
+                        Voorkeur = true,
+                    });
+                }
+                // Geval 2: e-mailadres bestond al, maar was nog geen voorkeursmailadres.
+                else if (!email.Voorkeur)
+                {
+                    // Het feit dat we telkens terug moeten mappen naar een
+                    // datacontract, maakt het rommelig en omslachtig.
+                    var info = Mapper.Map<CommunicatieVorm, CommunicatieInfo>(email);
+                    info.Voorkeur = true;
+                    CommunicatieVormAanpassen(info);
+                }
+                // Geval 3: e-mailadres bestond al, en had al voorkeur.
+                // Dan moeten we niets doen.
+            }
+            gelieerdePersoon.Persoon.NieuwsBrief = inschrijven;
+
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                if (gelieerdePersoon.Persoon.InSync)
+                {
+                    // Als we de persoon al kenden, moeten we gewoon de inschrijving registreren.
+                    _personenSync.Updaten(gelieerdePersoon);
+                }
+                else
+                {
+                    // Als we hem nog niet kenden, dan moet e-mail en communicatie mee.
+                    gelieerdePersoon.Persoon.InSync = true;
+                    _personenSync.UpdatenOfMaken(gelieerdePersoon);
+                }
+            _gelieerdePersonenRepo.SaveChanges();
+#if KIPDORP   
+            tx.Complete();
+            }
+#endif
+        }
+
         #endregion
 
         #region te syncen updates
@@ -1288,7 +1333,7 @@ namespace Chiro.Gap.Services
             _gelieerdePersonenRepo.SaveChanges();
             if (gp.Persoon.InSync)
             {
-                _personenSync.Bewaren(gp, false, false);
+                _personenSync.Updaten(gp);
             }
 #if KIPDORP   
             tx.Complete();
@@ -1317,7 +1362,8 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
-            _personenSync.Bewaren(gp, true, true);
+            Debug.Assert(gp.Persoon.InSync);
+            _personenSync.UpdatenOfMaken(gp);
         }
 
         /// <summary>
@@ -1648,6 +1694,7 @@ namespace Chiro.Gap.Services
                 throw FaultExceptionHelper.GeenGav();
             }
 
+            #region Mailchimptoestanden
             // administratie mailchimp:
             IEnumerable<GelieerdePersoon> relevantePersonen;
             var uitTeSchrijvenAdressen = new List<string>();
@@ -1687,6 +1734,7 @@ namespace Chiro.Gap.Services
                     teSyncenAbonnementen.Add(_abonnementenMgr.HuidigAbonnementGet(gp, 1));
                 }
             }
+            #endregion
 
             var communicatieVorm = new CommunicatieVorm();
 
@@ -1714,6 +1762,9 @@ namespace Chiro.Gap.Services
                 // Eender welke andere exception throwen we opnieuw.
                 throw;
             }
+
+            // Het zou kunnen dat 'gekoppeld' ook communicatie bevat van gezinsgenoten,
+            // en die zijn mogelijk niet allemaal in sync. Vandaar onderstaande hack.
             var syncenNaarKip = (from cv in gekoppeld
                 where
                     cv.GelieerdePersoon.Persoon.InSync
@@ -1724,8 +1775,6 @@ namespace Chiro.Gap.Services
             {
 #endif
                     _gelieerdePersonenRepo.SaveChanges();
-                    // TODO (#1409): welke communicatievorm de voorkeur heeft, gaat verloren bij de sync
-                    // naar Kipadmin. 
                     foreach (var cv in syncenNaarKip)
                     {
                         _communicatieSync.Toevoegen(cv);

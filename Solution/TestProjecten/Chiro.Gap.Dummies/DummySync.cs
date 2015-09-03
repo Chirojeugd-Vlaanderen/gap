@@ -44,7 +44,7 @@ namespace Chiro.Gap.Dummies
         {
         }
 
-        public void Bewaren(GelieerdePersoon gp, bool metStandaardAdres, bool metCommunicatie)
+        public void Updaten(GelieerdePersoon gp)
         {
             if (gp == null)
             {
@@ -53,6 +53,16 @@ namespace Chiro.Gap.Dummies
         }
 
         public void MembershipRegistreren(Lid lid)
+        {
+        }
+
+        /// <summary>
+        /// Probeert de gegeven gelieerde persoon in de Chirocivi te vinden, en updatet
+        /// hem als dat lukt. Wordt de persoon niet gevonden, dan wordt er een
+        /// nieuwe aangemaakt.
+        /// </summary>
+        /// <param name="gp">Te bewaren gelieerde persoon</param>
+        public void UpdatenOfMaken(GelieerdePersoon gp)
         {
         }
 

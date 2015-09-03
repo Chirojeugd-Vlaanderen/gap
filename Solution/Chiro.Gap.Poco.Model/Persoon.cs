@@ -43,6 +43,7 @@ namespace Chiro.Gap.Poco.Model
         internal int GeslachtsInt { get; set; }
         public DateTime? SterfDatum { get; set; }
         public int? LaatsteMembership { get; set; }
+        public bool NieuwsBrief { get; set; }
         public override int ID { get; set; }
         public override byte[] Versie { get; set; }
         public bool InSync

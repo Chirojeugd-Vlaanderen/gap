@@ -411,4 +411,7 @@ Je kunt dit nog steeds doen door onder 'leden' te klikken op het vorige werkjaar
   <data name="AdresLokalen" xml:space="preserve">
     <value>Adres van de lokalen</value>
   </data>
+  <data name="OngeldigEmailAdres" xml:space="preserve">
+    <value>Dit e-mailadres werd niet aanvaard.</value>
+  </data>
 </root>

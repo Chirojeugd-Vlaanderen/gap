@@ -1,5 +1,5 @@
-/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+﻿/*
+ * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -15,25 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System.Collections.Generic;
-using Chiro.Cdf.Poco;
 
-namespace Chiro.Gap.Poco.Model
+using System.ComponentModel;
+using Chiro.Gap.ServiceContracts.DataContracts;
+
+namespace Chiro.Gap.WebApp.Models
 {
-    public class CommunicatieType: BasisEntiteit
+    /// <summary>
+    /// Model voor nieuw voorkeursmailadres van een persoon.
+    /// </summary>
+    public class VoorkeursMailModel: MasterViewModel
     {
-        public CommunicatieType()
-        {
-            this.CommunicatieVorm = new HashSet<CommunicatieVorm>();
-        }
-    
-        public string Omschrijving { get; set; }
-        public string Validatie { get; set; }
-        public override int ID { get; set; }
-        public override byte[] Versie { get; set; }
-        public string Voorbeeld { get; set; }
-    
-        public virtual ICollection<CommunicatieVorm> CommunicatieVorm { get; set; }
+        public PersoonLidInfo PersoonLidInfo { get; set; }
+        [DisplayName(@"Voorkeurs-e-mailades")]
+        public string EmailAdres { get; set; }
     }
-    
 }
