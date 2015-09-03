@@ -1761,17 +1761,21 @@ namespace Chiro.Gap.Services
                 throw;
             }
 
+            // Het zou kunnen dat 'gekoppeld' ook communicatie bevat van gezinsgenoten,
+            // en die zijn mogelijk niet allemaal in sync. Vandaar onderstaande hack.
+            var syncenNaarKip = (from cv in gekoppeld
+                where
+                    cv.GelieerdePersoon.Persoon.InSync
+                select cv).ToList();
+
 #if KIPDORP
             using (var tx = new TransactionScope())
             {
 #endif
                     _gelieerdePersonenRepo.SaveChanges();
-                    if (gelieerdePersoon.Persoon.InSync)
+                    foreach (var cv in syncenNaarKip)
                     {
-                        foreach (var cv in gekoppeld)
-                        {
-                            _communicatieSync.Toevoegen(cv);
-                        }
+                        _communicatieSync.Toevoegen(cv);
                     }
                     foreach (string adr in uitTeSchrijvenAdressen)
                     {
