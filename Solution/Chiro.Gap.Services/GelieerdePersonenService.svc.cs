@@ -1766,8 +1766,6 @@ namespace Chiro.Gap.Services
             {
 #endif
                     _gelieerdePersonenRepo.SaveChanges();
-                    // TODO (#1409): welke communicatievorm de voorkeur heeft, gaat verloren bij de sync
-                    // naar Kipadmin.
                     if (gelieerdePersoon.Persoon.InSync)
                     {
                         foreach (var cv in gekoppeld)
