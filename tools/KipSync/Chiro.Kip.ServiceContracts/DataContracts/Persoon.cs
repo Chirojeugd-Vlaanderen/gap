@@ -75,6 +75,12 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         public GeslachtsEnum Geslacht { get; set; }
 
         /// <summary>
+        /// <tc>true</tc> als de persoon de nieuwsbrief wil ontvangen
+        /// </summary>
+        [DataMember]
+        public bool NieuwsBrief { get; set; }
+
+        /// <summary>
         /// Leesbare identiticatie
         /// </summary>
         /// <returns></returns>

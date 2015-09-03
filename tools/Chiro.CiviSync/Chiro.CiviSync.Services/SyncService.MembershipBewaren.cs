@@ -97,7 +97,7 @@ namespace Chiro.CiviSync.Services
         public void MembershipNieuwePersoonBewaren(PersoonDetails details, int werkJaar, MembershipGedoe gedoe)
         {
             // Update of maak de persoon, en vind zijn AD-nummer
-            int adNr = UpdatenOfMaken(details);
+            int adNr = PersoonUpdatenOfMaken(details);
 
             MembershipBewaren(adNr, werkJaar, gedoe);
         }

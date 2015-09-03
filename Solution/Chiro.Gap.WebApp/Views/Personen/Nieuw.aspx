@@ -205,8 +205,8 @@
 					E-mailadres:<br />
 					<%=Html.TextBoxFor(mdl => mdl.EMail.Nummer, new { placeholder = Model.EMailType.Voorbeeld }) %> 
 					<%=Html.ValidationMessageFor(mdl => mdl.EMail.Nummer) %> <br />
-					<%=Html.CheckBoxFor(mdl => mdl.EMail.IsVoorOptIn) %>
-					<%=Html.LabelFor(mdl => mdl.EMail.IsVoorOptIn) %>
+					<%=Html.CheckBoxFor(mdl => mdl.NieuwePersoon.NieuwsBrief) %>
+					<%=Html.LabelFor(mdl => mdl.NieuwePersoon.NieuwsBrief) %>
 					<%=Html.InfoLink("snelBerichtInfo")%><br />
 					<%=Html.CheckBoxFor(mdl => mdl.EMail.IsGezinsGebonden) %>
 					<%=Html.LabelFor(mdl => mdl.EMail.IsGezinsGebonden) %><br />

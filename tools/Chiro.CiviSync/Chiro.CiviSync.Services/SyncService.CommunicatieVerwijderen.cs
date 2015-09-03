@@ -68,7 +68,7 @@ namespace Chiro.CiviSync.Services
             var createResult = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
                 svc =>
                     svc.GenericCall(_apiKey, _siteKey, communicatieRequest.EntityType, ApiAction.Delete,
-                        new IdRequest(bestaandeCommunicatie.Id.Value)));
+                        new DeleteRequest(bestaandeCommunicatie.Id.Value)));
             createResult.AssertValid();
 
             _log.Loggen(Niveau.Info,

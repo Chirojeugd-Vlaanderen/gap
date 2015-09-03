@@ -122,7 +122,7 @@ namespace Chiro.Gap.Workers
 
                     // Schrijft de persoon zich in voor de nieuwsbrief?
 
-                    if (!mailAdressen.Any(ma => ma.IsVoorOptIn))
+                    if (!lid.GelieerdePersoon.Persoon.NieuwsBrief)
                     {
                         throw new FoutNummerException(FoutNummer.ContactMoetNieuwsBriefKrijgen, Resources.ContactMoetNieuwsBriefKrijgen);
                     }

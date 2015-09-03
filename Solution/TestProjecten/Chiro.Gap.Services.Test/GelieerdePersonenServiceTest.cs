@@ -1,3 +1,4 @@
+using Chiro.Gap.Services;
 /*
  * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
@@ -19,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using Chiro.Cdf.Ioc.Factory;
@@ -143,7 +145,6 @@ namespace Chiro.Gap.Services.Test
             var telefoonNr = new CommunicatieType
                                  {
                                      ID = 1,
-                                     IsOptIn = false,
                                      Omschrijving = "Telefoonnummer",
                                      Validatie =
                                          @"(^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$)|^\+[0-9]*$"
@@ -175,6 +176,81 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.IsTrue(true);	// al blij als er geen exception optreedt
+        }
+
+        /// <summary>
+        /// Als je een communicatievorm voor heel het gezin toevoegt, maar niet heel het gezin is
+        /// 'in sync', dan mag die communicatievorm enkel gesynct worden voor de personen die
+        /// in sync zijn.
+        /// </summary>
+        [TestMethod]
+        public void CommunicatieVormToevoegenHeelGezinTest()
+        {
+            // ARRANGE
+
+            // modelletje
+
+            var gelieerdePersoonInSync = new GelieerdePersoon {ID = 1, Persoon = new Persoon {InSync = true} };
+            var gelieerdePersoonNietInSync = new GelieerdePersoon {ID = 2, Persoon = new Persoon()};
+
+            gelieerdePersoonInSync.Persoon.GelieerdePersoon = new List<GelieerdePersoon> {gelieerdePersoonInSync};
+            gelieerdePersoonNietInSync.Persoon.GelieerdePersoon = new List<GelieerdePersoon>
+            {
+                gelieerdePersoonNietInSync
+            };
+
+            var adres = new BuitenLandsAdres();
+
+            var pa1 = new PersoonsAdres {Persoon = gelieerdePersoonInSync.Persoon, Adres = adres};
+            var pa2 = new PersoonsAdres {Persoon = gelieerdePersoonNietInSync.Persoon, Adres = adres};
+
+            gelieerdePersoonInSync.Persoon.PersoonsAdres = new List<PersoonsAdres> {pa1};
+            gelieerdePersoonNietInSync.Persoon.PersoonsAdres = new List<PersoonsAdres> {pa2};
+            adres.PersoonsAdres = new List<PersoonsAdres> {pa1, pa2};
+
+            var telefoonNr = new CommunicatieType
+            {
+                ID = 1,
+                Omschrijving = "Telefoonnummer",
+                Validatie =
+                                         @"(^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$)|^\+[0-9]*$",
+            };
+
+            // mocking opzetten
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoonInSync, gelieerdePersoonNietInSync }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { telefoonNr }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // dependency injection voor synchronisatie:
+            // verwacht dat CommunicatieSync.Toevoegen niet wordt aangeroepen voor de persoon niet in sync.
+            var communicatieSyncMock = new Mock<ICommunicatieSync>();
+            communicatieSyncMock.Setup(snc => snc.Toevoegen(It.Is<CommunicatieVorm>(cv => Equals(cv.GelieerdePersoon, gelieerdePersoonNietInSync)))).Verifiable();
+            Factory.InstantieRegistreren(communicatieSyncMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            var commInfo = new CommunicatieDetail()
+            {
+                CommunicatieTypeID = telefoonNr.ID,
+                Voorkeur = true,
+                IsGezinsGebonden = true,
+                Nummer = "03-484 53 32" // geldig nummer
+            };
+
+            target.CommunicatieVormToevoegen(gelieerdePersoonInSync.ID, commInfo);
+
+            // ASSERT
+
+            communicatieSyncMock.Verify(
+                snc =>
+                    snc.Toevoegen(It.Is<CommunicatieVorm>(cv => Equals(cv.GelieerdePersoon, gelieerdePersoonNietInSync))),
+                Times.Never());
         }
 
         /// <summary>
@@ -351,6 +427,175 @@ namespace Chiro.Gap.Services.Test
             // ASSERT
 
             Assert.IsFalse(origineleCommunicatieVorm.Voorkeur);
+        }
+
+        /// <summary>
+        /// Als er voor een nieuwsbriefabonnement een e-mailadres gekozen wordt
+        /// dat al wel bestond, maar geen voorkeursadres was, dan moet dat
+        /// e-mailadres het voorkeursadres worden. Zie #3392.
+        /// </summary>
+        [TestMethod]
+        public void NieuwsBriefNieuwVoorkeursAdresTest()
+        {
+            // ARRANGE
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon {InSync = true},
+                Groep = new ChiroGroep()
+            };
+
+            // Voor deze test liggen we niet wakker van het formaat van een e-mailadres:
+            var emailType = new CommunicatieType { ID = 3, Validatie = ".*" };
+
+            var oudVoorkeursAdres = new CommunicatieVorm
+            {
+                GelieerdePersoon = gelieerdePersoon,
+                CommunicatieType = emailType,
+                ID = 2,
+                Nummer = "johan@linux.be",
+                Voorkeur = true
+            };
+
+            var adresVoorNieuwsBrief = new CommunicatieVorm
+            {
+                GelieerdePersoon = gelieerdePersoon,
+                CommunicatieType = emailType,
+                ID = 3,
+                Nummer = "commissie.linux@chiro.be",
+                Voorkeur = false
+            };
+
+            gelieerdePersoon.Communicatie = new List<CommunicatieVorm> { oudVoorkeursAdres, adresVoorNieuwsBrief };
+
+            // dependency injection voor data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> {emailType}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieVorm>())
+                .Returns(
+                    new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> {oudVoorkeursAdres, adresVoorNieuwsBrief}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.InschrijvenNieuwsBrief(gelieerdePersoon.ID, adresVoorNieuwsBrief.Nummer, true);
+
+            // ASSERT
+            Assert.IsTrue(adresVoorNieuwsBrief.Voorkeur);
+        }
+
+        /// <summary>
+        /// Als er voor een nieuwsbriefabonnement een nieuw e-mailadres wordt meegegeven,
+        /// dan moet dat e-mailadres gekoppeld worden aan de gelieerde persoon.  
+        /// </summary>
+        [TestMethod]
+        public void NieuwsBriefNieuwAdresTest()
+        {
+            // ARRANGE
+
+            const string mailAdres = "johan@linux.be";
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon { InSync = true },
+                Groep = new ChiroGroep()
+            };
+
+            // Voor deze test liggen we niet wakker van het formaat van een e-mailadres:
+            var emailType = new CommunicatieType { ID = 3, Validatie = ".*" };
+
+            // dependency injection voor data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { emailType }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.InschrijvenNieuwsBrief(gelieerdePersoon.ID, mailAdres, true);
+
+            // ASSERT
+            Debug.Assert(gelieerdePersoon.Communicatie.Any(cm => cm.Nummer == mailAdres));
+        }
+
+
+        /// <summary>
+        /// Als er een niet-in-sync persoon wordt ingeschreven voor de nieuwsbrief, dan moet die persoon
+        /// achteraf in sync zijn.  
+        /// </summary>
+        [TestMethod]
+        public void NieuwsBriefPersoonInSyncTest()
+        {
+            // ARRANGE
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon { InSync = false },
+                Groep = new ChiroGroep()
+            };
+
+            // Voor deze test liggen we niet wakker van het formaat van een e-mailadres:
+            var emailType = new CommunicatieType { ID = 3, Validatie = ".*" };
+
+            var email = new CommunicatieVorm
+            {
+                GelieerdePersoon = gelieerdePersoon,
+                CommunicatieType = emailType,
+                ID = 2,
+                Nummer = "johan@linux.be",
+                Voorkeur = true
+            };
+
+            gelieerdePersoon.Communicatie = new List<CommunicatieVorm> {email};
+
+            // dependency injection voor synchronisatie:
+            // verwacht syc van alle persoonsinfo
+
+            var personenSyncMock = new Mock<IPersonenSync>();
+            personenSyncMock.Setup(snc => snc.UpdatenOfMaken(gelieerdePersoon)).Verifiable();
+            Factory.InstantieRegistreren(personenSyncMock.Object);
+
+            // dependency injection voor data access
+            // voor gelieerde-personenrepo doen we iets speciaals, zodat we bij savechanges
+            // kunnen nakijken of de persoon al in sync is.
+
+            var gelieerdePersonenRepoMock = new Mock<IRepository<GelieerdePersoon>>();
+            gelieerdePersonenRepoMock.Setup(src => src.ByID(gelieerdePersoon.ID, It.IsAny<string[]>()))
+                .Returns(gelieerdePersoon);
+            gelieerdePersonenRepoMock.Setup(src => src.SaveChanges()).Callback(() =>
+            {
+                // Op het moment dat de nieuwsbriefinschrijving wordt geregistreerd,
+                // moet de persoon al in sync zijn.
+                Debug.Assert(gelieerdePersoon.Persoon.InSync);
+            });
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(gelieerdePersonenRepoMock.Object);
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { emailType }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.InschrijvenNieuwsBrief(gelieerdePersoon.ID, email.Nummer, true);
+
+            // ASSERT
+            Assert.IsTrue(gelieerdePersoon.Persoon.InSync);
+            personenSyncMock.Verify(snc => snc.UpdatenOfMaken(gelieerdePersoon), Times.AtLeastOnce);
         }
 
 

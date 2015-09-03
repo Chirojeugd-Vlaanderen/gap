@@ -39,13 +39,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public string Omschrijving { get; set; }
 
 		/// <summary>
-		/// Geeft aan of iemand toestemming moet geven voor Chirojeugd Vlaanderen
-		/// waarden voor dit communicatietype mag gebruiken
-		/// </summary>
-		[DataMember]
-		public bool IsOptIn { get; set; }
-
-		/// <summary>
 		/// Een regular expression die aangeeft welke vorm de waarde voor dat type moet hebben
 		/// </summary>
 		[DataMember]

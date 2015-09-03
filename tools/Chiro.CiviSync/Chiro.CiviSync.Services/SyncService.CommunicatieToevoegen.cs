@@ -49,16 +49,19 @@ namespace Chiro.CiviSync.Services
                             communicatieRequest));
 
             bestaandeCommunicatie.AssertValid();
+
+            // We bewaren sowieso opnieuw. Maar dan moeten we een request hebben dat wel
+            // voor saven gebruikt kan worden (dus inclusief de IsBulkMail)
+            communicatieRequest = CommunicatieLogic.RequestMaken(communicatieMiddel, contactId, false);
+
             if (bestaandeCommunicatie.Count != 0)
             {
-                _log.Loggen(Niveau.Info,
-                    String.Format("Nieuwe communicatievorm ({0}) {1} voor {2} {3} (AD {4}) bestond al.",
-                        communicatieMiddel.Type, communicatieMiddel.Waarde, persoon.VoorNaam, persoon.Naam,
-                        persoon.AdNummer), null, persoon.AdNummer, persoon.ID);
-                return;
+                // Overschrijf bestaande als dat van toepassing is.
+                communicatieRequest.Id = bestaandeCommunicatie.Id;
             }
 
             // Maak alleen aan als communicatievorm nog niet bestond.
+            // Pak wel de voorkeur mee.
             var createResult = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
                 svc =>
                     svc.GenericCall(_apiKey, _siteKey, communicatieRequest.EntityType, ApiAction.Create,
@@ -66,9 +69,10 @@ namespace Chiro.CiviSync.Services
             createResult.AssertValid();
 
             _log.Loggen(Niveau.Info,
-                String.Format("Nieuwe communicatievorm ({0}) {1} bewaard voor {2} {3} (AD {4}).",
+                String.Format("{5} communicatievorm ({0}) {1} bewaard voor {2} {3} (AD {4}).",
                     communicatieMiddel.Type, communicatieMiddel.Waarde, persoon.VoorNaam, persoon.Naam,
-                    persoon.AdNummer), null, persoon.AdNummer, persoon.ID);
+                    persoon.AdNummer, bestaandeCommunicatie.Count > 0 ? "Bestaande" : "Nieuwe"), null, persoon.AdNummer,
+                persoon.ID);
 
         }
     }

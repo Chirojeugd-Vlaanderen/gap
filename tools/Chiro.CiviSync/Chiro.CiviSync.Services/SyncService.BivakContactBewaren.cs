@@ -155,7 +155,7 @@ namespace Chiro.CiviSync.Services
         [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void BivakContactBewarenAdOnbekend(int uitstapId, PersoonDetails details)
         {
-            BivakContactBewaren(uitstapId, UpdatenOfMaken(details));
+            BivakContactBewaren(uitstapId, PersoonUpdatenOfMaken(details));
         }
 	}
 }

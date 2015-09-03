@@ -122,7 +122,7 @@ namespace Chiro.CiviSync.Services.Test
             civiApiMock.Setup(
                 src =>
                     src.RelationshipDelete(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<IdRequest>(
+                        It.Is<DeleteRequest>(
                             r => r.Id == relatie.Id)))
                 .Returns(new ApiResult()).Verifiable();
 
@@ -137,7 +137,7 @@ namespace Chiro.CiviSync.Services.Test
                 // LidMaken moet de startdatum dan op 1 september zetten.
                 src =>
                     src.RelationshipDelete(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<IdRequest>(
+                        It.Is<DeleteRequest>(
                             r => r.Id == relatie.Id)), Times.AtLeastOnce);
         }
 
@@ -271,7 +271,7 @@ namespace Chiro.CiviSync.Services.Test
             civiApiMock.Setup(
                 src =>
                     src.RelationshipDelete(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<IdRequest>(
+                        It.Is<DeleteRequest>(
                             r => r.Id == relatie.Id)))
                 .Returns(new ApiResult()).Verifiable();
 
@@ -298,7 +298,7 @@ namespace Chiro.CiviSync.Services.Test
                 // LidMaken moet de startdatum dan op 1 september zetten.
                 src =>
                     src.RelationshipDelete(It.IsAny<string>(), It.IsAny<string>(),
-                        It.Is<IdRequest>(
+                        It.Is<DeleteRequest>(
                             r => r.Id == relatie.Id)), Times.AtLeastOnce);
         }
     }

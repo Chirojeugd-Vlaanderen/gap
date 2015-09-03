@@ -50,7 +50,7 @@ namespace Chiro.CiviSync.Workers
 
             // Verwijderen moet één voor één, denk ik.
             foreach (var deleteResult in alleEmail.Values.Select(email => email.Id).Select(emailId => ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
-                svc => svc.EmailDelete(ApiKey, SiteKey, new IdRequest(emailId)))))
+                svc => svc.EmailDelete(ApiKey, SiteKey, new DeleteRequest(emailId)))))
             {
                 deleteResult.AssertValid();
             }
@@ -69,7 +69,7 @@ namespace Chiro.CiviSync.Workers
 
             // Verwijderen moet één voor één, denk ik.
             foreach (var deleteResult in alles.Values.Select(teVerwijderen => teVerwijderen.Id).Select(id => ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
-                svc => svc.PhoneDelete(ApiKey, SiteKey, new IdRequest(id)))))
+                svc => svc.PhoneDelete(ApiKey, SiteKey, new DeleteRequest(id)))))
             {
                 deleteResult.AssertValid();
             }
@@ -88,7 +88,7 @@ namespace Chiro.CiviSync.Workers
 
             // Verwijderen moet één voor één, denk ik.
             foreach (var deleteResult in alles.Values.Select(teVerwijderen => teVerwijderen.Id).Select(id => ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
-                svc => svc.WebsiteDelete(ApiKey, SiteKey, new IdRequest(id)))))
+                svc => svc.WebsiteDelete(ApiKey, SiteKey, new DeleteRequest(id)))))
             {
                 deleteResult.AssertValid();
             }
@@ -107,7 +107,7 @@ namespace Chiro.CiviSync.Workers
 
             // Verwijderen moet één voor één, denk ik.
             foreach (var deleteResult in alles.Values.Select(teVerwijderen => teVerwijderen.Id).Select(id => ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
-                svc => svc.ImDelete(ApiKey, SiteKey, new IdRequest(id)))))
+                svc => svc.ImDelete(ApiKey, SiteKey, new DeleteRequest(id)))))
             {
                 deleteResult.AssertValid();
             }

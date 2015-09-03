@@ -46,7 +46,7 @@ namespace Chiro.CiviSync.Services
 
             var result =
                 ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
-                    svc => svc.EventDelete(_apiKey, _siteKey, new IdRequest(bivak.Id)));
+                    svc => svc.EventDelete(_apiKey, _siteKey, new DeleteRequest(bivak.Id)));
             result.AssertValid();
 
             _log.Loggen(Niveau.Info,

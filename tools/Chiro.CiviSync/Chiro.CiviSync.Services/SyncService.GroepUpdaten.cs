@@ -75,7 +75,7 @@ namespace Chiro.CiviSync.Services
                 {
                     // Ik had dit liever met 1 chained call gedaan, maar dat ondersteunt Chiro.CiviCrm.Wcf niet.
                     ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
-                        svc => svc.AddressDelete(_apiKey, _siteKey, new IdRequest(addres.Id)));
+                        svc => svc.AddressDelete(_apiKey, _siteKey, new DeleteRequest(addres.Id)));
                 }
                 request.AddressSaveRequest = new[] {Mapper.Map<Adres, AddressRequest>(g.Adres)};
             }

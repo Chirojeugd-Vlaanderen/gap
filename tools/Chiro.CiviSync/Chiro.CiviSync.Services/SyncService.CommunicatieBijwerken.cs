@@ -43,9 +43,9 @@ namespace Chiro.CiviSync.Services
 
             var teVervangen = new CommunicatieMiddel
             {
-                GeenMailings = communicatieMiddel.GeenMailings,
                 Type = communicatieMiddel.Type,
-                Waarde = nummerBijTeWerken
+                Waarde = nummerBijTeWerken,
+                IsBulk = communicatieMiddel.IsBulk,
             };
 
             // Zoek de te vervangen communicatie

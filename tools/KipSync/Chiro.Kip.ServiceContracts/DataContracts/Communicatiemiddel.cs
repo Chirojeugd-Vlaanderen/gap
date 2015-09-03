@@ -85,13 +85,10 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         public string Waarde { get; set; }
 
         /// <summary>
-        /// De persoon wenst via dit Communicatiemiddel al dan niet mailings te ontvangen,
-        /// afhankelijk van de opgegeven waarde. Met andere woorden: dit bepaalt of het
-        /// Communicatiemiddel gebruikt mag worden in bulkcommunicatie, bijvoorbeeld
-        /// via de Snelleberichtenlijsten.
+        /// Op dit mailadres sturen we bulk-mail.
         /// </summary>
         [DataMember]
-        public bool GeenMailings { get; set; }
+        public bool IsBulk { get; set; }
 
         /// <summary>
         /// Returns a System.String that represents the current Communicatiemiddel

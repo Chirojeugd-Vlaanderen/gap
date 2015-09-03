@@ -133,7 +133,7 @@ namespace Chiro.CiviSync.Services
         public void NieuwLidBewaren(PersoonDetails details, LidGedoe lidGedoe)
         {
             // Update of maak de persoon, en vind zijn AD-nummer
-            int adNr = UpdatenOfMaken(details);
+            int adNr = PersoonUpdatenOfMaken(details);
 
             // Bewaar de lidrelatie op basis van het AD-nummer.
             LidBewaren(adNr, lidGedoe);
