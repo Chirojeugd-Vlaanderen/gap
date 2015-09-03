@@ -75,6 +75,7 @@ namespace Chiro.CiviSync.Services
                     ContactType = ContactType.Individual,
                     ExternalIdentifier = adNummer.ToString(),
                     GapId = details.Persoon.ID,
+                    IsOptOut = !details.Persoon.NieuwsBrief,
                     ApiOptions = new ApiOptions {Match = "external_identifier"}
                 };
 

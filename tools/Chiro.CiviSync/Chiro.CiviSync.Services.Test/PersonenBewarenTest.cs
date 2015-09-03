@@ -118,7 +118,7 @@ namespace Chiro.CiviSync.Services.Test
                         {
                             new CommunicatieMiddel
                             {
-                                GeenMailings = true,
+                                IsBulk = false,
                                 Type = CommunicatieType.TelefoonNummer,
                                 Waarde = "03-231 07 95"
                             }
@@ -246,7 +246,7 @@ namespace Chiro.CiviSync.Services.Test
                         {
                             new CommunicatieMiddel
                             {
-                                GeenMailings = true,
+                                IsBulk = false,
                                 Type = CommunicatieType.TelefoonNummer,
                                 Waarde = somePhoneNumber
                             }

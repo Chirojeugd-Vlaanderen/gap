@@ -143,7 +143,7 @@ namespace Chiro.CiviSync.Logic
                                 {
                                     ContactId = contactId,
                                     EmailAddress = c.Waarde,
-                                    IsBulkMail = enkelZoeken ? (bool?)null : !c.GeenMailings
+                                    IsBulkMail = enkelZoeken ? (bool?)null : c.IsBulk
                                 };
             // wat betreft websites ondersteunt GAP enkel twitter en 'iets anders'
             var websites = from c in communicatie
