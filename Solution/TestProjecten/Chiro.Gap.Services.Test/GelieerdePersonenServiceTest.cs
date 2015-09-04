@@ -95,6 +95,42 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
+        /// Als je een nieuwe persoon inschrijft die de nieuwsbrief wil, dan moet dat ook zo worden bewaard.
+        /// </summary>
+        [TestMethod]
+        public void NieuwsePersoonNieuwsBriefTest()
+        {
+            // ARRANGE
+            var groep = new ChiroGroep {ID = 1};
+            var nieuwePersoonDetails = new NieuwePersoonDetails {PersoonInfo = new PersoonInfo {NieuwsBrief = true}};
+
+            // dependency injection
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>()));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var gelieerdePersonenManagerMock = new Mock<IGelieerdePersonenManager>();
+            gelieerdePersonenManagerMock.Setup(
+                src => src.Toevoegen(It.Is<Persoon>(p => p.NieuwsBrief), groep, It.IsAny<int>(), It.IsAny<bool>()))
+                .Returns(new GelieerdePersoon {Persoon = new Persoon(), Groep = groep})
+                .Verifiable();
+            Factory.InstantieRegistreren(gelieerdePersonenManagerMock.Object);
+
+            var service = Factory.Maak<GelieerdePersonenService>();
+
+            // ACT
+            service.Nieuw(nieuwePersoonDetails, groep.ID, true);
+
+            // ASSERT
+            gelieerdePersonenManagerMock.Verify(
+                src => src.Toevoegen(It.Is<Persoon>(p => p.NieuwsBrief), groep, It.IsAny<int>(), It.IsAny<bool>()),
+                Times.AtLeastOnce);
+        }
+
+        /// <summary>
         /// Probeer een communicatievorm toe te voegen die niet valideert.
         /// </summary>
         [TestMethod]

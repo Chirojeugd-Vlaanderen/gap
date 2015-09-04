@@ -716,7 +716,8 @@ namespace Chiro.Gap.Services
                                     VoorNaam = details.PersoonInfo.VoorNaam,
                                     Naam = details.PersoonInfo.Naam,
                                     Geslacht = details.PersoonInfo.Geslacht,
-                                    GeboorteDatum = details.PersoonInfo.GeboorteDatum
+                                    GeboorteDatum = details.PersoonInfo.GeboorteDatum,
+                                    NieuwsBrief = details.PersoonInfo.NieuwsBrief
                                 };
 
 
