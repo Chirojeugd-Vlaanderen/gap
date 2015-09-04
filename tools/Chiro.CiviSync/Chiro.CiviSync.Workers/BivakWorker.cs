@@ -55,7 +55,7 @@ namespace Chiro.CiviSync.Workers
                             // hebben om te loggen.
                             ContactGetRequest = new ContactRequest
                             {
-                                IdValueExpression = "$value.custom_47_id",
+                                IdValueExpression = "$value.custom_48_id",
                                 ReturnFields = "external_identifier"
                             },
                             LocBlockGetRequest = new LocBlockRequest
