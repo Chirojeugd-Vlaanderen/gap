@@ -111,7 +111,7 @@ namespace Chiro.Gap.Maintenance.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("80")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public int LimitMembershipQuery {
             get {
                 return ((int)(this["LimitMembershipQuery"]));
