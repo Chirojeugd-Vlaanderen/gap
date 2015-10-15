@@ -170,6 +170,10 @@
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
       <Name>Chiro.Gap.ServiceContracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Services.Dev\Chiro.Gap.Services.Dev.csproj">
+      <Project>{df253c73-7632-476e-b760-deba6d306e69}</Project>
+      <Name>Chiro.Gap.Services.Dev</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
       <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
       <Name>Chiro.Gap.SyncInterfaces</Name>
