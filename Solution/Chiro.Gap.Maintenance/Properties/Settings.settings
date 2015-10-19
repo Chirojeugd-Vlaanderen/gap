@@ -30,7 +30,7 @@ https://adminwiki.chiro.be/devel:civisyncissues</Value>
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="LimitMembershipQuery" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">80</Value>
+      <Value Profile="(Default)">1000</Value>
     </Setting>
   </Settings>
 </SettingsFile>

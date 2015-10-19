@@ -67,5 +67,5 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// </summary>
         [DataMember]
         public AbonnementType? DubbelpuntAbonnement { get; set; }
-	}
+    }
 }

@@ -115,7 +115,7 @@ namespace Chiro.CiviSync.Services
                 foreach (var tvAdres in teVerwijderenAdressen)
                 {
                     int adresId = tvAdres.Id;
-                    result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressDelete(_apiKey, _siteKey, new IdRequest(adresId)));
+                    result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(svc => svc.AddressDelete(_apiKey, _siteKey, new DeleteRequest(adresId)));
                     result.AssertValid();
                     _log.Loggen(
                         Niveau.Info,

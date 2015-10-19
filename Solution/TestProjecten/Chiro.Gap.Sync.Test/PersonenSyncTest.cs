@@ -73,15 +73,15 @@ namespace Chiro.Gap.Sync.Test
 
 
         /// <summary>
-        ///A test for Bewaren
-        ///</summary>
+        /// Test of UpdatenOfMaken KipSync effectief aanroept.
+        /// </summary>
         [TestMethod()]
         public void BewarenMetCommunicatieTest()
         {
             // ARRANGE
 
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.AlleCommunicatieBewaren(It.IsAny<Persoon>(), It.IsAny<IEnumerable<CommunicatieMiddel>>())).Verifiable();
+            kipSyncMock.Setup(src => src.PersoonUpdatenOfMaken(It.IsAny<PersoonDetails>())).Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             var gelieerdePersoon = new GelieerdePersoon
@@ -101,7 +101,7 @@ namespace Chiro.Gap.Sync.Test
             // ACT
 
             var target = Factory.Maak<PersonenSync>();
-            target.Bewaren(gelieerdePersoon, false, true);
+            target.UpdatenOfMaken(gelieerdePersoon);
 
             // ASSERT
 

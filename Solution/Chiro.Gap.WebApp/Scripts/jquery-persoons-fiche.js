@@ -274,34 +274,6 @@ $(function () {
             wijzigCommunicatieNr(cvID, params.newValue);
         });
 
-    $('.sblink').click(function(e) {
-        e.preventDefault(); // vermijdt dat een klik op de link de pagina gaat herladen
-        var linkID = $(this).attr('id');
-        // extraheer communicatievormID
-        var pattern = /([0-9]*)$/;
-        var cvID = pattern.exec(linkID)[0];
-        var waarde;
-
-
-        // quick and dirty hack
-
-        if ($(this).text() == 'ja') {
-            $(this).html('nee');
-            waarde = null;
-        } else {
-            $(this).html('ja');
-            waarde = "true";
-        }
-
-        url = link("Personen", "SnelleBerichtenInschrijven");
-        $.post(url,
-            {
-                "Waarde": waarde,
-                "ID": cvID
-            });
-
-    });
-
     $('.contactBewerken').click(function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -331,7 +303,7 @@ $(function () {
         $('#extraInfoDialog').dialog();
 
         url = link("Personen", "NieuweCommVorm");
-        url += "?gelieerdePersoonID=" + GPid + " #main";
+        url += "/" + GPid + " #main";
         $('#extraInfoDialog').load(url, function () {
 
             gedeeltelijkTonen('#extraInfoDialog');
@@ -420,14 +392,12 @@ $(function () {
         var cId = $(this).parent().parent().attr('id');
         var nummer;
         var voorkeur;
-        var snelleber;
         var gezincom;
         var nota;
         var gaVerder = true;
         var type;
-        var antwoord
+        var antwoord;
 
-        $('#commDialog #voorkeur, #commDialog #snel').attr('checked', false);
         $('#commDialog #adresNota').val('');
         if (cId == 'email') {
             $('#commDialog select').html('<option>Email</option>');
@@ -441,7 +411,7 @@ $(function () {
         }
 
         url = link("Personen", "NieuweCommVorm");
-        url += "?gelieerdePersoonID=" + GPid;
+        url += "/" + GPid;
         $('#commDialog').dialog({
             modal: true,
             width: 510,
@@ -468,7 +438,6 @@ $(function () {
                     }
 
                     $('#voorkeurCheck').is(':checked') ? voorkeur = true : voorkeur = false;
-                    $('#snelCheck').is(':checked') ? snelleber = true : snelleber = false;
                     $('#gezinCheck').is(':checked') ? gezincom = true : gezincom = false;
                     nota = $('#adresNota').val();
                     if (gaVerder) {
@@ -479,7 +448,6 @@ $(function () {
                             data: {
                                 "NieuweCommVorm.CommunicatieTypeID": type,
                                 "NieuweCommVorm.Nummer": nummer,
-                                "NieuweCommVorm.IsVoorOptIn": snelleber,
                                 "NieuweCommVorm.Voorkeur": voorkeur,
                                 "NieuweCommVorm.IsGezinsGebonden": gezincom,
                                 "NieuweCommVorm.Nota": nota

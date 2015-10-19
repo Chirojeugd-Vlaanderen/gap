@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System.Diagnostics;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
@@ -65,6 +66,7 @@ namespace Chiro.Gap.Sync
 
             if (contactPersoon != null)
             {
+                Debug.Assert(contactPersoon.Persoon.InSync);
                 if (contactPersoon.Persoon.AdNummer != null)
                 {
                     // AD-nummer gekend: gewoon koppelen via AD-nummer
@@ -73,8 +75,7 @@ namespace Chiro.Gap.Sync
                         (int) contactPersoon.Persoon.AdNummer));
                 }
                 else
-                {
-                    contactPersoon.Persoon.InSync = true;
+                {                   
                     ServiceHelper.CallService<ISyncPersoonService>(
                         svc =>
                         svc.BivakContactBewarenAdOnbekend(uitstap.ID,

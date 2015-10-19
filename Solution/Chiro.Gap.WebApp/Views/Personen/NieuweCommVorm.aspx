@@ -61,15 +61,6 @@
                 </tr>
 			<tr>
 				<td>
-					<%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn)%><br />
-					<em>(alleen bij mailadressen van toepassing)</em>
-				</td>
-				<td>
-					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn) %>
-				</td>
-			</tr>
-			<tr>
-				<td>
 					<%=Html.LabelFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
 				</td>
 				<td>

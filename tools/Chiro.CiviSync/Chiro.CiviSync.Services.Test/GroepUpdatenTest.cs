@@ -80,7 +80,7 @@ namespace Chiro.CiviSync.Services.Test
             // Verwacht dat de bestaande adressen van de groep worden verwijderd.
             civiApiMock.Setup(
                 src =>
-                    src.AddressDelete(It.IsAny<string>(), It.IsAny<string>(), It.Is<IdRequest>(r => r.Id == address.Id)))
+                    src.AddressDelete(It.IsAny<string>(), It.IsAny<string>(), It.Is<DeleteRequest>(r => r.Id == address.Id)))
                 .Verifiable();
 
             // Maak service-mock, en probeer groepsgegevens te vervangen.
@@ -95,7 +95,7 @@ namespace Chiro.CiviSync.Services.Test
 
             // Werd het bestaande adres verwijderd?
             civiApiMock.Verify(src =>
-                src.AddressDelete(It.IsAny<string>(), It.IsAny<string>(), It.Is<IdRequest>(r => r.Id == address.Id)),
+                src.AddressDelete(It.IsAny<string>(), It.IsAny<string>(), It.Is<DeleteRequest>(r => r.Id == address.Id)),
                 Times.AtLeastOnce);
         }
     }

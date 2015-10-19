@@ -105,6 +105,13 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         }
 
         /// <summary>
+        /// Nieuwsbrief (eigenlijk: bulk mail)
+        /// </summary>
+        [DataMember]
+        [DisplayName(@"Nieuwsbrief ontvangen")]
+        public bool NieuwsBrief { get; set; }
+
+        /// <summary>
         /// VersieString van de Persoon.
         /// (Die van de gelieerde persoon nemen we niet mee, aangezien bij het wijzigen van een
         /// gelieerde persoon de persoon nagenoeg altijd mee zal wijzigen.  Tenzij enkel de

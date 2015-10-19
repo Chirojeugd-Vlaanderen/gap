@@ -3,7 +3,7 @@
 
 use gap_local;
 
-declare @bijhoudenvanaf as integer; set @bijhoudenvanaf=2012;
+declare @bijhoudenvanaf as integer; set @bijhoudenvanaf=2013;
 
 
 -- een willekeurig gewest om alle behouden groepen aan te koppelen
