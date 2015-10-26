@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 the Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -15,53 +15,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Chiro.Gap.Domain;
-using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.UpdateApi.Models;
+
 using Chiro.Gap.UpdateApi.Workers;
 using Nancy;
-using Nancy.ModelBinding;
+using System;
 
 namespace Chiro.Gap.UpdateApi.Modules
 {
-    public class AansluitingModule: NancyModule, IDisposable
+    /// <summary>
+    /// Module die raw data oplevert. Zo weinig mogelijk gebruiken aub.
+    /// Op dit moment wordt dit gebruikt voor #4326 en #4268, monitoring
+    /// van de sync met civi.
+    /// </summary>
+    /// <remarks>
+    /// Het opleveren van data hoort eigenlijk niet echt thuis in een
+    /// 'UpdateApi'. UpdateApi is niet de beste naam ooit. Eigenlijk is dit
+    /// de api via dewelke Civi GAP aanspreekt.
+    /// 
+    /// Als we ooit een echte API hebben, kan Civi het via de officiële
+    /// manier doen.
+    /// </remarks>
+    public class RawModule: NancyModule, IDisposable
     {
         private readonly IGapUpdater _gapUpdater;
 
-        public AansluitingModule(IGapUpdater gapUpdater)
+        public RawModule(IGapUpdater gapUpdater)
         {
             // gapUpdater, aangeleverd door de dependency injection container, is disposable,
             // en moet achteraf vrijgegeven worden. Dat doen we in Dispose() van deze module.
 
             _gapUpdater = gapUpdater;
 
-            // You can test this with curl:
-            // curl -X PUT -d AdNummer=3 -d RecentsteWerkJaar=2015 localhost:50673/aansluiting
-            Put["/aansluiting"] = _ =>
-            {
-                // AdNummer is hier de key.
-
-                AansluitingModel model = this.Bind();
-
-                try
-                {
-                    _gapUpdater.Bijwerken(model);
-                }
-                catch (FoutNummerException ex)
-                {
-                    if (ex.FoutNummer == FoutNummer.PersoonNietGevonden)
-                    {
-                        return HttpStatusCode.NotFound;
-                    }
-                    throw;
-                }
-
-                return HttpStatusCode.OK;
-            };
+            Get["/raw/leden/{werkjaar}"] = parameters => _gapUpdater.AlleLedenRaw(parameters.werkjaar);
         }
 
         #region Disposable etc
@@ -87,7 +72,7 @@ namespace Chiro.Gap.UpdateApi.Modules
             _disposed = true;
         }
 
-        ~AansluitingModule()
+        ~RawModule()
         {
             Dispose(false);
         }
