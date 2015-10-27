@@ -23,7 +23,6 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.UpdateApi.Models;
-using System.Text;
 
 namespace Chiro.Gap.UpdateApi.Workers
 {
@@ -551,29 +550,6 @@ namespace Chiro.Gap.UpdateApi.Workers
             persoon.LaatsteMembership = model.RecentsteWerkJaar;
             _personenRepo.SaveChanges();
             Console.WriteLine("LaatsteMembership {0} toegekend aan {1}. (ID {2})", model.RecentsteWerkJaar, persoon.VolledigeNaam, persoon.ID);
-        }
-
-        /// <summary>
-        /// Levert een lijst op van alle stamnummer-adnummer-combinaties van het huidige
-        /// werkjaar. Zal gebruikt worden voor monitoring. (#4326, #4268)
-        /// </summary>
-        /// <returns>Lijst van alle stamnummer-adnummer-combinaties van het huidige
-        /// werkjaar.</returns>
-        /// <remarks>
-        /// Deze functie hoort niet echt thuis in iets dat 'GapUpdater' heet. Misschien
-        /// is dit eerder een GapWorker. Of misschien moet deze klasse opgesplitst worden.
-        /// </remarks>
-        public string AlleLedenRaw(int werkjaar)
-        {
-            var alles = _ledenRepo.Select().Where(ld => ld.GroepsWerkJaar.WerkJaar == werkjaar && !ld.NonActief).OrderBy(l => l.GroepsWerkJaar.Groep.Code).ThenBy(l => l.GelieerdePersoon.Persoon.AdNummer).Select(l => new { StamNr = l.GroepsWerkJaar.Groep.Code, AdNr = l.GelieerdePersoon.Persoon.AdNummer });
-            var builder = new StringBuilder();
-            
-            foreach (var l in alles)
-            {
-                builder.AppendLine(String.Format("{0};{1}", l.StamNr.Trim(), l.AdNr));
-            }
-
-            return builder.ToString();
         }
     }
 }

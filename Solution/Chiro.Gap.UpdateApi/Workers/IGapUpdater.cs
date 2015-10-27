@@ -38,21 +38,6 @@ namespace Chiro.Gap.UpdateApi.Workers
         void AdNummerToekennen(int persoonId, int? adNummer);
 
         /// <summary>
-        /// Levert een lijst op van alle stamnummer-adnummer-combinaties van het gevraagde
-        /// <paramref name="werkjaar"/>. Zal gebruikt worden voor monitoring. (#4326, #4268)
-        /// </summary>
-        /// <param name="werkjaar">
-        /// Werkjaar waarvoor de leden gevraagd zijn.
-        /// </param>
-        /// <returns>Lijst van alle stamnummer-adnummer-combinaties van het gevraagde
-        /// werkjaar.</returns>
-        /// <remarks>
-        /// Deze functie hoort niet echt thuis in iets dat 'GapUpdater' heet. Misschien
-        /// is dit eerder een GapWorker. Of misschien moet deze klasse opgesplitst worden.
-        /// </remarks>
-        string AlleLedenRaw(int werkjaar);
-
-        /// <summary>
         /// Vervangt het AD-nummer van de persoon met AD-nummer <paramref name="oudAd"/>
         /// door <paramref name="nieuwAd"/>.  Als er al een persoon bestond met AD-nummer
         /// <paramref name="nieuwAd"/>, dan worden de personen gemerged.

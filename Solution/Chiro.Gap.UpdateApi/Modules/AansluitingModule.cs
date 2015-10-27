@@ -40,7 +40,7 @@ namespace Chiro.Gap.UpdateApi.Modules
             _gapUpdater = gapUpdater;
 
             // You can test this with curl:
-            // curl -X PUT -d AdNummer=3 -d RecentsteWerkJaar=2015 localhost:50673/aansluiting
+            // curl -X PUT -d AdNummer=3 -d RecentsteWerkJaar=2015 localhost:50673/persoon
             Put["/aansluiting"] = _ =>
             {
                 // AdNummer is hier de key.
