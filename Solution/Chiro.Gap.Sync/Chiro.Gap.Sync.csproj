@@ -76,8 +76,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\tools\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
-      <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
+    <ProjectReference Include="..\..\tools\Chiro.CiviSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
+      <Project>{6e81a10a-ad85-47a0-8b5d-70361f393cdd}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">

@@ -20,6 +20,7 @@ using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
+using Chiro.Gap.Sync;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +77,21 @@ namespace Chiro.Gap.FixAnomalies
             }
             
             Console.WriteLine("Het zijn er {0}.", teSyncen.Count);
-            Console.ReadLine();
+            Console.Write("Meteen syncen?");
+            string input = Console.ReadLine();
+            if (input.ToUpper() == "J" || input.ToUpper() == "Y")
+            {
+                var sync = new LedenSync(serviceHelper);
+                using (var context = new ChiroGroepEntities())
+                {
+                    var repositoryProvider = new RepositoryProvider(context);
+                    var ledenRepo = repositoryProvider.RepositoryGet<Lid>();
+                    foreach (var l in teSyncen)
+                    {
+                        sync.Bewaren(ledenRepo.ByID(l.LidId));
+                    }
+                }
+            }
         }
 
         /// <summary>
