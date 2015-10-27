@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chiro.Gap.FixAnomalies.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ApiKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">blablablapi</Value>
+    </Setting>
+    <Setting Name="SiteKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ef744ad8542c43579ac35263ed39d195</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
