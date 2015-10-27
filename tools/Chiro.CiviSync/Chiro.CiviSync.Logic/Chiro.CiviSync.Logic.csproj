@@ -67,7 +67,7 @@
       <Project>{C27C0FB3-740A-4705-98DF-3B237984C44F}</Project>
       <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
+    <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>

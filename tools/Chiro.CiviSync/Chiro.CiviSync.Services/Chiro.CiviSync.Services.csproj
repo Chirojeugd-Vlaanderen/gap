@@ -118,11 +118,11 @@
       <Project>{c27c0fb3-740a-4705-98df-3b237984c44f}</Project>
       <Name>Chiro.CiviCrm.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
+    <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\KipSync\Chiro.Mailchimp.Sync\Chiro.Mailchimp.Sync.csproj">
+    <ProjectReference Include="..\Chiro.Mailchimp.Sync\Chiro.Mailchimp.Sync.csproj">
       <Project>{4C2D492F-8C94-43F3-BF61-1FF21D0B74CE}</Project>
       <Name>Chiro.Mailchimp.Sync</Name>
     </ProjectReference>
