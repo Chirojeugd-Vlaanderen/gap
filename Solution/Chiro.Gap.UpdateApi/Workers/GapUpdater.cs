@@ -565,7 +565,7 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// </remarks>
         public string AlleLedenRaw(int werkjaar)
         {
-            var alles = _ledenRepo.Select().Where(ld => ld.GroepsWerkJaar.WerkJaar == werkjaar && !ld.NonActief).OrderBy(l => l.GroepsWerkJaar.Groep.Code).ThenBy(l => l.GelieerdePersoon.Persoon.AdNummer).Select(l => new { StamNr = l.GroepsWerkJaar.Groep.Code, AdNr = l.GelieerdePersoon.Persoon.AdNummer });
+            var alles = _ledenRepo.Select().Where(ld => ld.GroepsWerkJaar.WerkJaar == werkjaar && !ld.NonActief && ld.GroepsWerkJaar.Groep.StopDatum == null).OrderBy(l => l.GroepsWerkJaar.Groep.Code).ThenBy(l => l.GelieerdePersoon.Persoon.AdNummer).Select(l => new { StamNr = l.GroepsWerkJaar.Groep.Code, AdNr = l.GelieerdePersoon.Persoon.AdNummer });
             var builder = new StringBuilder();
             
             foreach (var l in alles)
