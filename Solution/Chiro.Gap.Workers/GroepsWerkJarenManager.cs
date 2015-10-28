@@ -197,17 +197,28 @@ namespace Chiro.Gap.Workers
         /// <returns>Het jaartal waarin het huidige werkjaar begon</returns>
         public int HuidigWerkJaarNationaal()
         {
-            var overgang = new DateTime(
-                DateTime.Today.Year,
-                Settings.Default.WerkjaarStartNationaal.Month,
-                Settings.Default.WerkjaarStartNationaal.Day);
+            return WerkJaarNationaal(Vandaag());
+        }
 
-            if (overgang <= DateTime.Today)
+        /// <summary>
+        /// Lever het nationale werkjaar op voor de gegeven <paramref name="datum"/>.
+        /// </summary>
+        /// <param name="datum"></param>
+        /// <returns>Het werkjaar volgens nationaal op gegeven <paramref name="datum"/>.</returns>
+        public int WerkJaarNationaal(DateTime datum)
+        {
+            var overgang = new DateTime(
+               datum.Year,
+               Settings.Default.WerkjaarStartNationaal.Month,
+               Settings.Default.WerkjaarStartNationaal.Day);
+
+            if (overgang <= datum)
             {
                 return overgang.Year;
             }
             return overgang.Year - 1;
         }
+
 
         /// <summary>
         /// Levert de datum van vandaag op.

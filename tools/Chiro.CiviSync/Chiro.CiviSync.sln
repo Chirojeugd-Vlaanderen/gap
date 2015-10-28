@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.Services", "Chiro.CiviSync.Services\Chiro.CiviSync.Services.csproj", "{30215F07-A682-4E89-8FF9-D33F705E9842}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ServiceContracts", "..\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj", "{6E81A10A-AD85-47A0-8B5D-70361F393CDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ServiceContracts", "Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj", "{6E81A10A-AD85-47A0-8B5D-70361F393CDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc", "..\..\Solution\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj", "{C100E957-CEE2-4707-BF13-C64553C28C7B}"
 EndProject
@@ -50,7 +50,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.Logic.Test",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CiviSync.ConsoleServiceHost", "Chiro.CiviSync.ConsoleServiceHost\Chiro.CiviSync.ConsoleServiceHost.csproj", "{62E4DF52-639E-4CFE-AD0F-2850604B280A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Mailchimp.Sync", "..\KipSync\Chiro.Mailchimp.Sync\Chiro.Mailchimp.Sync.csproj", "{4C2D492F-8C94-43F3-BF61-1FF21D0B74CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Mailchimp.Sync", "Chiro.Mailchimp.Sync\Chiro.Mailchimp.Sync.csproj", "{4C2D492F-8C94-43F3-BF61-1FF21D0B74CE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc.Factory", "..\..\Solution\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj", "{66147F76-9D76-46A6-8FCE-1BBE317A6093}"
 EndProject
