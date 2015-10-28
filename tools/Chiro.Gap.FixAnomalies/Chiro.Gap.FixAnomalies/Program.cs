@@ -85,7 +85,7 @@ namespace Chiro.Gap.FixAnomalies
                 {
                     ++civiCounter;
                 }
-                if (civiCounter < civiResult.Count && gapLeden[gapCounter].StamNrAdNr != civiResult.Values[civiCounter].First())
+                if (civiCounter < civiResult.Count && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiResult.Values[civiCounter].First(), true) != 0)
                 {
                     teSyncen.Add(gapLeden[gapCounter]);
                     Console.WriteLine(gapLeden[gapCounter].StamNrAdNr);

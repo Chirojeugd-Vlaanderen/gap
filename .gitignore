@@ -887,3 +887,4 @@ packages/
 *.ssms_suo
 Solution/.vs/config/applicationhost.config
 tools/Chiro.CiviSync/.vs/config/applicationhost.config
+tools/Chiro.Sso.DecryptieTool/.vs/config/applicationhost.config
