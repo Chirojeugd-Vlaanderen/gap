@@ -139,6 +139,8 @@ namespace Chiro.Gap.FixAnomalies
                             // Enkel personen waarvan AD-nummers al gekend zijn. In het andere geval
                             // zal gapmaintenance wel syncen.
                             && ld.GelieerdePersoon.Persoon.AdNummer.HasValue
+                            // Enkel leden van actieve groepen
+                            && ld.GroepsWerkJaar.Groep.StopDatum == null
                             select new LidInfo { StamNrAdNr = ld.GroepsWerkJaar.Groep.Code.Trim() + ";" + ld.GelieerdePersoon.Persoon.AdNummer, LidId = ld.ID };
                 return alles.OrderBy(info => info.StamNrAdNr).ToArray();
             }
