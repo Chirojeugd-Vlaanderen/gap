@@ -29,11 +29,6 @@ namespace Chiro.Gap.UpdateApi.Modules
     {
         public DbHackModule()
         {
-            Post["/dbhack/restorekip"] = _ =>
-            {
-                TestHacks.TestHacks.KipadminRestoren();
-                return HttpStatusCode.NoContent;
-            };
             Post["/dbhack/restoregap"] = _ =>
             {
                 TestHacks.TestHacks.GapRestoren();

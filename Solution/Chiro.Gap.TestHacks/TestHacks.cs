@@ -45,25 +45,6 @@ namespace Chiro.Gap.TestHacks
         }
 
         /// <summary>
-        /// Deze hack restoret de recentste backup van Kipadmin naar de dev-database.
-        /// </summary>
-        /// <returns>Naam van het teruggezette backupbestand.</returns>
-        public static void KipadminRestoren()
-        {
-            using (var connection = new SqlConnection(Settings.Default.ConnectionString))
-            {
-                connection.Open();
-                var command = new SqlCommand("msdb.dbo.sp_start_job", connection)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
-                command.Parameters.AddWithValue("@job_name", "restore-kip");
-                command.ExecuteNonQuery();
-                connection.Close();
-            }
-        }
-
-        /// <summary>
         /// Deze hack zet de backup van de echte gap van 3 dagen geleden terug naar de
         /// staging database.
         /// </summary>
