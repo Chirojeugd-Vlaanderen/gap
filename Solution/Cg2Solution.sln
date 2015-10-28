@@ -36,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceModel", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.ServiceContracts", "..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj", "{D1E7BBDD-D833-4DC1-AF39-287448612425}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ServiceContracts", "..\tools\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj", "{6E81A10A-AD85-47A0-8B5D-70361F393CDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ServiceContracts", "..\tools\Chiro.CiviSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj", "{6E81A10A-AD85-47A0-8B5D-70361F393CDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Mailer", "..\tools\LoginService\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj", "{18FF2008-106F-48A6-BEFB-5F8B301354D0}"
 EndProject
@@ -103,6 +103,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc.Factory", "Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj", "{66147F76-9D76-46A6-8FCE-1BBE317A6093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts.Mappers", "Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj", "{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -586,6 +588,22 @@ Global
 		{66147F76-9D76-46A6-8FCE-1BBE317A6093}.Release|Win32.Build.0 = Release|Any CPU
 		{66147F76-9D76-46A6-8FCE-1BBE317A6093}.Release|x86.ActiveCfg = Release|Any CPU
 		{66147F76-9D76-46A6-8FCE-1BBE317A6093}.Release|x86.Build.0 = Release|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Debug|Win32.Build.0 = Debug|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Debug|x86.Build.0 = Debug|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Release|Win32.ActiveCfg = Release|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Release|Win32.Build.0 = Release|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Release|x86.ActiveCfg = Release|Any CPU
+		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -606,8 +624,8 @@ Global
 		{5CAA5C51-8250-4E6E-851F-FACE0951BEA9} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution8.vsmdi

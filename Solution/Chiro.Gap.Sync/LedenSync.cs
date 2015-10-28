@@ -152,6 +152,7 @@ namespace Chiro.Gap.Sync
             }
             else
             {
+                // DEZE MAPPING DOET ME DE DAS OM!
                 var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon);
 
                 // kijk na of de persoon al bewaard is in GAP:

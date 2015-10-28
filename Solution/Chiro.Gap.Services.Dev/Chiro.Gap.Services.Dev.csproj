@@ -50,7 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\tools\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
+    <ProjectReference Include="..\..\tools\Chiro.CiviSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6e81a10a-ad85-47a0-8b5d-70361f393cdd}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
