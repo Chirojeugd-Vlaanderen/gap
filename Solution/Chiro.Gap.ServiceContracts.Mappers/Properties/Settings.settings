@@ -5,11 +5,5 @@
     <Setting Name="KleinAantal" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
-    <Setting Name="NieuwWerkJaarMaand" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">9</Value>
-    </Setting>
-    <Setting Name="NieuwWerkJaarDag" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

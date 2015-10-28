@@ -34,29 +34,5 @@ namespace Chiro.Gap.ServiceContracts.Mappers.Properties {
                 this["KleinAantal"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9")]
-        public int NieuwWerkJaarMaand {
-            get {
-                return ((int)(this["NieuwWerkJaarMaand"]));
-            }
-            set {
-                this["NieuwWerkJaarMaand"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int NieuwWerkJaarDag {
-            get {
-                return ((int)(this["NieuwWerkJaarDag"]));
-            }
-            set {
-                this["NieuwWerkJaarDag"] = value;
-            }
-        }
     }
 }

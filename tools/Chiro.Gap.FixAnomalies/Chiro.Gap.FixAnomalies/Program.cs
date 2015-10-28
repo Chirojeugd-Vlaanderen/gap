@@ -33,14 +33,18 @@ namespace Chiro.Gap.FixAnomalies
     {
         static void Main(string[] args)
         {
+            // DIT IS LELIJK, EN KAN BEST WAT OPKUIS GEBRUIKEN.
+
             string apiKey = Properties.Settings.Default.ApiKey;
             string siteKey = Properties.Settings.Default.SiteKey;
 
             var teSyncen = new List<LidInfo>();
 
-            // In het GAP (versie 2.2 alleszins) gebruiken we dependency injection
-            // om de ChannelProvider te injecteren. Voor dit voorbeeld doen we het
-            // manueel.
+            // Dependency injection gebeurt hier overal manueel
+            // TODO: Chiro.Gap.Ioc gebruiken.
+
+            var 
+
             var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
 
             var civiResult =

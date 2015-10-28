@@ -648,14 +648,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// leiding, dan Begeleiding. En anders onbekend.</returns>
         private DeelnemerType DeelnemerTypeBepalen(GelieerdePersoon gelieerdePersoon, DateTime datum)
         {
-            int werkJaar = datum.Year;
-            DateTime nieuwWerkJaarDatum = new DateTime(werkJaar, Settings.Default.NieuwWerkJaarMaand,
-                Settings.Default.NieuwWerkJaarDag);
-
-            if (datum < nieuwWerkJaarDatum)
-            {
-                --werkJaar;
-            }
+            int werkJaar = _groepsWerkJarenMgr.WerkJaarNationaal(datum);
 
             var lid =
                 (from l in gelieerdePersoon.Lid where l.GroepsWerkJaar.WerkJaar == werkJaar select l).FirstOrDefault();

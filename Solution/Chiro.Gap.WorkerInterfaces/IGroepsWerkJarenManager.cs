@@ -131,6 +131,13 @@ namespace Chiro.Gap.WorkerInterfaces
         int HuidigWerkJaarNationaal();
 
         /// <summary>
+        /// Lever het nationale werkjaar op voor de gegeven <paramref name="datum"/>.
+        /// </summary>
+        /// <param name="datum"></param>
+        /// <returns>Het werkjaar volgens nationaal op gegeven <paramref name="datum"/>.</returns>
+        int WerkJaarNationaal(DateTime datum);
+
+        /// <summary>
         /// Levert de datum van vandaag op.
         /// </summary>
         /// <returns>De datum van vandaag.</returns>
@@ -139,5 +146,5 @@ namespace Chiro.Gap.WorkerInterfaces
         /// foefelen in de unit tests.
         /// </remarks>
         DateTime Vandaag();
-	}
+    }
 }
