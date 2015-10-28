@@ -51,6 +51,11 @@ namespace Chiro.Gap.FixAnomalies
 
             var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
 
+            // TODO: via command line opties verbositeit van dit script bepalen.
+            // TODO: resources gebruiken voor outputtext.
+
+            Console.WriteLine("Opvragen actieve lidrelaties CiviCRM.");
+
             var civiResult =
                 serviceHelper.CallService<ICiviCrmApi, ApiResultStrings>(
                     svc => svc.ChiroDiagnosticsActieveLidRelaties(apiKey, siteKey));
@@ -58,11 +63,14 @@ namespace Chiro.Gap.FixAnomalies
             {
                 throw new ApplicationException(civiResult.ErrorMessage);
             }
+            Console.WriteLine("Dat zijn er {0}.", civiResult.Count);
 
             DateTime vandaag = DateTime.Now;
             int werkjaar = vandaag.Month >= 9 ? vandaag.Year : vandaag.Year - 1;
 
+            Console.WriteLine("Opvragen leden met AD-nummer in Gap, werkjaar {0}.", werkjaar);
             var gapLeden = AlleLeden(werkjaar);
+            Console.WriteLine("Dat zijn er {0}.", gapLeden.Length);
 
             int civiCounter = 0;
             int gapCounter = 0;
@@ -70,6 +78,7 @@ namespace Chiro.Gap.FixAnomalies
             // Normaal zijn de leden uit het GAP hetzelfde gesorteerd als die uit Civi.
             // Overloop de GAP-leden, en kijk of ze ook in de Civi-leden voorkomen.
 
+            Console.WriteLine("Opzoeken leden in GAP maar niet in CiviCRM.");
             while (gapCounter < gapLeden.Length && civiCounter < civiResult.Count)
             {
                 while (civiCounter < civiResult.Count && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiResult.Values[civiCounter].First(), true) > 0)
@@ -84,9 +93,13 @@ namespace Chiro.Gap.FixAnomalies
                 ++gapCounter;
             }
             
-            Console.WriteLine("Het zijn er {0}.", teSyncen.Count);
-            Console.Write("Meteen syncen?");
+            Console.WriteLine("{0} leden uit GAP niet teruggevonden in CiviCRM.", teSyncen.Count);
+
+            // TODO: command line switch om deze vraag te vermijden.
+            Console.Write("Meteen syncen? ");
             string input = Console.ReadLine();
+            int counter = 0;
+
             if (input.ToUpper() == "J" || input.ToUpper() == "Y")
             {
                 var sync = new LedenSync(serviceHelper);
@@ -97,6 +110,7 @@ namespace Chiro.Gap.FixAnomalies
                     foreach (var l in teSyncen)
                     {
                         sync.Bewaren(ledenRepo.ByID(l.LidId));
+                        Console.Write("{0} ", ++counter);
                     }
                 }
             }
