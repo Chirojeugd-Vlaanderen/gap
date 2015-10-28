@@ -21,11 +21,10 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Sync;
+using Chiro.Gap.Workers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chiro.Gap.FixAnomalies
 {
@@ -43,7 +42,12 @@ namespace Chiro.Gap.FixAnomalies
             // Dependency injection gebeurt hier overal manueel
             // TODO: Chiro.Gap.Ioc gebruiken.
 
-            var 
+            var ledenManager = new LedenManager();
+            var groepsWerkJarenManager = new GroepsWerkJarenManager(new VeelGebruikt());
+            var abonnementenManager = new AbonnementenManager();
+
+            var helper = new Chiro.Gap.ServiceContracts.Mappers.MappingHelper(ledenManager, groepsWerkJarenManager, abonnementenManager);
+            helper.MappingsDefinieren();
 
             var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
 
@@ -118,6 +122,9 @@ namespace Chiro.Gap.FixAnomalies
 
                 var alles = from ld in ledenRepo.Select()
                             where ld.GroepsWerkJaar.WerkJaar == werkjaar && !ld.NonActief
+                            // Enkel personen waarvan AD-nummers al gekend zijn. In het andere geval
+                            // zal gapmaintenance wel syncen.
+                            && ld.GelieerdePersoon.Persoon.AdNummer.HasValue
                             select new LidInfo { StamNrAdNr = ld.GroepsWerkJaar.Groep.Code.Trim() + ";" + ld.GelieerdePersoon.Persoon.AdNummer, LidId = ld.ID };
                 return alles.OrderBy(info => info.StamNrAdNr).ToArray();
             }
