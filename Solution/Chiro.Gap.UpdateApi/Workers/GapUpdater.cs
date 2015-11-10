@@ -471,7 +471,7 @@ namespace Chiro.Gap.UpdateApi.Workers
             {
                 throw new FoutNummerException(
                     FoutNummer.GroepNietGevonden,
-                    string.Format("Kan groep met stamnummer {0} niet vinden. Stopdatum niet aangepast."));
+                    string.Format("Kan groep met stamnummer {0} niet vinden. Stopdatum niet aangepast.", stamNr));
             }
         }
 
