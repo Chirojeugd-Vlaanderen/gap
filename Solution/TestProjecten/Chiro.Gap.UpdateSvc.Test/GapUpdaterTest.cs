@@ -26,6 +26,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.UpdateApi.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Chiro.Gap.Poco.Model.Exceptions;
 
 namespace Chiro.Gap.UpdateSvc.Test
 {
@@ -36,7 +37,7 @@ namespace Chiro.Gap.UpdateSvc.Test
     ///to contain all UpdateServiceTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class UpdateApiTest
+    public class GapUpdaterTest
     {
 
 
@@ -112,6 +113,28 @@ namespace Chiro.Gap.UpdateSvc.Test
             // ASSERT
 
             Assert.IsNotNull(groep.StopDatum);
+        }
+
+        /// <summary>
+        /// A test for GroepDesactiveren.
+        /// 
+        /// Verwacht een FoutNummerException als de groep niet wordt gevonden.
+        /// </summary>
+        [TestMethod()]
+        [ExpectedException(typeof(FoutNummerException))]
+        public void OnbestaandeGroepDesactiverenTest()
+        {
+            // ARRANGE
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                                  .Returns(new DummyRepo<Groep>(new List<Groep>()));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GapUpdater>();
+            target.GroepDesactiveren("EENDERWAT", DateTime.Now);
         }
 
         /// <summary>
