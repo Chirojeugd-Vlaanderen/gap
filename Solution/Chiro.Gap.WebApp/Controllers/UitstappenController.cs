@@ -398,7 +398,14 @@ namespace Chiro.Gap.WebApp.Controllers
                     "Emailadres", 
                     "Straat", 
                     "Huisnummer", 
-                    "Postcode", "Woonplaats", "Afdelingen", "Functie", "Contactpersoon", "Betaald", "Medische fiche", "Opmerkingen"
+                    "Postcode", 
+                    "Woonplaats", 
+                    "Afdelingen", 
+                    "Functie", 
+                    "Contactpersoon", 
+                    "Betaald", 
+                    "Medische fiche", 
+                    "Opmerkingen"
 			        };
 
             var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));

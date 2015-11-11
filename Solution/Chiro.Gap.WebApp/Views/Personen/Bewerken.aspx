@@ -159,7 +159,7 @@
                     </td>
                     <td id="adres">
                         <%= Html.Encode(String.Format("{0} {1}{2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus.IsEmpty()? "" : " bus " + pa.Bus))%>,
-                         <%if (!pa.IsBelgisch) { %>
+                         <%if (!pa.IsBelgisch) { // \note Duplicate code met Uitstappen/Bekijken.aspx%>
                             <%= Html.Encode(String.Format("{0} {1}, {2} ({3}) ", pa.PostCode, pa.WoonPlaatsNaam, pa.LandNaam, pa.AdresType)) %>
                         <% } else { %> 
                             <%= Html.Encode(String.Format("{0} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType)) %>

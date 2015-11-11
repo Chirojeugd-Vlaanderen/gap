@@ -33,27 +33,18 @@
 			[<%=Html.ActionLink("Bewerken", "Bewerken", new { id = Model.Uitstap.ID })%> - <%=Html.ActionLink("Verwijderen", "Verwijderen", new { uitstapID = Model.Uitstap.ID })%>]
 		</p>
 		<p>
-			<%
-				if (string.IsNullOrEmpty(Model.Uitstap.PlaatsNaam))
-				{
-			%>
-			[<%=Html.ActionLink("Bivakplaats ingeven", "PlaatsBewerken", new {id = Model.Uitstap.ID})%>]
-			<%
-				}
-				else
-				{
-			%>
-			<%=Model.Uitstap.PlaatsNaam%>,
-			<%=Model.Uitstap.Adres.StraatNaamNaam%>
-			<%=Model.Uitstap.Adres.HuisNr%>
-			<%=Model.Uitstap.Adres.Bus%>,
-			<%=Model.Uitstap.Adres.PostNr%>
-			<%=Model.Uitstap.Adres.PostCode%>
-			<%=Model.Uitstap.Adres.WoonPlaatsNaam%>
-			(<%=Model.Uitstap.Adres.LandNaam%>) [<%=Html.ActionLink("Bivakplaats wijzigen", "PlaatsBewerken", new {id = Model.Uitstap.ID})%>]
-			<%
-				}
-			%>
+			<% if (string.IsNullOrEmpty(Model.Uitstap.PlaatsNaam)) { %>
+			    [<%=Html.ActionLink("Bivakplaats ingeven", "PlaatsBewerken", new {id = Model.Uitstap.ID})%>]
+			<% } else {%>
+                <% var pa = Model.Uitstap.Adres; %>
+                <%= Html.Encode(String.Format("{0} {1}{2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus.IsEmpty()? "" : " bus " + pa.Bus))%>,
+                <%if (!pa.IsBelgisch) { // \note Duplicate code met Personen/Bewerken.aspx%>
+                    <%= Html.Encode(String.Format("{0} {1} ({2})", pa.PostCode, pa.WoonPlaatsNaam, pa.LandNaam)) %>
+                <% } else { %> 
+                    <%= Html.Encode(String.Format("{0} {1}", pa.PostNr, pa.WoonPlaatsNaam)) %>
+                <% }%>
+			    [<%=Html.ActionLink("Bivakplaats wijzigen", "PlaatsBewerken", new {id = Model.Uitstap.ID})%>]
+			<%}%>
 		</p>
 	</div>
 	<p>
