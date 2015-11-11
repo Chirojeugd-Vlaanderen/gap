@@ -687,7 +687,7 @@ namespace Chiro.Gap.Services
             }
             catch (BlokkerendeObjectenException<PersoonsVerzekering>)
             {
-                // TODO: beter faultcontract. (VerzkeringsInfo?)
+                // TODO: beter faultcontract. (VerzekeringsInfo?)
                 throw FaultExceptionHelper.BestaatAl("Verzekering");
             }
 

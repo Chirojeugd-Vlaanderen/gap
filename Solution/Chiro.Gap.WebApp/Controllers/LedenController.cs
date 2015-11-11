@@ -666,8 +666,35 @@ namespace Chiro.Gap.WebApp.Controllers
         [HandleError]
         public ActionResult LoonVerliesVerzekeren(BevestigingsModel model, int groepID, int id)
         {
-            int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.LoonVerliesVerzekeren(id));
-            return RedirectToAction("Bewerken", "Personen", new { id = gelieerdePersoonID });
+            try 
+            {
+                ServiceHelper.CallService<ILedenService, int>(svc => svc.LoonVerliesVerzekeren(id));
+                TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;                
+            }
+            catch (FaultException<FoutNummerFault> ex) 
+            {
+                var lidInfo = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
+                switch (ex.Detail.FoutNummer) 
+                {
+                    case FoutNummer.GroepInactief:
+                        TempData["fout"] = String.Format(Properties.Resources.GroepInactief);
+                        break;
+                    case FoutNummer.ChronologieFout:
+                        var url = Url.Action("Index","JaarOvergang");
+                        var werkJaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaar;
+                        TempData["fout"] = String.Format(Properties.Resources.WerkJaarInOvergang, werkJaar + 1, werkJaar + 2, url);
+                        break;
+                    default:
+                        throw;
+                }
+            }
+            catch (FaultException<BestaatAlFault<String>>) 
+            {
+                TempData["fout"] = String.Format(Properties.Resources.VerzekeringBestaatAl);
+            }
+            // TODO (#1031): DetailsOphalen is eigenlijk overkill; we hebben enkel de volledige naam en het GelieerdePersoonID nodig.
+            var info = ServiceHelper.CallService<ILedenService, PersoonInfo>(svc => svc.PersoonOphalen(id));
+            return RedirectToAction("Bewerken", "Personen", new { id = info.GelieerdePersoonID });
         }
 
         /// <summary>

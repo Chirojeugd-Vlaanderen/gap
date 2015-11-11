@@ -691,40 +691,6 @@ $(function () {
     });
 
     //------------------------------------------------------------------------------------------
-    // verzekering tegen loonverlies
-    $('#bewerkVerzekering').click(function (e) {
-        e.preventDefault();
-
-        url = link("Leden", "LoonVerliesVerzekeren");
-        url += "/" + id + " #ver";
-        $('#bewerkVerzekeringDialog').load(url);
-
-        $('#bewerkVerzekeringDialog').dialog({
-            modal: true,
-            title: "Verzekeren tegen loonverlies",
-            width: 500,
-            buttons: {
-                "Bevestigen": function () {
-
-                    url = link("Leden", "LoonVerliesVerzekeren");
-                    $(this).dialog('close');
-                    bezig();
-                    $.post(url, { id: id, groepID: GID }, function () {
-
-                        success:
-                        {
-                            location.reload();
-                        }
-                    });
-
-                },
-                "Annuleren": function () {
-                    $(this).dialog('close');
-                }
-            }
-        });
-    });
-    //------------------------------------------------------------------------------------------
     //EINDE INLINE EDITING
     //------------------------------------------------------------------------------------------
 
