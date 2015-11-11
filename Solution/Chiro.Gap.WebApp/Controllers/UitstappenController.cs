@@ -389,7 +389,16 @@ namespace Chiro.Gap.WebApp.Controllers
 
             string[] kolomkoppen = 
                     {
-			        "AD-nummer", "Voornaam", "Familienaam", "Geboortedatum", "Geslacht", "Telefoon", "Straat", "Huisnummer", "Postcode", "Woonplaats", "Afdelingen", "Functie", "Contactpersoon", "Betaald", "Medische fiche", "Opmerkingen"
+			        "AD-nummer", 
+                    "Voornaam", 
+                    "Familienaam", 
+                    "Geboortedatum", 
+                    "Geslacht", 
+                    "Telefoon", 
+                    "Emailadres", 
+                    "Straat", 
+                    "Huisnummer", 
+                    "Postcode", "Woonplaats", "Afdelingen", "Functie", "Contactpersoon", "Betaald", "Medische fiche", "Opmerkingen"
 			        };
 
             var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));
@@ -402,6 +411,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => it.PersoonOverzicht.GeboorteDatum,
                 it => it.PersoonOverzicht.Geslacht,
                 it => it.PersoonOverzicht.TelefoonNummer,
+                it => it.PersoonOverzicht.Email,
                 it => it.PersoonOverzicht.StraatNaam,
                 it => it.PersoonOverzicht.HuisNummer,
                 it => it.PersoonOverzicht.PostNummer,
