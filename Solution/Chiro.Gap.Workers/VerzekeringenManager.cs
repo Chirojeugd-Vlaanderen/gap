@@ -89,11 +89,13 @@ namespace Chiro.Gap.Workers
             // dit meer inhoudt dan een unique index/unique constraint.
             var query = from v in l.GelieerdePersoon.Persoon.PersoonsVerzekering
                         where v.VerzekeringsType.ID == verz.ID
-                              && (v.Tot > beginDatum && beginDatum >= v.Van || v.Van < eindDatum && eindDatum <= v.Tot)
+                              && ((verz.TotEindeWerkJaar && v.Tot == eindDatum) 
+                                        // Een verzekering tot het einde van het jaar mag wat overlappen (met vorig jaar) zolang je er nog geen hebt voor dat jaar.
+                                  || (!verz.TotEindeWerkJaar && (v.Tot > beginDatum && beginDatum >= v.Van || v.Van < eindDatum && eindDatum <= v.Tot)))
+                                        // Anders laten we geen overlap toe.
                         select v;
 
             var bestaande = query.FirstOrDefault();
-
             if (bestaande != null)
             {
                 throw new BlokkerendeObjectenException<PersoonsVerzekering>(
