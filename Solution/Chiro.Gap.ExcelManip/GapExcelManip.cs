@@ -73,31 +73,37 @@ namespace Chiro.Gap.ExcelManip
             Insert(ledenBlad, "AD-nummer", 2, 1);
             Insert(ledenBlad, "Voornaam", 3, 1);
             Insert(ledenBlad, "Naam", 4, 1);
-            Insert(ledenBlad, "Afdelingen", 5, 1);
-            Insert(ledenBlad, "Functies", 6, 1);
-            Insert(ledenBlad, "Geboortedatum", 7, 1);
-            Insert(ledenBlad, "Betaald", 8, 1);
+            Insert(ledenBlad, "Geslacht", 5, 1);
+            Insert(ledenBlad, "Afdelingen", 6, 1);
+            Insert(ledenBlad, "Functies", 7, 1);
+            Insert(ledenBlad, "Geboortedatum", 8, 1);
+            Insert(ledenBlad, "Betaald", 9, 1);
 
+            var startAdresIndex = 10;
             for (int i = 0; i < maxAantalAdressen; ++i)
             {
-                Insert(ledenBlad, String.Format("Straat {0}", i + 1), i*7 + 9, 1);
-                Insert(ledenBlad, String.Format("Nr. {0}", i + 1), i*7 + 10, 1);
-                Insert(ledenBlad, String.Format("Bus {0}", i + 1), i*7 + 11, 1);
-                Insert(ledenBlad, String.Format("Postnr. {0}", i + 1), i*7 + 12, 1);
-                Insert(ledenBlad, String.Format("Postcode {0}", i + 1), i*7 + 13, 1);
-                Insert(ledenBlad, String.Format("Woonplaats {0}", i + 1), i*7 + 14, 1);
-                Insert(ledenBlad, String.Format("Land {0}", i + 1), i*7 + 15, 1);
+                var nb = maxAantalAdressen > 1? " " + (i + 1) : "";
+                Insert(ledenBlad, String.Format("Straat{0}", nb), i * 7 + startAdresIndex, 1);
+                Insert(ledenBlad, String.Format("Nr.{0}", nb), i * 7 + startAdresIndex + 1, 1);
+                Insert(ledenBlad, String.Format("Bus{0}", nb), i * 7 + startAdresIndex + 2, 1);
+                Insert(ledenBlad, String.Format("Postnr.{0}", nb), i * 7 + startAdresIndex + 3, 1);
+                Insert(ledenBlad, String.Format("Postcode{0}", nb), i * 7 + startAdresIndex + 4, 1);
+                Insert(ledenBlad, String.Format("Woonplaats{0}", nb), i * 7 + startAdresIndex + 5, 1);
+                Insert(ledenBlad, String.Format("Land{0}", nb), i * 7 + startAdresIndex + 6, 1);
             }
 
+            var startTelIndex = 7 * maxAantalAdressen + startAdresIndex;
             for (int i = 0; i < maxAantalTel; ++i)
             {
-                Insert(ledenBlad, String.Format("Tel. {0}", i + 1), 7*maxAantalAdressen + i + 9, 1);
+                var nb = maxAantalTel > 1 ? " " + (i + 1) : "";
+                Insert(ledenBlad, String.Format("Tel.{0}", nb), i + startTelIndex, 1);
             }
 
+            var startMailIndex = startTelIndex + maxAantalTel;
             for (int i = 0; i < maxAantalEmail; ++i)
             {
-                Insert(ledenBlad, String.Format("E-mail. {0}", i + 1),
-                    7*maxAantalAdressen + maxAantalTel + i + 9, 1);
+                var nb = maxAantalEmail > 1 ? " " + (i + 1) : "";
+                Insert(ledenBlad, String.Format("E-mail.{0}", nb), i + startMailIndex, 1);
             }
 
             // de effectieve gegevens
@@ -109,20 +115,19 @@ namespace Chiro.Gap.ExcelManip
                 Insert(ledenBlad, rij.PersoonDetail.AdNummer, 2, rijNr);
                 Insert(ledenBlad, rij.PersoonDetail.VoorNaam, 3, rijNr);
                 Insert(ledenBlad, rij.PersoonDetail.Naam, 4, rijNr);
+                Insert(ledenBlad, rij.PersoonDetail.Geslacht.ToString(), 5, rijNr);
+                Insert(ledenBlad, rij.PersoonDetail.GeboorteDatum, 8, rijNr);
 
                 if (rij.LidInfo != null)
                 {
                     Insert(ledenBlad, rij.LidInfo.Type.ToString(), 1, rijNr);
-                    Insert(ledenBlad, GeconcateneerdeAfdelingen(rij.LidInfo.AfdelingIdLijst, alleAfdelingen), 5, rijNr);
+                    Insert(ledenBlad, GeconcateneerdeAfdelingen(rij.LidInfo.AfdelingIdLijst, alleAfdelingen), 6, rijNr);
                     if (rij.LidInfo.Functies != null)
                     {
-                        Insert(ledenBlad, String.Concat(rij.LidInfo.Functies.Select(fn => fn.Code + " ")), 6,
-                            rijNr);
+                        Insert(ledenBlad, String.Concat(rij.LidInfo.Functies.Select(fn => fn.Code + " ")), 7, rijNr);
                     }
-                    Insert(ledenBlad, rij.LidInfo.LidgeldBetaald ? "Ja" : "Nee", 8, rijNr);
+                    Insert(ledenBlad, rij.LidInfo.LidgeldBetaald ? "Ja" : "Nee", 9, rijNr);
                 }
-
-                Insert(ledenBlad, rij.PersoonDetail.GeboorteDatum, 7, rijNr);
 
                 int voorkeursAdresID = rij.PersoonDetail.VoorkeursAdresID ?? 0;
                 int i = 0;
@@ -131,21 +136,18 @@ namespace Chiro.Gap.ExcelManip
 
                 foreach (var adres in rij.PersoonsAdresInfo.OrderBy(pai => Math.Abs(pai.PersoonsAdresID - voorkeursAdresID)))
                 {
-                    Insert(ledenBlad, adres.StraatNaamNaam, i * 7 + 9, rijNr);
-                    Insert(ledenBlad, adres.HuisNr, i * 7 + 10, rijNr);
-                    Insert(ledenBlad, adres.Bus, i * 7 + 11, rijNr);
-                    Insert(ledenBlad, adres.PostNr, i * 7 + 12, rijNr);
-                    Insert(ledenBlad, adres.PostCode, i * 7 + 13, rijNr);
-                    Insert(ledenBlad, adres.WoonPlaatsNaam, i * 7 + 14, rijNr);
-                    Insert(ledenBlad, adres.LandNaam, i * 7 + 15, rijNr);
+                    Insert(ledenBlad, adres.StraatNaamNaam, i * 7 + startAdresIndex, rijNr);
+                    Insert(ledenBlad, adres.HuisNr, i * 7 + startAdresIndex + 1, rijNr);
+                    Insert(ledenBlad, adres.Bus, i * 7 + startAdresIndex + 2, rijNr);
+                    Insert(ledenBlad, adres.PostNr, i * 7 + startAdresIndex + 3, rijNr);
+                    Insert(ledenBlad, adres.PostCode, i * 7 + startAdresIndex + 4, rijNr);
+                    Insert(ledenBlad, adres.WoonPlaatsNaam, i * 7 + startAdresIndex + 5, rijNr);
+                    Insert(ledenBlad, adres.LandNaam, i * 7 + startAdresIndex + 6, rijNr);
                     ++i;
                 }
 
                 i = 0;
-                foreach (
-                    var tel in
-                        rij.CommunicatieInfo.Where(
-                            ci => ci.CommunicatieTypeID == (int)CommunicatieTypeEnum.TelefoonNummer))
+                foreach (var tel in rij.CommunicatieInfo.Where(ci => ci.CommunicatieTypeID == (int)CommunicatieTypeEnum.TelefoonNummer))
                 {
                     string output;
                     if (String.IsNullOrEmpty(tel.Nota))
@@ -156,15 +158,12 @@ namespace Chiro.Gap.ExcelManip
                     {
                         output = String.Format("{0} ({1})", tel.Nummer, tel.Nota);
                     }
-                    Insert(ledenBlad, output, 7 * maxAantalAdressen + i + 9, rijNr);
+                    Insert(ledenBlad, output, i + startTelIndex, rijNr);
                     ++i;
                 }
 
                 i = 0;
-                foreach (
-                    var email in
-                        rij.CommunicatieInfo.Where(
-                            ci => ci.CommunicatieTypeID == (int)CommunicatieTypeEnum.Email))
+                foreach (var email in rij.CommunicatieInfo.Where(ci => ci.CommunicatieTypeID == (int)CommunicatieTypeEnum.Email))
                 {
                     string output;
                     if (String.IsNullOrEmpty(email.Nota))
@@ -173,10 +172,9 @@ namespace Chiro.Gap.ExcelManip
                     }
                     else
                     {
-                        output = String.Format("{0} ({2}) <{1}>", rij.PersoonDetail.VolledigeNaam, email.Nummer,
-                            email.Nota);
+                        output = String.Format("{0} ({2}) <{1}>", rij.PersoonDetail.VolledigeNaam, email.Nummer, email.Nota);
                     }
-                    Insert(ledenBlad, output, 7 * maxAantalAdressen + maxAantalTel + i + 9, rijNr);
+                    Insert(ledenBlad, output, i + startMailIndex, rijNr);
                     ++i;
                 }
                 ++rijNr;
