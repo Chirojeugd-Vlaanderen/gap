@@ -46,15 +46,13 @@ namespace Chiro.Gap.Domain
 		public string Bus { get; set; }
 
 		/// <summary>
-		/// Het postnummer
+		/// Het postnummer. Enkel voor Belgische adressen (altijd een getal).
 		/// </summary>
 		[DataMember]
-
 		public int PostNr { get; set; }
 
 		/// <summary>
-		/// Postcode, voor buitenlandse adressen.
-		/// (dit gaan de gebruikers weer langs geen kanten snappen)
+        /// De postcode. Enkel voor buitenlandse adressen (omdat dat niet altijd een getal is).
 		/// </summary>
 		[DataMember]
 		public string PostCode { get; set; }

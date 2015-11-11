@@ -65,9 +65,8 @@
 						hoe we daar een mouw aan kunnen passen.
 				</p>
 				<p id="uitlegBuitenland" hidden>
-					Voor een buitenlands adres kun je behalve een postnummer ook een postcode invullen:
-					dat is bijvoorbeeld de lettercode die in Nederlandse adressen na het postnummer
-					komt (bv. 1216 RA Hilversum).
+					Een buitenlands adres heeft een postcode, die niet enkel uit cijfers moet bestaan: 
+                    1216 RA is bijvoorbeeld een postcode van het Nederlandse Hilversum.
 				</p>
 				<table id="adrestabel">
 				<%

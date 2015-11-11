@@ -22,7 +22,7 @@
 		<td><%=Html.LabelFor(mdl => mdl.Land) %></td>
 		<td><%=Html.DropDownListFor(mdl => mdl.Land, new SelectList(Model.AlleLanden, "Naam", "Naam")) %></td>
 	</tr>
-	<tr>
+	<tr id="postNrLabel" hidden>
 		<td><%=Html.LabelFor(mdl => mdl.PostNr) %></td>
 		<td><%=Html.EditorFor(mdl => mdl.PostNr)%>
 		<%=Html.ValidationMessageFor(mdl => mdl.PostNr)%></td>
