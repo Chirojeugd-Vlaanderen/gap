@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
@@ -74,7 +74,28 @@ namespace Chiro.Gap.Domain
         [EnumMember]
         Vrouw = 0x02,
         [EnumMember]
-        Gemengd = Man | Vrouw	// interessant voor gemengde groepen/afdelingen
+        X = 0x04,               // het derde geslacht
+        [EnumMember]
+        Gemengd = Man | Vrouw | X,	// interessant voor gemengde groepen/afdelingen
+    }
+
+    /// <summary>
+    /// Soorten abonnement
+    /// </summary>
+    [DataContract]
+    public enum AbonnementType
+    {
+        /// <summary>
+        /// <c>AbonnementType.Geen</c> mag niet in de database bewaard worden; in dat geval
+        /// moet het abonnement gewoon verdwijnen. <c>Geen</c> is enkel van toepassing
+        /// in een webform.
+        /// </summary>
+        [EnumMember]
+        Geen = 0,
+        [EnumMember]
+        Digitaal = 1,
+        [EnumMember]
+        Papier = 2,
     }
 
     /// <summary>

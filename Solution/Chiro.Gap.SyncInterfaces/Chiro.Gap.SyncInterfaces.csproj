@@ -37,11 +37,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAdressenSync.cs" />
+    <Compile Include="IAbonnementenSync.cs" />
     <Compile Include="IBivakSync.cs" />
     <Compile Include="ICommunicatieSync.cs" />
     <Compile Include="IGroepenSync.cs" />

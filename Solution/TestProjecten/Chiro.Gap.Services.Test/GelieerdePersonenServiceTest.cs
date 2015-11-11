@@ -1,5 +1,6 @@
+using Chiro.Gap.Services;
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
@@ -22,18 +23,20 @@ using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.ServiceModel;
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Services.Dev;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.TestAttributes;
 using Chiro.Gap.WorkerInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -83,8 +86,48 @@ namespace Chiro.Gap.Services.Test
 
             Factory.ContainerInit();
 
-            // Vreemd. Als ik deze niet instantieer, dan vindt Unity deze klasse niet.
-            Chiro.Gap.Services.Dev.DevChannelProvider dummy;
+#pragma warning disable 168
+            // Als ik onderstaande niet een keertje instantieer, dan werken mijn tests niet.
+            // Geen idee hoe dat komt.
+
+            DevChannelProvider bla;
+#pragma warning restore 168
+        }
+
+        /// <summary>
+        /// Als je een nieuwe persoon inschrijft die de nieuwsbrief wil, dan moet dat ook zo worden bewaard.
+        /// </summary>
+        [TestMethod]
+        public void NieuwsePersoonNieuwsBriefTest()
+        {
+            // ARRANGE
+            var groep = new ChiroGroep {ID = 1};
+            var nieuwePersoonDetails = new NieuwePersoonDetails {PersoonInfo = new PersoonInfo {NieuwsBrief = true}};
+
+            // dependency injection
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Groep>())
+                .Returns(new DummyRepo<Groep>(new List<Groep> {groep}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon>()));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            var gelieerdePersonenManagerMock = new Mock<IGelieerdePersonenManager>();
+            gelieerdePersonenManagerMock.Setup(
+                src => src.Toevoegen(It.Is<Persoon>(p => p.NieuwsBrief), groep, It.IsAny<int>(), It.IsAny<bool>()))
+                .Returns(new GelieerdePersoon {Persoon = new Persoon(), Groep = groep})
+                .Verifiable();
+            Factory.InstantieRegistreren(gelieerdePersonenManagerMock.Object);
+
+            var service = Factory.Maak<GelieerdePersonenService>();
+
+            // ACT
+            service.Nieuw(nieuwePersoonDetails, groep.ID, true);
+
+            // ASSERT
+            gelieerdePersonenManagerMock.Verify(
+                src => src.Toevoegen(It.Is<Persoon>(p => p.NieuwsBrief), groep, It.IsAny<int>(), It.IsAny<bool>()),
+                Times.AtLeastOnce);
         }
 
         /// <summary>
@@ -138,7 +181,6 @@ namespace Chiro.Gap.Services.Test
             var telefoonNr = new CommunicatieType
                                  {
                                      ID = 1,
-                                     IsOptIn = false,
                                      Omschrijving = "Telefoonnummer",
                                      Validatie =
                                          @"(^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$)|^\+[0-9]*$"
@@ -173,6 +215,81 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
+        /// Als je een communicatievorm voor heel het gezin toevoegt, maar niet heel het gezin is
+        /// 'in sync', dan mag die communicatievorm enkel gesynct worden voor de personen die
+        /// in sync zijn.
+        /// </summary>
+        [TestMethod]
+        public void CommunicatieVormToevoegenHeelGezinTest()
+        {
+            // ARRANGE
+
+            // modelletje
+
+            var gelieerdePersoonInSync = new GelieerdePersoon {ID = 1, Persoon = new Persoon {InSync = true} };
+            var gelieerdePersoonNietInSync = new GelieerdePersoon {ID = 2, Persoon = new Persoon()};
+
+            gelieerdePersoonInSync.Persoon.GelieerdePersoon = new List<GelieerdePersoon> {gelieerdePersoonInSync};
+            gelieerdePersoonNietInSync.Persoon.GelieerdePersoon = new List<GelieerdePersoon>
+            {
+                gelieerdePersoonNietInSync
+            };
+
+            var adres = new BuitenLandsAdres();
+
+            var pa1 = new PersoonsAdres {Persoon = gelieerdePersoonInSync.Persoon, Adres = adres};
+            var pa2 = new PersoonsAdres {Persoon = gelieerdePersoonNietInSync.Persoon, Adres = adres};
+
+            gelieerdePersoonInSync.Persoon.PersoonsAdres = new List<PersoonsAdres> {pa1};
+            gelieerdePersoonNietInSync.Persoon.PersoonsAdres = new List<PersoonsAdres> {pa2};
+            adres.PersoonsAdres = new List<PersoonsAdres> {pa1, pa2};
+
+            var telefoonNr = new CommunicatieType
+            {
+                ID = 1,
+                Omschrijving = "Telefoonnummer",
+                Validatie =
+                                         @"(^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$)|^\+[0-9]*$",
+            };
+
+            // mocking opzetten
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoonInSync, gelieerdePersoonNietInSync }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { telefoonNr }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // dependency injection voor synchronisatie:
+            // verwacht dat CommunicatieSync.Toevoegen niet wordt aangeroepen voor de persoon niet in sync.
+            var communicatieSyncMock = new Mock<ICommunicatieSync>();
+            communicatieSyncMock.Setup(snc => snc.Toevoegen(It.Is<CommunicatieVorm>(cv => Equals(cv.GelieerdePersoon, gelieerdePersoonNietInSync)))).Verifiable();
+            Factory.InstantieRegistreren(communicatieSyncMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+
+            var commInfo = new CommunicatieDetail()
+            {
+                CommunicatieTypeID = telefoonNr.ID,
+                Voorkeur = true,
+                IsGezinsGebonden = true,
+                Nummer = "03-484 53 32" // geldig nummer
+            };
+
+            target.CommunicatieVormToevoegen(gelieerdePersoonInSync.ID, commInfo);
+
+            // ASSERT
+
+            communicatieSyncMock.Verify(
+                snc =>
+                    snc.Toevoegen(It.Is<CommunicatieVorm>(cv => Equals(cv.GelieerdePersoon, gelieerdePersoonNietInSync))),
+                Times.Never());
+        }
+
+        /// <summary>
         /// Kijkt na of CommunicatieVormToevoegen enkel de nieuwe communicatievorm
         /// naar Kipadmin synct, ipv alle communicatie in kipadmin te vervangen  
         /// </summary>
@@ -181,7 +298,12 @@ namespace Chiro.Gap.Services.Test
         {
             // ARRANGE
 
-            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon { InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon {InSync = true},
+                Groep = new ChiroGroep()
+            };
             var email = new CommunicatieType { ID = 3, Validatie = ".*" };
 
             var commDetail = new CommunicatieInfo
@@ -343,6 +465,175 @@ namespace Chiro.Gap.Services.Test
             Assert.IsFalse(origineleCommunicatieVorm.Voorkeur);
         }
 
+        /// <summary>
+        /// Als er voor een nieuwsbriefabonnement een e-mailadres gekozen wordt
+        /// dat al wel bestond, maar geen voorkeursadres was, dan moet dat
+        /// e-mailadres het voorkeursadres worden. Zie #3392.
+        /// </summary>
+        [TestMethod]
+        public void NieuwsBriefNieuwVoorkeursAdresTest()
+        {
+            // ARRANGE
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon {InSync = true},
+                Groep = new ChiroGroep()
+            };
+
+            // Voor deze test liggen we niet wakker van het formaat van een e-mailadres:
+            var emailType = new CommunicatieType { ID = 3, Validatie = ".*" };
+
+            var oudVoorkeursAdres = new CommunicatieVorm
+            {
+                GelieerdePersoon = gelieerdePersoon,
+                CommunicatieType = emailType,
+                ID = 2,
+                Nummer = "johan@linux.be",
+                Voorkeur = true
+            };
+
+            var adresVoorNieuwsBrief = new CommunicatieVorm
+            {
+                GelieerdePersoon = gelieerdePersoon,
+                CommunicatieType = emailType,
+                ID = 3,
+                Nummer = "commissie.linux@chiro.be",
+                Voorkeur = false
+            };
+
+            gelieerdePersoon.Communicatie = new List<CommunicatieVorm> { oudVoorkeursAdres, adresVoorNieuwsBrief };
+
+            // dependency injection voor data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> {gelieerdePersoon}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> {emailType}));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieVorm>())
+                .Returns(
+                    new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> {oudVoorkeursAdres, adresVoorNieuwsBrief}));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.InschrijvenNieuwsBrief(gelieerdePersoon.ID, adresVoorNieuwsBrief.Nummer, true);
+
+            // ASSERT
+            Assert.IsTrue(adresVoorNieuwsBrief.Voorkeur);
+        }
+
+        /// <summary>
+        /// Als er voor een nieuwsbriefabonnement een nieuw e-mailadres wordt meegegeven,
+        /// dan moet dat e-mailadres gekoppeld worden aan de gelieerde persoon.  
+        /// </summary>
+        [TestMethod]
+        public void NieuwsBriefNieuwAdresTest()
+        {
+            // ARRANGE
+
+            const string mailAdres = "johan@linux.be";
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon { InSync = true },
+                Groep = new ChiroGroep()
+            };
+
+            // Voor deze test liggen we niet wakker van het formaat van een e-mailadres:
+            var emailType = new CommunicatieType { ID = 3, Validatie = ".*" };
+
+            // dependency injection voor data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(new DummyRepo<GelieerdePersoon>(new List<GelieerdePersoon> { gelieerdePersoon }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { emailType }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.InschrijvenNieuwsBrief(gelieerdePersoon.ID, mailAdres, true);
+
+            // ASSERT
+            Debug.Assert(gelieerdePersoon.Communicatie.Any(cm => cm.Nummer == mailAdres));
+        }
+
+
+        /// <summary>
+        /// Als er een niet-in-sync persoon wordt ingeschreven voor de nieuwsbrief, dan moet die persoon
+        /// achteraf in sync zijn.  
+        /// </summary>
+        [TestMethod]
+        public void NieuwsBriefPersoonInSyncTest()
+        {
+            // ARRANGE
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon { InSync = false },
+                Groep = new ChiroGroep()
+            };
+
+            // Voor deze test liggen we niet wakker van het formaat van een e-mailadres:
+            var emailType = new CommunicatieType { ID = 3, Validatie = ".*" };
+
+            var email = new CommunicatieVorm
+            {
+                GelieerdePersoon = gelieerdePersoon,
+                CommunicatieType = emailType,
+                ID = 2,
+                Nummer = "johan@linux.be",
+                Voorkeur = true
+            };
+
+            gelieerdePersoon.Communicatie = new List<CommunicatieVorm> {email};
+
+            // dependency injection voor synchronisatie:
+            // verwacht syc van alle persoonsinfo
+
+            var personenSyncMock = new Mock<IPersonenSync>();
+            personenSyncMock.Setup(snc => snc.UpdatenOfMaken(gelieerdePersoon)).Verifiable();
+            Factory.InstantieRegistreren(personenSyncMock.Object);
+
+            // dependency injection voor data access
+            // voor gelieerde-personenrepo doen we iets speciaals, zodat we bij savechanges
+            // kunnen nakijken of de persoon al in sync is.
+
+            var gelieerdePersonenRepoMock = new Mock<IRepository<GelieerdePersoon>>();
+            gelieerdePersonenRepoMock.Setup(src => src.ByID(gelieerdePersoon.ID, It.IsAny<string[]>()))
+                .Returns(gelieerdePersoon);
+            gelieerdePersonenRepoMock.Setup(src => src.SaveChanges()).Callback(() =>
+            {
+                // Op het moment dat de nieuwsbriefinschrijving wordt geregistreerd,
+                // moet de persoon al in sync zijn.
+                Debug.Assert(gelieerdePersoon.Persoon.InSync);
+            });
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<GelieerdePersoon>())
+                                  .Returns(gelieerdePersonenRepoMock.Object);
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieType>())
+                                  .Returns(new DummyRepo<CommunicatieType>(new List<CommunicatieType> { emailType }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.InschrijvenNieuwsBrief(gelieerdePersoon.ID, email.Nummer, true);
+
+            // ASSERT
+            Assert.IsTrue(gelieerdePersoon.Persoon.InSync);
+            personenSyncMock.Verify(snc => snc.UpdatenOfMaken(gelieerdePersoon), Times.AtLeastOnce);
+        }
+
 
         // Tests die nagingen of gewijzigde entiteiten wel bewaard werden, moeten we niet meer doen, want voor
         // change tracking gebruiken we entity framework. We kunnen ervan uitgaan dat dat wel fatsoenlijk
@@ -498,37 +789,25 @@ namespace Chiro.Gap.Services.Test
             #region testdata
 
             var gelieerdePersoon = new GelieerdePersoon
-                                       {
-                                           ID = 1,
-                                           Persoon = new Persoon
-                                                         {
-                                                             InSync = true,
-                                                             PersoonsAdres = new List<PersoonsAdres>
-                                                                                 {
-                                                                                     new PersoonsAdres
-                                                                                         {
-                                                                                             Adres = new BelgischAdres
-                                                                                                         {
-                                                                                                             ID = 2,
-                                                                                                             StraatNaam
-                                                                                                                 =
-                                                                                                                 new StraatNaam
-                                                                                                                     {
-                                                                                                                         ID
-                                                                                                                             =
-                                                                                                                             3,
-                                                                                                                         Naam
-                                                                                                                             =
-                                                                                                                             "Langstraat",
-                                                                                                                         PostNummer
-                                                                                                                             =
-                                                                                                                             2140
-                                                                                                                     }
-                                                                                                         }
-                                                                                         }
-                                                                                 }
-                                                         }
-                                       };
+            {
+                ID = 1,
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}},
+                Persoon = new Persoon
+                {
+                    InSync = true,
+                    PersoonsAdres = new List<PersoonsAdres>
+                    {
+                        new PersoonsAdres
+                        {
+                            Adres = new BelgischAdres
+                            {
+                                ID = 2,
+                                StraatNaam = new StraatNaam {ID = 3, Naam = "Langstraat", PostNummer = 2140}
+                            }
+                        }
+                    }
+                }
+            };
 
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             gelieerdePersoon.PersoonsAdres = gelieerdePersoon.Persoon.PersoonsAdres.First();
@@ -609,6 +888,120 @@ namespace Chiro.Gap.Services.Test
         }
 
         /// <summary>
+        /// Controleert of een nieuw niet-voorkeursadres van een gekende gelieerde persoon niet wordt gesynct
+        /// met Kipadmin
+        /// </summary>
+        [TestMethod()]
+        public void GelieerdePersonenVerhuizenNietVoorkeurSyncTest()
+        {
+            // ARRANGE.
+
+            #region testdata
+
+            var adres = new BelgischAdres
+            {
+                ID = 2,
+                StraatNaam = new StraatNaam {ID = 3, Naam = "Langstraat", PostNummer = 2140}
+            };
+
+
+            // GelierdePersoon1 heeft het adres niet als voorkeursadres, gelieerdePersoon2 wel.
+            var gelieerdePersoon1 = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon
+                {
+                    ID = 4,
+                    InSync = true,
+                },
+                PersoonsAdres = new PersoonsAdres {ID = 3, Adres = new BelgischAdres{ID = 8}}
+            };
+            gelieerdePersoon1.Persoon.PersoonsAdres.Add(new PersoonsAdres { ID = 6, Adres = adres, Persoon = gelieerdePersoon1.Persoon });
+            gelieerdePersoon1.Persoon.PersoonsAdres.Add(gelieerdePersoon1.PersoonsAdres);
+
+            var gelieerdePersoon2 = new GelieerdePersoon
+            {
+                ID = 2,
+                Persoon = new Persoon
+                {
+                    ID = 5,
+                    InSync = false,
+                    PersoonsAdres = new List<PersoonsAdres>
+                    {
+                        new PersoonsAdres
+                        {
+                            ID = 7,
+                            Adres = adres
+                        }
+                    }
+                }
+            };
+
+            gelieerdePersoon1.Persoon.GelieerdePersoon.Add(gelieerdePersoon1);
+            gelieerdePersoon1.PersoonsAdres.Persoon = gelieerdePersoon1.Persoon;
+
+            gelieerdePersoon2.Persoon.GelieerdePersoon.Add(gelieerdePersoon2);
+            gelieerdePersoon2.PersoonsAdres = gelieerdePersoon2.Persoon.PersoonsAdres.First();
+            gelieerdePersoon2.PersoonsAdres.Persoon = gelieerdePersoon2.Persoon;
+            gelieerdePersoon2.PersoonsAdres.GelieerdePersoon.Add(gelieerdePersoon2);
+            adres.PersoonsAdres.Add(gelieerdePersoon2.PersoonsAdres);
+            adres.PersoonsAdres.Add(gelieerdePersoon1.PersoonsAdres);
+
+            var infoNieuwAdres = new PersoonsAdresInfo
+            {
+                StraatNaamNaam = "Kipdorp",
+                HuisNr = 30,
+                PostNr = 2000,
+                WoonPlaatsNaam = "Antwerpen",
+                AdresType = AdresTypeEnum.Thuis
+            };
+            #endregion
+
+            #region Dependency injection
+
+            // mocks voor data access
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Adres>())
+                                  .Returns(new DummyRepo<Adres>(new List<Adres> { adres }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<StraatNaam>())
+                .Returns(
+                    new DummyRepo<StraatNaam>(new List<StraatNaam>
+                    {
+                        ((BelgischAdres) adres).StraatNaam,
+                        new StraatNaam {PostNummer = infoNieuwAdres.PostNr, Naam = infoNieuwAdres.StraatNaamNaam}
+                    }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<WoonPlaats>())
+                .Returns(
+                    new DummyRepo<WoonPlaats>(new List<WoonPlaats>
+                    {
+                        new WoonPlaats {PostNummer = infoNieuwAdres.PostNr, Naam = infoNieuwAdres.WoonPlaatsNaam}
+                    }));
+            repositoryProviderMock.Setup(src => src.RepositoryGet<Land>())
+                                  .Returns(new DummyRepo<Land>(new List<Land>()));
+
+
+            // mock voor sync
+            var adressenSyncMock = new Mock<IAdressenSync>();
+            adressenSyncMock.Setup(src => src.StandaardAdressenBewaren(It.Is<IList<PersoonsAdres>>(l => !l.Any()))).Verifiable();
+
+            // mocks registreren bij dependency-injectioncontainer
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+            Factory.InstantieRegistreren(adressenSyncMock.Object);
+
+            #endregion
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.GelieerdePersonenVerhuizen(new[] { gelieerdePersoon1.ID }, infoNieuwAdres,
+                                              adres.ID);
+
+            // ASSERT
+
+            adressenSyncMock.VerifyAll();
+        }
+
+        /// <summary>
         /// Controleert of een nieuw voorkeursadres van een gekende gelieerde persoon wordt gesynct.
         ///</summary>
         [TestMethod()]
@@ -618,7 +1011,12 @@ namespace Chiro.Gap.Services.Test
 
             // testdata
 
-            var gelieerdePersoon = new GelieerdePersoon { ID = 1, Persoon = new Persoon { InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                ID = 1,
+                Persoon = new Persoon {InSync = true},
+                Groep = new ChiroGroep()
+            };
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
 
             var nederland = new Land { Naam = "Nederland" };
@@ -677,7 +1075,11 @@ namespace Chiro.Gap.Services.Test
             var voorkeursAdres = new BelgischAdres { ID = 2 };
             var anderAdres = new BelgischAdres { ID = 3 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Persoon = new Persoon {ID = 1, InSync = true},
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}}
+            };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
             var anderPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = anderAdres };
@@ -731,7 +1133,11 @@ namespace Chiro.Gap.Services.Test
             var voorkeursAdres = new BelgischAdres { ID = 2 };
             var anderAdres = new BelgischAdres { ID = 3 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Persoon = new Persoon {ID = 1, InSync = true},
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}}
+            };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
             var anderPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = anderAdres };
@@ -781,19 +1187,20 @@ namespace Chiro.Gap.Services.Test
             // ARRANGE
 
             var communicatieVorm = new CommunicatieVorm
-                                       {
-                                           ID = 1,
-                                           GelieerdePersoon =
-                                               new GelieerdePersoon
-                                                   {
-                                                       Persoon =
-                                                           new Persoon
-                                                               {
-                                                                   InSync =
-                                                                       true
-                                                               }
-                                                   }
-                                       };
+            {
+                ID = 1,
+                GelieerdePersoon =
+                    new GelieerdePersoon
+                    {
+                        Persoon =
+                            new Persoon
+                            {
+                                InSync =
+                                    true
+                            },
+                        Groep = new ChiroGroep {GroepsWerkJaar = new[] {new GroepsWerkJaar()}}
+                    }
+            };
 
             // Dependency injection: synchronisatie
 
@@ -819,6 +1226,91 @@ namespace Chiro.Gap.Services.Test
 
             communicatieSyncMock.Verify(src => src.Verwijderen(It.IsAny<CommunicatieVorm>()),
                                         Times.AtLeastOnce());
+        }
+
+        /// <summary>
+        /// Verwijderen voorkeursmailadres moet syncen met mailchimp als persoon DP-abonnement heeft.
+        ///</summary>
+        [TestMethod()]
+        public void VoorkeursmailVerwijderenChimpSyncTest()
+        {
+            // ARRANGE
+
+            var mailAdres = new CommunicatieVorm
+            {
+                ID = 1,
+                CommunicatieType = new CommunicatieType {ID = 3},
+                Nummer = "oudevoorkeur@chiro.be",
+                Voorkeur = true,
+                GelieerdePersoon =
+                    new GelieerdePersoon
+                    {
+                        Persoon =
+                            new Persoon
+                            {
+                                InSync =
+                                    true
+                            },
+                        Groep = new ChiroGroep()
+                    }
+            };
+            mailAdres.GelieerdePersoon.Communicatie.Add(mailAdres);
+            var groepswerkjaar = new GroepsWerkJaar {Groep = mailAdres.GelieerdePersoon.Groep, WerkJaar = 2014};
+            mailAdres.GelieerdePersoon.Groep.GroepsWerkJaar.Add(groepswerkjaar);
+            var abonnement = new Abonnement
+            {
+                GelieerdePersoon = mailAdres.GelieerdePersoon,
+                GroepsWerkJaar = groepswerkjaar,
+                Publicatie = new Publicatie {ID = 1}
+            };
+            groepswerkjaar.Abonnement.Add(abonnement);
+            mailAdres.GelieerdePersoon.Abonnement.Add(abonnement);
+            var anderMailAdres = new CommunicatieVorm
+            {
+                ID = 2,
+                CommunicatieType = new CommunicatieType {ID = 3},
+                GelieerdePersoon = mailAdres.GelieerdePersoon,
+                Voorkeur = false,
+                Nummer = "2deadres@chiro.be"
+            };
+            mailAdres.GelieerdePersoon.Communicatie.Add(anderMailAdres);
+
+            // Dependency injection: synchronisatie
+
+            var abonnementenSyncMock = new Mock<IAbonnementenSync>();
+            abonnementenSyncMock.Setup(
+                src =>
+                    src.AbonnementBewaren(
+                        It.Is<Abonnement>(
+                            ab =>
+                                Equals(
+                                    ab.GelieerdePersoon.Communicatie.First(
+                                        cm => cm.Voorkeur && cm.CommunicatieType.ID == 3), anderMailAdres))))
+                .Verifiable();
+            Factory.InstantieRegistreren(abonnementenSyncMock.Object);
+
+            // Dependency injection: data access
+
+            var repositoryProviderMock = new Mock<IRepositoryProvider>();
+            repositoryProviderMock.Setup(src => src.RepositoryGet<CommunicatieVorm>())
+                                  .Returns(new DummyRepo<CommunicatieVorm>(new List<CommunicatieVorm> { mailAdres }));
+            Factory.InstantieRegistreren(repositoryProviderMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<GelieerdePersonenService>();
+            target.CommunicatieVormVerwijderen(mailAdres.ID);
+
+            // ASSERT
+
+            abonnementenSyncMock.Verify(src =>
+                src.AbonnementBewaren(
+                    It.Is<Abonnement>(
+                        ab =>
+                            Equals(
+                                ab.GelieerdePersoon.Communicatie.First(
+                                    cm => cm.Voorkeur && cm.CommunicatieType.ID == 3), anderMailAdres))),
+                Times.AtLeastOnce());
         }
 
         /// <summary>
@@ -1026,7 +1518,11 @@ namespace Chiro.Gap.Services.Test
 
             var voorkeursAdres = new BelgischAdres { ID = 2 };
 
-            var gelieerdePersoon = new GelieerdePersoon { Persoon = new Persoon { ID = 1, InSync = true } };
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Persoon = new Persoon {ID = 1, InSync = true},
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}}
+            };
 
             var voorkeursPa = new PersoonsAdres { Persoon = gelieerdePersoon.Persoon, Adres = voorkeursAdres };
 
@@ -1259,33 +1755,29 @@ namespace Chiro.Gap.Services.Test
             #region testdata
 
             var gelieerdePersoon = new GelieerdePersoon
-                                   {
-                                       ID = 1,
-                                       Persoon = new Persoon
-                                                 {
-                                                     InSync = true,
-                                                     PersoonsAdres = new List<PersoonsAdres>
-                                                                     {
-                                                                         new PersoonsAdres
-                                                                         {
-                                                                             Adres = new BuitenLandsAdres()
-                                                                                     {
-                                                                                         ID = 2,
-                                                                                         Straat = "Rue Nouvelle",
-                                                                                         PostNummer = 12345,
-                                                                                         HuisNr = 77,
-                                                                                         WoonPlaats = "Nilin",
-                                                                                         Land =
-                                                                                             new Land
-                                                                                             {
-                                                                                                 Naam =
-                                                                                                     "Frankrijk"
-                                                                                             }
-                                                                                     }
-                                                                         }
-                                                                     }
-                                                 }
-                                   };
+            {
+                ID = 1,
+                Groep = new ChiroGroep {GroepsWerkJaar = new List<GroepsWerkJaar> {new GroepsWerkJaar()}},
+                Persoon = new Persoon
+                {
+                    InSync = true,
+                    PersoonsAdres = new List<PersoonsAdres>
+                    {
+                        new PersoonsAdres
+                        {
+                            Adres = new BuitenLandsAdres()
+                            {
+                                ID = 2,
+                                Straat = "Rue Nouvelle",
+                                PostNummer = 12345,
+                                HuisNr = 77,
+                                WoonPlaats = "Nilin",
+                                Land = new Land {Naam = "Frankrijk"}
+                            }
+                        }
+                    }
+                }
+            };
 
             gelieerdePersoon.Persoon.GelieerdePersoon.Add(gelieerdePersoon);
             gelieerdePersoon.PersoonsAdres = gelieerdePersoon.Persoon.PersoonsAdres.First();

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -256,7 +256,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new NieuwePersoonModel();
             BaseModelInit(model, groepID);
 
-            // zeken ophalen voor het model
+            // zaken ophalen voor het model
 
             var groepsWerkJaar = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
             model.GroepsWerkJaarID = groepsWerkJaar.WerkJaarID;
@@ -282,7 +282,6 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Forceer = false;
 
             model.Titel = Properties.Resources.NieuwePersoonTitel;
-
 
             return View(model);
         }
@@ -547,6 +546,21 @@ namespace Chiro.Gap.WebApp.Controllers
             // zodat je bij een 'refresh' niet de vraag krijgt
             // of je de gegevens opnieuw wil posten.)
             return RedirectToAction("Bewerken", new { id = model.Wijziging.GelieerdePersoonID, groepID });
+        }
+
+        /// <summary>
+        /// Zorgt ervoor dat de persoon met gelieerdePersoonID <paramref name="id"/> opnieuw gesynct
+        /// wordt naar ChiroCivi.
+        /// </summary>
+        /// <param name="id">GelieerdePersoonID van de te syncen gelieerde persoon.</param>
+        /// <param name="groepID">ID van de groep waarin wordt gewerkt.</param>
+        /// <returns>Redirect naar de pagina om de persoon te bewerken.</returns>
+        /// <remarks>Naar deze actie wordt nergens expliciet verwezen. Maar het is handig dat ze er is,
+        /// om fouten in de sync makkelijk te kunnen rechtzetten.</remarks>
+        public ActionResult OpnieuwSyncen(int id, int groepID)
+        {
+            ServiceHelper.CallService<IGelieerdePersonenService>(svc => svc.OpnieuwSyncen(id));
+            return RedirectToAction("Bewerken", new { id, groepID });
         }
 
         /// <summary>
@@ -1280,22 +1294,22 @@ namespace Chiro.Gap.WebApp.Controllers
                            where String.Compare(gav.Login, mijnUser, StringComparison.OrdinalIgnoreCase) == 0
                            select gav).First();
 
-            return RedirectToAction("NieuweCommVorm", new { groepID, gelieerdePersoonID = mijnGav.GelieerdePersoonID });
+            return RedirectToAction("NieuweCommVorm", new { groepID, id = mijnGav.GelieerdePersoonID });
         }
 
 
         /// <summary>
         /// Toont het formulier waarmee een nieuwe communicatievorm toegevoegd kan worden
         /// </summary>
-        /// <param name="gelieerdePersoonID">ID van de gelieerde persoon voor wie we een nieuwe 
+        /// <param name="id">ID van de gelieerde persoon voor wie we een nieuwe 
         /// communicatievorm toevoegen</param>
         /// <param name="groepID">ID van de groep die de communicatievorm toevoegt</param>
         /// <returns></returns>
         /// <!-- GET: /Personen/NieuweCommVorm/gelieerdePersoonID -->
         [HandleError]
-        public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
+        public ActionResult NieuweCommVorm(int id, int groepID)
         {
-            var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonID));
+            var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(id));
             var types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieTypeInfo>>(l => l.CommunicatieTypesOphalen());
             var model = new NieuweCommVormModel(persoonDetail, types);
             BaseModelInit(model, groepID);
@@ -1306,23 +1320,15 @@ namespace Chiro.Gap.WebApp.Controllers
         // post: /Personen/NieuweCommVorm
         [AcceptVerbs(HttpVerbs.Post)]
         [HandleError]
-        public ActionResult NieuweCommVorm(NieuweCommVormModel model, int groepID, int gelieerdePersoonID)
+        public ActionResult NieuweCommVorm(NieuweCommVormModel model, int groepID, int id)
         {
+            var communicatieDetail = model.NieuweCommVorm;
+
             // Eerst een hoop gedoe om de CommunicatieInfo uit het model in een
             // CommunicatieDetail te krijgen, zodat de validatie kan gebeuren.
 
             var communicatieType = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieTypeInfo>
                 (svc => svc.CommunicatieTypeOphalen(model.NieuweCommVorm.CommunicatieTypeID));
-
-            // Ik begrijp onderstaande code niet.  Wordt automapper hier gebruikt om te klonen?
-            // En zo ja: wat is de meerwaarde?
-
-            Mapper.CreateMap<CommunicatieDetail, CommunicatieDetail>()
-                .ForMember(dst => dst.CommunicatieTypeValidatie, opt => opt.Ignore());
-
-            var communicatieDetail = Mapper.Map<CommunicatieDetail, CommunicatieDetail>(
-                model.NieuweCommVorm);
-
             communicatieDetail.CommunicatieTypeOmschrijving = communicatieType.Omschrijving;
             communicatieDetail.CommunicatieTypeValidatie = communicatieType.Validatie;
             communicatieDetail.CommunicatieTypeVoorbeeld = communicatieType.Voorbeeld;
@@ -1350,7 +1356,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 BaseModelInit(model, groepID);
 
                 // info voor model herstellen
-                model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(gelieerdePersoonID));
+                model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailOphalen(id));
                 model.Types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieTypeInfo>>(l => l.CommunicatieTypesOphalen());
                 model.Titel = "Tel./mail/enz. toevoegen";
 
@@ -1358,16 +1364,18 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             else
             {
-                // vermijd bloat van te veel over de lijn te sturen
+                // We sturen niet heel CommunicatieDetail terug naar de service,
+                // want dat bevat veel te veel informatie. Daarom mappen
+                // we eerst naar het (beperktere) CommunicatieInfo
 
                 var commInfo = new CommunicatieInfo();
                 Mapper.CreateMap<CommunicatieDetail, CommunicatieInfo>();
                 Mapper.Map(model.NieuweCommVorm, commInfo);
 
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo));
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(id, commInfo));
                 VeelGebruikt.LedenProblemenResetten(groepID);
 
-                return RedirectToAction("Bewerken", new { id = gelieerdePersoonID });
+                return RedirectToAction("Bewerken", new { id = id });
             }
         }
 
@@ -1564,6 +1572,114 @@ namespace Chiro.Gap.WebApp.Controllers
 
         #endregion categorieën
 
+        #region abonnementen
+        /// <summary>
+        /// Formulier voor beheer Dubbelpuntabonnement van persoon met GelieerdePersoonID
+        /// <paramref name="id"/>.
+        /// </summary>
+        /// <param name="groepID">groep waarin wordt gewerkt.</param>
+        /// <param name="id">GelieerdePersoonID om Dubbelpuntabonnement te beheren.</param>
+        /// <returns>Het Dubbelpuntabonnementformulier</returns>
+        [HandleError]
+        public ActionResult Dubbelpunt(int id, int groepID)
+        {
+            var model = new DubbelpuntModel();
+            BaseModelInit(model, groepID);
+            model.Titel = "Dubbelpuntabonnement";
+
+            model.PersoonInfo =
+                ServiceHelper.CallService<IGelieerdePersonenService, PersoonInfo>(svc => svc.InfoOphalen(id));
+            model.AbonnementType =
+                ServiceHelper.CallService<IGelieerdePersonenService, AbonnementType?>(
+                    svc => svc.AbonnementOphalen(id, VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID, 1));
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Formulier voor het beheer van nieuwsbriefabonnement van persoon met gegeven gelieerdePersoonID
+        /// <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id">GelieerdePersoonID van de persoon die de nieuwsbrief wil krijgen.</param>
+        /// <param name="groepID">ID van de groep waarin wordt gewerkt.</param>
+        /// <returns>Het nieuwsbriefinschrijvingsformulier.</returns>
+        public ActionResult NieuwsBrief(int id, int groepID)
+        {
+            var model = new VoorkeursMailModel();
+            BaseModelInit(model, groepID);
+
+            // Toegegeven, dit is wat overkill:
+            model.PersoonLidInfo =
+                ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(svc => svc.AlleDetailsOphalen(id));
+
+            // Pas vinkje voor nieuwsbrief meteen aan.
+            model.PersoonLidInfo.PersoonDetail.NieuwsBrief = !model.PersoonLidInfo.PersoonDetail.NieuwsBrief;
+
+            model.EmailAdres = (from a in model.PersoonLidInfo.CommunicatieInfo
+                where a.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email && a.Voorkeur
+                select a.Nummer).FirstOrDefault();
+            model.Titel = String.Format("Nieuwsbrief voor {0}", model.PersoonLidInfo.PersoonDetail.VolledigeNaam);
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Afhandeling van het <paramref name="model"/> dat de user meegaf via het
+        /// Dubbelpuntabonnementformulier.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="groepID"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Dubbelpunt(int id, int groepID, DubbelpuntModel model)
+        {
+            ServiceHelper.CallService<IGelieerdePersonenService>(
+                svc => svc.AbonnementBewaren(id, VeelGebruikt.GroepsWerkJaarOphalen(groepID).WerkJaarID, model.AbonnementType, 1));
+
+            return RedirectToAction("Bewerken", new {id});
+        }
+
+        /// <summary>
+        /// Afhandelen van de input <paramref name="model"/> van het nieuwsbriefformulier.
+        /// </summary>
+        /// <param name="id">Gelieerde persoon die een nieuwsbrief wil krijgen.</param>
+        /// <param name="groepID">Groep waarin wordt gewerkt.</param>
+        /// <param name="model">Voornamelijk e-mailadres en nieuwsbriefboolean.</param>
+        /// <returns>Als alles goed is, redirect naar bewerkenformulier.</returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult NieuwsBrief(int id, int groepID, VoorkeursMailModel model)
+        {
+            // TODO: validatie e-mailadres in de frontend, gelijkaardig aan NieuweCommVorm.
+            // Maar hier mag het e-mailadres wel leeg zijn.
+
+            try
+            {
+                ServiceHelper.CallService<IGelieerdePersonenService>(
+                    svc => svc.InschrijvenNieuwsBrief(id, model.EmailAdres, model.PersoonLidInfo.PersoonDetail.NieuwsBrief));
+            }
+            catch (FaultException<FoutNummerFault> ex)
+            {
+                if (ex.Detail.FoutNummer != FoutNummer.ValidatieFout)
+                {
+                    throw;
+                }
+                BaseModelInit(model, groepID);
+
+                new ModelStateWrapper(ModelState).BerichtToevoegen("EmailAdres", Properties.Resources.OngeldigEmailAdres);
+                model.PersoonLidInfo =
+                    ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(
+                        svc => svc.AlleDetailsOphalen(id));
+
+                model.Titel = String.Format("Nieuwsbrief voor {0}", model.PersoonLidInfo.PersoonDetail.VolledigeNaam);
+
+                return View("NieuwsBrief", model);
+            }
+
+            return RedirectToAction("Bewerken", new { id });
+        }
+        #endregion
+
         #region uitstappen
         /// <summary>
         /// Toont een view die de gebruiker toelaat om een bivak te kiezen waarvoor de gelieerde personen
@@ -1656,22 +1772,6 @@ namespace Chiro.Gap.WebApp.Controllers
                 svc => svc.NummerCommunicatieVormWijzigen(wijziging.ID, wijziging.Waarde));
             return Json(null);
         }
-
-        /// <summary>
-        /// Schrijft een communicatievorm in of uit voor snelleberichtenlijst.
-        /// </summary>
-        /// <param name="groepID">Groep waarin we werken. Speelt eigenlijk geen rol.</param>
-        /// <param name="wijziging">Bevat communciatieVormID, en een string. Als de string leeg is,
-        /// wordt uitgeschreven, anders wordt ingeschreven.</param>
-        /// <returns>Voorlopig leeg JsonResult. Zou beter een foutcode worden.</returns>
-        public JsonResult SnelleBerichtenInschrijven(int groepID, IntStringModel wijziging)
-        {
-            ServiceHelper.CallService<IGelieerdePersonenService>(
-                svc => svc.SnelleBerichtenInschrijven(wijziging.ID, !String.IsNullOrEmpty(wijziging.Waarde)));
-            return Json(null);
-        }
-
         #endregion
-
     }
 }

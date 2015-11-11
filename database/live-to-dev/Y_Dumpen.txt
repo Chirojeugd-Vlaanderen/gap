@@ -1,0 +1,3 @@
+Om een mysqldump-achtige dump te maken van de dev-database:
+
+http://serverfault.com/questions/147638/dump-microsoft-sql-server-database-to-an-sql-script

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -16,11 +16,13 @@
  * limitations under the License.
  */
 
+using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.SyncInterfaces;
+using Chiro.Gap.WorkerInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 
@@ -31,6 +33,8 @@ namespace Chiro.Gap.Sync
     /// </summary>
     public class VerzekeringenSync : BaseSync, IVerzekeringenSync
     {
+        private readonly ILedenManager _ledenManager;
+
         /// <summary>
         /// Constructor.
         /// 
@@ -39,7 +43,11 @@ namespace Chiro.Gap.Sync
         /// is bij de container.
         /// </summary>
         /// <param name="serviceHelper">ServiceHelper, nodig voor service calls.</param>
-        public VerzekeringenSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
+        /// <param name="ledenManager">Wat ledenlogica.</param>
+        public VerzekeringenSync(ServiceHelper serviceHelper, ILedenManager ledenManager) : base(serviceHelper)
+        {
+            _ledenManager = ledenManager;
+        }
 
         /// <summary>
         /// Zet de gegeven <paramref name="persoonsVerzekering"/> over naar Kipadmin.
@@ -48,13 +56,16 @@ namespace Chiro.Gap.Sync
         /// <param name="gwj">Bepaalt werkJaar en groep die factuur zal krijgen</param>
         public void Bewaren(PersoonsVerzekering persoonsVerzekering, GroepsWerkJaar gwj)
         {
+            Debug.Assert(persoonsVerzekering.Persoon.InSync);
             if (persoonsVerzekering.Persoon.AdNummer.HasValue)
             {
-                // Verzekeren op basis van AD-nummer
+                bool gratis = persoonsVerzekering.Persoon.GelieerdePersoon.Any(
+                    gp => gp.Lid.Any(l => l.GroepsWerkJaar.ID == gwj.ID && _ledenManager.GratisAansluiting(l)));
                 ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LoonVerliesVerzekeren(
                     persoonsVerzekering.Persoon.AdNummer.Value,
                     gwj.Groep.Code,
-                    gwj.WerkJaar));
+                    gwj.WerkJaar,
+                    gratis));
             }
             else
             {
@@ -69,10 +80,13 @@ namespace Chiro.Gap.Sync
                                         where Equals(gp.Groep, gwj.Groep)
                                         select gp).Single();
 
+                bool gratis =
+                    gelieerdePersoon.Lid.Any(l => l.GroepsWerkJaar.ID == gwj.ID && _ledenManager.GratisAansluiting(l));
+
                 ServiceHelper.CallService<ISyncPersoonService>(
                     svc =>
                     svc.LoonVerliesVerzekerenAdOnbekend(Mapper.Map<GelieerdePersoon, PersoonDetails>(gelieerdePersoon),
-                                                        gwj.Groep.Code, gwj.WerkJaar));
+                                                        gwj.Groep.Code, gwj.WerkJaar, gratis));
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<!--
+﻿<!--
   Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
   top-level directory of this distribution, and at
   https://develop.chiro.be/gap/wiki/copyright
@@ -21,7 +20,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ChiroGroepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ChiroGroepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Abonnement">
           <Key>
             <PropertyRef Name="AbonnementID" />
@@ -32,6 +31,7 @@
           <Property Name="GroepsWerkJaarID" Type="int" Nullable="false" />
           <Property Name="AanvraagDatum" Type="datetime" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="Type" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Publicatie">
           <Key>
@@ -302,12 +302,24 @@
           <Property Name="LeefTijdTot" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="Bericht">
+          <Key>
+            <PropertyRef Name="BerichtID" />
+          </Key>
+          <Property Name="BerichtID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tijd" Type="datetime" Nullable="false" />
+          <Property Name="Niveau" Type="int" Nullable="false" />
+          <Property Name="Boodschap" Type="varchar(max)" />
+          <Property Name="StamNummer" Type="char" MaxLength="10" />
+          <Property Name="AdNummer" Type="int" />
+          <Property Name="PersoonID" Type="int" />
+          <Property Name="GebruikerID" Type="int" />
+        </EntityType>
         <EntityType Name="CommunicatieType">
           <Key>
             <PropertyRef Name="CommunicatieTypeID" />
           </Key>
           <Property Name="Omschrijving" Type="varchar" MaxLength="80" />
-          <Property Name="IsOptIn" Type="bit" Nullable="false" />
           <Property Name="Validatie" Type="varchar" MaxLength="160" />
           <Property Name="CommunicatieTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Voorbeeld" Type="varchar" MaxLength="160" />
@@ -321,7 +333,6 @@
           <Property Name="Nummer" Type="varchar" MaxLength="160" Nullable="false" />
           <Property Name="CommunicatieVormID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CommunicatieTypeID" Type="int" Nullable="false" />
-          <Property Name="IsVoorOptIn" Type="bit" Nullable="false" />
           <Property Name="IsGezinsgebonden" Type="bit" Nullable="false" />
           <Property Name="Voorkeur" Type="bit" Nullable="false" />
           <Property Name="GelieerdePersoonID" Type="int" />
@@ -353,7 +364,8 @@
           <Property Name="AdInAanvraag" Type="bit" Nullable="false" />
           <Property Name="SeNaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
           <Property Name="SeVoornaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
-          <Property Name="CiviID" Type="int" />
+          <Property Name="LaatsteMembership" Type="int" />
+          <Property Name="Nieuwsbrief" Type="bit" />
         </EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
@@ -513,6 +525,33 @@
             </Principal>
             <Dependent Role="BelgischAdres">
               <PropertyRef Name="WoonPlaatsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bericht_Gebruiker">
+          <End Role="Persoon" Type="Self.Persoon" Multiplicity="0..1" />
+          <End Role="Bericht" Type="Self.Bericht" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persoon">
+              <PropertyRef Name="PersoonID" />
+            </Principal>
+            <Dependent Role="Bericht">
+              <PropertyRef Name="GebruikerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_Bericht_Groep" />-->
+        <Association Name="FK_Bericht_Persoon_Id">
+          <End Role="Persoon" Type="Self.Persoon" Multiplicity="0..1" />
+          <End Role="Bericht" Type="Self.Bericht" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persoon">
+              <PropertyRef Name="PersoonID" />
+            </Principal>
+            <Dependent Role="Bericht">
+              <PropertyRef Name="PersoonID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -996,9 +1035,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="ufnSoundEx" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="core" ReturnType="varchar">
-          <Parameter Name="tekst" Type="varchar(max)" Mode="In" />
-        </Function>
         <EntityContainer Name="ChiroGroepModelStoreContainer">
           <EntitySet Name="Abonnement" EntityType="Self.Abonnement" Schema="abo" store:Type="Tables" />
           <EntitySet Name="Publicatie" EntityType="Self.Publicatie" Schema="abo" store:Type="Tables" />
@@ -1008,6 +1044,7 @@
           <EntitySet Name="Land" EntityType="Self.Land" Schema="adr" store:Type="Tables" />
           <EntitySet Name="StraatNaam" EntityType="Self.StraatNaam" Schema="adr" store:Type="Tables" />
           <EntitySet Name="WoonPlaats" EntityType="Self.WoonPlaats" Schema="adr" store:Type="Tables" />
+          
           <EntitySet Name="GebruikersRechtv2" EntityType="Self.GebruikersRechtv2" Schema="auth" store:Type="Tables" />
           <EntitySet Name="Deelnemer" EntityType="Self.Deelnemer" Schema="biv" store:Type="Tables" />
           <EntitySet Name="Plaats" EntityType="Self.Plaats" Schema="biv" store:Type="Tables" />
@@ -1034,6 +1071,9 @@
           <EntitySet Name="PersoonsCategorie" EntityType="Self.PersoonsCategorie" Schema="pers" store:Type="Tables" />
           <EntitySet Name="PersoonsVerzekering" EntityType="Self.PersoonsVerzekering" Schema="verz" store:Type="Tables" />
           <EntitySet Name="VerzekeringsType" EntityType="Self.VerzekeringsType" Schema="verz" store:Type="Tables" />
+          
+          <EntitySet Name="Bericht" EntityType="Self.Bericht" Schema="logging" store:Type="Tables" />
+          
           <AssociationSet Name="FK_Abonnement_GelieerdePersoon" Association="Self.FK_Abonnement_GelieerdePersoon">
             <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
             <End Role="Abonnement" EntitySet="Abonnement" />
@@ -1073,6 +1113,14 @@
           <AssociationSet Name="FK_BelgischAdres_WoonPlaats" Association="Self.FK_BelgischAdres_WoonPlaats">
             <End Role="WoonPlaats" EntitySet="WoonPlaats" />
             <End Role="BelgischAdres" EntitySet="BelgischAdres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bericht_Gebruiker" Association="Self.FK_Bericht_Gebruiker">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="Bericht" EntitySet="Bericht" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bericht_Persoon_Id" Association="Self.FK_Bericht_Persoon_Id">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="Bericht" EntitySet="Bericht" />
           </AssociationSet>
           <AssociationSet Name="FK_BuitenlandsAdres_Adres" Association="Self.FK_BuitenlandsAdres_Adres">
             <End Role="Adres" EntitySet="Adres" />
@@ -1425,9 +1473,18 @@
             <End Role="Groep" EntitySet="Groep" />
             <End Role="GebruikersRechtv2" EntitySet="GebruikersRechtv2" />
           </AssociationSet>
+          <EntitySet Name="Bericht" EntityType="ChiroGroepModel.Bericht" />
+          <AssociationSet Name="FK_Bericht_Gebruiker" Association="ChiroGroepModel.FK_Bericht_Gebruiker">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="Bericht" EntitySet="Bericht" />
+          </AssociationSet>
           <AssociationSet Name="FK_GebruikersRechtV2_Persoon" Association="ChiroGroepModel.FK_GebruikersRechtV2_Persoon">
             <End Role="Persoon" EntitySet="Persoon" />
             <End Role="GebruikersRechtv2" EntitySet="GebruikersRechtv2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bericht_Persoon_Id" Association="ChiroGroepModel.FK_Bericht_Persoon_Id">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="Bericht" EntitySet="Bericht" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
@@ -1474,6 +1531,10 @@
           <Property Type="String" Name="SeNaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="SeVoornaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <NavigationProperty Name="GebruikersRechtV2" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" FromRole="Persoon" ToRole="GebruikersRechtv2" />
+          <NavigationProperty Name="BerichtGebruiker" Relationship="ChiroGroepModel.FK_Bericht_Gebruiker" FromRole="Persoon" ToRole="Bericht" />
+          <NavigationProperty Name="BerichtPersoon" Relationship="ChiroGroepModel.FK_Bericht_Persoon_Id" FromRole="Persoon" ToRole="Bericht" />
+          <Property Name="LaatsteMembership" Type="Int32" />
+          <Property Name="NieuwsBrief" Type="Boolean" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -1487,7 +1548,6 @@
           <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="CommunicatieVorm" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="CommunicatieType" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieVorm" ToRole="CommunicatieType" />
-          <Property Name="IsVoorOptIn" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="GelieerdePersoon">
           <Key>
@@ -1685,7 +1745,6 @@
           <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" MaxLength="8" FixedLength="true" />
           <NavigationProperty Name="CommunicatieVorm" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieType" ToRole="CommunicatieVorm" />
           <Property Name="Voorbeeld" Type="String" Nullable="true" MaxLength="160" Unicode="false" FixedLength="false" />
-          <Property Name="IsOptIn" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_CommunicatieVorm_CommunicatieType">
           <End Type="ChiroGroepModel.CommunicatieType" Role="CommunicatieType" Multiplicity="1" />
@@ -1915,6 +1974,7 @@
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Abonnement_GelieerdePersoon" FromRole="Abonnement" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Abonnement_GroepsWerkJaar" FromRole="Abonnement" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="Publicatie" Relationship="ChiroGroepModel.FK_Abonnement_Publicatie" FromRole="Abonnement" ToRole="Publicatie" />
+          <Property Name="TypeInt" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Publicatie">
           <Key>
@@ -1946,7 +2006,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ID" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="VervalDatum" Type="DateTime" Precision="3" />
           <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GebruikersRechtV2_Groep" FromRole="GebruikersRechtv2" ToRole="Groep" />
@@ -1963,6 +2023,27 @@
         <Association Name="FK_GebruikersRechtV2_Persoon">
           <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="1" />
           <End Type="ChiroGroepModel.GebruikersRechtV2" Role="GebruikersRechtv2" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Bericht">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tijd" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Niveau" Type="Int32" Nullable="false" />
+          <Property Name="Boodschap" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StamNummer" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="AdNummer" Type="Int32" />
+          <NavigationProperty Name="Gebruiker" Relationship="ChiroGroepModel.FK_Bericht_Gebruiker" FromRole="Bericht" ToRole="Persoon" />
+          <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_Bericht_Persoon_Id" FromRole="Bericht" ToRole="Persoon" />
+        </EntityType>
+        <Association Name="FK_Bericht_Gebruiker">
+          <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="0..1" />
+          <End Type="ChiroGroepModel.Bericht" Role="Bericht" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Bericht_Persoon_Id">
+          <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="0..1" />
+          <End Type="ChiroGroepModel.Bericht" Role="Bericht" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1999,6 +2080,8 @@
           <EntitySetMapping Name="Persoon">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Persoon)">
               <MappingFragment StoreEntitySet="Persoon">
+                <ScalarProperty Name="NieuwsBrief" ColumnName="Nieuwsbrief" />
+                <ScalarProperty Name="LaatsteMembership" ColumnName="LaatsteMembership" />
                 <ScalarProperty Name="SeVoornaam" ColumnName="SeVoornaam" />
                 <ScalarProperty Name="SeNaam" ColumnName="SeNaam" />
                 <ScalarProperty Name="InSync" ColumnName="AdInAanvraag" />
@@ -2016,7 +2099,6 @@
           <EntitySetMapping Name="CommunicatieVorm">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieVorm)">
               <MappingFragment StoreEntitySet="CommunicatieVorm">
-                <ScalarProperty Name="IsVoorOptIn" ColumnName="IsVoorOptIn" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="Voorkeur" ColumnName="Voorkeur" />
                 <ScalarProperty Name="IsGezinsgebonden" ColumnName="IsGezinsgebonden" />
@@ -2271,7 +2353,6 @@
           <EntitySetMapping Name="CommunicatieType">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieType)">
               <MappingFragment StoreEntitySet="CommunicatieType">
-                <ScalarProperty Name="IsOptIn" ColumnName="IsOptIn" />
                 <ScalarProperty Name="Voorbeeld" ColumnName="Voorbeeld" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="ID" ColumnName="CommunicatieTypeID" />
@@ -2556,6 +2637,7 @@
           <EntitySetMapping Name="Abonnement">
             <EntityTypeMapping TypeName="ChiroGroepModel.Abonnement">
               <MappingFragment StoreEntitySet="Abonnement">
+                <ScalarProperty Name="TypeInt" ColumnName="Type" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="AanvraagDatum" ColumnName="AanvraagDatum" />
                 <ScalarProperty Name="ID" ColumnName="AbonnementID" />
@@ -2626,6 +2708,27 @@
               <ScalarProperty Name="ID" ColumnName="GroepID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Bericht">
+            <EntityTypeMapping TypeName="ChiroGroepModel.Bericht">
+              <MappingFragment StoreEntitySet="Bericht">
+                <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+                <ScalarProperty Name="StamNummer" ColumnName="StamNummer" />
+                <ScalarProperty Name="Boodschap" ColumnName="Boodschap" />
+                <ScalarProperty Name="Niveau" ColumnName="Niveau" />
+                <ScalarProperty Name="Tijd" ColumnName="Tijd" />
+                <ScalarProperty Name="ID" ColumnName="BerichtID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_Bericht_Gebruiker" TypeName="ChiroGroepModel.FK_Bericht_Gebruiker" StoreEntitySet="Bericht">
+            <EndProperty Name="Bericht">
+              <ScalarProperty Name="ID" ColumnName="BerichtID" />
+            </EndProperty>
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="ID" ColumnName="GebruikerID" />
+            </EndProperty>
+            <Condition ColumnName="GebruikerID" IsNull="false" />
+          </AssociationSetMapping>
           <AssociationSetMapping Name="FK_GebruikersRechtV2_Persoon" TypeName="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" StoreEntitySet="GebruikersRechtv2">
             <EndProperty Name="GebruikersRechtv2">
               <ScalarProperty Name="ID" ColumnName="GebruikersRechtV2ID" />
@@ -2634,6 +2737,15 @@
               <ScalarProperty Name="ID" ColumnName="PersoonID" />
             </EndProperty>
           </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Bericht_Persoon_Id" TypeName="ChiroGroepModel.FK_Bericht_Persoon_Id" StoreEntitySet="Bericht">
+            <EndProperty Name="Bericht">
+              <ScalarProperty Name="ID" ColumnName="BerichtID" />
+            </EndProperty>
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="ID" ColumnName="PersoonID" />
+            </EndProperty>
+            <Condition ColumnName="PersoonID" IsNull="false" />
+          </AssociationSetMapping>          
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -2652,12 +2764,12 @@
         <edmx:DesignerProperty Name="EnablePluralization" Value="False" />
         <edmx:DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="None" />
-        <edmx:DesignerProperty Name="UseLegacyProvider" Value="True" />
+        <edmx:DesignerProperty Name="UseLegacyProvider" Value="False" />
       </edmx:DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <edmx:Diagram Name="ChiroGroepModel" ZoomLevel="86">
+      <edmx:Diagram Name="ChiroGroepModel" ZoomLevel="93">
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.ChiroGroep" Width="1.5" PointX="1" PointY="32.125" Height="1.5956835937500102" IsExpanded="true" />
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.Groep" Width="1.5" PointX="1" PointY="25.375" Height="3.5186979166666674" IsExpanded="true" />
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.Persoon" Width="1.5" PointX="9" PointY="4.875" Height="4.0956022135416656" IsExpanded="true" />
@@ -3137,6 +3249,9 @@
         <edmx:EntityTypeShape EntityType="ChiroGroepModel.GebruikersRechtV2" Width="1.5" PointX="11.625" PointY="16.125" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_GebruikersRechtV2_Groep" />
         <edmx:AssociationConnector Association="ChiroGroepModel.FK_GebruikersRechtV2_Persoon" />
+        <edmx:EntityTypeShape EntityType="ChiroGroepModel.Bericht" Width="1.5" PointX="11.25" PointY="8.75" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Gebruiker" />
+        <edmx:AssociationConnector Association="ChiroGroepModel.FK_Bericht_Persoon_Id" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

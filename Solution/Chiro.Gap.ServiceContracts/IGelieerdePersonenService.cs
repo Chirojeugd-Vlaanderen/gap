@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -124,7 +125,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Haalt gelieerde persoon op met ALLE nodige info om het persoons-bewerken scherm te vullen:
 		/// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
-		/// functies
+		/// functies, abonnementen.
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
 		/// <returns>
@@ -234,6 +235,22 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		IDPersEnGP AanmakenForceer(PersoonInfo info, int groepID, bool forceer);
+
+        /// <summary>
+        /// Synct alle gegevens van de gelieerde persoon met gegeven
+        /// <paramref name="gelieerdePersoonID"/> opnieuw naar de Chirocivi.
+        /// </summary>
+        /// <param name="gelieerdePersoonID"></param>
+        /// <remarks>Dit is groepsoverschrijdend. Communicatievormen die aan dezelfde
+        /// persoon hangen, maar via een andere groep, gaan ook opnieuw mee.
+        /// 
+        /// Deze method heeft als voornaamste use case het rechtzetten van zaken die
+        /// vroeger niet goed waren gesynct. Het is niet zeker of ze hier helemaal op
+        /// zijn plaats staat.</remarks>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        void OpnieuwSyncen(int gelieerdePersoonID);
 
 		/// <summary>
 		/// Haalt PersoonID op van een gelieerde persoon
@@ -414,15 +431,6 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         void NummerCommunicatieVormWijzigen(int ID, string waarde);
 
-        /// <summary>
-        /// Schrijft een communicatievorm in of uit voor de snelleberichtgenlijsten
-        /// </summary>
-        /// <param name="communicatieVormID">ID in/uit te schrijven communicatievorm</param>
-        /// <param name="inschrijven"><c>true</c> voor inschrijven, <c>false</c> voor uitschrijven.</param>
-        [OperationContract]
-        void SnelleBerichtenInschrijven(int communicatieVormID, bool inschrijven);
-
-
 		#endregion commvormen
 
 		#region categorieën
@@ -448,5 +456,55 @@ namespace Chiro.Gap.ServiceContracts
 		void UitCategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
 
 		#endregion categorieën
-	}
+
+        #region abonnementen
+        /// <summary>
+        /// Haalt type abonnement op voor de persoon met gegeven
+        /// <paramref name="gelieerdePersoonID"/> in groepswerkjaar met gegeven
+        /// <paramref name="groepsWerkJaarID"/>, voor publicatie met gegeven
+        /// <paramref name="publicatieID"/>.
+        /// </summary>
+        /// <param name="gelieerdePersoonID"></param>
+        /// <param name="groepsWerkJaarID"></param>
+        /// <param name="publicatieID"></param>
+        /// <returns>Het type abonnement op voor de persoon met gegeven
+        /// <paramref name="gelieerdePersoonID"/> in groepswerkjaar met gegeven
+        /// <paramref name="groepsWerkJaarID"/>, voor publicatie met gegeven
+        /// <paramref name="publicatieID"/></returns>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+	    AbonnementType AbonnementOphalen(int gelieerdePersoonID, int groepsWerkJaarID, int publicatieID);
+
+	    /// <summary>
+	    /// Legt het abonnement van de gelieerde persoon met gegeven 
+	    /// <paramref name="gelieerdePersoonID"/> voor het groepswerkjaar met gegeven
+	    /// <paramref name="groepsWerkJaarID"/> vast als zijnde van het type 
+	    /// <paramref name="abonnementType"/>. Als <paramref name="abonnementType"/>
+	    /// <c>AbonnementType.Geen</c> is, wordt het abonnement verwijderd.
+	    /// </summary>
+	    /// <param name="gelieerdePersoonID"></param>
+	    /// <param name="groepsWerkJaarID"></param>
+	    /// <param name="abonnementType"></param>
+	    /// <param name="publicatieID"></param>
+	    [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+	    void AbonnementBewaren(int gelieerdePersoonID, int groepsWerkJaarID, AbonnementType? abonnementType, int publicatieID);
+
+        /// <summary>
+        /// Schrijft de gelieerde persoon met gegeven <paramref name="gelieerdePersoonID"/> in of uit
+        /// voor de nieuwsbrief. Als <paramref name="emailAdres"/> is gegeven, dan wordt dat het nieuwe voorkeursadres van
+        /// de gelieerde persoon; zo nodig wordt het toegevoegd.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van gelieerde persoon die in- of uitgeschreven moet worden.</param>
+        /// <param name="emailAdres">Als gegeven, en <paramref name="inschrijven"/> is <c>true</c>, dan wordt dit 
+        /// het nieuwe voorkeursadres van de persoon.</param>
+        /// <param name="inschrijven">Als <c>true</c>, dan wordt de persoon ingeschreven, anders uitgeschreven.</param>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        void InschrijvenNieuwsBrief(int gelieerdePersoonID, string emailAdres, bool inschrijven);
+        #endregion
+    }
 }

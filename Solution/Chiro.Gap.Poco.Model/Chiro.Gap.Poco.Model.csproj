@@ -46,6 +46,7 @@
     <Compile Include="Afdeling.cs" />
     <Compile Include="AfdelingsJaar.cs" />
     <Compile Include="BelgischAdres.cs" />
+    <Compile Include="Bericht.cs" />
     <Compile Include="BuitenLandsAdres.cs" />
     <Compile Include="Categorie.cs" />
     <Compile Include="ChiroGroep.cs" />

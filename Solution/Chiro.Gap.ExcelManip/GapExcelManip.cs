@@ -70,7 +70,7 @@ namespace Chiro.Gap.ExcelManip
             // Bouw koppen op
             
             Insert(ledenBlad, "Type", 1, 1);
-            Insert(ledenBlad, "AD-nr.", 2, 1);
+            Insert(ledenBlad, "AD-nummer", 2, 1);
             Insert(ledenBlad, "Voornaam", 3, 1);
             Insert(ledenBlad, "Naam", 4, 1);
             Insert(ledenBlad, "Afdelingen", 5, 1);
@@ -225,7 +225,7 @@ namespace Chiro.Gap.ExcelManip
             KolomTitelsInvullen(communicatieBlad, new string[]
                                               {
                                                   "Type", "AD-nummer", "Voornaam", "Naam", "Afdelingen", "Type",
-                                                  "Nr./adres", "Snelleberichtenlijst", "Opmerking"
+                                                  "Nr./adres", "Opmerking"
                                               });
             rijNr = 2;
             foreach (var lid in leden)
@@ -242,8 +242,7 @@ namespace Chiro.Gap.ExcelManip
                     Insert(communicatieBlad, lid.PersoonDetail.Naam, 4, rijNr);
                     Insert(communicatieBlad, ci.CommunicatieTypeOmschrijving, 6, rijNr);
                     Insert(communicatieBlad, ci.Nummer, 7, rijNr);
-                    Insert(communicatieBlad, ci.IsVoorOptIn, 8, rijNr);
-                    Insert(communicatieBlad, ci.Nota, 9, rijNr);
+                    Insert(communicatieBlad, ci.Nota, 8, rijNr);
                     ++rijNr;
                 }
             }

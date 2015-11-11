@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Chirojeugd-Vlaanderen. See the NOTICE file at the 
+ * Copyright 2014, 2015 Chirojeugd-Vlaanderen. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -63,7 +63,7 @@ namespace Chiro.Gap.Validatie
             }
 
             // Geslacht is verplicht; kipadmin kan geen onzijdige mensen aan.
-            if (gp.Persoon.Geslacht != GeslachtsType.Man && gp.Persoon.Geslacht != GeslachtsType.Vrouw)
+            if (gp.Persoon.Geslacht != GeslachtsType.Man && gp.Persoon.Geslacht != GeslachtsType.Vrouw && gp.Persoon.Geslacht != GeslachtsType.X)
             {
                 return Domain.FoutNummer.OnbekendGeslacht;
             }

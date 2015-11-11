@@ -24,18 +24,31 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<%using (Html.BeginForm()) {%>
-	<ul id="acties">
-		<li><input type="submit" id="afdelingNieuw_bewaar" value="Bewaren" /></li>
-	</ul>
-	<fieldset>
-		<legend>Nieuwe afdeling</legend>
-		<%=Html.LabelFor(mdl => mdl.Info.Naam) %>
-		<%=Html.EditorFor(mdl => mdl.Info.Naam)%>
-        <%=Html.ValidationMessageFor(mdl => mdl.Info.Naam)%>
-		<br />
-		<%=Html.LabelFor(mdl => mdl.Info.Afkorting)%>
-		<%=Html.EditorFor(mdl => mdl.Info.Afkorting)%>
-        <%=Html.ValidationMessageFor(mdl => mdl.Info.Afkorting)%>
-	</fieldset>
+		<ul id="acties">
+			<li><input type="submit" id="afdelingNieuw_bewaar" value="Bewaren" /></li>
+		</ul>
+		<fieldset>
+			<legend>Nieuwe afdeling</legend>
+			<table>
+				<tr>
+					<td>
+						<%=Html.LabelFor(mdl => mdl.Info.Naam) %>
+					</td>
+					<td>
+						<%=Html.EditorFor(mdl => mdl.Info.Naam)%>
+						<%=Html.ValidationMessageFor(mdl => mdl.Info.Naam)%>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<%=Html.LabelFor(mdl => mdl.Info.Afkorting)%>
+					</td>
+					<td>
+						<%=Html.EditorFor(mdl => mdl.Info.Afkorting)%>
+						<%=Html.ValidationMessageFor(mdl => mdl.Info.Afkorting)%>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
 	<% } %>
 </asp:Content>

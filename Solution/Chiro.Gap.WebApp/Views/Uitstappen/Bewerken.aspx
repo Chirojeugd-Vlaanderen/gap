@@ -20,7 +20,6 @@
  * limitations under the License.
  */
 %>
-    <script src="<%=ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
     <script src="<%=ResolveUrl("~/Scripts/jquery-uitstap.js")%>" type="text/javascript"></script>
     
     <%	// OPGELET: de opening en closing tag voor 'script' niet vervangen door 1 enkele tag, want dan

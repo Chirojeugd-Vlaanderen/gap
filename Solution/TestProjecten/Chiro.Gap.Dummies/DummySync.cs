@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -26,7 +26,7 @@ namespace Chiro.Gap.Dummies
     /// <summary>
     /// Gauw een klasse die gebruikt kan worden om eender welke Sync te mocken.
     /// </summary>
-    public class DummySync : IAdressenSync, ICommunicatieSync, IPersonenSync, ILedenSync, IVerzekeringenSync, IBivakSync, IGroepenSync
+    public class DummySync : IAdressenSync, ICommunicatieSync, IPersonenSync, ILedenSync, IVerzekeringenSync, IBivakSync, IGroepenSync, IAbonnementenSync
     {
         public void StandaardAdressenBewaren(IList<PersoonsAdres> persoonsAdressen)
         {
@@ -44,12 +44,26 @@ namespace Chiro.Gap.Dummies
         {
         }
 
-        public void Bewaren(GelieerdePersoon gp, bool metStandaardAdres, bool metCommunicatie)
+        public void Updaten(GelieerdePersoon gp)
         {
             if (gp == null)
             {
                 throw new ArgumentNullException("gp");
             }
+        }
+
+        public void MembershipRegistreren(Lid lid)
+        {
+        }
+
+        /// <summary>
+        /// Probeert de gegeven gelieerde persoon in de Chirocivi te vinden, en updatet
+        /// hem als dat lukt. Wordt de persoon niet gevonden, dan wordt er een
+        /// nieuwe aangemaakt.
+        /// </summary>
+        /// <param name="gp">Te bewaren gelieerde persoon</param>
+        public void UpdatenOfMaken(GelieerdePersoon gp)
+        {
         }
 
         public void CommunicatieUpdaten(GelieerdePersoon gp)
@@ -98,6 +112,23 @@ namespace Chiro.Gap.Dummies
 
         public void Bewaren(Groep g)
         {
+        }
+
+        public void AbonnementBewaren(Abonnement teSyncenAbonnement)
+        {
+        }
+
+        public void AlleAbonnementenVerwijderen(GelieerdePersoon gelieerdePersoon)
+        {
+        }
+
+        public void AlleAbonnementenVerwijderen(string eMail)
+        {
+        }
+
+        public string DummyEmailAdresMaken(Persoon persoon)
+        {
+            return string.Format("g{0}@chiro.be", persoon.ID);
         }
     }
 }

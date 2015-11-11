@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -16,21 +16,17 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Moq;
-
-using Chiro.Cdf.Ioc;
+using System.Diagnostics;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.Services;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.SyncInterfaces;
-using Chiro.Gap.WorkerInterfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -43,8 +39,6 @@ namespace Chiro.Gap.Services.Test
     [TestClass()]
     public class UitstappenServiceTest
     {
-
-
         private TestContext testContextInstance;
 
         /// <summary>
@@ -90,9 +84,10 @@ namespace Chiro.Gap.Services.Test
 
         #endregion
 
-
         /// <summary>
-        /// Controleert of een bewaard bivak naar Kipadmin wordt gesynct
+        /// Controleert of een bewaard bivak naar Kipadmin wordt gesynct.
+        /// (*en* of het eerst bewaard werd, want anders heeft het geen
+        /// GAP-ID)
         /// </summary>
         [TestMethod()]
         public void BewarenTest()
@@ -100,16 +95,20 @@ namespace Chiro.Gap.Services.Test
             // ARRANGE 
             var groepsWerkJaar = new GroepsWerkJaar {Groep = new ChiroGroep {ID = 1}};
             var uitstapInfo = new UitstapInfo {IsBivak = true};
+            var gwjRepo = new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar> {groepsWerkJaar});
 
             // mock synchronisatie voor kipadmin
             var bivakSyncMock = new Mock<IBivakSync>();
-            bivakSyncMock.Setup(src => src.Bewaren(It.IsAny<Uitstap>())).Verifiable();
+            bivakSyncMock.Setup(src => src.Bewaren(It.IsAny<Uitstap>()))
+                // controleer of het bivak bewaard werd voor de sync.
+                .Callback((() => Assert.AreNotEqual(0,gwjRepo.SaveCount)))
+                .Verifiable();
             Factory.InstantieRegistreren(bivakSyncMock.Object);
 
             // mock data acces
             var repositoryProviderMock = new Mock<IRepositoryProvider>();
             repositoryProviderMock.Setup(src => src.RepositoryGet<GroepsWerkJaar>())
-                                  .Returns(new DummyRepo<GroepsWerkJaar>(new List<GroepsWerkJaar> { groepsWerkJaar }));
+                                  .Returns(gwjRepo);
             Factory.InstantieRegistreren(repositoryProviderMock.Object);
 
             // ACT
@@ -480,7 +479,12 @@ namespace Chiro.Gap.Services.Test
                 IsBivak = true,
                 GroepsWerkJaar = groepsWerkJaar,
             };
-            var deelnemer = new Deelnemer { ID = 3, Uitstap = bivak };
+            var deelnemer = new Deelnemer
+            {
+                ID = 3,
+                Uitstap = bivak,
+                GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
+            };
 
             groepsWerkJaar.Uitstap.Add(bivak);
 
@@ -519,7 +523,12 @@ namespace Chiro.Gap.Services.Test
                                 IsBivak = true,
                                 GroepsWerkJaar = groepsWerkJaar,
                             };
-            var deelnemer = new Deelnemer {ID = 3, Uitstap = bivak};
+            var deelnemer = new Deelnemer
+            {
+                ID = 3,
+                Uitstap = bivak,
+                GelieerdePersoon = new GelieerdePersoon {Persoon = new Persoon()}
+            };
 
             groepsWerkJaar.Uitstap.Add(bivak);
 
@@ -542,6 +551,7 @@ namespace Chiro.Gap.Services.Test
 
             // ASSERT
 
+            Assert.IsTrue(deelnemer.GelieerdePersoon.Persoon.InSync);
             bivakSyncMock.Verify(src => src.Bewaren(bivak), Times.AtLeastOnce());
         }
 

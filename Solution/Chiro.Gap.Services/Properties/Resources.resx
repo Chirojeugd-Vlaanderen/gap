@@ -177,9 +177,6 @@
   <data name="EntiteitBestondAl" xml:space="preserve">
     <value>Je probeerde een entiteit toe te voegen die al bestond.</value>
   </data>
-  <data name="Belgie" xml:space="preserve">
-    <value>België</value>
-  </data>
   <data name="FoutieveGroepUitstap" xml:space="preserve">
     <value>De groep van de uitstap verschilt van de groep van de deelnemer.</value>
   </data>
@@ -254,8 +251,5 @@
   </data>
   <data name="WaaromTelefoonNummer" xml:space="preserve">
     <value>We vragen een telefoonnummer van ieder lid om makkelijk contact te kunnen opnemen bij noodgevallen.</value>
-  </data>
-  <data name="NietVanToepassing" xml:space="preserve">
-    <value>n.v.t.</value>
   </data>
 </root>

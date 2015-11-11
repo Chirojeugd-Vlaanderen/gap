@@ -36,6 +36,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Chiro.Cdf.ServiceHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Chiro.Cdf.ServiceHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -46,17 +50,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\tools\KipSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
+    <ProjectReference Include="..\..\tools\Chiro.CiviSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6e81a10a-ad85-47a0-8b5d-70361f393cdd}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
       <Project>{d1e7bbdd-d833-4dc1-af39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
-      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
-      <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

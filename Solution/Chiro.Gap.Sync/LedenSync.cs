@@ -95,8 +95,8 @@ namespace Chiro.Gap.Sync
 				};
 
         /// <summary>
-        /// Stuurt een lid naar Kipadmin. Als het lid inactief is, gebeurt er niets. Daarvoor is er de 
-        /// method 'Verwijderen' 
+        /// Stuurt een lid naar Kipadmin. Als het lid inactief is, wordt een stopdatum op de lidrelatie gezet. 
+        /// Om een lid te verwijderen, is er de method 'Verwijderen' 
         /// </summary>
         /// <param name="l">Te bewaren lid</param>
         /// <remarks>Voor het gemak gaan we ervan uit dat persoonsgegevens, adressen, afdelingen en functies al
@@ -106,64 +106,58 @@ namespace Chiro.Gap.Sync
         {
             Debug.Assert(l.GelieerdePersoon != null);
             Debug.Assert(l.GelieerdePersoon.Persoon != null);
+            Debug.Assert(l.GelieerdePersoon.Persoon.InSync);
             Debug.Assert(l.GroepsWerkJaar != null);
             Debug.Assert(l.GroepsWerkJaar.Groep != null);
+            var nationaleFuncties = (from f in l.Functie
+                where f.IsNationaal
+                select _functieVertaling[(NationaleFunctie) f.ID]).ToList();
 
-            if (!l.NonActief)
+            List<AfdelingEnum> officieleAfdelingen;
+
+            if (l is Kind)
             {
-                var nationaleFuncties = (from f in l.Functie
-                    where f.IsNationaal
-                    select _functieVertaling[(NationaleFunctie) f.ID]).ToList();
-
-                List<AfdelingEnum> officieleAfdelingen;
-
-                if (l is Kind)
+                officieleAfdelingen = new List<AfdelingEnum>
                 {
-                    officieleAfdelingen = new List<AfdelingEnum>
-                                          {
-                                              _afdelingVertaling[
-                                                  (NationaleAfdeling) ((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
-                                          };
-                }
-                else
-                {
-                    Debug.Assert(l is Leiding);
-                    officieleAfdelingen = (from a in (l as Leiding).AfdelingsJaar
-                        select _afdelingVertaling[(NationaleAfdeling) a.OfficieleAfdeling.ID]).ToList
-                        ();
-                }
-
-                // Euh, en waarom heb ik hiervoor geen mapper gemaakt?
-
-                var lidGedoe = new LidGedoe
-                               {
-                                   StamNummer = l.GroepsWerkJaar.Groep.Code,
-                                   WerkJaar = l.GroepsWerkJaar.WerkJaar,
-                                   LidType = l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
-                                   NationaleFuncties = nationaleFuncties,
-                                   OfficieleAfdelingen = officieleAfdelingen,
-                                   EindeInstapPeriode = l.EindeInstapPeriode
-                               };
-
-                if (l.GelieerdePersoon.Persoon.AdNummer != null)
-                {
-                    // AD-nummer gekend. Persoon dus zeker gekend door Kipadmin.
-                    ServiceHelper.CallService<ISyncPersoonService>(
-                        svc => svc.LidBewaren(l.GelieerdePersoon.Persoon.AdNummer.Value, lidGedoe));
-                }
-                else
-                {
-                    var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon);
-
-                    // kijk na of de persoon al bewaard is in GAP:
-                    Debug.Assert(l.GelieerdePersoon.Persoon.ID != 0);
-
-                    ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidBewaren(details, lidGedoe));
-                }
+                    _afdelingVertaling[
+                        (NationaleAfdeling) ((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
+                };
             }
             else
             {
-                throw new FoutNummerException(FoutNummer.LidUitgeschreven, Resources.UitgeschrevenLidSyncen);
+                Debug.Assert(l is Leiding);
+                officieleAfdelingen = (from a in (l as Leiding).AfdelingsJaar
+                    select _afdelingVertaling[(NationaleAfdeling) a.OfficieleAfdeling.ID]).ToList
+                    ();
+            }
+
+            // Euh, en waarom heb ik hiervoor geen mapper gemaakt?
+
+            var lidGedoe = new LidGedoe
+            {
+                StamNummer = l.GroepsWerkJaar.Groep.Code,
+                WerkJaar = l.GroepsWerkJaar.WerkJaar,
+                LidType = l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
+                NationaleFuncties = nationaleFuncties,
+                OfficieleAfdelingen = officieleAfdelingen,
+                EindeInstapPeriode = l.EindeInstapPeriode,
+                UitschrijfDatum = l.UitschrijfDatum,
+            };
+
+            if (l.GelieerdePersoon.Persoon.AdNummer != null)
+            {
+                // AD-nummer gekend. Persoon dus zeker gekend door Kipadmin.
+                ServiceHelper.CallService<ISyncPersoonService>(
+                    svc => svc.LidBewaren(l.GelieerdePersoon.Persoon.AdNummer.Value, lidGedoe));
+            }
+            else
+            {
+                var details = Mapper.Map<GelieerdePersoon, PersoonDetails>(l.GelieerdePersoon);
+
+                // kijk na of de persoon al bewaard is in GAP:
+                Debug.Assert(l.GelieerdePersoon.Persoon.ID != 0);
+
+                ServiceHelper.CallService<ISyncPersoonService>(svc => svc.NieuwLidBewaren(details, lidGedoe));
             }
         }
 
@@ -176,12 +170,13 @@ namespace Chiro.Gap.Sync
         {
             Debug.Assert(lid.GroepsWerkJaar != null);
             Debug.Assert(lid.GroepsWerkJaar.Groep != null);
+            Debug.Assert(lid.GelieerdePersoon.Persoon.InSync);
 
             // TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
 
             var kipFunctieIDs = (from f in lid.Functie
                                  where f.IsNationaal
-                                 select _functieVertaling[(NationaleFunctie)f.ID]).ToList();
+                                 select _functieVertaling[(NationaleFunctie)f.ID]).ToArray();
 
             ServiceHelper.CallService<ISyncPersoonService>(
                 svc => svc.FunctiesUpdaten(Mapper.Map<Persoon, Kip.ServiceContracts.DataContracts.Persoon>(
@@ -203,11 +198,12 @@ namespace Chiro.Gap.Sync
             // TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
 
             Debug.Assert(chiroGroep != null);
-            List<AfdelingEnum> kipAfdelingen;
+            Debug.Assert(lid.GelieerdePersoon.Persoon.InSync);
+            AfdelingEnum[] kipAfdelingen;
 
             if (lid is Kind)
             {
-                kipAfdelingen = new List<AfdelingEnum>
+                kipAfdelingen = new[]
                                     {
                                         _afdelingVertaling[
                                             (NationaleAfdeling)
@@ -220,7 +216,7 @@ namespace Chiro.Gap.Sync
                 Debug.Assert(leiding != null);
 
                 kipAfdelingen = (from aj in leiding.AfdelingsJaar
-                                 select _afdelingVertaling[(NationaleAfdeling)(aj.OfficieleAfdeling.ID)]).ToList();
+                                 select _afdelingVertaling[(NationaleAfdeling)(aj.OfficieleAfdeling.ID)]).ToArray();
             }
 
             ServiceHelper.CallService<ISyncPersoonService>(

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * Bijgewerkte authenticatie Copyright 2014 Johan Vervloet
@@ -28,6 +28,7 @@ using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Services.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
@@ -77,6 +78,7 @@ namespace Chiro.Gap.Services
         // Sync
 
         private readonly IGroepenSync _groepenSync;
+        private readonly IAbonnementenSync _abonnementenSync;
 
         // Cache
 
@@ -95,16 +97,19 @@ namespace Chiro.Gap.Services
         /// <param name="jaarOvergangMgr">Businesslogica aangaande de jaarovergang</param>
         /// <param name="adressenMgr">Businesslogica wat betreft adressen</param>
         /// <param name="ledenMgr">Businesslogica m.b.t. de leden</param>
+        /// <param name="abonnementenMgr">Businesslogica wat betreft abonnementen.</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         /// <param name="groepenSync">Synchronisatie met Kipadmin</param>
+        /// <param name="abonnementenSync">Abonnementensync met Mailchimp.</param>
         /// <param name="veelGebruikt">Cache</param>
         public GroepenService(IAfdelingsJaarManager afdelingsJaarMgr, IAuthenticatieManager authenticatieMgr,
             IAutorisatieManager autorisatieMgr,
             IGroepenManager groepenMgr, IJaarOvergangManager jaarOvergangMgr,
             IChiroGroepenManager chiroGroepenMgr, IGroepsWerkJarenManager groepsWerkJarenMgr,
             IFunctiesManager functiesMgr, IAdressenManager adressenMgr, ILedenManager ledenMgr,
-            IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IVeelGebruikt veelGebruikt)
-            : base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr, autorisatieMgr)
+            IAbonnementenManager abonnementenMgr,
+            IRepositoryProvider repositoryProvider, IGroepenSync groepenSync, IAbonnementenSync abonnementenSync,
+            IVeelGebruikt veelGebruikt) : base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr, autorisatieMgr, abonnementenMgr)
         {
             _repositoryProvider = repositoryProvider;
             _straatRepo = repositoryProvider.RepositoryGet<StraatNaam>();
@@ -132,6 +137,7 @@ namespace Chiro.Gap.Services
             _afdelingsJaarMgr = afdelingsJaarMgr;
             _adressenMgr = adressenMgr;
             _groepenSync = groepenSync;
+            _abonnementenSync = abonnementenSync;
 
             _veelGebruikt = veelGebruikt;
 
@@ -441,7 +447,7 @@ namespace Chiro.Gap.Services
             if (groepInfo.Naam == null)
             {
                 // TODO (#1420): Validator maken in Chiro.Gap.Validatie
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.ValidatieFout, Properties.Resources.OngeldigeGroepsNaam);
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.ValidatieFout, Resources.OngeldigeGroepsNaam);
             }
 
             groep.Naam = groepInfo.Naam.Trim();
@@ -609,7 +615,7 @@ namespace Chiro.Gap.Services
 
                 if (foutNummer != null)
                 {
-                    throw FaultExceptionHelper.FoutNummer(foutNummer.Value, Properties.Resources.OngeldigAfdelingsJaar);
+                    throw FaultExceptionHelper.FoutNummer(foutNummer.Value, Resources.OngeldigAfdelingsJaar);
                 }
 
             }
@@ -634,7 +640,7 @@ namespace Chiro.Gap.Services
             }
             catch (Exception)
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietLeeg, Properties.Resources.AfdelingNietLeeg);
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietLeeg, Resources.AfdelingNietLeeg);
             }
         }
 
@@ -651,7 +657,7 @@ namespace Chiro.Gap.Services
                 _afdelingenRepo.Delete(afdeling);
                 _afdelingenRepo.SaveChanges();
             } catch(Exception){
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietLeeg, Properties.Resources.AfdelingNietLeeg);
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietLeeg, Resources.AfdelingNietLeeg);
             }
         }
 
@@ -884,7 +890,7 @@ namespace Chiro.Gap.Services
             if (recentsteWerkJaar == null)
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepsWerkJaarNietBeschikbaar,
-                                                Properties.Resources.GeenWerkJaar);
+                                                Resources.GeenWerkJaar);
             }
 
             var f = new Functie
@@ -958,7 +964,7 @@ namespace Chiro.Gap.Services
             if (functie.IsNationaal)
             {
                 throw FaultExceptionHelper.FoutNummer(FoutNummer.AlgemeneFout,
-                    Properties.Resources.NationaleFunctieNietBewerken);
+                    Resources.NationaleFunctieNietBewerken);
             }
 
             if (String.Compare(detail.Code, functie.Code, StringComparison.InvariantCultureIgnoreCase) != 0)
@@ -1058,7 +1064,7 @@ namespace Chiro.Gap.Services
             else if (categorie.GelieerdePersoon.Any())
             {
                 throw FaultExceptionHelper.Blokkerend(Mapper.Map<IEnumerable<GelieerdePersoon>, List<PersoonDetail>>(categorie.GelieerdePersoon),
-                                                      Properties.Resources.CategorieNietLeeg);
+                                                      Resources.CategorieNietLeeg);
             }
             _categorieenRepo.Delete(categorie);
             _categorieenRepo.SaveChanges();
@@ -1078,7 +1084,7 @@ namespace Chiro.Gap.Services
 
             if (string.IsNullOrEmpty(nieuwenaam))
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.ValidatieFout, Properties.Resources.OngeldigeCategorieNaam);
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.ValidatieFout, Resources.OngeldigeCategorieNaam);
             }
             bool bestaatal = (from g in _categorieenRepo.Select()
                               where String.Compare(g.Naam, nieuwenaam, StringComparison.OrdinalIgnoreCase) == 0
@@ -1146,7 +1152,7 @@ namespace Chiro.Gap.Services
 
             if (!_autorisatieMgr.IsGav(groep))
             {
-                throw new GeenGavException(Properties.Resources.GeenGav);
+                throw new GeenGavException(Resources.GeenGav);
             }
 
             // zoek of maak adres
@@ -1214,7 +1220,7 @@ namespace Chiro.Gap.Services
                 _straatRepo.Select().Where(e =>
                                            e.PostNummer == postNr
                                            && e.Naam.Contains(straatStukje))
-                           .Take(Properties.Settings.Default.AantalStraatSuggesties)
+                           .Take(Settings.Default.AantalStraatSuggesties)
                            .ToList();
 
             var straatInfos = Mapper.Map<IEnumerable<StraatNaam>, IEnumerable<StraatInfo>>(straatNaams);
@@ -1284,7 +1290,7 @@ namespace Chiro.Gap.Services
 
             if (!_groepsWerkJarenMgr.OvergangMogelijk(DateTime.Today, vorigGwj.WerkJaar))
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.OvergangTeVroeg, Properties.Resources.OvergangTeVroeg);
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.OvergangTeVroeg, Resources.OvergangTeVroeg);
             }
 
             var nieuwGwj = new GroepsWerkJaar { WerkJaar = _groepsWerkJarenMgr.NieuweWerkJaar(groepID), Groep = groep };
@@ -1324,18 +1330,33 @@ namespace Chiro.Gap.Services
                 {
                     throw FaultExceptionHelper.FoutNummer(FoutNummer.OngeldigeGeboorteJarenVoorAfdeling,
                                       String.Format(
-                                          Properties.Resources.OngeldigeGeborteJarenAfdelingsJaar, afd.Naam));
+                                          Resources.OngeldigeGeborteJarenAfdelingsJaar, afd.Naam));
                 }
                 if (foutNummer != null)
                 {
                     throw FaultExceptionHelper.FoutNummer(FoutNummer.ValidatieFout,
-                                                          Properties.Resources.OngeldigAfdelingsJaar);
+                                                          Resources.OngeldigAfdelingsJaar);
                 }
 
                 nieuwGwj.AfdelingsJaar.Add(nieuwAfdelingsJaar);
             }
 
-            _groepenRepo.SaveChanges();
+#if KIPDORP
+            using (var tx = new TransactionScope())
+            {
+#endif
+                _groepenRepo.SaveChanges();
+                foreach (var ab in vorigGwj.Abonnement)
+                {
+                    // In GAP mogen de oude abonnementen blijven staan, want
+                    // die zijn daar aan het werkjaar gekoppeld. Voor Mailchimp
+                    _abonnementenSync.AlleAbonnementenVerwijderen(ab.GelieerdePersoon);
+                }
+
+#if KIPDORP
+                tx.Complete();
+            }
+#endif
             _veelGebruikt.WerkJaarInvalideren(groep);
         }
 

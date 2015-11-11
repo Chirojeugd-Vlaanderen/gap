@@ -27,7 +27,6 @@
     	     Dus niet <script blablabla />!.  -->
     <%-- ReSharper restore Asp.DeadCode --%>
     <%-- ReSharper restore SelfClosedScript --%>
-    <script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
@@ -56,15 +55,6 @@
                 <td>
                     <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nummer)%>
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    <%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn)%><%= Html.InfoLink("snelBerichtInfo")%>
-                </td>
-                <td>
-                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn) %>
-                </td>
-                <td />
             </tr>
             <tr>
                 <td>

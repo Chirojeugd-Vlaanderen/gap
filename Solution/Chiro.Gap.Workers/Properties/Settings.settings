@@ -23,9 +23,6 @@
     <Setting Name="UniqueViolation" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">2627</Value>
     </Setting>
-    <Setting Name="AantalLedenOverzettenPerKeer" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">25</Value>
-    </Setting>
     <Setting Name="BivakAangifteStart" Type="System.DateTime" Scope="Application">
       <Value Profile="(Default)">1990-05-01</Value>
     </Setting>

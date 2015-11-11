@@ -20,6 +20,7 @@
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using Chiro.Cdf.Ioc;
+﻿using Chiro.Cdf.Ioc.Factory;
 
 namespace Chiro.Cdf.UnityWcfExtensions
 {

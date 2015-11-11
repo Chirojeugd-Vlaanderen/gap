@@ -1,15 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.Sync;
+using Chiro.Cdf.Ioc.Factory;
+using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Chiro.Gap.Poco.Model;
-using System.Collections.Generic;
 using Moq;
-using Adres = Chiro.Gap.Poco.Model.Adres;
+using Adres = Chiro.Kip.ServiceContracts.DataContracts.Adres;
 using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync.Test
@@ -86,8 +83,8 @@ namespace Chiro.Gap.Sync.Test
 
             var adres = new BuitenLandsAdres {Land = new Land()};
 
-            var persoonsAdres1 = new PersoonsAdres {Adres = adres, Persoon = new Persoon()};
-            var persoonsAdres2 = new PersoonsAdres {Adres = adres, Persoon = new Persoon()};
+            var persoonsAdres1 = new PersoonsAdres {Adres = adres, Persoon = new Persoon{InSync = true}};
+            var persoonsAdres2 = new PersoonsAdres { Adres = adres, Persoon = new Persoon{InSync = true}};
 
             adres.PersoonsAdres.Add(persoonsAdres1);
             adres.PersoonsAdres.Add(persoonsAdres2);
@@ -98,9 +95,9 @@ namespace Chiro.Gap.Sync.Test
             var kipSyncMock = new Mock<ISyncPersoonService>();
             kipSyncMock.Setup(
                 src =>
-                    src.StandaardAdresBewaren(It.IsAny<Kip.ServiceContracts.DataContracts.Adres>(),
+                    src.StandaardAdresBewaren(It.IsAny<Adres>(),
                         It.IsAny<IEnumerable<Bewoner>>()))
-                .Callback<Kip.ServiceContracts.DataContracts.Adres, IEnumerable<Bewoner>>(
+                .Callback<Adres, IEnumerable<Bewoner>>(
                     (a, b) => teSyncenBewoners = b);
 
             Factory.InstantieRegistreren(kipSyncMock.Object);

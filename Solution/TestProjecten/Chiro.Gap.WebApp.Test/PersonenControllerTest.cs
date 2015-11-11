@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -18,15 +18,18 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Chiro.Cdf.Ioc;
+using System.ServiceModel;
+using System.Web.Mvc;
+using Chiro.Cdf.Ioc.Factory;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.Controllers;
 using Chiro.Gap.WebApp.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Test
 {
@@ -41,6 +44,129 @@ namespace Chiro.Gap.WebApp.Test
         public static void MyClassInitialize(TestContext testContext)
         {
             Factory.ContainerInit();
+        }
+
+        /// <summary>
+        /// Als je bij het aanvragen van de nieuwsbrief een ongeldig e-mailadres ingeeft,
+        /// dan moet je opnieuw de view krijgen waarin je het adres kunt ingeven.
+        /// </summary>
+        [TestMethod]
+        public void NieuwsbriefOngeldigAdresTest()
+        {
+            const int groepid = 426;            // arbitrair
+            const int werkjaar = 2011;          // werkJaar 2011-2012, om iets te doen
+            const int groepswerkjaarid = 2971;  // arbitrair
+            const int gelieerdePersoonId = 1;   // arbitrair.
+
+            // setup mocks
+            // (dit is nogal hetzelfde in veel tests.  Best eens afsplitsen)
+
+            var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            veelGebruiktMock.Setup(vg => vg.GroepsWerkJaarOphalen(groepid)).Returns(new GroepsWerkJaarDetail
+            {
+                GroepID = groepid,
+                WerkJaar = werkjaar,
+                WerkJaarID =
+                    groepswerkjaarid
+            });
+            veelGebruiktMock.Setup(vg => vg.BivakStatusHuidigWerkjaarOphalen(groepid)).Returns(new BivakAangifteLijstInfo
+            {
+                AlgemeneStatus =
+                    BivakAangifteStatus.NogNietVanBelang
+            });
+
+            var gelieerdePersonenServiceMock = new Mock<IGelieerdePersonenService>();
+            gelieerdePersonenServiceMock.Setup(svc => svc.AlleDetailsOphalen(gelieerdePersoonId))
+                .Returns(new PersoonLidGebruikersInfo
+                {
+                    CommunicatieInfo = new List<CommunicatieDetail>(),
+                    PersoonDetail = new PersoonDetail {NieuwsBrief = false}
+                });
+            gelieerdePersonenServiceMock.Setup(svc => svc.InschrijvenNieuwsBrief(gelieerdePersoonId, It.IsAny<string>(), true))
+                .Throws(new FaultException<FoutNummerFault>(new FoutNummerFault {FoutNummer = FoutNummer.ValidatieFout}));
+
+            var channelProviderMock = new Mock<IChannelProvider>();
+            channelProviderMock.Setup(mock => mock.GetChannel<IGelieerdePersonenService>()).Returns(gelieerdePersonenServiceMock.Object);
+
+            Factory.InstantieRegistreren(veelGebruiktMock.Object);
+            Factory.InstantieRegistreren(channelProviderMock.Object);
+
+            var target = Factory.Maak<PersonenController>();
+            var model = new VoorkeursMailModel
+            {
+                PersoonLidInfo =
+                    new PersoonLidInfo
+                    {
+                        CommunicatieInfo = new List<CommunicatieDetail>(),
+                        PersoonDetail = new PersoonDetail { NieuwsBrief = true }
+                    }
+            };
+
+            // act
+
+            var result = target.NieuwsBrief(gelieerdePersoonId, groepid, model);
+
+            // assert
+
+            Assert.IsInstanceOfType(result, typeof (ViewResult));
+            Assert.AreEqual(((ViewResult)result).ViewName, "NieuwsBrief");
+        }
+
+        /// <summary>
+        /// Als je de nieuwsbriefinstellingen wilt wijzigen, dan is het handig dat op het
+        /// formulier dat je krijgt, nieuwsbrief krijgen is aangevinkt als dat nog niet
+        /// het geval was, en uitgevinkt als dat wel het geval was.
+        /// </summary>
+        [TestMethod]
+        public void NieuwsbriefWijzigenVinkjeOpVoorhandGewijzigdTest()
+        {
+            const int groepid = 426;            // arbitrair
+            const int werkjaar = 2011;          // werkJaar 2011-2012, om iets te doen
+            const int groepswerkjaarid = 2971;  // arbitrair
+            const int gelieerdePersoonId = 1;   // arbitrair.
+
+            // setup mocks
+            // (dit is nogal hetzelfde in veel tests.  Best eens afsplitsen)
+
+            var veelGebruiktMock = new Mock<IVeelGebruikt>();
+            veelGebruiktMock.Setup(vg => vg.GroepsWerkJaarOphalen(groepid)).Returns(new GroepsWerkJaarDetail
+            {
+                GroepID = groepid,
+                WerkJaar = werkjaar,
+                WerkJaarID =
+                    groepswerkjaarid
+            });
+            veelGebruiktMock.Setup(vg => vg.BivakStatusHuidigWerkjaarOphalen(groepid)).Returns(new BivakAangifteLijstInfo
+            {
+                AlgemeneStatus =
+                    BivakAangifteStatus.NogNietVanBelang
+            });
+
+            var gelieerdePersonenServiceMock = new Mock<IGelieerdePersonenService>();
+            gelieerdePersonenServiceMock.Setup(svc => svc.AlleDetailsOphalen(gelieerdePersoonId))
+                .Returns(new PersoonLidGebruikersInfo
+                {
+                    CommunicatieInfo = new List<CommunicatieDetail>(),
+                    PersoonDetail = new PersoonDetail { NieuwsBrief = false }
+                });
+
+            var channelProviderMock = new Mock<IChannelProvider>();
+            channelProviderMock.Setup(mock => mock.GetChannel<IGelieerdePersonenService>()).Returns(gelieerdePersonenServiceMock.Object);
+
+            Factory.InstantieRegistreren(veelGebruiktMock.Object);
+            Factory.InstantieRegistreren(channelProviderMock.Object);
+
+            var target = Factory.Maak<PersonenController>();
+
+            // act
+
+            var result = target.NieuwsBrief(gelieerdePersoonId, groepid);
+
+            // assert
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            Assert.IsInstanceOfType(((ViewResult) result).Model, typeof (VoorkeursMailModel));
+            Assert.IsTrue(((VoorkeursMailModel)((ViewResult)result).Model).PersoonLidInfo.PersoonDetail.NieuwsBrief);
         }
 
         ///<summary>

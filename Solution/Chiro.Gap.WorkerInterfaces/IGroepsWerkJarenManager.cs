@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -17,6 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WorkerInterfaces
@@ -53,6 +54,15 @@ namespace Chiro.Gap.WorkerInterfaces
         /// Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden
         /// </returns>
         bool OvergangMogelijk(DateTime tijdstip, int werkJaar);
+
+        /// <summary>
+        /// Controleert of een lid <paramref name="src"/>in zijn werkJaar verzekerd is wat betreft de verzekering gegeven
+        /// door <paramref name="verzekering"/>.
+        /// </summary>
+        /// <param name="src">Lid van wie moet nagekeken worden of het verzekerd is</param>
+        /// <param name="verzekering">Type verzekering waarop gecontroleerd moet worden</param>
+        /// <returns><c>True</c> alss het lid een verzekering loonverlies heeft.</returns>
+        bool IsVerzekerd(Lid src, Verzekering verzekering);
 
         /// <summary>
         /// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
@@ -114,5 +124,27 @@ namespace Chiro.Gap.WorkerInterfaces
         IList<AfdelingsJaar> AfdelingsJarenVoorstellen(ChiroGroep groep, IList<Afdeling> afdelingen,
                                                        int nieuwWerkJaar,
                                                        OfficieleAfdeling standaardOfficieleAfdeling);
-	}
+        /// <summary>
+        /// Levert het huidige werkjaar op, volgens 'nationaal'.
+        /// </summary>
+        /// <returns>Het jaartal waarin het huidige werkjaar begon</returns>
+        int HuidigWerkJaarNationaal();
+
+        /// <summary>
+        /// Lever het nationale werkjaar op voor de gegeven <paramref name="datum"/>.
+        /// </summary>
+        /// <param name="datum"></param>
+        /// <returns>Het werkjaar volgens nationaal op gegeven <paramref name="datum"/>.</returns>
+        int WerkJaarNationaal(DateTime datum);
+
+        /// <summary>
+        /// Levert de datum van vandaag op.
+        /// </summary>
+        /// <returns>De datum van vandaag.</returns>
+        /// <remarks>
+        /// Dit is een tamelijk domme functie. Maar ze is er om met de datum te kunnen
+        /// foefelen in de unit tests.
+        /// </remarks>
+        DateTime Vandaag();
+    }
 }

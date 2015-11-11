@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -161,6 +161,13 @@ namespace Chiro.Gap.Workers
                     afdelingsJaar.Geslacht = bestaandAfdelingsJaar.Geslacht;
                     afdelingsJaar.GeboorteJaarTot = bestaandAfdelingsJaar.GeboorteJaarTot + werkJarenVerschil;
                     afdelingsJaar.GeboorteJaarVan = bestaandAfdelingsJaar.GeboorteJaarVan + werkJarenVerschil;
+
+                    // 'Gemengd' werd geherdefinieerd sinds het gap het derde geslacht ondersteunt (#3814).
+                    // De 'oude' interpretatie van gemengd moet nu vertaald worden naar M|V|X. (zie #3849).
+                    if (afdelingsJaar.Geslacht == (GeslachtsType.Man | GeslachtsType.Vrouw))
+                    {
+                        afdelingsJaar.Geslacht = GeslachtsType.Gemengd;
+                    }
                 }
                 else
                 {
@@ -185,6 +192,48 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Levert het huidige werkjaar op, volgens 'nationaal'.
+        /// </summary>
+        /// <returns>Het jaartal waarin het huidige werkjaar begon</returns>
+        public int HuidigWerkJaarNationaal()
+        {
+            return WerkJaarNationaal(Vandaag());
+        }
+
+        /// <summary>
+        /// Lever het nationale werkjaar op voor de gegeven <paramref name="datum"/>.
+        /// </summary>
+        /// <param name="datum"></param>
+        /// <returns>Het werkjaar volgens nationaal op gegeven <paramref name="datum"/>.</returns>
+        public int WerkJaarNationaal(DateTime datum)
+        {
+            var overgang = new DateTime(
+               datum.Year,
+               Settings.Default.WerkjaarStartNationaal.Month,
+               Settings.Default.WerkjaarStartNationaal.Day);
+
+            if (overgang <= datum)
+            {
+                return overgang.Year;
+            }
+            return overgang.Year - 1;
+        }
+
+
+        /// <summary>
+        /// Levert de datum van vandaag op.
+        /// </summary>
+        /// <returns>De datum van vandaag.</returns>
+        /// <remarks>
+        /// Dit is een tamelijk domme functie. Maar ze is er om met de datum te kunnen
+        /// foefelen in de unit tests.
+        /// </remarks>
+        public DateTime Vandaag()
+        {
+            return DateTime.Now.Date;
+        }
+
+        /// <summary>
         /// Bepaalt of in het gegeven <paramref name='werkJaar' /> op
 	    /// het gegeven <paramref name='tijdstip' /> de jaarovergang al
 	    /// kan doorgaan.
@@ -203,6 +252,30 @@ namespace Chiro.Gap.Workers
 #endif
             return tijdstip >= StartOvergang(werkJaar);
         }
+
+        /// <summary>
+        /// Controleert of een lid <paramref name="src"/>in zijn werkJaar verzekerd is wat betreft de verzekering gegeven
+        /// door <paramref name="verzekering"/>.
+        /// </summary>
+        /// <param name="src">Lid van wie moet nagekeken worden of het verzekerd is</param>
+        /// <param name="verzekering">Type verzekering waarop gecontroleerd moet worden</param>
+        /// <returns><c>True</c> alss het lid een verzekering loonverlies heeft.</returns>
+        public bool IsVerzekerd(Lid src, Verzekering verzekering)
+        {
+            if (src.GelieerdePersoon == null)
+            {
+                return false;
+            }
+
+            var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
+                                        where v.VerzekeringsType.ID == (int)verzekering &&
+                                          (DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
+                                           DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
+                                        select v;
+
+            return persoonsverzekeringen.FirstOrDefault() != null;
+        }
+
 
         /// <summary>
         /// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.

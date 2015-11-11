@@ -124,6 +124,6 @@
     <value>'{0}' is ongeldig voor {1}.</value>
   </data>
   <data name="PropertyValueRequired" xml:space="preserve">
-    <value>Er dient een waarde opgegeven te worden.</value>
+    <value>Er moet een waarde opgegeven worden.</value>
   </data>
 </root>

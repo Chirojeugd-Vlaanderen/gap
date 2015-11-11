@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -15,10 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-using System.Collections.Generic;
 
-using Chiro.Gap.Domain;
+using System.Collections.Generic;
 using Chiro.Gap.Poco.Model;
 
 namespace Chiro.Gap.WorkerInterfaces
@@ -166,5 +164,28 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <remarks>als <paramref name="lid"/> een kindlid is, dan moet <paramref name="afdelingsJaren"/>
         /// precies 1 afdelingsjaar bevatten.</remarks>
         void AfdelingsJarenVervangen(Lid lid, IList<AfdelingsJaar> afdelingsJaren);
+
+        /// <summary>
+        /// Geeft <c>true</c> als de probeerperiode van het gegeven <paramref name="lid"/> voorbij is,
+        /// anders <c>false</c>.
+        /// </summary>
+        /// <param name="lid">Een lid waarvan de probeerperiode getest moet worden.</param>
+        /// <returns><c>true</c> als de probeerperiode van het gegeven <paramref name="lid"/> voorbij is,
+        /// anders <c>false</c>.</returns>
+        bool ProbeerPeriodeVoorbij(Lid lid);
+
+        /// <summary>
+        /// Bepaalt of een lid gratis kan aansluiten.
+        /// </summary>
+        /// <param name="lid">Een lid.</param>
+        /// <returns><c>true</c> als dat lid gratis aangesloten kan worden.</returns>
+        bool GratisAansluiting(Lid lid);
+
+        /// <summary>
+        /// Levert het stamnummer van een lid op.
+        /// </summary>
+        /// <param name="lid">Lid waarvan we het stamnummer willen weten.</param>
+        /// <returns>Het stamnummer van dat lid.</returns>
+        string StamNummer(Lid lid);
     }
 }

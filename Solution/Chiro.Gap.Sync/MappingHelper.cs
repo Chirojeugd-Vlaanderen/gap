@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -18,6 +18,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using AutoMapper;
 using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -97,7 +98,7 @@ namespace Chiro.Gap.Sync
                                 : src is BuitenLandsAdres ? (src as BuitenLandsAdres).WoonPlaats : String.Empty));
 
             Mapper.CreateMap<CommunicatieVorm, CommunicatieMiddel>()
-                .ForMember(dst => dst.GeenMailings, opt => opt.MapFrom(src => !src.IsVoorOptIn))
+                .ForMember(dst => dst.IsBulk, opt => opt.MapFrom(src => src.Voorkeur))
                 .ForMember(dst => dst.Type, opt => opt.MapFrom(src => (CommunicatieType)src.CommunicatieType.ID))
                 .ForMember(dst => dst.Waarde, opt => opt.MapFrom(src => src.Nummer));
 
@@ -114,13 +115,41 @@ namespace Chiro.Gap.Sync
                 .ForMember(dst => dst.Communicatie, opt => opt.MapFrom(src => src.Communicatie));
 
             Mapper.CreateMap<Uitstap, Bivak>()
-                .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.GroepsWerkJaar.Groep.Code))
+                .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(src => src.GroepsWerkJaar.Groep.Code.Trim()))
                 .ForMember(dst => dst.UitstapID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.WerkJaar, opt => opt.MapFrom(src => src.GroepsWerkJaar.WerkJaar));
 
             Mapper.CreateMap<Groep, Kip.ServiceContracts.DataContracts.Groep>();
 
+            Mapper.CreateMap<GelieerdePersoon, AbonnementInfo>()
+                .ForMember(dst => dst.EmailAdres, opt => opt.MapFrom(src => VoorkeursMail(src)))
+                .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Persoon.Naam))
+                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
+                .ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.PersoonsAdres.Adres))
+                .ForMember(dst => dst.AbonnementType, opt => opt.Ignore())
+                .ForMember(dst => dst.StamNr, opt => opt.MapFrom(src => src.Groep.Code))
+                .ForMember(dst => dst.GapPersoonId, opt => opt.MapFrom(src => src.Persoon.ID));
+
+            Mapper.CreateMap<Abonnement, AbonnementInfo>()
+                .ForMember(dst => dst.EmailAdres, opt => opt.MapFrom(src => VoorkeursMail(src.GelieerdePersoon)))
+                .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
+                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
+                .ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.GelieerdePersoon.PersoonsAdres.Adres))
+                .ForMember(dst => dst.AbonnementType, opt => opt.MapFrom(src => (int) src.Type))
+                .ForMember(dst => dst.StamNr, opt => opt.MapFrom(src => src.GelieerdePersoon.Groep.Code))
+                .ForMember(dst => dst.GapPersoonId, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.ID));
+
             Mapper.AssertConfigurationIsValid();
+        }
+
+        private static string VoorkeursMail(GelieerdePersoon gelieerdePersoon)
+        {
+            string result = (from a in gelieerdePersoon.Communicatie
+                where a.CommunicatieType.ID == 3
+                orderby a.Voorkeur descending
+                select a.Nummer).FirstOrDefault();
+
+            return result;
         }
     }
 }

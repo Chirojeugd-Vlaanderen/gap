@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -22,25 +22,12 @@ namespace Chiro.Cdf.Mailer
     /// </summary>
     public class FakeMailer : IMailer
     {
-        /// <summary>
-        /// Doet alsof het een mailtje verstuurt
-        /// </summary>
-        /// <param name="ontvanger">
-        /// Het adres van degene naar wie de mail verstuurd moet worden
-        /// </param>
-        /// <param name="onderwerp">
-        /// Het onderwerp van het mailtje
-        /// </param>
-        /// <param name="body">
-        /// De inhoud van het mailtje
-        /// </param>
-        /// <returns>
-        /// <c>True</c> als het mailtje verstuurd is (wat in deze mockversie
-        /// natuurlijk altijd het geval is)
-        /// </returns>
-        public bool Verzenden(string ontvanger, string onderwerp, string body)
+        public void Verzenden(string ontvanger, string onderwerp, string body)
         {
-            return true;
+        }
+
+        public void Verzenden(string afzender, string ontvanger, string onderwerp, string body)
+        {
         }
     }
 }

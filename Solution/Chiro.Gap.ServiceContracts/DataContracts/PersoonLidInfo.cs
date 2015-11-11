@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
@@ -53,5 +54,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		public IEnumerable<CommunicatieDetail> CommunicatieInfo { get; set; }
-	}
+
+        /// <summary>
+        /// Type Dubbelpuntabonnement dit werkjaar (if applicable)
+        /// </summary>
+        [DataMember]
+        public AbonnementType? DubbelpuntAbonnement { get; set; }
+    }
 }

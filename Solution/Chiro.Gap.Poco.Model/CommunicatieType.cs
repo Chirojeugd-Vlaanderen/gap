@@ -32,7 +32,6 @@ namespace Chiro.Gap.Poco.Model
         public override int ID { get; set; }
         public override byte[] Versie { get; set; }
         public string Voorbeeld { get; set; }
-        public bool IsOptIn { get; set; }
     
         public virtual ICollection<CommunicatieVorm> CommunicatieVorm { get; set; }
     }

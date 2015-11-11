@@ -2,7 +2,6 @@
  * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
- * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
 using Chiro.Ad.ServiceContracts;
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Poco;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;

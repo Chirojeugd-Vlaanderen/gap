@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 using System;
+using System.Net.Mail;
 using System.Web;
 
 namespace Chiro.Cdf.Mailer
@@ -32,25 +33,28 @@ namespace Chiro.Cdf.Mailer
         /// <param name="ontvanger">E-mailadres van de geadresseerde</param>
         /// <param name="onderwerp">Onderwerp van de mail</param>
         /// <param name="body">Inhoud van de mail</param>
-        /// <returns><c>True</c> als het bericht verstuurd is, anders <c>false</c>.</returns>
-        /// <remarks>
-        /// Het mailtje dat verstuurd wordt, heeft html-opmaak. De <paramref name="body"/> die je hier
-        /// meegeeft, komt tussen de body-tags in het bericht terecht.
-        /// </remarks>
-        public bool Verzenden(string ontvanger, string onderwerp, string body)
+        public void Verzenden(string ontvanger, string onderwerp, string body)
         {
-            MailServiceReference.BerichtStatus status;
+            Verzenden(Properties.Settings.Default.StandaardAfzender, ontvanger, onderwerp, body);
+        }
 
-            // Ik zou hier ook graag met ServiceHelper werken, maar dat kan niet direct omdat ik niet
-            // direct de interface van de service heb.  Bovendien ben ik niet zeker of ServiceHelper
-            // werkt als het geen WCF-services zijn.
+        /// <summary>
+        /// Verstuurt een mail naar <paramref name="ontvanger"/>, met gegeven <paramref name="onderwerp"/> en
+        /// <paramref name="ontvanger"/>
+        /// </summary>
+        /// <param name="afzender">E-mailadres van de afzender.</param>
+        /// <param name="ontvanger">E-mailadres van de geadresseerde</param>
+        /// <param name="onderwerp">Onderwerp van de mail</param>
+        /// <param name="body">Inhoud van de mail</param>
+        public void Verzenden(string afzender, string ontvanger, string onderwerp, string body)
+        {
+            var message = new MailMessage {From = new MailAddress(afzender), Subject = onderwerp, Body = body};
+            message.To.Add(new MailAddress(ontvanger));
 
-            using (var msr = new MailServiceReference.MailServiceSoapClient())
+            using (var client = new SmtpClient(Properties.Settings.Default.SmtpServer))
             {
-                // Om te vermijden dat de gebruiker het mailtje om zeep helpt, zetten we <pre>...</pre> rond de inhoud.
-                status = msr.VerstuurGapMail(ontvanger, onderwerp, String.Format("<pre>\n{0}\n</pre>", HttpUtility.HtmlEncode(body)));
+                client.Send(message);
             }
-            return status.IsVerstuurd;
         }
     }
 }

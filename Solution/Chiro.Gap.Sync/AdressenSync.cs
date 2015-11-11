@@ -17,6 +17,7 @@
  */
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
@@ -45,14 +46,18 @@ namespace Chiro.Gap.Sync
         public AdressenSync(ServiceHelper serviceHelper) : base(serviceHelper) { }
 
         /// <summary>
-        /// Stelt de gegeven persoonsadressen in als standaardadressen in Kipadmin
+        /// Stelt de gegeven persoonsadressen in als standaardadressen in Kipadmin. Mag enkel aangeroepen
+        /// worden voor persoonsAdressen van personen die in sync zijn.
         /// </summary>
         /// <param name="persoonsAdressen">Persoonsadressen die als standaardadressen (adres 1) naar
         /// Kipadmin moeten.  Personen moeten gekoppeld zijn, net zoals adressen met straatnaam en gemeente</param>
         public void StandaardAdressenBewaren(IList<PersoonsAdres> persoonsAdressen)
         {
-            // Voorlopig afhandelen per adres.
+            // Check even of iedere persoon wel in sync is.
+            var personen = persoonsAdressen.Select(pa => pa.Persoon).Where(p => !p.InSync);
+            Debug.Assert(!personen.Any());
 
+            // Voorlopig afhandelen per adres.
             var gegroepeerdOpAdres = persoonsAdressen.GroupBy(pa => pa.Adres, pa => pa);
 
             foreach (var persoonsAdressenVoorAdres in gegroepeerdOpAdres)

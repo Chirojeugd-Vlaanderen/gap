@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -30,6 +30,7 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Services.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.WorkerInterfaces;
+
 #if KIPDORP
 using System.Transactions;
 #endif
@@ -76,6 +77,7 @@ namespace Chiro.Gap.Services
         /// <param name="ledenManager">Businesslogica m.b.t. leden</param>
         /// <param name="groepsWerkJarenManager">Businesslogica m.b.t. groepswerkjaren</param>
         /// <param name="authenticatieManager">Businesslogica m.b.t. authenticatie</param>
+        /// <param name="abonnementenManager">Businesslogica m.b.t. abonnementen</param>
         /// <param name="bivakSync"></param>
         public UitstappenService(IRepositoryProvider repositoryProvider,
                                  IAutorisatieManager autorisatieManager,
@@ -84,7 +86,8 @@ namespace Chiro.Gap.Services
                                  ILedenManager ledenManager,
                                  IGroepsWerkJarenManager groepsWerkJarenManager,
                                  IAuthenticatieManager authenticatieManager,
-                                 IBivakSync bivakSync): base(ledenManager, groepsWerkJarenManager, authenticatieManager, autorisatieManager)
+                                 IAbonnementenManager abonnementenManager,
+                                 IBivakSync bivakSync): base(ledenManager, groepsWerkJarenManager, authenticatieManager, autorisatieManager, abonnementenManager)
         {
             _repositoryProvider = repositoryProvider;
             _groepsWerkJaarRepo = repositoryProvider.RepositoryGet<GroepsWerkJaar>();
@@ -290,6 +293,8 @@ namespace Chiro.Gap.Services
         /// <param name="info">Details over de uitstap.  Als <c>uitstap.ID</c> <c>0</c> is,
         ///  dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
         /// <returns>ID van de uitstap</returns>
+        /// <remark>De contactdeelnemer zit niet bij in <paramref name="info"/>, daar wordt dus
+        /// niets mee gedaan.</remark>
         public int Bewaren(int groepId, UitstapInfo info)
         {
             // Als de uitstap een ID heeft, moet een bestaande uitstap opgehaald worden.
@@ -331,6 +336,8 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
+                _groepsWerkJaarRepo.SaveChanges();
+
                 if (uitstap.IsBivak)
                 {
                     _bivakSync.Bewaren(uitstap);
@@ -340,7 +347,6 @@ namespace Chiro.Gap.Services
                     _bivakSync.Verwijderen(uitstap.ID);
                 }
 
-                _groepsWerkJaarRepo.SaveChanges();
 #if KIPDORP
                 tx.Complete();
             }
@@ -463,6 +469,7 @@ namespace Chiro.Gap.Services
 
                 if (deelnemer.Uitstap.IsBivak)
                 {
+                    deelnemer.GelieerdePersoon.Persoon.InSync = true;
                     _bivakSync.Bewaren(deelnemer.Uitstap);
                 }
                 _deelnemersRepo.SaveChanges();

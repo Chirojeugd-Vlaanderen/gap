@@ -1,5 +1,5 @@
 <%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.UitstapPlaatsBewerkenModel>"
-    MasterPageFile="~/Views/Shared/Site.Master" %>
+	MasterPageFile="~/Views/Shared/Site.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
@@ -21,64 +21,57 @@
  * limitations under the License.
  */
 %>
-<script src="<%= ResolveUrl("~/Scripts/AdresBewerken.js") %>" type="text/javascript"></script>
+<script src="<%= ResolveUrl("~/Scripts/Modules/AdresModule.js") %>" type="text/javascript"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-
-        // Ehh...
-        
-        $('#tabel').show();
-        $('#postCode').hide();
-        $('#woonplaatsBuitenland').hide();
-
-       AdresBewerken();
-    });
+	$(document).ready(function () {
+		AdresModule.Init();
+	});
 </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="kaderke">
-        <div class="kadertitel">
-            <%=Model.Uitstap.IsBivak ? "Details bivak" : "Details uitstap" %></div>
-        <p>
-            <em>Periode:</em>
-            <%=String.Format("{0:d}", Model.Uitstap.DatumVan) %>
-            -
-            <%=String.Format("{0:d}", Model.Uitstap.DatumTot)%>
-        </p>
-        <p>
-            <%=Model.Uitstap.Opmerkingen %>
-        </p>
-        <% 
-            // Ik neem in het form hidden de niet-wijzigbare informatie uit het model op.  Op die manier is die
-            // gemakkelijk beschikbaar als er zich validatiefouten voordoen.
+	<div class="kaderke">
+		<div class="kadertitel">
+			<%=Model.Uitstap.IsBivak ? "Details bivak" : "Details uitstap" %></div>
+		<p>
+			<em>Periode:</em>
+			<%=String.Format("{0:d}", Model.Uitstap.DatumVan) %>
+			-
+			<%=String.Format("{0:d}", Model.Uitstap.DatumTot)%>
+		</p>
+		<p>
+			<%=Model.Uitstap.Opmerkingen %>
+		</p>
+		<% 
+			// Ik neem in het form hidden de niet-wijzigbare informatie uit het model op.  Op die manier is die
+			// gemakkelijk beschikbaar als er zich validatiefouten voordoen.
 
-            using (Html.BeginForm())
-            {%>
-        <ul id="acties">
-            <li>
-                <input type="submit" name="action" value="Bewaren" /></li>
-        </ul>
-        <%=Html.HiddenFor(mdl=>mdl.Uitstap.Naam) %>
-        <%=Html.HiddenFor(mdl=>mdl.Uitstap.IsBivak) %>
-        <%=Html.HiddenFor(mdl=>mdl.Uitstap.DatumVan) %>
-        <%=Html.HiddenFor(mdl=>mdl.Uitstap.DatumTot) %>
-        <%=Html.HiddenFor(mdl=>mdl.Uitstap.Opmerkingen) %>
-        <p>
-            <%=Html.LabelFor(mdl => mdl.Uitstap.PlaatsNaam)%>
-            <%=Html.EditorFor(mdl => mdl.Uitstap.PlaatsNaam)%>
-            <%=Html.ValidationMessageFor(mdl => mdl.Uitstap.PlaatsNaam)%>
-        </p>
-        <p>
+			using (Html.BeginForm())
+			{%>
+		<ul id="acties">
+			<li>
+				<input type="submit" name="action" value="Bewaren" /></li>
+		</ul>
+		<%=Html.HiddenFor(mdl=>mdl.Uitstap.Naam) %>
+		<%=Html.HiddenFor(mdl=>mdl.Uitstap.IsBivak) %>
+		<%=Html.HiddenFor(mdl=>mdl.Uitstap.DatumVan) %>
+		<%=Html.HiddenFor(mdl=>mdl.Uitstap.DatumTot) %>
+		<%=Html.HiddenFor(mdl=>mdl.Uitstap.Opmerkingen) %>
+		<p>
+			<%=Html.LabelFor(mdl => mdl.Uitstap.PlaatsNaam)%>
+			<%=Html.EditorFor(mdl => mdl.Uitstap.PlaatsNaam)%>
+			<%=Html.ValidationMessageFor(mdl => mdl.Uitstap.PlaatsNaam)%>
+		</p>
+		<p>
 			<strong>Opgelet:</strong> voor binnenlandse adressen wordt alleen de officiële spelling van de straatnaam geaccepteerd.<br />
 			Ben je zeker van de straatnaam maar wordt ze geweigerd? Lees in
 			<%=Html.ActionLink("de handleiding", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuweStraatnaam"})%>
 			hoe we daar een mouw aan kunnen passen.</p>
-            <% =Html.ValidationSummary() %>
-            
-            <table>
-            <% Html.RenderPartial("AdresBewerkenControl", Model); %>
-            </table>
-        <%
+			<% =Html.ValidationSummary() %>
+			
+			<table>
+			<% Html.RenderPartial("AdresBewerkenControl", Model); %>
+			</table>
+		<%
 }%>
-    </div>
+	</div>
 </asp:Content>

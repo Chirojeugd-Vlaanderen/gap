@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.Sync;
+using Chiro.Cdf.Ioc.Factory;
+using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Chiro.Gap.Poco.Model;
 using Moq;
+using CommunicatieType = Chiro.Gap.Poco.Model.CommunicatieType;
 using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
 
 namespace Chiro.Gap.Sync.Test
@@ -74,26 +73,26 @@ namespace Chiro.Gap.Sync.Test
 
 
         /// <summary>
-        ///A test for Bewaren
-        ///</summary>
+        /// Test of UpdatenOfMaken KipSync effectief aanroept.
+        /// </summary>
         [TestMethod()]
         public void BewarenMetCommunicatieTest()
         {
             // ARRANGE
 
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.AlleCommunicatieBewaren(It.IsAny<Persoon>(), It.IsAny<IEnumerable<CommunicatieMiddel>>())).Verifiable();
+            kipSyncMock.Setup(src => src.PersoonUpdatenOfMaken(It.IsAny<PersoonDetails>())).Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
             var gelieerdePersoon = new GelieerdePersoon
                                        {
-                                           Persoon = new Gap.Poco.Model.Persoon { InSync = true },
+                                           Persoon = new Poco.Model.Persoon { InSync = true },
                                            Communicatie =
                                                new List<CommunicatieVorm> 
                                                {
                                                    new CommunicatieVorm 
                                                    { 
-                                                       CommunicatieType = new Chiro.Gap.Poco.Model.CommunicatieType { ID = 3 } 
+                                                       CommunicatieType = new CommunicatieType { ID = 3 } 
                                                    }
                                                }
                                        };
@@ -102,7 +101,7 @@ namespace Chiro.Gap.Sync.Test
             // ACT
 
             var target = Factory.Maak<PersonenSync>();
-            target.Bewaren(gelieerdePersoon, false, true);
+            target.UpdatenOfMaken(gelieerdePersoon);
 
             // ASSERT
 

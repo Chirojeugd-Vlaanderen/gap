@@ -52,6 +52,7 @@ namespace Chiro.Gap.Sync
 		{
 			Debug.Assert(communicatieVorm.GelieerdePersoon != null);
 			Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon != null);
+		    Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon.InSync);
 
             ServiceHelper.CallService<ISyncPersoonService>(
 		        svc =>
@@ -72,6 +73,7 @@ namespace Chiro.Gap.Sync
 		{
 			Debug.Assert(communicatieVorm.GelieerdePersoon != null);
 			Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon != null);
+		    Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon.InSync);
 
 		    ServiceHelper.CallService<ISyncPersoonService>(
 		        svc =>
@@ -82,7 +84,7 @@ namespace Chiro.Gap.Sync
 		                {
 		                    Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,
 		                    Waarde = communicatieVorm.Nummer,
-		                    GeenMailings = !communicatieVorm.IsVoorOptIn
+		                    IsBulk = communicatieVorm.Voorkeur
 		                }));
 		}
 
@@ -99,6 +101,7 @@ namespace Chiro.Gap.Sync
 	    {
             Debug.Assert(communicatieVorm.GelieerdePersoon != null);
             Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon != null);
+            Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon.InSync);
 
             ServiceHelper.CallService<ISyncPersoonService>(
                 svc =>
@@ -110,7 +113,7 @@ namespace Chiro.Gap.Sync
                         {
                             Type = (CommunicatieType) communicatieVorm.CommunicatieType.ID,
                             Waarde = communicatieVorm.Nummer,
-                            GeenMailings = !communicatieVorm.IsVoorOptIn
+                            IsBulk = communicatieVorm.Voorkeur
                         }));
 	    }
 	}

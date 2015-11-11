@@ -6,10 +6,11 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <%
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
+ * Cleanup en refactoring met module pattern: Copyright 2015 Sam Segers
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +28,7 @@
     <link href="<%= ResolveUrl("~/Content/print.css") %>" media="print" rel="stylesheet" type="text/css" />
     
     <script src="<%= ResolveUrl("~/Scripts/jquery-persoons-fiche.js") %>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/AdresBewerken.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/Modules/AdresModule.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/moment.js") %>" type="text/javascript"></script>
 </asp:Content>
 
@@ -51,7 +52,7 @@
            <input id="gwJaar" value="geenGwJaar" hidden readonly/>
            <input id="lidType" value="geenType" hidden readonly/>
       <% }%>
-   <input id="werkjaar" value="<%= Model.HuidigWerkJaar %>"hidden readonly/>
+   <input id="werkjaar" value="<%= Model.HuidigWerkJaar %>" hidden readonly/>
     <input id="GPid" value="<%=Model.PersoonLidGebruikersInfo.PersoonDetail.GelieerdePersoonID  %>" hidden readonly/>
     <input id="versieString" value="<%=Model.PersoonLidGebruikersInfo.PersoonDetail.VersieString %>" hidden readonly/> 
      
@@ -78,10 +79,6 @@
                     <tr>
                         <td>Voorkeur:</td>
                         <td><input id="voorkeurCheck" type="checkbox"/></td>
-                    </tr>
-                    <tr id="sb" hidden>
-                        <td>Nieuwsbrief ontvangen:</td>
-                        <td><input id="snelCheck" type="checkbox" /></td>
                     </tr>
                     <tr id="gezin">
                         <td>Voor heel het gezin:</td>
@@ -221,11 +218,6 @@
                 <td><%= commType.Key.Omschrijving + " " + teller %> </td>
                 <td title="<%= Html.Encode(cv.Nota) %>">
                     <<%:tag %> id="<%:cvID %>" class="contact"><%=ctTekst %></<%:tag %>>
-                    <% if (cv.CommunicatieTypeIsOptIn)
-                       { %>
-                    <br />
-                    Nieuwsbrief ontvangen<%= Html.InfoLink("snelBerichtInfo")%>: <a class="sblink" href="#" id="sb<%: cvID %>"><%= cv.IsVoorOptIn ? "ja" : "nee" %></a>
-                    <% } %>
                 </td>
                 <td>
                     <div class="contactBewerken ui-icon ui-icon-pencil" title="Bewerken" style="cursor: pointer"></div>
@@ -236,8 +228,7 @@
               </tr>
                 <% } %>
             
-            <% } %>
-                
+            <% } %>                
         </table>
         <br />
 
@@ -262,6 +253,33 @@
                 <td><div class="ui-icon ui-icon-pencil" id="bewerkCl"title="Bewerken" style="cursor: pointer"></div></td>
             </tr>
         <% } %>
+
+        <% 
+        // Omdat ik die JQuery-toestanden in zijn huidige vorm zodanig
+        // moeilijk te onderhouden vind, maak ik gewoon saaie actionlinks
+        // om abonnementen te bewerken. Dat werkt ook.
+        // Van zodra we een framework gebruiken voor JQuery, klappen we
+        // nog eens :) %>
+
+        <tr>
+            <td>Dubbelpunt</td>
+            <td>
+                <%= Html.DisplayFor(mdl =>mdl.PersoonLidInfo.DubbelpuntAbonnement) %>
+            </td>
+            <td>
+                 <%:Html.ActionLink("[Wijzig]", "Dubbelpunt", new {id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
+            </td>
+        </tr>
+        <tr>
+            <td><%= Html.LabelFor(mdl => mdl.PersoonLidInfo.PersoonDetail.NieuwsBrief) %> <%= Html.InfoLink("snelBerichtInfo")%></td>
+            <td>
+                <%: Model.PersoonLidInfo.PersoonDetail.NieuwsBrief ? "ja" : "nee" %>
+            </td>
+            <td>
+                 <%:Html.ActionLink("[Wijzig]", "NieuwsBrief", new {id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
+            </td>
+        </tr>
+
 
         <% // controleert of de persoon ingeschreven is %>
         <%if ((Model.PersoonLidGebruikersInfo.PersoonDetail.IsLid || Model.PersoonLidGebruikersInfo.PersoonDetail.IsLeiding) &&

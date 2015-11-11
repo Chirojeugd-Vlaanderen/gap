@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2014 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * Verfijnen gebruikersrechten Copyright 2015 Chirojeugd-Vlaanderen vzw
@@ -21,22 +21,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-#if KIPDORP
-using System.Transactions; // NIET VERWIJDEREN!!
-#endif
-
 using AutoMapper;
 using Chiro.Cdf.Poco;
-
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Poco.Model.Exceptions;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Services.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WorkerInterfaces;
+#if KIPDORP
+using System.Transactions; // NIET VERWIJDEREN!!
+#endif
 
 namespace Chiro.Gap.Services
 {
@@ -90,6 +88,7 @@ namespace Chiro.Gap.Services
         /// <param name="groepenMgr">Businesslogica m.b.t. groepen</param>
         /// <param name="functiesMgr">Businesslogica m.b.t. functies</param>
         /// <param name="authenticatieMgr">Businesslogica m.b.t. authenticatie</param>
+        /// <param name="abonnementenManager">Businesslogica m.b.t. abonnementen</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         /// <param name="ledenSync">Voor synchronisatie lidgegevens met Kipadmin</param>
         /// <param name="verzekeringenSync">Voor synchronisatie verzekeringsgegevens naar Kipadmin</param>
@@ -99,7 +98,8 @@ namespace Chiro.Gap.Services
                             IGroepenManager groepenMgr, IFunctiesManager functiesMgr,
                             IAuthenticatieManager authenticatieMgr,
                             IRepositoryProvider repositoryProvider, ILedenSync ledenSync,
-                            IVerzekeringenSync verzekeringenSync): base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr, autorisatieMgr)
+                            IAbonnementenManager abonnementenManager,
+                            IVerzekeringenSync verzekeringenSync): base(ledenMgr, groepsWerkJarenMgr, authenticatieMgr, autorisatieMgr, abonnementenManager)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -393,7 +393,7 @@ namespace Chiro.Gap.Services
             using (var tx = new TransactionScope())
             {
 #endif
-                _ledenSync.Bewaren(teSyncen);     // TODO: (#1436) Sync naar Kipadmin
+                _ledenSync.Bewaren(teSyncen);
                 _gelieerdePersonenRepo.SaveChanges();
 #if KIPDORP
                 tx.Complete();
@@ -415,7 +415,8 @@ namespace Chiro.Gap.Services
         {
             // Deze code is tamelijk rommelig; gebruik ze niet als referentie-implementatie
             // (Ik ben er ook niet van overtuigd of het werken met 'foutBerichten' wel in orde is.)
-            var teSyncen = new List<Lid>();
+            var teVerwijderen = new List<Lid>();
+            var stopDatumBewaren = new List<Lid>();
 
             var foutBerichtenBuilder = new StringBuilder();
 
@@ -432,7 +433,7 @@ namespace Chiro.Gap.Services
             {
                 if (g.StopDatum != null && g.StopDatum < DateTime.Now)
                 {
-                    throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+                    throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Resources.GroepInactief);
                 }
 
                 var gwj = _groepenMgr.HuidigWerkJaar(g);
@@ -447,13 +448,13 @@ namespace Chiro.Gap.Services
 
                     if (lid == null)
                     {
-                        foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogNietIngeschreven,
+                        foutBerichtenBuilder.AppendLine(String.Format(Resources.IsNogNietIngeschreven,
                                                                       gp.Persoon.VolledigeNaam));
                         continue;
                     }
                     if (lid.NonActief)
                     {
-                        foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsAlUitgeschreven,
+                        foutBerichtenBuilder.AppendLine(String.Format(Resources.IsAlUitgeschreven,
                                                                       gp.Persoon.VolledigeNaam));
                         continue;
                     }
@@ -463,7 +464,11 @@ namespace Chiro.Gap.Services
 
                     if (lid.EindeInstapPeriode > lid.UitschrijfDatum || lid.Niveau > Niveau.Groep)
                     {
-                        teSyncen.Add(lid);
+                        teVerwijderen.Add(lid);
+                    }
+                    else
+                    {
+                        stopDatumBewaren.Add(lid);
                     }
                 }
             }
@@ -475,9 +480,13 @@ namespace Chiro.Gap.Services
 			{
 #endif
                 _gelieerdePersonenRepo.SaveChanges();
-                foreach (var l in teSyncen)
+                foreach (var l in teVerwijderen)
                 {
-                    _ledenSync.Verwijderen(l);
+                    _ledenSync.Verwijderen  (l);
+                }
+                foreach (var l in stopDatumBewaren)
+                {
+                    _ledenSync.Bewaren(l);
                 }
 #if KIPDORP
 				tx.Complete();
@@ -590,7 +599,7 @@ namespace Chiro.Gap.Services
                     // nooit gekoppeld zijn aan het groepswerkjaar van elk lid. 
                     // (pigeon hole principle)
                     throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietVanGroep,
-                                                          Properties.Resources.OngelidgeAfdelingVoorLid);
+                                                          Resources.OngelidgeAfdelingVoorLid);
                 }
                 afdelingsJaren = (from aj in gwjs.First().AfdelingsJaar
                                   where afdelingsJaarIds.Contains(aj.ID)
@@ -600,7 +609,7 @@ namespace Chiro.Gap.Services
                 {
                     // Niet alle afdelingsjaren zijn gevonden in het groepswerkjaar van de leden.
                     throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingNietVanGroep,
-                                      Properties.Resources.OngelidgeAfdelingVoorLid);
+                                      Resources.OngelidgeAfdelingVoorLid);
 
                 }
             }
@@ -624,7 +633,7 @@ namespace Chiro.Gap.Services
                 {
                     if (ex.FoutNummer == FoutNummer.AlgemeneKindFout)
                     {
-                        throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingKindVerplicht, Properties.Resources.KindInEenAfdelingsJaar);
+                        throw FaultExceptionHelper.FoutNummer(FoutNummer.AfdelingKindVerplicht, Resources.KindInEenAfdelingsJaar);
                     }
                     else
                     {
@@ -666,7 +675,7 @@ namespace Chiro.Gap.Services
 
             if (lid.GroepsWerkJaar.Groep.StopDatum != null && lid.GroepsWerkJaar.Groep.StopDatum < DateTime.Now)
             {
-                throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Properties.Resources.GroepInactief);
+                throw FaultExceptionHelper.FoutNummer(FoutNummer.GroepInactief, Resources.GroepInactief);
             }
 
             var verzekeringstype = (from g in _verzekerRepo.Select() where g.ID == (int)Verzekering.LoonVerlies select g).First();
@@ -764,7 +773,7 @@ namespace Chiro.Gap.Services
             Gav.Check(lid);
             if (lid.NonActief)
             {
-                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Properties.Resources.LidInactief);
+                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Resources.LidInactief);
             }
             return Mapper.Map<Lid, PersoonLidInfo>(lid);
         }
@@ -780,7 +789,7 @@ namespace Chiro.Gap.Services
             Gav.Check(lid);
             if (lid.NonActief)
             {
-                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Properties.Resources.LidInactief);
+                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Resources.LidInactief);
             }
             return Mapper.Map<GelieerdePersoon, PersoonInfo>(lid.GelieerdePersoon);
         }
@@ -796,7 +805,7 @@ namespace Chiro.Gap.Services
             Gav.Check(lid);
             if (lid.NonActief)
             {
-                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Properties.Resources.LidInactief);
+                FaultExceptionHelper.FoutNummer(FoutNummer.LidUitgeschreven, Resources.LidInactief);
             }
             return Mapper.Map<Lid, LidInfo>(lid);
         }

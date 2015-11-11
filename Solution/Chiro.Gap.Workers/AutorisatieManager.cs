@@ -264,6 +264,18 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
+        /// Geeft <c>true</c> als de aangemelde gebruiker GAV is van van het gegeven
+        /// <paramref name="abonnement"/>. Zo niet <c>false</c>.
+        /// </summary>
+        /// <param name="abonnement">Een abonnement</param>
+        /// <returns>Geeft <c>true</c> als de aangemelde gebruiker GAV is van van het gegeven
+        /// <paramref name="abonnement"/>. Zo niet <c>false</c>.</returns>
+        public bool IsGav(Abonnement abonnement)
+        {
+            return IsGav(abonnement.GelieerdePersoon) && IsGav(abonnement.GroepsWerkJaar);
+        }
+
+        /// <summary>
         /// Geeft <c>true</c> als de aangemelde gebruiker GAV is van alle gegeven 
         /// <paramref name="groepen"/>. Zo niet <c>false</c>
         /// </summary>

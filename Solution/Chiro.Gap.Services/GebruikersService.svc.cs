@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * Bijgewerkt gebruikersbeheer Copyright 2014, 2015 Chirojeugd-Vlaanderen vzw
@@ -18,11 +18,9 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Web;
-using AutoMapper;
 using Chiro.Ad.ServiceContracts;
 using Chiro.Cdf.Poco;
 using Chiro.Cdf.ServiceHelper;
@@ -34,6 +32,8 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Services.Properties;
 using Chiro.Gap.WorkerInterfaces;
+using GebruikersRecht = Chiro.Gap.ServiceContracts.DataContracts.GebruikersRecht;
+using AutoMapper;
 #if KIPDORP
 using System.Transactions;
 #endif
@@ -100,6 +100,7 @@ namespace Chiro.Gap.Services
         /// <param name="ledenManager">Businesslogica m.b.t. de leden</param>
         /// <param name="groepsWerkJarenManager">Businesslogica m.b.t. de groepswerkjaren.</param>
         /// <param name="gelieerdePersonenManager">Businesslogica i.f.v. gelieerde personen</param>
+        /// <param name="abonnementenManager">Businesslogica i.f.v. abonnementen.</param>
         /// <param name="repositoryProvider">De repository provider levert alle nodige repository's op.</param>
         /// <param name="serviceHelper">Service helper die gebruikt zal worden om de active-directory-service aan te spreken.</param>
         public GebruikersService(IAutorisatieManager autorisatieMgr,
@@ -108,8 +109,10 @@ namespace Chiro.Gap.Services
                                  ILedenManager ledenManager,
                                  IGroepsWerkJarenManager groepsWerkJarenManager,
                                  IGelieerdePersonenManager gelieerdePersonenManager,
+                                 IAbonnementenManager abonnementenManager,
                                  IRepositoryProvider repositoryProvider,
-                                 ServiceHelper serviceHelper): base(ledenManager, groepsWerkJarenManager, authenticatieManager, autorisatieMgr)
+                                 ServiceHelper serviceHelper)
+            : base(ledenManager, groepsWerkJarenManager, authenticatieManager, autorisatieMgr, abonnementenManager)
         {
             _repositoryProvider = repositoryProvider;
 
@@ -312,15 +315,14 @@ namespace Chiro.Gap.Services
                     Resources.KoppelingLoginPersoonOntbreekt,
                     login,
                     adNummer));
+                    // Als je hier een exception krijgt dat je gebruiker niet gevonden is, dan kun je die
+                    // aanmaken, en meteen rechten geven op 1 of meerdere willekeurige groepen. Je hebt hiervoor het
+                    // AD-nummer nodig uit de exception. (Als je aan het ontwikkelen bent, is dat een dummy-adnr.)
+                    //
+                    // Stel dat dat AD-nummer 1445 is, dan gaat het bijvoorbeeld als volgt:
+                    //   exec auth.spWillekeurigeGroepToekennenAd 1455, 'Vervloet', 'Johan', '1977-03-08', 1
+                    // De parameters zijn AD-nummer, naam, voornaam, geboortedatum en geslacht.
             }
-
-            // Als je hieronder een exception krijgt dat je gebruiker niet gevonden is, dan kun je die
-            // aanmaken, en meteen rechten geven op 1 of meerdere willekeurige groepen. Je hebt hiervoor het
-            // AD-nummer nodig uit de exception. (Als je aan het ontwikkelen bent, is dat een dummy-adnr.)
-            //
-            // Stel dat dat AD-nummer 1445 is, dan gaat het bijvoorbeeld als volgt:
-            //   exec auth.spWillekeurigeGroepToekennenAd 1455, 'Vervloet', 'Johan', '1977-03-08', 1
-            // De parameters zijn AD-nummer, naam, voornaam, geboortedatum en geslacht.
 
             // Mag ik mijn eigen gegevens lezen?
             if (_autorisatieMgr.MagLezen(persoon, persoon))
