@@ -74,7 +74,7 @@ namespace Chiro.Gap.Services
         /// </summary>
         private void MappingsDefinieren()
         {
-            var helper = new MappingHelper(_ledenMgr, _groepsWerkJarenMgr, _abonnementenMgr, _authenticatieMgr);
+            var helper = new MappingHelper(_ledenMgr, _groepsWerkJarenMgr, _abonnementenMgr, _authenticatieMgr, _autorisatieMgr);
             helper.MappingsDefinieren();
         }
 

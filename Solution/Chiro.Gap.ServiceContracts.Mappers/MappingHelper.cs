@@ -37,13 +37,15 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         private readonly IGroepsWerkJarenManager _groepsWerkJarenMgr;
         private readonly IAbonnementenManager _abonnementenMgr;
         private readonly IAuthenticatieManager _authenticatieMgr;
+        private readonly IAutorisatieManager _autorisatieMgr;
 
-        public MappingHelper(ILedenManager ledenManager, IGroepsWerkJarenManager groepsWerkjarenManager, IAbonnementenManager abonnementenManager, IAuthenticatieManager authenticatieManager)
+        public MappingHelper(ILedenManager ledenManager, IGroepsWerkJarenManager groepsWerkjarenManager, IAbonnementenManager abonnementenManager, IAuthenticatieManager authenticatieManager, IAutorisatieManager autorisatieManager)
         {
             _ledenMgr = ledenManager;
             _groepsWerkJarenMgr = groepsWerkjarenManager;
             _abonnementenMgr = abonnementenManager;
             _authenticatieMgr = authenticatieManager;
+            _autorisatieMgr = autorisatieManager;
         }
 
         /// <summary>
@@ -531,10 +533,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(dst => dst.ID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Naam));
 
-
-            // Let op: Gebruikersrechten worden niet automatisch gemapt, want dat staat
-            // nog niet helemaal op punt.
-            Mapper.CreateMap<GelieerdePersoon, PersoonLidInfo>()
+            Mapper.CreateMap<GelieerdePersoon, PersoonLidGebruikersInfo>()
                 .ForMember(
                     dst => dst.PersoonDetail,
                     opt => opt.MapFrom(src => src))
@@ -550,7 +549,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(
                     dst => dst.DubbelpuntAbonnement,
                     // Voorlopig hebben we enkel Dubbelpunt als publicatie.
-                    opt => opt.MapFrom(src => _abonnementenMgr.HuidigAbonnementTypeGet(src, 1)));
+                    opt => opt.MapFrom(src => _abonnementenMgr.HuidigAbonnementTypeGet(src, 1)))
+                .ForMember(
+                    dst => dst.GebruikersInfo,
+                    opt => opt.MapFrom(src => _autorisatieMgr.GebruikersRechtOpEigenGroep(src)));
+
 
             Mapper.CreateMap<Lid, InschrijvingsVoorstel>()
                 .ForMember(
@@ -572,15 +575,21 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.FoutNummer,
                     opt => opt.UseValue(null));
 
-            //Mapper.CreateMap<Poco.Model.GebruikersRechtV2, GebruikersDetail>()
-            //    .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsVerlengbaar))
-            //    .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => GelieerdePersoonIDGet(src)))
-            //    .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Persoon.ID))
-            //    .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Persoon.Naam))
-            //    .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
-            //    .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer));
+            Mapper.CreateMap<GebruikersRechtV2, GebruikersDetail>()
+                .ForMember(dst => dst.IsVerlengbaar, opt => opt.MapFrom(src => src.IsVerlengbaar))
+                .ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => GelieerdePersoonIDGet(src)))
+                .ForMember(dst => dst.PersoonID, opt => opt.MapFrom(src => src.Persoon.ID))
+                .ForMember(dst => dst.FamilieNaam, opt => opt.MapFrom(src => src.Persoon.Naam))
+                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
+                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)))
+                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => src))
+                .ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer));
 
-            //Mapper.CreateMap<Poco.Model.GebruikersRechtV2, GebruikersInfo>();
+            Mapper.CreateMap<GebruikersRechtV2, GebruikersInfo>()
+                .ForMember(dst => dst.Login, opt => opt.MapFrom(src => _authenticatieMgr.GebruikersNaamGet(src.Persoon)))
+                .ForMember(dst => dst.GebruikersRecht, opt => opt.MapFrom(src => src));
+
+            Mapper.CreateMap<GebruikersRechtV2, GebruikersRecht>();
 
             #region mapping van datacontracts naar entity's
 
