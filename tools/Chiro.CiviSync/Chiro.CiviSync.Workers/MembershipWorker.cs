@@ -124,9 +124,11 @@ namespace Chiro.CiviSync.Workers
                     svc => svc.MembershipSave(ApiKey, SiteKey, membershipRequest));
                 updateResult.AssertValid();
 
+                // We voegen een asteriskje toe achter dit logbericht. Op die manier kunnen we de berichten van de buggy
+                // CiviSync (#4413) onderscheiden van die van de gepatchte.
                 Log.Loggen(Niveau.Info,
                     String.Format(
-                        "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Opnieuw naar Civi om sync te herstellen.",
+                        "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Opnieuw naar Civi om sync te herstellen.*",
                         contact.FirstName, contact.LastName, contact.GapId, contact.ExternalIdentifier, werkJaar),
                     null, adNummer, contact.GapId);
             }
