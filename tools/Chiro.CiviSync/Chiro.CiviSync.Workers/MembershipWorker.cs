@@ -112,7 +112,10 @@ namespace Chiro.CiviSync.Workers
                 var membershipRequest = new MembershipRequest
                 {
                     Id = bestaandMembership.Id,
-                    VerzekeringLoonverlies = true,
+                    // Ofwel had ik al een verzekerling loonverlies, ofwel is de bijwerking zonder
+                    // verzekering loonverlies. Voor het bijgewerkte loonverlies kan het dus nog
+                    // alle kanten op. (#4413)
+                    VerzekeringLoonverlies = bestaandMembership.VerzekeringLoonverlies || gedoe.MetLoonVerlies,
                     AangemaaktDoorPloegId = civiGroepId,
                     FactuurStatus = bestaandMembership.FactuurStatus
                 };
