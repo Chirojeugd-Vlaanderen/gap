@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015-2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,10 +15,7 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -27,6 +24,7 @@ using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using System.Diagnostics;
 
 namespace Chiro.CiviSync.Workers
 {
@@ -50,6 +48,10 @@ namespace Chiro.CiviSync.Workers
         /// <param name="gedoe">Membershipdetails</param>
         public void BestaandeBijwerken(Membership bestaandMembership, MembershipGedoe gedoe)
         {
+            // Om te weten of een membership 'geupgradet' moet worden van gratis naar
+            // betalend (#4520), hebben we informatie nodig over de betalingen. We asserten
+            // dus dat die betalingsinfo mee in het bestaandMembership zit.
+            Debug.Assert(bestaandMembership.MembershipPaymentResult != null);
             int werkJaar = _membershipLogic.WerkjaarGet(bestaandMembership);
             // We halen de persoon opnieuw op. Wat een beetje overkill is, aangezien
             // dat enkel dient om te kunnen loggen. Maar het bijwerken van een bestaand
@@ -80,6 +82,11 @@ namespace Chiro.CiviSync.Workers
                     gedoe.StamNummer, adNummer, null);
                 return;
             }
+
+            // We moeten bijwerken in deze gevallen:
+            // (1) er was al een aansluiting bij een kaderploeg, maar nu wordt er aangesloten door een plaatselijke groep. (#4510)
+            // (2) er was nog geen verzekering loonverlies, nu is die er wel. Alnaargelang de aansluiting gebeurde door
+            //     een groep of niet, moet de factuurstatus aangepast worden. (#4514)
 
             if (gedoe.MetLoonVerlies && !bestaandMembership.VerzekeringLoonverlies)
             {
