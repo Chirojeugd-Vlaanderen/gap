@@ -1,0 +1,7 @@
+Deze folder bevat SQL scripts met wijzigingen voor de database. En wel als volgt:
+
+CHANGES.sql - wijzigingen nodig aan de live database, opdat deze branch zou kunnen runnen
+
+0001.sql, 0002.sql, 0003.sql,... - changes vroeger toegepast op de database, in volgorde.
+
+ 
