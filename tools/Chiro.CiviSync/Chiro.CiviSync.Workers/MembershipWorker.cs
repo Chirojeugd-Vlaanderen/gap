@@ -84,17 +84,37 @@ namespace Chiro.CiviSync.Workers
             }
 
             // We moeten bijwerken in deze gevallen:
-            // (1) er was al een aansluiting bij een kaderploeg, maar nu wordt er aangesloten door een plaatselijke groep. (#4510)
+            // (1) er was al een gratis aansluiting, maar de nieuwe aansluiting is betalend. (#4510)
             // (2) er was nog geen verzekering loonverlies, nu is die er wel. Alnaargelang de aansluiting gebeurde door
             //     een groep of niet, moet de factuurstatus aangepast worden. (#4514)
+            if (!gedoe.Gratis && _membershipLogic.IsGratis(bestaandMembership))
+            {
+                var membershipRequest = new MembershipRequest
+                {
+                    Id = bestaandMembership.Id,
+                    VerzekeringLoonverlies = gedoe.MetLoonVerlies,
+                    AangemaaktDoorPloegId = civiGroepId,
+                    FactuurStatus = FactuurStatus.VolledigTeFactureren,
+                };
 
-            if (gedoe.MetLoonVerlies && !bestaandMembership.VerzekeringLoonverlies)
+                var updateResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
+                    svc => svc.MembershipSave(ApiKey, SiteKey, membershipRequest));
+                updateResult.AssertValid();
+                Log.Loggen(Niveau.Info,
+                    String.Format(
+                        "Membership van {0} {1} (AD {2}, ID {3}) voor werkjaar {4}, met ID {5} moet nu betaald worden door {6}.",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, contact.GapId,
+                        werkJaar, updateResult.Id, gedoe.StamNummer), gedoe.StamNummer, adNummer, contact.GapId);
+            }
+            else if (gedoe.MetLoonVerlies && !bestaandMembership.VerzekeringLoonverlies)
             {
                 var membershipRequest = new MembershipRequest
                 {
                     Id = bestaandMembership.Id,
                     VerzekeringLoonverlies = true,
                     AangemaaktDoorPloegId = civiGroepId,
+                    // TODO: Als er al een bestaand betalend membership is, maar het gewest verzekert bij
+                    // voor loonverlies, dan ziten we hier mogelijk in de problemen.
                     FactuurStatus = gedoe.Gratis
                         ? FactuurStatus.FactuurOk
                         : bestaandMembership.FactuurStatus == FactuurStatus.FactuurOk
@@ -114,7 +134,8 @@ namespace Chiro.CiviSync.Workers
             else
             {
                 // Membership bestond eigenlijk al. Maar we sturen het toch opnieuw naar de civi,
-                // zodat die aan GAP het juiste werkjaar kan afleveren (#3581)
+                // zodat een update-hook wordt gefired, en de Civi het juiste werkjaar aflevert
+                // bij het GAP. (#3581)
 
                 var membershipRequest = new MembershipRequest
                 {
@@ -123,7 +144,8 @@ namespace Chiro.CiviSync.Workers
                     // verzekering loonverlies. Voor het bijgewerkte loonverlies kan het dus nog
                     // alle kanten op. (#4413)
                     VerzekeringLoonverlies = bestaandMembership.VerzekeringLoonverlies || gedoe.MetLoonVerlies,
-                    AangemaaktDoorPloegId = civiGroepId,
+                    // Verander niets aan de bestaande ploeg-ID. Anders wordt het te verwarrend.
+                    // AangemaaktDoorPloegId = civiGroepId,
                     FactuurStatus = bestaandMembership.FactuurStatus
                 };
 

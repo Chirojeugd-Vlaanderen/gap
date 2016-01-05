@@ -19,6 +19,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic.Properties;
+using System.Diagnostics;
 
 namespace Chiro.CiviSync.Logic
 {
@@ -107,6 +108,18 @@ namespace Chiro.CiviSync.Logic
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Kijkt na of <paramref name="bestaandMembership"/> een gratis membership was.
+        /// We gaan er hier wel vanuit dat MembershipPayment mee opgevraagd is.
+        /// </summary>
+        /// <param name="bestaandMembership">Membership waarvan we moeten controleren of het gratis is.</param>
+        /// <returns><c>true</c> als <paramref name="bestaandMembership"/> een gratis membership is.</returns>
+        public bool IsGratis(Membership bestaandMembership)
+        {
+            Debug.Assert(bestaandMembership.MembershipPaymentResult != null);
+            return bestaandMembership.FactuurStatus == FactuurStatus.FactuurOk && bestaandMembership.MembershipPaymentResult.Count == 0;
         }
     }
 }
