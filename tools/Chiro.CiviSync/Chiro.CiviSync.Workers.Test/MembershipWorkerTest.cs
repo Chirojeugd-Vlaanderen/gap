@@ -75,7 +75,8 @@ namespace Chiro.CiviSync.Workers.Test
                 ContactId = myCiviContact.Id,
                 VerzekeringLoonverlies = false,
                 StartDate = new DateTime(2015, 10, 15),
-                EndDate = new DateTime(2016, 8, 31)
+                EndDate = new DateTime(2016, 8, 31),
+                MembershipPaymentResult = new ApiResultValues<MembershipPayment>(new MembershipPayment())
             };
 
             // Dit nam ik over van ContactWorkerTest:
@@ -160,6 +161,9 @@ namespace Chiro.CiviSync.Workers.Test
             var membershipWorker = factory.Maak<MembershipWorker>();
 
             // ACT
+
+            // Als we onderweg een invalid api-result hebben, zou het kunnen dat de condities niet voldaan zijn
+            // om de juiste mocking te triggeren.
             membershipWorker.BestaandeBijwerken(membership,
                 new MembershipGedoe
                 {

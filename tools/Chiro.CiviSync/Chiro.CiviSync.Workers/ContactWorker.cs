@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -80,7 +80,8 @@ namespace Chiro.CiviSync.Workers
 
         /// <summary>
         /// Haalt de persoon met gegeven <paramref name="adNummer"/> op, samen met zijn recentste
-        /// membership van het gegeven <paramref name="type"/>.
+        /// membership van het gegeven <paramref name="type"/>, en daarvan op zijn beurt de
+        /// membershippayments.
         /// </summary>
         /// <param name="adNummer">AD-nummer van op te halen persoon</param>
         /// <param name="type">gevraagde membership type</param>
@@ -96,7 +97,8 @@ namespace Chiro.CiviSync.Workers
                 MembershipGetRequest = new MembershipRequest
                 {
                     MembershipTypeId = (int)type,
-                    ApiOptions = new ApiOptions { Sort = "start_date DESC", Limit = 1 }
+                    ApiOptions = new ApiOptions { Sort = "start_date DESC", Limit = 1 },
+                    MembershipPaymentGetRequest = new MembershipPaymentRequest()
                 }
             };
 
