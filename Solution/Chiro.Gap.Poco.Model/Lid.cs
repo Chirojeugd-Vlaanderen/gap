@@ -39,6 +39,7 @@ namespace Chiro.Gap.Poco.Model
         public override byte[] Versie { get; set; }
         public DateTime? EindeInstapPeriode { get; set; }
         public DateTime? UitschrijfDatum { get; set; }
+        public bool IsAangesloten { get; set; }
     
         public virtual GroepsWerkJaar GroepsWerkJaar { get; set; }
         public virtual GelieerdePersoon GelieerdePersoon { get; set; }

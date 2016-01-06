@@ -278,6 +278,7 @@
           <Property Name="EindeInstapPeriode" Type="smalldatetime" />
           <Property Name="UitschrijfDatum" Type="datetime" />
           <Property Name="NonActief" Type="bit" StoreGeneratedPattern="Computed" />
+          <Property Name="IsAangesloten" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="LidFunctie">
           <Key>
@@ -359,8 +360,8 @@
           <Property Name="AdInAanvraag" Type="bit" Nullable="false" />
           <Property Name="SeNaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
           <Property Name="SeVoornaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
+          <Property Name="NieuwsBrief" Type="bit" Nullable="false" />
           <Property Name="LaatsteMembership" Type="int" />
-          <Property Name="Nieuwsbrief" Type="bit" />
         </EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
@@ -1565,7 +1566,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <NavigationProperty Name="BerichtGebruiker" Relationship="ChiroGroepModel.FK_Bericht_Gebruiker" FromRole="Persoon" ToRole="Bericht" />
           <NavigationProperty Name="BerichtPersoon" Relationship="ChiroGroepModel.FK_Bericht_Persoon_Id" FromRole="Persoon" ToRole="Bericht" />
           <Property Name="LaatsteMembership" Type="Int32" />
-          <Property Name="NieuwsBrief" Type="Boolean" />
+          <Property Name="NieuwsBrief" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -1669,6 +1670,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <NavigationProperty Name="Functie" Relationship="ChiroGroepModel.LidFunctie" FromRole="Lid" ToRole="Functie" />
           <Property Name="EindeInstapPeriode" Type="DateTime" Nullable="true" Precision="0" />
           <Property Type="DateTime" Name="UitschrijfDatum" Precision="3" />
+          <Property Name="IsAangesloten" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_GroepsWerkjaar_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
@@ -2121,7 +2123,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <EntitySetMapping Name="Persoon">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Persoon)">
               <MappingFragment StoreEntitySet="Persoon">
-                <ScalarProperty Name="NieuwsBrief" ColumnName="Nieuwsbrief" />
+                <ScalarProperty Name="NieuwsBrief" ColumnName="NieuwsBrief" />
                 <ScalarProperty Name="LaatsteMembership" ColumnName="LaatsteMembership" />
                 <ScalarProperty Name="SeVoornaam" ColumnName="SeVoornaam" />
                 <ScalarProperty Name="SeNaam" ColumnName="SeNaam" />
@@ -2245,6 +2247,7 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <EntitySetMapping Name="Lid">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Lid)">
               <MappingFragment StoreEntitySet="Lid">
+                <ScalarProperty Name="IsAangesloten" ColumnName="IsAangesloten" />
                 <ScalarProperty Name="UitschrijfDatum" ColumnName="UitschrijfDatum" />
                 <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" />
                 <ScalarProperty Name="ID" ColumnName="LidID" />
