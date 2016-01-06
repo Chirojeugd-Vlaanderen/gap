@@ -61,7 +61,11 @@ namespace Chiro.CiviSync.Workers
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                     svc =>
                         svc.ContactGet(ApiKey, SiteKey,
-                            new ContactRequest { Id = bestaandMembership.ContactId }));
+                            new ContactRequest
+                            {
+                                Id = bestaandMembership.ContactId,
+                                ReturnFields = "external_identifier,first_name,last_name,custom_1"
+                            }));
             result.AssertValid();
             if (result.Count == 0)
             {
