@@ -159,11 +159,28 @@ namespace Chiro.CiviSync.Workers
 
                 // We voegen een asteriskje toe achter dit logbericht. Op die manier kunnen we de berichten van de buggy
                 // CiviSync (#4413) onderscheiden van die van de gepatchte.
-                Log.Loggen(Niveau.Info,
+                int logResult = Log.Loggen(Niveau.Info,
                     String.Format(
                         "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Opnieuw naar Civi om sync te herstellen.*",
                         contact.FirstName, contact.LastName, contact.GapId, contact.ExternalIdentifier, werkJaar),
                     null, adNummer, contact.GapId);
+
+                if (logResult != 0)
+                {
+                    // Loggen mislukt. Wellicht was GAP-ID van contact ongeldig.
+                    Log.Loggen(Niveau.Info,
+                    String.Format(
+                        "{0} {1} (AD {2}) was al aangesloten in werkjaar {3}. Opnieuw naar Civi om sync te herstellen.*",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, werkJaar),
+                    null, adNummer, null);
+                    // We kunnen dat jammer genoeg niet met de API herstellen, want als we GapID=NULL meegeven, wordt dat
+                    // als ontbrekende parameter beschouwd.
+                    Log.Loggen(Niveau.Error,
+                    String.Format(
+                        "{0} {1} (AD {2}) heeft ongeldig Gap-ID {3} in Civi.",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, contact.GapId),
+                    null, adNummer, null);
+                }
             }
         }
     }
