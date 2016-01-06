@@ -54,7 +54,6 @@ WHERE gwj.WerkJaar = 2015 AND kf.id IS NULL
 -- Door alle leden uit meer dan 1 ploeg geen 'IsAangesloten' te geven, geven we
 -- in principe een aantal lidrelaties ten onrechte geen 'IsAangesloten'. Maar
 -- dat is niet erg, want civisync zal wel merken dat er toch een membership bestaat.
+GO
 
-
-
--- TODO: kolom pers.persoon.laatstemembership mag weg.
+ALTER TABLE pers.Persoon DROP COLUMN LaatsteMembership;

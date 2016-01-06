@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -62,18 +62,29 @@ namespace Chiro.Gap.Maintenance
             int huidigWerkJaar = _groepsWerkJarenManager.HuidigWerkJaarNationaal();
             DateTime vandaag = _groepsWerkJarenManager.Vandaag();
 
-            var teSyncen = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon.PersoonsVerzekering", "GroepsWerkJaar")
+            // Zoek eerst de leden waarvan IsAangesloten nog niet gezet is.
+            var nietAangeslotenLeden = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon.PersoonsVerzekering", "GroepsWerkJaar")
                 where
-                    (l.GelieerdePersoon.Persoon.LaatsteMembership < huidigWerkJaar ||
-                     l.GelieerdePersoon.Persoon.LaatsteMembership == null) &&
+                    // maak memberships voor niet-aangesloten leden
+                    !l.IsAangesloten && 
+                    // maak enkel memberships voor huidig werkjaar
                     l.GroepsWerkJaar.WerkJaar == huidigWerkJaar &&
+                    // actieve leden waarvan de instapperiode voorbij is
                     l.EindeInstapPeriode < vandaag && !l.NonActief
                 select l).ToArray();
 
+            // Hou dan enkel de leden over waarvan de persoon niet ergens anders een
+            // aangesloten lid heeft in hetzelfde werkjaar.
+            // (We doen dit apart van bovenstaande query om timeouts te vermijden.)
+
+            var teSyncen = (from l in nietAangeslotenLeden
+                            where l.GelieerdePersoon.Persoon.GelieerdePersoon.Where(gp => gp.Lid.Any(l2 => l2.GroepsWerkJaar.WerkJaar == huidigWerkJaar && l2.IsAangesloten)).FirstOrDefault() == null
+                            select l).ToArray();
+
             Console.WriteLine("Syncen van {0} memberships.", teSyncen.Count());
-            foreach (var p in teSyncen)
+            foreach (var lid in teSyncen)
             {
-                _personenSync.MembershipRegistreren(p);
+                _personenSync.MembershipRegistreren(lid);
                 Console.Write(".");
             }
         }

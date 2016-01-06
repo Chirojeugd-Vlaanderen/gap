@@ -361,7 +361,6 @@
           <Property Name="SeNaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
           <Property Name="SeVoornaam" Type="varchar" MaxLength="5" StoreGeneratedPattern="Computed" />
           <Property Name="NieuwsBrief" Type="bit" Nullable="false" />
-          <Property Name="LaatsteMembership" Type="int" />
         </EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
@@ -1565,7 +1564,6 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <Property Type="String" Name="SeVoornaam" MaxLength="5" FixedLength="false" Unicode="false" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <NavigationProperty Name="BerichtGebruiker" Relationship="ChiroGroepModel.FK_Bericht_Gebruiker" FromRole="Persoon" ToRole="Bericht" />
           <NavigationProperty Name="BerichtPersoon" Relationship="ChiroGroepModel.FK_Bericht_Persoon_Id" FromRole="Persoon" ToRole="Bericht" />
-          <Property Name="LaatsteMembership" Type="Int32" />
           <Property Name="NieuwsBrief" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
@@ -2124,7 +2122,6 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Persoon)">
               <MappingFragment StoreEntitySet="Persoon">
                 <ScalarProperty Name="NieuwsBrief" ColumnName="NieuwsBrief" />
-                <ScalarProperty Name="LaatsteMembership" ColumnName="LaatsteMembership" />
                 <ScalarProperty Name="SeVoornaam" ColumnName="SeVoornaam" />
                 <ScalarProperty Name="SeNaam" ColumnName="SeNaam" />
                 <ScalarProperty Name="InSync" ColumnName="AdInAanvraag" />

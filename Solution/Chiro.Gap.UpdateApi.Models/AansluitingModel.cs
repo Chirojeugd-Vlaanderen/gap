@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 the Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015, 2016 the Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -22,5 +22,6 @@ namespace Chiro.Gap.UpdateApi.Models
     {
         public int AdNummer { get; set; }
         public int? RecentsteWerkJaar { get; set; }
+        public string StamNummer { get; set; }
     }
 }
