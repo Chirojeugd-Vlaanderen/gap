@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -227,7 +227,8 @@ namespace Chiro.CiviSync.Services.Test
                 EndDate = eindeDitWerkJaar,
                 JoinDate = beginDitWerkJaar.AddMonths(1),
                 VerzekeringLoonverlies = false,
-                FactuurStatus = FactuurStatus.VolledigTeFactureren
+                FactuurStatus = FactuurStatus.VolledigTeFactureren,
+                MembershipPaymentResult = new ApiResultValues<MembershipPayment>(new MembershipPayment())
             };
 
             var persoon = new Contact

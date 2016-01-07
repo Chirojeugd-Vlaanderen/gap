@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015-2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,10 +15,7 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
@@ -27,6 +24,7 @@ using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using System.Diagnostics;
 
 namespace Chiro.CiviSync.Workers
 {
@@ -50,6 +48,10 @@ namespace Chiro.CiviSync.Workers
         /// <param name="gedoe">Membershipdetails</param>
         public void BestaandeBijwerken(Membership bestaandMembership, MembershipGedoe gedoe)
         {
+            // Om te weten of een membership 'geupgradet' moet worden van gratis naar
+            // betalend (#4520), hebben we informatie nodig over de betalingen. We asserten
+            // dus dat die betalingsinfo mee in het bestaandMembership zit.
+            Debug.Assert(bestaandMembership.MembershipPaymentResult != null);
             int werkJaar = _membershipLogic.WerkjaarGet(bestaandMembership);
             // We halen de persoon opnieuw op. Wat een beetje overkill is, aangezien
             // dat enkel dient om te kunnen loggen. Maar het bijwerken van een bestaand
@@ -59,7 +61,11 @@ namespace Chiro.CiviSync.Workers
                 ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Contact>>(
                     svc =>
                         svc.ContactGet(ApiKey, SiteKey,
-                            new ContactRequest { Id = bestaandMembership.ContactId }));
+                            new ContactRequest
+                            {
+                                Id = bestaandMembership.ContactId,
+                                ReturnFields = "external_identifier,first_name,last_name,custom_1"
+                            }));
             result.AssertValid();
             if (result.Count == 0)
             {
@@ -81,13 +87,38 @@ namespace Chiro.CiviSync.Workers
                 return;
             }
 
-            if (gedoe.MetLoonVerlies && !bestaandMembership.VerzekeringLoonverlies)
+            // We moeten bijwerken in deze gevallen:
+            // (1) er was al een gratis aansluiting, maar de nieuwe aansluiting is betalend. (#4510)
+            // (2) er was nog geen verzekering loonverlies, nu is die er wel. Alnaargelang de aansluiting gebeurde door
+            //     een groep of niet, moet de factuurstatus aangepast worden. (#4514)
+            if (!gedoe.Gratis && _membershipLogic.IsGratis(bestaandMembership))
+            {
+                var membershipRequest = new MembershipRequest
+                {
+                    Id = bestaandMembership.Id,
+                    VerzekeringLoonverlies = gedoe.MetLoonVerlies,
+                    AangemaaktDoorPloegId = civiGroepId,
+                    FactuurStatus = FactuurStatus.VolledigTeFactureren,
+                };
+
+                var updateResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
+                    svc => svc.MembershipSave(ApiKey, SiteKey, membershipRequest));
+                updateResult.AssertValid();
+                Log.Loggen(Niveau.Info,
+                    String.Format(
+                        "Membership van {0} {1} (AD {2}, ID {3}) voor werkjaar {4}, met ID {5} moet nu betaald worden door {6}.",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, contact.GapId,
+                        werkJaar, updateResult.Id, gedoe.StamNummer), gedoe.StamNummer, adNummer, contact.GapId);
+            }
+            else if (gedoe.MetLoonVerlies && !bestaandMembership.VerzekeringLoonverlies)
             {
                 var membershipRequest = new MembershipRequest
                 {
                     Id = bestaandMembership.Id,
                     VerzekeringLoonverlies = true,
                     AangemaaktDoorPloegId = civiGroepId,
+                    // TODO: Als er al een bestaand betalend membership is, maar het gewest verzekert bij
+                    // voor loonverlies, dan ziten we hier mogelijk in de problemen.
                     FactuurStatus = gedoe.Gratis
                         ? FactuurStatus.FactuurOk
                         : bestaandMembership.FactuurStatus == FactuurStatus.FactuurOk
@@ -107,7 +138,8 @@ namespace Chiro.CiviSync.Workers
             else
             {
                 // Membership bestond eigenlijk al. Maar we sturen het toch opnieuw naar de civi,
-                // zodat die aan GAP het juiste werkjaar kan afleveren (#3581)
+                // zodat een update-hook wordt gefired, en de Civi het juiste werkjaar aflevert
+                // bij het GAP. (#3581)
 
                 var membershipRequest = new MembershipRequest
                 {
@@ -116,7 +148,8 @@ namespace Chiro.CiviSync.Workers
                     // verzekering loonverlies. Voor het bijgewerkte loonverlies kan het dus nog
                     // alle kanten op. (#4413)
                     VerzekeringLoonverlies = bestaandMembership.VerzekeringLoonverlies || gedoe.MetLoonVerlies,
-                    AangemaaktDoorPloegId = civiGroepId,
+                    // Verander niets aan de bestaande ploeg-ID. Anders wordt het te verwarrend.
+                    // AangemaaktDoorPloegId = civiGroepId,
                     FactuurStatus = bestaandMembership.FactuurStatus
                 };
 
@@ -126,11 +159,28 @@ namespace Chiro.CiviSync.Workers
 
                 // We voegen een asteriskje toe achter dit logbericht. Op die manier kunnen we de berichten van de buggy
                 // CiviSync (#4413) onderscheiden van die van de gepatchte.
-                Log.Loggen(Niveau.Info,
+                int logResult = Log.Loggen(Niveau.Info,
                     String.Format(
                         "{0} {1} (AD {3}, ID {2}) was al aangesloten in werkjaar {4}. Opnieuw naar Civi om sync te herstellen.*",
                         contact.FirstName, contact.LastName, contact.GapId, contact.ExternalIdentifier, werkJaar),
                     null, adNummer, contact.GapId);
+
+                if (logResult != 0)
+                {
+                    // Loggen mislukt. Wellicht was GAP-ID van contact ongeldig.
+                    Log.Loggen(Niveau.Info,
+                    String.Format(
+                        "{0} {1} (AD {2}) was al aangesloten in werkjaar {3}. Opnieuw naar Civi om sync te herstellen.*",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, werkJaar),
+                    null, adNummer, null);
+                    // We kunnen dat jammer genoeg niet met de API herstellen, want als we GapID=NULL meegeven, wordt dat
+                    // als ontbrekende parameter beschouwd.
+                    Log.Loggen(Niveau.Error,
+                    String.Format(
+                        "{0} {1} (AD {2}) heeft ongeldig Gap-ID {3} in Civi.",
+                        contact.FirstName, contact.LastName, contact.ExternalIdentifier, contact.GapId),
+                    null, adNummer, null);
+                }
             }
         }
     }

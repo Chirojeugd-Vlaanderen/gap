@@ -418,7 +418,7 @@
                <b>Nee</b>
             </td>
             <td>
-                <a id="bewerkVerzekering" style="cursor: pointer">[Verzeker]</a>
+                <%=Html.ActionLink("[Verzeker]", "LoonVerliesVerzekeren", new { Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID, groepID = Model.GroepID }) %>
             <% if (Model.GroepsNiveau.HasFlag(Niveau.KaderGroep))
                { %>
               (dit is gratis voor kaderleden)
