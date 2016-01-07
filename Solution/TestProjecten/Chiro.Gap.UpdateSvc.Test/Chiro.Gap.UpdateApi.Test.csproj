@@ -75,6 +75,10 @@
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.UpdateApi.Models\Chiro.Gap.UpdateApi.Models.csproj">
+      <Project>{71fdd616-e12e-474e-a996-575a187824e2}</Project>
+      <Name>Chiro.Gap.UpdateApi.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.UpdateApi\Chiro.Gap.UpdateApi.csproj">
       <Project>{25241b90-0cc2-4f25-b794-21dfe6a6fbf0}</Project>
       <Name>Chiro.Gap.UpdateApi</Name>
