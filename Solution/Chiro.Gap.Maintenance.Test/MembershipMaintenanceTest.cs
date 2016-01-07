@@ -115,6 +115,78 @@ namespace Chiro.Gap.Maintenance.Test
         }
 
         /// <summary>
+        /// Er mogen geen aansluitingen naar Civi gaan voor members van gestopte groepen.
+        /// </summary>
+        [TestMethod]
+        public void GeenAansluitingenVoorGestopteGroepen()
+        {
+            // ARRANGE
+
+            const int huidigWerkjaar = 2015;
+            DateTime vandaagZoGezegd = new DateTime(2016, 1, 7);
+
+            // We hebben 1 leidster, met probeerperiode die voorbij is.
+            var leidster = new Leiding
+            {
+                ID = 1,
+                EindeInstapPeriode = vandaagZoGezegd.AddDays(-7),
+                GelieerdePersoon = new GelieerdePersoon
+                {
+                    ID = 2,
+                    Persoon = new Persoon
+                    {
+                        ID = 3,
+                        VoorNaam = "Kelly",
+                        Naam = "Pfaff"
+                    }
+                },
+                GroepsWerkJaar = new GroepsWerkJaar
+                {
+                    ID = 4,
+                    WerkJaar = huidigWerkjaar,
+                    Groep = new ChiroGroep
+                    {
+                        ID = 5,
+                        StopDatum = vandaagZoGezegd.AddDays(-30)
+                    }
+                }
+            };
+
+            // De repository bevat enkel deze leidster.
+            var ledenRepo = new DummyRepo<Lid>(new List<Lid> { leidster });
+
+            // Repositoryprovidermock opzetten
+            var repoProviderMock = new Mock<IRepositoryProvider>();
+            repoProviderMock.Setup(src => src.RepositoryGet<Lid>()).Returns(ledenRepo);
+
+            // Mock voor personenSync
+            var personenSyncMock = new Mock<IPersonenSync>();
+            personenSyncMock.Setup(
+                src =>
+                    src.MembershipRegistreren(It.Is<Lid>(l => l.ID == leidster.ID))).Verifiable();
+
+            // Meer mocks.
+            var groepsWerkJaarManagerMock = new Mock<IGroepsWerkJarenManager>();
+            groepsWerkJaarManagerMock.Setup(src => src.HuidigWerkJaarNationaal()).Returns(huidigWerkjaar);
+            groepsWerkJaarManagerMock.Setup(src => src.Vandaag()).Returns(vandaagZoGezegd);
+
+            // Mocks registeren
+            Factory.InstantieRegistreren(repoProviderMock.Object);
+            Factory.InstantieRegistreren(personenSyncMock.Object);
+            Factory.InstantieRegistreren(groepsWerkJaarManagerMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<MembershipMaintenance>();
+            target.MembershipsMaken();
+
+            // ASSERT
+
+            personenSyncMock.Verify(
+                src => src.MembershipRegistreren(It.Is<Lid>(l => l.ID == leidster.ID)), Times.Never);
+        }
+
+        /// <summary>
         /// Als de property 'LaatsteMembership' van een persoon <c>null</c> is, mag dat niet
         /// verhinderen dat er memberships worden gemaakt.
         /// </summary>
