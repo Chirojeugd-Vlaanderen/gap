@@ -67,6 +67,9 @@ namespace Chiro.Gap.Maintenance
             int huidigWerkJaar = _groepsWerkJarenManager.HuidigWerkJaarNationaal();
             DateTime vandaag = _groepsWerkJarenManager.Vandaag();
 
+            // TODO: Het bepalen van de aan te vragen memberships, is eigenlijk business logic,
+            // en moet in de workers. Maar soit.
+
             // Zoek eerst de leden waarvan IsAangesloten nog niet gezet is.
             var nietAangeslotenLeden = (from l in _ledenRepo.Select("GelieerdePersoon.Persoon.PersoonsVerzekering", "GroepsWerkJaar")
                 where
@@ -75,7 +78,9 @@ namespace Chiro.Gap.Maintenance
                     // maak enkel memberships voor huidig werkjaar
                     l.GroepsWerkJaar.WerkJaar == huidigWerkJaar &&
                     // actieve leden waarvan de instapperiode voorbij is
-                    l.EindeInstapPeriode < vandaag && !l.NonActief
+                    l.EindeInstapPeriode < vandaag && !l.NonActief &&
+                    // enkel als de groep nog actief was wanneer instapperiode verviel (#4528)
+                    (l.GroepsWerkJaar.Groep.StopDatum == null || l.GroepsWerkJaar.Groep.StopDatum > l.EindeInstapPeriode)
                 select l).ToArray();
 
             // Hou dan enkel de leden over waarvan de persoon niet ergens anders een

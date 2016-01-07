@@ -216,7 +216,8 @@ namespace Chiro.Gap.Maintenance.Test
                 GroepsWerkJaar = new GroepsWerkJaar
                 {
                     ID = 4,
-                    WerkJaar = huidigWerkjaar
+                    WerkJaar = huidigWerkjaar,
+                    Groep = new ChiroGroep { ID = 5 }
                 }
             };
 
@@ -286,7 +287,8 @@ namespace Chiro.Gap.Maintenance.Test
                 GroepsWerkJaar = new GroepsWerkJaar
                 {
                     ID = 4,
-                    WerkJaar = huidigWerkjaar
+                    WerkJaar = huidigWerkjaar,
+                    Groep = new ChiroGroep { ID = 5 }
                 }
             };
 
