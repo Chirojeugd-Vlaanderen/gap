@@ -545,9 +545,12 @@ namespace Chiro.Gap.UpdateApi.Workers
 
             if (lid == null)
             {
-                throw new FoutNummerException(
-                    FoutNummer.LidNietGevonden,
-                    string.Format("Lid niet gevonden. {1} AD{0} {2}. Aansluiting genegeerd.", model.AdNummer, model.StamNummer, model.RecentsteWerkJaar));
+                Console.WriteLine(
+                    "Lid niet gevonden. {1} AD{0} {2}. Aansluiting genegeerd. Zie #4526", 
+                    model.AdNummer, 
+                    model.StamNummer, 
+                    model.RecentsteWerkJaar);
+                return;
             }
 
             if (lid.IsAangesloten)
