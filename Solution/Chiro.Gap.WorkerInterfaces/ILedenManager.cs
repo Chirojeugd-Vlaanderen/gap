@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
- * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * Copyright 2008-2013, 2015, 2016 the GAP developers. 
+ * See the NOTICE file at the top-level directory of this distribution, 
+ * and at https://develop.chiro.be/gap/wiki/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,6 +70,16 @@ namespace Chiro.Gap.WorkerInterfaces
         /// <returns><c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
         /// lid kan worden, d.w.z. dat hij qua (Chiro)leeftijd in een afdeling past.</returns>
         bool KanInschrijvenAlsKind(GelieerdePersoon gelieerdePersoon);
+
+        /// <summary>
+        /// Geeft <c>true</c> als er in de Civi een betalende aansluiting bestaat voor het gegeven lid
+        /// <paramref name="l"/> (eventueel via dezelfde persoon in een andere groep).
+        /// </summary>
+        /// <param name="l">Een lid</param>
+        /// <returns><c>true</c> als er in de Civi een betalende aansluiting bestaat voor het gegeven lid
+        /// <paramref name="l"/> (eventueel via dezelfde persoon in een andere groep).</returns>
+        /// <remarks>Dit wordt bepaald o.m. op basis van het IsAangesloten-veld van de leden.</remarks>
+        bool IsBetalendAangesloten(Lid l);
 
         /// <summary>
         /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar

@@ -37,16 +37,21 @@ namespace Chiro.Gap.Maintenance
 
         // Businesslogica
         private readonly IGroepsWerkJarenManager _groepsWerkJarenManager;
+        private readonly ILedenManager _ledenManager;
 
         // Synchronisatie
         private readonly IPersonenSync _personenSync;
 
-        public MembershipMaintenance(IRepositoryProvider repositoryProvider, IGroepsWerkJarenManager groepsWerkJarenManager,
+        public MembershipMaintenance(
+            IRepositoryProvider repositoryProvider, 
+            IGroepsWerkJarenManager groepsWerkJarenManager,
+            ILedenManager ledenManager,
             IPersonenSync personenSync)
         {
             _repositoryProvider = repositoryProvider;
             _ledenRepo = _repositoryProvider.RepositoryGet<Lid>();
             _groepsWerkJarenManager = groepsWerkJarenManager;
+            _ledenManager = ledenManager;
             _personenSync = personenSync;
         }
 
@@ -78,7 +83,7 @@ namespace Chiro.Gap.Maintenance
             // (We doen dit apart van bovenstaande query om timeouts te vermijden.)
 
             var teSyncen = (from l in nietAangeslotenLeden
-                            where l.GelieerdePersoon.Persoon.GelieerdePersoon.Where(gp => gp.Lid.Any(l2 => l2.GroepsWerkJaar.WerkJaar == huidigWerkJaar && l2.IsAangesloten)).FirstOrDefault() == null
+                            where !_ledenManager.IsBetalendAangesloten(l)
                             select l).ToArray();
 
             Console.WriteLine("Syncen van {0} memberships.", teSyncen.Count());
