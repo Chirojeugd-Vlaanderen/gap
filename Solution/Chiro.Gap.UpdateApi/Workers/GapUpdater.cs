@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2014-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -537,20 +537,39 @@ namespace Chiro.Gap.UpdateApi.Workers
         /// <param name="model">Gegevens over bij te werken werkjaar.</param>
         public void Bijwerken(AansluitingModel model)
         {
-            var persoon = _personenRepo.Select().FirstOrDefault(p => p.AdNummer == model.AdNummer);
+            var lid = (from l in _ledenRepo.Select()
+                       where l.GelieerdePersoon.Persoon.AdNummer == model.AdNummer &&
+                       l.GroepsWerkJaar.Groep.Code == model.StamNummer &&
+                       l.GroepsWerkJaar.WerkJaar == model.RecentsteWerkJaar
+                       select l).FirstOrDefault();
 
-            if (persoon == null)
+            if (lid == null)
             {
-                throw new FoutNummerException(
-                    FoutNummer.PersoonNietGevonden,
-                    string.Format("Onbekend persoon (AD {0}) genegeerd.", model.AdNummer));
+                Console.WriteLine(
+                    "Lid niet gevonden. {1} AD{0} {2}. Aansluiting genegeerd. Zie #4526", 
+                    model.AdNummer, 
+                    model.StamNummer, 
+                    model.RecentsteWerkJaar);
+                return;
             }
 
-            if (persoon.LaatsteMembership == model.RecentsteWerkJaar) return;
+            if (lid.IsAangesloten)
+            {
+                Console.WriteLine(
+                    "{1} (ID {2}) was al aangesloten bij {3} in {0}. ", 
+                    model.RecentsteWerkJaar, 
+                    lid.GelieerdePersoon.Persoon.VolledigeNaam, 
+                    lid.GelieerdePersoon.Persoon.ID,
+                    model.StamNummer);
+            }
 
-            persoon.LaatsteMembership = model.RecentsteWerkJaar;
-            _personenRepo.SaveChanges();
-            Console.WriteLine("LaatsteMembership {0} toegekend aan {1}. (ID {2})", model.RecentsteWerkJaar, persoon.VolledigeNaam, persoon.ID);
+            lid.IsAangesloten = true;
+            _ledenRepo.SaveChanges();
+            Console.WriteLine("Aansluiting in {0} geregistreerd voor {1} (ID {2}) bij {3}.", 
+                model.RecentsteWerkJaar, 
+                lid.GelieerdePersoon.Persoon.VolledigeNaam, 
+                lid.GelieerdePersoon.Persoon.ID,
+                model.StamNummer);
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -29,16 +29,18 @@ namespace Chiro.Gap.Log
 	/// </summary>
 	public class MiniLog : IMiniLog
 	{
-	    /// <summary>
-	    /// Log een bericht.
-	    /// </summary>
-	    /// <param name="niveau">Niveau van het bericht</param>
-	    /// <param name="boodschap">Te loggen boodschap</param>
-	    /// <param name="stamNummer">Een stamnummer, indien van toepassing</param>
-	    /// <param name="adNummer">Een AD-nummer, indien van toepassing</param>
-	    /// <param name="persoonId">Een PersoonID, indien van toepassing</param>
-	    public void Loggen(Niveau niveau, string boodschap, string stamNummer, int? adNummer, int? persoonId)
+        /// <summary>
+        /// Log een bericht.
+        /// </summary>
+        /// <param name="niveau">Niveau van het bericht</param>
+        /// <param name="boodschap">Te loggen boodschap</param>
+        /// <param name="stamNummer">Een stamnummer, indien van toepassing</param>
+        /// <param name="adNummer">Een AD-nummer, indien van toepassing</param>
+        /// <param name="persoonId">Een PersoonID, indien van toepassing</param>
+        /// <returns>0 als het loggen lukte, anders het foutnummer van de SqlException</returns>
+        public int Loggen(Niveau niveau, string boodschap, string stamNummer, int? adNummer, int? persoonId)
 	    {
+            int result = 0;
 	        string connectionString = ConfigurationManager.ConnectionStrings["LogConnection"].ConnectionString;
 	        using (var connection = new SqlConnection(connectionString))
 	        {
@@ -54,12 +56,21 @@ namespace Chiro.Gap.Log
 	            command.Parameters.AddWithValue("@persoonId", (Object)persoonId ?? DBNull.Value);
 
                 connection.Open();
-	            command.ExecuteNonQuery();
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    result = ex.Number;
+                }
+	            
                 connection.Close();
 	        }
 
 	        // Log to console as well.
 	        Console.WriteLine("{0} {1} AD{2} ID{3}\n{4}", niveau, stamNummer, adNummer, persoonId, boodschap);
+            return result;
 	    } 
 	}
 }
