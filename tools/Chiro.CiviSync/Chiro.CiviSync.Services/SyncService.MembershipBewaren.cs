@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ namespace Chiro.CiviSync.Services
 
             _log.Loggen(Niveau.Info,
                 String.Format(
-                    "Membership (aansluiting) {5} {3} {4}: AD {0} werkjaar {2} - memID {1}",
+                    "Nieuw membership (aansluiting) {5} {3} {4}: AD {0} werkjaar {2} - memID {1}",
                     adNummer, result.Id, werkJaar, contact.FirstName, contact.LastName,
                     gedoe.MetLoonVerlies ? "met loonverlies" : String.Empty),
                 null, adNummer, contact.GapId);

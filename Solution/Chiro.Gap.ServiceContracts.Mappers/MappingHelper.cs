@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014,2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2014,2015, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -586,7 +586,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                   .ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
                   .ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
                   .ForMember(dst => dst.InSync, opt => opt.MapFrom(src => src.AdNummer.HasValue))
-                  .ForMember(dst => dst.LaatsteMembership, opt => opt.Ignore())
                   .ForMember(dst => dst.Gav, opt => opt.Ignore())
                   .ForMember(dst => dst.BerichtGebruiker, opt => opt.Ignore())
                   .ForMember(dst => dst.BerichtPersoon, opt => opt.Ignore())

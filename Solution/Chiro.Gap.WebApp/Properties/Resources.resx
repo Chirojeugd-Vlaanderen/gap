@@ -414,4 +414,7 @@ Je kunt dit nog steeds doen door onder 'leden' te klikken op het vorige werkjaar
   <data name="OngeldigEmailAdres" xml:space="preserve">
     <value>Dit e-mailadres werd niet aanvaard.</value>
   </data>
+  <data name="VerzekeringBestaatAl" xml:space="preserve">
+    <value>Dit lid is al verzekerd voor dit werkjaar.</value>
+  </data>
 </root>
