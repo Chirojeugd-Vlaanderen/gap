@@ -84,7 +84,7 @@ namespace Chiro.Gap.Maintenance
                 select l).ToArray();
 
             // Hou dan enkel de leden over waarvan de persoon niet ergens anders een
-            // aangesloten lid heeft in hetzelfde werkjaar.
+            // betalend aangesloten lid heeft in hetzelfde werkjaar.
             // (We doen dit apart van bovenstaande query om timeouts te vermijden.)
 
             var teSyncen = (from l in nietAangeslotenLeden
