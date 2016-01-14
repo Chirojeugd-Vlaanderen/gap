@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2013 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2013,2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -79,20 +79,20 @@ namespace Chiro.Gap.ExcelManip
             Insert(ledenBlad, "Geboortedatum", 8, 1);
             Insert(ledenBlad, "Betaald", 9, 1);
 
-            var startAdresIndex = 10;
+            const int StartAdresIndex = 10;
             for (int i = 0; i < maxAantalAdressen; ++i)
             {
                 var nb = maxAantalAdressen > 1? " " + (i + 1) : "";
-                Insert(ledenBlad, String.Format("Straat{0}", nb), i * 7 + startAdresIndex, 1);
-                Insert(ledenBlad, String.Format("Nr.{0}", nb), i * 7 + startAdresIndex + 1, 1);
-                Insert(ledenBlad, String.Format("Bus{0}", nb), i * 7 + startAdresIndex + 2, 1);
-                Insert(ledenBlad, String.Format("Postnr.{0}", nb), i * 7 + startAdresIndex + 3, 1);
-                Insert(ledenBlad, String.Format("Postcode{0}", nb), i * 7 + startAdresIndex + 4, 1);
-                Insert(ledenBlad, String.Format("Woonplaats{0}", nb), i * 7 + startAdresIndex + 5, 1);
-                Insert(ledenBlad, String.Format("Land{0}", nb), i * 7 + startAdresIndex + 6, 1);
+                Insert(ledenBlad, String.Format("Straat{0}", nb), i * 7 + StartAdresIndex, 1);
+                Insert(ledenBlad, String.Format("Nr.{0}", nb), i * 7 + StartAdresIndex + 1, 1);
+                Insert(ledenBlad, String.Format("Bus{0}", nb), i * 7 + StartAdresIndex + 2, 1);
+                Insert(ledenBlad, String.Format("Postnr.{0}", nb), i * 7 + StartAdresIndex + 3, 1);
+                Insert(ledenBlad, String.Format("Postcode{0}", nb), i * 7 + StartAdresIndex + 4, 1);
+                Insert(ledenBlad, String.Format("Woonplaats{0}", nb), i * 7 + StartAdresIndex + 5, 1);
+                Insert(ledenBlad, String.Format("Land{0}", nb), i * 7 + StartAdresIndex + 6, 1);
             }
 
-            var startTelIndex = 7 * maxAantalAdressen + startAdresIndex;
+            var startTelIndex = 7 * maxAantalAdressen + StartAdresIndex;
             for (int i = 0; i < maxAantalTel; ++i)
             {
                 var nb = maxAantalTel > 1 ? " " + (i + 1) : "";
@@ -136,13 +136,13 @@ namespace Chiro.Gap.ExcelManip
 
                 foreach (var adres in rij.PersoonsAdresInfo.OrderBy(pai => Math.Abs(pai.PersoonsAdresID - voorkeursAdresID)))
                 {
-                    Insert(ledenBlad, adres.StraatNaamNaam, i * 7 + startAdresIndex, rijNr);
-                    Insert(ledenBlad, adres.HuisNr, i * 7 + startAdresIndex + 1, rijNr);
-                    Insert(ledenBlad, adres.Bus, i * 7 + startAdresIndex + 2, rijNr);
-                    Insert(ledenBlad, adres.PostNr, i * 7 + startAdresIndex + 3, rijNr);
-                    Insert(ledenBlad, adres.PostCode, i * 7 + startAdresIndex + 4, rijNr);
-                    Insert(ledenBlad, adres.WoonPlaatsNaam, i * 7 + startAdresIndex + 5, rijNr);
-                    Insert(ledenBlad, adres.LandNaam, i * 7 + startAdresIndex + 6, rijNr);
+                    Insert(ledenBlad, adres.StraatNaamNaam, i * 7 + StartAdresIndex, rijNr);
+                    Insert(ledenBlad, adres.HuisNr, i * 7 + StartAdresIndex + 1, rijNr);
+                    Insert(ledenBlad, adres.Bus, i * 7 + StartAdresIndex + 2, rijNr);
+                    Insert(ledenBlad, adres.PostNr, i * 7 + StartAdresIndex + 3, rijNr);
+                    Insert(ledenBlad, adres.PostCode, i * 7 + StartAdresIndex + 4, rijNr);
+                    Insert(ledenBlad, adres.WoonPlaatsNaam, i * 7 + StartAdresIndex + 5, rijNr);
+                    Insert(ledenBlad, adres.LandNaam, i * 7 + StartAdresIndex + 6, rijNr);
                     ++i;
                 }
 
