@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015,2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ namespace Chiro.CiviSync.Services.Test
             {
                 Straat = "Kipdorp",
                 HuisNr = 24,
-                PostNr = 2000,
+                PostNr = "2000",
                 WoonPlaats = "Antwerpen"
             };
             // mock

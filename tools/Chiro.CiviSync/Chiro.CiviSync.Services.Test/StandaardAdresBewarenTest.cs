@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015,2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ namespace Chiro.CiviSync.Services.Test
             // ACT
 
             service.StandaardAdresBewaren(
-                new Adres {Straat = "Kipdorp", HuisNr = 30, PostNr = 2000, WoonPlaats = "Antwerpen"}, new Bewoner[]
+                new Adres {Straat = "Kipdorp", HuisNr = 30, PostNr = "2000", WoonPlaats = "Antwerpen"}, new Bewoner[]
                 {
                     new Bewoner
                     {
@@ -133,7 +133,7 @@ namespace Chiro.CiviSync.Services.Test
             // ACT
 
             service.StandaardAdresBewaren(
-                new Adres { Straat = "Kipdorp", HuisNr = 30, PostNr = 2000, WoonPlaats = "Antwerpen" }, new Bewoner[]
+                new Adres { Straat = "Kipdorp", HuisNr = 30, PostNr = "2000", WoonPlaats = "Antwerpen" }, new Bewoner[]
                 {
                     new Bewoner
                     {

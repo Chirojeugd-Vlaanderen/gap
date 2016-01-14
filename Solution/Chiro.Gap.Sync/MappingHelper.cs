@@ -1,6 +1,6 @@
 /*
- * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
- * top-level directory of this distribution, and at
+ * Copyright 2008-2013, 2015, 2016 the GAP developers. See the NOTICE
+ * file at the top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,14 +74,13 @@ namespace Chiro.Gap.Sync
             Mapper.CreateMap<Adres, Kip.ServiceContracts.DataContracts.Adres>()
                 .ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.LandGet()))
                 .ForMember(dst => dst.LandIsoCode, opt => opt.MapFrom(src => src.LandCodeGet()))
-                .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()))
                 .ForMember(dst => dst.PostNr,
                            opt =>
                            opt.MapFrom(
                             src =>
                             src is BelgischAdres
-                                ? (src as BelgischAdres).StraatNaam.PostNummer
-                                : src is BuitenLandsAdres ? (src as BuitenLandsAdres).PostNummer : 0))
+                                ? (src as BelgischAdres).StraatNaam.PostNummer.ToString()
+                                : src.PostCodeGet()))
                 .ForMember(dst => dst.Straat,
                            opt =>
                            opt.MapFrom(

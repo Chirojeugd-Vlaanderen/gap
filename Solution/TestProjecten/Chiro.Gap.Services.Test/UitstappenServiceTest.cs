@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -217,8 +217,7 @@ namespace Chiro.Gap.Services.Test
                             {
                                 Straat = "Vorststraat",
                                 HuisNr = 3,
-                                PostNummer = 1234,
-                                PostCode = "BR",
+                                PostCode = "BR 1234",
                                 WoonPlaats = "Killegem",
                                 Land = new Land{Naam = "Nederland"}
                             };
@@ -250,7 +249,6 @@ namespace Chiro.Gap.Services.Test
                                      {
                                          StraatNaamNaam = adres.Straat,
                                          HuisNr = adres.HuisNr,
-                                         PostNr = adres.PostNummer ?? 0,
                                          PostCode = adres.PostCode,
                                          WoonPlaatsNaam = adres.WoonPlaats,
                                          LandNaam = adres.Land.Naam
@@ -275,8 +273,7 @@ namespace Chiro.Gap.Services.Test
             {
                 Straat = "Vorststraat",
                 HuisNr = 3,
-                PostNummer = 1234,
-                PostCode = "BR",
+                PostCode = "BR 1234",
                 WoonPlaats = "Killegem",
                 Land = new Land { Naam = "Nederland" }
             };
@@ -306,7 +303,6 @@ namespace Chiro.Gap.Services.Test
                                  {
                                      StraatNaamNaam = adres.Straat,
                                      HuisNr = adres.HuisNr,
-                                     PostNr = adres.PostNummer ?? 0,
                                      PostCode = adres.PostCode,
                                      WoonPlaatsNaam = adres.WoonPlaats,
                                      LandNaam = adres.Land.Naam
@@ -379,8 +375,7 @@ namespace Chiro.Gap.Services.Test
             {
                 Straat = "Vorststraat",
                 HuisNr = 3,
-                PostNummer = 1234,
-                PostCode = "BR",
+                PostCode = "BR 1234",
                 WoonPlaats = "Killegem",
                 Land = new Land { Naam = "Nederland" }
             };

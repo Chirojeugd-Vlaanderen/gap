@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015,2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -76,10 +76,7 @@ namespace Chiro.Mailchimp.Sync
                     : String.Format("{0} {1} bus {2}", abonnementInfo.Adres.Straat, abonnementInfo.Adres.HuisNr,
                         abonnementInfo.Adres.Bus);
 
-                member.merge_fields.POSTCODE = string.IsNullOrEmpty(abonnementInfo.Adres.PostCode)
-                    ? abonnementInfo.Adres.PostNr.ToString()
-                    : String.Format("{0} {1}", abonnementInfo.Adres.PostNr, abonnementInfo.Adres.PostCode);
-
+                member.merge_fields.POSTCODE = abonnementInfo.Adres.PostNr;
                 member.merge_fields.GEMEENTE = abonnementInfo.Adres.WoonPlaats;
                 member.merge_fields.LAND = string.IsNullOrEmpty(abonnementInfo.Adres.Land)
                     ? "België"

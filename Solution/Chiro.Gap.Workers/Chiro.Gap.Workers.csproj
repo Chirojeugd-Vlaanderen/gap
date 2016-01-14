@@ -114,7 +114,7 @@
       <Name>Chiro.Gap.Validatie</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
-      <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
+      <Project>{bdaf9a9d-49e3-48ac-869d-e17e8a3d9203}</Project>
       <Name>Chiro.Gap.WorkerInterfaces</Name>
     </ProjectReference>
   </ItemGroup>

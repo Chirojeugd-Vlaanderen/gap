@@ -1,3 +1,4 @@
+changes: wijzigingen t.o.v. vorige versies van de database
 DiagScripts: diagnostic dingen om de communicatie GAP->Kipadmin na te kijken
 live-to-dev: hoe de live-database te transformeren naar dev- of testdatabase
 initiele-conversie: conversiequery's van kipadmin naar GAP. Enkel gebruikt voor initiele migratie

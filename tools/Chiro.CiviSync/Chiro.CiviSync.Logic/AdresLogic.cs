@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015,2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 using System;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using System.Diagnostics;
 
 namespace Chiro.CiviSync.Logic
 {
@@ -51,7 +52,7 @@ namespace Chiro.CiviSync.Logic
                 return 0;
             }
 
-            int nr = src.PostNr;
+            int nr = int.Parse(src.PostNr);
 
             if (nr < 1300) return 5217;    // Brussel. eigenlijk geen provincie, maar kipadmin weet dat niet
             if (nr < 1500) return 1786;    // Waals Brabant

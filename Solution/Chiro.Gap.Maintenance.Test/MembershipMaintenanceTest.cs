@@ -38,7 +38,9 @@ namespace Chiro.Gap.Maintenance.Test
             // Raar. Asl ik onderstaande lijn er niet zet, dan
             // doet de IOC-container lastig omdat hij de ledenmanager
             // niet kan vinden.
+#pragma warning disable CS0168 // Variable is declared but never used
             Chiro.Gap.Workers.LedenManager dummy;
+#pragma warning restore CS0168 // Variable is declared but never used
 
             // Hercreeeer de IOC-container voor iedere test.
             // Dan hebben we geen mocks meer van vorige tests die mogelijk
