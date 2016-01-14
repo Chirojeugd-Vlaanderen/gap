@@ -53,7 +53,7 @@
     <Compile Include="AdresInfo.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FoutBericht.cs" />
-    <Compile Include="Foutnummers.cs" />
+    <Compile Include="FoutNummer.cs" />
     <Compile Include="ICommunicatie.cs" />
     <Compile Include="IPeriode.cs" />
     <Compile Include="LidFilter.cs" />

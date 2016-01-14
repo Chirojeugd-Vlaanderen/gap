@@ -26,7 +26,7 @@ using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
-	/// <summary>
+    /// <summary>
     /// Worker die alle businesslogica i.v.m. afdelingsjaren bevat
     /// </summary>
     public class AfdelingsJaarManager : IAfdelingsJaarManager

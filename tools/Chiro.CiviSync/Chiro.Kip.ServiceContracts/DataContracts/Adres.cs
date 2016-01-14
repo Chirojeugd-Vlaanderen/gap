@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -45,15 +45,20 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         public string Bus { get; set; }
 
         /// <summary>
-        /// Het postnummer van de (deel)gemeente
+        /// Het postnummer van de (deel)gemeente van een Belgisch adres.
         /// </summary>
+        /// <remarks>
+        /// Nullable, want wordt niet gebruikt voor buitenlandse adressen.
+        /// </remarks>
         [DataMember]
-        public int PostNr { get; set; }
+        public int? PostNr { get; set; }
 
         /// <summary>
-        /// Niet-numerieke toevoegen bij het postnummer
+        /// Postcode van een buitenlands adres. Hoeft niet numeriek te zijn.
         /// </summary>
-        /// <example>De twee letters die na het postnummer komen in een Nederlands adres</example>
+        /// <remarks>
+        /// Dit wordt niet gebruikt voor Belgische adressen.
+        /// </remarks>
         [DataMember]
         public string PostCode { get; set; }
 

@@ -1,6 +1,6 @@
 /*
- * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
- * top-level directory of this distribution, and at
+ * Copyright 2008-2013, 2015, 2016 the GAP developers. See the NOTICE
+ * file at the top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -80,8 +80,8 @@ namespace Chiro.Gap.Sync
                            opt.MapFrom(
                             src =>
                             src is BelgischAdres
-                                ? (src as BelgischAdres).StraatNaam.PostNummer
-                                : src is BuitenLandsAdres ? (src as BuitenLandsAdres).PostNummer : 0))
+                                ? (int?)(src as BelgischAdres).StraatNaam.PostNummer
+                                : null))
                 .ForMember(dst => dst.Straat,
                            opt =>
                            opt.MapFrom(

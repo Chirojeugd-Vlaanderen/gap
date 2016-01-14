@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014,2015, 2016 the GAP developers. See the NOTICE file at the 
+ * Copyright 2014,2015,2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -837,7 +837,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 return null;
             }
             Debug.Assert(a is BuitenLandsAdres);
-            return ((BuitenLandsAdres)a).PostNummer;
+
+            // Geen postnummers in buitenlandse adressen (#1816).
+            return null;
         }
         #endregion
 
