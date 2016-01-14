@@ -45,22 +45,10 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         public string Bus { get; set; }
 
         /// <summary>
-        /// Het postnummer van de (deel)gemeente van een Belgisch adres.
+        /// Postnummer.
         /// </summary>
-        /// <remarks>
-        /// Nullable, want wordt niet gebruikt voor buitenlandse adressen.
-        /// </remarks>
         [DataMember]
-        public int? PostNr { get; set; }
-
-        /// <summary>
-        /// Postcode van een buitenlands adres. Hoeft niet numeriek te zijn.
-        /// </summary>
-        /// <remarks>
-        /// Dit wordt niet gebruikt voor Belgische adressen.
-        /// </remarks>
-        [DataMember]
-        public string PostCode { get; set; }
+        public string PostNr { get; set; }
 
         /// <summary>
         /// De (deel)gemeente

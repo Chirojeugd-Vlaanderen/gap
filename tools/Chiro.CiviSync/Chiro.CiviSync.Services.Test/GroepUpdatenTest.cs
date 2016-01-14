@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015,2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ namespace Chiro.CiviSync.Services.Test
             var gapGroep = new Groep
             {
                 Code = civiGroep.ExternalIdentifier,
-                Adres = new Adres()
+                Adres = new Adres { PostNr = "2000" }
             };
             service.GroepUpdaten(gapGroep);
 
