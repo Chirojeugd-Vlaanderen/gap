@@ -5,7 +5,7 @@
 <head id="Head1" runat="server">
 	<%
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -117,9 +117,11 @@
 			<div id="footer">
 				<hr />
 				<p>
-					&copy; Chirojeugd-Vlaanderen vzw 2007-<%= DateTime.Now.Year.ToString(CultureInfo.InvariantCulture)
+					&copy; <a href="https://websites.chiro.be/projects/gap/repository/revisions/master/entry/NOTICE">De GAP-ontwikkelaars</a> 2007-<%= DateTime.Now.Year.ToString(CultureInfo.InvariantCulture)
 					%>
-					|| Vragen, opmerkingen of suggesties? <a href="http://www.chiro.be/eloket/feedback-gap">Geef ze door!</a> || Meewerken? <a href="http://www.facebook.com/chirogap">Volg ons op Facebook.</a>
+					|| Vragen, opmerkingen of suggesties? <a href="https://www.chiro.be/eloket/feedback-gap">Geef ze door!</a> 
+                    || Meewerken? Kijk eens rond in de <a href="https://websites.chiro.be/projects/gap">issue tracker</a>. 
+                    || <a href="https://www.facebook.com/chirogap">Volg ons op Facebook.</a>
 				</p>
 			</div>
 		</div>

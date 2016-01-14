@@ -92,7 +92,7 @@
             komen!</a></p>
     <p>
         Je kunt discussiëren over hoe handig het systeem wel of niet is, en je kunt
-        elkaar helpen om het te leren gebruiken: op het <a href="https://develop.chiro.be:3000/projects/gap/boards/1">
+        elkaar helpen om het te leren gebruiken: op het <a href="https://websites.chiro.be/projects/gap/boards/1">
             GAP-forum</a>.</p>
     <p>
         Of zit je heel erg in de knoop en heb je dringend hulp nodig? Dan kun je altijd
