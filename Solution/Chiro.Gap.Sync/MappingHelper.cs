@@ -74,14 +74,13 @@ namespace Chiro.Gap.Sync
             Mapper.CreateMap<Adres, Kip.ServiceContracts.DataContracts.Adres>()
                 .ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.LandGet()))
                 .ForMember(dst => dst.LandIsoCode, opt => opt.MapFrom(src => src.LandCodeGet()))
-                .ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()))
                 .ForMember(dst => dst.PostNr,
                            opt =>
                            opt.MapFrom(
                             src =>
                             src is BelgischAdres
-                                ? (int?)(src as BelgischAdres).StraatNaam.PostNummer
-                                : null))
+                                ? (src as BelgischAdres).StraatNaam.PostNummer.ToString()
+                                : src.PostCodeGet()))
                 .ForMember(dst => dst.Straat,
                            opt =>
                            opt.MapFrom(
