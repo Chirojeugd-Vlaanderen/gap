@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -389,7 +389,24 @@ namespace Chiro.Gap.WebApp.Controllers
 
             string[] kolomkoppen = 
                     {
-			        "AD-nummer", "Voornaam", "Familienaam", "Geboortedatum", "Geslacht", "Telefoon", "Straat", "Huisnummer", "Postcode", "Woonplaats", "Afdelingen", "Functie", "Contactpersoon", "Betaald", "Medische fiche", "Opmerkingen"
+			        "AD-nummer", 
+                    "Voornaam", 
+                    "Familienaam", 
+                    "Geboortedatum", 
+                    "Geslacht", 
+                    "Telefoon", 
+                    "Emailadres", 
+                    "Straat", 
+                    "Huisnummer", 
+                    "Postcode", 
+                    "Woonplaats", 
+                    "Land",
+                    "Afdelingen", 
+                    "Functie", 
+                    "Contactpersoon", 
+                    "Betaald", 
+                    "Medische fiche", 
+                    "Opmerkingen"
 			        };
 
             var bestandsNaam = String.Format("{0}.xlsx", uitstap.Naam.Replace(" ", "-"));
@@ -402,10 +419,12 @@ namespace Chiro.Gap.WebApp.Controllers
                 it => it.PersoonOverzicht.GeboorteDatum,
                 it => it.PersoonOverzicht.Geslacht,
                 it => it.PersoonOverzicht.TelefoonNummer,
+                it => it.PersoonOverzicht.Email,
                 it => it.PersoonOverzicht.StraatNaam,
                 it => it.PersoonOverzicht.HuisNummer,
-                it => it.PersoonOverzicht.PostNummer,
+                it => it.PersoonOverzicht.PostNummer != null ? it.PersoonOverzicht.PostNummer.ToString() : it.PersoonOverzicht.PostCode,
                 it => it.PersoonOverzicht.WoonPlaats,
+                it => it.PersoonOverzicht.Land,
                 it => it.Afdelingen == null ? String.Empty : String.Concat(it.Afdelingen.Select(afd => afd.Afkorting + " ").ToArray()),
                 it => it.Type,
                 it => it.IsContact ? "Ja" : "Nee",
