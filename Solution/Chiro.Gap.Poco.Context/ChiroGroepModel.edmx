@@ -48,8 +48,7 @@
             <PropertyRef Name="BuitenlandsAdresID" />
           </Key>
           <Property Name="BuitenlandsAdresID" Type="int" Nullable="false" />
-          <Property Name="PostCode" Type="varchar" MaxLength="10" />
-          <Property Name="PostNummer" Type="int" />
+          <Property Name="PostCode" Type="varchar" MaxLength="16" />
           <Property Name="Straat" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="WoonPlaats" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="LandID" Type="int" Nullable="false" />
@@ -1922,11 +1921,10 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
           <NavigationProperty Name="WoonPlaats" Relationship="ChiroGroepModel.FK_BelgischAdres_WoonPlaats" FromRole="BelgischAdres" ToRole="WoonPlaats" />
         </EntityType>
         <EntityType Name="BuitenLandsAdres" BaseType="ChiroGroepModel.Adres">
-          <Property Type="String" Name="PostCode" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PostCode" MaxLength="16" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Straat" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="WoonPlaats" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Land" Relationship="ChiroGroepModel.FK_BuitenlandsAdres_Land" FromRole="BuitenLandsAdres" ToRole="Land" />
-          <Property Type="Int32" Name="PostNummer" />
         </EntityType>
         <EntityType Name="Land">
           <Key>
@@ -2198,7 +2196,6 @@ warning 6035: The relationship 'FK_Bericht_Groep' has columns that are not part 
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.BuitenLandsAdres)">
               <MappingFragment StoreEntitySet="BuitenLandsAdres">
-                <ScalarProperty Name="PostNummer" ColumnName="PostNummer" />
                 <ScalarProperty Name="WoonPlaats" ColumnName="WoonPlaats" />
                 <ScalarProperty Name="PostCode" ColumnName="PostCode" />
                 <ScalarProperty Name="ID" ColumnName="BuitenlandsAdresID" />
