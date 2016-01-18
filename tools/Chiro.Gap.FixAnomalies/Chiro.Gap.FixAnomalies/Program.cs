@@ -63,15 +63,13 @@ namespace Chiro.Gap.FixAnomalies
             }
             Console.WriteLine("Dat zijn er {0}.", civiResult.Count);
 
-            DateTime vandaag = DateTime.Now;
-            int werkjaar = vandaag.Month >= 9 ? vandaag.Year : vandaag.Year - 1;
+            int werkjaar = HuidigWerkJaar();
 
             Console.WriteLine("Opvragen leden met AD-nummer in Gap, werkjaar {0}.", werkjaar);
             var gapLeden = AlleLeden(werkjaar);
             Console.WriteLine("Dat zijn er {0}.", gapLeden.Length);
 
             var teBewarenLeden = OntbrekendInCiviZoeken(civiResult, gapLeden);
-
             Console.WriteLine("{0} leden uit GAP niet teruggevonden in CiviCRM.", teBewarenLeden.Count);
 
             // TODO: command line switch om deze vraag te vermijden.
@@ -82,6 +80,25 @@ namespace Chiro.Gap.FixAnomalies
             {
                 LedenNaarCivi(teBewarenLeden, serviceHelper);
             }
+
+            var uitTeSchrijvenLeden = TeVeelInCiviZoeken(civiResult, gapLeden);
+            Console.WriteLine("{0} leden uit GAP niet teruggevonden in CiviCRM.", uitTeSchrijvenLeden.Count);
+
+            // TODO: command line switch om deze vraag te vermijden.
+            Console.Write("Meteen syncen? ");
+            string input2 = Console.ReadLine();
+
+            if (input2.ToUpper() == "J" || input2.ToUpper() == "Y")
+            {
+                LedenNaarCivi(uitTeSchrijvenLeden, serviceHelper);
+            }
+        }
+
+        private static int HuidigWerkJaar()
+        {
+            DateTime vandaag = DateTime.Now;
+            int werkjaar = vandaag.Month >= 9 ? vandaag.Year : vandaag.Year - 1;
+            return werkjaar;
         }
 
         private static void LedenNaarCivi(List<LidInfo> teSyncen, ServiceHelper serviceHelper)
@@ -97,6 +114,17 @@ namespace Chiro.Gap.FixAnomalies
                     sync.Bewaren(ledenRepo.ByID(l.LidId));
                     Console.Write("{0} ", ++counter);
                 }
+            }
+        }
+
+        private static void LedenNaarCivi(List<Lid> teSyncen, ServiceHelper serviceHelper)
+        {
+            int counter = 0;
+            var sync = new LedenSync(serviceHelper);
+            foreach (var l in teSyncen)
+            {
+                sync.Bewaren(l);
+                Console.Write("{0} ", ++counter);
             }
         }
 
@@ -122,6 +150,67 @@ namespace Chiro.Gap.FixAnomalies
                     Console.WriteLine(gapLeden[gapCounter].StamNrAdNr);
                 }
                 ++gapCounter;
+            }
+            return teSyncen;
+        }
+
+        private static List<Lid> TeVeelInCiviZoeken(ApiResultStrings civiResult, LidInfo[] gapLeden)
+        {
+            int civiCounter = 0;
+            int gapCounter = 0;
+            var teSyncen = new List<Lid>();
+
+            // Normaal zijn de leden uit het GAP hetzelfde gesorteerd als die uit Civi.
+            // Overloop de GAP-leden, en kijk of ze ook in de Civi-leden voorkomen.
+
+            Console.WriteLine("Opzoeken leden in CiviCRM maar niet in GAP.");
+            while (gapCounter < gapLeden.Length && civiCounter < civiResult.Count)
+            {
+                while (gapCounter < gapLeden.Length && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiResult.Values[civiCounter].First(), true) < 0)
+                {
+                    ++gapCounter;
+                }
+                if (gapCounter < gapLeden.Length && String.Compare(gapLeden[gapCounter].StamNrAdNr, civiResult.Values[civiCounter].First(), true) != 0)
+                {
+                    // Splits output van Civi in stamnummer en AD-nummer.
+                    string[] components = civiResult.Values[civiCounter].First().Split(';');
+
+                    // Nationale ploegen zitten nog niet in GAP (#4055). We negeren hen op basis van de lengte van
+                    // hun stamnummer. (Oh dear.)
+                    if (components[0].Length == 8)
+                    {
+                        // Construeer een fake lid, om dat zodatdelijk naar Civi te syncen.
+                        // Ik gebruik niet het echte lid, want het is niet gezegd dat dat bestaat. En leden uit Civi
+                        // verwijderen die misschien al DP februari hebben gekregen, lijkt me niet zo'n goed idee.
+
+                        var l = new Leiding
+                        {
+                            GelieerdePersoon = new GelieerdePersoon
+                            {
+                                Persoon = new Persoon
+                                {
+                                    AdNummer = int.Parse(components[1]),
+                                    InSync = true
+                                }
+                            },
+                            GroepsWerkJaar = new GroepsWerkJaar
+                            {
+                                WerkJaar = HuidigWerkJaar(),
+                                // ChiroGroep of Kadergroep is in deze niet zo
+                                // relevant. We doen maar iets.
+                                Groep = new ChiroGroep
+                                {
+                                    Code = components[0],
+                                }
+                            },
+                            NonActief = true,
+                            UitschrijfDatum = DateTime.Now
+                        };
+                        teSyncen.Add(l);
+                        Console.WriteLine(civiResult.Values[civiCounter].First());
+                    }
+                }
+                ++civiCounter;
             }
             return teSyncen;
         }
