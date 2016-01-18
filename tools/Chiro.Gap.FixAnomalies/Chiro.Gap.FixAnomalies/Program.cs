@@ -21,6 +21,7 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.Gap.Poco.Context;
 using Chiro.Gap.Poco.Model;
 using Chiro.Gap.Sync;
+using Chiro.Gap.SyncInterfaces;
 using Chiro.Gap.Workers;
 using System;
 using System.Collections.Generic;
@@ -90,7 +91,7 @@ namespace Chiro.Gap.FixAnomalies
 
             if (input2.ToUpper() == "J" || input2.ToUpper() == "Y")
             {
-                LedenNaarCivi(uitTeSchrijvenLeden, serviceHelper);
+                LedenUitschrijvenCivi(uitTeSchrijvenLeden, serviceHelper);
             }
         }
 
@@ -117,13 +118,13 @@ namespace Chiro.Gap.FixAnomalies
             }
         }
 
-        private static void LedenNaarCivi(List<Lid> teSyncen, ServiceHelper serviceHelper)
+        private static void LedenUitschrijvenCivi(List<UitschrijfInfo> teSyncen, ServiceHelper serviceHelper)
         {
             int counter = 0;
             var sync = new LedenSync(serviceHelper);
             foreach (var l in teSyncen)
             {
-                sync.Bewaren(l);
+                sync.Uitschrijven(l);
                 Console.Write("{0} ", ++counter);
             }
         }
@@ -154,11 +155,11 @@ namespace Chiro.Gap.FixAnomalies
             return teSyncen;
         }
 
-        private static List<Lid> TeVeelInCiviZoeken(ApiResultStrings civiResult, LidInfo[] gapLeden)
+        private static List<UitschrijfInfo> TeVeelInCiviZoeken(ApiResultStrings civiResult, LidInfo[] gapLeden)
         {
             int civiCounter = 0;
             int gapCounter = 0;
-            var teSyncen = new List<Lid>();
+            var teSyncen = new List<UitschrijfInfo>();
 
             // Normaal zijn de leden uit het GAP hetzelfde gesorteerd als die uit Civi.
             // Overloop de GAP-leden, en kijk of ze ook in de Civi-leden voorkomen.
@@ -183,27 +184,11 @@ namespace Chiro.Gap.FixAnomalies
                         // Ik gebruik niet het echte lid, want het is niet gezegd dat dat bestaat. En leden uit Civi
                         // verwijderen die misschien al DP februari hebben gekregen, lijkt me niet zo'n goed idee.
 
-                        var l = new Leiding
+                        var l = new UitschrijfInfo
                         {
-                            GelieerdePersoon = new GelieerdePersoon
-                            {
-                                Persoon = new Persoon
-                                {
-                                    AdNummer = int.Parse(components[1]),
-                                    InSync = true
-                                }
-                            },
-                            GroepsWerkJaar = new GroepsWerkJaar
-                            {
-                                WerkJaar = HuidigWerkJaar(),
-                                // ChiroGroep of Kadergroep is in deze niet zo
-                                // relevant. We doen maar iets.
-                                Groep = new ChiroGroep
-                                {
-                                    Code = components[0],
-                                }
-                            },
-                            NonActief = true,
+                            AdNummer = int.Parse(components[1]),
+                            StamNummer = components[0],
+                            WerkJaar = HuidigWerkJaar(),
                             UitschrijfDatum = DateTime.Now
                         };
                         teSyncen.Add(l);

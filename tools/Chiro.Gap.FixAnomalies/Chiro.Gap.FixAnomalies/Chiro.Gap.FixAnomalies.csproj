@@ -97,6 +97,10 @@
       <Project>{4e9327ef-2d32-4e12-8d20-1ee8af68a1b0}</Project>
       <Name>Chiro.Gap.ServiceContracts.Mappers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Solution\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
+      <Project>{3ecf9801-795b-40ff-b19b-44a7c49dbb40}</Project>
+      <Name>Chiro.Gap.SyncInterfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Solution\Chiro.Gap.Sync\Chiro.Gap.Sync.csproj">
       <Project>{c934c8ce-39c8-45b7-ac38-f487cea9b2d5}</Project>
       <Name>Chiro.Gap.Sync</Name>

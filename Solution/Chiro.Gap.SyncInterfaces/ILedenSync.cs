@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013,2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -31,6 +31,16 @@ namespace Chiro.Gap.SyncInterfaces
 		/// </summary>
 		/// <param name="l">Te bewaren lid</param>
 		void Bewaren(Lid l);
+
+        /// <summary>
+        /// Schrijft een lid uit in Chirocivi.
+        /// </summary>
+        /// <param name="info">Informatie over het uit te schrijven lid.</param>
+        /// <remarks>
+        /// Deze dient om een lid uit te schrijven dat niet (meer) bestaat in GAP.
+        /// Dit hebben we enkel nodig om onregelmatigheden te fixen, zie #4554.
+        /// </remarks>
+        void Uitschrijven(UitschrijfInfo info);
 
 		/// <summary>
 		/// Updatet de functies van het lid in Kipadmin
