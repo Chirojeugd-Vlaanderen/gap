@@ -37,7 +37,7 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ef744ad8542c43579ac35263ed39d195")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4fcff822c77a6707a50c83939aca3bab")]
         public string SiteKey {
             get {
                 return ((string)(this["SiteKey"]));

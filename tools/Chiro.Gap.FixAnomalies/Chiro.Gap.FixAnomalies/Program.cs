@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015,2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -37,8 +37,6 @@ namespace Chiro.Gap.FixAnomalies
             string apiKey = Properties.Settings.Default.ApiKey;
             string siteKey = Properties.Settings.Default.SiteKey;
 
-            var teSyncen = new List<LidInfo>();
-
             // Dependency injection gebeurt hier overal manueel
             // TODO: Chiro.Gap.Ioc gebruiken.
 
@@ -72,8 +70,41 @@ namespace Chiro.Gap.FixAnomalies
             var gapLeden = AlleLeden(werkjaar);
             Console.WriteLine("Dat zijn er {0}.", gapLeden.Length);
 
+            var teBewarenLeden = OntbrekendInCiviZoeken(civiResult, gapLeden);
+
+            Console.WriteLine("{0} leden uit GAP niet teruggevonden in CiviCRM.", teBewarenLeden.Count);
+
+            // TODO: command line switch om deze vraag te vermijden.
+            Console.Write("Meteen syncen? ");
+            string input = Console.ReadLine();
+
+            if (input.ToUpper() == "J" || input.ToUpper() == "Y")
+            {
+                LedenNaarCivi(teBewarenLeden, serviceHelper);
+            }
+        }
+
+        private static void LedenNaarCivi(List<LidInfo> teSyncen, ServiceHelper serviceHelper)
+        {
+            int counter = 0;
+            var sync = new LedenSync(serviceHelper);
+            using (var context = new ChiroGroepEntities())
+            {
+                var repositoryProvider = new RepositoryProvider(context);
+                var ledenRepo = repositoryProvider.RepositoryGet<Lid>();
+                foreach (var l in teSyncen)
+                {
+                    sync.Bewaren(ledenRepo.ByID(l.LidId));
+                    Console.Write("{0} ", ++counter);
+                }
+            }
+        }
+
+        private static List<LidInfo> OntbrekendInCiviZoeken(ApiResultStrings civiResult, LidInfo[] gapLeden)
+        {
             int civiCounter = 0;
             int gapCounter = 0;
+            var teSyncen = new List<LidInfo>();
 
             // Normaal zijn de leden uit het GAP hetzelfde gesorteerd als die uit Civi.
             // Overloop de GAP-leden, en kijk of ze ook in de Civi-leden voorkomen.
@@ -92,28 +123,7 @@ namespace Chiro.Gap.FixAnomalies
                 }
                 ++gapCounter;
             }
-            
-            Console.WriteLine("{0} leden uit GAP niet teruggevonden in CiviCRM.", teSyncen.Count);
-
-            // TODO: command line switch om deze vraag te vermijden.
-            Console.Write("Meteen syncen? ");
-            string input = Console.ReadLine();
-            int counter = 0;
-
-            if (input.ToUpper() == "J" || input.ToUpper() == "Y")
-            {
-                var sync = new LedenSync(serviceHelper);
-                using (var context = new ChiroGroepEntities())
-                {
-                    var repositoryProvider = new RepositoryProvider(context);
-                    var ledenRepo = repositoryProvider.RepositoryGet<Lid>();
-                    foreach (var l in teSyncen)
-                    {
-                        sync.Bewaren(ledenRepo.ByID(l.LidId));
-                        Console.Write("{0} ", ++counter);
-                    }
-                }
-            }
+            return teSyncen;
         }
 
         /// <summary>
