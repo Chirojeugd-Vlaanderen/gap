@@ -120,7 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
-      <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
+      <Project>{b55edf1f-de3f-4e00-a359-0d56be67e197}</Project>
       <Name>Chiro.Cdf.Validation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
