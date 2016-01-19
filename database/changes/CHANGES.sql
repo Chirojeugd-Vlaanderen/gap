@@ -1,59 +1,51 @@
+-- Copyright 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+-- top-level directory of this distribution, and at
+-- https://gapwiki.chiro.be/copyright
+-- 
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+-- 
+--     http://www.apache.org/licenses/LICENSE-2.0
+-- 
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+
 USE gap_local;
 
--- Bewaar op lidniveau wie zeker een membership heeft in Civi.
-ALTER TABLE lid.Lid
-ADD IsAangesloten BIT NOT NULL DEFAULT 0;
+-- Migreer postnummer en postcode naar postcode voor buitenlandse adressen.
+-- We proberen er ook een aantal veel voorkomende fouten uit te halen,
+-- want er zijn meer buitenlandse adressen fout ingegeven dan juist.
+-- Zie #1816
+
+ALTER TABLE adr.BuitenlandsAdres ALTER COLUMN PostCode varchar(16);
 GO
 
--- Neem bij op in index.
-
-DROP INDEX [IDX_Lid_EindeInstapPeriode_UitschrijfDatum] ON [lid].[Lid]
+UPDATE ba
+	SET ba.PostCode = LTRIM(RTRIM(tmp2.PostCode + ' ' + tmp2.PostNummer))
+FROM (
+	SELECT 
+		BuitenlandsAdresID,
+		PostCode,
+		-- Als postnummer voorkomt in postcode, dan is dat waarschijnlijk fout, en mag postnummer
+		-- genegeerd worden.
+		CASE WHEN CHARINDEX(PostNummer, PostCode_Zonder_Spaties) > 0 THEN '' ELSE PostNummer END AS Postnummer
+	FROM (
+		-- Zet alles al eens om naar doordeweekse strings
+		SELECT 
+			BuitenlandsAdresID, 
+			ISNULL (PostCode, '') AS PostCode, 
+			-- postnummer 0 wil waarschijnlijk zeggen dat alle informatie in postcode zit.
+			CASE PostNummer WHEN 0 THEN '' ELSE CONVERT(VARCHAR(9), PostNummer) END AS PostNummer, 
+			REPLACE(PostCode, ' ', '') AS PostCode_Zonder_Spaties
+		FROM adr.BuitenLandsAdres
+	) tmp
+) tmp2
+JOIN adr.BuitenlandsAdres ba on tmp2.BuitenlandsAdresID = ba.BuitenlandsAdresID
 GO
 
-CREATE NONCLUSTERED INDEX [IDX_Lid_EindeInstapPeriode_UitschrijfDatum_IsAangesloten] ON [lid].[Lid]
-(
-	[EindeInstapPeriode] ASC,
-	[UitschrijfDatum] ASC,
-	[IsAangesloten] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+ALTER TABLE adr.BuitenlandsAdres DROP COLUMN PostNummer;
 GO
-
--- Leden van voor 2015-2016 mogen allemaal IsAangesloten = 1 krijgen.
-
-UPDATE l
-SET IsAangesloten = 1
-FROM lid.Lid l
-JOIN grp.GroepsWerkJaar gwj ON l.GroepsWerkJaarID = gwj.GroepsWerkJaarID
-WHERE gwj.WerkJaar < 2015
-
--- Zet IsAangesloten voor alle leden van 2015-2016 waarvan
---   het werkjaar van laatste aansluiting voor de persoon 2015-2016 is
---   de persoon niet aangesloten is in meer dan 1 ploeg
---   de persoon geen lid was van een nationale ploeg in de oude kipadmin
-
-UPDATE l1
-SET l1.IsAangesloten = 1
-FROM lid.Lid l1
-JOIN pers.GelieerdePersoon gp1 ON l1.GelieerdePersoonID = gp1.GelieerdePersoonID
-JOIN pers.Persoon p1 ON gp1.PersoonID = p1.PersoonID
-JOIN grp.GroepsWerkJaar gwj ON l1.GroepsWerkjaarID = gwj.GroepsWerkJaarID AND p1.LaatsteMembership = gwj.WerkJaar
-JOIN (
-	SELECT p.PersoonID, COUNT(*) AS aantalAansluitingen
-	FROM pers.Persoon p
-	JOIN pers.GelieerdePersoon gp ON p.PersoonID = gp.PersoonID
-	JOIN lid.Lid l ON gp.GelieerdePersoonID = l.GelieerdePersoonID
-	JOIN grp.GroepsWerkJaar gwj ON l.GroepsWerkjaarID = gwj.GroepsWerkJaarID
-	WHERE gwj.WerkJaar = 2015
-	GROUP BY p.PersoonId
-	) aa ON p1.PersoonID = aa.PersoonID AND aa.aantalAansluitingen = 1
-LEFT OUTER JOIN kipadmin.lid.Lid kl ON kl.ADNR = p1.AdNummer AND kl.GroepID = 1044 AND kl.werkjaar = gwj.WerkJaar
-LEFT OUTER JOIN kipadmin.dbo.kipHeeftFunctie khf ON kl.id = khf.leidkad
-LEFT OUTER JOIN kipadmin.dbo.kipFunctie kf ON khf.functie = kf.id AND kf.PloegInCivi = 1
-WHERE gwj.WerkJaar = 2015 AND kf.id IS NULL
-
--- Door alle leden uit meer dan 1 ploeg geen 'IsAangesloten' te geven, geven we
--- in principe een aantal lidrelaties ten onrechte geen 'IsAangesloten'. Maar
--- dat is niet erg, want civisync zal wel merken dat er toch een membership bestaat.
-GO
-
-ALTER TABLE pers.Persoon DROP COLUMN LaatsteMembership;

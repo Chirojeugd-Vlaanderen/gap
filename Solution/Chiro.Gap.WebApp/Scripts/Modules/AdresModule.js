@@ -96,23 +96,26 @@ var AdresModule = (function () {
         $('#adrestabel').show();
         if (!isBelgieGeselecteerd()) {
             //show gegevens voor buitenland en gewone gegevens
+            $('#postNrLabel').hide();
             $('#postCode').show();
             $('#uitlegBuitenland').show();
             $('#woonplaatsBuitenland').show();
             $('#uitlegBinnenland').hide();
             $('#woonplaatsBinnenland').hide();
         } else {
+            $('#postNrLabel').show();
             $('#postCode').hide();
             $('#uitlegBuitenland').hide();
             $('#woonplaatsBuitenland').hide();
             $('#uitlegBinnenland').show();
             $('#woonplaatsBinnenland').show();
+
+            // Events die niet zijn afgegaan tijdens dat het land niet belgie was, 
+            // moeten mogelijks gecorrigeerd worden
+            var postNr = $(postNummerElement).val();
+            laadGemeenten(postNr, '#WoonPlaatsNaam');
+            autocomplete.InitForPostNr(postNr);
         }
-        // Events die niet zijn afgegaan tijdens dat het land niet belgie was, 
-        // moeten mogelijks gecorrigeerd worden
-        var postNr = $(postNummerElement).val();
-        laadGemeenten(postNr, '#WoonPlaatsNaam');
-        autocomplete.InitForPostNr(postNr);
     };
     // Belgi is genoeg, want met die accentjes heb je niets dan miserie.
     var isBelgieGeselecteerd = function () {

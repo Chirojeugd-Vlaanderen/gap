@@ -1,7 +1,7 @@
 ﻿/*
  * Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,9 @@ namespace Chiro.Gap.Maintenance.Test
             // Raar. Asl ik onderstaande lijn er niet zet, dan
             // doet de IOC-container lastig omdat hij de ledenmanager
             // niet kan vinden.
+#pragma warning disable CS0168 // Variable is declared but never used
             Chiro.Gap.Workers.LedenManager dummy;
+#pragma warning restore CS0168 // Variable is declared but never used
 
             // Hercreeeer de IOC-container voor iedere test.
             // Dan hebben we geen mocks meer van vorige tests die mogelijk

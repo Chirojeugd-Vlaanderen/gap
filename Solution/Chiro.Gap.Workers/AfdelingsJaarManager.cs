@@ -1,7 +1,7 @@
 ﻿/*
  * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
-	/// <summary>
+    /// <summary>
     /// Worker die alle businesslogica i.v.m. afdelingsjaren bevat
     /// </summary>
     public class AfdelingsJaarManager : IAfdelingsJaarManager

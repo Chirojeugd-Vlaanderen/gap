@@ -1,7 +1,7 @@
 ﻿/*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -189,6 +189,28 @@ namespace Chiro.Kip.ServiceContracts
         /// </remarks>
         [OperationContract(IsOneWay = true)]
         void LidVerwijderen(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
+
+        /// <summary>
+        /// Desactiveert een lidrelatie in CiviCRM.
+        /// </summary>
+        /// <param name="adNummer">
+        /// AD-nummer te desactiveren lid.
+        /// </param>
+        /// <param name="stamNummer">
+        /// Stamnummer te desactiveren lid.
+        /// </param>
+        /// <param name="werkJaar">
+        /// Werkjaar te desactiveren lid.
+        /// </param>
+        /// <param name="uitschrijfDatum">te registreren uitschrijfdatum in CiviCRM.</param>
+        /// <remarks>
+        /// In principe kun je een lid ook uitschrijven m.b.v. LidBewaren, waarbij het te bewaren
+        /// lid inactief is. Maar dat wil zeggen dat je in GAP een lid moet hebben. Deze functie
+        /// kunnen we gebruiken als het te desactiveren lid niet bestaat in GAP.
+        /// (Dat is alleen zo als er iets louche aan de hadn is, zie #4554.)
+        /// </remarks>
+        [OperationContract(IsOneWay = true)]
+        void LidUitschrijven(int adNummer, string stamNummer, int werkJaar, DateTime uitschrijfDatum);
 
         /// <summary>
         /// Verwijdert een lid als het ad-nummer om een of andere reden niet bekend is.

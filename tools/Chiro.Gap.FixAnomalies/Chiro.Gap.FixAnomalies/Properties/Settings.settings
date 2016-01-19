@@ -6,7 +6,7 @@
       <Value Profile="(Default)">blablablapi</Value>
     </Setting>
     <Setting Name="SiteKey" Type="System.String" Scope="User">
-      <Value Profile="(Default)">ef744ad8542c43579ac35263ed39d195</Value>
+      <Value Profile="(Default)">4fcff822c77a6707a50c83939aca3bab</Value>
     </Setting>
   </Settings>
 </SettingsFile>

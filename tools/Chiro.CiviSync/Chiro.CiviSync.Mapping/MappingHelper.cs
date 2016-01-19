@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2013, 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2013,2015,2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -80,7 +80,6 @@ namespace Chiro.CiviSync.Mapping
                 .ForMember(dst => dst.IsBilling, opt => opt.Ignore())
                 .ForMember(dst => dst.IsPrimary, opt => opt.Ignore())
                 .ForMember(dst => dst.PostalCode, opt => opt.MapFrom(src => src.PostNr))
-                .ForMember(dst => dst.PostalCodeSuffix, opt => opt.MapFrom(src => src.PostCode))
                 .ForMember(dst => dst.StateProvinceId, opt => opt.MapFrom(src => AdresLogic.ProvincieId(src)))
                 .ForMember(dst => dst.StreetAddress, opt => opt.MapFrom(src => AdresLogic.StraatNrBus(src)))
                 .ForMember(dst => dst.IdValueExpression, opt => opt.Ignore())
@@ -89,7 +88,8 @@ namespace Chiro.CiviSync.Mapping
                 .ForMember(dst => dst.LocBlockGetRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.LocBlockSaveRequest, opt => opt.Ignore())
                 .ForMember(dst => dst.ApiOptions, opt => opt.Ignore())
-                .ForMember(dst => dst.ReturnFields, opt => opt.Ignore());
+                .ForMember(dst => dst.ReturnFields, opt => opt.Ignore())
+                .ForMember(dst => dst.PostalCodeSuffix, opt => opt.Ignore());
 
             Mapper.CreateMap<Bivak, EventRequest>()
                 .ForMember(dst => dst.StartDate, opt => opt.MapFrom(src => new Filter<DateTime?>(src.DatumVan)))
