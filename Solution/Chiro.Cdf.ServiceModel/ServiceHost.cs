@@ -15,11 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿using System;
+using System;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.Messaging;
-
 using Microsoft.Practices.Unity;
 
 // LET OP! De klasses in dit project hebben niets te maken met ServiceHelper, wel met de
