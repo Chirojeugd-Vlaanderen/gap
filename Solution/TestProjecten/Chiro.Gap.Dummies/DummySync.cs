@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013,2015,2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -129,6 +129,10 @@ namespace Chiro.Gap.Dummies
         public string DummyEmailAdresMaken(Persoon persoon)
         {
             return string.Format("g{0}@chiro.be", persoon.ID);
+        }
+
+        public void Uitschrijven(UitschrijfInfo info)
+        {
         }
     }
 }
