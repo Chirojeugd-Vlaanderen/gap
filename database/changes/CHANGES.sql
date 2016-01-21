@@ -14,8 +14,6 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
-USE gap_local;
-
 -- Migreer postnummer en postcode naar postcode voor buitenlandse adressen.
 -- We proberen er ook een aantal veel voorkomende fouten uit te halen,
 -- want er zijn meer buitenlandse adressen fout ingegeven dan juist.
