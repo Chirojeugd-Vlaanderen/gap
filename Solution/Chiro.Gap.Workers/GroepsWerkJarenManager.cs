@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -28,7 +28,12 @@ using Chiro.Gap.Workers.Properties;
 namespace Chiro.Gap.Workers
 {
     /// <summary>
-    /// Worker die alle businesslogica i.v.m. groepswerkjaren bevat
+    /// Worker die alle businesslogica i.v.m. groepswerkjaren bevat.
+    /// 
+    /// Deze worker wordt gebruikt door andere workers, wat een beetje
+    /// uitzonderlijk is. Maar ze bevat zaken die nogal essentieel zijn
+    /// voor meerdere use cases (bijv. de method EindDatum die de
+    /// einddatum van het werkjaar oplevert).
     /// </summary>
     public class GroepsWerkJarenManager : IGroepsWerkJarenManager
     {
