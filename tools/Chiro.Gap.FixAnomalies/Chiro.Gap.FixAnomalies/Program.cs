@@ -83,10 +83,10 @@ namespace Chiro.Gap.FixAnomalies
             }
 
             var uitTeSchrijvenLeden = TeVeelInCiviZoeken(civiResult, gapLeden);
-            Console.WriteLine("{0} leden uit GAP niet teruggevonden in CiviCRM.", uitTeSchrijvenLeden.Count);
+            Console.WriteLine("{0} leden uit CiviCRM niet teruggevonden in GAP.", uitTeSchrijvenLeden.Count);
 
             // TODO: command line switch om deze vraag te vermijden.
-            Console.Write("Meteen syncen? ");
+            Console.Write("Uitschrijven uit Civi? ");
             string input2 = Console.ReadLine();
 
             if (input2.ToUpper() == "J" || input2.ToUpper() == "Y")
