@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{994E80C0-DD18-417A-A51C-F781D3B012AB}"
 	ProjectSection(SolutionItems) = preProject
@@ -31,8 +31,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Domain", "Chiro.Gap.Domain\Chiro.Gap.Domain.csproj", "{65D1DB34-9F12-48C6-88F8-3943E5A4609B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Sync", "Chiro.Gap.Sync\Chiro.Gap.Sync.csproj", "{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceModel", "Chiro.Cdf.ServiceModel\Chiro.Cdf.ServiceModel.csproj", "{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.ServiceContracts", "..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj", "{D1E7BBDD-D833-4DC1-AF39-287448612425}"
 EndProject
@@ -95,7 +93,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateApi.Models"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Maintenance", "Chiro.Gap.Maintenance\Chiro.Gap.Maintenance.csproj", "{02217AE2-239B-414E-84F5-F32BB1C751F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Maintenance.Test", "Chiro.Gap.Maintenance.Test\Chiro.Gap.Maintenance.Test.csproj", "{5CAA5C51-8250-4E6E-851F-FACE0951BEA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Maintenance.Test", "TestProjecten\Chiro.Gap.Maintenance.Test\Chiro.Gap.Maintenance.Test.csproj", "{5CAA5C51-8250-4E6E-851F-FACE0951BEA9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{407F43AB-F75D-483E-B194-9D06B188BD7B}"
 	ProjectSection(SolutionItems) = preProject
@@ -224,18 +222,6 @@ Global
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|Win32.ActiveCfg = Release|Any CPU
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|x86.ActiveCfg = Release|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|Win32.ActiveCfg = Release|Any CPU
-		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|x86.ActiveCfg = Release|Any CPU
 		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

@@ -42,7 +42,7 @@ namespace Chiro.Gap.Maintenance.Properties {
         
         [UserScopedSetting()]
         [DebuggerNonUserCode()]
-        [DefaultSettingValue("25")]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
         public int MaxBerichten {
             get {
                 return ((int)(this["MaxBerichten"]));

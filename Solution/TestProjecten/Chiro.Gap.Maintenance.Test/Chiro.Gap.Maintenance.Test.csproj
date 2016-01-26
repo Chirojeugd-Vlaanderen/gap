@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Chiro.Gap.Maintenance.Test</RootNamespace>
     <AssemblyName>Chiro.Gap.Maintenance.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,8 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.2.1409.1722, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -57,45 +59,46 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
+    <ProjectReference Include="..\..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
       <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>
       <Name>Chiro.Cdf.Ioc.Factory</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
+    <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
+    <ProjectReference Include="..\..\Chiro.Cdf.Poco\Chiro.Cdf.Poco.csproj">
       <Project>{CDEA3723-7D66-44BF-93D0-913881918330}</Project>
       <Name>Chiro.Cdf.Poco</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Maintenance\Chiro.Gap.Maintenance.csproj">
+    <ProjectReference Include="..\..\Chiro.Gap.Maintenance\Chiro.Gap.Maintenance.csproj">
       <Project>{02217AE2-239B-414E-84F5-F32BB1C751F8}</Project>
       <Name>Chiro.Gap.Maintenance</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj">
+    <ProjectReference Include="..\..\Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj">
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
+    <ProjectReference Include="..\..\Chiro.Gap.SyncInterfaces\Chiro.Gap.SyncInterfaces.csproj">
       <Project>{3ECF9801-795B-40FF-B19B-44A7C49DBB40}</Project>
       <Name>Chiro.Gap.SyncInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
+    <ProjectReference Include="..\..\Chiro.Gap.WorkerInterfaces\Chiro.Gap.WorkerInterfaces.csproj">
       <Project>{BDAF9A9D-49E3-48AC-869D-E17E8A3D9203}</Project>
       <Name>Chiro.Gap.WorkerInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
+    <ProjectReference Include="..\..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
       <Project>{35e2aed7-7c0a-4b30-b7c8-24f9078ac32e}</Project>
       <Name>Chiro.Gap.Workers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TestProjecten\Chiro.Gap.Dummies\Chiro.Gap.Dummies.csproj">
+    <ProjectReference Include="..\Chiro.Gap.Dummies\Chiro.Gap.Dummies.csproj">
       <Project>{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}</Project>
       <Name>Chiro.Gap.Dummies</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

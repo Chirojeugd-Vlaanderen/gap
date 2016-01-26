@@ -1,7 +1,7 @@
 /*
- * Copyright 2008-2013 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -23,8 +24,6 @@ using AutoMapper;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
-using Chiro.Gap.Poco.Model.Exceptions;
-using Chiro.Gap.Sync.Properties;
 using Chiro.Gap.SyncInterfaces;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -281,6 +280,21 @@ namespace Chiro.Gap.Sync
             {
                 Bewaren(l);
             }
+        }
+
+        /// <summary>
+        /// Schrijft een lid uit in Chirocivi.
+        /// </summary>
+        /// <param name="info">Informatie over het uit te schrijven lid.</param>
+        /// <remarks>
+        /// Deze dient om een lid uit te schrijven dat niet (meer) bestaat in GAP.
+        /// Dit hebben we enkel nodig om onregelmatigheden te fixen, zie #4554.
+        /// </remarks>
+        public void Uitschrijven(UitschrijfInfo info)
+        {
+            ServiceHelper.CallService<ISyncPersoonService>(svc => svc.LidUitschrijven(
+                info.AdNummer,
+                info.StamNummer, info.WerkJaar, info.UitschrijfDatum));
         }
     }
 }

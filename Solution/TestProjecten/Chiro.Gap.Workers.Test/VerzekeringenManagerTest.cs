@@ -1,7 +1,7 @@
 ﻿/*
- * Copyright 2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2015,2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,12 @@
  */
 
 using System;
-using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.Poco.Model;
 using Chiro.Cdf.Ioc.Factory;
-using Chiro.Gap.WorkerInterfaces;
-using System.Linq;
 using Chiro.Gap.Poco.Model.Exceptions;
+using Chiro.Gap.WorkerInterfaces;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -93,6 +91,8 @@ namespace Chiro.Gap.Workers.Test
         public void WerkjaarVerzekeringGeenOverlap()
         {
             // ARRANGE
+            var groepsWerkJarenManager = Factory.Maak<IGroepsWerkJarenManager>();
+
             var vtype = new VerzekeringsType
             {
                 TotEindeWerkJaar = true
@@ -103,7 +103,13 @@ namespace Chiro.Gap.Workers.Test
                 Groep = new ChiroGroep(),
                 WerkJaar = 2012
             };
+            var vorigGroepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = new ChiroGroep(),
+                WerkJaar = 2011
+            };
             groepsWerkJaar.Groep.GroepsWerkJaar.Add(groepsWerkJaar);
+            groepsWerkJaar.Groep.GroepsWerkJaar.Add(vorigGroepsWerkJaar);
 
             var persoon = new Persoon
             {
@@ -113,7 +119,10 @@ namespace Chiro.Gap.Workers.Test
                     {
                         VerzekeringsType = vtype,
                         Van = new DateTime(2011, 10, 1),
-                        Tot = new DateTime(2012, 8, 31)
+                        // De einddatum moeten we via de groepsWerkJarenManager laten
+                        // berekenen, want het einde van een groepswerkjaar valt bijv.
+                        // anders bij staging als bij dev.
+                        Tot = groepsWerkJarenManager.EindDatum(vorigGroepsWerkJaar)
                     }
                 }
             };
@@ -127,7 +136,7 @@ namespace Chiro.Gap.Workers.Test
             // ACT
 
             var verzekeringenManager = Factory.Maak<VerzekeringenManager>();
-            verzekeringenManager.Verzekeren(lid1, vtype, new DateTime(2012, 10, 1), new DateTime(2013, 8, 31));
+            verzekeringenManager.Verzekeren(lid1, vtype, new DateTime(2012, 10, 1), groepsWerkJarenManager.EindDatum(groepsWerkJaar));
 
             // ASSERT
 
@@ -141,6 +150,8 @@ namespace Chiro.Gap.Workers.Test
         public void WerkjaarVerzekeringWelOverlap()
         {
             // ARRANGE
+            var groepsWerkJarenManager = Factory.Maak<IGroepsWerkJarenManager>();
+
             var vtype = new VerzekeringsType
             {
                 TotEindeWerkJaar = true
@@ -151,7 +162,13 @@ namespace Chiro.Gap.Workers.Test
                 Groep = new ChiroGroep(),
                 WerkJaar = 2012
             };
+            var vorigGroepsWerkJaar = new GroepsWerkJaar
+            {
+                Groep = new ChiroGroep(),
+                WerkJaar = 2011
+            };
             groepsWerkJaar.Groep.GroepsWerkJaar.Add(groepsWerkJaar);
+            groepsWerkJaar.Groep.GroepsWerkJaar.Add(vorigGroepsWerkJaar);
 
             var persoon = new Persoon
             {
@@ -161,7 +178,10 @@ namespace Chiro.Gap.Workers.Test
                     {
                         VerzekeringsType = vtype,
                         Van = new DateTime(2011, 10, 1),
-                        Tot = new DateTime(2012, 8, 31)
+                        // De einddatum moeten we via de groepsWerkJarenManager laten
+                        // berekenen, want het einde van een groepswerkjaar valt bijv.
+                        // anders bij staging als bij dev.
+                        Tot = groepsWerkJarenManager.EindDatum(vorigGroepsWerkJaar)
                     }
                 }
             };
@@ -175,7 +195,7 @@ namespace Chiro.Gap.Workers.Test
             // ACT
 
             var verzekeringenManager = Factory.Maak<VerzekeringenManager>();
-            verzekeringenManager.Verzekeren(lid1, vtype, new DateTime(2012, 8, 1), new DateTime(2013, 8, 31));
+            verzekeringenManager.Verzekeren(lid1, vtype, new DateTime(2012, 7, 28), groepsWerkJarenManager.EindDatum(groepsWerkJaar));
 
             // ASSERT
 

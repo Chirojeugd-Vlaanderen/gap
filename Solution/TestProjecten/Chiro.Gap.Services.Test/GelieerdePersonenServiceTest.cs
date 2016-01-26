@@ -1,8 +1,8 @@
 using Chiro.Gap.Services;
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
- * https://develop.chiro.be/gap/wiki/copyright
+ * https://gapwiki.chiro.be/copyright
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1790,7 +1790,7 @@ namespace Chiro.Gap.Services.Test
                             {
                                 ID = 2,
                                 Straat = "Rue Nouvelle",
-                                PostNummer = 12345,
+                                PostCode = "12345",
                                 HuisNr = 77,
                                 WoonPlaats = "Nilin",
                                 Land = new Land {Naam = "Frankrijk"}
@@ -1810,7 +1810,6 @@ namespace Chiro.Gap.Services.Test
             {
                 StraatNaamNaam = ((BuitenLandsAdres)gelieerdePersoon.PersoonsAdres.Adres).Straat,
                 HuisNr = gelieerdePersoon.PersoonsAdres.Adres.HuisNr,
-                PostNr = ((BuitenLandsAdres)gelieerdePersoon.PersoonsAdres.Adres).PostNummer ?? 0,
                 WoonPlaatsNaam = "Kessle",
                 LandNaam = ((BuitenLandsAdres)gelieerdePersoon.PersoonsAdres.Adres).Land.Naam,
                 AdresType = AdresTypeEnum.Thuis
