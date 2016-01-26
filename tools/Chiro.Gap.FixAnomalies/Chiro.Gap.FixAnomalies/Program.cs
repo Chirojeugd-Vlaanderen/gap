@@ -26,6 +26,7 @@ using Chiro.Gap.Workers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Chiro.Gap.FixAnomalies.Properties;
 
 namespace Chiro.Gap.FixAnomalies
 {
@@ -51,9 +52,8 @@ namespace Chiro.Gap.FixAnomalies
             var serviceHelper = new ServiceHelper(new ChannelFactoryChannelProvider());
 
             // TODO: via command line opties verbositeit van dit script bepalen.
-            // TODO: resources gebruiken voor outputtext.
 
-            Console.WriteLine("Opvragen actieve lidrelaties CiviCRM.");
+            Console.WriteLine(Resources.Program_Main_Opvragen_actieve_lidrelaties_CiviCRM_);
 
             var civiResult =
                 serviceHelper.CallService<ICiviCrmApi, ApiResultStrings>(
@@ -62,19 +62,19 @@ namespace Chiro.Gap.FixAnomalies
             {
                 throw new ApplicationException(civiResult.ErrorMessage);
             }
-            Console.WriteLine("Dat zijn er {0}.", civiResult.Count);
+            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, civiResult.Count);
 
             int werkjaar = HuidigWerkJaar();
 
-            Console.WriteLine("Opvragen leden met AD-nummer in Gap, werkjaar {0}.", werkjaar);
+            Console.WriteLine(Resources.Program_Main_Opvragen_leden_met_AD_nummer_in_Gap__werkjaar__0__, werkjaar);
             var gapLeden = AlleLeden(werkjaar);
-            Console.WriteLine("Dat zijn er {0}.", gapLeden.Length);
+            Console.WriteLine(Resources.Program_Main_Dat_zijn_er__0__, gapLeden.Length);
 
             var teBewarenLeden = OntbrekendInCiviZoeken(civiResult, gapLeden);
-            Console.WriteLine("{0} leden uit GAP niet teruggevonden in CiviCRM.", teBewarenLeden.Count);
+            Console.WriteLine(Resources.Program_Main__0__leden_uit_GAP_niet_teruggevonden_in_CiviCRM_, teBewarenLeden.Count);
 
             // TODO: command line switch om deze vraag te vermijden.
-            Console.Write("Meteen syncen? ");
+            Console.Write(Resources.Program_Main_Meteen_syncen__);
             string input = Console.ReadLine();
 
             if (input.ToUpper() == "J" || input.ToUpper() == "Y")
@@ -83,10 +83,10 @@ namespace Chiro.Gap.FixAnomalies
             }
 
             var uitTeSchrijvenLeden = TeVeelInCiviZoeken(civiResult, gapLeden);
-            Console.WriteLine("{0} leden uit CiviCRM niet teruggevonden in GAP.", uitTeSchrijvenLeden.Count);
+            Console.WriteLine(Resources.Program_Main__0__leden_uit_CiviCRM_niet_teruggevonden_in_GAP_, uitTeSchrijvenLeden.Count);
 
             // TODO: command line switch om deze vraag te vermijden.
-            Console.Write("Uitschrijven uit Civi? ");
+            Console.Write(Resources.Program_Main_Uitschrijven_uit_Civi__);
             string input2 = Console.ReadLine();
 
             if (input2.ToUpper() == "J" || input2.ToUpper() == "Y")
