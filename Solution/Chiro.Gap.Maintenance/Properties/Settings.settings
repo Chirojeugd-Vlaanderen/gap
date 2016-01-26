@@ -6,7 +6,7 @@
       <Value Profile="(Default)">lap-jve-8\private$\civisyncdev</Value>
     </Setting>
     <Setting Name="MaxBerichten" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">25</Value>
     </Setting>
     <Setting Name="Afzender" Type="System.String" Scope="User">
       <Value Profile="(Default)">civisync@chiro.be</Value>
@@ -15,17 +15,16 @@
       <Value Profile="(Default)">helpdesk@chiro.be</Value>
     </Setting>
     <Setting Name="Onderwerp" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Verdacht veel berichten in civisync-queue (STAGING)</Value>
+      <Value Profile="(Default)">Verdacht veel berichten in civisync-queue</Value>
     </Setting>
     <Setting Name="Inhoud" Type="System.String" Scope="User">
       <Value Profile="(Default)">Dag helpdesker,
 
-De message queue voor CiviSync-staging loopt vol. 
-Op staging is dat natuurlijk niet zo erg,
-maar geef je dit even door aan Johan aub?
+De message queue voor CiviSync loopt vol. Kun je dit
+eens nakijken aub?
 
-Bedankt!
-</Value>
+Meer info op de adminwiki:
+https://adminwiki.chiro.be/devel:civisyncissues</Value>
     </Setting>
     <Setting Name="Setting" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
