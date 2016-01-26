@@ -122,4 +122,19 @@
   <data name="Program_Main_Uitschrijven_uit_Civi__" xml:space="preserve">
     <value>Uitschrijven uit Civi? </value>
   </data>
+  <data name="Program_LoonVerliesFixen_Opvragen_actieve_memberships_met_loonverlies_uit_CiviCRM_" xml:space="preserve">
+    <value>Opvragen actieve memberships met loonverlies uit CiviCRM.</value>
+  </data>
+  <data name="Program_LoonVerliesFixen_Verzekeringen_loonverlies_opvragen_uit_GAP_" xml:space="preserve">
+    <value>Verzekeringen loonverlies opvragen uit GAP.</value>
+  </data>
+  <data name="Program_LoonVerliesFixen_Personen_waarvoor_Kipadmin_loonverlies_factureerde__maar_die_niet_aangesloten_zijn_" xml:space="preserve">
+    <value>Personen waarvoor Kipadmin loonverlies factureerde, maar die niet aangesloten zijn:</value>
+  </data>
+  <data name="Program_LoonVerliesFixen_Ofwel_zijn_er_zo_geen__ofwel_is_Zulma_op_de_hoogte_" xml:space="preserve">
+    <value>Ofwel zijn er zo geen, ofwel is Zulma op de hoogte.</value>
+  </data>
+  <data name="Program_LoonVerliesFixen__0__verzekeringen_te_kort_in_CiviCRM_" xml:space="preserve">
+    <value>{0} verzekeringen te kort in CiviCRM.</value>
+  </data>
 </root>

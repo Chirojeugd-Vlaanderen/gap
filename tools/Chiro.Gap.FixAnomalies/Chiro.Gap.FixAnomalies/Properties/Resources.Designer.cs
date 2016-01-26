@@ -70,6 +70,53 @@ namespace Chiro.Gap.FixAnomalies.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} verzekeringen te kort in CiviCRM..
+        /// </summary>
+        internal static string Program_LoonVerliesFixen__0__verzekeringen_te_kort_in_CiviCRM_ {
+            get {
+                return ResourceManager.GetString("Program_LoonVerliesFixen__0__verzekeringen_te_kort_in_CiviCRM_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ofwel zijn er zo geen, ofwel is Zulma op de hoogte..
+        /// </summary>
+        internal static string Program_LoonVerliesFixen_Ofwel_zijn_er_zo_geen__ofwel_is_Zulma_op_de_hoogte_ {
+            get {
+                return ResourceManager.GetString("Program_LoonVerliesFixen_Ofwel_zijn_er_zo_geen__ofwel_is_Zulma_op_de_hoogte_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opvragen actieve memberships met loonverlies uit CiviCRM..
+        /// </summary>
+        internal static string Program_LoonVerliesFixen_Opvragen_actieve_memberships_met_loonverlies_uit_CiviCRM_ {
+            get {
+                return ResourceManager.GetString("Program_LoonVerliesFixen_Opvragen_actieve_memberships_met_loonverlies_uit_CiviCRM" +
+                        "_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personen waarvoor Kipadmin loonverlies factureerde, maar die niet aangesloten zijn:.
+        /// </summary>
+        internal static string Program_LoonVerliesFixen_Personen_waarvoor_Kipadmin_loonverlies_factureerde__maar_die_niet_aangesloten_zijn_ {
+            get {
+                return ResourceManager.GetString("Program_LoonVerliesFixen_Personen_waarvoor_Kipadmin_loonverlies_factureerde__maar" +
+                        "_die_niet_aangesloten_zijn_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verzekeringen loonverlies opvragen uit GAP..
+        /// </summary>
+        internal static string Program_LoonVerliesFixen_Verzekeringen_loonverlies_opvragen_uit_GAP_ {
+            get {
+                return ResourceManager.GetString("Program_LoonVerliesFixen_Verzekeringen_loonverlies_opvragen_uit_GAP_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} leden uit CiviCRM niet teruggevonden in GAP..
         /// </summary>
         internal static string Program_Main__0__leden_uit_CiviCRM_niet_teruggevonden_in_GAP_ {
