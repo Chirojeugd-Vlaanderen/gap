@@ -37,7 +37,7 @@ namespace Chiro.Gap.Maintenance.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("25")]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
         public int MaxBerichten {
             get {
                 return ((int)(this["MaxBerichten"]));
@@ -73,7 +73,7 @@ namespace Chiro.Gap.Maintenance.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Verdacht veel berichten in civisync-queue")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Verdacht veel berichten in civisync-queue (STAGING)")]
         public string Onderwerp {
             get {
                 return ((string)(this["Onderwerp"]));
@@ -85,9 +85,9 @@ namespace Chiro.Gap.Maintenance.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Dag helpdesker,\r\n\r\nDe message queue voor CiviSync loopt vol. Kun je dit\r\neens nak" +
-            "ijken aub?\r\n\r\nMeer info op de adminwiki:\r\nhttps://adminwiki.chiro.be/devel:civis" +
-            "yncissues")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dag helpdesker,\r\n\r\nDe message queue voor CiviSync-staging loopt vol. \r\nOp staging" +
+            " is dat natuurlijk niet zo erg,\r\nmaar geef je dit even door aan Johan aub?\r\n\r\nBe" +
+            "dankt!\r\n")]
         public string Inhoud {
             get {
                 return ((string)(this["Inhoud"]));
