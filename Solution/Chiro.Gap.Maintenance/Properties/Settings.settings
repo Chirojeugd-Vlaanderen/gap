@@ -6,7 +6,7 @@
       <Value Profile="(Default)">lap-jve-8\private$\civisyncdev</Value>
     </Setting>
     <Setting Name="MaxBerichten" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">25</Value>
+      <Value Profile="(Default)">100</Value>
     </Setting>
     <Setting Name="Afzender" Type="System.String" Scope="User">
       <Value Profile="(Default)">civisync@chiro.be</Value>
