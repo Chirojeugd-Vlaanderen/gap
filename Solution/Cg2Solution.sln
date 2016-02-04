@@ -62,6 +62,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Validatie.Test", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1A77A926-AC69-41E5-842B-78504EB4A356}"
 	ProjectSection(SolutionItems) = preProject
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.TestHacks", "Chiro.Gap.TestHacks\Chiro.Gap.TestHacks.csproj", "{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}"
+EndProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
@@ -428,6 +431,18 @@ Global
 		{CFFB2A00-E7BF-4E0C-B69A-7804C13EB5F3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CFFB2A00-E7BF-4E0C-B69A-7804C13EB5F3}.Release|Win32.ActiveCfg = Release|Any CPU
 		{CFFB2A00-E7BF-4E0C-B69A-7804C13EB5F3}.Release|x86.ActiveCfg = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Win32.ActiveCfg = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|x86.ActiveCfg = Release|Any CPU
 		{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

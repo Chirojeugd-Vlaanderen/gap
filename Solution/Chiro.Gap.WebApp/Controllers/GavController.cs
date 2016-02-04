@@ -93,5 +93,11 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			return r;
 		}
+
+        public ActionResult TestGroepToevoegen()
+        {
+            ServiceHelper.CallService<IDbHacksService>(svc => svc.WillekeurigeGroepToekennen(HttpContext.User.Identity.Name));
+            return RedirectToAction("Index");
+        }
 	}
 }
