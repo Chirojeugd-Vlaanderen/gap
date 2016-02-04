@@ -1,6 +1,22 @@
--- STAP 2: anonimize data
+-- Copyright 2012-2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+-- top-level directory of this distribution, and at
+-- https://gapwiki.chiro.be/copyright
+-- 
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+-- 
+--     http://www.apache.org/licenses/LICENSE-2.0
+-- 
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
 
-USE gap_local;
+-- Maak GAP-data anoniem.
+
+-- telefoonnummers
 
 update cv
 set nummer = cast(communicatievormid as varchar(50)) + '@example.org'
@@ -23,8 +39,6 @@ delete from pers.communicatieVorm where communicatietypeid >= 4
 update pers.communicatieVorm set nota = null;
 update biv.uitstap set opmerkingen = null;
 
-
-
 -- dit is ook niet écht willekeurig, maar hopelijk wel goed genoeg om gauw
 -- te anonymiseren
 --
@@ -38,7 +52,7 @@ from
  from adr.belgischadres) a2 on a1.volgorde=a2.volgorde
 
 update a1
-set a1.postnummer=15500,a1.straat='Kípdorpskà',a1.woonplaats='Praha 5',
+set a1.postcode='15500',a1.straat='Kípdorpskà',a1.woonplaats='Praha 5',
 a1.landid=14
 from adr.buitenlandsAdres a1
 
@@ -77,6 +91,6 @@ pers.persoon where AdNummer is not null) p1 join
 (select *, row_number() over (order by newid()) as volgorde from
 pers.persoon where AdNummer is not null) p2 on p1.volgorde=p2.volgorde
 
--- log nog maar eens opnieuw shrinken :-)
+-- log shrinken :-)
 
 dbcc shrinkfile(gap1rc2_log, 128, NOTRUNCATE)

@@ -1,10 +1,23 @@
+-- Copyright 2012-2014 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+-- top-level directory of this distribution, and at
+-- https://gapwiki.chiro.be/copyright
+-- 
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+-- 
+--     http://www.apache.org/licenses/LICENSE-2.0
+-- 
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+
 -- verwijder heel wat data, om de dump kleiner te krijgen
 -- we gaan dat doen na het shuffelen, omdat shuffelen beter zal werken op veel data
 
-use gap_local;
-
-declare @bijhoudenvanaf as integer; set @bijhoudenvanaf=2013;
-
+declare @bijhoudenvanaf as integer; set @bijhoudenvanaf=(select YEAR(getdate())-3);
 
 -- een willekeurig gewest om alle behouden groepen aan te koppelen
 
@@ -27,6 +40,7 @@ insert into @groepids values(892);
 insert into @groepids values(312);
 insert into @groepids values(302);
 
+truncate table logging.bericht
 
 delete lf
 from lid.Lid l 
