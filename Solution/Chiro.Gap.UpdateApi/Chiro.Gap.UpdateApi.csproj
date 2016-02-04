@@ -104,7 +104,6 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Modules\AansluitingModule.cs" />
-    <Compile Include="Modules\DbHackModule.cs" />
     <Compile Include="Modules\FoutAdModule.cs" />
     <Compile Include="Modules\GroepModule.cs" />
     <Compile Include="Modules\PersoonModule.cs" />
@@ -141,10 +140,6 @@
     <ProjectReference Include="..\Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj">
       <Project>{5B06D34A-3C2F-4041-914C-FA3B63F973E2}</Project>
       <Name>Chiro.Gap.Poco.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.TestHacks\Chiro.Gap.TestHacks.csproj">
-      <Project>{c3e92f5a-82f6-4079-9b9e-066ca7ecf017}</Project>
-      <Name>Chiro.Gap.TestHacks</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.UpdateApi.Models\Chiro.Gap.UpdateApi.Models.csproj">
       <Project>{71FDD616-E12E-474E-A996-575A187824E2}</Project>

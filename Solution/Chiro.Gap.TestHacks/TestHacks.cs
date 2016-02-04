@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2013-2015 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
+ * Copyright 2013-2016 Chirojeugd-Vlaanderen vzw. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://develop.chiro.be/gap/wiki/copyright
  * 
@@ -39,25 +39,6 @@ namespace Chiro.Gap.TestHacks
                     CommandType = CommandType.StoredProcedure
                 };
                 command.Parameters.Add(new SqlParameter("@login", userName));
-                command.ExecuteNonQuery();
-                connection.Close();
-            }
-        }
-
-        /// <summary>
-        /// Deze hack zet de backup van de echte gap van 3 dagen geleden terug naar de
-        /// staging database.
-        /// </summary>
-        public static void GapRestoren()
-        {
-            using (var connection = new SqlConnection(Settings.Default.ConnectionString))
-            {
-                connection.Open();
-                var command = new SqlCommand("msdb.dbo.sp_start_job", connection)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
-                command.Parameters.AddWithValue("@job_name", "restore-gap");
                 command.ExecuteNonQuery();
                 connection.Close();
             }
