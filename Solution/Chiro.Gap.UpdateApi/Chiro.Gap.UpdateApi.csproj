@@ -104,7 +104,6 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Modules\AansluitingModule.cs" />
-    <Compile Include="Modules\DbHackModule.cs" />
     <Compile Include="Modules\FoutAdModule.cs" />
     <Compile Include="Modules\GroepModule.cs" />
     <Compile Include="Modules\PersoonModule.cs" />
