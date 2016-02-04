@@ -52,22 +52,17 @@ go
 alter table pers.Persoon add LaatsteMembership int null;
 go
 
--- Hier vul ik het laatste membership op basis van de probeerperiode.
--- In staging wordt er ook gekeken naar de kipadmin, met name of er voor plaatselijke
--- groepen een factuur is doorgeboekt.
-
-declare @laatsteMembershipsGemaakt as datetime; set @laatsteMembershipsGemaakt = getdate();
 update p
 set p.LaatsteMembership = tmp.LaatsteMembership
 from pers.persoon p join
 (
-select p.persoonid,max(gwj.werkjaar) as LaatsteMembership from lid.lid l 
-join pers.gelieerdepersoon gp on l.gelieerdepersoonid = gp.GelieerdePersoonID
-join pers.persoon p on gp.persoonid = p.persoonid
-join grp.groepswerkjaar gwj on l.groepswerkjaarid=gwj.groepswerkjaarid
-where l.EindeInstapPeriode < @laatsteMembershipsGemaakt
-group by p.persoonid
-) tmp on p.persoonid=tmp.persoonid
+select  l.adnr, max(l.werkjaar) as LaatsteMembership
+from kip_stg.lid.lid l
+left outer join kip_stg.lid.aansluiting a on l.groepid=a.groepid and l.werkjaar=a.werkjaar and l.aansl_nr=a.VolgNummer
+left outer join kip_stg.dbo.rekening r on a.rekeningid = r.nr
+where  l.soort = 'KA' or (l.aansl_nr > 0 and r.DOORGEBOE='j')
+group by l.adnr
+) tmp on p.AdNummer=tmp.ADNR
 
 -- tabel voor logberichten
 go
@@ -95,6 +90,18 @@ create index IX_Bericht_Niveau on logging.Bericht(Niveau);
 create index IX_Bericht_StamNummer on logging.Bericht(StamNummer);
 create index IX_Bericht_AdNummer on logging.Bericht(AdNummer);
 create index IX_Bericht_PersoonID on logging.Bericht(PersoonID);
+
+go
+
+CREATE ROLE GapLogRole
+GO
+
+GRANT INSERT ON logging.Bericht TO GapLogRole
+GO
+
+CREATE USER [KIPDORP\kipsync_tst] FOR LOGIN [KIPDORP\kipsync_tst]
+ALTER ROLE [GapLogRole] ADD MEMBER [KIPDORP\kipsync_tst]
+GO
 
 
 
