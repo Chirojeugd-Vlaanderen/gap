@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using Chiro.Gap.TestHacks.Properties;
@@ -29,8 +30,10 @@ namespace Chiro.Gap.TestHacks
         /// <paramref name="userName"/> toegang te geven tot een testgroep.
         /// </summary>
         /// <param name="userName">naam van de gebruiker die toegang moet krijgen</param>
-        public static void TestGroepToevoegen(string userName)
+        public static int TestGroepToevoegen(string userName)
         {
+            int result;
+
             using (var connection = new SqlConnection(Settings.Default.ConnectionString))
             {
                 connection.Open();
@@ -39,9 +42,10 @@ namespace Chiro.Gap.TestHacks
                     CommandType = CommandType.StoredProcedure
                 };
                 command.Parameters.Add(new SqlParameter("@login", userName));
-                command.ExecuteNonQuery();
+                result = Convert.ToInt32(command.ExecuteScalar());
                 connection.Close();
             }
+            return result;
         }
     }
 }

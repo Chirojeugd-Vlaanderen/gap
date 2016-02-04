@@ -27,6 +27,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -72,6 +73,7 @@
     <Reference Include="System.Activities" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -87,6 +89,7 @@
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+    <Content Include="DbHacksService.svc" />
     <Content Include="GebruikersService.svc" />
     <Content Include="GelieerdePersonenService.svc" />
     <Content Include="Global.asax" />
@@ -99,6 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseService.cs" />
+    <Compile Include="DbHacksService.svc.cs">
+      <DependentUpon>DbHacksService.svc</DependentUpon>
+    </Compile>
     <Compile Include="FaultExceptionHelper.cs" />
     <Compile Include="GavChecker.cs" />
     <Compile Include="GebruikersService.svc.cs">
@@ -191,6 +197,10 @@
     <ProjectReference Include="..\Chiro.Gap.Sync\Chiro.Gap.Sync.csproj">
       <Project>{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}</Project>
       <Name>Chiro.Gap.Sync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.TestHacks\Chiro.Gap.TestHacks.csproj">
+      <Project>{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}</Project>
+      <Name>Chiro.Gap.TestHacks</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj">
       <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>

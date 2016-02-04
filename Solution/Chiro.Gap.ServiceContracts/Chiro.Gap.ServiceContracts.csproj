@@ -106,6 +106,7 @@
     <Compile Include="FaultContracts\OngeldigObjectFault.cs" />
     <Compile Include="FaultContracts\BlokkerendeObjectenFault.cs" />
     <Compile Include="FaultContracts\GapFault.cs" />
+    <Compile Include="IDbHacksService.cs" />
     <Compile Include="IGebruikersService.cs" />
     <Compile Include="IGelieerdePersonenService.cs" />
     <Compile Include="IGroepenService.cs" />
