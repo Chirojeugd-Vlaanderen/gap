@@ -55,10 +55,6 @@
       <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Chiro.Cdf.ServiceHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Chiro.Cdf.ServiceHelper.dll</HintPath>
-    </Reference>
     <Reference Include="EPPlus, Version=4.0.5.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.0.5\lib\net20\EPPlus.dll</HintPath>
       <Private>True</Private>
@@ -426,6 +422,10 @@
     <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{baac24ec-57c1-4108-94ba-40fc0977762a}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
       <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
