@@ -61,14 +61,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Validatie.Test", "TestProjecten\Chiro.Gap.Validatie.Test\Chiro.Gap.Validatie.Test.csproj", "{D1C65B7E-8F0E-497A-A6A2-4CD36175219C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1A77A926-AC69-41E5-842B-78504EB4A356}"
-	ProjectSection(SolutionItems) = preProject
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.TestHacks", "Chiro.Gap.TestHacks\Chiro.Gap.TestHacks.csproj", "{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}"
-EndProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Services.Dev", "Chiro.Gap.Services.Dev\Chiro.Gap.Services.Dev.csproj", "{DF253C73-7632-476E-B760-DEBA6D306E69}"
 EndProject
@@ -98,14 +92,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Maintenance", "Ch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Maintenance.Test", "TestProjecten\Chiro.Gap.Maintenance.Test\Chiro.Gap.Maintenance.Test.csproj", "{5CAA5C51-8250-4E6E-851F-FACE0951BEA9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{407F43AB-F75D-483E-B194-9D06B188BD7B}"
-	ProjectSection(SolutionItems) = preProject
-		References\Chiro.Cdf.ServiceHelper.dll = References\Chiro.Cdf.ServiceHelper.dll
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc.Factory", "Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj", "{66147F76-9D76-46A6-8FCE-1BBE317A6093}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts.Mappers", "Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj", "{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceHelper", "Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -395,6 +386,18 @@ Global
 		{D1C65B7E-8F0E-497A-A6A2-4CD36175219C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D1C65B7E-8F0E-497A-A6A2-4CD36175219C}.Release|Win32.ActiveCfg = Release|Any CPU
 		{D1C65B7E-8F0E-497A-A6A2-4CD36175219C}.Release|x86.ActiveCfg = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Win32.ActiveCfg = Release|Any CPU
+		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|x86.ActiveCfg = Release|Any CPU
 		{DF253C73-7632-476E-B760-DEBA6D306E69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF253C73-7632-476E-B760-DEBA6D306E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF253C73-7632-476E-B760-DEBA6D306E69}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -431,18 +434,6 @@ Global
 		{CFFB2A00-E7BF-4E0C-B69A-7804C13EB5F3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CFFB2A00-E7BF-4E0C-B69A-7804C13EB5F3}.Release|Win32.ActiveCfg = Release|Any CPU
 		{CFFB2A00-E7BF-4E0C-B69A-7804C13EB5F3}.Release|x86.ActiveCfg = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|Win32.ActiveCfg = Release|Any CPU
-		{C3E92F5A-82F6-4079-9B9E-066CA7ECF017}.Release|x86.ActiveCfg = Release|Any CPU
 		{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -607,6 +598,22 @@ Global
 		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Release|Win32.Build.0 = Release|Any CPU
 		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Release|x86.ActiveCfg = Release|Any CPU
 		{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}.Release|x86.Build.0 = Release|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Win32.Build.0 = Debug|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|x86.Build.0 = Debug|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Win32.ActiveCfg = Release|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Win32.Build.0 = Release|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|x86.ActiveCfg = Release|Any CPU
+		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -627,8 +634,8 @@ Global
 		{5CAA5C51-8250-4E6E-851F-FACE0951BEA9} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution8.vsmdi
