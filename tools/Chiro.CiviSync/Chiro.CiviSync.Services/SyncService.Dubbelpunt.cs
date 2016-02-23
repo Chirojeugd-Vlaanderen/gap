@@ -60,7 +60,9 @@ namespace Chiro.CiviSync.Services
             if (contact.MembershipResult.Count == 1)
             {
                 var bestaandMembership = contact.MembershipResult.Values.First();
-                request.JoinDate = bestaandMembership.JoinDate;
+                request.JoinDate = bestaandMembership.JoinDate < request.JoinDate
+                    ? bestaandMembership.JoinDate
+                    : request.JoinDate;
 
                 if (bestaandMembership.EndDate == null ||
                     bestaandMembership.EndDate.Value.AddDays(Properties.Settings.Default.DagenOverlapDubbelpunt) >=
@@ -71,7 +73,12 @@ namespace Chiro.CiviSync.Services
 
                     // Misschien beter mappen? Geen idee.
                     request.Id = bestaandMembership.Id;
-                    request.StartDate = bestaandMembership.StartDate;
+                    request.StartDate = bestaandMembership.StartDate < request.StartDate
+                        ? bestaandMembership.StartDate
+                        : request.StartDate;
+                    request.EndDate = bestaandMembership.EndDate > request.EndDate
+                        ? bestaandMembership.EndDate
+                        : request.EndDate;
                     request.Status = MembershipStatus.Current;
                 }
             }
