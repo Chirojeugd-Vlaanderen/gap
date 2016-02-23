@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ namespace Chiro.CiviSync.Logic
         /// <returns>Membershiprequest van het gegeven <paramref name="type"/> voor de
         /// contact met gegeven <paramref name="contactId"/> in het gegeven
         /// <paramref name="werkJaar"/>.</returns>
-        public MembershipRequest VanWerkjaar(MembershipType type, int contactId, int civiPloegId, int werkJaar)
+        public MembershipRequest VanWerkjaar(MembershipType type, int contactId, int? civiPloegId, int werkJaar)
         {
             // We bekijken de datums zonder uren, dus discrete dagen. De EndDate valt volledig binnen de
             // relationship.

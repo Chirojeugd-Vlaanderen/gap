@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013, 2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2013, 2015, 2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -15,6 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+using System;
 using System.Runtime.Serialization;
 
 namespace Chiro.Kip.ServiceContracts.DataContracts
@@ -262,5 +264,14 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
         /// verder nog mee doet, zullen we wel zien ;-)
         /// </summary>
         [EnumMember] X = 4,
+    }
+
+    [DataContract]
+    [Flags]
+    public enum AbonnementTypeEnum
+    {
+        [EnumMember] Papier = 1,
+        [EnumMember] Digitaal = 2,
+        [EnumMember] FullOption = Papier|Digitaal
     }
 }
