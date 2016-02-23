@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -1363,12 +1363,6 @@ namespace Chiro.Gap.Services
             {
 #endif
                 _groepenRepo.SaveChanges();
-                foreach (var ab in vorigGwj.Abonnement)
-                {
-                    // In GAP mogen de oude abonnementen blijven staan, want
-                    // die zijn daar aan het werkjaar gekoppeld. Voor Mailchimp
-                    _abonnementenSync.AlleAbonnementenVerwijderen(ab.GelieerdePersoon);
-                }
 
 #if KIPDORP
                 tx.Complete();
