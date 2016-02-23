@@ -47,11 +47,15 @@ namespace Chiro.Gap.Sync.Test
         {
             // ARRANGE
 
-            var gelieerdePersoon = new GelieerdePersoon {Communicatie = new List<CommunicatieVorm>()};
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Communicatie = new List<CommunicatieVorm>(),
+                Persoon = new Persoon {AdNummer = 1}
+            };
 
             // Verwacht dat er een (dummy) e-mailadres meegegeven wordt.
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.AbonnementVerwijderen(It.Is<string>(ml => !string.IsNullOrEmpty(ml))))
+            kipSyncMock.Setup(src => src.AbonnementStopzetten(It.Is<int>(ad => ad == gelieerdePersoon.Persoon.AdNummer.Value)))
                 .Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 

@@ -1160,10 +1160,11 @@ namespace Chiro.Gap.Services
                     }
                     var publicatie = _publicatieRepo.ByID(publicatieID);
 
-                    // TODO: DateTime.Now is niet goed, want dat gaat problemen geven met de unit tests.
                     teSyncenAbonnement = new Abonnement
                     {
-                        AanvraagDatum = DateTime.Now,
+                        // Door vandaag te bepalen via de groepswerkjarenmanager,
+                        // is het ding meer testable.
+                        AanvraagDatum = _groepsWerkJarenMgr.Vandaag(),
                         GroepsWerkJaar = groepsWerkJaar,
                         GelieerdePersoon = gelieerdePersoon,
                         Publicatie = publicatie,
