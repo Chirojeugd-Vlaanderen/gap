@@ -80,6 +80,7 @@
     <Compile Include="AfdelingUpdatenTest.cs" />
     <Compile Include="LoonVerliesVerzerkerenTest.cs" />
     <Compile Include="GroepUpdatenTest.cs" />
+    <Compile Include="AbonnementBewarenTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
