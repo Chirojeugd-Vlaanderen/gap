@@ -60,7 +60,6 @@ namespace Chiro.CiviSync.Services
             {
                 var bestaandMembership = contact.MembershipResult.Values.First();
 
-                Debug.Assert(bestaandMembership.EndDate.HasValue);
                 if (bestaandMembership.EndDate == null ||
                     bestaandMembership.EndDate.Value.AddDays(Properties.Settings.Default.DagenOverlapDubbelpunt) >=
                     request.StartDate)
