@@ -270,8 +270,8 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
     [Flags]
     public enum AbonnementTypeEnum
     {
-        [EnumMember] Papier = 1,
-        [EnumMember] Digitaal = 2,
+        [EnumMember] Papier = 2,
+        [EnumMember] Digitaal = 1,
         [EnumMember] FullOption = Papier|Digitaal
     }
 }
