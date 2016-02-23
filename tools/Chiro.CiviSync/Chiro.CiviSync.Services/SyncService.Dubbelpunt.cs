@@ -96,9 +96,12 @@ namespace Chiro.CiviSync.Services
         /// <param name="details">Details van de persoon die een abonnement wil.</param>
         /// <param name="werkjaar">Werkjaar van het abonnement.</param>
         /// <param name="type">Digitaal of op papier.</param>
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
         public void AbonnementNieuwePersoonBewaren(PersoonDetails details, int werkjaar, AbonnementTypeEnum type)
         {
-            throw new NotImplementedException();
+            // Update of maak de persoon, en vind zijn AD-nummer
+            int adNr = PersoonUpdatenOfMaken(details);
+            AbonnementBewaren(adNr, werkjaar, type);
         }
 
         /// <summary>
