@@ -24,6 +24,7 @@ using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
+using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -107,20 +108,62 @@ namespace Chiro.CiviSync.Services
         /// Verwijdert abonnement van persoon met gegeven <paramref name="adNummer"/>.
         /// </summary>
         /// <param name="adNummer">AD-nummer van persoon die geen abonnement meer wil.</param>
-        public void AbonnementVerwijderen(int adNummer)
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public async void AbonnementStopzetten(int adNummer)
         {
+            var contact = _contactWorker.PersoonMetRecentsteMembership(adNummer, MembershipType.DubbelpuntAbonnement);
+
+            if (contact == null)
+            {
+                _log.Loggen(Niveau.Error, String.Format("Onbestaand AD-nummer {0} voor te bewaren Dubbelpuntabonnement - als dusdanig terug naar GAP.", adNummer),
+                    null, adNummer, null);
+
+                await _gapUpdateClient.OngeldigAdNaarGap(adNummer);
+                return;
+            }
+
+            if (contact.MembershipResult.Count != 1)
+            {
+                _log.Loggen(Niveau.Error,
+                    String.Format(
+                        "Geen recentste Dubbelpuntabonnement gevonden voor {0} {1} (AD {2}, GapID {3}). Abonnement niet verwijderd.",
+                        contact.FirstName, contact.LastName, adNummer, contact.GapId),
+                    null, adNummer, contact.GapId);
+                return;
+            }
+            var bestaandMembership = contact.MembershipResult.Values.First();
+
+            if (_membershipLogic.IsVervallen(bestaandMembership))
+            {
+                _log.Loggen(Niveau.Warning,
+                    String.Format(
+                        "Dubbelpuntabonnement voor {0} {1} (AD {2}, GapID {3}) was al beeindigd, einddatum {4}. Abonnement niet verwijderd.",
+                        contact.FirstName, contact.LastName, adNummer, contact.GapId, bestaandMembership.EndDate),
+                    null, adNummer, contact.GapId);
+                return;
+            }
+            _membershipLogic.Beeindigen(bestaandMembership);
+
+            var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
+                svc => svc.MembershipSave(_apiKey, _siteKey, Mapper.Map<MembershipRequest>(bestaandMembership)));
+            result.AssertValid();
+
             _log.Loggen(Niveau.Debug,
-                string.Format("DubbelpuntAbonnement verwijderd: {0}.",
-                    adNummer), null, adNummer, null);
+                String.Format("DubbelpuntAbonnement voor {0} {1} ({2}, {3}) stopgezet. Type {4}.",
+                    contact.FirstName, contact.LastName, contact.Email, contact.StreetAddress,
+                    bestaandMembership.AbonnementType), null, adNummer, contact.GapId);
         }
 
         /// <summary>
         /// Verwijdert abonnement van persoon met gegeven <paramref name="details"/>.
         /// </summary>
         /// <param name="details">Details van persoon die geen abonnement meer wil.</param>
-        public void AbonnementVerwijderenNieuwePersoon(PersoonDetails details)
+        [OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+        public void AbonnementStopzettenNieuwePersoon(PersoonDetails details)
         {
-            throw new NotImplementedException();
+            // Update of maak de persoon, en vind zijn AD-nummer
+            int adNr = PersoonUpdatenOfMaken(details);
+            AbonnementStopzetten(adNr);
         }
     }
 }

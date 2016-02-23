@@ -119,7 +119,27 @@ namespace Chiro.CiviSync.Logic
         public bool IsGratis(Membership bestaandMembership)
         {
             Debug.Assert(bestaandMembership.MembershipPaymentResult != null);
-            return bestaandMembership.FactuurStatus == FactuurStatus.FactuurOk && bestaandMembership.MembershipPaymentResult.Count == 0;
+            return bestaandMembership.FactuurStatus == FactuurStatus.FactuurOk &&
+                   bestaandMembership.MembershipPaymentResult.Count == 0;
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de einddatum van het <paramref name="membership"/> voorbij is.
+        /// </summary>
+        /// <param name="membership">Na te kijken membership.</param>
+        /// <returns><c>true</c> als de einddatum van het <paramref name="membership"/> voorbij is.</returns>
+        public bool IsVervallen(Membership membership)
+        {
+            return membership.EndDate != null && membership.EndDate < _datumProvider.Vandaag();
+        }
+
+        /// <summary>
+        /// Vervangt de einddatum van het gegeven <paramref name="membership"/> door de datum van gisteren.
+        /// </summary>
+        /// <param name="membership">Te beeindigen membership.</param>
+        public void Beeindigen(Membership membership)
+        {
+            membership.EndDate = _datumProvider.Vandaag().AddDays(-1);
         }
     }
 }

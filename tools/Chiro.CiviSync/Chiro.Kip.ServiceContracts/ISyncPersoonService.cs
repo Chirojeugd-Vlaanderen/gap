@@ -421,14 +421,14 @@ namespace Chiro.Kip.ServiceContracts
         /// </summary>
         /// <param name="adNummer">AD-nummer van persoon die geen abonnement meer wil.</param>
         [OperationContract(IsOneWay = true)]
-        void AbonnementVerwijderen(int adNummer);
+        void AbonnementStopzetten(int adNummer);
 
         /// <summary>
         /// Verwijdert abonnement van persoon met gegeven <paramref name="details"/>.
         /// </summary>
         /// <param name="details">Details van persoon die geen abonnement meer wil.</param>
         [OperationContract(IsOneWay = true)]
-        void AbonnementVerwijderenNieuwePersoon(PersoonDetails details);
+        void AbonnementStopzettenNieuwePersoon(PersoonDetails details);
         #endregion
 
         #region memberships
