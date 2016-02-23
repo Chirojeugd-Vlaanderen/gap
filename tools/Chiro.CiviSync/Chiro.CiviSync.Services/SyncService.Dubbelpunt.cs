@@ -60,6 +60,7 @@ namespace Chiro.CiviSync.Services
             if (contact.MembershipResult.Count == 1)
             {
                 var bestaandMembership = contact.MembershipResult.Values.First();
+                request.JoinDate = bestaandMembership.JoinDate;
 
                 if (bestaandMembership.EndDate == null ||
                     bestaandMembership.EndDate.Value.AddDays(Properties.Settings.Default.DagenOverlapDubbelpunt) >=
@@ -68,14 +69,10 @@ namespace Chiro.CiviSync.Services
                     // Als er een actief membership is, of de overlap is 'redelijk', dan
                     // hergebruiken we het recentste membership.
 
-                    DateTime? nieuweEndDate = request.EndDate;
-                    Mapper.Map(bestaandMembership, request);
-                    request.EndDate = nieuweEndDate;
-                }
-                else
-                {
-                    // In het andere geval houden we wel de join date.
-                    request.JoinDate = bestaandMembership.JoinDate;
+                    // Misschien beter mappen? Geen idee.
+                    request.Id = bestaandMembership.Id;
+                    request.StartDate = bestaandMembership.StartDate;
+                    request.Status = MembershipStatus.Current;
                 }
             }
             request.AbonnementType = (AbonnementType)(int)type;
