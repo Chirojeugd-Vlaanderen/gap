@@ -22,7 +22,6 @@ using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
 using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.Gap.UpdateApi.Client;
-using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -43,6 +42,9 @@ namespace Chiro.CiviSync.Services.Test
         /// <summary>
         /// Test of een abonnement wel stopgezet wordt.
         /// </summary>
+        /// <remarks>
+        /// Deze test zou beter verplaatst worden naar de WorkersTest.
+        /// </remarks>
         [TestMethod]
         public void AbonnementStopzetten()
         {
@@ -105,6 +107,74 @@ namespace Chiro.CiviSync.Services.Test
                 src =>
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(r => r.Id == 5 && r.EndDate <= _vandaagZogezegd)), Times.AtLeastOnce);
+        }
+
+        /// <summary>
+        /// Als je een abonnement vandaag maakt, en vandaag terug stopzet,
+        /// dan moet het verwijderd worden uit de Civi.
+        /// </summary>
+        /// <remarks>
+        /// Deze test zou beter verplaatst worden naar de WorkersTest.
+        /// </remarks>
+        [TestMethod]
+        public void AbonnementDirectStopzetten()
+        {
+            // ARRANGE
+
+            Mock<ICiviCrmApi> civiApiMock;
+            Mock<IGapUpdateClient> updateHelperMock;
+            IDiContainer factory;
+            TestHelper.IocOpzetten(_vandaagZogezegd, out factory, out civiApiMock, out updateHelperMock);
+
+            const int adNummer = 2;
+            const int contactId = 4;
+            DateTime beginBestaandAbonnement = _vandaagZogezegd;
+            DateTime eindeBestaandAbonnement = new DateTime(HuidigWerkJaar + 1, 9, 1);
+
+            var bestaandAbonnement = new Membership
+            {
+                Id = 5,
+                ContactId = contactId,
+                MembershipTypeId = (int)MembershipType.DubbelpuntAbonnement,
+                StartDate = beginBestaandAbonnement,
+                EndDate = eindeBestaandAbonnement,
+                JoinDate = beginBestaandAbonnement
+            };
+
+            var persoon = new Contact
+            {
+                Id = contactId,
+                ExternalIdentifier = adNummer.ToString(),
+                FirstName = "Kees",
+                LastName = "Flodder",
+                GapId = 3,
+                MembershipResult =
+                    new ApiResultValues<Membership> { Count = 1, IsError = 0, Values = new[] { bestaandAbonnement } }
+            };
+
+            civiApiMock.Setup(
+                src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
+                .Returns(new ApiResultValues<Contact>(persoon));
+
+            civiApiMock.Setup(
+                src =>
+                    src.MembershipDelete(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<DeleteRequest>(r => r.Id == bestaandAbonnement.Id)))
+                .Returns(new ApiResult()).Verifiable();
+
+            var service = factory.Maak<SyncService>();
+
+            // ACT
+
+
+            service.AbonnementStopzetten(adNummer);
+
+            // ASSERT
+
+            civiApiMock.Verify(
+                src =>
+                    src.MembershipDelete(It.IsAny<string>(), It.IsAny<string>(),
+                        It.Is<DeleteRequest>(r => r.Id == bestaandAbonnement.Id)), Times.AtLeastOnce);
         }
     }
 
