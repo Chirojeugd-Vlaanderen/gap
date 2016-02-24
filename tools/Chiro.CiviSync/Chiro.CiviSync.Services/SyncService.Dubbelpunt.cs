@@ -148,8 +148,14 @@ namespace Chiro.CiviSync.Services
             }
             _membershipLogic.Beeindigen(bestaandMembership);
 
+            var request = new MembershipRequest
+            {
+                Id = bestaandMembership.Id,
+                EndDate = bestaandMembership.EndDate
+            };
+
             var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
-                svc => svc.MembershipSave(_apiKey, _siteKey, Mapper.Map<MembershipRequest>(bestaandMembership)));
+                svc => svc.MembershipSave(_apiKey, _siteKey, request));
             result.AssertValid();
 
             _log.Loggen(Niveau.Debug,
