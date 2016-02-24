@@ -16,10 +16,13 @@
 
 using System.Collections.Generic;
 using Chiro.Cdf.Ioc.Factory;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Poco.Model;
 using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Persoon = Chiro.Gap.Poco.Model.Persoon;
 
 namespace Chiro.Gap.Sync.Test
 {
@@ -47,11 +50,15 @@ namespace Chiro.Gap.Sync.Test
         {
             // ARRANGE
 
-            var gelieerdePersoon = new GelieerdePersoon {Communicatie = new List<CommunicatieVorm>()};
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Communicatie = new List<CommunicatieVorm>(),
+                Persoon = new Persoon {AdNummer = 1}
+            };
 
             // Verwacht dat er een (dummy) e-mailadres meegegeven wordt.
             var kipSyncMock = new Mock<ISyncPersoonService>();
-            kipSyncMock.Setup(src => src.AbonnementVerwijderen(It.Is<string>(ml => !string.IsNullOrEmpty(ml))))
+            kipSyncMock.Setup(src => src.AbonnementStopzetten(It.Is<int>(ad => ad == gelieerdePersoon.Persoon.AdNummer.Value)))
                 .Verifiable();
             Factory.InstantieRegistreren(kipSyncMock.Object);
 
@@ -59,6 +66,47 @@ namespace Chiro.Gap.Sync.Test
 
             var target = Factory.Maak<AbonnementenSync>();
             target.AlleAbonnementenVerwijderen(gelieerdePersoon);
+
+            // ASSERT
+
+            kipSyncMock.VerifyAll();
+        }
+
+        /// <summary>
+        /// Test op doorgegeven abonnementtypes.
+        /// </summary>
+        [TestMethod]
+        public void AbonnementTypeTest()
+        {
+            // ARRANGE
+
+            var gelieerdePersoon = new GelieerdePersoon
+            {
+                Communicatie = new List<CommunicatieVorm>(),
+                Persoon = new Persoon { AdNummer = 1 }
+            };
+
+            var abonnement = new Abonnement
+            {
+                GelieerdePersoon = gelieerdePersoon,
+                GroepsWerkJaar = new GroepsWerkJaar {WerkJaar = 2015},
+                Type = AbonnementType.Digitaal
+            };
+
+            // Verwacht dat er een (dummy) e-mailadres meegegeven wordt.
+            var kipSyncMock = new Mock<ISyncPersoonService>();
+            kipSyncMock.Setup(
+                src =>
+                    src.AbonnementBewaren(It.Is<int>(ad => ad == gelieerdePersoon.Persoon.AdNummer.Value),
+                        It.Is<int>(wj => wj == abonnement.GroepsWerkJaar.WerkJaar),
+                        It.Is<AbonnementTypeEnum>(tp => tp == AbonnementTypeEnum.Digitaal)))
+                .Verifiable();
+            Factory.InstantieRegistreren(kipSyncMock.Object);
+
+            // ACT
+
+            var target = Factory.Maak<AbonnementenSync>();
+            target.AbonnementBewaren(abonnement);
 
             // ASSERT
 

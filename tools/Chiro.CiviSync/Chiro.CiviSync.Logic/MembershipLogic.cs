@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2015, 2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ namespace Chiro.CiviSync.Logic
         /// <returns>Membershiprequest van het gegeven <paramref name="type"/> voor de
         /// contact met gegeven <paramref name="contactId"/> in het gegeven
         /// <paramref name="werkJaar"/>.</returns>
-        public MembershipRequest VanWerkjaar(MembershipType type, int contactId, int civiPloegId, int werkJaar)
+        public MembershipRequest VanWerkjaar(MembershipType type, int contactId, int? civiPloegId, int werkJaar)
         {
             // We bekijken de datums zonder uren, dus discrete dagen. De EndDate valt volledig binnen de
             // relationship.
@@ -119,7 +119,30 @@ namespace Chiro.CiviSync.Logic
         public bool IsGratis(Membership bestaandMembership)
         {
             Debug.Assert(bestaandMembership.MembershipPaymentResult != null);
-            return bestaandMembership.FactuurStatus == FactuurStatus.FactuurOk && bestaandMembership.MembershipPaymentResult.Count == 0;
+            return bestaandMembership.FactuurStatus == FactuurStatus.FactuurOk &&
+                   bestaandMembership.MembershipPaymentResult.Count == 0;
+        }
+
+        /// <summary>
+        /// Geeft <c>true</c> als de einddatum van het <paramref name="membership"/> voorbij is.
+        /// </summary>
+        /// <param name="membership">Na te kijken membership.</param>
+        /// <returns><c>true</c> als de einddatum van het <paramref name="membership"/> voorbij is.</returns>
+        public bool IsVervallen(Membership membership)
+        {
+            return membership.EndDate != null && membership.EndDate < _datumProvider.Vandaag();
+        }
+
+        /// <summary>
+        /// Vervangt de einddatum van het gegeven <paramref name="membership"/> door de datum van gisteren.
+        /// </summary>
+        /// <param name="membership">Te beeindigen membership.</param>
+        /// <returns>Het beeindigde membership. Of <c>null</c> als het membership beter verwijderd zou
+        /// worden (als de einddatum niet na de startdatum valt).</returns>
+        public Membership Beeindigen(Membership membership)
+        {
+            membership.EndDate = _datumProvider.Vandaag().AddDays(-1);
+            return membership.EndDate > membership.StartDate ? membership : (Membership) null;
         }
     }
 }

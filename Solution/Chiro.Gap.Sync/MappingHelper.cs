@@ -120,24 +120,6 @@ namespace Chiro.Gap.Sync
 
             Mapper.CreateMap<Groep, Kip.ServiceContracts.DataContracts.Groep>();
 
-            Mapper.CreateMap<GelieerdePersoon, AbonnementInfo>()
-                .ForMember(dst => dst.EmailAdres, opt => opt.MapFrom(src => VoorkeursMail(src)))
-                .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Persoon.Naam))
-                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
-                .ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.PersoonsAdres.Adres))
-                .ForMember(dst => dst.AbonnementType, opt => opt.Ignore())
-                .ForMember(dst => dst.StamNr, opt => opt.MapFrom(src => src.Groep.Code))
-                .ForMember(dst => dst.GapPersoonId, opt => opt.MapFrom(src => src.Persoon.ID));
-
-            Mapper.CreateMap<Abonnement, AbonnementInfo>()
-                .ForMember(dst => dst.EmailAdres, opt => opt.MapFrom(src => VoorkeursMail(src.GelieerdePersoon)))
-                .ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
-                .ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
-                .ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.GelieerdePersoon.PersoonsAdres.Adres))
-                .ForMember(dst => dst.AbonnementType, opt => opt.MapFrom(src => (int) src.Type))
-                .ForMember(dst => dst.StamNr, opt => opt.MapFrom(src => src.GelieerdePersoon.Groep.Code))
-                .ForMember(dst => dst.GapPersoonId, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.ID));
-
             Mapper.AssertConfigurationIsValid();
         }
 

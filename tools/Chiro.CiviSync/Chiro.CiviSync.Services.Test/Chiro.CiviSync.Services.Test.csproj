@@ -80,6 +80,8 @@
     <Compile Include="AfdelingUpdatenTest.cs" />
     <Compile Include="LoonVerliesVerzerkerenTest.cs" />
     <Compile Include="GroepUpdatenTest.cs" />
+    <Compile Include="AbonnementBewarenTest.cs" />
+    <Compile Include="AbonnementStopzettenTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -101,10 +103,6 @@
     <ProjectReference Include="..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
       <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Mailchimp.Sync\Chiro.Mailchimp.Sync.csproj">
-      <Project>{4C2D492F-8C94-43F3-BF61-1FF21D0B74CE}</Project>
-      <Name>Chiro.Mailchimp.Sync</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.CiviSync.Logic\Chiro.CiviSync.Logic.csproj">
       <Project>{3CCD93C2-0CB6-4562-B017-E2DF3F9AB0A4}</Project>
