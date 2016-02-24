@@ -81,6 +81,7 @@
     <Compile Include="LoonVerliesVerzerkerenTest.cs" />
     <Compile Include="GroepUpdatenTest.cs" />
     <Compile Include="AbonnementBewarenTest.cs" />
+    <Compile Include="AbonnementStopzettenTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
