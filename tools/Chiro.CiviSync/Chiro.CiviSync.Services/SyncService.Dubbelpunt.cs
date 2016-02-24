@@ -137,31 +137,7 @@ namespace Chiro.CiviSync.Services
             }
             var bestaandMembership = contact.MembershipResult.Values.First();
 
-            if (_membershipLogic.IsVervallen(bestaandMembership))
-            {
-                _log.Loggen(Niveau.Warning,
-                    String.Format(
-                        "Dubbelpuntabonnement voor {0} {1} (AD {2}, GapID {3}) was al beeindigd, einddatum {4}. Abonnement niet verwijderd.",
-                        contact.FirstName, contact.LastName, adNummer, contact.GapId, bestaandMembership.EndDate),
-                    null, adNummer, contact.GapId);
-                return;
-            }
-            _membershipLogic.Beeindigen(bestaandMembership);
-
-            var request = new MembershipRequest
-            {
-                Id = bestaandMembership.Id,
-                EndDate = bestaandMembership.EndDate
-            };
-
-            var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
-                svc => svc.MembershipSave(_apiKey, _siteKey, request));
-            result.AssertValid();
-
-            _log.Loggen(Niveau.Debug,
-                String.Format("DubbelpuntAbonnement voor {0} {1} ({2}, {3}) stopgezet. Type {4}.",
-                    contact.FirstName, contact.LastName, contact.Email, contact.StreetAddress,
-                    bestaandMembership.AbonnementType), null, adNummer, contact.GapId);
+            _membershipWorker.AbonnementBeeindigen(bestaandMembership, contact);
         }
 
         /// <summary>

@@ -137,9 +137,12 @@ namespace Chiro.CiviSync.Logic
         /// Vervangt de einddatum van het gegeven <paramref name="membership"/> door de datum van gisteren.
         /// </summary>
         /// <param name="membership">Te beeindigen membership.</param>
-        public void Beeindigen(Membership membership)
+        /// <returns>Het beeindigde membership. Of <c>null</c> als het membership beter verwijderd zou
+        /// worden (als de einddatum niet na de startdatum valt).</returns>
+        public Membership Beeindigen(Membership membership)
         {
             membership.EndDate = _datumProvider.Vandaag().AddDays(-1);
+            return membership.EndDate > membership.StartDate ? membership : (Membership) null;
         }
     }
 }

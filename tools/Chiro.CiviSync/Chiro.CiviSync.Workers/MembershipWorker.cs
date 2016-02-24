@@ -183,5 +183,59 @@ namespace Chiro.CiviSync.Workers
                 }
             }
         }
+
+        /// <summary>
+        /// Beeindigt (of verwijdert als het maar amper begonnen was) een abonnement.
+        /// </summary>
+        /// <param name="bestaandMembership">te verwijderen abonnement.</param>
+        /// <param name="contact">Contact horende bij het abonnement. Wordt gebruikt om te loggen.</param>
+        public void AbonnementBeeindigen(Membership bestaandMembership, Contact contact)
+        {
+            Debug.Assert(bestaandMembership.MembershipTypeId == (int)MembershipType.DubbelpuntAbonnement);
+            int adNummer = int.Parse (contact.ExternalIdentifier);
+
+            if (_membershipLogic.IsVervallen(bestaandMembership))
+            {
+                Log.Loggen(Niveau.Warning,
+                    String.Format(
+                        "Dubbelpuntabonnement voor {0} {1} (AD {2}, GapID {3}) was al beeindigd, einddatum {4}. Abonnement niet verwijderd.",
+                        contact.FirstName, contact.LastName, adNummer, contact.GapId, bestaandMembership.EndDate),
+                    null, adNummer, contact.GapId);
+                return;
+            }
+            if (_membershipLogic.Beeindigen(bestaandMembership) != null)
+            {
+                var request = new MembershipRequest
+                {
+                    Id = bestaandMembership.Id,
+                    EndDate = bestaandMembership.EndDate
+                };
+
+                var result = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
+                    svc => svc.MembershipSave(ApiKey, SiteKey, request));
+                result.AssertValid();
+
+                Log.Loggen(Niveau.Debug,
+                    String.Format("DubbelpuntAbonnement voor {0} {1} ({2}, {3}) stopgezet. Type {4}.",
+                        contact.FirstName, contact.LastName, contact.Email, contact.StreetAddress,
+                        bestaandMembership.AbonnementType), null, adNummer, contact.GapId);
+            }
+            else
+            {
+                var request = new DeleteRequest
+                {
+                    Id = bestaandMembership.Id
+                };
+                var result = ServiceHelper.CallService<ICiviCrmApi, ApiResult>(
+                    svc => svc.MembershipDelete(ApiKey, SiteKey, request));
+                result.AssertValid();
+
+                Log.Loggen(Niveau.Debug,
+                    String.Format("DubbelpuntAbonnement voor {0} {1} ({2}, {3}) verwijderd. Type {4}.",
+                        contact.FirstName, contact.LastName, contact.Email, contact.StreetAddress,
+                        bestaandMembership.AbonnementType), null, adNummer, contact.GapId);
+
+            }
+        }
     }
 }
