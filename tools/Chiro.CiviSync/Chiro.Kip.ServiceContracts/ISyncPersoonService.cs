@@ -399,20 +399,38 @@ namespace Chiro.Kip.ServiceContracts
 
         #region dubbelpunt
         /// <summary>
-        /// Werkt een dubbelpuntabonnement bij in Mailchimp. Spannend.
+        /// Dubbelpuntabonnement als membership naar Civi.
         /// </summary>
-        /// <param name="abonnementInfo">Alle informatie over het abonnement.</param>
+        /// <param name="adNummer">AD-nummer van de persoon die een abonnement wil.</param>
+        /// <param name="werkJaar">Werkjaar van het abonnement.</param>
+        /// <param name="type">Digitaal of op papier.</param>
         [OperationContract(IsOneWay = true)]
-        void AbonnementNaarMailchimp(AbonnementInfo abonnementInfo);
+        void AbonnementBewaren(int adNummer, int werkJaar, AbonnementTypeEnum type);
 
         /// <summary>
-        /// Verwijdert Dubbelpuntabonnement voor persoon met gegeven <paramref name="eMail"/>.
+        /// Dubbelpuntabonnement als membership naar Civi.
         /// </summary>
-        /// <param name="eMail">E-mailadres (of dummy-e-mailadres) van te verwijderen abonnement.</param>
+        /// <param name="details">Details van de persoon die een abonnement wil.</param>
+        /// <param name="werkjaar">Werkjaar van het abonnement.</param>
+        /// <param name="type">Digitaal of op papier.</param>
         [OperationContract(IsOneWay = true)]
-        void AbonnementVerwijderen(string eMail);
+        void AbonnementNieuwePersoonBewaren(PersoonDetails details, int werkjaar, AbonnementTypeEnum type);
+
+        /// <summary>
+        /// Verwijdert abonnement van persoon met gegeven <paramref name="adNummer"/>.
+        /// </summary>
+        /// <param name="adNummer">AD-nummer van persoon die geen abonnement meer wil.</param>
+        [OperationContract(IsOneWay = true)]
+        void AbonnementStopzetten(int adNummer);
+
+        /// <summary>
+        /// Verwijdert abonnement van persoon met gegeven <paramref name="details"/>.
+        /// </summary>
+        /// <param name="details">Details van persoon die geen abonnement meer wil.</param>
+        [OperationContract(IsOneWay = true)]
+        void AbonnementStopzettenNieuwePersoon(PersoonDetails details);
         #endregion
-        
+
         #region memberships
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2013-2015 Chirojeugd-Vlaanderen vzw
+   Copyright 2013-2016 Chirojeugd-Vlaanderen vzw
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ using Chiro.Gap.Log;
 using Chiro.Gap.UpdateApi.Client;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
-using Chiro.Mailchimp.Sync;
 
 namespace Chiro.CiviSync.Services
 {
@@ -47,7 +46,6 @@ namespace Chiro.CiviSync.Services
 
         private readonly IMiniLog _log;
         private readonly IGapUpdateClient _gapUpdateClient;
-        private readonly IChimpSyncHelper _chimpSyncHelper;
 
         protected ServiceHelper ServiceHelper { get; }
 
@@ -66,13 +64,12 @@ namespace Chiro.CiviSync.Services
         /// <param name="gapUpdateClient">Wrapper rond de UpdateApi.</param>
         /// <param name="chimpSyncHelper">Communicatie met Mailchimp.</param>
         /// <param name="log">Logger</param>
-        public SyncService(ServiceHelper serviceHelper, RelationshipLogic relationshipLogic, MembershipLogic membershipLogic, BivakWorker bivakWorker, ContactWorker contactWorker, CommunicatieWorker communicatieWorker, LidWorker lidWorker, MembershipWorker membershipWorker, AdresWorker adresWorker, IGapUpdateClient gapUpdateClient, IChimpSyncHelper chimpSyncHelper, IMiniLog log)
+        public SyncService(ServiceHelper serviceHelper, RelationshipLogic relationshipLogic, MembershipLogic membershipLogic, BivakWorker bivakWorker, ContactWorker contactWorker, CommunicatieWorker communicatieWorker, LidWorker lidWorker, MembershipWorker membershipWorker, AdresWorker adresWorker, IGapUpdateClient gapUpdateClient, IMiniLog log)
         {
             ServiceHelper = serviceHelper;
             _gapUpdateClient = gapUpdateClient;
             _relationshipLogic = relationshipLogic;
             _membershipLogic = membershipLogic;
-            _chimpSyncHelper = chimpSyncHelper;
             _log = log;
 
             // LET OP! De workers hieronder moeten ook geconfigureerd worden!
