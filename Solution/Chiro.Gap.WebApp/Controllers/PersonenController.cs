@@ -1618,7 +1618,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.EmailAdres = (from a in model.PersoonLidInfo.CommunicatieInfo
                 where a.CommunicatieTypeID == (int) CommunicatieTypeEnum.Email && a.Voorkeur
                 select a.Nummer).FirstOrDefault();
-            model.Titel = String.Format("Nieuwsbrief voor {0}", model.PersoonLidInfo.PersoonDetail.VolledigeNaam);
+            model.Titel = String.Format("E-mailvoorkeur voor {0}", model.PersoonLidInfo.PersoonDetail.VolledigeNaam);
 
             return View(model);
         }
@@ -1671,7 +1671,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(
                         svc => svc.AlleDetailsOphalen(id));
 
-                model.Titel = String.Format("Nieuwsbrief voor {0}", model.PersoonLidInfo.PersoonDetail.VolledigeNaam);
+                model.Titel = String.Format("E-mailvoorkeur voor {0}", model.PersoonLidInfo.PersoonDetail.VolledigeNaam);
 
                 return View("NieuwsBrief", model);
             }

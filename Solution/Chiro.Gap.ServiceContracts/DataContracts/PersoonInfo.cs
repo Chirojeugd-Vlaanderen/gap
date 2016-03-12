@@ -108,7 +108,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         /// Nieuwsbrief (eigenlijk: bulk mail)
         /// </summary>
         [DataMember]
-        [DisplayName(@"Nieuwsbrief ontvangen")]
+        [DisplayName(@"E-mail van de Chiro")]
         public bool NieuwsBrief { get; set; }
 
         /// <summary>
