@@ -49,7 +49,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
             foreach (var afd in afdelingen)
             {
                 builder.Append(html.ActionLink(
-                    html.Encode(String.IsNullOrWhiteSpace(afd.Afkorting) ? "(nvt)" : afd.Afkorting),
+                   String.IsNullOrWhiteSpace(afd.Afkorting) ? "(nvt)" : afd.Afkorting,
                     "Afdeling",
                     new { Controller = "Leden", groepsWerkJaarID, groepID, afd.ID },
                     new { title = String.Format(Properties.Resources.AfdelingsLinkTitel, afd.Naam) }).ToString());
