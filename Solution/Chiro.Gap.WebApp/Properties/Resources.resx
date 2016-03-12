@@ -151,19 +151,19 @@
     <comment>Parameters: 0 - code, 1 - naam</comment>
   </data>
   <data name="FunctieMeerdereKeren" xml:space="preserve">
-    <value>Er zijn {2} ingeschreven personen met de functie {0} ({1}), en er mag er zo maar één zijn.</value>
+    <value>Er zijn &lt;a href='{3}'&gt;{2} ingeschreven personen&lt;/a&gt; met de functie {0} ({1}), en er mag er zo maar één zijn.</value>
   </data>
   <data name="FunctieNaamBestaatAl" xml:space="preserve">
     <value>Je groep heeft al een functie met die naam: '{1}' ('{0}').</value>
   </data>
   <data name="FunctieOntbreekt" xml:space="preserve">
-    <value>Er is nog niemand met de functie {0} ({1}).</value>
+    <value>Er is nog &lt;a href='{2}'&gt;niemand&lt;/a&gt; met de functie {0} ({1}). &lt;a href='{3}'&gt;Gelieve deze functie toe te kennen&lt;/a&gt;.</value>
   </data>
   <data name="FunctieTeVeel" xml:space="preserve">
-    <value>Er zijn te veel leden met de functie {0} ({1}).  Huidig aantal: {2}, verplicht maximum: {3}.</value>
+    <value>Er zijn &lt;a href='{4}'&gt;te veel leden&lt;/a&gt; met de functie {0} ({1}).  Huidig aantal: {2}, verplicht maximum: {3}.</value>
   </data>
   <data name="FunctieTeWeinig" xml:space="preserve">
-    <value>Er zijn te weinig ingeschreven personen met de functie {0} ({1}).  Huidig aantal: {2}, verplicht minimum: {3}.</value>
+    <value>Er zijn &lt;a href='{4}'&gt;te weinig ingeschreven personen&lt;/a&gt; met de functie {0} ({1}).  Huidig aantal: {2}, verplicht minimum: {3}.</value>
   </data>
   <data name="GeenActieveAfdelingen" xml:space="preserve">
     <value>Er zijn geen afdelingen geactiveerd voor dit werkjaar.  Pas eerst je &lt;a href='{0}'&gt;afdelingsverdeling&lt;/a&gt; aan.</value>

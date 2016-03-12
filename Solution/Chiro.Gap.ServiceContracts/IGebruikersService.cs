@@ -97,5 +97,13 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(GapFault))]
         [FaultContract(typeof(FoutNummerFault))]
         string VerzekeringsUrlGet(int groepID);
+
+        /// <summary>
+        /// Indien de ingelogde gebruiker lid is voor gegeven groep in het recentste werkjaar, dan wordt de id van dat lid terug gegeven
+        /// </summary>
+        [OperationContract]
+        [FaultContract(typeof(GapFault))]
+        [FaultContract(typeof(FoutNummerFault))]
+        int? AangelogdeGebruikerLidIdGet(int groepID);
     }
 }

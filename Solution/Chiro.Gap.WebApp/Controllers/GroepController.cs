@@ -53,17 +53,19 @@ namespace Chiro.Gap.WebApp.Controllers
 		public override ActionResult Index(int groepID)
 		{
             var werkjaarID = ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID));
-            var model = new GroepsInstellingenModel
-            {
-                Titel = Properties.Resources.GroepsInstellingenTitel,
-                Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(svc => svc.DetailOphalen(groepID)),
-                NonActieveAfdelingen = ServiceHelper.CallService<IGroepenService, List<AfdelingInfo>>(svc => svc.OngebruikteAfdelingenOphalen(werkjaarID))
-            };
+		    var model = new GroepsInstellingenModel
+		    {
+		        Titel = Properties.Resources.GroepsInstellingenTitel,
+		        Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(svc => svc.DetailOphalen(groepID)),
+		        NonActieveAfdelingen =
+		            ServiceHelper.CallService<IGroepenService, List<AfdelingInfo>>(
+		                svc => svc.OngebruikteAfdelingenOphalen(werkjaarID)),
+		        IsLive = VeelGebruikt.IsLive()
+		    };
 
-            // Ook hier nakijken of we live zijn.
-            model.IsLive = VeelGebruikt.IsLive();
+		    // Ook hier nakijken of we live zijn.
 
-            return View(model);
+		    return View(model);
 		}
 
         // NOTE: onderstaande methodes komen voort uit opsplitsing groepenscherm, maar halen dus eigenlijk wat teveel info op.

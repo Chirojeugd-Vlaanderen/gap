@@ -356,5 +356,32 @@ namespace Chiro.Gap.Services
                                  HttpUtility.UrlEncode(credentials.GeencrypteerdeUserInfo),
                                  HttpUtility.UrlEncode(credentials.Hash));
         }
+
+        /// <summary>
+        /// Indien de ingelogde gebruiker lid is voor gegeven groep in het recentste werkjaar, dan wordt de id van dat lid terug gegeven
+        /// </summary>
+        public int? AangelogdeGebruikerLidIdGet(int groepID)
+        {
+            var userName = _authenticatieMgr.GebruikersNaamGet();
+            var gav = (from g in _gavRepo.Select()
+                where
+                    string.Compare(g.Login, userName,
+                        StringComparison.InvariantCultureIgnoreCase) == 0
+                select g).First();
+            if (!gav.Persoon.Any())
+            {
+                return null; // geen persoon gevonden
+            }
+            var lps = (from gp in gav.Persoon.First().GelieerdePersoon
+                          where gp.Groep.ID == groepID
+                          select gp).ToList();
+            var leden = lps.SelectMany(gp => gp.Lid).ToList();
+            if (!leden.Any())
+            {
+                return null;
+            }
+            var maxJaar = leden.Max(l => l.GroepsWerkJaar.WerkJaar);
+            return leden.First(l => l.GroepsWerkJaar.WerkJaar == maxJaar).ID;
+        }
     }
 }
