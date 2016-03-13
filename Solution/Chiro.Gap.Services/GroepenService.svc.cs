@@ -817,7 +817,9 @@ namespace Chiro.Gap.Services
 			var lidNiveau = (gwj.Groep.Niveau == Niveau.Groep ? ((int)lidType)<<1 : (int)gwj.Groep.Niveau);
 
 			var nationaleFuncties = (from f in _functiesRepo.Select()
-									 where f.IsNationaal && ((f.NiveauInt & lidNiveau) != 0)
+                                     where f.IsNationaal && ((f.NiveauInt & lidNiveau) != 0) &&
+                                      (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar) && // Toegevoegd om functies te verbergen als ze niet meer actief zijn voor dit werkjaar
+                                      (f.WerkJaarTot == null || gwj.WerkJaar <= f.WerkJaarTot)   // Fixes bug #1809
 									 select f).ToList();
 
 			var eigenRelevanteFuncties = (from f in gwj.Groep.Functie
