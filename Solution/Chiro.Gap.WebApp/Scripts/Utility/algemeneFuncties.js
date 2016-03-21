@@ -68,7 +68,7 @@ $(function () {
 
     $('#snelBerichtInfo').click(function () {
         $('#extraInfoDialog').dialog();
-        toonInfo('#SBLINFO', 'E-mail van de Chiro ontvangen', '#extraInfoDialog');
+        toonInfo('#SBLINFO', 'Nieuwsbrief', '#extraInfoDialog');
     });
 
     $('#print').click(function () {

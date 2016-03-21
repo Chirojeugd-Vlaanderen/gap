@@ -214,7 +214,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Om {0} contactpersoon te maken, moet een van {1} e-mailadressen e-mail van de Chiro ontvangen..
+        ///   Looks up a localized string similar to Om {0} contactpersoon te maken, moet je een van {1} e-mailadressen inschrijven voor de nieuwsbrief..
         /// </summary>
         public static string ContactMoetNieuwsBriefKrijgen {
             get {
@@ -250,7 +250,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} heeft geen e-mailadres. Om {1} contactpersoon te maken, moet je {1} een e-mailadres geven dat e-mail van de Chiro mag ontvangen..
+        ///   Looks up a localized string similar to {0} heeft geen e-mailadres. Om {1} contactpersoon te maken, moet je {1} een e-mailadres geven, en {1} met dat e-mailadres inschrijven voor de nieuwsbrief..
         /// </summary>
         public static string EmailVoorContactOntbreekt {
             get {

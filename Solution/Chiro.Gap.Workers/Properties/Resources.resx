@@ -332,7 +332,7 @@ de helpdesk</value>
     <value>Poging tot inschrijven kindleden in een kaderploeg.</value>
   </data>
   <data name="ContactMoetNieuwsBriefKrijgen" xml:space="preserve">
-    <value>Van een contactpersoon verwachten we dat hij/zij zich inschrijft om e-mail van de Chiro te krijgen.</value>
+    <value>Van een contactpersoon verwachten we dat hij/zij zich inschrijft voor de nieuwsbrief.</value>
   </data>
   <data name="LidWasAlIngeschreven" xml:space="preserve">
     <value>Je probeerde een persoon in te schrijven die al lid is.</value>

@@ -169,7 +169,7 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Van een contactpersoon verwachten we dat hij/zij zich inschrijft om e-mail van de Chiro te krijgen..
+        ///   Looks up a localized string similar to Van een contactpersoon verwachten we dat hij/zij zich inschrijft voor de nieuwsbrief..
         /// </summary>
         internal static string ContactMoetNieuwsBriefKrijgen {
             get {

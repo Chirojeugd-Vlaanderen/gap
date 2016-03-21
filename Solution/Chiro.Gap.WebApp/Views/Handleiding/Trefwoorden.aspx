@@ -186,9 +186,10 @@
             Je kunt wel een verzekering voor een beperkte periode afsluiten (zie <a href="http://www.chiro.be/verzekeringen">
                 www.chiro.be/verzekeringen</a>).
         </dd>
-        <dt><strong><a class="anchor" id="Nieuwsbrief">E-mail van de Chiro</a></strong>:</dt>
+        <dt><strong><a class="anchor" id="Nieuwsbrief">Nieuwsbrief</a></strong>:</dt>
         <dd id="SBLINFO">
-            Je kunt je via het GAP inschrijven om e-mail van de Chiro te ontvangen. Dit bepaalt ook of je digitaal een Dubbelpunt kunt krijgen.</dd>
+            Je kunt je via het GAP inschrijven voor de maandelijkse Chiro-nieuwsbrief met nieuws, info
+            en weetjes voor Chiroleiding.</dd>
         <dt><strong><a class="anchor" id="Persoon">Persoon</a></strong>:</dt>
         <dd id="PERINFO">
             In deze handleiding bedoelen we met een persoon om het even wie van wie je gegevens
