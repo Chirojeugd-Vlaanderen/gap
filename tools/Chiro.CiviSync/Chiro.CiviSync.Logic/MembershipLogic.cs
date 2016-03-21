@@ -90,14 +90,13 @@ namespace Chiro.CiviSync.Logic
                 MembershipTypeId = (int) type,
             };
 
+            // Don't touch the membership status; CiviCRM will handle it for us (#4960).
             if (vandaag < result.StartDate)
             {
-                result.Status = MembershipStatus.Pending;
                 result.StartDate = beginWerkjaar;
             }
             else if (vandaag > result.EndDate)
             {
-                result.Status = MembershipStatus.Expired;
                 result.StartDate = eindeWerkJaar;
             }
             else
