@@ -47,6 +47,8 @@ namespace Chiro.CiviSync.Logic.Test
             var target = factory.Maak<MembershipLogic>();
             var result = target.VanWerkjaar(MembershipType.Aansluiting, 4, DummyGroepId, 2014);
             Assert.AreEqual(result.StartDate, VandaagZogezegd);
+            // Don't override status (#4960)
+            Assert.AreNotEqual(1, result.IsOverride);
         }
 
         /// <summary>
@@ -61,6 +63,8 @@ namespace Chiro.CiviSync.Logic.Test
             var target = factory.Maak<MembershipLogic>();
             var result = target.VanWerkjaar(MembershipType.Aansluiting, 4, DummyGroepId, 2013);
             Assert.AreEqual(result.StartDate, result.EndDate);
+            // Don't override status (#4960)
+            Assert.AreNotEqual(1, result.IsOverride);
         }
     }
 }
