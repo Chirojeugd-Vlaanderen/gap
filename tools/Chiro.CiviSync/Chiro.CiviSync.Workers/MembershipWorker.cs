@@ -153,6 +153,20 @@ namespace Chiro.CiviSync.Workers
                     FactuurStatus = bestaandMembership.FactuurStatus
                 };
 
+                if (bestaandMembership.AangemaaktDoorPloegId == 1)
+                {
+                    // Als het oorspronkelijke membership was aangevraagd door NAT/0000, dan overschrijven
+                    // we de aanvrager door die van het nieuwe membership. (Oorspronkelijk membership was dan
+                    // gratis, het nieuwe dus ook, want anders zaten we niet in else.)
+
+                    // Dit is een hack die rond issue #4963 werkt. Maar de hack is tijdelijk.
+                    // Als #4055 wordt gesloten (memberships voor nationale ploegen), dan mag
+                    // deze hack weg. Maar als daarentegen civi-issue #4318 eerst wordt aangepakt
+                    // (die in wezen een workaround is voor #4055), dan moet deze hack verfijnd worden.
+                    // Issue #4963 mag dus nog niet gesloten worden.
+                    membershipRequest.AangemaaktDoorPloegId = civiGroepId;
+                }
+
                 var updateResult = ServiceHelper.CallService<ICiviCrmApi, ApiResultValues<Membership>>(
                     svc => svc.MembershipSave(ApiKey, SiteKey, membershipRequest));
                 updateResult.AssertValid();
