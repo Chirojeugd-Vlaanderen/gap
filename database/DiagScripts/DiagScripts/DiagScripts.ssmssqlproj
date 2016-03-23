@@ -3,58 +3,10 @@
   <Items>
     <LogicalFolder Name="Connections" Type="2" Sorted="true">
       <Items>
-        <ConnectionNode Name="devsrv1.chiro.wereld\sql2k8:CgDevelop">
-          <Created>2012-10-23T12:27:49.5531292+02:00</Created>
+        <ConnectionNode Name="(local)\sqlexpress:KIPDORP\VervlJo">
+          <Created>2016-03-21T13:37:06.321266+01:00</Created>
           <Type>SQL</Type>
-          <Server>devsrv1.chiro.wereld\sql2k8</Server>
-          <UserName>CgDevelop</UserName>
-          <Authentication>SQL</Authentication>
-          <InitialDB />
-          <LoginTimeout>15</LoginTimeout>
-          <ExecutionTimeout>0</ExecutionTimeout>
-          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
-          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
-        </ConnectionNode>
-        <ConnectionNode Name="devsrv1.chiro.wereld\sql2k8:sa">
-          <Created>2012-08-31T13:28:02.488035+02:00</Created>
-          <Type>SQL</Type>
-          <Server>devsrv1.chiro.wereld\sql2k8</Server>
-          <UserName>sa</UserName>
-          <Authentication>SQL</Authentication>
-          <InitialDB />
-          <LoginTimeout>15</LoginTimeout>
-          <ExecutionTimeout>0</ExecutionTimeout>
-          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
-          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
-        </ConnectionNode>
-        <ConnectionNode Name="kip-sql02.chiro.lokaal\sql2012:sa">
-          <Created>2014-12-29T15:14:11.662642+01:00</Created>
-          <Type>SQL</Type>
-          <Server>kip-sql02.chiro.lokaal\sql2012</Server>
-          <UserName>sa</UserName>
-          <Authentication>SQL</Authentication>
-          <InitialDB />
-          <LoginTimeout>15</LoginTimeout>
-          <ExecutionTimeout>0</ExecutionTimeout>
-          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
-          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
-        </ConnectionNode>
-        <ConnectionNode Name="kip-sql02\sql2012:sa">
-          <Created>2014-07-04T11:51:59.9551243+02:00</Created>
-          <Type>SQL</Type>
-          <Server>kip-sql02\sql2012</Server>
-          <UserName>sa</UserName>
-          <Authentication>SQL</Authentication>
-          <InitialDB />
-          <LoginTimeout>15</LoginTimeout>
-          <ExecutionTimeout>0</ExecutionTimeout>
-          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
-          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
-        </ConnectionNode>
-        <ConnectionNode Name="LAP-JVE-WIN\SQLEXPRESS:LAP-JVE-WIN\johan">
-          <Created>2016-01-12T14:23:13.9862793+01:00</Created>
-          <Type>SQL</Type>
-          <Server>LAP-JVE-WIN\SQLEXPRESS</Server>
+          <Server>(local)\sqlexpress</Server>
           <UserName />
           <Authentication>Windows Authentication</Authentication>
           <InitialDB />
@@ -92,9 +44,9 @@
           <FullPath>DubbelAd.sql</FullPath>
         </FileNode>
         <FileNode Name="DubbelVerwijderen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>DubbelVerwijderen.sql</FullPath>
         </FileNode>
         <FileNode Name="FixContactType.sql">
@@ -116,9 +68,9 @@
           <FullPath>GpsOpAd.sql</FullPath>
         </FileNode>
         <FileNode Name="GroepOpPlaats.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02\sql2012:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kip-sql02\sql2012</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>GroepOpPlaats.sql</FullPath>
         </FileNode>
         <FileNode Name="ix_persoon_AdNummer.sql">
@@ -146,8 +98,8 @@
           <FullPath>LedenOpFactuur.sql</FullPath>
         </FileNode>
         <FileNode Name="LidInfoZoeken.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:LAP-JVE-WIN\SQLEXPRESS:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>LAP-JVE-WIN\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
           <AssociatedConnUserName />
           <FullPath>LidInfoZoeken.sql</FullPath>
         </FileNode>
@@ -158,9 +110,9 @@
           <FullPath>LidInKip.sql</FullPath>
         </FileNode>
         <FileNode Name="LoginKoppelen.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02\sql2012:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kip-sql02\sql2012</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>LoginKoppelen.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenAbonnement.sql">
@@ -176,15 +128,15 @@
           <FullPath>NietDoorgekomenAfdelingen.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenEmail.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>NietDoorgekomenEmail.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenLeden.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>NietDoorgekomenLeden.sql</FullPath>
         </FileNode>
         <FileNode Name="NietDoorgekomenTelefoonNr.sql">
@@ -200,9 +152,9 @@
           <FullPath>NietVerwijderdeLeden.sql</FullPath>
         </FileNode>
         <FileNode Name="PersoonOpAd.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>PersoonOpAd.sql</FullPath>
         </FileNode>
         <FileNode Name="ProbleemFacturen.sql">
@@ -236,9 +188,9 @@
           <FullPath>vAdresInfo.sql</FullPath>
         </FileNode>
         <FileNode Name="TijdelijkeGebruiker.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:kip-sql02.chiro.lokaal\sql2012:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>kip-sql02.chiro.lokaal\sql2012</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>TijdelijkeGebruiker.sql</FullPath>
         </FileNode>
         <FileNode Name="VerkeerdeAdressen.sql">
@@ -266,14 +218,14 @@
           <FullPath>vVerlorenAdressen.sql</FullPath>
         </FileNode>
         <FileNode Name="vVerlorenBivakken.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:devsrv1.chiro.wereld\sql2k8:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>devsrv1.chiro.wereld\sql2k8</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>vVerlorenBivakken.sql</FullPath>
         </FileNode>
         <FileNode Name="ZoekLogs.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:LAP-JVE-WIN\SQLEXPRESS:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>LAP-JVE-WIN\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\sqlexpress:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\sqlexpress</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>ZoekLogs.sql</FullPath>
         </FileNode>
