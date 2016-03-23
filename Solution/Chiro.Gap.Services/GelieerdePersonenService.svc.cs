@@ -683,7 +683,6 @@ namespace Chiro.Gap.Services
 
             Lid lid = null;
             GelieerdePersoon gelieerdePersoon;
-            Adres adres = null;
 
             var problemen = new Dictionary<string, FoutBericht>();
 
@@ -725,38 +724,36 @@ namespace Chiro.Gap.Services
                     Mapper.Map<IList<GelieerdePersoon>, List<PersoonDetail>>(ex.Objecten), ex.Message);
             }
 
-            // Telefoonnummer en e-mailadres koppelen
-
-            if (details.EMail != null)
+            // CommunicatieVormen (Telefoonnummer en e-mailadres,..) koppelen
+            var n = 0;
+            foreach (var communicatieInfo in details.CommunicatieInfos)
             {
-                var eMail = new CommunicatieVorm()
-                            {
-                                ID = 0, // nieuw e-mailadres
-                                CommunicatieType = _communicatieTypesRepo.ByID((int) CommunicatieTypeEnum.Email),
-                                IsGezinsgebonden = details.EMail.IsGezinsGebonden,
-                                Nota = details.EMail.Nota,
-                                Nummer = details.EMail.Nummer,
-                                Voorkeur = details.EMail.Voorkeur
-                            };
-
+                var communicatieVorm = new CommunicatieVorm
+                {
+                    ID = 0, // nieuw
+                    CommunicatieType = _communicatieTypesRepo.ByID(communicatieInfo.CommunicatieTypeID),
+                    IsGezinsgebonden = communicatieInfo.IsGezinsGebonden,
+                    Nota = communicatieInfo.Nota,
+                    Nummer = communicatieInfo.Nummer,
+                    Voorkeur = communicatieInfo.Voorkeur,
+                };
                 // Communicatie koppelen is een beetje een gedoe, omdat je die voorkeuren hebt, en het concept
                 // 'gezinsgebonden' dat eigenlijk niet helemaal klopt. Al die brol handelen we af in de manager.
-
                 try
                 {
-                    _communicatieVormenMgr.Koppelen(gelieerdePersoon, eMail);
+                    _communicatieVormenMgr.Koppelen(gelieerdePersoon, communicatieVorm);
                 }
                 catch (FoutNummerException ex)
                 {
                     if (ex.FoutNummer == FoutNummer.ValidatieFout)
                     {
-                        problemen.Add("EMail.Nummer", new FoutBericht
+                        problemen.Add("CommunicatieInfos["+n+"].Nummer", new FoutBericht
                                                       {
                                                           FoutNummer = FoutNummer.ValidatieFout,
                                                           Bericht =
                                                               string.Format(Resources.OngeldigeCommunicatie,
-                                                                  details.EMail.Nummer,
-                                                                  eMail.CommunicatieType.Omschrijving)
+                                                                  communicatieInfo.Nummer,
+                                                                  communicatieVorm.CommunicatieType.Omschrijving)
                                                       });
                     }
                     else
@@ -764,50 +761,13 @@ namespace Chiro.Gap.Services
                         throw;
                     }
                 }
+                n++;
             }
-
-            if (details.TelefoonNummer != null)
-            {
-                var telefoonNummer = new CommunicatieVorm()
-                                     {
-                                         ID = 0, // nieuw e-mailadres
-                                         CommunicatieType =
-                                             _communicatieTypesRepo.ByID((int) CommunicatieTypeEnum.TelefoonNummer),
-                                         IsGezinsgebonden = details.TelefoonNummer.IsGezinsGebonden,
-                                         Nota = details.TelefoonNummer.Nota,
-                                         Nummer = details.TelefoonNummer.Nummer,
-                                         Voorkeur = details.TelefoonNummer.Voorkeur
-                                     };
-
-
-                try
-                {
-                    _communicatieVormenMgr.Koppelen(gelieerdePersoon, telefoonNummer);
-                }
-                catch (FoutNummerException ex)
-                {
-                    if (ex.FoutNummer == FoutNummer.ValidatieFout)
-                    {
-                        problemen.Add("TelefoonNummer.Nummer", new FoutBericht
-                                                               {
-                                                                   FoutNummer = FoutNummer.ValidatieFout,
-                                                                   Bericht =
-                                                                       string.Format(Resources.OngeldigeCommunicatie,
-                                                                           details.TelefoonNummer.Nummer,
-                                                                           telefoonNummer.CommunicatieType.Omschrijving)
-                                                               });
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            }
-
             // adres koppelen
 
             if (details.Adres != null)
             {
+                Adres adres;
                 try
                 {
                     adres = _adressenMgr.ZoekenOfMaken(details.Adres, _adressenRepo.Select(), _straatNamenRepo.Select(),
@@ -816,7 +776,7 @@ namespace Chiro.Gap.Services
                 catch (OngeldigObjectException ex)
                 {
                     adres = null;
-                    foreach (KeyValuePair<string, FoutBericht> kvp in ex.Berichten)
+                    foreach (var kvp in ex.Berichten)
                     {
                         problemen.Add(kvp.Key, kvp.Value);
                     }

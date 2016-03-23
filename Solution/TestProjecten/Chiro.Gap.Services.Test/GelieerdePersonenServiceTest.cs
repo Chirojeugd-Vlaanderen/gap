@@ -102,7 +102,11 @@ namespace Chiro.Gap.Services.Test
         {
             // ARRANGE
             var groep = new ChiroGroep {ID = 1};
-            var nieuwePersoonDetails = new NieuwePersoonDetails {PersoonInfo = new PersoonInfo {NieuwsBrief = true}};
+            var nieuwePersoonDetails = new NieuwePersoonDetails
+            {
+                PersoonInfo = new PersoonInfo {NieuwsBrief = true},
+                CommunicatieInfos = new List<CommunicatieInfo>()
+            };
 
             // dependency injection
             var repositoryProviderMock = new Mock<IRepositoryProvider>();

@@ -697,6 +697,17 @@ namespace Chiro.Gap.WebApp.Controllers
             return RedirectToAction("Bewerken", "Personen", new { id = info.GelieerdePersoonID });
         }
 
+        [HandleError]
+        public ActionResult ZelfFunctiesToekennen(int groepID)
+        {
+            var lidId = ServiceHelper.CallService<IGebruikersService, int?>(svc => svc.AangelogdeGebruikerLidIdGet(groepID));
+            if (!lidId.HasValue)
+            {
+                return RedirectToAction("Lijst", new { id = 0 });
+            }
+            return RedirectToAction("FunctiesToekennen", new {id = lidId.Value});
+        }
+
         /// <summary>
         /// Toont een view die toelaat de functies van het lid met LidID <paramref name="id"/> te bewerken.
         /// </summary>

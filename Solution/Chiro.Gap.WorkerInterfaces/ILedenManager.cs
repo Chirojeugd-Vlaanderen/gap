@@ -82,6 +82,17 @@ namespace Chiro.Gap.WorkerInterfaces
         bool IsBetalendAangesloten(Lid l);
 
         /// <summary>
+        /// Geeft <c>true</c> als er in de Civi al een aansluiting bestaat voor het gegeven <paramref name="lid"/>
+        /// (typisch via dezelfde persoon in een andere groep).
+        /// </summary>
+        /// <param name="lid">Een lid</param>
+        /// <returns>
+        /// <c>true</c> als er in de Civi al een aansluiting bestaat voor het gegeven <paramref name="lid"/>.
+        /// </returns>
+        /// <remarks>We gaan hiervoor niet in Civi kijken, maar wel naar het IsAangesloten-veld van de leden.</remarks>
+        bool IsAangesloten(Lid lid);
+
+        /// <summary>
         /// Geeft <c>true</c> als de gegeven <paramref name="gelieerdePersoon"/> in zijn recentste groepswerkjaar
         /// leiding kan worden. Dit hangt eigenlijk enkel van de leeftijd af.
         /// </summary>
