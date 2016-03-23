@@ -882,5 +882,25 @@ namespace Chiro.Gap.Workers
 
             return betalendAangeslotenGelieerdePersonen.FirstOrDefault() != null;
         }
+
+        /// <summary>
+        /// Geeft <c>true</c> als er in de Civi al een aansluiting bestaat voor het gegeven <paramref name="lid"/>
+        /// (typisch via dezelfde persoon in een andere groep).
+        /// </summary>
+        /// <param name="lid">Een lid</param>
+        /// <returns>
+        /// <c>true</c> als er in de Civi al een aansluiting bestaat voor het gegeven <paramref name="lid"/>.
+        /// </returns>
+        /// <remarks>We gaan hiervoor niet in Civi kijken, maar wel naar het IsAangesloten-veld van de leden.</remarks>
+        public bool IsAangesloten(Lid lid)
+        {
+            // TODO: Dit lijkt te hard op de functie hierboven.
+
+            var aangeslotenGelieerdePersonen = (from gp in lid.GelieerdePersoon.Persoon.GelieerdePersoon
+                where gp.Lid.Any(l2 => l2.GroepsWerkJaar.WerkJaar == lid.GroepsWerkJaar.WerkJaar && l2.IsAangesloten)
+                select gp);
+
+            return aangeslotenGelieerdePersonen.FirstOrDefault() != null;
+        }
     }
 }
