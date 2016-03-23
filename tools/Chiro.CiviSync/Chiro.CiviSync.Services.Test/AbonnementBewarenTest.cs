@@ -83,13 +83,14 @@ namespace Chiro.CiviSync.Services.Test
                 src => src.ContactGet(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ContactRequest>()))
                 .Returns(new ApiResultValues<Contact>(persoon));
 
+            // Neem meteen mee dat IsOverride niet gezet mag zijn (zie #4960).
             civiApiMock.Setup(
                 src =>
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(
                             r =>
                                 r.StartDate == _vandaagZogezegd && r.EndDate == eindeBestaandAbonnement &&
-                                r.JoinDate == _vandaagZogezegd &&
+                                r.JoinDate == _vandaagZogezegd && r.IsOverride != true &&
                                 r.MembershipTypeId == (int)MembershipType.DubbelpuntAbonnement)))
                 .Returns(
                     (string key1, string key2, MembershipRequest r) =>
@@ -108,7 +109,7 @@ namespace Chiro.CiviSync.Services.Test
                     src.MembershipSave(It.IsAny<string>(), It.IsAny<string>(),
                         It.Is<MembershipRequest>(
                             r => r.StartDate == _vandaagZogezegd && r.EndDate == eindeBestaandAbonnement &&
-                                 r.JoinDate == _vandaagZogezegd &&
+                                 r.JoinDate == _vandaagZogezegd && r.IsOverride != true &&
                                  r.MembershipTypeId == (int) MembershipType.DubbelpuntAbonnement)), Times.AtLeastOnce);
         }
     }

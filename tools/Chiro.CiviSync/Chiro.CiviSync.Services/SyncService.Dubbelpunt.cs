@@ -17,14 +17,11 @@
  */
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
-using AutoMapper;
 using Chiro.CiviCrm.Api;
 using Chiro.CiviCrm.Api.DataContracts;
 using Chiro.CiviCrm.Api.DataContracts.Entities;
-using Chiro.CiviCrm.Api.DataContracts.Requests;
 using Chiro.CiviSync.Logic;
 using Chiro.Gap.Log;
 using Chiro.Kip.ServiceContracts.DataContracts;
@@ -79,7 +76,9 @@ namespace Chiro.CiviSync.Services
                     request.EndDate = bestaandMembership.EndDate > request.EndDate
                         ? bestaandMembership.EndDate
                         : request.EndDate;
-                    request.Status = MembershipStatus.Current;
+
+                    // Van een membershipstatus blijven we af, want we willen dat CiviCRM die voor
+                    // ons afhandelt (#4960)
                 }
             }
             request.AbonnementType = (AbonnementType)(int)type;

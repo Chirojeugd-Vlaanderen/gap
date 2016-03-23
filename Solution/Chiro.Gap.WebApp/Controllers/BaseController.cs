@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Web.Mvc;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
+using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
@@ -161,24 +162,33 @@ namespace Chiro.Gap.WebApp.Controllers
                 VoegBivakStatusMededelingenToe(bivakstatus, model.Mededelingen);
 
                 // Problemen opvragen
-
                 var functieProblemen = VeelGebruikt.FunctieProblemenOphalen(gwjDetail.GroepID);
                 var ledenProblemen = VeelGebruikt.LedenProblemenOphalen(gwjDetail.GroepID);
 
                 // Problemen vertalen naar model
-
                 if (functieProblemen != null)
                 {
                     foreach (var p in functieProblemen)
                     {
+                        var bekijkMetFunctieUrl = Url.Action("Functie", "Leden",
+                            new
+                            {
+                                groepsWerkJaarID = gwjDetail.WerkJaarID,
+                                id = p.ID,
+                                groepID = groepID,
+                            });
                         // Eerst een paar specifieke en veelvoorkomende problemen apart behandelen.
-
                         if (p.MinAantal > 0 && p.EffectiefAantal == 0)
                         {
+                            var statusToekennenUrl = Url.Action("ZelfFunctiesToekennen", "Leden",
+                            new
+                            {
+                                groepID = groepID,
+                            });
                             model.Mededelingen.Add(new Mededeling
                             {
                                 Type = MededelingsType.Probleem,
-                                Info = String.Format(Properties.Resources.FunctieOntbreekt, p.Naam, p.Code)
+                                Info = string.Format(Properties.Resources.FunctieOntbreekt, p.Naam, p.Code, bekijkMetFunctieUrl, statusToekennenUrl)
                             });
                         }
                         else if (p.MaxAantal == 1 && p.EffectiefAantal > 1)
@@ -186,18 +196,16 @@ namespace Chiro.Gap.WebApp.Controllers
                             model.Mededelingen.Add(new Mededeling
                             {
                                 Type = MededelingsType.Probleem,
-                                Info = String.Format(Properties.Resources.FunctieMeerdereKeren, p.Naam, p.Code, p.EffectiefAantal)
+                                Info = string.Format(Properties.Resources.FunctieMeerdereKeren, p.Naam, p.Code, p.EffectiefAantal,bekijkMetFunctieUrl)
                             });
                         }
-
                         // Dan de algemene foutmeldingen
-
                         else if (p.MinAantal > p.EffectiefAantal)
                         {
                             model.Mededelingen.Add(new Mededeling
                             {
                                 Type = MededelingsType.Probleem,
-                                Info = String.Format(Properties.Resources.FunctieTeWeinig, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal)
+                                Info = string.Format(Properties.Resources.FunctieTeWeinig, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal, bekijkMetFunctieUrl)
                             });
                         }
                         else if (p.EffectiefAantal > p.MaxAantal)
@@ -205,7 +213,7 @@ namespace Chiro.Gap.WebApp.Controllers
                             model.Mededelingen.Add(new Mededeling
                             {
                                 Type = MededelingsType.Probleem,
-                                Info = String.Format(Properties.Resources.FunctieTeVeel, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal)
+                                Info = string.Format(Properties.Resources.FunctieTeVeel, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal, bekijkMetFunctieUrl)
                             });
                         }
                     }
