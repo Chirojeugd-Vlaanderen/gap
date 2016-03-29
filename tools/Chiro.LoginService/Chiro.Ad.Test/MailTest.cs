@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -17,7 +17,7 @@
  */
 
 using System;
-using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Ioc.Factory;
 using Chiro.Cdf.Mailer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -37,9 +37,9 @@ namespace Chiro.Ad.Test
 
             IMailer mailer = Factory.Maak<IMailer>();
 
-            var resultaat = mailer.Verzenden("johan.vervloet@chiro.be", "unit test " + DateTime.Now, "unit test");
+            mailer.Verzenden("johan.vervloet@chiro.be", "unit test " + DateTime.Now, "unit test");
 
-            Assert.IsTrue(resultaat);
+            Assert.IsTrue(true);
         }
 
         [TestMethod]
@@ -49,9 +49,9 @@ namespace Chiro.Ad.Test
 
             IMailer mailer = Factory.Maak<IMailer>();
 
-            var resultaat = mailer.Verzenden("johan.vervloet@gmail.com", "unit test " + DateTime.Now, "unit test");
+            mailer.Verzenden("johan.vervloet@gmail.com", "unit test " + DateTime.Now, "unit test");
 
-            Assert.IsTrue(resultaat);
+            Assert.IsTrue(true);
         }
 
     }
