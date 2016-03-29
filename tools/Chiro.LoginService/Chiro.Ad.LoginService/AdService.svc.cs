@@ -87,36 +87,9 @@ namespace Chiro.Ad.LoginService
         //[PrincipalPermission(SecurityAction.Demand, Name = @"KIPDORP\LoginSvcUser")]
         public string GapLoginAanvragen(int adNr, string voornaam, string familienaam, string mailadres)
         {
-            // Validatie
-            if (!Regex.IsMatch(mailadres, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"))
-            {
-                throw new FaultException<ArgumentException>(new ArgumentException(), "Ongeldig mailadres");
-            }
-
-            // Verwerking
-
             try
             {
-                var gebruiker = new GapLogin(adNr, voornaam, familienaam);
-
-                // We controleren of het mailadres hetzelfde is als hier opgegeven.
-                if (gebruiker.Mailadres != string.Empty && gebruiker.Mailadres != mailadres)
-                {
-                    // TODO: dit verhuizen naar businesslogica
-
-                    // Het is een ander, dus sturen we ook nog een mailtje naar het hier opgegeven adres,
-                    // voor de zekerheid, met instructies om het wachtwoord van de login te kunnen aanpassen.
-                    string boodschap = String.Format(Properties.Resources.VerschillendWachtwoordMail, voornaam);
-                    _mailer.Verzenden(mailadres, "Je Chirologin", boodschap);
-                }
-                else if (gebruiker.Mailadres == string.Empty)
-                {
-                    // Nog geen mailadres ingevuld, dus is het een nieuwe login
-                    gebruiker.Mailadres = mailadres;
-                    gebruiker.Opslaan();
-                    _loginManager.ActiverenEnMailen(gebruiker);
-                }
-
+                var gebruiker = _loginManager.ZoekenOfMaken(DomeinEnum.Wereld, adNr, voornaam, familienaam, mailadres);
                 return gebruiker.Login;
             }
             catch (FormatException ex)
