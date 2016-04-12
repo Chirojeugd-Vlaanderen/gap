@@ -67,8 +67,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\tools\LoginService\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
-      <Project>{18ff2008-106f-48a6-befb-5f8b301354d0}</Project>
+    <ProjectReference Include="..\..\tools\Chiro.LoginService\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
+      <Project>{18FF2008-106F-48A6-BEFB-5F8B301354D0}</Project>
       <Name>Chiro.Cdf.Mailer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">

@@ -50,8 +50,8 @@
       <Project>{6e81a10a-ad85-47a0-8b5d-70361f393cdd}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
-      <Project>{d1e7bbdd-d833-4dc1-af39-287448612425}</Project>
+    <ProjectReference Include="..\..\tools\Chiro.LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
+      <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
