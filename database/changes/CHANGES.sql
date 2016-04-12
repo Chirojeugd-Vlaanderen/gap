@@ -14,69 +14,167 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
+CREATE FUNCTION grp.ufnRaadGeslacht(@stamNr VARCHAR(10)) RETURNS INT AS
+-- Bepaalt geslacht (als int) uit stamnummer
+BEGIN
+	DECLARE @char2 CHAR(1)
+	DECLARE @char3 CHAR(1)
 
---  Dit is de procedure voor nieuwe groep, zoals ze was (#5011)
-ALTER PROCEDURE [data].[spNieuweGroepUitKipadmin] @stamNr VARCHAR(10), @werkJaar INT AS
--- vult de gegevens van een groep aan met die in Kipadmin.
+	SELECT @char2 = SUBSTRING(@stamNr, 2, 1)
+	SELECT @char3 = SUBSTRING(@stamNr, 3, 1)
+
+	IF @char3 = ' ' 
+	BEGIN
+		RETURN CASE @char2 WHEN 'J' THEN 1 WHEN 'M' THEN 2 ELSE 3 END
+	END
+	RETURN CASE @char3 WHEN 'J' THEN 1 WHEN 'M' THEN 2 ELSE 3 END
+END
+GO
+
+CREATE FUNCTION grp.ufnRaadNiveau(@stamNr VARCHAR(10)) RETURNS INT AS
+-- Bepaalt niveau (groep=2, gewest=8, verbond=32, nationaal=128) op basis van stamnr
+BEGIN
+	IF LEFT(@stamNr, 3) = 'NAT' RETURN 128
+	-- Dit is niet helemaal waterdicht, maar is voorlopig goed.
+	IF RIGHT(@stamNr, 3) = '000' RETURN 32
+	IF RIGHT(@stamNr, 2) = '00' RETURN 8
+	IF SUBSTRING(@stamNr, 4, 1) = '/' RETURN 2
+	RETURN 128
+END
+GO
+
+CREATE FUNCTION grp.ufnRaadGewest(@stamNr VARCHAR(10)) RETURNS INT AS
+-- Bepaalt (GroepID van) gewest uit stamnummer
+BEGIN
+	DECLARE @char3 CHAR(1)
+	DECLARE @leftPart VARCHAR(10)
+	DECLARE @midPart VARCHAR(10)
+	DECLARE @gewestStamnr VARCHAR(10)
+
+	SELECT @char3 = SUBSTRING(@stamNr, 3, 1)
+
+	IF @char3 = ' ' 
+	BEGIN
+		SELECT @leftPart = LEFT(@stamNr, 1)
+		SELECT @midPart = SUBSTRING(@stamNr, 3, 4)
+	END
+	ELSE
+	BEGIN
+		SELECT @leftPart = LEFT(@stamNr, 2)
+		SELECT @midPart = SUBSTRING(@stamNr, 4, 3)
+	END
+	SELECT @gewestStamnr = @leftPart + 'G' + @midPart + '00'
+	RETURN (SELECT GroepID FROM grp.Groep WHERE Code = @gewestStamnr)
+END
+GO
+
+CREATE FUNCTION grp.ufnRaadVerbond(@stamNr VARCHAR(10)) RETURNS INT AS
+-- Bepaalt (GroepID van) verbond op basis stamnummer groep
+BEGIN
+	DECLARE @gewestStamnr VARCHAR(10)
+	DECLARE @verbondStamnr VARCHAR(10)
+
+	SET @gewestStamnr = (SELECT Code FROM grp.Groep WHERE GroepID = grp.ufnRaadGewest(@stamNr))
+
+	IF LEFT(@gewestStamnr,1) = 'O'
+	BEGIN
+		SELECT @verbondStamnr = LEFT(@gewestStamnr, 5) + '000'
+	END
+	ELSE
+	BEGIN
+		SELECT @verbondStamnr = LEFT(@gewestStamnr, 4) + '0000'
+	END
+	RETURN (SELECT GroepID FROM grp.Groep WHERE Code = @verbondStamnr)
+END
+GO
+
+-- Aangepaste procedure voor nieuwe groep (#5011)
+-- Drop oude, maak nieuwe
+
+DROP PROCEDURE data.spNieuweGroepUitKipadmin
+GO
+
+CREATE PROCEDURE [data].[spNieuweGroep] 
+	@stamNr VARCHAR(10), 
+	@naam VARCHAR(160),
+	@plaats VARCHAR(60), 
+	@werkJaar INT AS
+-- Maakt een nieuwe ploeg in GAP
 
 DECLARE @groepID AS INTEGER
-DECLARE @verdCode AS INTEGER
 DECLARE @geslacht AS INTEGER
 DECLARE @groepsWjID AS INTEGER
+DECLARE @niveau AS INTEGER
 
-SET @verdCode = (SELECT Verd_Code FROM Kipadmin.dbo.Groep WHERE StamNr = @stamnr)
-SET @geslacht = (SELECT CASE Soort WHEN 'J' THEN 1 WHEN 'M' THEN 2 ELSE 3 END FROM Kipadmin.Dbo.Groep WHERE StamNr = @stamNr)
+SET @geslacht = grp.ufnRaadGeslacht(@stamNr)
+SET @niveau = grp.ufnRaadNiveau(@stamNr)
 
-----------------------
--- groep overzetten --
-----------------------
+-----------------
+-- groep maken --
+-----------------
 
-PRINT 'Chirogroep Overzeten'
-PRINT '--------------------'
+PRINT 'Groep maken/vinden'
+PRINT '------------------'
 IF NOT EXISTS (SELECT 1 FROM grp.Groep WHERE Code=@stamNr)
 BEGIN
-	-- De Chiro Groep bestaat nog niet in de database, 
-	-- de chirogroep dan gewoon invoegen.
-	INSERT INTO grp.Groep(Naam, Code, OprichtingsJaar, WebSite)
-		SELECT Naam, StamNr, Jr_Aanslui, lower(HomePage) 
-		FROM KipAdmin.dbo.Groep
-			WHERE StamNr = @stamNr
+	-- De groep bestaat nog niet in de database. Creeer.
+	INSERT INTO grp.Groep(Naam, Code, OprichtingsJaar)
+		SELECT @naam, @stamnr, @werkJaar 
 	SET @groepID = scope_identity();
 END
 ELSE
 BEGIN
-	-- De ChiroGroep bestaat al in de database, de GroepID opvragen in de CG2 database
+	-- De Groep bestaat al in de database, de GroepID opvragen in de CG2 database
 	SET @groepID = (SELECT GroepID FROM grp.Groep WHERE Code=@stamNr)
 
 	-- Opvragen van Naam, Oprichtingsjaar en Website.
-	-- Hier veronderstellen we dat de Naam, Oprichtingsjaar en Website in KipAdmin 
-	-- steeds van betere kwaliteit zijn dan de al geimporteerde.
-	
-    -- LET OP! De groepid's in kipadmin verschillen van de groepid's in GAP!
+	-- Hier veronderstellen we dat meegegeven Naam, Oprichtingsjaar en Website 
+	-- steeds van betere kwaliteit zijn dan de al bestaande.
 
 	UPDATE dst
-		SET dst.Naam = g.Naam, 
-			dst.OprichtingsJaar = YEAR(g.StartDatum), 
-			dst.WebSite = lower(g.WebSite)
+		SET dst.Naam = @naam, 
+			dst.OprichtingsJaar = @werkJaar
 	FROM grp.Groep dst 
-	JOIN Kipadmin.grp.ChiroGroep cg on dst.Code = cg.StamNr COLLATE SQL_Latin1_General_CP1_CI_AS
-	JOIN Kipadmin.grp.Groep g on cg.GroepID = g.GroepID
 	WHERE dst.GroepID = @groepID
 END
 
--- Maak ook chirogroep aan als die niet bestaat.
+-- Maak ook chirogroep of kadergroep aan als die niet bestaat.
 
-IF NOT EXISTS (SELECT 1 FROM grp.ChiroGroep WHERE ChiroGroepID = @groepID)
+IF @niveau = 2
 BEGIN
-    INSERT INTO grp.ChiroGroep(ChiroGroepID, Plaats, KaderGroepID)
-		SELECT @groepID, Gemeente, gg.GroepID
-		FROM KipAdmin.grp.ChiroGroep cg
-		JOIN KipAdmin.dbo.Gewest gew on cg.GewestNr = gew.Nr
-		JOIN grp.Groep gg on gg.Code = gew.StamNr COLLATE SQL_Latin1_General_CP1_CI_AS
-			WHERE cg.StamNr = @stamNr
+	IF NOT EXISTS (SELECT 1 FROM grp.ChiroGroep WHERE ChiroGroepID = @groepID)
+	BEGIN
+		INSERT INTO grp.ChiroGroep(ChiroGroepID, Plaats, KaderGroepID)
+			SELECT @groepID, @plaats, grp.ufnRaadGewest(@stamNr)
+	END
+	----------------------------------------------------------------------
+	-- standaardafdelingen
+	----------------------------------------------------------------------
+
+	IF (SELECT COUNT(*) FROM lid.Afdeling WHERE ChiroGroepID = @groepID) = 0
+	BEGIN
+		INSERT INTO lid.Afdeling(AfdelingsNaam, Afkorting, ChiroGroepID)
+		VALUES	('ribbels', 'RI', @groepID),
+				('speelclub', 'SP', @groepID),
+				('rakwi''s', 'RA', @groepID),
+				('tito''s', 'TI', @groepID),
+				('keti''s', 'KE', @groepID),
+				('aspi''s', 'AS', @groepID);
+	END
+	PRINT 'Chirogroep met standaardafdeling ingevoegd/aangepast.'
+	-- Geen afdelingsjaren dus, omdat een nieuwe Chirogroep waarschijnlijk geen
+	-- regelmatige afdelingsverdeling heeft.
+END
+ELSE
+BEGIN
+	IF NOT EXISTS (SELECT 1 FROM grp.KaderGroep WHERE KaderGroepID = @groepID)
+	BEGIN
+		INSERT INTO grp.KaderGroep(KaderGroepID, Niveau, ParentID)
+			SELECT @groepID, @niveau, CASE @niveau WHEN 8 THEN grp.ufnRaadVerbond(@stamNr) ELSE NULL END
+	END
+	PRINT 'Kadergroep ingevoegd/aangepast.'
 END
 
-PRINT 'Chirogroep ingevoegd/aangepast.'
 PRINT ''
 
 
@@ -95,103 +193,6 @@ ELSE
 BEGIN
 	SET @groepsWjID = (SELECT GroepsWerkJaarID FROM grp.GroepsWerkJaar gwj 
 					  WHERE gwj.GroepID = @groepID AND gwj.WerkJaar = @werkJaar)
-END
-
-----------------------------------------------------------------------
--- standaardafdelingen
-----------------------------------------------------------------------
-
--- eventueel ribbels (met groepsgekozen naam)
--- 3 letters voor ribbelcode, zo is er geen clash met de standaardafdelingen
-
-INSERT INTO lid.Afdeling(AfdelingsNaam, Afkorting, ChiroGroepID)
-SELECT core.ufnUcFirst(g.Pink_Naam) AS AfdelingsNaam, LEFT(g.Pink_Naam, 3) AS Afkorting, @groepID AS GroepID FROM kipadmin.dbo.Groep g
-WHERE StamNr = @stamNr
-	AND g.Verd_Code = 2
-	AND NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE ChiroGroepID=@groepID AND AfdelingsNaam=g.Pink_Naam  COLLATE SQL_Latin1_General_CP1_CI_AS)
-
--- andere afdelingen (standaard zelfde namen als officiele afdelingen)
-
-INSERT INTO lid.Afdeling(AfdelingsNaam, Afkorting, ChiroGroepID)
-SELECT oa.Naam AS AfdelingsNaam, UPPER(LEFT(oa.Naam, 2)) AS Afkorting, @groepID AS GroepID FROM lid.OfficieleAfdeling oa
-WHERE oa.officieleAfdelingID > 1 and oa.officieleAfdelingID < 7  -- speciaal valt weg
-	AND NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE ChiroGroepID=@groepID AND AfdelingsNaam=oa.Naam COLLATE SQL_Latin1_General_CP1_CI_AS)
-
-----------------------------------------------------------------------
--- en meteen ook maar afdelngsjaren
--- (mijn 'i' werkt niet meer fatsoenlijk sinds dataclean mijn keyboard
--- kuiste)
-----------------------------------------------------------------------
-
-INSERT INTO lid.AfdelingsJaar(AfdelingID, Geslacht, GroepsWerkJaarID, OfficieleAfdelingID, GeboorteJaarVan, GeboorteJaarTot)
-SELECT 
-	a.AfdelingID as AfdelingID,
-	@geslacht as Geslacht,
-	@groepsWjID as GroepsWerkJaarID,
-	oa.OfficieleAfdelingID as OfficieleAfdelingID,
-	@werkJaar - oa.LeefTijdTot AS GeboorteJaarVan,
-	@werkJaar - oa.LeefTijdVan AS GeboorteJaarTot
-FROM lid.OfficieleAfdeling oa
-JOIN lid.Afdeling a on oa.Naam = a.AfdelingsNaam
-WHERE a.ChiroGroepID=@groepID AND oa.OfficieleAfdelingID > 3
-AND NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID=@groepsWjID AND AfdelingID=a.AfdelingID)
-
-IF (@verdCode = 2) BEGIN
-	-- speelclub en rakwi's
-	INSERT INTO lid.AfdelingsJaar(AfdelingID, Geslacht, GroepsWerkJaarID, OfficieleAfdelingID, GeboorteJaarVan, GeboorteJaarTot)
-	SELECT 
-		a.AfdelingID as AfdelingID,
-		@geslacht as Geslacht,
-		@groepsWjID as GroepsWerkJaarID,
-		oa.OfficieleAfdelingID as OfficieleAfdelingID,
-		@werkJaar - oa.LeefTijdTot AS GeboorteJaarVan,
-		@werkJaar - oa.LeefTijdVan AS GeboorteJaarTot
-	FROM lid.OfficieleAfdeling oa
-	JOIN lid.Afdeling a on oa.Naam = a.AfdelingsNaam
-	WHERE a.ChiroGroepID=@groepID AND oa.OfficieleAfdelingID in (2,3)
-	AND NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID=@groepsWjID AND AfdelingID=a.AfdelingID)
-
-   -- ribbels
-	INSERT INTO lid.AfdelingsJaar(AfdelingID, Geslacht, GroepsWerkJaarID, OfficieleAfdelingID, GeboorteJaarVan, GeboorteJaarTot)
-	SELECT 
-		a.AfdelingID as AfdelingID,
-		@geslacht as Geslacht,
-		@groepsWjID as GroepsWerkJaarID,
-		1 as OfficieleAfdelingID,
-		@werkJaar - 7 AS GeboorteJaarVan,
-		@werkJaar - 6 AS GeboorteJaarTot
-	FROM Kipadmin.dbo.Groep g
-	JOIN lid.Afdeling a ON g.Pink_Naam = a.AfdelingsNaam COLLATE SQL_Latin1_General_CP1_CI_AS
-	WHERE a.ChiroGroepID = @groepID AND g.StamNr = @stamNr
-	AND NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID=@groepsWjID AND AfdelingID=a.AfdelingID)
-END	
-ELSE
-BEGIN
-	-- rakwi's
-	INSERT INTO lid.AfdelingsJaar(AfdelingID, Geslacht, GroepsWerkJaarID, OfficieleAfdelingID, GeboorteJaarVan, GeboorteJaarTot)
-	SELECT 
-		a.AfdelingID as AfdelingID,
-		@geslacht as Geslacht,
-		@groepsWjID as GroepsWerkJaarID,
-		3 as OfficieleAfdelingID,
-		@werkJaar - 11 AS GeboorteJaarVan,
-		@werkJaar - 9 AS GeboorteJaarTot
-	FROM lid.Afdeling a
-	WHERE a.AfdelingsNaam='Rakwi''s' and a.ChiroGroepID = @groepID
-	AND NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID=@groepsWjID AND AfdelingID=a.AfdelingID)
-
-	-- speelclub
-	INSERT INTO lid.AfdelingsJaar(AfdelingID, Geslacht, GroepsWerkJaarID, OfficieleAfdelingID, GeboorteJaarVan, GeboorteJaarTot)
-	SELECT 
-		a.AfdelingID as AfdelingID,
-		@geslacht as Geslacht,
-		@groepsWjID as GroepsWerkJaarID,
-		2 as OfficieleAfdelingID,
-		@werkJaar - 8 AS GeboorteJaarVan,
-		@werkJaar - 6 AS GeboorteJaarTot
-	FROM lid.Afdeling a
-	WHERE a.AfdelingsNaam='Speelclub' and a.ChiroGroepID = @groepID
-	AND NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID=@groepsWjID AND AfdelingID=a.AfdelingID)
 END
 
 PRINT 'GroepID: ' + CAST(@GroepID AS VARCHAR(10))
