@@ -138,13 +138,9 @@
       <Project>{6e81a10a-ad85-47a0-8b5d-70361f393cdd}</Project>
       <Name>Chiro.Kip.ServiceContracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
+    <ProjectReference Include="..\..\tools\Chiro.LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj">
       <Project>{D1E7BBDD-D833-4DC1-AF39-287448612425}</Project>
       <Name>Chiro.Ad.ServiceContracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\tools\LoginService\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
-      <Project>{18ff2008-106f-48a6-befb-5f8b301354d0}</Project>
-      <Name>Chiro.Cdf.Mailer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc.Factory\Chiro.Cdf.Ioc.Factory.csproj">
       <Project>{66147F76-9D76-46A6-8FCE-1BBE317A6093}</Project>

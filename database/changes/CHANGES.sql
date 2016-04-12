@@ -94,7 +94,7 @@ GO
 DROP PROCEDURE data.spNieuweGroepUitKipadmin
 GO
 
-CREATE PROCEDURE [data].[spNieuweGroep] 
+CREATE PROCEDURE [grp].[spNieuweGroep] 
 	@stamNr VARCHAR(10), 
 	@naam VARCHAR(160),
 	@plaats VARCHAR(60), 

@@ -67,7 +67,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\tools\LoginService\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
+    <ProjectReference Include="..\..\tools\Chiro.LoginService\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj">
       <Project>{18ff2008-106f-48a6-befb-5f8b301354d0}</Project>
       <Name>Chiro.Cdf.Mailer</Name>
     </ProjectReference>
