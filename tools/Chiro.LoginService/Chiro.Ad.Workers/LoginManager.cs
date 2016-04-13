@@ -16,8 +16,10 @@
  * limitations under the License.
  */
 ﻿using System;
+﻿using System.Collections;
 ﻿using System.Text;
-using Chiro.Ad.Domain;
+﻿using Chiro.Ad.DirectoryInterface;
+﻿using Chiro.Ad.Domain;
 using Chiro.Cdf.Mailer;
 
 namespace Chiro.Ad.Workers
@@ -29,14 +31,17 @@ namespace Chiro.Ad.Workers
     public class LoginManager
     {
         private readonly IMailer _mailer;
+        private readonly IDirectoryAccess _directoryAccess;
 
         /// <summary>
         /// Standaardconstructor
         /// </summary>
         /// <param name="mailer">IMailer via dewelke mails verstuurd zullen worden.</param>
-        public LoginManager(IMailer mailer)
+        /// <param name="directoryAccess">interface voor toegang tot active directory</param>
+        public LoginManager(IMailer mailer, IDirectoryAccess directoryAccess)
         {
             _mailer = mailer;
+            _directoryAccess = directoryAccess;
         }
 
 
@@ -46,12 +51,11 @@ namespace Chiro.Ad.Workers
         /// <param name="login">Login waarvoor wachtwoord moet worden ingesteld</param>
         /// <param name="nieuwWachtWoord">Het wachtwoord dat ingesteld moet worden. Als dat een lege
         /// string is, wordt een willekeurig wachtwoord gegenereerd.</param>
-        public void Activeren(GapLogin login, string nieuwWachtWoord)
+        public void Activeren(Chirologin login, string nieuwWachtWoord)
         {
             var wachtWoord = nieuwWachtWoord == string.Empty ? WachtWoordMaken() : nieuwWachtWoord;
-            login.Activeren();
-            login.Wachtwoord = wachtWoord;
-            login.Opslaan();
+            _directoryAccess.PasswordReset(login, wachtWoord);
+            _directoryAccess.GebruikerActiveren(login);
         }
 
         /// <summary>
@@ -68,12 +72,12 @@ namespace Chiro.Ad.Workers
         /// Activeert de gegeven <paramref name="login"/>, en stuurt de gebruiker een mailtje
         /// </summary>
         /// <param name="login">Te activeren login</param>
-        public void ActiverenEnMailen (GapLogin login)
+        public void ActiverenEnMailen (Chirologin login)
         {
             string boodschap;
 
             // Alleen als de gebruiker niet-actief is, moet er nog een wachtwoord ingesteld worden
-            if (login.IsActief == false)
+            if (!login.IsActief)
             {
                 string wachtWoord = WachtWoordMaken();
                 Activeren(login, wachtWoord);
@@ -92,6 +96,87 @@ namespace Chiro.Ad.Workers
             }
 
             _mailer.Verzenden(login.Mailadres, "Je GAP-login", boodschap);
+        }
+
+        /// <summary>
+        /// Zoekt een login, of maakt aan als nog niet gevonden.
+        /// </summary>
+        /// <param name="domein">Domein waarin de login gemaakt moet worden.</param>
+        /// <param name="adNr">AD-nummer van persoon voor wie een login is gevraagd.</param>
+        /// <param name="voornaam">Voornaam van persoon voor wie een login is gevraagd.</param>
+        /// <param name="familienaam">Familienaam van persoon voor wie een login is gevraagd.</param>
+        /// <param name="mailadres">E-mailadres van persoon voor wie een login is gevraagd.</param>
+        /// <returns></returns>
+        public Chirologin ZoekenOfMaken(DomeinEnum domein, int adNr, string voornaam, string familienaam, string mailadres)
+        {
+            string ldapRoot;
+
+            switch (domein)
+            {
+                case DomeinEnum.Lokaal:
+                    ldapRoot = Properties.Settings.Default.LdapLokaalRoot;
+                    break;
+                case DomeinEnum.Wereld:
+                    ldapRoot = Properties.Settings.Default.LdapWereldRoot;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(domein));
+            }
+
+            var login = _directoryAccess.GebruikerZoeken(ldapRoot, adNr);
+
+            if (login != null)
+            {
+                // Als we een gebruiker hebben gevonden, moeten we niets meer doen. We leveren de
+                // bestaande login op.
+                return login;
+            }
+
+            // Er bestaat nog geen gebruiker. Nu moeten we nakijken of er al een andere gebruiker bestaat met dezelfde
+            // naam, want daar kan Active Directory niet mee lachen. In dat laatste geval foefelen we wat, tot we toch
+            // verder kunnen. (foefelen in de zin van cijfers aan de voornaam plakken)
+            // UPDATE: Vermoedelijk mag dat wel, eenzelfde voornaam en familienaam, maar moet de 'common name'
+            // (waarvoor wij voornaam en familienaam nemen) uniek zijn.
+
+            int teller = 0;
+            string oorspronkelijkeVoornaam = voornaam;
+
+            while (_directoryAccess.GebruikerZoeken(ldapRoot, voornaam, familienaam) != null)
+            {
+                voornaam = String.Format("{0}{1}", oorspronkelijkeVoornaam, ++teller);
+            }
+
+            // Als gebruikersnaam nemen we normaal voornaam.famielienaam, eventueel met de teller er achter. We gaan
+            // er (eigenlijk ten onrechte, maar soit) van uit dat die nog niet bestaat.
+            // 't Is een beetje raar dat voor de naam van de user het volgnummer aan de voornaam wordt geplakt, en
+            // voor de login aan de familienaam, maar dat is dan voorlopig nog maar zo. Wie wil, kan dit fixen.
+
+            login = new Chirologin
+            {
+                Login =
+                    String.Format("{0}.{1}{2}", oorspronkelijkeVoornaam, familienaam,
+                        teller > 0 ? String.Format(".{0}", teller) : String.Empty),
+                Voornaam = voornaam,
+                Familienaam = familienaam,
+                AdNr = adNr,
+              	Mailadres = mailadres
+            };
+            _directoryAccess.NieuweGebruikerBewaren(login);
+            return login;
+        }
+
+        /// <summary>
+        /// Voegt de gegeven <paramref name="gebruiker" /> toe aan de gebruikersgroep
+        /// van de GAP-users.
+        /// </summary>
+        public void GapRechtenToekennen(Chirologin gebruiker)
+        {
+            string groep = Properties.Settings.Default.GapGebruikersGroep;
+            string groepOu = Properties.Settings.Default.GapGroepenOU;
+            if (!((IList) gebruiker.SecurityGroepen).Contains(groep))
+            {
+                _directoryAccess.GebruikerToevoegenAanGroep(gebruiker, groep, groepOu);
+            }
         }
     }
 }

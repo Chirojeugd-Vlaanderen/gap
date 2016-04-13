@@ -63,16 +63,16 @@ namespace Chiro.Ad.LoginService.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Dag {0}
         ///
-        ///Iemand van je groep of kaderploeg gaf je toegang tot de website van het Groepsadministratieprogramma (GAP): https://gap.chiro.be/. Je had blijkbaar al een login voor het extranet van de Chiro, je kunt hiervoor dezelfde gebruiken. In die login zat wel een ander mailadres dan wat er in de gegevens van je groep of kaderploeg zit.
+        ///Iemand probeerde voor jou, {2}, een nieuwe Chirologin aan te maken, maar blijkbaar had je er al een. Het e-mailadres voor die bestaande login is {1}.
         ///
-        ///Is het niet de bedoeling dat we dat andere adres nog gebruiken? Pas dat dan aan op https://login.chiro.be/.
+        ///Is het niet de bedoeling dat we het adres {1} nog gebruiken? Pas dat dan aan op https://login.chiro.be/.
         ///
         ///Groeten
         ///De Chirohelpdesk (Helpdesk@chiro.be).
         /// </summary>
-        internal static string VerschillendWachtwoordMail {
+        internal static string VerschillendAdresMail {
             get {
-                return ResourceManager.GetString("VerschillendWachtwoordMail", resourceCulture);
+                return ResourceManager.GetString("VerschillendAdresMail", resourceCulture);
             }
         }
     }

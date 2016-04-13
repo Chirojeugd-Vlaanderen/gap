@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chiro.Ad.DirectoryAccess.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="GapOU" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/OU=Gebruikers,OU=ChiroAdministratie,DC=Chiro,DC=Wereld</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
