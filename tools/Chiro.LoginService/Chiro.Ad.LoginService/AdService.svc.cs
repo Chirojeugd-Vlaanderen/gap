@@ -97,12 +97,12 @@ namespace Chiro.Ad.LoginService
                     string wachtwoord = RandomPassword.Generate();
                     _loginManager.ActiverenEnMailen(gebruiker);
                 }
-                else if (String.Compare(gebruiker.Mailadres, mailadres, true) != 0)
+                else if (String.Compare(gebruiker.Mailadres, mailadres, StringComparison.OrdinalIgnoreCase) != 0)
                 {
                     // Als het mailadres van de gebruiker niet hetzelfde is als het mailadres van de bestaande
                     // account, dan sturen we ook een mailtje.
                     // TODO: Dit staat hier op een rare plaats.
-                    string boodschap = String.Format(Properties.Resources.VerschillendWachtwoordMail, voornaam);
+                    string boodschap = String.Format(Properties.Resources.VerschillendAdresMail, voornaam, gebruiker.Mailadres, mailadres);
                     _mailer.Verzenden(mailadres, "Je Chirologin", boodschap);
                 }
                 return gebruiker.Login;
