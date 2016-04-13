@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2015 the GAP developers. See the NOTICE file at the 
+ * Copyright 2008-2016 the GAP developers. See the NOTICE file at the 
  * top-level directory of this distribution, and at
  * https://gapwiki.chiro.be/copyright
  * 
@@ -17,7 +17,7 @@
  */
 ﻿using System;
 using System.Security.Principal;
-using Chiro.Cdf.Ioc;
+﻿using Chiro.Cdf.Ioc.Factory;
 
 namespace Chiro.Ad.LoginService
 {

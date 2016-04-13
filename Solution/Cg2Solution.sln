@@ -32,11 +32,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Domain", "Chiro.G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Sync", "Chiro.Gap.Sync\Chiro.Gap.Sync.csproj", "{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.ServiceContracts", "..\tools\LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj", "{D1E7BBDD-D833-4DC1-AF39-287448612425}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ServiceContracts", "..\tools\Chiro.CiviSync\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj", "{6E81A10A-AD85-47A0-8B5D-70361F393CDD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Mailer", "..\tools\LoginService\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj", "{18FF2008-106F-48A6-BEFB-5F8B301354D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Poco.Model", "Chiro.Gap.Poco.Model\Chiro.Gap.Poco.Model.csproj", "{5B06D34A-3C2F-4041-914C-FA3B63F973E2}"
 EndProject
@@ -94,6 +90,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts.Mappers", "Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj", "{4E9327EF-2D32-4E12-8D20-1EE8AF68A1B0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceHelper", "Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Mailer", "..\tools\Chiro.LoginService\Chiro.Cdf.Mailer\Chiro.Cdf.Mailer.csproj", "{18FF2008-106F-48A6-BEFB-5F8B301354D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Ad.ServiceContracts", "..\tools\Chiro.LoginService\Chiro.Ad.ServiceContracts\Chiro.Ad.ServiceContracts.csproj", "{D1E7BBDD-D833-4DC1-AF39-287448612425}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -215,18 +215,6 @@ Global
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|Win32.ActiveCfg = Release|Any CPU
 		{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}.Release|x86.ActiveCfg = Release|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Win32.ActiveCfg = Release|Any CPU
-		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|x86.ActiveCfg = Release|Any CPU
 		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -239,18 +227,6 @@ Global
 		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Release|Win32.ActiveCfg = Release|Any CPU
 		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Release|x86.ActiveCfg = Release|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Win32.ActiveCfg = Release|Any CPU
-		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|x86.ActiveCfg = Release|Any CPU
 		{5B06D34A-3C2F-4041-914C-FA3B63F973E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5B06D34A-3C2F-4041-914C-FA3B63F973E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B06D34A-3C2F-4041-914C-FA3B63F973E2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -611,6 +587,38 @@ Global
 		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Win32.Build.0 = Release|Any CPU
 		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|x86.ActiveCfg = Release|Any CPU
 		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|x86.Build.0 = Release|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|Win32.Build.0 = Debug|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Debug|x86.Build.0 = Debug|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Win32.ActiveCfg = Release|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|Win32.Build.0 = Release|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|x86.ActiveCfg = Release|Any CPU
+		{18FF2008-106F-48A6-BEFB-5F8B301354D0}.Release|x86.Build.0 = Release|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|Win32.Build.0 = Debug|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Debug|x86.Build.0 = Debug|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Win32.ActiveCfg = Release|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|Win32.Build.0 = Release|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|x86.ActiveCfg = Release|Any CPU
+		{D1E7BBDD-D833-4DC1-AF39-287448612425}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -631,8 +639,8 @@ Global
 		{5CAA5C51-8250-4E6E-851F-FACE0951BEA9} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
 		VisualSVNWorkingCopyRoot = .
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution8.vsmdi

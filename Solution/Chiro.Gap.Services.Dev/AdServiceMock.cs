@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-using Chiro.Ad.ServiceContracts;
 using System;
+using Chiro.Ad.ServiceContracts;
 
 namespace Chiro.Gap.Services.Dev
 {
